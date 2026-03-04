@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1772632153850,
+      "tag": "0000_perfect_caretaker",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1772632192683,
+      "tag": "0001_lame_microchip",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1772633335243,
+      "tag": "0002_strong_hannibal_king",
+      "breakpoints": true
+    }
+  ]
+}

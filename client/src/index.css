@@ -1,7 +1,7 @@
 /*
- * IDEASMART — Dark Editorial / Tech Magazine Design System
- * Design Movement: Dark Editorial inspired by Wired, The Verge
- * Color Philosophy: Deep navy (#0a0f1e) + Cyan accent (#00e5c8) + Orange (#ff5500)
+ * IDEASMART — Light Editorial / Tech Magazine Design System
+ * Design Movement: Clean Editorial inspired by MIT Technology Review, Fast Company
+ * Color Philosophy: White (#ffffff) + Slate (#1a1f2e) + Cyan accent (#00b4a0) + Orange (#e84f00)
  * Typography: Space Grotesk (display) + DM Sans (body) + JetBrains Mono (mono)
  */
 
@@ -44,39 +44,45 @@
 :root {
   --radius: 0.5rem;
 
-  /* IDEASMART Dark Editorial Palette */
-  --background: oklch(0.09 0.02 250);         /* #0a0f1e — deep navy */
-  --foreground: oklch(0.97 0 0);              /* #f8f8f8 — near white */
-  --card: oklch(0.13 0.02 250);               /* #111827 — card dark */
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.13 0.02 250);
-  --popover-foreground: oklch(0.97 0 0);
-  --primary: oklch(0.82 0.15 185);            /* #00e5c8 — cyan */
-  --primary-foreground: oklch(0.09 0.02 250);
-  --secondary: oklch(0.17 0.02 250);          /* subtle dark */
-  --secondary-foreground: oklch(0.75 0.01 250);
-  --muted: oklch(0.17 0.02 250);
-  --muted-foreground: oklch(0.55 0.01 250);
-  --accent: oklch(0.17 0.02 250);
-  --accent-foreground: oklch(0.82 0.15 185);
-  --destructive: oklch(0.65 0.22 25);         /* #ff5500 — orange */
-  --destructive-foreground: oklch(0.97 0 0);
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.82 0.15 185);
-  --chart-1: oklch(0.82 0.15 185);
-  --chart-2: oklch(0.65 0.22 25);
-  --chart-3: oklch(0.55 0.18 250);
-  --chart-4: oklch(0.7 0.1 185);
-  --chart-5: oklch(0.4 0.1 250);
+  /* IDEASMART Light Editorial Palette */
+  --background: oklch(0.99 0 0);               /* #fafafa — near white */
+  --foreground: oklch(0.13 0.02 250);          /* #1a1f2e — deep slate */
+  --card: oklch(1 0 0);                        /* #ffffff — pure white */
+  --card-foreground: oklch(0.13 0.02 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.02 250);
+  --primary: oklch(0.62 0.13 185);             /* #00b4a0 — teal */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.01 250);           /* #f1f3f7 — light grey */
+  --secondary-foreground: oklch(0.35 0.02 250);
+  --muted: oklch(0.96 0.01 250);
+  --muted-foreground: oklch(0.48 0.02 250);    /* #6b7280 — medium grey */
+  --accent: oklch(0.94 0.02 185);              /* #e6f7f5 — light teal tint */
+  --accent-foreground: oklch(0.62 0.13 185);
+  --destructive: oklch(0.60 0.22 30);          /* #e84f00 — orange */
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.88 0.01 250);              /* #e2e5ed — light border */
+  --input: oklch(0.93 0.01 250);
+  --ring: oklch(0.62 0.13 185);
+  --chart-1: oklch(0.62 0.13 185);
+  --chart-2: oklch(0.60 0.22 30);
+  --chart-3: oklch(0.45 0.15 250);
+  --chart-4: oklch(0.55 0.1 185);
+  --chart-5: oklch(0.35 0.08 250);
 
   /* Custom brand tokens */
-  --cyan: #00e5c8;
-  --orange: #ff5500;
-  --navy: #0a0f1e;
-  --navy-light: #111827;
-  --navy-card: rgba(255,255,255,0.04);
-  --blue-accent: #0066ff;
+  --cyan: #00b4a0;
+  --cyan-dark: #008f7e;
+  --orange: #e84f00;
+  --navy: #1a1f2e;
+  --navy-light: #2d3548;
+  --blue-accent: #1a56db;
+  --surface-1: #f8f9fc;
+  --surface-2: #f1f3f8;
+  --surface-3: #e8ecf4;
+  --text-primary: #1a1f2e;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
 }
 
 @layer base {
@@ -88,10 +94,17 @@
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  p {
+    color: var(--text-secondary);
+    line-height: 1.75;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -135,26 +148,97 @@
     text-transform: uppercase;
   }
 
-  /* Glow effect */
-  .glow-cyan {
-    box-shadow: 0 0 20px rgba(0, 229, 200, 0.15);
-  }
-  .glow-cyan:hover {
-    box-shadow: 0 0 30px rgba(0, 229, 200, 0.25);
-  }
-
-  /* Progress bar animation */
-  .progress-fill {
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
   /* Article card hover */
   .article-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--surface-3);
+    background: #ffffff;
   }
   .article-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Section divider */
+  .section-divider {
+    border-top: 1px solid var(--surface-3);
+  }
+
+  /* News card */
+  .news-card {
+    background: #ffffff;
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+  .news-card:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 4px 20px rgba(0, 180, 160, 0.08);
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0, 229, 200, 0.1);
+  }
+
+  /* Stat block */
+  .stat-block {
+    background: var(--surface-1);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+  }
+
+  /* Feature item */
+  .feature-item {
+    border-bottom: 1px solid var(--surface-2);
+    padding: 0.75rem 0;
+  }
+  .feature-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Quote block */
+  .quote-block {
+    border-left: 3px solid var(--cyan);
+    background: var(--surface-1);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+  }
+
+  /* CTA primary button */
+  .btn-primary {
+    background: var(--navy);
+    color: #ffffff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-primary:hover {
+    background: var(--navy-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(26, 31, 46, 0.25);
+  }
+
+  /* CTA secondary button */
+  .btn-secondary {
+    background: transparent;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--surface-3);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-secondary:hover {
+    border-color: var(--navy);
+    background: var(--surface-1);
   }
 }
 
@@ -163,12 +247,12 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0f1e;
+  background: #f1f3f8;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 229, 200, 0.3);
+  background: rgba(0, 180, 160, 0.4);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 229, 200, 0.5);
+  background: rgba(0, 180, 160, 0.6);
 }

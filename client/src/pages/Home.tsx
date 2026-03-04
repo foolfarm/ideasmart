@@ -1,12 +1,14 @@
 /*
- * IDEASMART Home Page — Dark Editorial / Tech Magazine
- * Design: Deep navy (#0a0f1e) + Cyan (#00e5c8) + Orange (#ff5500)
+ * IDEASMART Home Page — Light Editorial / Tech Magazine
+ * Design: White (#fafafa) + Slate (#1a1f2e) + Teal (#00b4a0) + Orange (#e84f00)
  * Typography: Space Grotesk (display) + DM Sans (body) + JetBrains Mono (mono)
  * Layout: Asymmetric editorial with numbered sections
  */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Navbar from "@/components/Navbar";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 // ─── Image URLs (CDN) ────────────────────────────────────────────────────────
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
@@ -15,16 +17,32 @@ const FOOLSHARE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3E
 const FRAGMENTALIS_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_fragmentalis-WqVpGnPxQvhf6bevxs5m6m.webp";
 const POLLCAST_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_pollcast-gLGMN8iojcFU6EWceVzvo5.webp";
 
+// ─── Brand Colors ─────────────────────────────────────────────────────────────
+const C = {
+  teal: "#00b4a0",
+  tealLight: "#e6f7f5",
+  orange: "#e84f00",
+  orangeLight: "#fff2ec",
+  blue: "#1a56db",
+  blueLight: "#eff4ff",
+  navy: "#1a1f2e",
+  slate: "#4b5563",
+  muted: "#9ca3af",
+  border: "#e2e5ed",
+  surface1: "#f8f9fc",
+  surface2: "#f1f3f8",
+};
+
 // ─── Animation helpers ───────────────────────────────────────────────────────
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -33,18 +51,18 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
 }
 
 // ─── Progress Bar ────────────────────────────────────────────────────────────
-function PollBar({ label, category, percentage, votes, color }: {
-  label: string; category: string; percentage: number; votes: number; color: string;
+function PollBar({ label, category, percentage, votes, color, bgColor }: {
+  label: string; category: string; percentage: number; votes: number; color: string; bgColor: string;
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
-    <div ref={ref} className="border border-white/8 rounded-xl p-4 hover:border-white/15 transition-colors">
+    <div ref={ref} className="rounded-xl p-4 border transition-all hover:shadow-sm" style={{ borderColor: C.border, background: "#fff" }}>
       <p className="editorial-tag mb-2" style={{ color }}>{category}</p>
-      <p className="text-sm font-semibold text-white/90 mb-3 leading-snug" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <p className="text-sm font-semibold mb-3 leading-snug" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
         {label}
       </p>
-      <div className="h-1.5 bg-white/8 rounded-full overflow-hidden mb-2">
+      <div className="h-1.5 rounded-full overflow-hidden mb-2" style={{ background: bgColor }}>
         <motion.div
           className="h-full rounded-full"
           style={{ background: color }}
@@ -55,23 +73,23 @@ function PollBar({ label, category, percentage, votes, color }: {
       </div>
       <div className="flex justify-between">
         <span className="text-xs font-bold" style={{ color }}>{percentage}% Sì</span>
-        <span className="text-xs text-white/35">{votes.toLocaleString()} voti</span>
+        <span className="text-xs" style={{ color: C.muted }}>{votes.toLocaleString()} voti</span>
       </div>
     </div>
   );
 }
 
 // ─── Feature check item ──────────────────────────────────────────────────────
-function FeatureItem({ text, color }: { text: string; color: string }) {
+function FeatureItem({ text, color, bgColor }: { text: string; color: string; bgColor: string }) {
   return (
-    <div className="flex items-start gap-3 py-3 border-b border-white/6 last:border-0">
+    <div className="flex items-start gap-3 py-3 feature-item">
       <div
         className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-        style={{ background: `${color}20` }}
+        style={{ background: bgColor }}
       >
         <span className="text-xs font-bold" style={{ color }}>✓</span>
       </div>
-      <p className="text-sm text-white/70 leading-relaxed">{text}</p>
+      <p className="text-sm leading-relaxed" style={{ color: C.slate }}>{text}</p>
     </div>
   );
 }
@@ -79,142 +97,105 @@ function FeatureItem({ text, color }: { text: string; color: string }) {
 // ─── Stat block ─────────────────────────────────────────────────────────────
 function StatBlock({ value, label, color }: { value: string; label: string; color: string }) {
   return (
-    <div className="text-center p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.04)" }}>
+    <div className="text-center p-4 rounded-xl stat-block">
       <div className="text-3xl font-black mb-1" style={{ color, fontFamily: "'Space Grotesk', sans-serif" }}>{value}</div>
-      <div className="editorial-tag text-white/35">{label}</div>
+      <div className="editorial-tag" style={{ color: C.muted }}>{label}</div>
     </div>
   );
 }
 
-// ─── Article Section ─────────────────────────────────────────────────────────
-function ArticleSection({
-  id, number, category, categoryColor, title, subtitle, image, accentColor, bgDark = false,
-  children, ctaPrimary, ctaSecondary, ctaUrl,
-}: {
-  id: string; number: string; category: string; categoryColor: string;
-  title: string; subtitle: string; image: string; accentColor: string; bgDark?: boolean;
-  children: React.ReactNode; ctaPrimary: string; ctaSecondary: string; ctaUrl: string;
+// ─── Section Header ──────────────────────────────────────────────────────────
+function SectionHeader({ number, category, categoryColor, title, titleColor }: {
+  number: string; category: string; categoryColor: string; title: string; titleColor?: string;
 }) {
   return (
-    <section id={id} className="relative" style={{ background: bgDark ? "#080c18" : "#0a0f1e" }}>
-      {/* Category bar */}
-      <div className="border-b border-white/8" style={{ background: "#060a14" }}>
+    <>
+      <div className="border-b" style={{ borderColor: C.border, background: C.surface1 }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
-          <span className="editorial-tag text-white/30">{number} —</span>
+          <span className="editorial-tag" style={{ color: C.muted }}>{number} —</span>
           <span className="editorial-tag" style={{ color: categoryColor }}>{category}</span>
         </div>
       </div>
-
-      {/* Title bar */}
-      <div className="border-b-2" style={{ borderColor: accentColor, background: `${accentColor}12` }}>
+      <div className="border-b-2" style={{ borderColor: categoryColor, background: `${categoryColor}08` }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <h2
             className="text-2xl sm:text-3xl font-black leading-tight"
-            style={{ color: bgDark ? accentColor : "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ color: titleColor || C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
           >
             {title}
           </h2>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Left: text */}
-          <FadeUp>
-            <p className="text-sm font-medium mb-4" style={{ color: accentColor, fontFamily: "'DM Sans', sans-serif" }}>
-              {subtitle}
-            </p>
-            {children}
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mt-8">
-              <a
-                href={ctaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105"
-                style={{ background: accentColor, color: bgDark ? "#0a0f1e" : "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {ctaPrimary} →
-              </a>
-              <a
-                href={ctaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-all duration-200"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                {ctaSecondary}
-              </a>
-            </div>
-          </FadeUp>
-
-          {/* Right: image */}
-          <FadeUp delay={0.15}>
-            <div className="rounded-2xl overflow-hidden border border-white/8 article-card">
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-56 object-cover"
-                loading="lazy"
-              />
-            </div>
-          </FadeUp>
-        </div>
-      </div>
-    </section>
+    </>
   );
 }
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function Home() {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+
+  const subscribeMutation = trpc.newsletter.subscribe.useMutation({
+    onSuccess: (data) => {
+      if ((data as any).alreadySubscribed) {
+        toast.info("Sei già iscritto alla newsletter IDEASMART!");
+      } else {
+        setSubscribed(true);
+        toast.success("Iscrizione completata! Benvenuto in IDEASMART.");
+      }
+    },
+    onError: (err) => {
+      toast.error("Errore: " + err.message);
+    },
+  });
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) setSubscribed(true);
+    if (email) {
+      subscribeMutation.mutate({ email, name: name || undefined });
+    }
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0f1e" }}>
+    <div className="min-h-screen" style={{ background: "#fafafa" }}>
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden" style={{ background: C.navy }}>
         {/* Background image */}
         <div className="absolute inset-0">
-          <img src={HERO_IMG} alt="Rete neurale AI - Osservatorio sull'Innovazione AI Italiana" className="w-full h-full object-cover opacity-30" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,15,30,0.6) 0%, rgba(10,15,30,0.85) 60%, #0a0f1e 100%)" }} />
+          <img src={HERO_IMG} alt="Rete neurale AI - Osservatorio sull'Innovazione AI Italiana" className="w-full h-full object-cover opacity-20" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${C.navy}f0 0%, ${C.navy}cc 60%, ${C.navy}e8 100%)` }} />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
           <FadeUp>
             {/* Issue badge */}
-            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-white/15" style={{ background: "rgba(0,229,200,0.08)" }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#00e5c8" }} />
-              <span className="editorial-tag" style={{ color: "#00e5c8" }}>
+            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}40`, background: `${C.teal}15` }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
+              <span className="editorial-tag" style={{ color: C.teal }}>
                 Osservatorio sull'Innovazione AI Italiana
               </span>
-              <span className="editorial-tag text-white/30">N° 03 — Marzo 2026</span>
+              <span className="editorial-tag" style={{ color: "rgba(255,255,255,0.35)" }}>N° 03 — Marzo 2026</span>
             </div>
 
             {/* Main title */}
             <h1
-              className="text-6xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tight mb-6"
+              className="text-6xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tight mb-6 text-white"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              IDEA<span style={{ color: "#00e5c8" }}>SMART</span>
+              IDEA<span style={{ color: C.teal }}>SMART</span>
             </h1>
             <p
-              className="text-base sm:text-lg tracking-widest uppercase mb-8 text-white/40"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              className="text-base sm:text-lg tracking-widest uppercase mb-8"
+              style={{ fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.4)" }}
             >
               L'Analisi Mensile &nbsp;·&nbsp; AI for Business
             </p>
 
             {/* Description */}
-            <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-2xl mb-10" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-lg sm:text-xl leading-relaxed max-w-2xl mb-10" style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.75)" }}>
               <strong className="text-white">IDEASMART</strong> è la startup italiana di tecnologia e innovazione
               che ogni mese analizza, testa e seleziona le realtà più promettenti
               dell'ecosistema AI per il business. La nostra redazione porta alla luce
@@ -222,15 +203,15 @@ export default function Home() {
             </p>
 
             {/* Stats row */}
-            <div className="flex flex-wrap gap-6 mb-10">
+            <div className="flex flex-wrap gap-8 mb-10">
               {[
                 { value: "N° 03", label: "Marzo 2026" },
                 { value: "4", label: "Startup analizzate" },
                 { value: "100%", label: "AI-driven" },
               ].map((s) => (
                 <div key={s.label} className="flex items-baseline gap-2">
-                  <span className="text-2xl font-black" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>{s.value}</span>
-                  <span className="text-sm text-white/40">{s.label}</span>
+                  <span className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>{s.value}</span>
+                  <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>{s.label}</span>
                 </div>
               ))}
             </div>
@@ -239,15 +220,15 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => document.getElementById("editoriale")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105"
-                style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
+                className="px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105 text-white"
+                style={{ background: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 Leggi l'analisi del mese ↓
               </button>
               <button
                 onClick={() => document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg text-sm font-semibold border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all duration-200"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                className="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200"
+                style={{ border: "1.5px solid rgba(255,255,255,0.25)", color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}
               >
                 Abbonati alla newsletter →
               </button>
@@ -256,98 +237,172 @@ export default function Home() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/25">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ color: "rgba(255,255,255,0.25)" }}>
           <span className="editorial-tag">SCORRI</span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
             className="w-0.5 h-8 rounded-full"
-            style={{ background: "linear-gradient(to bottom, rgba(0,229,200,0.5), transparent)" }}
+            style={{ background: `linear-gradient(to bottom, ${C.teal}80, transparent)` }}
           />
         </div>
       </section>
 
+      {/* ── ULTIME NEWS AI ─────────────────────────────────────────────── */}
+      <section id="news" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
+        {/* Category bar */}
+        <div className="border-b" style={{ borderColor: C.border, background: C.surface1 }}>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
+              <span className="editorial-tag" style={{ color: C.teal }}>◆ Ultime News AI</span>
+              <span className="editorial-tag" style={{ color: C.muted }}>Settimana del 3 Marzo 2026</span>
+            </div>
+            <span className="editorial-tag hidden sm:block" style={{ color: C.muted }}>Aggiornato ogni 7 giorni</span>
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <FadeUp>
+            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
+              I 10 eventi AI più significativi della settimana
+            </h2>
+            <p className="text-sm mb-8" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
+              La selezione editoriale di IDEASMART sui fatti che stanno ridefinendo il panorama dell'intelligenza artificiale globale.
+            </p>
+          </FadeUp>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              { n: "01", cat: "Modelli Generativi", color: C.teal, bg: C.tealLight, title: "OpenAI lancia GPT-5.3 Instant: -26.8% di allucinazioni", summary: "Il modello più usato di OpenAI riceve un aggiornamento significativo che riduce le allucinazioni del 26,8% sulle query web e del 19,7% sulla conoscenza interna.", source: "VentureBeat", url: "https://venturebeat.com/orchestration/gpt-5-3-instant-cuts-hallucinations-by-26-8-as-openai-shifts-focus-from" },
+              { n: "02", cat: "AI & Difesa", color: C.orange, bg: C.orangeLight, title: "Anthropic vs. Pentagono: Claude rifiuta le richieste militari", summary: "Anthropic entra in rotta di collisione con il Dipartimento della Difesa USA dopo aver rifiutato di adattare Claude per usi di sorveglianza e sviluppo di armamenti.", source: "CBS News", url: "https://www.cbsnews.com/video/ai-anthropic-dario-amodei-on-red-lines/" },
+              { n: "03", cat: "AI Agentiva", color: C.teal, bg: C.tealLight, title: "Agentic AI: nel 2026 il 40% delle app aziendali sarà AI-driven", summary: "Il report Deloitte certifica che le aziende stanno deployando agenti AI autonomi su funzioni critiche. Nuovi ruoli emergono: AI Operations Manager e Human-AI Interaction Designer.", source: "Deloitte Global", url: "https://www.deloitte.com/cz-sk/en/issues/generative-ai/state-of-ai-in-enterprise.html" },
+              { n: "04", cat: "Big Tech", color: C.blue, bg: C.blueLight, title: "Google lancia Flash-Lite: Gemini 3.1 punta sull'enterprise scale", summary: "Google risponde a OpenAI con Flash-Lite, la versione enterprise di Gemini 3.1 ottimizzata per carichi di lavoro su scala. La battaglia si sposta dalla qualità alla scalabilità.", source: "The Neuron Daily", url: "https://www.theneurondaily.com/p/openai-gemini-qwen-new-models" },
+              { n: "05", cat: "Robot & AI Fisica", color: C.teal, bg: C.tealLight, title: "La Cina accelera: robot umanoidi e agenti AI nelle fabbriche", summary: "Al 'Two Sessions' di Pechino, i leader tech cinesi chiedono di accelerare l'adozione industriale di robot umanoidi. Obiettivo: produzione di massa entro il 2027.", source: "South China Morning Post", url: "https://www.scmp.com/tech/policy/article/3345372/chinas-tech-leaders-urge-faster-ai-humanoid-robot-adoption-two-sessions-proposals" },
+              { n: "06", cat: "Startup & Funding", color: C.orange, bg: C.orangeLight, title: "Anthropic raggiunge $20 miliardi di revenue run rate", summary: "Anthropic supera i 20 miliardi di dollari di revenue run rate, trainata da Claude Code che da solo vale 2,5 miliardi e il 4% di tutto il codice su GitHub.", source: "Analisi Finanziaria", url: "https://www.youtube.com/watch?v=cYtQxtrn3kw" },
+              { n: "07", cat: "AI & Hardware", color: C.blue, bg: C.blueLight, title: "Qualcomm al MWC 2026: l'AI ibrida arriva su ogni dispositivo", summary: "Dal Mobile World Congress di Barcellona, Qualcomm annuncia la nuova generazione Snapdragon con AI ibrida on-device/cloud per portare modelli AI direttamente sugli smartphone.", source: "La Repubblica", url: "https://www.repubblica.it/tecnologia/2026/03/02/news/qualcomm_ai_snapdragon_mwc_2026_barcellona-425195738/" },
+              { n: "08", cat: "AI & Startup Italiane", color: C.teal, bg: C.tealLight, title: "Deep Tech Revolution: 5 startup italiane ricevono €200k ciascuna", summary: "Il programma Deep Tech Revolution seleziona 5 startup italiane che riceveranno 200.000 euro ciascuna per sviluppare tecnologie deep tech con componente AI.", source: "Il Messaggero", url: "https://www.ilmessaggero.it/economia/news/ecco_le_5_start_up_che_avranno_i_fondi_di_deep_tech_revolution-9384113.html" },
+              { n: "09", cat: "Internazionalizzazione", color: C.blue, bg: C.blueLight, title: "Call4Innovit 2026: startup italiane a Silicon Valley a fondo perduto", summary: "Innovit lancia il programma di accelerazione gratuito per portare startup e PMI italiane nella Silicon Valley. Un'opportunità per le realtà AI italiane di accedere al mercato americano.", source: "Incentivi Impresa", url: "https://www.incentivimpresa.it/call4innovit-2026-startup-pmi-silicon-valley-fondo-perduto/" },
+              { n: "10", cat: "Ricerca & Innovazione", color: C.orange, bg: C.orangeLight, title: "MIT Sloan: \"L'AI agentiva non è ancora pronta per il prime time\"", summary: "Il MIT Sloan Management Review pubblica le action items per i decision maker AI nel 2026: l'AI agentiva è promettente ma ancora instabile per uso enterprise critico.", source: "MIT Sloan Management Review", url: "https://mitsloan.mit.edu/ideas-made-to-matter/action-items-ai-decision-makers-2026" },
+            ].map((item, i) => (
+              <FadeUp key={item.n} delay={i * 0.04}>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="news-card block h-full p-5 group"
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{item.n}</span>
+                    <span
+                      className="inline-block px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
+                      style={{ background: item.bg, color: item.color }}
+                    >
+                      {item.cat}
+                    </span>
+                  </div>
+                  <h3
+                    className="text-sm font-bold leading-snug mb-2 transition-colors group-hover:text-[#00b4a0]"
+                    style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="text-xs leading-relaxed mb-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                    {item.summary}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.source}</span>
+                    <span className="text-xs group-hover:translate-x-1 transition-transform" style={{ color: item.color }}>→</span>
+                  </div>
+                </a>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── EDITORIALE ──────────────────────────────────────────────────────── */}
-      <section id="editoriale" className="border-t border-white/8" style={{ background: "#0d1220" }}>
+      <section id="editoriale" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <FadeUp>
-            <p className="editorial-tag mb-4" style={{ color: "#00e5c8" }}>◆ Editoriale</p>
+            <p className="editorial-tag mb-4" style={{ color: C.teal }}>◆ Editoriale</p>
             <h2
               className="text-3xl sm:text-4xl font-black leading-tight mb-8 max-w-3xl"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
             >
               L'AI italiana non è un fenomeno di nicchia.
               <br />
-              <span style={{ color: "#00e5c8" }}>Sta cambiando le regole del gioco.</span>
+              <span style={{ color: C.teal }}>Sta cambiando le regole del gioco.</span>
             </h2>
           </FadeUp>
 
           <div className="grid lg:grid-cols-3 gap-12">
             <FadeUp delay={0.1} className="lg:col-span-2">
-              <div className="space-y-5 text-white/70 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p>
+              <div className="space-y-5 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <p style={{ color: C.slate }}>
                   Quando abbiamo fondato IDEASMART, la domanda che ci ponevamo era semplice:
                   dove sta succedendo davvero qualcosa di interessante nell'ecosistema AI italiano?
                   Non nei comunicati stampa, non nei convegni, ma nei prodotti concreti che le aziende
                   usano ogni giorno per assumere, proteggere dati, comunicare e prendere decisioni.
                 </p>
-                <p>
+                <p style={{ color: C.slate }}>
                   Questo mese abbiamo analizzato quattro startup che ci hanno convinto. Non perché abbiano
                   raccolto il round più grande o abbiano il fondatore più famoso, ma perché hanno costruito
                   qualcosa di reale: una tecnologia proprietaria, un modello di business sostenibile,
                   un problema concreto risolto in modo intelligente.
                 </p>
-                <p>
-                  Da <strong className="text-white">FoolTalent</strong>, che sta ridefinendo il recruiting
-                  con l'AI, a <strong className="text-white">FoolShare</strong>, che ha costruito la data room
-                  più avanzata del mercato italiano. Da <strong className="text-white">Fragmentalis</strong>,
+                <p style={{ color: C.slate }}>
+                  Da <strong style={{ color: C.navy }}>FoolTalent</strong>, che sta ridefinendo il recruiting
+                  con l'AI, a <strong style={{ color: C.navy }}>FoolShare</strong>, che ha costruito la data room
+                  più avanzata del mercato italiano. Da <strong style={{ color: C.navy }}>Fragmentalis</strong>,
                   con la sua tecnologia brevettata di comunicazione quantum-resistant, a{" "}
-                  <strong className="text-white">PollCast</strong>, che trasforma l'intelligenza collettiva
+                  <strong style={{ color: C.navy }}>PollCast</strong>, che trasforma l'intelligenza collettiva
                   in market intelligence. Quattro storie diverse, un denominatore comune: l'AI come leva
                   di vantaggio competitivo reale.
                 </p>
               </div>
 
               {/* Firma */}
-              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-white/8">
+              <div className="flex items-center gap-4 mt-8 pt-6 border-t" style={{ borderColor: C.border }}>
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black flex-shrink-0"
-                  style={{ background: "linear-gradient(135deg, #00e5c8, #0066ff)", color: "#0a0f1e" }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black flex-shrink-0 text-white"
+                  style={{ background: `linear-gradient(135deg, ${C.teal}, ${C.blue})` }}
                 >
                   IS
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <p className="text-sm font-semibold" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
                     La Redazione IDEASMART
                   </p>
-                  <p className="text-xs text-white/40">Startup di Tecnologia &amp; Innovazione — AI for Business</p>
+                  <p className="text-xs" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione — AI for Business</p>
                 </div>
               </div>
             </FadeUp>
 
             {/* Index */}
             <FadeUp delay={0.2}>
-              <div className="border border-white/8 rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.02)" }}>
-                <p className="editorial-tag text-white/30 mb-5">◆ In questo numero</p>
+              <div className="rounded-2xl p-6 border" style={{ background: "#fff", borderColor: C.border }}>
+                <p className="editorial-tag mb-5" style={{ color: C.muted }}>◆ In questo numero</p>
                 <div className="space-y-1">
                   {[
-                    { n: "01", cat: "Reportage", title: "FoolTalent: l'AI che scova i talenti prima degli altri.", id: "fooltalent", color: "#00e5c8" },
-                    { n: "02", cat: "Analisi", title: "FoolShare: la fortezza digitale per i dati che contano.", id: "foolshare", color: "#0066ff" },
-                    { n: "03", cat: "Inchiesta", title: "Fragmentalis: la comunicazione a prova di spia.", id: "fragmentalis", color: "#00e5c8" },
-                    { n: "04", cat: "Focus", title: "PollCast: l'intelligenza collettiva che prevede i trend.", id: "pollcast", color: "#ff5500" },
+                    { n: "01", cat: "Reportage", title: "FoolTalent: l'AI che scova i talenti prima degli altri.", id: "fooltalent", color: C.teal },
+                    { n: "02", cat: "Analisi", title: "FoolShare: la fortezza digitale per i dati che contano.", id: "foolshare", color: C.blue },
+                    { n: "03", cat: "Inchiesta", title: "Fragmentalis: la comunicazione a prova di spia.", id: "fragmentalis", color: C.teal },
+                    { n: "04", cat: "Focus", title: "PollCast: l'intelligenza collettiva che prevede i trend.", id: "pollcast", color: C.orange },
                   ].map((item) => (
                     <button
                       key={item.id}
                       onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })}
-                      className="w-full text-left p-3 rounded-xl hover:bg-white/5 transition-colors group"
+                      className="w-full text-left p-3 rounded-xl transition-colors group"
+                      style={{ background: "transparent" }}
+                      onMouseEnter={e => (e.currentTarget.style.background = C.surface1)}
+                      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="editorial-tag text-white/25 flex-shrink-0 mt-0.5">{item.n}</span>
+                        <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{item.n}</span>
                         <div>
                           <p className="editorial-tag mb-1" style={{ color: item.color }}>{item.cat}</p>
-                          <p className="text-xs text-white/60 group-hover:text-white/80 transition-colors leading-snug">
-                            {item.title}
-                          </p>
+                          <p className="text-xs leading-snug" style={{ color: C.slate }}>{item.title}</p>
                         </div>
                         <span className="ml-auto text-xs flex-shrink-0" style={{ color: item.color }}>→</span>
                       </div>
@@ -361,140 +416,133 @@ export default function Home() {
       </section>
 
       {/* ── FOOLTALENT ──────────────────────────────────────────────────────── */}
-      <ArticleSection
-        id="fooltalent"
-        number="01"
-        category="Reportage · AI Recruiting"
-        categoryColor="#00e5c8"
-        title="FoolTalent: l'AI che scova i talenti prima degli altri."
-        subtitle="Come una startup milanese sta rivoluzionando il processo di selezione del personale con l'intelligenza artificiale."
-        image={FOOLTALENT_IMG}
-        accentColor="#00e5c8"
-        ctaPrimary="Scopri FoolTalent"
-        ctaSecondary="Vedi gli annunci →"
-        ctaUrl="https://fooltalent.com"
-      >
-        <div className="space-y-4 text-white/70 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          <p>
-            Il problema del recruiting nelle startup italiane è sempre lo stesso: troppo tempo perso
-            a leggere CV irrilevanti, troppo poco a parlare con i candidati giusti.{" "}
-            <strong className="text-white">FoolTalent</strong> ha deciso di affrontarlo con un approccio
-            radicalmente diverso: la sua AI non filtra per parole chiave, ma analizza ogni candidatura
-            in profondità e assegna un punteggio di compatibilità reale.
-          </p>
-          <p>
-            Nella nostra analisi, quello che ci ha colpito è la granularità del punteggio: l'AI non
-            si limita a dire "compatibile" o "non compatibile", ma spiega perché, indicando i punti
-            di forza e le lacune di ogni candidato rispetto al profilo cercato.
-          </p>
-        </div>
-
-        {/* Quote */}
-        <blockquote className="border-l-2 pl-4 py-2 mb-6" style={{ borderColor: "#00e5c8", background: "rgba(0,229,200,0.05)", borderRadius: "0 8px 8px 0" }}>
-          <p className="text-sm italic" style={{ color: "#00e5c8" }}>
-            "L'AI non sostituisce il recruiter. Lo libera dal rumore, così può concentrarsi sul segnale."
-          </p>
-        </blockquote>
-
-        <div className="space-y-0">
-          <FeatureItem color="#00e5c8" text="Valutazione automatica AI con punteggio percentuale di compatibilità per ogni candidatura" />
-          <FeatureItem color="#00e5c8" text="Shortlist intelligente: il sistema mostra solo i profili più compatibili, ordinati per rilevanza" />
-          <FeatureItem color="#00e5c8" text="Database talenti integrato con ricerca avanzata per competenze, settore ed esperienza" />
-          <FeatureItem color="#00e5c8" text="Dashboard analytics con trend candidature in tempo reale e reportistica avanzata" />
-        </div>
-
-        <div className="grid grid-cols-3 gap-3 mt-6">
-          <StatBlock value="78" label="Candidature gestite" color="#00e5c8" />
-          <StatBlock value="100%" label="Valutate da AI" color="#00e5c8" />
-          <StatBlock value="60%" label="Punteggio medio" color="#00e5c8" />
-        </div>
-      </ArticleSection>
-
-      {/* ── FOOLSHARE ───────────────────────────────────────────────────────── */}
-      <section id="foolshare" className="relative border-t border-white/8" style={{ background: "#080c18" }}>
-        {/* Category bar */}
-        <div className="border-b border-white/8" style={{ background: "#060a14" }}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
-            <span className="editorial-tag text-white/30">02 —</span>
-            <span className="editorial-tag" style={{ color: "#0066ff" }}>Analisi · Data Room &amp; Fundraising</span>
-          </div>
-        </div>
-        <div className="border-b-2" style={{ borderColor: "#0066ff", background: "rgba(0,102,255,0.08)" }}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              FoolShare: la fortezza digitale per i dati che contano.
-            </h2>
-          </div>
-        </div>
-
+      <section id="fooltalent" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
+        <SectionHeader number="01" category="Reportage · AI Recruiting" categoryColor={C.teal} title="FoolTalent: l'AI che scova i talenti prima degli altri." />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <FadeUp>
-              <p className="text-sm font-medium mb-4" style={{ color: "#0066ff" }}>
+              <p className="text-sm font-semibold mb-4" style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}>
+                Come una startup milanese sta rivoluzionando il processo di selezione del personale con l'intelligenza artificiale.
+              </p>
+              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <p style={{ color: C.slate }}>
+                  Il problema del recruiting nelle startup italiane è sempre lo stesso: troppo tempo perso
+                  a leggere CV irrilevanti, troppo poco a parlare con i candidati giusti.{" "}
+                  <strong style={{ color: C.navy }}>FoolTalent</strong> ha deciso di affrontarlo con un approccio
+                  radicalmente diverso: la sua AI non filtra per parole chiave, ma analizza ogni candidatura
+                  in profondità e assegna un punteggio di compatibilità reale.
+                </p>
+                <p style={{ color: C.slate }}>
+                  Nella nostra analisi, quello che ci ha colpito è la granularità del punteggio: l'AI non
+                  si limita a dire "compatibile" o "non compatibile", ma spiega perché, indicando i punti
+                  di forza e le lacune di ogni candidato rispetto al profilo cercato.
+                </p>
+              </div>
+
+              <blockquote className="quote-block mb-6">
+                <p className="text-sm italic" style={{ color: C.teal }}>
+                  "L'AI non sostituisce il recruiter. Lo libera dal rumore, così può concentrarsi sul segnale."
+                </p>
+              </blockquote>
+
+              <div>
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Valutazione automatica AI con punteggio percentuale di compatibilità per ogni candidatura" />
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Shortlist intelligente: il sistema mostra solo i profili più compatibili, ordinati per rilevanza" />
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Database talenti integrato con ricerca avanzata per competenze, settore ed esperienza" />
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Dashboard analytics con trend candidature in tempo reale e reportistica avanzata" />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mt-6">
+                <StatBlock value="78" label="Candidature gestite" color={C.teal} />
+                <StatBlock value="100%" label="Valutate da AI" color={C.teal} />
+                <StatBlock value="60%" label="Punteggio medio" color={C.teal} />
+              </div>
+
+              <div className="flex flex-wrap gap-3 mt-8">
+                <a href="https://fooltalent.com" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                  Scopri FoolTalent →
+                </a>
+                <a href="https://fooltalent.com" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                  Vedi gli annunci →
+                </a>
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.15}>
+              <div className="rounded-2xl overflow-hidden article-card">
+                <img src={FOOLTALENT_IMG} alt="FoolTalent - AI Recruiting Platform" className="w-full h-60 object-cover" loading="lazy" />
+              </div>
+            </FadeUp>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOLSHARE ───────────────────────────────────────────────────────── */}
+      <section id="foolshare" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
+        <SectionHeader number="02" category="Analisi · Data Room & Fundraising" categoryColor={C.blue} title="FoolShare: la fortezza digitale per i dati che contano." />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <FadeUp>
+              <p className="text-sm font-semibold mb-4" style={{ color: C.blue, fontFamily: "'DM Sans', sans-serif" }}>
                 Abbiamo testato la piattaforma che unisce data room sicure, NDA digitali e un sistema operativo per il fundraising.
               </p>
-              <div className="space-y-4 text-white/70 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p>
+              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <p style={{ color: C.slate }}>
                   La condivisione di documenti sensibili è il tallone d'Achille di molte aziende.{" "}
-                  <strong className="text-white">FoolShare</strong> risponde con una piattaforma che non si limita
+                  <strong style={{ color: C.navy }}>FoolShare</strong> risponde con una piattaforma che non si limita
                   a "proteggere" i documenti, ma li trasforma in uno strumento di intelligence: ogni link condiviso
                   è tracciabile — chi lo ha aperto, per quanti minuti, quante volte, da quale città.
                 </p>
-                <p>
+                <p style={{ color: C.slate }}>
                   Il modulo Fundraising OS è quello che ci ha colpito di più. Le startup possono aprire una
                   Project Room pubblica, presentarsi agli investitori e raccogliere soft commitment in modo
                   strutturato. L'AI Agent integrato analizza automaticamente tutti i documenti caricati.
                 </p>
               </div>
 
-              <blockquote className="border-l-2 pl-4 py-2 mb-6" style={{ borderColor: "#0066ff", background: "rgba(0,102,255,0.05)", borderRadius: "0 8px 8px 0" }}>
-                <p className="text-sm italic" style={{ color: "#0066ff" }}>
+              <blockquote className="quote-block mb-6" style={{ borderLeftColor: C.blue }}>
+                <p className="text-sm italic" style={{ color: C.blue }}>
                   "Non è solo una data room. È un sistema operativo per il fundraising. La differenza è sostanziale."
                 </p>
               </blockquote>
 
-              {/* Pricing box */}
-              <div className="rounded-xl p-4 mb-6 border border-white/8" style={{ background: "rgba(0,102,255,0.06)" }}>
-                <p className="text-sm text-white/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  <span style={{ color: "#0066ff" }}>🎁 Prova gratuita 7 giorni</span> — nessuna carta di credito richiesta.<br />
-                  Piani da <strong className="text-white">€49/mese</strong> (Premium) · <strong className="text-white">€99/mese</strong> (Project Room + Fundraising OS)
+              <div className="rounded-xl p-4 mb-6 border" style={{ background: C.blueLight, borderColor: `${C.blue}20` }}>
+                <p className="text-sm" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                  <span style={{ color: C.blue }}>🎁 Prova gratuita 7 giorni</span> — nessuna carta di credito richiesta.<br />
+                  Piani da <strong style={{ color: C.navy }}>€49/mese</strong> (Premium) · <strong style={{ color: C.navy }}>€99/mese</strong> (Project Room + Fundraising OS)
                 </p>
               </div>
 
-              <div className="space-y-0">
-                <FeatureItem color="#0066ff" text="Crittografia 256-bit su tutti i file — GDPR compliant, 99.9% uptime garantito" />
-                <FeatureItem color="#0066ff" text="NDA digitali legalmente vincolanti con template bilingue IT/EN incluso" />
-                <FeatureItem color="#0066ff" text="Analytics avanzate: geolocalizzazione visitatori, grafici settimanali, visualizzazioni in tempo reale" />
-                <FeatureItem color="#0066ff" text="AI Agent integrato: analisi automatica dei documenti e risposte immediate sui contenuti" />
+              <div>
+                <FeatureItem color={C.blue} bgColor={C.blueLight} text="Crittografia 256-bit su tutti i file — GDPR compliant, 99.9% uptime garantito" />
+                <FeatureItem color={C.blue} bgColor={C.blueLight} text="NDA digitali legalmente vincolanti con template bilingue IT/EN incluso" />
+                <FeatureItem color={C.blue} bgColor={C.blueLight} text="Analytics avanzate: geolocalizzazione visitatori, grafici settimanali, visualizzazioni in tempo reale" />
+                <FeatureItem color={C.blue} bgColor={C.blueLight} text="AI Agent integrato: analisi automatica dei documenti e risposte immediate sui contenuti" />
               </div>
 
               <div className="flex flex-wrap gap-3 mt-8">
-                <a href="https://foolshare.xyz" target="_blank" rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105"
-                  style={{ background: "#0066ff", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
+                <a href="https://foolshare.xyz" target="_blank" rel="noopener noreferrer" className="btn-primary">
                   Inizia gratis →
                 </a>
-                <a href="https://foolshare.xyz" target="_blank" rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-lg text-sm font-semibold border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-all">
+                <a href="https://foolshare.xyz" target="_blank" rel="noopener noreferrer" className="btn-secondary">
                   Scopri i piani →
                 </a>
               </div>
             </FadeUp>
 
             <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden border border-white/8 article-card mb-6">
-                <img src={FOOLSHARE_IMG} alt="FoolShare" className="w-full h-56 object-cover" loading="lazy" />
+              <div className="rounded-2xl overflow-hidden article-card mb-6">
+                <img src={FOOLSHARE_IMG} alt="FoolShare - Data Room e Fundraising" className="w-full h-60 object-cover" loading="lazy" />
               </div>
-              {/* Feature cards */}
               <div className="grid grid-cols-3 gap-3">
                 {[
                   { title: "Condivisione Sicura", desc: "Link protetti, accesso per email, blocco download" },
                   { title: "Fundraising OS", desc: "Project Room, investor tracking, soft commitment" },
                   { title: "Data Room Pro", desc: "Cartelle strutturate, permessi granulari, due diligence" },
                 ].map((f) => (
-                  <div key={f.title} className="rounded-xl p-3 border border-white/8 text-center" style={{ background: "rgba(0,102,255,0.05)" }}>
-                    <p className="text-xs font-bold mb-1" style={{ color: "#0066ff", fontFamily: "'Space Grotesk', sans-serif" }}>{f.title}</p>
-                    <p className="text-xs text-white/40 leading-snug">{f.desc}</p>
+                  <div key={f.title} className="rounded-xl p-3 border text-center" style={{ background: "#fff", borderColor: C.border }}>
+                    <p className="text-xs font-bold mb-1" style={{ color: C.blue, fontFamily: "'Space Grotesk', sans-serif" }}>{f.title}</p>
+                    <p className="text-xs leading-snug" style={{ color: C.muted }}>{f.desc}</p>
                   </div>
                 ))}
               </div>
@@ -504,76 +552,60 @@ export default function Home() {
       </section>
 
       {/* ── FRAGMENTALIS ────────────────────────────────────────────────────── */}
-      <section id="fragmentalis" className="border-t border-white/8" style={{ background: "#060a14" }}>
-        <div className="border-b border-white/8" style={{ background: "#040810" }}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
-            <span className="editorial-tag text-white/30">03 —</span>
-            <span className="editorial-tag" style={{ color: "#00e5c8" }}>Inchiesta · Cybersecurity &amp; Comunicazione</span>
-          </div>
-        </div>
-        <div className="border-b-2" style={{ borderColor: "#00e5c8", background: "linear-gradient(135deg, rgba(0,6,110,0.4), rgba(0,229,200,0.05))" }}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <h2 className="text-2xl sm:text-3xl font-black leading-tight" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
-              Fragmentalis: la comunicazione a prova di spia (e di computer quantistici).
-            </h2>
-          </div>
-        </div>
-
+      <section id="fragmentalis" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
+        <SectionHeader number="03" category="Inchiesta · Cybersecurity & Comunicazione" categoryColor={C.teal} title="Fragmentalis: la comunicazione a prova di spia (e di computer quantistici)." />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <FadeUp>
-              <p className="text-sm font-medium mb-4" style={{ color: "#00e5c8" }}>
+              <p className="text-sm font-semibold mb-4" style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}>
                 La tecnologia brevettata IT/EU/USA che rende matematicamente impossibile intercettare le comunicazioni aziendali.
               </p>
-              <div className="space-y-4 text-white/70 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p>
-                  Mentre tutti parlano di crittografia end-to-end, <strong className="text-white">Fragmentalis</strong>{" "}
+              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <p style={{ color: C.slate }}>
+                  Mentre tutti parlano di crittografia end-to-end, <strong style={{ color: C.navy }}>Fragmentalis</strong>{" "}
                   ha già spostato il campo di gioco nel futuro. La sua tecnologia brevettata "polverizza" i dati —
                   li frammenta su nodi distribuiti, rendendo matematicamente impossibile ricostruirli. Il prodotto
-                  di punta, <strong className="text-white">StreamSafer Communicator</strong>, è già usato da CDA
+                  di punta, <strong style={{ color: C.navy }}>StreamSafer Communicator</strong>, è già usato da CDA
                   aziendali, studi legali e istituzioni finanziarie.
                 </p>
-                <p>
+                <p style={{ color: C.slate }}>
                   Con l'avvento dei computer quantistici, che renderanno obsoleta la crittografia tradizionale,
                   la soluzione di Fragmentalis diventa non solo interessante, ma necessaria. GDPR, DORA e NIS2
                   compliant. 6 prodotti verticali per ogni settore.
                 </p>
               </div>
 
-              <blockquote className="border-l-2 pl-4 py-2 mb-6" style={{ borderColor: "#00e5c8", background: "rgba(0,229,200,0.04)", borderRadius: "0 8px 8px 0" }}>
-                <p className="text-sm italic" style={{ color: "#00e5c8" }}>
+              <blockquote className="quote-block mb-6">
+                <p className="text-sm italic" style={{ color: C.teal }}>
                   "Non esiste un server centrale. I dati vengono polverizzati. Per ricostruirli, bisognerebbe accedere a tutti i nodi contemporaneamente. Matematicamente impossibile."
                 </p>
               </blockquote>
 
               <div className="grid grid-cols-3 gap-3 mb-6">
-                <StatBlock value="0" label="Server centrale" color="#00e5c8" />
-                <StatBlock value="100%" label="Controllo dati" color="#00e5c8" />
-                <StatBlock value="3" label="Brevetti IT/EU/US" color="#00e5c8" />
+                <StatBlock value="0" label="Server centrale" color={C.teal} />
+                <StatBlock value="100%" label="Controllo dati" color={C.teal} />
+                <StatBlock value="3" label="Brevetti IT/EU/US" color={C.teal} />
               </div>
 
-              <div className="flex flex-wrap gap-3 mt-4">
-                <a href="https://fragmentalis.com" target="_blank" rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105"
-                  style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <div className="flex flex-wrap gap-3">
+                <a href="https://fragmentalis.com" target="_blank" rel="noopener noreferrer" className="btn-primary">
                   Richiedi Demo →
                 </a>
-                <a href="https://fragmentalis.com" target="_blank" rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-lg text-sm font-semibold border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-all">
+                <a href="https://fragmentalis.com" target="_blank" rel="noopener noreferrer" className="btn-secondary">
                   Scopri StreamSafer →
                 </a>
               </div>
             </FadeUp>
 
             <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden border border-white/8 article-card">
-                <img src={FRAGMENTALIS_IMG} alt="Fragmentalis" className="w-full h-56 object-cover" loading="lazy" />
+              <div className="rounded-2xl overflow-hidden article-card mb-6">
+                <img src={FRAGMENTALIS_IMG} alt="Fragmentalis - Comunicazione Quantum-Resistant" className="w-full h-60 object-cover" loading="lazy" />
               </div>
-              <div className="mt-4 space-y-0">
-                <FeatureItem color="#00e5c8" text="Nessun server centrale — architettura distribuita peer-to-peer brevettata" />
-                <FeatureItem color="#00e5c8" text="Quantum-resistant: resistente anche ai futuri computer quantistici" />
-                <FeatureItem color="#00e5c8" text="6 prodotti verticali: Communicator, Vault, Shield, Bridge, Guard, Relay" />
-                <FeatureItem color="#00e5c8" text="Compliance totale: GDPR, DORA, NIS2 — audit trail completo" />
+              <div>
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Nessun server centrale — architettura distribuita peer-to-peer brevettata" />
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Quantum-resistant: resistente anche ai futuri computer quantistici" />
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="6 prodotti verticali: Communicator, Vault, Shield, Bridge, Guard, Relay" />
+                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Compliance totale: GDPR, DORA, NIS2 — audit trail completo" />
               </div>
             </FadeUp>
           </div>
@@ -581,36 +613,23 @@ export default function Home() {
       </section>
 
       {/* ── POLLCAST ────────────────────────────────────────────────────────── */}
-      <section id="pollcast" className="border-t border-white/8" style={{ background: "#0a0f1e" }}>
-        <div className="border-b border-white/8" style={{ background: "#060a14" }}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
-            <span className="editorial-tag text-white/30">04 —</span>
-            <span className="editorial-tag" style={{ color: "#ff5500" }}>Focus · Market Intelligence</span>
-          </div>
-        </div>
-        <div className="border-b-2" style={{ borderColor: "#ff5500", background: "rgba(255,85,0,0.06)" }}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              PollCast: l'intelligenza collettiva che prevede i trend di mercato.
-            </h2>
-          </div>
-        </div>
-
+      <section id="pollcast" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
+        <SectionHeader number="04" category="Focus · Market Intelligence" categoryColor={C.orange} title="PollCast: l'intelligenza collettiva che prevede i trend di mercato." />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <FadeUp>
-              <p className="text-sm font-medium mb-4" style={{ color: "#ff5500" }}>
+              <p className="text-sm font-semibold mb-4" style={{ color: C.orange, fontFamily: "'DM Sans', sans-serif" }}>
                 La piattaforma gratuita che trasforma le previsioni della community in strumento di market intelligence per le aziende.
               </p>
-              <div className="space-y-4 text-white/70 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p>
+              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <p style={{ color: C.slate }}>
                   E se le previsioni di mercato non fossero più un'esclusiva per pochi analisti?{" "}
-                  <strong className="text-white">PollCast</strong> ha lanciato una piattaforma gratuita dove
+                  <strong style={{ color: C.navy }}>PollCast</strong> ha lanciato una piattaforma gratuita dove
                   chiunque può creare e votare previsioni su qualsiasi tema — business, tech, sport, politica
                   o trend di mercato. I risultati aggregati, su migliaia di voti, tendono a essere
                   sorprendentemente accurati.
                 </p>
-                <p>
+                <p style={{ color: C.slate }}>
                   Per le aziende, l'applicazione più interessante è la market intelligence: monitorare le
                   previsioni della community su temi rilevanti offre un termometro in tempo reale del sentiment
                   del mercato. Un vantaggio informativo che fino a ieri richiedeva costose ricerche.
@@ -618,33 +637,30 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 mb-6">
-                <StatBlock value="2.974" label="Voti totali" color="#ff5500" />
-                <StatBlock value="10" label="Previsioni attive" color="#ff5500" />
+                <StatBlock value="2.974" label="Voti totali" color={C.orange} />
+                <StatBlock value="10" label="Previsioni attive" color={C.orange} />
               </div>
 
-              <div className="flex flex-wrap gap-3 mt-4">
-                <a href="https://pollcast.online" target="_blank" rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105"
-                  style={{ background: "#ff5500", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <div className="flex flex-wrap gap-3">
+                <a href="https://pollcast.online" target="_blank" rel="noopener noreferrer" className="btn-primary">
                   Vota le previsioni →
                 </a>
-                <a href="https://pollcast.online" target="_blank" rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-lg text-sm font-semibold border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-all">
+                <a href="https://pollcast.online" target="_blank" rel="noopener noreferrer" className="btn-secondary">
                   Crea una previsione →
                 </a>
               </div>
             </FadeUp>
 
             <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden border border-white/8 article-card mb-6">
-                <img src={POLLCAST_IMG} alt="PollCast" className="w-full h-48 object-cover" loading="lazy" />
+              <div className="rounded-2xl overflow-hidden article-card mb-6">
+                <img src={POLLCAST_IMG} alt="PollCast - Market Intelligence Platform" className="w-full h-48 object-cover" loading="lazy" />
               </div>
 
-              <p className="editorial-tag text-white/30 mb-4">◆ Previsioni di tendenza</p>
+              <p className="editorial-tag mb-4" style={{ color: C.muted }}>◆ Previsioni di tendenza</p>
               <div className="space-y-3">
-                <PollBar label="Bitcoin supererà i $200,000 entro il 2026?" category="Crypto" percentage={61} votes={511} color="#ff5500" />
-                <PollBar label="ChatGPT-5 sarà rilasciato entro giugno 2026?" category="Tecnologia" percentage={75} votes={370} color="#ff5500" />
-                <PollBar label="Tesla raggiungerà i $500 per azione entro fine 2026?" category="Economia" percentage={57} votes={412} color="#ff5500" />
+                <PollBar label="Bitcoin supererà i $200,000 entro il 2026?" category="Crypto" percentage={61} votes={511} color={C.orange} bgColor={C.orangeLight} />
+                <PollBar label="ChatGPT-5 sarà rilasciato entro giugno 2026?" category="Tecnologia" percentage={75} votes={370} color={C.orange} bgColor={C.orangeLight} />
+                <PollBar label="Tesla raggiungerà i $500 per azione entro fine 2026?" category="Economia" percentage={57} votes={412} color={C.orange} bgColor={C.orangeLight} />
               </div>
             </FadeUp>
           </div>
@@ -652,14 +668,14 @@ export default function Home() {
       </section>
 
       {/* ── FOOLFARM BANNER ─────────────────────────────────────────────────── */}
-      <section className="border-t border-white/8" style={{ background: "linear-gradient(135deg, #060a14, #0a0f1e)" }}>
+      <section className="border-t" style={{ borderColor: C.border, background: C.navy }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <FadeUp>
-            <p className="editorial-tag text-white/30 mb-4">◆ Da dove nasce l'innovazione</p>
+            <p className="editorial-tag mb-4" style={{ color: "rgba(255,255,255,0.35)" }}>◆ Da dove nasce l'innovazione</p>
             <h2 className="text-3xl font-black text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               FoolFarm AI Innovation Studios
             </h2>
-            <p className="text-base text-white/50 max-w-2xl mx-auto mb-8 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-base max-w-2xl mx-auto mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', sans-serif" }}>
               IDEASMART è un progetto editoriale indipendente nato all'interno di{" "}
               <strong className="text-white">FoolFarm</strong>, il primo startup studio AI-native italiano.
               La nostra missione è dare voce all'ecosistema, con analisi imparziali e approfondite.
@@ -668,8 +684,8 @@ export default function Home() {
               href="https://foolfarm.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105"
-              style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105 text-white"
+              style={{ background: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Scopri FoolFarm →
             </a>
@@ -678,52 +694,67 @@ export default function Home() {
       </section>
 
       {/* ── NEWSLETTER SIGNUP ───────────────────────────────────────────────── */}
-      <section id="newsletter" className="border-t border-white/8" style={{ background: "#0d1220" }}>
+      <section id="newsletter" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <FadeUp>
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-white/10" style={{ background: "rgba(0,229,200,0.06)" }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#00e5c8" }} />
-              <span className="editorial-tag" style={{ color: "#00e5c8" }}>Newsletter Mensile</span>
+            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}30`, background: C.tealLight }}>
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.teal }} />
+              <span className="editorial-tag" style={{ color: C.teal }}>Newsletter Mensile</span>
             </div>
-            <h2 className="text-4xl font-black text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h2 className="text-4xl font-black mb-4" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
               Ricevi l'analisi mensile
               <br />
-              <span style={{ color: "#00e5c8" }}>direttamente nella tua inbox.</span>
+              <span style={{ color: C.teal }}>direttamente nella tua inbox.</span>
             </h2>
-            <p className="text-base text-white/50 mb-10 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-base mb-10 leading-relaxed" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
               Ogni mese selezioniamo le 4 startup AI più promettenti per il business italiano.
               Analisi approfondite, dati reali, nessuno spam.
             </p>
 
             {!subscribed ? (
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <form onSubmit={handleSubscribe} className="flex flex-col gap-3 max-w-md mx-auto">
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="La tua email aziendale"
-                  required
-                  className="flex-1 px-4 py-3 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-[#00e5c8] transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Il tuo nome (opzionale)"
+                  className="w-full px-4 py-3 rounded-lg text-sm border focus:outline-none transition-colors"
+                  style={{ borderColor: C.border, background: C.surface1, color: C.navy, fontFamily: "'DM Sans', sans-serif" }}
+                  onFocus={e => (e.target.style.borderColor = C.teal)}
+                  onBlur={e => (e.target.style.borderColor = C.border)}
                 />
-                <button
-                  type="submit"
-                  className="px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105 whitespace-nowrap"
-                  style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  Abbonati gratis →
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="La tua email aziendale"
+                    required
+                    className="flex-1 px-4 py-3 rounded-lg text-sm border focus:outline-none transition-colors"
+                    style={{ borderColor: C.border, background: C.surface1, color: C.navy, fontFamily: "'DM Sans', sans-serif" }}
+                    onFocus={e => (e.target.style.borderColor = C.teal)}
+                    onBlur={e => (e.target.style.borderColor = C.border)}
+                  />
+                  <button
+                    type="submit"
+                    disabled={subscribeMutation.isPending}
+                    className="px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed text-white"
+                    style={{ background: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {subscribeMutation.isPending ? "Iscrizione..." : "Abbonati gratis →"}
+                  </button>
+                </div>
               </form>
             ) : (
-              <div className="flex items-center justify-center gap-3 p-4 rounded-xl border border-white/10" style={{ background: "rgba(0,229,200,0.06)" }}>
-                <span style={{ color: "#00e5c8" }}>✓</span>
-                <p className="text-white/80 text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <div className="flex items-center justify-center gap-3 p-4 rounded-xl border" style={{ background: C.tealLight, borderColor: `${C.teal}30` }}>
+                <span style={{ color: C.teal }}>✓</span>
+                <p className="text-sm" style={{ color: C.navy, fontFamily: "'DM Sans', sans-serif" }}>
                   Perfetto! Ti invieremo la prossima analisi mensile.
                 </p>
               </div>
             )}
 
-            <p className="text-xs text-white/25 mt-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-xs mt-4" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
               Gratuita · Mensile · Nessuno spam · Disiscrizione in un click
             </p>
           </FadeUp>
@@ -731,16 +762,16 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ──────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/8" style={{ background: "#060a14" }}>
+      <footer className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
             {/* Brand */}
             <div className="lg:col-span-2">
-              <div className="text-2xl font-black mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                IDEA<span style={{ color: "#00e5c8" }}>SMART</span>
+              <div className="text-2xl font-black mb-2" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
+                IDEA<span style={{ color: C.teal }}>SMART</span>
               </div>
-              <p className="editorial-tag text-white/25 mb-4">Startup di Tecnologia &amp; Innovazione</p>
-              <p className="text-sm text-white/40 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione</p>
+              <p className="text-sm leading-relaxed" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
                 L'Osservatorio sull'Innovazione AI Italiana. Ogni mese analizziamo le startup AI
                 più promettenti per il business.
               </p>
@@ -748,7 +779,7 @@ export default function Home() {
 
             {/* Startup analizzate */}
             <div>
-              <p className="editorial-tag text-white/30 mb-4">Startup analizzate</p>
+              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Startup analizzate</p>
               <div className="space-y-2">
                 {[
                   { name: "FoolTalent", url: "https://fooltalent.com" },
@@ -761,8 +792,10 @@ export default function Home() {
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-sm text-white/50 hover:text-white transition-colors"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    className="block text-sm transition-colors"
+                    style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
+                    onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
+                    onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
                   >
                     {s.name} →
                   </a>
@@ -772,27 +805,29 @@ export default function Home() {
 
             {/* Powered by */}
             <div>
-              <p className="editorial-tag text-white/30 mb-4">Powered by</p>
+              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Powered by</p>
               <a
                 href="https://foolfarm.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-sm text-white/50 hover:text-white transition-colors mb-2"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                className="block text-sm transition-colors mb-2"
+                style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
+                onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
+                onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
               >
                 FoolFarm AI Innovation Studios →
               </a>
-              <p className="text-xs text-white/25" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
                 Il primo startup studio AI-native italiano.
               </p>
             </div>
           </div>
 
-          <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-white/25" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderColor: C.border }}>
+            <p className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
               © 2026 IDEASMART — Startup di Tecnologia &amp; Innovazione. Tutti i diritti riservati.
             </p>
-            <p className="editorial-tag text-white/20">
+            <p className="editorial-tag" style={{ color: C.muted }}>
               AI for Business · N° 03 · Marzo 2026
             </p>
           </div>
