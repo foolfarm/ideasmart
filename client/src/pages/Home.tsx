@@ -184,7 +184,7 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0">
-          <img src={HERO_IMG} alt="" className="w-full h-full object-cover opacity-30" />
+          <img src={HERO_IMG} alt="Rete neurale AI - Osservatorio sull'Innovazione AI Italiana" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,15,30,0.6) 0%, rgba(10,15,30,0.85) 60%, #0a0f1e 100%)" }} />
         </div>
 
@@ -278,7 +278,7 @@ export default function Home() {
             >
               L'AI italiana non è un fenomeno di nicchia.
               <br />
-              <span style={{ color: "#00e5c8" }}>È già qui, e sta cambiando le regole del gioco.</span>
+              <span style={{ color: "#00e5c8" }}>Sta cambiando le regole del gioco.</span>
             </h2>
           </FadeUp>
 
