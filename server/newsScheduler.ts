@@ -1,6 +1,6 @@
 /**
  * IDEASMART News Scheduler
- * Aggiorna automaticamente le 10 notizie AI ogni 7 giorni
+ * Aggiorna automaticamente le 20 notizie AI ogni 7 giorni
  * usando l'AI per cercare e selezionare i nuovi eventi più significativi
  */
 
@@ -24,6 +24,11 @@ const NEWS_CATEGORIES = [
   "Ricerca & Innovazione",
   "AI & Lavoro",
   "AI & Sicurezza",
+  "AI & Difesa",
+  "Regolamentazione AI",
+  "Internazionalizzazione",
+  "AI & Salute",
+  "AI & Finanza",
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -62,7 +67,7 @@ export async function generateLatestAINews(): Promise<NewsItemData[]> {
 
   const prompt = `Sei il redattore capo di IDEASMART, la newsletter italiana di tecnologia e innovazione AI per il business.
 
-Genera esattamente 10 notizie AI reali e verificabili della settimana corrente (settimana del ${weekStr}).
+Genera esattamente 20 notizie AI reali e verificabili della settimana corrente (settimana del ${weekStr}).
 Le notizie devono riguardare eventi, annunci, ricerche e sviluppi REALI nel mondo dell'intelligenza artificiale.
 
 Per ogni notizia fornisci:
@@ -75,10 +80,13 @@ Per ogni notizia fornisci:
 
 Criteri editoriali:
 1. Privilegia notizie con impatto concreto sul business e sull'ecosistema startup
-2. Includi almeno 2 notizie sull'ecosistema italiano/europeo
-3. Includi almeno 1 notizia su finanziamenti o acquisizioni AI
-4. Includi almeno 1 notizia su nuovi modelli o aggiornamenti AI
-5. Il tono deve essere editoriale, non promozionale
+2. Includi almeno 4 notizie sull'ecosistema italiano/europeo
+3. Includi almeno 2 notizie su finanziamenti o acquisizioni AI
+4. Includi almeno 2 notizie su nuovi modelli o aggiornamenti AI
+5. Includi almeno 1 notizia su AI & Salute e 1 su AI & Finanza
+6. Includi almeno 1 notizia su regolamentazione AI (EU AI Act, normative)
+7. Il tono deve essere editoriale, non promozionale
+8. Distribuisci le categorie in modo equilibrato tra le 20 notizie
 
 Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
 
@@ -125,7 +133,7 @@ Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
 
     const content = response.choices[0]?.message?.content as string;
     const parsed = JSON.parse(content);
-    const items: NewsItemData[] = (parsed.items || []).slice(0, 10).map((item: any) => ({
+    const items: NewsItemData[] = (parsed.items || []).slice(0, 20).map((item: any) => ({
       title: item.title,
       summary: item.summary,
       category: item.category,

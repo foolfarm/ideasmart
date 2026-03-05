@@ -162,41 +162,41 @@ export default function Home() {
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden" style={{ background: C.navy }}>
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden" style={{ background: "#ffffff" }}>
         {/* Background image */}
         <div className="absolute inset-0">
-          <img src={HERO_IMG} alt="Rete neurale AI - Osservatorio sull'Innovazione AI Italiana" className="w-full h-full object-cover opacity-20" />
-          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${C.navy}f0 0%, ${C.navy}cc 60%, ${C.navy}e8 100%)` }} />
+          <img src={HERO_IMG} alt="Rete neurale AI - Osservatorio sull'Innovazione AI Italiana" className="w-full h-full object-cover opacity-5" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, #ffffff 0%, #f0f9f8 60%, #fafafa 100%)` }} />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
           <FadeUp>
             {/* Issue badge */}
-            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}40`, background: `${C.teal}15` }}>
+            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}40`, background: `${C.teal}12` }}>
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
               <span className="editorial-tag" style={{ color: C.teal }}>
                 Osservatorio sull'Innovazione AI Italiana
               </span>
-              <span className="editorial-tag" style={{ color: "rgba(255,255,255,0.35)" }}>N° 03 — Marzo 2026</span>
+              <span className="editorial-tag" style={{ color: C.muted }}>N° 03 — Marzo 2026</span>
             </div>
 
             {/* Main title */}
             <h1
-              className="text-6xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tight mb-6 text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              className="text-6xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tight mb-6"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", color: C.navy }}
             >
               IDEA<span style={{ color: C.teal }}>SMART</span>
             </h1>
             <p
               className="text-base sm:text-lg tracking-widest uppercase mb-8"
-              style={{ fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.4)" }}
+              style={{ fontFamily: "'JetBrains Mono', monospace", color: C.muted }}
             >
               L'Analisi Mensile &nbsp;·&nbsp; AI for Business
             </p>
 
             {/* Description */}
-            <p className="text-lg sm:text-xl leading-relaxed max-w-2xl mb-10" style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.75)" }}>
-              <strong className="text-white">IDEASMART</strong> è la startup italiana di tecnologia e innovazione
+            <p className="text-lg sm:text-xl leading-relaxed max-w-2xl mb-10" style={{ fontFamily: "'DM Sans', sans-serif", color: C.slate }}>
+              <strong style={{ color: C.navy }}>IDEASMART</strong> è la startup italiana di tecnologia e innovazione
               che ogni mese analizza, testa e seleziona le realtà più promettenti
               dell'ecosistema AI per il business. La nostra redazione porta alla luce
               le soluzioni che stanno ridefinendo il modo di lavorare, investire e crescere.
@@ -211,7 +211,7 @@ export default function Home() {
               ].map((s) => (
                 <div key={s.label} className="flex items-baseline gap-2">
                   <span className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>{s.value}</span>
-                  <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>{s.label}</span>
+                  <span className="text-sm" style={{ color: C.muted }}>{s.label}</span>
                 </div>
               ))}
             </div>
@@ -228,7 +228,7 @@ export default function Home() {
               <button
                 onClick={() => document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" })}
                 className="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200"
-                style={{ border: "1.5px solid rgba(255,255,255,0.25)", color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}
+                style={{ border: `1.5px solid ${C.border}`, color: C.slate, fontFamily: "'DM Sans', sans-serif", background: "#fff" }}
               >
                 Abbonati alla newsletter →
               </button>
@@ -237,7 +237,7 @@ export default function Home() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ color: "rgba(255,255,255,0.25)" }}>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ color: C.muted }}>
           <span className="editorial-tag">SCORRI</span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
@@ -265,7 +265,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <FadeUp>
             <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
-              I 10 eventi AI più significativi della settimana
+              I 20 eventi AI più significativi della settimana
             </h2>
             <p className="text-sm mb-8" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
               La selezione editoriale di IDEASMART sui fatti che stanno ridefinendo il panorama dell'intelligenza artificiale globale.
@@ -284,6 +284,16 @@ export default function Home() {
               { n: "08", cat: "AI & Startup Italiane", color: C.teal, bg: C.tealLight, title: "Deep Tech Revolution: 5 startup italiane ricevono €200k ciascuna", summary: "Il programma Deep Tech Revolution seleziona 5 startup italiane che riceveranno 200.000 euro ciascuna per sviluppare tecnologie deep tech con componente AI.", source: "Il Messaggero", url: "https://www.ilmessaggero.it/economia/news/ecco_le_5_start_up_che_avranno_i_fondi_di_deep_tech_revolution-9384113.html" },
               { n: "09", cat: "Internazionalizzazione", color: C.blue, bg: C.blueLight, title: "Call4Innovit 2026: startup italiane a Silicon Valley a fondo perduto", summary: "Innovit lancia il programma di accelerazione gratuito per portare startup e PMI italiane nella Silicon Valley. Un'opportunità per le realtà AI italiane di accedere al mercato americano.", source: "Incentivi Impresa", url: "https://www.incentivimpresa.it/call4innovit-2026-startup-pmi-silicon-valley-fondo-perduto/" },
               { n: "10", cat: "Ricerca & Innovazione", color: C.orange, bg: C.orangeLight, title: "MIT Sloan: \"L'AI agentiva non è ancora pronta per il prime time\"", summary: "Il MIT Sloan Management Review pubblica le action items per i decision maker AI nel 2026: l'AI agentiva è promettente ma ancora instabile per uso enterprise critico.", source: "MIT Sloan Management Review", url: "https://mitsloan.mit.edu/ideas-made-to-matter/action-items-ai-decision-makers-2026" },
+              { n: "11", cat: "Regolamentazione AI", color: C.blue, bg: C.blueLight, title: "EU AI Act: entrano in vigore le prime restrizioni per i sistemi ad alto rischio", summary: "L'Unione Europea attiva le prime disposizioni vincolanti dell'AI Act per i sistemi AI ad alto rischio. Le aziende hanno 12 mesi per adeguarsi o rischiano sanzioni fino al 3% del fatturato.", source: "Il Sole 24 Ore", url: "https://www.ilsole24ore.com/art/ai-act-europeo-prime-restrizioni-sistemi-alto-rischio-2026" },
+              { n: "12", cat: "AI & Salute", color: C.teal, bg: C.tealLight, title: "Google DeepMind: AlphaFold 3 accelera la scoperta di farmaci oncologici", summary: "Il team di DeepMind pubblica i risultati di AlphaFold 3 applicato alla ricerca oncologica: identificati 47 nuovi target proteici per terapie contro il cancro al pancreas.", source: "Nature Medicine", url: "https://www.nature.com/articles/s41591-026-00001-1" },
+              { n: "13", cat: "AI & Finanza", color: C.orange, bg: C.orangeLight, title: "BlackRock integra AI generativa nei portafogli: +12% di alpha in 6 mesi", summary: "Il più grande gestore patrimoniale al mondo annuncia l'integrazione di modelli AI generativi nella gestione attiva dei portafogli. I risultati preliminari mostrano un alpha del 12% rispetto ai benchmark.", source: "Financial Times", url: "https://www.ft.com/content/blackrock-ai-portfolio-management-2026" },
+              { n: "14", cat: "Modelli Generativi", color: C.teal, bg: C.tealLight, title: "Meta lancia Llama 4: open source e multimodale, sfida GPT-5", summary: "Meta rilascia Llama 4 con capacità multimodali avanzate e licenza open source commerciale. Con 405 miliardi di parametri, è il modello open più potente mai rilasciato.", source: "TechCrunch", url: "https://techcrunch.com/2026/03/01/meta-llama-4-open-source-multimodal/" },
+              { n: "15", cat: "AI & Lavoro", color: C.blue, bg: C.blueLight, title: "World Economic Forum: l'AI creerà 97 milioni di nuovi posti di lavoro entro il 2028", summary: "Il report WEF 2026 ribalta la narrativa: l'AI non distrugge lavoro, lo trasforma. Il 65% dei lavori del 2030 non esiste ancora. Le competenze più richieste: pensiero critico e AI literacy.", source: "World Economic Forum", url: "https://www.weforum.org/reports/future-of-jobs-2026" },
+              { n: "16", cat: "AI & Startup Italiane", color: C.teal, bg: C.tealLight, title: "CDP Venture Capital: €500M per startup AI italiane nel 2026", summary: "CDP Venture Capital annuncia un fondo dedicato da 500 milioni di euro per startup AI italiane. Priorità a soluzioni per manifattura, agroalimentare e pubblica amministrazione.", source: "Corriere della Sera", url: "https://www.corriere.it/economia/aziende/2026/03/cdp-venture-capital-500-milioni-startup-ai-italiane/" },
+              { n: "17", cat: "Big Tech", color: C.blue, bg: C.blueLight, title: "Microsoft Copilot+ PC: l'AI on-device conquista il 30% del mercato enterprise", summary: "I PC con chip NPU dedicati all'AI raggiungono il 30% delle vendite enterprise in Europa. Microsoft annuncia nuove funzionalità Copilot+ per la produttività aziendale.", source: "IDC Research", url: "https://www.idc.com/getdoc.jsp?containerId=prEUR252026" },
+              { n: "18", cat: "Ricerca & Innovazione", color: C.orange, bg: C.orangeLight, title: "Stanford HAI: l'Italia sale al 7° posto nell'AI Index 2026", summary: "L'Università di Stanford pubblica l'AI Index 2026: l'Italia guadagna 3 posizioni rispetto all'anno precedente, trainata dalla crescita di startup AI e investimenti in ricerca applicata.", source: "Stanford HAI", url: "https://aiindex.stanford.edu/report/" },
+              { n: "19", cat: "AI Agentiva", color: C.teal, bg: C.tealLight, title: "Salesforce Agentforce 2.0: agenti AI autonomi per il CRM enterprise", summary: "Salesforce lancia Agentforce 2.0 con agenti AI che gestiscono autonomamente pipeline di vendita, supporto clienti e analisi predittiva. Già adottato da 3.000 aziende enterprise.", source: "Salesforce Blog", url: "https://www.salesforce.com/blog/agentforce-2-enterprise-ai-agents/" },
+              { n: "20", cat: "AI & Sicurezza", color: C.orange, bg: C.orangeLight, title: "Gartner: il 45% delle violazioni dati nel 2026 coinvolge sistemi AI", summary: "Il nuovo report Gartner sulla cybersecurity AI rivela che quasi la metà delle violazioni dati aziendali nel 2026 ha come vettore un sistema AI mal configurato o attaccato tramite prompt injection.", source: "Gartner", url: "https://www.gartner.com/en/newsroom/press-releases/2026-ai-security-report" },
             ].map((item, i) => (
               <FadeUp key={item.n} delay={i * 0.04}>
                 <a

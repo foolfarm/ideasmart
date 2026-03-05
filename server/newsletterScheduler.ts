@@ -3,7 +3,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  * Routine automatica settimanale:
  *   - Ogni LUNEDÌ alle 09:00 (ora italiana)
- *   - Genera 10 notizie AI aggiornate tramite LLM
+ *   - Genera 20 notizie AI aggiornate tramite LLM
  *   - Costruisce la newsletter con il template dark ufficiale IDEASMART
  *   - Invia a tutti gli iscritti attivi nel database
  *   - Registra l'invio nella tabella newsletter_sends
@@ -93,17 +93,20 @@ Scrivi in italiano con tono editoriale autorevole. Rispondi SOLO con JSON valido
       },
       {
         role: "user",
-        content: `Genera esattamente 10 notizie AI reali e significative della settimana (${dateRange}).
+        content: `Genera esattamente 20 notizie AI reali e significative della settimana (${dateRange}).
 
 Criteri editoriali:
 - Privilegia notizie con impatto concreto sul business e sull'ecosistema startup
-- Includi almeno 2 notizie sull'ecosistema italiano/europeo
-- Includi almeno 1 notizia su finanziamenti o acquisizioni AI
-- Includi almeno 1 notizia su nuovi modelli o aggiornamenti AI
+- Includi almeno 4 notizie sull'ecosistema italiano/europeo
+- Includi almeno 2 notizie su finanziamenti o acquisizioni AI
+- Includi almeno 2 notizie su nuovi modelli o aggiornamenti AI
 - Includi almeno 1 notizia su startup italiane
+- Includi almeno 1 notizia su AI & Salute e 1 su AI & Finanza
+- Includi almeno 1 notizia su regolamentazione AI (EU AI Act)
 - Tono editoriale, non promozionale
+- Distribuisci le categorie in modo equilibrato
 
-Categorie disponibili: "Modelli Generativi", "AI Agentiva", "Big Tech", "Startup & Funding", "AI & Hardware", "Robot & AI Fisica", "AI & Startup Italiane", "Ricerca & Innovazione", "AI & Lavoro", "AI & Sicurezza", "AI & Difesa", "Internazionalizzazione"
+Categorie disponibili: "Modelli Generativi", "AI Agentiva", "Big Tech", "Startup & Funding", "AI & Hardware", "Robot & AI Fisica", "AI & Startup Italiane", "Ricerca & Innovazione", "AI & Lavoro", "AI & Sicurezza", "AI & Difesa", "Internazionalizzazione", "Regolamentazione AI", "AI & Salute", "AI & Finanza"
 
 Rispondi con JSON: {"items":[{"category":"...","title":"...","summary":"...","url":"...","source":"..."}]}`,
       },
@@ -141,7 +144,7 @@ Rispondi con JSON: {"items":[{"category":"...","title":"...","summary":"...","ur
 
   const content = response.choices[0]?.message?.content as string;
   const parsed = JSON.parse(content);
-  return (parsed.items || []).slice(0, 10) as NewsItem[];
+  return (parsed.items || []).slice(0, 20) as NewsItem[];
 }
 
 // ─── Invio newsletter settimanale ─────────────────────────────────────────────

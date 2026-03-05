@@ -96,7 +96,7 @@ export function buildMonthlyNewsletterHtml(opts: {
   };
 
   // Genera le righe news
-  const newsItemsHtml = news.slice(0, 10).map((item, idx) => {
+  const newsItemsHtml = news.slice(0, 20).map((item, idx) => {
     const num = String(idx + 1).padStart(2, "0");
     const color = categoryColors[item.category] ?? categoryColors["default"];
     const bgColor = `${color}1e`; // ~12% opacity
@@ -104,7 +104,7 @@ export function buildMonthlyNewsletterHtml(opts: {
       ? `<a href="${item.url}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${item.title}</a>`
       : `<span style="font-size:13px;font-weight:700;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${item.title}</span>`;
     const sourceEl = item.source ? ` &mdash; <em>${item.source}</em>` : "";
-    const isLast = idx === Math.min(news.length, 10) - 1;
+    const isLast = idx === Math.min(news.length, 20) - 1;
 
     return `
         <tr>
