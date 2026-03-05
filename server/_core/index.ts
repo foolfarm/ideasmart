@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { startNewsScheduler } from "../newsScheduler";
+import { startNewsletterScheduler } from "../newsletterScheduler";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -67,3 +68,6 @@ startServer().catch(console.error);
 
 // Avvia il cron job per l'aggiornamento settimanale delle notizie AI
 startNewsScheduler();
+
+// Avvia il cron job per l'invio automatico della newsletter settimanale (ogni lunedì 09:00 IT)
+startNewsletterScheduler();

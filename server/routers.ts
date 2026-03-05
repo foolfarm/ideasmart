@@ -6,6 +6,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWeeklyNewsletterHtml } from "./email";
+import { sendWeeklyNewsletter } from "./newsletterScheduler";
 import {
   addSubscriber,
   getAllSubscribers,
@@ -172,7 +173,16 @@ Rispondi con questo JSON:
         };
       }),
 
-    // Send weekly newsletter to all active subscribers
+    // Trigger invio automatico immediato (usa il template dark ufficiale)
+    triggerWeeklyNewsletter: adminProcedure.mutation(async () => {
+      const result = await sendWeeklyNewsletter();
+      if (!result.success) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio newsletter" });
+      }
+      return result;
+    }),
+
+    // Send weekly newsletter to all active subscribers (legacy - usa buildWeeklyNewsletterHtml)
     sendWeeklyNewsletter: adminProcedure.mutation(async () => {
       const activeSubscribers = await getActiveSubscribers();
       if (activeSubscribers.length === 0) {
