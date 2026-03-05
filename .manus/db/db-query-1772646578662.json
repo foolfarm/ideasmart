@@ -1,0 +1,33 @@
+{
+  "query": "\nSELECT COUNT(*) as totale, status, source FROM subscribers GROUP BY status, source;\nSELECT email, subscribedAt FROM subscribers ORDER BY subscribedAt DESC LIMIT 5;\nSELECT email FROM subscribers WHERE email LIKE '%foolfarm%' OR email LIKE '%p101%' OR email LIKE '%reply%' LIMIT 5;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT COUNT(*) as totale, status, source FROM subscribers GROUP BY status, source;\nSELECT email, subscribedAt FROM subscribers ORDER BY subscribedAt DESC LIMIT 5;\nSELECT email FROM subscribers WHERE email LIKE '%foolfarm%' OR email LIKE '%p101%' OR email LIKE '%reply%' LIMIT 5;\n",
+  "rows": [
+    {
+      "totale": "1856",
+      "status": "active",
+      "source": "import_csv"
+    },
+    {
+      "totale": "1",
+      "status": "active",
+      "source": "website"
+    }
+  ],
+  "messages": [
+    "email\tsubscribedAt",
+    "teo.damiani@gmail.com\t2026-03-04 17:49:26",
+    "tatiana.deluca@it.bosch.com\t2026-03-04 17:49:26",
+    "tdemontille@clipperton.net\t2026-03-04 17:49:26",
+    "tdargenio@gmail.com\t2026-03-04 17:49:26",
+    "teresa.alberti@albaleasing.eu\t2026-03-04 17:49:26",
+    "email",
+    "a.dicamillo@p101.it",
+    "a.ranchino@reply.it",
+    "a.tavecchio@p101.it",
+    "ac@foolfarm.com",
+    "alessandra.ondeggia@foolfarm.com"
+  ],
+  "stdout": "totale\tstatus\tsource\n1856\tactive\timport_csv\n1\tactive\twebsite\nemail\tsubscribedAt\nteo.damiani@gmail.com\t2026-03-04 17:49:26\ntatiana.deluca@it.bosch.com\t2026-03-04 17:49:26\ntdemontille@clipperton.net\t2026-03-04 17:49:26\ntdargenio@gmail.com\t2026-03-04 17:49:26\nteresa.alberti@albaleasing.eu\t2026-03-04 17:49:26\nemail\na.dicamillo@p101.it\na.ranchino@reply.it\na.tavecchio@p101.it\nac@foolfarm.com\nalessandra.ondeggia@foolfarm.com\n",
+  "stderr": "",
+  "execution_time_ms": 137
+}
