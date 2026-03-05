@@ -71,8 +71,11 @@ export function buildMonthlyNewsletterHtml(opts: {
     url?: string;
     source?: string;
   }>;
+  unsubscribeUrl?: string; // URL personalizzato per disiscrizione (con token)
 }): string {
-  const { month, issueNumber, news } = opts;
+  const { month, issueNumber, news, unsubscribeUrl } = opts;
+  const baseUrl = process.env.VITE_APP_ID ? `https://ideasmart.ai` : `https://ideasmart.manus.space`;
+  const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
   // Colori per le categorie news
   const categoryColors: Record<string, string> = {
@@ -477,16 +480,28 @@ export function buildMonthlyNewsletterHtml(opts: {
 
   <!-- FOOTER -->
   <tr>
-    <td style="padding:24px 32px;background:#040810;border-top:1px solid rgba(255,255,255,0.05);">
-      <p style="font-size:11px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;text-align:center;">
-        &copy; 2026 <strong style="color:rgba(255,255,255,0.40);">IDEASMART</strong> &mdash; Startup di Tecnologia &amp; Innovazione · AI for Business
+    <td style="padding:28px 32px 32px;background:#040810;border-top:1px solid rgba(255,255,255,0.05);">
+      <p style="font-size:11px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-align:center;">
+        &copy; 2026 <strong style="color:rgba(255,255,255,0.40);">IDEASMART</strong> &mdash; Startup di Tecnologia &amp; Innovazione &middot; AI for Business
       </p>
+      <p style="font-size:11px;color:rgba(255,255,255,0.18);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-align:center;line-height:1.6;">
+        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
+        Sede legale: Italia &middot; P.IVA in corso di registrazione &middot; <a href="${baseUrl}/privacy" style="color:rgba(255,255,255,0.30);text-decoration:underline;">Privacy Policy</a>
+      </p>
+      <!-- Separatore -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 12px;">
+        <tr><td style="border-top:1px solid rgba(255,255,255,0.06);font-size:0;line-height:0;">&nbsp;</td></tr>
+      </table>
+      <!-- Link disiscrizione GDPR -->
       <p style="font-size:11px;color:rgba(255,255,255,0.20);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
-        <a href="*|UNSUB|*" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Disiscriviti</a>
+        <a href="${unsubLink}" style="color:#ff5500;text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:600;">Annulla iscrizione</a>
         &nbsp;&middot;&nbsp;
-        <a href="*|UPDATE_PROFILE|*" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Aggiorna preferenze</a>
+        <a href="${baseUrl}" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito</a>
         &nbsp;&middot;&nbsp;
-        <a href="*|ARCHIVE|*" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Archivio</a>
+        <a href="${baseUrl}/privacy" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Privacy Policy</a>
+      </p>
+      <p style="font-size:10px;color:rgba(255,255,255,0.12);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:10px 0 0;text-align:center;">
+        Ai sensi del Regolamento UE 2016/679 (GDPR), hai il diritto di annullare l&rsquo;iscrizione in qualsiasi momento.
       </p>
     </td>
   </tr>

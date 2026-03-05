@@ -12,9 +12,12 @@ import {
   getAllSubscribers,
   getActiveSubscribers,
   unsubscribeEmail,
+  unsubscribeByToken,
+  getSubscriberByToken,
   deleteSubscriber,
   createNewsletterSend,
   getNewsletterHistory,
+  ensureUnsubscribeTokens,
 } from "./db";
 
 // Admin guard
@@ -55,12 +58,46 @@ export const appRouter = router({
         return result;
       }),
 
+    // Disiscrizione tramite email (legacy, richiede autenticazione)
     unsubscribe: publicProcedure
       .input(z.object({ email: z.string().email() }))
       .mutation(async ({ input }) => {
         await unsubscribeEmail(input.email);
         return { success: true };
       }),
+
+    // Disiscrizione tramite token univoco (GDPR-compliant, nessun login richiesto)
+    unsubscribeByToken: publicProcedure
+      .input(z.object({ token: z.string().min(10) }))
+      .mutation(async ({ input }) => {
+        const result = await unsubscribeByToken(input.token);
+        if (!result.success) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: result.error ?? "Token non valido" });
+        }
+        return { success: true, email: result.email };
+      }),
+
+    // Recupera l'email associata al token (per mostrare conferma prima di disiscrizione)
+    getByToken: publicProcedure
+      .input(z.object({ token: z.string().min(10) }))
+      .query(async ({ input }) => {
+        const subscriber = await getSubscriberByToken(input.token);
+        if (!subscriber) return null;
+        return {
+          email: subscriber.email,
+          name: subscriber.name,
+          status: subscriber.status,
+        };
+      }),
+  }),
+
+  // ── Admin: migrazione token ────────────────────────────────────────────────
+  // Assegna token a iscritti importati che non ne hanno uno
+  adminMigrate: router({
+    ensureTokens: adminProcedure.mutation(async () => {
+      await ensureUnsubscribeTokens();
+      return { success: true };
+    }),
   }),
 
   // ── Admin Dashboard ────────────────────────────────────────────────────────

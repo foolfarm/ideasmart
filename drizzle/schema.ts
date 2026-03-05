@@ -22,6 +22,7 @@ export const subscribers = mysqlTable("subscribers", {
   name: varchar("name", { length: 255 }),
   status: mysqlEnum("status", ["active", "unsubscribed"]).default("active").notNull(),
   source: varchar("source", { length: 64 }).default("website").notNull(),
+  unsubscribeToken: varchar("unsubscribeToken", { length: 128 }).unique(),
   subscribedAt: timestamp("subscribedAt").defaultNow().notNull(),
   unsubscribedAt: timestamp("unsubscribedAt"),
 });

@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, InsertSubscriber, subscribers, newsletterSends, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -90,6 +91,11 @@ export async function getUserByOpenId(openId: string) {
 }
 
 // ── Subscribers ─────────────────────────────────────────────────────────────
+// Genera un token univoco per la disiscrizione
+export function generateUnsubscribeToken(): string {
+  return randomBytes(32).toString("hex");
+}
+
 export async function addSubscriber(data: { email: string; name?: string; source?: string }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -97,19 +103,23 @@ export async function addSubscriber(data: { email: string; name?: string; source
   const existing = await db.select().from(subscribers).where(eq(subscribers.email, data.email)).limit(1);
   if (existing.length > 0) {
     if (existing[0].status === "unsubscribed") {
+      // Genera un nuovo token se non ne ha uno
+      const token = existing[0].unsubscribeToken ?? generateUnsubscribeToken();
       await db.update(subscribers)
-        .set({ status: "active", unsubscribedAt: null })
+        .set({ status: "active", unsubscribedAt: null, unsubscribeToken: token })
         .where(eq(subscribers.email, data.email));
       return { resubscribed: true };
     }
     return { alreadySubscribed: true };
   }
 
+  const token = generateUnsubscribeToken();
   const insert: InsertSubscriber = {
     email: data.email,
     name: data.name ?? null,
     source: data.source ?? "website",
     status: "active",
+    unsubscribeToken: token,
   };
   await db.insert(subscribers).values(insert);
   return { success: true };
@@ -133,6 +143,55 @@ export async function unsubscribeEmail(email: string) {
   await db.update(subscribers)
     .set({ status: "unsubscribed", unsubscribedAt: new Date() })
     .where(eq(subscribers.email, email));
+}
+
+// Disiscrivi tramite token (GDPR-compliant, nessun login richiesto)
+export async function unsubscribeByToken(token: string): Promise<{ success: boolean; email?: string; error?: string }> {
+  const db = await getDb();
+  if (!db) return { success: false, error: "Database non disponibile" };
+
+  const result = await db.select().from(subscribers)
+    .where(eq(subscribers.unsubscribeToken, token))
+    .limit(1);
+
+  if (result.length === 0) {
+    return { success: false, error: "Token non valido o già utilizzato" };
+  }
+
+  const subscriber = result[0];
+  if (subscriber.status === "unsubscribed") {
+    return { success: true, email: subscriber.email }; // già disiscritta
+  }
+
+  await db.update(subscribers)
+    .set({ status: "unsubscribed", unsubscribedAt: new Date() })
+    .where(eq(subscribers.unsubscribeToken, token));
+
+  return { success: true, email: subscriber.email };
+}
+
+// Recupera un iscritto tramite token (per mostrare l'email nella pagina di conferma)
+export async function getSubscriberByToken(token: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(subscribers)
+    .where(eq(subscribers.unsubscribeToken, token))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+// Assegna token a iscritti esistenti che non ne hanno uno (migrazione)
+export async function ensureUnsubscribeTokens() {
+  const db = await getDb();
+  if (!db) return;
+  const all = await db.select().from(subscribers).where(eq(subscribers.status, "active"));
+  for (const sub of all) {
+    if (!sub.unsubscribeToken) {
+      await db.update(subscribers)
+        .set({ unsubscribeToken: generateUnsubscribeToken() })
+        .where(eq(subscribers.id, sub.id));
+    }
+  }
 }
 
 export async function deleteSubscriber(id: number) {
