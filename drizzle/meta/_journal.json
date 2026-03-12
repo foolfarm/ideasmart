@@ -43,6 +43,13 @@
       "when": 1773329734512,
       "tag": "0005_nifty_moonstone",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1773332331003,
+      "tag": "0006_friendly_rhodey",
+      "breakpoints": true
     }
   ]
 }

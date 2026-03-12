@@ -246,6 +246,7 @@ function NewsGrid() {
 // ─── Daily Editorial Section (dinamica, legge dal DB) ───────────────────────────────────────────────────────────────────────────────
 function DailyEditorialSection() {
   const { data: editorial, isLoading } = trpc.editorial.getLatest.useQuery();
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery();
 
   const today = new Date().toLocaleDateString("it-IT", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
@@ -346,12 +347,17 @@ function DailyEditorialSection() {
             <div className="rounded-2xl p-6 border" style={{ background: "#fff", borderColor: C.border }}>
               <p className="editorial-tag mb-5" style={{ color: C.muted }}>◆ In questo numero</p>
               <div className="space-y-1">
-                {[
-                  { n: "01", cat: "Reportage", title: "FoolTalent: l'AI che scova i talenti prima degli altri.", id: "fooltalent", color: C.teal },
-                  { n: "02", cat: "Analisi", title: "FoolShare: la fortezza digitale per i dati che contano.", id: "foolshare", color: C.blue },
-                  { n: "03", cat: "Inchiesta", title: "Fragmentalis: la comunicazione a prova di spia.", id: "fragmentalis", color: C.teal },
-                  { n: "04", cat: "Focus", title: "PollCast: l'intelligenza collettiva che prevede i trend.", id: "pollcast", color: C.orange },
-                ].map((item) => (
+                {(reportageItems && reportageItems.length > 0 ? reportageItems : [
+                  { position: 1, sectionNumber: "01", category: "Reportage", headline: "Reportage 1 in arrivo...", id: "reportage-1" },
+                  { position: 2, sectionNumber: "02", category: "Analisi", headline: "Reportage 2 in arrivo...", id: "reportage-2" },
+                  { position: 3, sectionNumber: "03", category: "Inchiesta", headline: "Reportage 3 in arrivo...", id: "reportage-3" },
+                  { position: 4, sectionNumber: "04", category: "Focus", headline: "Reportage 4 in arrivo...", id: "reportage-4" },
+                ]).map((item: { position: number; sectionNumber: string; category: string; headline: string }, idx: number) => {
+                  const colors = [C.teal, C.blue, C.teal, C.orange];
+                  const color = colors[idx % colors.length];
+                  const sectionId = `reportage-${item.position}`;
+                  return { n: item.sectionNumber, cat: item.category.split(' · ')[0], title: item.headline, id: sectionId, color };
+                }).map((item: { n: string; cat: string; title: string; id: string; color: string }) => (
                   <button
                     key={item.id}
                     onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })}
@@ -550,11 +556,125 @@ function StartupOfDaySection() {
   );
 }
 
+// ─── Weekly Reportage Section (dinamica, legge dal DB) ─────────────────────────────────────
+const REPORTAGE_COLORS = [
+  { color: C.teal, bg: C.tealLight },
+  { color: C.blue, bg: C.blueLight },
+  { color: C.teal, bg: C.tealLight },
+  { color: C.orange, bg: C.orangeLight },
+];
+
+function WeeklyReportageSection() {
+  const { data: reportageItems, isLoading } = trpc.reportage.getLatestWeek.useQuery();
+
+  const fallback = [
+    { id: 1, position: 1, sectionNumber: "01", category: "Reportage · AI & Produttività", startupName: "Caricamento...", headline: "Reportage in arrivo", subheadline: "", bodyText: "", quote: "", feature1: "", feature2: "", feature3: "", feature4: "", stat1Value: "—", stat1Label: "Stat 1", stat2Value: "—", stat2Label: "Stat 2", stat3Value: "—", stat3Label: "Stat 3", ctaLabel: "Scopri di più →", ctaUrl: "#", websiteUrl: "#", weekLabel: "" },
+  ];
+
+  const items = (reportageItems && reportageItems.length > 0 ? reportageItems : fallback) as Array<{
+    id: number; position: number; sectionNumber: string; category: string; startupName: string;
+    headline: string; subheadline: string; bodyText: string; quote: string;
+    feature1: string; feature2: string; feature3: string; feature4: string;
+    stat1Value: string; stat1Label: string; stat2Value: string; stat2Label: string;
+    stat3Value: string; stat3Label: string; ctaLabel: string; ctaUrl: string;
+    websiteUrl: string; weekLabel: string;
+  }>;
+
+  return (
+    <>
+      {isLoading ? (
+        <section className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="animate-pulse space-y-4">
+              {[1,2,3,4].map(i => <div key={i} className="h-32 rounded" style={{ background: C.surface2 }} />)}
+            </div>
+          </div>
+        </section>
+      ) : (
+        items.map((item, idx) => {
+          const colorSet = REPORTAGE_COLORS[idx % REPORTAGE_COLORS.length];
+          const sectionId = `reportage-${item.position}`;
+          const features = [item.feature1, item.feature2, item.feature3, item.feature4].filter(Boolean);
+          const paragraphs = item.bodyText ? item.bodyText.split(/\n+/).filter(p => p.trim().length > 0) : [];
+          return (
+            <section key={item.id} id={sectionId} className="border-t" style={{ borderColor: C.border, background: idx % 2 === 0 ? "#fff" : C.surface1 }}>
+              <SectionHeader
+                number={item.sectionNumber}
+                category={item.category}
+                categoryColor={colorSet.color}
+                title={item.headline}
+              />
+              <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="grid lg:grid-cols-2 gap-12 items-start">
+                  <FadeUp>
+                    {item.subheadline && (
+                      <p className="text-sm font-semibold mb-4" style={{ color: colorSet.color, fontFamily: "'DM Sans', sans-serif" }}>
+                        {item.subheadline}
+                      </p>
+                    )}
+                    <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                      {paragraphs.map((p, i) => (
+                        <p key={i} style={{ color: C.slate }}>{p}</p>
+                      ))}
+                    </div>
+                    {item.quote && (
+                      <blockquote
+                        className="border-l-4 pl-4 py-2 italic text-sm mb-6"
+                        style={{ borderColor: colorSet.color, color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
+                      >
+                        {item.quote}
+                      </blockquote>
+                    )}
+                    {features.length > 0 && (
+                      <div className="divide-y" style={{ borderColor: C.border }}>
+                        {features.map((f, i) => (
+                          <FeatureItem key={i} text={f} color={colorSet.color} bgColor={colorSet.bg} />
+                        ))}
+                      </div>
+                    )}
+                    <div className="mt-6">
+                      <a
+                        href={item.websiteUrl !== "#" ? item.websiteUrl : undefined}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all hover:opacity-90"
+                        style={{ background: colorSet.color, color: "#fff" }}
+                      >
+                        {item.ctaLabel}
+                      </a>
+                    </div>
+                  </FadeUp>
+
+                  <FadeUp delay={0.15}>
+                    {/* Stats card */}
+                    <div className="rounded-2xl p-6 border" style={{ background: colorSet.bg, borderColor: `${colorSet.color}30` }}>
+                      <p className="editorial-tag mb-4" style={{ color: colorSet.color }}>◆ {item.startupName} in numeri</p>
+                      <div className="grid grid-cols-3 gap-4 mb-6">
+                        <StatBlock value={item.stat1Value} label={item.stat1Label} color={colorSet.color} />
+                        <StatBlock value={item.stat2Value} label={item.stat2Label} color={colorSet.color} />
+                        <StatBlock value={item.stat3Value} label={item.stat3Label} color={colorSet.color} />
+                      </div>
+                      <div className="pt-4 border-t" style={{ borderColor: `${colorSet.color}30` }}>
+                        <p className="text-xs" style={{ color: C.muted }}>Reportage aggiornato ogni lunedì dalla redazione IDEASMART.</p>
+                      </div>
+                    </div>
+                  </FadeUp>
+                </div>
+              </div>
+            </section>
+          );
+        })
+      )}
+    </>
+  );
+}
+
 // ─── Main Page ───────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery();
 
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
@@ -743,284 +863,8 @@ export default function Home() {
       <StartupOfDaySection />
 
 
-      {/* ── FOOLTALENT ──────────────────────────────────────────────────────── */}
-      <section id="fooltalent" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
-        <SectionHeader number="01" category="Reportage · AI Recruiting" categoryColor={C.teal} title="FoolTalent: l'AI che scova i talenti prima degli altri." />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <FadeUp>
-              <p className="text-sm font-semibold mb-4" style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}>
-                Come una startup milanese sta rivoluzionando il processo di selezione del personale con l'intelligenza artificiale.
-              </p>
-              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p style={{ color: C.slate }}>
-                  Il problema del recruiting nelle startup italiane è sempre lo stesso: troppo tempo perso
-                  a leggere CV irrilevanti, troppo poco a parlare con i candidati giusti.{" "}
-                  <strong style={{ color: C.navy }}>FoolTalent</strong> ha deciso di affrontarlo con un approccio
-                  radicalmente diverso: la sua AI non filtra per parole chiave, ma analizza ogni candidatura
-                  in profondità e assegna un punteggio di compatibilità reale.
-                </p>
-                <p style={{ color: C.slate }}>
-                  Nella nostra analisi, quello che ci ha colpito è la granularità del punteggio: l'AI non
-                  si limita a dire "compatibile" o "non compatibile", ma spiega perché, indicando i punti
-                  di forza e le lacune di ogni candidato rispetto al profilo cercato.
-                </p>
-              </div>
-
-              <blockquote className="quote-block mb-6">
-                <p className="text-sm italic" style={{ color: C.teal }}>
-                  "L'AI non sostituisce il recruiter. Lo libera dal rumore, così può concentrarsi sul segnale."
-                </p>
-              </blockquote>
-
-              <div>
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Valutazione automatica AI con punteggio percentuale di compatibilità per ogni candidatura" />
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Shortlist intelligente: il sistema mostra solo i profili più compatibili, ordinati per rilevanza" />
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Database talenti integrato con ricerca avanzata per competenze, settore ed esperienza" />
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Dashboard analytics con trend candidature in tempo reale e reportistica avanzata" />
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 mt-6">
-                <StatBlock value="78" label="Candidature gestite" color={C.teal} />
-                <StatBlock value="100%" label="Valutate da AI" color={C.teal} />
-                <StatBlock value="60%" label="Punteggio medio" color={C.teal} />
-              </div>
-
-              <div className="flex flex-wrap gap-3 mt-8">
-                <a href="https://fooltalent.com" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                  Scopri FoolTalent →
-                </a>
-                <a href="https://fooltalent.com" target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  Vedi gli annunci →
-                </a>
-              </div>
-            </FadeUp>
-
-            <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden article-card">
-                <img src={FOOLTALENT_IMG} alt="FoolTalent - AI Recruiting Platform" className="w-full h-60 object-cover" loading="lazy" />
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FOOLSHARE ───────────────────────────────────────────────────────── */}
-      <section id="foolshare" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
-        <SectionHeader number="02" category="Analisi · Data Room & Fundraising" categoryColor={C.blue} title="FoolShare: la fortezza digitale per i dati che contano." />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <FadeUp>
-              <p className="text-sm font-semibold mb-4" style={{ color: C.blue, fontFamily: "'DM Sans', sans-serif" }}>
-                Abbiamo testato la piattaforma che unisce data room sicure, NDA digitali e un sistema operativo per il fundraising.
-              </p>
-              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p style={{ color: C.slate }}>
-                  La condivisione di documenti sensibili è il tallone d'Achille di molte aziende.{" "}
-                  <strong style={{ color: C.navy }}>FoolShare</strong> risponde con una piattaforma che non si limita
-                  a "proteggere" i documenti, ma li trasforma in uno strumento di intelligence: ogni link condiviso
-                  è tracciabile — chi lo ha aperto, per quanti minuti, quante volte, da quale città.
-                </p>
-                <p style={{ color: C.slate }}>
-                  Il modulo Fundraising OS è quello che ci ha colpito di più. Le startup possono aprire una
-                  Project Room pubblica, presentarsi agli investitori e raccogliere soft commitment in modo
-                  strutturato. L'AI Agent integrato analizza automaticamente tutti i documenti caricati.
-                </p>
-              </div>
-
-              <blockquote className="quote-block mb-6" style={{ borderLeftColor: C.blue }}>
-                <p className="text-sm italic" style={{ color: C.blue }}>
-                  "Non è solo una data room. È un sistema operativo per il fundraising. La differenza è sostanziale."
-                </p>
-              </blockquote>
-
-              <div className="rounded-xl p-4 mb-6 border" style={{ background: C.blueLight, borderColor: `${C.blue}20` }}>
-                <p className="text-sm" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
-                  <span style={{ color: C.blue }}>🎁 Prova gratuita 7 giorni</span> — nessuna carta di credito richiesta.<br />
-                  Piani da <strong style={{ color: C.navy }}>€49/mese</strong> (Premium) · <strong style={{ color: C.navy }}>€99/mese</strong> (Project Room + Fundraising OS)
-                </p>
-              </div>
-
-              <div>
-                <FeatureItem color={C.blue} bgColor={C.blueLight} text="Crittografia 256-bit su tutti i file — GDPR compliant, 99.9% uptime garantito" />
-                <FeatureItem color={C.blue} bgColor={C.blueLight} text="NDA digitali legalmente vincolanti con template bilingue IT/EN incluso" />
-                <FeatureItem color={C.blue} bgColor={C.blueLight} text="Analytics avanzate: geolocalizzazione visitatori, grafici settimanali, visualizzazioni in tempo reale" />
-                <FeatureItem color={C.blue} bgColor={C.blueLight} text="AI Agent integrato: analisi automatica dei documenti e risposte immediate sui contenuti" />
-              </div>
-
-              <div className="flex flex-wrap gap-3 mt-8">
-                <a href="https://foolshare.xyz" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                  Inizia gratis →
-                </a>
-                <a href="https://foolshare.xyz" target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  Scopri i piani →
-                </a>
-              </div>
-            </FadeUp>
-
-            <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden article-card mb-6">
-                <img src={FOOLSHARE_IMG} alt="FoolShare - Data Room e Fundraising" className="w-full h-60 object-cover" loading="lazy" />
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { title: "Condivisione Sicura", desc: "Link protetti, accesso per email, blocco download" },
-                  { title: "Fundraising OS", desc: "Project Room, investor tracking, soft commitment" },
-                  { title: "Data Room Pro", desc: "Cartelle strutturate, permessi granulari, due diligence" },
-                ].map((f) => (
-                  <div key={f.title} className="rounded-xl p-3 border text-center" style={{ background: "#fff", borderColor: C.border }}>
-                    <p className="text-xs font-bold mb-1" style={{ color: C.blue, fontFamily: "'Space Grotesk', sans-serif" }}>{f.title}</p>
-                    <p className="text-xs leading-snug" style={{ color: C.muted }}>{f.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FRAGMENTALIS ────────────────────────────────────────────────────── */}
-      <section id="fragmentalis" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
-        <SectionHeader number="03" category="Inchiesta · Cybersecurity & Comunicazione" categoryColor={C.teal} title="Fragmentalis: la comunicazione a prova di spia (e di computer quantistici)." />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <FadeUp>
-              <p className="text-sm font-semibold mb-4" style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}>
-                La tecnologia brevettata IT/EU/USA che rende matematicamente impossibile intercettare le comunicazioni aziendali.
-              </p>
-              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p style={{ color: C.slate }}>
-                  Mentre tutti parlano di crittografia end-to-end, <strong style={{ color: C.navy }}>Fragmentalis</strong>{" "}
-                  ha già spostato il campo di gioco nel futuro. La sua tecnologia brevettata "polverizza" i dati —
-                  li frammenta su nodi distribuiti, rendendo matematicamente impossibile ricostruirli. Il prodotto
-                  di punta, <strong style={{ color: C.navy }}>StreamSafer Communicator</strong>, è già usato da CDA
-                  aziendali, studi legali e istituzioni finanziarie.
-                </p>
-                <p style={{ color: C.slate }}>
-                  Con l'avvento dei computer quantistici, che renderanno obsoleta la crittografia tradizionale,
-                  la soluzione di Fragmentalis diventa non solo interessante, ma necessaria. GDPR, DORA e NIS2
-                  compliant. 6 prodotti verticali per ogni settore.
-                </p>
-              </div>
-
-              <blockquote className="quote-block mb-6">
-                <p className="text-sm italic" style={{ color: C.teal }}>
-                  "Non esiste un server centrale. I dati vengono polverizzati. Per ricostruirli, bisognerebbe accedere a tutti i nodi contemporaneamente. Matematicamente impossibile."
-                </p>
-              </blockquote>
-
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <StatBlock value="0" label="Server centrale" color={C.teal} />
-                <StatBlock value="100%" label="Controllo dati" color={C.teal} />
-                <StatBlock value="3" label="Brevetti IT/EU/US" color={C.teal} />
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <a href="https://fragmentalis.com" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                  Richiedi Demo →
-                </a>
-                <a href="https://fragmentalis.com" target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  Scopri StreamSafer →
-                </a>
-              </div>
-            </FadeUp>
-
-            <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden article-card mb-6">
-                <img src={FRAGMENTALIS_IMG} alt="Fragmentalis - Comunicazione Quantum-Resistant" className="w-full h-60 object-cover" loading="lazy" />
-              </div>
-              <div>
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Nessun server centrale — architettura distribuita peer-to-peer brevettata" />
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Quantum-resistant: resistente anche ai futuri computer quantistici" />
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="6 prodotti verticali: Communicator, Vault, Shield, Bridge, Guard, Relay" />
-                <FeatureItem color={C.teal} bgColor={C.tealLight} text="Compliance totale: GDPR, DORA, NIS2 — audit trail completo" />
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* ── POLLCAST ────────────────────────────────────────────────────────── */}
-      <section id="pollcast" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
-        <SectionHeader number="04" category="Focus · Market Intelligence" categoryColor={C.orange} title="PollCast: l'intelligenza collettiva che prevede i trend di mercato." />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <FadeUp>
-              <p className="text-sm font-semibold mb-4" style={{ color: C.orange, fontFamily: "'DM Sans', sans-serif" }}>
-                La piattaforma gratuita che trasforma le previsioni della community in strumento di market intelligence per le aziende.
-              </p>
-              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p style={{ color: C.slate }}>
-                  E se le previsioni di mercato non fossero più un'esclusiva per pochi analisti?{" "}
-                  <strong style={{ color: C.navy }}>PollCast</strong> ha lanciato una piattaforma gratuita dove
-                  chiunque può creare e votare previsioni su qualsiasi tema — business, tech, sport, politica
-                  o trend di mercato. I risultati aggregati, su migliaia di voti, tendono a essere
-                  sorprendentemente accurati.
-                </p>
-                <p style={{ color: C.slate }}>
-                  Per le aziende, l'applicazione più interessante è la market intelligence: monitorare le
-                  previsioni della community su temi rilevanti offre un termometro in tempo reale del sentiment
-                  del mercato. Un vantaggio informativo che fino a ieri richiedeva costose ricerche.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <StatBlock value="2.974" label="Voti totali" color={C.orange} />
-                <StatBlock value="10" label="Previsioni attive" color={C.orange} />
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <a href="https://pollcast.online" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                  Vota le previsioni →
-                </a>
-                <a href="https://pollcast.online" target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  Crea una previsione →
-                </a>
-              </div>
-            </FadeUp>
-
-            <FadeUp delay={0.15}>
-              <div className="rounded-2xl overflow-hidden article-card mb-6">
-                <img src={POLLCAST_IMG} alt="PollCast - Market Intelligence Platform" className="w-full h-48 object-cover" loading="lazy" />
-              </div>
-
-              <p className="editorial-tag mb-4" style={{ color: C.muted }}>◆ Previsioni di tendenza</p>
-              <div className="space-y-3">
-                <PollBar label="Bitcoin supererà i $200,000 entro il 2026?" category="Crypto" percentage={61} votes={511} color={C.orange} bgColor={C.orangeLight} />
-                <PollBar label="ChatGPT-5 sarà rilasciato entro giugno 2026?" category="Tecnologia" percentage={75} votes={370} color={C.orange} bgColor={C.orangeLight} />
-                <PollBar label="Tesla raggiungerà i $500 per azione entro fine 2026?" category="Economia" percentage={57} votes={412} color={C.orange} bgColor={C.orangeLight} />
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FOOLFARM BANNER ─────────────────────────────────────────────────── */}
-      <section className="border-t" style={{ borderColor: C.border, background: C.navy }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <FadeUp>
-            <p className="editorial-tag mb-4" style={{ color: "rgba(255,255,255,0.35)" }}>◆ Da dove nasce l'innovazione</p>
-            <h2 className="text-3xl font-black text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              FoolFarm AI Innovation Studios
-            </h2>
-            <p className="text-base max-w-2xl mx-auto mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', sans-serif" }}>
-              IDEASMART è un progetto editoriale indipendente nato all'interno di{" "}
-              <strong className="text-white">FoolFarm</strong>, il primo startup studio AI-native italiano.
-              La nostra missione è dare voce all'ecosistema, con analisi imparziali e approfondite.
-            </p>
-            <a
-              href="https://foolfarm.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105 text-white"
-              style={{ background: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Scopri FoolFarm →
-            </a>
-          </FadeUp>
-        </div>
-      </section>
-
+      {/* ── REPORTAGE SETTIMANALI DINAMICI ─────────────────────────────────── */}
+      <WeeklyReportageSection />
       {/* ── NEWSLETTER SIGNUP ───────────────────────────────────────────────── */}
       <section id="newsletter" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
@@ -1105,19 +949,19 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Startup analizzate */}
+            {/* Reportage della settimana */}
             <div>
-              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Startup analizzate</p>
+              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Reportage della settimana</p>
               <div className="space-y-2">
-                {[
-                  { name: "FoolTalent", url: "https://fooltalent.com" },
-                  { name: "FoolShare", url: "https://foolshare.xyz" },
-                  { name: "Fragmentalis", url: "https://fragmentalis.com" },
-                  { name: "PollCast", url: "https://pollcast.online" },
-                ].map((s) => (
+                {(reportageItems && reportageItems.length > 0 ? reportageItems : [
+                  { position: 1, startupName: "Reportage 01", websiteUrl: "#" },
+                  { position: 2, startupName: "Reportage 02", websiteUrl: "#" },
+                  { position: 3, startupName: "Reportage 03", websiteUrl: "#" },
+                  { position: 4, startupName: "Reportage 04", websiteUrl: "#" },
+                ]).map((s: { position: number; startupName: string; websiteUrl: string | null }) => (
                   <a
-                    key={s.name}
-                    href={s.url}
+                    key={s.position}
+                    href={s.websiteUrl && s.websiteUrl !== "#" ? s.websiteUrl : undefined}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-sm transition-colors"
@@ -1125,29 +969,32 @@ export default function Home() {
                     onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
                     onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
                   >
-                    {s.name} →
+                    {s.startupName} →
                   </a>
                 ))}
               </div>
             </div>
-
-            {/* Powered by */}
+            {/* Contatti */}
             <div>
-              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Powered by</p>
+              <p className="editorial-tag mb-4" style={{ color: C.muted }}>Contatti</p>
               <a
-                href="https://foolfarm.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:ac@foolfarm.com?subject=IDEASMART"
                 className="block text-sm transition-colors mb-2"
                 style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
                 onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
                 onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
               >
-                FoolFarm AI Innovation Studios →
+                ac@foolfarm.com
               </a>
-              <p className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
-                Il primo startup studio AI-native italiano.
-              </p>
+              <a
+                href="mailto:ac@foolfarm.com?subject=Advertising%20IDEASMART"
+                className="block text-sm transition-colors"
+                style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}
+                onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
+                onMouseLeave={e => (e.currentTarget.style.color = C.teal)}
+              >
+                Advertising →
+              </a>
             </div>
           </div>
 

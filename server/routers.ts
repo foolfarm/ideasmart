@@ -27,6 +27,8 @@ import {
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
+import { generateWeeklyReportage } from "./weeklyReportageScheduler";
+import { getLatestWeeklyReportage } from "./db";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -38,6 +40,13 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 
 export const appRouter = router({
   system: systemRouter,
+
+  // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────
+  reportage: router({
+    getLatestWeek: publicProcedure.query(async () => {
+      return getLatestWeeklyReportage();
+    }),
+  }),
 
   // ── Editorial (public) ──────────────────────────────────────────────────────────────────────────────────
   editorial: router({
@@ -266,6 +275,13 @@ Rispondi con questo JSON:
       const editorial = await generateDailyEditorial();
       await saveEditorial(editorial);
       return { success: true, title: editorial.title };
+    }),
+
+    // Rigenerazione manuale dei 4 reportage settimanali
+    refreshReportage: adminProcedure.mutation(async () => {
+      await generateWeeklyReportage();
+      const items = await getLatestWeeklyReportage();
+      return { success: true, count: items.length };
     }),
 
     // Rigenerazione manuale della startup del giorno

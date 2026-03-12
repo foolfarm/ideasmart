@@ -43,3 +43,24 @@
 - [x] Hero: aggiornare descrizione da mensile a quotidiana
 - [x] Hero: sostituire "N° 03 Marzo 2026" con data dinamica aggiornata ogni giorno
 - [x] Hero: aggiornare "4 Startup analizzate" e "Leggi l'analisi del mese" con testo aggiornato
+
+## Nuovi task (12 Mar 2026 — Reportage automatici)
+
+- [x] Schema DB: tabella weekly_reportage (4 reportage settimanali su startup AI italiane)
+- [x] Generatore LLM: 4 reportage settimanali con struttura editoriale (titolo, categoria, testo, quote, features, stats, link)
+- [x] Cron job: ogni lunedì 00:00 genera 4 nuovi reportage
+- [x] Home.tsx: sezioni reportage dinamiche dal DB (sostituisce i 4 reportage statici)
+- [x] tRPC procedure: reportage.getLatestWeek
+- [x] Admin dashboard: pulsante refresh manuale reportage
+- [x] Generazione immediata dei reportage di oggi (12 Mar 2026)
+
+## Nuovi task (12 Mar 2026 — Reportage + rimozione FoolFarm)
+
+- [x] Schema DB: tabella weekly_reportage con struttura editoriale completa
+- [x] Funzioni DB: saveWeeklyReportage, getLatestWeeklyReportage
+- [x] Generatore LLM: 4 reportage su startup AI italiane (titolo, categoria, testo, quote, features, stats)
+- [x] Cron job: ogni lunedì alle 00:00 genera 4 nuovi reportage
+- [x] tRPC procedure: reportage.getLatestWeek e admin.refreshReportage
+- [x] Generazione immediata dei 4 reportage di oggi
+- [x] Home.tsx: sezione reportage dinamica dal DB (sostituisce i 4 statici)
+- [x] Home.tsx: rimozione sezione FoolFarm ("Da dove nasce l'innovazione")

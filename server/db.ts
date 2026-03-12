@@ -338,3 +338,32 @@ export async function saveStartupOfDay(data: InsertStartupOfDay) {
   if (!db) throw new Error("Database not available");
   await db.insert(startupOfDay).values(data);
 }
+
+// ── Weekly Reportage ─────────────────────────────────────────────────────────
+import { weeklyReportage, InsertWeeklyReportage } from "../drizzle/schema";
+
+export async function getLatestWeeklyReportage() {
+  const db = await getDb();
+  if (!db) return [];
+  // Prende i 4 reportage della settimana più recente
+  const latest = await db.select().from(weeklyReportage)
+    .orderBy(desc(weeklyReportage.createdAt))
+    .limit(1);
+  if (latest.length === 0) return [];
+  const weekLabel = latest[0].weekLabel;
+  return db.select().from(weeklyReportage)
+    .where(eq(weeklyReportage.weekLabel, weekLabel))
+    .orderBy(weeklyReportage.position);
+}
+
+export async function saveWeeklyReportage(items: InsertWeeklyReportage[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(weeklyReportage).values(items);
+}
+
+export async function deleteReportageByWeek(weekLabel: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(weeklyReportage).where(eq(weeklyReportage.weekLabel, weekLabel));
+}

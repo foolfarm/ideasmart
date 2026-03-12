@@ -10,6 +10,7 @@ import { serveStatic, setupVite } from "./vite";
 import { startNewsScheduler } from "../newsScheduler";
 import { startNewsletterScheduler } from "../newsletterScheduler";
 import { startDailyContentScheduler } from "../dailyContentScheduler";
+import { startWeeklyReportageScheduler } from "../weeklyReportageScheduler";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -75,3 +76,6 @@ startNewsletterScheduler();
 
 // Avvia il cron job per editoriale giornaliero e startup del giorno (ogni 24h)
 startDailyContentScheduler();
+
+// Avvia il cron job per i 4 reportage settimanali su startup AI italiane (ogni lunedì 00:00)
+startWeeklyReportageScheduler();
