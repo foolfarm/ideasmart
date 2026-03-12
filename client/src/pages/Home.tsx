@@ -597,7 +597,7 @@ export default function Home() {
               <span className="editorial-tag" style={{ color: C.teal }}>
                 Osservatorio sull'Innovazione AI Italiana
               </span>
-              <span className="editorial-tag" style={{ color: C.muted }}>N° 03 — Marzo 2026</span>
+              <span className="editorial-tag" style={{ color: C.muted }}>Aggiornato ogni giorno — {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
             </div>
 
             {/* Main title */}
@@ -611,13 +611,13 @@ export default function Home() {
               className="text-base sm:text-lg tracking-widest uppercase mb-8"
               style={{ fontFamily: "'JetBrains Mono', monospace", color: C.muted }}
             >
-              L'Analisi Mensile &nbsp;·&nbsp; AI for Business
+              Il tuo punto di riferimento sull'AI &nbsp;·&nbsp; News ogni giorno aggiornate
             </p>
 
             {/* Description */}
             <p className="text-lg sm:text-xl leading-relaxed max-w-2xl mb-10" style={{ fontFamily: "'DM Sans', sans-serif", color: C.slate }}>
-              <strong style={{ color: C.navy }}>IDEASMART</strong> è la startup italiana di tecnologia e innovazione
-              che ogni mese analizza, testa e seleziona le realtà più promettenti
+              <strong style={{ color: C.navy }}>IDEASMART</strong> è il quotidiano di tecnologia e innovazione
+              che ogni giorno analizza, testa e seleziona le realtà più promettenti
               dell'ecosistema AI per il business. La nostra redazione porta alla luce
               le soluzioni che stanno ridefinendo il modo di lavorare, investire e crescere.
             </p>
@@ -625,8 +625,8 @@ export default function Home() {
             {/* Stats row */}
             <div className="flex flex-wrap gap-8 mb-10">
               {[
-                { value: "N° 03", label: "Marzo 2026" },
-                { value: "4", label: "Startup analizzate" },
+                { value: new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }).toUpperCase(), label: new Date().toLocaleDateString('it-IT', { year: 'numeric' }) },
+                { value: "20+", label: "News al giorno" },
                 { value: "100%", label: "AI-driven" },
               ].map((s) => (
                 <div key={s.label} className="flex items-baseline gap-2">
@@ -643,7 +643,7 @@ export default function Home() {
                 className="px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105 text-white"
                 style={{ background: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Leggi l'analisi del mese ↓
+                Leggi le ultime news ↓
               </button>
               <button
                 onClick={() => document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" })}
@@ -1156,7 +1156,7 @@ export default function Home() {
               © 2026 IDEASMART — Startup di Tecnologia &amp; Innovazione. Tutti i diritti riservati.
             </p>
             <p className="editorial-tag" style={{ color: C.muted }}>
-              AI for Business · N° 03 · Marzo 2026
+              AI for Business · Aggiornato il {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>
         </div>

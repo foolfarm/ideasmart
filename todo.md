@@ -36,3 +36,10 @@
 - [x] Home.tsx: sezione Startup del Giorno (nuova sezione)
 - [x] tRPC procedures: editorial.getLatest e startupOfDay.getLatest
 - [x] Admin dashboard: pulsanti refresh manuale editoriale e startup del giorno
+
+## Nuovi task (12 Mar 2026 — Hero update)
+
+- [x] Hero: aggiornare sottotitolo "L'Analisi Mensile · AI for Business" → "Il tuo punto di riferimento sull'AI · News ogni giorno aggiornate"
+- [x] Hero: aggiornare descrizione da mensile a quotidiana
+- [x] Hero: sostituire "N° 03 Marzo 2026" con data dinamica aggiornata ogni giorno
+- [x] Hero: aggiornare "4 Startup analizzate" e "Leggi l'analisi del mese" con testo aggiornato
