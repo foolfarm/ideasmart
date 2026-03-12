@@ -1,7 +1,12 @@
 import { eq, desc } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertSubscriber, InsertNewsItem, subscribers, newsletterSends, users, newsItems, newsRefreshLog } from "../drizzle/schema";
+import {
+  InsertUser, InsertSubscriber, InsertNewsItem,
+  subscribers, newsletterSends, users, newsItems, newsRefreshLog,
+  dailyEditorial, startupOfDay,
+  InsertDailyEditorial, InsertStartupOfDay,
+} from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -282,4 +287,54 @@ export async function getNewsRefreshHistory() {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(newsRefreshLog).orderBy(desc(newsRefreshLog.createdAt)).limit(10);
+}
+
+// ── Daily Editorial ──────────────────────────────────────────────────────────────────────────────────
+export async function getLatestEditorial() {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(dailyEditorial)
+    .orderBy(desc(dailyEditorial.createdAt))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function getTodayEditorial(dateLabel: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(dailyEditorial)
+    .where(eq(dailyEditorial.dateLabel, dateLabel))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function saveEditorial(data: InsertDailyEditorial) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(dailyEditorial).values(data);
+}
+
+// ── Startup of the Day ──────────────────────────────────────────────────────────────────────────────
+export async function getLatestStartupOfDay() {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(startupOfDay)
+    .orderBy(desc(startupOfDay.createdAt))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function getTodayStartup(dateLabel: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(startupOfDay)
+    .where(eq(startupOfDay.dateLabel, dateLabel))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function saveStartupOfDay(data: InsertStartupOfDay) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(startupOfDay).values(data);
 }

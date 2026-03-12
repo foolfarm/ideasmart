@@ -20,8 +20,13 @@ import {
   ensureUnsubscribeTokens,
   getLatestNews,
   getNewsRefreshHistory,
+  getLatestEditorial,
+  getLatestStartupOfDay,
+  saveEditorial,
+  saveStartupOfDay,
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
+import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -33,6 +38,20 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 
 export const appRouter = router({
   system: systemRouter,
+
+  // ── Editorial (public) ──────────────────────────────────────────────────────────────────────────────────
+  editorial: router({
+    getLatest: publicProcedure.query(async () => {
+      return getLatestEditorial();
+    }),
+  }),
+
+  // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────
+  startupOfDay: router({
+    getLatest: publicProcedure.query(async () => {
+      return getLatestStartupOfDay();
+    }),
+  }),
 
   // ── News (public) ──────────────────────────────────────────────────────────────────────────────────
   news: router({
@@ -240,6 +259,20 @@ Rispondi con questo JSON:
       const items = await generateLatestAINews();
       await saveNewsToDb(items);
       return { success: true, count: items.length };
+    }),
+
+    // Rigenerazione manuale dell'editoriale giornaliero
+    refreshEditorial: adminProcedure.mutation(async () => {
+      const editorial = await generateDailyEditorial();
+      await saveEditorial(editorial);
+      return { success: true, title: editorial.title };
+    }),
+
+    // Rigenerazione manuale della startup del giorno
+    refreshStartupOfDay: adminProcedure.mutation(async () => {
+      const startup = await generateStartupOfDay();
+      await saveStartupOfDay(startup);
+      return { success: true, name: startup.name };
     }),
 
     // Trigger invio automatico immediato (usa il template dark ufficiale)

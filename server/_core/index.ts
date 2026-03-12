@@ -9,6 +9,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { startNewsScheduler } from "../newsScheduler";
 import { startNewsletterScheduler } from "../newsletterScheduler";
+import { startDailyContentScheduler } from "../dailyContentScheduler";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -71,3 +72,6 @@ startNewsScheduler();
 
 // Avvia il cron job per l'invio automatico della newsletter settimanale (ogni lunedì 09:00 IT)
 startNewsletterScheduler();
+
+// Avvia il cron job per editoriale giornaliero e startup del giorno (ogni 24h)
+startDailyContentScheduler();

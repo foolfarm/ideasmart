@@ -1,0 +1,26 @@
+{
+  "query": "SELECT * FROM startup_of_day LIMIT 2;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT * FROM startup_of_day LIMIT 2;",
+  "rows": [
+    {
+      "id": "1",
+      "dateLabel": "2026-03-12",
+      "name": "Robo Wunderkind",
+      "tagline": "AI-powered robotics platform for education and STEM learning.",
+      "description": "Robo Wunderkind sviluppa un sistema modulare di robotica educativa che integra l'intelligenza artificiale per insegnare ai bambini e agli studenti le basi della programmazione, della robotica e del machine learning. La loro piattaforma include blocchi robotici programmabili, un'app intuitiva per la codifica visuale (basata su blocchi e Python) e un curriculum educativo strutturato. L'innovazione risiede nell'accessibilità dell'AI: gli studenti possono sperimentare concetti di visione artificiale, riconoscimento vocale e navigazione autonoma in modo pratico e giocoso, senza la necessità di conoscenze pregresse complesse. Questo approccio hands-on rende l'AI meno astratta e più tangibile. Fondata da Rustem Akishbekov e Anna Iarotska, la startup mira a colmare il divario di competenze digitali e AI, preparando la prossima generazione. Sebbene il focus sia educativo, la loro tecnologia sta trovando applicazione anche in contesti di formazione aziendale per la prototipazione rapida e l'introduzione alla robotica. Servono scuole, istituzioni educative e, in misura crescente, dipartimenti di R&D aziendali per workshop di innovazione.",
+      "category": "AI per Education",
+      "country": "Austria",
+      "foundedYear": "2015",
+      "funding": "Series A — $2.7M (total funding reported around $4.5M)",
+      "whyToday": "Robo Wunderkind sta cavalcando l'onda della crescente domanda di competenze AI e STEM nell'istruzione e nella forza lavoro. La loro recente espansione in nuovi mercati europei e le partnership con istituzioni educative dimostrano una trazione significativa, rendendola un'opportunità per le aziende italiane che cercano di investire nella formazione futura.",
+      "websiteUrl": "https://robowunderkind.com",
+      "linkedinUrl": "https://linkedin.com/company/robo-wunderkind",
+      "aiScore": "85",
+      "createdAt": "2026-03-12 15:37:19"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tdateLabel\tname\ttagline\tdescription\tcategory\tcountry\tfoundedYear\tfunding\twhyToday\twebsiteUrl\tlinkedinUrl\taiScore\tcreatedAt\n1\t2026-03-12\tRobo Wunderkind\tAI-powered robotics platform for education and STEM learning.\tRobo Wunderkind sviluppa un sistema modulare di robotica educativa che integra l'intelligenza artificiale per insegnare ai bambini e agli studenti le basi della programmazione, della robotica e del machine learning. La loro piattaforma include blocchi robotici programmabili, un'app intuitiva per la codifica visuale (basata su blocchi e Python) e un curriculum educativo strutturato. L'innovazione risiede nell'accessibilità dell'AI: gli studenti possono sperimentare concetti di visione artificiale, riconoscimento vocale e navigazione autonoma in modo pratico e giocoso, senza la necessità di conoscenze pregresse complesse. Questo approccio hands-on rende l'AI meno astratta e più tangibile. Fondata da Rustem Akishbekov e Anna Iarotska, la startup mira a colmare il divario di competenze digitali e AI, preparando la prossima generazione. Sebbene il focus sia educativo, la loro tecnologia sta trovando applicazione anche in contesti di formazione aziendale per la prototipazione rapida e l'introduzione alla robotica. Servono scuole, istituzioni educative e, in misura crescente, dipartimenti di R&D aziendali per workshop di innovazione.\tAI per Education\tAustria\t2015\tSeries A — $2.7M (total funding reported around $4.5M)\tRobo Wunderkind sta cavalcando l'onda della crescente domanda di competenze AI e STEM nell'istruzione e nella forza lavoro. La loro recente espansione in nuovi mercati europei e le partnership con istituzioni educative dimostrano una trazione significativa, rendendola un'opportunità per le aziende italiane che cercano di investire nella formazione futura.\thttps://robowunderkind.com\thttps://linkedin.com/company/robo-wunderkind\t85\t2026-03-12 15:37:19\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

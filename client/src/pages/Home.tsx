@@ -243,8 +243,314 @@ function NewsGrid() {
     </div>
   );
 }
+// ─── Daily Editorial Section (dinamica, legge dal DB) ───────────────────────────────────────────────────────────────────────────────
+function DailyEditorialSection() {
+  const { data: editorial, isLoading } = trpc.editorial.getLatest.useQuery();
 
-// ─── Main Page ───────────────────────────────────────────────────────────────
+  const today = new Date().toLocaleDateString("it-IT", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+
+  // Paragrafi dal corpo dell'editoriale
+  const paragraphs = editorial?.body
+    ? editorial.body.split(/\n+/).filter(p => p.trim().length > 0)
+    : [];
+
+  return (
+    <section id="editoriale-dinamico" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <FadeUp>
+          <div className="flex items-center gap-3 mb-4">
+            <p className="editorial-tag" style={{ color: C.teal }}>◆ Editoriale del Giorno</p>
+            <span className="editorial-tag" style={{ color: C.muted }}>|</span>
+            <p className="editorial-tag capitalize" style={{ color: C.muted }}>{today}</p>
+          </div>
+          {isLoading ? (
+            <div className="animate-pulse">
+              <div className="h-8 rounded mb-3" style={{ background: C.surface2, width: "70%" }} />
+              <div className="h-5 rounded mb-8" style={{ background: C.surface2, width: "50%" }} />
+            </div>
+          ) : (
+            <>
+              <h2
+                className="text-3xl sm:text-4xl font-black leading-tight mb-3 max-w-3xl"
+                style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {editorial?.title ?? "L'AI italiana non è un fenomeno di nicchia."}
+              </h2>
+              {editorial?.subtitle && (
+                <p className="text-lg font-medium mb-8" style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}>
+                  {editorial.subtitle}
+                </p>
+              )}
+              {editorial?.keyTrend && (
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8" style={{ background: C.tealLight }}>
+                  <span className="text-xs font-bold" style={{ color: C.teal }}>TREND DEL GIORNO</span>
+                  <span className="text-xs font-semibold" style={{ color: C.navy }}>{editorial.keyTrend}</span>
+                </div>
+              )}
+            </>
+          )}
+        </FadeUp>
+
+        <div className="grid lg:grid-cols-3 gap-12">
+          <FadeUp delay={0.1} className="lg:col-span-2">
+            {isLoading ? (
+              <div className="space-y-4 animate-pulse">
+                {[1,2,3].map(i => <div key={i} className="h-16 rounded" style={{ background: C.surface2 }} />)}
+              </div>
+            ) : (
+              <div className="space-y-5 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                {paragraphs.length > 0
+                  ? paragraphs.map((p, i) => (
+                      <p key={i} style={{ color: C.slate }}>{p}</p>
+                    ))
+                  : (
+                    <p style={{ color: C.slate }}>
+                      Dove sta succedendo davvero qualcosa di interessante nell'ecosistema AI italiano?
+                      Non nei comunicati stampa, non nei convegni, ma nei prodotti concreti che le aziende
+                      usano ogni giorno per assumere, proteggere dati, comunicare e prendere decisioni.
+                    </p>
+                  )
+                }
+                {editorial?.authorNote && (
+                  <blockquote
+                    className="border-l-4 pl-4 py-2 mt-6 italic text-sm"
+                    style={{ borderColor: C.teal, color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    {editorial.authorNote}
+                  </blockquote>
+                )}
+              </div>
+            )}
+
+            {/* Firma */}
+            <div className="flex items-center gap-4 mt-8 pt-6 border-t" style={{ borderColor: C.border }}>
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black flex-shrink-0 text-white"
+                style={{ background: `linear-gradient(135deg, ${C.teal}, ${C.blue})` }}
+              >
+                IS
+              </div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  La Redazione IDEASMART
+                </p>
+                <p className="text-xs" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione — AI for Business</p>
+              </div>
+            </div>
+          </FadeUp>
+
+          {/* Indice sezioni */}
+          <FadeUp delay={0.2}>
+            <div className="rounded-2xl p-6 border" style={{ background: "#fff", borderColor: C.border }}>
+              <p className="editorial-tag mb-5" style={{ color: C.muted }}>◆ In questo numero</p>
+              <div className="space-y-1">
+                {[
+                  { n: "01", cat: "Reportage", title: "FoolTalent: l'AI che scova i talenti prima degli altri.", id: "fooltalent", color: C.teal },
+                  { n: "02", cat: "Analisi", title: "FoolShare: la fortezza digitale per i dati che contano.", id: "foolshare", color: C.blue },
+                  { n: "03", cat: "Inchiesta", title: "Fragmentalis: la comunicazione a prova di spia.", id: "fragmentalis", color: C.teal },
+                  { n: "04", cat: "Focus", title: "PollCast: l'intelligenza collettiva che prevede i trend.", id: "pollcast", color: C.orange },
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })}
+                    className="w-full text-left p-3 rounded-xl transition-colors group"
+                    style={{ background: "transparent" }}
+                    onMouseEnter={e => (e.currentTarget.style.background = C.surface1)}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{item.n}</span>
+                      <div>
+                        <p className="editorial-tag mb-1" style={{ color: item.color }}>{item.cat}</p>
+                        <p className="text-xs leading-snug" style={{ color: C.slate }}>{item.title}</p>
+                      </div>
+                      <span className="ml-auto text-xs flex-shrink-0" style={{ color: item.color }}>→</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Startup of the Day Section (dinamica, legge dal DB) ───────────────────────────────────────────────────────────────────────────────
+function StartupOfDaySection() {
+  const { data: startup, isLoading } = trpc.startupOfDay.getLatest.useQuery();
+
+  const today = new Date().toLocaleDateString("it-IT", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+
+  return (
+    <section id="startup-del-giorno" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
+      <div className="border-b-2" style={{ borderColor: C.orange, background: `${C.orange}08` }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-4">
+          <span className="editorial-tag" style={{ color: C.orange }}>◆ Startup del Giorno</span>
+          <span className="editorial-tag" style={{ color: C.muted }}>|</span>
+          <span className="editorial-tag capitalize" style={{ color: C.muted }}>{today}</span>
+        </div>
+      </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {isLoading ? (
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 rounded" style={{ background: C.surface2, width: "40%" }} />
+            <div className="h-4 rounded" style={{ background: C.surface2, width: "60%" }} />
+            <div className="h-32 rounded" style={{ background: C.surface2 }} />
+          </div>
+        ) : startup ? (
+          <div className="grid lg:grid-cols-3 gap-10">
+            {/* Colonna principale */}
+            <FadeUp className="lg:col-span-2">
+              <div className="flex items-start gap-4 mb-6">
+                {/* Avatar startup */}
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 text-white"
+                  style={{ background: `linear-gradient(135deg, ${C.orange}, #ff8c42)` }}
+                >
+                  {startup.name.charAt(0)}
+                </div>
+                <div>
+                  <h2
+                    className="text-2xl sm:text-3xl font-black leading-tight"
+                    style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {startup.name}
+                  </h2>
+                  <p className="text-base font-medium mt-1" style={{ color: C.orange, fontFamily: "'DM Sans', sans-serif" }}>
+                    {startup.tagline}
+                  </p>
+                </div>
+              </div>
+
+              {/* Badge info */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold" style={{ background: C.orangeLight, color: C.orange }}>
+                  {startup.category}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: C.surface2, color: C.slate }}>
+                  🌍 {startup.country}
+                </span>
+                {startup.foundedYear && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: C.surface2, color: C.slate }}>
+                    📅 Fondata {startup.foundedYear}
+                  </span>
+                )}
+                {startup.funding && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: C.blueLight, color: C.blue }}>
+                    💰 {startup.funding}
+                  </span>
+                )}
+              </div>
+
+              {/* Descrizione */}
+              <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                {startup.description.split(/\n+/).filter(p => p.trim()).map((p, i) => (
+                  <p key={i} style={{ color: C.slate }}>{p}</p>
+                ))}
+              </div>
+
+              {/* Perché oggi */}
+              <div className="rounded-xl p-5 border-l-4" style={{ background: C.orangeLight, borderColor: C.orange }}>
+                <p className="editorial-tag mb-2" style={{ color: C.orange }}>◆ Perché è rilevante oggi</p>
+                <p className="text-sm leading-relaxed" style={{ color: C.navy, fontFamily: "'DM Sans', sans-serif" }}>
+                  {startup.whyToday}
+                </p>
+              </div>
+
+              {/* Link */}
+              <div className="flex items-center gap-3 mt-6">
+                {startup.websiteUrl && (
+                  <a
+                    href={startup.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
+                    style={{ background: C.orange, color: "#fff" }}
+                  >
+                    Visita il sito →
+                  </a>
+                )}
+                {startup.linkedinUrl && (
+                  <a
+                    href={startup.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
+                    style={{ background: "#0077b5", color: "#fff" }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                  </a>
+                )}
+              </div>
+            </FadeUp>
+
+            {/* Score card */}
+            <FadeUp delay={0.15}>
+              <div className="rounded-2xl p-6 border sticky top-24" style={{ background: C.surface1, borderColor: C.border }}>
+                <p className="editorial-tag mb-4" style={{ color: C.muted }}>◆ AI Potential Score</p>
+                <div className="text-center mb-6">
+                  <div
+                    className="text-6xl font-black mb-1"
+                    style={{ color: C.orange, fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {startup.aiScore}
+                  </div>
+                  <div className="text-xs" style={{ color: C.muted }}>su 100</div>
+                  {/* Progress bar */}
+                  <div className="mt-3 h-2 rounded-full" style={{ background: C.surface2 }}>
+                    <div
+                      className="h-2 rounded-full transition-all"
+                      style={{ width: `${startup.aiScore}%`, background: `linear-gradient(90deg, ${C.orange}, #ff8c42)` }}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span style={{ color: C.muted }}>Categoria</span>
+                    <span className="font-semibold" style={{ color: C.navy }}>{startup.category}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span style={{ color: C.muted }}>Paese</span>
+                    <span className="font-semibold" style={{ color: C.navy }}>{startup.country}</span>
+                  </div>
+                  {startup.foundedYear && (
+                    <div className="flex justify-between">
+                      <span style={{ color: C.muted }}>Fondata</span>
+                      <span className="font-semibold" style={{ color: C.navy }}>{startup.foundedYear}</span>
+                    </div>
+                  )}
+                  {startup.funding && (
+                    <div className="flex justify-between">
+                      <span style={{ color: C.muted }}>Funding</span>
+                      <span className="font-semibold" style={{ color: C.blue }}>{startup.funding}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-6 pt-4 border-t" style={{ borderColor: C.border }}>
+                  <p className="text-xs" style={{ color: C.muted }}>Selezionata dalla redazione IDEASMART ogni giorno tramite analisi AI.</p>
+                </div>
+              </div>
+            </FadeUp>
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-lg font-semibold" style={{ color: C.navy }}>Startup del giorno in arrivo...</p>
+            <p className="text-sm mt-2" style={{ color: C.muted }}>Il nostro sistema AI sta analizzando le startup emergenti. Torna tra poco.</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// ─── Main Page ───────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -430,101 +736,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>      {/* ── EDITORIALE DINAMICO ───────────────────────────────────────────────────────────────────────── */}
+      <DailyEditorialSection />
 
-      {/* ── EDITORIALE ──────────────────────────────────────────────────────── */}
-      <section id="editoriale" className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <FadeUp>
-            <p className="editorial-tag mb-4" style={{ color: C.teal }}>◆ Editoriale</p>
-            <h2
-              className="text-3xl sm:text-4xl font-black leading-tight mb-8 max-w-3xl"
-              style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              L'AI italiana non è un fenomeno di nicchia.
-              <br />
-              <span style={{ color: C.teal }}>Sta cambiando le regole del gioco.</span>
-            </h2>
-          </FadeUp>
+      {/* ── STARTUP DEL GIORNO ───────────────────────────────────────────────────────────────────────── */}
+      <StartupOfDaySection />
 
-          <div className="grid lg:grid-cols-3 gap-12">
-            <FadeUp delay={0.1} className="lg:col-span-2">
-              <div className="space-y-5 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p style={{ color: C.slate }}>
-                  Quando abbiamo fondato IDEASMART, la domanda che ci ponevamo era semplice:
-                  dove sta succedendo davvero qualcosa di interessante nell'ecosistema AI italiano?
-                  Non nei comunicati stampa, non nei convegni, ma nei prodotti concreti che le aziende
-                  usano ogni giorno per assumere, proteggere dati, comunicare e prendere decisioni.
-                </p>
-                <p style={{ color: C.slate }}>
-                  Questo mese abbiamo analizzato quattro startup che ci hanno convinto. Non perché abbiano
-                  raccolto il round più grande o abbiano il fondatore più famoso, ma perché hanno costruito
-                  qualcosa di reale: una tecnologia proprietaria, un modello di business sostenibile,
-                  un problema concreto risolto in modo intelligente.
-                </p>
-                <p style={{ color: C.slate }}>
-                  Da <strong style={{ color: C.navy }}>FoolTalent</strong>, che sta ridefinendo il recruiting
-                  con l'AI, a <strong style={{ color: C.navy }}>FoolShare</strong>, che ha costruito la data room
-                  più avanzata del mercato italiano. Da <strong style={{ color: C.navy }}>Fragmentalis</strong>,
-                  con la sua tecnologia brevettata di comunicazione quantum-resistant, a{" "}
-                  <strong style={{ color: C.navy }}>PollCast</strong>, che trasforma l'intelligenza collettiva
-                  in market intelligence. Quattro storie diverse, un denominatore comune: l'AI come leva
-                  di vantaggio competitivo reale.
-                </p>
-              </div>
-
-              {/* Firma */}
-              <div className="flex items-center gap-4 mt-8 pt-6 border-t" style={{ borderColor: C.border }}>
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black flex-shrink-0 text-white"
-                  style={{ background: `linear-gradient(135deg, ${C.teal}, ${C.blue})` }}
-                >
-                  IS
-                </div>
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
-                    La Redazione IDEASMART
-                  </p>
-                  <p className="text-xs" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione — AI for Business</p>
-                </div>
-              </div>
-            </FadeUp>
-
-            {/* Index */}
-            <FadeUp delay={0.2}>
-              <div className="rounded-2xl p-6 border" style={{ background: "#fff", borderColor: C.border }}>
-                <p className="editorial-tag mb-5" style={{ color: C.muted }}>◆ In questo numero</p>
-                <div className="space-y-1">
-                  {[
-                    { n: "01", cat: "Reportage", title: "FoolTalent: l'AI che scova i talenti prima degli altri.", id: "fooltalent", color: C.teal },
-                    { n: "02", cat: "Analisi", title: "FoolShare: la fortezza digitale per i dati che contano.", id: "foolshare", color: C.blue },
-                    { n: "03", cat: "Inchiesta", title: "Fragmentalis: la comunicazione a prova di spia.", id: "fragmentalis", color: C.teal },
-                    { n: "04", cat: "Focus", title: "PollCast: l'intelligenza collettiva che prevede i trend.", id: "pollcast", color: C.orange },
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })}
-                      className="w-full text-left p-3 rounded-xl transition-colors group"
-                      style={{ background: "transparent" }}
-                      onMouseEnter={e => (e.currentTarget.style.background = C.surface1)}
-                      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{item.n}</span>
-                        <div>
-                          <p className="editorial-tag mb-1" style={{ color: item.color }}>{item.cat}</p>
-                          <p className="text-xs leading-snug" style={{ color: C.slate }}>{item.title}</p>
-                        </div>
-                        <span className="ml-auto text-xs flex-shrink-0" style={{ color: item.color }}>→</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
 
       {/* ── FOOLTALENT ──────────────────────────────────────────────────────── */}
       <section id="fooltalent" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
