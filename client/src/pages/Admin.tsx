@@ -55,6 +55,25 @@ export default function Admin() {
   });
 
   const [sendingDark, setSendingDark] = useState(false);
+  const [refreshingNews, setRefreshingNews] = useState(false);
+
+  // News management
+  const newsQuery = trpc.news.getLatest.useQuery({ limit: 20 }, { enabled: user?.role === "admin" });
+  const newsRefreshHistoryQuery = trpc.news.getRefreshHistory.useQuery(undefined, { enabled: user?.role === "admin" });
+
+  const refreshNewsMutation = trpc.admin.refreshNews.useMutation({
+    onSuccess: (data) => {
+      setRefreshingNews(false);
+      setLastResult(`✓ News aggiornate: ${data.count} notizie generate dall'AI`);
+      toast.success(`${data.count} notizie AI aggiornate con successo!`);
+      newsQuery.refetch();
+      newsRefreshHistoryQuery.refetch();
+    },
+    onError: (err) => {
+      setRefreshingNews(false);
+      toast.error("Errore aggiornamento news: " + err.message);
+    },
+  });
 
   const triggerWeeklyMutation = trpc.admin.triggerWeeklyNewsletter.useMutation({
     onSuccess: (data) => {
@@ -257,6 +276,41 @@ export default function Admin() {
                   </span>
                 ) : (
                   `Invia a ${activeCount} Iscritti →`
+                )}
+              </button>
+            </div>
+
+            {/* Refresh News */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(0,102,255,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0066ff", fontFamily: "'Space Grotesk', sans-serif" }}>
+                ◆ Aggiornamento News AI
+              </p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Aggiornamento giornaliero automatico</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Genera 20 nuove notizie AI con LLM e aggiorna il sito. L'aggiornamento automatico avviene ogni 24 ore. Usa questo pulsante per un aggiornamento manuale immediato.
+              </p>
+              {newsRefreshHistoryQuery.data && newsRefreshHistoryQuery.data.length > 0 && (
+                <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  Ultimo aggiornamento: {new Date(newsRefreshHistoryQuery.data[0].createdAt).toLocaleString("it-IT")}
+                  {" — "}{newsRefreshHistoryQuery.data[0].itemCount} notizie
+                </p>
+              )}
+              <button
+                onClick={() => {
+                  setRefreshingNews(true);
+                  refreshNewsMutation.mutate();
+                }}
+                disabled={refreshingNews}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: "#0066ff", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {refreshingNews ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Generazione notizie AI...
+                  </span>
+                ) : (
+                  `Aggiorna News AI Ora →`
                 )}
               </button>
             </div>

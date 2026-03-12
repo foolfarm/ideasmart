@@ -66,7 +66,7 @@ async function startServer() {
 
 startServer().catch(console.error);
 
-// Avvia il cron job per l'aggiornamento settimanale delle notizie AI
+// Avvia il cron job per l'aggiornamento giornaliero delle notizie AI (ogni 24h)
 startNewsScheduler();
 
 // Avvia il cron job per l'invio automatico della newsletter settimanale (ogni lunedì 09:00 IT)

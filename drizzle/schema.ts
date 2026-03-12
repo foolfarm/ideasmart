@@ -44,14 +44,14 @@ export const newsletterSends = mysqlTable("newsletter_sends", {
 
 export type NewsletterSend = typeof newsletterSends.$inferSelect;
 
-// ── News Items (aggiornate ogni 7 giorni via AI) ────────────────────────────
+// ── News Items (aggiornate ogni giorno via AI) ────────────────────────────────────────────
 export const newsItems = mysqlTable("news_items", {
   id: int("id").autoincrement().primaryKey(),
   title: varchar("title", { length: 500 }).notNull(),
   summary: text("summary").notNull(),
   category: varchar("category", { length: 100 }).notNull(),
-  source: varchar("source", { length: 255 }),
-  url: varchar("url", { length: 1000 }),
+  sourceName: varchar("sourceName", { length: 255 }),
+  sourceUrl: varchar("sourceUrl", { length: 1000 }),
   publishedAt: varchar("publishedAt", { length: 50 }),
   weekLabel: varchar("weekLabel", { length: 50 }).notNull(),
   position: int("position").default(0).notNull(),

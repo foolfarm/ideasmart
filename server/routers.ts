@@ -18,7 +18,10 @@ import {
   createNewsletterSend,
   getNewsletterHistory,
   ensureUnsubscribeTokens,
+  getLatestNews,
+  getNewsRefreshHistory,
 } from "./db";
+import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -30,6 +33,28 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 
 export const appRouter = router({
   system: systemRouter,
+
+  // ── News (public) ──────────────────────────────────────────────────────────────────────────────────
+  news: router({
+    getLatest: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(50).default(20) }))
+      .query(async ({ input }) => {
+        const items = await getLatestNews(input.limit);
+        return items.map((item) => ({
+          id: item.id,
+          title: item.title,
+          summary: item.summary,
+          category: item.category,
+          sourceName: item.sourceName ?? "",
+          sourceUrl: item.sourceUrl ?? "#",
+          publishedAt: item.publishedAt ?? "",
+        }));
+      }),
+
+    getRefreshHistory: publicProcedure.query(async () => {
+      return getNewsRefreshHistory();
+    }),
+  }),
 
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
@@ -209,6 +234,13 @@ Rispondi con questo JSON:
           week: newsData.week,
         };
       }),
+
+    // Aggiornamento manuale delle news AI
+    refreshNews: adminProcedure.mutation(async () => {
+      const items = await generateLatestAINews();
+      await saveNewsToDb(items);
+      return { success: true, count: items.length };
+    }),
 
     // Trigger invio automatico immediato (usa il template dark ufficiale)
     triggerWeeklyNewsletter: adminProcedure.mutation(async () => {

@@ -1,7 +1,7 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertSubscriber, subscribers, newsletterSends, users } from "../drizzle/schema";
+import { InsertUser, InsertSubscriber, InsertNewsItem, subscribers, newsletterSends, users, newsItems, newsRefreshLog } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -224,4 +224,62 @@ export async function getNewsletterHistory() {
     sentAt: newsletterSends.sentAt,
     createdAt: newsletterSends.createdAt,
   }).from(newsletterSends).orderBy(newsletterSends.createdAt);
+}
+
+// ── News Items ───────────────────────────────────────────────────────────────
+export async function getLatestNews(limit = 20) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(newsItems)
+    .orderBy(desc(newsItems.createdAt), newsItems.position)
+    .limit(limit);
+}
+
+export async function replaceAllNews(items: Array<{
+  title: string;
+  summary: string;
+  category: string;
+  sourceUrl?: string;
+  sourceName?: string;
+}>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Delete all existing news
+  await db.delete(newsItems);
+
+  // Insert new items
+  const today = new Date();
+  const dayLabel = today.toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" });
+
+  const inserts: InsertNewsItem[] = items.map((item, i) => ({
+    title: item.title,
+    summary: item.summary,
+    category: item.category,
+    source: item.sourceName ?? null,
+    url: item.sourceUrl ?? null,
+    publishedAt: dayLabel,
+    weekLabel: dayLabel,
+    position: i,
+  }));
+
+  await db.insert(newsItems).values(inserts);
+  return inserts.length;
+}
+
+export async function logNewsRefresh(data: { weekLabel: string; itemCount: number; status: "success" | "failed"; error?: string }) {
+  const db = await getDb();
+  if (!db) return;
+  await db.insert(newsRefreshLog).values({
+    weekLabel: data.weekLabel,
+    itemCount: data.itemCount,
+    status: data.status,
+    error: data.error ?? null,
+  });
+}
+
+export async function getNewsRefreshHistory() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(newsRefreshLog).orderBy(desc(newsRefreshLog.createdAt)).limit(10);
 }

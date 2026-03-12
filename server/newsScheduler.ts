@@ -1,6 +1,6 @@
 /**
  * IDEASMART News Scheduler
- * Aggiorna automaticamente le 20 notizie AI ogni 7 giorni
+ * Aggiorna automaticamente le 20 notizie AI ogni giorno
  * usando l'AI per cercare e selezionare i nuovi eventi più significativi
  */
 
@@ -9,8 +9,8 @@ import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 
-// Intervallo: 7 giorni in millisecondi
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+// Intervallo: 24 ore in millisecondi
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 // Categorie editoriali per le news
 const NEWS_CATEGORIES = [
@@ -31,52 +31,38 @@ const NEWS_CATEGORIES = [
   "AI & Finanza",
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "Modelli Generativi": "#00e5c8",
-  "AI Agentiva": "#00e5c8",
-  "Big Tech": "#0066ff",
-  "Startup & Funding": "#ff5500",
-  "AI & Hardware": "#0066ff",
-  "Robot & AI Fisica": "#00e5c8",
-  "AI & Startup Italiane": "#00e5c8",
-  "Ricerca & Innovazione": "#ff5500",
-  "AI & Lavoro": "#0066ff",
-  "AI & Sicurezza": "#ff5500",
-};
-
 export interface NewsItemData {
   title: string;
   summary: string;
   category: string;
-  color: string;
-  source: string;
-  url: string;
+  sourceName: string;
+  sourceUrl: string;
   publishedAt: string;
 }
 
-function getWeekLabel(): string {
+function getDayLabel(): string {
   const now = new Date();
   return now.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
 }
 
 /**
- * Genera 10 notizie AI aggiornate usando l'LLM
+ * Genera 20 notizie AI aggiornate usando l'LLM
  */
 export async function generateLatestAINews(): Promise<NewsItemData[]> {
-  const weekStr = getWeekLabel();
+  const dayStr = getDayLabel();
 
   const prompt = `Sei il redattore capo di IDEASMART, la newsletter italiana di tecnologia e innovazione AI per il business.
 
-Genera esattamente 20 notizie AI reali e verificabili della settimana corrente (settimana del ${weekStr}).
+Genera esattamente 20 notizie AI reali e verificabili di oggi (${dayStr}).
 Le notizie devono riguardare eventi, annunci, ricerche e sviluppi REALI nel mondo dell'intelligenza artificiale.
 
 Per ogni notizia fornisci:
 - title: titolo giornalistico incisivo (max 80 caratteri)
 - summary: riassunto editoriale (2-3 frasi, max 250 caratteri)
 - category: una tra [${NEWS_CATEGORIES.join(", ")}]
-- source: nome della fonte (es. "VentureBeat", "TechCrunch", "Il Sole 24 Ore", "MIT Sloan", ecc.)
-- url: URL reale e verificabile dell'articolo originale
-- publishedAt: data di pubblicazione in formato YYYY-MM-DD (es. "2026-03-04")
+- sourceName: nome della fonte (es. "VentureBeat", "TechCrunch", "Il Sole 24 Ore", "MIT Sloan", ecc.)
+- sourceUrl: URL reale e verificabile dell'articolo originale
+- publishedAt: data di pubblicazione in formato YYYY-MM-DD (es. "2026-03-12")
 
 Criteri editoriali:
 1. Privilegia notizie con impatto concreto sul business e sull'ecosistema startup
@@ -115,11 +101,11 @@ Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
                     title: { type: "string" },
                     summary: { type: "string" },
                     category: { type: "string" },
-                    source: { type: "string" },
-                    url: { type: "string" },
+                    sourceName: { type: "string" },
+                    sourceUrl: { type: "string" },
                     publishedAt: { type: "string" },
                   },
-                  required: ["title", "summary", "category", "source", "url", "publishedAt"],
+                  required: ["title", "summary", "category", "sourceName", "sourceUrl", "publishedAt"],
                   additionalProperties: false,
                 },
               },
@@ -137,10 +123,9 @@ Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
       title: item.title,
       summary: item.summary,
       category: item.category,
-      source: item.source,
-      url: item.url,
+      sourceName: item.sourceName,
+      sourceUrl: item.sourceUrl,
       publishedAt: item.publishedAt,
-      color: CATEGORY_COLORS[item.category] || "#00e5c8",
     }));
 
     return items;
@@ -160,35 +145,35 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
     return;
   }
 
-  const weekLabel = getWeekLabel();
+  const dayLabel = getDayLabel();
 
   try {
     // Cancella le notizie precedenti
     await db.delete(newsItems);
 
-    // Inserisce le nuove notizie
+    // Inserisce le nuove notizie una alla volta per evitare problemi di tipo
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       await db.insert(newsItems).values({
         title: item.title,
         summary: item.summary,
         category: item.category,
-        source: item.source,
-        url: item.url,
+        sourceName: item.sourceName,
+        sourceUrl: item.sourceUrl,
         publishedAt: item.publishedAt,
-        weekLabel,
+        weekLabel: dayLabel,
         position: i + 1,
       });
     }
 
     // Registra il refresh con successo
     await db.insert(newsRefreshLog).values({
-      weekLabel,
+      weekLabel: dayLabel,
       itemCount: items.length,
       status: "success",
     });
 
-    console.log(`[NewsScheduler] Saved ${items.length} news items to DB (week: ${weekLabel})`);
+    console.log(`[NewsScheduler] Saved ${items.length} news items to DB (${dayLabel})`);
   } catch (error) {
     console.error("[NewsScheduler] Error saving news to DB:", error);
 
@@ -197,7 +182,7 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
       const db2 = await getDb();
       if (db2) {
         await db2.insert(newsRefreshLog).values({
-          weekLabel,
+          weekLabel: dayLabel,
           itemCount: 0,
           status: "failed",
           error: String(error),
@@ -225,15 +210,14 @@ export async function getNewsFromDb(): Promise<NewsItemData[]> {
     title: row.title,
     summary: row.summary,
     category: row.category,
-    color: CATEGORY_COLORS[row.category] || "#00e5c8",
-    source: row.source || "",
-    url: row.url || "#",
+    sourceName: row.sourceName || "",
+    sourceUrl: row.sourceUrl || "#",
     publishedAt: row.publishedAt || new Date().toISOString().split("T")[0],
   }));
 }
 
 /**
- * Controlla se le notizie devono essere aggiornate (ogni 7 giorni)
+ * Controlla se le notizie devono essere aggiornate (ogni 24 ore)
  */
 export async function shouldRefreshNews(): Promise<boolean> {
   const db = await getDb();
@@ -256,7 +240,7 @@ export async function shouldRefreshNews(): Promise<boolean> {
   const lastRefreshTime = lastRefresh[0].createdAt?.getTime() || 0;
   const now = Date.now();
 
-  return (now - lastRefreshTime) > SEVEN_DAYS_MS;
+  return (now - lastRefreshTime) > ONE_DAY_MS;
 }
 
 /**
@@ -280,9 +264,9 @@ export async function refreshNewsIfNeeded(): Promise<void> {
 }
 
 /**
- * Avvia il cron job settimanale
+ * Avvia il cron job giornaliero
  * - Controlla ogni 6 ore se è necessario aggiornare
- * - Aggiorna solo se sono passati 7 giorni dall'ultimo refresh
+ * - Aggiorna solo se sono passate 24 ore dall'ultimo refresh
  */
 export function startNewsScheduler(): void {
   // Esegui subito al primo avvio (se necessario)
@@ -296,5 +280,5 @@ export function startNewsScheduler(): void {
     refreshNewsIfNeeded().catch(console.error);
   }, SIX_HOURS_MS);
 
-  console.log("[NewsScheduler] Started — checks every 6h, refreshes every 7 days");
+  console.log("[NewsScheduler] Started — checks every 6h, refreshes every 24h");
 }

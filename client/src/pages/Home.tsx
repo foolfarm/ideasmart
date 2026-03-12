@@ -4,7 +4,7 @@
  * Typography: Space Grotesk (display) + DM Sans (body) + JetBrains Mono (mono)
  * Layout: Asymmetric editorial with numbered sections
  */
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
@@ -130,6 +130,120 @@ function SectionHeader({ number, category, categoryColor, title, titleColor }: {
   );
 }
 
+// ─── NewsGrid Component (dynamic, reads from DB via tRPC) ──────────────────
+const NEWS_COLORS = [
+  { color: C.teal, bg: C.tealLight },
+  { color: C.orange, bg: C.orangeLight },
+  { color: C.blue, bg: C.blueLight },
+];
+
+function NewsGrid() {
+  const { data: newsData, isLoading } = trpc.news.getLatest.useQuery({ limit: 20 });
+
+  const fallbackNews = [
+    { id: 1, title: "OpenAI lancia GPT-5.3 Instant: -26.8% di allucinazioni", summary: "Il modello più usato di OpenAI riceve un aggiornamento che riduce le allucinazioni del 26,8% sulle query web.", category: "Modelli Generativi", sourceUrl: "https://venturebeat.com", sourceName: "VentureBeat" },
+    { id: 2, title: "Anthropic vs. Pentagono: Claude rifiuta le richieste militari", summary: "Anthropic entra in rotta di collisione con il Dipartimento della Difesa USA dopo aver rifiutato di adattare Claude per usi militari.", category: "AI & Difesa", sourceUrl: "https://cbsnews.com", sourceName: "CBS News" },
+    { id: 3, title: "Agentic AI: nel 2026 il 40% delle app aziendali sarà AI-driven", summary: "Il report Deloitte certifica che le aziende stanno deployando agenti AI autonomi su funzioni critiche.", category: "AI Agentiva", sourceUrl: "https://deloitte.com", sourceName: "Deloitte" },
+    { id: 4, title: "Google lancia Flash-Lite: Gemini 3.1 punta sull'enterprise scale", summary: "Google risponde a OpenAI con Flash-Lite, la versione enterprise di Gemini 3.1 ottimizzata per carichi di lavoro su scala.", category: "Big Tech", sourceUrl: "https://google.com", sourceName: "Google Blog" },
+    { id: 5, title: "La Cina accelera: robot umanoidi e agenti AI nelle fabbriche", summary: "I leader tech cinesi chiedono di accelerare l'adozione industriale di robot umanoidi. Obiettivo: produzione di massa entro il 2027.", category: "Robot & AI Fisica", sourceUrl: "https://scmp.com", sourceName: "SCMP" },
+    { id: 6, title: "Anthropic raggiunge $20 miliardi di revenue run rate", summary: "Anthropic supera i 20 miliardi di dollari di revenue run rate, trainata da Claude Code.", category: "Startup & Funding", sourceUrl: "https://anthropic.com", sourceName: "Analisi Finanziaria" },
+    { id: 7, title: "Qualcomm al MWC 2026: l'AI ibrida arriva su ogni dispositivo", summary: "Qualcomm annuncia la nuova generazione Snapdragon con AI ibrida on-device/cloud per smartphone.", category: "AI & Hardware", sourceUrl: "https://qualcomm.com", sourceName: "La Repubblica" },
+    { id: 8, title: "Deep Tech Revolution: 5 startup italiane ricevono €200k ciascuna", summary: "Il programma seleziona 5 startup italiane che riceveranno 200.000 euro ciascuna per sviluppare tecnologie deep tech con AI.", category: "AI & Startup Italiane", sourceUrl: "https://ilmessaggero.it", sourceName: "Il Messaggero" },
+    { id: 9, title: "Call4Innovit 2026: startup italiane a Silicon Valley a fondo perduto", summary: "Innovit lancia il programma di accelerazione gratuito per portare startup e PMI italiane nella Silicon Valley.", category: "Internazionalizzazione", sourceUrl: "https://innovit.it", sourceName: "Incentivi Impresa" },
+    { id: 10, title: "MIT Sloan: 'L'AI agentiva non è ancora pronta per il prime time'", summary: "Il MIT Sloan pubblica le action items per i decision maker AI nel 2026: l'AI agentiva è promettente ma instabile.", category: "Ricerca & Innovazione", sourceUrl: "https://mitsloan.mit.edu", sourceName: "MIT Sloan" },
+    { id: 11, title: "EU AI Act: prime restrizioni per i sistemi ad alto rischio", summary: "L'UE attiva le prime disposizioni vincolanti dell'AI Act. Le aziende hanno 12 mesi per adeguarsi.", category: "Regolamentazione AI", sourceUrl: "https://ec.europa.eu", sourceName: "Il Sole 24 Ore" },
+    { id: 12, title: "DeepMind: AlphaFold 3 accelera la scoperta di farmaci oncologici", summary: "AlphaFold 3 applicato alla ricerca oncologica: identificati 47 nuovi target proteici per terapie contro il cancro.", category: "AI & Salute", sourceUrl: "https://deepmind.google", sourceName: "Nature Medicine" },
+    { id: 13, title: "BlackRock integra AI generativa nei portafogli: +12% di alpha", summary: "Il più grande gestore patrimoniale al mondo annuncia l'integrazione di modelli AI generativi nella gestione attiva.", category: "AI & Finanza", sourceUrl: "https://blackrock.com", sourceName: "Financial Times" },
+    { id: 14, title: "Meta lancia Llama 4: open source e multimodale, sfida GPT-5", summary: "Meta rilascia Llama 4 con capacità multimodali avanzate e licenza open source commerciale. 405 miliardi di parametri.", category: "Modelli Generativi", sourceUrl: "https://ai.meta.com", sourceName: "TechCrunch" },
+    { id: 15, title: "WEF: l'AI creerà 97 milioni di nuovi posti di lavoro entro il 2028", summary: "Il report WEF 2026 ribalta la narrativa: l'AI non distrugge lavoro, lo trasforma. Il 65% dei lavori del 2030 non esiste ancora.", category: "AI & Lavoro", sourceUrl: "https://weforum.org", sourceName: "World Economic Forum" },
+    { id: 16, title: "CDP Venture Capital: €500M per startup AI italiane nel 2026", summary: "CDP Venture Capital annuncia un fondo dedicato da 500 milioni di euro per startup AI italiane.", category: "AI & Startup Italiane", sourceUrl: "https://cdpventurecapital.it", sourceName: "Corriere della Sera" },
+    { id: 17, title: "Microsoft Copilot+ PC: l'AI on-device conquista il 30% del mercato", summary: "I PC con chip NPU dedicati all'AI raggiungono il 30% delle vendite enterprise in Europa.", category: "Big Tech", sourceUrl: "https://microsoft.com", sourceName: "IDC Research" },
+    { id: 18, title: "Stanford HAI: l'Italia sale al 7° posto nell'AI Index 2026", summary: "L'AI Index 2026 di Stanford: l'Italia guadagna 3 posizioni, trainata dalla crescita di startup AI.", category: "Ricerca & Innovazione", sourceUrl: "https://aiindex.stanford.edu", sourceName: "Stanford HAI" },
+    { id: 19, title: "Salesforce Agentforce 2.0: agenti AI autonomi per il CRM enterprise", summary: "Salesforce lancia Agentforce 2.0 con agenti AI che gestiscono autonomamente pipeline di vendita e supporto clienti.", category: "AI Agentiva", sourceUrl: "https://salesforce.com", sourceName: "Salesforce Blog" },
+    { id: 20, title: "Gartner: il 45% delle violazioni dati nel 2026 coinvolge sistemi AI", summary: "Quasi la metà delle violazioni dati aziendali nel 2026 ha come vettore un sistema AI mal configurato.", category: "AI & Sicurezza", sourceUrl: "https://gartner.com", sourceName: "Gartner" },
+  ];
+
+  const items = (newsData && newsData.length > 0 ? newsData : fallbackNews) as Array<{
+    id: number; title: string; summary: string; category: string; sourceUrl: string; sourceName: string;
+  }>;
+
+  if (isLoading) {
+    return (
+      <div className="grid sm:grid-cols-2 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="news-card p-5 animate-pulse">
+            <div className="h-3 rounded mb-3" style={{ background: C.surface2, width: "40%" }} />
+            <div className="h-4 rounded mb-2" style={{ background: C.surface2, width: "90%" }} />
+            <div className="h-3 rounded" style={{ background: C.surface2, width: "70%" }} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid sm:grid-cols-2 gap-4">
+      {items.slice(0, 20).map((item, i) => {
+        const colorSet = NEWS_COLORS[i % NEWS_COLORS.length];
+        const num = String(i + 1).padStart(2, "0");
+        return (
+          <FadeUp key={item.id} delay={i * 0.03}>
+            <div className="news-card h-full p-5 group flex flex-col">
+              <div className="flex items-start gap-3 mb-3">
+                <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{num}</span>
+                <span
+                  className="inline-block px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
+                  style={{ background: colorSet.bg, color: colorSet.color }}
+                >
+                  {item.category}
+                </span>
+              </div>
+              <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                <h3
+                  className="text-sm font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
+                  style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  {item.title}
+                </h3>
+                <p className="text-xs leading-relaxed mb-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                  {item.summary}
+                </p>
+              </a>
+              <div className="flex items-center justify-between mt-auto pt-3 border-t" style={{ borderColor: C.border }}>
+                <span className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(item.sourceUrl)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
+                    style={{ background: "#0077b5", color: "#fff" }}
+                    title="Condividi su LinkedIn"
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <span className="hidden sm:inline">LinkedIn</span>
+                  </a>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(item.title + ' — via @IDEASMART_AI')}&url=${encodeURIComponent(item.sourceUrl)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
+                    style={{ background: "#000", color: "#fff" }}
+                    title="Condividi su X"
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span className="hidden sm:inline">X</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </FadeUp>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -248,7 +362,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── ULTIME NEWS AI ─────────────────────────────────────────────── */}
+      {/* ── ULTIME NEWS AI (dinamiche dal DB) ──────────────────────────── */}
       <section id="news" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
         {/* Category bar */}
         <div className="border-b" style={{ borderColor: C.border, background: C.surface1 }}>
@@ -256,9 +370,9 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
               <span className="editorial-tag" style={{ color: C.teal }}>◆ Ultime News AI</span>
-              <span className="editorial-tag" style={{ color: C.muted }}>Settimana del 3 Marzo 2026</span>
+              <span className="editorial-tag" style={{ color: C.muted }}>Aggiornato ogni giorno</span>
             </div>
-            <span className="editorial-tag hidden sm:block" style={{ color: C.muted }}>Aggiornato ogni 7 giorni</span>
+            <span className="editorial-tag hidden sm:block" style={{ color: C.muted }}>Selezione editoriale IDEASMART</span>
           </div>
         </div>
 
@@ -272,94 +386,48 @@ export default function Home() {
             </p>
           </FadeUp>
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              { n: "01", cat: "Modelli Generativi", color: C.teal, bg: C.tealLight, title: "OpenAI lancia GPT-5.3 Instant: -26.8% di allucinazioni", summary: "Il modello più usato di OpenAI riceve un aggiornamento significativo che riduce le allucinazioni del 26,8% sulle query web e del 19,7% sulla conoscenza interna.", source: "VentureBeat", url: "https://venturebeat.com/orchestration/gpt-5-3-instant-cuts-hallucinations-by-26-8-as-openai-shifts-focus-from" },
-              { n: "02", cat: "AI & Difesa", color: C.orange, bg: C.orangeLight, title: "Anthropic vs. Pentagono: Claude rifiuta le richieste militari", summary: "Anthropic entra in rotta di collisione con il Dipartimento della Difesa USA dopo aver rifiutato di adattare Claude per usi di sorveglianza e sviluppo di armamenti.", source: "CBS News", url: "https://www.cbsnews.com/video/ai-anthropic-dario-amodei-on-red-lines/" },
-              { n: "03", cat: "AI Agentiva", color: C.teal, bg: C.tealLight, title: "Agentic AI: nel 2026 il 40% delle app aziendali sarà AI-driven", summary: "Il report Deloitte certifica che le aziende stanno deployando agenti AI autonomi su funzioni critiche. Nuovi ruoli emergono: AI Operations Manager e Human-AI Interaction Designer.", source: "Deloitte Global", url: "https://www.deloitte.com/cz-sk/en/issues/generative-ai/state-of-ai-in-enterprise.html" },
-              { n: "04", cat: "Big Tech", color: C.blue, bg: C.blueLight, title: "Google lancia Flash-Lite: Gemini 3.1 punta sull'enterprise scale", summary: "Google risponde a OpenAI con Flash-Lite, la versione enterprise di Gemini 3.1 ottimizzata per carichi di lavoro su scala. La battaglia si sposta dalla qualità alla scalabilità.", source: "The Neuron Daily", url: "https://www.theneurondaily.com/p/openai-gemini-qwen-new-models" },
-              { n: "05", cat: "Robot & AI Fisica", color: C.teal, bg: C.tealLight, title: "La Cina accelera: robot umanoidi e agenti AI nelle fabbriche", summary: "Al 'Two Sessions' di Pechino, i leader tech cinesi chiedono di accelerare l'adozione industriale di robot umanoidi. Obiettivo: produzione di massa entro il 2027.", source: "South China Morning Post", url: "https://www.scmp.com/tech/policy/article/3345372/chinas-tech-leaders-urge-faster-ai-humanoid-robot-adoption-two-sessions-proposals" },
-              { n: "06", cat: "Startup & Funding", color: C.orange, bg: C.orangeLight, title: "Anthropic raggiunge $20 miliardi di revenue run rate", summary: "Anthropic supera i 20 miliardi di dollari di revenue run rate, trainata da Claude Code che da solo vale 2,5 miliardi e il 4% di tutto il codice su GitHub.", source: "Analisi Finanziaria", url: "https://www.youtube.com/watch?v=cYtQxtrn3kw" },
-              { n: "07", cat: "AI & Hardware", color: C.blue, bg: C.blueLight, title: "Qualcomm al MWC 2026: l'AI ibrida arriva su ogni dispositivo", summary: "Dal Mobile World Congress di Barcellona, Qualcomm annuncia la nuova generazione Snapdragon con AI ibrida on-device/cloud per portare modelli AI direttamente sugli smartphone.", source: "La Repubblica", url: "https://www.repubblica.it/tecnologia/2026/03/02/news/qualcomm_ai_snapdragon_mwc_2026_barcellona-425195738/" },
-              { n: "08", cat: "AI & Startup Italiane", color: C.teal, bg: C.tealLight, title: "Deep Tech Revolution: 5 startup italiane ricevono €200k ciascuna", summary: "Il programma Deep Tech Revolution seleziona 5 startup italiane che riceveranno 200.000 euro ciascuna per sviluppare tecnologie deep tech con componente AI.", source: "Il Messaggero", url: "https://www.ilmessaggero.it/economia/news/ecco_le_5_start_up_che_avranno_i_fondi_di_deep_tech_revolution-9384113.html" },
-              { n: "09", cat: "Internazionalizzazione", color: C.blue, bg: C.blueLight, title: "Call4Innovit 2026: startup italiane a Silicon Valley a fondo perduto", summary: "Innovit lancia il programma di accelerazione gratuito per portare startup e PMI italiane nella Silicon Valley. Un'opportunità per le realtà AI italiane di accedere al mercato americano.", source: "Incentivi Impresa", url: "https://www.incentivimpresa.it/call4innovit-2026-startup-pmi-silicon-valley-fondo-perduto/" },
-              { n: "10", cat: "Ricerca & Innovazione", color: C.orange, bg: C.orangeLight, title: "MIT Sloan: \"L'AI agentiva non è ancora pronta per il prime time\"", summary: "Il MIT Sloan Management Review pubblica le action items per i decision maker AI nel 2026: l'AI agentiva è promettente ma ancora instabile per uso enterprise critico.", source: "MIT Sloan Management Review", url: "https://mitsloan.mit.edu/ideas-made-to-matter/action-items-ai-decision-makers-2026" },
-              { n: "11", cat: "Regolamentazione AI", color: C.blue, bg: C.blueLight, title: "EU AI Act: entrano in vigore le prime restrizioni per i sistemi ad alto rischio", summary: "L'Unione Europea attiva le prime disposizioni vincolanti dell'AI Act per i sistemi AI ad alto rischio. Le aziende hanno 12 mesi per adeguarsi o rischiano sanzioni fino al 3% del fatturato.", source: "Il Sole 24 Ore", url: "https://www.ilsole24ore.com/art/ai-act-europeo-prime-restrizioni-sistemi-alto-rischio-2026" },
-              { n: "12", cat: "AI & Salute", color: C.teal, bg: C.tealLight, title: "Google DeepMind: AlphaFold 3 accelera la scoperta di farmaci oncologici", summary: "Il team di DeepMind pubblica i risultati di AlphaFold 3 applicato alla ricerca oncologica: identificati 47 nuovi target proteici per terapie contro il cancro al pancreas.", source: "Nature Medicine", url: "https://www.nature.com/articles/s41591-026-00001-1" },
-              { n: "13", cat: "AI & Finanza", color: C.orange, bg: C.orangeLight, title: "BlackRock integra AI generativa nei portafogli: +12% di alpha in 6 mesi", summary: "Il più grande gestore patrimoniale al mondo annuncia l'integrazione di modelli AI generativi nella gestione attiva dei portafogli. I risultati preliminari mostrano un alpha del 12% rispetto ai benchmark.", source: "Financial Times", url: "https://www.ft.com/content/blackrock-ai-portfolio-management-2026" },
-              { n: "14", cat: "Modelli Generativi", color: C.teal, bg: C.tealLight, title: "Meta lancia Llama 4: open source e multimodale, sfida GPT-5", summary: "Meta rilascia Llama 4 con capacità multimodali avanzate e licenza open source commerciale. Con 405 miliardi di parametri, è il modello open più potente mai rilasciato.", source: "TechCrunch", url: "https://techcrunch.com/2026/03/01/meta-llama-4-open-source-multimodal/" },
-              { n: "15", cat: "AI & Lavoro", color: C.blue, bg: C.blueLight, title: "World Economic Forum: l'AI creerà 97 milioni di nuovi posti di lavoro entro il 2028", summary: "Il report WEF 2026 ribalta la narrativa: l'AI non distrugge lavoro, lo trasforma. Il 65% dei lavori del 2030 non esiste ancora. Le competenze più richieste: pensiero critico e AI literacy.", source: "World Economic Forum", url: "https://www.weforum.org/reports/future-of-jobs-2026" },
-              { n: "16", cat: "AI & Startup Italiane", color: C.teal, bg: C.tealLight, title: "CDP Venture Capital: €500M per startup AI italiane nel 2026", summary: "CDP Venture Capital annuncia un fondo dedicato da 500 milioni di euro per startup AI italiane. Priorità a soluzioni per manifattura, agroalimentare e pubblica amministrazione.", source: "Corriere della Sera", url: "https://www.corriere.it/economia/aziende/2026/03/cdp-venture-capital-500-milioni-startup-ai-italiane/" },
-              { n: "17", cat: "Big Tech", color: C.blue, bg: C.blueLight, title: "Microsoft Copilot+ PC: l'AI on-device conquista il 30% del mercato enterprise", summary: "I PC con chip NPU dedicati all'AI raggiungono il 30% delle vendite enterprise in Europa. Microsoft annuncia nuove funzionalità Copilot+ per la produttività aziendale.", source: "IDC Research", url: "https://www.idc.com/getdoc.jsp?containerId=prEUR252026" },
-              { n: "18", cat: "Ricerca & Innovazione", color: C.orange, bg: C.orangeLight, title: "Stanford HAI: l'Italia sale al 7° posto nell'AI Index 2026", summary: "L'Università di Stanford pubblica l'AI Index 2026: l'Italia guadagna 3 posizioni rispetto all'anno precedente, trainata dalla crescita di startup AI e investimenti in ricerca applicata.", source: "Stanford HAI", url: "https://aiindex.stanford.edu/report/" },
-              { n: "19", cat: "AI Agentiva", color: C.teal, bg: C.tealLight, title: "Salesforce Agentforce 2.0: agenti AI autonomi per il CRM enterprise", summary: "Salesforce lancia Agentforce 2.0 con agenti AI che gestiscono autonomamente pipeline di vendita, supporto clienti e analisi predittiva. Già adottato da 3.000 aziende enterprise.", source: "Salesforce Blog", url: "https://www.salesforce.com/blog/agentforce-2-enterprise-ai-agents/" },
-              { n: "20", cat: "AI & Sicurezza", color: C.orange, bg: C.orangeLight, title: "Gartner: il 45% delle violazioni dati nel 2026 coinvolge sistemi AI", summary: "Il nuovo report Gartner sulla cybersecurity AI rivela che quasi la metà delle violazioni dati aziendali nel 2026 ha come vettore un sistema AI mal configurato o attaccato tramite prompt injection.", source: "Gartner", url: "https://www.gartner.com/en/newsroom/press-releases/2026-ai-security-report" },
-            ].map((item, i) => (
-              <FadeUp key={item.n} delay={i * 0.04}>
-                <div className="news-card h-full p-5 group flex flex-col">
-                  <div className="flex items-start gap-3 mb-3">
-                    <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{item.n}</span>
-                    <span
-                      className="inline-block px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
-                      style={{ background: item.bg, color: item.color }}
-                    >
-                      {item.cat}
-                    </span>
-                  </div>
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1"
+          <NewsGrid />
+
+          {/* ── ADVERTISING BANNER ──────────────────────────────────────────────────────────────────────────── */}
+          <div className="mt-12">
+            <div
+              className="relative rounded-2xl overflow-hidden border"
+              style={{ borderColor: `${C.teal}30`, background: `linear-gradient(135deg, ${C.teal}08 0%, ${C.blue}08 100%)` }}
+            >
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-8">
+                <div className="flex items-center gap-4">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: `linear-gradient(135deg, ${C.teal}, ${C.blue})` }}
                   >
-                    <h3
-                      className="text-sm font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
-                      style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
-                    >
-                      {item.title}
-                    </h3>
-                    <p className="text-xs leading-relaxed mb-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
-                      {item.summary}
+                    <span className="text-white font-black text-lg">AD</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: C.muted }}>Spazio Pubblicitario</p>
+                    <p className="text-base font-bold" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
+                      La tua startup AI qui — Raggiungi 1.857 decision maker italiani
                     </p>
-                  </a>
-                  <div className="flex items-center justify-between mt-auto pt-3 border-t" style={{ borderColor: C.border }}>
-                    <span className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.source}</span>
-                    <div className="flex items-center gap-2">
-                      {/* LinkedIn share */}
-                      <a
-                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(item.url)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
-                        style={{ background: "#0077b5", color: "#fff", fontFamily: "'DM Sans', sans-serif" }}
-                        title="Condividi su LinkedIn"
-                      >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                        <span className="hidden sm:inline">LinkedIn</span>
-                      </a>
-                      {/* Twitter/X share */}
-                      <a
-                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(item.title + ' — via @IDEASMART_AI')}&url=${encodeURIComponent(item.url)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
-                        style={{ background: "#000", color: "#fff", fontFamily: "'DM Sans', sans-serif" }}
-                        title="Condividi su X (Twitter)"
-                      >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
-                        <span className="hidden sm:inline">X</span>
-                      </a>
-                    </div>
+                    <p className="text-xs mt-1" style={{ color: C.slate }}>
+                      Newsletter settimanale · Sito editoriale · Audience qualificata
+                    </p>
                   </div>
                 </div>
-              </FadeUp>
-            ))}
+                <a
+                  href="mailto:ac@foolfarm.com?subject=Advertising%20IDEASMART&body=Ciao%2C%20sono%20interessato%20a%20uno%20spazio%20pubblicitario%20su%20IDEASMART."
+                  className="flex-shrink-0 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ background: `linear-gradient(135deg, ${C.teal}, ${C.blue})`, color: "#fff" }}
+                >
+                  Contattaci →
+                </a>
+              </div>
+              {/* Decorative tag */}
+              <div
+                className="absolute top-3 right-3 px-2 py-0.5 rounded text-xs font-bold"
+                style={{ background: `${C.teal}20`, color: C.teal }}
+              >
+                Advertising
+              </div>
+            </div>
           </div>
         </div>
       </section>

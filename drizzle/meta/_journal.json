@@ -29,6 +29,13 @@
       "when": 1772712734857,
       "tag": "0003_whole_flatman",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1773328938046,
+      "tag": "0004_ancient_scarlet_spider",
+      "breakpoints": true
     }
   ]
 }
