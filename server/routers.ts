@@ -28,7 +28,8 @@ import {
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
-import { getLatestWeeklyReportage } from "./db";
+import { generateMarketAnalysis } from "./marketAnalysisScheduler";
+import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -41,7 +42,14 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 export const appRouter = router({
   system: systemRouter,
 
-  // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────
+  // ── Market Analysis (public) ─────────────────────────────────────────────────────────────────────────────────────────────
+  marketAnalysis: router({
+    getLatest: publicProcedure.query(async () => {
+      return getLatestMarketAnalysis();
+    }),
+  }),
+
+  // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   reportage: router({
     getLatestWeek: publicProcedure.query(async () => {
       return getLatestWeeklyReportage();
@@ -289,6 +297,13 @@ Rispondi con questo JSON:
       const startup = await generateStartupOfDay();
       await saveStartupOfDay(startup);
       return { success: true, name: startup.name };
+    }),
+
+    // Rigenerazione manuale delle 4 analisi di mercato
+    refreshMarketAnalysis: adminProcedure.mutation(async () => {
+      await generateMarketAnalysis();
+      const items = await getLatestMarketAnalysis();
+      return { success: true, count: items.length };
     }),
 
     // Trigger invio automatico immediato (usa il template dark ufficiale)

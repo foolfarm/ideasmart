@@ -669,7 +669,128 @@ function WeeklyReportageSection() {
   );
 }
 
-// ─── Main Page ───────────────────────────────────────────────────────────────────────────────
+// ─── Market Analysis Section ─────────────────────────────────────────────────────────────────────────────────────────────
+function MarketAnalysisSection() {
+  const { data: analyses, isLoading } = trpc.marketAnalysis.getLatest.useQuery();
+
+  const SOURCES = ["CB Insights", "Sifted", "TechCrunch", "The Information", "Dealroom", "PitchBook"];
+
+  const SOURCE_COLORS: Record<string, string> = {
+    "CB Insights": C.teal,
+    "Sifted": C.blue,
+    "TechCrunch": C.orange,
+    "The Information": "#8b5cf6",
+    "Dealroom": "#10b981",
+    "PitchBook": "#f59e0b",
+  };
+
+  return (
+    <section className="border-t" style={{ borderColor: C.border, background: C.surface1 }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        {/* Header */}
+        <FadeUp>
+          <div className="flex items-start justify-between mb-12">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="editorial-tag" style={{ color: C.teal }}>Analisi di Mercato</span>
+                <span className="text-xs px-2 py-0.5 rounded-full font-mono" style={{ background: C.tealLight, color: C.teal }}>Aggiornato ogni 7 giorni</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold leading-tight" style={{ color: C.navy }}>
+                Le Ultime Analisi di Mercato
+              </h2>
+              <p className="mt-3 text-base" style={{ color: C.muted }}>
+                Sintesi delle analisi più rilevanti da CB Insights, Sifted, TechCrunch e altri media specializzati AI.
+              </p>
+            </div>
+            <div className="hidden sm:flex items-center gap-2 mt-2">
+              {SOURCES.map((s) => (
+                <span key={s} className="text-xs px-2 py-1 rounded-full border" style={{ borderColor: `${SOURCE_COLORS[s] ?? C.teal}40`, color: SOURCE_COLORS[s] ?? C.teal, background: `${SOURCE_COLORS[s] ?? C.teal}10` }}>{s}</span>
+              ))}
+            </div>
+          </div>
+        </FadeUp>
+
+        {/* Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="rounded-2xl border animate-pulse" style={{ borderColor: C.border, background: C.surface2, height: 280 }} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {(analyses ?? []).map((item, idx) => {
+              const accentColor = [C.teal, C.blue, C.orange, "#8b5cf6"][idx % 4];
+              const accentLight = [`${C.teal}15`, `${C.blue}15`, `${C.orange}15`, "#8b5cf615"][idx % 4];
+              return (
+                <FadeUp key={item.id} delay={idx * 0.08}>
+                  <div
+                    className="rounded-2xl border p-6 flex flex-col gap-4 h-full hover:shadow-lg transition-shadow"
+                    style={{ borderColor: C.border, background: "#fff", borderTop: `3px solid ${accentColor}` }}
+                  >
+                    {/* Source + Category */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold px-2 py-1 rounded-full" style={{ background: accentLight, color: accentColor }}>
+                        {item.category}
+                      </span>
+                      <span className="text-xs" style={{ color: C.muted }}>{item.source}</span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="font-display text-lg font-bold leading-snug" style={{ color: C.navy }}>
+                      {item.title}
+                    </h3>
+
+                    {/* Summary */}
+                    <p className="text-sm leading-relaxed flex-1" style={{ color: C.muted }}>
+                      {item.summary}
+                    </p>
+
+                    {/* Key Data */}
+                    {(item.dataPoint1 || item.dataPoint2 || item.dataPoint3) && (
+                      <div className="grid grid-cols-3 gap-3 pt-3 border-t" style={{ borderColor: `${accentColor}20` }}>
+                        {item.dataPoint1 && (
+                          <div className="text-center">
+                            <p className="text-base font-bold font-mono" style={{ color: accentColor }}>{item.dataPoint1}</p>
+                          </div>
+                        )}
+                        {item.dataPoint2 && (
+                          <div className="text-center">
+                            <p className="text-base font-bold font-mono" style={{ color: accentColor }}>{item.dataPoint2}</p>
+                          </div>
+                        )}
+                        {item.dataPoint3 && (
+                          <div className="text-center">
+                            <p className="text-base font-bold font-mono" style={{ color: accentColor }}>{item.dataPoint3}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Key Insight */}
+                    {item.keyInsight && (
+                      <blockquote className="text-sm italic border-l-2 pl-3" style={{ borderColor: accentColor, color: C.muted }}>
+                        "{item.keyInsight}"
+                      </blockquote>
+                    )}
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: C.border }}>
+                      <span className="text-xs" style={{ color: C.muted }}>Fonte: {item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>{item.source}</a> : item.source}</span>
+                      <span className="text-xs" style={{ color: C.muted }}>Analisi IDEASMART</span>
+                    </div>
+                  </div>
+                </FadeUp>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// ─── Main Page ─────────────────────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -862,10 +983,13 @@ export default function Home() {
       {/* ── STARTUP DEL GIORNO ───────────────────────────────────────────────────────────────────────── */}
       <StartupOfDaySection />
 
-
-      {/* ── REPORTAGE SETTIMANALI DINAMICI ─────────────────────────────────── */}
+      {/* ── REPORTAGE SETTIMANALI DINAMICI ────────────────────────────────────── */}
       <WeeklyReportageSection />
-      {/* ── NEWSLETTER SIGNUP ───────────────────────────────────────────────── */}
+
+      {/* ── ANALISI DI MERCATO ──────────────────────────────────────── */}
+      <MarketAnalysisSection />
+
+      {/* ── NEWSLETTER SIGNUP ──────────────────────────────────────── */}
       <section id="newsletter" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <FadeUp>

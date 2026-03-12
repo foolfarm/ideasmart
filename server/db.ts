@@ -340,7 +340,7 @@ export async function saveStartupOfDay(data: InsertStartupOfDay) {
 }
 
 // ── Weekly Reportage ─────────────────────────────────────────────────────────
-import { weeklyReportage, InsertWeeklyReportage } from "../drizzle/schema";
+import { weeklyReportage, InsertWeeklyReportage, marketAnalysis, InsertMarketAnalysis } from "../drizzle/schema";
 
 export async function getLatestWeeklyReportage() {
   const db = await getDb();
@@ -366,4 +366,31 @@ export async function deleteReportageByWeek(weekLabel: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.delete(weeklyReportage).where(eq(weeklyReportage.weekLabel, weekLabel));
+}
+
+// ── Market Analysis ─────────────────────────────────────────────────────────────────────────────────────────────
+export async function getLatestMarketAnalysis() {
+  const db = await getDb();
+  if (!db) return [];
+  const latest = await db.select({ weekLabel: marketAnalysis.weekLabel })
+    .from(marketAnalysis)
+    .orderBy(desc(marketAnalysis.createdAt))
+    .limit(1);
+  if (latest.length === 0) return [];
+  const weekLabel = latest[0].weekLabel;
+  return db.select().from(marketAnalysis)
+    .where(eq(marketAnalysis.weekLabel, weekLabel))
+    .orderBy(marketAnalysis.position);
+}
+
+export async function saveMarketAnalysis(items: InsertMarketAnalysis[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(marketAnalysis).values(items);
+}
+
+export async function deleteMarketAnalysisByWeek(weekLabel: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(marketAnalysis).where(eq(marketAnalysis.weekLabel, weekLabel));
 }

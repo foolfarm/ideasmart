@@ -11,6 +11,7 @@ import { startNewsScheduler } from "../newsScheduler";
 import { startNewsletterScheduler } from "../newsletterScheduler";
 import { startDailyContentScheduler } from "../dailyContentScheduler";
 import { startWeeklyReportageScheduler } from "../weeklyReportageScheduler";
+import { startMarketAnalysisScheduler } from "../marketAnalysisScheduler";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -79,3 +80,6 @@ startDailyContentScheduler();
 
 // Avvia il cron job per i 4 reportage settimanali su startup AI italiane (ogni lunedì 00:00)
 startWeeklyReportageScheduler();
+
+// Avvia il cron job per le 4 analisi di mercato AI (ogni giovedì 06:00 UTC)
+startMarketAnalysisScheduler();

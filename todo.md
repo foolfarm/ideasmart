@@ -64,3 +64,13 @@
 - [x] Generazione immediata dei 4 reportage di oggi
 - [x] Home.tsx: sezione reportage dinamica dal DB (sostituisce i 4 statici)
 - [x] Home.tsx: rimozione sezione FoolFarm ("Da dove nasce l'innovazione")
+
+## Nuovi task (12 Mar 2026 — Analisi di Mercato)
+
+- [ ] Schema DB: tabella market_analysis (4 analisi settimanali da media AI)
+- [ ] Generatore LLM: 4 analisi di mercato AI da CB Insights, Sifted, TechCrunch, The Information
+- [ ] Cron job: ogni 7 giorni genera 4 nuove analisi di mercato
+- [ ] tRPC procedure: marketAnalysis.getLatest e admin.refreshMarketAnalysis
+- [ ] Generazione immediata delle prime 4 analisi di oggi
+- [ ] Home.tsx: sezione "Le Ultime Analisi di Mercato" con design editoriale
+- [ ] Footer: aggiornato con link alle analisi di mercato

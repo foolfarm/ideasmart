@@ -1,0 +1,38 @@
+{
+  "query": "SELECT id, title, source, category, weekLabel FROM market_analysis ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, source, category, weekLabel FROM market_analysis ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "4",
+      "title": "AI in Healthcare: Diagnosi, Ricerca e Cure Personalizzate",
+      "source": "Sifted",
+      "category": "AI & Healthcare",
+      "weekLabel": "2026-W12"
+    },
+    {
+      "id": "3",
+      "title": "Fintech AI: L'Era della Finanza Iper-Personalizzata e Sicura",
+      "source": "The Information",
+      "category": "AI & Fintech",
+      "weekLabel": "2026-W12"
+    },
+    {
+      "id": "2",
+      "title": "AI Ridefinisce il Real Estate: Efficienza e Valutazioni Predittive",
+      "source": "Stanford HAI",
+      "category": "AI & Real Estate",
+      "weekLabel": "2026-W12"
+    },
+    {
+      "id": "1",
+      "title": "AI Rivoluziona la Cybersecurity: Difese Predittive e Attacchi Sofisticati",
+      "source": "VentureBeat",
+      "category": "AI & Cybersecurity",
+      "weekLabel": "2026-W12"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsource\tcategory\tweekLabel\n4\tAI in Healthcare: Diagnosi, Ricerca e Cure Personalizzate\tSifted\tAI & Healthcare\t2026-W12\n3\tFintech AI: L'Era della Finanza Iper-Personalizzata e Sicura\tThe Information\tAI & Fintech\t2026-W12\n2\tAI Ridefinisce il Real Estate: Efficienza e Valutazioni Predittive\tStanford HAI\tAI & Real Estate\t2026-W12\n1\tAI Rivoluziona la Cybersecurity: Difese Predittive e Attacchi Sofisticati\tVentureBeat\tAI & Cybersecurity\t2026-W12\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

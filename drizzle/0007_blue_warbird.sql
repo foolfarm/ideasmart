@@ -1,0 +1,20 @@
+CREATE TABLE `market_analysis` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`weekLabel` varchar(20) NOT NULL,
+	`position` int NOT NULL DEFAULT 0,
+	`source` varchar(255) NOT NULL,
+	`sourceUrl` varchar(1000),
+	`category` varchar(100) NOT NULL,
+	`title` varchar(500) NOT NULL,
+	`subtitle` varchar(500),
+	`summary` text NOT NULL,
+	`keyInsight` text,
+	`dataPoint1` varchar(255),
+	`dataPoint2` varchar(255),
+	`dataPoint3` varchar(255),
+	`marketSize` varchar(100),
+	`growthRate` varchar(50),
+	`italyRelevance` text,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `market_analysis_id` PRIMARY KEY(`id`)
+);
