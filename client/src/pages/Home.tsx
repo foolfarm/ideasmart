@@ -9,6 +9,7 @@ import { motion, useInView } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { useCookieConsent } from "@/hooks/useCookieConsent";
 
 // ─── Image URLs (CDN) ────────────────────────────────────────────────────────
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
@@ -34,6 +35,22 @@ const C = {
 };
 
 // ─── Animation helpers ───────────────────────────────────────────────────────
+// ─── Cookie Preferences Link (footer) ───────────────────────────────────────
+function CookiePreferencesLink() {
+  const { resetConsent } = useCookieConsent();
+  return (
+    <button
+      onClick={resetConsent}
+      className="text-sm transition-colors bg-transparent border-none p-0 cursor-pointer"
+      style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}
+      onMouseEnter={e => (e.currentTarget.style.color = C.teal)}
+      onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
+    >
+      Gestisci preferenze cookie
+    </button>
+  );
+}
+
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -1239,6 +1256,8 @@ export default function Home() {
               >
                 Privacy Policy &amp; Disclaimer
               </a>
+              <span style={{ color: C.border }}>·</span>
+              <CookiePreferencesLink />
               <span style={{ color: C.border }}>·</span>
               <p className="text-sm" style={{ color: C.muted, fontFamily: "'JetBrains Mono', monospace" }}>
                 AI for Business · Aggiornato il {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}

@@ -1,8 +1,11 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
+import { useEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import CookieBanner from "./components/CookieBanner";
+import { useCookieConsent } from "./hooks/useCookieConsent";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
@@ -28,6 +31,37 @@ function Router() {
   );
 }
 
+/**
+ * Gestisce il caricamento condizionale di Google AdSense
+ * in base al consenso ai cookie pubblicitari
+ */
+function AdSenseManager() {
+  const { consent, hasDecided } = useCookieConsent();
+
+  useEffect(() => {
+    if (!hasDecided) return;
+    const scriptId = "google-adsense-script";
+    const existing = document.getElementById(scriptId);
+
+    if (consent?.advertising) {
+      // Carica AdSense solo se l'utente ha accettato i cookie pubblicitari
+      if (!existing) {
+        const script = document.createElement("script");
+        script.id = scriptId;
+        script.async = true;
+        script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7185482526978993";
+        script.crossOrigin = "anonymous";
+        document.head.appendChild(script);
+      }
+    } else {
+      // Rimuovi AdSense se l'utente ha rifiutato
+      if (existing) existing.remove();
+    }
+  }, [consent, hasDecided]);
+
+  return null;
+}
+
 function App() {
   return (
     <ErrorBoundary>
@@ -35,6 +69,8 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <CookieBanner />
+          <AdSenseManager />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

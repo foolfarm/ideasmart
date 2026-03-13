@@ -190,3 +190,11 @@
 - [x] Aggiungere link /privacy nel footer della landing page
 - [x] Aggiungere link /privacy nel footer delle email newsletter
 - [x] Inviare newsletter di prova con tracking attivo a ac@acinelli.com
+
+## Nuovi task (13 Mar 2026 — Banner Cookie GDPR)
+
+- [x] Creare hook useCookieConsent con persistenza localStorage
+- [x] Creare componente CookieBanner con pannello preferenze per categoria
+- [x] Integrare banner in App.tsx
+- [x] Bloccare Google AdSense finché non c'è consenso ai cookie pubblicitari
+- [x] Aggiungere link "Gestisci preferenze cookie" nel footer della landing page
