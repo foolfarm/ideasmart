@@ -10,7 +10,7 @@
  */
 
 import { invokeLLM } from "./_core/llm";
-import { sendEmail, buildMonthlyNewsletterHtml } from "./email";
+import { sendEmail, buildMonthlyNewsletterHtml, buildFullNewsletterHtml } from "./email";
 import { getActiveSubscribers, createNewsletterSend } from "./db";
 import { notifyOwner } from "./_core/notification";
 
@@ -191,11 +191,14 @@ export async function sendWeeklyNewsletter(): Promise<{
     for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
       const batch = subscribers.slice(i, i + BATCH_SIZE);
 
-      // Costruisce personalizations con link unsubscribe univoco per ogni iscritto
+      // Costruisce personalizations con link unsubscribe e pixel tracking univoco per ogni iscritto
       const personalizations = batch.map((sub) => {
         const unsubUrl = sub.unsubscribeToken
           ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
           : `${BASE_URL}/unsubscribe`;
+        const trackingPixelUrl = sub.unsubscribeToken
+          ? `${BASE_URL}/api/track/open?sid=${sub.unsubscribeToken}&cid=${monthLabel}&sub=${encodeURIComponent(subject)}`
+          : undefined;
         const html = buildMonthlyNewsletterHtml({
           month: monthLabel,
           issueNumber,

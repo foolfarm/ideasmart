@@ -515,3 +515,52 @@ export async function getSubscriberByEmail(email: string) {
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
+
+// ── Newsletter Performance Tracking ──────────────────────────────────────────
+
+/** Statistiche aggregate per ogni campagna newsletter */
+export async function getNewsletterCampaignStats() {
+  const db = await getDb();
+  if (!db) return [];
+  const sends = await db.select().from(newsletterSends).orderBy(newsletterSends.sentAt);
+  return sends.map(s => ({
+    id: s.id,
+    subject: s.subject,
+    sentAt: s.sentAt,
+    recipientCount: s.recipientCount ?? 0,
+    openedCount: s.openedCount ?? 0,
+    openRate: s.recipientCount && s.recipientCount > 0
+      ? Math.round(((s.openedCount ?? 0) / s.recipientCount) * 100)
+      : 0,
+  }));
+}
+
+/** Lista iscritti con dati di tracking (aperture, ultima apertura, stato) */
+export async function getSubscribersWithTracking() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({
+    id: subscribers.id,
+    email: subscribers.email,
+    name: subscribers.name,
+    status: subscribers.status,
+    subscribedAt: subscribers.subscribedAt,
+    unsubscribedAt: subscribers.unsubscribedAt,
+    totalSent: subscribers.totalSent,
+    totalOpened: subscribers.totalOpened,
+    lastSentAt: subscribers.lastSentAt,
+    lastOpenedAt: subscribers.lastOpenedAt,
+  }).from(subscribers).orderBy(subscribers.subscribedAt);
+}
+
+/** Aggiorna openedCount nella tabella newsletter_sends per una campagna */
+export async function incrementCampaignOpenCount(campaignId: string) {
+  const db = await getDb();
+  if (!db) return;
+  // campaignId corrisponde al campo 'subject' nella tabella newsletter_sends
+  // Usiamo sql per incrementare atomicamente
+  const { sql: sqlHelper } = await import("drizzle-orm");
+  await db.update(newsletterSends)
+    .set({ openedCount: sqlHelper`${newsletterSends.openedCount} + 1` })
+    .where(sqlHelper`${newsletterSends.subject} LIKE ${`%${campaignId}%`}`);
+}

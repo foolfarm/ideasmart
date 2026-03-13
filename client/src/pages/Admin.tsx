@@ -145,6 +145,16 @@ export default function Admin() {
             <span className="text-sm font-bold" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
               Admin Dashboard
             </span>
+            <span className="text-white/20">·</span>
+            <button
+              onClick={() => navigate("/admin/newsletter-performance")}
+              className="text-xs font-bold transition-colors"
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#00e5c8")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+            >
+              📊 Performance
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />

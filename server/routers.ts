@@ -28,6 +28,8 @@ import {
   getNotificationPreferenceByToken,
   updateNotificationPreferenceByToken,
   getAllActiveNotificationPreferences,
+  getNewsletterCampaignStats,
+  getSubscribersWithTracking,
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
@@ -496,6 +498,16 @@ Rispondi con questo JSON:
     }),
 
     // Send weekly newsletter to all active subscribers (legacy - usa buildWeeklyNewsletterHtml)
+    // Statistiche performance newsletter (aperture, tasso apertura per campagna)
+    getNewsletterCampaignStats: adminProcedure.query(async () => {
+      return getNewsletterCampaignStats();
+    }),
+
+    // Lista iscritti con dati tracking (aperture, ultima apertura, stato)
+    getSubscribersWithTracking: adminProcedure.query(async () => {
+      return getSubscribersWithTracking();
+    }),
+
     sendWeeklyNewsletter: adminProcedure.mutation(async () => {
       const activeSubscribers = await getActiveSubscribers();
       if (activeSubscribers.length === 0) {

@@ -166,3 +166,19 @@
 - [x] Identificato problema: script di prova usava template HTML inline scuro separato da buildFullNewsletterHtml
 - [x] Riscritto completamente scripts/send-test-newsletter.mjs con palette chiara (sfondo bianco, testo navy)
 - [x] Inviata nuova email di prova chiara a ac@acinelli.com
+
+## Nuovi task (13 Mar 2026 — Email Tracking & Admin Dashboard)
+
+- [ ] Schema DB: tabella newsletter_sends (invii newsletter con statistiche per campagna)
+- [ ] Schema DB: aggiungere colonne tracking a subscribers (openCount, lastOpenedAt, lastSentAt, totalSent)
+- [ ] Endpoint GET /api/track/open?sid=TOKEN per pixel di tracciamento 1x1 px
+- [ ] Aggiornare template email (script prova + buildFullNewsletterHtml) con pixel di tracciamento
+- [ ] tRPC procedure: admin.getSubscribersWithStats (lista iscritti con stato apertura)
+- [ ] Admin dashboard: tabella iscritti con colonne email, stato, aperture, ultima apertura, data iscrizione
+- [ ] Admin dashboard: statistiche campagna (totale inviati, aperti, % apertura, disiscritti)
+
+## Nuovi task (13 Mar 2026 — Dashboard Performance Newsletter)
+
+- [x] Aggiungere procedure tRPC admin: getNewsletterCampaignStats, getSubscribersWithTracking
+- [x] Creare pagina admin /admin/newsletter-performance con statistiche campagne e tabella iscritti
+- [x] Aggiungere link "Performance" nell'header della dashboard admin

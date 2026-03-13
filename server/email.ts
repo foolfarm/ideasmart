@@ -645,9 +645,10 @@ export function buildFullNewsletterHtml(opts: {
   reportages: Array<{ startupName: string; category: string; headline: string; subheadline?: string | null; bodyText: string; quote?: string | null; stat1Value?: string | null; stat1Label?: string | null; stat2Value?: string | null; stat2Label?: string | null; stat3Value?: string | null; stat3Label?: string | null; websiteUrl?: string | null; ctaLabel?: string | null; ctaUrl?: string | null }>;
   analyses: Array<{ title: string; category: string; summary: string; source: string; dataPoint1?: string | null; dataPoint2?: string | null; dataPoint3?: string | null; keyInsight?: string | null; italyRelevance?: string | null }>;
   unsubscribeUrl?: string;
+  trackingPixelUrl?: string;
   isTest?: boolean;
 }): string {
-  const { dateLabel, editorial, startup, news, reportages, analyses, unsubscribeUrl, isTest } = opts;
+  const { dateLabel, editorial, startup, news, reportages, analyses, unsubscribeUrl, trackingPixelUrl, isTest } = opts;
   const baseUrl = `https://ideasmart.ai`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
@@ -1025,6 +1026,8 @@ export function buildFullNewsletterHtml(opts: {
     </td>
   </tr>
 </table>
+
+${trackingPixelUrl ? `<!-- Tracking pixel --><img src="${trackingPixelUrl}" width="1" height="1" border="0" style="display:block;width:1px;height:1px;" alt="" />` : ''}
 
 </body>
 </html>`;
