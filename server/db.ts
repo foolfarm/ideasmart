@@ -394,3 +394,114 @@ export async function deleteMarketAnalysisByWeek(weekLabel: string) {
   if (!db) throw new Error("Database not available");
   await db.delete(marketAnalysis).where(eq(marketAnalysis.weekLabel, weekLabel));
 }
+
+// ── Notification Preferences ─────────────────────────────────────────────────
+import { notificationPreferences } from "../drizzle/schema";
+
+export async function upsertNotificationPreference(data: {
+  email: string;
+  name?: string;
+  notifyNews?: boolean;
+  notifyEditorial?: boolean;
+  notifyStartup?: boolean;
+  notifyReportage?: boolean;
+  notifyMarket?: boolean;
+  frequency?: "daily" | "weekly" | "realtime";
+  categories?: string[];
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const existing = await db.select().from(notificationPreferences)
+    .where(eq(notificationPreferences.email, data.email))
+    .limit(1);
+
+  const categoriesJson = data.categories ? JSON.stringify(data.categories) : null;
+  const prefsToken = randomBytes(32).toString("hex");
+
+  if (existing.length > 0) {
+    await db.update(notificationPreferences)
+      .set({
+        name: data.name ?? existing[0].name,
+        notifyNews: data.notifyNews ?? existing[0].notifyNews,
+        notifyEditorial: data.notifyEditorial ?? existing[0].notifyEditorial,
+        notifyStartup: data.notifyStartup ?? existing[0].notifyStartup,
+        notifyReportage: data.notifyReportage ?? existing[0].notifyReportage,
+        notifyMarket: data.notifyMarket ?? existing[0].notifyMarket,
+        frequency: data.frequency ?? existing[0].frequency,
+        categories: categoriesJson ?? existing[0].categories,
+      })
+      .where(eq(notificationPreferences.email, data.email));
+    return existing[0];
+  } else {
+    await db.insert(notificationPreferences).values({
+      email: data.email,
+      name: data.name,
+      notifyNews: data.notifyNews ?? true,
+      notifyEditorial: data.notifyEditorial ?? true,
+      notifyStartup: data.notifyStartup ?? true,
+      notifyReportage: data.notifyReportage ?? false,
+      notifyMarket: data.notifyMarket ?? false,
+      frequency: data.frequency ?? "daily",
+      categories: categoriesJson,
+      prefsToken,
+      isActive: true,
+    });
+    const created = await db.select().from(notificationPreferences)
+      .where(eq(notificationPreferences.email, data.email))
+      .limit(1);
+    return created[0];
+  }
+}
+
+export async function getNotificationPreferenceByToken(token: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(notificationPreferences)
+    .where(eq(notificationPreferences.prefsToken, token))
+    .limit(1);
+  return result[0] ?? null;
+}
+
+export async function getNotificationPreferenceByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(notificationPreferences)
+    .where(eq(notificationPreferences.email, email))
+    .limit(1);
+  return result[0] ?? null;
+}
+
+export async function updateNotificationPreferenceByToken(token: string, data: {
+  notifyNews?: boolean;
+  notifyEditorial?: boolean;
+  notifyStartup?: boolean;
+  notifyReportage?: boolean;
+  notifyMarket?: boolean;
+  frequency?: "daily" | "weekly" | "realtime";
+  categories?: string[];
+  isActive?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const categoriesJson = data.categories ? JSON.stringify(data.categories) : undefined;
+  await db.update(notificationPreferences)
+    .set({
+      ...(data.notifyNews !== undefined && { notifyNews: data.notifyNews }),
+      ...(data.notifyEditorial !== undefined && { notifyEditorial: data.notifyEditorial }),
+      ...(data.notifyStartup !== undefined && { notifyStartup: data.notifyStartup }),
+      ...(data.notifyReportage !== undefined && { notifyReportage: data.notifyReportage }),
+      ...(data.notifyMarket !== undefined && { notifyMarket: data.notifyMarket }),
+      ...(data.frequency !== undefined && { frequency: data.frequency }),
+      ...(categoriesJson !== undefined && { categories: categoriesJson }),
+      ...(data.isActive !== undefined && { isActive: data.isActive }),
+    })
+    .where(eq(notificationPreferences.prefsToken, token));
+}
+
+export async function getAllActiveNotificationPreferences() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(notificationPreferences)
+    .where(eq(notificationPreferences.isActive, true));
+}

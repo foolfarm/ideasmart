@@ -119,7 +119,7 @@ function SectionHeader({ number, category, categoryColor, title, titleColor }: {
       <div className="border-b-2" style={{ borderColor: categoryColor, background: `${categoryColor}08` }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <h2
-            className="text-2xl sm:text-3xl font-black leading-tight"
+            className="text-3xl sm:text-4xl font-black leading-tight"
             style={{ color: titleColor || C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
           >
             {title}
@@ -200,17 +200,17 @@ function NewsGrid() {
               </div>
               <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
                 <h3
-                  className="text-sm font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
+                  className="text-lg font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
                   style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
                 >
                   {item.title}
                 </h3>
-                <p className="text-xs leading-relaxed mb-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                <p className="text-base leading-relaxed mb-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
                   {item.summary}
                 </p>
               </a>
               <div className="flex items-center justify-between mt-auto pt-3 border-t" style={{ borderColor: C.border }}>
-                <span className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
+                <span className="text-sm" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
                 <div className="flex items-center gap-2">
                   <a
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(item.sourceUrl)}`}
@@ -304,10 +304,10 @@ function DailyEditorialSection() {
               <div className="space-y-5 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {paragraphs.length > 0
                   ? paragraphs.map((p, i) => (
-                      <p key={i} style={{ color: C.slate }}>{p}</p>
+                      <p key={i} className="text-base sm:text-lg" style={{ color: C.slate }}>{p}</p>
                     ))
                   : (
-                    <p style={{ color: C.slate }}>
+                    <p className="text-base sm:text-lg" style={{ color: C.slate }}>
                       Dove sta succedendo davvero qualcosa di interessante nell'ecosistema AI italiano?
                       Non nei comunicati stampa, non nei convegni, ma nei prodotti concreti che le aziende
                       usano ogni giorno per assumere, proteggere dati, comunicare e prendere decisioni.
@@ -316,7 +316,7 @@ function DailyEditorialSection() {
                 }
                 {editorial?.authorNote && (
                   <blockquote
-                    className="border-l-4 pl-4 py-2 mt-6 italic text-sm"
+                    className="border-l-4 pl-4 py-2 mt-6 italic text-base"
                     style={{ borderColor: C.teal, color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
                   >
                     {editorial.authorNote}
@@ -337,7 +337,7 @@ function DailyEditorialSection() {
                 <p className="text-sm font-semibold" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
                   La Redazione IDEASMART
                 </p>
-                <p className="text-xs" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione — AI for Business</p>
+                <p className="text-sm" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione — AI for Business</p>
               </div>
             </div>
           </FadeUp>
@@ -370,7 +370,7 @@ function DailyEditorialSection() {
                       <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{item.n}</span>
                       <div>
                         <p className="editorial-tag mb-1" style={{ color: item.color }}>{item.cat}</p>
-                        <p className="text-xs leading-snug" style={{ color: C.slate }}>{item.title}</p>
+                        <p className="text-sm leading-snug" style={{ color: C.slate }}>{item.title}</p>
                       </div>
                       <span className="ml-auto text-xs flex-shrink-0" style={{ color: item.color }}>→</span>
                     </div>
@@ -423,7 +423,7 @@ function StartupOfDaySection() {
                 </div>
                 <div>
                   <h2
-                    className="text-2xl sm:text-3xl font-black leading-tight"
+                    className="text-3xl sm:text-4xl font-black leading-tight"
                     style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     {startup.name}
@@ -457,14 +457,14 @@ function StartupOfDaySection() {
               {/* Descrizione */}
               <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {startup.description.split(/\n+/).filter(p => p.trim()).map((p, i) => (
-                  <p key={i} style={{ color: C.slate }}>{p}</p>
+                  <p key={i} className="text-base sm:text-lg" style={{ color: C.slate }}>{p}</p>
                 ))}
               </div>
 
               {/* Perché oggi */}
               <div className="rounded-xl p-5 border-l-4" style={{ background: C.orangeLight, borderColor: C.orange }}>
                 <p className="editorial-tag mb-2" style={{ color: C.orange }}>◆ Perché è rilevante oggi</p>
-                <p className="text-sm leading-relaxed" style={{ color: C.navy, fontFamily: "'DM Sans', sans-serif" }}>
+                <p className="text-base leading-relaxed" style={{ color: C.navy, fontFamily: "'DM Sans', sans-serif" }}>
                   {startup.whyToday}
                 </p>
               </div>
@@ -540,15 +540,15 @@ function StartupOfDaySection() {
                   )}
                 </div>
                 <div className="mt-6 pt-4 border-t" style={{ borderColor: C.border }}>
-                  <p className="text-xs" style={{ color: C.muted }}>Selezionata dalla redazione IDEASMART ogni giorno tramite analisi AI.</p>
+                  <p className="text-sm" style={{ color: C.muted }}>Selezionata dalla redazione IDEASMART ogni giorno tramite analisi AI.</p>
                 </div>
               </div>
             </FadeUp>
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-lg font-semibold" style={{ color: C.navy }}>Startup del giorno in arrivo...</p>
-            <p className="text-sm mt-2" style={{ color: C.muted }}>Il nostro sistema AI sta analizzando le startup emergenti. Torna tra poco.</p>
+            <p className="text-xl font-semibold" style={{ color: C.navy }}>Startup del giorno in arrivo...</p>
+            <p className="text-base mt-2" style={{ color: C.muted }}>Il nostro sistema AI sta analizzando le startup emergenti. Torna tra poco.</p>
           </div>
         )}
       </div>
@@ -608,18 +608,18 @@ function WeeklyReportageSection() {
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
                   <FadeUp>
                     {item.subheadline && (
-                      <p className="text-sm font-semibold mb-4" style={{ color: colorSet.color, fontFamily: "'DM Sans', sans-serif" }}>
+                      <p className="text-base font-semibold mb-4" style={{ color: colorSet.color, fontFamily: "'DM Sans', sans-serif" }}>
                         {item.subheadline}
                       </p>
                     )}
                     <div className="space-y-4 leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                       {paragraphs.map((p, i) => (
-                        <p key={i} style={{ color: C.slate }}>{p}</p>
+                        <p key={i} className="text-base sm:text-lg" style={{ color: C.slate }}>{p}</p>
                       ))}
                     </div>
                     {item.quote && (
                       <blockquote
-                        className="border-l-4 pl-4 py-2 italic text-sm mb-6"
+                        className="border-l-4 pl-4 py-2 italic text-base mb-6"
                         style={{ borderColor: colorSet.color, color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
                       >
                         {item.quote}
@@ -655,7 +655,7 @@ function WeeklyReportageSection() {
                         <StatBlock value={item.stat3Value} label={item.stat3Label} color={colorSet.color} />
                       </div>
                       <div className="pt-4 border-t" style={{ borderColor: `${colorSet.color}30` }}>
-                        <p className="text-xs" style={{ color: C.muted }}>Reportage aggiornato ogni lunedì dalla redazione IDEASMART.</p>
+                        <p className="text-sm" style={{ color: C.muted }}>Reportage aggiornato ogni lunedì dalla redazione IDEASMART.</p>
                       </div>
                     </div>
                   </FadeUp>
@@ -737,12 +737,12 @@ function MarketAnalysisSection() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-display text-lg font-bold leading-snug" style={{ color: C.navy }}>
+                    <h3 className="font-display text-xl font-bold leading-snug" style={{ color: C.navy }}>
                       {item.title}
                     </h3>
 
                     {/* Summary */}
-                    <p className="text-sm leading-relaxed flex-1" style={{ color: C.muted }}>
+                    <p className="text-base leading-relaxed flex-1" style={{ color: C.muted }}>
                       {item.summary}
                     </p>
 
@@ -769,15 +769,15 @@ function MarketAnalysisSection() {
 
                     {/* Key Insight */}
                     {item.keyInsight && (
-                      <blockquote className="text-sm italic border-l-2 pl-3" style={{ borderColor: accentColor, color: C.muted }}>
+                      <blockquote className="text-base italic border-l-2 pl-3" style={{ borderColor: accentColor, color: C.muted }}>
                         "{item.keyInsight}"
                       </blockquote>
                     )}
 
                     {/* Footer */}
                     <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: C.border }}>
-                      <span className="text-xs" style={{ color: C.muted }}>Fonte: {item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>{item.source}</a> : item.source}</span>
-                      <span className="text-xs" style={{ color: C.muted }}>Analisi IDEASMART</span>
+                      <span className="text-sm" style={{ color: C.muted }}>Fonte: {item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>{item.source}</a> : item.source}</span>
+                      <span className="text-sm" style={{ color: C.muted }}>Analisi IDEASMART</span>
                     </div>
                   </div>
                 </FadeUp>
@@ -830,33 +830,34 @@ export default function Home() {
           <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, #ffffff 0%, #f0f9f8 60%, #fafafa 100%)` }} />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 lg:pt-28 pb-14 sm:pb-20">
           <FadeUp>
             {/* Issue badge */}
-            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}40`, background: `${C.teal}12` }}>
+            <div className="inline-flex flex-wrap items-center gap-2 mb-6 sm:mb-8 px-3 sm:px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}40`, background: `${C.teal}12` }}>
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
               <span className="editorial-tag" style={{ color: C.teal }}>
                 Osservatorio sull'Innovazione AI Italiana
               </span>
-              <span className="editorial-tag" style={{ color: C.muted }}>Aggiornato ogni giorno — {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <span className="editorial-tag hidden sm:inline" style={{ color: C.muted }}>Aggiornato ogni giorno — {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <span className="editorial-tag sm:hidden" style={{ color: C.muted }}>{new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
             </div>
 
             {/* Main title */}
             <h1
-              className="text-6xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tight mb-6"
+              className="text-4xl sm:text-6xl lg:text-8xl font-black leading-none tracking-tight mb-4 sm:mb-6"
               style={{ fontFamily: "'Space Grotesk', sans-serif", color: C.navy }}
             >
               IDEA<span style={{ color: C.teal }}>SMART</span>
             </h1>
             <p
-              className="text-base sm:text-lg tracking-widest uppercase mb-8"
+              className="text-xs sm:text-sm lg:text-base tracking-widest uppercase mb-6 sm:mb-8"
               style={{ fontFamily: "'JetBrains Mono', monospace", color: C.muted }}
             >
               Il tuo punto di riferimento sull'AI &nbsp;·&nbsp; News ogni giorno aggiornate
             </p>
 
             {/* Description */}
-            <p className="text-lg sm:text-xl leading-relaxed max-w-2xl mb-10" style={{ fontFamily: "'DM Sans', sans-serif", color: C.slate }}>
+            <p className="text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mb-8 sm:mb-10" style={{ fontFamily: "'DM Sans', sans-serif", color: C.slate }}>
               <strong style={{ color: C.navy }}>IDEASMART</strong> è il quotidiano di tecnologia e innovazione
               che ogni giorno analizza, testa e seleziona le realtà più promettenti
               dell'ecosistema AI per il business. La nostra redazione porta alla luce
@@ -864,31 +865,31 @@ export default function Home() {
             </p>
 
             {/* Stats row */}
-            <div className="flex flex-wrap gap-8 mb-10">
+            <div className="flex flex-wrap gap-6 sm:gap-8 mb-10">
               {[
                 { value: new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }).toUpperCase(), label: new Date().toLocaleDateString('it-IT', { year: 'numeric' }) },
                 { value: "20+", label: "News al giorno" },
                 { value: "100%", label: "AI-driven" },
               ].map((s) => (
                 <div key={s.label} className="flex items-baseline gap-2">
-                  <span className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>{s.value}</span>
-                  <span className="text-sm" style={{ color: C.muted }}>{s.label}</span>
+                  <span className="text-2xl sm:text-3xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>{s.value}</span>
+                  <span className="text-sm sm:text-base" style={{ color: C.muted }}>{s.label}</span>
                 </div>
               ))}
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 onClick={() => document.getElementById("editoriale")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105 text-white"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-lg text-base font-bold transition-all duration-200 hover:scale-105 text-white"
                 style={{ background: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 Leggi le ultime news ↓
               </button>
               <button
                 onClick={() => document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-lg text-base font-semibold transition-all duration-200"
                 style={{ border: `1.5px solid ${C.border}`, color: C.slate, fontFamily: "'DM Sans', sans-serif", background: "#fff" }}
               >
                 Abbonati alla newsletter →
@@ -925,10 +926,10 @@ export default function Home() {
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <FadeUp>
-            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
               I 20 eventi AI più significativi della settimana
             </h2>
-            <p className="text-sm mb-8" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-base sm:text-lg mb-8" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
               La selezione editoriale di IDEASMART sui fatti che stanno ridefinendo il panorama dell'intelligenza artificiale globale.
             </p>
           </FadeUp>
@@ -993,18 +994,18 @@ export default function Home() {
       <section id="newsletter" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <FadeUp>
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}30`, background: C.tealLight }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.teal }} />
-              <span className="editorial-tag" style={{ color: C.teal }}>Newsletter Mensile</span>
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}30`, background: C.tealLight }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
+              <span className="editorial-tag" style={{ color: C.teal }}>Newsletter Quotidiana</span>
             </div>
             <h2 className="text-4xl font-black mb-4" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
-              Ricevi l'analisi mensile
+              Ricevi il meglio dell'AI
               <br />
-              <span style={{ color: C.teal }}>direttamente nella tua inbox.</span>
+              <span style={{ color: C.teal }}>ogni giorno nella tua inbox.</span>
             </h2>
             <p className="text-base mb-10 leading-relaxed" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
-              Ogni mese selezioniamo le 4 startup AI più promettenti per il business italiano.
-              Analisi approfondite, dati reali, nessuno spam.
+              News AI, editoriale, startup emergenti e analisi di mercato aggiornate ogni giorno.
+              Personalizza cosa vuoi ricevere e con quale frequenza. Nessuno spam.
             </p>
 
             {!subscribed ? (
@@ -1050,9 +1051,23 @@ export default function Home() {
               </div>
             )}
 
-            <p className="text-xs mt-4" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
-              Gratuita · Mensile · Nessuno spam · Disiscrizione in un click
+            <p className="text-sm mt-4" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
+              Gratuita · Aggiornata ogni giorno · Nessuno spam · Disiscrizione in un click
             </p>
+
+            {/* Pulsante personalizza notifiche */}
+            <div className="mt-6 pt-6 border-t" style={{ borderColor: C.border }}>
+              <p className="text-xs mb-3" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
+                Già iscritto? Personalizza cosa vuoi ricevere.
+              </p>
+              <a
+                href="/notifiche"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all hover:scale-105"
+                style={{ borderColor: `${C.teal}40`, color: C.teal, background: C.tealLight, fontFamily: "'DM Sans', sans-serif" }}
+              >
+                🔔 Gestisci le tue preferenze di notifica
+              </a>
+            </div>
           </FadeUp>
         </div>
       </section>
@@ -1067,8 +1082,8 @@ export default function Home() {
                 IDEA<span style={{ color: C.teal }}>SMART</span>
               </div>
               <p className="editorial-tag mb-4" style={{ color: C.muted }}>Startup di Tecnologia &amp; Innovazione</p>
-              <p className="text-sm leading-relaxed" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
-                L'Osservatorio sull'Innovazione AI Italiana. Ogni mese analizziamo le startup AI
+              <p className="text-base leading-relaxed" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                L'Osservatorio sull'Innovazione AI Italiana. Ogni giorno analizziamo le startup AI
                 più promettenti per il business.
               </p>
             </div>
@@ -1088,7 +1103,7 @@ export default function Home() {
                     href={s.websiteUrl && s.websiteUrl !== "#" ? s.websiteUrl : undefined}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-sm transition-colors"
+                    className="block text-base transition-colors"
                     style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
                     onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
                     onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
@@ -1103,7 +1118,7 @@ export default function Home() {
               <p className="editorial-tag mb-4" style={{ color: C.muted }}>Contatti</p>
               <a
                 href="mailto:ac@foolfarm.com?subject=IDEASMART"
-                className="block text-sm transition-colors mb-2"
+                className="block text-base transition-colors mb-2"
                 style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
                 onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
                 onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
@@ -1112,7 +1127,7 @@ export default function Home() {
               </a>
               <a
                 href="mailto:ac@foolfarm.com?subject=Advertising%20IDEASMART"
-                className="block text-sm transition-colors"
+                className="block text-base transition-colors"
                 style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}
                 onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
                 onMouseLeave={e => (e.currentTarget.style.color = C.teal)}
@@ -1123,10 +1138,10 @@ export default function Home() {
           </div>
 
           <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderColor: C.border }}>
-            <p className="text-xs" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-sm" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
               © 2026 IDEASMART — Startup di Tecnologia &amp; Innovazione. Tutti i diritti riservati.
             </p>
-            <p className="editorial-tag" style={{ color: C.muted }}>
+            <p className="text-sm" style={{ color: C.muted, fontFamily: "'JetBrains Mono', monospace" }}>
               AI for Business · Aggiornato il {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>

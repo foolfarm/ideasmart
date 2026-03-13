@@ -74,3 +74,22 @@
 - [ ] Generazione immediata delle prime 4 analisi di oggi
 - [ ] Home.tsx: sezione "Le Ultime Analisi di Mercato" con design editoriale
 - [ ] Footer: aggiornato con link alle analisi di mercato
+
+## Nuovi task (12 Mar 2026 — SEO + Notifiche)
+
+- [ ] SEO: titolo pagina tra 30-60 caratteri (attuale: 27)
+- [ ] SEO: descrizione meta tra 50-160 caratteri (attuale: 209)
+- [ ] SEO: ridurre parole chiave da 13 a 3-8 concentrate
+- [ ] SEO: aggiornare index.html con meta tag ottimizzati
+- [ ] Notifiche: sistema di notifiche personalizzate per utenti iscritti
+- [ ] Notifiche: tabella DB per preferenze notifiche utenti
+- [ ] Notifiche: UI per gestire le preferenze di notifica
+
+## Nuovi task (13 Mar 2026 — Font e Responsiveness Mobile)
+
+- [ ] Aumentare dimensioni font in tutte le sezioni della Home (body, titoli, tag, label)
+- [ ] Ottimizzare la hero section per mobile (font, layout, spaziatura)
+- [ ] Ottimizzare le card news per mobile (grid, font, padding)
+- [ ] Ottimizzare editoriale, startup del giorno, reportage e analisi di mercato per mobile
+- [ ] Ottimizzare newsletter section e footer per mobile
+- [ ] Aggiornare index.css con font base più grandi

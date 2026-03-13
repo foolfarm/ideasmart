@@ -94,7 +94,8 @@
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.7;
+    line-height: 1.75;
+    font-size: 1rem; /* 16px base */
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
@@ -104,7 +105,8 @@
   }
   p {
     color: var(--text-secondary);
-    line-height: 1.75;
+    line-height: 1.8;
+    font-size: 1rem;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -142,10 +144,16 @@
   /* Editorial tag */
   .editorial-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
+  }
+  @media (min-width: 640px) {
+    .editorial-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+    }
   }
 
   /* Article card hover */
@@ -207,8 +215,8 @@
     color: #ffffff;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 0.875rem;
-    padding: 0.75rem 1.5rem;
+    font-size: 1rem; /* aumentato da 0.875rem */
+    padding: 0.875rem 1.75rem;
     border-radius: 8px;
     transition: all 0.2s ease;
     display: inline-flex;
@@ -227,8 +235,8 @@
     color: var(--navy);
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.75rem 1.5rem;
+    font-size: 1rem; /* aumentato da 0.875rem */
+    padding: 0.875rem 1.75rem;
     border-radius: 8px;
     border: 1.5px solid var(--surface-3);
     transition: all 0.2s ease;
@@ -239,6 +247,35 @@
   .btn-secondary:hover {
     border-color: var(--navy);
     background: var(--surface-1);
+  }
+}
+
+/* ── Mobile-first typography improvements ── */
+@media (max-width: 639px) {
+  body {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  h1 { font-size: 2.25rem; line-height: 1.1; }
+  h2 { font-size: 1.75rem; line-height: 1.15; }
+  h3 { font-size: 1.35rem; line-height: 1.25; }
+  h4 { font-size: 1.15rem; }
+  p  { font-size: 1rem; line-height: 1.75; }
+
+  /* Increase tap targets */
+  button, a {
+    min-height: 44px;
+  }
+
+  /* News card grid: single column on mobile */
+  .news-card {
+    border-radius: 10px;
+  }
+
+  /* Section padding on mobile */
+  section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 

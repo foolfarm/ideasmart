@@ -51,16 +51,16 @@ export default function Navbar() {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6">
             {[
-              { label: "Reportage", id: "fooltalent" },
-              { label: "Analisi", id: "foolshare" },
-              { label: "Inchiesta", id: "fragmentalis" },
-              { label: "Focus", id: "pollcast" },
               { label: "News", id: "news" },
+              { label: "Editoriale", id: "editoriale-dinamico" },
+              { label: "Startup", id: "startup-del-giorno" },
+              { label: "Reportage", id: "reportage-1" },
+              { label: "Analisi", id: "analisi-mercato" },
             ].map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="text-sm font-medium text-gray-500 hover:text-[#1a1f2e] transition-colors duration-200"
+                className="text-base font-medium text-gray-500 hover:text-[#1a1f2e] transition-colors duration-200"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 {item.label}
@@ -93,27 +93,27 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="md:hidden border-t border-gray-100 py-4 space-y-1 bg-white">
-            {[
-              { label: "01 — Reportage", id: "fooltalent" },
-              { label: "02 — Analisi", id: "foolshare" },
-              { label: "03 — Inchiesta", id: "fragmentalis" },
-              { label: "04 — Focus", id: "pollcast" },
-              { label: "Ultime News", id: "news" },
-              { label: "Newsletter", id: "newsletter" },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="block w-full text-left px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#1a1f2e] hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        )}
+          {/* Mobile menu */}
+          {menuOpen && (
+            <div className="md:hidden border-t border-gray-100 py-4 space-y-1 bg-white">
+              {[
+                { label: "Ultime News AI", id: "news" },
+                { label: "Editoriale del Giorno", id: "editoriale-dinamico" },
+                { label: "Startup del Giorno", id: "startup-del-giorno" },
+                { label: "Reportage Settimanale", id: "reportage-1" },
+                { label: "Analisi di Mercato", id: "analisi-mercato" },
+                { label: "Newsletter", id: "newsletter" },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollTo(item.id)}
+                  className="block w-full text-left px-4 py-3 text-base font-medium text-gray-600 hover:text-[#1a1f2e] hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
       </div>
     </nav>
   );

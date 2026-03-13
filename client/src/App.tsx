@@ -6,6 +6,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Unsubscribe from "./pages/Unsubscribe";
+import NotificationPreferences from "./pages/NotificationPreferences";
 import NotFound from "./pages/NotFound";
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/admin" component={Admin} />
       <Route path="/unsubscribe" component={Unsubscribe} />
+      <Route path="/notifiche" component={NotificationPreferences} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

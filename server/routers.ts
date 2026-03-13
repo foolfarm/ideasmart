@@ -24,6 +24,10 @@ import {
   getLatestStartupOfDay,
   saveEditorial,
   saveStartupOfDay,
+  upsertNotificationPreference,
+  getNotificationPreferenceByToken,
+  updateNotificationPreferenceByToken,
+  getAllActiveNotificationPreferences,
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
@@ -41,6 +45,70 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 
 export const appRouter = router({
   system: systemRouter,
+
+  // ── Notification Preferences (public) ─────────────────────────────────────
+  notifications: router({
+    // Salva o aggiorna le preferenze di notifica
+    savePreferences: publicProcedure
+      .input(z.object({
+        email: z.string().email("Email non valida"),
+        name: z.string().optional(),
+        notifyNews: z.boolean().optional(),
+        notifyEditorial: z.boolean().optional(),
+        notifyStartup: z.boolean().optional(),
+        notifyReportage: z.boolean().optional(),
+        notifyMarket: z.boolean().optional(),
+        frequency: z.enum(["daily", "weekly", "realtime"]).optional(),
+        categories: z.array(z.string()).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const pref = await upsertNotificationPreference(input);
+        return {
+          success: true,
+          prefsToken: pref?.prefsToken ?? null,
+          message: "Preferenze salvate con successo",
+        };
+      }),
+
+    // Recupera le preferenze tramite token (per pagina gestione)
+    getByToken: publicProcedure
+      .input(z.object({ token: z.string().min(10) }))
+      .query(async ({ input }) => {
+        const pref = await getNotificationPreferenceByToken(input.token);
+        if (!pref) return null;
+        return {
+          email: pref.email,
+          name: pref.name,
+          notifyNews: pref.notifyNews,
+          notifyEditorial: pref.notifyEditorial,
+          notifyStartup: pref.notifyStartup,
+          notifyReportage: pref.notifyReportage,
+          notifyMarket: pref.notifyMarket,
+          frequency: pref.frequency,
+          categories: pref.categories ? JSON.parse(pref.categories) : [],
+          isActive: pref.isActive,
+        };
+      }),
+
+    // Aggiorna le preferenze tramite token (senza login)
+    updateByToken: publicProcedure
+      .input(z.object({
+        token: z.string().min(10),
+        notifyNews: z.boolean().optional(),
+        notifyEditorial: z.boolean().optional(),
+        notifyStartup: z.boolean().optional(),
+        notifyReportage: z.boolean().optional(),
+        notifyMarket: z.boolean().optional(),
+        frequency: z.enum(["daily", "weekly", "realtime"]).optional(),
+        categories: z.array(z.string()).optional(),
+        isActive: z.boolean().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { token, ...data } = input;
+        await updateNotificationPreferenceByToken(token, data);
+        return { success: true, message: "Preferenze aggiornate" };
+      }),
+  }),
 
   // ── Market Analysis (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   marketAnalysis: router({
