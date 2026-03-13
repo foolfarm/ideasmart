@@ -160,3 +160,9 @@
 
 - [x] Riscrivere template newsletter con sfondo bianco/chiaro stile editoriale landing page
 - [x] Inviare email di prova newsletter chiara a ac@acinelli.com
+
+## Nuovi task (13 Mar 2026 — Fix Newsletter Chiara definitivo)
+
+- [x] Identificato problema: script di prova usava template HTML inline scuro separato da buildFullNewsletterHtml
+- [x] Riscritto completamente scripts/send-test-newsletter.mjs con palette chiara (sfondo bianco, testo navy)
+- [x] Inviata nuova email di prova chiara a ac@acinelli.com
