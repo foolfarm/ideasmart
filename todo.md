@@ -93,3 +93,13 @@
 - [ ] Ottimizzare editoriale, startup del giorno, reportage e analisi di mercato per mobile
 - [ ] Ottimizzare newsletter section e footer per mobile
 - [ ] Aggiornare index.css con font base più grandi
+
+## Nuovi task (13 Mar 2026 — Newsletter iscrizione)
+
+- [ ] Schema DB: tabella newsletter_subscribers (email, nome, stato, token conferma)
+- [ ] Funzioni DB: saveSubscriber, getSubscriberByEmail, confirmSubscriber, unsubscribe
+- [ ] tRPC procedure: newsletter.subscribe, newsletter.confirm, newsletter.unsubscribe
+- [ ] Email di conferma iscrizione via SendGrid
+- [ ] Sezione newsletter nella landing page con form email + nome
+- [ ] Pagina di conferma iscrizione (/newsletter/confirm)
+- [ ] Admin dashboard: lista iscritti newsletter con statistiche

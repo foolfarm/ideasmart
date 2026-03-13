@@ -991,84 +991,166 @@ export default function Home() {
       <MarketAnalysisSection />
 
       {/* ── NEWSLETTER SIGNUP ──────────────────────────────────────── */}
-      <section id="newsletter" className="border-t" style={{ borderColor: C.border, background: "#fff" }}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <FadeUp>
-              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}30`, background: C.tealLight }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
-              <span className="editorial-tag" style={{ color: C.teal }}>Newsletter Quotidiana</span>
-            </div>
-            <h2 className="text-4xl font-black mb-4" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
-              Ricevi il meglio dell'AI
-              <br />
-              <span style={{ color: C.teal }}>ogni giorno nella tua inbox.</span>
-            </h2>
-            <p className="text-base mb-10 leading-relaxed" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
-              News AI, editoriale, startup emergenti e analisi di mercato aggiornate ogni giorno.
-              Personalizza cosa vuoi ricevere e con quale frequenza. Nessuno spam.
-            </p>
+      {/* ── NEWSLETTER ────────────────────────────────────────────────────────── */}
+      <section id="newsletter" style={{ background: C.navy, position: "relative", overflow: "hidden" }}>
+        {/* Decorative background elements */}
+        <div style={{ position: "absolute", top: 0, right: 0, width: "40%", height: "100%", background: `radial-gradient(ellipse at top right, ${C.teal}15 0%, transparent 70%)`, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: 0, width: "30%", height: "60%", background: `radial-gradient(ellipse at bottom left, ${C.orange}10 0%, transparent 70%)`, pointerEvents: "none" }} />
 
-            {!subscribed ? (
-              <form onSubmit={handleSubscribe} className="flex flex-col gap-3 max-w-md mx-auto">
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Il tuo nome (opzionale)"
-                  className="w-full px-4 py-3 rounded-lg text-sm border focus:outline-none transition-colors"
-                  style={{ borderColor: C.border, background: C.surface1, color: C.navy, fontFamily: "'DM Sans', sans-serif" }}
-                  onFocus={e => (e.target.style.borderColor = C.teal)}
-                  onBlur={e => (e.target.style.borderColor = C.border)}
-                />
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="La tua email aziendale"
-                    required
-                    className="flex-1 px-4 py-3 rounded-lg text-sm border focus:outline-none transition-colors"
-                    style={{ borderColor: C.border, background: C.surface1, color: C.navy, fontFamily: "'DM Sans', sans-serif" }}
-                    onFocus={e => (e.target.style.borderColor = C.teal)}
-                    onBlur={e => (e.target.style.borderColor = C.border)}
-                  />
-                  <button
-                    type="submit"
-                    disabled={subscribeMutation.isPending}
-                    className="px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed text-white"
-                    style={{ background: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
-                  >
-                    {subscribeMutation.isPending ? "Iscrizione..." : "Abbonati gratis →"}
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="flex items-center justify-center gap-3 p-4 rounded-xl border" style={{ background: C.tealLight, borderColor: `${C.teal}30` }}>
-                <span style={{ color: C.teal }}>✓</span>
-                <p className="text-sm" style={{ color: C.navy, fontFamily: "'DM Sans', sans-serif" }}>
-                  Perfetto! Ti invieremo la prossima analisi mensile.
-                </p>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+            {/* ── Left column: copy ── */}
+            <FadeUp>
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border" style={{ borderColor: `${C.teal}40`, background: `${C.teal}15` }}>
+                <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: C.teal }} />
+                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>Newsletter Gratuita</span>
               </div>
-            )}
 
-            <p className="text-sm mt-4" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
-              Gratuita · Aggiornata ogni giorno · Nessuno spam · Disiscrizione in un click
-            </p>
+              <h2 className="text-4xl sm:text-5xl font-black mb-6 leading-tight" style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
+                L'AI che conta,
+                <br />
+                <span style={{ color: C.teal }}>ogni giorno.</span>
+              </h2>
 
-            {/* Pulsante personalizza notifiche */}
-            <div className="mt-6 pt-6 border-t" style={{ borderColor: C.border }}>
-              <p className="text-xs mb-3" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
-                Già iscritto? Personalizza cosa vuoi ricevere.
+              <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.92)", fontFamily: "'DM Sans', sans-serif" }}>
+                Unisciti a oltre <strong style={{ color: "#fff" }}>1.800 professionisti</strong> che ogni settimana ricevono
+                la selezione editoriale IDEASMART: news AI, startup emergenti, analisi di mercato e reportage esclusivi.
               </p>
-              <a
-                href="/notifiche"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all hover:scale-105"
-                style={{ borderColor: `${C.teal}40`, color: C.teal, background: C.tealLight, fontFamily: "'DM Sans', sans-serif" }}
-              >
-                🔔 Gestisci le tue preferenze di notifica
-              </a>
-            </div>
-          </FadeUp>
+
+              {/* What you get */}
+              <div className="space-y-3 mb-8">
+                {[
+                  { icon: "◆", label: "20+ news AI selezionate ogni giorno" },
+                  { icon: "◆", label: "Editoriale sui trend AI più rilevanti" },
+                  { icon: "◆", label: "Startup del giorno con AI Score" },
+                  { icon: "◆", label: "4 reportage su startup italiane ogni settimana" },
+                  { icon: "◆", label: "Analisi di mercato da CB Insights, Sifted e altri" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <span className="text-xs flex-shrink-0" style={{ color: C.teal }}>✓</span>
+                    <span className="text-base" style={{ color: "rgba(255,255,255,0.95)", fontFamily: "'DM Sans', sans-serif" }}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social proof stats */}
+              <div className="flex flex-wrap gap-6">
+                {[
+                  { value: "1.800+", label: "Iscritti attivi" },
+                  { value: "100%", label: "Gratuita" },
+                  { value: "0", label: "Spam" },
+                ].map((stat, i) => (
+                  <div key={i}>
+                    <div className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>{stat.value}</div>
+                    <div className="text-sm" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}>{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </FadeUp>
+
+            {/* ── Right column: form ── */}
+            <FadeUp delay={0.15}>
+              <div className="rounded-2xl p-8 sm:p-10" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid rgba(255,255,255,0.12)`, backdropFilter: "blur(10px)" }}>
+
+                {!subscribed ? (
+                  <>
+                    <h3 className="text-2xl font-black mb-2" style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
+                      Iscriviti gratis
+                    </h3>
+                    <p className="text-base mb-6" style={{ color: "rgba(255,255,255,0.85)", fontFamily: "'DM Sans', sans-serif" }}>
+                      Nessuna carta di credito. Disiscrizione in un click.
+                    </p>
+
+                    <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold mb-2" style={{ color: "rgba(255,255,255,0.8)", fontFamily: "'DM Sans', sans-serif" }}>Nome</label>
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Il tuo nome"
+                          className="w-full px-4 py-3.5 rounded-xl text-base border focus:outline-none transition-all"
+                          style={{
+                            borderColor: "rgba(255,255,255,0.2)",
+                            background: "rgba(255,255,255,0.08)",
+                            color: "#fff",
+                            fontFamily: "'DM Sans', sans-serif"
+                          }}
+                          onFocus={e => { e.target.style.borderColor = C.teal; e.target.style.background = "rgba(255,255,255,0.12)"; }}
+                          onBlur={e => { e.target.style.borderColor = "rgba(255,255,255,0.2)"; e.target.style.background = "rgba(255,255,255,0.08)"; }}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold mb-2" style={{ color: "rgba(255,255,255,0.8)", fontFamily: "'DM Sans', sans-serif" }}>Email *</label>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="la.tua@email.com"
+                          required
+                          className="w-full px-4 py-3.5 rounded-xl text-base border focus:outline-none transition-all"
+                          style={{
+                            borderColor: "rgba(255,255,255,0.2)",
+                            background: "rgba(255,255,255,0.08)",
+                            color: "#fff",
+                            fontFamily: "'DM Sans', sans-serif"
+                          }}
+                          onFocus={e => { e.target.style.borderColor = C.teal; e.target.style.background = "rgba(255,255,255,0.12)"; }}
+                          onBlur={e => { e.target.style.borderColor = "rgba(255,255,255,0.2)"; e.target.style.background = "rgba(255,255,255,0.08)"; }}
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={subscribeMutation.isPending}
+                        className="w-full py-4 rounded-xl text-base font-black transition-all hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+                        style={{ background: C.teal, color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+                      >
+                        {subscribeMutation.isPending ? "Iscrizione in corso..." : "Iscriviti alla Newsletter →"}
+                      </button>
+                    </form>
+
+                    <p className="text-xs mt-4 text-center" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans', sans-serif" }}>
+                      Cliccando accetti la nostra Privacy Policy. Nessuno spam, promesso.
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: `${C.teal}20`, border: `2px solid ${C.teal}` }}>
+                      <span className="text-2xl" style={{ color: C.teal }}>✓</span>
+                    </div>
+                    <h3 className="text-2xl font-black mb-2" style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
+                      Benvenuto in IDEASMART!
+                    </h3>
+                    <p className="text-base mb-6" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'DM Sans', sans-serif" }}>
+                      Iscrizione confermata. Riceverai la prossima newsletter nella tua inbox.
+                    </p>
+                    <a
+                      href="/notifiche"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold border transition-all hover:scale-105"
+                      style={{ borderColor: `${C.teal}50`, color: C.teal, background: `${C.teal}15`, fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                      Personalizza le tue preferenze →
+                    </a>
+                  </div>
+                )}
+
+                {/* Personalizza link */}
+                {!subscribed && (
+                  <div className="mt-5 pt-5 border-t" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
+                    <p className="text-xs text-center" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans', sans-serif" }}>
+                      Già iscritto?{" "}
+                      <a href="/notifiche" className="underline transition-colors hover:opacity-80" style={{ color: C.teal }}>
+                        Gestisci le tue preferenze
+                      </a>
+                    </p>
+                  </div>
+                )}
+              </div>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
