@@ -1012,6 +1012,8 @@ export function buildFullNewsletterHtml(opts: {
             <p style="font-size:11px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
               <a href="${unsubLink}" style="color:${ORANGE};text-decoration:underline;font-weight:700;">Annulla iscrizione</a>
               &nbsp;&middot;&nbsp;
+              <a href="${baseUrl}/privacy" style="color:${MUTED};text-decoration:underline;">Privacy Policy &amp; Disclaimer</a>
+              &nbsp;&middot;&nbsp;
               <a href="${baseUrl}" style="color:${TEAL};text-decoration:none;">ideasmart.ai</a>
               &nbsp;&middot;&nbsp;
               <a href="mailto:info@ideasmart.ai" style="color:${TEAL};text-decoration:none;">info@ideasmart.ai</a>

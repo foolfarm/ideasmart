@@ -1229,9 +1229,21 @@ export default function Home() {
             <p className="text-sm" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>
               © 2026 IDEASMART — Startup di Tecnologia &amp; Innovazione. Tutti i diritti riservati.
             </p>
-            <p className="text-sm" style={{ color: C.muted, fontFamily: "'JetBrains Mono', monospace" }}>
-              AI for Business · Aggiornato il {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
+            <div className="flex items-center gap-4">
+              <a
+                href="/privacy"
+                className="text-sm transition-colors"
+                style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}
+                onMouseEnter={e => (e.currentTarget.style.color = C.teal)}
+                onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
+              >
+                Privacy Policy &amp; Disclaimer
+              </a>
+              <span style={{ color: C.border }}>·</span>
+              <p className="text-sm" style={{ color: C.muted, fontFamily: "'JetBrains Mono', monospace" }}>
+                AI for Business · Aggiornato il {new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </p>
+            </div>
           </div>
         </div>
       </footer>

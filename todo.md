@@ -182,3 +182,11 @@
 - [x] Aggiungere procedure tRPC admin: getNewsletterCampaignStats, getSubscribersWithTracking
 - [x] Creare pagina admin /admin/newsletter-performance con statistiche campagne e tabella iscritti
 - [x] Aggiungere link "Performance" nell'header della dashboard admin
+
+## Nuovi task (13 Mar 2026 — Privacy, GDPR, Mittente)
+
+- [x] Aggiornare SENDGRID_FROM_NAME a "AI4Business News by IDEASMART"
+- [x] Creare pagina /privacy con Privacy Policy e Disclaimer GDPR completi
+- [x] Aggiungere link /privacy nel footer della landing page
+- [x] Aggiungere link /privacy nel footer delle email newsletter
+- [x] Inviare newsletter di prova con tracking attivo a ac@acinelli.com
