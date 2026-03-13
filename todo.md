@@ -155,3 +155,8 @@
 
 - [x] Riscrivere template HTML newsletter con stile dark navy identico alla landing page
 - [x] Inviare email di prova con nuovo template a ac@acinelli.com
+
+## Nuovi task (13 Mar 2026 — Newsletter Chiara)
+
+- [x] Riscrivere template newsletter con sfondo bianco/chiaro stile editoriale landing page
+- [x] Inviare email di prova newsletter chiara a ac@acinelli.com

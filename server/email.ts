@@ -651,49 +651,70 @@ export function buildFullNewsletterHtml(opts: {
   const baseUrl = `https://ideasmart.ai`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
-  // ── Palette brand identica alla landing page ──
-  const TEAL   = "#00e5c8";   // ciano primario
-  const NAVY   = "#0a0f1e";   // sfondo principale
-  const DARK   = "#060b18";   // sfondo più scuro
-  const ORANGE = "#ff5500";   // accento arancio
-  const BLUE   = "#0066ff";   // accento blu
-  const PURPLE = "#8b5cf6";   // accento viola
-  const GREEN  = "#10b981";   // accento verde
+  // ── Palette brand CHIARA — identica alla landing page ──
+  const TEAL   = "#00b4a0";   // teal primario (landing page)
+  const TEAL_L = "#e6f7f5";   // teal light bg
+  const NAVY   = "#1a1f2e";   // testo primario scuro
+  const ORANGE = "#e84f00";   // accento arancio
+  const ORANGE_L = "#fff2ec"; // arancio light bg
+  const BLUE   = "#1a56db";   // accento blu
+  const BLUE_L = "#eff4ff";   // blu light bg
+  const SLATE  = "#4b5563";   // testo secondario
+  const MUTED  = "#9ca3af";   // testo muted
+  const BORDER = "#e2e5ed";   // bordi
+  const SURF1  = "#f8f9fc";   // superficie 1
+  const SURF2  = "#f1f3f8";   // superficie 2
+  const WHITE  = "#ffffff";   // sfondo bianco
+  const PURPLE = "#7c3aed";   // viola
+  const PURPLE_L = "#f5f3ff"; // viola light
+  const GREEN  = "#059669";   // verde
+  const GREEN_L = "#ecfdf5";  // verde light
 
-  const catColors: Record<string, string> = {
-    "Modelli Generativi": TEAL, "AI Generativa": TEAL, "AI Agentiva": TEAL,
-    "Robot & AI Fisica": TEAL, "AI & Startup Italiane": TEAL,
-    "AI & Hardware": BLUE, "Big Tech": BLUE, "Internazionalizzazione": BLUE,
-    "AI & Difesa": ORANGE, "Startup & Funding": ORANGE, "Ricerca & Innovazione": ORANGE,
-    "Regolamentazione AI": "#f59e0b", "AI & Lavoro": PURPLE,
-    "AI & Salute": GREEN, "AI & Finanza": BLUE,
+  const catColors: Record<string, { text: string; bg: string }> = {
+    "Modelli Generativi": { text: TEAL, bg: TEAL_L },
+    "AI Generativa":      { text: TEAL, bg: TEAL_L },
+    "AI Agentiva":        { text: TEAL, bg: TEAL_L },
+    "Robot & AI Fisica":  { text: TEAL, bg: TEAL_L },
+    "AI & Startup Italiane": { text: TEAL, bg: TEAL_L },
+    "AI & Hardware":      { text: BLUE, bg: BLUE_L },
+    "Big Tech":           { text: BLUE, bg: BLUE_L },
+    "Internazionalizzazione": { text: BLUE, bg: BLUE_L },
+    "AI & Difesa":        { text: ORANGE, bg: ORANGE_L },
+    "Startup & Funding":  { text: ORANGE, bg: ORANGE_L },
+    "Ricerca & Innovazione": { text: ORANGE, bg: ORANGE_L },
+    "Regolamentazione AI": { text: "#b45309", bg: "#fffbeb" },
+    "AI & Lavoro":        { text: PURPLE, bg: PURPLE_L },
+    "AI & Salute":        { text: GREEN, bg: GREEN_L },
+    "AI & Finanza":       { text: BLUE, bg: BLUE_L },
   };
-  const getColor = (cat: string) => catColors[cat] ?? TEAL;
+  const getColor = (cat: string) => catColors[cat]?.text ?? TEAL;
+  const getBg    = (cat: string) => catColors[cat]?.bg   ?? TEAL_L;
 
-  // ── Sezione news — stile editoriale dark ──
+  // ── Sezione news — stile editoriale CHIARO ──
   const newsHtml = news.map((item, idx) => {
     const num = String(idx + 1).padStart(2, "0");
     const color = getColor(item.category);
+    const bgPill = getBg(item.category);
     const isEven = idx % 2 === 1;
     return `
   <tr>
-    <td style="padding:0;border-bottom:1px solid rgba(255,255,255,0.05);background:${isEven ? "rgba(255,255,255,0.015)" : "transparent"};">
+    <td style="padding:0;border-bottom:1px solid ${BORDER};background:${isEven ? SURF1 : WHITE};">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td width="52" valign="top" style="padding:16px 0 16px 24px;">
-            <div style="width:36px;height:36px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:table;">
+          <td width="52" valign="top" style="padding:16px 0 16px 20px;">
+            <div style="width:32px;height:32px;border-radius:6px;background:${bgPill};display:table;">
               <div style="display:table-cell;vertical-align:middle;text-align:center;">
-                <span style="font-size:12px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${num}</span>
+                <span style="font-size:11px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${num}</span>
               </div>
             </div>
           </td>
-          <td valign="top" style="padding:16px 24px 16px 12px;">
+          <td valign="top" style="padding:16px 20px 16px 10px;">
             <div style="margin-bottom:5px;">
-              <span style="display:inline-block;font-size:9px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.12em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border:1px solid ${color};border-radius:3px;padding:2px 7px;">${item.category}</span>
+              <span style="display:inline-block;font-size:9px;font-weight:700;color:${color};background:${bgPill};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border-radius:4px;padding:2px 8px;">${item.category}</span>
             </div>
-            <div style="font-size:14px;font-weight:800;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.35;margin-bottom:6px;">${item.title}</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.50);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">${item.summary}</div>
-            ${item.sourceName ? `<div style="margin-top:6px;"><span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">via </span>${item.sourceUrl ? `<a href="${item.sourceUrl}" style="font-size:10px;color:${color};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</a>` : `<span style="font-size:10px;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</span>`}</div>` : ""}
+            <div style="font-size:14px;font-weight:800;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.35;margin-bottom:5px;">${item.title}</div>
+            <div style="font-size:12px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.65;">${item.summary}</div>
+            ${item.sourceName ? `<div style="margin-top:5px;"><span style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">via </span>${item.sourceUrl ? `<a href="${item.sourceUrl}" style="font-size:10px;color:${color};text-decoration:none;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</a>` : `<span style="font-size:10px;color:${color};font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</span>`}</div>` : ""}
           </td>
         </tr>
       </table>
@@ -701,51 +722,50 @@ export function buildFullNewsletterHtml(opts: {
   </tr>`;
   }).join("");
 
-  // ── Sezione reportage — stile magazine dark ──
+  // ── Sezione reportage — stile magazine CHIARO ──
   const reportageHtml = reportages.map((rep, idx) => {
     const accentColors = [TEAL, ORANGE, BLUE, PURPLE];
+    const accentBgs    = [TEAL_L, ORANGE_L, BLUE_L, PURPLE_L];
     const color = accentColors[idx % 4];
+    const colorBg = accentBgs[idx % 4];
     const statsHtml = [
-      rep.stat1Value && rep.stat1Label ? `<td width="30%" align="center" style="background:rgba(255,255,255,0.04);border-radius:10px;padding:16px 8px;border:1px solid rgba(255,255,255,0.08);"><div style="font-size:26px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;margin-bottom:6px;">${rep.stat1Value}</div><div style="font-size:9px;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat1Label}</div></td>` : "",
-      rep.stat2Value && rep.stat2Label ? `<td width="4%"></td><td width="30%" align="center" style="background:rgba(255,255,255,0.04);border-radius:10px;padding:16px 8px;border:1px solid rgba(255,255,255,0.08);"><div style="font-size:26px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;margin-bottom:6px;">${rep.stat2Value}</div><div style="font-size:9px;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat2Label}</div></td>` : "",
-      rep.stat3Value && rep.stat3Label ? `<td width="4%"></td><td width="30%" align="center" style="background:rgba(255,255,255,0.04);border-radius:10px;padding:16px 8px;border:1px solid rgba(255,255,255,0.08);"><div style="font-size:26px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;margin-bottom:6px;">${rep.stat3Value}</div><div style="font-size:9px;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat3Label}</div></td>` : "",
+      rep.stat1Value && rep.stat1Label ? `<td width="30%" align="center" style="background:${colorBg};border-radius:10px;padding:16px 8px;border:1px solid ${BORDER};"><div style="font-size:26px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;margin-bottom:6px;">${rep.stat1Value}</div><div style="font-size:9px;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat1Label}</div></td>` : "",
+      rep.stat2Value && rep.stat2Label ? `<td width="4%"></td><td width="30%" align="center" style="background:${colorBg};border-radius:10px;padding:16px 8px;border:1px solid ${BORDER};"><div style="font-size:26px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;margin-bottom:6px;">${rep.stat2Value}</div><div style="font-size:9px;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat2Label}</div></td>` : "",
+      rep.stat3Value && rep.stat3Label ? `<td width="4%"></td><td width="30%" align="center" style="background:${colorBg};border-radius:10px;padding:16px 8px;border:1px solid ${BORDER};"><div style="font-size:26px;font-weight:900;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;margin-bottom:6px;">${rep.stat3Value}</div><div style="font-size:9px;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat3Label}</div></td>` : "",
     ].filter(Boolean).join("");
 
     return `
   <!-- REPORTAGE ${idx + 1}: ${rep.startupName} -->
   <tr>
-    <td style="padding:0;border-top:1px solid rgba(255,255,255,0.06);">
-      <!-- Label sezione -->
+    <td style="padding:0;border-top:1px solid ${BORDER};">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:${DARK};padding:10px 28px;">
-            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.15em;text-transform:uppercase;">REPORTAGE 0${idx + 1}</span>
-            <span style="font-size:9px;color:rgba(255,255,255,0.15);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &mdash; </span>
+          <td style="background:${SURF1};padding:10px 24px;">
+            <span style="font-size:9px;font-weight:700;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.15em;text-transform:uppercase;">REPORTAGE 0${idx + 1}</span>
+            <span style="font-size:9px;color:${BORDER};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &mdash; </span>
             <span style="font-size:9px;font-weight:700;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.15em;text-transform:uppercase;">${rep.category}</span>
           </td>
         </tr>
-        <!-- Headline con bordo sinistro colorato -->
         <tr>
-          <td style="padding:24px 28px 20px;border-left:4px solid ${color};background:rgba(255,255,255,0.015);">
-            <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.25;margin-bottom:8px;">${rep.headline}</div>
-            ${rep.subheadline ? `<div style="font-size:13px;color:rgba(255,255,255,0.45);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${rep.subheadline}</div>` : ""}
+          <td style="padding:22px 24px 18px;border-left:4px solid ${color};background:${colorBg};">
+            <div style="font-size:20px;font-weight:900;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.25;margin-bottom:7px;">${rep.headline}</div>
+            ${rep.subheadline ? `<div style="font-size:13px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${rep.subheadline}</div>` : ""}
           </td>
         </tr>
-        <!-- Body -->
         <tr>
-          <td style="padding:20px 28px;background:${NAVY};">
-            <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;">${rep.bodyText.replace(/\n/g, "<br>")}</p>
+          <td style="padding:18px 24px;background:${WHITE};">
+            <p style="font-size:13px;line-height:1.8;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">${rep.bodyText.replace(/\n/g, "<br>")}</p>
             ${rep.quote ? `
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:16px 0 20px;">
-              <tr><td style="border-left:3px solid ${color};padding:12px 18px;background:rgba(255,255,255,0.03);border-radius:0 8px 8px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 18px;">
+              <tr><td style="border-left:3px solid ${color};padding:10px 16px;background:${colorBg};border-radius:0 8px 8px 0;">
                 <span style="font-size:13px;font-style:italic;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">&ldquo;${rep.quote}&rdquo;</span>
               </td></tr>
             </table>` : ""}
-            ${statsHtml ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;"><tr>${statsHtml}</tr></table>` : ""}
+            ${statsHtml ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;"><tr>${statsHtml}</tr></table>` : ""}
             ${rep.websiteUrl || rep.ctaUrl ? `
             <table cellpadding="0" cellspacing="0" border="0">
-              <tr><td style="background:${color};border-radius:8px;padding:12px 28px;">
-                <a href="${rep.ctaUrl || rep.websiteUrl}" target="_blank" style="font-size:13px;font-weight:700;color:${NAVY};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.ctaLabel || "Scopri di più"} →</a>
+              <tr><td style="background:${color};border-radius:8px;padding:11px 26px;">
+                <a href="${rep.ctaUrl || rep.websiteUrl}" target="_blank" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.ctaLabel || "Scopri di più"} →</a>
               </td></tr>
             </table>` : ""}
           </td>
@@ -755,34 +775,34 @@ export function buildFullNewsletterHtml(opts: {
   </tr>`;
   }).join("");
 
-  // ── Sezione analisi di mercato — stile dark card ──
+  // ── Sezione analisi di mercato — stile CHIARO card ──
   const analysesHtml = analyses.map((a, idx) => {
     const accentColors = [TEAL, BLUE, ORANGE, PURPLE];
+    const accentBgs    = [TEAL_L, BLUE_L, ORANGE_L, PURPLE_L];
     const color = accentColors[idx % 4];
+    const colorBg = accentBgs[idx % 4];
     const dataPoints = [a.dataPoint1, a.dataPoint2, a.dataPoint3].filter(Boolean);
     return `
   <tr>
     <td style="padding:0 0 12px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(255,255,255,0.07);border-radius:10px;overflow:hidden;">
-        <!-- Header card analisi -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid ${BORDER};border-radius:10px;overflow:hidden;">
         <tr>
-          <td style="background:rgba(255,255,255,0.03);padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <td style="background:${colorBg};padding:12px 20px;border-bottom:1px solid ${BORDER};">
             <span style="font-size:9px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.12em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${a.category}</span>
-            <span style="font-size:9px;color:rgba(255,255,255,0.20);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &bull; ${a.source}</span>
+            <span style="font-size:9px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &bull; ${a.source}</span>
           </td>
         </tr>
-        <!-- Contenuto -->
         <tr>
-          <td style="padding:16px 20px 18px;">
-            <div style="font-size:15px;font-weight:800;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.35;margin-bottom:10px;">${a.title}</div>
-            <div style="font-size:12px;line-height:1.7;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:${dataPoints.length > 0 ? "14px" : "0"}">${a.summary}</div>
+          <td style="padding:16px 20px 18px;background:${WHITE};">
+            <div style="font-size:15px;font-weight:800;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.35;margin-bottom:8px;">${a.title}</div>
+            <div style="font-size:12px;line-height:1.7;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:${dataPoints.length > 0 ? "12px" : "0"}">${a.summary}</div>
             ${dataPoints.length > 0 ? `
             <table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
               <tr>
-                ${dataPoints.map(dp => `<td style="padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:6px;border:1px solid rgba(255,255,255,0.07);margin-right:8px;"><span style="font-size:11px;font-weight:700;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${dp}</span></td><td width="8"></td>`).join("")}
+                ${dataPoints.map(dp => `<td style="padding:7px 10px;background:${colorBg};border-radius:6px;border:1px solid ${BORDER};"><span style="font-size:11px;font-weight:700;color:${color};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${dp}</span></td><td width="8"></td>`).join("")}
               </tr>
             </table>` : ""}
-            ${a.keyInsight ? `<div style="margin-top:12px;padding:10px 14px;border-left:3px solid ${color};background:rgba(255,255,255,0.02);border-radius:0 6px 6px 0;"><span style="font-size:12px;font-style:italic;color:rgba(255,255,255,0.40);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&ldquo;${a.keyInsight}&rdquo;</span></div>` : ""}
+            ${a.keyInsight ? `<div style="margin-top:10px;padding:10px 14px;border-left:3px solid ${color};background:${colorBg};border-radius:0 6px 6px 0;"><span style="font-size:12px;font-style:italic;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&ldquo;${a.keyInsight}&rdquo;</span></div>` : ""}
           </td>
         </tr>
       </table>
@@ -797,64 +817,59 @@ export function buildFullNewsletterHtml(opts: {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI4Business News — ${dateLabel}</title>
 </head>
-<body style="margin:0;padding:0;background:${DARK};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:${SURF2};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DARK};padding:24px 0 48px;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${SURF2};padding:24px 0 48px;">
   <tr>
     <td align="center">
-      <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:${NAVY};">
+      <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:${WHITE};border:1px solid ${BORDER};border-radius:12px;overflow:hidden;">
 
         ${isTest ? `<!-- TEST BANNER -->
         <tr><td style="background:${ORANGE};padding:10px 28px;text-align:center;"><span style="font-size:11px;font-weight:700;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.12em;">&#9888; EMAIL DI PROVA — Non distribuire</span></td></tr>` : ""}
 
-        <!-- TOP BAR — striscia ciano sottile -->
-        <tr>
-          <td style="background:${TEAL};padding:0;height:3px;"></td>
-        </tr>
+        <!-- TOP BAR — striscia teal -->
+        <tr><td style="background:${TEAL};padding:0;height:4px;"></td></tr>
 
         <!-- HEADER BRAND -->
         <tr>
-          <td style="background:${DARK};padding:18px 28px;">
+          <td style="background:${WHITE};padding:18px 24px;border-bottom:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td valign="middle">
-                  <span style="font-size:11px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">IDEA<span style="color:${TEAL};">SMART</span></span>
-                  <span style="font-size:9px;color:rgba(255,255,255,0.30);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;"> &nbsp;&bull;&nbsp; AI for Business</span>
+                  <span style="font-size:13px;font-weight:900;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;">IDEA<span style="color:${TEAL};">SMART</span></span>
+                  <span style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;"> &nbsp;&bull;&nbsp; AI for Business</span>
                 </td>
                 <td align="right" valign="middle">
-                  <span style="font-size:9px;color:rgba(255,255,255,0.30);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">${dateLabel}</span>
+                  <span style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${dateLabel}</span>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- HERO HEADER — identico alla landing page -->
+        <!-- HERO HEADER — sfondo teal chiaro -->
         <tr>
-          <td style="background:${NAVY};padding:40px 28px 32px;border-bottom:1px solid rgba(255,255,255,0.06);">
-            <!-- Pill badge -->
-            <div style="display:inline-block;margin-bottom:20px;">
-              <span style="font-size:9px;font-weight:700;color:${TEAL};text-transform:uppercase;letter-spacing:0.15em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border:1px solid ${TEAL};border-radius:20px;padding:4px 12px;">&#9670; Osservatorio AI Italiano &bull; Aggiornato ogni giorno</span>
+          <td style="background:${TEAL_L};padding:36px 24px 28px;border-bottom:1px solid ${BORDER};">
+            <div style="display:inline-block;margin-bottom:14px;">
+              <span style="font-size:9px;font-weight:700;color:${TEAL};text-transform:uppercase;letter-spacing:0.15em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border:1px solid ${TEAL};border-radius:20px;padding:3px 12px;">&#9670; Osservatorio AI Italiano &bull; Aggiornato ogni giorno</span>
             </div>
-            <!-- Titolo hero -->
-            <div style="font-size:36px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.1;margin-bottom:6px;">
+            <div style="font-size:34px;font-weight:900;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.1;margin-bottom:5px;">
               AI4Business <span style="color:${TEAL};">News</span>
             </div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:24px;letter-spacing:0.05em;">by IDEASMART &mdash; Il Quotidiano AI Italiano</div>
-            <!-- Contatori edizione — stile landing page -->
+            <div style="font-size:13px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:22px;">by IDEASMART &mdash; Il Quotidiano AI Italiano</div>
             <table cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="padding-right:24px;">
                   <div style="font-size:24px;font-weight:900;color:${TEAL};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;">${news.length}</div>
-                  <div style="font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">News AI</div>
+                  <div style="font-size:9px;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">News AI</div>
                 </td>
-                ${reportages.length > 0 ? `<td style="padding-right:24px;border-left:1px solid rgba(255,255,255,0.08);padding-left:24px;">
+                ${reportages.length > 0 ? `<td style="padding-right:24px;border-left:1px solid ${BORDER};padding-left:24px;">
                   <div style="font-size:24px;font-weight:900;color:${ORANGE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;">${reportages.length}</div>
-                  <div style="font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Reportage</div>
+                  <div style="font-size:9px;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Reportage</div>
                 </td>` : ""}
-                ${analyses.length > 0 ? `<td style="border-left:1px solid rgba(255,255,255,0.08);padding-left:24px;">
+                ${analyses.length > 0 ? `<td style="border-left:1px solid ${BORDER};padding-left:24px;">
                   <div style="font-size:24px;font-weight:900;color:${BLUE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;">${analyses.length}</div>
-                  <div style="font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Analisi</div>
+                  <div style="font-size:9px;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Analisi</div>
                 </td>` : ""}
               </tr>
             </table>
@@ -864,24 +879,21 @@ export function buildFullNewsletterHtml(opts: {
         ${editorial ? `
         <!-- EDITORIALE -->
         <tr>
-          <td style="border-top:1px solid rgba(255,255,255,0.06);">
-            <!-- Label -->
+          <td style="border-top:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr><td style="background:${DARK};padding:10px 28px;">
-                <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">EDITORIALE</span>
-                <span style="font-size:9px;color:rgba(255,255,255,0.15);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &mdash; </span>
+              <tr><td style="background:${SURF1};padding:10px 24px;">
+                <span style="font-size:9px;font-weight:700;color:${MUTED};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">EDITORIALE</span>
+                <span style="font-size:9px;color:${BORDER};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &mdash; </span>
                 <span style="font-size:9px;font-weight:700;color:${TEAL};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Analisi del Giorno</span>
               </td></tr>
-              <!-- Headline con bordo ciano -->
-              <tr><td style="padding:24px 28px 20px;border-left:4px solid ${TEAL};background:rgba(0,229,200,0.04);">
+              <tr><td style="padding:22px 24px 18px;border-left:4px solid ${TEAL};background:${TEAL_L};">
                 ${editorial.keyTrend ? `<div style="font-size:9px;font-weight:700;color:${TEAL};text-transform:uppercase;letter-spacing:0.12em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:10px;">&#9670; ${editorial.keyTrend}</div>` : ""}
-                <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.25;margin-bottom:8px;">${editorial.title}</div>
-                ${editorial.subtitle ? `<div style="font-size:13px;color:rgba(255,255,255,0.40);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${editorial.subtitle}</div>` : ""}
+                <div style="font-size:20px;font-weight:900;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.25;margin-bottom:7px;">${editorial.title}</div>
+                ${editorial.subtitle ? `<div style="font-size:13px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${editorial.subtitle}</div>` : ""}
               </td></tr>
-              <!-- Body -->
-              <tr><td style="padding:20px 28px;background:${NAVY};">
-                <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;">${editorial.body.replace(/\n/g, "<br>")}</p>
-                ${editorial.authorNote ? `<p style="font-size:12px;font-style:italic;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:12px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">${editorial.authorNote}</p>` : ""}
+              <tr><td style="padding:18px 24px;background:${WHITE};">
+                <p style="font-size:13px;line-height:1.8;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;">${editorial.body.replace(/\n/g, "<br>")}</p>
+                ${editorial.authorNote ? `<p style="font-size:12px;font-style:italic;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:10px 0 0;padding-top:10px;border-top:1px solid ${BORDER};">${editorial.authorNote}</p>` : ""}
               </td></tr>
             </table>
           </td>
@@ -890,24 +902,24 @@ export function buildFullNewsletterHtml(opts: {
         ${startup ? `
         <!-- STARTUP DEL GIORNO -->
         <tr>
-          <td style="border-top:1px solid rgba(255,255,255,0.06);">
+          <td style="border-top:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr><td style="background:${DARK};padding:10px 28px;">
-                <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">STARTUP DEL GIORNO</span>
-                <span style="font-size:9px;color:rgba(255,255,255,0.15);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &mdash; </span>
+              <tr><td style="background:${SURF1};padding:10px 24px;">
+                <span style="font-size:9px;font-weight:700;color:${MUTED};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">STARTUP DEL GIORNO</span>
+                <span style="font-size:9px;color:${BORDER};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"> &mdash; </span>
                 <span style="font-size:9px;font-weight:700;color:${ORANGE};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${startup.category}</span>
               </td></tr>
-              <tr><td style="padding:24px 28px 20px;border-left:4px solid ${ORANGE};background:rgba(255,85,0,0.04);">
-                <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.2;margin-bottom:6px;">${startup.name}</div>
-                <div style="font-size:13px;color:rgba(255,255,255,0.40);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${startup.tagline}</div>
+              <tr><td style="padding:22px 24px 18px;border-left:4px solid ${ORANGE};background:${ORANGE_L};">
+                <div style="font-size:20px;font-weight:900;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.2;margin-bottom:5px;">${startup.name}</div>
+                <div style="font-size:13px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${startup.tagline}</div>
               </td></tr>
-              <tr><td style="padding:20px 28px;background:${NAVY};">
-                <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;">${startup.description}</p>
-                <p style="font-size:11px;font-weight:700;color:${ORANGE};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 6px;">Perché oggi?</p>
-                <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;">${startup.whyToday}</p>
-                ${startup.funding ? `<div style="margin-bottom:16px;"><span style="font-size:11px;font-weight:700;color:${ORANGE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; Funding: ${startup.funding}</span></div>` : ""}
-                ${startup.aiScore ? `<div style="margin-bottom:16px;"><span style="font-size:11px;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">AI Score: <strong style="color:${ORANGE};">${startup.aiScore}/100</strong></span></div>` : ""}
-                ${startup.websiteUrl ? `<table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:${ORANGE};border-radius:8px;padding:12px 28px;"><a href="${startup.websiteUrl}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito →</a></td></tr></table>` : ""}
+              <tr><td style="padding:18px 24px;background:${WHITE};">
+                <p style="font-size:13px;line-height:1.8;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;">${startup.description}</p>
+                <p style="font-size:11px;font-weight:700;color:${ORANGE};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 5px;">Perché oggi?</p>
+                <p style="font-size:13px;line-height:1.7;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">${startup.whyToday}</p>
+                ${startup.funding ? `<div style="margin-bottom:12px;"><span style="font-size:11px;font-weight:700;color:${ORANGE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; Funding: ${startup.funding}</span></div>` : ""}
+                ${startup.aiScore ? `<div style="margin-bottom:14px;"><span style="font-size:11px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">AI Score: <strong style="color:${ORANGE};">${startup.aiScore}/100</strong></span></div>` : ""}
+                ${startup.websiteUrl ? `<table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:${ORANGE};border-radius:8px;padding:11px 26px;"><a href="${startup.websiteUrl}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito →</a></td></tr></table>` : ""}
               </td></tr>
             </table>
           </td>
@@ -916,28 +928,28 @@ export function buildFullNewsletterHtml(opts: {
         <!-- REPORTAGE -->
         ${reportages.length > 0 ? `
         <tr>
-          <td style="border-top:1px solid rgba(255,255,255,0.06);">
+          <td style="border-top:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr><td style="background:${DARK};padding:14px 28px;">
+              <tr><td style="background:${SURF1};padding:12px 24px;">
                 <span style="font-size:9px;font-weight:700;color:${TEAL};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Reportage Startup AI Italiane</span>
               </td></tr>
             </table>
           </td>
         </tr>
-        <tr><td style="padding:0 28px 8px;background:${NAVY};"><table width="100%" cellpadding="0" cellspacing="0" border="0">${reportageHtml}</table></td></tr>` : ""}
+        <tr><td style="padding:0;background:${WHITE};"><table width="100%" cellpadding="0" cellspacing="0" border="0">${reportageHtml}</table></td></tr>` : ""}
 
         <!-- NEWS AI -->
         <tr>
-          <td style="border-top:1px solid rgba(255,255,255,0.06);">
+          <td style="border-top:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr><td style="background:${DARK};padding:14px 28px;">
+              <tr><td style="background:${SURF1};padding:12px 24px;">
                 <span style="font-size:9px;font-weight:700;color:${TEAL};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Le ${news.length} Notizie AI del Giorno</span>
               </td></tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td style="background:${NAVY};">
+          <td style="background:${WHITE};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               ${newsHtml}
             </table>
@@ -947,16 +959,16 @@ export function buildFullNewsletterHtml(opts: {
         <!-- ANALISI DI MERCATO -->
         ${analyses.length > 0 ? `
         <tr>
-          <td style="border-top:1px solid rgba(255,255,255,0.06);">
+          <td style="border-top:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr><td style="background:${DARK};padding:14px 28px;">
+              <tr><td style="background:${SURF1};padding:12px 24px;">
                 <span style="font-size:9px;font-weight:700;color:${BLUE};letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Analisi di Mercato AI</span>
               </td></tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td style="padding:20px 28px 12px;background:${NAVY};">
+          <td style="padding:16px 24px 8px;background:${WHITE};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               ${analysesHtml}
             </table>
@@ -985,23 +997,23 @@ export function buildFullNewsletterHtml(opts: {
 
         <!-- FOOTER -->
         <tr>
-          <td style="background:${DARK};padding:24px 28px 28px;border-top:1px solid rgba(255,255,255,0.05);">
-            <p style="font-size:11px;color:rgba(255,255,255,0.20);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;text-align:center;">
-              <strong style="color:rgba(255,255,255,0.35);">IDEA<span style="color:${TEAL};">SMART</span></strong> &mdash; AI for Business &bull; &copy; 2026
+          <td style="background:${SURF1};padding:24px 24px 28px;border-top:1px solid ${BORDER};">
+            <p style="font-size:11px;color:${NAVY};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;text-align:center;">
+              <strong>IDEA<span style="color:${TEAL};">SMART</span></strong> &mdash; AI for Business &bull; &copy; 2026
             </p>
-            <p style="font-size:10px;color:rgba(255,255,255,0.15);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;text-align:center;line-height:1.7;">
+            <p style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;text-align:center;line-height:1.7;">
               Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter AI4Business News by IDEASMART.<br>
               Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
             </p>
             <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 14px;">
-              <tr><td style="border-top:1px solid rgba(255,255,255,0.05);font-size:0;line-height:0;">&nbsp;</td></tr>
+              <tr><td style="border-top:1px solid ${BORDER};font-size:0;line-height:0;">&nbsp;</td></tr>
             </table>
-            <p style="font-size:11px;color:rgba(255,255,255,0.18);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
+            <p style="font-size:11px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
               <a href="${unsubLink}" style="color:${ORANGE};text-decoration:underline;font-weight:700;">Annulla iscrizione</a>
               &nbsp;&middot;&nbsp;
-              <a href="${baseUrl}" style="color:rgba(255,255,255,0.30);text-decoration:none;">ideasmart.ai</a>
+              <a href="${baseUrl}" style="color:${TEAL};text-decoration:none;">ideasmart.ai</a>
               &nbsp;&middot;&nbsp;
-              <a href="mailto:info@ideasmart.ai" style="color:rgba(255,255,255,0.30);text-decoration:none;">info@ideasmart.ai</a>
+              <a href="mailto:info@ideasmart.ai" style="color:${TEAL};text-decoration:none;">info@ideasmart.ai</a>
             </p>
           </td>
         </tr>
