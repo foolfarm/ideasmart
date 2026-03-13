@@ -150,3 +150,8 @@
 ## Nuovi task (13 Mar 2026 — Google AdSense)
 
 - [x] Inserire codice Google AdSense (ca-pub-7185482526978993) nell'head del sito
+
+## Nuovi task (13 Mar 2026 — Ridisegno Newsletter Dark)
+
+- [x] Riscrivere template HTML newsletter con stile dark navy identico alla landing page
+- [x] Inviare email di prova con nuovo template a ac@acinelli.com
