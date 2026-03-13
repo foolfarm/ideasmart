@@ -126,3 +126,19 @@
 ## Nuovi task (13 Mar 2026 — SEO)
 
 - [x] SEO: aggiorna titolo pagina a 30-60 caratteri con document.title nella Home
+
+## Nuovi task (13 Mar 2026 — Newsletter di prova)
+
+- [ ] Creare template newsletter completo con news + reportage + editoriale + startup + analisi
+- [ ] Aggiungere procedura tRPC admin sendTestNewsletter per inviare a email specifica
+- [ ] Aggiungere pulsante "Invia Newsletter di Prova" nella dashboard admin
+- [ ] Inviare newsletter di prova a ac@acinelli.com
+
+## Nuovi task (13 Mar 2026 — Fix Unsubscribe)
+
+- [x] Fix: il link "Annulla iscrizione" nella newsletter non funziona — diagnosticare e correggere il flusso unsubscribe
+- [x] Generati token unsubscribe per tutti i 1.857 iscritti importati
+- [x] Aggiornato newsletterScheduler per inviare link unsubscribe personalizzato per ogni iscritto
+- [x] Aggiornato script send-test-newsletter.mjs con link unsubscribe personalizzato
+- [x] Inviata newsletter di prova a ac@acinelli.com con link unsubscribe funzionante
+- [x] Aggiornato mittente email a info@foolfarm.com (verificato SendGrid)

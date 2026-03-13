@@ -5,7 +5,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
-import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml } from "./email";
+import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { sendWeeklyNewsletter } from "./newsletterScheduler";
 import {
   addSubscriber,
@@ -408,6 +408,83 @@ Rispondi con questo JSON:
       const items = await getLatestMarketAnalysis();
       return { success: true, count: items.length };
     }),
+
+    // Invia newsletter completa di prova (news + reportage + editoriale + startup + analisi) a una singola email
+    sendFullTestNewsletter: adminProcedure
+      .input(z.object({ to: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const today = new Date();
+        const dateLabel = today.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
+
+        // Recupera tutti i dati dal DB in parallelo
+        const [news, reportages, analyses, editorial, startup] = await Promise.all([
+          getLatestNews(),
+          getLatestWeeklyReportage(),
+          getLatestMarketAnalysis(),
+          getLatestEditorial(),
+          getLatestStartupOfDay(),
+        ]);
+
+        const html = buildFullNewsletterHtml({
+          dateLabel,
+          editorial: editorial ?? null,
+          startup: startup ?? null,
+          news: news.map(n => ({
+            title: n.title,
+            summary: n.summary,
+            category: n.category,
+            sourceName: n.sourceName,
+            sourceUrl: n.sourceUrl,
+          })),
+          reportages: reportages.map(r => ({
+            startupName: r.startupName,
+            category: r.category,
+            headline: r.headline,
+            subheadline: r.subheadline,
+            bodyText: r.bodyText,
+            quote: r.quote,
+            stat1Value: r.stat1Value,
+            stat1Label: r.stat1Label,
+            stat2Value: r.stat2Value,
+            stat2Label: r.stat2Label,
+            stat3Value: r.stat3Value,
+            stat3Label: r.stat3Label,
+            websiteUrl: r.websiteUrl,
+            ctaLabel: r.ctaLabel,
+            ctaUrl: r.ctaUrl,
+          })),
+          analyses: analyses.map(a => ({
+            title: a.title,
+            category: a.category,
+            summary: a.summary,
+            source: a.source,
+            dataPoint1: a.dataPoint1,
+            dataPoint2: a.dataPoint2,
+            dataPoint3: a.dataPoint3,
+            keyInsight: a.keyInsight,
+            italyRelevance: a.italyRelevance,
+          })),
+          isTest: true,
+        });
+
+        const subject = `[PROVA] AI4Business News — ${dateLabel} | ${news.length} news, ${reportages.length} reportage`;
+
+        const result = await sendEmail({ to: input.to, subject, html });
+        if (!result.success) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio email" });
+        }
+
+        return {
+          success: true,
+          to: input.to,
+          subject,
+          newsCount: news.length,
+          reportageCount: reportages.length,
+          analysesCount: analyses.length,
+          hasEditorial: !!editorial,
+          hasStartup: !!startup,
+        };
+      }),
 
     // Trigger invio automatico immediato (usa il template dark ufficiale)
     triggerWeeklyNewsletter: adminProcedure.mutation(async () => {

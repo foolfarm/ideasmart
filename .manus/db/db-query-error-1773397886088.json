@@ -1,0 +1,8 @@
+{
+  "query": "SELECT title, content, dateLabel FROM daily_editorial ORDER BY createdAt DESC LIMIT 1;\nSELECT startupName, tagline, review, websiteUrl FROM startup_of_day ORDER BY createdAt DESC LIMIT 1;\nSELECT startupName, category, content, websiteUrl FROM weekly_reportage ORDER BY createdAt DESC LIMIT 4;\nSELECT title, category, summary, source, dataPoint1, dataPoint2, dataPoint3, keyInsight FROM market_analysis ORDER BY createdAt DESC LIMIT 4;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT title, content, dateLabel FROM daily_editorial ORDER BY createdAt DESC LIMIT 1;\nSELECT startupName, tagline, review, websiteUrl FROM startup_of_day ORDER BY createdAt DESC LIMIT 1;\nSELECT startupName, category, content, websiteUrl FROM weekly_reportage ORDER BY createdAt DESC LIMIT 4;\nSELECT title, category, summary, source, dataPoint1, dataPoint2, dataPoint3, keyInsight FROM market_analysis ORDER BY createdAt DESC LIMIT 4;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'content' in 'field list'"
+  ]
+}

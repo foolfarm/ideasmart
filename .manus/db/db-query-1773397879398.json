@@ -1,0 +1,150 @@
+{
+  "query": "SELECT title, summary, category, sourceName, sourceUrl FROM news_items ORDER BY createdAt DESC, position ASC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT title, summary, category, sourceName, sourceUrl FROM news_items ORDER BY createdAt DESC, position ASC LIMIT 20;",
+  "rows": [
+    {
+      "title": "Google DeepMind lancia Gemini Ultra 1.5 con nuove capacità multimodali",
+      "summary": "Google DeepMind ha annunciato il rilascio di Gemini Ultra 1.5, l'ultima iterazione del suo modello multimodale di punta. Le nuove funzionalità includono una comprensione contestuale estesa e capacità avanzate di ragionamento su video e audio, promettendo un impatto significativo su applicazioni aziendali complesse. Questo aggiornamento mira a rafforzare la posizione di Google nel panorama dell'AI generativa.",
+      "category": "Modelli Generativi",
+      "sourceName": "TechCrunch",
+      "sourceUrl": "https://techcrunch.com/2026/03/12/google-deepmind-gemini-ultra-1-5-multimodal-ai-launch"
+    },
+    {
+      "title": "Microsoft acquisisce AI-Vision per 1.2 miliardi di dollari",
+      "summary": "Microsoft ha finalizzato l'acquisizione di AI-Vision, una startup specializzata in visione artificiale per la robotica industriale, per un valore di 1.2 miliardi di dollari. Questa mossa strategica rafforza la divisione AI di Microsoft, integrando tecnologie avanzate per l'automazione e il controllo qualità. L'operazione sottolinea la crescente convergenza tra AI e automazione fisica.",
+      "category": "Big Tech",
+      "sourceName": "The Wall Street Journal",
+      "sourceUrl": "https://www.wsj.com/articles/microsoft-acquires-ai-vision-robotics-2026-03-12"
+    },
+    {
+      "title": "Startup italiana 'NeuroSense' chiude round Series A da 20M per AI diagnostica",
+      "summary": "NeuroSense, una promettente startup italiana nel settore MedTech, ha annunciato la chiusura di un round di finanziamento Series A da 20 milioni di euro. I fondi saranno utilizzati per accelerare lo sviluppo e la commercializzazione della sua piattaforma AI per la diagnosi precoce di malattie neurodegenerative. Questo successo evidenzia la vitalità dell'ecosistema startup italiano nell'AI.",
+      "category": "AI & Startup Italiane",
+      "sourceName": "Il Sole 24 Ore",
+      "sourceUrl": "https://www.ilsole24ore.com/art/startup-italiana-neurosense-chiude-round-series-a-20m-ai-diagnostica-AEB12345"
+    },
+    {
+      "title": "Nuovo chip AI di NVIDIA 'Blackwell' promette prestazioni rivoluzionarie",
+      "summary": "NVIDIA ha svelato i dettagli del suo prossimo chip AI, nome in codice 'Blackwell', che promette un salto generazionale nelle prestazioni di calcolo per l'intelligenza artificiale. Il chip è progettato per gestire carichi di lavoro di AI generativa e modelli linguistici di grandi dimensioni con efficienza senza precedenti. L'annuncio ha già scosso il mercato dei semiconduttori.",
+      "category": "AI & Hardware",
+      "sourceName": "AnandTech",
+      "sourceUrl": "https://www.anandtech.com/show/21345/nvidia-blackwell-ai-chip-unveiled-2026-03-12"
+    },
+    {
+      "title": "OpenAI lancia 'AgentOS': un sistema operativo per AI agentive",
+      "summary": "OpenAI ha presentato 'AgentOS', un framework open-source progettato per lo sviluppo e la gestione di AI agentive autonome. Questo sistema operativo facilita la creazione di agenti capaci di interagire con il mondo digitale e fisico in modo più complesso e adattivo. La mossa segna un passo significativo verso l'implementazione su larga scala di AI con capacità decisionali avanzate.",
+      "category": "AI Agentiva",
+      "sourceName": "VentureBeat",
+      "sourceUrl": "https://venturebeat.com/ai/openai-launches-agentos-for-ai-agents-2026-03-12"
+    },
+    {
+      "title": "UE approva nuove linee guida per l'implementazione dell'AI Act",
+      "summary": "La Commissione Europea ha pubblicato le prime linee guida dettagliate per l'implementazione dell'AI Act, concentrandosi sulla classificazione dei sistemi ad alto rischio. Queste direttive mirano a fornire chiarezza alle aziende e agli sviluppatori, garantendo conformità e promuovendo un'innovazione responsabile. L'UE continua a guidare il dibattito globale sulla regolamentazione dell'AI.",
+      "category": "Regolamentazione AI",
+      "sourceName": "European Commission Newsroom",
+      "sourceUrl": "https://ec.europa.eu/commission/presscorner/detail/en/IP_26_1234"
+    },
+    {
+      "title": "Amazon Web Services introduce nuovi servizi AI per il settore sanitario",
+      "summary": "AWS ha annunciato una suite di nuovi servizi basati sull'AI, specificamente progettati per il settore sanitario. Questi strumenti mirano a migliorare l'analisi dei dati clinici, la gestione dei pazienti e l'efficienza operativa degli ospedali. L'iniziativa di AWS sottolinea la crescente integrazione dell'AI nelle infrastrutture critiche del settore salute.",
+      "category": "AI & Salute",
+      "sourceName": "Healthcare IT News",
+      "sourceUrl": "https://www.healthcareitnews.com/news/aws-launches-new-ai-health-services-2026-03-12"
+    },
+    {
+      "title": "Goldman Sachs prevede 10 trilioni di dollari di impatto AI entro il 2030",
+      "summary": "Un nuovo rapporto di Goldman Sachs stima che l'intelligenza artificiale generativa potrebbe aggiungere 10 trilioni di dollari al PIL globale entro il 2030. Lo studio evidenzia settori chiave come la produttività del lavoro, l'innovazione di prodotto e la trasformazione dei servizi finanziari. Questa previsione sottolinea l'enorme potenziale economico dell'AI per il business.",
+      "category": "AI & Finanza",
+      "sourceName": "Goldman Sachs Research",
+      "sourceUrl": "https://www.goldmansachs.com/insights/pages/ai-impact-report-2026.html"
+    },
+    {
+      "title": "Boston Dynamics presenta 'Atlas 2.0' con maggiore agilità e autonomia",
+      "summary": "Boston Dynamics ha svelato una versione aggiornata del suo robot umanoide Atlas, denominata 'Atlas 2.0'. Il nuovo modello vanta miglioramenti significativi in termini di agilità, equilibrio e capacità di navigazione autonoma in ambienti complessi. Queste innovazioni aprono nuove prospettive per l'applicazione di robot umanoidi in settori come la logistica e l'assistenza.",
+      "category": "Robot & AI Fisica",
+      "sourceName": "IEEE Spectrum",
+      "sourceUrl": "https://spectrum.ieee.org/boston-dynamics-atlas-2-0-2026-03-12"
+    },
+    {
+      "title": "Startup europea 'QuantumFlow' raccoglie 50M per AI quantistica",
+      "summary": "QuantumFlow, una startup con sede a Berlino, ha annunciato un finanziamento di 50 milioni di euro per accelerare la ricerca e lo sviluppo di algoritmi di intelligenza artificiale quantistica. L'azienda mira a risolvere problemi computazionali attualmente intrattabili. Questo investimento strategico rafforza la posizione dell'Europa nella corsa all'AI di prossima generazione.",
+      "category": "Ricerca & Innovazione",
+      "sourceName": "EU-Startups",
+      "sourceUrl": "https://www.eu-startups.com/2026/03/quantumflow-raises-50m-for-quantum-ai"
+    },
+    {
+      "title": "Report: L'AI aumenterà la produttività ma richiederà nuove skill",
+      "summary": "Un nuovo rapporto del World Economic Forum evidenzia che l'AI generativa aumenterà significativamente la produttività in molti settori, ma richiederà un'ampia riqualificazione della forza lavoro. Le aziende dovranno investire in formazione per colmare il divario di competenze. Il report suggerisce che la collaborazione uomo-macchina sarà la chiave per il successo futuro.",
+      "category": "AI & Lavoro",
+      "sourceName": "World Economic Forum",
+      "sourceUrl": "https://www.weforum.org/reports/ai-future-of-work-2026-03-12"
+    },
+    {
+      "title": "Palantir firma contratto da 500M con il Dipartimento della Difesa USA",
+      "summary": "Palantir Technologies ha annunciato un nuovo contratto pluriennale del valore di 500 milioni di dollari con il Dipartimento della Difesa degli Stati Uniti. L'accordo prevede l'implementazione di piattaforme AI avanzate per l'analisi dei dati e il supporto decisionale in ambito strategico. Questo rafforza il ruolo dell'AI nella sicurezza nazionale e nelle operazioni militari.",
+      "category": "AI & Difesa",
+      "sourceName": "Defense News",
+      "sourceUrl": "https://www.defensenews.com/ai-palantir-dod-contract-2026-03-12"
+    },
+    {
+      "title": "IBM presenta 'Watson X.ai' per la creazione di modelli AI personalizzati",
+      "summary": "IBM ha lanciato 'Watson X.ai', una nuova piattaforma che consente alle aziende di creare, addestrare e implementare modelli AI personalizzati con maggiore facilità. La piattaforma offre strumenti per l'ottimizzazione dei dati e la gestione del ciclo di vita dei modelli. L'obiettivo è democratizzare l'accesso all'AI avanzata per le imprese di ogni dimensione.",
+      "category": "Modelli Generativi",
+      "sourceName": "ZDNet",
+      "sourceUrl": "https://www.zdnet.com/article/ibm-watson-x-ai-custom-models-2026-03-12"
+    },
+    {
+      "title": "Nuova direttiva europea per la protezione dei dati nell'AI generativa",
+      "summary": "Il Parlamento Europeo ha approvato una nuova direttiva che rafforza la protezione dei dati personali nell'uso dell'AI generativa, introducendo requisiti più stringenti per la trasparenza e il consenso. Questa normativa mira a bilanciare innovazione e diritti dei cittadini. L'Europa continua a definire standard elevati per l'etica e la privacy nell'AI.",
+      "category": "Regolamentazione AI",
+      "sourceName": "Euractiv",
+      "sourceUrl": "https://www.euractiv.com/section/digital/news/eu-data-protection-ai-generative-2026-03-12"
+    },
+    {
+      "title": "Banca d'Italia sperimenta AI per la prevenzione frodi finanziarie",
+      "summary": "La Banca d'Italia ha avviato un progetto pilota per l'utilizzo dell'intelligenza artificiale nella prevenzione e nel rilevamento delle frodi finanziarie. L'AI analizza grandi volumi di transazioni per identificare pattern sospetti in tempo reale. Questa iniziativa mira a rafforzare la sicurezza del sistema bancario italiano e a tutelare i consumatori.",
+      "category": "AI & Finanza",
+      "sourceName": "FinanzaOnline",
+      "sourceUrl": "https://www.finanzaonline.com/notizie/banca-italia-ai-frodi-2026-03-12"
+    },
+    {
+      "title": "Startup 'BioGenAI' raccoglie 75M per scoperta farmaci AI-driven",
+      "summary": "BioGenAI, una startup biotecnologica con sede a Cambridge, ha annunciato un round di finanziamento Series B da 75 milioni di dollari. L'azienda utilizza l'AI per accelerare la scoperta e lo sviluppo di nuovi farmaci, riducendo tempi e costi. Questo investimento sottolinea l'enorme potenziale dell'AI nel rivoluzionare l'industria farmaceutica.",
+      "category": "Startup & Funding",
+      "sourceName": "FierceBiotech",
+      "sourceUrl": "https://www.fiercebiotech.com/biotech/biogenai-raises-75m-ai-drug-discovery-2026-03-12"
+    },
+    {
+      "title": "Cina lancia nuovo centro di ricerca AI per la sicurezza informatica",
+      "summary": "La Cina ha inaugurato un nuovo centro di ricerca nazionale dedicato all'applicazione dell'intelligenza artificiale per la sicurezza informatica. L'obiettivo è sviluppare soluzioni AI avanzate per la difesa contro attacchi cibernetici e la protezione delle infrastrutture critiche. L'iniziativa evidenzia l'importanza strategica dell'AI nella geopolitica e nella sicurezza globale.",
+      "category": "AI & Sicurezza",
+      "sourceName": "South China Morning Post",
+      "sourceUrl": "https://www.scmp.com/tech/big-tech/article/3123456/china-launches-ai-cybersecurity-research-center-2026-03-12"
+    },
+    {
+      "title": "Siemens investe 1 miliardo in AI industriale e robotica avanzata",
+      "summary": "Siemens ha annunciato un piano di investimento da 1 miliardo di euro per accelerare lo sviluppo e l'implementazione di soluzioni AI industriale e robotica avanzata. L'obiettivo è migliorare l'efficienza produttiva e la flessibilità nelle fabbriche intelligenti. Questo impegno rafforza la leadership di Siemens nell'Industria 4.0 e nell'automazione AI-driven.",
+      "category": "AI & Hardware",
+      "sourceName": "Handelsblatt",
+      "sourceUrl": "https://www.handelsblatt.com/technik/siemens-investiert-1-milliarde-in-ki-robotik-2026-03-12"
+    },
+    {
+      "title": "Nuova partnership tra MIT e Google per ricerca AI etica",
+      "summary": "Il MIT e Google hanno annunciato una partnership strategica per la ricerca sull'intelligenza artificiale etica e responsabile. La collaborazione si concentrerà sullo sviluppo di metodologie per mitigare i bias, garantire la trasparenza e promuovere l'equità nei sistemi AI. L'iniziativa mira a stabilire standard globali per lo sviluppo etico dell'AI.",
+      "category": "Ricerca & Innovazione",
+      "sourceName": "MIT News",
+      "sourceUrl": "https://news.mit.edu/2026/mit-google-ai-ethics-partnership-2026-03-12"
+    },
+    {
+      "title": "Startup italiana 'GreenAI' ottiene 5M per AI per l'efficienza energetica",
+      "summary": "GreenAI, una startup italiana focalizzata sull'applicazione dell'intelligenza artificiale per l'efficienza energetica, ha ricevuto un finanziamento di 5 milioni di euro. I fondi saranno impiegati per espandere la sua piattaforma di ottimizzazione dei consumi per industrie e smart cities. Questo successo evidenzia il potenziale dell'AI per la sostenibilità e l'innovazione italiana.",
+      "category": "AI & Startup Italiane",
+      "sourceName": "StartupItalia",
+      "sourceUrl": "https://startupitalia.eu/123456-greenai-finanziamento-efficienza-energetica-2026-03-12"
+    }
+  ],
+  "messages": [],
+  "stdout": "title\tsummary\tcategory\tsourceName\tsourceUrl\nGoogle DeepMind lancia Gemini Ultra 1.5 con nuove capacità multimodali\tGoogle DeepMind ha annunciato il rilascio di Gemini Ultra 1.5, l'ultima iterazione del suo modello multimodale di punta. Le nuove funzionalità includono una comprensione contestuale estesa e capacità avanzate di ragionamento su video e audio, promettendo un impatto significativo su applicazioni aziendali complesse. Questo aggiornamento mira a rafforzare la posizione di Google nel panorama dell'AI generativa.\tModelli Generativi\tTechCrunch\thttps://techcrunch.com/2026/03/12/google-deepmind-gemini-ultra-1-5-multimodal-ai-launch\nMicrosoft acquisisce AI-Vision per 1.2 miliardi di dollari\tMicrosoft ha finalizzato l'acquisizione di AI-Vision, una startup specializzata in visione artificiale per la robotica industriale, per un valore di 1.2 miliardi di dollari. Questa mossa strategica rafforza la divisione AI di Microsoft, integrando tecnologie avanzate per l'automazione e il controllo qualità. L'operazione sottolinea la crescente convergenza tra AI e automazione fisica.\tBig Tech\tThe Wall Street Journal\thttps://www.wsj.com/articles/microsoft-acquires-ai-vision-robotics-2026-03-12\nStartup italiana 'NeuroSense' chiude round Series A da 20M per AI diagnostica\tNeuroSense, una promettente startup italiana nel settore MedTech, ha annunciato la chiusura di un round di finanziamento Series A da 20 milioni di euro. I fondi saranno utilizzati per accelerare lo sviluppo e la commercializzazione della sua piattaforma AI per la diagnosi precoce di malattie neurodegenerative. Questo successo evidenzia la vitalità dell'ecosistema startup italiano nell'AI.\tAI & Startup Italiane\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/startup-italiana-neurosense-chiude-round-series-a-20m-ai-diagnostica-AEB12345\nNuovo chip AI di NVIDIA 'Blackwell' promette prestazioni rivoluzionarie\tNVIDIA ha svelato i dettagli del suo prossimo chip AI, nome in codice 'Blackwell', che promette un salto generazionale nelle prestazioni di calcolo per l'intelligenza artificiale. Il chip è progettato per gestire carichi di lavoro di AI generativa e modelli linguistici di grandi dimensioni con efficienza senza precedenti. L'annuncio ha già scosso il mercato dei semiconduttori.\tAI & Hardware\tAnandTech\thttps://www.anandtech.com/show/21345/nvidia-blackwell-ai-chip-unveiled-2026-03-12\nOpenAI lancia 'AgentOS': un sistema operativo per AI agentive\tOpenAI ha presentato 'AgentOS', un framework open-source progettato per lo sviluppo e la gestione di AI agentive autonome. Questo sistema operativo facilita la creazione di agenti capaci di interagire con il mondo digitale e fisico in modo più complesso e adattivo. La mossa segna un passo significativo verso l'implementazione su larga scala di AI con capacità decisionali avanzate.\tAI Agentiva\tVentureBeat\thttps://venturebeat.com/ai/openai-launches-agentos-for-ai-agents-2026-03-12\nUE approva nuove linee guida per l'implementazione dell'AI Act\tLa Commissione Europea ha pubblicato le prime linee guida dettagliate per l'implementazione dell'AI Act, concentrandosi sulla classificazione dei sistemi ad alto rischio. Queste direttive mirano a fornire chiarezza alle aziende e agli sviluppatori, garantendo conformità e promuovendo un'innovazione responsabile. L'UE continua a guidare il dibattito globale sulla regolamentazione dell'AI.\tRegolamentazione AI\tEuropean Commission Newsroom\thttps://ec.europa.eu/commission/presscorner/detail/en/IP_26_1234\nAmazon Web Services introduce nuovi servizi AI per il settore sanitario\tAWS ha annunciato una suite di nuovi servizi basati sull'AI, specificamente progettati per il settore sanitario. Questi strumenti mirano a migliorare l'analisi dei dati clinici, la gestione dei pazienti e l'efficienza operativa degli ospedali. L'iniziativa di AWS sottolinea la crescente integrazione dell'AI nelle infrastrutture critiche del settore salute.\tAI & Salute\tHealthcare IT News\thttps://www.healthcareitnews.com/news/aws-launches-new-ai-health-services-2026-03-12\nGoldman Sachs prevede 10 trilioni di dollari di impatto AI entro il 2030\tUn nuovo rapporto di Goldman Sachs stima che l'intelligenza artificiale generativa potrebbe aggiungere 10 trilioni di dollari al PIL globale entro il 2030. Lo studio evidenzia settori chiave come la produttività del lavoro, l'innovazione di prodotto e la trasformazione dei servizi finanziari. Questa previsione sottolinea l'enorme potenziale economico dell'AI per il business.\tAI & Finanza\tGoldman Sachs Research\thttps://www.goldmansachs.com/insights/pages/ai-impact-report-2026.html\nBoston Dynamics presenta 'Atlas 2.0' con maggiore agilità e autonomia\tBoston Dynamics ha svelato una versione aggiornata del suo robot umanoide Atlas, denominata 'Atlas 2.0'. Il nuovo modello vanta miglioramenti significativi in termini di agilità, equilibrio e capacità di navigazione autonoma in ambienti complessi. Queste innovazioni aprono nuove prospettive per l'applicazione di robot umanoidi in settori come la logistica e l'assistenza.\tRobot & AI Fisica\tIEEE Spectrum\thttps://spectrum.ieee.org/boston-dynamics-atlas-2-0-2026-03-12\nStartup europea 'QuantumFlow' raccoglie 50M per AI quantistica\tQuantumFlow, una startup con sede a Berlino, ha annunciato un finanziamento di 50 milioni di euro per accelerare la ricerca e lo sviluppo di algoritmi di intelligenza artificiale quantistica. L'azienda mira a risolvere problemi computazionali attualmente intrattabili. Questo investimento strategico rafforza la posizione dell'Europa nella corsa all'AI di prossima generazione.\tRicerca & Innovazione\tEU-Startups\thttps://www.eu-startups.com/2026/03/quantumflow-raises-50m-for-quantum-ai\nReport: L'AI aumenterà la produttività ma richiederà nuove skill\tUn nuovo rapporto del World Economic Forum evidenzia che l'AI generativa aumenterà significativamente la produttività in molti settori, ma richiederà un'ampia riqualificazione della forza lavoro. Le aziende dovranno investire in formazione per colmare il divario di competenze. Il report suggerisce che la collaborazione uomo-macchina sarà la chiave per il successo futuro.\tAI & Lavoro\tWorld Economic Forum\thttps://www.weforum.org/reports/ai-future-of-work-2026-03-12\nPalantir firma contratto da 500M con il Dipartimento della Difesa USA\tPalantir Technologies ha annunciato un nuovo contratto pluriennale del valore di 500 milioni di dollari con il Dipartimento della Difesa degli Stati Uniti. L'accordo prevede l'implementazione di piattaforme AI avanzate per l'analisi dei dati e il supporto decisionale in ambito strategico. Questo rafforza il ruolo dell'AI nella sicurezza nazionale e nelle operazioni militari.\tAI & Difesa\tDefense News\thttps://www.defensenews.com/ai-palantir-dod-contract-2026-03-12\nIBM presenta 'Watson X.ai' per la creazione di modelli AI personalizzati\tIBM ha lanciato 'Watson X.ai', una nuova piattaforma che consente alle aziende di creare, addestrare e implementare modelli AI personalizzati con maggiore facilità. La piattaforma offre strumenti per l'ottimizzazione dei dati e la gestione del ciclo di vita dei modelli. L'obiettivo è democratizzare l'accesso all'AI avanzata per le imprese di ogni dimensione.\tModelli Generativi\tZDNet\thttps://www.zdnet.com/article/ibm-watson-x-ai-custom-models-2026-03-12\nNuova direttiva europea per la protezione dei dati nell'AI generativa\tIl Parlamento Europeo ha approvato una nuova direttiva che rafforza la protezione dei dati personali nell'uso dell'AI generativa, introducendo requisiti più stringenti per la trasparenza e il consenso. Questa normativa mira a bilanciare innovazione e diritti dei cittadini. L'Europa continua a definire standard elevati per l'etica e la privacy nell'AI.\tRegolamentazione AI\tEuractiv\thttps://www.euractiv.com/section/digital/news/eu-data-protection-ai-generative-2026-03-12\nBanca d'Italia sperimenta AI per la prevenzione frodi finanziarie\tLa Banca d'Italia ha avviato un progetto pilota per l'utilizzo dell'intelligenza artificiale nella prevenzione e nel rilevamento delle frodi finanziarie. L'AI analizza grandi volumi di transazioni per identificare pattern sospetti in tempo reale. Questa iniziativa mira a rafforzare la sicurezza del sistema bancario italiano e a tutelare i consumatori.\tAI & Finanza\tFinanzaOnline\thttps://www.finanzaonline.com/notizie/banca-italia-ai-frodi-2026-03-12\nStartup 'BioGenAI' raccoglie 75M per scoperta farmaci AI-driven\tBioGenAI, una startup biotecnologica con sede a Cambridge, ha annunciato un round di finanziamento Series B da 75 milioni di dollari. L'azienda utilizza l'AI per accelerare la scoperta e lo sviluppo di nuovi farmaci, riducendo tempi e costi. Questo investimento sottolinea l'enorme potenziale dell'AI nel rivoluzionare l'industria farmaceutica.\tStartup & Funding\tFierceBiotech\thttps://www.fiercebiotech.com/biotech/biogenai-raises-75m-ai-drug-discovery-2026-03-12\nCina lancia nuovo centro di ricerca AI per la sicurezza informatica\tLa Cina ha inaugurato un nuovo centro di ricerca nazionale dedicato all'applicazione dell'intelligenza artificiale per la sicurezza informatica. L'obiettivo è sviluppare soluzioni AI avanzate per la difesa contro attacchi cibernetici e la protezione delle infrastrutture critiche. L'iniziativa evidenzia l'importanza strategica dell'AI nella geopolitica e nella sicurezza globale.\tAI & Sicurezza\tSouth China Morning Post\thttps://www.scmp.com/tech/big-tech/article/3123456/china-launches-ai-cybersecurity-research-center-2026-03-12\nSiemens investe 1 miliardo in AI industriale e robotica avanzata\tSiemens ha annunciato un piano di investimento da 1 miliardo di euro per accelerare lo sviluppo e l'implementazione di soluzioni AI industriale e robotica avanzata. L'obiettivo è migliorare l'efficienza produttiva e la flessibilità nelle fabbriche intelligenti. Questo impegno rafforza la leadership di Siemens nell'Industria 4.0 e nell'automazione AI-driven.\tAI & Hardware\tHandelsblatt\thttps://www.handelsblatt.com/technik/siemens-investiert-1-milliarde-in-ki-robotik-2026-03-12\nNuova partnership tra MIT e Google per ricerca AI etica\tIl MIT e Google hanno annunciato una partnership strategica per la ricerca sull'intelligenza artificiale etica e responsabile. La collaborazione si concentrerà sullo sviluppo di metodologie per mitigare i bias, garantire la trasparenza e promuovere l'equità nei sistemi AI. L'iniziativa mira a stabilire standard globali per lo sviluppo etico dell'AI.\tRicerca & Innovazione\tMIT News\thttps://news.mit.edu/2026/mit-google-ai-ethics-partnership-2026-03-12\nStartup italiana 'GreenAI' ottiene 5M per AI per l'efficienza energetica\tGreenAI, una startup italiana focalizzata sull'applicazione dell'intelligenza artificiale per l'efficienza energetica, ha ricevuto un finanziamento di 5 milioni di euro. I fondi saranno impiegati per espandere la sua piattaforma di ottimizzazione dei consumi per industrie e smart cities. Questo successo evidenzia il potenziale dell'AI per la sostenibilità e l'innovazione italiana.\tAI & Startup Italiane\tStartupItalia\thttps://startupitalia.eu/123456-greenai-finanziamento-efficienza-energetica-2026-03-12\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

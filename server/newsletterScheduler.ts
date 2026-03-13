@@ -180,31 +180,57 @@ export async function sendWeeklyNewsletter(): Promise<{
 
     // 3. Costruisce HTML con il template dark ufficiale
     const subject = `IDEASMART — AI for Business · N° ${issueNumber} · ${monthLabel}`;
-    const htmlContent = buildMonthlyNewsletterHtml({
-      month: monthLabel,
-      issueNumber,
-      news,
-    });
+    const BASE_URL = "https://ideasmart.ai";
 
-    // 4. Invia in batch (max 1000 per richiesta SendGrid)
-    const emails = subscribers.map((s) => s.email);
-    const BATCH_SIZE = 1000;
+    // 4. Invia individualmente con link unsubscribe personalizzato per ogni iscritto
+    //    (necessario per GDPR: ogni iscritto deve avere il proprio token univoco)
+    const BATCH_SIZE = 50; // SendGrid personalizations limit per request
     let totalSent = 0;
     let sendError: string | undefined;
 
-    for (let i = 0; i < emails.length; i += BATCH_SIZE) {
-      const batch = emails.slice(i, i + BATCH_SIZE);
-      const result = await sendEmail({ to: batch, subject, html: htmlContent });
+    for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
+      const batch = subscribers.slice(i, i + BATCH_SIZE);
 
-      if (result.success) {
-        totalSent += batch.length;
-        console.log(`[NewsletterScheduler] Batch ${Math.floor(i / BATCH_SIZE) + 1}: sent to ${batch.length} recipients`);
-      } else {
-        sendError = result.error;
-        console.error(`[NewsletterScheduler] Batch error:`, result.error);
-        break;
+      // Costruisce personalizations con link unsubscribe univoco per ogni iscritto
+      const personalizations = batch.map((sub) => {
+        const unsubUrl = sub.unsubscribeToken
+          ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
+          : `${BASE_URL}/unsubscribe`;
+        const html = buildMonthlyNewsletterHtml({
+          month: monthLabel,
+          issueNumber,
+          news,
+          unsubscribeUrl: unsubUrl,
+        });
+        return { email: sub.email, html };
+      });
+
+      // Invia ogni email del batch individualmente (per link personalizzati)
+      for (const p of personalizations) {
+        const result = await sendEmail({ to: p.email, subject, html: p.html });
+        if (result.success) {
+          totalSent++;
+        } else {
+          sendError = result.error;
+          console.error(`[NewsletterScheduler] Error sending to ${p.email}:`, result.error);
+          // Non interrompere: continua con gli altri iscritti
+        }
+      }
+
+      // Salva HTML di esempio (primo iscritto del primo batch) per il log
+      if (i === 0) {
+        const sampleHtml = buildMonthlyNewsletterHtml({ month: monthLabel, issueNumber, news });
+        // Registra l'invio nel DB con l'HTML di esempio
+        await createNewsletterSend({ subject, htmlContent: sampleHtml, recipientCount: 0 });
+      }
+
+      if (i % 200 === 0 && i > 0) {
+        console.log(`[NewsletterScheduler] Progress: ${totalSent}/${subscribers.length} sent`);
       }
     }
+
+    // Aggiorna il conteggio nel DB
+    const htmlContent = buildMonthlyNewsletterHtml({ month: monthLabel, issueNumber, news });
 
     // 5. Registra l'invio nel DB
     await createNewsletterSend({
@@ -222,7 +248,7 @@ export async function sendWeeklyNewsletter(): Promise<{
       content: `Newsletter settimanale inviata con successo a ${totalSent} iscritti. Notizie: ${news.length}. Settimana: ${dateRange}.`,
     });
 
-    console.log(`[NewsletterScheduler] ✅ Weekly newsletter sent to ${totalSent}/${emails.length} subscribers`);
+    console.log(`[NewsletterScheduler] ✅ Weekly newsletter sent to ${totalSent}/${subscribers.length} subscribers`);
 
     return {
       success: !sendError,
