@@ -11,7 +11,7 @@ import { useLocation } from "wouter";
 export default function Admin() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
-  const [testEmail, setTestEmail] = useState("ac@foolfarm.com");
+  const [testEmail, setTestEmail] = useState("ac@acinelli.com");
   const [sendingTest, setSendingTest] = useState(false);
   const [sendingAll, setSendingAll] = useState(false);
   const [lastResult, setLastResult] = useState<string | null>(null);

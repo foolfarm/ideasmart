@@ -1222,13 +1222,13 @@ export default function Home() {
             <div>
               <p className="editorial-tag mb-4" style={{ color: C.muted }}>Contatti</p>
               <a
-                href="mailto:ac@foolfarm.com?subject=IDEASMART"
+                href="mailto:info@ideasmart.ai?subject=IDEASMART"
                 className="block text-base transition-colors mb-2"
                 style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}
                 onMouseEnter={e => (e.currentTarget.style.color = C.navy)}
                 onMouseLeave={e => (e.currentTarget.style.color = C.slate)}
               >
-                ac@foolfarm.com
+                info@ideasmart.ai
               </a>
               <a
                 href="/advertise"

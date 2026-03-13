@@ -177,7 +177,7 @@ export default function Advertise() {
       setSubmitted(true);
       toast.success("Richiesta inviata! Ti contatteremo entro 24 ore.");
     } catch {
-      toast.error("Errore nell'invio. Scrivi direttamente a ac@foolfarm.com");
+      toast.error("Errore nell'invio. Scrivi direttamente a info@ideasmart.ai");
     } finally {
       setSending(false);
     }
@@ -564,7 +564,7 @@ export default function Advertise() {
                     </button>
                     <p className="text-xs mt-3 text-center" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans', sans-serif" }}>
                       Oppure scrivi direttamente a{" "}
-                      <a href="mailto:ac@foolfarm.com" className="underline" style={{ color: C.teal }}>ac@foolfarm.com</a>
+                      <a href="mailto:info@ideasmart.ai" className="underline" style={{ color: C.teal }}>info@ideasmart.ai</a>
                     </p>
                   </div>
                 </form>

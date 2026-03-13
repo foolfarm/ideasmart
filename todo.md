@@ -198,3 +198,8 @@
 - [x] Integrare banner in App.tsx
 - [x] Bloccare Google AdSense finché non c'è consenso ai cookie pubblicitari
 - [x] Aggiungere link "Gestisci preferenze cookie" nel footer della landing page
+
+## Nuovi task (13 Mar 2026 — Aggiornamento email footer)
+
+- [x] Aggiornare email contatto nel footer da ac@foolfarm.com a info@ideasmart.ai
+- [x] Verificare tutti i riferimenti obsoleti a ac@foolfarm.com nel codice (Home.tsx, Advertise.tsx, Admin.tsx, email.ts, scripts)

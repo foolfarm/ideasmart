@@ -9,8 +9,8 @@ interface SendEmailOptions {
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
   const apiKey = process.env.SENDGRID_API_KEY;
-  // Usa ac@foolfarm.com come mittente verificato (newsletter@ideasmart.it non ancora verificato su SendGrid)
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "ac@foolfarm.com";
+  // Mittente ufficiale IDEASMART — verificare info@ideasmart.ai su SendGrid Sender Authentication
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@ideasmart.ai";
   const fromName = process.env.SENDGRID_FROM_NAME || "IDEASMART — AI for Business";
 
   if (!apiKey) {
@@ -609,7 +609,7 @@ export function buildWelcomeEmailHtml(opts: {
             </table>
 
             <p style="font-size:13px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
-              Hai domande? Scrivi a <a href="mailto:ac@foolfarm.com" style="color:#00b4a0;text-decoration:none;">ac@foolfarm.com</a>
+              Hai domande? Scrivi a <a href="mailto:info@ideasmart.ai" style="color:#00b4a0;text-decoration:none;">info@ideasmart.ai</a>
             </p>
           </td>
         </tr>
