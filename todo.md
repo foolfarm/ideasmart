@@ -142,3 +142,11 @@
 - [x] Aggiornato script send-test-newsletter.mjs con link unsubscribe personalizzato
 - [x] Inviata newsletter di prova a ac@acinelli.com con link unsubscribe funzionante
 - [x] Aggiornato mittente email a info@foolfarm.com (verificato SendGrid)
+
+## Nuovi task (13 Mar 2026 — Cambio mittente)
+
+- [x] Aggiornare SENDGRID_FROM_EMAIL a info@ideasmart.ai
+
+## Nuovi task (13 Mar 2026 — Google AdSense)
+
+- [x] Inserire codice Google AdSense (ca-pub-7185482526978993) nell'head del sito
