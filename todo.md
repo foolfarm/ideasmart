@@ -113,3 +113,7 @@
 - [ ] Form di contatto per inserzionisti
 - [ ] Rotta /advertise in App.tsx
 - [ ] Link "Advertising" nel footer e nel Navbar
+
+## Nuovi task (13 Mar 2026 — Titolo Hero)
+
+- [x] Hero: cambia main title in "AI4Business News" con "by IDEASMART" più piccolo sotto

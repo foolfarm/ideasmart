@@ -844,16 +844,16 @@ export default function Home() {
 
             {/* Main title */}
             <h1
-              className="text-4xl sm:text-6xl lg:text-8xl font-black leading-none tracking-tight mb-4 sm:mb-6"
+              className="text-4xl sm:text-6xl lg:text-8xl font-black leading-none tracking-tight mb-2 sm:mb-3"
               style={{ fontFamily: "'Space Grotesk', sans-serif", color: C.navy }}
             >
-              IDEA<span style={{ color: C.teal }}>SMART</span>
+              AI4Business <span style={{ color: C.teal }}>News</span>
             </h1>
             <p
-              className="text-xs sm:text-sm lg:text-base tracking-widest uppercase mb-6 sm:mb-8"
-              style={{ fontFamily: "'JetBrains Mono', monospace", color: C.muted }}
+              className="text-base sm:text-lg lg:text-xl font-semibold tracking-wide mb-6 sm:mb-8"
+              style={{ fontFamily: "'DM Sans', sans-serif", color: C.muted }}
             >
-              Il tuo punto di riferimento sull'AI &nbsp;·&nbsp; News ogni giorno aggiornate
+              by <span style={{ color: C.navy, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif" }}>IDEA<span style={{ color: C.teal }}>SMART</span></span>
             </p>
 
             {/* Description */}
