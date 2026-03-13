@@ -5,7 +5,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
-import { sendEmail, buildWeeklyNewsletterHtml } from "./email";
+import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml } from "./email";
 import { sendWeeklyNewsletter } from "./newsletterScheduler";
 import {
   addSubscriber,
@@ -184,6 +184,35 @@ export const appRouter = router({
           name: input.name,
           source: "website",
         });
+
+        // Invia email di benvenuto solo ai nuovi iscritti (non a chi è già iscritto)
+        if ((result as any).success || (result as any).resubscribed) {
+          try {
+            // Recupera il token di disiscrizione per il link GDPR nell'email
+            const baseUrl = `https://ideasmart.ai`;
+            const { getSubscriberByEmail } = await import("./db");
+            const subscriber = await getSubscriberByEmail(input.email);
+            const unsubToken = subscriber?.unsubscribeToken;
+            const unsubUrl = unsubToken
+              ? `${baseUrl}/unsubscribe?token=${unsubToken}`
+              : `${baseUrl}/unsubscribe`;
+
+            const html = buildWelcomeEmailHtml({
+              name: input.name,
+              unsubscribeUrl: unsubUrl,
+            });
+
+            await sendEmail({
+              to: input.email,
+              subject: "Benvenuto in AI4Business News — Iscrizione confermata ✓",
+              html,
+            });
+          } catch (emailErr) {
+            // Non bloccare l'iscrizione se l'email fallisce
+            console.error("[Newsletter] Errore invio email benvenuto:", emailErr);
+          }
+        }
+
         return result;
       }),
 

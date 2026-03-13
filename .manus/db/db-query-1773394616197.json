@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, email, name, source, status, unsubscribeToken IS NOT NULL as has_token, subscribedAt FROM subscribers WHERE email = 'test@example.com' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, email, name, source, status, unsubscribeToken IS NOT NULL as has_token, subscribedAt FROM subscribers WHERE email = 'test@example.com' LIMIT 1;",
+  "rows": [
+    {
+      "id": "30001",
+      "email": "test@example.com",
+      "name": "Test User",
+      "source": "website",
+      "status": "active",
+      "has_token": "1",
+      "subscribedAt": "2026-03-13 09:36:36"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tname\tsource\tstatus\thas_token\tsubscribedAt\n30001\ttest@example.com\tTest User\twebsite\tactive\t1\t2026-03-13 09:36:36\n",
+  "stderr": "",
+  "execution_time_ms": 99
+}

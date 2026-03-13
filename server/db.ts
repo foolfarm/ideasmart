@@ -505,3 +505,13 @@ export async function getAllActiveNotificationPreferences() {
   return db.select().from(notificationPreferences)
     .where(eq(notificationPreferences.isActive, true));
 }
+
+// Recupera un iscritto tramite email
+export async function getSubscriberByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(subscribers)
+    .where(eq(subscribers.email, email))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
