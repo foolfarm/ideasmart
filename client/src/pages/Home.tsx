@@ -797,6 +797,11 @@ export default function Home() {
   const [subscribed, setSubscribed] = useState(false);
   const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery();
 
+  // SEO: imposta il titolo dinamicamente con document.title
+  useEffect(() => {
+    document.title = "AI4Business News — Il Quotidiano AI Italiano";
+  }, []);
+
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
       if ((data as any).alreadySubscribed) {

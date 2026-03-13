@@ -122,3 +122,7 @@
 
 - [x] Sezione newsletter Home: aggiorna titolo e testo con "AI4Business News by IDEASMART"
 - [x] Template email newsletter: aggiorna header con nuovo branding
+
+## Nuovi task (13 Mar 2026 — SEO)
+
+- [x] SEO: aggiorna titolo pagina a 30-60 caratteri con document.title nella Home
