@@ -131,7 +131,7 @@ export function buildMonthlyNewsletterHtml(opts: {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>IDEASMART — AI for Business · N° ${issueNumber} · ${month}</title>
+<title>AI4Business News by IDEASMART · N° ${issueNumber} · ${month}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#0a0f1e;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
@@ -148,7 +148,7 @@ export function buildMonthlyNewsletterHtml(opts: {
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td style="font-size:11px;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">
-            Direttore: Redazione IDEASMART
+            AI4Business News · by IDEASMART
           </td>
           <td align="right" style="font-size:11px;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">
             ${month} · N° ${issueNumber}
@@ -162,10 +162,10 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td align="center" style="padding:40px 32px 32px;background:linear-gradient(180deg,#060a14 0%,#0d1220 100%);">
       <div style="display:inline-block;margin-bottom:12px;">
-        <span style="font-size:42px;font-weight:900;color:#ffffff;letter-spacing:-2px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">IDEA</span><span style="font-size:42px;font-weight:900;color:#00e5c8;letter-spacing:-2px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">SMART</span>
+        <span style="font-size:42px;font-weight:900;color:#ffffff;letter-spacing:-2px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">AI4Business </span><span style="font-size:42px;font-weight:900;color:#00e5c8;letter-spacing:-2px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">News</span>
       </div>
       <br>
-      <span style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.25em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">L'Analisi Mensile &nbsp;·&nbsp; AI for Business</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.55);letter-spacing:0.15em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">by <strong style="color:#ffffff;">IDEA</strong><strong style="color:#00e5c8;">SMART</strong></span>
       <br><br>
       <table cellpadding="0" cellspacing="0" border="0" align="center">
         <tr>
@@ -181,10 +181,7 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td style="padding:0 32px 32px;">
       <p style="font-size:15px;line-height:1.75;color:rgba(255,255,255,0.70);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        <strong style="color:#ffffff;">IDEASMART</strong> è la startup italiana di tecnologia e innovazione che ogni mese analizza, testa e seleziona le realtà più promettenti dell'ecosistema AI per il business. In questo numero abbiamo esaminato quattro realtà che stanno ridefinendo il modo di lavorare, investire e comunicare.
-      </p>
-      <p style="font-size:15px;line-height:1.75;color:rgba(255,255,255,0.70);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;">
-        Da <strong style="color:#ffffff;">FoolTalent</strong>, che porta l'AI nel recruiting, a <strong style="color:#ffffff;">FoolShare</strong>, la data room più avanzata del mercato. Da <strong style="color:#ffffff;">Fragmentalis</strong>, con la sua comunicazione quantum-resistant brevettata, a <strong style="color:#ffffff;">PollCast</strong>, che trasforma l'intelligenza collettiva in market intelligence.
+        <strong style="color:#ffffff;">AI4Business News</strong> è il quotidiano di tecnologia e innovazione che ogni giorno analizza, testa e seleziona le realtà più promettenti dell'ecosistema AI per il business. La nostra redazione porta alla luce le soluzioni che stanno ridefinendo il modo di lavorare, investire e crescere.
       </p>
     </td>
   </tr>
@@ -482,10 +479,10 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td style="padding:28px 32px 32px;background:#040810;border-top:1px solid rgba(255,255,255,0.05);">
       <p style="font-size:11px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-align:center;">
-        &copy; 2026 <strong style="color:rgba(255,255,255,0.40);">IDEASMART</strong> &mdash; Startup di Tecnologia &amp; Innovazione &middot; AI for Business
+        &copy; 2026 <strong style="color:rgba(255,255,255,0.40);">AI4Business News</strong> &mdash; by IDEASMART &middot; Startup di Tecnologia &amp; Innovazione
       </p>
       <p style="font-size:11px;color:rgba(255,255,255,0.18);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-align:center;line-height:1.6;">
-        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
+        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter AI4Business News by IDEASMART.<br>
         Sede legale: Italia &middot; P.IVA in corso di registrazione &middot; <a href="${baseUrl}/privacy" style="color:rgba(255,255,255,0.30);text-decoration:underline;">Privacy Policy</a>
       </p>
       <!-- Separatore -->

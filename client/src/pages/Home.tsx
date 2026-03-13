@@ -1007,15 +1007,16 @@ export default function Home() {
                 <span className="text-xs font-bold tracking-widest uppercase" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>Newsletter Gratuita</span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl font-black mb-6 leading-tight" style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
-                L'AI che conta,
-                <br />
-                <span style={{ color: C.teal }}>ogni giorno.</span>
+              <h2 className="text-4xl sm:text-5xl font-black mb-3 leading-tight" style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>
+                AI4Business <span style={{ color: C.teal }}>News</span>
               </h2>
+              <p className="text-base font-semibold mb-6" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', sans-serif" }}>
+                by <span style={{ color: "#fff", fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif" }}>IDEA<span style={{ color: C.teal }}>SMART</span></span>
+              </p>
 
               <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.92)", fontFamily: "'DM Sans', sans-serif" }}>
                 Unisciti a oltre <strong style={{ color: "#fff" }}>1.800 professionisti</strong> che ogni settimana ricevono
-                la selezione editoriale IDEASMART: news AI, startup emergenti, analisi di mercato e reportage esclusivi.
+                la selezione editoriale AI4Business News: news AI, startup emergenti, analisi di mercato e reportage esclusivi.
               </p>
 
               {/* What you get */}

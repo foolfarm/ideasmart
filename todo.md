@@ -117,3 +117,8 @@
 ## Nuovi task (13 Mar 2026 — Titolo Hero)
 
 - [x] Hero: cambia main title in "AI4Business News" con "by IDEASMART" più piccolo sotto
+
+## Nuovi task (13 Mar 2026 — Newsletter branding)
+
+- [x] Sezione newsletter Home: aggiorna titolo e testo con "AI4Business News by IDEASMART"
+- [x] Template email newsletter: aggiorna header con nuovo branding
