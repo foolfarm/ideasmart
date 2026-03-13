@@ -103,3 +103,13 @@
 - [ ] Sezione newsletter nella landing page con form email + nome
 - [ ] Pagina di conferma iscrizione (/newsletter/confirm)
 - [ ] Admin dashboard: lista iscritti newsletter con statistiche
+
+## Nuovi task (13 Mar 2026 — Pagina /advertise)
+
+- [ ] Pagina /advertise con media kit professionale
+- [ ] Sezione hero con statistiche audience (iscritti, lettori, engagement)
+- [ ] Sezione formati pubblicitari con prezzi (5 formati)
+- [ ] Sezione "Perché IDEASMART" con dati editoriali
+- [ ] Form di contatto per inserzionisti
+- [ ] Rotta /advertise in App.tsx
+- [ ] Link "Advertising" nel footer e nel Navbar

@@ -187,6 +187,12 @@ export const appRouter = router({
         return result;
       }),
 
+    // Conta iscritti attivi (pubblico, per social proof)
+    getActiveCount: publicProcedure.query(async () => {
+      const subs = await getActiveSubscribers();
+      return subs.length;
+    }),
+
     // Disiscrizione tramite email (legacy, richiede autenticazione)
     unsubscribe: publicProcedure
       .input(z.object({ email: z.string().email() }))

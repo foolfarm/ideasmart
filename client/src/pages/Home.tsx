@@ -961,7 +961,7 @@ export default function Home() {
                   </div>
                 </div>
                 <a
-                  href="mailto:ac@foolfarm.com?subject=Advertising%20IDEASMART&body=Ciao%2C%20sono%20interessato%20a%20uno%20spazio%20pubblicitario%20su%20IDEASMART."
+                  href="/advertise"
                   className="flex-shrink-0 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:scale-105 hover:shadow-lg"
                   style={{ background: `linear-gradient(135deg, ${C.teal}, ${C.blue})`, color: "#fff" }}
                 >
@@ -1208,7 +1208,7 @@ export default function Home() {
                 ac@foolfarm.com
               </a>
               <a
-                href="mailto:ac@foolfarm.com?subject=Advertising%20IDEASMART"
+                href="/advertise"
                 className="block text-base transition-colors"
                 style={{ color: C.teal, fontFamily: "'DM Sans', sans-serif" }}
                 onMouseEnter={e => (e.currentTarget.style.color = C.navy)}

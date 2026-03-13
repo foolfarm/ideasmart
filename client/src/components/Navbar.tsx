@@ -70,6 +70,18 @@ export default function Navbar() {
 
           {/* CTA + mobile menu */}
           <div className="flex items-center gap-3">
+            <a
+              href="/advertise"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
+              style={{
+                color: "#ff5500",
+                borderColor: "#ff550030",
+                background: "#fff3ee",
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+            >
+              Advertising
+            </a>
             <button
               onClick={() => scrollTo("newsletter")}
               className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 text-white"
@@ -112,6 +124,14 @@ export default function Navbar() {
                   {item.label}
                 </button>
               ))}
+              <a
+                href="/advertise"
+                className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors"
+                style={{ color: "#ff5500", background: "#fff3ee" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Advertising →
+              </a>
             </div>
           )}
       </div>
