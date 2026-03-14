@@ -9,6 +9,8 @@ import { motion, useInView } from "framer-motion";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import AdUnit from "@/components/AdUnit";
+import CommentSection from "@/components/CommentSection";
+import SocialShare from "@/components/SocialShare";
 
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 const M = {
@@ -209,6 +211,23 @@ function MusicNewsGrid() {
                       Leggi →
                     </a>
                   )}
+                  {/* Social sharing */}
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-purple-500/20">
+                    <span className="text-xs" style={{ color: M.textMuted }}>{item.sourceName}</span>
+                    <SocialShare
+                      title={item.title + ' — via ITsMusic by IDEASMART'}
+                      url={item.sourceUrl !== '#' ? item.sourceUrl : undefined}
+                      accentColor="purple"
+                      compact
+                    />
+                  </div>
+                  {/* Commenti */}
+                  <CommentSection
+                    section="music"
+                    articleType="news"
+                    articleId={item.id}
+                    accentColor="purple"
+                  />
                 </div>
               </div>
             </div>

@@ -223,3 +223,23 @@ export const notificationPreferences = mysqlTable("notification_preferences", {
 
 export type NotificationPreference = typeof notificationPreferences.$inferSelect;
 export type InsertNotificationPreference = typeof notificationPreferences.$inferInsert;
+
+// ── Article Comments ──────────────────────────────────────────────────
+export const articleComments = mysqlTable("article_comments", {
+  id: int("id").autoincrement().primaryKey(),
+  // Sezione: 'ai' o 'music'
+  section: mysqlEnum("section", ["ai", "music"]).default("ai").notNull(),
+  // Tipo articolo: 'news', 'editorial', 'startup', 'reportage', 'analysis'
+  articleType: mysqlEnum("articleType", ["news", "editorial", "startup", "reportage", "analysis"]).notNull(),
+  articleId: int("articleId").notNull(),
+  // Autore (anonimo o con nome)
+  authorName: varchar("authorName", { length: 255 }).notNull(),
+  authorEmail: varchar("authorEmail", { length: 320 }),
+  content: text("content").notNull(),
+  // Moderazione: i commenti sono approvati automaticamente (true) o richiedono revisione
+  approved: boolean("approved").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ArticleComment = typeof articleComments.$inferSelect;
+export type InsertArticleComment = typeof articleComments.$inferInsert;

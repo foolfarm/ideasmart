@@ -354,3 +354,29 @@
 - [x] Riscritta Home.tsx come homepage hub multitematica di IDEASMART
 - [x] Aggiornata Admin dashboard con sezioni ITsMusic e statistiche separate
 - [x] Aggiornate route in App.tsx: / (hub), /ai (AI4Business), /music (ITsMusic)
+
+## Nuovi task (14 Mar 2026 — Commenti, Social Sharing, Popolamento /music)
+
+- [ ] Schema DB: tabella article_comments (id, articleType, articleId, section, authorName, authorEmail, content, createdAt, approved)
+- [ ] Procedure tRPC: comments.add, comments.getByArticle, comments.approve (admin)
+- [ ] Componente CommentSection.tsx riutilizzabile per /ai e /music
+- [ ] Pulsanti social sharing (LinkedIn, Twitter/X, WhatsApp, Copia link) su ogni articolo
+- [ ] Popolare /music: 20 notizie Rock/Indie/AI Music
+- [ ] Popolare /music: editoriale della settimana
+- [ ] Popolare /music: artista della settimana = Bark Psychosis
+- [ ] Popolare /music: 4 reportage ultime novità Indie e AI Music
+- [ ] Popolare /music: analisi di mercato musicale Indie e AI Music
+
+## Nuovi task (14 Mar 2026 — Commenti, Social Sharing, Sezione Music)
+
+- [x] Schema DB: tabella article_comments per commenti su articoli
+- [x] Procedure tRPC: comments.add e comments.getByArticle
+- [x] Componente CommentSection.tsx riutilizzabile (sezione commenti sotto ogni articolo)
+- [x] Componente SocialShare.tsx riutilizzabile (pulsanti LinkedIn, X, WhatsApp, copia link)
+- [x] Integrazione CommentSection e SocialShare in AiHome.tsx
+- [x] Integrazione CommentSection e SocialShare in MusicHome.tsx
+- [x] Seed /music: 20 notizie Rock/Indie/AI Music con immagini Pexels
+- [x] Seed /music: editoriale della settimana (AI e Musica)
+- [x] Seed /music: artista della settimana — Bark Psychosis
+- [x] Seed /music: 4 reportage Indie/AI Music (Bark Psychosis, Suno AI, Indie Italia, Mubert)
+- [x] Seed /music: 4 analisi di mercato musicale (IFPI, Goldman Sachs, Spotify, Pollstar)

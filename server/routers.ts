@@ -40,8 +40,8 @@ import { generateMarketAnalysis } from "./marketAnalysisScheduler";
 import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
-import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable } from "../drizzle/schema";
-import { eq, isNull } from "drizzle-orm";
+import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable } from "../drizzle/schema";
+import { eq, isNull, and, desc } from "drizzle-orm";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -732,6 +732,60 @@ Rispondi con questo JSON:
       const count = await generateMusicNews();
       return { count, message: `${count} notizie musicali aggiornate con successo` };
     }),
+  }),
+
+  // ── Comments (public) ──────────────────────────────────────────────────────────────
+  comments: router({
+    // Aggiungi un commento a un articolo
+    add: publicProcedure
+      .input(z.object({
+        section: z.enum(["ai", "music"]),
+        articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
+        articleId: z.number().int().positive(),
+        authorName: z.string().min(2).max(100),
+        authorEmail: z.string().email().optional(),
+        content: z.string().min(5).max(2000),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const [inserted] = await db.insert(articleCommentsTable).values({
+          section: input.section,
+          articleType: input.articleType,
+          articleId: input.articleId,
+          authorName: input.authorName,
+          authorEmail: input.authorEmail ?? null,
+          content: input.content,
+          approved: true,
+        });
+        return { success: true, id: inserted.insertId };
+      }),
+
+    // Recupera i commenti approvati per un articolo
+    getByArticle: publicProcedure
+      .input(z.object({
+        section: z.enum(["ai", "music"]),
+        articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
+        articleId: z.number().int().positive(),
+      }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return [];
+        const comments = await db
+          .select()
+          .from(articleCommentsTable)
+          .where(
+            and(
+              eq(articleCommentsTable.section, input.section),
+              eq(articleCommentsTable.articleType, input.articleType),
+              eq(articleCommentsTable.articleId, input.articleId),
+              eq(articleCommentsTable.approved, true)
+            )
+          )
+          .orderBy(desc(articleCommentsTable.createdAt))
+          .limit(50);
+        return comments;
+      }),
   }),
 });
 
