@@ -197,6 +197,60 @@ export const appRouter = router({
         return getLowScoreNews(input.section);
       }),
 
+    // Recupera una singola notizia per ID (per la pagina articolo)
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const items = await db.select().from(newsItemsTable)
+          .where(eq(newsItemsTable.id, input.id))
+          .limit(1);
+        if (!items.length) return null;
+        const item = items[0];
+        return {
+          id: item.id,
+          title: item.title,
+          summary: item.summary,
+          category: item.category,
+          sourceName: item.sourceName ?? '',
+          sourceUrl: item.sourceUrl ?? '#',
+          publishedAt: item.publishedAt ?? '',
+          imageUrl: item.imageUrl ?? null,
+          section: item.section,
+        };
+      }),
+
+    // Recupera notizie correlate per sezione/categoria
+    getRelated: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        section: z.enum(['ai', 'music']).default('ai'),
+        limit: z.number().min(1).max(6).default(4),
+      }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return [];
+        const items = await db.select().from(newsItemsTable)
+          .where(eq(newsItemsTable.section, input.section))
+          .orderBy(desc(newsItemsTable.createdAt))
+          .limit(input.limit + 1);
+        // Escludi la notizia corrente
+        return items
+          .filter((item: typeof items[0]) => item.id !== input.id)
+          .slice(0, input.limit)
+          .map((item: typeof items[0]) => ({
+            id: item.id,
+            title: item.title,
+            summary: item.summary,
+            category: item.category,
+            sourceName: item.sourceName ?? '',
+            sourceUrl: item.sourceUrl ?? '#',
+            publishedAt: item.publishedAt ?? '',
+            imageUrl: item.imageUrl ?? null,
+          }));
+      }),
+
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))

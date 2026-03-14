@@ -16,6 +16,8 @@ import Privacy from "./pages/Privacy";
 import Unsubscribe from "./pages/Unsubscribe";
 import NotificationPreferences from "./pages/NotificationPreferences";
 import Advertise from "./pages/Advertise";
+import NewsArticle from "./pages/NewsArticle";
+import MusicNewsArticle from "./pages/MusicNewsArticle";
 import NotFound from "./pages/NotFound";
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -31,6 +33,8 @@ function Router() {
       <Route path="/unsubscribe" component={Unsubscribe} />
       <Route path="/notifiche" component={NotificationPreferences} />
       <Route path="/advertise" component={Advertise} />
+      <Route path="/ai/news/:id" component={NewsArticle} />
+      <Route path="/music/news/:id" component={MusicNewsArticle} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

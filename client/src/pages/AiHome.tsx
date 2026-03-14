@@ -214,9 +214,7 @@ function NewsGrid() {
               <div className="flex flex-col sm:flex-row gap-0">
                 {/* Immagine — sopra su mobile, a sinistra su desktop */}
                 <a
-                  href={item.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/ai/news/${item.id}`}
                   className="flex-shrink-0 w-full sm:w-44 relative overflow-hidden rounded-t-xl sm:rounded-t-none sm:rounded-l-xl"
                   style={{ height: "180px", minHeight: "180px" }}
                 >
@@ -251,7 +249,7 @@ function NewsGrid() {
                   </div>
 
                   {/* Titolo + sommario */}
-                  <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                  <a href={`/ai/news/${item.id}`} className="flex-1">
                     <h3
                       className="text-lg sm:text-xl font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
                       style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}

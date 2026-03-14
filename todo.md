@@ -461,3 +461,14 @@
 - [x] Sostituzione automatica: procedura tRPC news.replaceAllLowScore genera contenuto AI alternativo per notizie sotto soglia
 - [x] Pannello sostituzione in /admin/audit con selezione sezione e pulsante sostituzione
 - [x] TypeScript: 0 errori
+
+## Nuovi task (14 Mar 2026 — Sostituzione notizie + Articolo singolo)
+
+- [x] Eseguire sostituzione automatica notizie score<40 per AI4Business (20/20 sostituite) e ITsMusic (0 da sostituire)
+- [x] Creare pagina /ai/news/[id] con sommario espanso, fonti, contenuti correlati, SEO, commenti
+- [x] Creare pagina /music/news/[id] con design dark ITsMusic, correlati, SEO, commenti
+- [x] Aggiornare App.tsx con le nuove route /ai/news/:id e /music/news/:id
+- [x] Aggiornare link immagine e titolo in AiHome per puntare a /ai/news/[id]
+- [x] Aggiornare link "Leggi" in MusicHome per puntare a /music/news/[id]
+- [x] SEO: meta tag dinamici per ogni articolo (title, description, og:image, canonical, JSON-LD NewsArticle)
+- [x] TypeScript: 0 errori

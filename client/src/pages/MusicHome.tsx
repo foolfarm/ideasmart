@@ -211,17 +211,13 @@ function MusicNewsGrid() {
                   <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#cbd5e1" }}>
                     {item.summary}
                   </p>
-                  {item.sourceUrl && item.sourceUrl !== "#" && (
-                    <a
-                      href={item.sourceUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-medium mt-2 transition-colors"
-                      style={{ color }}
-                    >
-                      Leggi →
-                    </a>
-                  )}
+                  <a
+                    href={`/music/news/${item.id}`}
+                    className="inline-flex items-center gap-1 text-xs font-medium mt-2 transition-colors"
+                    style={{ color }}
+                  >
+                    Leggi →
+                  </a>
                   {/* Social sharing */}
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-purple-500/20">
                     <span className="text-xs" style={{ color: M.textMuted }}>{item.sourceName}</span>
