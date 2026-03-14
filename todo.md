@@ -538,3 +538,7 @@
 - [x] Rimosso import startAuditScheduler da server/_core/index.ts (non più importato)
 - [x] Disabilitato invio email di alert in auditScheduler.ts (codice email sostituito con log)
 - [x] Verificato: nessun log AuditScheduler dopo il riavvio del server alle 19:40 UTC
+
+## Nuovi task (14 Mar 2026 — Sezione PollCast)
+- [x] Aggiunta sezione "Partecipa ai sondaggi di IdeaSmart su PollCast Online" in Home.tsx sopra "Chi siamo"
+- [x] Sezione con card dark, due CTA (Vai ai sondaggi / Scopri PollCast), statistiche decorative, link a https://pollcast.online/

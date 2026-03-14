@@ -706,6 +706,104 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── POLLCAST SONDAGGI ─────────────────────────────────────────────── */}
+      <section id="pollcast" className="py-20 px-4" style={{ background: C.navy }}>
+        <div className="max-w-5xl mx-auto">
+          <FadeUp>
+            <div className="text-center mb-10">
+              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.orange }}>Community</p>
+              <h2 className="hub-title text-4xl md:text-5xl font-black mb-4" style={{ color: C.white }}>
+                Partecipa ai sondaggi di<br /><span style={{ color: C.teal }}>IdeaSmart</span> su PollCast
+              </h2>
+              <p className="text-lg max-w-2xl mx-auto" style={{ color: C.whiteAlpha60 }}>
+                La tua opinione conta. Vota i sondaggi curati dalla redazione di IDEASMART su AI, business e musica — e scopri cosa pensa la community.
+              </p>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.15}>
+            <div
+              className="relative rounded-2xl overflow-hidden p-8 md:p-12 flex flex-col md:flex-row items-center gap-8"
+              style={{
+                background: "linear-gradient(135deg, #0f172a 0%, #111827 60%, rgba(0,180,160,0.08) 100%)",
+                border: `1px solid ${C.whiteAlpha15}`,
+              }}
+            >
+              {/* Icona / Logo PollCast */}
+              <div className="flex-shrink-0 flex flex-col items-center gap-3">
+                <div
+                  className="w-24 h-24 rounded-2xl flex items-center justify-center text-5xl"
+                  style={{ background: "linear-gradient(135deg, #00b4a0 0%, #e84f00 100%)" }}
+                >
+                  📊
+                </div>
+                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: C.teal }}>PollCast Online</span>
+              </div>
+
+              {/* Testo */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl md:text-3xl font-black mb-3" style={{ color: C.white }}>
+                  Esprimi la tua opinione
+                </h3>
+                <p className="text-base mb-6" style={{ color: C.whiteAlpha60 }}>
+                  PollCast è la piattaforma di sondaggi in tempo reale di IDEASMART. Partecipa ai poll settimanali su intelligenza artificiale, industria musicale e tendenze del business italiano. I risultati vengono pubblicati nelle nostre newsletter.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                  <a
+                    href="https://pollcast.online/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-200 hover:scale-105"
+                    style={{
+                      background: `linear-gradient(135deg, ${C.teal} 0%, #007a6e 100%)`,
+                      color: C.white,
+                      boxShadow: `0 4px 20px rgba(0,180,160,0.35)`,
+                    }}
+                  >
+                    <span>Vai ai sondaggi</span>
+                    <span style={{ fontSize: "1.1em" }}>→</span>
+                  </a>
+                  <a
+                    href="https://pollcast.online/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-200"
+                    style={{
+                      border: `1px solid ${C.whiteAlpha15}`,
+                      color: C.whiteAlpha80,
+                      background: "transparent",
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = C.whiteAlpha8)}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    Scopri PollCast
+                  </a>
+                </div>
+              </div>
+
+              {/* Statistiche decorative */}
+              <div className="flex-shrink-0 grid grid-cols-2 gap-3 md:gap-4">
+                {[
+                  { value: "100%", label: "Anonimo" },
+                  { value: "Live", label: "Risultati" },
+                  { value: "AI", label: "& Musica" },
+                  { value: "Free", label: "Gratuito" },
+                ].map((stat, i) => (
+                  <div
+                    key={i}
+                    className="text-center p-3 rounded-xl"
+                    style={{ background: C.whiteAlpha8, border: `1px solid ${C.whiteAlpha8}` }}
+                  >
+                    <p className="text-xl font-black" style={{ color: i % 2 === 0 ? C.teal : C.orange }}>{stat.value}</p>
+                    <p className="text-xs" style={{ color: C.whiteAlpha50 }}>{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* ── CHI SIAMO / MANIFESTO ─────────────────────────────────────────── */}
       <section id="chi-siamo" className="py-24 px-4" style={{ background: C.navyMid }}>
         <div className="max-w-4xl mx-auto">
