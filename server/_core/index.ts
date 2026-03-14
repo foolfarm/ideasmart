@@ -12,6 +12,7 @@ import { startNewsletterScheduler } from "../newsletterScheduler";
 import { startDailyContentScheduler } from "../dailyContentScheduler";
 import { startWeeklyReportageScheduler } from "../weeklyReportageScheduler";
 import { startMarketAnalysisScheduler } from "../marketAnalysisScheduler";
+import { scheduleImageBackfill } from "../backfillImages";
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
@@ -144,3 +145,7 @@ startWeeklyReportageScheduler();
 
 // Avvia il cron job per le 4 analisi di mercato AI (ogni giovedì 06:00 UTC)
 startMarketAnalysisScheduler();
+
+// Genera automaticamente le immagini AI per gli articoli esistenti senza immagine
+// Parte 30 secondi dopo l'avvio per non rallentare il boot
+scheduleImageBackfill();

@@ -6,6 +6,7 @@
 import { invokeLLM } from "./_core/llm";
 import { saveWeeklyReportage, deleteReportageByWeek } from "./db";
 import { InsertWeeklyReportage } from "../drizzle/schema";
+import { genImageForReportage } from "./imageAutoGen";
 
 function getWeekLabel(): string {
   const now = new Date();
@@ -142,6 +143,17 @@ Rispondi con un array JSON di esattamente 4 oggetti, uno per settore. Nessun tes
     // Elimina eventuali reportage della stessa settimana già presenti
     await deleteReportageByWeek(weekLabel);
 
+    // Genera immagini AI per ogni reportage in parallelo
+    const imageUrls = await Promise.all(
+      items.slice(0, 4).map((item, i) =>
+        genImageForReportage(item.startupName ?? "", item.headline ?? "", CATEGORIES[i])
+          .then(url => {
+            if (url) console.log(`[WeeklyReportage] Image generated for reportage ${i + 1}: ${item.startupName}`);
+            return url;
+          })
+      )
+    );
+
     const inserts: InsertWeeklyReportage[] = items.slice(0, 4).map((item, i) => ({
       weekLabel,
       position: i + 1,
@@ -165,6 +177,7 @@ Rispondi con un array JSON di esattamente 4 oggetti, uno per settore. Nessun tes
       ctaLabel: item.ctaLabel ?? "Scopri di più →",
       ctaUrl: item.websiteUrl ?? "#",
       websiteUrl: item.websiteUrl ?? "#",
+      imageUrl: imageUrls[i] ?? null,
     }));
 
     await saveWeeklyReportage(inserts);

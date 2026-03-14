@@ -7,6 +7,7 @@
 
 import { invokeLLM } from "./_core/llm";
 import { saveMarketAnalysis, getLatestMarketAnalysis, deleteMarketAnalysisByWeek } from "./db";
+import { genImageForMarketAnalysis } from "./imageAutoGen";
 
 function getWeekLabel(): string {
   const now = new Date();
@@ -170,9 +171,20 @@ Rispondi SOLO con un JSON valido, senza markdown, nel formato:
     // Elimina analisi precedenti della stessa settimana (idempotente)
     await deleteMarketAnalysisByWeek(weekLabel);
 
-    // Salva le nuove analisi
+    // Genera immagini AI per ogni analisi in parallelo
+    const imageUrls = await Promise.all(
+      analyses.map((a) =>
+        genImageForMarketAnalysis(a.title, a.category, a.source)
+          .then(url => {
+            if (url) console.log(`[MarketAnalysis] Image generated: ${a.title.slice(0, 40)}...`);
+            return url;
+          })
+      )
+    );
+
+    // Salva le nuove analisi con immagini
     await saveMarketAnalysis(
-      analyses.map((a) => ({
+      analyses.map((a, i) => ({
         weekLabel,
         position: a.position,
         source: a.source,
@@ -188,6 +200,7 @@ Rispondi SOLO con un JSON valido, senza markdown, nel formato:
         marketSize: a.marketSize ?? null,
         growthRate: a.growthRate ?? null,
         italyRelevance: a.italyRelevance ?? null,
+        imageUrl: imageUrls[i] ?? null,
       }))
     );
 

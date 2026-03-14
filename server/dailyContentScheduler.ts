@@ -12,6 +12,7 @@ import {
   getTodayStartup,
   saveStartupOfDay,
 } from "./db";
+import { genImageForEditorial, genImageForStartup } from "./imageAutoGen";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -189,7 +190,12 @@ async function runDailyContentRefresh() {
     if (!existingEditorial) {
       console.log("[DailyContent] Generating editorial...");
       const editorial = await generateDailyEditorial();
-      await saveEditorial(editorial);
+      // Genera immagine AI automaticamente
+      const editorialImageUrl = await genImageForEditorial(editorial.title, editorial.keyTrend ?? "AI Innovation");
+      if (editorialImageUrl) {
+        console.log(`[DailyContent] Editorial image generated: ${editorial.title.slice(0, 40)}...`);
+      }
+      await saveEditorial({ ...editorial, imageUrl: editorialImageUrl ?? undefined });
       console.log(`[DailyContent] Editorial saved: "${editorial.title}"`);
     } else {
       console.log("[DailyContent] Editorial already exists for today, skipping.");
@@ -200,7 +206,12 @@ async function runDailyContentRefresh() {
     if (!existingStartup) {
       console.log("[DailyContent] Generating startup of the day...");
       const startup = await generateStartupOfDay();
-      await saveStartupOfDay(startup);
+      // Genera immagine AI automaticamente
+      const startupImageUrl = await genImageForStartup(startup.name, startup.category, startup.tagline);
+      if (startupImageUrl) {
+        console.log(`[DailyContent] Startup image generated: ${startup.name}`);
+      }
+      await saveStartupOfDay({ ...startup, imageUrl: startupImageUrl ?? undefined });
       console.log(`[DailyContent] Startup saved: "${startup.name}"`);
     } else {
       console.log("[DailyContent] Startup of the day already exists for today, skipping.");

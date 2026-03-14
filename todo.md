@@ -230,3 +230,15 @@
 - [ ] Creare procedura tRPC admin per generare immagini AI per ogni articolo
 - [ ] Aggiornare componenti frontend per mostrare immagini accanto agli articoli
 - [ ] Generare immagini AI per gli articoli esistenti
+
+## Nuovi task (14 Mar 2026 — Generazione automatica immagini AI)
+
+- [x] Creare helper centralizzato imageAutoGen.ts con funzioni per ogni tipo di contenuto
+- [x] Integrare genImageForNews in newsScheduler: ogni notizia riceve immagine al momento della creazione
+- [x] Integrare genImageForEditorial in dailyContentScheduler: ogni editoriale riceve immagine automatica
+- [x] Integrare genImageForStartup in dailyContentScheduler: ogni startup del giorno riceve immagine automatica
+- [x] Integrare genImageForReportage in weeklyReportageScheduler: ogni reportage riceve immagine automatica
+- [x] Integrare genImageForMarketAnalysis in marketAnalysisScheduler: ogni analisi riceve immagine automatica
+- [x] Creare backfillImages.ts: genera immagini per tutti gli articoli esistenti senza immagine
+- [x] Avviare backfill automatico 30 secondi dopo l'avvio del server (scheduleImageBackfill)
+- [x] Backfill completato: 20 news + 3 editoriali + 3 startup + 4 reportage + 4 analisi = 34 immagini generate
