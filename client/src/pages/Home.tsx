@@ -266,7 +266,7 @@ export default function Home() {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
-        className="relative pt-28 pb-20 px-4 overflow-hidden"
+        className="relative pt-24 sm:pt-28 pb-16 sm:pb-20 px-4 overflow-hidden"
         style={{
           background: `radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,180,160,0.15) 0%, transparent 70%), ${C.navy}`,
         }}
@@ -282,17 +282,18 @@ export default function Home() {
         <div className="relative max-w-5xl mx-auto text-center">
           <FadeUp>
             <div
-              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6"
+              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase px-3 sm:px-4 py-2 rounded-full mb-5 sm:mb-6"
               style={{ background: C.whiteAlpha8, border: `1px solid ${C.border}`, color: C.teal }}
             >
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
-              Testata Giornalistica Multicanale
+              <span className="hidden xs:inline">Testata Giornalistica </span>Multicanale
             </div>
           </FadeUp>
 
           <FadeUp delay={0.1}>
+            {/* Titolo: 5xl su mobile, 7xl su sm, 8xl su md */}
             <h1
-              className="hub-title text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight"
+              className="hub-title text-5xl sm:text-7xl md:text-8xl font-black mb-4 sm:mb-6 leading-none tracking-tight"
               style={{ color: C.white }}
             >
               IDEA<span style={{ color: C.teal }}>SMART</span>
@@ -300,43 +301,51 @@ export default function Home() {
           </FadeUp>
 
           <FadeUp delay={0.2}>
-            <p className="text-xl md:text-2xl mb-5 max-w-3xl mx-auto leading-relaxed" style={{ color: C.whiteAlpha90 }}>
+            <p
+              className="text-lg sm:text-xl md:text-2xl mb-4 sm:mb-5 max-w-3xl mx-auto leading-relaxed px-1"
+              style={{ color: C.whiteAlpha90 }}
+            >
               La piattaforma editoriale italiana che unisce i mondi dell'<strong style={{ color: C.teal }}>Intelligenza Artificiale</strong> e della <strong style={{ color: C.violet }}>Musica</strong>.
             </p>
-            <p className="text-lg mb-12 max-w-2xl mx-auto leading-relaxed" style={{ color: C.whiteAlpha60 }}>
+            <p
+              className="text-base sm:text-lg mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-1"
+              style={{ color: C.whiteAlpha60 }}
+            >
               Contenuti aggiornati ogni giorno. Analisi, reportage e newsletter curate da AI per professionisti.
             </p>
           </FadeUp>
 
           <FadeUp delay={0.3}>
-            <div className="flex flex-wrap justify-center gap-10 mb-12">
+            {/* Statistiche: griglia 2×2 su mobile, 4 colonne su desktop */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-10 mb-8 sm:mb-12 max-w-xs sm:max-w-none mx-auto">
               {[
                 { value: "2", label: "canali tematici" },
                 { value: "40+", label: "contenuti al giorno" },
                 { value: subscriberCount ? `${subscriberCount.toLocaleString("it-IT")}+` : "5.000+", label: "iscritti attivi" },
-                { value: "100%", label: "aggiornamento automatico" },
+                { value: "100%", label: "aggiornamento auto" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="hub-title text-4xl font-black" style={{ color: C.white }}>{stat.value}</div>
-                  <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>{stat.label}</div>
+                  <div className="hub-title text-3xl sm:text-4xl font-black" style={{ color: C.white }}>{stat.value}</div>
+                  <div className="text-xs sm:text-sm mt-1 leading-tight" style={{ color: C.whiteAlpha50 }}>{stat.label}</div>
                 </div>
               ))}
             </div>
           </FadeUp>
 
           <FadeUp delay={0.4}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/ai">
+            {/* CTA: full-width su mobile, auto su desktop */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Link href="/ai" className="block sm:inline-block">
                 <button
-                  className="px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 active:scale-95"
                   style={{ background: C.teal, color: C.navy }}
                 >
                   🤖 Entra in AI4Business
                 </button>
               </Link>
-              <Link href="/music">
+              <Link href="/music" className="block sm:inline-block">
                 <button
-                  className="px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 active:scale-95"
                   style={{ background: C.violet, color: C.white }}
                 >
                   🎸 Entra in ITsMusic

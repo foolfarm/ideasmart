@@ -895,6 +895,93 @@ Rispondi con questo JSON:
         return { success: true, message: "Audit avviato in background" };
       }),
   }),
+
+  // ── Advertising / Media Kit ──────────────────────────────────────────────
+  advertise: router({
+    // Invio richiesta contatto inserzionista
+    contact: publicProcedure
+      .input(z.object({
+        company: z.string().min(1, "Azienda obbligatoria"),
+        name: z.string().min(1, "Nome obbligatorio"),
+        email: z.string().email("Email non valida"),
+        format: z.string().optional(),
+        budget: z.string().optional(),
+        message: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const subject = `🎯 Nuova richiesta advertising da ${input.company}`;
+        const htmlBody = `
+          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 32px;">
+            <div style="background: #0a0f1e; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+              <h1 style="color: #00e5c8; font-size: 22px; margin: 0; font-weight: 900;">IDEA<span style="color: #ffffff;">SMART</span></h1>
+              <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin: 4px 0 0; letter-spacing: 2px;">NUOVA RICHIESTA ADVERTISING</p>
+            </div>
+            <div style="background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e5e7eb;">
+              <h2 style="color: #0a0f1e; font-size: 20px; margin: 0 0 20px;">Dettagli richiesta</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 10px 0; color: #9ca3af; font-size: 13px; width: 140px;">Azienda</td>
+                  <td style="padding: 10px 0; color: #111827; font-size: 15px; font-weight: 600;">${input.company}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Contatto</td>
+                  <td style="padding: 10px 0; color: #111827; font-size: 15px;">${input.name}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Email</td>
+                  <td style="padding: 10px 0;"><a href="mailto:${input.email}" style="color: #00e5c8; font-size: 15px;">${input.email}</a></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Formato</td>
+                  <td style="padding: 10px 0; color: #111827; font-size: 15px;">${input.format || "Non specificato"}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Budget</td>
+                  <td style="padding: 10px 0; color: #111827; font-size: 15px;">${input.budget || "Non specificato"}</td>
+                </tr>
+                ${input.message ? `<tr><td style="padding: 10px 0; color: #9ca3af; font-size: 13px; vertical-align: top;">Messaggio</td><td style="padding: 10px 0; color: #374151; font-size: 14px; line-height: 1.6;">${input.message}</td></tr>` : ""}
+              </table>
+            </div>
+            <div style="margin-top: 20px; padding: 16px; background: #fff3ee; border-radius: 8px; border-left: 3px solid #ff5500;">
+              <p style="color: #ff5500; font-size: 13px; font-weight: 700; margin: 0 0 4px;">Azione richiesta</p>
+              <p style="color: #4b5563; font-size: 13px; margin: 0;">Rispondere entro 24 ore a <strong>${input.email}</strong> con una proposta personalizzata.</p>
+            </div>
+          </div>
+        `;
+
+        // Invia email di notifica all'admin
+        await sendEmail({
+          to: "info@andreacinelli.com",
+          subject,
+          html: htmlBody,
+        });
+
+        // Invia email di conferma all'inserzionista
+        const confirmHtml = `
+          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 32px;">
+            <div style="background: #0a0f1e; padding: 24px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
+              <h1 style="color: #00e5c8; font-size: 24px; margin: 0; font-weight: 900;">IDEA<span style="color: #ffffff;">SMART</span></h1>
+              <p style="color: rgba(255,255,255,0.5); font-size: 11px; margin: 6px 0 0; letter-spacing: 2px;">AI FOR BUSINESS</p>
+            </div>
+            <div style="background: #ffffff; border-radius: 12px; padding: 32px; border: 1px solid #e5e7eb; text-align: center;">
+              <div style="width: 64px; height: 64px; background: #e6faf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px;">✓</div>
+              <h2 style="color: #0a0f1e; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta per <strong>${input.company}</strong>. Ti risponderemo entro <strong>24 ore</strong> con una proposta personalizzata.</p>
+              <a href="https://ideasmart.ai/advertise" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Esplora i formati →</a>
+            </div>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">IDEASMART · info@ideasmart.ai · <a href="https://ideasmart.ai" style="color: #00e5c8;">ideasmart.ai</a></p>
+          </div>
+        `;
+
+        await sendEmail({
+          to: input.email,
+          subject: `Abbiamo ricevuto la tua richiesta — IDEASMART`,
+          html: confirmHtml,
+        });
+
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -433,3 +433,11 @@
 - [x] Aggiungere procedure tRPC: audit.getSchedulerStatus, audit.runFullAuditNow, audit.triggerScheduledAudit, audit.auditSingleReportage
 - [x] Dashboard /admin/audit: stato scheduler live, filtro reportage, audit completo, pulsante esegui ora
 - [x] TypeScript: 0 errori, server riavviato
+
+## Nuovi task (14 Mar 2026 — Advertise + Hero Mobile + Audit)
+
+- [x] Pagina /advertise con media kit professionale — già esistente e completa
+- [x] Form contatto inserzionisti con invio email via SendGrid (tRPC advertise.contact + email admin + conferma inserzionista)
+- [x] Rotta /advertise in App.tsx — già presente
+- [x] Ottimizzare hero section homepage hub per mobile (font 5xl mobile, griglia 2x2 statistiche, CTA full-width)
+- [x] Audit automatico avviato in background (scheduler ogni 24h attivo dal riavvio server)

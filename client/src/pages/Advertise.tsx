@@ -154,6 +154,16 @@ export default function Advertise() {
   // Conta iscritti reali dal DB
   const { data: subscriberCount } = trpc.newsletter.getActiveCount.useQuery();
 
+  const contactMutation = trpc.advertise.contact.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      toast.success("Richiesta inviata! Ti contatteremo entro 24 ore.");
+    },
+    onError: () => {
+      toast.error("Errore nell'invio. Scrivi direttamente a info@ideasmart.ai");
+    },
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.email || !formData.name || !formData.company) {
@@ -162,22 +172,14 @@ export default function Advertise() {
     }
     setSending(true);
     try {
-      // Notifica al proprietario del sito
-      await fetch("/api/trpc/system.notifyOwner", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          json: {
-            title: `🎯 Nuova richiesta advertising da ${formData.company}`,
-            content: `**Azienda:** ${formData.company}\n**Contatto:** ${formData.name} (${formData.email})\n**Formato:** ${formData.format || "Non specificato"}\n**Budget:** ${formData.budget || "Non specificato"}\n**Messaggio:** ${formData.message || "—"}`,
-          },
-        }),
+      await contactMutation.mutateAsync({
+        company: formData.company,
+        name: formData.name,
+        email: formData.email,
+        format: formData.format || undefined,
+        budget: formData.budget || undefined,
+        message: formData.message || undefined,
       });
-      setSubmitted(true);
-      toast.success("Richiesta inviata! Ti contatteremo entro 24 ore.");
-    } catch {
-      toast.error("Errore nell'invio. Scrivi direttamente a info@ideasmart.ai");
     } finally {
       setSending(false);
     }
