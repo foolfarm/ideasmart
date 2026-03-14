@@ -144,7 +144,7 @@ function MusicNewsGrid() {
     { id: 6, title: "Suno AI 4.0: genera canzoni complete in 30 secondi con testo e musica", summary: "Suno lancia la versione 4.0 del suo generatore musicale AI, capace di creare canzoni complete di alta qualità.", category: "AI Music", sourceUrl: "#", sourceName: "Wired" },
   ];
 
-  const items = (newsData && newsData.length > 0 ? newsData : fallbackNews) as Array<{
+  const items = (newsData ?? []) as Array<{
     id: number; title: string; summary: string; category: string;
     sourceUrl: string; sourceName: string; imageUrl?: string | null;
   }>;
@@ -161,6 +161,15 @@ function MusicNewsGrid() {
         {[...Array(6)].map((_, i) => (
           <div key={i} className="rounded-xl p-5 animate-pulse" style={{ background: M.surface, height: 160 }} />
         ))}
+      </div>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="text-center py-16" style={{ color: M.muted }}>
+        <p className="text-lg font-semibold mb-2" style={{ color: M.text }}>Notizie in aggiornamento...</p>
+        <p className="text-sm">I contenuti musicali verranno caricati a breve.</p>
       </div>
     );
   }

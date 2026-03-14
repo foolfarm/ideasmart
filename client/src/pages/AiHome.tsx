@@ -184,20 +184,29 @@ function NewsGrid() {
     { id: 20, title: "Gartner: il 45% delle violazioni dati nel 2026 coinvolge sistemi AI", summary: "Quasi la metà delle violazioni dati aziendali nel 2026 ha come vettore un sistema AI mal configurato.", category: "AI & Sicurezza", sourceUrl: "https://gartner.com", sourceName: "Gartner" },
   ];
 
-  const items = (newsData && newsData.length > 0 ? newsData : fallbackNews) as Array<{
+  const items = (newsData ?? []) as Array<{
     id: number; title: string; summary: string; category: string; sourceUrl: string; sourceName: string; imageUrl?: string | null;
   }>;
 
   if (isLoading) {
     return (
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="flex flex-col gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="news-card p-5 animate-pulse">
+          <div key={i} className="news-card p-5 animate-pulse" style={{ height: '120px' }}>
             <div className="h-3 rounded mb-3" style={{ background: C.surface2, width: "40%" }} />
             <div className="h-4 rounded mb-2" style={{ background: C.surface2, width: "90%" }} />
             <div className="h-3 rounded" style={{ background: C.surface2, width: "70%" }} />
           </div>
         ))}
+      </div>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="text-center py-16" style={{ color: C.muted }}>
+        <p className="text-lg font-semibold mb-2">Notizie in aggiornamento...</p>
+        <p className="text-sm">I contenuti verranno caricati a breve.</p>
       </div>
     );
   }

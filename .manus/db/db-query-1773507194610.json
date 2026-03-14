@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, title, section, category FROM news_items ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, section, category FROM news_items ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "150022",
+      "title": "L'UE introduce nuove linee guida per l'AI Act: focus su trasparenza e responsabilità per modelli generativi",
+      "section": "ai",
+      "category": "Regolamentazione AI"
+    },
+    {
+      "id": "150021",
+      "title": "Startup Italiana 'Synapse AI' Raccoglie €50M per Espansione Globale in Asia e USA",
+      "section": "ai",
+      "category": "Internazionalizzazione"
+    },
+    {
+      "id": "150020",
+      "title": "Nuova Era per la Diagnostica Medica: AI Predittiva Rileva Malattie Rare con Precisione Senza Precedenti",
+      "section": "ai",
+      "category": "Ricerca & Innovazione"
+    },
+    {
+      "id": "150019",
+      "title": "Agenti AI autonomi rivoluzionano la gestione aziendale: il caso di 'Nexus' nel 2026",
+      "section": "ai",
+      "category": "AI Agentiva"
+    },
+    {
+      "id": "150018",
+      "title": "Google DeepMind presenta 'Aura', il nuovo modello generativo multimodale che riscrive le regole dell'interazione AI",
+      "section": "ai",
+      "category": "Modelli Generativi"
+    },
+    {
+      "id": "150017",
+      "title": "AI: 'Synapse Italia' chiude round Series A da 15M€ per piattaforma di analisi predittiva",
+      "section": "ai",
+      "category": "AI & Startup Italiane"
+    },
+    {
+      "id": "150016",
+      "title": "Startup Italiane AI Accelerano l'Espansione Globale nel 2026: Focus su Mercati Asiatici e Nordamericani",
+      "section": "ai",
+      "category": "Internazionalizzazione"
+    },
+    {
+      "id": "150015",
+      "title": "Startup italiana 'NeuroSense AI' raccoglie 50M per diagnosi precoce dell'Alzheimer tramite AI nel 2026",
+      "section": "ai",
+      "category": "AI & Salute"
+    },
+    {
+      "id": "150014",
+      "title": "QuantumFinance lancia piattaforma AI per la gestione del rischio algoritmico, rivoluzionando il trading nel 2026",
+      "section": "ai",
+      "category": "AI & Finanza"
+    },
+    {
+      "id": "150013",
+      "title": "Google acquisisce 'Synapse AI' per 15 miliardi di dollari, rafforzando la leadership nell'IA generativa",
+      "section": "ai",
+      "category": "Big Tech"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsection\tcategory\n150022\tL'UE introduce nuove linee guida per l'AI Act: focus su trasparenza e responsabilità per modelli generativi\tai\tRegolamentazione AI\n150021\tStartup Italiana 'Synapse AI' Raccoglie €50M per Espansione Globale in Asia e USA\tai\tInternazionalizzazione\n150020\tNuova Era per la Diagnostica Medica: AI Predittiva Rileva Malattie Rare con Precisione Senza Precedenti\tai\tRicerca & Innovazione\n150019\tAgenti AI autonomi rivoluzionano la gestione aziendale: il caso di 'Nexus' nel 2026\tai\tAI Agentiva\n150018\tGoogle DeepMind presenta 'Aura', il nuovo modello generativo multimodale che riscrive le regole dell'interazione AI\tai\tModelli Generativi\n150017\tAI: 'Synapse Italia' chiude round Series A da 15M€ per piattaforma di analisi predittiva\tai\tAI & Startup Italiane\n150016\tStartup Italiane AI Accelerano l'Espansione Globale nel 2026: Focus su Mercati Asiatici e Nordamericani\tai\tInternazionalizzazione\n150015\tStartup italiana 'NeuroSense AI' raccoglie 50M per diagnosi precoce dell'Alzheimer tramite AI nel 2026\tai\tAI & Salute\n150014\tQuantumFinance lancia piattaforma AI per la gestione del rischio algoritmico, rivoluzionando il trading nel 2026\tai\tAI & Finanza\n150013\tGoogle acquisisce 'Synapse AI' per 15 miliardi di dollari, rafforzando la leadership nell'IA generativa\tai\tBig Tech\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

@@ -472,3 +472,12 @@
 - [x] Aggiornare link "Leggi" in MusicHome per puntare a /music/news/[id]
 - [x] SEO: meta tag dinamici per ogni articolo (title, description, og:image, canonical, JSON-LD NewsArticle)
 - [x] TypeScript: 0 errori
+
+## Nuovi task (14 Mar 2026 — Bug Fix Notizie ITsMusic)
+
+- [x] Diagnosticato: AiHome e MusicHome usavano fallback statico con ID 1-20 quando il DB era lento
+- [x] Correggere AiHome: rimosso fallback statico, usa solo ID reali dal DB (150003-150022)
+- [x] Correggere MusicHome: rimosso fallback statico, usa solo ID reali dal DB
+- [x] Generare 20 notizie ITsMusic nel DB (ID 150023-150042) tramite script AI
+- [x] Aggiunto empty state "Notizie in aggiornamento" quando il DB non ha ancora dati
+- [x] TypeScript: 0 errori
