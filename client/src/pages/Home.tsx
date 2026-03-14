@@ -11,6 +11,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import SEOHead from "@/components/SEOHead";
 
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 const C = {
@@ -223,8 +224,39 @@ export default function Home() {
     if (musicSlice[i]) allNews.push({ ...musicSlice[i], section: "music" as const });
   }
 
+  const seoStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "IDEASMART",
+    "url": "https://www.ideasmart.ai",
+    "description": "Testata giornalistica multicanale italiana: AI4Business News e ITsMusic. Notizie, analisi e newsletter su intelligenza artificiale e industria musicale.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "IDEASMART",
+      "url": "https://www.ideasmart.ai",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.ideasmart.ai/favicon.ico"
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.ideasmart.ai/ai?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <div style={{ background: C.navy, minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
+      <SEOHead
+        title="IDEASMART — Testata Giornalistica Multicanale AI e Musica"
+        description="IDEASMART è la piattaforma editoriale italiana che unisce AI4Business News e ITsMusic. Notizie, analisi di mercato, startup emergenti e industria musicale aggiornate ogni giorno."
+        keywords="IDEASMART, testata giornalistica, AI for business, intelligenza artificiale, musica, rock, indie, startup italiane, newsletter AI, newsletter musica"
+        canonical="https://www.ideasmart.ai"
+        ogSiteName="IDEASMART"
+        ogType="website"
+        structuredData={seoStructuredData}
+      />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
         .hub-title { font-family: 'Space Grotesk', sans-serif; }

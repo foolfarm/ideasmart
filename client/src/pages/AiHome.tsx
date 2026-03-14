@@ -13,6 +13,7 @@ import { useCookieConsent } from "@/hooks/useCookieConsent";
 import AdUnit from "@/components/AdUnit";
 import CommentSection from "@/components/CommentSection";
 import SocialShare from "@/components/SocialShare";
+import SEOHead from "@/components/SEOHead";
 
 // ─── Image URLs (CDN) ────────────────────────────────────────────────────────
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
@@ -873,10 +874,7 @@ export default function AiHome() {
   const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: 'ai' });
   const { data: activeSubscriberCount } = trpc.newsletter.getActiveCount.useQuery();
 
-  // SEO: imposta il titolo dinamicamente con document.title
-  useEffect(() => {
-    document.title = "AI4Business News — Il Quotidiano AI Italiano";
-  }, []);
+  // SEO gestito da SEOHead
 
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
@@ -899,8 +897,39 @@ export default function AiHome() {
     }
   };
 
+  const aiSeoStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "AI4Business News",
+    "alternateName": "AI4Business",
+    "url": "https://www.ideasmart.ai/ai",
+    "description": "Il quotidiano italiano sull'intelligenza artificiale per il business. News, analisi di mercato, startup emergenti e reportage aggiornati ogni giorno.",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ideasmart.ai/favicon.ico"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "IDEASMART",
+      "url": "https://www.ideasmart.ai"
+    },
+    "sameAs": [
+      "https://www.ideasmart.ai"
+    ]
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "#fafafa" }}>
+      <SEOHead
+        title="AI4Business News — Il Quotidiano Italiano sull'Intelligenza Artificiale"
+        description="News, analisi di mercato e startup AI aggiornate ogni giorno. Il tuo punto di riferimento sull'intelligenza artificiale per il business italiano: editoriali, reportage e newsletter settimanale."
+        keywords="AI for business, intelligenza artificiale, startup AI italiane, analisi mercato AI, machine learning, LLM, ChatGPT, automazione, innovazione digitale, newsletter AI italiana"
+        canonical="https://www.ideasmart.ai/ai"
+        ogSiteName="AI4Business News"
+        ogType="website"
+        robots="index, follow"
+        structuredData={aiSeoStructuredData}
+      />
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}

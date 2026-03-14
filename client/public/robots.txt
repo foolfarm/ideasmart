@@ -1,0 +1,15 @@
+# IDEASMART — robots.txt
+# Testata giornalistica multicanale: AI4Business News + ITsMusic
+
+User-agent: *
+Allow: /
+Allow: /ai
+Allow: /music
+
+# Blocca percorsi API e autenticazione
+Disallow: /api/
+Disallow: /api/trpc/
+Disallow: /api/oauth/
+
+# Sitemap
+Sitemap: https://www.ideasmart.ai/sitemap.xml

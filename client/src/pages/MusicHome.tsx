@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import AdUnit from "@/components/AdUnit";
 import CommentSection from "@/components/CommentSection";
 import SocialShare from "@/components/SocialShare";
+import SEOHead from "@/components/SEOHead";
 
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 const M = {
@@ -701,12 +702,42 @@ function MusicNewsletterSection() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function MusicHome() {
-  useEffect(() => {
-    document.title = "ITsMusic by IDEASMART — Rock, Indie & AI Music";
-  }, []);
+  const musicSeoStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "ITsMusic",
+    "alternateName": "ITsMusic by IDEASMART",
+    "url": "https://www.ideasmart.ai/music",
+    "description": "La testata italiana dedicata all'industria musicale: Rock, Indie, AI Music. Notizie, artisti emergenti, analisi di mercato e reportage aggiornati ogni giorno.",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ideasmart.ai/favicon.ico"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "IDEASMART",
+      "url": "https://www.ideasmart.ai"
+    },
+    "about": [
+      { "@type": "Thing", "name": "Rock music" },
+      { "@type": "Thing", "name": "Indie music" },
+      { "@type": "Thing", "name": "AI Music" },
+      { "@type": "Thing", "name": "Industria musicale" }
+    ]
+  };
 
   return (
     <div className="min-h-screen" style={{ background: M.black }}>
+      <SEOHead
+        title="ITsMusic — Rock, Indie e AI Music | Notizie sull'Industria Musicale"
+        description="ITsMusic è la testata italiana dedicata all'industria musicale: Rock, Indie, AI Music. Notizie su artisti emergenti, analisi di mercato discografico, reportage e newsletter settimanale."
+        keywords="ITsMusic, rock italiano, indie music, AI music, industria musicale, artisti emergenti, Spotify, Billboard, Rolling Stone, musica italiana, notizie musica, newsletter musica"
+        canonical="https://www.ideasmart.ai/music"
+        ogSiteName="ITsMusic"
+        ogType="website"
+        robots="index, follow"
+        structuredData={musicSeoStructuredData}
+      />
       <MusicNavbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}

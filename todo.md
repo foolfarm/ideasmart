@@ -400,3 +400,14 @@
 - [x] Home: Sezione canali più grande con descrizioni estese e font aumentati
 - [x] Home: Logo IDEASMART visibile ovunque nella home hub
 - [x] Home: Ultime notizie in layout verticale con font grandi e alta leggibilità
+
+## Nuovi task (14 Mar 2026 — SEO Indipendente per canali)
+
+- [x] Creare componente SEOHead per gestione dinamica di title, description, OG, canonical
+- [x] Homepage hub /: SEO IDEASMART — testata multicanale AI e Musica
+- [x] Canale /ai: SEO AI4Business News — intelligenza artificiale, startup, business
+- [x] Canale /music: SEO ITsMusic — rock, indie, industria musicale
+- [x] index.html: meta tag di base, canonical, robots, sitemap hint
+- [x] sitemap.xml con le 3 pagine principali
+- [x] robots.txt con regole crawler e riferimento sitemap
+- [x] JSON-LD structured data (Schema.org WebSite + NewsMediaOrganization) per ogni canale
