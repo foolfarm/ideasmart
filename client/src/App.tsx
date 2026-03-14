@@ -11,6 +11,7 @@ import AiHome from "./pages/AiHome";
 import MusicHome from "./pages/MusicHome";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
+import AuditDashboard from "./pages/AuditDashboard";
 import Privacy from "./pages/Privacy";
 import Unsubscribe from "./pages/Unsubscribe";
 import NotificationPreferences from "./pages/NotificationPreferences";
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/music" component={MusicHome} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
+      <Route path="/admin/audit" component={AuditDashboard} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/unsubscribe" component={Unsubscribe} />
       <Route path="/notifiche" component={NotificationPreferences} />

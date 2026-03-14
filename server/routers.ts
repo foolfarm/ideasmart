@@ -40,8 +40,9 @@ import { generateMarketAnalysis } from "./marketAnalysisScheduler";
 import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
-import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable } from "../drizzle/schema";
+import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
 import { eq, isNull, and, desc } from "drizzle-orm";
+import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults } from "./auditContent";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -785,6 +786,80 @@ Rispondi con questo JSON:
           .orderBy(desc(articleCommentsTable.createdAt))
           .limit(50);
         return comments;
+      }),
+  }),
+  // ── Audit Contenuti (admin only) ──────────────────────────────────────────────────────
+  // Verifica la coerenza tra contenuti pubblicati e pagine di destinazione
+  audit: router({
+    // Avvia un audit batch sulle ultime notizie
+    runBatch: adminProcedure
+      .input(z.object({
+        section: z.enum(["ai", "music"]).optional(),
+        contentType: z.enum(["news", "analysis"]).default("news"),
+        limit: z.number().min(1).max(50).default(10),
+      }))
+      .mutation(async ({ input }) => {
+        const results = await runBatchAudit({
+          section: input.section,
+          contentType: input.contentType,
+          limit: input.limit,
+        });
+        return results;
+      }),
+
+    // Audit di una singola notizia
+    auditSingleNews: adminProcedure
+      .input(z.object({ newsId: z.number() }))
+      .mutation(async ({ input }) => {
+        return auditNewsItem(input.newsId);
+      }),
+
+    // Audit di una singola analisi
+    auditSingleAnalysis: adminProcedure
+      .input(z.object({ analysisId: z.number() }))
+      .mutation(async ({ input }) => {
+        return auditMarketAnalysis(input.analysisId);
+      }),
+
+    // Recupera i risultati dell'audit con filtri
+    getResults: adminProcedure
+      .input(z.object({
+        section: z.enum(["ai", "music"]).optional(),
+        status: z.enum(["ok", "warning", "error", "unreachable", "pending"]).optional(),
+        contentType: z.enum(["news", "analysis", "reportage", "startup"]).optional(),
+        limit: z.number().min(1).max(100).default(50),
+      }))
+      .query(async ({ input }) => {
+        return getAuditResults(input);
+      }),
+
+    // Statistiche aggregate dell'audit
+    getStats: adminProcedure
+      .query(async () => {
+        const db = await getDbInstance();
+        if (!db) return { total: 0, ok: 0, warning: 0, error: 0, unreachable: 0, pending: 0 };
+
+        const all = await db
+          .select()
+          .from(contentAuditTable)
+          .orderBy(desc(contentAuditTable.auditedAt))
+          .limit(500);
+
+        const stats = { total: all.length, ok: 0, warning: 0, error: 0, unreachable: 0, pending: 0 };
+        for (const row of all) {
+          stats[row.status as keyof typeof stats] = (stats[row.status as keyof typeof stats] || 0) + 1;
+        }
+        return stats;
+      }),
+
+    // Elimina un risultato di audit
+    deleteResult: adminProcedure
+      .input(z.object({ auditId: z.number() }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        await db.delete(contentAuditTable).where(eq(contentAuditTable.id, input.auditId));
+        return { success: true };
       }),
   }),
 });

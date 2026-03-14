@@ -411,3 +411,14 @@
 - [x] sitemap.xml con le 3 pagine principali
 - [x] robots.txt con regole crawler e riferimento sitemap
 - [x] JSON-LD structured data (Schema.org WebSite + NewsMediaOrganization) per ogni canale
+
+## Nuovi task (14 Mar 2026 — Audit Coerenza Contenuti)
+
+- [x] Analizzare schema DB notizie e struttura sourceUrl
+- [x] Aggiungere tabella content_audit con campi status, coherenceScore, auditNote, extractedText, httpStatus
+- [x] Creare server/auditContent.ts: helper fetch URL + estrazione testo + verifica LLM
+- [x] Creare procedure tRPC audit.runBatch, audit.getResults, audit.getStats, audit.deleteResult
+- [x] Creare pagina /admin/audit con dashboard notizie flaggate, filtri, score bar
+- [x] Integrare audit automatico post-inserimento in newsScheduler.ts (background, non bloccante)
+- [x] Aggiungere link Audit Contenuti nella navbar admin
+- [x] TypeScript: 0 errori

@@ -9,6 +9,7 @@ import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
+import { runBatchAudit } from "./auditContent";
 
 // Intervallo: 24 ore in millisecondi
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -182,6 +183,21 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
     });
 
     console.log(`[NewsScheduler] Saved ${items.length} news items to DB (${dayLabel})`);
+
+    // Audit automatico: verifica coerenza delle notizie appena inserite
+    // Eseguito in background senza bloccare il flusso principale
+    setImmediate(async () => {
+      try {
+        console.log(`[NewsScheduler] Starting automatic content audit for ${Math.min(items.length, 20)} news items...`);
+        const auditResults = await runBatchAudit({ section: 'ai', contentType: 'news', limit: Math.min(items.length, 20) });
+        console.log(`[NewsScheduler] Audit completed: OK=${auditResults.ok}, Warning=${auditResults.warning}, Error=${auditResults.error}, Unreachable=${auditResults.unreachable}`);
+        if (auditResults.error > 0 || auditResults.warning > 2) {
+          console.warn(`[NewsScheduler] ⚠ Audit alert: ${auditResults.error} notizie non coerenti, ${auditResults.warning} parziali. Verifica /admin/audit`);
+        }
+      } catch (auditErr) {
+        console.warn('[NewsScheduler] Audit post-inserimento fallito (non critico):', auditErr);
+      }
+    });
   } catch (error) {
     console.error("[NewsScheduler] Error saving news to DB:", error);
 

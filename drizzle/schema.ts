@@ -1,4 +1,4 @@
-import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, float, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -86,6 +86,38 @@ export const newsItems = mysqlTable("news_items", {
 
 export type NewsItem = typeof newsItems.$inferSelect;
 export type InsertNewsItem = typeof newsItems.$inferInsert;
+
+// ── Content Audit Log ───────────────────────────────────────────────────────
+// Tiene traccia dei controlli di coerenza tra contenuto pubblicato e pagina di destinazione
+export const contentAudit = mysqlTable("content_audit", {
+  id: int("id").autoincrement().primaryKey(),
+  // Tipo di contenuto auditato
+  contentType: mysqlEnum("contentType", ["news", "analysis", "reportage", "startup"]).notNull(),
+  contentId: int("contentId").notNull(),
+  // URL verificato
+  sourceUrl: varchar("sourceUrl", { length: 1000 }).notNull(),
+  // Titolo del contenuto pubblicato
+  publishedTitle: varchar("publishedTitle", { length: 500 }).notNull(),
+  // Sommario del contenuto pubblicato
+  publishedSummary: text("publishedSummary"),
+  // Stato dell'audit
+  status: mysqlEnum("status", ["pending", "ok", "warning", "error", "unreachable"]).default("pending").notNull(),
+  // Punteggio di coerenza 0-100 (100 = perfettamente coerente)
+  coherenceScore: float("coherenceScore"),
+  // Note dell'audit (spiegazione del problema se status != ok)
+  auditNote: text("auditNote"),
+  // Testo estratto dalla pagina di destinazione (primi 2000 char)
+  extractedText: text("extractedText"),
+  // HTTP status code della pagina di destinazione
+  httpStatus: int("httpStatus"),
+  // Sezione editoriale
+  section: mysqlEnum("section", ["ai", "music"]).default("ai").notNull(),
+  auditedAt: timestamp("auditedAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ContentAudit = typeof contentAudit.$inferSelect;
+export type InsertContentAudit = typeof contentAudit.$inferInsert;
 
 // ── News Refresh Log ────────────────────────────────────────────────────────
 export const newsRefreshLog = mysqlTable("news_refresh_log", {
