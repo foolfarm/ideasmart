@@ -880,6 +880,7 @@ export default function Home() {
   const [name, setName] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery();
+  const { data: activeSubscriberCount } = trpc.newsletter.getActiveCount.useQuery();
 
   // SEO: imposta il titolo dinamicamente con document.title
   useEffect(() => {
@@ -1153,7 +1154,7 @@ export default function Home() {
               </p>
 
               <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.92)", fontFamily: "'DM Sans', sans-serif" }}>
-                Unisciti a oltre <strong style={{ color: "#fff" }}>1.800 professionisti</strong> che ogni settimana ricevono
+                Unisciti a oltre <strong style={{ color: "#fff" }}>{activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "4.700"} professionisti</strong> che ogni settimana ricevono
                 la selezione editoriale AI4Business News: news AI, startup emergenti, analisi di mercato e reportage esclusivi.
               </p>
 
@@ -1175,16 +1176,20 @@ export default function Home() {
 
               {/* Social proof stats */}
               <div className="flex flex-wrap gap-6">
-                {[
-                  { value: "1.800+", label: "Iscritti attivi" },
-                  { value: "100%", label: "Gratuita" },
-                  { value: "0", label: "Spam" },
-                ].map((stat, i) => (
-                  <div key={i}>
-                    <div className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>{stat.value}</div>
-                    <div className="text-sm" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}>{stat.label}</div>
+                <div>
+                  <div className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "4.700"}+
                   </div>
-                ))}
+                  <div className="text-sm" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}>Iscritti attivi</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>100%</div>
+                  <div className="text-sm" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}>Gratuita</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>0</div>
+                  <div className="text-sm" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}>Spam</div>
+                </div>
               </div>
             </FadeUp>
 

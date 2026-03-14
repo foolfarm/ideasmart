@@ -11,6 +11,7 @@ import {
   addSubscriber,
   getAllSubscribers,
   getActiveSubscribers,
+  getActiveSubscriberCount,
   unsubscribeEmail,
   unsubscribeByToken,
   getSubscriberByToken,
@@ -225,8 +226,7 @@ export const appRouter = router({
 
     // Conta iscritti attivi (pubblico, per social proof)
     getActiveCount: publicProcedure.query(async () => {
-      const subs = await getActiveSubscribers();
-      return subs.length;
+      return getActiveSubscriberCount();
     }),
 
     // Disiscrizione tramite email (legacy, richiede autenticazione)

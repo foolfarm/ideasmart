@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, count } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
@@ -140,6 +140,13 @@ export async function getActiveSubscribers() {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(subscribers).where(eq(subscribers.status, "active"));
+}
+
+export async function getActiveSubscriberCount(): Promise<number> {
+  const db = await getDb();
+  if (!db) return 0;
+  const result = await db.select({ count: count() }).from(subscribers).where(eq(subscribers.status, "active"));
+  return result[0]?.count ?? 0;
 }
 
 export async function unsubscribeEmail(email: string) {

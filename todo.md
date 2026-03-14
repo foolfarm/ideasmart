@@ -278,3 +278,8 @@
 - [x] Placeholder colorato per articoli senza immagine
 - [x] Backfill immagini Pexels per tutti gli articoli esistenti (20 news + 3 editoriali + 3 startup + 4 reportage + 4 analisi = 34/34)
 - [x] Correggere AdUnit: mostrare banner AdSense sempre (senza blocco consenso cookie)
+
+## Nuovi task (14 Mar 2026 — Contatore iscritti dinamico)
+
+- [x] Aggiungere procedura tRPC newsletter.getActiveCount per contare iscritti attivi dal DB
+- [x] Aggiornare sezione newsletter nella Home con numero esatto iscritti attivi (dinamico)
