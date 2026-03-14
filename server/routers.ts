@@ -21,6 +21,10 @@ import {
   getNewsletterHistory,
   ensureUnsubscribeTokens,
   getLatestNews,
+  getLatestNewsFiltered,
+  countFilteredNews,
+  getLowScoreNews,
+  replaceNewsItem,
   getNewsRefreshHistory,
   getLatestEditorial,
   getLatestStartupOfDay,
@@ -161,7 +165,8 @@ export const appRouter = router({
     getLatest: publicProcedure
       .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music']).default('ai') }))
       .query(async ({ input }) => {
-        const items = await getLatestNews(input.limit, input.section);
+        // Usa il filtro audit: esclude notizie con score < 40 o URL non raggiungibili
+        const items = await getLatestNewsFiltered(input.limit, input.section);
         return items.map((item) => ({
           id: item.id,
           title: item.title,
@@ -177,6 +182,79 @@ export const appRouter = router({
     getRefreshHistory: publicProcedure.query(async () => {
       return getNewsRefreshHistory();
     }),
+
+    // Statistiche filtro audit per la dashboard admin
+    getFilterStats: adminProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .query(async ({ input }) => {
+        return countFilteredNews(input.section);
+      }),
+
+    // Recupera notizie con score < 40 per revisione/sostituzione
+    getLowScore: adminProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .query(async ({ input }) => {
+        return getLowScoreNews(input.section);
+      }),
+
+    // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
+    replaceAllLowScore: adminProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .mutation(async ({ input }) => {
+        const lowScoreNews = await getLowScoreNews(input.section);
+        if (lowScoreNews.length === 0) return { replaced: 0, message: 'Nessuna notizia da sostituire' };
+
+        const sectionLabel = input.section === 'ai' ? 'intelligenza artificiale e business' : 'musica rock, indie e industria musicale';
+        let replaced = 0;
+
+        for (const news of lowScoreNews) {
+          try {
+            const prompt = `Sei un giornalista specializzato in ${sectionLabel}. Genera una notizia originale e verificabile per sostituire questa notizia che ha avuto problemi di coerenza con la fonte originale.
+
+Notizia originale (da sostituire): "${news.title}"
+Categoria: ${news.category}
+
+Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispondi SOLO con JSON valido:`;
+
+            const response = await invokeLLM({
+              messages: [
+                { role: 'system', content: 'Sei un giornalista editoriale italiano specializzato. Genera sempre contenuti accurati e verificabili. Rispondi solo con JSON valido.' },
+                { role: 'user', content: prompt },
+              ],
+              response_format: {
+                type: 'json_schema',
+                json_schema: {
+                  name: 'news_replacement',
+                  strict: true,
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      title: { type: 'string', description: 'Titolo della notizia (max 120 caratteri)' },
+                      summary: { type: 'string', description: 'Sommario della notizia (2-3 frasi, max 300 caratteri)' },
+                      category: { type: 'string', description: 'Categoria della notizia' },
+                      sourceName: { type: 'string', description: 'Nome della fonte (es. TechCrunch, Wired, Rolling Stone)' },
+                      sourceUrl: { type: 'string', description: 'URL della fonte originale (URL reale e verificabile)' },
+                    },
+                    required: ['title', 'summary', 'category', 'sourceName', 'sourceUrl'],
+                    additionalProperties: false,
+                  },
+                },
+              },
+            });
+
+            const content = response.choices[0]?.message?.content;
+            if (!content) continue;
+
+            const newContent = JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
+            await replaceNewsItem(news.id, newContent);
+            replaced++;
+          } catch (err) {
+            console.error(`[NewsReplace] Errore sostituzione notizia ${news.id}:`, err);
+          }
+        }
+
+        return { replaced, total: lowScoreNews.length, message: `Sostituite ${replaced} notizie su ${lowScoreNews.length}` };
+      }),
   }),
 
   auth: router({

@@ -450,3 +450,14 @@
 - [x] Creare manifest.json con nome, short_name, colori brand, icone, shortcuts AI/Music
 - [x] Aggiornare index.html con meta tag PWA, apple-touch-icon, theme-color teal, manifest link
 - [x] Favicon branded in tutte le dimensioni (16, 32, .ico)
+
+## Nuovi task (14 Mar 2026 — Splash Screen iOS e Filtro Notizie)
+
+- [x] Generare splash screen iOS 390x844 (iPhone 14/15)
+- [x] Generare splash screen iOS 414x896 (iPhone 11/XR)
+- [x] Generare splash screen iOS 428x926 (iPhone 14 Plus/13 Pro Max)
+- [x] Caricare splash screen su CDN e aggiungere meta tag apple-touch-startup-image in index.html
+- [x] Implementare filtro automatico: notizie con auditScore < 40 o URL non raggiungibili nascoste dalla homepage (getLatestNewsFiltered)
+- [x] Sostituzione automatica: procedura tRPC news.replaceAllLowScore genera contenuto AI alternativo per notizie sotto soglia
+- [x] Pannello sostituzione in /admin/audit con selezione sezione e pulsante sostituzione
+- [x] TypeScript: 0 errori

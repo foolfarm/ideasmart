@@ -125,6 +125,16 @@ export default function AuditDashboard() {
     onError: (err) => toast.error("Errore: " + err.message),
   });
 
+  const [replaceSection, setReplaceSection] = useState<"ai" | "music">("ai");
+  const replaceAllLowScore = trpc.news.replaceAllLowScore.useMutation({
+    onSuccess: (data) => {
+      toast.success(`${data.message} — Le notizie sostituite non appariranno più in homepage.`);
+      refetchStats();
+      refetchResults();
+    },
+    onError: (err) => toast.error("Errore sostituzione: " + err.message),
+  });
+
   const handleRunAudit = () => {
     if (batchType === "full") {
       runFullAudit.mutate({ section: batchSection, limit: batchLimit });
@@ -308,6 +318,55 @@ export default function AuditDashboard() {
               Verifica in corso — il processo può richiedere 2-5 minuti per 20 contenuti (fetch + analisi LLM per ogni tipo)...
             </div>
           )}
+        </div>
+
+        {/* Sostituzione automatica notizie score < 40 */}
+        <div className="bg-white rounded-xl border border-red-200 p-6 shadow-sm">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex-1">
+              <h2 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
+                <span className="text-red-500">✗</span>
+                Sostituzione Automatica Notizie Non Coerenti
+              </h2>
+              <p className="text-sm text-gray-500 mb-3">
+                Le notizie con score di coerenza &lt; 40 o con URL non raggiungibili vengono
+                <strong className="text-gray-700"> automaticamente nascoste dalla homepage</strong>.
+                Usa questo strumento per sostituirle con nuovi contenuti generati dall'AI,
+                mantenendo la stessa categoria editoriale.
+              </p>
+              <div className="flex flex-wrap gap-3 items-end">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">Sezione</label>
+                  <select
+                    value={replaceSection}
+                    onChange={(e) => setReplaceSection(e.target.value as "ai" | "music")}
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                  >
+                    <option value="ai">AI4Business</option>
+                    <option value="music">ITsMusic</option>
+                  </select>
+                </div>
+                <button
+                  onClick={() => replaceAllLowScore.mutate({ section: replaceSection })}
+                  disabled={replaceAllLowScore.isPending}
+                  className="px-5 py-2 rounded-lg font-bold text-sm text-white transition-all disabled:opacity-50"
+                  style={{ background: replaceAllLowScore.isPending ? "#9ca3af" : "#dc2626" }}
+                >
+                  {replaceAllLowScore.isPending ? "Sostituzione in corso..." : "Sostituisci notizie non coerenti"}
+                </button>
+              </div>
+              {replaceAllLowScore.isPending && (
+                <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">
+                  Generazione contenuti sostitutivi in corso — può richiedere 1-2 minuti...
+                </div>
+              )}
+            </div>
+            <div className="text-right text-sm">
+              <div className="text-xs text-gray-400 mb-1">Filtro attivo</div>
+              <div className="font-bold text-red-600 text-lg">Score &lt; 40</div>
+              <div className="text-xs text-gray-400">nascoste dalla homepage</div>
+            </div>
+          </div>
         </div>
 
         {/* Filtri e Risultati */}

@@ -595,3 +595,173 @@ export async function incrementCampaignOpenCount(campaignId: string) {
     .set({ openedCount: sqlHelper`${newsletterSends.openedCount} + 1` })
     .where(sqlHelper`${newsletterSends.subject} LIKE ${`%${campaignId}%`}`);
 }
+
+// ── Audit-filtered News Queries ─────────────────────────────────────────────
+import { contentAudit } from "../drizzle/schema";
+
+/**
+ * Recupera le notizie filtrando quelle con audit score < 40.
+ * Se una notizia ha un audit recente con score < 40, viene esclusa.
+ * Le notizie senza audit (non ancora verificate) vengono incluse.
+ */
+export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' = 'ai') {
+  const db = await getDb();
+  if (!db) return [];
+
+  // Recupera tutte le notizie della sezione
+  const allNews = await db.select().from(newsItems)
+    .where(eq(newsItems.section, section))
+    .orderBy(desc(newsItems.createdAt), newsItems.position)
+    .limit(limit * 2); // prende più notizie per compensare quelle filtrate
+
+  if (allNews.length === 0) return [];
+
+  // Recupera gli audit più recenti per ogni notizia
+  const newsIds = allNews.map(n => n.id);
+  const audits = await db.select({
+    contentId: contentAudit.contentId,
+    coherenceScore: contentAudit.coherenceScore,
+    status: contentAudit.status,
+  }).from(contentAudit)
+    .where(and(
+      eq(contentAudit.contentType, 'news'),
+      eq(contentAudit.section, section)
+    ))
+    .orderBy(desc(contentAudit.auditedAt));
+
+  // Mappa: contentId -> audit più recente
+  const auditMap = new Map<number, { coherenceScore: number | null; status: string }>();
+  for (const audit of audits) {
+    if (!auditMap.has(audit.contentId)) {
+      auditMap.set(audit.contentId, { coherenceScore: audit.coherenceScore, status: audit.status });
+    }
+  }
+
+  // Filtra le notizie con score < 40 (solo se hanno un audit con score definito)
+  const filtered = allNews.filter(news => {
+    const audit = auditMap.get(news.id);
+    if (!audit) return true; // nessun audit → includi
+    if (audit.status === 'unreachable') return false; // URL non raggiungibile → escludi
+    if (audit.coherenceScore !== null && audit.coherenceScore < 40) return false; // score basso → escludi
+    return true;
+  });
+
+  return filtered.slice(0, limit);
+}
+
+/**
+ * Conta le notizie filtrate (score < 40 o non raggiungibili) per una sezione.
+ */
+export async function countFilteredNews(section: 'ai' | 'music' = 'ai') {
+  const db = await getDb();
+  if (!db) return { total: 0, filtered: 0, visible: 0 };
+
+  const allNews = await db.select({ id: newsItems.id }).from(newsItems)
+    .where(eq(newsItems.section, section));
+
+  const audits = await db.select({
+    contentId: contentAudit.contentId,
+    coherenceScore: contentAudit.coherenceScore,
+    status: contentAudit.status,
+  }).from(contentAudit)
+    .where(and(
+      eq(contentAudit.contentType, 'news'),
+      eq(contentAudit.section, section)
+    ))
+    .orderBy(desc(contentAudit.auditedAt));
+
+  const auditMap = new Map<number, { coherenceScore: number | null; status: string }>();
+  for (const audit of audits) {
+    if (!auditMap.has(audit.contentId)) {
+      auditMap.set(audit.contentId, { coherenceScore: audit.coherenceScore, status: audit.status });
+    }
+  }
+
+  let filteredCount = 0;
+  for (const news of allNews) {
+    const audit = auditMap.get(news.id);
+    if (!audit) continue;
+    if (audit.status === 'unreachable' || (audit.coherenceScore !== null && audit.coherenceScore < 40)) {
+      filteredCount++;
+    }
+  }
+
+  return {
+    total: allNews.length,
+    filtered: filteredCount,
+    visible: allNews.length - filteredCount,
+  };
+}
+
+/**
+ * Sostituisce una notizia con score < 40 con un nuovo contenuto generato dall'AI.
+ * Aggiorna il record esistente invece di crearne uno nuovo.
+ */
+export async function replaceNewsItem(id: number, newContent: {
+  title: string;
+  summary: string;
+  category: string;
+  sourceUrl?: string;
+  sourceName?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.update(newsItems)
+    .set({
+      title: newContent.title,
+      summary: newContent.summary,
+      category: newContent.category,
+      sourceUrl: newContent.sourceUrl ?? null,
+      sourceName: newContent.sourceName ?? null,
+    })
+    .where(eq(newsItems.id, id));
+}
+
+/**
+ * Recupera le notizie con audit score < 40 o non raggiungibili per una sezione.
+ */
+export async function getLowScoreNews(section: 'ai' | 'music' = 'ai') {
+  const db = await getDb();
+  if (!db) return [];
+
+  const allNews = await db.select().from(newsItems)
+    .where(eq(newsItems.section, section))
+    .orderBy(desc(newsItems.createdAt));
+
+  const audits = await db.select({
+    contentId: contentAudit.contentId,
+    coherenceScore: contentAudit.coherenceScore,
+    status: contentAudit.status,
+    auditNote: contentAudit.auditNote,
+  }).from(contentAudit)
+    .where(and(
+      eq(contentAudit.contentType, 'news'),
+      eq(contentAudit.section, section)
+    ))
+    .orderBy(desc(contentAudit.auditedAt));
+
+  const auditMap = new Map<number, { coherenceScore: number | null; status: string; auditNote: string | null }>();
+  for (const audit of audits) {
+    if (!auditMap.has(audit.contentId)) {
+      auditMap.set(audit.contentId, {
+        coherenceScore: audit.coherenceScore,
+        status: audit.status,
+        auditNote: audit.auditNote,
+      });
+    }
+  }
+
+  return allNews
+    .filter(news => {
+      const audit = auditMap.get(news.id);
+      if (!audit) return false;
+      return audit.status === 'unreachable' || (audit.coherenceScore !== null && audit.coherenceScore < 40);
+    })
+    .map(news => ({
+      ...news,
+      auditScore: auditMap.get(news.id)?.coherenceScore ?? null,
+      auditStatus: auditMap.get(news.id)?.status ?? 'pending',
+      auditNote: auditMap.get(news.id)?.auditNote ?? null,
+    }));
+}
