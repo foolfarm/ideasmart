@@ -184,36 +184,14 @@ export async function runScheduledAudit(): Promise<void> {
     const elapsed = Math.round((Date.now() - startTime) / 1000);
     console.log(`[AuditScheduler] Audit completato in ${elapsed}s — Verificati: ${result.processed}, OK: ${result.ok}, Warning: ${result.warning}, Errori: ${result.error}, Non raggiungibili: ${result.unreachable}`);
 
-    // Verifica se ci sono anomalie da segnalare
+    // NOTA: invio email di alert DISABILITATO il 14/03/2026
+    // L'audit genera falsi positivi (score 0) sulle notizie AI perché verifica
+    // le homepage dei giornali invece degli articoli specifici.
+    // Le email di alert sono state disabilitate per evitare falsi allarmi.
+    // Per riabilitarle, rimuovere questo commento e ripristinare il codice.
     const hasAlerts = result.error >= ALERT_THRESHOLD_ERRORS || result.warning >= ALERT_THRESHOLD_WARNINGS || result.unreachable >= 5;
-
     if (hasAlerts) {
-      console.warn(`[AuditScheduler] ⚠ Anomalie rilevate — invio notifica email a ${ADMIN_EMAIL}`);
-
-      // Recupera i dettagli delle anomalie
-      const anomalies = await getAuditResults({
-        status: result.error >= ALERT_THRESHOLD_ERRORS ? "error" : "warning",
-        limit: 20,
-      });
-
-      const subject = result.error >= ALERT_THRESHOLD_ERRORS
-        ? `🚨 IDEASMART Audit Alert — ${result.error} contenuti non coerenti rilevati`
-        : `⚠️ IDEASMART Audit Report — ${result.warning} contenuti parziali rilevati`;
-
-      const html = buildAuditReportEmail(result, anomalies);
-
-      const emailResult = await sendEmail({
-        to: ADMIN_EMAIL,
-        subject,
-        html,
-        text: `Audit IDEASMART completato: ${result.processed} contenuti verificati. OK: ${result.ok}, Warning: ${result.warning}, Errori: ${result.error}, Non raggiungibili: ${result.unreachable}. Vai su https://www.ideasmart.ai/admin/audit per i dettagli.`,
-      });
-
-      if (emailResult.success) {
-        console.log(`[AuditScheduler] Email di alert inviata a ${ADMIN_EMAIL}`);
-      } else {
-        console.error(`[AuditScheduler] Errore invio email: ${emailResult.error}`);
-      }
+      console.log(`[AuditScheduler] Anomalie rilevate (${result.error} errori, ${result.unreachable} non raggiungibili) — email DISABILITATA`);
     } else {
       console.log(`[AuditScheduler] Nessuna anomalia critica — email non inviata`);
     }

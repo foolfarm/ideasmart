@@ -10,7 +10,7 @@ import { serveStatic, setupVite } from "./vite";
 import { startAllSchedulers } from "../schedulerManager";
 import { refreshNewsIfNeeded } from "../newsScheduler";
 import { runDailyContentRefresh } from "../dailyContentScheduler";
-import { startAuditScheduler } from "../auditScheduler";
+// import { startAuditScheduler } from "../auditScheduler"; // RIMOSSO — audit disabilitato definitivamente il 14/03/2026
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";

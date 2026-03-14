@@ -533,3 +533,8 @@
 - [x] Aggiunte MUSIC_TITLE_TRANSLATIONS (40+ termini IT→EN musicali)
 - [x] Aggiornate 20/20 immagini notizie Music nel DB con immagini Pexels musicali
 - [x] Creato script scripts/refresh-music-images.mjs per aggiornamenti futuri
+
+## Nuovi task (14 Mar 2026 — Disabilitazione definitiva audit)
+- [x] Rimosso import startAuditScheduler da server/_core/index.ts (non più importato)
+- [x] Disabilitato invio email di alert in auditScheduler.ts (codice email sostituito con log)
+- [x] Verificato: nessun log AuditScheduler dopo il riavvio del server alle 19:40 UTC
