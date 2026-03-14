@@ -64,9 +64,64 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   "default": ["artificial intelligence", "technology innovation", "digital future"],
 };
 
+// ── Categorie musicali (per rilevare la sezione) ────────────────────────────
+
+const MUSIC_CATEGORIES = new Set([
+  "Rock & Indie", "AI Music", "Industria Musicale", "Tour & Live",
+  "Artisti Emergenti", "Streaming & Digital", "Vinile & Fisico",
+  "Produzione Musicale", "Diritti & Copyright", "Festival & Concerti",
+]);
+
+// ── Keyword musicali per titolo (traduzione IT→EN contestuale) ───────────────
+
+const MUSIC_TITLE_TRANSLATIONS: Record<string, string> = {
+  "musica": "music",
+  "musicale": "music",
+  "musicali": "music",
+  "concerto": "concert",
+  "concerti": "concert stage",
+  "tour": "music tour",
+  "album": "album vinyl",
+  "singolo": "music single",
+  "band": "rock band",
+  "artista": "musician artist",
+  "artisti": "musicians artists",
+  "festival": "music festival",
+  "streaming": "music streaming",
+  "vinile": "vinyl record",
+  "produzione": "music production",
+  "studio": "recording studio",
+  "chitarra": "guitar",
+  "batteria": "drums",
+  "cantante": "singer",
+  "cantanti": "singers",
+  "indie": "indie music",
+  "rock": "rock music",
+  "punk": "punk rock",
+  "pop": "pop music",
+  "hip-hop": "hip hop",
+  "rapper": "rapper",
+  "dj": "dj music",
+  "etichetta": "record label",
+  "royalties": "music royalties",
+  "diritti": "music rights",
+  "palco": "concert stage",
+  "live": "live concert",
+  "playlist": "music playlist",
+  "spotify": "music streaming",
+  "metaverso": "virtual concert",
+  "emergenti": "emerging musicians",
+  "produttore": "music producer",
+  "produttori": "music producers",
+  "discografica": "record label",
+  "discografiche": "record labels",
+  "majorlabel": "record label",
+  "major": "record label",
+};
+
 // ── Estrai parole chiave dal titolo ─────────────────────────────────────────
 
-function extractKeywordsFromTitle(title: string): string {
+function extractKeywordsFromTitle(title: string, isMusic = false): string {
   // Rimuovi parole comuni italiane e inglesi
   const stopWords = new Set([
     "il", "la", "lo", "le", "gli", "i", "un", "una", "uno",
@@ -91,7 +146,7 @@ function extractKeywordsFromTitle(title: string): string {
     .slice(0, 4);
 
   // Sostituisci termini italiani con equivalenti inglesi per Pexels
-  const translations: Record<string, string> = {
+  const aiTranslations: Record<string, string> = {
     "intelligenza": "artificial intelligence",
     "artificiale": "artificial intelligence",
     "startup": "startup",
@@ -122,8 +177,9 @@ function extractKeywordsFromTitle(title: string): string {
     "crescita": "growth",
   };
 
+  const translations = isMusic ? MUSIC_TITLE_TRANSLATIONS : aiTranslations;
   const translated = words.map(w => translations[w] || w).join(" ");
-  return translated || "technology innovation";
+  return translated || (isMusic ? "music" : "technology innovation");
 }
 
 // ── Ricerca immagine su Pexels ────────────────────────────────────────────────
@@ -195,15 +251,22 @@ function getUnsplashFallback(category: string, seed: string): string {
 /**
  * Cerca un'immagine stock coerente con il titolo e la categoria dell'articolo.
  * Usa Pexels come fonte principale, con fallback su Unsplash.
+ *
+ * Per le categorie musicali usa keyword musicali specifiche (mai tecnologiche).
  */
 export async function findStockImage(
   title: string,
   category: string,
   context?: string
 ): Promise<string | null> {
+  const isMusic = MUSIC_CATEGORIES.has(category);
+
   // 1. Prima prova con parole chiave estratte dal titolo
-  const titleKeywords = extractKeywordsFromTitle(title);
-  const query1 = `${titleKeywords} technology`;
+  //    Per Music: keyword musicali | Per AI: keyword tecnologiche
+  const titleKeywords = extractKeywordsFromTitle(title, isMusic);
+  const query1 = isMusic
+    ? `${titleKeywords} music`          // es. "concert stage music"
+    : `${titleKeywords} technology`;    // es. "artificial intelligence technology"
   let url = await searchPexels(query1);
 
   // 2. Se non trovato, prova con le keyword della categoria
@@ -213,12 +276,22 @@ export async function findStockImage(
     url = await searchPexels(query2);
   }
 
-  // 3. Se ancora non trovato, prova con context (es. nome startup)
+  // 3. Se ancora non trovato, prova con context
   if (!url && context) {
-    url = await searchPexels(`${context} technology`);
+    const query3 = isMusic ? `${context} music` : `${context} technology`;
+    url = await searchPexels(query3);
   }
 
-  // 4. Fallback finale: Unsplash deterministico per categoria
+  // 4. Fallback finale: per Music usa sempre query musicale generica
+  if (!url) {
+    if (isMusic) {
+      const musicFallbacks = ["music concert", "live music", "musician playing", "music studio", "vinyl record"];
+      const fallbackQuery = musicFallbacks[Math.floor(Math.random() * musicFallbacks.length)];
+      url = await searchPexels(fallbackQuery);
+    }
+  }
+
+  // 5. Fallback Unsplash
   if (!url) {
     url = getUnsplashFallback(category, title);
   }

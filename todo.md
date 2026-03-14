@@ -526,3 +526,10 @@
 - [x] Aggiornato AdUnit.tsx con oggetto AD_SLOTS e 9 componenti nominati per posizione
 - [x] Documentato come configurare gli slot AdSense nel pannello Google
 - [x] Recuperate credenziali admin: ac@foolfarm.com (login via Manus OAuth)
+
+## Nuovi task (14 Mar 2026 — Fix immagini Music)
+- [x] Corretta logica findStockImage in stockImages.ts: keyword musicali per sezione Music, tecnologiche per AI
+- [x] Aggiunto MUSIC_CATEGORIES set per rilevare automaticamente la sezione
+- [x] Aggiunte MUSIC_TITLE_TRANSLATIONS (40+ termini IT→EN musicali)
+- [x] Aggiornate 20/20 immagini notizie Music nel DB con immagini Pexels musicali
+- [x] Creato script scripts/refresh-music-images.mjs per aggiornamenti futuri
