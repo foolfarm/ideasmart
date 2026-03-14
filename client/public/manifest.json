@@ -1,0 +1,71 @@
+{
+  "name": "IDEASMART — Testata Multicanale",
+  "short_name": "IDEASMART",
+  "description": "La piattaforma editoriale italiana su AI e Musica. AI4Business News e ITsMusic aggiornati ogni giorno.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0f1e",
+  "theme_color": "#00b4a0",
+  "orientation": "portrait-primary",
+  "lang": "it",
+  "categories": ["news", "business", "music"],
+  "icons": [
+    {
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-16_792fe740.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-32_32e20909.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-192_1ef5dded.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-512-kvZYZR8gxBeEwBNJnxxnLu.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-512-kvZYZR8gxBeEwBNJnxxnLu.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "IDEASMART — Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI4Business News",
+      "short_name": "AI News",
+      "description": "Notizie su intelligenza artificiale e business",
+      "url": "/ai",
+      "icons": [
+        {
+          "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-192_1ef5dded.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "ITsMusic",
+      "short_name": "Music",
+      "description": "Rock, Indie e AI Music",
+      "url": "/music",
+      "icons": [
+        {
+          "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-192_1ef5dded.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

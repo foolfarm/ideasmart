@@ -441,3 +441,12 @@
 - [x] Rotta /advertise in App.tsx — già presente
 - [x] Ottimizzare hero section homepage hub per mobile (font 5xl mobile, griglia 2x2 statistiche, CTA full-width)
 - [x] Audit automatico avviato in background (scheduler ogni 24h attivo dal riavvio server)
+
+## Nuovi task (14 Mar 2026 — Icona Mobile e PWA)
+
+- [x] Generare icona IDEASMART 512x512px (sfondo navy #0a0f1e, testo IDEA+SMART teal)
+- [x] Generare varianti 192px, 180px (apple-touch-icon), 32px favicon, 16px, .ico
+- [x] Caricare icone su CDN webdev (5 file)
+- [x] Creare manifest.json con nome, short_name, colori brand, icone, shortcuts AI/Music
+- [x] Aggiornare index.html con meta tag PWA, apple-touch-icon, theme-color teal, manifest link
+- [x] Favicon branded in tutte le dimensioni (16, 32, .ico)
