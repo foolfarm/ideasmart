@@ -74,6 +74,7 @@ export const newsItems = mysqlTable("news_items", {
   publishedAt: varchar("publishedAt", { length: 50 }),
   weekLabel: varchar("weekLabel", { length: 50 }).notNull(),
   position: int("position").default(0).notNull(),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -101,6 +102,7 @@ export const dailyEditorial = mysqlTable("daily_editorial", {
   body: text("body").notNull(),
   keyTrend: varchar("keyTrend", { length: 255 }),
   authorNote: text("authorNote"),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -122,6 +124,7 @@ export const startupOfDay = mysqlTable("startup_of_day", {
   websiteUrl: varchar("websiteUrl", { length: 500 }),
   linkedinUrl: varchar("linkedinUrl", { length: 500 }),
   aiScore: int("aiScore").default(0),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -153,6 +156,7 @@ export const weeklyReportage = mysqlTable("weekly_reportage", {
   ctaLabel: varchar("ctaLabel", { length: 100 }),
   ctaUrl: varchar("ctaUrl", { length: 500 }),
   websiteUrl: varchar("websiteUrl", { length: 500 }),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -177,6 +181,7 @@ export const marketAnalysis = mysqlTable("market_analysis", {
   marketSize: varchar("marketSize", { length: 100 }),
   growthRate: varchar("growthRate", { length: 50 }),
   italyRelevance: text("italyRelevance"),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

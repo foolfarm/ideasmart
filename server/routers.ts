@@ -36,6 +36,10 @@ import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentSche
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
 import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
+import { generateImage } from "./_core/imageGeneration";
+import { getDb as getDbInstance } from "./db";
+import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable } from "../drizzle/schema";
+import { eq, isNull } from "drizzle-orm";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -597,6 +601,105 @@ Rispondi con questo JSON:
         newsCount: newsData.news.length,
         week: newsData.week,
       };
+    }),
+
+    // ── Generazione immagini AI per articoli ──────────────────────────────────
+    generateArticleImages: adminProcedure
+    .input(z.object({
+      type: z.enum(["news", "reportage", "analysis", "editorial", "startup", "all"]),
+      limit: z.number().default(5),
+    }))
+    .mutation(async ({ input }) => {
+      const db = await getDbInstance();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const results: { type: string; id: number; title: string; imageUrl: string }[] = [];
+      const errors: { type: string; id: number; error: string }[] = [];
+
+      async function genImage(prompt: string): Promise<string | null> {
+        try {
+          const { url } = await generateImage({ prompt });
+          return url ?? null;
+        } catch (e: unknown) {
+          return null;
+        }
+      }
+
+      // News
+      if (input.type === "news" || input.type === "all") {
+        const items = await db.select().from(newsItemsTable).where(isNull(newsItemsTable.imageUrl)).limit(input.limit);
+        for (const item of items) {
+          const prompt = `Professional editorial illustration for an AI business news article. Title: "${item.title}". Category: ${item.category}. Style: modern tech magazine, clean, abstract, no text, 16:9 ratio.`;
+          const url = await genImage(prompt);
+          if (url) {
+            await db.update(newsItemsTable).set({ imageUrl: url }).where(eq(newsItemsTable.id, item.id));
+            results.push({ type: "news", id: item.id, title: item.title, imageUrl: url });
+          } else {
+            errors.push({ type: "news", id: item.id, error: "Generation failed" });
+          }
+        }
+      }
+
+      // Reportage
+      if (input.type === "reportage" || input.type === "all") {
+        const items = await db.select().from(weeklyReportageTable).where(isNull(weeklyReportageTable.imageUrl)).limit(input.limit);
+        for (const item of items) {
+          const prompt = `Professional editorial illustration for an AI startup reportage. Startup: "${item.startupName}". Headline: "${item.headline}". Category: ${item.category}. Style: modern tech magazine, clean, abstract, no text, 16:9 ratio.`;
+          const url = await genImage(prompt);
+          if (url) {
+            await db.update(weeklyReportageTable).set({ imageUrl: url }).where(eq(weeklyReportageTable.id, item.id));
+            results.push({ type: "reportage", id: item.id, title: item.headline, imageUrl: url });
+          } else {
+            errors.push({ type: "reportage", id: item.id, error: "Generation failed" });
+          }
+        }
+      }
+
+      // Market Analysis
+      if (input.type === "analysis" || input.type === "all") {
+        const items = await db.select().from(marketAnalysisTable).where(isNull(marketAnalysisTable.imageUrl)).limit(input.limit);
+        for (const item of items) {
+          const prompt = `Professional editorial illustration for a market analysis report. Title: "${item.title}". Category: ${item.category}. Style: modern business magazine, data visualization aesthetic, clean, abstract, no text, 16:9 ratio.`;
+          const url = await genImage(prompt);
+          if (url) {
+            await db.update(marketAnalysisTable).set({ imageUrl: url }).where(eq(marketAnalysisTable.id, item.id));
+            results.push({ type: "analysis", id: item.id, title: item.title, imageUrl: url });
+          } else {
+            errors.push({ type: "analysis", id: item.id, error: "Generation failed" });
+          }
+        }
+      }
+
+      // Editorial
+      if (input.type === "editorial" || input.type === "all") {
+        const items = await db.select().from(dailyEditorialTable).where(isNull(dailyEditorialTable.imageUrl)).limit(input.limit);
+        for (const item of items) {
+          const prompt = `Professional editorial illustration for an AI business editorial. Title: "${item.title}". Trend: ${item.keyTrend ?? "AI innovation"}. Style: premium Italian business magazine, editorial photography aesthetic, clean, no text, 16:9 ratio.`;
+          const url = await genImage(prompt);
+          if (url) {
+            await db.update(dailyEditorialTable).set({ imageUrl: url }).where(eq(dailyEditorialTable.id, item.id));
+            results.push({ type: "editorial", id: item.id, title: item.title, imageUrl: url });
+          } else {
+            errors.push({ type: "editorial", id: item.id, error: "Generation failed" });
+          }
+        }
+      }
+
+      // Startup
+      if (input.type === "startup" || input.type === "all") {
+        const items = await db.select().from(startupOfDayTable).where(isNull(startupOfDayTable.imageUrl)).limit(input.limit);
+        for (const item of items) {
+          const prompt = `Professional editorial illustration for an AI startup spotlight. Startup: "${item.name}". Tagline: "${item.tagline}". Category: ${item.category}. Style: modern tech startup magazine, clean, vibrant, abstract, no text, 16:9 ratio.`;
+          const url = await genImage(prompt);
+          if (url) {
+            await db.update(startupOfDayTable).set({ imageUrl: url }).where(eq(startupOfDayTable.id, item.id));
+            results.push({ type: "startup", id: item.id, title: item.name, imageUrl: url });
+          } else {
+            errors.push({ type: "startup", id: item.id, error: "Generation failed" });
+          }
+        }
+      }
+
+      return { generated: results.length, errorsCount: errors.length, results, errors };
     }),
   }),
 });

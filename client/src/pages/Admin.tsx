@@ -56,6 +56,19 @@ export default function Admin() {
 
   const [sendingDark, setSendingDark] = useState(false);
   const [refreshingNews, setRefreshingNews] = useState(false);
+  const [generatingImages, setGeneratingImages] = useState(false);
+
+  const generateImagesMutation = trpc.admin.generateArticleImages.useMutation({
+    onSuccess: (data) => {
+      setGeneratingImages(false);
+      setLastResult(`✓ Immagini generate: ${data.generated} articoli aggiornati`);
+      toast.success(`${data.generated} immagini AI generate con successo!`);
+    },
+    onError: (err) => {
+      setGeneratingImages(false);
+      toast.error("Errore generazione immagini: " + err.message);
+    },
+  });
 
   // News management
   const newsQuery = trpc.news.getLatest.useQuery({ limit: 20 }, { enabled: user?.role === "admin" });
@@ -321,6 +334,35 @@ export default function Admin() {
                   </span>
                 ) : (
                   `Aggiorna News AI Ora →`
+                )}
+              </button>
+            </div>
+
+            {/* Genera Immagini AI */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
+                ◆ Immagini AI Articoli
+              </p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Genera immagini per tutti i tipi di articolo</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Genera immagini AI per news, reportage, analisi, editoriali e startup senza immagine (max 5 per tipo). Le immagini vengono salvate automaticamente nel database.
+              </p>
+              <button
+                onClick={() => {
+                  setGeneratingImages(true);
+                  generateImagesMutation.mutate({ type: "all", limit: 5 });
+                }}
+                disabled={generatingImages}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: "#8b5cf6", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {generatingImages ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Generazione immagini AI...
+                  </span>
+                ) : (
+                  `Genera Immagini AI →`
                 )}
               </button>
             </div>

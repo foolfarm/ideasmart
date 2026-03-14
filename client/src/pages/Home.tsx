@@ -181,7 +181,7 @@ function NewsGrid() {
   ];
 
   const items = (newsData && newsData.length > 0 ? newsData : fallbackNews) as Array<{
-    id: number; title: string; summary: string; category: string; sourceUrl: string; sourceName: string;
+    id: number; title: string; summary: string; category: string; sourceUrl: string; sourceName: string; imageUrl?: string | null;
   }>;
 
   if (isLoading) {
@@ -206,6 +206,17 @@ function NewsGrid() {
         return (
           <FadeUp key={item.id} delay={i * 0.03}>
             <div className="news-card h-full p-5 group flex flex-col">
+              {item.imageUrl && (
+                <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer">
+                  <div className="w-full h-36 rounded-lg overflow-hidden mb-3 -mx-0">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                </a>
+              )}
               <div className="flex items-start gap-3 mb-3">
                 <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{num}</span>
                 <span
@@ -361,6 +372,15 @@ function DailyEditorialSection() {
 
           {/* Indice sezioni */}
           <FadeUp delay={0.2}>
+            {editorial?.imageUrl && (
+              <div className="w-full h-48 rounded-2xl overflow-hidden mb-4">
+                <img
+                  src={editorial.imageUrl}
+                  alt={editorial.title ?? "Editoriale del giorno"}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="rounded-2xl p-6 border" style={{ background: "#fff", borderColor: C.border }}>
               <p className="editorial-tag mb-5" style={{ color: C.muted }}>◆ In questo numero</p>
               <div className="space-y-1">
@@ -594,7 +614,7 @@ function WeeklyReportageSection() {
     feature1: string; feature2: string; feature3: string; feature4: string;
     stat1Value: string; stat1Label: string; stat2Value: string; stat2Label: string;
     stat3Value: string; stat3Label: string; ctaLabel: string; ctaUrl: string;
-    websiteUrl: string; weekLabel: string;
+    websiteUrl: string; weekLabel: string; imageUrl?: string | null;
   }>;
 
   return (
@@ -663,6 +683,16 @@ function WeeklyReportageSection() {
                   </FadeUp>
 
                   <FadeUp delay={0.15}>
+                    {/* Immagine AI */}
+                    {item.imageUrl && (
+                      <div className="w-full h-52 rounded-2xl overflow-hidden mb-4">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.headline}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
                     {/* Stats card */}
                     <div className="rounded-2xl p-6 border" style={{ background: colorSet.bg, borderColor: `${colorSet.color}30` }}>
                       <p className="editorial-tag mb-4" style={{ color: colorSet.color }}>◆ {item.startupName} in numeri</p>
@@ -752,6 +782,17 @@ function MarketAnalysisSection() {
                       </span>
                       <span className="text-xs" style={{ color: C.muted }}>{item.source}</span>
                     </div>
+
+                    {/* Immagine AI */}
+                    {(item as { imageUrl?: string | null }).imageUrl && (
+                      <div className="w-full h-36 rounded-xl overflow-hidden -mx-0">
+                        <img
+                          src={(item as { imageUrl?: string | null }).imageUrl!}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
 
                     {/* Title */}
                     <h3 className="font-display text-xl font-bold leading-snug" style={{ color: C.navy }}>

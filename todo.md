@@ -203,3 +203,30 @@
 
 - [x] Aggiornare email contatto nel footer da ac@foolfarm.com a info@ideasmart.ai
 - [x] Verificare tutti i riferimenti obsoleti a ac@foolfarm.com nel codice (Home.tsx, Advertise.tsx, Admin.tsx, email.ts, scripts)
+
+## Nuovi task (13 Mar 2026 — Primo invio newsletter a tutta la lista)
+
+- [x] Inviare la prima newsletter a tutti i 1.859 iscritti attivi (1859/1859 consegnate, 0 fallimenti)
+- [x] Configurare routine automatica newsletter ogni venerdì alle 10:00 CET
+
+## Nuovi task (13 Mar 2026 — Pulizia lista bounce/spam)
+
+- [x] Recuperare lista bounce e spam report da SendGrid API (44 bounce, 2 spam, 1 invalid)
+- [x] Aggiornare iscritti con bounce/spam come unsubscribed nel DB (33 disattivati, 1821 attivi rimasti)
+
+## Nuovi task (13 Mar 2026 — Importazione nuovi iscritti da CSV)
+
+- [x] Leggere e analizzare il file email_nuove_da_contatti.valids.csv (2883 email valide)
+- [x] Importare i nuovi indirizzi nel DB evitando duplicati (2883 aggiunti, 0 duplicati, 4704 attivi totali)
+
+## Nuovi task (13 Mar 2026 — Google ads.txt)
+
+- [ ] Creare file ads.txt con dichiarazione Google AdSense (google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0)
+- [ ] Aggiungere meta tag google-adsense-account nell'head dell'index.html
+
+## Nuovi task (13 Mar 2026 — Immagini articoli)
+
+- [ ] Aggiungere colonna imageUrl a news, reportage, editoriale, analisi, startup nel DB
+- [ ] Creare procedura tRPC admin per generare immagini AI per ogni articolo
+- [ ] Aggiornare componenti frontend per mostrare immagini accanto agli articoli
+- [ ] Generare immagini AI per gli articoli esistenti
