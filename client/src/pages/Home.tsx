@@ -2,24 +2,30 @@
  * IDEASMART — Homepage Hub Multitematica
  * Design: Deep navy (#0a0f1e) + Teal (#00b4a0) + Viola (#8b5cf6) + Orange (#e84f00)
  * Layout: Testata giornalistica multicanale — AI4Business News + ITsMusic
+ *
+ * NAVBAR: differenziata — hub con Canali / Chi siamo / Advertising
+ * CANALI: card grandi con descrizioni estese
+ * NOTIZIE: layout verticale, font grandi, alta leggibilità
  */
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
 
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 const C = {
   navy: "#0a0f1e",
   navyMid: "#111827",
+  navyCard: "#0f172a",
   teal: "#00b4a0",
   tealLight: "rgba(0,180,160,0.12)",
   violet: "#8b5cf6",
   violetLight: "rgba(139,92,246,0.12)",
   orange: "#e84f00",
   white: "#ffffff",
+  whiteAlpha90: "rgba(255,255,255,0.9)",
   whiteAlpha80: "rgba(255,255,255,0.8)",
+  whiteAlpha60: "rgba(255,255,255,0.6)",
   whiteAlpha50: "rgba(255,255,255,0.5)",
   whiteAlpha15: "rgba(255,255,255,0.15)",
   whiteAlpha8: "rgba(255,255,255,0.08)",
@@ -43,120 +49,163 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
-// ─── Channel Card ─────────────────────────────────────────────────────────────
-function ChannelCard({
-  href, label, tagline, color, colorLight, icon, newsCount, subscriberCount,
-  latestNews,
-}: {
-  href: string; label: string; tagline: string; color: string; colorLight: string;
-  icon: string; newsCount: number; subscriberCount?: number;
-  latestNews: Array<{ title: string; category: string }>;
-}) {
+// ─── Hub Navbar (solo per la homepage /) ──────────────────────────────────────
+function HubNavbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  const navItems = [
+    { label: "AI4Business", href: "/ai", color: C.teal },
+    { label: "ITsMusic", href: "/music", color: C.violet },
+    { label: "Chi siamo", href: "#chi-siamo" },
+    { label: "Advertising", href: "/advertise", highlight: true },
+  ];
+
   return (
-    <Link href={href}>
-      <div
-        className="group cursor-pointer rounded-2xl p-8 transition-all duration-300 hover:scale-[1.01]"
-        style={{
-          background: `linear-gradient(135deg, ${colorLight} 0%, rgba(255,255,255,0.03) 100%)`,
-          border: `1px solid ${color}30`,
-          boxShadow: `0 0 40px ${color}10`,
-        }}
-      >
-        {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">{icon}</span>
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{
+        background: scrolled ? "rgba(10,15,30,0.97)" : "rgba(10,15,30,0.85)",
+        backdropFilter: "blur(12px)",
+        borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent",
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-18">
+          {/* Logo */}
+          <Link href="/">
+            <div className="flex items-center gap-3 cursor-pointer">
               <span
-                className="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
-                style={{ background: colorLight, color, border: `1px solid ${color}40` }}
+                className="text-xl sm:text-2xl font-black tracking-tight"
+                style={{ color: C.white, fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                {label}
+                IDEA<span style={{ color: C.teal }}>SMART</span>
+              </span>
+              <span
+                className="hidden sm:block text-xs font-mono tracking-widest uppercase"
+                style={{ color: C.whiteAlpha50 }}
+              >
+                MULTICANALE
               </span>
             </div>
-            <p className="text-sm" style={{ color: C.whiteAlpha50 }}>{tagline}</p>
+          </Link>
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              item.href.startsWith("#") ? (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    const el = document.getElementById("chi-siamo");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
+                  style={{
+                    color: item.color || C.whiteAlpha80,
+                    background: "transparent",
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.background = C.whiteAlpha8)}
+                  onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                >
+                  {item.label}
+                </button>
+              ) : item.highlight ? (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:opacity-90"
+                  style={{
+                    background: C.orange,
+                    color: "#fff",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link key={item.label} href={item.href}>
+                  <span
+                    className="px-3 py-2 rounded-lg text-sm font-bold transition-colors duration-200 cursor-pointer"
+                    style={{
+                      color: item.color || C.whiteAlpha80,
+                      fontFamily: "'DM Sans', sans-serif",
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = C.whiteAlpha8)}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              )
+            ))}
           </div>
-          <div
-            className="text-sm font-bold px-3 py-1 rounded-full transition-all group-hover:scale-105"
-            style={{ background: color, color: "#fff" }}
+
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden p-2 rounded-lg transition-colors"
+            style={{ background: menuOpen ? C.whiteAlpha8 : "transparent" }}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
           >
-            Entra →
-          </div>
+            <div className="w-6 h-0.5 mb-1.5 transition-all duration-300 origin-center"
+              style={{ background: C.white, transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none" }} />
+            <div className="w-6 h-0.5 mb-1.5 transition-all duration-300"
+              style={{ background: C.white, opacity: menuOpen ? 0 : 1 }} />
+            <div className="w-6 h-0.5 transition-all duration-300 origin-center"
+              style={{ background: C.white, transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none" }} />
+          </button>
         </div>
 
-        {/* Stats */}
-        <div className="flex gap-4 mb-6">
-          <div className="text-center">
-            <div className="text-xl font-bold" style={{ color }}>{newsCount}</div>
-            <div className="text-xs" style={{ color: C.whiteAlpha50 }}>notizie oggi</div>
-          </div>
-          {subscriberCount && (
-            <div className="text-center">
-              <div className="text-xl font-bold" style={{ color: C.white }}>{subscriberCount.toLocaleString("it-IT")}</div>
-              <div className="text-xs" style={{ color: C.whiteAlpha50 }}>iscritti</div>
-            </div>
-          )}
-        </div>
-
-        {/* Latest news preview */}
-        <div className="space-y-2">
-          {latestNews.slice(0, 3).map((item, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <span className="text-xs mt-0.5 shrink-0" style={{ color }}>▸</span>
-              <span className="text-xs leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ─── News Card compatta ───────────────────────────────────────────────────────
-function MiniNewsCard({
-  title, category, imageUrl, section, sourceUrl,
-}: {
-  title: string; category: string; imageUrl?: string | null; section: "ai" | "music"; sourceUrl?: string;
-}) {
-  const color = section === "ai" ? C.teal : C.violet;
-  const sectionLabel = section === "ai" ? "AI" : "MUSIC";
-  const href = section === "ai" ? "/ai" : "/music";
-
-  return (
-    <Link href={href}>
-      <div
-        className="group cursor-pointer rounded-xl overflow-hidden transition-all duration-200 hover:scale-[1.01]"
-        style={{ background: C.whiteAlpha8, border: `1px solid ${C.border}` }}
-      >
-        {imageUrl && (
-          <div className="h-32 overflow-hidden">
-            <img
-              src={imageUrl}
-              alt={title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          </div>
-        )}
-        <div className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span
-              className="text-xs font-bold px-2 py-0.5 rounded-full"
-              style={{ background: `${color}20`, color, border: `1px solid ${color}30` }}
+        {/* Mobile menu */}
+        <div
+          className="md:hidden overflow-hidden transition-all duration-300"
+          style={{ maxHeight: menuOpen ? "400px" : "0px" }}
+        >
+          <div className="py-3 space-y-1" style={{ borderTop: `1px solid ${C.border}` }}>
+            <Link href="/ai">
+              <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
+                style={{ color: C.teal }} onClick={() => setMenuOpen(false)}>
+                🤖 AI4Business News
+              </div>
+            </Link>
+            <Link href="/music">
+              <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
+                style={{ color: C.violet }} onClick={() => setMenuOpen(false)}>
+                🎸 ITsMusic
+              </div>
+            </Link>
+            <button
+              className="block w-full text-left px-4 py-3.5 text-base font-semibold rounded-lg"
+              style={{ color: C.whiteAlpha80 }}
+              onClick={() => {
+                const el = document.getElementById("chi-siamo");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+                setMenuOpen(false);
+              }}
             >
-              {sectionLabel}
-            </span>
-            <span className="text-xs" style={{ color: C.whiteAlpha50 }}>{category}</span>
+              Chi siamo
+            </button>
+            <a href="/advertise" className="block px-4 py-3.5 text-base font-bold rounded-lg"
+              style={{ color: C.orange }} onClick={() => setMenuOpen(false)}>
+              Advertising →
+            </a>
           </div>
-          <p className="text-sm font-semibold leading-snug" style={{ color: C.white }}>{title}</p>
         </div>
       </div>
-    </Link>
+    </nav>
   );
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function Home() {
-  // Carica le ultime news AI e musicali per la preview
   const { data: aiNews } = trpc.news.getLatest.useQuery({ section: "ai" });
   const { data: musicNews } = trpc.news.getLatest.useQuery({ section: "music" });
   const { data: subscriberCount } = trpc.newsletter.getActiveCount.useQuery();
@@ -164,10 +213,10 @@ export default function Home() {
   const aiLatest = (aiNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
   const musicLatest = (musicNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
 
-  // Mix delle ultime notizie da entrambe le sezioni (alternato)
-  const allNews = [];
-  const aiSlice = (aiNews || []).slice(0, 6);
-  const musicSlice = (musicNews || []).slice(0, 6);
+  // Mix alternato AI + Music per la sezione notizie
+  const allNews: Array<{ id: number; title: string; category: string; imageUrl?: string | null; section: "ai" | "music"; sourceUrl?: string; summary?: string }> = [];
+  const aiSlice = (aiNews || []).slice(0, 8);
+  const musicSlice = (musicNews || []).slice(0, 8);
   const maxLen = Math.max(aiSlice.length, musicSlice.length);
   for (let i = 0; i < maxLen; i++) {
     if (aiSlice[i]) allNews.push({ ...aiSlice[i], section: "ai" as const });
@@ -176,13 +225,12 @@ export default function Home() {
 
   return (
     <div style={{ background: C.navy, minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
-      {/* Font imports */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
         .hub-title { font-family: 'Space Grotesk', sans-serif; }
       `}</style>
 
-      <Navbar />
+      <HubNavbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
@@ -191,7 +239,6 @@ export default function Home() {
           background: `radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,180,160,0.15) 0%, transparent 70%), ${C.navy}`,
         }}
       >
-        {/* Decorative grid */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -213,7 +260,7 @@ export default function Home() {
 
           <FadeUp delay={0.1}>
             <h1
-              className="hub-title text-5xl md:text-7xl font-bold mb-6 leading-tight"
+              className="hub-title text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight"
               style={{ color: C.white }}
             >
               IDEA<span style={{ color: C.teal }}>SMART</span>
@@ -221,17 +268,16 @@ export default function Home() {
           </FadeUp>
 
           <FadeUp delay={0.2}>
-            <p className="text-lg md:text-xl mb-4 max-w-2xl mx-auto" style={{ color: C.whiteAlpha80 }}>
+            <p className="text-xl md:text-2xl mb-5 max-w-3xl mx-auto leading-relaxed" style={{ color: C.whiteAlpha90 }}>
               La piattaforma editoriale italiana che unisce i mondi dell'<strong style={{ color: C.teal }}>Intelligenza Artificiale</strong> e della <strong style={{ color: C.violet }}>Musica</strong>.
             </p>
-            <p className="text-base mb-10 max-w-xl mx-auto" style={{ color: C.whiteAlpha50 }}>
+            <p className="text-lg mb-12 max-w-2xl mx-auto leading-relaxed" style={{ color: C.whiteAlpha60 }}>
               Contenuti aggiornati ogni giorno. Analisi, reportage e newsletter curate da AI per professionisti.
             </p>
           </FadeUp>
 
-          {/* Stats */}
           <FadeUp delay={0.3}>
-            <div className="flex flex-wrap justify-center gap-8 mb-12">
+            <div className="flex flex-wrap justify-center gap-10 mb-12">
               {[
                 { value: "2", label: "canali tematici" },
                 { value: "40+", label: "contenuti al giorno" },
@@ -239,85 +285,275 @@ export default function Home() {
                 { value: "100%", label: "aggiornamento automatico" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="hub-title text-3xl font-bold" style={{ color: C.white }}>{stat.value}</div>
-                  <div className="text-xs mt-1" style={{ color: C.whiteAlpha50 }}>{stat.label}</div>
+                  <div className="hub-title text-4xl font-black" style={{ color: C.white }}>{stat.value}</div>
+                  <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>{stat.label}</div>
                 </div>
               ))}
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.4}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/ai">
+                <button
+                  className="px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
+                  style={{ background: C.teal, color: C.navy }}
+                >
+                  🤖 Entra in AI4Business
+                </button>
+              </Link>
+              <Link href="/music">
+                <button
+                  className="px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
+                  style={{ background: C.violet, color: C.white }}
+                >
+                  🎸 Entra in ITsMusic
+                </button>
+              </Link>
             </div>
           </FadeUp>
         </div>
       </section>
 
-      {/* ── CANALI ────────────────────────────────────────────────────────── */}
-      <section className="py-16 px-4">
+      {/* ── I NOSTRI CANALI ───────────────────────────────────────────────── */}
+      <section className="py-20 px-4" style={{ background: C.navyMid }}>
         <div className="max-w-5xl mx-auto">
           <FadeUp>
-            <div className="text-center mb-12">
+            <div className="text-center mb-14">
               <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.teal }}>I nostri canali</p>
-              <h2 className="hub-title text-3xl md:text-4xl font-bold" style={{ color: C.white }}>
+              <h2 className="hub-title text-4xl md:text-5xl font-black mb-4" style={{ color: C.white }}>
                 Scegli il tuo canale
               </h2>
+              <p className="text-lg max-w-2xl mx-auto" style={{ color: C.whiteAlpha60 }}>
+                Due testate indipendenti, una piattaforma. Ogni canale ha la sua redazione AI, la sua newsletter e il suo pubblico di riferimento.
+              </p>
             </div>
           </FadeUp>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* AI4Business */}
             <FadeUp delay={0.1}>
-              <ChannelCard
-                href="/ai"
-                label="AI4Business News"
-                tagline="Intelligenza artificiale, startup, analisi di mercato e reportage per il business"
-                color={C.teal}
-                colorLight={C.tealLight}
-                icon="🤖"
-                newsCount={20}
-                subscriberCount={subscriberCount || undefined}
-                latestNews={aiLatest}
-              />
+              <Link href="/ai">
+                <div
+                  className="group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(0,180,160,0.15) 0%, rgba(0,180,160,0.05) 100%)`,
+                    border: `1px solid rgba(0,180,160,0.3)`,
+                  }}
+                >
+                  {/* Top accent bar */}
+                  <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${C.teal}, rgba(0,180,160,0.3))` }} />
+
+                  <div className="p-8 md:p-10">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                          style={{ background: "rgba(0,180,160,0.2)", border: "1px solid rgba(0,180,160,0.3)" }}
+                        >
+                          🤖
+                        </div>
+                        <div>
+                          <span
+                            className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
+                            style={{ background: "rgba(0,180,160,0.2)", color: C.teal, border: "1px solid rgba(0,180,160,0.3)" }}
+                          >
+                            AI4BUSINESS NEWS
+                          </span>
+                          <p className="text-xs mt-1.5" style={{ color: C.whiteAlpha50 }}>by IDEASMART</p>
+                        </div>
+                      </div>
+                      <div
+                        className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all group-hover:scale-105"
+                        style={{ background: C.teal, color: C.navy }}
+                      >
+                        Entra →
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="hub-title text-2xl md:text-3xl font-black mb-4 leading-tight" style={{ color: C.white }}>
+                      Il tuo punto di riferimento sull'AI per il business
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-base leading-relaxed mb-6" style={{ color: C.whiteAlpha80 }}>
+                      Ogni giorno selezioniamo e analizziamo le notizie più rilevanti sull'intelligenza artificiale applicata al business: startup emergenti, analisi di mercato, reportage esclusivi e l'editoriale quotidiano del nostro algoritmo editoriale.
+                    </p>
+                    <p className="text-sm leading-relaxed mb-8" style={{ color: C.whiteAlpha60 }}>
+                      Cosa trovi su AI4Business: <strong style={{ color: C.teal }}>20 notizie al giorno</strong> dalle fonti globali più autorevoli, l'editoriale AI del giorno, la startup emergente da tenere d'occhio, 4 reportage settimanali su aziende italiane e 4 analisi di mercato da CB Insights, Sifted e The Information.
+                    </p>
+
+                    {/* Stats */}
+                    <div className="flex gap-6 mb-8 py-5 border-t border-b" style={{ borderColor: "rgba(0,180,160,0.2)" }}>
+                      <div>
+                        <div className="hub-title text-3xl font-black" style={{ color: C.teal }}>20</div>
+                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>notizie al giorno</div>
+                      </div>
+                      <div>
+                        <div className="hub-title text-3xl font-black" style={{ color: C.white }}>
+                          {subscriberCount ? subscriberCount.toLocaleString("it-IT") : "5.452"}
+                        </div>
+                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>iscritti newsletter</div>
+                      </div>
+                      <div>
+                        <div className="hub-title text-3xl font-black" style={{ color: C.teal }}>2×</div>
+                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>a settimana</div>
+                      </div>
+                    </div>
+
+                    {/* Latest news */}
+                    <div className="space-y-3">
+                      <p className="text-xs font-bold tracking-widest uppercase" style={{ color: C.whiteAlpha50 }}>ULTIME NOTIZIE</p>
+                      {aiLatest.map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: C.teal }} />
+                          <span className="text-sm leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-8 sm:hidden">
+                      <div
+                        className="w-full text-center py-3 rounded-xl font-bold text-base"
+                        style={{ background: C.teal, color: C.navy }}
+                      >
+                        Entra in AI4Business →
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             </FadeUp>
 
+            {/* ITsMusic */}
             <FadeUp delay={0.2}>
-              <ChannelCard
-                href="/music"
-                label="ITsMusic"
-                tagline="Rock, Indie e AI Music — notizie, artisti emergenti, analisi dell'industria musicale"
-                color={C.violet}
-                colorLight={C.violetLight}
-                icon="🎸"
-                newsCount={20}
-                latestNews={musicLatest}
-              />
+              <Link href="/music">
+                <div
+                  className="group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(139,92,246,0.05) 100%)`,
+                    border: `1px solid rgba(139,92,246,0.3)`,
+                  }}
+                >
+                  {/* Top accent bar */}
+                  <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${C.violet}, rgba(139,92,246,0.3))` }} />
+
+                  <div className="p-8 md:p-10">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                          style={{ background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.3)" }}
+                        >
+                          🎸
+                        </div>
+                        <div>
+                          <span
+                            className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
+                            style={{ background: "rgba(139,92,246,0.2)", color: C.violet, border: "1px solid rgba(139,92,246,0.3)" }}
+                          >
+                            ITSMUSIC
+                          </span>
+                          <p className="text-xs mt-1.5" style={{ color: C.whiteAlpha50 }}>by IDEASMART</p>
+                        </div>
+                      </div>
+                      <div
+                        className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all group-hover:scale-105"
+                        style={{ background: C.violet, color: C.white }}
+                      >
+                        Entra →
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="hub-title text-2xl md:text-3xl font-black mb-4 leading-tight" style={{ color: C.white }}>
+                      Rock, Indie e AI Music: l'industria musicale vista dall'interno
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-base leading-relaxed mb-6" style={{ color: C.whiteAlpha80 }}>
+                      ITsMusic è la testata italiana dedicata all'industria musicale contemporanea. Copriamo il Rock e l'Indie italiano e internazionale, l'impatto dell'intelligenza artificiale sulla musica e le dinamiche del mercato discografico globale.
+                    </p>
+                    <p className="text-sm leading-relaxed mb-8" style={{ color: C.whiteAlpha60 }}>
+                      Cosa trovi su ITsMusic: <strong style={{ color: C.violet }}>20 notizie al giorno</strong> da Billboard, Rolling Stone e NME, l'editoriale musicale quotidiano, l'artista della settimana da scoprire, 4 reportage su scene musicali emergenti e 4 analisi di mercato da IFPI e Goldman Sachs.
+                    </p>
+
+                    {/* Stats */}
+                    <div className="flex gap-6 mb-8 py-5 border-t border-b" style={{ borderColor: "rgba(139,92,246,0.2)" }}>
+                      <div>
+                        <div className="hub-title text-3xl font-black" style={{ color: C.violet }}>20</div>
+                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>notizie al giorno</div>
+                      </div>
+                      <div>
+                        <div className="hub-title text-3xl font-black" style={{ color: C.white }}>Rock</div>
+                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>Indie · AI Music</div>
+                      </div>
+                      <div>
+                        <div className="hub-title text-3xl font-black" style={{ color: C.violet }}>2×</div>
+                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>a settimana</div>
+                      </div>
+                    </div>
+
+                    {/* Latest news */}
+                    <div className="space-y-3">
+                      <p className="text-xs font-bold tracking-widest uppercase" style={{ color: C.whiteAlpha50 }}>ULTIME NOTIZIE</p>
+                      {musicLatest.map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: C.violet }} />
+                          <span className="text-sm leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-8 sm:hidden">
+                      <div
+                        className="w-full text-center py-3 rounded-xl font-bold text-base"
+                        style={{ background: C.violet, color: C.white }}
+                      >
+                        Entra in ITsMusic →
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             </FadeUp>
           </div>
         </div>
       </section>
 
-      {/* ── MIX NOTIZIE ───────────────────────────────────────────────────── */}
+      {/* ── ULTIME NOTIZIE (layout verticale, font grandi) ─────────────────── */}
       {allNews.length > 0 && (
-        <section className="py-16 px-4" style={{ background: C.navyMid }}>
-          <div className="max-w-5xl mx-auto">
+        <section className="py-20 px-4" style={{ background: C.navy }}>
+          <div className="max-w-4xl mx-auto">
             <FadeUp>
-              <div className="flex items-center justify-between mb-10">
+              <div className="flex items-end justify-between mb-12">
                 <div>
-                  <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: C.whiteAlpha50 }}>
+                  <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.whiteAlpha50 }}>
                     In primo piano
                   </p>
-                  <h2 className="hub-title text-2xl md:text-3xl font-bold" style={{ color: C.white }}>
+                  <h2 className="hub-title text-4xl md:text-5xl font-black" style={{ color: C.white }}>
                     Le ultime notizie
                   </h2>
+                  <p className="text-sm mt-2" style={{ color: C.whiteAlpha50 }}>
+                    da <span className="font-bold" style={{ color: C.teal }}>AI4Business</span> e <span className="font-bold" style={{ color: C.violet }}>ITsMusic</span> — aggiornate ogni giorno
+                  </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <Link href="/ai">
                     <span
-                      className="text-xs font-bold px-3 py-1.5 rounded-full cursor-pointer transition-all hover:opacity-80"
-                      style={{ background: C.tealLight, color: C.teal, border: `1px solid ${C.teal}30` }}
+                      className="text-sm font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:opacity-80"
+                      style={{ background: "rgba(0,180,160,0.15)", color: C.teal, border: `1px solid rgba(0,180,160,0.3)` }}
                     >
                       AI →
                     </span>
                   </Link>
                   <Link href="/music">
                     <span
-                      className="text-xs font-bold px-3 py-1.5 rounded-full cursor-pointer transition-all hover:opacity-80"
-                      style={{ background: C.violetLight, color: C.violet, border: `1px solid ${C.violet}30` }}
+                      className="text-sm font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:opacity-80"
+                      style={{ background: "rgba(139,92,246,0.15)", color: C.violet, border: `1px solid rgba(139,92,246,0.3)` }}
                     >
                       Music →
                     </span>
@@ -326,40 +562,147 @@ export default function Home() {
               </div>
             </FadeUp>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {allNews.slice(0, 12).map((item, i) => (
-                <FadeUp key={i} delay={i * 0.04}>
-                  <MiniNewsCard
-                    title={item.title}
-                    category={item.category}
-                    imageUrl={item.imageUrl}
-                    section={item.section}
-                    sourceUrl={item.sourceUrl}
-                  />
-                </FadeUp>
-              ))}
+            {/* Layout verticale — una notizia per riga */}
+            <div className="space-y-0">
+              {allNews.slice(0, 12).map((item, i) => {
+                const isAi = item.section === "ai";
+                const color = isAi ? C.teal : C.violet;
+                const sectionLabel = isAi ? "AI4Business" : "ITsMusic";
+                const href = isAi ? "/ai" : "/music";
+                return (
+                  <FadeUp key={i} delay={i * 0.03}>
+                    <Link href={href}>
+                      <div
+                        className="group cursor-pointer flex gap-5 py-6 transition-all duration-200 hover:bg-white/5 px-4 -mx-4 rounded-xl"
+                        style={{ borderBottom: `1px solid ${C.border}` }}
+                      >
+                        {/* Numero */}
+                        <div
+                          className="hub-title text-3xl font-black shrink-0 w-10 text-right leading-none pt-1"
+                          style={{ color: `${color}40` }}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </div>
+
+                        {/* Immagine */}
+                        {item.imageUrl && (
+                          <div className="hidden sm:block w-24 h-16 rounded-lg overflow-hidden shrink-0">
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                          </div>
+                        )}
+
+                        {/* Contenuto */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span
+                              className="text-xs font-bold px-2.5 py-1 rounded-full"
+                              style={{ background: `${color}20`, color, border: `1px solid ${color}30` }}
+                            >
+                              {sectionLabel}
+                            </span>
+                            <span className="text-xs font-medium" style={{ color: C.whiteAlpha50 }}>{item.category}</span>
+                          </div>
+                          <h3
+                            className="hub-title text-xl md:text-2xl font-bold leading-snug group-hover:opacity-80 transition-opacity"
+                            style={{ color: C.white }}
+                          >
+                            {item.title}
+                          </h3>
+                          {item.summary && (
+                            <p className="text-base mt-2 leading-relaxed line-clamp-2" style={{ color: C.whiteAlpha60 }}>
+                              {item.summary}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Arrow */}
+                        <div
+                          className="hidden md:flex items-center shrink-0 text-xl font-bold transition-transform duration-200 group-hover:translate-x-1"
+                          style={{ color: `${color}60` }}
+                        >
+                          →
+                        </div>
+                      </div>
+                    </Link>
+                  </FadeUp>
+                );
+              })}
             </div>
+
+            <FadeUp>
+              <div className="flex gap-4 mt-10 justify-center">
+                <Link href="/ai">
+                  <button
+                    className="px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
+                    style={{ background: "rgba(0,180,160,0.15)", color: C.teal, border: `1px solid rgba(0,180,160,0.3)` }}
+                  >
+                    Tutte le news AI →
+                  </button>
+                </Link>
+                <Link href="/music">
+                  <button
+                    className="px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
+                    style={{ background: "rgba(139,92,246,0.15)", color: C.violet, border: `1px solid rgba(139,92,246,0.3)` }}
+                  >
+                    Tutte le news Music →
+                  </button>
+                </Link>
+              </div>
+            </FadeUp>
           </div>
         </section>
       )}
 
-      {/* ── MANIFESTO ─────────────────────────────────────────────────────── */}
-      <section className="py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
+      {/* ── CHI SIAMO / MANIFESTO ─────────────────────────────────────────── */}
+      <section id="chi-siamo" className="py-24 px-4" style={{ background: C.navyMid }}>
+        <div className="max-w-4xl mx-auto">
           <FadeUp>
-            <p className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: C.teal }}>
-              Il nostro manifesto
-            </p>
-            <h2 className="hub-title text-3xl md:text-4xl font-bold mb-6" style={{ color: C.white }}>
-              Giornalismo aumentato dall'intelligenza artificiale
-            </h2>
-            <p className="text-base leading-relaxed mb-4" style={{ color: C.whiteAlpha80 }}>
-              IDEASMART è una testata giornalistica di nuova generazione che usa l'intelligenza artificiale per selezionare, analizzare e distribuire contenuti di qualità in due dei settori più dinamici del nostro tempo: il business dell'AI e l'industria musicale.
-            </p>
-            <p className="text-base leading-relaxed" style={{ color: C.whiteAlpha50 }}>
-              Ogni giorno, i nostri algoritmi analizzano centinaia di fonti globali per estrarre le notizie più rilevanti, arricchirle con analisi originali e distribuirle ai professionisti che ne hanno bisogno.
-            </p>
+            <div className="text-center mb-14">
+              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.teal }}>Chi siamo</p>
+              <h2 className="hub-title text-4xl md:text-5xl font-black mb-6" style={{ color: C.white }}>
+                Giornalismo aumentato<br />dall'intelligenza artificiale
+              </h2>
+            </div>
           </FadeUp>
+
+          <div className="grid md:grid-cols-2 gap-10">
+            <FadeUp delay={0.1}>
+              <div>
+                <p className="text-lg leading-relaxed mb-5" style={{ color: C.whiteAlpha80 }}>
+                  IDEASMART è una testata giornalistica di nuova generazione che usa l'intelligenza artificiale per selezionare, analizzare e distribuire contenuti di qualità in due dei settori più dinamici del nostro tempo: il business dell'AI e l'industria musicale.
+                </p>
+                <p className="text-base leading-relaxed" style={{ color: C.whiteAlpha60 }}>
+                  Ogni giorno, i nostri algoritmi analizzano centinaia di fonti globali per estrarre le notizie più rilevanti, arricchirle con analisi originali e distribuirle ai professionisti che ne hanno bisogno — senza rumore, senza clickbait.
+                </p>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <div className="space-y-5">
+                {[
+                  { icon: "🔍", title: "Selezione automatica", desc: "Il nostro sistema analizza oltre 200 fonti globali ogni giorno e seleziona solo le notizie davvero rilevanti per il tuo settore." },
+                  { icon: "✍️", title: "Analisi editoriale AI", desc: "Ogni notizia viene arricchita con contesto, analisi e prospettive originali generate dal nostro modello editoriale." },
+                  { icon: "📬", title: "Newsletter curate", desc: "Due newsletter settimanali — AI4Business e ITsMusic — consegnate ogni lunedì e venerdì alle 10:00." },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
+                      style={{ background: C.whiteAlpha8, border: `1px solid ${C.border}` }}
+                    >
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-base font-bold mb-1" style={{ color: C.white }}>{item.title}</p>
+                      <p className="text-sm leading-relaxed" style={{ color: C.whiteAlpha60 }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
@@ -367,18 +710,18 @@ export default function Home() {
       <section
         className="py-20 px-4"
         style={{
-          background: `linear-gradient(135deg, ${C.tealLight} 0%, ${C.violetLight} 100%)`,
+          background: `linear-gradient(135deg, rgba(0,180,160,0.12) 0%, rgba(139,92,246,0.12) 100%)`,
           borderTop: `1px solid ${C.border}`,
           borderBottom: `1px solid ${C.border}`,
         }}
       >
         <div className="max-w-3xl mx-auto text-center">
           <FadeUp>
-            <h2 className="hub-title text-3xl md:text-4xl font-bold mb-4" style={{ color: C.white }}>
+            <div className="hub-title text-4xl md:text-5xl font-black mb-5" style={{ color: C.white }}>
               Scegli la tua newsletter
-            </h2>
-            <p className="text-base mb-10" style={{ color: C.whiteAlpha80 }}>
-              Ricevi ogni lunedì e venerdì la selezione editoriale del canale che preferisci.
+            </div>
+            <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: C.whiteAlpha80 }}>
+              Ricevi ogni lunedì e venerdì la selezione editoriale del canale che preferisci. Gratis, sempre.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/ai">
@@ -403,23 +746,64 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ────────────────────────────────────────────────────────── */}
-      <footer className="py-12 px-4" style={{ borderTop: `1px solid ${C.border}` }}>
+      <footer className="py-14 px-4" style={{ borderTop: `1px solid ${C.border}` }}>
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-10">
+            {/* Logo + tagline */}
             <div>
-              <div className="hub-title text-xl font-bold mb-1" style={{ color: C.white }}>
+              <div className="hub-title text-2xl font-black mb-2" style={{ color: C.white }}>
                 IDEA<span style={{ color: C.teal }}>SMART</span>
               </div>
-              <p className="text-xs" style={{ color: C.whiteAlpha50 }}>
-                Testata giornalistica multicanale — AI4Business News + ITsMusic
+              <p className="text-sm mb-1" style={{ color: C.whiteAlpha50 }}>
+                Testata giornalistica multicanale
+              </p>
+              <p className="text-sm" style={{ color: C.whiteAlpha50 }}>
+                AI4Business News + ITsMusic
               </p>
             </div>
-            <div className="flex gap-6 text-sm" style={{ color: C.whiteAlpha50 }}>
-              <Link href="/ai"><span className="hover:text-white cursor-pointer transition-colors" style={{ color: C.teal }}>AI4Business →</span></Link>
-              <Link href="/music"><span className="hover:text-white cursor-pointer transition-colors" style={{ color: C.violet }}>ITsMusic →</span></Link>
+
+            {/* Canali */}
+            <div>
+              <p className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: C.whiteAlpha50 }}>CANALI</p>
+              <div className="space-y-2">
+                <Link href="/ai">
+                  <div className="text-base font-semibold cursor-pointer transition-opacity hover:opacity-80" style={{ color: C.teal }}>
+                    🤖 AI4Business News →
+                  </div>
+                </Link>
+                <Link href="/music">
+                  <div className="text-base font-semibold cursor-pointer transition-opacity hover:opacity-80" style={{ color: C.violet }}>
+                    🎸 ITsMusic →
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Info */}
+            <div>
+              <p className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: C.whiteAlpha50 }}>INFO</p>
+              <div className="space-y-2">
+                <button
+                  className="block text-base transition-opacity hover:opacity-80"
+                  style={{ color: C.whiteAlpha60 }}
+                  onClick={() => document.getElementById("chi-siamo")?.scrollIntoView({ behavior: "smooth" })}
+                >
+                  Chi siamo
+                </button>
+                <a href="/advertise" className="block text-base transition-opacity hover:opacity-80" style={{ color: C.whiteAlpha60 }}>
+                  Advertising
+                </a>
+                <a href="/privacy" className="block text-base transition-opacity hover:opacity-80" style={{ color: C.whiteAlpha60 }}>
+                  Privacy Policy
+                </a>
+                <a href="mailto:info@ideasmart.ai" className="block text-base transition-opacity hover:opacity-80" style={{ color: C.whiteAlpha60 }}>
+                  info@ideasmart.ai
+                </a>
+              </div>
             </div>
           </div>
-          <div className="mt-8 pt-6 text-center text-xs" style={{ color: C.whiteAlpha50, borderTop: `1px solid ${C.border}` }}>
+
+          <div className="pt-6 text-center text-sm" style={{ color: C.whiteAlpha50, borderTop: `1px solid ${C.border}` }}>
             © {new Date().getFullYear()} IDEASMART — Tutti i diritti riservati
           </div>
         </div>

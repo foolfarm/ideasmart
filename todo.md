@@ -393,3 +393,10 @@
 - [x] Responsive mobile: sezioni editoriale, artista, reportage, analisi ottimizzate
 - [ ] Home hub: aumentare font e spaziature sezioni
 - [ ] Responsive mobile: Hero section ottimizzata (font, layout, CTA)
+
+## Nuovi task (14 Mar 2026 — Home Hub Redesign)
+
+- [x] Home: Navbar differenziata — hub con Canali/Chi siamo/Advertising, sezioni /ai e /music con News/Editoriale/Startup/Reportage/Analisi
+- [x] Home: Sezione canali più grande con descrizioni estese e font aumentati
+- [x] Home: Logo IDEASMART visibile ovunque nella home hub
+- [x] Home: Ultime notizie in layout verticale con font grandi e alta leggibilità
