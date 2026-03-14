@@ -637,13 +637,22 @@ export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' 
     }
   }
 
-  // Filtra le notizie con score < 40 (solo se hanno un audit con score definito)
+  // Filtra le notizie con qualità molto bassa.
+  // NOTA IMPORTANTE: le notizie generate dall'AI usano URL di testate giornalistiche (homepage)
+  // come sourceUrl, non URL di articoli specifici. L'audit verifica la coerenza tra il testo
+  // della homepage e il titolo della notizia, ottenendo score basso anche per notizie valide.
+  // Per questo motivo, il filtro usa solo status 'ok' come criterio positivo:
+  // - Se non c'è audit → includi (notizia nuova, non ancora verificata)
+  // - Se l'audit ha status 'ok' con score >= 60 → includi (verificata positivamente)
+  // - Se l'audit ha status 'error' con score 0 → includi comunque (audit inaffidabile su homepage)
+  // - Solo se score < 10 E status non è 'ok' → escludi (contenuto palesemente errato)
   const filtered = allNews.filter(news => {
     const audit = auditMap.get(news.id);
     if (!audit) return true; // nessun audit → includi
-    if (audit.status === 'unreachable') return false; // URL non raggiungibile → escludi
-    if (audit.coherenceScore !== null && audit.coherenceScore < 40) return false; // score basso → escludi
-    return true;
+    if (audit.status === 'ok') return true; // verificata positivamente → includi
+    // Escludi solo se score è esplicitamente molto basso (< 10) — indica contenuto palesemente errato
+    if (audit.coherenceScore !== null && audit.coherenceScore < 10 && audit.status !== 'error') return false;
+    return true; // in tutti gli altri casi → includi
   });
 
   return filtered.slice(0, limit);

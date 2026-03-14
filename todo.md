@@ -507,3 +507,8 @@
 - [x] Verificato: tutte le 20 notizie Music hanno già immagini Pexels (20/20)
 - [x] Aggiornato Advertise.tsx: contatore dinamico dal DB, fallback 5400
 - [x] Aggiornato AiHome.tsx: fallback iscritti da 4.700 a 5.400
+
+## Bug fix (14 Mar 2026 — Notizie AI scomparse)
+- [x] Diagnosticato: audit automatico assegnava score 0 a tutte le notizie AI (verificava homepage giornali, non articoli specifici)
+- [x] Corretto filtro getLatestNewsFiltered in db.ts: ora include notizie con status error (audit inaffidabile su homepage)
+- [x] Notizie AI ora visibili correttamente (20/20 restituite dall'API)
