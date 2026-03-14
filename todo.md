@@ -293,3 +293,7 @@
 - [x] Analisi di mercato: ogni lunedì alle 00:20 CET
 - [x] Newsletter: ogni lunedì e venerdì alle 10:00 CET
 - [x] Immagini stock: generate automaticamente per ogni nuovo contenuto (Pexels)
+
+## Nuovi task (14 Mar 2026 — Importazione nuovi iscritti)
+
+- [x] Importare lista_contatti_email.valids.csv (897 email valide): 750 nuovi aggiunti, 147 duplicati saltati, 5.452 iscritti attivi totali
