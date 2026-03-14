@@ -42,6 +42,13 @@ import {
   generateMusicMarketAnalysis,
 } from "./musicScheduler";
 import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
+import {
+  generateStartupNews,
+  generateStartupEditorial,
+  generateStartupOfWeek,
+  generateStartupReportage,
+  generateStartupMarketAnalysis,
+} from "./startupScheduler";
 
 const TZ = "Europe/Rome";
 
@@ -162,6 +169,55 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
+  // SEZIONE /startup — Startup News
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // ── 9. NEWS STARTUP — ogni giorno alle 01:00 CET ─────────────────────────
+  cron.schedule("0 1 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio aggiornamento Startup News...");
+    try {
+      await generateStartupNews();
+      console.log("[SchedulerManager] ✅ Startup News aggiornate con successo");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore aggiornamento Startup News:", err);
+    }
+  }, { timezone: TZ });
+
+  // ── 10. EDITORIALE STARTUP + STARTUP DELLA SETTIMANA — ogni giorno alle 01:05 CET ──
+  cron.schedule("5 1 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 01:05 CET — Avvio Editoriale Startup + Startup della Settimana...");
+    try {
+      await generateStartupEditorial();
+      await generateStartupOfWeek();
+      console.log("[SchedulerManager] ✅ Editoriale Startup e Startup della Settimana aggiornati");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore Editoriale/Startup della Settimana:", err);
+    }
+  }, { timezone: TZ });
+
+  // ── 11. REPORTAGE STARTUP — ogni lunedì alle 01:15 CET ───────────────────
+  cron.schedule("15 1 * * 1", async () => {
+    console.log("[SchedulerManager] ⏰ Lunedì 01:15 CET — Avvio generazione Reportage Startup...");
+    try {
+      await generateStartupReportage();
+      console.log("[SchedulerManager] ✅ Reportage Startup generati con successo");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore generazione Reportage Startup:", err);
+    }
+  }, { timezone: TZ });
+
+  // ── 12. ANALISI MERCATO STARTUP — ogni lunedì alle 01:20 CET ─────────────
+  cron.schedule("20 1 * * 1", async () => {
+    console.log("[SchedulerManager] ⏰ Lunedì 01:20 CET — Avvio generazione Analisi Mercato Startup...");
+    try {
+      await generateStartupMarketAnalysis();
+      console.log("[SchedulerManager] ✅ Analisi Mercato Startup generate con successo");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore generazione Analisi Mercato Startup:", err);
+    }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
   // NEWSLETTER — AI4Business News + ITsMusic
   // ══════════════════════════════════════════════════════════════════════════
 
@@ -214,5 +270,9 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🎵 Editoriale Music → ogni giorno alle 00:35 CET");
   console.log("[SchedulerManager]   🎤 Reportage Music  → ogni lunedì alle 00:45 CET");
   console.log("[SchedulerManager]   🎼 Analisi Music    → ogni lunedì alle 00:50 CET");
+  console.log("[SchedulerManager]   🚀 News Startup     → ogni giorno alle 01:00 CET");
+  console.log("[SchedulerManager]   ✍️  Editoriale Startup → ogni giorno alle 01:05 CET");
+  console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
+  console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");
   console.log("[SchedulerManager]   📧 Newsletter       → lunedì e venerdì alle 10:00 CET");
 }

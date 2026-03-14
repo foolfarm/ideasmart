@@ -9,6 +9,7 @@ import { useCookieConsent } from "./hooks/useCookieConsent";
 import Home from "./pages/Home";
 import AiHome from "./pages/AiHome";
 import MusicHome from "./pages/MusicHome";
+import StartupHome from "./pages/StartupHome";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
 import AuditDashboard from "./pages/AuditDashboard";
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/ai" component={AiHome} />
       <Route path="/music" component={MusicHome} />
+      <Route path="/startup" component={StartupHome} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
       <Route path="/admin/audit" component={AuditDashboard} />
@@ -35,6 +37,7 @@ function Router() {
       <Route path="/advertise" component={Advertise} />
       <Route path="/ai/news/:id" component={NewsArticle} />
       <Route path="/music/news/:id" component={MusicNewsArticle} />
+      <Route path="/startup/news/:id" component={MusicNewsArticle} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

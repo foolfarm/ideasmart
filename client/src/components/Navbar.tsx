@@ -74,6 +74,18 @@ export default function Navbar() {
           {/* CTA + mobile menu */}
           <div className="flex items-center gap-2">
             <a
+              href="/startup"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
+              style={{
+                color: "#e84f00",
+                borderColor: "#e84f0030",
+                background: "#fff2ec",
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+            >
+              🚀 Startup
+            </a>
+            <a
               href="/advertise"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{

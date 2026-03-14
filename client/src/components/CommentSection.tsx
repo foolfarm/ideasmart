@@ -3,7 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { MessageCircle, Send, User } from "lucide-react";
 import { toast } from "sonner";
 
-type Section = "ai" | "music";
+type Section = "ai" | "music" | "startup";
 type ArticleType = "news" | "editorial" | "startup" | "reportage" | "analysis";
 
 interface CommentSectionProps {

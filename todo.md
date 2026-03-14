@@ -542,3 +542,13 @@
 ## Nuovi task (14 Mar 2026 — Sezione PollCast)
 - [x] Aggiunta sezione "Partecipa ai sondaggi di IdeaSmart su PollCast Online" in Home.tsx sopra "Chi siamo"
 - [x] Sezione con card dark, due CTA (Vai ai sondaggi / Scopri PollCast), statistiche decorative, link a https://pollcast.online/
+
+## Nuovi task (14 Mar 2026 — Sezione Startup News)
+- [x] Aggiunta sezione 'startup' alle enum DB in tutte le tabelle (schema.ts + db:push)
+- [x] Creato startupScheduler.ts con generazione notizie, editoriale, startup settimana, reportage, analisi mercato
+- [x] Aggiunto startupScheduler al schedulerManager (esecuzione automatica alle 00:00 ogni giorno)
+- [x] Creata pagina StartupHome.tsx identica ad AiHome/MusicHome con palette verde startup
+- [x] Aggiunto routing /startup in App.tsx
+- [x] Aggiunto link "Startup News" nella HubNavbar (Home.tsx), MusicNavbar (MusicHome.tsx) e Navbar AI (Navbar.tsx)
+- [x] Aggiunte procedure admin refreshStartupNews e refreshStartupContent nel router
+- [x] Generate le prime 20 notizie + editoriale + startup settimana + 4 reportage + 4 analisi mercato nel DB

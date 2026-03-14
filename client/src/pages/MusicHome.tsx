@@ -125,6 +125,15 @@ function MusicNavbar() {
           >
             MUSIC
           </a>
+          <a
+            href="/startup"
+            className="text-xs font-bold px-3 py-1.5 rounded-full border transition-all"
+            style={{ borderColor: M.border, color: M.textMuted }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "#e84f00"; e.currentTarget.style.color = "#e84f00"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = M.border; e.currentTarget.style.color = M.textMuted; }}
+          >
+            → STARTUP
+          </a>
         </div>
       </div>
     </nav>

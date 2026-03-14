@@ -65,6 +65,7 @@ function HubNavbar() {
   const navItems = [
     { label: "AI4Business", href: "/ai", color: C.teal },
     { label: "ITsMusic", href: "/music", color: C.violet },
+    { label: "Startup News", href: "/startup", color: C.orange },
     { label: "Chi siamo", href: "#chi-siamo" },
     { label: "Advertising", href: "/advertise", highlight: true },
   ];
@@ -182,6 +183,12 @@ function HubNavbar() {
               <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
                 style={{ color: C.violet }} onClick={() => setMenuOpen(false)}>
                 🎸 ITsMusic
+              </div>
+            </Link>
+            <Link href="/startup">
+              <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
+                style={{ color: C.orange }} onClick={() => setMenuOpen(false)}>
+                🚀 Startup News
               </div>
             </Link>
             <button

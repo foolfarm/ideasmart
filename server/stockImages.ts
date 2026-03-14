@@ -60,6 +60,23 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   "Produzione Musicale": ["music studio", "mixing console", "music producer"],
   "Diritti & Copyright": ["music rights", "copyright law", "intellectual property"],
   "Festival & Concerti": ["music festival", "outdoor concert", "festival crowd"],
+  // Startup categories
+  "Startup Italiana": ["italian startup office", "entrepreneur team italy", "startup coworking"],
+  "Startup Internazionale": ["global startup", "tech startup office", "entrepreneur team"],
+  "Fintech": ["fintech", "financial technology", "digital banking app"],
+  "Healthtech": ["health technology", "medical startup", "digital health app"],
+  "Greentech": ["green technology startup", "sustainable energy startup", "clean tech"],
+  "Edtech": ["education technology", "e-learning startup", "digital classroom"],
+  "Foodtech": ["food technology", "food startup", "food innovation lab"],
+  "Proptech": ["real estate technology", "property tech", "smart building"],
+  "Deeptech": ["deep technology research", "innovation lab", "scientific startup"],
+  "SaaS & B2B": ["software startup", "saas business", "b2b technology office"],
+  "E-commerce": ["e-commerce startup", "online retail", "digital commerce"],
+  "Mobility": ["mobility startup", "transportation technology", "smart mobility"],
+  "Funding & VC": ["venture capital meeting", "startup funding", "investor pitch"],
+  "Acquisizioni": ["business acquisition", "company merger", "deal handshake"],
+  "IPO & Mercati": ["stock market", "ipo business", "financial market trading"],
+  "Ecosistema": ["startup ecosystem", "innovation hub", "startup incubator space"],
   // Default
   "default": ["artificial intelligence", "technology innovation", "digital future"],
 };
@@ -70,6 +87,12 @@ const MUSIC_CATEGORIES = new Set([
   "Rock & Indie", "AI Music", "Industria Musicale", "Tour & Live",
   "Artisti Emergenti", "Streaming & Digital", "Vinile & Fisico",
   "Produzione Musicale", "Diritti & Copyright", "Festival & Concerti",
+]);
+
+const STARTUP_CATEGORIES = new Set([
+  "Startup Italiana", "Startup Internazionale", "Fintech", "Healthtech",
+  "Greentech", "Edtech", "Foodtech", "Proptech", "Deeptech", "SaaS & B2B",
+  "E-commerce", "Mobility", "Funding & VC", "Acquisizioni", "IPO & Mercati", "Ecosistema",
 ]);
 
 // ── Keyword musicali per titolo (traduzione IT→EN contestuale) ───────────────
@@ -260,13 +283,16 @@ export async function findStockImage(
   context?: string
 ): Promise<string | null> {
   const isMusic = MUSIC_CATEGORIES.has(category);
+  const isStartup = STARTUP_CATEGORIES.has(category);
 
   // 1. Prima prova con parole chiave estratte dal titolo
-  //    Per Music: keyword musicali | Per AI: keyword tecnologiche
+  //    Per Music: keyword musicali | Per Startup: keyword startup | Per AI: keyword tecnologiche
   const titleKeywords = extractKeywordsFromTitle(title, isMusic);
   const query1 = isMusic
-    ? `${titleKeywords} music`          // es. "concert stage music"
-    : `${titleKeywords} technology`;    // es. "artificial intelligence technology"
+    ? `${titleKeywords} music`
+    : isStartup
+    ? `${titleKeywords} startup entrepreneur`
+    : `${titleKeywords} technology`;
   let url = await searchPexels(query1);
 
   // 2. Se non trovato, prova con le keyword della categoria
@@ -278,16 +304,18 @@ export async function findStockImage(
 
   // 3. Se ancora non trovato, prova con context
   if (!url && context) {
-    const query3 = isMusic ? `${context} music` : `${context} technology`;
+    const query3 = isMusic ? `${context} music` : isStartup ? `${context} startup` : `${context} technology`;
     url = await searchPexels(query3);
   }
 
-  // 4. Fallback finale: per Music usa sempre query musicale generica
+  // 4. Fallback finale per sezione specifica
   if (!url) {
     if (isMusic) {
       const musicFallbacks = ["music concert", "live music", "musician playing", "music studio", "vinyl record"];
-      const fallbackQuery = musicFallbacks[Math.floor(Math.random() * musicFallbacks.length)];
-      url = await searchPexels(fallbackQuery);
+      url = await searchPexels(musicFallbacks[Math.floor(Math.random() * musicFallbacks.length)]);
+    } else if (isStartup) {
+      const startupFallbacks = ["startup team", "entrepreneur office", "business innovation", "startup pitch", "coworking space"];
+      url = await searchPexels(startupFallbacks[Math.floor(Math.random() * startupFallbacks.length)]);
     }
   }
 

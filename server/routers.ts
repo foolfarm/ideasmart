@@ -38,6 +38,7 @@ import {
   getSubscribersWithTracking,
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
+import { generateStartupNews, generateStartupEditorial, generateStartupOfWeek, generateStartupReportage, generateStartupMarketAnalysis } from "./startupScheduler";
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
@@ -127,7 +128,7 @@ export const appRouter = router({
   // ── Market Analysis (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   marketAnalysis: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLatestMarketAnalysis(input.section);
       }),
@@ -136,7 +137,7 @@ export const appRouter = router({
   // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   reportage: router({
     getLatestWeek: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLatestWeeklyReportage(input.section);
       }),
@@ -145,7 +146,7 @@ export const appRouter = router({
   // ── Editorial (public) ──────────────────────────────────────────────────────────────────────────────────
   editorial: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLatestEditorial(input.section);
       }),
@@ -154,7 +155,7 @@ export const appRouter = router({
   // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────
   startupOfDay: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLatestStartupOfDay(input.section);
       }),
@@ -163,7 +164,7 @@ export const appRouter = router({
   // ── News (public) ──────────────────────────────────────────────────────────────────────────────────
   news: router({
     getLatest: publicProcedure
-      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         // Usa il filtro audit: esclude notizie con score < 40 o URL non raggiungibili
         const items = await getLatestNewsFiltered(input.limit, input.section);
@@ -185,14 +186,14 @@ export const appRouter = router({
 
     // Statistiche filtro audit per la dashboard admin
     getFilterStats: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return countFilteredNews(input.section);
       }),
 
     // Recupera notizie con score < 40 per revisione/sostituzione
     getLowScore: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLowScoreNews(input.section);
       }),
@@ -225,7 +226,7 @@ export const appRouter = router({
     getRelated: publicProcedure
       .input(z.object({
         id: z.number(),
-        section: z.enum(['ai', 'music']).default('ai'),
+        section: z.enum(['ai', 'music', 'startup']).default('ai'),
         limit: z.number().min(1).max(6).default(4),
       }))
       .query(async ({ input }) => {
@@ -253,7 +254,7 @@ export const appRouter = router({
 
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .mutation(async ({ input }) => {
         const lowScoreNews = await getLowScoreNews(input.section);
         if (lowScoreNews.length === 0) return { replaced: 0, message: 'Nessuna notizia da sostituire' };
@@ -557,6 +558,20 @@ Rispondi con questo JSON:
       await generateMarketAnalysis();
       const items = await getLatestMarketAnalysis();
       return { success: true, count: items.length };
+    }),
+
+    // Generazione manuale notizie Startup
+    refreshStartupNews: adminProcedure.mutation(async () => {
+      await generateStartupNews();
+      return { success: true };
+    }),
+    // Generazione manuale contenuti Startup (editoriale, startup settimana, reportage, analisi)
+    refreshStartupContent: adminProcedure.mutation(async () => {
+      await generateStartupEditorial();
+      await generateStartupOfWeek();
+      await generateStartupReportage();
+      await generateStartupMarketAnalysis();
+      return { success: true };
     }),
 
     // Invia newsletter completa di prova (news + reportage + editoriale + startup + analisi) a una singola email
@@ -873,7 +888,7 @@ Rispondi con questo JSON:
     // Aggiungi un commento a un articolo
     add: publicProcedure
       .input(z.object({
-        section: z.enum(["ai", "music"]),
+        section: z.enum(["ai", "music", "startup"]),
         articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
         articleId: z.number().int().positive(),
         authorName: z.string().min(2).max(100),
@@ -898,7 +913,7 @@ Rispondi con questo JSON:
     // Recupera i commenti approvati per un articolo
     getByArticle: publicProcedure
       .input(z.object({
-        section: z.enum(["ai", "music"]),
+        section: z.enum(["ai", "music", "startup"]),
         articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
         articleId: z.number().int().positive(),
       }))
@@ -927,7 +942,7 @@ Rispondi con questo JSON:
     // Avvia un audit batch sulle ultime notizie
     runBatch: adminProcedure
       .input(z.object({
-        section: z.enum(["ai", "music"]).optional(),
+        section: z.enum(["ai", "music", "startup"]).optional(),
         contentType: z.enum(["news", "analysis"]).default("news"),
         limit: z.number().min(1).max(50).default(10),
       }))
@@ -957,7 +972,7 @@ Rispondi con questo JSON:
     // Recupera i risultati dell'audit con filtri
     getResults: adminProcedure
       .input(z.object({
-        section: z.enum(["ai", "music"]).optional(),
+        section: z.enum(["ai", "music", "startup"]).optional(),
         status: z.enum(["ok", "warning", "error", "unreachable", "pending"]).optional(),
         contentType: z.enum(["news", "analysis", "reportage", "startup"]).optional(),
         limit: z.number().min(1).max(100).default(50),
@@ -998,7 +1013,7 @@ Rispondi con questo JSON:
     // Audit completo: news + analisi + reportage
     runFullAuditNow: adminProcedure
       .input(z.object({
-        section: z.enum(["ai", "music"]).optional(),
+        section: z.enum(["ai", "music", "startup"]).optional(),
         limit: z.number().min(1).max(50).default(20),
       }))
       .mutation(async ({ input }) => {
