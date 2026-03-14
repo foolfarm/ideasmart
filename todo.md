@@ -283,3 +283,13 @@
 
 - [x] Aggiungere procedura tRPC newsletter.getActiveCount per contare iscritti attivi dal DB
 - [x] Aggiornare sezione newsletter nella Home con numero esatto iscritti attivi (dinamico)
+
+## Nuovi task (14 Mar 2026 — Routine automatiche)
+
+- [x] Verificare e centralizzare tutti gli scheduler nel file schedulerManager.ts
+- [x] News: aggiornamento ogni giorno alle 00:00 CET
+- [x] Editoriale + Startup del giorno: ogni giorno alle 00:05 CET
+- [x] Reportage: ogni lunedì alle 00:15 CET
+- [x] Analisi di mercato: ogni lunedì alle 00:20 CET
+- [x] Newsletter: ogni lunedì e venerdì alle 10:00 CET
+- [x] Immagini stock: generate automaticamente per ogni nuovo contenuto (Pexels)

@@ -7,12 +7,9 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { startNewsScheduler } from "../newsScheduler";
-import { startNewsletterScheduler } from "../newsletterScheduler";
-import { startDailyContentScheduler } from "../dailyContentScheduler";
-import { startWeeklyReportageScheduler } from "../weeklyReportageScheduler";
-import { startMarketAnalysisScheduler } from "../marketAnalysisScheduler";
-import { scheduleImageBackfill } from "../backfillImages";
+import { startAllSchedulers } from "../schedulerManager";
+import { refreshNewsIfNeeded } from "../newsScheduler";
+import { runDailyContentRefresh } from "../dailyContentScheduler";
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
@@ -131,21 +128,29 @@ async function startServer() {
 
 startServer().catch(console.error);
 
-// Avvia il cron job per l'aggiornamento giornaliero delle notizie AI (ogni 24h)
-startNewsScheduler();
+// ─── Avvia tutti gli scheduler automatici centralizzati ───────────────────────
+// Tutti gli orari sono in CET/CEST (ora italiana, Europe/Rome)
+// - News AI:       ogni giorno alle 00:00
+// - Editoriale:    ogni giorno alle 00:05
+// - Reportage:     ogni lunedì alle 00:15
+// - Analisi:       ogni lunedì alle 00:20
+// - Newsletter:    lunedì e venerdì alle 10:00
+startAllSchedulers();
 
-// Avvia il cron job per l'invio automatico della newsletter settimanale (ogni lunedì 09:00 IT)
-startNewsletterScheduler();
+// ─── Avvio immediato: genera contenuti se il DB è vuoto ───────────────────────
+// Parte 10 secondi dopo l'avvio per non rallentare il boot
+setTimeout(async () => {
+  try {
+    await refreshNewsIfNeeded();
+  } catch (err) {
+    console.error("[Startup] Errore refresh news iniziale:", err);
+  }
+}, 10_000);
 
-// Avvia il cron job per editoriale giornaliero e startup del giorno (ogni 24h)
-startDailyContentScheduler();
-
-// Avvia il cron job per i 4 reportage settimanali su startup AI italiane (ogni lunedì 00:00)
-startWeeklyReportageScheduler();
-
-// Avvia il cron job per le 4 analisi di mercato AI (ogni giovedì 06:00 UTC)
-startMarketAnalysisScheduler();
-
-// Genera automaticamente le immagini AI per gli articoli esistenti senza immagine
-// Parte 30 secondi dopo l'avvio per non rallentare il boot
-scheduleImageBackfill();
+setTimeout(async () => {
+  try {
+    await runDailyContentRefresh();
+  } catch (err) {
+    console.error("[Startup] Errore refresh contenuti iniziale:", err);
+  }
+}, 30_000);
