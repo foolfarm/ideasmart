@@ -85,7 +85,7 @@ function MusicNavbar() {
         </div>
 
         {/* Nav links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-1">
           {[
             { label: "News", href: "#news" },
             { label: "Editoriale", href: "#editoriale" },
@@ -96,10 +96,10 @@ function MusicNavbar() {
             <a
               key={item.label}
               href={item.href}
-              className="text-sm font-medium transition-colors"
-              style={{ color: M.textMuted, fontFamily: "'DM Sans', sans-serif" }}
-              onMouseEnter={e => (e.currentTarget.style.color = M.violet)}
-              onMouseLeave={e => (e.currentTarget.style.color = M.textMuted)}
+              className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+              style={{ color: "#c4b5fd", fontFamily: "'DM Sans', sans-serif" }}
+              onMouseEnter={e => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.background = `${M.violet}30`; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "#c4b5fd"; e.currentTarget.style.background = "transparent"; }}
             >
               {item.label}
             </a>
@@ -165,39 +165,49 @@ function MusicNewsGrid() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       {items.map((item, i) => {
         const { color, bg } = COLORS[i % COLORS.length];
         return (
           <FadeUp key={item.id} delay={i * 0.05}>
             <div
-              className="rounded-xl border overflow-hidden hover:shadow-lg transition-all group"
+              className="rounded-xl border overflow-hidden hover:shadow-xl transition-all group"
               style={{ borderColor: M.border, background: M.surface }}
             >
+              {/* Image — sopra su mobile, a sinistra su desktop */}
+              {item.imageUrl && (
+                <div className="block sm:hidden w-full h-44 overflow-hidden">
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              )}
               <div className="flex gap-0">
-                {/* Image */}
+                {/* Image — affiancata su desktop */}
                 {item.imageUrl && (
-                  <div className="w-28 flex-shrink-0 overflow-hidden">
+                  <div className="hidden sm:block w-32 flex-shrink-0 overflow-hidden">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      style={{ minHeight: 120 }}
+                      style={{ minHeight: 140 }}
                     />
                   </div>
                 )}
                 {/* Content */}
-                <div className="flex-1 p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: bg, color }}>
+                <div className="flex-1 p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-full" style={{ background: bg, color }}>
                       {item.category}
                     </span>
-                    <span className="text-xs" style={{ color: M.textMuted }}>{item.sourceName}</span>
+                    <span className="text-xs font-medium" style={{ color: "#a78bfa" }}>{item.sourceName}</span>
                   </div>
-                  <h3 className="text-sm font-bold leading-snug mb-2" style={{ color: M.text, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <h3 className="text-base font-bold leading-snug mb-3" style={{ color: M.text, fontFamily: "'Space Grotesk', sans-serif" }}>
                     {item.title}
                   </h3>
-                  <p className="text-xs leading-relaxed line-clamp-2" style={{ color: M.textMuted }}>
+                  <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#cbd5e1" }}>
                     {item.summary}
                   </p>
                   {item.sourceUrl && item.sourceUrl !== "#" && (
@@ -290,20 +300,20 @@ function MusicEditorialSection() {
             ) : paragraphs ? (
               <div className="space-y-4">
                 {paragraphs.map((p, i) => (
-                  <p key={i} className="text-sm leading-relaxed" style={{ color: M.textMuted, fontFamily: "'DM Sans', sans-serif" }}>
+                  <p key={i} className="text-base leading-relaxed" style={{ color: "#cbd5e1", fontFamily: "'DM Sans', sans-serif" }}>
                     {p}
                   </p>
                 ))}
               </div>
             ) : (
-              <p className="text-sm leading-relaxed" style={{ color: M.textMuted }}>
+              <p className="text-base leading-relaxed" style={{ color: "#cbd5e1" }}>
                 L'editoriale musicale di oggi sarà disponibile a breve. Torna domani per la nostra analisi quotidiana sull'industria musicale.
               </p>
             )}
 
             {editorial?.authorNote && (
               <div className="mt-6 p-4 rounded-xl border-l-4" style={{ borderColor: M.violet, background: `${M.violet}10` }}>
-                <p className="text-xs italic" style={{ color: M.textMuted }}>{editorial.authorNote}</p>
+                <p className="text-sm italic" style={{ color: "#c4b5fd" }}>{editorial.authorNote}</p>
               </div>
             )}
           </div>
@@ -313,7 +323,7 @@ function MusicEditorialSection() {
             {editorial?.subtitle && (
               <div className="p-5 rounded-xl border" style={{ borderColor: M.border, background: M.surface }}>
                 <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: M.violet }}>FOCUS</p>
-                <p className="text-sm font-semibold leading-snug" style={{ color: M.text, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <p className="text-base font-semibold leading-snug" style={{ color: "#e2e8f0", fontFamily: "'Space Grotesk', sans-serif" }}>
                   {editorial.subtitle}
                 </p>
               </div>
@@ -377,12 +387,12 @@ function ArtistOfWeekSection() {
                   <p className="text-xs" style={{ color: M.textMuted }}>{artist.category} · {artist.country}</p>
                 </div>
               </div>
-              <p className="text-sm font-semibold mb-3" style={{ color: M.violet }}>{artist.tagline}</p>
-              <p className="text-sm leading-relaxed" style={{ color: M.textMuted }}>{artist.description}</p>
+              <p className="text-base font-semibold mb-3" style={{ color: "#a78bfa" }}>{artist.tagline}</p>
+              <p className="text-base leading-relaxed" style={{ color: "#cbd5e1" }}>{artist.description}</p>
               {artist.whyToday && (
                 <div className="mt-4 p-4 rounded-xl border-l-4" style={{ borderColor: M.magenta, background: `${M.magenta}10` }}>
                   <p className="text-xs font-bold uppercase mb-1" style={{ color: M.magenta }}>PERCHÉ ORA</p>
-                  <p className="text-sm" style={{ color: M.textMuted }}>{artist.whyToday}</p>
+                  <p className="text-sm" style={{ color: "#cbd5e1" }}>{artist.whyToday}</p>
                 </div>
               )}
             </div>
@@ -485,7 +495,7 @@ function MusicReportageSection() {
                       </h3>
                       <p className="text-sm font-semibold mb-3" style={{ color: accent }}>{item.headline}</p>
                       {item.bodyText && (
-                        <p className="text-xs leading-relaxed line-clamp-3 mb-4" style={{ color: M.textMuted }}>{item.bodyText}</p>
+                        <p className="text-sm leading-relaxed line-clamp-3 mb-4" style={{ color: "#cbd5e1" }}>{item.bodyText}</p>
                       )}
                       <div className="grid grid-cols-3 gap-2 mb-4">
                         {[
@@ -574,11 +584,11 @@ function MusicMarketSection() {
                       {item.subtitle && (
                         <p className="text-sm font-semibold mb-2" style={{ color: accent }}>{item.subtitle}</p>
                       )}
-                      <p className="text-xs leading-relaxed" style={{ color: M.textMuted }}>{item.summary}</p>
+                      <p className="text-sm leading-relaxed" style={{ color: "#cbd5e1" }}>{item.summary}</p>
                       {item.keyInsight && (
                         <div className="mt-3 p-3 rounded-lg" style={{ background: `${accent}15` }}>
                           <p className="text-xs font-bold uppercase mb-1" style={{ color: accent }}>KEY INSIGHT</p>
-                          <p className="text-xs" style={{ color: M.textMuted }}>{item.keyInsight}</p>
+                          <p className="text-sm" style={{ color: "#cbd5e1" }}>{item.keyInsight}</p>
                         </div>
                       )}
                     </div>
@@ -635,7 +645,7 @@ function MusicNewsletterSection() {
           <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: M.text, fontFamily: "'Space Grotesk', sans-serif" }}>
             La newsletter musicale italiana
           </h2>
-          <p className="text-base mb-2" style={{ color: M.textMuted }}>
+          <p className="text-lg mb-2" style={{ color: "#cbd5e1" }}>
             Unisciti a oltre{" "}
             <span className="font-black" style={{ color: M.violet }}>
               {activeSubscriberCount?.toLocaleString("it-IT") ?? "—"}

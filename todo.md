@@ -380,3 +380,16 @@
 - [x] Seed /music: artista della settimana — Bark Psychosis
 - [x] Seed /music: 4 reportage Indie/AI Music (Bark Psychosis, Suno AI, Indie Italia, Mubert)
 - [x] Seed /music: 4 analisi di mercato musicale (IFPI, Goldman Sachs, Spotify, Pollstar)
+
+## Nuovi task (14 Mar 2026 — Leggibilità, Font e Responsive Mobile)
+
+- [x] AiHome: aumentare font titoli notizie, body text, tag categoria — contrasto testo scuro su sfondo chiaro
+- [x] AiHome: aumentare spaziatura tra card news, padding interno, line-height
+- [x] AiHome: correggere colori testo su sfondo chiaro (da grigio chiaro a grigio scuro/navy)
+- [x] MusicHome: aumentare font e spaziature, migliorare leggibilità su sfondo scuro
+- [x] MusicHome: card news responsive (immagine sopra su mobile, affiancata su desktop)
+- [x] Responsive mobile: Navbar hamburger menu animato funzionante
+- [x] Responsive mobile: card news a colonna singola su mobile con immagine sopra
+- [x] Responsive mobile: sezioni editoriale, artista, reportage, analisi ottimizzate
+- [ ] Home hub: aumentare font e spaziature sezioni
+- [ ] Responsive mobile: Hero section ottimizzata (font, layout, CTA)

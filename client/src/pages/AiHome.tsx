@@ -30,9 +30,9 @@ const C = {
   blue: "#1a56db",
   blueLight: "#eff4ff",
   navy: "#1a1f2e",
-  slate: "#4b5563",
-  muted: "#9ca3af",
-  border: "#e2e5ed",
+  slate: "#374151",     /* aumentato contrasto: era #4b5563 */
+  muted: "#6b7280",     /* aumentato contrasto: era #9ca3af — ora WCAG AA */
+  border: "#d1d5db",   /* bordi leggermente più visibili */
   surface1: "#f8f9fc",
   surface2: "#f1f3f8",
 };
@@ -202,21 +202,22 @@ function NewsGrid() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       {items.slice(0, 20).map((item, i) => {
         const colorSet = NEWS_COLORS[i % NEWS_COLORS.length];
         const num = String(i + 1).padStart(2, "0");
         return (
           <FadeUp key={item.id} delay={i * 0.03}>
             <div className="news-card group">
-              <div className="flex gap-0">
-                {/* Immagine a sinistra — sempre visibile, stock Pexels o placeholder */}
+              {/* Layout: immagine sopra su mobile, affiancata su sm+ */}
+              <div className="flex flex-col sm:flex-row gap-0">
+                {/* Immagine — sopra su mobile, a sinistra su desktop */}
                 <a
                   href={item.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-shrink-0 w-32 sm:w-44 h-auto self-stretch relative overflow-hidden rounded-l-xl"
-                  style={{ minHeight: "120px" }}
+                  className="flex-shrink-0 w-full sm:w-44 relative overflow-hidden rounded-t-xl sm:rounded-t-none sm:rounded-l-xl"
+                  style={{ height: "180px", minHeight: "180px" }}
                 >
                   {item.imageUrl ? (
                     <img
@@ -226,23 +227,22 @@ function NewsGrid() {
                       style={{ position: "absolute", inset: 0 }}
                     />
                   ) : (
-                    // Placeholder colorato con icona categoria quando non c'è immagine
                     <div
                       className="w-full h-full flex items-center justify-center"
                       style={{ background: `linear-gradient(135deg, ${colorSet.bg} 0%, ${colorSet.color}20 100%)`, position: "absolute", inset: 0 }}
                     >
-                      <span className="text-3xl font-black opacity-30" style={{ color: colorSet.color, fontFamily: "'Space Grotesk', sans-serif" }}>{num}</span>
+                      <span className="text-4xl font-black opacity-30" style={{ color: colorSet.color, fontFamily: "'Space Grotesk', sans-serif" }}>{num}</span>
                     </div>
                   )}
                 </a>
 
-                {/* Contenuto a destra */}
-                <div className="flex-1 p-4 sm:p-5 flex flex-col min-w-0">
+                {/* Contenuto */}
+                <div className="flex-1 p-5 sm:p-6 flex flex-col min-w-0">
                   {/* Numero + categoria */}
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-3">
                     <span className="editorial-tag flex-shrink-0" style={{ color: C.muted }}>{num}</span>
                     <span
-                      className="inline-block px-2 py-0.5 rounded-full text-xs font-bold flex-shrink-0 truncate"
+                      className="inline-block px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
                       style={{ background: colorSet.bg, color: colorSet.color }}
                     >
                       {item.category}
@@ -252,19 +252,19 @@ function NewsGrid() {
                   {/* Titolo + sommario */}
                   <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
                     <h3
-                      className="text-base sm:text-lg font-bold leading-snug mb-1.5 transition-colors hover:text-[#00b4a0] line-clamp-2"
+                      className="text-lg sm:text-xl font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
                       style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
                     >
                       {item.title}
                     </h3>
-                    <p className="text-sm leading-relaxed line-clamp-2 hidden sm:block" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                    <p className="text-base leading-relaxed line-clamp-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
                       {item.summary}
                     </p>
                   </a>
 
                   {/* Footer: fonte + condivisione */}
-                  <div className="flex items-center justify-between mt-2 pt-2 border-t" style={{ borderColor: C.border }}>
-                    <span className="text-xs truncate" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: C.border }}>
+                    <span className="text-sm font-medium" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
                     <SocialShare
                       title={item.title + ' — via AI4Business News by IDEASMART'}
                       url={item.sourceUrl || undefined}
@@ -817,7 +817,7 @@ function MarketAnalysisSection() {
                     </h3>
 
                     {/* Summary */}
-                    <p className="text-base leading-relaxed flex-1" style={{ color: C.muted }}>
+                    <p className="text-base leading-relaxed flex-1" style={{ color: C.slate }}>
                       {item.summary}
                     </p>
 
@@ -844,7 +844,7 @@ function MarketAnalysisSection() {
 
                     {/* Key Insight */}
                     {item.keyInsight && (
-                      <blockquote className="text-base italic border-l-2 pl-3" style={{ borderColor: accentColor, color: C.muted }}>
+                      <blockquote className="text-base italic border-l-2 pl-3" style={{ borderColor: accentColor, color: C.slate }}>
                         "{item.keyInsight}"
                       </blockquote>
                     )}
