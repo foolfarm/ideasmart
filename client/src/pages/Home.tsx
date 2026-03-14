@@ -12,6 +12,7 @@ import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
+import AdUnit from "@/components/AdUnit";
 
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 const C = {
@@ -697,6 +698,13 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* ── ADSENSE BANNER ────────────────────────────────────────────────── */}
+      <div className="py-4 px-4" style={{ background: "#0a0f1e" }}>
+        <div className="max-w-4xl mx-auto">
+          <AdUnit format="auto" label="Pubblicità" />
+        </div>
+      </div>
 
       {/* ── CHI SIAMO / MANIFESTO ─────────────────────────────────────────── */}
       <section id="chi-siamo" className="py-24 px-4" style={{ background: C.navyMid }}>

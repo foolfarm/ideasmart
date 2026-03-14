@@ -512,3 +512,11 @@
 - [x] Diagnosticato: audit automatico assegnava score 0 a tutte le notizie AI (verificava homepage giornali, non articoli specifici)
 - [x] Corretto filtro getLatestNewsFiltered in db.ts: ora include notizie con status error (audit inaffidabile su homepage)
 - [x] Notizie AI ora visibili correttamente (20/20 restituite dall'API)
+
+## Nuovi task (14 Mar 2026 — Import CSV + AdSense + Bug fix AI news)
+- [x] Bug fix: notizie AI scomparse dalla sezione /ai (audit score 0 su homepage giornali)
+- [x] Corretto filtro getLatestNewsFiltered in db.ts: ora include notizie con status error
+- [x] Importati 320 nuovi iscritti da contacts.valids(1).csv (91 duplicati saltati, 5.772 attivi totali)
+- [x] Aggiunto AdUnit nella Home.tsx tra sezione notizie e Chi siamo
+- [x] Verificato: AdUnit già presente in AiHome.tsx (4 banner) e MusicHome.tsx (4 banner)
+- [x] Codice AdSense ca-pub-7185482526978993 già presente nell'index.html globale
