@@ -185,6 +185,7 @@ Rispondi SOLO con un JSON valido, senza markdown, nel formato:
     // Salva le nuove analisi con immagini
     await saveMarketAnalysis(
       analyses.map((a, i) => ({
+        section: 'ai' as const,
         weekLabel,
         position: a.position,
         source: a.source,

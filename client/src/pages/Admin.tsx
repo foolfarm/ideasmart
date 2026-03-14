@@ -57,6 +57,33 @@ export default function Admin() {
   const [sendingDark, setSendingDark] = useState(false);
   const [refreshingNews, setRefreshingNews] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
+  const [sendingItsMusic, setSendingItsMusic] = useState(false);
+  const [refreshingMusicNews, setRefreshingMusicNews] = useState(false);
+
+  const triggerItsMusicMutation = trpc.admin.triggerItsMusicNewsletter.useMutation({
+    onSuccess: (data) => {
+      setSendingItsMusic(false);
+      setLastResult(`✓ ITsMusic inviata a ${data.recipientCount} iscritti — ${data.newsCount} notizie musicali generate`);
+      toast.success(`🎸 ITsMusic inviata a ${data.recipientCount} iscritti!`);
+      historyQuery.refetch();
+    },
+    onError: (err) => {
+      setSendingItsMusic(false);
+      toast.error("Errore invio ITsMusic: " + err.message);
+    },
+  });
+
+  const refreshMusicNewsMutation = trpc.admin.refreshMusicNews.useMutation({
+    onSuccess: (data) => {
+      setRefreshingMusicNews(false);
+      setLastResult(`✓ News musicali aggiornate: ${data.count} notizie generate dall'AI`);
+      toast.success(`🎸 ${data.count} notizie musicali aggiornate!`);
+    },
+    onError: (err) => {
+      setRefreshingMusicNews(false);
+      toast.error("Errore aggiornamento news musicali: " + err.message);
+    },
+  });
 
   const generateImagesMutation = trpc.admin.generateArticleImages.useMutation({
     onSuccess: (data) => {
@@ -144,6 +171,8 @@ export default function Admin() {
   const subscribers = subscribersQuery.data ?? [];
   const history = historyQuery.data ?? [];
   const activeCount = subscribers.filter((s) => s.status === "active").length;
+  const aiSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "ai4business" || s.newsletter === "both")).length;
+  const musicSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "itsmusic" || s.newsletter === "both")).length;
 
   return (
     <div className="min-h-screen" style={{ background: "#0a0f1e" }}>
@@ -182,8 +211,8 @@ export default function Admin() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
             { label: "Iscritti totali", value: subscribers.length, color: "#00e5c8" },
-            { label: "Iscritti attivi", value: activeCount, color: "#00e5c8" },
-            { label: "Disattivati", value: subscribers.length - activeCount, color: "#ff5500" },
+            { label: "AI4Business News", value: aiSubscribers, color: "#00e5c8" },
+            { label: "ITsMusic", value: musicSubscribers, color: "#8b5cf6" },
             { label: "Newsletter inviate", value: history.length, color: "#0066ff" },
           ].map((stat) => (
             <div key={stat.label} className="rounded-xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
@@ -338,6 +367,65 @@ export default function Admin() {
               </button>
             </div>
 
+            {/* ITsMusic Newsletter */}
+            <div className="rounded-2xl border border-purple-500/20 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
+                🎸 ITsMusic Newsletter
+              </p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rock · Indie · AI Music</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Invia la newsletter <strong className="text-purple-400">ITsMusic</strong> a tutti i <strong className="text-white">{musicSubscribers} iscritti ITsMusic</strong>. Genera 20 notizie Rock/Indie/AI Music con LLM.
+              </p>
+              <button
+                onClick={() => {
+                  if (musicSubscribers === 0) { toast.error("Nessun iscritto ITsMusic attivo"); return; }
+                  setSendingItsMusic(true);
+                  triggerItsMusicMutation.mutate();
+                }}
+                disabled={sendingItsMusic || musicSubscribers === 0}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: "#8b5cf6", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {sendingItsMusic ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Generazione notizie musicali...
+                  </span>
+                ) : (
+                  `Invia ITsMusic a ${musicSubscribers} Iscritti →`
+                )}
+              </button>
+            </div>
+
+            {/* Aggiornamento News Musicali */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.03)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
+                🎸 Aggiornamento News Musicali
+              </p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Aggiornamento giornaliero automatico</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Genera 20 nuove notizie Rock/Indie/AI Music e aggiorna la sezione /music. Usa questo pulsante per un aggiornamento manuale immediato.
+              </p>
+              <button
+                onClick={() => {
+                  setRefreshingMusicNews(true);
+                  refreshMusicNewsMutation.mutate();
+                }}
+                disabled={refreshingMusicNews}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: "rgba(139,92,246,0.3)", color: "#c4b5fd", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(139,92,246,0.4)" }}
+              >
+                {refreshingMusicNews ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-purple-300 border-t-transparent rounded-full animate-spin" />
+                    Generazione notizie musicali...
+                  </span>
+                ) : (
+                  `Aggiorna News Musicali Ora →`
+                )}
+              </button>
+            </div>
+
             {/* Genera Immagini AI */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
@@ -424,6 +512,7 @@ export default function Admin() {
                       <tr className="border-b border-white/6">
                         <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Email</th>
                         <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Nome</th>
+                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Newsletter</th>
                         <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Stato</th>
                         <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Data</th>
                         <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-white/30">Azioni</th>
@@ -436,6 +525,17 @@ export default function Admin() {
                             {sub.email}
                           </td>
                           <td className="px-4 py-3 text-sm text-white/50">{sub.name ?? "—"}</td>
+                          <td className="px-4 py-3">
+                            <span
+                              className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
+                              style={{
+                                background: sub.newsletter === "itsmusic" ? "rgba(139,92,246,0.15)" : sub.newsletter === "both" ? "rgba(0,229,200,0.1)" : "rgba(0,102,255,0.15)",
+                                color: sub.newsletter === "itsmusic" ? "#8b5cf6" : sub.newsletter === "both" ? "#00e5c8" : "#60a5fa",
+                              }}
+                            >
+                              {sub.newsletter === "ai4business" ? "AI4Biz" : sub.newsletter === "itsmusic" ? "ITsMusic" : "Entrambe"}
+                            </span>
+                          </td>
                           <td className="px-4 py-3">
                             <span
                               className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"

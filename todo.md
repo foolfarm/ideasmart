@@ -297,3 +297,60 @@
 ## Nuovi task (14 Mar 2026 — Importazione nuovi iscritti)
 
 - [x] Importare lista_contatti_email.valids.csv (897 email valide): 750 nuovi aggiunti, 147 duplicati saltati, 5.452 iscritti attivi totali
+
+## Refactoring Multisettore (14 Mar 2026)
+
+### Fase 1 — Schema DB e architettura
+- [ ] Aggiungere colonna `section` ('ai'|'music') a tutte le tabelle contenuto
+- [ ] Aggiungere colonna `newsletter` ('ai4business'|'itsmusic') alla tabella subscribers
+- [ ] Eseguire migrazione DB (pnpm db:push)
+
+### Fase 2 — Sezione /ai
+- [ ] Spostare la Home attuale su /ai (AI4Business News)
+- [ ] Aggiornare tutti i router tRPC per filtrare per section='ai'
+- [ ] Aggiornare tutti gli scheduler AI per salvare con section='ai'
+- [ ] Aggiornare la navbar con link /ai
+
+### Fase 3 — Sezione /music (ITsMusic)
+- [ ] Creare musicNewsScheduler.ts per news Rock/Indie/AI Music
+- [ ] Creare musicDailyContentScheduler.ts per editoriale + artista del giorno
+- [ ] Creare musicReportageScheduler.ts per reportage settimanali
+- [ ] Creare musicMarketAnalysisScheduler.ts per analisi mercato musicale
+- [ ] Creare pagina /music con design viola/magenta
+- [ ] Aggiungere route /music in App.tsx
+
+### Fase 4 — Homepage Hub
+- [ ] Creare nuova homepage / con mix notizie AI + Music
+- [ ] Design hub multitematico con sezioni distinte per ogni area
+- [ ] Link a /ai e /music dalle rispettive sezioni
+
+### Fase 5 — Newsletter ITsMusic
+- [ ] Creare musicNewsletterScheduler.ts per ITsMusic
+- [ ] Aggiornare schedulerManager.ts con newsletter ITsMusic (lun+ven 10:00)
+- [ ] Aggiornare form iscrizione con scelta newsletter
+
+### Fase 6 — Admin unificato
+- [ ] Aggiornare dashboard admin con tab AI / Music
+- [ ] Aggiungere trigger manuale per scheduler music
+
+### Fase 7 — Test e deploy
+- [ ] TypeScript 0 errori
+- [ ] Test vitest passano
+- [ ] Checkpoint finale
+
+## Refactoring Multisettore (14 Mar 2026)
+
+- [x] Schema DB: aggiunta colonna section a tutte le tabelle contenuto (news, editorial, startup, reportage, analisi)
+- [x] Schema DB: aggiunta colonna newsletter agli iscritti (ai4business, itsmusic, both)
+- [x] Migrazione DB eseguita con pnpm db:push
+- [x] Aggiornati tutti i record esistenti con section='ai'
+- [x] Aggiornate tutte le procedure tRPC per filtrare per section
+- [x] Aggiornati tutti gli scheduler AI per salvare con section='ai'
+- [x] Creata pagina AiHome.tsx per la sezione /ai (clone della Home AI)
+- [x] Creata pagina MusicHome.tsx per la sezione /music (design viola/magenta)
+- [x] Creato musicScheduler.ts con scheduler Rock/Indie/AI Music
+- [x] Creato musicNewsletterScheduler.ts per la newsletter ITsMusic
+- [x] Aggiornato schedulerManager.ts con tutti gli scheduler musicali
+- [x] Riscritta Home.tsx come homepage hub multitematica di IDEASMART
+- [x] Aggiornata Admin dashboard con sezioni ITsMusic e statistiche separate
+- [x] Aggiornate route in App.tsx: / (hub), /ai (AI4Business), /music (ITsMusic)

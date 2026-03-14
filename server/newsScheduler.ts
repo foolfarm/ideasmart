@@ -161,6 +161,7 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         console.log(`[NewsScheduler] Stock image found for news ${i + 1}: ${item.title.slice(0, 40)}...`);
       }
       await db.insert(newsItems).values({
+        section: 'ai',
         title: item.title,
         summary: item.summary,
         category: item.category,

@@ -82,6 +82,7 @@ Temi da considerare per oggi: modelli generativi, AI agentiva, automazione del l
   const parsed = JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw));
 
   return {
+    section: 'ai' as const,
     dateLabel: today,
     title: parsed.title ?? "L'AI italiana non è un fenomeno di nicchia",
     subtitle: parsed.subtitle ?? "Sta cambiando le regole del gioco",
@@ -161,6 +162,7 @@ Restituisci un JSON con questa struttura esatta:
   const parsed = JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw));
 
   return {
+    section: 'ai' as const,
     dateLabel: today,
     name: parsed.name ?? "Startup AI del Giorno",
     tagline: parsed.tagline ?? "",

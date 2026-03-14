@@ -7,6 +7,7 @@ import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { sendWeeklyNewsletter } from "./newsletterScheduler";
+import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
   addSubscriber,
   getAllSubscribers,
@@ -119,38 +120,46 @@ export const appRouter = router({
 
   // ── Market Analysis (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   marketAnalysis: router({
-    getLatest: publicProcedure.query(async () => {
-      return getLatestMarketAnalysis();
-    }),
+    getLatest: publicProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .query(async ({ input }) => {
+        return getLatestMarketAnalysis(input.section);
+      }),
   }),
 
   // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   reportage: router({
-    getLatestWeek: publicProcedure.query(async () => {
-      return getLatestWeeklyReportage();
-    }),
+    getLatestWeek: publicProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .query(async ({ input }) => {
+        return getLatestWeeklyReportage(input.section);
+      }),
   }),
 
   // ── Editorial (public) ──────────────────────────────────────────────────────────────────────────────────
   editorial: router({
-    getLatest: publicProcedure.query(async () => {
-      return getLatestEditorial();
-    }),
+    getLatest: publicProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .query(async ({ input }) => {
+        return getLatestEditorial(input.section);
+      }),
   }),
 
   // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────
   startupOfDay: router({
-    getLatest: publicProcedure.query(async () => {
-      return getLatestStartupOfDay();
-    }),
+    getLatest: publicProcedure
+      .input(z.object({ section: z.enum(['ai', 'music']).default('ai') }))
+      .query(async ({ input }) => {
+        return getLatestStartupOfDay(input.section);
+      }),
   }),
 
   // ── News (public) ──────────────────────────────────────────────────────────────────────────────────
   news: router({
     getLatest: publicProcedure
-      .input(z.object({ limit: z.number().min(1).max(50).default(20) }))
+      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music']).default('ai') }))
       .query(async ({ input }) => {
-        const items = await getLatestNews(input.limit);
+        const items = await getLatestNews(input.limit, input.section);
         return items.map((item) => ({
           id: item.id,
           title: item.title,
@@ -701,6 +710,27 @@ Rispondi con questo JSON:
       }
 
       return { generated: results.length, errorsCount: errors.length, results, errors };
+    }),
+
+    // ── ITsMusic Newsletter ──────────────────────────────────────────────────
+    triggerItsMusicNewsletter: adminProcedure.mutation(async () => {
+      const result = await sendItsMusicNewsletter();
+      if (!result.success && result.error) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error });
+      }
+      return {
+        success: result.success,
+        recipientCount: result.recipientCount,
+        newsCount: result.newsCount,
+        subject: result.subject,
+      };
+    }),
+
+    // ── Aggiornamento News Musicali ──────────────────────────────────────────
+    refreshMusicNews: adminProcedure.mutation(async () => {
+      const { generateMusicNews } = await import("./musicScheduler");
+      const count = await generateMusicNews();
+      return { count, message: `${count} notizie musicali aggiornate con successo` };
     }),
   }),
 });

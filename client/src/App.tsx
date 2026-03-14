@@ -7,6 +7,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import CookieBanner from "./components/CookieBanner";
 import { useCookieConsent } from "./hooks/useCookieConsent";
 import Home from "./pages/Home";
+import AiHome from "./pages/AiHome";
+import MusicHome from "./pages/MusicHome";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
 import Privacy from "./pages/Privacy";
@@ -19,6 +21,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/ai" component={AiHome} />
+      <Route path="/music" component={MusicHome} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
       <Route path="/privacy" component={Privacy} />

@@ -155,6 +155,7 @@ Rispondi con un array JSON di esattamente 4 oggetti, uno per settore. Nessun tes
     );
 
     const inserts: InsertWeeklyReportage[] = items.slice(0, 4).map((item, i) => ({
+      section: 'ai' as const,
       weekLabel,
       position: i + 1,
       sectionNumber: SECTION_NUMBERS[i],

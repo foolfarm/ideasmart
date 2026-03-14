@@ -1,4 +1,4 @@
-import { eq, desc, count } from "drizzle-orm";
+import { eq, desc, count, and, or, inArray } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
@@ -149,6 +149,25 @@ export async function getActiveSubscriberCount(): Promise<number> {
   return result[0]?.count ?? 0;
 }
 
+/**
+ * Restituisce gli iscritti attivi filtrati per newsletter:
+ * - 'ai4business': iscritti a AI4Business News o a entrambe
+ * - 'itsmusic': iscritti a ITsMusic o a entrambe
+ */
+export async function getActiveSubscribersByNewsletter(newsletter: 'ai4business' | 'itsmusic') {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(subscribers).where(
+    and(
+      eq(subscribers.status, "active"),
+      or(
+        eq(subscribers.newsletter, newsletter),
+        eq(subscribers.newsletter, "both")
+      )
+    )
+  );
+}
+
 export async function unsubscribeEmail(email: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -239,10 +258,11 @@ export async function getNewsletterHistory() {
 }
 
 // ── News Items ───────────────────────────────────────────────────────────────
-export async function getLatestNews(limit = 20) {
+export async function getLatestNews(limit = 20, section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(newsItems)
+    .where(eq(newsItems.section, section))
     .orderBy(desc(newsItems.createdAt), newsItems.position)
     .limit(limit);
 }
@@ -297,20 +317,21 @@ export async function getNewsRefreshHistory() {
 }
 
 // ── Daily Editorial ──────────────────────────────────────────────────────────────────────────────────
-export async function getLatestEditorial() {
+export async function getLatestEditorial(section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(dailyEditorial)
+    .where(eq(dailyEditorial.section, section))
     .orderBy(desc(dailyEditorial.createdAt))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
 
-export async function getTodayEditorial(dateLabel: string) {
+export async function getTodayEditorial(dateLabel: string, section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(dailyEditorial)
-    .where(eq(dailyEditorial.dateLabel, dateLabel))
+    .where(and(eq(dailyEditorial.dateLabel, dateLabel), eq(dailyEditorial.section, section)))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
@@ -322,20 +343,21 @@ export async function saveEditorial(data: InsertDailyEditorial) {
 }
 
 // ── Startup of the Day ──────────────────────────────────────────────────────────────────────────────
-export async function getLatestStartupOfDay() {
+export async function getLatestStartupOfDay(section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(startupOfDay)
+    .where(eq(startupOfDay.section, section))
     .orderBy(desc(startupOfDay.createdAt))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
 
-export async function getTodayStartup(dateLabel: string) {
+export async function getTodayStartup(dateLabel: string, section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(startupOfDay)
-    .where(eq(startupOfDay.dateLabel, dateLabel))
+    .where(and(eq(startupOfDay.dateLabel, dateLabel), eq(startupOfDay.section, section)))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
@@ -349,17 +371,18 @@ export async function saveStartupOfDay(data: InsertStartupOfDay) {
 // ── Weekly Reportage ─────────────────────────────────────────────────────────
 import { weeklyReportage, InsertWeeklyReportage, marketAnalysis, InsertMarketAnalysis } from "../drizzle/schema";
 
-export async function getLatestWeeklyReportage() {
+export async function getLatestWeeklyReportage(section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return [];
-  // Prende i 4 reportage della settimana più recente
+  // Prende i 4 reportage della settimana più recente per la sezione specificata
   const latest = await db.select().from(weeklyReportage)
+    .where(eq(weeklyReportage.section, section))
     .orderBy(desc(weeklyReportage.createdAt))
     .limit(1);
   if (latest.length === 0) return [];
   const weekLabel = latest[0].weekLabel;
   return db.select().from(weeklyReportage)
-    .where(eq(weeklyReportage.weekLabel, weekLabel))
+    .where(and(eq(weeklyReportage.weekLabel, weekLabel), eq(weeklyReportage.section, section)))
     .orderBy(weeklyReportage.position);
 }
 
@@ -376,17 +399,18 @@ export async function deleteReportageByWeek(weekLabel: string) {
 }
 
 // ── Market Analysis ─────────────────────────────────────────────────────────────────────────────────────────────
-export async function getLatestMarketAnalysis() {
+export async function getLatestMarketAnalysis(section: 'ai' | 'music' = 'ai') {
   const db = await getDb();
   if (!db) return [];
   const latest = await db.select({ weekLabel: marketAnalysis.weekLabel })
     .from(marketAnalysis)
+    .where(eq(marketAnalysis.section, section))
     .orderBy(desc(marketAnalysis.createdAt))
     .limit(1);
   if (latest.length === 0) return [];
   const weekLabel = latest[0].weekLabel;
   return db.select().from(marketAnalysis)
-    .where(eq(marketAnalysis.weekLabel, weekLabel))
+    .where(and(eq(marketAnalysis.weekLabel, weekLabel), eq(marketAnalysis.section, section)))
     .orderBy(marketAnalysis.position);
 }
 

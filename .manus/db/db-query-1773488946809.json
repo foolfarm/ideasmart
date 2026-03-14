@@ -1,0 +1,9 @@
+{
+  "query": "\nUPDATE news_items SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE daily_editorial SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE startup_of_day SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE weekly_reportage SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE market_analysis SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE newsletter_sends SET section = 'ai4business' WHERE section IS NULL OR section = 'ai4business';\nUPDATE subscribers SET newsletter = 'ai4business' WHERE newsletter IS NULL OR newsletter = 'ai4business';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nUPDATE news_items SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE daily_editorial SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE startup_of_day SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE weekly_reportage SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE market_analysis SET section = 'ai' WHERE section IS NULL OR section = 'ai';\nUPDATE newsletter_sends SET section = 'ai4business' WHERE section IS NULL OR section = 'ai4business';\nUPDATE subscribers SET newsletter = 'ai4business' WHERE newsletter IS NULL OR newsletter = 'ai4business';\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 240
+}
