@@ -481,3 +481,29 @@
 - [x] Generare 20 notizie ITsMusic nel DB (ID 150023-150042) tramite script AI
 - [x] Aggiunto empty state "Notizie in aggiornamento" quando il DB non ha ancora dati
 - [x] TypeScript: 0 errori
+
+## Nuovi task (14 Mar 2026 — Immagini Pexels, Scheduler Music, Banner dinamico)
+
+- [ ] Aggiungere immagini Pexels alle 20 notizie Music esistenti nel DB (script batch)
+- [ ] Aggiungere immagini Pexels alle notizie AI che ne sono prive
+- [ ] Estendere newsScheduler per generare 20 notizie ITsMusic ogni 24h con immagini Pexels
+- [ ] Banner advertising: numero iscritti dinamico dalla mailing list reale (trpc.newsletter.getActiveCount)
+- [ ] Aggiornare AiHome: banner advertising con numero iscritti dinamico
+- [ ] Aggiornare MusicHome: banner advertising con numero iscritti dinamico
+
+## Nuovi task (14 Mar 2026 — Aggiornamento contatori iscritti)
+- [x] Verificato: tutte le 20 notizie AI hanno già immagini Pexels (20/20)
+- [x] Verificato: tutte le 20 notizie Music hanno già immagini Pexels (20/20)
+- [x] Aggiornato Advertise.tsx: contatore dinamico dal DB (5.400+ iscritti), fallback aggiornato da 1800 a 5400
+- [x] Aggiornato Advertise.tsx: AUDIENCE_STATS "Iscritti newsletter" aggiornato da 1.800+ a 5.400+
+- [x] Aggiornato Advertise.tsx: impressions newsletter da ~1.800 a ~5.400 destinatari
+- [x] Aggiornato AiHome.tsx: fallback iscritti da 4.700 a 5.400 in sezione newsletter e social proof
+- [x] Verificato: MusicHome usa già activeSubscriberCount dinamico dal DB
+- [x] Verificato: Home.tsx usa già subscriberCount dinamico dal DB
+- [x] Verificato: "Chi siamo" è sezione nella homepage (#chi-siamo), non serve pagina separata
+
+## Nuovi task (14 Mar 2026 — Aggiornamento contatori iscritti)
+- [x] Verificato: tutte le 20 notizie AI hanno già immagini Pexels (20/20)
+- [x] Verificato: tutte le 20 notizie Music hanno già immagini Pexels (20/20)
+- [x] Aggiornato Advertise.tsx: contatore dinamico dal DB, fallback 5400
+- [x] Aggiornato AiHome.tsx: fallback iscritti da 4.700 a 5.400

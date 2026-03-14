@@ -1070,7 +1070,7 @@ export default function AiHome() {
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: C.muted }}>Spazio Pubblicitario</p>
                     <p className="text-base font-bold" style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}>
-                      La tua startup AI qui — Raggiungi 1.857 decision maker italiani
+                      La tua startup AI qui — Raggiungi {activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "5.491"} decision maker italiani
                     </p>
                     <p className="text-xs mt-1" style={{ color: C.slate }}>
                       Newsletter settimanale · Sito editoriale · Audience qualificata
@@ -1181,7 +1181,7 @@ export default function AiHome() {
               </p>
 
               <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.92)", fontFamily: "'DM Sans', sans-serif" }}>
-                Unisciti a oltre <strong style={{ color: "#fff" }}>{activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "4.700"} professionisti</strong> che ogni settimana ricevono
+                Unisciti a oltre <strong style={{ color: "#fff" }}>{activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "5.400"} professionisti</strong> che ogni settimana ricevono
                 la selezione editoriale AI4Business News: news AI, startup emergenti, analisi di mercato e reportage esclusivi.
               </p>
 
@@ -1205,7 +1205,7 @@ export default function AiHome() {
               <div className="flex flex-wrap gap-6">
                 <div>
                   <div className="text-2xl font-black" style={{ color: C.teal, fontFamily: "'Space Grotesk', sans-serif" }}>
-                    {activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "4.700"}+
+                    {activeSubscriberCount ? activeSubscriberCount.toLocaleString("it-IT") : "5.400"}+
                   </div>
                   <div className="text-sm" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', sans-serif" }}>Iscritti attivi</div>
                 </div>

@@ -49,6 +49,17 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   "Cybersecurity": ["cybersecurity", "data protection", "digital security"],
   "Cloud & Edge": ["cloud computing", "data center", "server technology"],
   "Robotica": ["robot technology", "automation", "industrial robot"],
+  // Music categories
+  "Rock & Indie": ["rock concert", "indie music band", "live music performance"],
+  "AI Music": ["music technology", "digital music production", "audio technology"],
+  "Industria Musicale": ["music industry", "record label", "music business"],
+  "Tour & Live": ["concert stage", "live music concert", "music festival crowd"],
+  "Artisti Emergenti": ["young musician", "emerging artist", "music studio recording"],
+  "Streaming & Digital": ["music streaming", "headphones music", "digital audio"],
+  "Vinile & Fisico": ["vinyl record", "record store", "turntable music"],
+  "Produzione Musicale": ["music studio", "mixing console", "music producer"],
+  "Diritti & Copyright": ["music rights", "copyright law", "intellectual property"],
+  "Festival & Concerti": ["music festival", "outdoor concert", "festival crowd"],
   // Default
   "default": ["artificial intelligence", "technology innovation", "digital future"],
 };

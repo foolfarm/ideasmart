@@ -67,7 +67,7 @@ const FORMATS = [
     size: "Blocco nativo · 600px wide",
     price: "€900",
     period: "/ invio",
-    impressions: "~1.800 destinatari",
+    impressions: "~5.400 destinatari",
     ctr: "Open rate: 42%",
     highlight: false,
     features: ["Formato nativo editoriale", "Logo + testo + CTA", "Link tracciato", "Report aperture incluso"],
@@ -121,7 +121,7 @@ const FORMATS = [
 
 // ─── Statistiche audience ─────────────────────────────────────────────────────
 const AUDIENCE_STATS = [
-  { value: "1.800+", label: "Iscritti newsletter", icon: "◆" },
+  { value: "5.400+", label: "Iscritti newsletter", icon: "◆" },
   { value: "8.000+", label: "Visitatori unici/mese", icon: "◆" },
   { value: "42%", label: "Open rate newsletter", icon: "◆" },
   { value: "4,2 min", label: "Tempo medio sul sito", icon: "◆" },
@@ -185,7 +185,7 @@ export default function Advertise() {
     }
   };
 
-  const realCount = subscriberCount ?? 1800;
+  const realCount = subscriberCount ?? 5400;
 
   return (
     <div style={{ background: C.white, minHeight: "100vh" }}>
