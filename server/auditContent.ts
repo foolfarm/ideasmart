@@ -12,7 +12,7 @@
  */
 
 import { getDb } from "./db";
-import { contentAudit, newsItems, marketAnalysis } from "../drizzle/schema";
+import { contentAudit, newsItems, marketAnalysis, weeklyReportage } from "../drizzle/schema";
 import { invokeLLM } from "./_core/llm";
 import { eq, and, isNotNull, desc } from "drizzle-orm";
 
@@ -365,6 +365,145 @@ export async function runBatchAudit(params: {
   }
 
   return results;
+}
+
+// ── Audit di un reportage settimanale ────────────────────────────────────
+export async function auditReportage(reportageId: number): Promise<{
+  status: string;
+  score: number | null;
+  note: string;
+}> {
+  const db = await getDb();
+  if (!db) return { status: "error", score: null, note: "Database non disponibile" };
+
+  const [item] = await db
+    .select()
+    .from(weeklyReportage)
+    .where(eq(weeklyReportage.id, reportageId))
+    .limit(1);
+
+  if (!item) return { status: "error", score: null, note: "Reportage non trovato" };
+
+  // Per i reportage usiamo ctaUrl o websiteUrl come fonte da verificare
+  const sourceUrl = item.ctaUrl || item.websiteUrl;
+  if (!sourceUrl) return { status: "error", score: null, note: "Nessun URL disponibile per questo reportage" };
+
+  const { text, httpStatus, error } = await fetchPageText(sourceUrl);
+
+  if (error && !text) {
+    await db.insert(contentAudit).values({
+      contentType: "reportage",
+      contentId: reportageId,
+      sourceUrl,
+      publishedTitle: item.headline,
+      publishedSummary: `${item.startupName}: ${item.subheadline ?? item.bodyText.slice(0, 200)}`,
+      status: "unreachable",
+      coherenceScore: null,
+      auditNote: error,
+      extractedText: null,
+      httpStatus,
+      section: item.section,
+    });
+    return { status: "unreachable", score: null, note: error };
+  }
+
+  const { score, status, note } = await checkCoherence({
+    publishedTitle: item.headline,
+    publishedSummary: `${item.startupName} — ${item.subheadline ?? item.bodyText.slice(0, 200)}`,
+    pageText: text,
+    url: sourceUrl,
+  });
+
+  await db.insert(contentAudit).values({
+    contentType: "reportage",
+    contentId: reportageId,
+    sourceUrl,
+    publishedTitle: item.headline,
+    publishedSummary: `${item.startupName}: ${item.subheadline ?? ""}`,
+    status,
+    coherenceScore: score,
+    auditNote: note,
+    extractedText: text.slice(0, 2000),
+    httpStatus,
+    section: item.section,
+  });
+
+  return { status, score, note };
+}
+
+// ── Audit completo: news + analisi + reportage ────────────────────────────
+export async function runFullAudit(params: {
+  section?: "ai" | "music";
+  limit?: number;
+}): Promise<{
+  processed: number;
+  ok: number;
+  warning: number;
+  error: number;
+  unreachable: number;
+  byType: Record<string, { processed: number; ok: number; warning: number; error: number; unreachable: number }>;
+}> {
+  const { section, limit = 20 } = params;
+  const db = await getDb();
+
+  const totals = { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 };
+  const byType: Record<string, typeof totals> = {
+    news: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 },
+    analysis: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 },
+    reportage: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 },
+  };
+
+  if (!db) return { ...totals, byType };
+
+  // 1. Notizie
+  const newsRows = await db
+    .select({ id: newsItems.id })
+    .from(newsItems)
+    .where(and(isNotNull(newsItems.sourceUrl), section ? eq(newsItems.section, section) : undefined))
+    .orderBy(desc(newsItems.createdAt))
+    .limit(limit);
+
+  for (const row of newsRows) {
+    const r = await auditNewsItem(row.id);
+    byType.news.processed++;
+    byType.news[r.status as keyof typeof totals] = (byType.news[r.status as keyof typeof totals] || 0) + 1;
+    totals.processed++;
+    totals[r.status as keyof typeof totals] = (totals[r.status as keyof typeof totals] || 0) + 1;
+  }
+
+  // 2. Analisi di mercato
+  const analysisRows = await db
+    .select({ id: marketAnalysis.id })
+    .from(marketAnalysis)
+    .where(and(isNotNull(marketAnalysis.sourceUrl), section ? eq(marketAnalysis.section, section) : undefined))
+    .orderBy(desc(marketAnalysis.createdAt))
+    .limit(Math.ceil(limit / 2));
+
+  for (const row of analysisRows) {
+    const r = await auditMarketAnalysis(row.id);
+    byType.analysis.processed++;
+    byType.analysis[r.status as keyof typeof totals] = (byType.analysis[r.status as keyof typeof totals] || 0) + 1;
+    totals.processed++;
+    totals[r.status as keyof typeof totals] = (totals[r.status as keyof typeof totals] || 0) + 1;
+  }
+
+  // 3. Reportage settimanali
+  const reportageRows = await db
+    .select({ id: weeklyReportage.id })
+    .from(weeklyReportage)
+    .where(section ? eq(weeklyReportage.section, section) : undefined)
+    .orderBy(desc(weeklyReportage.createdAt))
+    .limit(Math.ceil(limit / 4));
+
+  for (const row of reportageRows) {
+    const r = await auditReportage(row.id);
+    byType.reportage.processed++;
+    byType.reportage[r.status as keyof typeof totals] = (byType.reportage[r.status as keyof typeof totals] || 0) + 1;
+    totals.processed++;
+    totals[r.status as keyof typeof totals] = (totals[r.status as keyof typeof totals] || 0) + 1;
+  }
+
+  return { ...totals, byType };
 }
 
 // ── Query risultati audit ──────────────────────────────────────────────────

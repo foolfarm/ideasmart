@@ -10,6 +10,7 @@ import { serveStatic, setupVite } from "./vite";
 import { startAllSchedulers } from "../schedulerManager";
 import { refreshNewsIfNeeded } from "../newsScheduler";
 import { runDailyContentRefresh } from "../dailyContentScheduler";
+import { startAuditScheduler } from "../auditScheduler";
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
@@ -135,7 +136,9 @@ startServer().catch(console.error);
 // - Reportage:     ogni lunedì alle 00:15
 // - Analisi:       ogni lunedì alle 00:20
 // - Newsletter:    lunedì e venerdì alle 10:00
+// - Audit:         ogni 24 ore (prima esecuzione dopo 5 minuti dall'avvio)
 startAllSchedulers();
+startAuditScheduler();
 
 // ─── Avvio immediato: genera contenuti se il DB è vuoto ───────────────────────
 // Parte 10 secondi dopo l'avvio per non rallentare il boot

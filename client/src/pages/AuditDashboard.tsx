@@ -2,10 +2,11 @@
  * AuditDashboard — Dashboard editoriale per il controllo della coerenza dei contenuti
  *
  * Accessibile solo agli admin su /admin/audit
- * Permette di:
- * - Avviare audit batch su notizie e analisi
- * - Vedere i risultati con filtri per stato e sezione
- * - Identificare rapidamente contenuti non coerenti con le fonti
+ * Funzionalità:
+ * - Stato scheduler automatico (ogni 24 ore)
+ * - Avvio audit completo (news + analisi + reportage) o batch per tipo
+ * - Risultati con filtri per stato, sezione e tipo di contenuto
+ * - Identificazione rapida di contenuti non coerenti con le fonti
  */
 
 import { useState } from "react";
@@ -52,21 +53,29 @@ function ScoreBar({ score }: { score: number | null }) {
   );
 }
 
+function formatDate(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString("it-IT", {
+    day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"
+  });
+}
+
 export default function AuditDashboard() {
   const { user, loading } = useAuth();
 
-  // Filtri
+  // Filtri risultati
   const [filterSection, setFilterSection] = useState<"ai" | "music" | undefined>(undefined);
   const [filterStatus, setFilterStatus] = useState<AuditStatus | undefined>(undefined);
-  const [filterType, setFilterType] = useState<"news" | "analysis" | undefined>(undefined);
+  const [filterType, setFilterType] = useState<"news" | "analysis" | "reportage" | undefined>(undefined);
 
   // Audit batch state
   const [batchSection, setBatchSection] = useState<"ai" | "music" | undefined>(undefined);
-  const [batchType, setBatchType] = useState<"news" | "analysis">("news");
-  const [batchLimit, setBatchLimit] = useState(10);
+  const [batchType, setBatchType] = useState<"news" | "analysis" | "full">("full");
+  const [batchLimit, setBatchLimit] = useState(20);
 
   // Queries
   const { data: stats, refetch: refetchStats } = trpc.audit.getStats.useQuery();
+  const { data: schedulerStatus, refetch: refetchScheduler } = trpc.audit.getSchedulerStatus.useQuery();
   const { data: results, refetch: refetchResults, isLoading: resultsLoading } = trpc.audit.getResults.useQuery({
     section: filterSection,
     status: filterStatus,
@@ -77,11 +86,34 @@ export default function AuditDashboard() {
   // Mutations
   const runBatch = trpc.audit.runBatch.useMutation({
     onSuccess: (data) => {
-      toast.success(`Audit completato: ${data.processed} contenuti verificati — OK: ${data.ok}, Warning: ${data.warning}, Errori: ${data.error}, Non raggiungibili: ${data.unreachable}`);
+      toast.success(`Audit completato: ${data.processed} contenuti — OK: ${data.ok}, Warning: ${data.warning}, Errori: ${data.error}`);
       refetchStats();
       refetchResults();
+      refetchScheduler();
     },
     onError: (err) => toast.error("Errore audit: " + err.message),
+  });
+
+  const runFullAudit = trpc.audit.runFullAuditNow.useMutation({
+    onSuccess: (data) => {
+      const byType = data.byType as Record<string, { processed: number; ok: number; warning: number; error: number }>;
+      toast.success(
+        `Audit completo: ${data.processed} contenuti — OK: ${data.ok}, Warning: ${data.warning}, Errori: ${data.error}\n` +
+        `News: ${byType?.news?.processed ?? 0} | Analisi: ${byType?.analysis?.processed ?? 0} | Reportage: ${byType?.reportage?.processed ?? 0}`
+      );
+      refetchStats();
+      refetchResults();
+      refetchScheduler();
+    },
+    onError: (err) => toast.error("Errore audit completo: " + err.message),
+  });
+
+  const triggerScheduled = trpc.audit.triggerScheduledAudit.useMutation({
+    onSuccess: () => {
+      toast.success("Audit schedulato avviato in background — riceverai email se ci sono anomalie");
+      setTimeout(() => { refetchScheduler(); refetchStats(); refetchResults(); }, 3000);
+    },
+    onError: (err) => toast.error("Errore: " + err.message),
   });
 
   const deleteResult = trpc.audit.deleteResult.useMutation({
@@ -92,6 +124,16 @@ export default function AuditDashboard() {
     },
     onError: (err) => toast.error("Errore: " + err.message),
   });
+
+  const handleRunAudit = () => {
+    if (batchType === "full") {
+      runFullAudit.mutate({ section: batchSection, limit: batchLimit });
+    } else {
+      runBatch.mutate({ section: batchSection, contentType: batchType, limit: batchLimit });
+    }
+  };
+
+  const isAuditRunning = runBatch.isPending || runFullAudit.isPending;
 
   if (loading) {
     return (
@@ -121,16 +163,72 @@ export default function AuditDashboard() {
           <div>
             <Link href="/admin" className="text-sm text-gray-400 hover:text-gray-600">← Admin</Link>
             <h1 className="text-2xl font-black text-gray-900 mt-1">Audit Coerenza Contenuti</h1>
-            <p className="text-sm text-gray-500 mt-0.5">Verifica che le notizie pubblicate corrispondano alle pagine di destinazione</p>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Verifica automatica ogni 24 ore — News · Analisi · Reportage
+            </p>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
-            Sistema attivo
+          <div className="flex items-center gap-3">
+            {schedulerStatus?.isRunning ? (
+              <div className="flex items-center gap-2 text-sm text-amber-600 font-medium">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse inline-block" />
+                Audit in corso...
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-sm text-green-600">
+                <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                Scheduler attivo
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
+
+        {/* Scheduler Status Card */}
+        {schedulerStatus && (
+          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-base font-bold text-gray-900 mb-1">Scheduler Automatico</h2>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                  <span>
+                    <span className="font-semibold text-gray-700">Ultimo audit:</span>{" "}
+                    {schedulerStatus.lastRunAt ? formatDate(schedulerStatus.lastRunAt) : "Mai eseguito"}
+                  </span>
+                  <span>
+                    <span className="font-semibold text-gray-700">Prossimo:</span>{" "}
+                    {schedulerStatus.nextRunAt ? formatDate(schedulerStatus.nextRunAt) : "—"}
+                  </span>
+                  <span>
+                    <span className="font-semibold text-gray-700">Frequenza:</span>{" "}
+                    ogni {schedulerStatus.intervalHours}h
+                  </span>
+                  <span>
+                    <span className="font-semibold text-gray-700">Alert email:</span>{" "}
+                    {schedulerStatus.adminEmail}
+                  </span>
+                </div>
+                {schedulerStatus.lastResult && (
+                  <div className="mt-2 flex flex-wrap gap-3 text-xs">
+                    <span className="text-gray-500">Ultimo risultato:</span>
+                    <span className="text-green-600 font-bold">✓ {schedulerStatus.lastResult.ok} OK</span>
+                    <span className="text-amber-600 font-bold">⚠ {schedulerStatus.lastResult.warning} warning</span>
+                    <span className="text-red-600 font-bold">✗ {schedulerStatus.lastResult.error} errori</span>
+                    <span className="text-gray-500">{schedulerStatus.lastResult.unreachable} non raggiungibili</span>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => triggerScheduled.mutate()}
+                disabled={triggerScheduled.isPending || schedulerStatus.isRunning}
+                className="px-4 py-2 rounded-lg font-bold text-sm border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                {triggerScheduled.isPending ? "Avviando..." : "Esegui ora"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Stats Cards */}
         {stats && (
@@ -151,23 +249,24 @@ export default function AuditDashboard() {
           </div>
         )}
 
-        {/* Avvia Audit Batch */}
+        {/* Avvia Audit */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Avvia Audit Batch</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-2">Avvia Audit</h2>
           <p className="text-sm text-gray-500 mb-4">
-            Seleziona il tipo di contenuto e la sezione, poi avvia la verifica. Il sistema scarica ogni pagina di destinazione,
-            estrae il testo e usa l'AI per verificare se il contenuto pubblicato è coerente con la fonte.
+            L'audit scarica ogni pagina di destinazione, estrae il testo e usa l'AI per verificare
+            se il contenuto pubblicato corrisponde alla fonte. L'audit completo verifica news, analisi di mercato e reportage.
           </p>
           <div className="flex flex-wrap gap-3 items-end">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Tipo contenuto</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Tipo audit</label>
               <select
                 value={batchType}
-                onChange={(e) => setBatchType(e.target.value as "news" | "analysis")}
+                onChange={(e) => setBatchType(e.target.value as "news" | "analysis" | "full")}
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
-                <option value="news">Notizie</option>
-                <option value="analysis">Analisi di mercato</option>
+                <option value="full">Audit completo (news + analisi + reportage)</option>
+                <option value="news">Solo notizie</option>
+                <option value="analysis">Solo analisi di mercato</option>
               </select>
             </div>
             <div>
@@ -183,7 +282,7 @@ export default function AuditDashboard() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Quanti contenuti</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Contenuti per tipo</label>
               <select
                 value={batchLimit}
                 onChange={(e) => setBatchLimit(Number(e.target.value))}
@@ -196,27 +295,26 @@ export default function AuditDashboard() {
               </select>
             </div>
             <button
-              onClick={() => runBatch.mutate({ section: batchSection, contentType: batchType, limit: batchLimit })}
-              disabled={runBatch.isPending}
+              onClick={handleRunAudit}
+              disabled={isAuditRunning}
               className="px-5 py-2 rounded-lg font-bold text-sm text-white transition-all disabled:opacity-50"
-              style={{ background: runBatch.isPending ? "#9ca3af" : "#00b4a0" }}
+              style={{ background: isAuditRunning ? "#9ca3af" : "#00b4a0" }}
             >
-              {runBatch.isPending ? "Audit in corso..." : "Avvia Audit"}
+              {isAuditRunning ? "Audit in corso..." : "Avvia Audit"}
             </button>
           </div>
-          {runBatch.isPending && (
+          {isAuditRunning && (
             <div className="mt-4 p-3 rounded-lg bg-teal-50 border border-teal-200 text-sm text-teal-700">
-              Verifica in corso — il processo può richiedere 1-3 minuti per 10 contenuti (fetch + analisi LLM)...
+              Verifica in corso — il processo può richiedere 2-5 minuti per 20 contenuti (fetch + analisi LLM per ogni tipo)...
             </div>
           )}
         </div>
 
-        {/* Filtri risultati */}
+        {/* Filtri e Risultati */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <h2 className="text-lg font-bold text-gray-900 flex-1">Risultati Audit</h2>
             <div className="flex flex-wrap gap-2">
-              {/* Filtro sezione */}
               <select
                 value={filterSection ?? ""}
                 onChange={(e) => setFilterSection(e.target.value ? e.target.value as "ai" | "music" : undefined)}
@@ -226,7 +324,6 @@ export default function AuditDashboard() {
                 <option value="ai">AI4Business</option>
                 <option value="music">ITsMusic</option>
               </select>
-              {/* Filtro status */}
               <select
                 value={filterStatus ?? ""}
                 onChange={(e) => setFilterStatus(e.target.value ? e.target.value as AuditStatus : undefined)}
@@ -238,15 +335,15 @@ export default function AuditDashboard() {
                 <option value="error">Non coerenti</option>
                 <option value="unreachable">Non raggiungibili</option>
               </select>
-              {/* Filtro tipo */}
               <select
                 value={filterType ?? ""}
-                onChange={(e) => setFilterType(e.target.value ? e.target.value as "news" | "analysis" : undefined)}
+                onChange={(e) => setFilterType(e.target.value ? e.target.value as "news" | "analysis" | "reportage" : undefined)}
                 className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">Tutti i tipi</option>
                 <option value="news">Notizie</option>
                 <option value="analysis">Analisi</option>
+                <option value="reportage">Reportage</option>
               </select>
             </div>
           </div>
@@ -257,7 +354,7 @@ export default function AuditDashboard() {
             <div className="text-center py-12">
               <div className="text-4xl mb-3">🔍</div>
               <div className="text-gray-500 font-medium">Nessun risultato di audit</div>
-              <p className="text-sm text-gray-400 mt-1">Avvia un audit batch per iniziare la verifica dei contenuti</p>
+              <p className="text-sm text-gray-400 mt-1">Avvia un audit per iniziare la verifica dei contenuti</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -272,21 +369,16 @@ export default function AuditDashboard() {
                 >
                   <div className="flex flex-wrap items-start gap-3">
                     <div className="flex-1 min-w-0">
-                      {/* Titolo e badge */}
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         <StatusBadge status={row.status as AuditStatus} />
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium capitalize">
                           {row.contentType} · {row.section === "ai" ? "AI4Business" : "ITsMusic"}
                         </span>
                         <span className="text-xs text-gray-400">ID #{row.contentId}</span>
                       </div>
-
-                      {/* Titolo pubblicato */}
                       <p className="font-semibold text-gray-900 text-sm leading-snug mb-1 line-clamp-2">
                         {row.publishedTitle}
                       </p>
-
-                      {/* URL fonte */}
                       <a
                         href={row.sourceUrl}
                         target="_blank"
@@ -295,26 +387,18 @@ export default function AuditDashboard() {
                       >
                         {row.sourceUrl}
                       </a>
-
-                      {/* Note audit */}
                       {row.auditNote && (
                         <p className="text-xs text-gray-600 mt-2 p-2 rounded bg-white/60 border border-gray-200">
                           <span className="font-semibold">Nota audit:</span> {row.auditNote}
                         </p>
                       )}
-
-                      {/* HTTP status */}
                       {row.httpStatus && row.httpStatus !== 200 && (
                         <p className="text-xs text-red-600 mt-1">HTTP Status: {row.httpStatus}</p>
                       )}
                     </div>
-
-                    {/* Score + data + azioni */}
                     <div className="flex flex-col items-end gap-2 shrink-0">
                       <ScoreBar score={row.coherenceScore ?? null} />
-                      <span className="text-xs text-gray-400">
-                        {new Date(row.auditedAt).toLocaleDateString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
-                      </span>
+                      <span className="text-xs text-gray-400">{formatDate(row.auditedAt?.toString())}</span>
                       <div className="flex gap-2">
                         <a
                           href={row.sourceUrl}
@@ -339,7 +423,7 @@ export default function AuditDashboard() {
           )}
         </div>
 
-        {/* Guida */}
+        {/* Guida interpretazione */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
           <h3 className="font-bold text-gray-900 mb-3">Come interpretare i risultati</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
@@ -359,6 +443,10 @@ export default function AuditDashboard() {
               <p className="font-semibold text-gray-600 mb-1">○ Non raggiungibile</p>
               <p>La pagina non è accessibile (404, timeout, blocco bot). Verificare se l'URL è ancora valido.</p>
             </div>
+          </div>
+          <div className="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-200 text-sm text-blue-700">
+            <span className="font-semibold">Notifiche automatiche:</span> Se l'audit rileva ≥2 contenuti non coerenti o ≥4 parziali,
+            viene inviata automaticamente un'email di alert a <strong>{schedulerStatus?.adminEmail ?? "info@andreacinelli.com"}</strong>.
           </div>
         </div>
 

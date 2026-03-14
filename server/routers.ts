@@ -42,7 +42,8 @@ import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
 import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
 import { eq, isNull, and, desc } from "drizzle-orm";
-import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults } from "./auditContent";
+import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, runFullAudit, auditReportage } from "./auditContent";
+import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -860,6 +861,38 @@ Rispondi con questo JSON:
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
         await db.delete(contentAuditTable).where(eq(contentAuditTable.id, input.auditId));
         return { success: true };
+      }),
+
+    // Audit completo: news + analisi + reportage
+    runFullAuditNow: adminProcedure
+      .input(z.object({
+        section: z.enum(["ai", "music"]).optional(),
+        limit: z.number().min(1).max(50).default(20),
+      }))
+      .mutation(async ({ input }) => {
+        const results = await runFullAudit({ section: input.section, limit: input.limit });
+        return results;
+      }),
+
+    // Audit singolo reportage
+    auditSingleReportage: adminProcedure
+      .input(z.object({ reportageId: z.number() }))
+      .mutation(async ({ input }) => {
+        return auditReportage(input.reportageId);
+      }),
+
+    // Stato dello scheduler automatico
+    getSchedulerStatus: adminProcedure
+      .query(() => {
+        return getSchedulerStatus();
+      }),
+
+    // Forza esecuzione immediata dell'audit schedulato
+    triggerScheduledAudit: adminProcedure
+      .mutation(async () => {
+        // Esegui in background senza bloccare la risposta
+        setImmediate(() => runScheduledAudit());
+        return { success: true, message: "Audit avviato in background" };
       }),
   }),
 });

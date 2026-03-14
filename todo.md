@@ -422,3 +422,14 @@
 - [x] Integrare audit automatico post-inserimento in newsScheduler.ts (background, non bloccante)
 - [x] Aggiungere link Audit Contenuti nella navbar admin
 - [x] TypeScript: 0 errori
+
+## Nuovi task (14 Mar 2026 — Audit Automatico 24h + Reportage)
+
+- [x] auditContent.ts: aggiungere auditReportage() per i reportage settimanali (ctaUrl/websiteUrl come fonte)
+- [x] auditContent.ts: aggiungere runFullAudit() che copre news + analisi + reportage
+- [x] Creare server/auditScheduler.ts con job automatico ogni 24 ore
+- [x] auditScheduler: notifica email admin (info@andreacinelli.com) se >=2 errori o >=4 warning
+- [x] Integrare startAuditScheduler() nell'avvio del server (_core/index.ts)
+- [x] Aggiungere procedure tRPC: audit.getSchedulerStatus, audit.runFullAuditNow, audit.triggerScheduledAudit, audit.auditSingleReportage
+- [x] Dashboard /admin/audit: stato scheduler live, filtro reportage, audit completo, pulsante esegui ora
+- [x] TypeScript: 0 errori, server riavviato
