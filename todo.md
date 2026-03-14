@@ -520,3 +520,9 @@
 - [x] Aggiunto AdUnit nella Home.tsx tra sezione notizie e Chi siamo
 - [x] Verificato: AdUnit già presente in AiHome.tsx (4 banner) e MusicHome.tsx (4 banner)
 - [x] Codice AdSense ca-pub-7185482526978993 già presente nell'index.html globale
+
+## Nuovi task (14 Mar 2026 — Audit off + AdSense slots + Admin)
+- [x] Disabilitato audit scheduler in server/_core/index.ts (commentato startAuditScheduler())
+- [x] Aggiornato AdUnit.tsx con oggetto AD_SLOTS e 9 componenti nominati per posizione
+- [x] Documentato come configurare gli slot AdSense nel pannello Google
+- [x] Recuperate credenziali admin: ac@foolfarm.com (login via Manus OAuth)

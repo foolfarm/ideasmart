@@ -136,9 +136,11 @@ startServer().catch(console.error);
 // - Reportage:     ogni lunedì alle 00:15
 // - Analisi:       ogni lunedì alle 00:20
 // - Newsletter:    lunedì e venerdì alle 10:00
-// - Audit:         ogni 24 ore (prima esecuzione dopo 5 minuti dall'avvio)
+// - Audit:         DISABILITATO — l'audit sulle homepage dei giornali genera falsi negativi
+//                   (score 0 su notizie AI generate internamente). Riabilitare solo dopo
+//                   aver configurato l'audit per verificare URL articolo specifici.
 startAllSchedulers();
-startAuditScheduler();
+// startAuditScheduler(); // DISABILITATO il 14/03/2026
 
 // ─── Avvio immediato: genera contenuti se il DB è vuoto ───────────────────────
 // Parte 10 secondi dopo l'avvio per non rallentare il boot
