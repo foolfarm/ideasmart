@@ -10,6 +10,7 @@ import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useCookieConsent } from "@/hooks/useCookieConsent";
+import AdUnit from "@/components/AdUnit";
 
 // ─── Image URLs (CDN) ────────────────────────────────────────────────────────
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
@@ -1041,19 +1042,68 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>      {/* ── EDITORIALE DINAMICO ───────────────────────────────────────────────────────────────────────── */}
+      </section>
+
+      {/* ── BANNER ADSENSE 1 — tra News e Editoriale ──────────────────── */}
+      <div className="border-t" style={{ borderColor: "#e2e5ed", background: "#f8f9fc" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <AdUnit
+            slot=""
+            format="auto"
+            label="Pubblicità"
+            style={{ margin: "0 auto", maxWidth: "970px" }}
+          />
+        </div>
+      </div>
+
+      {/* ── EDITORIALE DINAMICO ───────────────────────────────────────────────────────────────────────── */}
       <DailyEditorialSection />
 
       {/* ── STARTUP DEL GIORNO ───────────────────────────────────────────────────────────────────────── */}
       <StartupOfDaySection />
 
+      {/* ── BANNER ADSENSE 2 — tra Startup e Reportage ────────────────── */}
+      <div className="border-t" style={{ borderColor: "#e2e5ed", background: "#ffffff" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <AdUnit
+            slot=""
+            format="auto"
+            label="Pubblicità"
+            style={{ margin: "0 auto", maxWidth: "970px" }}
+          />
+        </div>
+      </div>
+
       {/* ── REPORTAGE SETTIMANALI DINAMICI ────────────────────────────────────── */}
       <WeeklyReportageSection />
+
+      {/* ── BANNER ADSENSE 3 — tra Reportage e Analisi ────────────────── */}
+      <div className="border-t" style={{ borderColor: "#e2e5ed", background: "#f8f9fc" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <AdUnit
+            slot=""
+            format="auto"
+            label="Pubblicità"
+            style={{ margin: "0 auto", maxWidth: "970px" }}
+          />
+        </div>
+      </div>
 
       {/* ── ANALISI DI MERCATO ──────────────────────────────────────── */}
       <MarketAnalysisSection />
 
-      {/* ── NEWSLETTER SIGNUP ──────────────────────────────────────── */}
+      {/* ── BANNER ADSENSE 4 — prima della Newsletter ─────────────────── */}
+      <div className="border-t" style={{ borderColor: "#e2e5ed", background: "#ffffff" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <AdUnit
+            slot=""
+            format="auto"
+            label="Pubblicità"
+            style={{ margin: "0 auto", maxWidth: "970px" }}
+          />
+        </div>
+      </div>
+
       {/* ── NEWSLETTER ────────────────────────────────────────────────────────── */}
       <section id="newsletter" style={{ background: C.navy, position: "relative", overflow: "hidden" }}>
         {/* Decorative background elements */}

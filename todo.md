@@ -242,3 +242,12 @@
 - [x] Creare backfillImages.ts: genera immagini per tutti gli articoli esistenti senza immagine
 - [x] Avviare backfill automatico 30 secondi dopo l'avvio del server (scheduleImageBackfill)
 - [x] Backfill completato: 20 news + 3 editoriali + 3 startup + 4 reportage + 4 analisi = 34 immagini generate
+
+## Nuovi task (14 Mar 2026 — AdSense ottimizzato)
+
+- [x] Creare componente AdUnit.tsx riutilizzabile per le unità pubblicitarie AdSense
+- [x] Creare file ads.txt con dichiarazione Google AdSense
+- [x] Inserire banner AdSense responsive tra sezione News e Editoriale
+- [x] Inserire banner AdSense tra sezione Startup e Reportage
+- [x] Inserire banner AdSense tra sezione Reportage e Analisi di Mercato
+- [x] Inserire banner AdSense prima della sezione Newsletter
