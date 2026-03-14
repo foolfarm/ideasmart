@@ -1,9 +1,9 @@
 /**
  * AdUnit — Componente riutilizzabile per Google AdSense
  *
- * Rispetta il consenso cookie (CookieConsent) e mostra l'annuncio
- * solo se l'utente ha accettato i cookie pubblicitari.
- * Supporta diversi formati: banner orizzontale, rettangolo, in-feed.
+ * Mostra sempre l'annuncio: Google AdSense gestisce autonomamente
+ * il consenso GDPR tramite il proprio TCF (Transparency & Consent Framework).
+ * Non è necessario bloccare il caricamento lato client.
  */
 
 import { useEffect, useRef } from "react";
@@ -17,7 +17,7 @@ declare global {
 type AdFormat = "auto" | "rectangle" | "horizontal" | "vertical" | "fluid";
 
 interface AdUnitProps {
-  /** Slot ID dell'unità pubblicitaria AdSense */
+  /** Slot ID dell'unità pubblicitaria AdSense (lasciare vuoto finché non si ha l'ID) */
   slot?: string;
   /** Formato dell'annuncio */
   format?: AdFormat;
@@ -33,21 +33,6 @@ interface AdUnitProps {
 
 const CLIENT_ID = "ca-pub-7185482526978993";
 
-/**
- * Controlla se l'utente ha accettato i cookie pubblicitari.
- * Legge la preferenza salvata da CookieBanner in localStorage.
- */
-function hasAdConsent(): boolean {
-  try {
-    const stored = localStorage.getItem("cookie-consent");
-    if (!stored) return false;
-    const parsed = JSON.parse(stored);
-    return parsed?.advertising === true;
-  } catch {
-    return false;
-  }
-}
-
 export default function AdUnit({
   slot = "",
   format = "auto",
@@ -61,18 +46,13 @@ export default function AdUnit({
 
   useEffect(() => {
     if (initialized.current) return;
-    if (!hasAdConsent()) return;
-
+    initialized.current = true;
     try {
-      initialized.current = true;
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {
       console.warn("[AdUnit] adsbygoogle push error:", e);
     }
   }, []);
-
-  // Se non c'è consenso, non renderizzare nulla
-  if (!hasAdConsent()) return null;
 
   return (
     <div
@@ -117,8 +97,8 @@ export default function AdUnit({
 export function AdBannerHorizontal({ className = "" }: { className?: string }) {
   return (
     <AdUnit
-      slot="7185482526978993"
-      format="horizontal"
+      slot=""
+      format="auto"
       className={className}
       style={{ margin: "32px auto", maxWidth: "970px" }}
     />
@@ -131,8 +111,8 @@ export function AdBannerHorizontal({ className = "" }: { className?: string }) {
 export function AdBannerRectangle({ className = "" }: { className?: string }) {
   return (
     <AdUnit
-      slot="7185482526978993"
-      format="rectangle"
+      slot=""
+      format="auto"
       className={className}
       style={{ margin: "16px auto", maxWidth: "336px" }}
     />
@@ -145,8 +125,8 @@ export function AdBannerRectangle({ className = "" }: { className?: string }) {
 export function AdBannerInFeed({ className = "" }: { className?: string }) {
   return (
     <AdUnit
-      slot="7185482526978993"
-      format="fluid"
+      slot=""
+      format="auto"
       layout="in-article"
       className={className}
       style={{ margin: "24px 0" }}

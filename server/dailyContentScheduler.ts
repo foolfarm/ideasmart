@@ -12,7 +12,7 @@ import {
   getTodayStartup,
   saveStartupOfDay,
 } from "./db";
-import { genImageForEditorial, genImageForStartup } from "./imageAutoGen";
+import { findEditorialImage, findStartupImage } from "./stockImages";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -190,10 +190,10 @@ async function runDailyContentRefresh() {
     if (!existingEditorial) {
       console.log("[DailyContent] Generating editorial...");
       const editorial = await generateDailyEditorial();
-      // Genera immagine AI automaticamente
-      const editorialImageUrl = await genImageForEditorial(editorial.title, editorial.keyTrend ?? "AI Innovation");
+      // Cerca immagine stock Pexels coerente (zero costi)
+      const editorialImageUrl = await findEditorialImage(editorial.title, editorial.keyTrend ?? "AI Innovation");
       if (editorialImageUrl) {
-        console.log(`[DailyContent] Editorial image generated: ${editorial.title.slice(0, 40)}...`);
+        console.log(`[DailyContent] Editorial stock image found: ${editorial.title.slice(0, 40)}...`);
       }
       await saveEditorial({ ...editorial, imageUrl: editorialImageUrl ?? undefined });
       console.log(`[DailyContent] Editorial saved: "${editorial.title}"`);
@@ -206,10 +206,10 @@ async function runDailyContentRefresh() {
     if (!existingStartup) {
       console.log("[DailyContent] Generating startup of the day...");
       const startup = await generateStartupOfDay();
-      // Genera immagine AI automaticamente
-      const startupImageUrl = await genImageForStartup(startup.name, startup.category, startup.tagline);
+      // Cerca immagine stock Pexels coerente (zero costi)
+      const startupImageUrl = await findStartupImage(startup.name, startup.category, startup.tagline);
       if (startupImageUrl) {
-        console.log(`[DailyContent] Startup image generated: ${startup.name}`);
+        console.log(`[DailyContent] Startup stock image found: ${startup.name}`);
       }
       await saveStartupOfDay({ ...startup, imageUrl: startupImageUrl ?? undefined });
       console.log(`[DailyContent] Startup saved: "${startup.name}"`);

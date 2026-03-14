@@ -8,7 +8,7 @@ import { invokeLLM } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
-import { genImageForNews } from "./imageAutoGen";
+import { findNewsImage } from "./stockImages";
 
 // Intervallo: 24 ore in millisecondi
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -155,10 +155,10 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
     // Inserisce le nuove notizie con generazione immagine AI automatica
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      // Genera immagine AI in parallelo (non blocca se fallisce)
-      const imageUrl = await genImageForNews(item.title, item.category);
+      // Cerca immagine stock Pexels coerente con l'articolo (zero costi)
+      const imageUrl = await findNewsImage(item.title, item.category);
       if (imageUrl) {
-        console.log(`[NewsScheduler] Image generated for news ${i + 1}: ${item.title.slice(0, 40)}...`);
+        console.log(`[NewsScheduler] Stock image found for news ${i + 1}: ${item.title.slice(0, 40)}...`);
       }
       await db.insert(newsItems).values({
         title: item.title,

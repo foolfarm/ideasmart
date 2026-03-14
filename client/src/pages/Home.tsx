@@ -200,69 +200,94 @@ function NewsGrid() {
   }
 
   return (
-    <div className="grid sm:grid-cols-2 gap-4">
+    <div className="flex flex-col gap-3">
       {items.slice(0, 20).map((item, i) => {
         const colorSet = NEWS_COLORS[i % NEWS_COLORS.length];
         const num = String(i + 1).padStart(2, "0");
         return (
           <FadeUp key={item.id} delay={i * 0.03}>
-            <div className="news-card h-full p-5 group flex flex-col">
-              {item.imageUrl && (
-                <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer">
-                  <div className="w-full h-36 rounded-lg overflow-hidden mb-3 -mx-0">
+            <div className="news-card group">
+              <div className="flex gap-0">
+                {/* Immagine a sinistra — sempre visibile, stock Pexels o placeholder */}
+                <a
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 w-32 sm:w-44 h-auto self-stretch relative overflow-hidden rounded-l-xl"
+                  style={{ minHeight: "120px" }}
+                >
+                  {item.imageUrl ? (
                     <img
                       src={item.imageUrl}
                       alt={item.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      style={{ position: "absolute", inset: 0 }}
                     />
-                  </div>
+                  ) : (
+                    // Placeholder colorato con icona categoria quando non c'è immagine
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{ background: `linear-gradient(135deg, ${colorSet.bg} 0%, ${colorSet.color}20 100%)`, position: "absolute", inset: 0 }}
+                    >
+                      <span className="text-3xl font-black opacity-30" style={{ color: colorSet.color, fontFamily: "'Space Grotesk', sans-serif" }}>{num}</span>
+                    </div>
+                  )}
                 </a>
-              )}
-              <div className="flex items-start gap-3 mb-3">
-                <span className="editorial-tag flex-shrink-0 mt-0.5" style={{ color: C.muted }}>{num}</span>
-                <span
-                  className="inline-block px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
-                  style={{ background: colorSet.bg, color: colorSet.color }}
-                >
-                  {item.category}
-                </span>
-              </div>
-              <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                <h3
-                  className="text-lg font-bold leading-snug mb-2 transition-colors hover:text-[#00b4a0]"
-                  style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  {item.title}
-                </h3>
-                <p className="text-base leading-relaxed mb-3" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
-                  {item.summary}
-                </p>
-              </a>
-              <div className="flex items-center justify-between mt-auto pt-3 border-t" style={{ borderColor: C.border }}>
-                <span className="text-sm" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(item.sourceUrl)}`}
-                    target="_blank" rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
-                    style={{ background: "#0077b5", color: "#fff" }}
-                    title="Condividi su LinkedIn"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    <span className="hidden sm:inline">LinkedIn</span>
+
+                {/* Contenuto a destra */}
+                <div className="flex-1 p-4 sm:p-5 flex flex-col min-w-0">
+                  {/* Numero + categoria */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="editorial-tag flex-shrink-0" style={{ color: C.muted }}>{num}</span>
+                    <span
+                      className="inline-block px-2 py-0.5 rounded-full text-xs font-bold flex-shrink-0 truncate"
+                      style={{ background: colorSet.bg, color: colorSet.color }}
+                    >
+                      {item.category}
+                    </span>
+                  </div>
+
+                  {/* Titolo + sommario */}
+                  <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                    <h3
+                      className="text-base sm:text-lg font-bold leading-snug mb-1.5 transition-colors hover:text-[#00b4a0] line-clamp-2"
+                      style={{ color: C.navy, fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed line-clamp-2 hidden sm:block" style={{ color: C.slate, fontFamily: "'DM Sans', sans-serif" }}>
+                      {item.summary}
+                    </p>
                   </a>
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(item.title + ' — via @IDEASMART_AI')}&url=${encodeURIComponent(item.sourceUrl)}`}
-                    target="_blank" rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
-                    style={{ background: "#000", color: "#fff" }}
-                    title="Condividi su X"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    <span className="hidden sm:inline">X</span>
-                  </a>
+
+                  {/* Footer: fonte + condivisione */}
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t" style={{ borderColor: C.border }}>
+                    <span className="text-xs truncate" style={{ color: C.muted, fontFamily: "'DM Sans', sans-serif" }}>{item.sourceName}</span>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <a
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(item.sourceUrl)}`}
+                        target="_blank" rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
+                        style={{ background: "#0077b5", color: "#fff" }}
+                        title="Condividi su LinkedIn"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        <span className="hidden sm:inline">LinkedIn</span>
+                      </a>
+                      <a
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(item.title + ' — via @IDEASMART_AI')}&url=${encodeURIComponent(item.sourceUrl)}`}
+                        target="_blank" rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
+                        style={{ background: "#000", color: "#fff" }}
+                        title="Condividi su X"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <span className="hidden sm:inline">X</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

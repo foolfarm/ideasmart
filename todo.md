@@ -251,3 +251,30 @@
 - [x] Inserire banner AdSense tra sezione Startup e Reportage
 - [x] Inserire banner AdSense tra sezione Reportage e Analisi di Mercato
 - [x] Inserire banner AdSense prima della sezione Newsletter
+
+## Nuovi task (14 Mar 2026 — Fix immagini e banner)
+
+- [ ] Fix: le immagini non appaiono nelle card news (imageUrl presente nel DB ma non mostrata nel layout)
+- [ ] Fix: i banner AdSense non sono visibili (il componente AdUnit richiede consenso cookie ma l'utente non ha ancora accettato)
+- [ ] Aggiungere placeholder visivo per i banner AdSense quando non c'è consenso
+
+## Nuovi task (14 Mar 2026 — Immagini stock Unsplash, zero costi AI)
+
+- [ ] Rimuovere imageAutoGen.ts e backfillImages.ts (generazione AI immagini)
+- [ ] Creare helper unsplashImages.ts con ricerca per parole chiave (API Unsplash gratuita)
+- [ ] Aggiornare tutti gli scheduler per usare Unsplash invece di AI
+- [ ] Fix: includere imageUrl nella risposta tRPC news.getLatest
+- [ ] Aggiornare layout card news per mostrare immagine accanto al testo
+- [ ] Backfill immagini Unsplash per tutti gli articoli esistenti
+- [ ] Fix banner AdSense: mostrare placeholder visivo anche senza consenso cookie
+
+## Nuovi task (14 Mar 2026 — Immagini stock Pexels + layout card news)
+
+- [x] Sostituire generazione AI immagini con immagini stock Pexels gratuite (zero costi)
+- [x] Creare helper stockImages.ts con ricerca Pexels multi-keyword per categoria
+- [x] Aggiornare tutti gli scheduler per usare findNewsImage/findEditorialImage/findStartupImage/findReportageImage/findMarketAnalysisImage
+- [x] Aggiornare tRPC news.getLatest per includere imageUrl nella risposta
+- [x] Nuovo layout card news: immagine a sinistra + testo a destra (layout editoriale orizzontale)
+- [x] Placeholder colorato per articoli senza immagine
+- [x] Backfill immagini Pexels per tutti gli articoli esistenti (20 news + 3 editoriali + 3 startup + 4 reportage + 4 analisi = 34/34)
+- [x] Correggere AdUnit: mostrare banner AdSense sempre (senza blocco consenso cookie)

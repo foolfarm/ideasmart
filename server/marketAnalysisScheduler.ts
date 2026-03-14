@@ -7,7 +7,7 @@
 
 import { invokeLLM } from "./_core/llm";
 import { saveMarketAnalysis, getLatestMarketAnalysis, deleteMarketAnalysisByWeek } from "./db";
-import { genImageForMarketAnalysis } from "./imageAutoGen";
+import { findMarketAnalysisImage } from "./stockImages";
 
 function getWeekLabel(): string {
   const now = new Date();
@@ -171,12 +171,12 @@ Rispondi SOLO con un JSON valido, senza markdown, nel formato:
     // Elimina analisi precedenti della stessa settimana (idempotente)
     await deleteMarketAnalysisByWeek(weekLabel);
 
-    // Genera immagini AI per ogni analisi in parallelo
+    // Cerca immagini stock Pexels per ogni analisi (zero costi)
     const imageUrls = await Promise.all(
       analyses.map((a) =>
-        genImageForMarketAnalysis(a.title, a.category, a.source)
+        findMarketAnalysisImage(a.title, a.category, a.source)
           .then(url => {
-            if (url) console.log(`[MarketAnalysis] Image generated: ${a.title.slice(0, 40)}...`);
+            if (url) console.log(`[MarketAnalysis] Stock image found: ${a.title.slice(0, 40)}...`);
             return url;
           })
       )

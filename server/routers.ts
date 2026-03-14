@@ -158,6 +158,7 @@ export const appRouter = router({
           sourceName: item.sourceName ?? "",
           sourceUrl: item.sourceUrl ?? "#",
           publishedAt: item.publishedAt ?? "",
+          imageUrl: item.imageUrl ?? null,
         }));
       }),
 
