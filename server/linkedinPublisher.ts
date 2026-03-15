@@ -10,7 +10,7 @@
  *  - Analisi editoriale (3-4 paragrafi brevi, tono diretto e autorevole)
  *  - CTA verso IDEASMART
  *  - Hashtag tematici
- *  - Immagine Pexels coerente con il tema
+ *  - Immagine caricata direttamente su LinkedIn (formato IMAGE, non ARTICLE)
  *
  * Sezioni supportate: 'ai' e 'startup' (no musica)
  */
@@ -18,7 +18,7 @@
 import { ENV } from "./_core/env";
 import { invokeLLM } from "./_core/llm";
 import { getLatestEditorial } from "./db";
-import { findEditorialImage, findStockImage } from "./stockImages";
+import { findEditorialImage } from "./stockImages";
 
 const SITE_BASE_URL = "https://ideasmart.ai";
 
@@ -73,7 +73,111 @@ STILE: Thought leader, non giornalistico. Parla in prima persona.
 NON includere il titolo dell'editoriale letteralmente — rielaboralo nel tuo stile.`;
 };
 
-// ── Pubblicazione su LinkedIn API ────────────────────────────────────────────
+// ── Step 1: Registra upload immagine su LinkedIn ─────────────────────────────
+async function registerLinkedInImageUpload(
+  token: string,
+  authorUrn: string
+): Promise<{ uploadUrl: string; asset: string } | null> {
+  try {
+    const body = {
+      registerUploadRequest: {
+        recipes: ["urn:li:digitalmediaRecipe:feedshare-image"],
+        owner: authorUrn,
+        serviceRelationships: [
+          {
+            relationshipType: "OWNER",
+            identifier: "urn:li:userGeneratedContent",
+          },
+        ],
+      },
+    };
+
+    const response = await fetch("https://api.linkedin.com/v2/assets?action=registerUpload", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-Restli-Protocol-Version": "2.0.0",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error("[LinkedIn] ❌ registerUpload fallito:", err);
+      return null;
+    }
+
+    const data = await response.json() as {
+      value: {
+        uploadMechanism: {
+          "com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest": {
+            uploadUrl: string;
+          };
+        };
+        asset: string;
+      };
+    };
+
+    const uploadUrl =
+      data?.value?.uploadMechanism?.[
+        "com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"
+      ]?.uploadUrl;
+    const asset = data?.value?.asset;
+
+    if (!uploadUrl || !asset) {
+      console.error("[LinkedIn] ❌ uploadUrl o asset mancanti nella risposta registerUpload");
+      return null;
+    }
+
+    return { uploadUrl, asset };
+  } catch (err) {
+    console.error("[LinkedIn] ❌ Errore registerUpload:", err);
+    return null;
+  }
+}
+
+// ── Step 2: Scarica immagine da URL e caricala su LinkedIn ───────────────────
+async function uploadImageToLinkedIn(
+  uploadUrl: string,
+  imageUrl: string,
+  token: string
+): Promise<boolean> {
+  try {
+    // Scarica l'immagine
+    const imgResponse = await fetch(imageUrl);
+    if (!imgResponse.ok) {
+      console.error("[LinkedIn] ❌ Impossibile scaricare immagine:", imageUrl);
+      return false;
+    }
+
+    const imageBuffer = await imgResponse.arrayBuffer();
+    const contentType = imgResponse.headers.get("content-type") || "image/jpeg";
+
+    // Carica su LinkedIn
+    const uploadResponse = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": contentType,
+      },
+      body: imageBuffer,
+    });
+
+    if (uploadResponse.ok || uploadResponse.status === 201) {
+      console.log("[LinkedIn] ✅ Immagine caricata su LinkedIn");
+      return true;
+    }
+
+    console.error("[LinkedIn] ❌ Upload immagine fallito:", uploadResponse.status);
+    return false;
+  } catch (err) {
+    console.error("[LinkedIn] ❌ Errore upload immagine:", err);
+    return false;
+  }
+}
+
+// ── Step 3: Pubblica post con immagine su LinkedIn ───────────────────────────
 async function publishToLinkedIn(
   text: string,
   articleUrl: string,
@@ -85,46 +189,82 @@ async function publishToLinkedIn(
   const authorUrn = ENV.linkedinAuthorUrn;
 
   if (!token || !authorUrn) {
-    return { success: false, error: "Credenziali LinkedIn non configurate (LINKEDIN_ACCESS_TOKEN o LINKEDIN_AUTHOR_URN mancanti)" };
+    return {
+      success: false,
+      error: "Credenziali LinkedIn non configurate (LINKEDIN_ACCESS_TOKEN o LINKEDIN_AUTHOR_URN mancanti)",
+    };
   }
 
-  // Corpo del post LinkedIn con link preview ARTICLE
-  const body: Record<string, unknown> = {
-    author: authorUrn,
-    lifecycleState: "PUBLISHED",
-    specificContent: {
-      "com.linkedin.ugc.ShareContent": {
-        shareCommentary: {
-          text,
+  // Prova a caricare l'immagine direttamente su LinkedIn (formato IMAGE)
+  let linkedInAsset: string | null = null;
+
+  if (imageUrl) {
+    console.log("[LinkedIn] 🖼️ Avvio upload immagine su LinkedIn...");
+    const uploadInfo = await registerLinkedInImageUpload(token, authorUrn);
+
+    if (uploadInfo) {
+      const uploaded = await uploadImageToLinkedIn(uploadInfo.uploadUrl, imageUrl, token);
+      if (uploaded) {
+        linkedInAsset = uploadInfo.asset;
+        console.log(`[LinkedIn] ✅ Asset immagine LinkedIn: ${linkedInAsset}`);
+        // Attendi 3 secondi per processing LinkedIn
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
+    }
+  }
+
+  // Costruisci il body del post
+  let body: Record<string, unknown>;
+
+  if (linkedInAsset) {
+    // Post con immagine caricata (formato IMAGE — mostra foto grande nel feed)
+    body = {
+      author: authorUrn,
+      lifecycleState: "PUBLISHED",
+      specificContent: {
+        "com.linkedin.ugc.ShareContent": {
+          shareCommentary: { text },
+          shareMediaCategory: "IMAGE",
+          media: [
+            {
+              status: "READY",
+              description: { text: articleSummary.slice(0, 256) },
+              media: linkedInAsset,
+              title: { text: articleTitle.slice(0, 200) },
+            },
+          ],
         },
-        shareMediaCategory: "ARTICLE",
-        media: [
-          {
-            status: "READY",
-            description: {
-              text: articleSummary.slice(0, 256),
-            },
-            originalUrl: articleUrl,
-            title: {
-              text: articleTitle.slice(0, 200),
-            },
-            ...(imageUrl
-              ? {
-                  thumbnails: [
-                    {
-                      resolvedUrl: imageUrl,
-                    },
-                  ],
-                }
-              : {}),
-          },
-        ],
       },
-    },
-    visibility: {
-      "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-    },
-  };
+      visibility: {
+        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+      },
+    };
+    console.log("[LinkedIn] 📸 Formato: IMAGE (foto grande nel feed)");
+  } else {
+    // Fallback: post con link preview ARTICLE (senza immagine caricata)
+    body = {
+      author: authorUrn,
+      lifecycleState: "PUBLISHED",
+      specificContent: {
+        "com.linkedin.ugc.ShareContent": {
+          shareCommentary: { text },
+          shareMediaCategory: "ARTICLE",
+          media: [
+            {
+              status: "READY",
+              description: { text: articleSummary.slice(0, 256) },
+              originalUrl: articleUrl,
+              title: { text: articleTitle.slice(0, 200) },
+            },
+          ],
+        },
+      },
+      visibility: {
+        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+      },
+    };
+    console.log("[LinkedIn] 🔗 Formato: ARTICLE (link preview, nessuna immagine caricata)");
+  }
 
   try {
     const response = await fetch("https://api.linkedin.com/v2/ugcPosts", {
@@ -189,7 +329,6 @@ async function generateLinkedInPostText(
     throw new Error("Risposta LLM vuota o troppo corta");
   } catch (err) {
     console.warn("[LinkedIn] ⚠️ LLM fallito, uso testo fallback:", err);
-    // Fallback: testo semplice senza LLM
     const meta = SECTION_META[section] ?? SECTION_META.ai;
     return [
       `${title}`,
@@ -275,7 +414,7 @@ export async function publishDailyLinkedInPosts(): Promise<{
   console.log(`[LinkedIn] 🚀 Pubblicazione post — Sezione: ${meta.label}`);
   console.log(`[LinkedIn]    Titolo editoriale: ${editorial.title.slice(0, 60)}...`);
   console.log(`[LinkedIn]    Immagine: ${imageUrl ? "✅ presente" : "❌ assente"}`);
-  console.log(`[LinkedIn]    Testo post (prime 200 char): ${postText.slice(0, 200)}...`);
+  console.log(`[LinkedIn]    Testo post (prime 200 char): ${postText.slice(0, 200)}`);
 
   const result = await publishToLinkedIn(
     postText,
@@ -303,3 +442,6 @@ export async function publishDailyLinkedInPosts(): Promise<{
     return { published: 0, errors: [result.error ?? "Errore sconosciuto"], posts };
   }
 }
+
+// Export per compatibilità
+export { SUPPORTED_SECTIONS };
