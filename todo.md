@@ -679,3 +679,13 @@
 - [x] Totale fonti RSS: 212 (112 AI + 65 Startup + 36 Music)
 - [x] Reset DB e nuovo scraping da 212 fonti: 60/60 notizie con URL articolo specifico (100%)
 - [x] Scraping completato in 141 secondi
+
+## LinkedIn Autopost (15 Mar 2026)
+
+- [ ] Configurare credenziali LinkedIn (Access Token, URN persona/organizzazione)
+- [ ] Aggiungere tabella linkedin_posts nel DB per tracciare i post pubblicati
+- [ ] Creare server/linkedinScheduler.ts con selezione top 3 notizie del giorno
+- [ ] Implementare chiamata API LinkedIn ugcPosts con link preview
+- [ ] Aggiungere scheduler giornaliero alle 10:00 CET in schedulerManager.ts
+- [ ] Aggiungere pulsante "Pubblica su LinkedIn ora" in /admin
+- [ ] Test e checkpoint
