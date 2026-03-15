@@ -575,3 +575,7 @@
 - [x] Espandere whitelist fonti RSS con feed italiani per AI, Music e Startup
 - [x] Creare pagina admin /admin/rss-monitor per monitoraggio qualità fonti e trigger scraping manuale
 - [x] Implementare sistema feedback utenti per segnalare fonti errate (schema DB + tRPC + UI)
+
+## Nuovi task (15 Mar 2026 — Homepage layout giornale)
+
+- [ ] Riscrivere Home.tsx con layout da prima pagina di giornale (testata, notizia del giorno, colonne canali, griglia 3 sezioni, elenco misto)

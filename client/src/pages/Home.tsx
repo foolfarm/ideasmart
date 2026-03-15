@@ -1,1086 +1,470 @@
-/*
- * IDEASMART — Homepage Hub Multitematica
- * Design: Deep navy (#0a0f1e) + Teal (#00b4a0) + Viola (#8b5cf6) + Orange (#e84f00)
- * Layout: Testata giornalistica multicanale — AI4Business News + ITsMusic
- *
- * NAVBAR: differenziata — hub con Canali / Chi siamo / Advertising
- * CANALI: card grandi con descrizioni estese
- * NOTIZIE: layout verticale, font grandi, alta leggibilità
+/**
+ * IDEASMART — Prima Pagina di Giornale
+ * Layout editoriale classico: testata, notizia del giorno, colonne canali, griglia sezioni, elenco misto.
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accenti per sezione.
+ * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
-import { useRef, useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { useMemo } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
-import AdUnit from "@/components/AdUnit";
 
-// ─── Brand Colors ─────────────────────────────────────────────────────────────
-const C = {
-  navy: "#0a0f1e",
-  navyMid: "#111827",
-  navyCard: "#0f172a",
-  teal: "#00b4a0",
-  tealLight: "rgba(0,180,160,0.12)",
-  violet: "#8b5cf6",
-  violetLight: "rgba(139,92,246,0.12)",
-  orange: "#e84f00",
-  white: "#ffffff",
-  whiteAlpha90: "rgba(255,255,255,0.9)",
-  whiteAlpha80: "rgba(255,255,255,0.8)",
-  whiteAlpha60: "rgba(255,255,255,0.6)",
-  whiteAlpha50: "rgba(255,255,255,0.5)",
-  whiteAlpha15: "rgba(255,255,255,0.15)",
-  whiteAlpha8: "rgba(255,255,255,0.08)",
-  border: "rgba(255,255,255,0.1)",
+const SECTION_COLORS = {
+  ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
+  music: { accent: "#5b21b6", light: "#ede9fe", label: "ITsMusic", path: "/music" },
+  startup: { accent: "#c2410c", light: "#fff0e6", label: "Startup News", path: "/startup" },
 };
 
-// ─── Animation helpers ───────────────────────────────────────────────────────
-function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+function formatDateIT(date: Date): string {
+  return date.toLocaleDateString("it-IT", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+}
+
+function formatShortDate(str: string): string {
+  if (!str) return "";
+  try {
+    return new Date(str).toLocaleDateString("it-IT", { day: "numeric", month: "short" });
+  } catch { return str; }
+}
+
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+}
+
+function ThinDivider() {
+  return <div className="w-full border-t border-[#1a1a2e]/20" />;
+}
+
+function SectionLabel({ section }: { section: "ai" | "music" | "startup" }) {
+  const s = SECTION_COLORS[section];
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+    <span
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+      style={{ background: s.light, color: s.accent, fontFamily: "'Space Mono', monospace" }}
     >
-      {children}
-    </motion.div>
+      {s.label}
+    </span>
   );
 }
 
-// ─── Hub Navbar (solo per la homepage /) ──────────────────────────────────────
-function HubNavbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
-  const navItems = [
-    { label: "AI4Business", href: "/ai", color: C.teal },
-    { label: "ITsMusic", href: "/music", color: C.violet },
-    { label: "Startup News", href: "/startup", color: C.orange },
-    { label: "Chi siamo", href: "#chi-siamo" },
-    { label: "Advertising", href: "/advertise", highlight: true },
-  ];
-
+function HeroNews({ news, editorial }: {
+  news: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; section?: string };
+  editorial?: { title: string; subtitle?: string | null; body: string } | null;
+}) {
+  const section = (news.section as "ai" | "music" | "startup") || "ai";
+  const s = SECTION_COLORS[section];
+  const href = `${s.path}/news/${news.id}`;
+  const bodyText = editorial?.body || news.summary;
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-      style={{
-        background: scrolled ? "rgba(10,15,30,0.97)" : "rgba(10,15,30,0.85)",
-        backdropFilter: "blur(12px)",
-        borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18">
-          {/* Logo */}
-          <Link href="/">
-            <div className="flex items-center gap-3 cursor-pointer">
-              <span
-                className="text-xl sm:text-2xl font-black tracking-tight"
-                style={{ color: C.white, fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                IDEA<span style={{ color: C.teal }}>SMART</span>
-              </span>
-              <span
-                className="hidden sm:block text-xs font-mono tracking-widest uppercase"
-                style={{ color: C.whiteAlpha50 }}
-              >
-                MULTICANALE
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              item.href.startsWith("#") ? (
-                <button
-                  key={item.label}
-                  onClick={() => {
-                    const el = document.getElementById("chi-siamo");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
-                  style={{
-                    color: item.color || C.whiteAlpha80,
-                    background: "transparent",
-                    fontFamily: "'DM Sans', sans-serif",
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.background = C.whiteAlpha8)}
-                  onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                >
-                  {item.label}
-                </button>
-              ) : item.highlight ? (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:opacity-90"
-                  style={{
-                    background: C.orange,
-                    color: "#fff",
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  {item.label}
-                </a>
-              ) : (
-                <Link key={item.label} href={item.href}>
-                  <span
-                    className="px-3 py-2 rounded-lg text-sm font-bold transition-colors duration-200 cursor-pointer"
-                    style={{
-                      color: item.color || C.whiteAlpha80,
-                      fontFamily: "'DM Sans', sans-serif",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = C.whiteAlpha8)}
-                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                  >
-                    {item.label}
-                  </span>
-                </Link>
-              )
-            ))}
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden p-2 rounded-lg transition-colors"
-            style={{ background: menuOpen ? C.whiteAlpha8 : "transparent" }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
-          >
-            <div className="w-6 h-0.5 mb-1.5 transition-all duration-300 origin-center"
-              style={{ background: C.white, transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none" }} />
-            <div className="w-6 h-0.5 mb-1.5 transition-all duration-300"
-              style={{ background: C.white, opacity: menuOpen ? 0 : 1 }} />
-            <div className="w-6 h-0.5 transition-all duration-300 origin-center"
-              style={{ background: C.white, transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none" }} />
-          </button>
-        </div>
-
-        {/* Mobile menu */}
-        <div
-          className="md:hidden overflow-hidden transition-all duration-300"
-          style={{ maxHeight: menuOpen ? "400px" : "0px" }}
-        >
-          <div className="py-3 space-y-1" style={{ borderTop: `1px solid ${C.border}` }}>
-            <Link href="/ai">
-              <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
-                style={{ color: C.teal }} onClick={() => setMenuOpen(false)}>
-                🤖 AI4Business News
-              </div>
-            </Link>
-            <Link href="/music">
-              <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
-                style={{ color: C.violet }} onClick={() => setMenuOpen(false)}>
-                🎸 ITsMusic
-              </div>
-            </Link>
-            <Link href="/startup">
-              <div className="px-4 py-3.5 text-base font-bold rounded-lg cursor-pointer"
-                style={{ color: C.orange }} onClick={() => setMenuOpen(false)}>
-                🚀 Startup News
-              </div>
-            </Link>
-            <button
-              className="block w-full text-left px-4 py-3.5 text-base font-semibold rounded-lg"
-              style={{ color: C.whiteAlpha80 }}
-              onClick={() => {
-                const el = document.getElementById("chi-siamo");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-                setMenuOpen(false);
-              }}
-            >
-              Chi siamo
-            </button>
-            <a href="/advertise" className="block px-4 py-3.5 text-base font-bold rounded-lg"
-              style={{ color: C.orange }} onClick={() => setMenuOpen(false)}>
-              Advertising →
-            </a>
-          </div>
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+      <div className="pr-0 md:pr-6 py-4">
+        <SectionLabel section={section} />
+        <Link href={href}>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+            {editorial?.title || news.title}
+          </h2>
+        </Link>
+        {(editorial?.subtitle || news.category) && (
+          <p className="mt-2 text-base font-semibold text-[#1a1a2e]/60 italic"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            {editorial?.subtitle || news.category}
+          </p>
+        )}
+        <ThinDivider />
+        <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/80"
+          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+          {bodyText.slice(0, 320)}{bodyText.length > 320 ? "…" : ""}
+        </p>
+        <Link href={href}>
+          <span className="mt-4 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
+            style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+            Continua a leggere →
+          </span>
+        </Link>
       </div>
-    </nav>
+      <div className="py-4 pl-0 md:pl-6 border-l-0 md:border-l border-[#1a1a2e]/20">
+        {news.imageUrl ? (
+          <Link href={href}>
+            <img src={news.imageUrl} alt={news.title}
+              className="w-full h-56 md:h-72 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
+              style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
+          </Link>
+        ) : (
+          <div className="w-full h-56 md:h-72 flex items-center justify-center"
+            style={{ background: s.light, border: `1px solid ${s.accent}30` }}>
+            <span className="text-4xl opacity-30">📰</span>
+          </div>
+        )}
+        {news.sourceName && (
+          <p className="mt-2 text-xs text-[#1a1a2e]/40 italic"
+            style={{ fontFamily: "'Space Mono', monospace" }}>
+            Fonte: {news.sourceName}{news.publishedAt ? ` · ${formatShortDate(news.publishedAt)}` : ""}
+          </p>
+        )}
+      </div>
+    </div>
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+function NewsCard({ item, section, showImage = false }: {
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string };
+  section: "ai" | "music" | "startup";
+  showImage?: boolean;
+}) {
+  const s = SECTION_COLORS[section];
+  const href = `${s.path}/news/${item.id}`;
+  return (
+    <div className="py-3">
+      {showImage && item.imageUrl && (
+        <Link href={href}>
+          <img src={item.imageUrl} alt={item.title}
+            className="w-full h-32 object-cover mb-2 grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
+            style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
+        </Link>
+      )}
+      <Link href={href}>
+        <h3 className="text-base font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+          {item.title}
+        </h3>
+      </Link>
+      <p className="mt-1 text-sm leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
+        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+        {item.summary}
+      </p>
+      {item.sourceName && (
+        <p className="mt-1 text-[10px] text-[#1a1a2e]/35"
+          style={{ fontFamily: "'Space Mono', monospace" }}>
+          {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function NewsRow({ item, section }: {
+  item: { id: number; title: string; summary: string; category: string; sourceName?: string; publishedAt?: string };
+  section: "ai" | "music" | "startup";
+}) {
+  const s = SECTION_COLORS[section];
+  const href = `${s.path}/news/${item.id}`;
+  return (
+    <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
+      <SectionLabel section={section} />
+      <div>
+        <Link href={href}>
+          <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+            {item.title}
+          </span>
+        </Link>
+        {item.sourceName && (
+          <span className="ml-2 text-[10px] text-[#1a1a2e]/35"
+            style={{ fontFamily: "'Space Mono', monospace" }}>
+            {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
-  const { data: aiNews } = trpc.news.getLatest.useQuery({ section: "ai" });
-  const { data: musicNews } = trpc.news.getLatest.useQuery({ section: "music" });
-  const { data: startupNews } = trpc.news.getLatest.useQuery({ section: "startup" });
-  const { data: subscriberCount } = trpc.newsletter.getActiveCount.useQuery();
+  const today = useMemo(() => new Date(), []);
 
-  const aiLatest = (aiNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
-  const musicLatest = (musicNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
-  const startupLatest = (startupNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
+  const { data: aiNews } = trpc.news.getLatest.useQuery({ limit: 8, section: "ai" });
+  const { data: musicNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "music" });
+  const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "startup" });
+  const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
 
-  // Mix alternato AI + Music per la sezione notizie
-  const allNews: Array<{ id: number; title: string; category: string; imageUrl?: string | null; section: "ai" | "music"; sourceUrl?: string; summary?: string }> = [];
-  const aiSlice = (aiNews || []).slice(0, 8);
-  const musicSlice = (musicNews || []).slice(0, 8);
-  const maxLen = Math.max(aiSlice.length, musicSlice.length);
-  for (let i = 0; i < maxLen; i++) {
-    if (aiSlice[i]) allNews.push({ ...aiSlice[i], section: "ai" as const });
-    if (musicSlice[i]) allNews.push({ ...musicSlice[i], section: "music" as const });
-  }
+  const heroNews = useMemo(() => {
+    const all = aiNews || [];
+    return all.find(n => n.imageUrl) || all[0] || null;
+  }, [aiNews]);
 
-  const seoStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "IDEASMART",
-    "url": "https://www.ideasmart.ai",
-    "description": "Testata giornalistica multicanale italiana: AI4Business News e ITsMusic. Notizie, analisi e newsletter su intelligenza artificiale e industria musicale.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "IDEASMART",
-      "url": "https://www.ideasmart.ai",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.ideasmart.ai/favicon.ico"
-      }
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.ideasmart.ai/ai?q={search_term_string}",
-      "query-input": "required name=search_term_string"
+  const aiSecondary = useMemo(() => {
+    if (!aiNews) return [];
+    return aiNews.filter(n => n.id !== heroNews?.id).slice(0, 2);
+  }, [aiNews, heroNews]);
+
+  type MixedNewsItem = { id: number; title: string; summary: string; category: string; sourceName: string; sourceUrl: string; publishedAt: string; imageUrl: string | null; section: "ai" | "music" | "startup" };
+
+  const mixedNews = useMemo(() => {
+    const ai: MixedNewsItem[] = (aiNews || []).filter(n => n.id !== heroNews?.id).slice(2, 5).map(n => ({ ...n, section: "ai" as const }));
+    const music: MixedNewsItem[] = (musicNews || []).slice(2, 5).map(n => ({ ...n, section: "music" as const }));
+    const startup: MixedNewsItem[] = (startupNews || []).slice(2, 5).map(n => ({ ...n, section: "startup" as const }));
+    const result: MixedNewsItem[] = [];
+    const maxLen = Math.max(ai.length, music.length, startup.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (ai[i]) result.push(ai[i]);
+      if (music[i]) result.push(music[i]);
+      if (startup[i]) result.push(startup[i]);
     }
-  };
+    return result;
+  }, [aiNews, musicNews, startupNews, heroNews]);
 
   return (
-    <div style={{ background: C.navy, minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
+    <>
       <SEOHead
-        title="IDEASMART — Testata Giornalistica Multicanale AI, Musica e Startup"
-        description="IDEASMART è la piattaforma editoriale italiana su AI4Business, ITsMusic e Startup News. Notizie, analisi di mercato, startup emergenti e industria musicale aggiornate ogni giorno."
-        keywords="IDEASMART, testata giornalistica, AI for business, intelligenza artificiale, musica, rock, indie, startup italiane, newsletter AI, newsletter musica, startup news"
-        canonical="https://www.ideasmart.ai"
+        title="IDEASMART — Testata Giornalistica AI, Musica e Startup"
+        description="La prima pagina di IDEASMART: notizie aggiornate ogni giorno su Intelligenza Artificiale, Musica e Startup italiane. Testata 100% AI Powered."
+        canonical="https://ideasmart.ai"
         ogSiteName="IDEASMART"
-        ogType="website"
-        structuredData={seoStructuredData}
       />
+
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
-        .hub-title { font-family: 'Space Grotesk', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
       `}</style>
 
-      <HubNavbar />
+      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a2e" }}>
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section
-        className="relative pt-24 sm:pt-28 pb-16 sm:pb-20 px-4 overflow-hidden"
-        style={{
-          background: `radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,180,160,0.15) 0%, transparent 70%), ${C.navy}`,
-        }}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(${C.whiteAlpha8} 1px, transparent 1px), linear-gradient(90deg, ${C.whiteAlpha8} 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
+        {/* TESTATA */}
+        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-[#1a1a2e]/50 uppercase tracking-widest"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              {formatDateIT(today)}
+            </span>
+            <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              Testata 100% AI Powered
+            </span>
+          </div>
 
-        <div className="relative max-w-5xl mx-auto text-center">
-          <FadeUp>
-            <div
-              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase px-3 sm:px-4 py-2 rounded-full mb-5 sm:mb-6"
-              style={{ background: C.whiteAlpha8, border: `1px solid ${C.border}`, color: C.teal }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal }} />
-              <span className="hidden xs:inline">Testata Giornalistica </span>Multicanale
-            </div>
-          </FadeUp>
+          <Divider thick />
 
-          <FadeUp delay={0.1}>
-            {/* Titolo: 5xl su mobile, 7xl su sm, 8xl su md */}
-            <h1
-              className="hub-title text-5xl sm:text-7xl md:text-8xl font-black mb-4 sm:mb-6 leading-none tracking-tight"
-              style={{ color: C.white }}
-            >
-              IDEA<span style={{ color: C.teal }}>SMART</span>
+          <div className="text-center py-5">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e]"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
+              IdeaSmart
             </h1>
-          </FadeUp>
-
-          <FadeUp delay={0.2}>
-            <p
-              className="text-lg sm:text-xl md:text-2xl mb-4 sm:mb-5 max-w-3xl mx-auto leading-relaxed px-1"
-              style={{ color: C.whiteAlpha90 }}
-            >
-              La piattaforma editoriale italiana su <strong style={{ color: C.teal }}>Intelligenza Artificiale</strong>, <strong style={{ color: C.violet }}>Musica</strong> e <strong style={{ color: C.orange }}>Startup</strong>.
+            <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              Testata Giornalistica Multicanale · AI · Musica · Startup
             </p>
-            <p
-              className="text-base sm:text-lg mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-1"
-              style={{ color: C.whiteAlpha60 }}
-            >
-              Contenuti aggiornati ogni giorno. Analisi, reportage e newsletter curate da AI per professionisti.
-            </p>
-          </FadeUp>
+          </div>
 
-          <FadeUp delay={0.3}>
-            {/* Statistiche: griglia 2×2 su mobile, 4 colonne su desktop */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-10 mb-8 sm:mb-12 max-w-xs sm:max-w-none mx-auto">
-              {[
-                { value: "3", label: "canali tematici" },
-                { value: "40+", label: "contenuti al giorno" },
-                { value: subscriberCount ? `${subscriberCount.toLocaleString("it-IT")}+` : "5.000+", label: "iscritti attivi" },
-                { value: "100%", label: "aggiornamento auto" },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="hub-title text-3xl sm:text-4xl font-black" style={{ color: C.white }}>{stat.value}</div>
-                  <div className="text-xs sm:text-sm mt-1 leading-tight" style={{ color: C.whiteAlpha50 }}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </FadeUp>
+          <Divider thick />
 
-          <FadeUp delay={0.4}>
-            {/* CTA: full-width su mobile, auto su desktop */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Link href="/ai" className="block sm:inline-block">
-                <button
-                  className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 active:scale-95"
-                  style={{ background: C.teal, color: C.navy }}
-                >
-                  🤖 Entra in AI4Business
-                </button>
-              </Link>
-              <Link href="/music" className="block sm:inline-block">
-                <button
-                  className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 active:scale-95"
-                  style={{ background: C.violet, color: C.white }}
-                >
-                  🎸 Entra in ITsMusic
-                </button>
-              </Link>
-              <Link href="/startup" className="block sm:inline-block">
-                <button
-                  className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 active:scale-95"
-                  style={{ background: C.orange, color: C.white }}
-                >
-                  🚀 Entra in Startup News
-                </button>
-              </Link>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
+          <nav className="flex items-center justify-center gap-0 py-2">
+            {(["ai", "music", "startup"] as const).map((sec, i) => {
+              const s = SECTION_COLORS[sec];
+              return (
+                <Link key={sec} href={s.path}>
+                  <span className="px-6 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                    style={{
+                      fontFamily: "'Space Mono', monospace",
+                      color: s.accent,
+                      borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.2)" : "none",
+                    }}>
+                    {s.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
 
-      {/* ── I NOSTRI CANALI ───────────────────────────────────────────────── */}
-      <section className="py-20 px-4" style={{ background: C.navyMid }}>
-        <div className="max-w-5xl mx-auto">
-          <FadeUp>
-            <div className="text-center mb-14">
-              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.teal }}>I nostri canali</p>
-              <h2 className="hub-title text-4xl md:text-5xl font-black mb-4" style={{ color: C.white }}>
-                Scegli il tuo canale
-              </h2>
-              <p className="text-lg max-w-2xl mx-auto" style={{ color: C.whiteAlpha60 }}>
-                Tre testate indipendenti, una piattaforma. Ogni canale ha la sua redazione AI, la sua newsletter e il suo pubblico di riferimento.
-              </p>
-            </div>
-          </FadeUp>
+          <Divider />
+        </header>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* AI4Business */}
-            <FadeUp delay={0.1}>
-              <Link href="/ai">
-                <div
-                  className="group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
-                  style={{
-                    background: `linear-gradient(135deg, rgba(0,180,160,0.15) 0%, rgba(0,180,160,0.05) 100%)`,
-                    border: `1px solid rgba(0,180,160,0.3)`,
-                  }}
-                >
-                  {/* Top accent bar */}
-                  <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${C.teal}, rgba(0,180,160,0.3))` }} />
+        {/* CORPO */}
+        <main className="max-w-6xl mx-auto px-4 pb-12">
 
-                  <div className="p-8 md:p-10">
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-4">
-                        <div
-                          className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
-                          style={{ background: "rgba(0,180,160,0.2)", border: "1px solid rgba(0,180,160,0.3)" }}
-                        >
-                          🤖
-                        </div>
-                        <div>
-                          <span
-                            className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
-                            style={{ background: "rgba(0,180,160,0.2)", color: C.teal, border: "1px solid rgba(0,180,160,0.3)" }}
-                          >
-                            AI4BUSINESS NEWS
-                          </span>
-                          <p className="text-xs mt-1.5" style={{ color: C.whiteAlpha50 }}>by IDEASMART</p>
-                        </div>
-                      </div>
-                      <div
-                        className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all group-hover:scale-105"
-                        style={{ background: C.teal, color: C.navy }}
-                      >
-                        Entra →
-                      </div>
-                    </div>
+          {/* Sezione 1: Notizia del giorno + Sidebar */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-0 mt-0">
 
-                    {/* Title */}
-                    <h3 className="hub-title text-2xl md:text-3xl font-black mb-4 leading-tight" style={{ color: C.white }}>
-                      Il tuo punto di riferimento sull'AI per il business
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-base leading-relaxed mb-6" style={{ color: C.whiteAlpha80 }}>
-                      Ogni giorno selezioniamo e analizziamo le notizie più rilevanti sull'intelligenza artificiale applicata al business: startup emergenti, analisi di mercato, reportage esclusivi e l'editoriale quotidiano del nostro algoritmo editoriale.
-                    </p>
-                    <p className="text-sm leading-relaxed mb-8" style={{ color: C.whiteAlpha60 }}>
-                      Cosa trovi su AI4Business: <strong style={{ color: C.teal }}>20 notizie al giorno</strong> dalle fonti globali più autorevoli, l'editoriale AI del giorno, la startup emergente da tenere d'occhio, 4 reportage settimanali su aziende italiane e 4 analisi di mercato da CB Insights, Sifted e The Information.
-                    </p>
-
-                    {/* Stats */}
-                    <div className="flex gap-6 mb-8 py-5 border-t border-b" style={{ borderColor: "rgba(0,180,160,0.2)" }}>
-                      <div>
-                        <div className="hub-title text-3xl font-black" style={{ color: C.teal }}>20</div>
-                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>notizie al giorno</div>
-                      </div>
-                      <div>
-                        <div className="hub-title text-3xl font-black" style={{ color: C.white }}>
-                          {subscriberCount ? subscriberCount.toLocaleString("it-IT") : "5.452"}
-                        </div>
-                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>iscritti newsletter</div>
-                      </div>
-                      <div>
-                        <div className="hub-title text-3xl font-black" style={{ color: C.teal }}>2×</div>
-                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>a settimana</div>
-                      </div>
-                    </div>
-
-                    {/* Latest news */}
-                    <div className="space-y-3">
-                      <p className="text-xs font-bold tracking-widest uppercase" style={{ color: C.whiteAlpha50 }}>ULTIME NOTIZIE</p>
-                      {aiLatest.map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: C.teal }} />
-                          <span className="text-sm leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-8 sm:hidden">
-                      <div
-                        className="w-full text-center py-3 rounded-xl font-bold text-base"
-                        style={{ background: C.teal, color: C.navy }}
-                      >
-                        Entra in AI4Business →
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </FadeUp>
-
-            {/* ITsMusic */}
-            <FadeUp delay={0.2}>
-              <Link href="/music">
-                <div
-                  className="group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
-                  style={{
-                    background: `linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(139,92,246,0.05) 100%)`,
-                    border: `1px solid rgba(139,92,246,0.3)`,
-                  }}
-                >
-                  {/* Top accent bar */}
-                  <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${C.violet}, rgba(139,92,246,0.3))` }} />
-
-                  <div className="p-8 md:p-10">
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-4">
-                        <div
-                          className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
-                          style={{ background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.3)" }}
-                        >
-                          🎸
-                        </div>
-                        <div>
-                          <span
-                            className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
-                            style={{ background: "rgba(139,92,246,0.2)", color: C.violet, border: "1px solid rgba(139,92,246,0.3)" }}
-                          >
-                            ITSMUSIC
-                          </span>
-                          <p className="text-xs mt-1.5" style={{ color: C.whiteAlpha50 }}>by IDEASMART</p>
-                        </div>
-                      </div>
-                      <div
-                        className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all group-hover:scale-105"
-                        style={{ background: C.violet, color: C.white }}
-                      >
-                        Entra →
-                      </div>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="hub-title text-2xl md:text-3xl font-black mb-4 leading-tight" style={{ color: C.white }}>
-                      Rock, Indie e AI Music: l'industria musicale vista dall'interno
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-base leading-relaxed mb-6" style={{ color: C.whiteAlpha80 }}>
-                      ITsMusic è la testata italiana dedicata all'industria musicale contemporanea. Copriamo il Rock e l'Indie italiano e internazionale, l'impatto dell'intelligenza artificiale sulla musica e le dinamiche del mercato discografico globale.
-                    </p>
-                    <p className="text-sm leading-relaxed mb-8" style={{ color: C.whiteAlpha60 }}>
-                      Cosa trovi su ITsMusic: <strong style={{ color: C.violet }}>20 notizie al giorno</strong> da Billboard, Rolling Stone e NME, l'editoriale musicale quotidiano, l'artista della settimana da scoprire, 4 reportage su scene musicali emergenti e 4 analisi di mercato da IFPI e Goldman Sachs.
-                    </p>
-
-                    {/* Stats */}
-                    <div className="flex gap-6 mb-8 py-5 border-t border-b" style={{ borderColor: "rgba(139,92,246,0.2)" }}>
-                      <div>
-                        <div className="hub-title text-3xl font-black" style={{ color: C.violet }}>20</div>
-                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>notizie al giorno</div>
-                      </div>
-                      <div>
-                        <div className="hub-title text-3xl font-black" style={{ color: C.white }}>Rock</div>
-                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>Indie · AI Music</div>
-                      </div>
-                      <div>
-                        <div className="hub-title text-3xl font-black" style={{ color: C.violet }}>2×</div>
-                        <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>a settimana</div>
-                      </div>
-                    </div>
-
-                    {/* Latest news */}
-                    <div className="space-y-3">
-                      <p className="text-xs font-bold tracking-widest uppercase" style={{ color: C.whiteAlpha50 }}>ULTIME NOTIZIE</p>
-                      {musicLatest.map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: C.violet }} />
-                          <span className="text-sm leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-8 sm:hidden">
-                      <div
-                        className="w-full text-center py-3 rounded-xl font-bold text-base"
-                        style={{ background: C.violet, color: C.white }}
-                      >
-                        Entra in ITsMusic →
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </FadeUp>
-          </div>{/* end grid md:grid-cols-2 */}
-
-          {/* Startup News — full width */}
-          <FadeUp delay={0.3}>
-            <Link href="/startup">
-              <div
-                className="group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.005] hover:shadow-2xl"
-                style={{
-                  background: `linear-gradient(135deg, rgba(232,79,0,0.15) 0%, rgba(232,79,0,0.05) 100%)`,
-                  border: `1px solid rgba(232,79,0,0.3)`,
-                }}
-              >
-                {/* Top accent bar */}
-                <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${C.orange}, rgba(232,79,0,0.3))` }} />
-
-                <div className="p-8 md:p-10">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
-                        style={{ background: "rgba(232,79,0,0.2)", border: "1px solid rgba(232,79,0,0.3)" }}
-                      >
-                        🚀
-                      </div>
-                      <div>
-                        <span
-                          className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
-                          style={{ background: "rgba(232,79,0,0.2)", color: C.orange, border: "1px solid rgba(232,79,0,0.3)" }}
-                        >
-                          STARTUP NEWS
-                        </span>
-                        <p className="text-xs mt-1.5" style={{ color: C.whiteAlpha50 }}>by IDEASMART</p>
-                      </div>
-                    </div>
-                    <div
-                      className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all group-hover:scale-105"
-                      style={{ background: C.orange, color: C.white }}
-                    >
-                      Entra →
-                    </div>
-                  </div>
-
-                  {/* Content: two columns on desktop */}
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div>
-                      {/* Title */}
-                      <h3 className="hub-title text-2xl md:text-3xl font-black mb-4 leading-tight" style={{ color: C.white }}>
-                        L'ecosistema startup italiano e internazionale ogni giorno
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-base leading-relaxed mb-4" style={{ color: C.whiteAlpha80 }}>
-                        Startup News è la testata italiana dedicata all'ecosistema delle startup: funding round, nuovi prodotti, tendenze di mercato, founder da seguire e analisi degli investitori più attivi.
-                      </p>
-                      <p className="text-sm leading-relaxed" style={{ color: C.whiteAlpha60 }}>
-                        Cosa trovi su Startup News: <strong style={{ color: C.orange }}>20 notizie al giorno</strong> da TechCrunch, Sifted e Il Sole 24 Ore, l'editoriale startup del giorno, la startup della settimana, 4 reportage su founder italiani e 4 analisi di mercato da CB Insights.
-                      </p>
-                    </div>
-
-                    <div>
-                      {/* Stats */}
-                      <div className="flex gap-6 mb-6 py-5 border-t border-b" style={{ borderColor: "rgba(232,79,0,0.2)" }}>
-                        <div>
-                          <div className="hub-title text-3xl font-black" style={{ color: C.orange }}>20</div>
-                          <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>notizie al giorno</div>
-                        </div>
-                        <div>
-                          <div className="hub-title text-3xl font-black" style={{ color: C.white }}>Seed</div>
-                          <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>Series A · B · C</div>
-                        </div>
-                        <div>
-                          <div className="hub-title text-3xl font-black" style={{ color: C.orange }}>2×</div>
-                          <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>a settimana</div>
-                        </div>
-                      </div>
-
-                      {/* Latest news */}
-                      <div className="space-y-3">
-                        <p className="text-xs font-bold tracking-widest uppercase" style={{ color: C.whiteAlpha50 }}>ULTIME NOTIZIE</p>
-                        {startupLatest.map((item, i) => (
-                          <div key={i} className="flex items-start gap-3">
-                            <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: C.orange }} />
-                            <span className="text-sm leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 sm:hidden">
-                    <div
-                      className="w-full text-center py-3 rounded-xl font-bold text-base"
-                      style={{ background: C.orange, color: C.white }}
-                    >
-                      Entra in Startup News →
-                    </div>
-                  </div>
-                </div>
+            <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
+              <div className="py-3">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  Notizia del Giorno
+                </span>
               </div>
-            </Link>
-          </FadeUp>
-        </div>
-      </section>
+              <ThinDivider />
 
-      {/* ── ULTIME NOTIZIE (layout verticale, font grandi) ─────────────────── */}
-      {allNews.length > 0 && (
-        <section className="py-20 px-4" style={{ background: C.navy }}>
-          <div className="max-w-4xl mx-auto">
-            <FadeUp>
-              <div className="flex items-end justify-between mb-12">
-                <div>
-                  <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.whiteAlpha50 }}>
-                    In primo piano
-                  </p>
-                  <h2 className="hub-title text-4xl md:text-5xl font-black" style={{ color: C.white }}>
-                    Le ultime notizie
-                  </h2>
-                  <p className="text-sm mt-2" style={{ color: C.whiteAlpha50 }}>
-                    da <span className="font-bold" style={{ color: C.teal }}>AI4Business</span>, <span className="font-bold" style={{ color: C.violet }}>ITsMusic</span> e <span className="font-bold" style={{ color: C.orange }}>Startup News</span> — aggiornate ogni giorno
-                  </p>
+              {heroNews ? (
+                <HeroNews news={{ ...heroNews, section: "ai" }} editorial={aiEditorial} />
+              ) : (
+                <div className="py-12 text-center text-[#1a1a2e]/30">
+                  <p style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>Caricamento notizie…</p>
                 </div>
-                <div className="flex gap-3">
-                  <Link href="/ai">
-                    <span
-                      className="text-sm font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:opacity-80"
-                      style={{ background: "rgba(0,180,160,0.15)", color: C.teal, border: `1px solid rgba(0,180,160,0.3)` }}
-                    >
-                      AI →
-                    </span>
-                  </Link>
-                  <Link href="/music">
-                    <span
-                      className="text-sm font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:opacity-80"
-                      style={{ background: "rgba(139,92,246,0.15)", color: C.violet, border: `1px solid rgba(139,92,246,0.3)` }}
-                    >
-                      Music →
-                    </span>
-                  </Link>
-                  <Link href="/startup">
-                    <span
-                      className="text-sm font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:opacity-80"
-                      style={{ background: "rgba(232,79,0,0.15)", color: C.orange, border: `1px solid rgba(232,79,0,0.3)` }}
-                    >
-                      Startup →
-                    </span>
-                  </Link>
+              )}
+
+              <ThinDivider />
+
+              {aiSecondary.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 mt-2">
+                  {aiSecondary.map((item, i) => (
+                    <div key={item.id} className={i > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
+                      <NewsCard item={item} section="ai" showImage />
+                    </div>
+                  ))}
                 </div>
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
+              <div className="py-3">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  I Canali
+                </span>
               </div>
-            </FadeUp>
+              <ThinDivider />
 
-            {/* Layout verticale — una notizia per riga */}
-            <div className="space-y-0">
-              {allNews.slice(0, 12).map((item, i) => {
-                const isAi = item.section === "ai";
-                const color = isAi ? C.teal : C.violet;
-                const sectionLabel = isAi ? "AI4Business" : "ITsMusic";
-                const href = isAi ? "/ai" : "/music";
+              {(["ai", "music", "startup"] as const).map((sec) => {
+                const s = SECTION_COLORS[sec];
                 return (
-                  <FadeUp key={i} delay={i * 0.03}>
-                    <Link href={href}>
-                      <div
-                        className="group cursor-pointer flex gap-5 py-6 transition-all duration-200 hover:bg-white/5 px-4 -mx-4 rounded-xl"
-                        style={{ borderBottom: `1px solid ${C.border}` }}
-                      >
-                        {/* Numero */}
-                        <div
-                          className="hub-title text-3xl font-black shrink-0 w-10 text-right leading-none pt-1"
-                          style={{ color: `${color}40` }}
-                        >
-                          {String(i + 1).padStart(2, "0")}
-                        </div>
+                  <Link key={sec} href={s.path}>
+                    <div className="py-2.5 flex items-center justify-between group cursor-pointer hover:opacity-70 transition-opacity border-b border-[#1a1a2e]/10">
+                      <span className="text-sm font-bold"
+                        style={{ color: s.accent, fontFamily: "'Playfair Display', Georgia, serif" }}>
+                        {s.label}
+                      </span>
+                      <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors"
+                        style={{ fontFamily: "'Space Mono', monospace" }}>
+                        →
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
 
-                        {/* Immagine */}
-                        {item.imageUrl && (
-                          <div className="hidden sm:block w-24 h-16 rounded-lg overflow-hidden shrink-0">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.title}
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                          </div>
-                        )}
-
-                        {/* Contenuto */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span
-                              className="text-xs font-bold px-2.5 py-1 rounded-full"
-                              style={{ background: `${color}20`, color, border: `1px solid ${color}30` }}
-                            >
-                              {sectionLabel}
-                            </span>
-                            <span className="text-xs font-medium" style={{ color: C.whiteAlpha50 }}>{item.category}</span>
-                          </div>
-                          <h3
-                            className="hub-title text-xl md:text-2xl font-bold leading-snug group-hover:opacity-80 transition-opacity"
-                            style={{ color: C.white }}
-                          >
-                            {item.title}
-                          </h3>
-                          {item.summary && (
-                            <p className="text-base mt-2 leading-relaxed line-clamp-2" style={{ color: C.whiteAlpha60 }}>
-                              {item.summary}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Arrow */}
-                        <div
-                          className="hidden md:flex items-center shrink-0 text-xl font-bold transition-transform duration-200 group-hover:translate-x-1"
-                          style={{ color: `${color}60` }}
-                        >
-                          →
-                        </div>
-                      </div>
+              {aiEditorial && (
+                <div className="mt-5">
+                  <div className="py-2">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                      style={{ fontFamily: "'Space Mono', monospace" }}>
+                      Editoriale
+                    </span>
+                  </div>
+                  <ThinDivider />
+                  <div className="py-3">
+                    <p className="text-sm font-bold text-[#1a1a2e] leading-snug"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      {aiEditorial.title}
+                    </p>
+                    {aiEditorial.subtitle && (
+                      <p className="mt-1 text-xs italic text-[#1a1a2e]/55"
+                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                        {aiEditorial.subtitle}
+                      </p>
+                    )}
+                    <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-5"
+                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                      {aiEditorial.body}
+                    </p>
+                    <Link href="/ai">
+                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline"
+                        style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
+                        Leggi tutto →
+                      </span>
                     </Link>
-                  </FadeUp>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Sezione 2: Griglia 3 colonne */}
+          <div className="mt-6">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                Dalle Redazioni
+              </span>
+            </div>
+            <ThinDivider />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+              {(["ai", "music", "startup"] as const).map((sec, colIdx) => {
+                const newsForSection = sec === "ai" ? aiNews : sec === "music" ? musicNews : startupNews;
+                const items = (newsForSection || []).filter(n => n.id !== heroNews?.id).slice(0, 3);
+                const s = SECTION_COLORS[sec];
+                return (
+                  <div key={sec} className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-5" : "pr-5"}>
+                    <div className="py-2">
+                      <Link href={s.path}>
+                        <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                          {s.label}
+                        </span>
+                      </Link>
+                    </div>
+                    <div className="border-t-2" style={{ borderColor: s.accent }} />
+                    {items.length > 0 ? (
+                      items.map((item, i) => (
+                        <div key={item.id}>
+                          <NewsCard item={item} section={sec} showImage={i === 0} />
+                          {i < items.length - 1 && <ThinDivider />}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">Caricamento…</div>
+                    )}
+                    <Link href={s.path}>
+                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                        Tutte le notizie →
+                      </span>
+                    </Link>
+                  </div>
                 );
               })}
             </div>
-
-            <FadeUp>
-              <div className="flex gap-4 mt-10 justify-center">
-                <Link href="/ai">
-                  <button
-                    className="px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                    style={{ background: "rgba(0,180,160,0.15)", color: C.teal, border: `1px solid rgba(0,180,160,0.3)` }}
-                  >
-                    Tutte le news AI →
-                  </button>
-                </Link>
-                <Link href="/music">
-                  <button
-                    className="px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                    style={{ background: "rgba(139,92,246,0.15)", color: C.violet, border: `1px solid rgba(139,92,246,0.3)` }}
-                  >
-                    Tutte le news Music →
-                  </button>
-                </Link>
-              </div>
-            </FadeUp>
           </div>
-        </section>
-      )}
 
-      {/* ── ADSENSE BANNER ────────────────────────────────────────────────── */}
-      <div className="py-4 px-4" style={{ background: "#0a0f1e" }}>
-        <div className="max-w-4xl mx-auto">
-          <AdUnit format="auto" label="Pubblicità" />
-        </div>
+          {/* Sezione 3: Elenco misto */}
+          {mixedNews.length > 0 && (
+            <div className="mt-8">
+              <Divider thick />
+              <div className="py-3">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  Altre Notizie del Giorno
+                </span>
+              </div>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
+                {mixedNews.map((item, i) => (
+                  <div key={`${item.section}-${item.id}`}>
+                    <NewsRow item={item} section={item.section} />
+                    {i < mixedNews.length - 1 && <ThinDivider />}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Footer testata */}
+          <div className="mt-12">
+            <Divider thick />
+            <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+              <p className="text-xs text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% AI Powered`}
+              </p>
+              <div className="flex items-center gap-4">
+                {(["ai", "music", "startup"] as const).map((sec) => {
+                  const s = SECTION_COLORS[sec];
+                  return (
+                    <Link key={sec} href={s.path}>
+                      <span className="text-xs hover:underline cursor-pointer"
+                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                        {s.label}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
-
-      {/* ── POLLCAST SONDAGGI ─────────────────────────────────────────────── */}
-      <section id="pollcast" className="py-20 px-4" style={{ background: C.navy }}>
-        <div className="max-w-5xl mx-auto">
-          <FadeUp>
-            <div className="text-center mb-10">
-              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.orange }}>Community</p>
-              <h2 className="hub-title text-4xl md:text-5xl font-black mb-4" style={{ color: C.white }}>
-                Partecipa ai sondaggi di<br /><span style={{ color: C.teal }}>IdeaSmart</span> su PollCast
-              </h2>
-              <p className="text-lg max-w-2xl mx-auto" style={{ color: C.whiteAlpha60 }}>
-                La tua opinione conta. Vota i sondaggi curati dalla redazione di IDEASMART su AI, business e musica — e scopri cosa pensa la community.
-              </p>
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.15}>
-            <div
-              className="relative rounded-2xl overflow-hidden p-8 md:p-12 flex flex-col md:flex-row items-center gap-8"
-              style={{
-                background: "linear-gradient(135deg, #0f172a 0%, #111827 60%, rgba(0,180,160,0.08) 100%)",
-                border: `1px solid ${C.whiteAlpha15}`,
-              }}
-            >
-              {/* Icona / Logo PollCast */}
-              <div className="flex-shrink-0 flex flex-col items-center gap-3">
-                <div
-                  className="w-24 h-24 rounded-2xl flex items-center justify-center text-5xl"
-                  style={{ background: "linear-gradient(135deg, #00b4a0 0%, #e84f00 100%)" }}
-                >
-                  📊
-                </div>
-                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: C.teal }}>PollCast Online</span>
-              </div>
-
-              {/* Testo */}
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-black mb-3" style={{ color: C.white }}>
-                  Esprimi la tua opinione
-                </h3>
-                <p className="text-base mb-6" style={{ color: C.whiteAlpha60 }}>
-                  PollCast è la piattaforma di sondaggi in tempo reale di IDEASMART. Partecipa ai poll settimanali su intelligenza artificiale, industria musicale e tendenze del business italiano. I risultati vengono pubblicati nelle nostre newsletter.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                  <a
-                    href="https://pollcast.online/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-200 hover:scale-105"
-                    style={{
-                      background: `linear-gradient(135deg, ${C.teal} 0%, #007a6e 100%)`,
-                      color: C.white,
-                      boxShadow: `0 4px 20px rgba(0,180,160,0.35)`,
-                    }}
-                  >
-                    <span>Vai ai sondaggi</span>
-                    <span style={{ fontSize: "1.1em" }}>→</span>
-                  </a>
-                  <a
-                    href="https://pollcast.online/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-200"
-                    style={{
-                      border: `1px solid ${C.whiteAlpha15}`,
-                      color: C.whiteAlpha80,
-                      background: "transparent",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = C.whiteAlpha8)}
-                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                  >
-                    Scopri PollCast
-                  </a>
-                </div>
-              </div>
-
-              {/* Statistiche decorative */}
-              <div className="flex-shrink-0 grid grid-cols-2 gap-3 md:gap-4">
-                {[
-                  { value: "100%", label: "Anonimo" },
-                  { value: "Live", label: "Risultati" },
-                  { value: "AI", label: "& Musica" },
-                  { value: "Free", label: "Gratuito" },
-                ].map((stat, i) => (
-                  <div
-                    key={i}
-                    className="text-center p-3 rounded-xl"
-                    style={{ background: C.whiteAlpha8, border: `1px solid ${C.whiteAlpha8}` }}
-                  >
-                    <p className="text-xl font-black" style={{ color: i % 2 === 0 ? C.teal : C.orange }}>{stat.value}</p>
-                    <p className="text-xs" style={{ color: C.whiteAlpha50 }}>{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── CHI SIAMO / MANIFESTO ─────────────────────────────────────────── */}
-      <section id="chi-siamo" className="py-24 px-4" style={{ background: C.navyMid }}>
-        <div className="max-w-4xl mx-auto">
-          <FadeUp>
-            <div className="text-center mb-14">
-              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: C.teal }}>Chi siamo</p>
-              <h2 className="hub-title text-4xl md:text-5xl font-black mb-6" style={{ color: C.white }}>
-                Giornalismo aumentato<br />dall'intelligenza artificiale
-              </h2>
-            </div>
-          </FadeUp>
-
-          <div className="grid md:grid-cols-2 gap-10">
-            <FadeUp delay={0.1}>
-              <div>
-                <p className="text-lg leading-relaxed mb-5" style={{ color: C.whiteAlpha80 }}>
-                  IDEASMART è una testata giornalistica di nuova generazione che usa l'intelligenza artificiale per selezionare, analizzare e distribuire contenuti di qualità in due dei settori più dinamici del nostro tempo: il business dell'AI e l'industria musicale.
-                </p>
-                <p className="text-base leading-relaxed" style={{ color: C.whiteAlpha60 }}>
-                  Ogni giorno, i nostri algoritmi analizzano centinaia di fonti globali per estrarre le notizie più rilevanti, arricchirle con analisi originali e distribuirle ai professionisti che ne hanno bisogno — senza rumore, senza clickbait.
-                </p>
-              </div>
-            </FadeUp>
-            <FadeUp delay={0.2}>
-              <div className="space-y-5">
-                {[
-                  { icon: "🔍", title: "Selezione automatica", desc: "Il nostro sistema analizza oltre 200 fonti globali ogni giorno e seleziona solo le notizie davvero rilevanti per il tuo settore." },
-                  { icon: "✍️", title: "Analisi editoriale AI", desc: "Ogni notizia viene arricchita con contesto, analisi e prospettive originali generate dal nostro modello editoriale." },
-                  { icon: "📬", title: "Newsletter curate", desc: "Due newsletter settimanali — AI4Business e ITsMusic — consegnate ogni lunedì e venerdì alle 10:00." },
-                ].map((item) => (
-                  <div key={item.title} className="flex gap-4">
-                    <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
-                      style={{ background: C.whiteAlpha8, border: `1px solid ${C.border}` }}
-                    >
-                      {item.icon}
-                    </div>
-                    <div>
-                      <p className="text-base font-bold mb-1" style={{ color: C.white }}>{item.title}</p>
-                      <p className="text-sm leading-relaxed" style={{ color: C.whiteAlpha60 }}>{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEWSLETTER CTA ────────────────────────────────────────────────── */}
-      <section
-        className="py-20 px-4"
-        style={{
-          background: `linear-gradient(135deg, rgba(0,180,160,0.12) 0%, rgba(139,92,246,0.12) 100%)`,
-          borderTop: `1px solid ${C.border}`,
-          borderBottom: `1px solid ${C.border}`,
-        }}
-      >
-        <div className="max-w-3xl mx-auto text-center">
-          <FadeUp>
-            <div className="hub-title text-4xl md:text-5xl font-black mb-5" style={{ color: C.white }}>
-              Scegli la tua newsletter
-            </div>
-            <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: C.whiteAlpha80 }}>
-              Ricevi ogni lunedì e venerdì la selezione editoriale del canale che preferisci. Gratis, sempre.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/ai">
-                <button
-                  className="px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
-                  style={{ background: C.teal, color: C.navy }}
-                >
-                  🤖 AI4Business News
-                </button>
-              </Link>
-              <Link href="/music">
-                <button
-                  className="px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
-                  style={{ background: C.violet, color: C.white }}
-                >
-                  🎸 ITsMusic
-                </button>
-              </Link>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── FOOTER ────────────────────────────────────────────────────────── */}
-      <footer className="py-14 px-4" style={{ borderTop: `1px solid ${C.border}` }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-10">
-            {/* Logo + tagline */}
-            <div>
-              <div className="hub-title text-2xl font-black mb-2" style={{ color: C.white }}>
-                IDEA<span style={{ color: C.teal }}>SMART</span>
-              </div>
-              <p className="text-sm mb-1" style={{ color: C.whiteAlpha50 }}>
-                Testata giornalistica multicanale
-              </p>
-              <p className="text-sm" style={{ color: C.whiteAlpha50 }}>
-                AI4Business News + ITsMusic
-              </p>
-            </div>
-
-            {/* Canali */}
-            <div>
-              <p className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: C.whiteAlpha50 }}>CANALI</p>
-              <div className="space-y-2">
-                <Link href="/ai">
-                  <div className="text-base font-semibold cursor-pointer transition-opacity hover:opacity-80" style={{ color: C.teal }}>
-                    🤖 AI4Business News →
-                  </div>
-                </Link>
-                <Link href="/music">
-                  <div className="text-base font-semibold cursor-pointer transition-opacity hover:opacity-80" style={{ color: C.violet }}>
-                    🎸 ITsMusic →
-                  </div>
-                </Link>
-              </div>
-            </div>
-
-            {/* Info */}
-            <div>
-              <p className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: C.whiteAlpha50 }}>INFO</p>
-              <div className="space-y-2">
-                <button
-                  className="block text-base transition-opacity hover:opacity-80"
-                  style={{ color: C.whiteAlpha60 }}
-                  onClick={() => document.getElementById("chi-siamo")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  Chi siamo
-                </button>
-                <a href="/advertise" className="block text-base transition-opacity hover:opacity-80" style={{ color: C.whiteAlpha60 }}>
-                  Advertising
-                </a>
-                <a href="/privacy" className="block text-base transition-opacity hover:opacity-80" style={{ color: C.whiteAlpha60 }}>
-                  Privacy Policy
-                </a>
-                <a href="mailto:info@ideasmart.ai" className="block text-base transition-opacity hover:opacity-80" style={{ color: C.whiteAlpha60 }}>
-                  info@ideasmart.ai
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-6 text-center text-sm" style={{ color: C.whiteAlpha50, borderTop: `1px solid ${C.border}` }}>
-            © {new Date().getFullYear()} IDEASMART — Tutti i diritti riservati
-          </div>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }
