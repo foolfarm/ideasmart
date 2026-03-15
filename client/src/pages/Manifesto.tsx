@@ -293,10 +293,10 @@ export default function Manifesto() {
                 className="text-sm font-bold text-[#1a1a2e]"
                 style={{ fontFamily: "'Space Mono', monospace" }}
               >
-                Andrea Cinelli
+                Adrian Lenice
                 <br />
                 <span className="font-normal text-[#1a1a2e]/50">
-                  Founder & CEO, FoolFarm · IDEASMART
+                  Direttore Responsabile · IDEASMART
                 </span>
               </div>
             </div>
