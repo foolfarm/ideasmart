@@ -743,3 +743,12 @@
 - [x] Aggiornato LINKEDIN_AUTHOR_URN = urn:li:organization:112273349 (pagina aziendale)
 - [x] Aggiornato LINKEDIN_ACCESS_TOKEN con token più recente
 - [x] 19/19 test Vitest passano
+
+## LinkedIn Autopost — Editoriale AI stile Andrea Cinelli (15 Mar 2026)
+
+- [ ] Analizzare struttura editoriale AI (getLatestEditorial) e Pexels helper esistenti
+- [ ] Riscrivere linkedinPublisher.ts: 1 post/giorno da editoriale AI con testo LLM stile thought leader
+- [ ] Includere immagine Pexels coerente con il tema dell'editoriale
+- [ ] Aggiornare scheduler: 1 post alle 10:00 (non 3)
+- [ ] Aggiornare procedura admin per test manuale
+- [ ] Test e checkpoint

@@ -314,14 +314,14 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
 
   // ── 16. LINKEDIN AUTOPOST — ogni giorno alle 10:00 CET ───────────────────
-  // Pubblica le 3 notizie più importanti del giorno su LinkedIn:
-  // 1 da AI4Business, 1 da ITsMusic, 1 da Startup News.
+  // Pubblica 1 post editoriale giornaliero su LinkedIn (AI o Startup in alternanza).
+  // Testo generato con LLM in stile Andrea Cinelli. Immagine da Pexels.
   // Token LinkedIn scade ogni 2 mesi — aggiornare in Secrets.
   cron.schedule("0 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:00 CET — Avvio pubblicazione LinkedIn top 3 notizie...");
+    console.log("[SchedulerManager] ⏰ 10:00 CET — Avvio pubblicazione LinkedIn editoriale del giorno...");
     try {
       const result = await publishDailyLinkedInPosts();
-      console.log(`[SchedulerManager] ✅ LinkedIn: ${result.published}/3 post pubblicati`);
+      console.log(`[SchedulerManager] ✅ LinkedIn: ${result.published}/1 post pubblicati`);
       if (result.errors.length > 0) {
         console.error("[SchedulerManager] ⚠️ LinkedIn errori:", result.errors);
       }
@@ -347,5 +347,5 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   🧪 Newsletter TEST  → ogni lunedì alle 08:30 CET → ac@acinelli.com");
   console.log("[SchedulerManager]   📧 Newsletter       → ogni lunedì alle 09:30 CET (invio massivo)");
-  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET (top 3 notizie)");
+  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET (editoriale AI/Startup in stile Andrea Cinelli)");
 }

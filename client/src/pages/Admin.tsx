@@ -495,9 +495,10 @@ export default function Admin() {
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0a66c2", fontFamily: "'Space Grotesk', sans-serif" }}>
                 ◆ LinkedIn Autopost
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Pubblica le top 3 notizie del giorno su LinkedIn</p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Pubblica 1 editoriale giornaliero su LinkedIn in stile Andrea Cinelli</p>
               <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Pubblica automaticamente 1 notizia per sezione (AI, Music, Startup) sul profilo LinkedIn di IDEASMART.
+                Genera un post thought leader dall'editoriale AI o Startup del giorno (alternanza automatica).
+                Testo scritto da LLM nel tuo stile, immagine da Pexels, link verso IDEASMART.
                 Lo scheduler parte ogni giorno alle <strong className="text-white">10:00 CET</strong>. Token scade ogni 2 mesi.
               </p>
               <button

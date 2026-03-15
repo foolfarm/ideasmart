@@ -1,96 +1,95 @@
 /**
- * IDEASMART — LinkedIn Auto-Publisher
- * ─────────────────────────────────────────────────────────────────────────────
- * Pubblica automaticamente le 3 notizie più importanti del giorno su LinkedIn.
+ * IDEASMART — LinkedIn Autopost
  *
- * Strategia di selezione top 3:
- *  - 1 notizia dalla sezione AI (posizione 1)
- *  - 1 notizia dalla sezione Music (posizione 1)
- *  - 1 notizia dalla sezione Startup (posizione 1)
+ * Pubblica 1 post giornaliero alle 10:00 CET sul profilo LinkedIn di Andrea Cinelli.
+ * Il post è basato sull'editoriale AI del giorno, riscritto in stile thought leader
+ * da un LLM che imita il tono di Andrea Cinelli (CEO, serial entrepreneur, AI expert).
  *
- * Formato del post LinkedIn:
- *  - Testo con emoji sezione + titolo + sommario + CTA verso IDEASMART
- *  - Link preview ARTICLE con immagine della notizia
- *  - URL di destinazione: pagina sezione su ideasmart.ai
+ * Struttura del post:
+ *  - Hook provocatorio (1-2 righe)
+ *  - Analisi editoriale (3-4 paragrafi brevi, tono diretto e autorevole)
+ *  - CTA verso IDEASMART
  *  - Hashtag tematici
+ *  - Immagine Pexels coerente con il tema
  *
- * Token LinkedIn: scade ogni 2 mesi — aggiornare manualmente in Secrets.
+ * Sezioni supportate: 'ai' e 'startup' (no musica)
  */
 
 import { ENV } from "./_core/env";
-import { getLatestNews } from "./db";
+import { invokeLLM } from "./_core/llm";
+import { getLatestEditorial } from "./db";
+import { findEditorialImage, findStockImage } from "./stockImages";
 
-const LINKEDIN_API_URL = "https://api.linkedin.com/v2/ugcPosts";
+const SITE_BASE_URL = "https://ideasmart.ai";
 
-// Emoji e hashtag per sezione
-const SECTION_META: Record<string, { emoji: string; hashtags: string[]; label: string }> = {
+// ── Sezioni supportate (no musica) ──────────────────────────────────────────
+const SUPPORTED_SECTIONS: Array<"ai" | "startup"> = ["ai", "startup"];
+
+const SECTION_META: Record<string, { label: string; hashtags: string[]; path: string }> = {
   ai: {
-    emoji: "🤖",
     label: "AI4Business",
-    hashtags: ["#AI", "#ArtificialIntelligence", "#Tech", "#Innovation", "#IDEASMART"],
-  },
-  music: {
-    emoji: "🎵",
-    label: "ITsMusic",
-    hashtags: ["#Music", "#MusicIndustry", "#ITsMusic", "#IDEASMART"],
+    hashtags: ["#AI", "#ArtificialIntelligence", "#Tech", "#Innovation", "#IDEASMART", "#FutureOfWork", "#AIBusiness"],
+    path: "/ai",
   },
   startup: {
-    emoji: "🚀",
     label: "Startup News",
-    hashtags: ["#Startup", "#Innovation", "#Entrepreneurship", "#Business", "#IDEASMART"],
+    hashtags: ["#Startup", "#VentureCapital", "#Innovation", "#Entrepreneurship", "#IDEASMART", "#Tech", "#Funding"],
+    path: "/startup",
   },
 };
 
-// URL base del sito e percorsi per sezione
-const SITE_BASE_URL = "https://ideasmart.ai";
-const SECTION_PATHS: Record<string, string> = {
-  ai: "/ai",
-  music: "/music",
-  startup: "/startup",
+// ── Prompt LLM per generare il testo del post ────────────────────────────────
+const SYSTEM_PROMPT = `Sei Andrea Cinelli, CEO di FoolFarm, serial entrepreneur italiano con 20.595 follower su LinkedIn.
+Il tuo stile è:
+- Diretto, autorevole, mai banale
+- Mescoli dati concreti con visione strategica
+- Usi frasi brevi e incisive, mai accademiche
+- Parli in prima persona, come se stessi condividendo una riflessione personale
+- Non usi emoji in modo eccessivo (massimo 2-3 nel post intero)
+- Sei provocatorio ma costruttivo
+- Scrivi in italiano, con qualche termine tecnico in inglese quando necessario
+
+Il tuo pubblico è: CEO, manager, investitori, imprenditori italiani interessati ad AI e startup.`;
+
+const USER_PROMPT_TEMPLATE = (title: string, body: string, keyTrend: string, section: string) => {
+  const meta = SECTION_META[section] ?? SECTION_META.ai;
+  return `Basandoti su questo editoriale di IDEASMART, scrivi un post LinkedIn di alto profilo come se fossi Andrea Cinelli.
+
+TITOLO EDITORIALE: ${title}
+TREND CHIAVE: ${keyTrend || "AI e innovazione"}
+CONTENUTO EDITORIALE:
+${body.slice(0, 1500)}
+
+ISTRUZIONI PER IL POST:
+1. Inizia con un hook provocatorio o una domanda che cattura l'attenzione (1-2 righe)
+2. Scrivi 3-4 paragrafi brevi (2-3 righe ciascuno) con analisi e punto di vista personale
+3. Concludi con una riflessione o call-to-action
+4. Aggiungi questa riga finale ESATTAMENTE così: "📰 Approfondisci su IDEASMART → ${SITE_BASE_URL}${meta.path}"
+5. Poi aggiungi gli hashtag: ${meta.hashtags.join(" ")}
+
+LUNGHEZZA: 1200-1800 caratteri totali (ottimale per LinkedIn)
+LINGUA: Italiano
+STILE: Thought leader, non giornalistico. Parla in prima persona.
+NON includere il titolo dell'editoriale letteralmente — rielaboralo nel tuo stile.`;
 };
 
-/**
- * Pubblica un singolo post su LinkedIn con link preview e immagine.
- * Usa shareMediaCategory: "ARTICLE" per mostrare il link preview con immagine.
- */
+// ── Pubblicazione su LinkedIn API ────────────────────────────────────────────
 async function publishToLinkedIn(
   text: string,
   articleUrl: string,
-  imageUrl?: string | null,
-  articleTitle?: string,
-  articleDescription?: string
+  imageUrl: string | null | undefined,
+  articleTitle: string,
+  articleSummary: string
 ): Promise<{ success: boolean; postId?: string; error?: string }> {
   const token = ENV.linkedinAccessToken;
   const authorUrn = ENV.linkedinAuthorUrn;
 
   if (!token || !authorUrn) {
-    return { success: false, error: "LINKEDIN_ACCESS_TOKEN o LINKEDIN_AUTHOR_URN non configurati" };
+    return { success: false, error: "Credenziali LinkedIn non configurate (LINKEDIN_ACCESS_TOKEN o LINKEDIN_AUTHOR_URN mancanti)" };
   }
 
-  // Costruisce il media per il link preview
-  const media: Record<string, unknown>[] = [
-    {
-      status: "READY",
-      description: {
-        text: articleDescription ? articleDescription.slice(0, 200) : "",
-      },
-      originalUrl: articleUrl,
-      title: {
-        text: articleTitle ? articleTitle.slice(0, 200) : "",
-      },
-      ...(imageUrl
-        ? {
-            thumbnails: [
-              {
-                url: imageUrl,
-              },
-            ],
-          }
-        : {}),
-    },
-  ];
-
-  const body = {
+  // Corpo del post LinkedIn con link preview ARTICLE
+  const body: Record<string, unknown> = {
     author: authorUrn,
     lifecycleState: "PUBLISHED",
     specificContent: {
@@ -99,7 +98,27 @@ async function publishToLinkedIn(
           text,
         },
         shareMediaCategory: "ARTICLE",
-        media,
+        media: [
+          {
+            status: "READY",
+            description: {
+              text: articleSummary.slice(0, 256),
+            },
+            originalUrl: articleUrl,
+            title: {
+              text: articleTitle.slice(0, 200),
+            },
+            ...(imageUrl
+              ? {
+                  thumbnails: [
+                    {
+                      resolvedUrl: imageUrl,
+                    },
+                  ],
+                }
+              : {}),
+          },
+        ],
       },
     },
     visibility: {
@@ -108,7 +127,7 @@ async function publishToLinkedIn(
   };
 
   try {
-    const response = await fetch(LINKEDIN_API_URL, {
+    const response = await fetch("https://api.linkedin.com/v2/ugcPosts", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -120,8 +139,11 @@ async function publishToLinkedIn(
 
     const responseText = await response.text();
 
-    if (response.status === 201) {
-      const postId = response.headers.get("X-RestLi-Id") || response.headers.get("x-restli-id") || "unknown";
+    if (response.ok) {
+      const postId =
+        response.headers.get("X-RestLi-Id") ||
+        response.headers.get("x-restli-id") ||
+        "unknown";
       console.log(`[LinkedIn] ✅ Post pubblicato con successo. ID: ${postId}`);
       return { success: true, postId };
     }
@@ -132,7 +154,6 @@ async function publishToLinkedIn(
     } catch {
       errorData = { raw: responseText };
     }
-
     console.error(`[LinkedIn] ❌ Errore pubblicazione (${response.status}):`, errorData);
     return {
       success: false,
@@ -145,76 +166,49 @@ async function publishToLinkedIn(
   }
 }
 
-/**
- * Formatta il testo del post LinkedIn per una notizia.
- * Il link preview viene gestito separatamente tramite il campo media.
- */
-function formatPostText(
-  section: string,
+// ── Genera testo post con LLM in stile Andrea Cinelli ────────────────────────
+async function generateLinkedInPostText(
   title: string,
-  summary: string
-): string {
-  const meta = SECTION_META[section] ?? SECTION_META.ai;
-  const sectionPath = SECTION_PATHS[section] ?? "/";
-  const siteUrl = `${SITE_BASE_URL}${sectionPath}`;
+  body: string,
+  keyTrend: string,
+  section: string
+): Promise<string> {
+  try {
+    const response = await invokeLLM({
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: USER_PROMPT_TEMPLATE(title, body, keyTrend, section) },
+      ],
+    });
 
-  // Tronca il sommario a 250 caratteri per il corpo del post
-  const shortSummary = summary.length > 250 ? summary.slice(0, 247) + "..." : summary;
-
-  const lines: string[] = [
-    `${meta.emoji} ${title}`,
-    "",
-    shortSummary,
-    "",
-    `📰 Leggi l'articolo completo su IDEASMART → ${siteUrl}`,
-    "",
-    meta.hashtags.join(" "),
-  ];
-
-  return lines.join("\n");
-}
-
-/**
- * Recupera la notizia più importante (posizione 1) per ogni sezione,
- * includendo imageUrl per il link preview LinkedIn.
- */
-async function getTop3News(): Promise<Array<{
-  section: string;
-  title: string;
-  summary: string;
-  sourceUrl?: string | null;
-  imageUrl?: string | null;
-}>> {
-  const sections: Array<"ai" | "music" | "startup"> = ["ai", "music", "startup"];
-  const top3 = [];
-
-  for (const section of sections) {
-    try {
-      const news = await getLatestNews(1, section);
-      if (news.length > 0) {
-        const item = news[0];
-        top3.push({
-          section,
-          title: item.title,
-          summary: item.summary,
-          sourceUrl: item.sourceUrl,
-          imageUrl: item.imageUrl,
-        });
-      }
-    } catch (err) {
-      console.error(`[LinkedIn] ⚠️ Impossibile recuperare notizie per sezione ${section}:`, err);
+    const content = response?.choices?.[0]?.message?.content;
+    if (typeof content === "string" && content.trim().length > 100) {
+      console.log("[LinkedIn] ✅ Testo post generato con LLM");
+      return content.trim();
     }
+    throw new Error("Risposta LLM vuota o troppo corta");
+  } catch (err) {
+    console.warn("[LinkedIn] ⚠️ LLM fallito, uso testo fallback:", err);
+    // Fallback: testo semplice senza LLM
+    const meta = SECTION_META[section] ?? SECTION_META.ai;
+    return [
+      `${title}`,
+      "",
+      body.slice(0, 800),
+      "",
+      `📰 Approfondisci su IDEASMART → ${SITE_BASE_URL}${meta.path}`,
+      "",
+      meta.hashtags.join(" "),
+    ].join("\n");
   }
-
-  return top3;
 }
 
+// ── Funzione principale ───────────────────────────────────────────────────────
 /**
- * Funzione principale: pubblica le 3 notizie top del giorno su LinkedIn.
- * Ogni post include:
- *  - Testo con titolo, sommario e CTA verso IDEASMART
- *  - Link preview ARTICLE con immagine della notizia
- *  - URL di destinazione: pagina sezione su ideasmart.ai
+ * Pubblica 1 post giornaliero su LinkedIn basato sull'editoriale AI del giorno.
+ * Alterna tra sezione 'ai' e 'startup' in base al giorno della settimana:
+ * - Lunedì, Mercoledì, Venerdì, Domenica → AI4Business
+ * - Martedì, Giovedì, Sabato → Startup News
  *
  * Chiamata dallo scheduler giornaliero alle 10:00 CET.
  */
@@ -223,67 +217,89 @@ export async function publishDailyLinkedInPosts(): Promise<{
   errors: string[];
   posts: Array<{ section: string; title: string; success: boolean; postId?: string; error?: string }>;
 }> {
-  console.log("[LinkedIn] 🚀 Avvio pubblicazione giornaliera top 3 notizie...");
+  console.log("[LinkedIn] 🚀 Avvio pubblicazione giornaliera editoriale...");
 
-  const top3 = await getTop3News();
+  // Seleziona la sezione in base al giorno della settimana
+  const dayOfWeek = new Date().getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mer, 4=Gio, 5=Ven, 6=Sab
+  const section: "ai" | "startup" = [1, 3, 5, 0].includes(dayOfWeek) ? "ai" : "startup";
+  const meta = SECTION_META[section];
 
-  if (top3.length === 0) {
-    console.warn("[LinkedIn] ⚠️ Nessuna notizia trovata nel database. Pubblicazione saltata.");
-    return { published: 0, errors: ["Nessuna notizia disponibile"], posts: [] };
+  console.log(`[LinkedIn] 📅 Giorno ${dayOfWeek} → Sezione: ${meta.label}`);
+
+  // 1. Recupera l'editoriale del giorno
+  let editorial;
+  try {
+    editorial = await getLatestEditorial(section);
+  } catch (err) {
+    console.error("[LinkedIn] ❌ Errore recupero editoriale:", err);
+    return { published: 0, errors: ["Errore recupero editoriale dal DB"], posts: [] };
   }
 
-  const results = [];
-  let published = 0;
-  const errors: string[] = [];
+  if (!editorial) {
+    console.warn(`[LinkedIn] ⚠️ Nessun editoriale trovato per sezione '${section}'. Pubblicazione saltata.`);
+    return {
+      published: 0,
+      errors: [`Nessun editoriale disponibile per sezione '${section}'`],
+      posts: [],
+    };
+  }
 
-  // Pubblica con un ritardo di 5 secondi tra un post e l'altro per evitare rate limiting
-  for (let i = 0; i < top3.length; i++) {
-    const news = top3[i];
-    const meta = SECTION_META[news.section] ?? SECTION_META.ai;
-    const sectionPath = SECTION_PATHS[news.section] ?? "/";
+  console.log(`[LinkedIn] 📝 Editoriale trovato: "${editorial.title.slice(0, 60)}..."`);
 
-    // URL di destinazione: pagina sezione su IDEASMART
-    const articleUrl = `${SITE_BASE_URL}${sectionPath}`;
+  // 2. Genera il testo del post con LLM in stile Andrea Cinelli
+  const postText = await generateLinkedInPostText(
+    editorial.title,
+    editorial.body,
+    editorial.keyTrend ?? "",
+    section
+  );
 
-    // Testo del post
-    const postText = formatPostText(news.section, news.title, news.summary);
+  // 3. Recupera immagine: usa quella dell'editoriale o cerca su Pexels
+  let imageUrl = editorial.imageUrl;
+  if (!imageUrl) {
+    console.log("[LinkedIn] 🖼️ Nessuna immagine nell'editoriale, cerco su Pexels...");
+    try {
+      imageUrl = await findEditorialImage(editorial.title, editorial.keyTrend ?? "AI innovation");
+      console.log(`[LinkedIn] 🖼️ Immagine Pexels trovata: ${imageUrl ? "✅" : "❌"}`);
+    } catch (err) {
+      console.warn("[LinkedIn] ⚠️ Errore ricerca immagine Pexels:", err);
+    }
+  } else {
+    console.log("[LinkedIn] 🖼️ Uso immagine dall'editoriale ✅");
+  }
 
-    console.log(`[LinkedIn] 📝 Pubblicazione notizia ${i + 1}/3 — Sezione: ${news.section} (${meta.label})`);
-    console.log(`[LinkedIn]    Titolo: ${news.title.slice(0, 60)}...`);
-    console.log(`[LinkedIn]    Immagine: ${news.imageUrl ? "✅ presente" : "❌ assente"}`);
+  // 4. URL di destinazione: pagina sezione su IDEASMART
+  const articleUrl = `${SITE_BASE_URL}${meta.path}`;
 
-    const result = await publishToLinkedIn(
-      postText,
-      articleUrl,
-      news.imageUrl,
-      news.title,
-      news.summary
-    );
+  // 5. Pubblica su LinkedIn
+  console.log(`[LinkedIn] 🚀 Pubblicazione post — Sezione: ${meta.label}`);
+  console.log(`[LinkedIn]    Titolo editoriale: ${editorial.title.slice(0, 60)}...`);
+  console.log(`[LinkedIn]    Immagine: ${imageUrl ? "✅ presente" : "❌ assente"}`);
+  console.log(`[LinkedIn]    Testo post (prime 200 char): ${postText.slice(0, 200)}...`);
 
-    results.push({
-      section: news.section,
-      title: news.title,
+  const result = await publishToLinkedIn(
+    postText,
+    articleUrl,
+    imageUrl,
+    editorial.title,
+    editorial.subtitle ?? editorial.body.slice(0, 200)
+  );
+
+  const posts = [
+    {
+      section,
+      title: editorial.title,
       success: result.success,
       postId: result.postId,
       error: result.error,
-    });
+    },
+  ];
 
-    if (result.success) {
-      published++;
-    } else {
-      errors.push(`[${news.section}] ${result.error}`);
-    }
-
-    // Pausa tra i post (tranne dopo l'ultimo)
-    if (i < top3.length - 1) {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-    }
+  if (result.success) {
+    console.log(`[LinkedIn] ✅ Post pubblicato con successo per sezione '${section}'`);
+    return { published: 1, errors: [], posts };
+  } else {
+    console.error(`[LinkedIn] ❌ Pubblicazione fallita:`, result.error);
+    return { published: 0, errors: [result.error ?? "Errore sconosciuto"], posts };
   }
-
-  console.log(`[LinkedIn] ✅ Pubblicazione completata: ${published}/${top3.length} post pubblicati`);
-  if (errors.length > 0) {
-    console.error("[LinkedIn] ❌ Errori:", errors);
-  }
-
-  return { published, errors, posts: results };
 }
