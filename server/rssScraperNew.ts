@@ -269,29 +269,31 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
 }
 
 /**
- * Verifica e corregge il sourceUrl di un articolo.
- * Se l'URL è un articolo specifico (non homepage) → usa la homepage del dominio.
- * Se la homepage non risponde → usa il fallback di sezione.
+ * Verifica e preserva il sourceUrl di un articolo.
+ * REGOLA FONDAMENTALE: preservare SEMPRE l'URL dell'articolo (con path).
+ * Usare la homepage solo se l'URL è già una homepage (senza path).
+ * Usare il fallback di sezione solo se l'URL è completamente non valido.
+ * 
+ * NON verificare HTTP qui (troppo lento per lo scraping massivo).
+ * La verifica HTTP avviene nell'audit notturno (nightlyAuditScheduler).
  */
 export async function sanitizeSourceUrl(
   url: string,
   section: "ai" | "music" | "startup"
 ): Promise<string> {
-  // Se è già una homepage (nessun path significativo), verifica e restituisci
   try {
     const parsed = new URL(url);
-    const isHomepage = parsed.pathname === "/" || parsed.pathname === "";
+    const isHomepage = parsed.pathname === "/" || parsed.pathname === "" || parsed.pathname === "//";
     
-    if (isHomepage) {
-      const ok = await verifyUrl(url);
-      return ok ? url : SECTION_FALLBACKS[section];
+    if (!isHomepage) {
+      // È un URL articolo specifico (con path) → PRESERVARE SEMPRE
+      return url;
     }
     
-    // È un URL con path → prendi la homepage
-    const homepage = getHomepageForUrl(url, section);
-    const ok = await verifyUrl(homepage);
-    return ok ? homepage : SECTION_FALLBACKS[section];
+    // È già una homepage (nessun path) → restituire così com'è
+    return url;
   } catch {
+    // URL non valido → usa il fallback di sezione
     return SECTION_FALLBACKS[section];
   }
 }

@@ -1,0 +1,28 @@
+{
+  "query": "SELECT section, COUNT(*) as total,\n  SUM(CASE WHEN LENGTH(sourceUrl) > 30 AND sourceUrl LIKE '%/%/%' THEN 1 ELSE 0 END) as has_article_path,\n  SUM(CASE WHEN sourceUrl LIKE 'https://techcrunch.com' OR sourceUrl LIKE 'https://www.zdnet.com' OR sourceUrl LIKE 'https://venturebeat.com' THEN 1 ELSE 0 END) as homepage_only\nFROM news_items\nGROUP BY section;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as total,\n  SUM(CASE WHEN LENGTH(sourceUrl) > 30 AND sourceUrl LIKE '%/%/%' THEN 1 ELSE 0 END) as has_article_path,\n  SUM(CASE WHEN sourceUrl LIKE 'https://techcrunch.com' OR sourceUrl LIKE 'https://www.zdnet.com' OR sourceUrl LIKE 'https://venturebeat.com' THEN 1 ELSE 0 END) as homepage_only\nFROM news_items\nGROUP BY section;",
+  "rows": [
+    {
+      "section": "ai",
+      "total": "33",
+      "has_article_path": "33",
+      "homepage_only": "0"
+    },
+    {
+      "section": "music",
+      "total": "20",
+      "has_article_path": "20",
+      "homepage_only": "0"
+    },
+    {
+      "section": "startup",
+      "total": "20",
+      "has_article_path": "20",
+      "homepage_only": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotal\thas_article_path\thomepage_only\nai\t33\t33\t0\nmusic\t20\t20\t0\nstartup\t20\t20\t0\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}

@@ -4,13 +4,14 @@
  * 
  * PRINCIPIO: Nessuna notizia viene inventata.
  * Tutte le notizie derivano da feed RSS di fonti giornalistiche reali.
- * Il sourceUrl è SEMPRE la homepage del dominio (mai URL di articolo specifico).
+ * Il sourceUrl è SEMPRE l'URL dell'articolo originale dal feed RSS.
+ * NON viene mai sostituito con la homepage.
  * 
  * Flusso per ogni sezione (AI, Music, Startup):
  * 1. Fetch RSS da tutte le fonti certificate della sezione
  * 2. LLM seleziona i 20 più rilevanti e li traduce in italiano
- * 3. Verifica HTTP del sourceUrl (homepage) prima di salvare
- * 4. Salva nel DB, sostituendo le notizie precedenti
+ * 3. Salva nel DB con l'URL articolo originale dal feed RSS
+ * 4. Audit notturno (nightlyAuditScheduler) verifica e sostituisce URL non raggiungibili
  */
 
 import { getDb } from "./db";
@@ -48,28 +49,23 @@ async function saveScrapedNews(
   for (let i = 0; i < articles.length; i++) {
     const article = articles[i];
 
-    // Usa direttamente l'URL articolo originale dal feed RSS.
-    // Gli URL RSS sono già verificati alla fonte (il feed non include articoli 404).
-    // NON facciamo verifica HTTP bloccante: molti siti bloccano le HEAD request
-    // da server (es. TechCrunch restituisce 404 a HEAD ma 200 a browser).
-    // Validazione: verifica solo che l'URL sia un URL valido con path (non homepage inventata).
+    // REGOLA FONDAMENTALE: preservare SEMPRE l'URL articolo originale dal feed RSS.
+    // Il feed RSS contiene già l'URL diretto all'articolo — non va mai sostituito con la homepage.
+    // Molti feed usano CDN o redirect (feedburner, r.zdnet.com, ecc.) con dominio diverso dalla fonte:
+    // questi sono URL validi e devono essere preservati.
+    // L'audit notturno (nightlyAuditScheduler) verificherà e sostituirà gli URL non raggiungibili.
     let finalSourceUrl = article.sourceUrl;
     try {
       const parsed = new URL(article.sourceUrl);
       const hasPath = parsed.pathname.length > 1; // ha un path reale
-      const sameDomain = parsed.hostname === new URL(article.sourceHomepage).hostname;
       
-      if (hasPath && sameDomain) {
-        finalSourceUrl = article.sourceUrl; // URL articolo reale con path ✓
-      } else if (!hasPath) {
-        // È una homepage → usa la homepage del dominio corretto
-        finalSourceUrl = article.sourceHomepage;
-        console.warn(`[RssNewsScheduler] ⚠️ URL senza path, uso homepage: ${article.sourceUrl}`);
-      } else {
-        // Dominio diverso → anomalia, usa homepage della fonte
-        finalSourceUrl = article.sourceHomepage;
-        console.warn(`[RssNewsScheduler] ⚠️ Dominio incoerente, uso homepage: ${article.sourceUrl}`);
+      if (!hasPath) {
+        // È già una homepage (nessun path) → usa la homepage della fonte
+        finalSourceUrl = article.sourceHomepage || SECTION_FALLBACKS[section];
+        console.warn(`[RssNewsScheduler] ⚠️ URL senza path nel feed, uso homepage: ${article.sourceUrl}`);
       }
+      // Se ha un path (URL articolo specifico) → PRESERVARE SEMPRE
+      // anche se il dominio è diverso (CDN, feedburner, redirect, ecc.)
     } catch {
       finalSourceUrl = article.sourceHomepage || SECTION_FALLBACKS[section];
     }

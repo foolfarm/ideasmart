@@ -1,24 +1,26 @@
 /**
  * URL Audit & Fix — IDEASMART
  * 
- * PRINCIPIO FONDAMENTALE (aggiornato):
+ * PRINCIPIO FONDAMENTALE (v3 — definitivo):
  * - sourceUrl = URL dell'articolo originale (link diretto all'articolo su fonte reale)
- * - L'audit NON deve mai sostituire URL di articoli reali con homepage
+ * - L'audit PRESERVA SEMPRE gli URL con path (= URL articolo specifico)
  * - L'audit corregge SOLO:
- *   1. URL completamente mancanti o "#" → usa homepage della fonte
- *   2. URL di domini non nella whitelist → usa homepage della fonte corretta
- *   3. URL inventati (non provenienti da feed RSS) → usa homepage della fonte
+ *   1. URL completamente mancanti, "#" o troppo corti (< 15 char)
+ *   2. URL senza path (= homepage) → usa homepage della fonte corretta
  * 
  * COSA NON FA:
+ * - NON fa whitelist per dominio (molti articoli hanno CDN/redirect con dominio diverso)
  * - NON sostituisce URL di articoli reali (con path) con homepage
  * - NON fa verifica HTTP bloccante (molti siti bloccano HEAD da server)
+ * 
+ * La verifica HTTP avviene nel nightlyAuditScheduler (02:00 CET) che sostituisce
+ * gli URL non raggiungibili con notizie fresche da RSS.
  */
 
 import { getDb } from "./db";
 import { newsItems } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
-import { SECTION_FALLBACKS, AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES } from "./rssSources";
-import type { RssSource } from "./rssSources";
+import { SECTION_FALLBACKS } from "./rssSources";
 
 export interface AuditResult {
   total: number;
@@ -30,33 +32,26 @@ export interface AuditResult {
 }
 
 /**
- * Verifica se un URL è una homepage (nessun path significativo)
+ * Verifica se un URL è una homepage (nessun path significativo).
+ * Un URL con path (es. /2026/03/article-title) è un articolo specifico → PRESERVARE.
  */
 function isHomepageUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return parsed.pathname === "/" || parsed.pathname === "" || parsed.pathname === "//";
+    const path = parsed.pathname;
+    return path === "/" || path === "" || path === "//" || path.length <= 1;
   } catch {
     return false;
   }
 }
 
 /**
- * Verifica se un URL appartiene a un dominio nella whitelist della sezione.
- * Se sì, l'URL è considerato valido (proviene da un feed RSS certificato).
+ * Verifica se un URL è valido (ha schema http/https e un hostname).
  */
-function isWhitelistedDomain(url: string, section: "ai" | "music" | "startup"): boolean {
+function isValidUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    const hostname = parsed.hostname.replace(/^www\./, "");
-    
-    const sources: RssSource[] = section === "ai" ? AI_SOURCES : section === "music" ? MUSIC_SOURCES : STARTUP_SOURCES;
-    return sources.some(s => {
-      try {
-        const srcHostname = new URL(s.homepage).hostname.replace(/^www\./, "");
-        return hostname === srcHostname || hostname.endsWith("." + srcHostname);
-      } catch { return false; }
-    });
+    return (parsed.protocol === "http:" || parsed.protocol === "https:") && parsed.hostname.length > 3;
   } catch {
     return false;
   }
@@ -64,8 +59,8 @@ function isWhitelistedDomain(url: string, section: "ai" | "music" | "startup"): 
 
 /**
  * Audit rapido post-scraping: verifica solo le notizie appena inserite.
- * Corregge SOLO URL mancanti o di domini non in whitelist.
- * PRESERVA gli URL di articoli reali provenienti da feed RSS certificati.
+ * PRESERVA gli URL con path (articoli specifici).
+ * Corregge SOLO URL mancanti o homepage.
  */
 export async function auditRecentNews(
   section: "ai" | "music" | "startup",
@@ -88,32 +83,33 @@ export async function auditRecentNews(
   await Promise.all(rows.map(async (row) => {
     const url = row.sourceUrl || "";
     
-    // Caso 1: URL mancante o placeholder → usa fallback di sezione
-    if (!url || url === "#" || url.length < 10) {
+    // Caso 1: URL mancante, placeholder o troppo corto → usa fallback di sezione
+    if (!url || url === "#" || url.length < 15 || !isValidUrl(url)) {
       try {
         await db.update(newsItems)
           .set({ sourceUrl: SECTION_FALLBACKS[section] })
           .where(eq(newsItems.id, row.id));
         fixed++;
-        console.log(`[UrlAuditFix] Fix URL mancante → ${SECTION_FALLBACKS[section]} (ID: ${row.id})`);
+        console.log(`[UrlAuditFix] Fix URL non valido → ${SECTION_FALLBACKS[section]} (ID: ${row.id})`);
       } catch { failed++; }
       return;
     }
 
-    // Caso 2: URL di dominio in whitelist → PRESERVA (è un articolo reale da RSS)
-    if (isWhitelistedDomain(url, section)) {
+    // Caso 2: URL con path (articolo specifico) → PRESERVA SEMPRE
+    // Non importa il dominio: CDN, feedburner, redirect sono tutti validi
+    if (!isHomepageUrl(url)) {
       ok++;
       return;
     }
 
-    // Caso 3: URL di dominio NON in whitelist → potrebbe essere inventato
-    // Usa il fallback di sezione come sicurezza
+    // Caso 3: URL è una homepage (nessun path) → usa homepage della fonte
+    // Questo può succedere se il feed RSS non include l'URL dell'articolo
     try {
       await db.update(newsItems)
         .set({ sourceUrl: SECTION_FALLBACKS[section] })
         .where(eq(newsItems.id, row.id));
       fixed++;
-      console.log(`[UrlAuditFix] Fix dominio non in whitelist: ${url.slice(0, 60)} → ${SECTION_FALLBACKS[section]} (ID: ${row.id})`);
+      console.log(`[UrlAuditFix] Fix homepage URL → ${SECTION_FALLBACKS[section]} (ID: ${row.id})`);
     } catch { failed++; }
   }));
 
@@ -122,8 +118,8 @@ export async function auditRecentNews(
 
 /**
  * Fix completo di tutte le notizie nel DB.
- * Corregge SOLO URL mancanti o di domini non in whitelist.
- * PRESERVA gli URL di articoli reali provenienti da feed RSS certificati.
+ * PRESERVA gli URL con path (articoli specifici).
+ * Corregge SOLO URL mancanti o homepage.
  */
 export async function fixAllSourceUrls(options: {
   section?: "ai" | "music" | "startup";
@@ -166,13 +162,14 @@ export async function fixAllSourceUrls(options: {
       const sec = row.section as "ai" | "music" | "startup";
       result.checked++;
 
-      // URL mancante → usa fallback
-      if (!url || url === "#" || url.length < 10) {
+      // URL non valido o troppo corto → usa fallback
+      if (!url || url === "#" || url.length < 15 || !isValidUrl(url)) {
         try {
           await db.update(newsItems)
             .set({ sourceUrl: SECTION_FALLBACKS[sec] })
             .where(eq(newsItems.id, row.id));
           result.fixed++;
+          console.log(`[UrlAuditFix] Fix URL non valido: "${url.slice(0, 40)}" → ${SECTION_FALLBACKS[sec]} (ID: ${row.id})`);
         } catch (err) {
           result.failed++;
           result.errors.push(`ID ${row.id}: ${(err as Error).message}`);
@@ -180,19 +177,19 @@ export async function fixAllSourceUrls(options: {
         return;
       }
 
-      // URL di dominio in whitelist → PRESERVA
-      if (isWhitelistedDomain(url, sec)) {
+      // URL con path (articolo specifico) → PRESERVA SEMPRE
+      if (!isHomepageUrl(url)) {
         result.alreadyOk++;
         return;
       }
 
-      // URL di dominio NON in whitelist → usa fallback
+      // URL è una homepage → usa fallback
       try {
         await db.update(newsItems)
           .set({ sourceUrl: SECTION_FALLBACKS[sec] })
           .where(eq(newsItems.id, row.id));
         result.fixed++;
-        console.log(`[UrlAuditFix] Fix dominio non in whitelist: ${url.slice(0, 60)} → ${SECTION_FALLBACKS[sec]} (ID: ${row.id})`);
+        console.log(`[UrlAuditFix] Fix homepage URL: "${url.slice(0, 60)}" → ${SECTION_FALLBACKS[sec]} (ID: ${row.id})`);
       } catch (err) {
         result.failed++;
         result.errors.push(`ID ${row.id}: ${(err as Error).message}`);

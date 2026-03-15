@@ -631,15 +631,15 @@
 - [x] Aggiornato schedulerManager.ts: 15 scheduler con orari corretti CET
 
 ## Fix critico link notizie (15 Mar 2026 — Eliminazione pagine intermedie)
-- [ ] Eliminare tutte le pagine intermedie AI-generate per le notizie (NewsArticle, MusicNewsArticle, StartupNewsArticle)
-- [ ] Tutti i link alle notizie puntano direttamente alla sourceUrl originale (fonte esterna)
-- [ ] Rimuovere rotte /ai/news/:id, /music/news/:id, /startup/news/:id da App.tsx
-- [ ] Correggere editoriale Home: "CONTINUA A LEGGERE" punta alla pagina editoriale interna /ai/editorial/:id
-- [ ] Aggiungere pulsante Back (← Torna indietro) in tutte le pagine interne (EditorialDetail, ReportageDetail, MarketAnalysisDetail, StartupOfDayDetail)
-- [ ] Tutti i link alle notizie aprono nella stessa finestra (rimuovere target="_blank")
-- [ ] Newsletter test spostata alle 07:30 CET (era 08:30)
-- [ ] Newsletter massiva confermata alle 09:30 CET (solo lunedì)
-- [ ] Pulire DB: eliminare notizie con link non validi e sostituire con RSS freschi
+- [x] Eliminare tutte le pagine intermedie AI-generate per le notizie (NewsArticle, MusicNewsArticle, StartupNewsArticle)
+- [x] Tutti i link alle notizie puntano direttamente alla sourceUrl originale (fonte esterna)
+- [x] Rimuovere rotte /ai/news/:id, /music/news/:id, /startup/news/:id da App.tsx
+- [x] Correggere editoriale Home: "CONTINUA A LEGGERE" punta alla pagina editoriale interna /ai/editorial/:id
+- [x] Aggiungere pulsante Back (← Torna indietro) in tutte le pagine interne (EditorialDetail, ReportageDetail, MarketAnalysisDetail, StartupOfDayDetail)
+- [x] Tutti i link alle notizie aprono nella stessa finestra (rimuovere target="_blank")
+- [x] Newsletter test spostata alle 07:30 CET (era 08:30)
+- [x] Newsletter massiva confermata alle 09:30 CET (solo lunedì)
+- [x] Pulire DB: eliminare notizie con link non validi e sostituire con RSS freschi
 
 ## Fix critico link notizie + Scheduler (15 Mar 2026)
 
@@ -652,3 +652,22 @@
 - [x] Orario newsletter test aggiornato da 08:30 a 07:30 CET ogni lunedì
 - [x] Orario newsletter massiva confermato a 09:30 CET ogni lunedì
 - [x] Logo IdeaSmart cliccabile → Home in tutte le pagine (sessione precedente)
+
+## Integrazione 250 feed RSS + Pipeline AI + LinkedIn (15 Mar 2026)
+
+- [ ] Aggiornare rssSources.ts con tutti i 250 feed RSS nelle 5 categorie (AI, Startup Italia, VC, Tech globale, Musica Rock/Indie)
+- [ ] Aggiornare scraper RSS per gestire più fonti con rotazione, deduplicazione e fallback
+- [ ] Pipeline AI summarization: RSS → riassunto AI → salvataggio nel DB (titolo, summary, sourceUrl, imageUrl)
+- [ ] LinkedIn autopost: pubblica le top 3 notizie del giorno su LinkedIn (API LinkedIn OAuth)
+- [ ] Admin dashboard: pulsante "Pubblica su LinkedIn Ora" per trigger manuale
+- [ ] Test pipeline completa: scraping → AI summary → sito + newsletter + LinkedIn
+
+## Reset DB + Fix scraper URL articolo (15 Mar 2026 — CRITICO)
+- [x] Analisi bug: rssNewsScheduler.ts usava controllo sameDomain che sostituiva URL articolo con homepage
+- [x] Analisi bug: urlAuditFix.ts usava whitelist per dominio che sostituiva URL CDN/redirect con homepage
+- [x] Reset completo DB: tutte le notizie da news_items eliminate
+- [x] Corretto rssNewsScheduler.ts: preserva sempre URL articolo dal feed RSS, rimosso controllo sameDomain
+- [x] Corretto urlAuditFix.ts: preserva URL con path (articolo), corregge solo URL senza path o non validi
+- [x] Aggiornato rssSources.ts: 178 fonti RSS (87 AI + 36 Music + 55 Startup)
+- [x] Nuovo scraping immediato da 178 fonti RSS
+- [x] Verifica qualità: 60/60 URL articolo specifico (100%) — zero homepage

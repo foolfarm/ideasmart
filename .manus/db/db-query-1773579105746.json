@@ -1,0 +1,85 @@
+{
+  "query": "SELECT section, title, sourceUrl FROM news_items ORDER BY section, id LIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, title, sourceUrl FROM news_items ORDER BY section, id LIMIT 15;",
+  "rows": [
+    {
+      "section": "ai",
+      "title": "Come i Modelli Vision-Language Vengono Addestrati da Zero",
+      "sourceUrl": "https://towardsdatascience.com/how-vision-language-models-are-trained-from-scratch/"
+    },
+    {
+      "section": "ai",
+      "title": "Deep Agents di LangChain: Agenti AI Multistep Più Affidabili",
+      "sourceUrl": "https://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-planning-memory-and-context-isolation-in-multi-step-ai-agents/"
+    },
+    {
+      "section": "ai",
+      "title": "Anduril si aggiudica un Contratto Militare da 20 Miliardi di Dollari",
+      "sourceUrl": "https://www.techbuzz.ai/articles/anduril-lands-20b-army-contract-biggest-defense-tech-deal-yet"
+    },
+    {
+      "section": "ai",
+      "title": "Zhipu AI presenta GLM-OCR: Rivoluzione nell'OCR Multimodale",
+      "sourceUrl": "https://www.marktechpost.com/2026/03/15/zhipu-ai-introduces-glm-ocr-a-0-9b-multimodal-ocr-model-for-document-parsing-and-key-information-extraction-kie/"
+    },
+    {
+      "section": "ai",
+      "title": "Meta Prevede Tagli del 20% per Finanziare l'Infrastruttura AI",
+      "sourceUrl": "https://www.techbuzz.ai/articles/meta-eyes-20-workforce-cut-to-fund-ai-infrastructure-push"
+    },
+    {
+      "section": "ai",
+      "title": "Google DeepMind lancia Aletheia: L'AI per la Ricerca Scientifica Autonoma",
+      "sourceUrl": "https://www.marktechpost.com/2026/03/13/google-deepmind-introduces-aletheia-the-ai-agent-moving-from-math-competitions-to-fully-autonomous-professional-research-discoveries/"
+    },
+    {
+      "section": "ai",
+      "title": "Musk's xAI Rilancia Strumento di Codifica AI, Assumendo Dirigenti Cursor",
+      "sourceUrl": "https://www.techbuzz.ai/articles/musk-s-xai-scraps-ai-coding-tool-poaches-cursor-execs"
+    },
+    {
+      "section": "ai",
+      "title": "Come passare da ChatGPT a Claude senza perdere contesto",
+      "sourceUrl": "https://www.analyticsvidhya.com/blog/2026/03/how-to-switch-from-chatgpt-to-claude/"
+    },
+    {
+      "section": "ai",
+      "title": "Guida per Principianti alla Creazione di Agenti AI Autonomi con MaxClaw",
+      "sourceUrl": "https://www.analyticsvidhya.com/blog/2026/03/maxclaw-cloud-ai-agent-for-autonomous-workflows/"
+    },
+    {
+      "section": "ai",
+      "title": "Nyne Raccoglie 5.3 Milioni di Dollari per Risolvere il Problema del Contesto degli Agenti AI",
+      "sourceUrl": "https://www.techbuzz.ai/articles/nyne-raises-5-3m-to-solve-ai-agents-context-problem"
+    },
+    {
+      "section": "ai",
+      "title": "Il paradosso dei Multi-Agent: Google DeepMind rivela criticità",
+      "sourceUrl": "https://towardsdatascience.com/the-multi-agent-trap/"
+    },
+    {
+      "section": "ai",
+      "title": "Digg Chiude Dopo 2 Mesi: Travolto dallo Spam dei Bot AI",
+      "sourceUrl": "https://www.techbuzz.ai/articles/digg-shuts-down-after-2-months-as-ai-bot-spam-overwhelms-platform"
+    },
+    {
+      "section": "ai",
+      "title": "Perché il Prompt Caching è essenziale per le LLM aziendali",
+      "sourceUrl": "https://towardsdatascience.com/why-care-about-promp-caching-in-llms/"
+    },
+    {
+      "section": "ai",
+      "title": "Xbox Gaming Copilot AI in Arrivo sulle Console Quest'Anno",
+      "sourceUrl": "https://www.techbuzz.ai/articles/xbox-gaming-copilot-ai-hits-consoles-this-year"
+    },
+    {
+      "section": "ai",
+      "title": "AWS Collabora con Cerebras per Accelerare l'Inferenza AI",
+      "sourceUrl": "https://www.techbuzz.ai/articles/aws-teams-with-cerebras-to-turbocharge-ai-inference"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttitle\tsourceUrl\nai\tCome i Modelli Vision-Language Vengono Addestrati da Zero\thttps://towardsdatascience.com/how-vision-language-models-are-trained-from-scratch/\nai\tDeep Agents di LangChain: Agenti AI Multistep Più Affidabili\thttps://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-planning-memory-and-context-isolation-in-multi-step-ai-agents/\nai\tAnduril si aggiudica un Contratto Militare da 20 Miliardi di Dollari\thttps://www.techbuzz.ai/articles/anduril-lands-20b-army-contract-biggest-defense-tech-deal-yet\nai\tZhipu AI presenta GLM-OCR: Rivoluzione nell'OCR Multimodale\thttps://www.marktechpost.com/2026/03/15/zhipu-ai-introduces-glm-ocr-a-0-9b-multimodal-ocr-model-for-document-parsing-and-key-information-extraction-kie/\nai\tMeta Prevede Tagli del 20% per Finanziare l'Infrastruttura AI\thttps://www.techbuzz.ai/articles/meta-eyes-20-workforce-cut-to-fund-ai-infrastructure-push\nai\tGoogle DeepMind lancia Aletheia: L'AI per la Ricerca Scientifica Autonoma\thttps://www.marktechpost.com/2026/03/13/google-deepmind-introduces-aletheia-the-ai-agent-moving-from-math-competitions-to-fully-autonomous-professional-research-discoveries/\nai\tMusk's xAI Rilancia Strumento di Codifica AI, Assumendo Dirigenti Cursor\thttps://www.techbuzz.ai/articles/musk-s-xai-scraps-ai-coding-tool-poaches-cursor-execs\nai\tCome passare da ChatGPT a Claude senza perdere contesto\thttps://www.analyticsvidhya.com/blog/2026/03/how-to-switch-from-chatgpt-to-claude/\nai\tGuida per Principianti alla Creazione di Agenti AI Autonomi con MaxClaw\thttps://www.analyticsvidhya.com/blog/2026/03/maxclaw-cloud-ai-agent-for-autonomous-workflows/\nai\tNyne Raccoglie 5.3 Milioni di Dollari per Risolvere il Problema del Contesto degli Agenti AI\thttps://www.techbuzz.ai/articles/nyne-raises-5-3m-to-solve-ai-agents-context-problem\nai\tIl paradosso dei Multi-Agent: Google DeepMind rivela criticità\thttps://towardsdatascience.com/the-multi-agent-trap/\nai\tDigg Chiude Dopo 2 Mesi: Travolto dallo Spam dei Bot AI\thttps://www.techbuzz.ai/articles/digg-shuts-down-after-2-months-as-ai-bot-spam-overwhelms-platform\nai\tPerché il Prompt Caching è essenziale per le LLM aziendali\thttps://towardsdatascience.com/why-care-about-promp-caching-in-llms/\nai\tXbox Gaming Copilot AI in Arrivo sulle Console Quest'Anno\thttps://www.techbuzz.ai/articles/xbox-gaming-copilot-ai-hits-consoles-this-year\nai\tAWS Collabora con Cerebras per Accelerare l'Inferenza AI\thttps://www.techbuzz.ai/articles/aws-teams-with-cerebras-to-turbocharge-ai-inference\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}
