@@ -77,7 +77,7 @@ Per ogni notizia fornisci:
 - summary: riassunto editoriale (2-3 frasi, max 250 caratteri)
 - category: una tra [${NEWS_CATEGORIES.join(", ")}]
 - sourceName: nome della fonte (es. "VentureBeat", "TechCrunch", "Il Sole 24 Ore", "MIT Sloan", ecc.)
-- sourceUrl: URL reale e verificabile dell'articolo originale
+- sourceUrl: URL homepage del sito sorgente (es. https://techcrunch.com, https://www.wired.com) — NON inventare URL di articoli specifici
 - publishedAt: data di pubblicazione in formato YYYY-MM-DD (es. "2026-03-12")
 
 Criteri editoriali:
@@ -167,7 +167,7 @@ Per ogni notizia fornisci:
 - summary: riassunto editoriale (2-3 frasi, max 250 caratteri)
 - category: una tra [${MUSIC_CATEGORIES.join(", ")}]
 - sourceName: nome della fonte (es. "Rolling Stone", "Billboard", "NME", "Rockol", "Il Manifesto", ecc.)
-- sourceUrl: URL reale e verificabile dell'articolo originale
+- sourceUrl: URL homepage del sito sorgente (es. https://techcrunch.com, https://www.wired.com) — NON inventare URL di articoli specifici
 - publishedAt: data di pubblicazione in formato YYYY-MM-DD
 
 Criteri editoriali:

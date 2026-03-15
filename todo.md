@@ -552,3 +552,10 @@
 - [x] Aggiunto link "Startup News" nella HubNavbar (Home.tsx), MusicNavbar (MusicHome.tsx) e Navbar AI (Navbar.tsx)
 - [x] Aggiunte procedure admin refreshStartupNews e refreshStartupContent nel router
 - [x] Generate le prime 20 notizie + editoriale + startup settimana + 4 reportage + 4 analisi mercato nel DB
+
+## Fix Startup News (15 Mar 2026)
+- [x] Creata pagina StartupNewsArticle.tsx dedicata (non più redirect a ITsMusic)
+- [x] Corretti 20 URL sorgenti Startup da URL articoli inventati a homepage reali
+- [x] Corretto prompt startupScheduler per generare URL homepage
+- [x] Corretto prompt musicScheduler per generare URL homepage
+- [x] Corretto prompt newsScheduler per generare URL homepage

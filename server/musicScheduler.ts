@@ -38,7 +38,7 @@ Restituisci un JSON con questa struttura:
       "title": "Titolo della notizia (max 80 caratteri)",
       "summary": "Riassunto in 2-3 frasi (max 200 caratteri)",
       "category": "Categoria (es: Rock, Indie Italia, AI Music, Industria, Tour & Live, Streaming, Label & Diritti)",
-      "sourceUrl": "URL fonte reale (Billboard, Rolling Stone, NME, Pitchfork, Il Sole 24 Ore, ecc.)",
+      "sourceUrl": "URL homepage del sito sorgente (es. https://www.billboard.com, https://www.rollingstone.com, https://www.nme.com) — NON inventare URL di articoli specifici",
       "sourceName": "Nome fonte"
     }
   ]

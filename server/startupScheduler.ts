@@ -37,7 +37,7 @@ Restituisci un JSON con questa struttura:
       "title": "Titolo della notizia (max 80 caratteri)",
       "summary": "Riassunto in 2-3 frasi (max 200 caratteri)",
       "category": "Categoria (dalla lista sopra)",
-      "sourceUrl": "URL fonte reale (Il Sole 24 Ore, TechCrunch, Wired, Startup Italia, Forbes, Reuters, ecc.)",
+      "sourceUrl": "URL homepage del sito sorgente (es. https://techcrunch.com, https://www.startupitalia.eu, https://www.ilsole24ore.com) — NON inventare URL di articoli specifici",
       "sourceName": "Nome fonte"
     }
   ]

@@ -19,6 +19,7 @@ import NotificationPreferences from "./pages/NotificationPreferences";
 import Advertise from "./pages/Advertise";
 import NewsArticle from "./pages/NewsArticle";
 import MusicNewsArticle from "./pages/MusicNewsArticle";
+import StartupNewsArticle from "./pages/StartupNewsArticle";
 import NotFound from "./pages/NotFound";
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -37,7 +38,7 @@ function Router() {
       <Route path="/advertise" component={Advertise} />
       <Route path="/ai/news/:id" component={NewsArticle} />
       <Route path="/music/news/:id" component={MusicNewsArticle} />
-      <Route path="/startup/news/:id" component={MusicNewsArticle} />
+      <Route path="/startup/news/:id" component={StartupNewsArticle} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
