@@ -1,0 +1,38 @@
+{
+  "query": "SELECT section, COUNT(*) as totale FROM news_items GROUP BY section ORDER BY section;\nSELECT section, COUNT(*) as url_specifici FROM news_items WHERE sourceUrl REGEXP '^https?://[^/]+/.+' GROUP BY section ORDER BY section;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as totale FROM news_items GROUP BY section ORDER BY section;\nSELECT section, COUNT(*) as url_specifici FROM news_items WHERE sourceUrl REGEXP '^https?://[^/]+/.+' GROUP BY section ORDER BY section;",
+  "rows": [
+    {
+      "section": "ai",
+      "totale": "20"
+    },
+    {
+      "section": "music",
+      "totale": "20"
+    },
+    {
+      "section": "startup",
+      "totale": "20"
+    },
+    {
+      "section": "section",
+      "totale": "url_specifici"
+    },
+    {
+      "section": "ai",
+      "totale": "20"
+    },
+    {
+      "section": "music",
+      "totale": "20"
+    },
+    {
+      "section": "startup",
+      "totale": "7"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotale\nai\t20\nmusic\t20\nstartup\t20\nsection\turl_specifici\nai\t20\nmusic\t20\nstartup\t7\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

@@ -29,26 +29,27 @@
  */
 
 import cron from "node-cron";
-import { refreshNewsIfNeeded } from "./newsScheduler";
+import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS } from "./rssNewsScheduler";
+// NOTA: refreshNewsIfNeeded rimosso — ora usiamo scraping RSS reale (nessuna notizia inventata)
 import { runDailyContentRefresh } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
 import { sendWeeklyNewsletter } from "./newsletterScheduler";
 import {
-  generateMusicNews,
   generateMusicEditorial,
   generateArtistOfWeek,
   generateMusicReportage,
   generateMusicMarketAnalysis,
 } from "./musicScheduler";
+// generateMusicNews rimosso — ora usiamo refreshMusicNewsFromRSS
 import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
-  generateStartupNews,
   generateStartupEditorial,
   generateStartupOfWeek,
   generateStartupReportage,
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
+// generateStartupNews rimosso — ora usiamo refreshStartupNewsFromRSS
 
 const TZ = "Europe/Rome";
 
@@ -75,14 +76,14 @@ export function startAllSchedulers(): void {
   // SEZIONE /ai — AI4Business News
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 1. NEWS AI — ogni giorno alle 00:00 CET ──────────────────────────────
+  // ── 1. NEWS AI — ogni giorno alle 00:00 CET (SCRAPING RSS REALE) ──────────
   cron.schedule("0 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio aggiornamento News AI...");
+    console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio scraping RSS News AI (fonti reali)...");
     try {
-      await refreshNewsIfNeeded();
-      console.log("[SchedulerManager] ✅ News AI aggiornate con successo");
+      await refreshAINewsFromRSS();
+      console.log("[SchedulerManager] ✅ News AI aggiornate da fonti RSS reali");
     } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore aggiornamento News AI:", err);
+      console.error("[SchedulerManager] ❌ Errore scraping RSS News AI:", err);
     }
   }, { timezone: TZ });
 
@@ -123,14 +124,14 @@ export function startAllSchedulers(): void {
   // SEZIONE /music — ITsMusic
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 5. NEWS MUSICALI — ogni giorno alle 00:30 CET ────────────────────────
+  // ── 5. NEWS MUSICALI — ogni giorno alle 00:30 CET (SCRAPING RSS REALE) ─────
   cron.schedule("30 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:30 CET — Avvio aggiornamento News Musicali...");
+    console.log("[SchedulerManager] ⏰ 00:30 CET — Avvio scraping RSS News Musicali (fonti reali)...");
     try {
-      await generateMusicNews();
-      console.log("[SchedulerManager] ✅ News Musicali aggiornate con successo");
+      await refreshMusicNewsFromRSS();
+      console.log("[SchedulerManager] ✅ News Musicali aggiornate da fonti RSS reali");
     } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore aggiornamento News Musicali:", err);
+      console.error("[SchedulerManager] ❌ Errore scraping RSS News Musicali:", err);
     }
   }, { timezone: TZ });
 
@@ -172,14 +173,14 @@ export function startAllSchedulers(): void {
   // SEZIONE /startup — Startup News
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 9. NEWS STARTUP — ogni giorno alle 01:00 CET ─────────────────────────
+  // ── 9. NEWS STARTUP — ogni giorno alle 01:00 CET (SCRAPING RSS REALE) ──────
   cron.schedule("0 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio aggiornamento Startup News...");
+    console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio scraping RSS Startup News (fonti reali)...");
     try {
-      await generateStartupNews();
-      console.log("[SchedulerManager] ✅ Startup News aggiornate con successo");
+      await refreshStartupNewsFromRSS();
+      console.log("[SchedulerManager] ✅ Startup News aggiornate da fonti RSS reali");
     } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore aggiornamento Startup News:", err);
+      console.error("[SchedulerManager] ❌ Errore scraping RSS Startup News:", err);
     }
   }, { timezone: TZ });
 
@@ -262,15 +263,15 @@ export function startAllSchedulers(): void {
 
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");
-  console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET");
+  console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   ✍️  Editoriale AI    → ogni giorno alle 00:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage AI     → ogni lunedì alle 00:15 CET");
   console.log("[SchedulerManager]   📊 Analisi AI       → ogni lunedì alle 00:20 CET");
-  console.log("[SchedulerManager]   🎸 News Musica      → ogni giorno alle 00:30 CET");
+  console.log("[SchedulerManager]   🎸 News Musica      → ogni giorno alle 00:30 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   🎵 Editoriale Music → ogni giorno alle 00:35 CET");
   console.log("[SchedulerManager]   🎤 Reportage Music  → ogni lunedì alle 00:45 CET");
   console.log("[SchedulerManager]   🎼 Analisi Music    → ogni lunedì alle 00:50 CET");
-  console.log("[SchedulerManager]   🚀 News Startup     → ogni giorno alle 01:00 CET");
+  console.log("[SchedulerManager]   🚀 News Startup     → ogni giorno alle 01:00 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   ✍️  Editoriale Startup → ogni giorno alle 01:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
   console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");

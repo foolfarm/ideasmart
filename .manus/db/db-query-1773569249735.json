@@ -1,0 +1,60 @@
+{
+  "query": "\nSELECT section, COUNT(*) as totale FROM news_items GROUP BY section;\nSELECT section, COUNT(*) as url_specifici FROM news_items WHERE sourceUrl REGEXP '^https?://[^/]+/.+' GROUP BY section;\nSELECT id, section, sourceName, LEFT(sourceUrl, 80) as sourceUrl FROM news_items WHERE sourceUrl REGEXP '^https?://[^/]+/.+' LIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT section, COUNT(*) as totale FROM news_items GROUP BY section;\nSELECT section, COUNT(*) as url_specifici FROM news_items WHERE sourceUrl REGEXP '^https?://[^/]+/.+' GROUP BY section;\nSELECT id, section, sourceName, LEFT(sourceUrl, 80) as sourceUrl FROM news_items WHERE sourceUrl REGEXP '^https?://[^/]+/.+' LIMIT 20;\n",
+  "rows": [
+    {
+      "section": "ai",
+      "totale": "20"
+    },
+    {
+      "section": "music",
+      "totale": "20"
+    },
+    {
+      "section": "startup",
+      "totale": "20"
+    },
+    {
+      "section": "section",
+      "totale": "url_specifici"
+    },
+    {
+      "section": "ai",
+      "totale": "20"
+    },
+    {
+      "section": "startup",
+      "totale": "7"
+    },
+    {
+      "section": "music",
+      "totale": "20"
+    }
+  ],
+  "messages": [
+    "id\tsection\tsourceName\tsourceUrl",
+    "150003\tai\tOpenAI Blog\thttps://openai.com/index/hello-gpt-4o/",
+    "150004\tai\tHarvard Business Review\thttps://hbr.org/2024/05/the-future-of-customer-service-is-ai-powered",
+    "150005\tai\tIntel Newsroom\thttps://www.intel.com/content/www/us/en/newsroom/news/intel-gaudi-3-ai-accelerat",
+    "150006\tai\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/startup-italiane-ai-salute-finanziamenti-AEzL3hD",
+    "150007\tai\tParlamento Europeo\thttps://www.europarl.europa.eu/news/it/press-room/20240308IPR19015/il-parlamento",
+    "150008\tai\tTechCrunch\thttps://techcrunch.com/2024/02/29/figure-ai-raises-675m-from-microsoft-nvidia-an",
+    "150009\tai\tHarvard Business Review\thttps://hbr.org/2023/10/how-generative-ai-is-changing-the-future-of-work",
+    "150010\tai\tGoogle DeepMind\thttps://deepmind.google/discover/blog/alphafold-3-achieves-unprecedented-predict",
+    "150011\tai\tCommissione Europea\thttps://commission.europa.eu/strategy-and-policy/priorities-2019-2024/europe-fit",
+    "150012\tai\tNATO News\thttps://www.nato.int/cps/en/natohq/news_224677.htm",
+    "150013\tai\tThe Wall Street Journal\thttps://www.wsj.com/tech/ai/microsoft-openai-stargate-supercomputer-100-billion-",
+    "150014\tai\tBloomberg\thttps://www.bloomberg.com/news/articles/2023-05-25/jpmorgan-is-using-ai-to-help-",
+    "150015\tai\tGoogle DeepMind\thttps://deepmind.google/discover/blog/alphafold-3-opens-new-frontiers-in-life-sc",
+    "150016\tai\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/startup-italiane-puntano-medio-oriente-e-nord-af",
+    "150017\tai\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/intelligenza-artificiale-startup-italiane-finanz",
+    "150018\tai\tOpenAI Blog\thttps://openai.com/index/hello-gpt-4o/",
+    "150019\tai\tGoogle DeepMind Blog\thttps://deepmind.google/discover/blog/project-astra-our-vision-for-the-future-of",
+    "150020\tai\tNature Biotechnology\thttps://www.nature.com/articles/s41587-023-01990-0",
+    "150021\tai\tMicrosoft Official Blog\thttps://blogs.microsoft.com/on-the-issues/2024/04/16/microsoft-g42-ai-partnershi",
+    "150022\tai\tParlamento Europeo\thttps://www.europarl.europa.eu/news/it/press-room/20240308IPR19015/il-parlamento"
+  ],
+  "stdout": "section\ttotale\nai\t20\nmusic\t20\nstartup\t20\nsection\turl_specifici\nai\t20\nstartup\t7\nmusic\t20\nid\tsection\tsourceName\tsourceUrl\n150003\tai\tOpenAI Blog\thttps://openai.com/index/hello-gpt-4o/\n150004\tai\tHarvard Business Review\thttps://hbr.org/2024/05/the-future-of-customer-service-is-ai-powered\n150005\tai\tIntel Newsroom\thttps://www.intel.com/content/www/us/en/newsroom/news/intel-gaudi-3-ai-accelerat\n150006\tai\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/startup-italiane-ai-salute-finanziamenti-AEzL3hD\n150007\tai\tParlamento Europeo\thttps://www.europarl.europa.eu/news/it/press-room/20240308IPR19015/il-parlamento\n150008\tai\tTechCrunch\thttps://techcrunch.com/2024/02/29/figure-ai-raises-675m-from-microsoft-nvidia-an\n150009\tai\tHarvard Business Review\thttps://hbr.org/2023/10/how-generative-ai-is-changing-the-future-of-work\n150010\tai\tGoogle DeepMind\thttps://deepmind.google/discover/blog/alphafold-3-achieves-unprecedented-predict\n150011\tai\tCommissione Europea\thttps://commission.europa.eu/strategy-and-policy/priorities-2019-2024/europe-fit\n150012\tai\tNATO News\thttps://www.nato.int/cps/en/natohq/news_224677.htm\n150013\tai\tThe Wall Street Journal\thttps://www.wsj.com/tech/ai/microsoft-openai-stargate-supercomputer-100-billion-\n150014\tai\tBloomberg\thttps://www.bloomberg.com/news/articles/2023-05-25/jpmorgan-is-using-ai-to-help-\n150015\tai\tGoogle DeepMind\thttps://deepmind.google/discover/blog/alphafold-3-opens-new-frontiers-in-life-sc\n150016\tai\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/startup-italiane-puntano-medio-oriente-e-nord-af\n150017\tai\tIl Sole 24 Ore\thttps://www.ilsole24ore.com/art/intelligenza-artificiale-startup-italiane-finanz\n150018\tai\tOpenAI Blog\thttps://openai.com/index/hello-gpt-4o/\n150019\tai\tGoogle DeepMind Blog\thttps://deepmind.google/discover/blog/project-astra-our-vision-for-the-future-of\n150020\tai\tNature Biotechnology\thttps://www.nature.com/articles/s41587-023-01990-0\n150021\tai\tMicrosoft Official Blog\thttps://blogs.microsoft.com/on-the-issues/2024/04/16/microsoft-g42-ai-partnershi\n150022\tai\tParlamento Europeo\thttps://www.europarl.europa.eu/news/it/press-room/20240308IPR19015/il-parlamento\n",
+  "stderr": "",
+  "execution_time_ms": 91
+}

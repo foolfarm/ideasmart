@@ -559,3 +559,13 @@
 - [x] Corretto prompt startupScheduler per generare URL homepage
 - [x] Corretto prompt musicScheduler per generare URL homepage
 - [x] Corretto prompt newsScheduler per generare URL homepage
+
+## Nuovi task (15 Mar 2026 — Scraping RSS reale + Audit URL)
+
+- [x] Sostituire generatori AI notizie inventate con scraping RSS da fonti reali (rssSources.ts, rssScraperNew.ts, rssNewsScheduler.ts)
+- [x] Creare whitelist fonti RSS certificate per AI (12 fonti), Music (10 fonti), Startup (11 fonti)
+- [x] Fix immediato DB: correggere tutti i sourceUrl non-homepage (urlAuditFix.ts) - 50/60 URL corretti all'avvio
+- [x] Audit automatico post-scraping: verifica HTTP dopo ogni salvataggio RSS
+- [x] Aggiornare schedulerManager per usare refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS
+- [x] Aggiungere adminTools router con procedure fixSourceUrls, triggerRssScraping, newsStats
+- [x] Aggiornare server/_core/index.ts: fix URL all'avvio (15s) + scraping RSS se DB vuoto (45s)

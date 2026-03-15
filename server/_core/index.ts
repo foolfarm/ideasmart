@@ -8,8 +8,9 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { startAllSchedulers } from "../schedulerManager";
-import { refreshNewsIfNeeded } from "../newsScheduler";
+import { refreshAINewsFromRSS } from "../rssNewsScheduler";
 import { runDailyContentRefresh } from "../dailyContentScheduler";
+import { fixAllSourceUrls } from "../urlAuditFix";
 // import { startAuditScheduler } from "../auditScheduler"; // RIMOSSO — audit disabilitato definitivamente il 14/03/2026
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
@@ -142,15 +143,37 @@ startServer().catch(console.error);
 startAllSchedulers();
 // startAuditScheduler(); // DISABILITATO il 14/03/2026
 
-// ─── Avvio immediato: genera contenuti se il DB è vuoto ───────────────────────
-// Parte 10 secondi dopo l'avvio per non rallentare il boot
+// ─── Avvio immediato: fix URL errati nel DB (eseguito una volta all'avvio) ────
+// Parte 15 secondi dopo l'avvio per non rallentare il boot
 setTimeout(async () => {
   try {
-    await refreshNewsIfNeeded();
+    console.log("[Startup] 🔧 Avvio fix immediato sourceUrl nel DB...");
+    const result = await fixAllSourceUrls({ batchSize: 15, delayMs: 200 });
+    console.log(`[Startup] ✅ Fix URL completato: ${result.fixed} corretti, ${result.alreadyOk} già ok, ${result.failed} falliti`);
   } catch (err) {
-    console.error("[Startup] Errore refresh news iniziale:", err);
+    console.error("[Startup] Errore fix URL (non critico):", err);
   }
-}, 10_000);
+}, 15_000);
+
+// ─── Avvio immediato: scraping RSS se il DB è vuoto ──────────────────────────
+// Parte 45 secondi dopo l'avvio (dopo il fix URL)
+setTimeout(async () => {
+  try {
+    const db = await getDb();
+    if (!db) return;
+    const { newsItems } = await import("../../drizzle/schema");
+    const { eq } = await import("drizzle-orm");
+    const existing = await db.select().from(newsItems).where(eq(newsItems.section, 'ai')).limit(1);
+    if (existing.length === 0) {
+      console.log("[Startup] DB vuoto — avvio scraping RSS iniziale...");
+      await refreshAINewsFromRSS();
+    } else {
+      console.log("[Startup] DB già popolato — skip scraping iniziale");
+    }
+  } catch (err) {
+    console.error("[Startup] Errore scraping RSS iniziale:", err);
+  }
+}, 45_000);
 
 setTimeout(async () => {
   try {
