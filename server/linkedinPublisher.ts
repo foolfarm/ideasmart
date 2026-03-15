@@ -394,9 +394,29 @@ export async function publishDailyLinkedInPosts(): Promise<{
   );
 
   // 3. Recupera immagine: usa quella dell'editoriale o cerca su Pexels
+  // Blacklist: immagini di crypto/finanza/trading non pertinenti a AI/Startup
+  const BLACKLISTED_PEXELS_IDS = [
+    "14354106", // ethereum coin
+    "7567443",  // bitcoin
+    "6770610",  // crypto trading
+    "8370752",  // stock market chart
+    "6801648",  // financial chart
+  ];
+  const isBlacklisted = (url: string | null | undefined): boolean => {
+    if (!url) return false;
+    return BLACKLISTED_PEXELS_IDS.some(id => url.includes(`photos/${id}/`));
+  };
+
   let imageUrl = editorial.imageUrl;
+
+  // Se l'immagine salvata nel DB è nella blacklist, forza una nuova ricerca
+  if (isBlacklisted(imageUrl)) {
+    console.log(`[LinkedIn] ⚠️ Immagine nel DB nella blacklist (crypto/finanza), forzo nuova ricerca Pexels...`);
+    imageUrl = null;
+  }
+
   if (!imageUrl) {
-    console.log("[LinkedIn] 🖼️ Nessuna immagine nell'editoriale, cerco su Pexels...");
+    console.log("[LinkedIn] 🖼️ Cerco immagine pertinente su Pexels...");
     try {
       imageUrl = await findEditorialImage(editorial.title, editorial.keyTrend ?? "AI innovation", section);
       console.log(`[LinkedIn] 🖼️ Immagine Pexels trovata: ${imageUrl ? "✅" : "❌"}`);

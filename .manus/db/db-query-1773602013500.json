@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, section, LEFT(title, 60) as title, LEFT(imageUrl, 100) as imageUrl FROM daily_editorial WHERE section = 'ai' ORDER BY createdAt DESC LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, section, LEFT(title, 60) as title, LEFT(imageUrl, 100) as imageUrl FROM daily_editorial WHERE section = 'ai' ORDER BY createdAt DESC LIMIT 1;",
+  "rows": [
+    {
+      "id": "210001",
+      "section": "ai",
+      "title": "AI: La Rivoluzione Silenziosa che Ridefinisce il Business It",
+      "imageUrl": "https://images.pexels.com/photos/14354106/pexels-photo-14354106.jpeg?auto=compress&cs=tinysrgb&h=650"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsection\ttitle\timageUrl\n210001\tai\tAI: La Rivoluzione Silenziosa che Ridefinisce il Business It\thttps://images.pexels.com/photos/14354106/pexels-photo-14354106.jpeg?auto=compress&cs=tinysrgb&h=650\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}
