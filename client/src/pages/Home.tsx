@@ -275,7 +275,7 @@ export default function Home() {
             </Link>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              Testata Giornalistica Multicanale · AI · Musica · Startup
+              La Prima Testata Giornalistica 100% Agentica · AI · Musica · Startup
             </p>
           </div>
 
