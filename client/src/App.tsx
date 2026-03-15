@@ -25,6 +25,7 @@ import EditorialDetail from "./pages/EditorialDetail";
 import ReportageDetail from "./pages/ReportageDetail";
 import MarketAnalysisDetail from "./pages/MarketAnalysisDetail";
 import StartupOfDayDetail from "./pages/StartupOfDayDetail";
+import Edicola from "./pages/Edicola";
 import NotFound from "./pages/NotFound";
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -42,6 +43,7 @@ function Router() {
       <Route path="/unsubscribe" component={Unsubscribe} />
       <Route path="/notifiche" component={NotificationPreferences} />
       <Route path="/advertise" component={Advertise} />
+      <Route path="/edicola" component={Edicola} />
       <Route path="/ai/news/:id" component={NewsArticle} />
       <Route path="/music/news/:id" component={MusicNewsArticle} />
       <Route path="/startup/news/:id" component={StartupNewsArticle} />

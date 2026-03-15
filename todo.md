@@ -590,3 +590,9 @@
 - [x] Aggiungere link Spotlight del Giorno nelle sezioni AiHome, MusicHome, StartupHome
 - [x] Creare componente BreakingNewsTicker con scorrimento automatico
 - [x] Integrare BreakingNewsTicker in Home, AiHome, MusicHome, StartupHome
+
+## Nuovi task (15 Mar 2026 — Pagina Edicola)
+- [x] Aggiungere procedura tRPC news.getAll con filtri sezione/data/categoria
+- [x] Creare pagina Edicola (/edicola) con layout archivio digitale
+- [x] Aggiungere link Edicola nella navbar di Home, AiHome, MusicHome, StartupHome
+- [x] Registrare rotta /edicola in App.tsx

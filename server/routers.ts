@@ -286,6 +286,51 @@ export const appRouter = router({
           }));
       }),
 
+    // Recupera tutte le notizie con filtri per l'Edicola
+    getAll: publicProcedure
+      .input(z.object({
+        section: z.enum(['all', 'ai', 'music', 'startup']).default('all'),
+        category: z.string().optional(),
+        dateFrom: z.string().optional(),
+        dateTo: z.string().optional(),
+        limit: z.number().min(1).max(200).default(60),
+        offset: z.number().min(0).default(0),
+      }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { items: [], total: 0 };
+        const conditions: ReturnType<typeof eq>[] = [];
+        if (input.section !== 'all') {
+          conditions.push(eq(newsItemsTable.section, input.section));
+        }
+        if (input.category) {
+          conditions.push(eq(newsItemsTable.category, input.category));
+        }
+        const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+        const [items, countResult] = await Promise.all([
+          db.select().from(newsItemsTable)
+            .where(whereClause)
+            .orderBy(desc(newsItemsTable.createdAt))
+            .limit(input.limit)
+            .offset(input.offset),
+          db.select({ count: newsItemsTable.id }).from(newsItemsTable).where(whereClause),
+        ]);
+        return {
+          items: items.map(item => ({
+            id: item.id,
+            title: item.title,
+            summary: item.summary,
+            category: item.category,
+            section: item.section,
+            sourceName: item.sourceName ?? '',
+            sourceUrl: item.sourceUrl ?? '#',
+            publishedAt: item.publishedAt ?? '',
+            imageUrl: item.imageUrl ?? null,
+          })),
+          total: countResult.length,
+        };
+      }),
+
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))

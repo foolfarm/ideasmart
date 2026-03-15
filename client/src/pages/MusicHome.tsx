@@ -175,6 +175,16 @@ export default function MusicHome() {
                 {label}
               </span>
             ))}
+            <Link href="/edicola">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#1a1a2e",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                📰 Edicola
+              </span>
+            </Link>
           </nav>
 
           <Divider />
