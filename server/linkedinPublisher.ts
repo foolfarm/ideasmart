@@ -398,7 +398,7 @@ export async function publishDailyLinkedInPosts(): Promise<{
   if (!imageUrl) {
     console.log("[LinkedIn] 🖼️ Nessuna immagine nell'editoriale, cerco su Pexels...");
     try {
-      imageUrl = await findEditorialImage(editorial.title, editorial.keyTrend ?? "AI innovation");
+      imageUrl = await findEditorialImage(editorial.title, editorial.keyTrend ?? "AI innovation", section);
       console.log(`[LinkedIn] 🖼️ Immagine Pexels trovata: ${imageUrl ? "✅" : "❌"}`);
     } catch (err) {
       console.warn("[LinkedIn] ⚠️ Errore ricerca immagine Pexels:", err);

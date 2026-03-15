@@ -334,11 +334,81 @@ export async function findNewsImage(title: string, category: string): Promise<st
   return findStockImage(title, category);
 }
 
+// ── Keyword curate per editoriali LinkedIn ──────────────────────────────────
+// Queste keyword sono visivamente inequivocabili: niente crypto, niente trading.
+
+const LINKEDIN_AI_KEYWORDS = [
+  "robot arm factory automation",
+  "data scientist laptop screen",
+  "artificial intelligence robot",
+  "machine learning code screen",
+  "tech startup team meeting",
+  "business innovation technology",
+  "digital transformation office",
+  "futuristic technology interface",
+  "AI computer vision screen",
+  "smart city technology",
+];
+
+const LINKEDIN_STARTUP_KEYWORDS = [
+  "startup team brainstorming",
+  "entrepreneur pitch presentation",
+  "coworking space startup",
+  "business growth chart meeting",
+  "venture capital handshake",
+  "startup office collaboration",
+  "innovation hub technology",
+  "founder startup laptop",
+  "accelerator program startup",
+  "business strategy whiteboard",
+];
+
 /**
- * Versione specializzata per editoriale
+ * Versione specializzata per editoriale LinkedIn.
+ * Usa keyword visivamente pertinenti per AI o Startup,
+ * evitando immagini crypto/finanza/trading.
  */
-export async function findEditorialImage(title: string, keyTrend: string): Promise<string | null> {
-  return findStockImage(title, "Modelli Generativi", keyTrend);
+export async function findEditorialImage(
+  title: string,
+  keyTrend: string,
+  section: "ai" | "startup" = "ai"
+): Promise<string | null> {
+  const isStartup = section === "startup";
+  const pool = isStartup ? LINKEDIN_STARTUP_KEYWORDS : LINKEDIN_AI_KEYWORDS;
+
+  // 1. Prova con keyword estratte dal titolo + sezione
+  const titleKws = extractKeywordsFromTitle(title, false);
+  const query1 = isStartup
+    ? `${titleKws} startup entrepreneur`
+    : `${titleKws} artificial intelligence technology`;
+  let url = await searchPexels(query1);
+
+  // 2. Prova con keyTrend + sezione (se diverso dal titolo)
+  if (!url && keyTrend && keyTrend.length > 3) {
+    const query2 = isStartup
+      ? `${keyTrend} startup`
+      : `${keyTrend} technology AI`;
+    url = await searchPexels(query2);
+  }
+
+  // 3. Prova con keyword curate dalla pool (casuale)
+  if (!url) {
+    const randomKw = pool[Math.floor(Math.random() * pool.length)];
+    url = await searchPexels(randomKw);
+  }
+
+  // 4. Seconda keyword curata (diversa dalla precedente)
+  if (!url) {
+    const idx2 = Math.floor(Math.random() * pool.length);
+    url = await searchPexels(pool[idx2]);
+  }
+
+  // 5. Fallback assoluto con keyword sicure
+  if (!url) {
+    url = await searchPexels(isStartup ? "startup office team" : "technology innovation office");
+  }
+
+  return url;
 }
 
 /**
