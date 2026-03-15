@@ -711,3 +711,35 @@
 - [x] Test Vitest linkedin.test.ts: 3 test passano (token configurato, URN valido, formato corretto)
 - [x] Test schedulerManager.test.ts aggiornato: 16 cron job + test LinkedIn alle 10:00
 - [x] Tutti i 19 test passano (4 test files)
+
+## LinkedIn Autopost — Cambio autore a pagina aziendale (15 Mar 2026)
+
+- [ ] Recuperare Organization ID della pagina LinkedIn IDEASMART
+- [ ] Aggiornare LINKEDIN_AUTHOR_URN con urn:li:organization:XXXXXXX
+- [ ] Verificare che il token abbia il permesso r_organization_social o w_organization_social
+- [ ] Testare pubblicazione dalla pagina aziendale IDEASMART
+
+## LinkedIn Autopost — Cambio autore a pagina aziendale (15 Mar 2026)
+
+- [x] Recuperato Organization ID pagina LinkedIn IDEASMART: 112273349
+- [x] Aggiornato LINKEDIN_AUTHOR_URN a urn:li:organization:112273349
+- [x] Aggiornato LINKEDIN_ACCESS_TOKEN con nuovo token
+- [x] Test Vitest: 19/19 passano con nuovo URN organization
+- [ ] Verificare in produzione che il token abbia permesso w_organization_social per pubblicare dalla pagina aziendale
+
+## LinkedIn Autopost — Immagine + Link Preview verso IDEASMART (15 Mar 2026)
+
+- [ ] Aggiornare linkedinPublisher.ts: usare shareMediaCategory ARTICLE con originalUrl verso IDEASMART
+- [ ] Includere imageUrl della notizia nel post LinkedIn (link preview con immagine)
+- [ ] Aggiungere CTA nel testo del post: "Leggi su IDEASMART → https://ideasmart.ai"
+- [ ] Aggiornare secrets: LINKEDIN_AUTHOR_URN = urn:li:organization:112273349
+- [ ] Test e checkpoint
+
+## LinkedIn Autopost — Immagine + Link Preview completato (15 Mar 2026)
+
+- [x] Aggiornato linkedinPublisher.ts: shareMediaCategory ARTICLE con link preview verso IDEASMART
+- [x] Incluso imageUrl della notizia nel media del post LinkedIn (thumbnails)
+- [x] Aggiunto CTA nel testo: "Leggi l'articolo completo su IDEASMART → https://ideasmart.ai/[sezione]"
+- [x] Aggiornato LINKEDIN_AUTHOR_URN = urn:li:organization:112273349 (pagina aziendale)
+- [x] Aggiornato LINKEDIN_ACCESS_TOKEN con token più recente
+- [x] 19/19 test Vitest passano
