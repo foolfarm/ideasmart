@@ -10,6 +10,7 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { fixAllSourceUrls } from "../urlAuditFix";
+import { publishDailyLinkedInPosts } from "../linkedinPublisher";
 import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshAllNewsFromRSS } from "../rssNewsScheduler";
 import { getDb } from "../db";
 import { newsItems, sourceReports } from "../../drizzle/schema";
@@ -198,5 +199,36 @@ export const adminRouter = router({
         })
         .where(eq(sourceReports.id, input.reportId));
       return { success: true };
+    }),
+
+  /**
+   * Pubblica manualmente le top 3 notizie del giorno su LinkedIn.
+   * Utile per test e per pubblicazioni straordinarie fuori orario.
+   */
+  publishLinkedIn: adminProcedure
+    .mutation(async () => {
+      console.log("[AdminRouter] Avvio pubblicazione manuale LinkedIn...");
+      try {
+        const result = await publishDailyLinkedInPosts();
+        return {
+          success: result.published > 0,
+          published: result.published,
+          total: result.posts.length,
+          errors: result.errors,
+          posts: result.posts.map(p => ({
+            section: p.section,
+            title: p.title.slice(0, 80),
+            success: p.success,
+            postId: p.postId,
+            error: p.error,
+          })),
+          message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn`,
+        };
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "Errore pubblicazione LinkedIn",
+        });
+      }
     }),
 });

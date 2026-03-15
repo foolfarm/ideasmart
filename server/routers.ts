@@ -8,6 +8,7 @@ import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { sendWeeklyNewsletter } from "./newsletterScheduler";
+import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
   addSubscriber,
@@ -959,6 +960,26 @@ Rispondi con questo JSON:
       const { generateMusicNews } = await import("./musicScheduler");
       const count = await generateMusicNews();
       return { count, message: `${count} notizie musicali aggiornate con successo` };
+    }),
+
+    // ── LinkedIn Autopost manuale ──────────────────────────────────────────
+    publishLinkedIn: adminProcedure.mutation(async () => {
+      console.log("[AdminRouter] Avvio pubblicazione manuale LinkedIn...");
+      const result = await publishDailyLinkedInPosts();
+      return {
+        success: result.published > 0,
+        published: result.published,
+        total: result.posts.length,
+        errors: result.errors,
+        posts: result.posts.map((p) => ({
+          section: p.section,
+          title: p.title.slice(0, 80),
+          success: p.success,
+          postId: p.postId,
+          error: p.error,
+        })),
+        message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn`,
+      };
     }),
   }),
 

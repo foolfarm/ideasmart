@@ -55,6 +55,7 @@ import {
 } from "./startupScheduler";
 import { sendTestNewsletter } from "./newsletterTestSender";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
+import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 
 const TZ = "Europe/Rome";
 
@@ -308,6 +309,27 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // LINKEDIN AUTOPOST — ogni giorno alle 10:00 CET
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // ── 16. LINKEDIN AUTOPOST — ogni giorno alle 10:00 CET ───────────────────
+  // Pubblica le 3 notizie più importanti del giorno su LinkedIn:
+  // 1 da AI4Business, 1 da ITsMusic, 1 da Startup News.
+  // Token LinkedIn scade ogni 2 mesi — aggiornare in Secrets.
+  cron.schedule("0 10 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 10:00 CET — Avvio pubblicazione LinkedIn top 3 notizie...");
+    try {
+      const result = await publishDailyLinkedInPosts();
+      console.log(`[SchedulerManager] ✅ LinkedIn: ${result.published}/3 post pubblicati`);
+      if (result.errors.length > 0) {
+        console.error("[SchedulerManager] ⚠️ LinkedIn errori:", result.errors);
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore pubblicazione LinkedIn:", err);
+    }
+  }, { timezone: TZ });
+
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");
   console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET (scraping RSS reale)");
@@ -325,4 +347,5 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   🧪 Newsletter TEST  → ogni lunedì alle 08:30 CET → ac@acinelli.com");
   console.log("[SchedulerManager]   📧 Newsletter       → ogni lunedì alle 09:30 CET (invio massivo)");
+  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET (top 3 notizie)");
 }

@@ -59,6 +59,8 @@ export default function Admin() {
   const [generatingImages, setGeneratingImages] = useState(false);
   const [sendingItsMusic, setSendingItsMusic] = useState(false);
   const [refreshingMusicNews, setRefreshingMusicNews] = useState(false);
+  const [publishingLinkedIn, setPublishingLinkedIn] = useState(false);
+  const [linkedInResult, setLinkedInResult] = useState<{ published: number; total: number; posts: Array<{ section: string; title: string; success: boolean; error?: string }> } | null>(null);
 
   const triggerItsMusicMutation = trpc.admin.triggerItsMusicNewsletter.useMutation({
     onSuccess: (data) => {
@@ -70,6 +72,19 @@ export default function Admin() {
     onError: (err) => {
       setSendingItsMusic(false);
       toast.error("Errore invio ITsMusic: " + err.message);
+    },
+  });
+
+  const publishLinkedInMutation = trpc.admin.publishLinkedIn.useMutation({
+    onSuccess: (data) => {
+      setPublishingLinkedIn(false);
+      setLinkedInResult({ published: data.published, total: data.total, posts: data.posts });
+      setLastResult(`✓ LinkedIn: ${data.published}/${data.total} post pubblicati`);
+      toast.success(`💼 ${data.published}/${data.total} post LinkedIn pubblicati!`);
+    },
+    onError: (err) => {
+      setPublishingLinkedIn(false);
+      toast.error("Errore LinkedIn: " + err.message);
     },
   });
 
@@ -473,6 +488,52 @@ export default function Admin() {
                   `Genera Immagini AI →`
                 )}
               </button>
+            </div>
+
+            {/* LinkedIn Autopost */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(0,102,255,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0a66c2", fontFamily: "'Space Grotesk', sans-serif" }}>
+                ◆ LinkedIn Autopost
+              </p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Pubblica le top 3 notizie del giorno su LinkedIn</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Pubblica automaticamente 1 notizia per sezione (AI, Music, Startup) sul profilo LinkedIn di IDEASMART.
+                Lo scheduler parte ogni giorno alle <strong className="text-white">10:00 CET</strong>. Token scade ogni 2 mesi.
+              </p>
+              <button
+                onClick={() => {
+                  setPublishingLinkedIn(true);
+                  setLinkedInResult(null);
+                  publishLinkedInMutation.mutate();
+                }}
+                disabled={publishingLinkedIn}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+                style={{ background: "#0a66c2", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {publishingLinkedIn ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Pubblicazione in corso...
+                  </span>
+                ) : (
+                  `💼 Pubblica Ora su LinkedIn →`
+                )}
+              </button>
+              {linkedInResult && (
+                <div className="space-y-2">
+                  <p className="text-xs font-bold" style={{ color: linkedInResult.published > 0 ? "#00e5c8" : "#ff5500" }}>
+                    {linkedInResult.published}/{linkedInResult.total} post pubblicati
+                  </p>
+                  {linkedInResult.posts.map((p, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs">
+                      <span style={{ color: p.success ? "#00e5c8" : "#ff5500" }}>{p.success ? "✓" : "✗"}</span>
+                      <span className="text-white/60">[{p.section.toUpperCase()}]</span>
+                      <span className="text-white/80 truncate">{p.title}</span>
+                      {p.error && <span className="text-red-400 text-xs">{p.error.slice(0, 50)}</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Send history */}

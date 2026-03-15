@@ -698,3 +698,16 @@
 - [x] Aggiunto link "Privacy Policy" nel footer di AiHome.tsx
 - [x] Aggiunto link "Privacy Policy" nel footer di MusicHome.tsx
 - [x] Aggiunto link "Privacy Policy" nel footer di StartupHome.tsx
+
+## LinkedIn Autopost — Implementazione completata (15 Mar 2026)
+
+- [x] Configurare credenziali LinkedIn (LINKEDIN_ACCESS_TOKEN = token Andrea Cinelli, LINKEDIN_AUTHOR_URN = urn:li:person:T2CjsXZQ59)
+- [x] Creare server/linkedinPublisher.ts con selezione top 3 notizie (1 per sezione AI/Music/Startup)
+- [x] Aggiungere variabili linkedinAccessToken e linkedinAuthorUrn in server/_core/env.ts
+- [x] Aggiungere import publishDailyLinkedInPosts in server/routers.ts
+- [x] Aggiungere procedura admin.publishLinkedIn nel router admin di routers.ts
+- [x] Aggiungere scheduler giornaliero alle 10:00 CET in schedulerManager.ts (cron "0 10 * * *")
+- [x] Aggiungere pannello LinkedIn nell'Admin.tsx con pulsante "Pubblica Ora su LinkedIn" e risultati
+- [x] Test Vitest linkedin.test.ts: 3 test passano (token configurato, URN valido, formato corretto)
+- [x] Test schedulerManager.test.ts aggiornato: 16 cron job + test LinkedIn alle 10:00
+- [x] Tutti i 19 test passano (4 test files)
