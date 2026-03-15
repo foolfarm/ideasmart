@@ -307,6 +307,16 @@ export default function Home() {
                 📰 Edicola
               </span>
             </Link>
+            <Link href="/manifesto">
+              <span className="px-6 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#0a6e5c",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Manifesto
+              </span>
+            </Link>
           </nav>
 
           <Divider />
@@ -504,6 +514,12 @@ export default function Home() {
                     </Link>
                   );
                 })}
+                <Link href="/manifesto">
+                  <span className="text-xs hover:underline cursor-pointer font-bold"
+                    style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
+                    Manifesto HumanLess
+                  </span>
+                </Link>
                 <Link href="/privacy">
                   <span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40"
                     style={{ fontFamily: "'Space Mono', monospace" }}>

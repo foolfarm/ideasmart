@@ -27,6 +27,7 @@ import MarketAnalysisDetail from "./pages/MarketAnalysisDetail";
 import StartupOfDayDetail from "./pages/StartupOfDayDetail";
 import Edicola from "./pages/Edicola";
 import NotFound from "./pages/NotFound";
+import Manifesto from "./pages/Manifesto";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -51,6 +52,7 @@ function Router() {
       <Route path="/:section/reportage/:id" component={ReportageDetail} />
       <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />
       <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
+      <Route path="/manifesto" component={Manifesto} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
