@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import SocialShare from "@/components/SocialShare";
 import CommentSection from "@/components/CommentSection";
 import { ArrowLeft, ExternalLink, Calendar, Tag, Clock } from "lucide-react";
+import ReportSourceButton from "@/components/ReportSourceButton";
 
 // Startup brand colors
 const S = {
@@ -219,6 +220,15 @@ export default function StartupNewsArticle() {
               <ExternalLink className="w-5 h-5" />
             </a>
             <p className="text-sm text-white/30 mt-1 break-all">{news.sourceUrl}</p>
+            <div className="mt-3 pt-3 border-t border-white/8">
+              <ReportSourceButton
+                section="startup"
+                articleType="news"
+                articleId={news.id}
+                sourceUrl={news.sourceUrl ?? undefined}
+                accentColor="#ff5500"
+              />
+            </div>
           </div>
         )}
 

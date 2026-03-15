@@ -569,3 +569,9 @@
 - [x] Aggiornare schedulerManager per usare refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS
 - [x] Aggiungere adminTools router con procedure fixSourceUrls, triggerRssScraping, newsStats
 - [x] Aggiornare server/_core/index.ts: fix URL all'avvio (15s) + scraping RSS se DB vuoto (45s)
+
+## Nuovi task (15 Mar 2026 — Admin fonti + Feedback utenti)
+
+- [x] Espandere whitelist fonti RSS con feed italiani per AI, Music e Startup
+- [x] Creare pagina admin /admin/rss-monitor per monitoraggio qualità fonti e trigger scraping manuale
+- [x] Implementare sistema feedback utenti per segnalare fonti errate (schema DB + tRPC + UI)

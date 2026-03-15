@@ -12,8 +12,8 @@ import { TRPCError } from "@trpc/server";
 import { fixAllSourceUrls } from "../urlAuditFix";
 import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshAllNewsFromRSS } from "../rssNewsScheduler";
 import { getDb } from "../db";
-import { newsItems } from "../../drizzle/schema";
-import { eq, sql } from "drizzle-orm";
+import { newsItems, sourceReports } from "../../drizzle/schema";
+import { eq, desc } from "drizzle-orm";
 
 // Middleware admin
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -129,5 +129,74 @@ export const adminRouter = router({
       }
 
       return stats;
+    }),
+
+  /**
+   * Segnalazione utente: fonte errata su un articolo.
+   */
+  reportSource: protectedProcedure
+    .input(z.object({
+      section: z.enum(["ai", "music", "startup"]),
+      articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
+      articleId: z.number().int().positive(),
+      reportedUrl: z.string().max(1000).optional(),
+      reason: z.enum(["not_found", "wrong_content", "broken_link", "spam", "other"]),
+      note: z.string().max(500).optional(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const ipHash = ctx.user?.openId ? ctx.user.openId.slice(0, 16) : "anon";
+      await db.insert(sourceReports).values({
+        section: input.section,
+        articleType: input.articleType,
+        articleId: input.articleId,
+        reportedUrl: input.reportedUrl,
+        reason: input.reason,
+        note: input.note,
+        ipHash,
+        status: "pending",
+      });
+      return { success: true, message: "Segnalazione ricevuta. Grazie per il contributo!" };
+    }),
+
+  /**
+   * Lista segnalazioni (solo admin).
+   */
+  getSourceReports: adminProcedure
+    .input(z.object({
+      status: z.enum(["pending", "reviewed", "resolved", "all"]).default("pending"),
+      limit: z.number().int().min(1).max(100).default(50),
+    }))
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const rows = await db.select().from(sourceReports).orderBy(desc(sourceReports.createdAt)).limit(input.limit);
+      if (input.status !== "all") {
+        return rows.filter(r => r.status === input.status);
+      }
+      return rows;
+    }),
+
+  /**
+   * Aggiorna stato di una segnalazione (solo admin).
+   */
+  updateReportStatus: adminProcedure
+    .input(z.object({
+      reportId: z.number().int().positive(),
+      status: z.enum(["pending", "reviewed", "resolved"]),
+      adminNote: z.string().max(500).optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      await db.update(sourceReports)
+        .set({
+          status: input.status,
+          adminNote: input.adminNote,
+          resolvedAt: input.status === "resolved" ? new Date() : undefined,
+        })
+        .where(eq(sourceReports.id, input.reportId));
+      return { success: true };
     }),
 });

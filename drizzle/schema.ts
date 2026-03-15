@@ -275,3 +275,29 @@ export const articleComments = mysqlTable("article_comments", {
 
 export type ArticleComment = typeof articleComments.$inferSelect;
 export type InsertArticleComment = typeof articleComments.$inferInsert;
+
+// ── Source Reports (feedback utenti su fonti errate) ─────────────────────────
+export const sourceReports = mysqlTable("source_reports", {
+  id: int("id").autoincrement().primaryKey(),
+  // Sezione: 'ai', 'music' o 'startup'
+  section: mysqlEnum("section", ["ai", "music", "startup"]).notNull(),
+  // Tipo articolo
+  articleType: mysqlEnum("articleType", ["news", "editorial", "startup", "reportage", "analysis"]).notNull(),
+  articleId: int("articleId").notNull(),
+  // URL segnalato come errato
+  reportedUrl: varchar("reportedUrl", { length: 1000 }),
+  // Motivo della segnalazione
+  reason: mysqlEnum("reason", ["not_found", "wrong_content", "broken_link", "spam", "other"]).notNull(),
+  // Nota opzionale dell'utente
+  note: varchar("note", { length: 500 }),
+  // IP anonimizzato per prevenire spam
+  ipHash: varchar("ipHash", { length: 64 }),
+  // Stato: pending → reviewed → resolved
+  status: mysqlEnum("status", ["pending", "reviewed", "resolved"]).default("pending").notNull(),
+  // Admin note (visibile solo in admin)
+  adminNote: varchar("adminNote", { length: 500 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  resolvedAt: timestamp("resolvedAt"),
+});
+export type SourceReport = typeof sourceReports.$inferSelect;
+export type InsertSourceReport = typeof sourceReports.$inferInsert;

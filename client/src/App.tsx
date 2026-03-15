@@ -13,6 +13,7 @@ import StartupHome from "./pages/StartupHome";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
 import AuditDashboard from "./pages/AuditDashboard";
+import AdminRssMonitor from "./pages/AdminRssMonitor";
 import Privacy from "./pages/Privacy";
 import Unsubscribe from "./pages/Unsubscribe";
 import NotificationPreferences from "./pages/NotificationPreferences";
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/startup" component={StartupHome} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
+      <Route path="/admin/rss-monitor" component={AdminRssMonitor} />
       <Route path="/admin/audit" component={AuditDashboard} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/unsubscribe" component={Unsubscribe} />

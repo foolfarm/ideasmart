@@ -5,6 +5,7 @@ import SocialShare from "@/components/SocialShare";
 import CommentSection from "@/components/CommentSection";
 import Navbar from "@/components/Navbar";
 import { ArrowLeft, ExternalLink, Calendar, Tag, Clock } from "lucide-react";
+import ReportSourceButton from "@/components/ReportSourceButton";
 
 function formatDate(dateStr: string) {
   if (!dateStr) return "";
@@ -198,6 +199,15 @@ export default function NewsArticle() {
               <ExternalLink className="w-5 h-5" />
             </a>
             <p className="text-sm text-gray-400 mt-1 break-all">{news.sourceUrl}</p>
+            <div className="mt-3 pt-3 border-t border-gray-100">
+              <ReportSourceButton
+                section="ai"
+                articleType="news"
+                articleId={news.id}
+                sourceUrl={news.sourceUrl ?? undefined}
+                accentColor="#00b4a0"
+              />
+            </div>
           </div>
         )}
 
