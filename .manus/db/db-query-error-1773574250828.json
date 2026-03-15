@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT section, title, source_name, source_url FROM news_items ORDER BY section, position LIMIT 15;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT section, title, source_name, source_url FROM news_items ORDER BY section, position LIMIT 15;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 2: Unknown column 'source_name' in 'field list'"
+  ]
+}

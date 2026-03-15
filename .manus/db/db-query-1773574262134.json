@@ -1,0 +1,100 @@
+{
+  "query": "\nSELECT section, title, sourceName, sourceUrl FROM news_items ORDER BY section, position LIMIT 15;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT section, title, sourceName, sourceUrl FROM news_items ORDER BY section, position LIMIT 15;\n",
+  "rows": [
+    {
+      "section": "ai",
+      "title": "L'Esercito USA sigla un maxi-contratto da 20 miliardi con Anduril per l'AI",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Meta valuta tagli al personale per finanziare l'AI",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Come sfruttare le nuove integrazioni di ChatGPT con le app",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "xAI di Musk riparte da zero per il suo strumento di coding AI",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Avvocato avverte sui rischi di psicosi da AI e incidenti di massa",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Nyne raccoglie 5,3 milioni per dare contesto umano agli AI agent",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Spielberg: 'Mai usata l'AI nei miei film', ma riconosce il potenziale",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Le principali storie AI dell'anno finora: acquisizioni e polemiche",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "NanoClaw: il successo di un progetto open source che affascina Docker",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Wiz, l'acquisizione da 32 miliardi definita 'Affare del Decennio'",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Spotify introduce la modifica del Taste Profile per migliorare i consigli AI",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Peacock punta su video AI e sport live mobile-first",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "L'acquisizione da 32 miliardi di Wiz: il 'Deal del Decennio' per l'AI",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "title": "Come acquistare elettronica usata o ricondizionata (2026)",
+      "sourceName": "Wired",
+      "sourceUrl": "https://www.wired.com"
+    },
+    {
+      "section": "ai",
+      "title": "Samsung Galaxy S26 Ultra: lo schermo privacy integrato fa la differenza",
+      "sourceName": "Wired",
+      "sourceUrl": "https://www.wired.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttitle\tsourceName\tsourceUrl\nai\tL'Esercito USA sigla un maxi-contratto da 20 miliardi con Anduril per l'AI\tTechCrunch AI\thttps://techcrunch.com\nai\tMeta valuta tagli al personale per finanziare l'AI\tTechCrunch AI\thttps://techcrunch.com\nai\tCome sfruttare le nuove integrazioni di ChatGPT con le app\tTechCrunch AI\thttps://techcrunch.com\nai\txAI di Musk riparte da zero per il suo strumento di coding AI\tTechCrunch AI\thttps://techcrunch.com\nai\tAvvocato avverte sui rischi di psicosi da AI e incidenti di massa\tTechCrunch AI\thttps://techcrunch.com\nai\tNyne raccoglie 5,3 milioni per dare contesto umano agli AI agent\tTechCrunch AI\thttps://techcrunch.com\nai\tSpielberg: 'Mai usata l'AI nei miei film', ma riconosce il potenziale\tTechCrunch AI\thttps://techcrunch.com\nai\tLe principali storie AI dell'anno finora: acquisizioni e polemiche\tTechCrunch AI\thttps://techcrunch.com\nai\tNanoClaw: il successo di un progetto open source che affascina Docker\tTechCrunch AI\thttps://techcrunch.com\nai\tWiz, l'acquisizione da 32 miliardi definita 'Affare del Decennio'\tTechCrunch AI\thttps://techcrunch.com\nai\tSpotify introduce la modifica del Taste Profile per migliorare i consigli AI\tTechCrunch AI\thttps://techcrunch.com\nai\tPeacock punta su video AI e sport live mobile-first\tTechCrunch AI\thttps://techcrunch.com\nai\tL'acquisizione da 32 miliardi di Wiz: il 'Deal del Decennio' per l'AI\tTechCrunch AI\thttps://techcrunch.com\nai\tCome acquistare elettronica usata o ricondizionata (2026)\tWired\thttps://www.wired.com\nai\tSamsung Galaxy S26 Ultra: lo schermo privacy integrato fa la differenza\tWired\thttps://www.wired.com\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

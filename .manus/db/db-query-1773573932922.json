@@ -1,0 +1,9 @@
+{
+  "query": "\nDELETE FROM news_items;\nDELETE FROM daily_editorial;\nDELETE FROM startup_of_day;\nDELETE FROM weekly_reportage;\nDELETE FROM market_analysis;\nDELETE FROM source_reports;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nDELETE FROM news_items;\nDELETE FROM daily_editorial;\nDELETE FROM startup_of_day;\nDELETE FROM weekly_reportage;\nDELETE FROM market_analysis;\nDELETE FROM source_reports;\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 126
+}

@@ -596,3 +596,25 @@
 - [x] Creare pagina Edicola (/edicola) con layout archivio digitale
 - [x] Aggiungere link Edicola nella navbar di Home, AiHome, MusicHome, StartupHome
 - [x] Registrare rotta /edicola in App.tsx
+
+## RESET TOTALE DB (15 Mar 2026 — Pulizia notizie inventate)
+- [x] Eliminare tutte le righe da news_items (notizie inventate dall'AI)
+- [x] Eliminare tutte le righe da daily_editorial (editoriali inventati)
+- [x] Eliminare tutte le righe da startup_of_day (startup inventate)
+- [x] Eliminare tutte le righe da weekly_reportage (reportage inventati)
+- [x] Eliminare tutte le righe da market_analysis (analisi inventate)
+- [x] Riscrivere RSS scraper per coerenza assoluta sourceName/sourceUrl dal feed
+- [x] Triggerare scraping RSS immediato per AI, Music, Startup
+- [x] Verificare qualità: ogni notizia deve avere sourceUrl reale e funzionante
+
+## Fix critico URL audit (15 Mar 2026)
+- [x] Bug: urlAuditFix.ts sovrascriveva URL articoli RSS con URL homepage
+- [x] Corretto: audit ora preserva URL con path (articoli reali), sostituisce solo URL senza path
+- [x] Verificato: 59/60 notizie (98.3%) hanno URL articolo reale, 1 URL homepage residuo
+- [x] Homepage redesign: layout da prima pagina di giornale (testata, notizia hero, griglia 3 sezioni)
+- [x] Sezioni AI/Music/Startup redesign: layout editoriale uniforme con stile giornale
+- [x] Pagine dettaglio: EditorialDetail, ReportageDetail, MarketAnalysisDetail, StartupOfDayDetail
+- [x] BreakingNewsTicker: barra scorrimento automatico notizie in tutte le pagine
+- [x] Pagina /edicola: archivio digitale con filtri e paginazione
+- [x] Admin /admin/rss-monitor: dashboard monitoraggio fonti RSS con trigger manuale
+- [x] Sistema segnalazione utenti: ReportSourceButton in tutte le sezioni notizie

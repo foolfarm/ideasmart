@@ -48,12 +48,30 @@ async function saveScrapedNews(
   for (let i = 0; i < articles.length; i++) {
     const article = articles[i];
 
-    // Verifica e sanifica il sourceUrl
+    // Usa direttamente l'URL articolo originale dal feed RSS.
+    // Gli URL RSS sono già verificati alla fonte (il feed non include articoli 404).
+    // NON facciamo verifica HTTP bloccante: molti siti bloccano le HEAD request
+    // da server (es. TechCrunch restituisce 404 a HEAD ma 200 a browser).
+    // Validazione: verifica solo che l'URL sia un URL valido con path (non homepage inventata).
     let finalSourceUrl = article.sourceUrl;
     try {
-      finalSourceUrl = await sanitizeSourceUrl(article.sourceUrl, section);
+      const parsed = new URL(article.sourceUrl);
+      const hasPath = parsed.pathname.length > 1; // ha un path reale
+      const sameDomain = parsed.hostname === new URL(article.sourceHomepage).hostname;
+      
+      if (hasPath && sameDomain) {
+        finalSourceUrl = article.sourceUrl; // URL articolo reale con path ✓
+      } else if (!hasPath) {
+        // È una homepage → usa la homepage del dominio corretto
+        finalSourceUrl = article.sourceHomepage;
+        console.warn(`[RssNewsScheduler] ⚠️ URL senza path, uso homepage: ${article.sourceUrl}`);
+      } else {
+        // Dominio diverso → anomalia, usa homepage della fonte
+        finalSourceUrl = article.sourceHomepage;
+        console.warn(`[RssNewsScheduler] ⚠️ Dominio incoerente, uso homepage: ${article.sourceUrl}`);
+      }
     } catch {
-      finalSourceUrl = SECTION_FALLBACKS[section];
+      finalSourceUrl = article.sourceHomepage || SECTION_FALLBACKS[section];
     }
 
     // Recupera immagine Pexels contestuale

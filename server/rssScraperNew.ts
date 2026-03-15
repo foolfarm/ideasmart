@@ -4,11 +4,17 @@
  * Nessuna notizia viene inventata: tutto deriva da feed RSS reali.
  * 
  * Flusso:
- * 1. Fetch feed RSS da tutte le fonti della sezione
+ * 1. Fetch feed RSS da tutte le fonti certificate della sezione
  * 2. Filtra articoli delle ultime 48h
  * 3. Usa LLM per selezionare i 20 più rilevanti e tradurli in italiano
- * 4. Verifica HTTP di ogni sourceUrl prima di salvare
- * 5. Salva nel DB con sourceUrl = homepage del dominio (mai URL articolo)
+ * 4. Verifica HTTP di ogni sourceUrl (URL articolo originale) prima di salvare
+ * 5. Se l'URL articolo non risponde → usa homepage del dominio
+ * 6. Salva nel DB con sourceUrl = URL articolo reale (o homepage come fallback)
+ * 
+ * PRINCIPIO FONDAMENTALE:
+ * - sourceUrl = URL dell'articolo originale (link diretto all'articolo su fonte reale)
+ * - sourceName = nome della testata giornalistica (coerente con sourceUrl)
+ * - MAI URL inventati, MAI mismatch tra sourceName e sourceUrl
  */
 
 import Parser from "rss-parser";
@@ -33,8 +39,8 @@ export interface ScrapedArticle {
   summary: string;
   category: string;
   sourceName: string;
-  sourceUrl: string;        // sempre homepage, mai URL articolo
-  originalUrl: string;      // URL articolo originale (per riferimento interno)
+  sourceUrl: string;        // URL articolo originale (link diretto alla fonte reale)
+  sourceHomepage: string;   // Homepage del dominio (fallback se articolo non raggiungibile)
   publishedAt: string;
   language: "it" | "en";
 }
@@ -202,8 +208,8 @@ Rispondi SOLO con JSON valido.`;
         summary: item.summary,
         category: item.category,
         sourceName: original.sourceName,
-        sourceUrl: original.sourceHomepage, // SEMPRE homepage, mai URL articolo
-        originalUrl: original.link,          // URL originale per riferimento
+        sourceUrl: original.link,           // URL articolo originale (link diretto)
+        sourceHomepage: original.sourceHomepage, // Homepage per fallback
         publishedAt: pubDate,
         language: "it",
       });
@@ -219,8 +225,8 @@ Rispondi SOLO con JSON valido.`;
       summary: a.content.slice(0, 250),
       category: section === "ai" ? "Ricerca & Innovazione" : section === "music" ? "Industria Musicale" : "Startup Internazionale",
       sourceName: a.sourceName,
-      sourceUrl: a.sourceHomepage,
-      originalUrl: a.link,
+      sourceUrl: a.link,           // URL articolo originale
+      sourceHomepage: a.sourceHomepage,
       publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
       language: "en" as const,
     }));

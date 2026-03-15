@@ -1,0 +1,22 @@
+{
+  "query": "\nSELECT section, COUNT(*) as count FROM news_items GROUP BY section;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT section, COUNT(*) as count FROM news_items GROUP BY section;\n",
+  "rows": [
+    {
+      "section": "music",
+      "count": "20"
+    },
+    {
+      "section": "ai",
+      "count": "32"
+    },
+    {
+      "section": "startup",
+      "count": "20"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tcount\nmusic\t20\nai\t32\nstartup\t20\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

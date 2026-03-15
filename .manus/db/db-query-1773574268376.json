@@ -1,0 +1,110 @@
+{
+  "query": "\nSELECT section, sourceName, sourceUrl FROM news_items ORDER BY section, position LIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT section, sourceName, sourceUrl FROM news_items ORDER BY section, position LIMIT 20;\n",
+  "rows": [
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "Wired",
+      "sourceUrl": "https://www.wired.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "TechCrunch AI",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "Wired",
+      "sourceUrl": "https://www.wired.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "MIT Technology Review",
+      "sourceUrl": "https://www.technologyreview.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "MIT Technology Review",
+      "sourceUrl": "https://www.technologyreview.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "MIT Technology Review",
+      "sourceUrl": "https://www.technologyreview.com"
+    },
+    {
+      "section": "ai",
+      "sourceName": "MIT Technology Review",
+      "sourceUrl": "https://www.technologyreview.com/2026/03/13/1134278/the-download-defense-official-ai-chatbots-targeting-pentagon-claude-pollute-military-supply-chain/"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tsourceName\tsourceUrl\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tWired\thttps://www.wired.com\nai\tTechCrunch AI\thttps://techcrunch.com\nai\tWired\thttps://www.wired.com\nai\tMIT Technology Review\thttps://www.technologyreview.com\nai\tMIT Technology Review\thttps://www.technologyreview.com\nai\tMIT Technology Review\thttps://www.technologyreview.com\nai\tMIT Technology Review\thttps://www.technologyreview.com/2026/03/13/1134278/the-download-defense-official-ai-chatbots-targeting-pentagon-claude-pollute-military-supply-chain/\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}
