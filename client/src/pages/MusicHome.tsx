@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
 const ACCENT = "#5b21b6";
 const ACCENT_LIGHT = "#ede9fe";
@@ -178,6 +179,7 @@ export default function MusicHome() {
 
           <Divider />
         </header>
+        <BreakingNewsTicker />
 
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
@@ -353,10 +355,12 @@ export default function MusicHome() {
               <ThinDivider />
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-0 py-4">
                 <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
-                  <h3 className="text-xl font-bold text-[#1a1a2e]"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    {artistData.name}
-                  </h3>
+                  <Link href={`/music/spotlight/${artistData.id}`}>
+                    <h3 className="text-xl font-bold text-[#1a1a2e] hover:opacity-70 transition-opacity cursor-pointer"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      {artistData.name}
+                    </h3>
+                  </Link>
                   <p className="text-sm italic text-[#1a1a2e]/60 mb-3"
                     style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                     {artistData.tagline}
@@ -376,6 +380,11 @@ export default function MusicHome() {
                       Scopri di più →
                     </a>
                   )}
+                  <Link href={`/music/spotlight/${artistData.id}`}
+                    className="mt-3 ml-4 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
+                    Approfondisci →
+                  </Link>
                 </div>
                 <div className="pl-0 lg:pl-6 mt-4 lg:mt-0">
                   <div className="grid grid-cols-2 gap-3">

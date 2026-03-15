@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
 const ACCENT = "#0a6e5c";
 const ACCENT_LIGHT = "#e6f4f1";
@@ -178,6 +179,7 @@ export default function AiHome() {
 
           <Divider />
         </header>
+        <BreakingNewsTicker />
 
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
@@ -356,10 +358,12 @@ export default function AiHome() {
                 <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
                   <div className="flex items-start gap-3 mb-3">
                     <div>
-                      <h3 className="text-xl font-bold text-[#1a1a2e]"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                        {startupData.name}
-                      </h3>
+                      <Link href={`/ai/spotlight/${startupData.id}`}>
+                        <h3 className="text-xl font-bold text-[#1a1a2e] hover:opacity-70 transition-opacity cursor-pointer"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                          {startupData.name}
+                        </h3>
+                      </Link>
                       <p className="text-sm italic text-[#1a1a2e]/60"
                         style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                         {startupData.tagline}
@@ -381,6 +385,11 @@ export default function AiHome() {
                       Visita il sito →
                     </a>
                   )}
+                  <Link href={`/ai/spotlight/${startupData.id}`}
+                    className="mt-3 ml-4 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
+                    Approfondisci →
+                  </Link>
                 </div>
                 <div className="pl-0 lg:pl-6 mt-4 lg:mt-0">
                   <div className="grid grid-cols-2 gap-3">

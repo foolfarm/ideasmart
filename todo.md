@@ -585,3 +585,8 @@
 - [ ] Aggiungere link cliccabili nelle sezioni Analisi di Mercato in AiHome, MusicHome, StartupHome
 - [ ] Aggiungere link cliccabili nella sezione Startup del Giorno
 - [ ] Verificare e creare pagine dettaglio mancanti se necessario
+
+## Nuovi task (15 Mar 2026 — Ticker + Spotlight links)
+- [x] Aggiungere link Spotlight del Giorno nelle sezioni AiHome, MusicHome, StartupHome
+- [x] Creare componente BreakingNewsTicker con scorrimento automatico
+- [x] Integrare BreakingNewsTicker in Home, AiHome, MusicHome, StartupHome

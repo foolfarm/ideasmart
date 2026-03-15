@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
 const ACCENT = "#c2410c";
 const ACCENT_LIGHT = "#fff7ed";
@@ -177,6 +178,7 @@ export default function StartupHome() {
 
           <Divider />
         </header>
+        <BreakingNewsTicker />
 
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
@@ -375,6 +377,11 @@ export default function StartupHome() {
                       Visita il sito →
                     </a>
                   )}
+                  <Link href={`/startup/spotlight/${startupData.id}`}
+                    className="mt-3 ml-4 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
+                    Approfondisci →
+                  </Link>
                 </div>
                 <div className="pl-0 lg:pl-6 mt-4 lg:mt-0">
                   <div className="grid grid-cols-2 gap-3">

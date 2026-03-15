@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
 const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
@@ -268,6 +269,7 @@ export default function Home() {
 
           <Divider />
         </header>
+        <BreakingNewsTicker />
 
         {/* CORPO */}
         <main className="max-w-6xl mx-auto px-4 pb-12">
