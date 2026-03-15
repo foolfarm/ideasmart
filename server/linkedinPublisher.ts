@@ -2,15 +2,17 @@
  * IDEASMART — LinkedIn Autopost
  *
  * Pubblica 1 post giornaliero alle 10:00 CET sul profilo LinkedIn di Andrea Cinelli.
- * Il post è basato sull'editoriale AI del giorno, riscritto in stile thought leader
- * da un LLM che imita il tono di Andrea Cinelli (CEO, serial entrepreneur, AI expert).
  *
- * Struttura del post:
- *  - Hook provocatorio (1-2 righe)
- *  - Analisi editoriale (3-4 paragrafi brevi, tono diretto e autorevole)
- *  - CTA verso IDEASMART
- *  - Hashtag tematici
- *  - Immagine caricata direttamente su LinkedIn (formato IMAGE, non ARTICLE)
+ * Flusso:
+ *  1. Recupera l'editoriale del giorno (AI o Startup, alternanza settimanale)
+ *  2. Cerca dati/statistiche da fonti di market intelligence (McKinsey, Gartner,
+ *     CBInsights, WEF, a16z, ecc.) via Perplexity Sonar API
+ *  3. Cerca immagine pertinente da feed RSS di fonti autorevoli (VentureBeat,
+ *     CBInsights, TechCrunch AI, Sifted, The Decoder)
+ *  4. Genera il testo del post con LLM in stile senior analyst Gartner
+ *     (non blogger, non motivational speaker — dati, framing strategico,
+ *     implicazioni per il business)
+ *  5. Carica l'immagine su LinkedIn e pubblica il post (formato IMAGE)
  *
  * Sezioni supportate: 'ai' e 'startup' (no musica)
  */
@@ -18,7 +20,7 @@
 import { ENV } from "./_core/env";
 import { invokeLLM } from "./_core/llm";
 import { getLatestEditorial } from "./db";
-import { findEditorialImage } from "./stockImages";
+import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
 
 const SITE_BASE_URL = "https://ideasmart.ai";
 
@@ -28,50 +30,78 @@ const SUPPORTED_SECTIONS: Array<"ai" | "startup"> = ["ai", "startup"];
 const SECTION_META: Record<string, { label: string; hashtags: string[]; path: string }> = {
   ai: {
     label: "AI4Business",
-    hashtags: ["#AI", "#ArtificialIntelligence", "#Tech", "#Innovation", "#IDEASMART", "#FutureOfWork", "#AIBusiness"],
+    hashtags: ["#AI", "#ArtificialIntelligence", "#AIStrategy", "#DigitalTransformation", "#IDEASMART", "#FutureOfWork", "#EnterpriseAI"],
     path: "/ai",
   },
   startup: {
     label: "Startup News",
-    hashtags: ["#Startup", "#VentureCapital", "#Innovation", "#Entrepreneurship", "#IDEASMART", "#Tech", "#Funding"],
+    hashtags: ["#Startup", "#VentureCapital", "#Innovation", "#Entrepreneurship", "#IDEASMART", "#TechEcosystem", "#StartupEurope"],
     path: "/startup",
   },
 };
 
-// ── Prompt LLM per generare il testo del post ────────────────────────────────
-const SYSTEM_PROMPT = `Sei Andrea Cinelli, CEO di FoolFarm, serial entrepreneur italiano con 20.595 follower su LinkedIn.
-Il tuo stile è:
-- Diretto, autorevole, mai banale
-- Mescoli dati concreti con visione strategica
-- Usi frasi brevi e incisive, mai accademiche
-- Parli in prima persona, come se stessi condividendo una riflessione personale
-- Non usi emoji in modo eccessivo (massimo 2-3 nel post intero)
-- Sei provocatorio ma costruttivo
-- Scrivi in italiano, con qualche termine tecnico in inglese quando necessario
+// ── Prompt LLM: stile senior analyst Gartner ────────────────────────────────
 
-Il tuo pubblico è: CEO, manager, investitori, imprenditori italiani interessati ad AI e startup.`;
+const SYSTEM_PROMPT_GARTNER = `Sei Andrea Cinelli, CEO di FoolFarm e serial entrepreneur italiano con 20+ anni di esperienza nell'ecosistema tech.
+Scrivi post LinkedIn con il rigore analitico di un senior analyst Gartner o McKinsey, ma con la voce diretta di un imprenditore che ha vissuto queste dinamiche sul campo.
 
-const USER_PROMPT_TEMPLATE = (title: string, body: string, keyTrend: string, section: string) => {
+Il tuo stile:
+- Parti sempre da un dato concreto o un'osservazione di mercato precisa — mai da un'opinione generica
+- Usi numeri e percentuali specifici per ancorare l'analisi alla realtà
+- Distingui tra segnali di mercato e noise — e lo dici esplicitamente
+- Il tuo tono è quello di chi ha letto il report McKinsey E ha fondato 3 aziende: non accademico, non motivazionale
+- Scrivi in italiano con terminologia tecnica in inglese quando necessario
+- Massimo 2 emoji per post, usate con parsimonia
+- Non usi mai frasi come "il futuro è adesso", "rivoluzione", "game changer" — troppo logore
+- Concludi sempre con una domanda o provocazione che stimola il dibattito tra peer
+
+Il tuo pubblico: CEO, CTO, investitori, imprenditori italiani e europei. Persone che leggono Economist e HBR, non TechCrunch.`;
+
+function buildGartnerPrompt(
+  title: string,
+  body: string,
+  keyTrend: string,
+  section: string,
+  marketData: MarketIntelligenceResult | null
+): string {
   const meta = SECTION_META[section] ?? SECTION_META.ai;
-  return `Basandoti su questo editoriale di IDEASMART, scrivi un post LinkedIn di alto profilo come se fossi Andrea Cinelli.
 
-TITOLO EDITORIALE: ${title}
-TREND CHIAVE: ${keyTrend || "AI e innovazione"}
+  let dataSection = "";
+  if (marketData && marketData.stats.length > 0) {
+    const statsText = marketData.stats
+      .map(s => `• ${s.value} — ${s.description} (${s.source})`)
+      .join("\n");
+    dataSection = `
+DATI DI MERCATO VERIFICATI (usa questi nel post):
+${statsText}
+
+INSIGHT ANALITICO:
+${marketData.insight}
+
+DATO CHIAVE DA EVIDENZIARE:
+${marketData.keyFinding}`;
+  }
+
+  return `Basandoti sull'editoriale di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
+
+TEMA EDITORIALE: ${title}
+TREND CHIAVE: ${keyTrend || "AI agentiva e trasformazione digitale"}
 CONTENUTO EDITORIALE:
-${body.slice(0, 1500)}
+${body.slice(0, 1200)}
+${dataSection}
 
-ISTRUZIONI PER IL POST:
-1. Inizia con un hook provocatorio o una domanda che cattura l'attenzione (1-2 righe)
-2. Scrivi 3-4 paragrafi brevi (2-3 righe ciascuno) con analisi e punto di vista personale
-3. Concludi con una riflessione o call-to-action
-4. Aggiungi questa riga finale ESATTAMENTE così: "📰 Approfondisci su IDEASMART → ${SITE_BASE_URL}${meta.path}"
-5. Poi aggiungi gli hashtag: ${meta.hashtags.join(" ")}
+STRUTTURA DEL POST:
+1. APERTURA (2-3 righe): Inizia con un dato di mercato specifico o un'osservazione controcorrente che sfida il pensiero convenzionale. NON iniziare con "Oggi parliamo di..." o simili.
+2. ANALISI (3-4 paragrafi brevi): Collega i dati a implicazioni strategiche concrete per aziende italiane/europee. Usa i dati di mercato forniti. Sii specifico sulle implicazioni operative, non solo sulle tendenze.
+3. POSIZIONE (1 paragrafo): Qual è la tua lettura personale come imprenditore? Dove vedi il rischio che gli altri non vedono?
+4. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}"
+5. HASHTAG: ${meta.hashtags.join(" ")}
 
-LUNGHEZZA: 1200-1800 caratteri totali (ottimale per LinkedIn)
+LUNGHEZZA: 1400-1900 caratteri totali
 LINGUA: Italiano
-STILE: Thought leader, non giornalistico. Parla in prima persona.
-NON includere il titolo dell'editoriale letteralmente — rielaboralo nel tuo stile.`;
-};
+TONO: Senior analyst con skin in the game — non consulente teorico, non blogger motivazionale
+EVITA: "rivoluzione", "game changer", "il futuro è adesso", "non possiamo permetterci di", frasi retoriche vuote`;
+}
 
 // ── Step 1: Registra upload immagine su LinkedIn ─────────────────────────────
 async function registerLinkedInImageUpload(
@@ -144,17 +174,20 @@ async function uploadImageToLinkedIn(
   token: string
 ): Promise<boolean> {
   try {
-    // Scarica l'immagine
-    const imgResponse = await fetch(imageUrl);
+    const imgResponse = await fetch(imageUrl, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        "Referer": "https://ideasmart.ai",
+      },
+    });
     if (!imgResponse.ok) {
-      console.error("[LinkedIn] ❌ Impossibile scaricare immagine:", imageUrl);
+      console.error("[LinkedIn] ❌ Impossibile scaricare immagine:", imageUrl, imgResponse.status);
       return false;
     }
 
     const imageBuffer = await imgResponse.arrayBuffer();
     const contentType = imgResponse.headers.get("content-type") || "image/jpeg";
 
-    // Carica su LinkedIn
     const uploadResponse = await fetch(uploadUrl, {
       method: "PUT",
       headers: {
@@ -177,7 +210,7 @@ async function uploadImageToLinkedIn(
   }
 }
 
-// ── Step 3: Pubblica post con immagine su LinkedIn ───────────────────────────
+// ── Step 3: Pubblica post su LinkedIn ────────────────────────────────────────
 async function publishToLinkedIn(
   text: string,
   articleUrl: string,
@@ -195,7 +228,6 @@ async function publishToLinkedIn(
     };
   }
 
-  // Prova a caricare l'immagine direttamente su LinkedIn (formato IMAGE)
   let linkedInAsset: string | null = null;
 
   if (imageUrl) {
@@ -213,11 +245,9 @@ async function publishToLinkedIn(
     }
   }
 
-  // Costruisci il body del post
   let body: Record<string, unknown>;
 
   if (linkedInAsset) {
-    // Post con immagine caricata (formato IMAGE — mostra foto grande nel feed)
     body = {
       author: authorUrn,
       lifecycleState: "PUBLISHED",
@@ -241,7 +271,6 @@ async function publishToLinkedIn(
     };
     console.log("[LinkedIn] 📸 Formato: IMAGE (foto grande nel feed)");
   } else {
-    // Fallback: post con link preview ARTICLE (senza immagine caricata)
     body = {
       author: authorUrn,
       lifecycleState: "PUBLISHED",
@@ -263,7 +292,7 @@ async function publishToLinkedIn(
         "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
       },
     };
-    console.log("[LinkedIn] 🔗 Formato: ARTICLE (link preview, nessuna immagine caricata)");
+    console.log("[LinkedIn] 🔗 Formato: ARTICLE (link preview, nessuna immagine)");
   }
 
   try {
@@ -306,24 +335,26 @@ async function publishToLinkedIn(
   }
 }
 
-// ── Genera testo post con LLM in stile Andrea Cinelli ────────────────────────
+// ── Genera testo post con LLM in stile Gartner ──────────────────────────────
 async function generateLinkedInPostText(
   title: string,
   body: string,
   keyTrend: string,
-  section: string
+  section: string,
+  marketData: MarketIntelligenceResult | null
 ): Promise<string> {
   try {
+    const prompt = buildGartnerPrompt(title, body, keyTrend, section, marketData);
     const response = await invokeLLM({
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: USER_PROMPT_TEMPLATE(title, body, keyTrend, section) },
+        { role: "system", content: SYSTEM_PROMPT_GARTNER },
+        { role: "user", content: prompt },
       ],
     });
 
     const content = response?.choices?.[0]?.message?.content;
-    if (typeof content === "string" && content.trim().length > 100) {
-      console.log("[LinkedIn] ✅ Testo post generato con LLM");
+    if (typeof content === "string" && content.trim().length > 200) {
+      console.log("[LinkedIn] ✅ Testo post generato con LLM (stile Gartner)");
       return content.trim();
     }
     throw new Error("Risposta LLM vuota o troppo corta");
@@ -331,11 +362,11 @@ async function generateLinkedInPostText(
     console.warn("[LinkedIn] ⚠️ LLM fallito, uso testo fallback:", err);
     const meta = SECTION_META[section] ?? SECTION_META.ai;
     return [
-      `${title}`,
+      title,
       "",
       body.slice(0, 800),
       "",
-      `📰 Approfondisci su IDEASMART → ${SITE_BASE_URL}${meta.path}`,
+      `📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}`,
       "",
       meta.hashtags.join(" "),
     ].join("\n");
@@ -344,10 +375,13 @@ async function generateLinkedInPostText(
 
 // ── Funzione principale ───────────────────────────────────────────────────────
 /**
- * Pubblica 1 post giornaliero su LinkedIn basato sull'editoriale AI del giorno.
+ * Pubblica 1 post giornaliero su LinkedIn basato sull'editoriale del giorno.
  * Alterna tra sezione 'ai' e 'startup' in base al giorno della settimana:
  * - Lunedì, Mercoledì, Venerdì, Domenica → AI4Business
  * - Martedì, Giovedì, Sabato → Startup News
+ *
+ * Il post include dati da fonti di market intelligence (McKinsey, Gartner, CBInsights)
+ * e un'immagine da feed RSS autorevoli (VentureBeat, CBInsights, TechCrunch AI).
  *
  * Chiamata dallo scheduler giornaliero alle 10:00 CET.
  */
@@ -385,56 +419,56 @@ export async function publishDailyLinkedInPosts(): Promise<{
 
   console.log(`[LinkedIn] 📝 Editoriale trovato: "${editorial.title.slice(0, 60)}..."`);
 
-  // 2. Genera il testo del post con LLM in stile Andrea Cinelli
+  // 2. Cerca dati di market intelligence + immagine da fonti autorevoli
+  console.log("[LinkedIn] 🔍 Ricerca dati market intelligence...");
+  const { data: marketData, image: marketImage } = await getMarketIntelligence(
+    `${editorial.title} ${editorial.keyTrend ?? ""}`,
+    section
+  );
+
+  if (marketData) {
+    console.log(`[LinkedIn] 📊 Dati trovati: ${marketData.stats.length} statistiche`);
+    console.log(`[LinkedIn] 💡 Key finding: ${marketData.keyFinding?.slice(0, 80)}`);
+  } else {
+    console.warn("[LinkedIn] ⚠️ Nessun dato di market intelligence trovato");
+  }
+
+  // 3. Determina l'immagine da usare
+  // Priorità: immagine da fonte market intelligence > immagine editoriale DB
+  let imageUrl: string | null | undefined = null;
+  let imageSource = "";
+
+  if (marketImage) {
+    imageUrl = marketImage.imageUrl;
+    imageSource = marketImage.source;
+    console.log(`[LinkedIn] 🖼️ Immagine da fonte autorevole: ${imageSource}`);
+    console.log(`[LinkedIn]    "${marketImage.title.slice(0, 60)}"`);
+  } else if (editorial.imageUrl) {
+    imageUrl = editorial.imageUrl;
+    imageSource = "editoriale";
+    console.log("[LinkedIn] 🖼️ Uso immagine dall'editoriale (fallback)");
+  } else {
+    console.warn("[LinkedIn] ⚠️ Nessuna immagine disponibile");
+  }
+
+  // 4. Genera il testo del post con LLM in stile Gartner
   const postText = await generateLinkedInPostText(
     editorial.title,
     editorial.body,
     editorial.keyTrend ?? "",
-    section
+    section,
+    marketData
   );
 
-  // 3. Recupera immagine: usa quella dell'editoriale o cerca su Pexels
-  // Blacklist: immagini di crypto/finanza/trading non pertinenti a AI/Startup
-  const BLACKLISTED_PEXELS_IDS = [
-    "14354106", // ethereum coin
-    "7567443",  // bitcoin
-    "6770610",  // crypto trading
-    "8370752",  // stock market chart
-    "6801648",  // financial chart
-  ];
-  const isBlacklisted = (url: string | null | undefined): boolean => {
-    if (!url) return false;
-    return BLACKLISTED_PEXELS_IDS.some(id => url.includes(`photos/${id}/`));
-  };
-
-  let imageUrl = editorial.imageUrl;
-
-  // Se l'immagine salvata nel DB è nella blacklist, forza una nuova ricerca
-  if (isBlacklisted(imageUrl)) {
-    console.log(`[LinkedIn] ⚠️ Immagine nel DB nella blacklist (crypto/finanza), forzo nuova ricerca Pexels...`);
-    imageUrl = null;
-  }
-
-  if (!imageUrl) {
-    console.log("[LinkedIn] 🖼️ Cerco immagine pertinente su Pexels...");
-    try {
-      imageUrl = await findEditorialImage(editorial.title, editorial.keyTrend ?? "AI innovation", section);
-      console.log(`[LinkedIn] 🖼️ Immagine Pexels trovata: ${imageUrl ? "✅" : "❌"}`);
-    } catch (err) {
-      console.warn("[LinkedIn] ⚠️ Errore ricerca immagine Pexels:", err);
-    }
-  } else {
-    console.log("[LinkedIn] 🖼️ Uso immagine dall'editoriale ✅");
-  }
-
-  // 4. URL di destinazione: pagina sezione su IDEASMART
+  // 5. URL di destinazione: pagina sezione su IDEASMART
   const articleUrl = `${SITE_BASE_URL}${meta.path}`;
 
-  // 5. Pubblica su LinkedIn
+  // 6. Pubblica su LinkedIn
   console.log(`[LinkedIn] 🚀 Pubblicazione post — Sezione: ${meta.label}`);
-  console.log(`[LinkedIn]    Titolo editoriale: ${editorial.title.slice(0, 60)}...`);
-  console.log(`[LinkedIn]    Immagine: ${imageUrl ? "✅ presente" : "❌ assente"}`);
-  console.log(`[LinkedIn]    Testo post (prime 200 char): ${postText.slice(0, 200)}`);
+  console.log(`[LinkedIn]    Titolo: ${editorial.title.slice(0, 60)}...`);
+  console.log(`[LinkedIn]    Immagine: ${imageUrl ? `✅ (${imageSource})` : "❌ assente"}`);
+  console.log(`[LinkedIn]    Dati market intel: ${marketData ? "✅" : "❌"}`);
+  console.log(`[LinkedIn]    Testo (prime 200 char): ${postText.slice(0, 200)}`);
 
   const result = await publishToLinkedIn(
     postText,
