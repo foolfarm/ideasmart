@@ -84,7 +84,7 @@ type RssArticle = Awaited<ReturnType<typeof scrapeAINews>>[number];
 // ─── Audit e sostituzione per sezione ────────────────────────────────────────
 
 async function auditAndReplaceSection(
-  section: "ai" | "music" | "startup"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"
 ): Promise<{
   checked: number;
   invalid: number;

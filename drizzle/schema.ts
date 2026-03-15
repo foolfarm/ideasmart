@@ -54,7 +54,7 @@ export type EmailOpen = typeof emailOpens.$inferSelect;
 export const newsletterSends = mysqlTable("newsletter_sends", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione newsletter: 'ai4business' o 'itsmusic'
-  section: mysqlEnum("section", ["ai4business", "itsmusic", "startup"]).default("ai4business").notNull(),
+  section: mysqlEnum("section", ["ai4business", "itsmusic", "startup", "finance", "health", "sport", "luxury"]).default("ai4business").notNull(),
   subject: varchar("subject", { length: 500 }).notNull(),
   htmlContent: text("htmlContent").notNull(),
   recipientCount: int("recipientCount").default(0).notNull(),
@@ -71,7 +71,7 @@ export type NewsletterSend = typeof newsletterSends.$inferSelect;
 export const newsItems = mysqlTable("news_items", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione editoriale: 'ai' = AI4Business News, 'music' = ITsMusic, 'startup' = Startup News
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   title: varchar("title", { length: 500 }).notNull(),
   summary: text("summary").notNull(),
   category: varchar("category", { length: 100 }).notNull(),
@@ -111,7 +111,7 @@ export const contentAudit = mysqlTable("content_audit", {
   // HTTP status code della pagina di destinazione
   httpStatus: int("httpStatus"),
   // Sezione editoriale
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   auditedAt: timestamp("auditedAt").defaultNow().notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
@@ -135,7 +135,7 @@ export type NewsRefreshLog = typeof newsRefreshLog.$inferSelect;
 export const dailyEditorial = mysqlTable("daily_editorial", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione editoriale: 'ai' = AI4Business News, 'music' = ITsMusic, 'startup' = Startup News
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   dateLabel: varchar("dateLabel", { length: 20 }).notNull(),
   title: varchar("title", { length: 500 }).notNull(),
   subtitle: varchar("subtitle", { length: 500 }),
@@ -154,7 +154,7 @@ export type InsertDailyEditorial = typeof dailyEditorial.$inferInsert;
 export const startupOfDay = mysqlTable("startup_of_day", {
   id: int("id").autoincrement().primaryKey(),
   //   // Sezione: 'ai' = Startup del giorno, 'music' = Artista del giorno, 'startup' = Startup della settimana
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   dateLabel: varchar("dateLabel", { length: 20 }),
   name: varchar("name", { length: 255 }).notNull(),
   tagline: varchar("tagline", { length: 500 }).notNull(),
@@ -178,7 +178,7 @@ export type InsertStartupOfDay = typeof startupOfDay.$inferInsert;
 export const weeklyReportage = mysqlTable("weekly_reportage", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione: 'ai' = Reportage startup AI, 'music' = Reportage musica, 'startup' = Reportage Startup News
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   weekLabel: varchar("weekLabel", { length: 20 }).notNull(),
   position: int("position").default(0).notNull(),
   sectionNumber: varchar("sectionNumber", { length: 10 }).notNull(),
@@ -212,7 +212,7 @@ export type InsertWeeklyReportage = typeof weeklyReportage.$inferInsert;
 export const marketAnalysis = mysqlTable("market_analysis", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione: 'ai' = Analisi mercato AI, 'music' = Analisi mercato musicale, 'startup' = Analisi mercato startup
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   weekLabel: varchar("weekLabel", { length: 20 }).notNull(),
   position: int("position").default(0).notNull(),
   source: varchar("source", { length: 255 }).notNull(),
@@ -260,7 +260,7 @@ export type InsertNotificationPreference = typeof notificationPreferences.$infer
 export const articleComments = mysqlTable("article_comments", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione: 'ai', 'music' o 'startup'
-  section: mysqlEnum("section", ["ai", "music", "startup"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).default("ai").notNull(),
   // Tipo articolo: 'news', 'editorial', 'startup', 'reportage', 'analysis'
   articleType: mysqlEnum("articleType", ["news", "editorial", "startup", "reportage", "analysis"]).notNull(),
   articleId: int("articleId").notNull(),
@@ -280,7 +280,7 @@ export type InsertArticleComment = typeof articleComments.$inferInsert;
 export const sourceReports = mysqlTable("source_reports", {
   id: int("id").autoincrement().primaryKey(),
   // Sezione: 'ai', 'music' o 'startup'
-  section: mysqlEnum("section", ["ai", "music", "startup"]).notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury"]).notNull(),
   // Tipo articolo
   articleType: mysqlEnum("articleType", ["news", "editorial", "startup", "reportage", "analysis"]).notNull(),
   articleId: int("articleId").notNull(),

@@ -307,7 +307,7 @@ export async function auditMarketAnalysis(analysisId: number): Promise<{
 
 // ── Audit batch: ultime N notizie senza audit recente ─────────────────────
 export async function runBatchAudit(params: {
-  section?: "ai" | "music" | "startup";
+  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
   limit?: number;
   contentType?: "news" | "analysis";
 }): Promise<{
@@ -433,7 +433,7 @@ export async function auditReportage(reportageId: number): Promise<{
 
 // ── Audit completo: news + analisi + reportage ────────────────────────────
 export async function runFullAudit(params: {
-  section?: "ai" | "music" | "startup";
+  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
   limit?: number;
 }): Promise<{
   processed: number;
@@ -508,7 +508,7 @@ export async function runFullAudit(params: {
 
 // ── Query risultati audit ──────────────────────────────────────────────────
 export async function getAuditResults(params: {
-  section?: "ai" | "music" | "startup";
+  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
   status?: "ok" | "warning" | "error" | "unreachable" | "pending";
   contentType?: "news" | "analysis" | "reportage" | "startup";
   limit?: number;

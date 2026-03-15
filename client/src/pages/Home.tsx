@@ -14,6 +14,10 @@ const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
   music: { accent: "#5b21b6", light: "#ede9fe", label: "ITsMusic", path: "/music" },
   startup: { accent: "#c2410c", light: "#fff0e6", label: "Startup News", path: "/startup" },
+  finance: { accent: "#15803d", light: "#f0fdf4", label: "Finance & Markets", path: "/finance" },
+  health: { accent: "#0369a1", light: "#eff6ff", label: "Health & Biotech", path: "/health" },
+  sport: { accent: "#b45309", light: "#fffbeb", label: "Sport & Business", path: "/sport" },
+  luxury: { accent: "#7c3aed", light: "#faf5ff", label: "Lifestyle & Luxury", path: "/luxury" },
 };
 
 function formatDateIT(date: Date): string {
@@ -37,7 +41,8 @@ function ThinDivider() {
   return <div className="w-full border-t border-[#1a1a2e]/20" />;
 }
 
-function SectionLabel({ section }: { section: "ai" | "music" | "startup" }) {
+type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+function SectionLabel({ section }: { section: SectionKey }) {
   const s = SECTION_COLORS[section];
   return (
     <span
@@ -141,7 +146,7 @@ function HeroNews({ news, editorial }: {
 
 function NewsCard({ item, section, showImage = false }: {
   item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string };
-  section: "ai" | "music" | "startup";
+  section: SectionKey;
   showImage?: boolean;
 }) {
   const s = SECTION_COLORS[section];
@@ -177,7 +182,7 @@ function NewsCard({ item, section, showImage = false }: {
 
 function NewsRow({ item, section }: {
   item: { id: number; title: string; summary: string; category: string; sourceName?: string; publishedAt?: string; sourceUrl?: string };
-  section: "ai" | "music" | "startup";
+  section: SectionKey;
 }) {
   const s = SECTION_COLORS[section];
   const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
@@ -208,6 +213,10 @@ export default function Home() {
   const { data: aiNews } = trpc.news.getLatest.useQuery({ limit: 8, section: "ai" });
   const { data: musicNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "music" });
   const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "startup" });
+  const { data: financeNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "finance" });
+  const { data: healthNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "health" });
+  const { data: sportNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "sport" });
+  const { data: luxuryNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "luxury" });
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
 
   const heroNews = useMemo(() => {
@@ -220,7 +229,7 @@ export default function Home() {
     return aiNews.filter(n => n.id !== heroNews?.id).slice(0, 2);
   }, [aiNews, heroNews]);
 
-  type MixedNewsItem = { id: number; title: string; summary: string; category: string; sourceName: string; sourceUrl: string; publishedAt: string; imageUrl: string | null; section: "ai" | "music" | "startup" };
+  type MixedNewsItem = { id: number; title: string; summary: string; category: string; sourceName: string; sourceUrl: string; publishedAt: string; imageUrl: string | null; section: SectionKey };
 
   const mixedNews = useMemo(() => {
     const ai: MixedNewsItem[] = (aiNews || []).filter(n => n.id !== heroNews?.id).slice(2, 5).map(n => ({ ...n, section: "ai" as const }));
@@ -236,11 +245,27 @@ export default function Home() {
     return result;
   }, [aiNews, musicNews, startupNews, heroNews]);
 
+  const newChannelsNews = useMemo(() => {
+    const finance: MixedNewsItem[] = (financeNews || []).slice(0, 3).map(n => ({ ...n, section: "finance" as const }));
+    const health: MixedNewsItem[] = (healthNews || []).slice(0, 3).map(n => ({ ...n, section: "health" as const }));
+    const sport: MixedNewsItem[] = (sportNews || []).slice(0, 3).map(n => ({ ...n, section: "sport" as const }));
+    const luxury: MixedNewsItem[] = (luxuryNews || []).slice(0, 3).map(n => ({ ...n, section: "luxury" as const }));
+    const result: MixedNewsItem[] = [];
+    const maxLen = Math.max(finance.length, health.length, sport.length, luxury.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (finance[i]) result.push(finance[i]);
+      if (health[i]) result.push(health[i]);
+      if (sport[i]) result.push(sport[i]);
+      if (luxury[i]) result.push(luxury[i]);
+    }
+    return result;
+  }, [financeNews, healthNews, sportNews, luxuryNews]);
+
   return (
     <>
       <SEOHead
-        title="IDEASMART — Testata Giornalistica AI, Musica e Startup"
-        description="La prima pagina di IDEASMART: notizie aggiornate ogni giorno su Intelligenza Artificiale, Musica e Startup italiane. Testata 100% AI Powered."
+        title="IDEASMART — Testata Giornalistica HumanLess"
+        description="La prima testata giornalistica HumanLess: AI, Musica, Startup, Finance, Health, Sport e Luxury. Informazione senza agenda, solo notizie."
         canonical="https://ideasmart.ai"
         ogSiteName="IDEASMART"
       />
@@ -275,14 +300,14 @@ export default function Home() {
             </Link>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              La Prima Testata Giornalistica HumanLess · AI · Musica · Startup
+              La Prima Testata Giornalistica HumanLess · AI · Musica · Startup · Finance · Health · Sport · Luxury
             </p>
           </div>
 
           <Divider thick />
 
           <nav className="flex items-center justify-center gap-0 py-2">
-            {(["ai", "music", "startup"] as const).map((sec, i) => {
+            {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec, i) => {
               const s = SECTION_COLORS[sec];
               return (
                 <Link key={sec} href={s.path}>
@@ -369,7 +394,7 @@ export default function Home() {
               </div>
               <ThinDivider />
 
-              {(["ai", "music", "startup"] as const).map((sec) => {
+              {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec) => {
                 const s = SECTION_COLORS[sec];
                 return (
                   <Link key={sec} href={s.path}>
@@ -494,6 +519,67 @@ export default function Home() {
             </div>
           )}
 
+          {/* Sezione 4: Nuovi Canali — Finance, Health, Sport, Luxury */}
+          <div className="mt-8">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                I Nuovi Canali
+              </span>
+            </div>
+            <ThinDivider />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-2">
+              {(["finance", "health", "sport", "luxury"] as const).map((sec, colIdx) => {
+                const newsForSection = sec === "finance" ? financeNews : sec === "health" ? healthNews : sec === "sport" ? sportNews : luxuryNews;
+                const items = (newsForSection || []).slice(0, 3);
+                const s = SECTION_COLORS[sec];
+                return (
+                  <div key={sec} className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
+                    <div className="py-2">
+                      <Link href={s.path}>
+                        <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                          {s.label}
+                        </span>
+                      </Link>
+                    </div>
+                    <div className="border-t-2" style={{ borderColor: s.accent }} />
+                    {items.length > 0 ? (
+                      items.map((item, i) => (
+                        <div key={item.id}>
+                          <div className="py-2.5">
+                            <a href={item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`}
+                              target="_blank" rel="noopener noreferrer">
+                              <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
+                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                                {item.title}
+                              </span>
+                            </a>
+                            {item.sourceName && (
+                              <p className="mt-0.5 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+                                {item.sourceName}
+                              </p>
+                            )}
+                          </div>
+                          {i < items.length - 1 && <ThinDivider />}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">In arrivo…</div>
+                    )}
+                    <Link href={s.path}>
+                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                        Tutte le notizie →
+                      </span>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Footer testata */}
           <div className="mt-12">
             <Divider thick />
@@ -503,7 +589,7 @@ export default function Home() {
                 {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% AI Powered`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
-                {(["ai", "music", "startup"] as const).map((sec) => {
+                {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec) => {
                   const s = SECTION_COLORS[sec];
                   return (
                     <Link key={sec} href={s.path}>

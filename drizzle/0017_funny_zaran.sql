@@ -1,0 +1,9 @@
+ALTER TABLE `article_comments` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';--> statement-breakpoint
+ALTER TABLE `content_audit` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';--> statement-breakpoint
+ALTER TABLE `daily_editorial` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';--> statement-breakpoint
+ALTER TABLE `market_analysis` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';--> statement-breakpoint
+ALTER TABLE `news_items` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';--> statement-breakpoint
+ALTER TABLE `newsletter_sends` MODIFY COLUMN `section` enum('ai4business','itsmusic','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai4business';--> statement-breakpoint
+ALTER TABLE `source_reports` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL;--> statement-breakpoint
+ALTER TABLE `startup_of_day` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';--> statement-breakpoint
+ALTER TABLE `weekly_reportage` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury') NOT NULL DEFAULT 'ai';

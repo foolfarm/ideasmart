@@ -20,7 +20,7 @@
 import Parser from "rss-parser";
 import axios from "axios";
 import { invokeLLM } from "./_core/llm";
-import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
+import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
 const rssParser = new Parser({
@@ -100,7 +100,7 @@ async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fe
  */
 async function selectAndTranslate(
   articles: Awaited<ReturnType<typeof fetchAllFeeds>>,
-  section: "ai" | "music" | "startup"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"
 ): Promise<ScrapedArticle[]> {
   if (articles.length === 0) {
     console.warn(`[RssScraper] Nessun articolo disponibile per ${section}`);
@@ -123,7 +123,27 @@ async function selectAndTranslate(
       categories: ["Startup Italiana", "Startup Internazionale", "Fintech", "Healthtech", "Greentech", "Edtech", "Deeptech", "SaaS & B2B", "Funding & VC", "Acquisizioni", "IPO & Mercati", "Ecosistema"],
       instructions: "Seleziona le notizie più rilevanti per founder, investitori e professionisti dell'ecosistema startup. Privilegia round di finanziamento, nuovi prodotti, unicorni, startup italiane.",
     },
-  };
+    finance: {
+      label: "Finance & Markets",
+      categories: ["Mercati Azionari", "Macro & Banche Centrali", "Fintech & Crypto", "M&A & Private Equity", "Venture Capital", "Obbligazioni & Tassi", "Commodities", "Forex", "Economia Globale", "ESG & Sostenibilità", "Banche & Credito", "IPO & Listini"],
+      instructions: "Seleziona le notizie più rilevanti per CFO, investitori e manager italiani. Privilegia dati macro, movimenti di mercato, deal significativi, politiche BCE/Fed, analisi di impatto per le imprese.",
+    },
+    health: {
+      label: "Health & Biotech",
+      categories: ["Biotech & Pharma", "AI in Medicina", "Longevità & Aging", "Oncologia", "MedTech & Dispositivi", "Salute Digitale", "Ricerca Clinica", "Sanità Pubblica", "Genomica", "Neuroscienze", "Drug Discovery", "Regolamentazione FDA/EMA"],
+      instructions: "Seleziona le notizie più rilevanti per professionisti della salute, investitori biotech e manager sanitari. Privilegia approvazioni FDA/EMA, trial clinici, breakthrough scientifici, finanziamenti biotech.",
+    },
+    sport: {
+      label: "Sport & Business",
+      categories: ["Calcio & Business", "Diritti TV & Media", "Sponsorship & Brand", "Stadi & Infrastrutture", "Esports", "Sport Tech", "Valutazioni Club", "Trasferimenti & Mercato", "Formula 1 & Motorsport", "NBA & Basket", "Tennis & Golf", "Olimpiadi & Mega-eventi"],
+      instructions: "Seleziona le notizie più rilevanti per manager dello sport, investitori e appassionati di business sportivo. Privilegia deal economici, diritti TV, valutazioni club, innovazione tecnologica nello sport.",
+    },
+    luxury: {
+      label: "Lifestyle & Luxury",
+      categories: ["Moda & Lusso", "Made in Italy", "Orologeria & Gioielleria", "Automotive Luxury", "Arte & Collezionismo", "Vino & Gastronomia", "Travel & Hospitality", "Real Estate Luxury", "Brand Strategy", "Sostenibilità nel Lusso", "Retail & E-commerce Luxury", "Acquisizioni nel Lusso"],
+      instructions: "Seleziona le notizie più rilevanti per imprenditori del made in Italy, manager del lusso e investitori. Privilegia strategie di brand, acquisizioni LVMH/Kering/Richemont, trend di mercato, innovazione nel retail luxury.",
+    },
+  } as const;
 
   const cfg = sectionConfig[section];
   const today = new Date().toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
@@ -279,7 +299,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
  */
 export async function sanitizeSourceUrl(
   url: string,
-  section: "ai" | "music" | "startup"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"
 ): Promise<string> {
   try {
     const parsed = new URL(url);
@@ -316,4 +336,28 @@ export async function scrapeStartupNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Startup news...");
   const articles = await fetchAllFeeds(STARTUP_SOURCES);
   return selectAndTranslate(articles, "startup");
+}
+
+export async function scrapeFinanceNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Finance news...");
+  const articles = await fetchAllFeeds(FINANCE_SOURCES);
+  return selectAndTranslate(articles, "finance");
+}
+
+export async function scrapeHealthNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Health news...");
+  const articles = await fetchAllFeeds(HEALTH_SOURCES);
+  return selectAndTranslate(articles, "health");
+}
+
+export async function scrapeSportNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Sport news...");
+  const articles = await fetchAllFeeds(SPORT_SOURCES);
+  return selectAndTranslate(articles, "sport");
+}
+
+export async function scrapeLuxuryNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Luxury news...");
+  const articles = await fetchAllFeeds(LUXURY_SOURCES);
+  return selectAndTranslate(articles, "luxury");
 }

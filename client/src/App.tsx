@@ -10,6 +10,10 @@ import Home from "./pages/Home";
 import AiHome from "./pages/AiHome";
 import MusicHome from "./pages/MusicHome";
 import StartupHome from "./pages/StartupHome";
+import FinanceHome from "./pages/FinanceHome";
+import HealthHome from "./pages/HealthHome";
+import SportHome from "./pages/SportHome";
+import LuxuryHome from "./pages/LuxuryHome";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
 import AuditDashboard from "./pages/AuditDashboard";
@@ -36,6 +40,10 @@ function Router() {
       <Route path="/ai" component={AiHome} />
       <Route path="/music" component={MusicHome} />
       <Route path="/startup" component={StartupHome} />
+      <Route path="/finance" component={FinanceHome} />
+      <Route path="/health" component={HealthHome} />
+      <Route path="/sport" component={SportHome} />
+      <Route path="/luxury" component={LuxuryHome} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
       <Route path="/admin/rss-monitor" component={AdminRssMonitor} />
