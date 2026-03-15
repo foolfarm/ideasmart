@@ -63,6 +63,17 @@ Una redazione di 50 giornalisti non può monitorare 200 fonti in tempo reale, pr
 La domanda per le PMI italiane non è "l'AI sostituirà i miei dipendenti?" La domanda corretta è: "Quali processi nella mia azienda hanno la stessa struttura del problema che IDEASMART ha risolto?" La risposta, nella maggior parte dei casi, è: molti più di quanti pensiate.`,
   },
   {
+    number: "VIII",
+    title: "Serietà, obiettività, imparzialità",
+    body: `Viviamo in un'epoca in cui il giornalismo è diventato, in larga parte, uno strumento di posizionamento. I grandi editori hanno azionisti, inserzionisti, affiliazioni politiche. Le redazioni hanno linee editoriali che riflettono interessi precisi. Il lettore lo sa — e ha smesso di fidarsi.
+
+Un sistema HumanLess non ha opinioni politiche. Non ha inserzionisti da compiacere. Non ha una parte da difendere. L'AI non è di destra né di sinistra, non è pro-establishment né anti-sistema. Analizza i dati, verifica le fonti, riporta i fatti.
+
+Questo non è un vantaggio tecnico. È un vantaggio strutturale. L'imparzialità di IDEASMART non dipende dalla buona volontà di un direttore editoriale o dall'etica di un singolo giornalista — dipende dall'architettura del sistema. Non ci sono interessi da tutelare perché non ci sono soggetti umani con interessi. Ci sono solo dati, fonti e analisi.
+
+In un panorama mediatico dove ogni voce è sospettata di essere pilotata, IDEASMART offre qualcosa di radicalmente diverso: informazione senza agenda. Solo notizie.`,
+  },
+  {
     number: "VII",
     title: "Un impegno verso il lettore",
     body: `IDEASMART si impegna a rispettare tre principi che definiscono cosa significa essere HumanLess in modo responsabile.
@@ -71,7 +82,7 @@ Il primo è la trasparenza radicale: ogni contenuto prodotto da agenti AI è ide
 
 Il secondo è la verificabilità: ogni affermazione quantitativa è accompagnata dalla fonte primaria. Nessun dato senza citazione. Nessuna statistica senza contesto. Il lettore può sempre risalire all'origine dell'informazione.
 
-Il terzo è la responsabilità editoriale: Andrea Cinelli risponde personalmente della qualità del sistema. Un sistema HumanLess non è un sistema irresponsabile — è un sistema dove la responsabilità è concentrata, non diluita in una catena di produzione opaca.`,
+Il terzo è la responsabilità editoriale: un sistema HumanLess non è un sistema irresponsabile. È un sistema dove la responsabilità è concentrata e misurabile, non diluita in una catena di produzione opaca dove nessuno risponde di nulla.`,
   },
 ];
 
