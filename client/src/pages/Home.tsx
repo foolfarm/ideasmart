@@ -258,7 +258,7 @@ export default function Home() {
     <div style={{ background: C.navy, minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
       <SEOHead
         title="IDEASMART — Testata Giornalistica Multicanale AI e Musica"
-        description="IDEASMART è la piattaforma editoriale italiana che unisce AI4Business News e ITsMusic. Notizie, analisi di mercato, startup emergenti e industria musicale aggiornate ogni giorno."
+        description="IDEASMART è la piattaforma editoriale italiana su AI4Business, ITsMusic e Startup News. Notizie, analisi di mercato, startup emergenti e industria musicale aggiornate ogni giorno."
         keywords="IDEASMART, testata giornalistica, AI for business, intelligenza artificiale, musica, rock, indie, startup italiane, newsletter AI, newsletter musica"
         canonical="https://www.ideasmart.ai"
         ogSiteName="IDEASMART"
@@ -313,7 +313,7 @@ export default function Home() {
               className="text-lg sm:text-xl md:text-2xl mb-4 sm:mb-5 max-w-3xl mx-auto leading-relaxed px-1"
               style={{ color: C.whiteAlpha90 }}
             >
-              La piattaforma editoriale italiana che unisce i mondi dell'<strong style={{ color: C.teal }}>Intelligenza Artificiale</strong> e della <strong style={{ color: C.violet }}>Musica</strong>.
+              La piattaforma editoriale italiana su <strong style={{ color: C.teal }}>Intelligenza Artificiale</strong>, <strong style={{ color: C.violet }}>Musica</strong> e <strong style={{ color: C.orange }}>Startup</strong>.
             </p>
             <p
               className="text-base sm:text-lg mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-1"
@@ -327,7 +327,7 @@ export default function Home() {
             {/* Statistiche: griglia 2×2 su mobile, 4 colonne su desktop */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-10 mb-8 sm:mb-12 max-w-xs sm:max-w-none mx-auto">
               {[
-                { value: "2", label: "canali tematici" },
+                { value: "3", label: "canali tematici" },
                 { value: "40+", label: "contenuti al giorno" },
                 { value: subscriberCount ? `${subscriberCount.toLocaleString("it-IT")}+` : "5.000+", label: "iscritti attivi" },
                 { value: "100%", label: "aggiornamento auto" },
@@ -357,6 +357,14 @@ export default function Home() {
                   style={{ background: C.violet, color: C.white }}
                 >
                   🎸 Entra in ITsMusic
+                </button>
+              </Link>
+              <Link href="/startup" className="block sm:inline-block">
+                <button
+                  className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 active:scale-95"
+                  style={{ background: C.orange, color: C.white }}
+                >
+                  🚀 Entra in Startup News
                 </button>
               </Link>
             </div>
