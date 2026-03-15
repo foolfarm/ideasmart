@@ -961,8 +961,51 @@ Rispondi con questo JSON:
       const count = await generateMusicNews();
       return { count, message: `${count} notizie musicali aggiornate con successo` };
     }),
-
-    // ── LinkedIn Autopost manuale ──────────────────────────────────────────
+    // ── Finance & Markets ────────────────────────────────────────────────────────
+    refreshFinanceAll: adminProcedure.mutation(async () => {
+      const { refreshFinanceNewsFromRSS } = await import("./rssNewsScheduler");
+      const { generateFinanceEditorial, generateFinanceDealOfWeek, generateFinanceReportage, generateFinanceMarketAnalysis } = await import("./financeScheduler");
+      await refreshFinanceNewsFromRSS();
+      await generateFinanceEditorial();
+      await generateFinanceDealOfWeek();
+      await generateFinanceReportage();
+      await generateFinanceMarketAnalysis();
+      return { success: true, message: "Finance & Markets aggiornato con successo" };
+    }),
+    // ── Health & Biotech ────────────────────────────────────────────────────────
+    refreshHealthAll: adminProcedure.mutation(async () => {
+      const { refreshHealthNewsFromRSS } = await import("./rssNewsScheduler");
+      const { generateHealthEditorial, generateHealthDealOfWeek, generateHealthReportage, generateHealthMarketAnalysis } = await import("./healthScheduler");
+      await refreshHealthNewsFromRSS();
+      await generateHealthEditorial();
+      await generateHealthDealOfWeek();
+      await generateHealthReportage();
+      await generateHealthMarketAnalysis();
+      return { success: true, message: "Health & Biotech aggiornato con successo" };
+    }),
+    // ── Sport & Business ────────────────────────────────────────────────────────
+    refreshSportAll: adminProcedure.mutation(async () => {
+      const { refreshSportNewsFromRSS } = await import("./rssNewsScheduler");
+      const { generateSportEditorial, generateSportDealOfWeek, generateSportReportage, generateSportMarketAnalysis } = await import("./sportScheduler");
+      await refreshSportNewsFromRSS();
+      await generateSportEditorial();
+      await generateSportDealOfWeek();
+      await generateSportReportage();
+      await generateSportMarketAnalysis();
+      return { success: true, message: "Sport & Business aggiornato con successo" };
+    }),
+    // ── Lifestyle & Luxury ───────────────────────────────────────────────────────
+    refreshLuxuryAll: adminProcedure.mutation(async () => {
+      const { refreshLuxuryNewsFromRSS } = await import("./rssNewsScheduler");
+      const { generateLuxuryEditorial, generateLuxuryDealOfWeek, generateLuxuryReportage, generateLuxuryMarketAnalysis } = await import("./luxuryScheduler");
+      await refreshLuxuryNewsFromRSS();
+      await generateLuxuryEditorial();
+      await generateLuxuryDealOfWeek();
+      await generateLuxuryReportage();
+      await generateLuxuryMarketAnalysis();
+      return { success: true, message: "Lifestyle & Luxury aggiornato con successo" };
+    }),
+    // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure.mutation(async () => {
       console.log("[AdminRouter] Avvio pubblicazione manuale LinkedIn...");
       const result = await publishDailyLinkedInPosts();

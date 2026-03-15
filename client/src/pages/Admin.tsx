@@ -59,6 +59,10 @@ export default function Admin() {
   const [generatingImages, setGeneratingImages] = useState(false);
   const [sendingItsMusic, setSendingItsMusic] = useState(false);
   const [refreshingMusicNews, setRefreshingMusicNews] = useState(false);
+  const [refreshingFinance, setRefreshingFinance] = useState(false);
+  const [refreshingHealth, setRefreshingHealth] = useState(false);
+  const [refreshingSport, setRefreshingSport] = useState(false);
+  const [refreshingLuxury, setRefreshingLuxury] = useState(false);
   const [publishingLinkedIn, setPublishingLinkedIn] = useState(false);
   const [linkedInResult, setLinkedInResult] = useState<{ published: number; total: number; posts: Array<{ section: string; title: string; success: boolean; error?: string }> } | null>(null);
 
@@ -100,6 +104,22 @@ export default function Admin() {
     },
   });
 
+  const refreshFinanceMutation = trpc.admin.refreshFinanceAll.useMutation({
+    onSuccess: () => { setRefreshingFinance(false); toast.success("✅ Finance & Markets aggiornato!"); },
+    onError: (err) => { setRefreshingFinance(false); toast.error("Errore Finance: " + err.message); },
+  });
+  const refreshHealthMutation = trpc.admin.refreshHealthAll.useMutation({
+    onSuccess: () => { setRefreshingHealth(false); toast.success("✅ Health & Biotech aggiornato!"); },
+    onError: (err) => { setRefreshingHealth(false); toast.error("Errore Health: " + err.message); },
+  });
+  const refreshSportMutation = trpc.admin.refreshSportAll.useMutation({
+    onSuccess: () => { setRefreshingSport(false); toast.success("✅ Sport & Business aggiornato!"); },
+    onError: (err) => { setRefreshingSport(false); toast.error("Errore Sport: " + err.message); },
+  });
+  const refreshLuxuryMutation = trpc.admin.refreshLuxuryAll.useMutation({
+    onSuccess: () => { setRefreshingLuxury(false); toast.success("✅ Lifestyle & Luxury aggiornato!"); },
+    onError: (err) => { setRefreshingLuxury(false); toast.error("Errore Luxury: " + err.message); },
+  });
   const generateImagesMutation = trpc.admin.generateArticleImages.useMutation({
     onSuccess: (data) => {
       setGeneratingImages(false);
@@ -487,6 +507,47 @@ export default function Admin() {
                 ) : (
                   `Genera Immagini AI →`
                 )}
+              </button>
+            </div>
+
+            {/* Finance & Markets */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(16,185,129,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#10b981", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Finance & Markets</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 03:00 CET.</p>
+              <button onClick={() => { setRefreshingFinance(true); refreshFinanceMutation.mutate(); }} disabled={refreshingFinance}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                style={{ background: "rgba(16,185,129,0.3)", color: "#6ee7b7", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(16,185,129,0.4)" }}>
+                {refreshingFinance ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-green-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Finance...</span> : "📈 Aggiorna Finance & Markets →"}
+              </button>
+            </div>
+            {/* Health & Biotech */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(59,130,246,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#3b82f6", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Health & Biotech</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 04:00 CET.</p>
+              <button onClick={() => { setRefreshingHealth(true); refreshHealthMutation.mutate(); }} disabled={refreshingHealth}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                style={{ background: "rgba(59,130,246,0.3)", color: "#93c5fd", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(59,130,246,0.4)" }}>
+                {refreshingHealth ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-blue-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Health...</span> : "🧬 Aggiorna Health & Biotech →"}
+              </button>
+            </div>
+            {/* Sport & Business */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(245,158,11,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#f59e0b", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Sport & Business</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 05:00 CET.</p>
+              <button onClick={() => { setRefreshingSport(true); refreshSportMutation.mutate(); }} disabled={refreshingSport}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                style={{ background: "rgba(245,158,11,0.3)", color: "#fcd34d", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(245,158,11,0.4)" }}>
+                {refreshingSport ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Sport...</span> : "⚽ Aggiorna Sport & Business →"}
+              </button>
+            </div>
+            {/* Lifestyle & Luxury */}
+            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(236,72,153,0.04)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#ec4899", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Lifestyle & Luxury</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 06:00 CET.</p>
+              <button onClick={() => { setRefreshingLuxury(true); refreshLuxuryMutation.mutate(); }} disabled={refreshingLuxury}
+                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                style={{ background: "rgba(236,72,153,0.3)", color: "#f9a8d4", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(236,72,153,0.4)" }}>
+                {refreshingLuxury ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-pink-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Luxury...</span> : "💎 Aggiorna Lifestyle & Luxury →"}
               </button>
             </div>
 

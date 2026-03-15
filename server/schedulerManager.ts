@@ -35,7 +35,11 @@
  */
 
 import cron from "node-cron";
-import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS } from "./rssNewsScheduler";
+import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshFinanceNewsFromRSS, refreshHealthNewsFromRSS, refreshSportNewsFromRSS, refreshLuxuryNewsFromRSS } from "./rssNewsScheduler";
+import { generateFinanceEditorial, generateFinanceDealOfWeek, generateFinanceReportage, generateFinanceMarketAnalysis } from "./financeScheduler";
+import { generateHealthEditorial, generateHealthDealOfWeek, generateHealthReportage, generateHealthMarketAnalysis } from "./healthScheduler";
+import { generateSportEditorial, generateSportDealOfWeek, generateSportReportage, generateSportMarketAnalysis } from "./sportScheduler";
+import { generateLuxuryEditorial, generateLuxuryDealOfWeek, generateLuxuryReportage, generateLuxuryMarketAnalysis } from "./luxuryScheduler";
 import { runDailyContentRefresh } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
@@ -225,9 +229,80 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
+  // ═════════════════════════════════════════════════════════════  // ══════════════════════════════════════════════════════════════════════════
+  // SEZIONE /finance — Finance & Markets
   // ══════════════════════════════════════════════════════════════════════════
-  // AUDIT NOTTURNO — ogni giorno alle 02:00 CET
+  cron.schedule("0 3 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 03:00 CET — Avvio scraping Finance news...");
+    try { await refreshFinanceNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Finance news:", err); }
+  }, { timezone: TZ });
+  cron.schedule("5 3 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 03:05 CET — Avvio editoriale Finance...");
+    try { await generateFinanceEditorial(); await generateFinanceDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Finance editorial:", err); }
+  }, { timezone: TZ });
+  cron.schedule("15 3 * * 1", async () => {
+    try { await generateFinanceReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Finance reportage:", err); }
+  }, { timezone: TZ });
+  cron.schedule("20 3 * * 1", async () => {
+    try { await generateFinanceMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Finance market analysis:", err); }
+  }, { timezone: TZ });
+
   // ══════════════════════════════════════════════════════════════════════════
+  // SEZIONE /health — Health & Biotech
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 4 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 04:00 CET — Avvio scraping Health news...");
+    try { await refreshHealthNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Health news:", err); }
+  }, { timezone: TZ });
+  cron.schedule("5 4 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 04:05 CET — Avvio editoriale Health...");
+    try { await generateHealthEditorial(); await generateHealthDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Health editorial:", err); }
+  }, { timezone: TZ });
+  cron.schedule("15 4 * * 1", async () => {
+    try { await generateHealthReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Health reportage:", err); }
+  }, { timezone: TZ });
+  cron.schedule("20 4 * * 1", async () => {
+    try { await generateHealthMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Health market analysis:", err); }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SEZIONE /sport — Sport & Business
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 5 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 05:00 CET — Avvio scraping Sport news...");
+    try { await refreshSportNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Sport news:", err); }
+  }, { timezone: TZ });
+  cron.schedule("5 5 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 05:05 CET — Avvio editoriale Sport...");
+    try { await generateSportEditorial(); await generateSportDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Sport editorial:", err); }
+  }, { timezone: TZ });
+  cron.schedule("15 5 * * 1", async () => {
+    try { await generateSportReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Sport reportage:", err); }
+  }, { timezone: TZ });
+  cron.schedule("20 5 * * 1", async () => {
+    try { await generateSportMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Sport market analysis:", err); }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SEZIONE /luxury — Lifestyle & Luxury
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 6 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 06:00 CET — Avvio scraping Luxury news...");
+    try { await refreshLuxuryNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury news:", err); }
+  }, { timezone: TZ });
+  cron.schedule("5 6 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 06:05 CET — Avvio editoriale Luxury...");
+    try { await generateLuxuryEditorial(); await generateLuxuryDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury editorial:", err); }
+  }, { timezone: TZ });
+  cron.schedule("15 6 * * 1", async () => {
+    try { await generateLuxuryReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury reportage:", err); }
+  }, { timezone: TZ });
+  cron.schedule("20 6 * * 1", async () => {
+    try { await generateLuxuryMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury market analysis:", err); }
+  }, { timezone: TZ });
+
+  // ══════════
+  // AUDIT NOTTURNO — ogni giorno alle 02:00 CET // ══════════════════════════════════════════════════════════════════════════
 
   // ── 13. AUDIT NOTTURNO — ogni giorno alle 02:00 CET ──────────────────────
   // Verifica raggiungibilità URL di tutte le notizie.

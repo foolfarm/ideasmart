@@ -51,6 +51,34 @@ vi.mock("./startupScheduler", () => ({
   generateStartupMarketAnalysis: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock("./financeScheduler", () => ({
+  generateFinanceEditorial: vi.fn().mockResolvedValue(undefined),
+  generateFinanceDealOfWeek: vi.fn().mockResolvedValue(undefined),
+  generateFinanceReportage: vi.fn().mockResolvedValue(undefined),
+  generateFinanceMarketAnalysis: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("./healthScheduler", () => ({
+  generateHealthEditorial: vi.fn().mockResolvedValue(undefined),
+  generateHealthDealOfWeek: vi.fn().mockResolvedValue(undefined),
+  generateHealthReportage: vi.fn().mockResolvedValue(undefined),
+  generateHealthMarketAnalysis: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("./sportScheduler", () => ({
+  generateSportEditorial: vi.fn().mockResolvedValue(undefined),
+  generateSportDealOfWeek: vi.fn().mockResolvedValue(undefined),
+  generateSportReportage: vi.fn().mockResolvedValue(undefined),
+  generateSportMarketAnalysis: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("./luxuryScheduler", () => ({
+  generateLuxuryEditorial: vi.fn().mockResolvedValue(undefined),
+  generateLuxuryDealOfWeek: vi.fn().mockResolvedValue(undefined),
+  generateLuxuryReportage: vi.fn().mockResolvedValue(undefined),
+  generateLuxuryMarketAnalysis: vi.fn().mockResolvedValue(undefined),
+}));
+
 vi.mock("./newsletterTestSender", () => ({
   sendTestNewsletter: vi.fn().mockResolvedValue({ success: true, subject: "[TEST] IDEASMART", newsCount: 10 }),
 }));
@@ -71,12 +99,12 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 16 cron job quando avviato", async () => {
+  it("dovrebbe registrare 32 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 16 scheduler: 12 contenuti + 1 audit + 1 test newsletter + 1 newsletter massiva + 1 LinkedIn autopost
-    expect(cron.default.schedule).toHaveBeenCalledTimes(16);
+    // 32 scheduler: 16 originali + 16 nuovi canali (Finance, Health, Sport, Luxury: 4 cron ciascuno)
+    expect(cron.default.schedule).toHaveBeenCalledTimes(32);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
