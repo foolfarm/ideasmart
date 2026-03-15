@@ -773,17 +773,17 @@ export default function MusicHome() {
 
             <FadeUp delay={0.1}>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-none mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                <span style={{ color: M.text }}>Rock, Indie</span>
+                <span style={{ color: M.text }}>ITS</span>
                 <br />
                 <span style={{ background: `linear-gradient(135deg, ${M.violet}, ${M.magenta})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  & AI Music
+                  Music
                 </span>
               </h1>
             </FadeUp>
 
             <FadeUp delay={0.2}>
               <p className="text-lg sm:text-xl mb-8 max-w-2xl leading-relaxed" style={{ color: M.textMuted, fontFamily: "'DM Sans', sans-serif" }}>
-                La testata giornalistica italiana sull'industria musicale. News, artisti emergenti, analisi di mercato e reportage esclusivi su Rock, Indie e AI Music.
+                La testata giornalistica italiana sull'industria musicale. News, artisti emergenti, analisi di mercato e reportage esclusivi.
               </p>
             </FadeUp>
 
