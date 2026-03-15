@@ -3,10 +3,13 @@
  * ─────────────────────────────────────────────────────────────────────────────
  * Routine automatica settimanale:
  *   - Ogni LUNEDÌ alle 09:00 (ora italiana)
- *   - Genera 20 notizie AI aggiornate tramite LLM
+ *   - Genera 32 notizie distribuite tra i 7 canali IDEASMART tramite LLM
  *   - Costruisce la newsletter con il template dark ufficiale IDEASMART
  *   - Invia a tutti gli iscritti attivi nel database
  *   - Registra l'invio nella tabella newsletter_sends
+ *
+ * Canali coperti: AI4Business, Startup, Musica, Finance & Markets,
+ *                 Health & Biotech, Sport & Business, Lifestyle & Luxury
  */
 
 import { invokeLLM } from "./_core/llm";
@@ -93,7 +96,7 @@ Scrivi in italiano con tono editoriale autorevole. Rispondi SOLO con JSON valido
       },
       {
         role: "user",
-        content: `Genera esattamente 20 notizie AI reali e significative della settimana (${dateRange}).
+        content: `Genera esattamente 32 notizie reali e significative della settimana (${dateRange}), distribuite tra i 7 canali editoriali di IDEASMART.
 
 Criteri editoriali:
 - Privilegia notizie con impatto concreto sul business e sull'ecosistema startup
@@ -101,12 +104,15 @@ Criteri editoriali:
 - Includi almeno 2 notizie su finanziamenti o acquisizioni AI
 - Includi almeno 2 notizie su nuovi modelli o aggiornamenti AI
 - Includi almeno 1 notizia su startup italiane
-- Includi almeno 1 notizia su AI & Salute e 1 su AI & Finanza
 - Includi almeno 1 notizia su regolamentazione AI (EU AI Act)
-- Tono editoriale, non promozionale
-- Distribuisci le categorie in modo equilibrato
+- Includi almeno 3 notizie su Finance & Markets (mercati, macro, BCE, M&A)
+- Includi almeno 3 notizie su Health & Biotech (farmaceutica, biotech, AI in medicina, longevità)
+- Includi almeno 3 notizie su Sport & Business (business dello sport, deal, valutazioni club, sponsorship)
+- Includi almeno 3 notizie su Lifestyle & Luxury (lusso, made in Italy, brand, mercato del lusso)
+- Tono editoriale autorevole, non promozionale
+- Distribuisci le categorie in modo equilibrato tra i 7 canali
 
-Categorie disponibili: "Modelli Generativi", "AI Agentiva", "Big Tech", "Startup & Funding", "AI & Hardware", "Robot & AI Fisica", "AI & Startup Italiane", "Ricerca & Innovazione", "AI & Lavoro", "AI & Sicurezza", "AI & Difesa", "Internazionalizzazione", "Regolamentazione AI", "AI & Salute", "AI & Finanza"
+Categorie disponibili: "Modelli Generativi", "AI Agentiva", "Big Tech", "Startup & Funding", "AI & Hardware", "Robot & AI Fisica", "AI & Startup Italiane", "Ricerca & Innovazione", "AI & Lavoro", "AI & Sicurezza", "AI & Difesa", "Internazionalizzazione", "Regolamentazione AI", "Finance & Markets", "Macro & BCE", "M&A & Deal", "Health & Biotech", "AI in Medicina", "Longevità & Wellness", "Sport Business", "Deal Sportivi", "Valutazioni Club", "Luxury & Made in Italy", "Brand Strategy", "Mercato del Lusso", "Musica & Business"
 
 Rispondi con JSON: {"items":[{"category":"...","title":"...","summary":"...","url":"...","source":"..."}]}`,
       },
@@ -144,7 +150,7 @@ Rispondi con JSON: {"items":[{"category":"...","title":"...","summary":"...","ur
 
   const content = response.choices[0]?.message?.content as string;
   const parsed = JSON.parse(content);
-  return (parsed.items || []).slice(0, 20) as NewsItem[];
+  return (parsed.items || []).slice(0, 32) as NewsItem[];
 }
 
 // ─── Invio newsletter settimanale ─────────────────────────────────────────────
@@ -179,7 +185,7 @@ export async function sendWeeklyNewsletter(): Promise<{
     console.log(`[NewsletterScheduler] Generated ${news.length} news items`);
 
     // 3. Costruisce HTML con il template dark ufficiale
-    const subject = `IDEASMART — AI for Business · N° ${issueNumber} · ${monthLabel}`;
+    const subject = `IDEASMART — AI · Finance · Health · Sport · Luxury · N° ${issueNumber} · ${monthLabel}`;
     const BASE_URL = "https://ideasmart.ai";
 
     // 4. Invia individualmente con link unsubscribe personalizzato per ogni iscritto

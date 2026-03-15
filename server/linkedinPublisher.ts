@@ -1,7 +1,7 @@
 /**
  * IDEASMART — LinkedIn Autopost
  *
- * Pubblica 1 post giornaliero alle 10:00 CET sul profilo LinkedIn di Andrea Cinelli.
+ * Pubblica 1 post giornaliero alle 10:00 CET su LinkedIn — tono HumanLess, dati da fonti autorevoli.
  *
  * Flusso:
  *  1. Recupera l'editoriale del giorno (AI o Startup, alternanza settimanale)
@@ -42,14 +42,14 @@ const SECTION_META: Record<string, { label: string; hashtags: string[]; path: st
 
 // ── Prompt LLM: stile senior analyst Gartner ────────────────────────────────
 
-const SYSTEM_PROMPT_GARTNER = `Sei Andrea Cinelli, CEO di FoolFarm e serial entrepreneur italiano con 20+ anni di esperienza nell'ecosistema tech.
-Scrivi post LinkedIn con il rigore analitico di un senior analyst Gartner o McKinsey, ma con la voce diretta di un imprenditore che ha vissuto queste dinamiche sul campo.
+const SYSTEM_PROMPT_GARTNER = `Sei un senior analyst con 20+ anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo.
+Scrivi post LinkedIn con il rigore analitico di un senior analyst Gartner o McKinsey, ma con la voce diretta di chi ha vissuto queste dinamiche sul campo.
 
 Il tuo stile:
 - Parti sempre da un dato concreto o un'osservazione di mercato precisa — mai da un'opinione generica
 - Usi numeri e percentuali specifici per ancorare l'analisi alla realtà
 - Distingui tra segnali di mercato e noise — e lo dici esplicitamente
-- Il tuo tono è quello di chi ha letto il report McKinsey E ha fondato 3 aziende: non accademico, non motivazionale
+- Il tuo tono è quello di chi ha letto il report McKinsey E ha gestito aziende: non accademico, non motivazionale
 - Scrivi in italiano con terminologia tecnica in inglese quando necessario
 - Massimo 2 emoji per post, usate con parsimonia
 - Non usi mai frasi come "il futuro è adesso", "rivoluzione", "game changer" — troppo logore
