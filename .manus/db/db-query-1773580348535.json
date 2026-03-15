@@ -1,0 +1,55 @@
+{
+  "query": "SELECT section, title, sourceUrl FROM news_items ORDER BY section, id LIMIT 9;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, title, sourceUrl FROM news_items ORDER BY section, id LIMIT 9;",
+  "rows": [
+    {
+      "section": "ai",
+      "title": "LangChain lancia Deep Agents: agenti AI multi-step più affidabili",
+      "sourceUrl": "https://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-planning-memory-and-context-isolation-in-multi-step-ai-agents/"
+    },
+    {
+      "section": "ai",
+      "title": "Zhipu AI presenta GLM-OCR: il modello multimodale per l'OCR avanzato",
+      "sourceUrl": "https://www.marktechpost.com/2026/03/15/zhipu-ai-introduces-glm-ocr-a-0-9b-multimodal-ocr-model-for-document-parsing-and-key-information-extraction-kie/"
+    },
+    {
+      "section": "ai",
+      "title": "Google DeepMind: Aletheia, l'AI che fa ricerca scientifica autonoma",
+      "sourceUrl": "https://www.marktechpost.com/2026/03/13/google-deepmind-introduces-aletheia-the-ai-agent-moving-from-math-competitions-to-fully-autonomous-professional-research-discoveries/"
+    },
+    {
+      "section": "ai",
+      "title": "Come passare da ChatGPT a Claude senza perdere dati e contesto",
+      "sourceUrl": "https://www.analyticsvidhya.com/blog/2026/03/how-to-switch-from-chatgpt-to-claude/"
+    },
+    {
+      "section": "ai",
+      "title": "Guida per principianti alla creazione di agenti AI autonomi con MaxClaw",
+      "sourceUrl": "https://www.analyticsvidhya.com/blog/2026/03/maxclaw-cloud-ai-agent-for-autonomous-workflows/"
+    },
+    {
+      "section": "ai",
+      "title": "La trappola multi-agente: Google DeepMind rivela rischi e soluzioni",
+      "sourceUrl": "https://towardsdatascience.com/the-multi-agent-trap/"
+    },
+    {
+      "section": "ai",
+      "title": "Perché il prompt caching è cruciale per le LLM: costi e latenza",
+      "sourceUrl": "https://towardsdatascience.com/why-care-about-promp-caching-in-llms/"
+    },
+    {
+      "section": "ai",
+      "title": "Meta punta a tagliare il 20% della forza lavoro per finanziare l'AI",
+      "sourceUrl": "https://www.techbuzz.ai/articles/meta-eyes-20-workforce-cut-to-fund-ai-infrastructure-push"
+    },
+    {
+      "section": "ai",
+      "title": "Musk's xAI abbandona tool di coding AI e assume dirigenti Cursor",
+      "sourceUrl": "https://www.techbuzz.ai/articles/musk-s-xai-scraps-ai-coding-tool-poaches-cursor-execs"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttitle\tsourceUrl\nai\tLangChain lancia Deep Agents: agenti AI multi-step più affidabili\thttps://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-planning-memory-and-context-isolation-in-multi-step-ai-agents/\nai\tZhipu AI presenta GLM-OCR: il modello multimodale per l'OCR avanzato\thttps://www.marktechpost.com/2026/03/15/zhipu-ai-introduces-glm-ocr-a-0-9b-multimodal-ocr-model-for-document-parsing-and-key-information-extraction-kie/\nai\tGoogle DeepMind: Aletheia, l'AI che fa ricerca scientifica autonoma\thttps://www.marktechpost.com/2026/03/13/google-deepmind-introduces-aletheia-the-ai-agent-moving-from-math-competitions-to-fully-autonomous-professional-research-discoveries/\nai\tCome passare da ChatGPT a Claude senza perdere dati e contesto\thttps://www.analyticsvidhya.com/blog/2026/03/how-to-switch-from-chatgpt-to-claude/\nai\tGuida per principianti alla creazione di agenti AI autonomi con MaxClaw\thttps://www.analyticsvidhya.com/blog/2026/03/maxclaw-cloud-ai-agent-for-autonomous-workflows/\nai\tLa trappola multi-agente: Google DeepMind rivela rischi e soluzioni\thttps://towardsdatascience.com/the-multi-agent-trap/\nai\tPerché il prompt caching è cruciale per le LLM: costi e latenza\thttps://towardsdatascience.com/why-care-about-promp-caching-in-llms/\nai\tMeta punta a tagliare il 20% della forza lavoro per finanziare l'AI\thttps://www.techbuzz.ai/articles/meta-eyes-20-workforce-cut-to-fund-ai-infrastructure-push\nai\tMusk's xAI abbandona tool di coding AI e assume dirigenti Cursor\thttps://www.techbuzz.ai/articles/musk-s-xai-scraps-ai-coding-tool-poaches-cursor-execs\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

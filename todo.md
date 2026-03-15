@@ -671,3 +671,11 @@
 - [x] Aggiornato rssSources.ts: 178 fonti RSS (87 AI + 36 Music + 55 Startup)
 - [x] Nuovo scraping immediato da 178 fonti RSS
 - [x] Verifica qualità: 60/60 URL articolo specifico (100%) — zero homepage
+
+## Integrazione 212 fonti RSS (15 Mar 2026)
+- [x] Aggiunto 25 nuove fonti italiane AI/Tech (AI4Business, BigData4Innovation, HDBlog, SmartWorld, Cybersecurity360, Italian Tech, Corriere Tecnologia, iPhoneItalia, AndroidWorld, ecc.)
+- [x] Aggiunto 4 nuove fonti Startup italiane (Forbes Italia, Il Sole 24 Ore Economia, Open Online, Panorama)
+- [x] Aggiunto 6 nuove fonti Startup internazionali (Finsmes, Startup Genome, Venture Burn, FT Technology)
+- [x] Totale fonti RSS: 212 (112 AI + 65 Startup + 36 Music)
+- [x] Reset DB e nuovo scraping da 212 fonti: 60/60 notizie con URL articolo specifico (100%)
+- [x] Scraping completato in 141 secondi

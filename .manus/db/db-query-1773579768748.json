@@ -1,0 +1,13 @@
+{
+  "query": "DELETE FROM news_items; SELECT COUNT(*) as remaining FROM news_items;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute DELETE FROM news_items; SELECT COUNT(*) as remaining FROM news_items;",
+  "rows": [
+    {
+      "remaining": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "remaining\n0\n",
+  "stderr": "",
+  "execution_time_ms": 68
+}

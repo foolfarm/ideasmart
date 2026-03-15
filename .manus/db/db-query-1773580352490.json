@@ -1,0 +1,70 @@
+{
+  "query": "SELECT section, LEFT(title, 50) as title, LEFT(sourceUrl, 100) as url FROM news_items ORDER BY section, id LIMIT 12;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, LEFT(title, 50) as title, LEFT(sourceUrl, 100) as url FROM news_items ORDER BY section, id LIMIT 12;",
+  "rows": [
+    {
+      "section": "ai",
+      "title": "LangChain lancia Deep Agents: agenti AI multi-step",
+      "url": "https://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-plan"
+    },
+    {
+      "section": "ai",
+      "title": "Zhipu AI presenta GLM-OCR: il modello multimodale ",
+      "url": "https://www.marktechpost.com/2026/03/15/zhipu-ai-introduces-glm-ocr-a-0-9b-multimodal-ocr-model-for-"
+    },
+    {
+      "section": "ai",
+      "title": "Google DeepMind: Aletheia, l'AI che fa ricerca sci",
+      "url": "https://www.marktechpost.com/2026/03/13/google-deepmind-introduces-aletheia-the-ai-agent-moving-from"
+    },
+    {
+      "section": "ai",
+      "title": "Come passare da ChatGPT a Claude senza perdere dat",
+      "url": "https://www.analyticsvidhya.com/blog/2026/03/how-to-switch-from-chatgpt-to-claude/"
+    },
+    {
+      "section": "ai",
+      "title": "Guida per principianti alla creazione di agenti AI",
+      "url": "https://www.analyticsvidhya.com/blog/2026/03/maxclaw-cloud-ai-agent-for-autonomous-workflows/"
+    },
+    {
+      "section": "ai",
+      "title": "La trappola multi-agente: Google DeepMind rivela r",
+      "url": "https://towardsdatascience.com/the-multi-agent-trap/"
+    },
+    {
+      "section": "ai",
+      "title": "Perché il prompt caching è cruciale per le LLM: co",
+      "url": "https://towardsdatascience.com/why-care-about-promp-caching-in-llms/"
+    },
+    {
+      "section": "ai",
+      "title": "Meta punta a tagliare il 20% della forza lavoro pe",
+      "url": "https://www.techbuzz.ai/articles/meta-eyes-20-workforce-cut-to-fund-ai-infrastructure-push"
+    },
+    {
+      "section": "ai",
+      "title": "Musk's xAI abbandona tool di coding AI e assume di",
+      "url": "https://www.techbuzz.ai/articles/musk-s-xai-scraps-ai-coding-tool-poaches-cursor-execs"
+    },
+    {
+      "section": "ai",
+      "title": "Avvocato avverte: chatbot AI collegati a eventi co",
+      "url": "https://www.techbuzz.ai/articles/ai-chatbots-now-linked-to-mass-casualty-events-lawyer-warns"
+    },
+    {
+      "section": "ai",
+      "title": "Nyne raccoglie 5.3M$ per risolvere il problema del",
+      "url": "https://www.techbuzz.ai/articles/nyne-raises-5-3m-to-solve-ai-agents-context-problem"
+    },
+    {
+      "section": "ai",
+      "title": "Digg chiude dopo 2 mesi: lo spam di bot AI travolg",
+      "url": "https://www.techbuzz.ai/articles/digg-shuts-down-after-2-months-as-ai-bot-spam-overwhelms-platform"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttitle\turl\nai\tLangChain lancia Deep Agents: agenti AI multi-step\thttps://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-plan\nai\tZhipu AI presenta GLM-OCR: il modello multimodale \thttps://www.marktechpost.com/2026/03/15/zhipu-ai-introduces-glm-ocr-a-0-9b-multimodal-ocr-model-for-\nai\tGoogle DeepMind: Aletheia, l'AI che fa ricerca sci\thttps://www.marktechpost.com/2026/03/13/google-deepmind-introduces-aletheia-the-ai-agent-moving-from\nai\tCome passare da ChatGPT a Claude senza perdere dat\thttps://www.analyticsvidhya.com/blog/2026/03/how-to-switch-from-chatgpt-to-claude/\nai\tGuida per principianti alla creazione di agenti AI\thttps://www.analyticsvidhya.com/blog/2026/03/maxclaw-cloud-ai-agent-for-autonomous-workflows/\nai\tLa trappola multi-agente: Google DeepMind rivela r\thttps://towardsdatascience.com/the-multi-agent-trap/\nai\tPerché il prompt caching è cruciale per le LLM: co\thttps://towardsdatascience.com/why-care-about-promp-caching-in-llms/\nai\tMeta punta a tagliare il 20% della forza lavoro pe\thttps://www.techbuzz.ai/articles/meta-eyes-20-workforce-cut-to-fund-ai-infrastructure-push\nai\tMusk's xAI abbandona tool di coding AI e assume di\thttps://www.techbuzz.ai/articles/musk-s-xai-scraps-ai-coding-tool-poaches-cursor-execs\nai\tAvvocato avverte: chatbot AI collegati a eventi co\thttps://www.techbuzz.ai/articles/ai-chatbots-now-linked-to-mass-casualty-events-lawyer-warns\nai\tNyne raccoglie 5.3M$ per risolvere il problema del\thttps://www.techbuzz.ai/articles/nyne-raises-5-3m-to-solve-ai-agents-context-problem\nai\tDigg chiude dopo 2 mesi: lo spam di bot AI travolg\thttps://www.techbuzz.ai/articles/digg-shuts-down-after-2-months-as-ai-bot-spam-overwhelms-platform\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}
