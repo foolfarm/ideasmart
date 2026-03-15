@@ -266,10 +266,12 @@ export default function MusicHome() {
 
               {editorial ? (
                 <div className="py-3">
-                  <p className="text-base font-bold text-[#1a1a2e] leading-snug"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    {editorial.title}
-                  </p>
+                  <Link href={`/music/editoriale/${editorial.id}`}>
+                    <p className="text-base font-bold text-[#1a1a2e] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      {editorial.title}
+                    </p>
+                  </Link>
                   {editorial.subtitle && (
                     <p className="mt-1 text-sm italic text-[#1a1a2e]/55"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
@@ -293,6 +295,11 @@ export default function MusicHome() {
                       {editorial.authorNote}
                     </blockquote>
                   )}
+                  <Link href={`/music/editoriale/${editorial.id}`}
+                    className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
+                    Leggi tutto →
+                  </Link>
                 </div>
               ) : (
                 <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">Caricamento editoriale…</div>
@@ -411,10 +418,12 @@ export default function MusicHome() {
                   <div key={item.id}
                     className={`py-4 ${i % 2 === 1 ? "border-l border-[#1a1a2e]/20 pl-6" : "pr-6"} ${i >= 2 ? "border-t border-[#1a1a2e]/20" : ""}`}>
                     <SectionBadge label={item.category || "Reportage"} />
-                    <h3 className="mt-2 text-lg font-bold text-[#1a1a2e] leading-snug"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                      {item.headline}
-                    </h3>
+                    <Link href={`/music/reportage/${item.id}`}>
+                      <h3 className="mt-2 text-lg font-bold text-[#1a1a2e] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                        {item.headline}
+                      </h3>
+                    </Link>
                     <p className="mt-1 text-sm leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                       {item.subheadline || item.bodyText?.slice(0, 200)}
@@ -425,6 +434,11 @@ export default function MusicHome() {
                         "{item.quote}"
                       </blockquote>
                     )}
+                    <Link href={`/music/reportage/${item.id}`}
+                      className="mt-2 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                      style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
+                      Leggi tutto →
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -447,14 +461,21 @@ export default function MusicHome() {
                   <div key={item.id}
                     className={`py-4 ${i % 2 === 1 ? "border-l border-[#1a1a2e]/20 pl-6" : "pr-6"} ${i >= 2 ? "border-t border-[#1a1a2e]/20" : ""}`}>
                     <SectionBadge label={item.source || "Analisi"} />
-                    <h3 className="mt-2 text-base font-bold text-[#1a1a2e] leading-snug"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                      {item.title}
-                    </h3>
+                    <Link href={`/music/analisi/${item.id}`}>
+                      <h3 className="mt-2 text-base font-bold text-[#1a1a2e] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                        {item.title}
+                      </h3>
+                    </Link>
                     <p className="mt-1 text-sm leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                       {item.summary}
                     </p>
+                    <Link href={`/music/analisi/${item.id}`}
+                      className="mt-2 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                      style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
+                      Leggi tutto →
+                    </Link>
                   </div>
                 ))}
               </div>

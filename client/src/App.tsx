@@ -21,6 +21,10 @@ import Advertise from "./pages/Advertise";
 import NewsArticle from "./pages/NewsArticle";
 import MusicNewsArticle from "./pages/MusicNewsArticle";
 import StartupNewsArticle from "./pages/StartupNewsArticle";
+import EditorialDetail from "./pages/EditorialDetail";
+import ReportageDetail from "./pages/ReportageDetail";
+import MarketAnalysisDetail from "./pages/MarketAnalysisDetail";
+import StartupOfDayDetail from "./pages/StartupOfDayDetail";
 import NotFound from "./pages/NotFound";
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -41,6 +45,10 @@ function Router() {
       <Route path="/ai/news/:id" component={NewsArticle} />
       <Route path="/music/news/:id" component={MusicNewsArticle} />
       <Route path="/startup/news/:id" component={StartupNewsArticle} />
+      <Route path="/:section/editoriale/:id" component={EditorialDetail} />
+      <Route path="/:section/reportage/:id" component={ReportageDetail} />
+      <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />
+      <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

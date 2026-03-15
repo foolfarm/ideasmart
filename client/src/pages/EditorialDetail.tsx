@@ -1,0 +1,155 @@
+/**
+ * EditorialDetail — Pagina dettaglio editoriale del giorno
+ * Stile: prima pagina di giornale (bianco carta, navy, Playfair Display)
+ */
+import { useParams, Link } from "wouter";
+import { trpc } from "@/lib/trpc";
+import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
+
+const SECTION_CONFIG = {
+  ai: { label: "AI4Business", color: "#0a7ea4", path: "/ai" },
+  music: { label: "ITsMusic", color: "#7c3aed", path: "/music" },
+  startup: { label: "Startup News", color: "#ea580c", path: "/startup" },
+};
+
+export default function EditorialDetail() {
+  const params = useParams<{ section: string; id: string }>();
+  const section = (params.section ?? "ai") as "ai" | "music" | "startup";
+  const id = parseInt(params.id ?? "0");
+
+  const { data: editorial, isLoading } = trpc.editorial.getById.useQuery(
+    { id },
+    { enabled: !!id }
+  );
+
+  const cfg = SECTION_CONFIG[section] ?? SECTION_CONFIG.ai;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#f9f6f0] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[#1a2744] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="font-mono text-sm text-[#1a2744]/60 tracking-widest uppercase">Caricamento editoriale…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!editorial) {
+    return (
+      <div className="min-h-screen bg-[#f9f6f0] flex items-center justify-center">
+        <div className="text-center">
+          <p className="font-mono text-sm text-[#1a2744]/60 tracking-widest uppercase mb-4">Editoriale non trovato</p>
+          <Link href={cfg.path} className="text-sm underline" style={{ color: cfg.color }}>← Torna alla sezione</Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      {/* Testata */}
+      <header className="border-b-2 border-[#1a2744] bg-[#f9f6f0]">
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-bold text-[#1a2744] tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+            IdeaSmart
+          </Link>
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-xs text-[#1a2744]/50 tracking-widest uppercase">
+              {new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+            </span>
+          </div>
+        </div>
+        <div className="border-t border-[#1a2744]/20">
+          <div className="max-w-4xl mx-auto px-4 py-1 flex gap-6">
+            {Object.entries(SECTION_CONFIG).map(([key, s]) => (
+              <Link key={key} href={s.path} className="font-mono text-xs tracking-widest uppercase py-1 hover:opacity-70 transition-opacity" style={{ color: key === section ? s.color : "#1a2744" }}>
+                {s.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* Breadcrumb */}
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <Link href={cfg.path} className="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity" style={{ color: cfg.color }}>
+          <ArrowLeft className="w-4 h-4" />
+          <span className="font-mono tracking-widest uppercase text-xs">Torna a {cfg.label}</span>
+        </Link>
+      </div>
+
+      {/* Articolo */}
+      <article className="max-w-4xl mx-auto px-4 pb-16">
+        {/* Label sezione */}
+        <div className="mb-4">
+          <span className="font-mono text-xs tracking-widest uppercase px-2 py-1 border" style={{ color: cfg.color, borderColor: cfg.color }}>
+            Editoriale del Giorno
+          </span>
+        </div>
+
+        {/* Titolo */}
+        <h1 className="text-4xl md:text-5xl font-bold text-[#1a2744] leading-tight mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+          {editorial.title}
+        </h1>
+
+        {/* Sottotitolo */}
+        {editorial.subtitle && (
+          <p className="text-xl text-[#1a2744]/70 italic mb-6 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+            {editorial.subtitle}
+          </p>
+        )}
+
+        {/* Meta */}
+        <div className="flex items-center gap-4 mb-8 pb-4 border-b border-[#1a2744]/20">
+          <div className="flex items-center gap-2 text-sm text-[#1a2744]/60">
+            <Calendar className="w-4 h-4" />
+            <span className="font-mono">{editorial.dateLabel}</span>
+          </div>
+          {editorial.keyTrend && (
+            <div className="flex items-center gap-2 text-sm" style={{ color: cfg.color }}>
+              <TrendingUp className="w-4 h-4" />
+              <span className="font-mono text-xs tracking-widest uppercase">Trend: {editorial.keyTrend}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Immagine */}
+        {editorial.imageUrl && (
+          <figure className="mb-8">
+            <img src={editorial.imageUrl} alt={editorial.title} className="w-full h-64 md:h-96 object-cover" />
+          </figure>
+        )}
+
+        {/* Corpo del testo */}
+        <div className="prose prose-lg max-w-none text-[#1a2744]/85 leading-relaxed">
+          {editorial.body.split('\n\n').map((paragraph, i) => (
+            <p key={i} className="mb-6 text-lg leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              {paragraph}
+            </p>
+          ))}
+        </div>
+
+        {/* Nota dell'autore */}
+        {editorial.authorNote && (
+          <blockquote className="mt-10 border-l-4 pl-6 py-2" style={{ borderColor: cfg.color }}>
+            <p className="text-base italic text-[#1a2744]/70 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+              {editorial.authorNote}
+            </p>
+          </blockquote>
+        )}
+
+        {/* Footer */}
+        <div className="mt-12 pt-6 border-t border-[#1a2744]/20 flex items-center justify-between">
+          <Link href={cfg.path} className="inline-flex items-center gap-2 text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: cfg.color }}>
+            <ArrowLeft className="w-4 h-4" />
+            Torna a {cfg.label}
+          </Link>
+          <Link href="/" className="text-sm text-[#1a2744]/50 hover:text-[#1a2744] transition-colors font-mono tracking-widest uppercase text-xs">
+            IdeaSmart Home
+          </Link>
+        </div>
+      </article>
+    </div>
+  );
+}

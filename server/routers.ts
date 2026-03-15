@@ -134,6 +134,14 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return getLatestMarketAnalysis(input.section);
       }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const items = await db.select().from(marketAnalysisTable).where(eq(marketAnalysisTable.id, input.id)).limit(1);
+        return items[0] ?? null;
+      }),
   }),
 
   // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────────────────────────
@@ -142,6 +150,14 @@ export const appRouter = router({
       .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLatestWeeklyReportage(input.section);
+      }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const items = await db.select().from(weeklyReportageTable).where(eq(weeklyReportageTable.id, input.id)).limit(1);
+        return items[0] ?? null;
       }),
   }),
 
@@ -152,6 +168,14 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return getLatestEditorial(input.section);
       }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const items = await db.select().from(dailyEditorialTable).where(eq(dailyEditorialTable.id, input.id)).limit(1);
+        return items[0] ?? null;
+      }),
   }),
 
   // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────
@@ -160,6 +184,14 @@ export const appRouter = router({
       .input(z.object({ section: z.enum(['ai', 'music', 'startup']).default('ai') }))
       .query(async ({ input }) => {
         return getLatestStartupOfDay(input.section);
+      }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const items = await db.select().from(startupOfDayTable).where(eq(startupOfDayTable.id, input.id)).limit(1);
+        return items[0] ?? null;
       }),
   }),
 

@@ -579,3 +579,9 @@
 ## Nuovi task (15 Mar 2026 — Homepage layout giornale)
 
 - [ ] Riscrivere Home.tsx con layout da prima pagina di giornale (testata, notizia del giorno, colonne canali, griglia 3 sezioni, elenco misto)
+
+## Fix link mancanti sezioni (15 Mar 2026)
+- [ ] Aggiungere link cliccabili nelle sezioni Reportage in AiHome, MusicHome, StartupHome
+- [ ] Aggiungere link cliccabili nelle sezioni Analisi di Mercato in AiHome, MusicHome, StartupHome
+- [ ] Aggiungere link cliccabili nella sezione Startup del Giorno
+- [ ] Verificare e creare pagine dettaglio mancanti se necessario
