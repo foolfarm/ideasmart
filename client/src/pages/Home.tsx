@@ -217,10 +217,12 @@ function HubNavbar() {
 export default function Home() {
   const { data: aiNews } = trpc.news.getLatest.useQuery({ section: "ai" });
   const { data: musicNews } = trpc.news.getLatest.useQuery({ section: "music" });
+  const { data: startupNews } = trpc.news.getLatest.useQuery({ section: "startup" });
   const { data: subscriberCount } = trpc.newsletter.getActiveCount.useQuery();
 
   const aiLatest = (aiNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
   const musicLatest = (musicNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
+  const startupLatest = (startupNews || []).slice(0, 3).map((n) => ({ title: n.title, category: n.category }));
 
   // Mix alternato AI + Music per la sezione notizie
   const allNews: Array<{ id: number; title: string; category: string; imageUrl?: string | null; section: "ai" | "music"; sourceUrl?: string; summary?: string }> = [];
@@ -257,9 +259,9 @@ export default function Home() {
   return (
     <div style={{ background: C.navy, minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
       <SEOHead
-        title="IDEASMART — Testata Giornalistica Multicanale AI e Musica"
+        title="IDEASMART — Testata Giornalistica Multicanale AI, Musica e Startup"
         description="IDEASMART è la piattaforma editoriale italiana su AI4Business, ITsMusic e Startup News. Notizie, analisi di mercato, startup emergenti e industria musicale aggiornate ogni giorno."
-        keywords="IDEASMART, testata giornalistica, AI for business, intelligenza artificiale, musica, rock, indie, startup italiane, newsletter AI, newsletter musica"
+        keywords="IDEASMART, testata giornalistica, AI for business, intelligenza artificiale, musica, rock, indie, startup italiane, newsletter AI, newsletter musica, startup news"
         canonical="https://www.ideasmart.ai"
         ogSiteName="IDEASMART"
         ogType="website"
@@ -382,12 +384,12 @@ export default function Home() {
                 Scegli il tuo canale
               </h2>
               <p className="text-lg max-w-2xl mx-auto" style={{ color: C.whiteAlpha60 }}>
-                Due testate indipendenti, una piattaforma. Ogni canale ha la sua redazione AI, la sua newsletter e il suo pubblico di riferimento.
+                Tre testate indipendenti, una piattaforma. Ogni canale ha la sua redazione AI, la sua newsletter e il suo pubblico di riferimento.
               </p>
             </div>
           </FadeUp>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
             {/* AI4Business */}
             <FadeUp delay={0.1}>
               <Link href="/ai">
@@ -577,7 +579,108 @@ export default function Home() {
                 </div>
               </Link>
             </FadeUp>
-          </div>
+          </div>{/* end grid md:grid-cols-2 */}
+
+          {/* Startup News — full width */}
+          <FadeUp delay={0.3}>
+            <Link href="/startup">
+              <div
+                className="group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.005] hover:shadow-2xl"
+                style={{
+                  background: `linear-gradient(135deg, rgba(232,79,0,0.15) 0%, rgba(232,79,0,0.05) 100%)`,
+                  border: `1px solid rgba(232,79,0,0.3)`,
+                }}
+              >
+                {/* Top accent bar */}
+                <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${C.orange}, rgba(232,79,0,0.3))` }} />
+
+                <div className="p-8 md:p-10">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                        style={{ background: "rgba(232,79,0,0.2)", border: "1px solid rgba(232,79,0,0.3)" }}
+                      >
+                        🚀
+                      </div>
+                      <div>
+                        <span
+                          className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
+                          style={{ background: "rgba(232,79,0,0.2)", color: C.orange, border: "1px solid rgba(232,79,0,0.3)" }}
+                        >
+                          STARTUP NEWS
+                        </span>
+                        <p className="text-xs mt-1.5" style={{ color: C.whiteAlpha50 }}>by IDEASMART</p>
+                      </div>
+                    </div>
+                    <div
+                      className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all group-hover:scale-105"
+                      style={{ background: C.orange, color: C.white }}
+                    >
+                      Entra →
+                    </div>
+                  </div>
+
+                  {/* Content: two columns on desktop */}
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      {/* Title */}
+                      <h3 className="hub-title text-2xl md:text-3xl font-black mb-4 leading-tight" style={{ color: C.white }}>
+                        L'ecosistema startup italiano e internazionale ogni giorno
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-base leading-relaxed mb-4" style={{ color: C.whiteAlpha80 }}>
+                        Startup News è la testata italiana dedicata all'ecosistema delle startup: funding round, nuovi prodotti, tendenze di mercato, founder da seguire e analisi degli investitori più attivi.
+                      </p>
+                      <p className="text-sm leading-relaxed" style={{ color: C.whiteAlpha60 }}>
+                        Cosa trovi su Startup News: <strong style={{ color: C.orange }}>20 notizie al giorno</strong> da TechCrunch, Sifted e Il Sole 24 Ore, l'editoriale startup del giorno, la startup della settimana, 4 reportage su founder italiani e 4 analisi di mercato da CB Insights.
+                      </p>
+                    </div>
+
+                    <div>
+                      {/* Stats */}
+                      <div className="flex gap-6 mb-6 py-5 border-t border-b" style={{ borderColor: "rgba(232,79,0,0.2)" }}>
+                        <div>
+                          <div className="hub-title text-3xl font-black" style={{ color: C.orange }}>20</div>
+                          <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>notizie al giorno</div>
+                        </div>
+                        <div>
+                          <div className="hub-title text-3xl font-black" style={{ color: C.white }}>Seed</div>
+                          <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>Series A · B · C</div>
+                        </div>
+                        <div>
+                          <div className="hub-title text-3xl font-black" style={{ color: C.orange }}>2×</div>
+                          <div className="text-sm mt-1" style={{ color: C.whiteAlpha50 }}>a settimana</div>
+                        </div>
+                      </div>
+
+                      {/* Latest news */}
+                      <div className="space-y-3">
+                        <p className="text-xs font-bold tracking-widest uppercase" style={{ color: C.whiteAlpha50 }}>ULTIME NOTIZIE</p>
+                        {startupLatest.map((item, i) => (
+                          <div key={i} className="flex items-start gap-3">
+                            <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: C.orange }} />
+                            <span className="text-sm leading-snug" style={{ color: C.whiteAlpha80 }}>{item.title}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 sm:hidden">
+                    <div
+                      className="w-full text-center py-3 rounded-xl font-bold text-base"
+                      style={{ background: C.orange, color: C.white }}
+                    >
+                      Entra in Startup News →
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </FadeUp>
         </div>
       </section>
 
@@ -595,7 +698,7 @@ export default function Home() {
                     Le ultime notizie
                   </h2>
                   <p className="text-sm mt-2" style={{ color: C.whiteAlpha50 }}>
-                    da <span className="font-bold" style={{ color: C.teal }}>AI4Business</span> e <span className="font-bold" style={{ color: C.violet }}>ITsMusic</span> — aggiornate ogni giorno
+                    da <span className="font-bold" style={{ color: C.teal }}>AI4Business</span>, <span className="font-bold" style={{ color: C.violet }}>ITsMusic</span> e <span className="font-bold" style={{ color: C.orange }}>Startup News</span> — aggiornate ogni giorno
                   </p>
                 </div>
                 <div className="flex gap-3">
@@ -613,6 +716,14 @@ export default function Home() {
                       style={{ background: "rgba(139,92,246,0.15)", color: C.violet, border: `1px solid rgba(139,92,246,0.3)` }}
                     >
                       Music →
+                    </span>
+                  </Link>
+                  <Link href="/startup">
+                    <span
+                      className="text-sm font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:opacity-80"
+                      style={{ background: "rgba(232,79,0,0.15)", color: C.orange, border: `1px solid rgba(232,79,0,0.3)` }}
+                    >
+                      Startup →
                     </span>
                   </Link>
                 </div>
