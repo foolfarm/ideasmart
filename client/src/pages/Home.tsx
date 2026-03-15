@@ -50,23 +50,36 @@ function SectionLabel({ section }: { section: "ai" | "music" | "startup" }) {
 }
 
 function HeroNews({ news, editorial }: {
-  news: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; section?: string };
-  editorial?: { title: string; subtitle?: string | null; body: string } | null;
+  news: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; section?: string; sourceUrl?: string };
+  editorial?: { id?: number; title: string; subtitle?: string | null; body: string } | null;
 }) {
   const section = (news.section as "ai" | "music" | "startup") || "ai";
   const s = SECTION_COLORS[section];
-  const href = `${s.path}/news/${news.id}`;
+  // Se c'è un editoriale, link interno all'editoriale; altrimenti link diretto alla fonte della notizia
+  const href = editorial?.id
+    ? `/${section}/editoriale/${editorial.id}`
+    : (news.sourceUrl && news.sourceUrl !== '#' ? news.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(news.title)}`);
+  const isExternal = !editorial?.id;
   const bodyText = editorial?.body || news.summary;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
       <div className="pr-0 md:pr-6 py-4">
         <SectionLabel section={section} />
-        <Link href={href}>
-          <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-            {editorial?.title || news.title}
-          </h2>
-        </Link>
+        {isExternal ? (
+          <a href={href} rel="noopener noreferrer">
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              {editorial?.title || news.title}
+            </h2>
+          </a>
+        ) : (
+          <Link href={href}>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              {editorial?.title || news.title}
+            </h2>
+          </Link>
+        )}
         {(editorial?.subtitle || news.category) && (
           <p className="mt-2 text-base font-semibold text-[#1a1a2e]/60 italic"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
@@ -78,20 +91,37 @@ function HeroNews({ news, editorial }: {
           style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
           {bodyText.slice(0, 320)}{bodyText.length > 320 ? "…" : ""}
         </p>
-        <Link href={href}>
-          <span className="mt-4 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
-            style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-            Continua a leggere →
-          </span>
-        </Link>
+        {isExternal ? (
+          <a href={href} rel="noopener noreferrer">
+            <span className="mt-4 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
+              style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+              Leggi l'articolo originale →
+            </span>
+          </a>
+        ) : (
+          <Link href={href}>
+            <span className="mt-4 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
+              style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+              Continua a leggere →
+            </span>
+          </Link>
+        )}
       </div>
       <div className="py-4 pl-0 md:pl-6 border-l-0 md:border-l border-[#1a1a2e]/20">
         {news.imageUrl ? (
-          <Link href={href}>
-            <img src={news.imageUrl} alt={news.title}
-              className="w-full h-56 md:h-72 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
-              style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
-          </Link>
+          isExternal ? (
+            <a href={href} rel="noopener noreferrer">
+              <img src={news.imageUrl} alt={news.title}
+                className="w-full h-56 md:h-72 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
+                style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
+            </a>
+          ) : (
+            <Link href={href}>
+              <img src={news.imageUrl} alt={news.title}
+                className="w-full h-56 md:h-72 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
+                style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
+            </Link>
+          )
         ) : (
           <div className="w-full h-56 md:h-72 flex items-center justify-center"
             style={{ background: s.light, border: `1px solid ${s.accent}30` }}>
@@ -110,27 +140,27 @@ function HeroNews({ news, editorial }: {
 }
 
 function NewsCard({ item, section, showImage = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string };
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string };
   section: "ai" | "music" | "startup";
   showImage?: boolean;
 }) {
   const s = SECTION_COLORS[section];
-  const href = `${s.path}/news/${item.id}`;
+  const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
     <div className="py-3">
       {showImage && item.imageUrl && (
-        <Link href={href}>
+        <a href={href} rel="noopener noreferrer">
           <img src={item.imageUrl} alt={item.title}
             className="w-full h-32 object-cover mb-2 grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
-        </Link>
+        </a>
       )}
-      <Link href={href}>
+      <a href={href} rel="noopener noreferrer">
         <h3 className="text-base font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer"
           style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
           {item.title}
         </h3>
-      </Link>
+      </a>
       <p className="mt-1 text-sm leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
         style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
         {item.summary}
@@ -146,21 +176,21 @@ function NewsCard({ item, section, showImage = false }: {
 }
 
 function NewsRow({ item, section }: {
-  item: { id: number; title: string; summary: string; category: string; sourceName?: string; publishedAt?: string };
+  item: { id: number; title: string; summary: string; category: string; sourceName?: string; publishedAt?: string; sourceUrl?: string };
   section: "ai" | "music" | "startup";
 }) {
   const s = SECTION_COLORS[section];
-  const href = `${s.path}/news/${item.id}`;
+  const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
     <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
       <SectionLabel section={section} />
       <div>
-        <Link href={href}>
+        <a href={href} rel="noopener noreferrer">
           <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
             {item.title}
           </span>
-        </Link>
+        </a>
         {item.sourceName && (
           <span className="ml-2 text-[10px] text-[#1a1a2e]/35"
             style={{ fontFamily: "'Space Mono', monospace" }}>

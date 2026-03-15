@@ -36,27 +36,27 @@ function SectionBadge({ label }: { label: string }) {
 }
 
 function NewsCard({ item, showImage = false, large = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string };
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string };
   showImage?: boolean;
   large?: boolean;
 }) {
-  const href = `/music/news/${item.id}`;
+  const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
     <div className="py-3">
       {showImage && item.imageUrl && (
-        <Link href={href}>
+        <a href={href} rel="noopener noreferrer">
           <img src={item.imageUrl} alt={item.title}
             className={`w-full ${large ? "h-52" : "h-32"} object-cover mb-3 cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all`}
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
-        </Link>
+        </a>
       )}
       <SectionBadge label={item.category || "Music"} />
-      <Link href={href}>
+      <a href={href} rel="noopener noreferrer">
         <h3 className={`mt-2 ${large ? "text-xl md:text-2xl" : "text-base"} font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer`}
           style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
           {item.title}
         </h3>
-      </Link>
+      </a>
       <p className="mt-1 text-sm leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
         style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
         {item.summary}
@@ -71,18 +71,19 @@ function NewsCard({ item, showImage = false, large = false }: {
 }
 
 function NewsRow({ item }: {
-  item: { id: number; title: string; category: string; sourceName?: string; publishedAt?: string };
+  item: { id: number; title: string; category: string; sourceName?: string; publishedAt?: string; sourceUrl?: string };
 }) {
+  const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
     <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
       <SectionBadge label={item.category || "Music"} />
       <div>
-        <Link href={`/music/news/${item.id}`}>
+        <a href={href} rel="noopener noreferrer">
           <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
             {item.title}
           </span>
-        </Link>
+        </a>
         {item.sourceName && (
           <span className="ml-2 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
             {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
@@ -211,31 +212,31 @@ export default function MusicHome() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                   <div className="pr-0 md:pr-5 py-4">
                     <SectionBadge label={heroNews.category || "Music"} />
-                    <Link href={`/music/news/${heroNews.id}`}>
+                    <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
                       <h2 className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
                         style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                         {heroNews.title}
                       </h2>
-                    </Link>
+                    </a>
                     <ThinDivider />
                     <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/80"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                       {heroNews.summary.slice(0, 280)}{heroNews.summary.length > 280 ? "…" : ""}
                     </p>
-                    <Link href={`/music/news/${heroNews.id}`}>
+                    <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
                       <span className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
                         style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
-                        Continua a leggere →
+                        Leggi l'articolo originale →
                       </span>
-                    </Link>
+                    </a>
                   </div>
                   <div className="py-4 pl-0 md:pl-5 border-l-0 md:border-l border-[#1a1a2e]/20">
                     {heroNews.imageUrl ? (
-                      <Link href={`/music/news/${heroNews.id}`}>
+                      <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
                         <img src={heroNews.imageUrl} alt={heroNews.title}
                           className="w-full h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
                           style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
-                      </Link>
+                      </a>
                     ) : (
                       <div className="w-full h-52 flex items-center justify-center"
                         style={{ background: ACCENT_LIGHT, border: `1px solid ${ACCENT}30` }}>

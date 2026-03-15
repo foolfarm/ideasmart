@@ -629,3 +629,26 @@
 - [x] Creato nightlyAuditScheduler.ts: audit URL + sostituzione automatica da RSS
 - [x] Creato newsletterTestSender.ts: newsletter test con contenuti reali dal DB (buildFullNewsletterHtml)
 - [x] Aggiornato schedulerManager.ts: 15 scheduler con orari corretti CET
+
+## Fix critico link notizie (15 Mar 2026 — Eliminazione pagine intermedie)
+- [ ] Eliminare tutte le pagine intermedie AI-generate per le notizie (NewsArticle, MusicNewsArticle, StartupNewsArticle)
+- [ ] Tutti i link alle notizie puntano direttamente alla sourceUrl originale (fonte esterna)
+- [ ] Rimuovere rotte /ai/news/:id, /music/news/:id, /startup/news/:id da App.tsx
+- [ ] Correggere editoriale Home: "CONTINUA A LEGGERE" punta alla pagina editoriale interna /ai/editorial/:id
+- [ ] Aggiungere pulsante Back (← Torna indietro) in tutte le pagine interne (EditorialDetail, ReportageDetail, MarketAnalysisDetail, StartupOfDayDetail)
+- [ ] Tutti i link alle notizie aprono nella stessa finestra (rimuovere target="_blank")
+- [ ] Newsletter test spostata alle 07:30 CET (era 08:30)
+- [ ] Newsletter massiva confermata alle 09:30 CET (solo lunedì)
+- [ ] Pulire DB: eliminare notizie con link non validi e sostituire con RSS freschi
+
+## Fix critico link notizie + Scheduler (15 Mar 2026)
+
+- [x] Eliminare pagine intermedie AI-generate: NewsArticle, MusicNewsArticle, StartupNewsArticle ora fanno redirect automatico a sourceUrl
+- [x] Home.tsx: NewsCard e NewsRow puntano direttamente a sourceUrl (fonte originale, stessa finestra)
+- [x] AiHome.tsx: tutti i link notizie puntano a sourceUrl direttamente
+- [x] MusicHome.tsx: tutti i link notizie puntano a sourceUrl direttamente
+- [x] StartupHome.tsx: tutti i link notizie puntano a sourceUrl direttamente
+- [x] Pulsante Back già presente in EditorialDetail, ReportageDetail, MarketAnalysisDetail, StartupOfDayDetail
+- [x] Orario newsletter test aggiornato da 08:30 a 07:30 CET ogni lunedì
+- [x] Orario newsletter massiva confermato a 09:30 CET ogni lunedì
+- [x] Logo IdeaSmart cliccabile → Home in tutte le pagine (sessione precedente)

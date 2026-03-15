@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, section, subtitle FROM daily_editorial WHERE section = 'ai' ORDER BY id DESC LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, section, subtitle FROM daily_editorial WHERE section = 'ai' ORDER BY id DESC LIMIT 3;",
+  "rows": [
+    {
+      "id": "210001",
+      "title": "AI: La Rivoluzione Silenziosa che Ridefinisce il Business Italiano",
+      "section": "ai",
+      "subtitle": "Dal Generativo all'Agentivo: come l'Intelligenza Artificiale sta plasmando il futuro delle imprese, dalle startup alle PMI."
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsection\tsubtitle\n210001\tAI: La Rivoluzione Silenziosa che Ridefinisce il Business Italiano\tai\tDal Generativo all'Agentivo: come l'Intelligenza Artificiale sta plasmando il futuro delle imprese, dalle startup alle PMI.\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

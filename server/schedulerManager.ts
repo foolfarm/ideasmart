@@ -25,7 +25,7 @@
  *  │          le notizie con link non validi con notizie fresche da RSS       │
  *  │                                                                          │
  *  │  NEWSLETTER — solo lunedì                                                │
- *  │  Lunedì 08:30 — Newsletter di TEST a ac@acinelli.com (preview)          │
+ *  │  Lunedì 07:30 — Newsletter di TEST a ac@acinelli.com (preview)          │
  *  │  Lunedì 09:30 — Newsletter MASSIVA a tutti gli iscritti attivi          │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
@@ -245,14 +245,14 @@ export function startAllSchedulers(): void {
   // NEWSLETTER — solo lunedì
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 14. NEWSLETTER TEST — ogni lunedì alle 08:30 CET ─────────────────────
+  // ── 14. NEWSLETTER TEST — ogni lunedì alle 07:30 CET ─────────────────────
   // Invia una newsletter di test a ac@acinelli.com con i contenuti reali dal DB.
   // Permette la valutazione del contenuto prima dell'invio massivo alle 09:30.
-  cron.schedule("30 8 * * 1", async () => {
+  cron.schedule("30 7 * * 1", async () => {
     const weekKey = getWeekKey();
     const testKey = `test-${weekKey}`;
 
-    console.log("[SchedulerManager] ⏰ Lunedì 08:30 CET — Invio newsletter di TEST a ac@acinelli.com...");
+    console.log("[SchedulerManager] ⏰ Lunedì 07:30 CET — Invio newsletter di TEST a ac@acinelli.com...");
 
     if (lastTestNewsletterSentKey === testKey) {
       console.log(`[SchedulerManager] ⏭️ Newsletter di test già inviata per ${weekKey}, skip`);
