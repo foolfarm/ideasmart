@@ -4,7 +4,7 @@
  */
 import { useLocation } from "wouter";
 
-const LAST_UPDATE = "13 marzo 2026";
+const LAST_UPDATE = "15 marzo 2026";
 const OWNER = "IDEASMART — AI for Business";
 const OWNER_EMAIL = "info@ideasmart.ai";
 const SITE_URL = "https://ideasmart.ai";

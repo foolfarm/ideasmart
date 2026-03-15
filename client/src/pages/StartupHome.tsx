@@ -592,10 +592,11 @@ export default function StartupHome() {
               <p className="text-xs text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
                 {`© ${today.getFullYear()} IdeaSmart · Startup News`}
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 <Link href="/"><span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>← Home</span></Link>
                 <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>AI4Business</span></Link>
                 <Link href="/music"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#5b21b6", fontFamily: "'Space Mono', monospace" }}>ITsMusic</span></Link>
+                <Link href="/privacy"><span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>Privacy Policy</span></Link>
               </div>
             </div>
           </div>

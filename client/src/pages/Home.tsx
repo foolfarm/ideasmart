@@ -492,7 +492,7 @@ export default function Home() {
                 style={{ fontFamily: "'Space Mono', monospace" }}>
                 {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% AI Powered`}
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 {(["ai", "music", "startup"] as const).map((sec) => {
                   const s = SECTION_COLORS[sec];
                   return (
@@ -504,6 +504,12 @@ export default function Home() {
                     </Link>
                   );
                 })}
+                <Link href="/privacy">
+                  <span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    Privacy Policy
+                  </span>
+                </Link>
               </div>
             </div>
           </div>

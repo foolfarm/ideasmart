@@ -689,3 +689,12 @@
 - [ ] Aggiungere scheduler giornaliero alle 10:00 CET in schedulerManager.ts
 - [ ] Aggiungere pulsante "Pubblica su LinkedIn ora" in /admin
 - [ ] Test e checkpoint
+
+## Privacy Policy nel footer (15 Mar 2026)
+
+- [x] Verificata pagina /privacy esistente con contenuto GDPR compliant
+- [x] Aggiornata data ultima modifica a 15 marzo 2026
+- [x] Aggiunto link "Privacy Policy" nel footer di Home.tsx
+- [x] Aggiunto link "Privacy Policy" nel footer di AiHome.tsx
+- [x] Aggiunto link "Privacy Policy" nel footer di MusicHome.tsx
+- [x] Aggiunto link "Privacy Policy" nel footer di StartupHome.tsx
