@@ -151,10 +151,12 @@ export default function MusicHome() {
               style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
               Canale Music
             </div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e]"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
-              ITsMusic
-            </h1>
+            <Link href="/">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
+                ITsMusic
+              </h1>
+            </Link>
             <p className="mt-1 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
               Musica Italiana e Internazionale · News · Analisi · Artisti

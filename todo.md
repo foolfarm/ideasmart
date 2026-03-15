@@ -618,3 +618,14 @@
 - [x] Pagina /edicola: archivio digitale con filtri e paginazione
 - [x] Admin /admin/rss-monitor: dashboard monitoraggio fonti RSS con trigger manuale
 - [x] Sistema segnalazione utenti: ReportSourceButton in tutte le sezioni notizie
+
+## Nuovi task (15 Mar 2026 — Logo + Scheduler)
+
+- [x] Fix: logo IdeaSmart cliccabile → torna alla Home (/) in tutte le pagine (Home, AiHome, MusicHome, StartupHome, Edicola, pagine dettaglio)
+- [x] Newsletter: invio test alle 08:30 CET ogni lunedì a ac@acinelli.com (preview prima dell'invio massivo)
+- [x] Newsletter: invio massivo spostato alle 09:30 CET ogni lunedì (era 10:00)
+- [x] Scheduler 00:00 CET: scraping RSS + editoriali + tutti i contenuti (AI, Music, Startup) ogni giorno (già attivo)
+- [x] Audit 02:00 CET: verifica URL con HEAD request, sostituisce notizie con link non validi con notizie fresche da RSS
+- [x] Creato nightlyAuditScheduler.ts: audit URL + sostituzione automatica da RSS
+- [x] Creato newsletterTestSender.ts: newsletter test con contenuti reali dal DB (buildFullNewsletterHtml)
+- [x] Aggiornato schedulerManager.ts: 15 scheduler con orari corretti CET

@@ -237,10 +237,12 @@ export default function Home() {
           <Divider thick />
 
           <div className="text-center py-5">
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e]"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
-              IdeaSmart
-            </h1>
+            <Link href="/">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
+                IdeaSmart
+              </h1>
+            </Link>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
               Testata Giornalistica Multicanale · AI · Musica · Startup

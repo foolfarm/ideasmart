@@ -6,21 +6,27 @@
  * Routine configurate (tutti gli orari sono in CET/CEST — ora italiana):
  *
  *  ┌─────────────────────────────────────────────────────────────────────────┐
- *  │  SEZIONE /ai — AI4Business News                                          │
- *  │  00:00 — News AI (20 notizie aggiornate)                                │
- *  │  00:05 — Editoriale del giorno + Startup del giorno                     │
+ *  │  AGGIORNAMENTO CONTENUTI — ogni giorno                                   │
+ *  │  00:00 — News AI (20 notizie da scraping RSS reale)                     │
+ *  │  00:05 — Editoriale AI del giorno + Startup del giorno                  │
  *  │  00:15 — 4 Reportage su startup AI italiane (ogni lunedì)               │
  *  │  00:20 — 4 Analisi di mercato AI (ogni lunedì)                          │
- *  │                                                                          │
- *  │  SEZIONE /music — ITsMusic                                               │
- *  │  00:30 — News musicali (20 notizie Rock/Indie/AI Music)                 │
+ *  │  00:30 — News musicali (20 notizie da scraping RSS reale)               │
  *  │  00:35 — Editoriale musicale + Artista della settimana                  │
  *  │  00:45 — 4 Reportage musicali (ogni lunedì)                             │
  *  │  00:50 — 4 Analisi mercato musicale (ogni lunedì)                       │
+ *  │  01:00 — News Startup (20 notizie da scraping RSS reale)                │
+ *  │  01:05 — Editoriale Startup + Startup della Settimana                   │
+ *  │  01:15 — 4 Reportage Startup (ogni lunedì)                              │
+ *  │  01:20 — 4 Analisi Mercato Startup (ogni lunedì)                        │
  *  │                                                                          │
- *  │  NEWSLETTER (ora italiana)                                               │
- *  │  Lunedì 10:00 — AI4Business News + ITsMusic                             │
- *  │  Venerdì 10:00 — AI4Business News + ITsMusic                            │
+ *  │  AUDIT NOTTURNO — ogni giorno                                            │
+ *  │  02:00 — Audit URL notizie: verifica raggiungibilità e sostituisce      │
+ *  │          le notizie con link non validi con notizie fresche da RSS       │
+ *  │                                                                          │
+ *  │  NEWSLETTER — solo lunedì                                                │
+ *  │  Lunedì 08:30 — Newsletter di TEST a ac@acinelli.com (preview)          │
+ *  │  Lunedì 09:30 — Newsletter MASSIVA a tutti gli iscritti attivi          │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
  * node-cron usa il fuso orario del server. Il server gira in UTC.
@@ -30,7 +36,6 @@
 
 import cron from "node-cron";
 import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS } from "./rssNewsScheduler";
-// NOTA: refreshNewsIfNeeded rimosso — ora usiamo scraping RSS reale (nessuna notizia inventata)
 import { runDailyContentRefresh } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
@@ -41,7 +46,6 @@ import {
   generateMusicReportage,
   generateMusicMarketAnalysis,
 } from "./musicScheduler";
-// generateMusicNews rimosso — ora usiamo refreshMusicNewsFromRSS
 import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
   generateStartupEditorial,
@@ -49,13 +53,15 @@ import {
   generateStartupReportage,
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
-// generateStartupNews rimosso — ora usiamo refreshStartupNewsFromRSS
+import { sendTestNewsletter } from "./newsletterTestSender";
+import { runNightlyAudit } from "./nightlyAuditScheduler";
 
 const TZ = "Europe/Rome";
 
 // ─── Chiavi per evitare doppi invii ──────────────────────────────────────────
 let lastNewsletterSentKey: string | null = null;
 let lastMusicNewsletterSentKey: string | null = null;
+let lastTestNewsletterSentKey: string | null = null;
 
 function getWeekKey(): string {
   const now = new Date();
@@ -219,34 +225,75 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // NEWSLETTER — AI4Business News + ITsMusic
+  // AUDIT NOTTURNO — ogni giorno alle 02:00 CET
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 9. NEWSLETTER — ogni lunedì e venerdì alle 10:00 CET ─────────────────
-  cron.schedule("0 10 * * 1,5", async () => {
-    const now = new Date();
-    const italianNow = new Date(now.toLocaleString("en-US", { timeZone: TZ }));
-    const dayName = italianNow.getDay() === 1 ? "Lunedì" : "Venerdì";
-    const weekKey = getWeekKey();
-    const sendKey = `${weekKey}-${italianNow.getDay()}`;
+  // ── 13. AUDIT NOTTURNO — ogni giorno alle 02:00 CET ──────────────────────
+  // Verifica raggiungibilità URL di tutte le notizie.
+  // Sostituisce le notizie con link non validi con notizie fresche da RSS.
+  cron.schedule("0 2 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 02:00 CET — Avvio audit notturno URL notizie...");
+    try {
+      await runNightlyAudit();
+      console.log("[SchedulerManager] ✅ Audit notturno completato");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore audit notturno:", err);
+    }
+  }, { timezone: TZ });
 
-    console.log(`[SchedulerManager] ⏰ ${dayName} 10:00 CET — Verifica invio Newsletter...`);
+  // ══════════════════════════════════════════════════════════════════════════
+  // NEWSLETTER — solo lunedì
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // ── 14. NEWSLETTER TEST — ogni lunedì alle 08:30 CET ─────────────────────
+  // Invia una newsletter di test a ac@acinelli.com con i contenuti reali dal DB.
+  // Permette la valutazione del contenuto prima dell'invio massivo alle 09:30.
+  cron.schedule("30 8 * * 1", async () => {
+    const weekKey = getWeekKey();
+    const testKey = `test-${weekKey}`;
+
+    console.log("[SchedulerManager] ⏰ Lunedì 08:30 CET — Invio newsletter di TEST a ac@acinelli.com...");
+
+    if (lastTestNewsletterSentKey === testKey) {
+      console.log(`[SchedulerManager] ⏭️ Newsletter di test già inviata per ${weekKey}, skip`);
+      return;
+    }
+
+    try {
+      lastTestNewsletterSentKey = testKey;
+      await sendTestNewsletter();
+      console.log("[SchedulerManager] ✅ Newsletter di test inviata a ac@acinelli.com");
+    } catch (err) {
+      lastTestNewsletterSentKey = null; // reset per permettere retry
+      console.error("[SchedulerManager] ❌ Errore invio newsletter di test:", err);
+    }
+  }, { timezone: TZ });
+
+  // ── 15. NEWSLETTER MASSIVA — ogni lunedì alle 09:30 CET ──────────────────
+  // Invia la newsletter a tutti gli iscritti attivi (AI4Business + ITsMusic).
+  // Spostato da 10:00 a 09:30 come richiesto.
+  cron.schedule("30 9 * * 1", async () => {
+    const weekKey = getWeekKey();
+    const sendKey = `${weekKey}-monday`;
+
+    console.log("[SchedulerManager] ⏰ Lunedì 09:30 CET — Verifica invio Newsletter massiva...");
 
     if (lastNewsletterSentKey === sendKey) {
       console.log(`[SchedulerManager] ⏭️ Newsletter già inviata per ${sendKey}, skip`);
       return;
     }
 
+    // Invia AI4Business News
     try {
       lastNewsletterSentKey = sendKey;
       await sendWeeklyNewsletter();
-      console.log(`[SchedulerManager] ✅ AI4Business News inviata con successo (${dayName})`);
+      console.log("[SchedulerManager] ✅ AI4Business News inviata con successo (Lunedì 09:30)");
     } catch (err) {
       lastNewsletterSentKey = null;
       console.error("[SchedulerManager] ❌ Errore invio AI4Business News:", err);
     }
 
-    // Invia anche ITsMusic
+    // Invia ITsMusic
     if (lastMusicNewsletterSentKey === sendKey) {
       console.log(`[SchedulerManager] ⏭️ ITsMusic già inviata per ${sendKey}, skip`);
       return;
@@ -254,7 +301,7 @@ export function startAllSchedulers(): void {
     try {
       lastMusicNewsletterSentKey = sendKey;
       await sendItsMusicNewsletter();
-      console.log(`[SchedulerManager] ✅ ITsMusic inviata con successo (${dayName})`);
+      console.log("[SchedulerManager] ✅ ITsMusic inviata con successo (Lunedì 09:30)");
     } catch (err) {
       lastMusicNewsletterSentKey = null;
       console.error("[SchedulerManager] ❌ Errore invio ITsMusic:", err);
@@ -275,5 +322,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale Startup → ogni giorno alle 01:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
   console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");
-  console.log("[SchedulerManager]   📧 Newsletter       → lunedì e venerdì alle 10:00 CET");
+  console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
+  console.log("[SchedulerManager]   🧪 Newsletter TEST  → ogni lunedì alle 08:30 CET → ac@acinelli.com");
+  console.log("[SchedulerManager]   📧 Newsletter       → ogni lunedì alle 09:30 CET (invio massivo)");
 }
