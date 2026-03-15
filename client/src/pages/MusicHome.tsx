@@ -772,12 +772,9 @@ export default function MusicHome() {
             </FadeUp>
 
             <FadeUp delay={0.1}>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-none mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              <h1 className="text-7xl sm:text-8xl lg:text-9xl font-black leading-none mb-6 tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                 <span style={{ color: M.text }}>ITS</span>
-                <br />
-                <span style={{ background: `linear-gradient(135deg, ${M.violet}, ${M.magenta})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  Music
-                </span>
+                <span style={{ background: `linear-gradient(135deg, ${M.violet}, ${M.magenta})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Music</span>
               </h1>
             </FadeUp>
 
