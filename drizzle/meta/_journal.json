@@ -134,6 +134,13 @@
       "when": 1773645726924,
       "tag": "0018_clumsy_scarlet_witch",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1773649902514,
+      "tag": "0019_cheerful_queen_noir",
+      "breakpoints": true
     }
   ]
 }

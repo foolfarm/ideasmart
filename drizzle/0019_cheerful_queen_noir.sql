@@ -1,0 +1,1 @@
+ALTER TABLE `newsletter_sends` MODIFY COLUMN `htmlContent` mediumtext NOT NULL;

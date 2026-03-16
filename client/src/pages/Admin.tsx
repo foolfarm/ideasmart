@@ -177,31 +177,7 @@ export default function Admin() {
     },
   });
 
-  const triggerWeeklyMutation = trpc.admin.triggerWeeklyNewsletter.useMutation({
-    onSuccess: (data) => {
-      setSendingDark(false);
-      setLastResult(`✓ Newsletter DARK inviata a ${data.recipientCount} iscritti — ${data.newsCount} notizie generate con template ufficiale`);
-      toast.success(`Newsletter inviata a ${data.recipientCount} iscritti con template dark!`);
-      historyQuery.refetch();
-    },
-    onError: (err) => {
-      setSendingDark(false);
-      toast.error("Errore invio: " + err.message);
-    },
-  });
 
-  const sendWeeklyMutation = trpc.admin.sendWeeklyNewsletter.useMutation({
-    onSuccess: (data) => {
-      setSendingAll(false);
-      setLastResult(`✓ Newsletter inviata a ${data.recipientCount} iscritti — ${data.newsCount} notizie per la settimana ${data.week}`);
-      toast.success(`Newsletter inviata a ${data.recipientCount} iscritti!`);
-      historyQuery.refetch();
-    },
-    onError: (err) => {
-      setSendingAll(false);
-      toast.error("Errore invio: " + err.message);
-    },
-  });
 
   if (loading) {
     return (
@@ -351,65 +327,6 @@ export default function Admin() {
                   </span>
                 ) : (
                   "Invia Email di Test →"
-                )}
-              </button>
-            </div>
-
-            {/* Send with dark template (official) */}
-            <div className="rounded-2xl border border-[#00e5c8]/20 p-6" style={{ background: "rgba(0,229,200,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
-                ◆ Invio Automatico — Template Dark
-              </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Routine settimanale ufficiale</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Usa il <strong className="text-[#00e5c8]">template dark ufficiale</strong> IDEASMART. Genera 10 notizie AI con LLM e invia a tutti i <strong className="text-white">{activeCount} iscritti attivi</strong>. Questa è la stessa routine che parte automaticamente ogni lunedì alle 09:00.
-              </p>
-              <button
-                onClick={() => {
-                  if (activeCount === 0) { toast.error("Nessun iscritto attivo"); return; }
-                  setSendingDark(true);
-                  triggerWeeklyMutation.mutate();
-                }}
-                disabled={sendingDark || activeCount === 0}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {sendingDark ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-[#0a0f1e] border-t-transparent rounded-full animate-spin" />
-                    Generazione notizie AI...
-                  </span>
-                ) : (
-                  `Invia Newsletter Dark a ${activeCount} Iscritti →`
-                )}
-              </button>
-            </div>
-
-            {/* Send to all */}
-            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(255,85,0,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#ff5500", fontFamily: "'Space Grotesk', sans-serif" }}>
-                ◆ Invio a Tutti gli Iscritti
-              </p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Genera le top 20 notizie AI della settimana e invia la newsletter a tutti i <strong className="text-white">{activeCount} iscritti attivi</strong>.
-              </p>
-              <button
-                onClick={() => {
-                  if (activeCount === 0) { toast.error("Nessun iscritto attivo"); return; }
-                  setSendingAll(true);
-                  sendWeeklyMutation.mutate();
-                }}
-                disabled={sendingAll || activeCount === 0}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-[#ff5500]/40"
-                style={{ background: "rgba(255,85,0,0.15)", color: "#ff5500", fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {sendingAll ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-[#ff5500] border-t-transparent rounded-full animate-spin" />
-                    Invio in corso...
-                  </span>
-                ) : (
-                  `Invia a ${activeCount} Iscritti →`
                 )}
               </button>
             </div>

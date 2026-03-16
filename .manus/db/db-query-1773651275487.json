@@ -1,0 +1,13 @@
+{
+  "query": "SELECT COUNT(*) as totale_attivi FROM subscribers WHERE status = 'active';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as totale_attivi FROM subscribers WHERE status = 'active';",
+  "rows": [
+    {
+      "totale_attivi": "5714"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale_attivi\n5714\n",
+  "stderr": "",
+  "execution_time_ms": 64
+}

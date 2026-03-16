@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO subscribers (email, name, status, newsletter, source, unsubscribeToken, subscribedAt, totalSent, totalOpened)\nVALUES \n  ('annaclara.borella@cofidis.it', 'Annaclara Borella', 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0),\n  ('edoardo.riccobono@camperiosim.com', 'Edoardo Riccobono', 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0),\n  ('sandro.parisi@eudata.com', 'Sandro Parisi', 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0),\n  ('acquisti@felsineo.com', NULL, 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0)\nON DUPLICATE KEY UPDATE status = 'active';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute INSERT INTO subscribers (email, name, status, newsletter, source, unsubscribeToken, subscribedAt, totalSent, totalOpened)\nVALUES \n  ('annaclara.borella@cofidis.it', 'Annaclara Borella', 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0),\n  ('edoardo.riccobono@camperiosim.com', 'Edoardo Riccobono', 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0),\n  ('sandro.parisi@eudata.com', 'Sandro Parisi', 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0),\n  ('acquisti@felsineo.com', NULL, 'active', 'ai4business', 'manual', UUID(), NOW(), 0, 0)\nON DUPLICATE KEY UPDATE status = 'active';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 72
+}

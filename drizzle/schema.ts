@@ -1,4 +1,4 @@
-import { boolean, float, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, float, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -56,7 +56,7 @@ export const newsletterSends = mysqlTable("newsletter_sends", {
   // Sezione newsletter: 'ai4business' o 'itsmusic'
   section: mysqlEnum("section", ["ai4business", "itsmusic", "startup", "finance", "health", "sport", "luxury"]).default("ai4business").notNull(),
   subject: varchar("subject", { length: 500 }).notNull(),
-  htmlContent: text("htmlContent").notNull(),
+  htmlContent: mediumtext("htmlContent").notNull(),
   recipientCount: int("recipientCount").default(0).notNull(),
   openedCount: int("openedCount").default(0).notNull(),
   status: mysqlEnum("status", ["pending", "sending", "sent", "failed"]).default("pending").notNull(),

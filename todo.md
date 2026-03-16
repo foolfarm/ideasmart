@@ -786,3 +786,16 @@
 - [x] Procedure admin: sendDailyChannelPreview, sendChannelNewsletter (7 canali)
 - [x] Pannello Admin aggiornato con tabella calendario e pulsanti per ogni canale
 - [x] Test per dailyChannelNewsletter (16 test) e schedulerManager (11 test) — 35/35 passano
+
+## Fix Newsletter Doppio Invio e Preferenze Canale (16 Mar 2026)
+
+- [ ] Disattivare scheduler newsletter settimanale/mensile vecchia (template scuro)
+- [ ] Aggiornare template newsletter settimanale/mensile con stile crema/navy
+- [ ] Implementare preferenze canale per gli iscritti nel DB (array di canali scelti)
+- [ ] Pagina /preferenze-newsletter per gestire le preferenze canale
+- [ ] Aggiornare invio newsletter per inviare solo agli iscritti che hanno scelto quel canale
+
+## Eliminazione Newsletter Vecchia e Nuovi Iscritti (16 Mar 2026)
+
+- [x] Eliminare definitivamente la newsletter settimanale/mensile (FoolTalent/FoolShare/Fragmentalis/PollCast) — scheduler e template rimossi
+- [x] Aggiungere 4 nuovi iscritti: annaclara.borella@cofidis.it, edoardo.riccobono@camperiosim.com, sandro.parisi@eudata.com, acquisti@felsineo.com

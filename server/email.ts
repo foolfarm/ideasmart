@@ -114,29 +114,29 @@ export function buildMonthlyNewsletterHtml(opts: {
     "default": "#00e5c8",
   };
 
-  // Genera le righe news
+  // Genera le righe news — stile crema/navy
   const newsItemsHtml = news.slice(0, 20).map((item, idx) => {
     const num = String(idx + 1).padStart(2, "0");
     const color = categoryColors[item.category] ?? categoryColors["default"];
-    const bgColor = `${color}1e`; // ~12% opacity
     const titleEl = item.url
-      ? `<a href="${item.url}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${item.title}</a>`
-      : `<span style="font-size:13px;font-weight:700;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${item.title}</span>`;
-    const sourceEl = item.source ? ` &mdash; <em>${item.source}</em>` : "";
+      ? `<a href="${item.url}" target="_blank" style="font-size:13px;font-weight:700;color:#0a1628;text-decoration:none;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</a>`
+      : `<span style="font-size:13px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</span>`;
+    const sourceEl = item.source ? ` &mdash; <em style="color:#9ca3af;">${item.source}</em>` : "";
     const isLast = idx === Math.min(news.length, 20) - 1;
+    const rowBg = idx % 2 === 0 ? "#ffffff" : "#f9f7f4";
 
     return `
         <tr>
-          <td style="padding:10px 0;${isLast ? "" : "border-bottom:1px solid rgba(255,255,255,0.05);"}">
+          <td style="background:${rowBg};padding:10px 0;${isLast ? "" : "border-bottom:1px solid #e8e0d0;"}">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td width="28" style="vertical-align:top;padding-top:2px;">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.20);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${num}</span>
+                <td width="28" style="vertical-align:top;padding-top:3px;">
+                  <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${num}</span>
                 </td>
                 <td>
-                  <span style="font-size:10px;background:${bgColor};color:${color};padding:2px 8px;border-radius:10px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.category}</span><br>
+                  <span style="font-size:9px;background:${color}22;color:${color};padding:2px 8px;border-radius:10px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">${item.category}</span><br>
                   ${titleEl}<br>
-                  <span style="font-size:12px;color:rgba(255,255,255,0.40);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.summary}${sourceEl}</span>
+                  <span style="font-size:12px;color:#6b7280;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.5;">${item.summary}${sourceEl}</span>
                 </td>
               </tr>
             </table>
@@ -152,25 +152,25 @@ export function buildMonthlyNewsletterHtml(opts: {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>AI4Business News by IDEASMART · N° ${issueNumber} · ${month}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0a0f1e;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background-color:#ede8de;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
 <!-- WRAPPER -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0a0f1e;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ede8de;">
 <tr><td align="center" style="padding:20px 0;">
 
 <!-- CONTAINER -->
-<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background-color:#0d1220;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
+<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background-color:#f5f0e8;border-radius:4px;overflow:hidden;border:1px solid #d8d0c0;">
 
   <!-- TOP BAR -->
   <tr>
-    <td style="background-color:#060a14;padding:10px 32px;border-bottom:1px solid rgba(255,255,255,0.06);">
+    <td style="background-color:#0a1628;padding:10px 32px;border-bottom:2px solid #00b4a0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="font-size:11px;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">
-            AI4Business News · by IDEASMART
+          <td style="font-size:10px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;">
+            AI &middot; STARTUP &middot; FINANCE &middot; HEALTH &middot; SPORT &middot; LUXURY &middot; MUSIC
           </td>
-          <td align="right" style="font-size:11px;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">
-            ${month} · N° ${issueNumber}
+          <td align="right" style="font-size:10px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;">
+            ${month}
           </td>
         </tr>
       </table>
@@ -179,73 +179,61 @@ export function buildMonthlyNewsletterHtml(opts: {
 
   <!-- HEADER / LOGO -->
   <tr>
-    <td align="center" style="padding:40px 32px 32px;background:linear-gradient(180deg,#060a14 0%,#0d1220 100%);">
-      <div style="display:inline-block;margin-bottom:12px;">
-        <span style="font-size:42px;font-weight:900;color:#ffffff;letter-spacing:-2px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">AI4Business </span><span style="font-size:42px;font-weight:900;color:#00e5c8;letter-spacing:-2px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">News</span>
+    <td align="center" style="padding:36px 32px 28px;background:#f5f0e8;border-bottom:1px solid #d8d0c0;">
+      <div style="margin-bottom:6px;">
+        <span style="font-size:52px;font-weight:700;color:#0a1628;letter-spacing:-2px;font-family:Georgia,'Times New Roman',serif;">IDEA</span><span style="font-size:52px;font-weight:700;color:#00b4a0;letter-spacing:-2px;font-family:Georgia,'Times New Roman',serif;">SMART</span>
       </div>
-      <br>
-      <span style="font-size:12px;color:rgba(255,255,255,0.55);letter-spacing:0.15em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">by <strong style="color:#ffffff;">IDEA</strong><strong style="color:#00e5c8;">SMART</strong></span>
-      <br><br>
-      <table cellpadding="0" cellspacing="0" border="0" align="center">
-        <tr>
-          <td style="background:rgba(0,229,200,0.08);border:1px solid rgba(0,229,200,0.25);border-radius:20px;padding:6px 16px;">
-            <span style="font-size:10px;color:#00e5c8;letter-spacing:0.12em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9679; Osservatorio sull'Innovazione AI Italiana</span>
-          </td>
-        </tr>
+      <div style="font-size:10px;color:#6b7280;letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:16px;">LA PRIMA TESTATA GIORNALISTICA HUMANLESS</div>
+      <!-- Doppia linea ciano -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:4px;">
+        <tr><td style="border-top:2px solid #00b4a0;font-size:0;line-height:0;">&nbsp;</td></tr>
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td style="border-top:1px solid #d8d0c0;font-size:0;line-height:0;">&nbsp;</td></tr>
       </table>
     </td>
   </tr>
 
   <!-- EDITORIALE -->
   <tr>
-    <td style="padding:0 32px 32px;">
-      <p style="font-size:15px;line-height:1.75;color:rgba(255,255,255,0.70);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        <strong style="color:#ffffff;">AI4Business News</strong> è il quotidiano di tecnologia e innovazione che ogni giorno analizza, testa e seleziona le realtà più promettenti dell'ecosistema AI per il business. La nostra redazione porta alla luce le soluzioni che stanno ridefinendo il modo di lavorare, investire e crescere.
+    <td style="padding:20px 28px 18px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
+      <p style="font-size:14px;line-height:1.8;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;">
+        <strong style="color:#0a1628;">AI4Business News</strong> è il quotidiano di tecnologia e innovazione che ogni giorno analizza, testa e seleziona le realtà più promettenti dell'ecosistema AI per il business. La nostra redazione porta alla luce le soluzioni che stanno ridefinendo il modo di lavorare, investire e crescere.
       </p>
     </td>
   </tr>
 
   <!-- INDICE -->
   <tr>
-    <td style="padding:0 32px 32px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;overflow:hidden;">
+    <td style="padding:16px 28px 20px;background:#f5f0e8;border-bottom:2px solid #d8d0c0;">
+      <div style="font-size:8px;font-weight:700;color:#9ca3af;letter-spacing:0.18em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:12px;">&#9670; In questo numero</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06);">
-            <span style="font-size:10px;color:rgba(255,255,255,0.30);letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; In questo numero</span>
+          <td style="padding:6px 0;border-bottom:1px solid #e8e0d0;">
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">01 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#00b4a0;letter-spacing:0.1em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;">Reportage</span>&nbsp;&nbsp;
+            <span style="font-size:12px;color:#374151;font-family:Georgia,'Times New Roman',serif;">FoolTalent: l'AI che scova i talenti prima degli altri</span>
           </td>
         </tr>
         <tr>
-          <td style="padding:8px 20px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">01 &mdash;</span>&nbsp;
-                  <span style="font-size:10px;color:#00e5c8;letter-spacing:0.08em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Reportage</span>&nbsp;&nbsp;
-                  <span style="font-size:12px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">FoolTalent: l'AI che scova i talenti prima degli altri</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">02 &mdash;</span>&nbsp;
-                  <span style="font-size:10px;color:#0066ff;letter-spacing:0.08em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Analisi</span>&nbsp;&nbsp;
-                  <span style="font-size:12px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">FoolShare: la fortezza digitale per i dati che contano</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">03 &mdash;</span>&nbsp;
-                  <span style="font-size:10px;color:#00e5c8;letter-spacing:0.08em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Inchiesta</span>&nbsp;&nbsp;
-                  <span style="font-size:12px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Fragmentalis: la comunicazione a prova di spia</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:8px 0;">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">04 &mdash;</span>&nbsp;
-                  <span style="font-size:10px;color:#ff5500;letter-spacing:0.08em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Focus</span>&nbsp;&nbsp;
-                  <span style="font-size:12px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">PollCast: l'intelligenza collettiva che prevede i trend</span>
-                </td>
-              </tr>
-            </table>
+          <td style="padding:6px 0;border-bottom:1px solid #e8e0d0;">
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">02 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#2563eb;letter-spacing:0.1em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;">Analisi</span>&nbsp;&nbsp;
+            <span style="font-size:12px;color:#374151;font-family:Georgia,'Times New Roman',serif;">FoolShare: la fortezza digitale per i dati che contano</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;border-bottom:1px solid #e8e0d0;">
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">03 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#00b4a0;letter-spacing:0.1em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;">Inchiesta</span>&nbsp;&nbsp;
+            <span style="font-size:12px;color:#374151;font-family:Georgia,'Times New Roman',serif;">Fragmentalis: la comunicazione a prova di spia</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;">
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">04 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#f97316;letter-spacing:0.1em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;">Focus</span>&nbsp;&nbsp;
+            <span style="font-size:12px;color:#374151;font-family:Georgia,'Times New Roman',serif;">PollCast: l'intelligenza collettiva che prevede i trend</span>
           </td>
         </tr>
       </table>
@@ -257,45 +245,45 @@ export function buildMonthlyNewsletterHtml(opts: {
     <td style="padding:0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#060a14;padding:10px 32px;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);">
-            <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">01 &mdash;</span>&nbsp;
-            <span style="font-size:10px;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Reportage · AI Recruiting</span>
+          <td style="background:#f5f0e8;padding:10px 28px;border-top:2px solid #e8e0d0;border-bottom:1px solid #e8e0d0;">
+            <span style="font-size:9px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;">01 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#00b4a0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;">Reportage &middot; AI Recruiting</span>
           </td>
         </tr>
         <tr>
-          <td style="background:rgba(0,229,200,0.07);border-bottom:3px solid #00e5c8;padding:14px 32px;">
-            <span style="font-size:20px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.3;">FoolTalent: l'AI che scova i talenti prima degli altri.</span>
+          <td style="background:#ffffff;border-left:4px solid #00b4a0;padding:16px 28px;">
+            <span style="font-size:20px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.3;">FoolTalent: l'AI che scova i talenti prima degli altri.</span>
           </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td style="padding:24px 32px 32px;">
-      <p style="font-size:13px;font-weight:600;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;">Come una startup milanese sta rivoluzionando il recruiting con l'AI.</p>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        Il problema del recruiting nelle startup italiane è sempre lo stesso: troppo tempo perso a leggere CV irrilevanti, troppo poco a parlare con i candidati giusti. <strong style="color:#ffffff;">FoolTalent</strong> ha deciso di affrontarlo con un approccio radicalmente diverso: la sua AI non filtra per parole chiave, ma analizza ogni candidatura in profondità e assegna un punteggio di compatibilità reale.
+    <td style="padding:20px 28px 28px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
+      <p style="font-size:11px;font-weight:700;color:#00b4a0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-transform:uppercase;letter-spacing:0.08em;">Come una startup milanese sta rivoluzionando il recruiting con l'AI.</p>
+      <p style="font-size:14px;line-height:1.8;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
+        Il problema del recruiting nelle startup italiane è sempre lo stesso: troppo tempo perso a leggere CV irrilevanti, troppo poco a parlare con i candidati giusti. <strong style="color:#0a1628;">FoolTalent</strong> ha deciso di affrontarlo con un approccio radicalmente diverso: la sua AI non filtra per parole chiave, ma analizza ogni candidatura in profondità e assegna un punteggio di compatibilità reale.
       </p>
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:16px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0;">
         <tr>
-          <td style="border-left:3px solid #00e5c8;padding:10px 16px;background:rgba(0,229,200,0.05);border-radius:0 6px 6px 0;">
-            <span style="font-size:13px;font-style:italic;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">"L'AI non sostituisce il recruiter. Lo libera dal rumore, così può concentrarsi sul segnale."</span>
+          <td style="border-left:3px solid #00b4a0;padding:10px 16px;background:#f0faf8;">
+            <span style="font-size:13px;font-style:italic;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">&ldquo;L'AI non sostituisce il recruiter. Lo libera dal rumore, così può concentrarsi sul segnale.&rdquo;</span>
           </td>
         </tr>
       </table>
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
-        <tr><td style="padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:rgba(255,255,255,0.60);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00e5c8;font-weight:700;">&#10003;</span>&nbsp; Valutazione AI con punteggio percentuale di compatibilità per ogni candidatura</td></tr>
-        <tr><td style="padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:rgba(255,255,255,0.60);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00e5c8;font-weight:700;">&#10003;</span>&nbsp; Shortlist intelligente: solo i profili più compatibili, ordinati per rilevanza</td></tr>
-        <tr><td style="padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:rgba(255,255,255,0.60);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00e5c8;font-weight:700;">&#10003;</span>&nbsp; Database talenti con ricerca avanzata per competenze, settore ed esperienza</td></tr>
-        <tr><td style="padding:7px 0;font-size:13px;color:rgba(255,255,255,0.60);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00e5c8;font-weight:700;">&#10003;</span>&nbsp; Dashboard analytics con trend candidature in tempo reale</td></tr>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
+        <tr><td style="padding:6px 0;border-bottom:1px solid #e8e0d0;font-size:13px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00b4a0;font-weight:700;">&#10003;</span>&nbsp; Valutazione AI con punteggio percentuale di compatibilità per ogni candidatura</td></tr>
+        <tr><td style="padding:6px 0;border-bottom:1px solid #e8e0d0;font-size:13px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00b4a0;font-weight:700;">&#10003;</span>&nbsp; Shortlist intelligente: solo i profili più compatibili, ordinati per rilevanza</td></tr>
+        <tr><td style="padding:6px 0;border-bottom:1px solid #e8e0d0;font-size:13px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00b4a0;font-weight:700;">&#10003;</span>&nbsp; Database talenti con ricerca avanzata per competenze, settore ed esperienza</td></tr>
+        <tr><td style="padding:6px 0;font-size:13px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><span style="color:#00b4a0;font-weight:700;">&#10003;</span>&nbsp; Dashboard analytics con trend candidature in tempo reale</td></tr>
       </table>
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#00e5c8;border-radius:8px;padding:12px 24px;">
-            <a href="https://fooltalent.com" target="_blank" style="font-size:13px;font-weight:700;color:#0a0f1e;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.03em;">Scopri FoolTalent &rarr;</a>
+          <td style="background:#0a1628;border-radius:3px;padding:10px 22px;">
+            <a href="https://fooltalent.com" target="_blank" style="font-size:12px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;">Scopri FoolTalent &rarr;</a>
           </td>
           <td style="padding-left:12px;">
-            <a href="https://fooltalent.com" target="_blank" style="font-size:13px;color:rgba(255,255,255,0.50);text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Vedi gli annunci &rarr;</a>
+            <a href="https://fooltalent.com" target="_blank" style="font-size:13px;color:#00b4a0;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Vedi gli annunci &rarr;</a>
           </td>
         </tr>
       </table>
@@ -307,47 +295,47 @@ export function buildMonthlyNewsletterHtml(opts: {
     <td style="padding:0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#060a14;padding:10px 32px;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);">
-            <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">02 &mdash;</span>&nbsp;
-            <span style="font-size:10px;color:#0066ff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Analisi · Data Room &amp; Fundraising</span>
+          <td style="background:#f5f0e8;padding:10px 28px;border-top:2px solid #e8e0d0;border-bottom:1px solid #e8e0d0;">
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;">02 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#2563eb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Analisi · Data Room &amp; Fundraising</span>
           </td>
         </tr>
         <tr>
-          <td style="background:rgba(0,102,255,0.07);border-bottom:3px solid #0066ff;padding:14px 32px;">
-            <span style="font-size:20px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.3;">FoolShare: la fortezza digitale per i dati che contano.</span>
+          <td style="background:#ffffff;border-left:4px solid #2563eb;padding:16px 28px;">
+            <span style="font-size:20px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.3;">FoolShare: la fortezza digitale per i dati che contano.</span>
           </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td style="padding:24px 32px 32px;background:#080c18;">
-      <p style="font-size:13px;font-weight:600;color:#0066ff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;">La piattaforma che unisce data room sicure, NDA digitali e fundraising OS.</p>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        La condivisione di documenti sensibili è il tallone d'Achille di molte aziende. <strong style="color:#ffffff;">FoolShare</strong> risponde con una piattaforma che non si limita a "proteggere" i documenti, ma li trasforma in uno strumento di intelligence: ogni link condiviso è tracciabile — chi lo ha aperto, per quanti minuti, quante volte, da quale città.
+    <td style="padding:20px 28px 28px;background:#f9f7f4;border-bottom:1px solid #e8e0d0;">
+      <p style="font-size:13px;font-weight:600;color:#2563eb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-transform:uppercase;letter-spacing:0.08em;">La piattaforma che unisce data room sicure, NDA digitali e fundraising OS.</p>
+      <p style="font-size:14px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
+        La condivisione di documenti sensibili è il tallone d'Achille di molte aziende. <strong style="color:#0a1628;">FoolShare</strong> risponde con una piattaforma che non si limita a "proteggere" i documenti, ma li trasforma in uno strumento di intelligence: ogni link condiviso è tracciabile — chi lo ha aperto, per quanti minuti, quante volte, da quale città.
       </p>
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:16px 0;">
         <tr>
-          <td style="border-left:3px solid #0066ff;padding:10px 16px;background:rgba(0,102,255,0.05);border-radius:0 6px 6px 0;">
-            <span style="font-size:13px;font-style:italic;color:#0066ff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">"Non è solo una data room. È un sistema operativo per il fundraising. La differenza è sostanziale."</span>
+          <td style="border-left:3px solid #2563eb;padding:10px 16px;background:#eff6ff;">
+            <span style="font-size:13px;font-style:italic;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">&ldquo;Non è solo una data room. È un sistema operativo per il fundraising. La differenza è sostanziale."</span>
           </td>
         </tr>
       </table>
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,102,255,0.06);border:1px solid rgba(0,102,255,0.15);border-radius:8px;margin-bottom:20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f4ff;border:1px solid #dbeafe;border-radius:4px;margin-bottom:18px;">
         <tr>
-          <td style="padding:12px 16px;font-size:13px;color:rgba(255,255,255,0.70);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-            <span style="color:#0066ff;font-weight:700;">&#127873; Prova gratuita 7 giorni</span> — nessuna carta di credito richiesta.<br>
-            Piani da <strong style="color:#ffffff;">€49/mese</strong> (Premium) · <strong style="color:#ffffff;">€99/mese</strong> (Project Room + Fundraising OS)
+          <td style="padding:12px 16px;font-size:13px;color:#374151;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+            <span style="color:#2563eb;font-weight:700;">&#127873; Prova gratuita 7 giorni</span> — nessuna carta di credito richiesta.<br>
+            Piani da <strong style="color:#0a1628;">€49/mese</strong> (Premium) · <strong style="color:#0a1628;">€99/mese</strong> (Project Room + Fundraising OS)
           </td>
         </tr>
       </table>
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#0066ff;border-radius:8px;padding:12px 24px;">
-            <a href="https://foolshare.xyz" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Inizia gratis &rarr;</a>
+          <td style="background:#0a1628;border-radius:3px;padding:10px 22px;">
+            <a href="https://foolshare.xyz" target="_blank" style="font-size:12px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;">Inizia gratis &rarr;</a>
           </td>
           <td style="padding-left:12px;">
-            <a href="https://foolshare.xyz" target="_blank" style="font-size:13px;color:rgba(255,255,255,0.50);text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Scopri i piani &rarr;</a>
+            <a href="https://foolshare.xyz" target="_blank" style="font-size:13px;color:#2563eb;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Scopri i piani &rarr;</a>
           </td>
         </tr>
       </table>
@@ -360,56 +348,56 @@ export function buildMonthlyNewsletterHtml(opts: {
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td style="background:#040810;padding:10px 32px;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);">
-            <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">03 &mdash;</span>&nbsp;
-            <span style="font-size:10px;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Inchiesta · Cybersecurity &amp; Comunicazione</span>
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;">03 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#00b4a0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Inchiesta · Cybersecurity &amp; Comunicazione</span>
           </td>
         </tr>
         <tr>
-          <td style="background:linear-gradient(135deg,rgba(0,6,110,0.4),rgba(0,229,200,0.06));border-bottom:3px solid #00e5c8;padding:14px 32px;">
-            <span style="font-size:20px;font-weight:900;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.3;">Fragmentalis: la comunicazione a prova di spia (e di computer quantistici).</span>
+          <td style="background:#ffffff;border-left:4px solid #00b4a0;padding:16px 28px;">
+            <span style="font-size:20px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.3;">Fragmentalis: la comunicazione a prova di spia (e di computer quantistici).</span>
           </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td style="padding:24px 32px 32px;background:#060a14;">
-      <p style="font-size:13px;font-weight:600;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;">Tecnologia brevettata IT/EU/USA che rende matematicamente impossibile intercettare le comunicazioni.</p>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        Mentre tutti parlano di crittografia end-to-end, <strong style="color:#ffffff;">Fragmentalis</strong> ha già spostato il campo di gioco nel futuro. La sua tecnologia brevettata "polverizza" i dati — li frammenta su nodi distribuiti, rendendo matematicamente impossibile ricostruirli. Il prodotto di punta, <strong style="color:#ffffff;">StreamSafer Communicator</strong>, è già usato da CDA aziendali, studi legali e istituzioni finanziarie.
+    <td style="padding:20px 28px 28px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
+      <p style="font-size:13px;font-weight:600;color:#00b4a0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-transform:uppercase;letter-spacing:0.08em;">Tecnologia brevettata IT/EU/USA che rende matematicamente impossibile intercettare le comunicazioni.</p>
+      <p style="font-size:14px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
+        Mentre tutti parlano di crittografia end-to-end, <strong style="color:#0a1628;">Fragmentalis</strong> ha già spostato il campo di gioco nel futuro. La sua tecnologia brevettata "polverizza" i dati — li frammenta su nodi distribuiti, rendendo matematicamente impossibile ricostruirli. Il prodotto di punta, <strong style="color:#0a1628;">StreamSafer Communicator</strong>, è già usato da CDA aziendali, studi legali e istituzioni finanziarie.
       </p>
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:16px 0;">
         <tr>
-          <td style="border-left:3px solid #00e5c8;padding:10px 16px;background:rgba(0,229,200,0.04);border-radius:0 6px 6px 0;">
-            <span style="font-size:13px;font-style:italic;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">"Non esiste un server centrale. I dati vengono polverizzati. Per ricostruirli, bisognerebbe accedere a tutti i nodi contemporaneamente. Matematicamente impossibile."</span>
+          <td style="border-left:3px solid #00b4a0;padding:10px 16px;background:#f0faf8;">
+            <span style="font-size:13px;font-style:italic;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">&ldquo;Non esiste un server centrale. I dati vengono polverizzati. Per ricostruirli, bisognerebbe accedere a tutti i nodi contemporaneamente. Matematicamente impossibile."</span>
           </td>
         </tr>
       </table>
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
         <tr>
-          <td width="33%" align="center" style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px 8px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="font-size:24px;font-weight:900;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">0</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Server centrale</div>
+          <td width="33%" align="center" style="background:#f5f0e8;border-radius:4px;padding:12px 8px;border:1px solid #e8e0d0;">
+            <div style="font-size:24px;font-weight:700;color:#00b4a0;font-family:Georgia,'Times New Roman',serif;">0</div>
+            <div style="font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Server centrale</div>
           </td>
           <td width="4%"></td>
-          <td width="33%" align="center" style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px 8px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="font-size:24px;font-weight:900;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">100%</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Controllo dati</div>
+          <td width="33%" align="center" style="background:#f5f0e8;border-radius:4px;padding:12px 8px;border:1px solid #e8e0d0;">
+            <div style="font-size:24px;font-weight:700;color:#00b4a0;font-family:Georgia,'Times New Roman',serif;">100%</div>
+            <div style="font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Controllo dati</div>
           </td>
           <td width="4%"></td>
-          <td width="26%" align="center" style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px 8px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="font-size:24px;font-weight:900;color:#00e5c8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">3</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Brevetti IT/EU/US</div>
+          <td width="26%" align="center" style="background:#f5f0e8;border-radius:4px;padding:12px 8px;border:1px solid #e8e0d0;">
+            <div style="font-size:24px;font-weight:700;color:#00b4a0;font-family:Georgia,'Times New Roman',serif;">3</div>
+            <div style="font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Brevetti IT/EU/US</div>
           </td>
         </tr>
       </table>
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#00e5c8;border-radius:8px;padding:12px 24px;">
-            <a href="https://fragmentalis.com" target="_blank" style="font-size:13px;font-weight:700;color:#0a0f1e;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Richiedi Demo &rarr;</a>
+          <td style="background:#0a1628;border-radius:3px;padding:10px 22px;">
+            <a href="https://fragmentalis.com" target="_blank" style="font-size:12px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;">Richiedi Demo &rarr;</a>
           </td>
           <td style="padding-left:12px;">
-            <a href="https://fragmentalis.com" target="_blank" style="font-size:13px;color:rgba(255,255,255,0.50);text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Scopri StreamSafer &rarr;</a>
+            <a href="https://fragmentalis.com" target="_blank" style="font-size:13px;color:#00b4a0;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Scopri StreamSafer &rarr;</a>
           </td>
         </tr>
       </table>
@@ -421,37 +409,37 @@ export function buildMonthlyNewsletterHtml(opts: {
     <td style="padding:0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#060a14;padding:10px 32px;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);">
-            <span style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">04 &mdash;</span>&nbsp;
-            <span style="font-size:10px;color:#ff5500;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Focus · Market Intelligence</span>
+          <td style="background:#f5f0e8;padding:10px 28px;border-top:2px solid #e8e0d0;border-bottom:1px solid #e8e0d0;">
+            <span style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;">04 &mdash;</span>&nbsp;
+            <span style="font-size:9px;color:#f97316;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;text-transform:uppercase;">Focus · Market Intelligence</span>
           </td>
         </tr>
         <tr>
-          <td style="background:rgba(255,85,0,0.06);border-bottom:3px solid #ff5500;padding:14px 32px;">
-            <span style="font-size:20px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.3;">PollCast: l'intelligenza collettiva che prevede i trend di mercato.</span>
+          <td style="background:#ffffff;border-left:4px solid #f97316;padding:16px 28px;">
+            <span style="font-size:20px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.3;">PollCast: l'intelligenza collettiva che prevede i trend di mercato.</span>
           </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td style="padding:24px 32px 32px;">
-      <p style="font-size:13px;font-weight:600;color:#ff5500;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;">La piattaforma gratuita che trasforma le previsioni della community in market intelligence.</p>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        E se le previsioni di mercato non fossero più un'esclusiva per pochi analisti? <strong style="color:#ffffff;">PollCast</strong> ha lanciato una piattaforma gratuita dove chiunque può creare e votare previsioni su qualsiasi tema — business, tech, sport, politica o trend di mercato. I risultati aggregati, su migliaia di voti, tendono a essere sorprendentemente accurati.
+    <td style="padding:20px 28px 28px;background:#f9f7f4;border-bottom:1px solid #e8e0d0;">
+      <p style="font-size:11px;font-weight:700;color:#f97316;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;">La piattaforma gratuita che trasforma le previsioni della community in market intelligence.</p>
+      <p style="font-size:14px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
+        E se le previsioni di mercato non fossero più un'esclusiva per pochi analisti? <strong style="color:#0a1628;">PollCast</strong> ha lanciato una piattaforma gratuita dove chiunque può creare e votare previsioni su qualsiasi tema — business, tech, sport, politica o trend di mercato. I risultati aggregati, su migliaia di voti, tendono a essere sorprendentemente accurati.
       </p>
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
-        <tr><td style="padding:4px 0;font-size:12px;color:rgba(255,255,255,0.50);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#ff5500;">Crypto</strong> &nbsp; Bitcoin supererà i $200k entro il 2026? &nbsp;<strong style="color:#ff5500;">61% Sì</strong> (511 voti)</td></tr>
-        <tr><td style="padding:4px 0;font-size:12px;color:rgba(255,255,255,0.50);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#ff5500;">Tech</strong> &nbsp; ChatGPT-5 sarà rilasciato entro giugno 2026? &nbsp;<strong style="color:#ff5500;">75% Sì</strong> (370 voti)</td></tr>
-        <tr><td style="padding:4px 0;font-size:12px;color:rgba(255,255,255,0.50);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#ff5500;">Economia</strong> &nbsp; Tesla raggiungerà i $500 per azione? &nbsp;<strong style="color:#ff5500;">57% Sì</strong> (412 voti)</td></tr>
+        <tr><td style="padding:5px 0;border-bottom:1px solid #e8e0d0;font-size:12px;color:#374151;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#f97316;">Crypto</strong> &nbsp; Bitcoin supererà i $200k entro il 2026? &nbsp;<strong style="color:#f97316;">61% Sì</strong> (511 voti)</td></tr>
+        <tr><td style="padding:5px 0;border-bottom:1px solid #e8e0d0;font-size:12px;color:#374151;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#f97316;">Tech</strong> &nbsp; ChatGPT-5 sarà rilasciato entro giugno 2026? &nbsp;<strong style="color:#f97316;">75% Sì</strong> (370 voti)</td></tr>
+        <tr><td style="padding:5px 0;font-size:12px;color:#374151;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#f97316;">Economia</strong> &nbsp; Tesla raggiungerà i $500 per azione? &nbsp;<strong style="color:#f97316;">57% Sì</strong> (412 voti)</td></tr>
       </table>
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#ff5500;border-radius:8px;padding:12px 24px;">
-            <a href="https://pollcast.online" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Vota le previsioni &rarr;</a>
+          <td style="background:#0a1628;border-radius:3px;padding:10px 22px;">
+            <a href="https://pollcast.online" target="_blank" style="font-size:12px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;">Vota le previsioni &rarr;</a>
           </td>
           <td style="padding-left:12px;">
-            <a href="https://pollcast.online" target="_blank" style="font-size:13px;color:rgba(255,255,255,0.50);text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Crea una previsione &rarr;</a>
+            <a href="https://pollcast.online" target="_blank" style="font-size:13px;color:#f97316;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Crea una previsione &rarr;</a>
           </td>
         </tr>
       </table>
@@ -463,16 +451,16 @@ export function buildMonthlyNewsletterHtml(opts: {
     <td style="padding:0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#040810;padding:14px 32px;border-top:1px solid rgba(255,255,255,0.06);">
-            <span style="font-size:10px;color:#00e5c8;letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Ultime News AI &mdash; ${month}</span>
+          <td style="background:#f5f0e8;padding:12px 28px;border-top:2px solid #e8e0d0;">
+            <span style="font-size:10px;color:#00b4a0;letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:9px;">&#9670; Ultime News AI &mdash; ${month}</span>
           </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td style="padding:20px 32px 32px;background:#060a14;">
-      <p style="font-size:13px;font-weight:700;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;">I 10 eventi AI più significativi della settimana</p>
+    <td style="padding:16px 28px 28px;background:#ffffff;">
+      <p style="font-size:13px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;margin:0 0 16px;">I 10 eventi AI più significativi della settimana</p>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         ${newsItemsHtml}
       </table>
@@ -481,13 +469,13 @@ export function buildMonthlyNewsletterHtml(opts: {
 
   <!-- NEWSLETTER CTA -->
   <tr>
-    <td align="center" style="padding:32px;background:linear-gradient(135deg,#060a14,#0a0f1e);border-top:1px solid rgba(255,255,255,0.06);">
-      <p style="font-size:18px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;">Ricevi l'analisi mensile<br><span style="color:#00e5c8;">direttamente nella tua inbox.</span></p>
-      <p style="font-size:13px;color:rgba(255,255,255,0.45);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 20px;">Ogni mese selezioniamo le 4 startup AI più promettenti per il business italiano.</p>
+    <td align="center" style="padding:28px;background:#0a1628;border-top:2px solid #00b4a0;">
+      <p style="font-size:18px;font-weight:700;color:#ffffff;font-family:Georgia,'Times New Roman',serif;margin:0 0 8px;">Ricevi la newsletter<br><span style="color:#00b4a0;">direttamente nella tua inbox.</span></p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 20px;">Ogni giorno le notizie più importanti più promettenti per il business italiano.</p>
       <table cellpadding="0" cellspacing="0" border="0" align="center">
         <tr>
-          <td style="background:#00e5c8;border-radius:8px;padding:14px 32px;">
-            <a href="https://ideasmart.ai" style="font-size:14px;font-weight:700;color:#0a0f1e;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Abbonati gratis &rarr;</a>
+          <td style="background:#00b4a0;border-radius:3px;padding:12px 28px;">
+            <a href="https://ideasmart.ai" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Abbonati gratis &rarr;</a>
           </td>
         </tr>
       </table>
@@ -496,27 +484,27 @@ export function buildMonthlyNewsletterHtml(opts: {
 
   <!-- FOOTER -->
   <tr>
-    <td style="padding:28px 32px 32px;background:#040810;border-top:1px solid rgba(255,255,255,0.05);">
-      <p style="font-size:11px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-align:center;">
-        &copy; 2026 <strong style="color:rgba(255,255,255,0.40);">AI4Business News</strong> &mdash; by IDEASMART &middot; Startup di Tecnologia &amp; Innovazione
+    <td style="padding:24px 28px 28px;background:#f5f0e8;border-top:1px solid #d8d0c0;">
+      <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-align:center;">
+        &copy; 2026 <strong style="color:#374151;">AI4Business News</strong> &mdash; by IDEASMART &middot; Startup di Tecnologia &amp; Innovazione
       </p>
-      <p style="font-size:11px;color:rgba(255,255,255,0.18);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-align:center;line-height:1.6;">
+      <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-align:center;line-height:1.6;">
         Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter AI4Business News by IDEASMART.<br>
-        Sede legale: Italia &middot; P.IVA in corso di registrazione &middot; <a href="${baseUrl}/privacy" style="color:rgba(255,255,255,0.30);text-decoration:underline;">Privacy Policy</a>
+        Sede legale: Italia &middot; P.IVA in corso di registrazione &middot; <a href="${baseUrl}/privacy" style="color:#9ca3af;text-decoration:underline;">Privacy Policy</a>
       </p>
       <!-- Separatore -->
       <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 12px;">
-        <tr><td style="border-top:1px solid rgba(255,255,255,0.06);font-size:0;line-height:0;">&nbsp;</td></tr>
+        <tr><td style="border-top:1px solid #d8d0c0;font-size:0;line-height:0;">&nbsp;</td></tr>
       </table>
       <!-- Link disiscrizione GDPR -->
-      <p style="font-size:11px;color:rgba(255,255,255,0.20);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
-        <a href="${unsubLink}" style="color:#ff5500;text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:600;">Annulla iscrizione</a>
+      <p style="font-size:11px;color:#6b7280;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
+        <a href="${unsubLink}" style="color:#f97316;text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:600;">Annulla iscrizione</a>
         &nbsp;&middot;&nbsp;
-        <a href="${baseUrl}" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito</a>
+        <a href="${baseUrl}" style="color:#6b7280;text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito</a>
         &nbsp;&middot;&nbsp;
-        <a href="${baseUrl}/privacy" style="color:rgba(255,255,255,0.30);text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Privacy Policy</a>
+        <a href="${baseUrl}/privacy" style="color:#9ca3af;text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Privacy Policy</a>
       </p>
-      <p style="font-size:10px;color:rgba(255,255,255,0.12);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:10px 0 0;text-align:center;">
+      <p style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:10px 0 0;text-align:center;">
         Ai sensi del Regolamento UE 2016/679 (GDPR), hai il diritto di annullare l&rsquo;iscrizione in qualsiasi momento.
       </p>
     </td>

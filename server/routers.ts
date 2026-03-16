@@ -7,7 +7,6 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
-import { sendWeeklyNewsletter } from "./newsletterScheduler";
 import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
@@ -731,14 +730,6 @@ Rispondi con questo JSON:
         };
       }),
 
-    // Trigger invio automatico immediato (usa il template dark ufficiale)
-    triggerWeeklyNewsletter: adminProcedure.mutation(async () => {
-      const result = await sendWeeklyNewsletter();
-      if (!result.success) {
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio newsletter" });
-      }
-      return result;
-    }),
 
     // Send weekly newsletter to all active subscribers (legacy - usa buildWeeklyNewsletterHtml)
     // Statistiche performance newsletter (aperture, tasso apertura per campagna)
@@ -751,96 +742,6 @@ Rispondi con questo JSON:
       return getSubscribersWithTracking();
     }),
 
-    sendWeeklyNewsletter: adminProcedure.mutation(async () => {
-      const activeSubscribers = await getActiveSubscribers();
-      if (activeSubscribers.length === 0) {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Nessun iscritto attivo trovato" });
-      }
-
-      const today = new Date();
-      const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-      const dateRange = `${weekAgo.toLocaleDateString("it-IT")} - ${today.toLocaleDateString("it-IT")}`;
-
-      const llmResponse = await invokeLLM({
-        messages: [
-          {
-            role: "system",
-            content: `Sei il redattore di IDEASMART, una startup italiana di tecnologia e innovazione che analizza le migliori realtà AI per il business. Scrivi in italiano con tono editoriale autorevole. Rispondi SOLO con JSON valido.`,
-          },
-          {
-            role: "user",
-            content: `Genera le 20 notizie più importanti della settimana (${dateRange}) nel mondo dell'AI e delle startup tecnologiche italiane e internazionali. Per ogni notizia includi: titolo, categoria, breve descrizione (2-3 frasi), e impatto per il business italiano.
-
-Rispondi con questo JSON:
-{"week":"${dateRange}","news":[{"id":1,"category":"categoria","title":"titolo","description":"descrizione","impact":"impatto"}]}`,
-          },
-        ],
-        response_format: {
-          type: "json_schema",
-          json_schema: {
-            name: "weekly_news",
-            strict: true,
-            schema: {
-              type: "object",
-              properties: {
-                week: { type: "string" },
-                news: {
-                  type: "array",
-                  items: {
-                    type: "object",
-                    properties: {
-                      id: { type: "integer" },
-                      category: { type: "string" },
-                      title: { type: "string" },
-                      description: { type: "string" },
-                      impact: { type: "string" },
-                    },
-                    required: ["id", "category", "title", "description", "impact"],
-                    additionalProperties: false,
-                  },
-                },
-              },
-              required: ["week", "news"],
-              additionalProperties: false,
-            },
-          },
-        },
-      });
-
-      const rawContent = llmResponse.choices[0]?.message?.content;
-      const content = typeof rawContent === "string" ? rawContent : null;
-      if (!content) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Errore generazione notizie" });
-
-      const newsData = JSON.parse(content) as {
-        week: string;
-        news: Array<{ id: number; category: string; title: string; description: string; impact: string }>;
-      };
-
-      const htmlContent = buildWeeklyNewsletterHtml(newsData);
-      const subject = `IDEASMART Weekly — Top 20 AI News | ${newsData.week}`;
-
-      // Send to all active subscribers
-      const emails = activeSubscribers.map((s) => s.email);
-      const result = await sendEmail({ to: emails, subject, html: htmlContent });
-
-      if (!result.success) {
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio email" });
-      }
-
-      await createNewsletterSend({
-        subject,
-        htmlContent,
-        recipientCount: emails.length,
-      });
-
-      return {
-        success: true,
-        subject,
-        recipientCount: emails.length,
-        newsCount: newsData.news.length,
-        week: newsData.week,
-      };
-    }),
 
     // ── Generazione immagini AI per articoli ──────────────────────────────────
     generateArticleImages: adminProcedure

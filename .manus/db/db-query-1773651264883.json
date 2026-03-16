@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, email, name, status, newsletter, source, subscribedAt FROM subscribers WHERE email IN ('annaclara.borella@cofidis.it', 'edoardo.riccobono@camperiosim.com', 'sandro.parisi@eudata.com', 'acquisti@felsineo.com');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, email, name, status, newsletter, source, subscribedAt FROM subscribers WHERE email IN ('annaclara.borella@cofidis.it', 'edoardo.riccobono@camperiosim.com', 'sandro.parisi@eudata.com', 'acquisti@felsineo.com');",
+  "rows": [
+    {
+      "id": "210001",
+      "email": "annaclara.borella@cofidis.it",
+      "name": "Annaclara Borella",
+      "status": "active",
+      "newsletter": "ai4business",
+      "source": "manual",
+      "subscribedAt": "2026-03-16 08:54:18"
+    },
+    {
+      "id": "210002",
+      "email": "edoardo.riccobono@camperiosim.com",
+      "name": "Edoardo Riccobono",
+      "status": "active",
+      "newsletter": "ai4business",
+      "source": "manual",
+      "subscribedAt": "2026-03-16 08:54:18"
+    },
+    {
+      "id": "210003",
+      "email": "sandro.parisi@eudata.com",
+      "name": "Sandro Parisi",
+      "status": "active",
+      "newsletter": "ai4business",
+      "source": "manual",
+      "subscribedAt": "2026-03-16 08:54:18"
+    },
+    {
+      "id": "210004",
+      "email": "acquisti@felsineo.com",
+      "name": "NULL",
+      "status": "active",
+      "newsletter": "ai4business",
+      "source": "manual",
+      "subscribedAt": "2026-03-16 08:54:18"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tname\tstatus\tnewsletter\tsource\tsubscribedAt\n210001\tannaclara.borella@cofidis.it\tAnnaclara Borella\tactive\tai4business\tmanual\t2026-03-16 08:54:18\n210002\tedoardo.riccobono@camperiosim.com\tEdoardo Riccobono\tactive\tai4business\tmanual\t2026-03-16 08:54:18\n210003\tsandro.parisi@eudata.com\tSandro Parisi\tactive\tai4business\tmanual\t2026-03-16 08:54:18\n210004\tacquisti@felsineo.com\tNULL\tactive\tai4business\tmanual\t2026-03-16 08:54:18\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}
