@@ -752,3 +752,26 @@
 - [ ] Aggiornare scheduler: 1 post alle 10:00 (non 3)
 - [ ] Aggiornare procedura admin per test manuale
 - [ ] Test e checkpoint
+
+## Newsletter Redesign — Stile Editoriale Navy (16 Mar 2026)
+
+- [x] Ridisegnare masthead newsletter: sfondo navy #0a0f1e, testata "IDEASMART" in Georgia serif 56px
+- [x] Aggiungere riga superiore con elenco canali (AI · STARTUP · FINANCE · HEALTH · SPORT · LUXURY · MUSIC) e data
+- [x] Aggiungere doppia linea ciano stile giornale sotto la testata
+- [x] Aggiungere sommario numeri (notizie, reportage, analisi) con colori accento
+- [x] Aggiornare sezione editoriale con sfondo navy e testo bianco
+- [x] Aggiornare sezione startup del giorno con sfondo navy e accento arancio
+- [x] Aggiornare sezione reportage con sfondo navy e colori accento dinamici
+- [x] Aggiornare sezione news con sfondo navy alternato (#0a0f1e / #0d1220) e testo bianco
+- [x] Aggiornare sezione analisi di mercato con card navy e bordi semitrasparenti
+- [x] Aggiornare footer con sfondo #060a14 e testo bianco/semitrasparente
+- [x] Aggiornare CTA finale con gradiente navy e bottone ciano
+
+## PWA Mobile — Banner Installazione (16 Mar 2026)
+
+- [x] Creare service worker /sw.js con caching offline-first per navigazione
+- [x] Creare hook usePWA.ts per gestire beforeinstallprompt (Android/Chrome) e iOS
+- [x] Creare componente PWAInstallBanner.tsx con design navy coerente con il brand
+- [x] Integrare PWAInstallBanner in App.tsx (visibile su tutte le pagine)
+- [x] Registrare service worker nell'index.html
+- [x] Banner si mostra dopo 3 secondi sulla prima visita mobile, si nasconde per 7 giorni dopo dismiss

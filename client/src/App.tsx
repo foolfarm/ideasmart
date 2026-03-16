@@ -32,6 +32,7 @@ import StartupOfDayDetail from "./pages/StartupOfDayDetail";
 import Edicola from "./pages/Edicola";
 import NotFound from "./pages/NotFound";
 import Manifesto from "./pages/Manifesto";
+import PWAInstallBanner from "./components/PWAInstallBanner";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -106,6 +107,7 @@ function App() {
           <Toaster />
           <Router />
           <CookieBanner />
+          <PWAInstallBanner />
           <AdSenseManager />
         </TooltipProvider>
       </ThemeProvider>
