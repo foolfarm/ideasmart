@@ -53,56 +53,58 @@ declare global {
 }
 
 // ─── Publisher ID ──────────────────────────────────────────────────────────────
-const CLIENT_ID = "ca-pub-5062085419723381";
+const CLIENT_ID = "ca-pub-7185482526978993";
 
 // ─── Slot ID Placeholder ───────────────────────────────────────────────────────
 // Sostituire con gli ID reali ottenuti dal pannello Google AdSense
 // Formato: stringa numerica a 10 cifre, es. "1234567890"
+// Slot ID configurato: 8948908650 (unità "ideasmart1" — formato auto, responsive)
+// Tutti i posizionamenti usano lo stesso slot; Google ottimizza automaticamente il contenuto.
 export const AD_SLOTS = {
   // Homepage Hub
-  HOME_BANNER:     "", // TODO: inserire Slot ID "IDEASMART — Home Banner"
+  HOME_BANNER:     "8948908650",
 
   // Sezione AI4Business
-  AI_TOP:          "", // TODO: inserire Slot ID "AI4Business — Top Banner"
-  AI_MID1:         "", // TODO: inserire Slot ID "AI4Business — Mid Banner 1"
-  AI_MID2:         "", // TODO: inserire Slot ID "AI4Business — Mid Banner 2"
-  AI_BOTTOM:       "", // TODO: inserire Slot ID "AI4Business — Bottom Banner"
+  AI_TOP:          "8948908650",
+  AI_MID1:         "8948908650",
+  AI_MID2:         "8948908650",
+  AI_BOTTOM:       "8948908650",
 
   // Sezione ITsMusic
-  MUSIC_TOP:       "", // TODO: inserire Slot ID "ITsMusic — Top Banner"
-  MUSIC_MID1:      "", // TODO: inserire Slot ID "ITsMusic — Mid Banner 1"
-  MUSIC_MID2:      "", // TODO: inserire Slot ID "ITsMusic — Mid Banner 2"
-  MUSIC_BOTTOM:    "", // TODO: inserire Slot ID "ITsMusic — Bottom Banner"
+  MUSIC_TOP:       "8948908650",
+  MUSIC_MID1:      "8948908650",
+  MUSIC_MID2:      "8948908650",
+  MUSIC_BOTTOM:    "8948908650",
 
   // Sezione Startup News
-  STARTUP_TOP:     "", // TODO: inserire Slot ID "Startup News — Top Banner"
-  STARTUP_MID1:    "", // TODO: inserire Slot ID "Startup News — Mid Banner 1"
-  STARTUP_MID2:    "", // TODO: inserire Slot ID "Startup News — Mid Banner 2"
-  STARTUP_BOTTOM:  "", // TODO: inserire Slot ID "Startup News — Bottom Banner"
+  STARTUP_TOP:     "8948908650",
+  STARTUP_MID1:    "8948908650",
+  STARTUP_MID2:    "8948908650",
+  STARTUP_BOTTOM:  "8948908650",
 
   // Sezione Finance & Markets
-  FINANCE_TOP:     "", // TODO: inserire Slot ID "Finance & Markets — Top Banner"
-  FINANCE_MID1:    "", // TODO: inserire Slot ID "Finance & Markets — Mid Banner 1"
-  FINANCE_MID2:    "", // TODO: inserire Slot ID "Finance & Markets — Mid Banner 2"
-  FINANCE_BOTTOM:  "", // TODO: inserire Slot ID "Finance & Markets — Bottom Banner"
+  FINANCE_TOP:     "8948908650",
+  FINANCE_MID1:    "8948908650",
+  FINANCE_MID2:    "8948908650",
+  FINANCE_BOTTOM:  "8948908650",
 
   // Sezione Health & Biotech
-  HEALTH_TOP:      "", // TODO: inserire Slot ID "Health & Biotech — Top Banner"
-  HEALTH_MID1:     "", // TODO: inserire Slot ID "Health & Biotech — Mid Banner 1"
-  HEALTH_MID2:     "", // TODO: inserire Slot ID "Health & Biotech — Mid Banner 2"
-  HEALTH_BOTTOM:   "", // TODO: inserire Slot ID "Health & Biotech — Bottom Banner"
+  HEALTH_TOP:      "8948908650",
+  HEALTH_MID1:     "8948908650",
+  HEALTH_MID2:     "8948908650",
+  HEALTH_BOTTOM:   "8948908650",
 
   // Sezione Sport & Business
-  SPORT_TOP:       "", // TODO: inserire Slot ID "Sport & Business — Top Banner"
-  SPORT_MID1:      "", // TODO: inserire Slot ID "Sport & Business — Mid Banner 1"
-  SPORT_MID2:      "", // TODO: inserire Slot ID "Sport & Business — Mid Banner 2"
-  SPORT_BOTTOM:    "", // TODO: inserire Slot ID "Sport & Business — Bottom Banner"
+  SPORT_TOP:       "8948908650",
+  SPORT_MID1:      "8948908650",
+  SPORT_MID2:      "8948908650",
+  SPORT_BOTTOM:    "8948908650",
 
   // Sezione Lifestyle & Luxury
-  LUXURY_TOP:      "", // TODO: inserire Slot ID "Lifestyle & Luxury — Top Banner"
-  LUXURY_MID1:     "", // TODO: inserire Slot ID "Lifestyle & Luxury — Mid Banner 1"
-  LUXURY_MID2:     "", // TODO: inserire Slot ID "Lifestyle & Luxury — Mid Banner 2"
-  LUXURY_BOTTOM:   "", // TODO: inserire Slot ID "Lifestyle & Luxury — Bottom Banner"
+  LUXURY_TOP:      "8948908650",
+  LUXURY_MID1:     "8948908650",
+  LUXURY_MID2:     "8948908650",
+  LUXURY_BOTTOM:   "8948908650",
 } as const;
 
 // ─── Tipi ──────────────────────────────────────────────────────────────────────
