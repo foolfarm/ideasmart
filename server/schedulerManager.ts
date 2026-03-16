@@ -25,7 +25,7 @@
  *  │          le notizie con link non validi con notizie fresche da RSS       │
  *  │                                                                          │
  *  │  NEWSLETTER — solo lunedì                                                │
- *  │  Lunedì 07:30 — Newsletter di TEST a ac@acinelli.com (preview)          │
+ *  │  Lunedì 07:30 — Newsletter di TEST a info@ideasmart.ai (preview)          │
  *  │  Lunedì 09:30 — Newsletter MASSIVA a tutti gli iscritti attivi          │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
@@ -322,13 +322,13 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
 
   // ── 14. NEWSLETTER TEST — ogni lunedì alle 07:30 CET ─────────────────────
-  // Invia una newsletter di test a ac@acinelli.com con i contenuti reali dal DB.
+  // Invia una newsletter di test a info@ideasmart.ai con i contenuti reali dal DB.
   // Permette la valutazione del contenuto prima dell'invio massivo alle 09:30.
   cron.schedule("30 7 * * 1", async () => {
     const weekKey = getWeekKey();
     const testKey = `test-${weekKey}`;
 
-    console.log("[SchedulerManager] ⏰ Lunedì 07:30 CET — Invio newsletter di TEST a ac@acinelli.com...");
+    console.log("[SchedulerManager] ⏰ Lunedì 07:30 CET — Invio newsletter di TEST a info@ideasmart.ai...");
 
     if (lastTestNewsletterSentKey === testKey) {
       console.log(`[SchedulerManager] ⏭️ Newsletter di test già inviata per ${weekKey}, skip`);
@@ -338,7 +338,7 @@ export function startAllSchedulers(): void {
     try {
       lastTestNewsletterSentKey = testKey;
       await sendTestNewsletter();
-      console.log("[SchedulerManager] ✅ Newsletter di test inviata a ac@acinelli.com");
+      console.log("[SchedulerManager] ✅ Newsletter di test inviata a info@ideasmart.ai");
     } catch (err) {
       lastTestNewsletterSentKey = null; // reset per permettere retry
       console.error("[SchedulerManager] ❌ Errore invio newsletter di test:", err);
@@ -420,7 +420,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
   console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
-  console.log("[SchedulerManager]   🧪 Newsletter TEST  → ogni lunedì alle 08:30 CET → ac@acinelli.com");
+  console.log("[SchedulerManager]   🧪 Newsletter TEST  → ogni lunedì alle 08:30 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter       → ogni lunedì alle 09:30 CET (invio massivo)");
   console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET (editoriale AI/Startup — tono HumanLess, analisi da senior analyst)");
 }

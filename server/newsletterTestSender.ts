@@ -1,7 +1,7 @@
 /**
  * newsletterTestSender.ts — Newsletter di Test IDEASMART
  * ─────────────────────────────────────────────────────────────────────────────
- * Invia ogni lunedì alle 08:30 CET una newsletter di test a ac@acinelli.com
+ * Invia ogni lunedì alle 08:30 CET una newsletter di test a info@ideasmart.ai
  * con i contenuti reali dal DB (notizie RSS, editoriale, startup, reportage, analisi).
  *
  * Questo consente la valutazione del contenuto prima dell'invio massivo alle 09:30.
@@ -23,7 +23,7 @@ import { notifyOwner } from "./_core/notification";
 
 // ─── Configurazione ───────────────────────────────────────────────────────────
 
-const TEST_EMAIL = "ac@acinelli.com";
+const TEST_EMAIL = "info@ideasmart.ai";
 const BASE_URL = "https://ideasmart.ai";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

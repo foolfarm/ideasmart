@@ -1241,7 +1241,7 @@ Rispondi con questo JSON:
 
         // Invia email di notifica all'admin
         await sendEmail({
-          to: "info@andreacinelli.com",
+          to: "info@ideasmart.ai",
           subject,
           html: htmlBody,
         });
