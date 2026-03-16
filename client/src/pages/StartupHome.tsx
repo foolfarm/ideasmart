@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
+import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
@@ -96,8 +97,6 @@ function NewsRow({ item }: {
 
 export default function StartupHome() {
   const today = useMemo(() => new Date(), []);
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
 
   const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "startup" });
   const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "startup" });
@@ -105,9 +104,6 @@ export default function StartupHome() {
   const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "startup" });
   const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "startup" });
 
-  const subscribeMutation = trpc.newsletter.subscribe.useMutation({
-    onSuccess: () => setSubscribed(true),
-  });
 
   const news = newsData || [];
   const heroNews = news.find(n => n.imageUrl) || news[0] || null;
@@ -558,30 +554,7 @@ export default function StartupHome() {
                 </p>
               </div>
               <div>
-                {subscribed ? (
-                  <div className="p-4 rounded-sm text-center" style={{ background: ACCENT_LIGHT }}>
-                    <p className="font-bold text-sm" style={{ color: ACCENT }}>Iscrizione confermata!</p>
-                    <p className="text-xs text-[#1a1a2e]/60 mt-1">Controlla la tua email per confermare.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={(e) => { e.preventDefault(); if (email) subscribeMutation.mutate({ email }); }}
-                    className="flex gap-2">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      placeholder="La tua email"
-                      required
-                      className="flex-1 px-3 py-2 text-sm border border-[#1a1a2e]/20 bg-white text-[#1a1a2e] focus:outline-none"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                    />
-                    <button type="submit"
-                      className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
-                      style={{ background: ACCENT, fontFamily: "'Space Mono', monospace" }}>
-                      Iscriviti
-                    </button>
-                  </form>
-                )}
+                <NewsletterSubscribeForm defaultChannel="startup" accentColor="#e84f00" />
               </div>
             </div>
           </div>

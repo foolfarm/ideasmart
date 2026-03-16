@@ -483,6 +483,85 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           status: subscriber.status,
         };
       }),
+
+    // Recupera le preferenze canale tramite token (per pagina preferenze)
+    getChannelPreferences: publicProcedure
+      .input(z.object({ token: z.string().min(10) }))
+      .query(async ({ input }) => {
+        const { getSubscriberWithChannels } = await import('./db');
+        const sub = await getSubscriberWithChannels(input.token);
+        if (!sub) return null;
+        return {
+          email: sub.email,
+          name: sub.name,
+          status: sub.status,
+          channels: sub.parsedChannels,
+        };
+      }),
+
+    // Aggiorna le preferenze canale tramite token (GDPR-compliant, nessun login)
+    updateChannelPreferences: publicProcedure
+      .input(z.object({
+        token: z.string().min(10),
+        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music'])).min(1, 'Seleziona almeno un canale'),
+      }))
+      .mutation(async ({ input }) => {
+        const { updateSubscriberChannelsByToken } = await import('./db');
+        const result = await updateSubscriberChannelsByToken(input.token, input.channels);
+        if (!result.success) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Token non valido o scaduto' });
+        }
+        return { success: true, email: result.email };
+      }),
+
+    // Iscrizione con canali specifici
+    subscribeWithChannels: publicProcedure
+      .input(z.object({
+        email: z.string().email('Email non valida'),
+        name: z.string().optional(),
+        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music'])).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { addSubscriberWithChannels } = await import('./db');
+        const result = await addSubscriberWithChannels({
+          email: input.email,
+          name: input.name,
+          source: 'website',
+          channels: input.channels,
+        });
+
+        if ((result as any).success || (result as any).resubscribed) {
+          try {
+            const baseUrl = 'https://ideasmart.ai';
+            const { getSubscriberByEmail } = await import('./db');
+            const subscriber = await getSubscriberByEmail(input.email);
+            const unsubToken = subscriber?.unsubscribeToken;
+            const unsubUrl = unsubToken
+              ? `${baseUrl}/unsubscribe?token=${unsubToken}`
+              : `${baseUrl}/unsubscribe`;
+            const prefsUrl = unsubToken
+              ? `${baseUrl}/preferenze-newsletter?token=${unsubToken}`
+              : `${baseUrl}/preferenze-newsletter`;
+
+            const html = buildWelcomeEmailHtml({
+              name: input.name,
+              unsubscribeUrl: unsubUrl,
+              preferencesUrl: prefsUrl,
+              channels: input.channels,
+            });
+
+            await sendEmail({
+              to: input.email,
+              subject: 'Benvenuto in IDEASMART — Iscrizione confermata ✓',
+              html,
+            });
+          } catch (emailErr) {
+            console.error('[Newsletter] Errore invio email benvenuto:', emailErr);
+          }
+        }
+
+        return result;
+      }),
   }),
 
   // ── Admin: migrazione token ────────────────────────────────────────────────

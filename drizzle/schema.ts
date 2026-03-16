@@ -27,6 +27,9 @@ export const subscribers = mysqlTable("subscribers", {
   unsubscribeToken: varchar("unsubscribeToken", { length: 128 }).unique(),
   subscribedAt: timestamp("subscribedAt").defaultNow().notNull(),
   unsubscribedAt: timestamp("unsubscribedAt"),
+  // Canali tematici scelti dall'iscritto (JSON array): ["ai","startup","finance","health","sport","luxury","music"]
+  // null = tutti i canali (comportamento legacy per iscritti pre-preferenze)
+  channels: text("channels"),
   // Tracking aperture email
   totalSent: int("totalSent").default(0).notNull(),
   totalOpened: int("totalOpened").default(0).notNull(),

@@ -32,6 +32,7 @@ import StartupOfDayDetail from "./pages/StartupOfDayDetail";
 import Edicola from "./pages/Edicola";
 import NotFound from "./pages/NotFound";
 import Manifesto from "./pages/Manifesto";
+import ChannelPreferences from "./pages/ChannelPreferences";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -51,6 +52,7 @@ function Router() {
       <Route path="/admin/audit" component={AuditDashboard} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/unsubscribe" component={Unsubscribe} />
+      <Route path="/preferenze-newsletter" component={ChannelPreferences} />
       <Route path="/notifiche" component={NotificationPreferences} />
       <Route path="/advertise" component={Advertise} />
       <Route path="/edicola" component={Edicola} />

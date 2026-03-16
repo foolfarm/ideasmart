@@ -789,13 +789,19 @@
 
 ## Fix Newsletter Doppio Invio e Preferenze Canale (16 Mar 2026)
 
-- [ ] Disattivare scheduler newsletter settimanale/mensile vecchia (template scuro)
-- [ ] Aggiornare template newsletter settimanale/mensile con stile crema/navy
-- [ ] Implementare preferenze canale per gli iscritti nel DB (array di canali scelti)
-- [ ] Pagina /preferenze-newsletter per gestire le preferenze canale
-- [ ] Aggiornare invio newsletter per inviare solo agli iscritti che hanno scelto quel canale
-
-## Eliminazione Newsletter Vecchia e Nuovi Iscritti (16 Mar 2026)
-
+- [x] Disattivare scheduler newsletter settimanale/mensile vecchia (template scuro)
 - [x] Eliminare definitivamente la newsletter settimanale/mensile (FoolTalent/FoolShare/Fragmentalis/PollCast) — scheduler e template rimossi
 - [x] Aggiungere 4 nuovi iscritti: annaclara.borella@cofidis.it, edoardo.riccobono@camperiosim.com, sandro.parisi@eudata.com, acquisti@felsineo.com
+
+## Preferenze Canale Newsletter (16 Mar 2026)
+
+- [x] Schema DB: aggiunta colonna channels (JSON array) alla tabella subscribers
+- [x] Migrazione DB: pnpm db:push completato
+- [x] Funzioni DB: getActiveSubscribersByChannel, updateSubscriberChannels, getSubscriberChannels
+- [x] tRPC procedure: newsletter.subscribeWithChannels, newsletter.updateChannels, newsletter.getChannels
+- [x] Componente NewsletterSubscribeForm con selezione canali (toggle pill per ogni canale)
+- [x] Pagina /preferenze-newsletter con UI selezione canali (7 canali con toggle)
+- [x] Form iscrizione aggiornato in tutti e 7 i canali con selezione canali
+- [x] Sistema invio newsletter filtrato per canale scelto dall'iscritto (legacy = tutti i canali)
+- [x] Link "Gestisci canali" nel footer di ogni newsletter
+- [x] 35/35 test passano

@@ -541,8 +541,10 @@ export function buildWeeklyNewsletterHtml(newsData: {
 export function buildWelcomeEmailHtml(opts: {
   name?: string;
   unsubscribeUrl?: string;
+  preferencesUrl?: string;
+  channels?: string[];
 }): string {
-  const { name, unsubscribeUrl } = opts;
+  const { name, unsubscribeUrl, preferencesUrl, channels } = opts;
   const baseUrl = `https://ideasmart.ai`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
   const greeting = name ? `Ciao ${name},` : "Ciao,";
@@ -627,9 +629,11 @@ export function buildWelcomeEmailHtml(opts: {
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;text-align:center;">
               &copy; 2026 <strong>AI4Business News</strong> &mdash; by IDEASMART &middot; Startup di Tecnologia &amp; Innovazione
             </p>
+            <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 6px;text-align:center;">
+              Hai ricevuto questa email perch&eacute; ti sei iscritto su <a href="${baseUrl}" style="color:#00b4a0;text-decoration:none;">ideasmart.ai</a>.
+            </p>
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
-              Hai ricevuto questa email perch&eacute; ti sei iscritto su <a href="${baseUrl}" style="color:#00b4a0;text-decoration:none;">ideasmart.ai</a>.&nbsp;
-              <a href="${unsubLink}" style="color:#e84f00;text-decoration:underline;">Annulla iscrizione</a>
+              ${preferencesUrl ? `<a href="${preferencesUrl}" style="color:#00b4a0;text-decoration:underline;">Gestisci preferenze canali</a>&nbsp;&middot;&nbsp;` : ''}<a href="${unsubLink}" style="color:#e84f00;text-decoration:underline;">Annulla iscrizione</a>
             </p>
           </td>
         </tr>
@@ -1011,13 +1015,13 @@ export function buildFullNewsletterHtml(opts: {
               <tr><td style="border-top:1px solid ${BORDER};font-size:0;line-height:0;">&nbsp;</td></tr>
             </table>
             <p style="font-size:11px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
+              <a href="${baseUrl}/preferenze-newsletter" style="color:${TEAL};text-decoration:underline;font-weight:700;">Gestisci canali</a>
+              &nbsp;&middot;&nbsp;
               <a href="${unsubLink}" style="color:${ORANGE};text-decoration:underline;font-weight:700;">Annulla iscrizione</a>
               &nbsp;&middot;&nbsp;
-              <a href="${baseUrl}/privacy" style="color:${MUTED};text-decoration:underline;">Privacy Policy &amp; Disclaimer</a>
+              <a href="${baseUrl}/privacy" style="color:${MUTED};text-decoration:underline;">Privacy Policy</a>
               &nbsp;&middot;&nbsp;
               <a href="${baseUrl}" style="color:${TEAL};text-decoration:none;">ideasmart.ai</a>
-              &nbsp;&middot;&nbsp;
-              <a href="mailto:info@ideasmart.ai" style="color:${TEAL};text-decoration:none;">info@ideasmart.ai</a>
             </p>
           </td>
         </tr>

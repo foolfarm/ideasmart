@@ -774,3 +774,125 @@ export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'fin
       auditNote: auditMap.get(news.id)?.auditNote ?? null,
     }));
 }
+
+// ── Channel Preferences ──────────────────────────────────────────────────────
+
+export type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music';
+export const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music'];
+
+/**
+ * Restituisce i canali scelti da un iscritto.
+ * Se channels è null → tutti i canali (legacy, pre-preferenze).
+ */
+export function parseChannels(channelsJson: string | null): ChannelKey[] {
+  if (!channelsJson) return [...ALL_CHANNELS];
+  try {
+    const parsed = JSON.parse(channelsJson);
+    if (Array.isArray(parsed)) return parsed as ChannelKey[];
+    return [...ALL_CHANNELS];
+  } catch {
+    return [...ALL_CHANNELS];
+  }
+}
+
+/**
+ * Aggiorna i canali scelti da un iscritto tramite token di disiscrizione.
+ */
+export async function updateSubscriberChannelsByToken(token: string, channels: ChannelKey[]): Promise<{ success: boolean; email?: string }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const existing = await db.select().from(subscribers)
+    .where(eq(subscribers.unsubscribeToken, token))
+    .limit(1);
+  if (existing.length === 0) return { success: false };
+  await db.update(subscribers)
+    .set({ channels: JSON.stringify(channels) })
+    .where(eq(subscribers.unsubscribeToken, token));
+  return { success: true, email: existing[0].email };
+}
+
+/**
+ * Aggiorna i canali scelti da un iscritto tramite email (uso admin/server).
+ */
+export async function updateSubscriberChannelsByEmail(email: string, channels: ChannelKey[]): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(subscribers)
+    .set({ channels: JSON.stringify(channels) })
+    .where(eq(subscribers.email, email));
+}
+
+/**
+ * Restituisce gli iscritti attivi che hanno scelto un determinato canale.
+ * Gli iscritti con channels=null ricevono tutti i canali (comportamento legacy).
+ */
+export async function getActiveSubscribersByChannel(channel: ChannelKey) {
+  const db = await getDb();
+  if (!db) return [];
+  const allActive = await db.select().from(subscribers).where(eq(subscribers.status, 'active'));
+  return allActive.filter(sub => {
+    const channels = parseChannels(sub.channels ?? null);
+    return channels.includes(channel);
+  });
+}
+
+/**
+ * Restituisce un iscritto tramite token di disiscrizione con i suoi canali parsati.
+ */
+export async function getSubscriberWithChannels(token: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(subscribers)
+    .where(eq(subscribers.unsubscribeToken, token))
+    .limit(1);
+  if (result.length === 0) return null;
+  const sub = result[0];
+  return {
+    ...sub,
+    parsedChannels: parseChannels(sub.channels ?? null),
+  };
+}
+
+/**
+ * Aggiunge un iscritto con canali specifici.
+ */
+export async function addSubscriberWithChannels(data: {
+  email: string;
+  name?: string;
+  source?: string;
+  channels?: ChannelKey[];
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const existing = await db.select().from(subscribers).where(eq(subscribers.email, data.email)).limit(1);
+  const channelsJson = data.channels && data.channels.length > 0 ? JSON.stringify(data.channels) : null;
+
+  if (existing.length > 0) {
+    if (existing[0].status === 'unsubscribed') {
+      const token = existing[0].unsubscribeToken ?? generateUnsubscribeToken();
+      await db.update(subscribers)
+        .set({ status: 'active', unsubscribedAt: null, unsubscribeToken: token, channels: channelsJson })
+        .where(eq(subscribers.email, data.email));
+      return { resubscribed: true };
+    }
+    // Aggiorna i canali se già iscritto
+    if (channelsJson) {
+      await db.update(subscribers)
+        .set({ channels: channelsJson })
+        .where(eq(subscribers.email, data.email));
+    }
+    return { alreadySubscribed: true };
+  }
+
+  const token = generateUnsubscribeToken();
+  await db.insert(subscribers).values({
+    email: data.email,
+    name: data.name ?? null,
+    source: data.source ?? 'website',
+    status: 'active',
+    unsubscribeToken: token,
+    channels: channelsJson,
+  });
+  return { success: true };
+}

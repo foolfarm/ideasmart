@@ -27,6 +27,7 @@ import {
   getLatestWeeklyReportage,
   getLatestMarketAnalysis,
   getActiveSubscribers,
+  getActiveSubscribersByChannel,
   createNewsletterSend,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
@@ -318,14 +319,15 @@ export async function sendDailyChannelNewsletter(): Promise<{
   console.log(`[DailyNewsletter] 📧 07:30 CET — Invio massivo ${channel.name}...`);
 
   try {
-    // 1. Recupera iscritti attivi
-    const subscribers = await getActiveSubscribers();
+    // 1. Recupera iscritti attivi che hanno scelto questo canale
+    // Gli iscritti con channels=null (legacy) ricevono tutti i canali
+    const subscribers = await getActiveSubscribersByChannel(channel.key as any);
     if (subscribers.length === 0) {
-      console.warn(`[DailyNewsletter] Nessun iscritto attivo, skip`);
-      return { success: false, channel: channel.name, recipientCount: 0, newsCount: 0, subject: "", error: "Nessun iscritto attivo" };
+      console.warn(`[DailyNewsletter] Nessun iscritto per il canale ${channel.key}, skip`);
+      return { success: false, channel: channel.name, recipientCount: 0, newsCount: 0, subject: "", error: `Nessun iscritto per il canale ${channel.key}` };
     }
 
-    console.log(`[DailyNewsletter] ${subscribers.length} iscritti attivi trovati`);
+    console.log(`[DailyNewsletter] ${subscribers.length} iscritti per il canale ${channel.key}`);
 
     // 2. Costruisce la newsletter (senza isTest per la versione massiva)
     const { html: sampleHtml, subject, newsCount } = await buildChannelNewsletter(channel, false);
@@ -349,12 +351,20 @@ export async function sendDailyChannelNewsletter(): Promise<{
         const unsubUrl = sub.unsubscribeToken
           ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
           : `${BASE_URL}/unsubscribe`;
+        const prefsUrl = sub.unsubscribeToken
+          ? `${BASE_URL}/preferenze-newsletter?token=${sub.unsubscribeToken}`
+          : `${BASE_URL}/preferenze-newsletter`;
 
         const { html } = await buildChannelNewsletter(channel, false);
         // Sostituisce il link di disiscrizione generico con quello personalizzato
-        const personalizedHtml = html.replace(
+        let personalizedHtml = html.replace(
           `${BASE_URL}/unsubscribe`,
           unsubUrl
+        );
+        // Aggiunge il link preferenze canale personalizzato
+        personalizedHtml = personalizedHtml.replace(
+          `${BASE_URL}/preferenze-newsletter`,
+          prefsUrl
         );
 
         const result = await sendEmail({ to: sub.email, subject, html: personalizedHtml });
@@ -441,7 +451,8 @@ export async function sendChannelNewsletterManual(
   }
 
   // Invio massivo manuale (stessa logica dell'automatico, senza check dayKey)
-  const subscribers = await getActiveSubscribers();
+  // Filtra per canale scelto dall'iscritto (null = tutti i canali, comportamento legacy)
+  const subscribers = await getActiveSubscribersByChannel(channel.key as any);
   const { html: sampleHtml, subject, newsCount } = await buildChannelNewsletter(channel, false);
 
   await createNewsletterSend({ subject, htmlContent: sampleHtml, recipientCount: 0 });
