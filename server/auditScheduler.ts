@@ -13,7 +13,7 @@ import { sendEmail } from "./email";
 
 // ── Configurazione ─────────────────────────────────────────────────────────
 const AUDIT_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 ore
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@ideasmart.ai";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "ac@acinelli.com";
 const ALERT_THRESHOLD_ERRORS = 2;   // Invia alert se ci sono >= 2 notizie non coerenti
 const ALERT_THRESHOLD_WARNINGS = 4; // Invia alert se ci sono >= 4 notizie parziali
 const AUDIT_LIMIT_PER_RUN = 20;     // Contenuti da verificare per ogni tipo

@@ -12,7 +12,7 @@
  *   Domenica  → Health & Biotech
  *
  * Flusso:
- *   07:00 CET — Preview di test inviata a info@ideasmart.ai per revisione
+ *   07:00 CET — Preview di test inviata a ac@acinelli.com per revisione
  *   07:30 CET — Invio massivo a tutti gli iscritti attivi
  *
  * Il template grafico è identico per tutti i canali (buildFullNewsletterHtml),
@@ -114,7 +114,7 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const BASE_URL = "https://ideasmart.ai";
-const TEST_EMAIL = "info@ideasmart.ai";
+const TEST_EMAIL = "ac@acinelli.com";
 
 function getDateLabel(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -237,7 +237,7 @@ async function buildChannelNewsletter(
 // ─── Preview di test (07:00 CET) ─────────────────────────────────────────────
 
 /**
- * Invia una preview della newsletter del giorno a info@ideasmart.ai.
+ * Invia una preview della newsletter del giorno a ac@acinelli.com.
  * Permette la revisione prima dell'invio massivo alle 07:30.
  */
 export async function sendDailyChannelPreview(): Promise<{

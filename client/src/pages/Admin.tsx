@@ -11,7 +11,7 @@ import { useLocation } from "wouter";
 export default function Admin() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
-  const [testEmail, setTestEmail] = useState("info@ideasmart.ai");
+  const [testEmail, setTestEmail] = useState("ac@acinelli.com");
   const [sendingTest, setSendingTest] = useState(false);
   const [sendingAll, setSendingAll] = useState(false);
   const [lastResult, setLastResult] = useState<string | null>(null);
@@ -71,7 +71,7 @@ export default function Admin() {
   const sendChannelPreviewMutation = trpc.admin.sendDailyChannelPreview.useMutation({
     onSuccess: (data) => {
       setSendingChannelPreview(false);
-      setLastResult(`✓ Preview ${data.channel} inviata a info@ideasmart.ai — ${data.newsCount} notizie`);
+      setLastResult(`✓ Preview ${data.channel} inviata a ac@acinelli.com — ${data.newsCount} notizie`);
       toast.success(`👁️ Preview ${data.channel} inviata!`);
     },
     onError: (err) => {
