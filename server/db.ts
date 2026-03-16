@@ -570,7 +570,7 @@ export async function getNewsletterCampaignStats() {
 export async function getSubscribersWithTracking() {
   const db = await getDb();
   if (!db) return [];
-  return db.select({
+  const rows = await db.select({
     id: subscribers.id,
     email: subscribers.email,
     name: subscribers.name,
@@ -581,7 +581,14 @@ export async function getSubscribersWithTracking() {
     totalOpened: subscribers.totalOpened,
     lastSentAt: subscribers.lastSentAt,
     lastOpenedAt: subscribers.lastOpenedAt,
+    channels: subscribers.channels,
   }).from(subscribers).orderBy(subscribers.subscribedAt);
+
+  // Parsa i canali da JSON string a array
+  return rows.map(row => ({
+    ...row,
+    parsedChannels: parseChannels(row.channels ?? null),
+  }));
 }
 
 /** Aggiorna openedCount nella tabella newsletter_sends per una campagna */

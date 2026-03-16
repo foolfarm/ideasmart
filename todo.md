@@ -805,3 +805,11 @@
 - [x] Sistema invio newsletter filtrato per canale scelto dall'iscritto (legacy = tutti i canali)
 - [x] Link "Gestisci canali" nel footer di ogni newsletter
 - [x] 35/35 test passano
+
+## Admin Dashboard — Colonna Canali Iscritti (16 Mar 2026)
+
+- [x] Aggiornare procedura tRPC admin.getSubscribersWithTracking per includere channels e parsedChannels
+- [x] Aggiungere pannello "Iscritti Attivi per Canale" con conteggio cliccabile per filtrare
+- [x] Aggiungere colonna "Canali" nella tabella iscritti Admin con badge colorati (AI/ST/FI/SP/MU/LX/HE)
+- [x] Aggiungere filtro per canale nella barra filtri della tabella iscritti Admin
+- [x] 35/35 test passano

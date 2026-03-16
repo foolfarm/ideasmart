@@ -27,6 +27,7 @@ export default function AdminNewsletterPerformance() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "unsubscribed">("all");
   const [filterOpened, setFilterOpened] = useState<"all" | "opened" | "never">("all");
+  const [filterChannel, setFilterChannel] = useState<"all" | "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health">("all");
   const [tab, setTab] = useState<"campaigns" | "subscribers">("campaigns");
 
   const campaignsQuery = trpc.admin.getNewsletterCampaignStats.useQuery(undefined, {
@@ -70,6 +71,25 @@ export default function AdminNewsletterPerformance() {
     : 0;
   const totalUnsubscribed = allSubs.filter(s => s.status === "unsubscribed").length;
 
+  // Definizione canali con colori
+  const CHANNELS = [
+    { key: "ai", label: "AI", color: "#00e5c8" },
+    { key: "startup", label: "Startup", color: "#ff5500" },
+    { key: "finance", label: "Finance", color: "#3b82f6" },
+    { key: "sport", label: "Sport", color: "#22c55e" },
+    { key: "music", label: "Music", color: "#a855f7" },
+    { key: "luxury", label: "Luxury", color: "#f59e0b" },
+    { key: "health", label: "Health", color: "#ec4899" },
+  ] as const;
+
+  // Statistiche segmentazione per canale (iscritti attivi per ogni canale)
+  const channelStats = CHANNELS.map(ch => ({
+    ...ch,
+    count: allSubs.filter(s =>
+      s.status === "active" && (s.parsedChannels as string[] ?? []).includes(ch.key)
+    ).length,
+  }));
+
   // Filtra iscritti
   const filtered = allSubs.filter(s => {
     const matchSearch = !search || s.email.toLowerCase().includes(search.toLowerCase()) || (s.name ?? "").toLowerCase().includes(search.toLowerCase());
@@ -77,7 +97,8 @@ export default function AdminNewsletterPerformance() {
     const matchOpened = filterOpened === "all"
       || (filterOpened === "opened" && s.totalOpened && s.totalOpened > 0)
       || (filterOpened === "never" && (!s.totalOpened || s.totalOpened === 0));
-    return matchSearch && matchStatus && matchOpened;
+    const matchChannel = filterChannel === "all" || (s.parsedChannels as string[] ?? []).includes(filterChannel);
+    return matchSearch && matchStatus && matchOpened && matchChannel;
   });
 
   return (
@@ -103,6 +124,31 @@ export default function AdminNewsletterPerformance() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        {/* Segmentazione Canali */}
+        <div className="rounded-2xl border border-white/8 p-5 mb-8" style={{ background: "rgba(255,255,255,0.02)" }}>
+          <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Iscritti Attivi per Canale</p>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
+            {channelStats.map(ch => (
+              <button
+                key={ch.key}
+                onClick={() => setFilterChannel(filterChannel === ch.key ? "all" : ch.key as typeof filterChannel)}
+                className="rounded-xl p-3 border transition-all text-center"
+                style={{
+                  background: filterChannel === ch.key ? `${ch.color}22` : "rgba(255,255,255,0.03)",
+                  borderColor: filterChannel === ch.key ? ch.color : "rgba(255,255,255,0.08)",
+                  cursor: "pointer",
+                }}
+              >
+                <div className="text-2xl font-black mb-0.5" style={{ color: ch.color, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  {ch.count}
+                </div>
+                <div className="text-xs text-white/40 uppercase tracking-wider">{ch.label}</div>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-white/20 mt-3">Clicca su un canale per filtrare la tabella iscritti · Gli iscritti legacy (pre-preferenze) ricevono tutti i canali</p>
+        </div>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
@@ -249,6 +295,20 @@ export default function AdminNewsletterPerformance() {
                 <option value="opened">Ha aperto almeno 1 volta</option>
                 <option value="never">Non ha mai aperto</option>
               </select>
+              <select
+                value={filterChannel}
+                onChange={e => setFilterChannel(e.target.value as typeof filterChannel)}
+                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#00e5c8] transition-colors"
+              >
+                <option value="all">Tutti i canali</option>
+                <option value="ai">AI</option>
+                <option value="startup">Startup</option>
+                <option value="finance">Finance</option>
+                <option value="sport">Sport</option>
+                <option value="music">Music</option>
+                <option value="luxury">Luxury</option>
+                <option value="health">Health</option>
+              </select>
               <span className="ml-auto text-xs text-white/30 self-center">
                 {filtered.length} / {allSubs.length} iscritti
               </span>
@@ -284,6 +344,7 @@ export default function AdminNewsletterPerformance() {
                         <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Aperture</th>
                         <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Ultima apertura</th>
                         <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Iscritto il</th>
+                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Canali</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -325,6 +386,31 @@ export default function AdminNewsletterPerformance() {
                             </td>
                             <td className="px-4 py-3 text-center text-xs text-white/30 whitespace-nowrap">
                               {fmt(sub.subscribedAt)}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex flex-wrap gap-1">
+                                {(sub.parsedChannels as string[] ?? []).map((ch: string) => {
+                                  const chInfo = [
+                                    { key: "ai", label: "AI", color: "#00e5c8" },
+                                    { key: "startup", label: "ST", color: "#ff5500" },
+                                    { key: "finance", label: "FI", color: "#3b82f6" },
+                                    { key: "sport", label: "SP", color: "#22c55e" },
+                                    { key: "music", label: "MU", color: "#a855f7" },
+                                    { key: "luxury", label: "LX", color: "#f59e0b" },
+                                    { key: "health", label: "HE", color: "#ec4899" },
+                                  ].find(c => c.key === ch);
+                                  if (!chInfo) return null;
+                                  return (
+                                    <span
+                                      key={ch}
+                                      className="inline-block px-1.5 py-0.5 rounded font-bold"
+                                      style={{ background: `${chInfo.color}22`, color: chInfo.color, fontSize: "10px" }}
+                                    >
+                                      {chInfo.label}
+                                    </span>
+                                  );
+                                })}
+                              </div>
                             </td>
                           </tr>
                         );
