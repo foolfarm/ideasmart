@@ -58,53 +58,54 @@ const CLIENT_ID = "ca-pub-7185482526978993";
 // ─── Slot ID Placeholder ───────────────────────────────────────────────────────
 // Sostituire con gli ID reali ottenuti dal pannello Google AdSense
 // Formato: stringa numerica a 10 cifre, es. "1234567890"
-// Due slot attivi:
-//   8723745625  → "ideasmart"   banner orizzontale (Top e Bottom)
-//   8948908650  → "ideasmart1"  banner in-content auto (Mid1 e Mid2)
+// Tre slot attivi in rotazione per posizionamento:
+//   8723745625  → "ideasmart"   banner orizzontale   → Top e Bottom
+//   8948908650  → "ideasmart1"  banner in-content     → Mid1
+//   3313438599  → "Ideasmart"   banner in-content     → Mid2
 export const AD_SLOTS = {
   // Homepage Hub
   HOME_BANNER:     "8723745625",  // orizzontale
 
   // Sezione AI4Business
   AI_TOP:          "8723745625",  // orizzontale
-  AI_MID1:         "8948908650",  // in-content
-  AI_MID2:         "8948908650",  // in-content
+  AI_MID1:         "8948908650",  // in-content 1
+  AI_MID2:         "3313438599",  // in-content 2
   AI_BOTTOM:       "8723745625",  // orizzontale
 
   // Sezione ITsMusic
   MUSIC_TOP:       "8723745625",
   MUSIC_MID1:      "8948908650",
-  MUSIC_MID2:      "8948908650",
+  MUSIC_MID2:      "3313438599",
   MUSIC_BOTTOM:    "8723745625",
 
   // Sezione Startup News
   STARTUP_TOP:     "8723745625",
   STARTUP_MID1:    "8948908650",
-  STARTUP_MID2:    "8948908650",
+  STARTUP_MID2:    "3313438599",
   STARTUP_BOTTOM:  "8723745625",
 
   // Sezione Finance & Markets
   FINANCE_TOP:     "8723745625",
   FINANCE_MID1:    "8948908650",
-  FINANCE_MID2:    "8948908650",
+  FINANCE_MID2:    "3313438599",
   FINANCE_BOTTOM:  "8723745625",
 
   // Sezione Health & Biotech
   HEALTH_TOP:      "8723745625",
   HEALTH_MID1:     "8948908650",
-  HEALTH_MID2:     "8948908650",
+  HEALTH_MID2:     "3313438599",
   HEALTH_BOTTOM:   "8723745625",
 
   // Sezione Sport & Business
   SPORT_TOP:       "8723745625",
   SPORT_MID1:      "8948908650",
-  SPORT_MID2:      "8948908650",
+  SPORT_MID2:      "3313438599",
   SPORT_BOTTOM:    "8723745625",
 
   // Sezione Lifestyle & Luxury
   LUXURY_TOP:      "8723745625",
   LUXURY_MID1:     "8948908650",
-  LUXURY_MID2:     "8948908650",
+  LUXURY_MID2:     "3313438599",
   LUXURY_BOTTOM:   "8723745625",
 } as const;
 
