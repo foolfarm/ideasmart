@@ -836,3 +836,7 @@
 - [x] Verificata protezione route /admin: doppio layer (frontend role check + backend adminProcedure)
 - [x] Confermato: nessun accesso username/password — solo Manus OAuth con ruolo admin
 - [x] 35/35 test passano
+
+## Google Analytics (16 Mar 2026)
+
+- [x] Aggiungere tag Google Analytics G-R9KESLT3MN nell'head di index.html
