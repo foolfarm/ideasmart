@@ -608,6 +608,45 @@ export function buildWelcomeEmailHtml(opts: {
               <tr><td style="padding:6px 0;font-size:14px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9679;&nbsp; <strong style="color:#1a1f2e;">Analisi di mercato</strong> da CB Insights, Sifted e altri</td></tr>
             </table>
 
+            <!-- CANALI SCELTI -->
+            ${channels && channels.length > 0 ? `
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0faf8;border:1px solid #b2e8e0;border-radius:12px;padding:20px;margin-bottom:24px;">
+              <tr>
+                <td style="padding:0 0 12px;">
+                  <span style="font-size:11px;font-weight:700;color:#00b4a0;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; I tuoi canali scelti</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0 0 14px;">
+                  ${channels.map(ch => {
+                    const info: Record<string, {label: string; color: string; bg: string}> = {
+                      ai: { label: 'AI', color: '#00b4a0', bg: '#e6f9f6' },
+                      startup: { label: 'Startup', color: '#e84f00', bg: '#fef0ea' },
+                      finance: { label: 'Finance', color: '#2563eb', bg: '#eff6ff' },
+                      sport: { label: 'Sport', color: '#16a34a', bg: '#f0fdf4' },
+                      music: { label: 'Music', color: '#9333ea', bg: '#faf5ff' },
+                      luxury: { label: 'Luxury', color: '#d97706', bg: '#fffbeb' },
+                      health: { label: 'Health', color: '#db2777', bg: '#fdf2f8' },
+                    };
+                    const c = info[ch] || { label: ch, color: '#6b7280', bg: '#f9fafb' };
+                    return `<span style="display:inline-block;background:${c.bg};color:${c.color};border:1px solid ${c.color}33;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:2px 4px 2px 0;">${c.label}</span>`;
+                  }).join('')}
+                </td>
+              </tr>
+              ${preferencesUrl ? `<tr><td><a href="${preferencesUrl}" style="font-size:13px;color:#00b4a0;text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Modifica i tuoi canali &rarr;</a></td></tr>` : ''}
+            </table>
+            ` : preferencesUrl ? `
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0faf8;border:1px solid #b2e8e0;border-radius:12px;padding:20px;margin-bottom:24px;">
+              <tr>
+                <td>
+                  <p style="font-size:14px;color:#1a1f2e;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;"><strong>Personalizza la tua newsletter</strong></p>
+                  <p style="font-size:13px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">Scegli i canali tematici che vuoi ricevere: AI, Startup, Finance, Sport, Music, Luxury, Health.</p>
+                  <a href="${preferencesUrl}" style="display:inline-block;background:#00b4a0;color:#ffffff;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Scegli i tuoi canali &rarr;</a>
+                </td>
+              </tr>
+            </table>
+            ` : ''}
+
             <!-- CTA -->
             <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 28px;">
               <tr>

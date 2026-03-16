@@ -427,15 +427,19 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
             const unsubUrl = unsubToken
               ? `${baseUrl}/unsubscribe?token=${unsubToken}`
               : `${baseUrl}/unsubscribe`;
+            const prefsUrl = unsubToken
+              ? `${baseUrl}/preferenze-newsletter?token=${unsubToken}`
+              : `${baseUrl}/preferenze-newsletter`;
 
             const html = buildWelcomeEmailHtml({
               name: input.name,
               unsubscribeUrl: unsubUrl,
+              preferencesUrl: prefsUrl,
             });
 
             await sendEmail({
               to: input.email,
-              subject: "Benvenuto in AI4Business News — Iscrizione confermata ✓",
+              subject: "Benvenuto in IDEASMART — Iscrizione confermata ✓",
               html,
             });
           } catch (emailErr) {

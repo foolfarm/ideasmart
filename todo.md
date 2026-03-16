@@ -813,3 +813,10 @@
 - [x] Aggiungere colonna "Canali" nella tabella iscritti Admin con badge colorati (AI/ST/FI/SP/MU/LX/HE)
 - [x] Aggiungere filtro per canale nella barra filtri della tabella iscritti Admin
 - [x] 35/35 test passano
+
+## Email Benvenuto — Link Gestisci Canali (16 Mar 2026)
+
+- [x] Aggiungere link "Gestisci canali" nella welcome email con URL personalizzato per l'iscritto
+- [x] Aggiungere sezione "I tuoi canali scelti" nella welcome email con badge colorati
+- [x] Fix procedura subscribe legacy: ora passa sempre preferencesUrl alla welcome email
+- [x] 35/35 test passano
