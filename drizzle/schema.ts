@@ -226,7 +226,7 @@ export const marketAnalysis = mysqlTable("market_analysis", {
   dataPoint2: varchar("dataPoint2", { length: 255 }),
   dataPoint3: varchar("dataPoint3", { length: 255 }),
   marketSize: varchar("marketSize", { length: 100 }),
-  growthRate: varchar("growthRate", { length: 50 }),
+  growthRate: varchar("growthRate", { length: 200 }),
   italyRelevance: text("italyRelevance"),
   imageUrl: varchar("imageUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

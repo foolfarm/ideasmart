@@ -285,7 +285,7 @@ export default function Home() {
             </span>
             <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              Testata 100% AI Powered
+              Testata 100% HumanLess
             </span>
           </div>
 
@@ -586,7 +586,7 @@ export default function Home() {
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <p className="text-xs text-[#1a1a2e]/40"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% AI Powered`}
+                {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec) => {

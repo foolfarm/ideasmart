@@ -92,6 +92,25 @@ export function buildMonthlyNewsletterHtml(opts: {
     "Ricerca & Innovazione": "#ff5500",
     "Mercato": "#ff5500",
     "Regolamentazione": "#f39c12",
+    "Regolamentazione AI": "#f39c12",
+    // Finance & Markets
+    "Finance & Markets": "#15803d",
+    "Macro & BCE": "#15803d",
+    "M&A & Deal": "#22c55e",
+    // Health & Biotech
+    "Health & Biotech": "#0369a1",
+    "AI in Medicina": "#0284c7",
+    "Longevit\u00e0 & Wellness": "#38bdf8",
+    // Sport & Business
+    "Sport Business": "#b45309",
+    "Deal Sportivi": "#d97706",
+    "Valutazioni Club": "#f59e0b",
+    // Lifestyle & Luxury
+    "Luxury & Made in Italy": "#7c3aed",
+    "Brand Strategy": "#9333ea",
+    "Mercato del Lusso": "#a855f7",
+    // Musica
+    "Musica & Business": "#ec4899",
     "default": "#00e5c8",
   };
 
