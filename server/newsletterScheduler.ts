@@ -185,7 +185,7 @@ export async function sendWeeklyNewsletter(): Promise<{
     console.log(`[NewsletterScheduler] Generated ${news.length} news items`);
 
     // 3. Costruisce HTML con il template dark ufficiale
-    const subject = `IDEASMART — AI · Finance · Health · Sport · Luxury · N° ${issueNumber} · ${monthLabel}`;
+    const subject = `IDEASMART — 7 Canali · AI · Finance · Health · Sport · Luxury · N° ${issueNumber} · ${monthLabel}`;
     const BASE_URL = "https://ideasmart.ai";
 
     // 4. Invia individualmente con link unsubscribe personalizzato per ogni iscritto

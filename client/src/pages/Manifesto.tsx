@@ -266,6 +266,67 @@ export default function Manifesto() {
             ))}
           </div>
 
+          {/* Sezione I Canali */}
+          <div className="mt-16 mb-12">
+            <div className="border-t-4 border-[#1a1a2e] pt-8 mb-8">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#1a1a2e]/40 mb-2"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                I Canali Editoriali
+              </p>
+              <h2 className="text-2xl font-bold text-[#1a1a2e] mb-4"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                Sette voci. Un'unica architettura.
+              </h2>
+              <p className="text-base leading-relaxed text-[#1a1a2e]/70 max-w-2xl"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                IDEASMART monitora sette settori strategici in modo continuo e autonomo.
+                Ogni canale ha fonti primarie dedicate, criteri editoriali propri e un ciclo
+                di aggiornamento indipendente. L'insieme forma una visione integrata
+                dell'economia e dell'innovazione globale.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+              {[
+                { code: "AI", label: "AI4Business", color: "#00e5c8", path: "/ai",
+                  desc: "Intelligenza artificiale applicata al business. Modelli generativi, AI agentiva, automazione industriale, impatto sulle PMI italiane. Fonti: MIT Technology Review, VentureBeat AI, The Decoder, Stanford AI Index." },
+                { code: "MUSIC", label: "ITsMusic", color: "#ec4899", path: "/music",
+                  desc: "L'economia della musica nell'era digitale. Streaming, diritti, AI generativa applicata alla produzione musicale, deal e acquisizioni nel settore. Fonti: Music Business Worldwide, Billboard, Pitchfork." },
+                { code: "STARTUP", label: "Startup News", color: "#ff5500", path: "/startup",
+                  desc: "L'ecosistema startup italiano ed europeo. Funding rounds, exit, founder stories, trend di mercato VC. Fonti: Sifted, TechCrunch, Crunchbase, Il Sole 24 Ore Startup." },
+                { code: "FINANCE", label: "Finance & Markets", color: "#15803d", path: "/finance",
+                  desc: "Macro-economia, mercati finanziari, politica monetaria BCE, M&A. Analisi strutturata per CFO e imprenditori che devono decidere in contesto macro. Fonti: FT, Bloomberg, Goldman Sachs Research, IMF." },
+                { code: "HEALTH", label: "Health & Biotech", color: "#0284c7", path: "/health",
+                  desc: "Innovazione in medicina, biotech, longevit\u00e0 e AI applicata alla salute. Il settore con il maggiore afflusso di capitale VC dopo l'AI. Fonti: Nature, STAT News, a16z Bio, Fierce Biotech." },
+                { code: "SPORT", label: "Sport & Business", color: "#d97706", path: "/sport",
+                  desc: "L'economia dello sport: valutazioni club, deal di sponsorship, modelli di revenue, impatto economico degli eventi. Non cronaca \u2014 analisi di mercato. Fonti: Deloitte Football Money League, KPMG Football Benchmark, SportsPro." },
+                { code: "LUXURY", label: "Lifestyle & Luxury", color: "#9333ea", path: "/luxury",
+                  desc: "Il lusso italiano come asset class e modello di business. Strategie LVMH, Kering, Richemont, mercato dei beni da collezione, AI nel retail di alta gamma. Fonti: Bain-Altagamma, Business of Fashion, Vogue Business." },
+              ].map((ch, i) => (
+                <div key={ch.code}
+                  className={`py-6 ${
+                    i % 2 === 0 ? "pr-0 md:pr-8" : "pl-0 md:pl-8 md:border-l border-[#1a1a2e]/15"
+                  } ${
+                    i < 6 ? "border-b border-[#1a1a2e]/10" : ""
+                  }`}>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5"
+                      style={{ color: ch.color, border: `1px solid ${ch.color}`, fontFamily: "'Space Mono', monospace" }}>
+                      {ch.code}
+                    </span>
+                    <a href={ch.path}
+                      className="text-sm font-bold hover:underline"
+                      style={{ color: ch.color, fontFamily: "'Space Mono', monospace" }}>
+                      {ch.label} \u2192
+                    </a>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[#1a1a2e]/65"
+                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                    {ch.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
           {/* Divisore finale */}
           <div className="w-full border-t-4 border-[#1a1a2e] mt-4 mb-16" />
 
