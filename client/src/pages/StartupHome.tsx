@@ -5,6 +5,7 @@
  */
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
+import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
@@ -585,7 +586,14 @@ export default function StartupHome() {
             </div>
           </div>
 
-          {/* Footer sezione */}
+          {/* Archivio */}
+          <ArchiveSection
+            section="startup"
+            accentColor="#c2410c"
+            skipCount={10}
+          />
+
+                    {/* Footer sezione */}
           <div className="mt-4">
             <Divider thick />
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">

@@ -100,6 +100,9 @@ export default function Manifesto() {
         title="Manifesto HumanLess — IDEASMART"
         description="La filosofia editoriale di IDEASMART: cosa significa essere la prima testata giornalistica HumanLess e perché questo approccio rappresenta il futuro dell'informazione di qualità."
         canonical="https://ideasmart.ai/manifesto"
+        ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/manifesto_og_d82bf630.png"
+        ogType="article"
+        keywords="HumanLess, testata giornalistica AI, IDEASMART, manifesto editoriale, intelligenza artificiale, informazione imparziale"
       />
 
       <div
