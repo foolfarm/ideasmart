@@ -1,0 +1,10 @@
+{
+  "query": "\nSELECT COUNT(*) as totale_disiscritti FROM subscribers WHERE status != 'active';\n\nSELECT email, status, updated_at \nFROM subscribers \nWHERE status != 'active'\nORDER BY updated_at DESC \nLIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT COUNT(*) as totale_disiscritti FROM subscribers WHERE status != 'active';\n\nSELECT email, status, updated_at \nFROM subscribers \nWHERE status != 'active'\nORDER BY updated_at DESC \nLIMIT 20;\n",
+  "returncode": 1,
+  "logs": [
+    "totale_disiscritti",
+    "167",
+    "ERROR 1054 (42S22) at line 4: Unknown column 'updated_at' in 'field list'"
+  ]
+}

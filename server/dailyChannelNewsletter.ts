@@ -167,8 +167,10 @@ async function buildChannelNewsletter(
   console.log(`[DailyNewsletter]   Reportage: ${reportages.length}`);
   console.log(`[DailyNewsletter]   Analisi: ${analyses.length}`);
 
-  const prefix = isTest ? "[PREVIEW] " : "";
-  const subject = `${prefix}IDEASMART — ${channel.name} · ${dateLabel}`;
+  const dayNames = ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"];
+  const dayName = dayNames[channel.dayOfWeek];
+  const frequencyLabel = `Ogni ${dayName} · ${channel.tagline}`;
+  const subject = `IDEASMART — ${channel.name} · ${dateLabel}`;
 
   const html = buildFullNewsletterHtml({
     dateLabel,
@@ -229,6 +231,8 @@ async function buildChannelNewsletter(
       italyRelevance: a.italyRelevance ?? null,
     })),
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
+    channelName: channel.name,
+    frequencyLabel,
     isTest,
   });
 

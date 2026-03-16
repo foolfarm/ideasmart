@@ -820,3 +820,19 @@
 - [x] Aggiungere sezione "I tuoi canali scelti" nella welcome email con badge colorati
 - [x] Fix procedura subscribe legacy: ora passa sempre preferencesUrl alla welcome email
 - [x] 35/35 test passano
+
+## Fix Newsletter e Sicurezza Admin (16 Mar 2026)
+
+- [ ] Rimuovere prefisso [PREVIEW] dall'oggetto newsletter invio manuale
+- [ ] Aggiungere riga frequenza "Ricevi questa newsletter ogni [giorno]" nel template
+- [ ] Verificare protezione route /admin (solo ruolo admin via Manus OAuth)
+- [ ] Confermare che non esiste accesso admin con username/password separato
+
+## Fix Newsletter Oggetto e Sicurezza Admin (16 Mar 2026)
+
+- [x] Rimosso prefisso [PREVIEW] dall'oggetto delle newsletter
+- [x] Aggiunto badge canale (pill teal) nel masthead sotto il logo IDEASMART
+- [x] Aggiunta riga frequenza ("Ogni lunedì · Intelligenza Artificiale per il Business") nel masthead
+- [x] Verificata protezione route /admin: doppio layer (frontend role check + backend adminProcedure)
+- [x] Confermato: nessun accesso username/password — solo Manus OAuth con ruolo admin
+- [x] 35/35 test passano

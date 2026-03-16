@@ -696,9 +696,11 @@ export function buildFullNewsletterHtml(opts: {
   analyses: Array<{ title: string; category: string; summary: string; source: string; dataPoint1?: string | null; dataPoint2?: string | null; dataPoint3?: string | null; keyInsight?: string | null; italyRelevance?: string | null }>;
   unsubscribeUrl?: string;
   trackingPixelUrl?: string;
+  channelName?: string;
+  frequencyLabel?: string;
   isTest?: boolean;
 }): string {
-  const { dateLabel, editorial, startup, news, reportages, analyses, unsubscribeUrl, trackingPixelUrl, isTest } = opts;
+  const { dateLabel, editorial, startup, news, reportages, analyses, unsubscribeUrl, trackingPixelUrl, channelName, frequencyLabel, isTest } = opts;
   const baseUrl = `https://ideasmart.ai`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
@@ -893,6 +895,8 @@ export function buildFullNewsletterHtml(opts: {
           <td align="center" style="background:${CREAM};padding:32px 28px 10px;">
             <div style="font-size:58px;font-weight:900;color:${NAVY};letter-spacing:-3px;line-height:1;font-family:Georgia,'Times New Roman',serif;">IDEA<span style="color:${TEAL};">SMART</span></div>
             <div style="font-size:9px;color:${SLATE};letter-spacing:0.28em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:8px;">La Prima Testata Giornalistica HumanLess</div>
+            ${channelName ? `<div style="margin-top:10px;display:inline-block;font-size:10px;font-weight:700;color:${TEAL};background:${TEAL_L};border:1px solid ${TEAL};border-radius:20px;padding:3px 14px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${channelName}</div>` : ""}
+            ${frequencyLabel ? `<div style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:7px;letter-spacing:0.05em;">${frequencyLabel}</div>` : ""}
           </td>
         </tr>
         <!-- DOPPIA LINEA STILE GIORNALE —  teal + grigio caldo -->

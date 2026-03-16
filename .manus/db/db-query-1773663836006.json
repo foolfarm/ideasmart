@@ -1,0 +1,517 @@
+{
+  "query": "\nSELECT COUNT(*) as totale_disiscritti FROM subscribers WHERE status = 'unsubscribed';\n\nSELECT email, status, subscribedAt, unsubscribedAt \nFROM subscribers \nWHERE status = 'unsubscribed'\nORDER BY unsubscribedAt DESC;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT COUNT(*) as totale_disiscritti FROM subscribers WHERE status = 'unsubscribed';\n\nSELECT email, status, subscribedAt, unsubscribedAt \nFROM subscribers \nWHERE status = 'unsubscribed'\nORDER BY unsubscribedAt DESC;\n",
+  "rows": [
+    {
+      "totale_disiscritti": "167"
+    },
+    {
+      "totale_disiscritti": "email\tstatus\tsubscribedAt\tunsubscribedAt"
+    },
+    {
+      "totale_disiscritti": "claudiabuonocore87@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 12:20:14"
+    },
+    {
+      "totale_disiscritti": "r.izzolino@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:55:24"
+    },
+    {
+      "totale_disiscritti": "lialapiccione@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:31:14"
+    },
+    {
+      "totale_disiscritti": "j@ymarino.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:28:56"
+    },
+    {
+      "totale_disiscritti": "gianluca@carucci.org\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:14:31"
+    },
+    {
+      "totale_disiscritti": "pietropaolo.raeli@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:13:20"
+    },
+    {
+      "totale_disiscritti": "andrearusso81@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 11:12:01"
+    },
+    {
+      "totale_disiscritti": "clara.covini@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:06:05"
+    },
+    {
+      "totale_disiscritti": "biagio.dibenedetto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:58:33"
+    },
+    {
+      "totale_disiscritti": "pasgia@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:51:46"
+    },
+    {
+      "totale_disiscritti": "stefano.uggeri@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:49:06"
+    },
+    {
+      "totale_disiscritti": "christianzanetti74@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:47:39"
+    },
+    {
+      "totale_disiscritti": "canestro.pablo@gmail.com\tunsubscribed\t2026-03-04 17:49:07\t2026-03-16 10:43:33"
+    },
+    {
+      "totale_disiscritti": "marco@marcolunardi.com\tunsubscribed\t2026-03-04 17:49:19\t2026-03-16 10:27:38"
+    },
+    {
+      "totale_disiscritti": "mauro@4scaleventures.com\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 10:19:11"
+    },
+    {
+      "totale_disiscritti": "francesco.anchisi@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:16:40"
+    },
+    {
+      "totale_disiscritti": "vitodig1999@libero.it\tunsubscribed\t2026-03-14 14:00:38\t2026-03-16 10:15:13"
+    },
+    {
+      "totale_disiscritti": "info@webstarschannel.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:09:37"
+    },
+    {
+      "totale_disiscritti": "massimilianof26@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:09:25"
+    },
+    {
+      "totale_disiscritti": "j.dauria@olivetti.com\tunsubscribed\t2026-03-04 17:49:16\t2026-03-16 10:06:01"
+    },
+    {
+      "totale_disiscritti": "quercialuciano@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:04:43"
+    },
+    {
+      "totale_disiscritti": "lorenzo@giaccardi.com\tunsubscribed\t2026-03-14 07:30:13\t2026-03-16 10:03:33"
+    },
+    {
+      "totale_disiscritti": "guido.romeo@gmail.com\tunsubscribed\t2026-03-04 17:49:14\t2026-03-16 10:01:38"
+    },
+    {
+      "totale_disiscritti": "antonio@ilmeteo.it\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:54:12"
+    },
+    {
+      "totale_disiscritti": "sergio.nunziati@gmail.com\tunsubscribed\t2026-03-04 17:49:24\t2026-03-16 09:53:10"
+    },
+    {
+      "totale_disiscritti": "cnzpll@gmail.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-16 09:53:06"
+    },
+    {
+      "totale_disiscritti": "patrizia.turri@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:51:44"
+    },
+    {
+      "totale_disiscritti": "marco.k.moretti@gmail.com\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 09:45:16"
+    },
+    {
+      "totale_disiscritti": "mt_bozzini@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:41:08"
+    },
+    {
+      "totale_disiscritti": "g.casalinuovo1981@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:37:16"
+    },
+    {
+      "totale_disiscritti": "alessiarinaldi.ita@gmail.com\tunsubscribed\t2026-03-04 17:49:05\t2026-03-16 09:35:30"
+    },
+    {
+      "totale_disiscritti": "emil.costanzo@gmail.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-16 09:31:57"
+    },
+    {
+      "totale_disiscritti": "ndl@italianangels.net\tunsubscribed\t2026-03-14 07:30:15\t2026-03-16 09:29:56"
+    },
+    {
+      "totale_disiscritti": "g.forte@oliocarli.it\tunsubscribed\t2026-03-04 17:49:12\t2026-03-16 09:26:19"
+    },
+    {
+      "totale_disiscritti": "gviolant@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:25:46"
+    },
+    {
+      "totale_disiscritti": "thevenon@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:21:56"
+    },
+    {
+      "totale_disiscritti": "genycaloisi@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:20:45"
+    },
+    {
+      "totale_disiscritti": "luca@rainoldi.biz\tunsubscribed\t2026-03-04 17:49:17\t2026-03-16 09:20:04"
+    },
+    {
+      "totale_disiscritti": "sandro.marchetti@iaki.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:19:44"
+    },
+    {
+      "totale_disiscritti": "michele.marzola@dnplc.net\tunsubscribed\t2026-03-04 17:49:21\t2026-03-16 09:17:58"
+    },
+    {
+      "totale_disiscritti": "lorenzo@podesta.it\tunsubscribed\t2026-03-04 17:49:17\t2026-03-16 09:16:54"
+    },
+    {
+      "totale_disiscritti": "matteo.rosettani@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:15:19"
+    },
+    {
+      "totale_disiscritti": "press@foolfarm.com\tunsubscribed\t2026-03-14 14:00:37\t2026-03-16 09:14:24"
+    },
+    {
+      "totale_disiscritti": "hiring@foolfarm.com\tunsubscribed\t2026-03-14 14:00:35\t2026-03-16 09:13:59"
+    },
+    {
+      "totale_disiscritti": "camyllina@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:12:27"
+    },
+    {
+      "totale_disiscritti": "f_giovina@yahoo.it\tunsubscribed\t2026-03-14 07:30:10\t2026-03-16 09:10:07"
+    },
+    {
+      "totale_disiscritti": "angelo.vitiello@abramo.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:08:24"
+    },
+    {
+      "totale_disiscritti": "ang.vitiello@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:08:08"
+    },
+    {
+      "totale_disiscritti": "maurizio.allio@casaforte.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:05:33"
+    },
+    {
+      "totale_disiscritti": "domenico.luciano@outlook.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-16 09:03:45"
+    },
+    {
+      "totale_disiscritti": "alessandro.j.vescovi@gmail.com\tunsubscribed\t2026-03-04 17:49:05\t2026-03-16 09:03:42"
+    },
+    {
+      "totale_disiscritti": "albertorinaldi.fr@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:03:18"
+    },
+    {
+      "totale_disiscritti": "davide.deluca@innovationmatch.io\tunsubscribed\t2026-03-14 07:30:09\t2026-03-16 09:02:37"
+    },
+    {
+      "totale_disiscritti": "enrico.noseda@gmail.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-16 09:02:00"
+    },
+    {
+      "totale_disiscritti": "giuseppe.manicone4@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:01:42"
+    },
+    {
+      "totale_disiscritti": "gianni.mantellini@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:00:54"
+    },
+    {
+      "totale_disiscritti": "cavalleri.reporting@gmail.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-16 09:00:29"
+    },
+    {
+      "totale_disiscritti": "cosimomelle@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:00:05"
+    },
+    {
+      "totale_disiscritti": "converti@iol.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:59:41"
+    },
+    {
+      "totale_disiscritti": "raffaele.turiel@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:59:12"
+    },
+    {
+      "totale_disiscritti": "mludovicadandria@gmail.com\tunsubscribed\t2026-03-14 07:30:15\t2026-03-16 08:57:19"
+    },
+    {
+      "totale_disiscritti": "alexey.popov@spitch.ch\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:55:42"
+    },
+    {
+      "totale_disiscritti": "cesare.baronio@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:55:38"
+    },
+    {
+      "totale_disiscritti": "riccardodavidbattaglia@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:55:34"
+    },
+    {
+      "totale_disiscritti": "marcodalsanto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:55:06"
+    },
+    {
+      "totale_disiscritti": "lorenzo.giordano@gmail.com\tunsubscribed\t2026-03-04 17:49:17\t2026-03-16 08:54:43"
+    },
+    {
+      "totale_disiscritti": "christian@christianvarisco.email\tunsubscribed\t2026-03-14 14:00:34\t2026-03-16 08:54:27"
+    },
+    {
+      "totale_disiscritti": "giovanni.colella@studiocolella.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:53:08"
+    },
+    {
+      "totale_disiscritti": "stefano.ardesi@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:51:52"
+    },
+    {
+      "totale_disiscritti": "giamma@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:50:38"
+    },
+    {
+      "totale_disiscritti": "matteo.levi@startupbootcamp.org\tunsubscribed\t2026-03-14 14:00:37\t2026-03-16 08:50:34"
+    },
+    {
+      "totale_disiscritti": "fredo.guzzo@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:50:26"
+    },
+    {
+      "totale_disiscritti": "joosthsb@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:50:21"
+    },
+    {
+      "totale_disiscritti": "favalli.massimo@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:49:51"
+    },
+    {
+      "totale_disiscritti": "paolo.sternini@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:49:29"
+    },
+    {
+      "totale_disiscritti": "alfredo@guzzo.me\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:49:11"
+    },
+    {
+      "totale_disiscritti": "giulio.ferretti2@gmail.com\tunsubscribed\t2026-03-14 07:30:12\t2026-03-16 08:49:05"
+    },
+    {
+      "totale_disiscritti": "fausto.boni@360capitalpartners.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:49:01"
+    },
+    {
+      "totale_disiscritti": "fausto@360cap.vc\tunsubscribed\t2026-03-04 17:49:11\t2026-03-16 08:48:35"
+    },
+    {
+      "totale_disiscritti": "a.bertoldi1@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:48:21"
+    },
+    {
+      "totale_disiscritti": "sergio.besana@proton.me\tunsubscribed\t2026-03-14 07:30:17\t2026-03-16 08:47:46"
+    },
+    {
+      "totale_disiscritti": "imperadore.fabrizio@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:47:07"
+    },
+    {
+      "totale_disiscritti": "alessandro.bandera@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:46:38"
+    },
+    {
+      "totale_disiscritti": "melisa.costantino.coach@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:46:31"
+    },
+    {
+      "totale_disiscritti": "marco_giacomini@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:45:36"
+    },
+    {
+      "totale_disiscritti": "choppy79@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:31"
+    },
+    {
+      "totale_disiscritti": "info@studioarmanni.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:19"
+    },
+    {
+      "totale_disiscritti": "dario.lupi@iol.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:17"
+    },
+    {
+      "totale_disiscritti": "federico.morganti@comunicazioneitaliana.it\tunsubscribed\t2026-03-14 14:00:35\t2026-03-16 08:44:14"
+    },
+    {
+      "totale_disiscritti": "doc_claudio2002@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:06"
+    },
+    {
+      "totale_disiscritti": "gianluca.rancati@gmail.com\tunsubscribed\t2026-03-04 17:49:13\t2026-03-16 08:43:43"
+    },
+    {
+      "totale_disiscritti": "info@clickgeneration.it\tunsubscribed\t2026-03-14 14:00:36\t2026-03-16 08:42:55"
+    },
+    {
+      "totale_disiscritti": "francescorubino222@gmail.com\tunsubscribed\t2026-03-04 17:49:12\t2026-03-16 08:42:40"
+    },
+    {
+      "totale_disiscritti": "marco.spallino@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:41:58"
+    },
+    {
+      "totale_disiscritti": "riccardo.giugno@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:41:45"
+    },
+    {
+      "totale_disiscritti": "belumat@libero.it\tunsubscribed\t2026-03-14 14:00:34\t2026-03-16 08:41:29"
+    },
+    {
+      "totale_disiscritti": "edoangelone@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:40:51"
+    },
+    {
+      "totale_disiscritti": "mariaamalia.pelle@studenti.unitn.it\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 08:40:48"
+    },
+    {
+      "totale_disiscritti": "giorgia.rinaldoni@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:40:28"
+    },
+    {
+      "totale_disiscritti": "info@mountainmaps.it\tunsubscribed\t2026-03-14 14:00:36\t2026-03-16 08:40:11"
+    },
+    {
+      "totale_disiscritti": "gmandelli@swlink.it\tunsubscribed\t2026-03-04 17:49:14\t2026-03-16 08:40:09"
+    },
+    {
+      "totale_disiscritti": "emanuele.meazzo@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:40:07"
+    },
+    {
+      "totale_disiscritti": "emilio.radius@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:39:53"
+    },
+    {
+      "totale_disiscritti": "antonello.bartiromo@dpixel.it\tunsubscribed\t2026-03-14 14:00:34\t2026-03-16 08:39:49"
+    },
+    {
+      "totale_disiscritti": "alfonso.marra57@gmail.com\tunsubscribed\t2026-03-14 07:30:07\t2026-03-16 08:39:35"
+    },
+    {
+      "totale_disiscritti": "assunta.castagnino@studiomottolabon.it\tunsubscribed\t2026-03-14 07:30:08\t2026-03-16 08:39:29"
+    },
+    {
+      "totale_disiscritti": "mattia.antignani@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:38:51"
+    },
+    {
+      "totale_disiscritti": "a.zara@area38.it\tunsubscribed\t2026-03-14 14:00:33\t2026-03-16 08:38:03"
+    },
+    {
+      "totale_disiscritti": "girgolu_2000@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:38:02"
+    },
+    {
+      "totale_disiscritti": "cesaremoretto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:57"
+    },
+    {
+      "totale_disiscritti": "mariodanielfalbo@gmail.com\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 08:37:18"
+    },
+    {
+      "totale_disiscritti": "stefano.luconi@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:16"
+    },
+    {
+      "totale_disiscritti": "s.ghisolfi@step.it\tunsubscribed\t2026-03-04 17:49:24\t2026-03-16 08:37:14"
+    },
+    {
+      "totale_disiscritti": "maurizio.marras1971@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:11"
+    },
+    {
+      "totale_disiscritti": "jarvis.andrea@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:08"
+    },
+    {
+      "totale_disiscritti": "davide.leale@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:06"
+    },
+    {
+      "totale_disiscritti": "rigamarco@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:36:45"
+    },
+    {
+      "totale_disiscritti": "pasquale.spani@fastwebnet.it\tunsubscribed\t2026-03-04 17:49:22\t2026-03-16 08:36:36"
+    },
+    {
+      "totale_disiscritti": "michelesessa1@gmail.com\tunsubscribed\t2026-03-04 17:49:21\t2026-03-16 08:36:22"
+    },
+    {
+      "totale_disiscritti": "giorgio.pirani@autogasnord.it\tunsubscribed\t2026-03-04 17:49:13\t2026-03-16 08:36:13"
+    },
+    {
+      "totale_disiscritti": "gallic23@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:35:50"
+    },
+    {
+      "totale_disiscritti": "fabio.rizzotto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:35:46"
+    },
+    {
+      "totale_disiscritti": "vender.pa@gmail.com\tunsubscribed\t2026-03-14 07:30:18\t2026-03-16 08:35:36"
+    },
+    {
+      "totale_disiscritti": "chiaradenigriss@gmail.com\tunsubscribed\t2026-03-14 07:30:08\t2026-03-16 08:35:35"
+    },
+    {
+      "totale_disiscritti": "stefano.fasola@brunofarmaceutici.it\tunsubscribed\t2026-03-04 17:49:25\t2026-03-16 08:35:35"
+    },
+    {
+      "totale_disiscritti": "giampiero.a.f.giunta@gmail.com\tunsubscribed\t2026-03-14 07:30:11\t2026-03-16 08:35:10"
+    },
+    {
+      "totale_disiscritti": "david.bottai@wearespoat.com\tunsubscribed\t2026-03-14 07:30:09\t2026-03-16 08:34:57"
+    },
+    {
+      "totale_disiscritti": "filippo.salmaso@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:34:45"
+    },
+    {
+      "totale_disiscritti": "elena.rocca.er@gmail.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-14 10:54:18"
+    },
+    {
+      "totale_disiscritti": "lorenza.sbarbaro@libero.it\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 21:02:35"
+    },
+    {
+      "totale_disiscritti": "giuseppe@milliegroup.com\tunsubscribed\t2026-03-04 17:49:14\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "c.padovani@yard.it\tunsubscribed\t2026-03-04 17:49:07\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "filippo.devita@vodafone.com\tunsubscribed\t2026-03-04 17:49:11\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "andrea.tugnoli@enerxenia.it\tunsubscribed\t2026-03-04 17:49:06\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "carmine.tufano@igt.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "christian.tufariello@cegeka.it\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "ciro_marciello@carrefour.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "eros.valzasina@melfore.com\tunsubscribed\t2026-03-04 17:49:11\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "achille.sassi@a2a.eu\tunsubscribed\t2026-03-04 17:49:04\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "dchevrel@hidglobal.com\tunsubscribed\t2026-03-04 17:49:09\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "andrea.grimaldi@enerxenia.it\tunsubscribed\t2026-03-04 17:49:06\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "alessandro_bondi@libero.it\tunsubscribed\t2026-03-04 17:49:05\t2026-03-13 20:02:10"
+    },
+    {
+      "totale_disiscritti": "e.rizzoli@step.it\tunsubscribed\t2026-03-04 17:49:10\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "luca.coresi@rgp.com\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "dlarocca@salesforce.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "nicola.tortora@cardif.com\tunsubscribed\t2026-03-04 17:49:21\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "paolo.mainardi@monrif.net\tunsubscribed\t2026-03-04 17:49:22\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "michele_moscato@carrefour.com\tunsubscribed\t2026-03-04 17:49:21\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "livio.roncalli@esselunga.it\tunsubscribed\t2026-03-04 17:49:16\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "info@ondaenergia.it\tunsubscribed\t2026-03-04 17:49:15\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "riccardo.samela@cardif.com\tunsubscribed\t2026-03-04 17:49:23\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "martinignacio.isolabella@acsm-agam.it\tunsubscribed\t2026-03-04 17:49:19\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "fabio_coppo@carrefour.com\tunsubscribed\t2026-03-04 17:49:11\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "mariaelena_viggiano@yahoo.it\tunsubscribed\t2026-03-04 17:49:19\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "roberto.limentani@camst.it\tunsubscribed\t2026-03-04 17:49:24\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "marco.caverzasio@fastwebnet.it\tunsubscribed\t2026-03-04 17:49:18\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "giovanni.perrone@acsm-agam.it\tunsubscribed\t2026-03-04 17:49:13\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "luca.villani@eu.jll.com\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "v.egidi@finnat.it\tunsubscribed\t2026-03-04 17:49:26\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "ugo.muffolini@beretta.com\tunsubscribed\t2026-03-04 17:49:26\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "luca.magni@elmec.it\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "info@unicoenergia.com\tunsubscribed\t2026-03-04 17:49:15\t2026-03-13 20:02:09"
+    },
+    {
+      "totale_disiscritti": "marco.bozzoli@libero.it\tunsubscribed\t2026-03-04 17:49:18\t2026-03-13 17:56:53"
+    },
+    {
+      "totale_disiscritti": "carmine.auletta@gmail.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 17:56:34"
+    },
+    {
+      "totale_disiscritti": "sergio.togni1@gmail.com\tunsubscribed\t2026-03-04 17:49:24\t2026-03-13 17:50:29"
+    },
+    {
+      "totale_disiscritti": "d.francescorubino@gmail.com\tunsubscribed\t2026-03-04 17:49:09\t2026-03-13 17:44:45"
+    },
+    {
+      "totale_disiscritti": "pla.saponaro@gmail.com\tunsubscribed\t2026-03-04 17:49:23\t2026-03-13 17:39:20"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale_disiscritti\n167\nemail\tstatus\tsubscribedAt\tunsubscribedAt\nclaudiabuonocore87@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 12:20:14\nr.izzolino@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:55:24\nlialapiccione@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:31:14\nj@ymarino.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:28:56\ngianluca@carucci.org\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:14:31\npietropaolo.raeli@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:13:20\nandrearusso81@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 11:12:01\nclara.covini@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 11:06:05\nbiagio.dibenedetto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:58:33\npasgia@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:51:46\nstefano.uggeri@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:49:06\nchristianzanetti74@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:47:39\ncanestro.pablo@gmail.com\tunsubscribed\t2026-03-04 17:49:07\t2026-03-16 10:43:33\nmarco@marcolunardi.com\tunsubscribed\t2026-03-04 17:49:19\t2026-03-16 10:27:38\nmauro@4scaleventures.com\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 10:19:11\nfrancesco.anchisi@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:16:40\nvitodig1999@libero.it\tunsubscribed\t2026-03-14 14:00:38\t2026-03-16 10:15:13\ninfo@webstarschannel.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:09:37\nmassimilianof26@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:09:25\nj.dauria@olivetti.com\tunsubscribed\t2026-03-04 17:49:16\t2026-03-16 10:06:01\nquercialuciano@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 10:04:43\nlorenzo@giaccardi.com\tunsubscribed\t2026-03-14 07:30:13\t2026-03-16 10:03:33\nguido.romeo@gmail.com\tunsubscribed\t2026-03-04 17:49:14\t2026-03-16 10:01:38\nantonio@ilmeteo.it\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:54:12\nsergio.nunziati@gmail.com\tunsubscribed\t2026-03-04 17:49:24\t2026-03-16 09:53:10\ncnzpll@gmail.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-16 09:53:06\npatrizia.turri@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:51:44\nmarco.k.moretti@gmail.com\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 09:45:16\nmt_bozzini@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:41:08\ng.casalinuovo1981@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:37:16\nalessiarinaldi.ita@gmail.com\tunsubscribed\t2026-03-04 17:49:05\t2026-03-16 09:35:30\nemil.costanzo@gmail.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-16 09:31:57\nndl@italianangels.net\tunsubscribed\t2026-03-14 07:30:15\t2026-03-16 09:29:56\ng.forte@oliocarli.it\tunsubscribed\t2026-03-04 17:49:12\t2026-03-16 09:26:19\ngviolant@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:25:46\nthevenon@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:21:56\ngenycaloisi@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:20:45\nluca@rainoldi.biz\tunsubscribed\t2026-03-04 17:49:17\t2026-03-16 09:20:04\nsandro.marchetti@iaki.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:19:44\nmichele.marzola@dnplc.net\tunsubscribed\t2026-03-04 17:49:21\t2026-03-16 09:17:58\nlorenzo@podesta.it\tunsubscribed\t2026-03-04 17:49:17\t2026-03-16 09:16:54\nmatteo.rosettani@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:15:19\npress@foolfarm.com\tunsubscribed\t2026-03-14 14:00:37\t2026-03-16 09:14:24\nhiring@foolfarm.com\tunsubscribed\t2026-03-14 14:00:35\t2026-03-16 09:13:59\ncamyllina@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:12:27\nf_giovina@yahoo.it\tunsubscribed\t2026-03-14 07:30:10\t2026-03-16 09:10:07\nangelo.vitiello@abramo.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:08:24\nang.vitiello@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:08:08\nmaurizio.allio@casaforte.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:05:33\ndomenico.luciano@outlook.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-16 09:03:45\nalessandro.j.vescovi@gmail.com\tunsubscribed\t2026-03-04 17:49:05\t2026-03-16 09:03:42\nalbertorinaldi.fr@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 09:03:18\ndavide.deluca@innovationmatch.io\tunsubscribed\t2026-03-14 07:30:09\t2026-03-16 09:02:37\nenrico.noseda@gmail.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-16 09:02:00\ngiuseppe.manicone4@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:01:42\ngianni.mantellini@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:00:54\ncavalleri.reporting@gmail.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-16 09:00:29\ncosimomelle@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 09:00:05\nconverti@iol.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:59:41\nraffaele.turiel@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:59:12\nmludovicadandria@gmail.com\tunsubscribed\t2026-03-14 07:30:15\t2026-03-16 08:57:19\nalexey.popov@spitch.ch\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:55:42\ncesare.baronio@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:55:38\nriccardodavidbattaglia@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:55:34\nmarcodalsanto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:55:06\nlorenzo.giordano@gmail.com\tunsubscribed\t2026-03-04 17:49:17\t2026-03-16 08:54:43\nchristian@christianvarisco.email\tunsubscribed\t2026-03-14 14:00:34\t2026-03-16 08:54:27\ngiovanni.colella@studiocolella.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:53:08\nstefano.ardesi@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:51:52\ngiamma@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:50:38\nmatteo.levi@startupbootcamp.org\tunsubscribed\t2026-03-14 14:00:37\t2026-03-16 08:50:34\nfredo.guzzo@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:50:26\njoosthsb@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:50:21\nfavalli.massimo@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:49:51\npaolo.sternini@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:49:29\nalfredo@guzzo.me\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:49:11\ngiulio.ferretti2@gmail.com\tunsubscribed\t2026-03-14 07:30:12\t2026-03-16 08:49:05\nfausto.boni@360capitalpartners.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:49:01\nfausto@360cap.vc\tunsubscribed\t2026-03-04 17:49:11\t2026-03-16 08:48:35\na.bertoldi1@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:48:21\nsergio.besana@proton.me\tunsubscribed\t2026-03-14 07:30:17\t2026-03-16 08:47:46\nimperadore.fabrizio@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:47:07\nalessandro.bandera@gmail.com\tunsubscribed\t2026-03-13 20:15:50\t2026-03-16 08:46:38\nmelisa.costantino.coach@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:46:31\nmarco_giacomini@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:45:36\nchoppy79@libero.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:31\ninfo@studioarmanni.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:19\ndario.lupi@iol.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:17\nfederico.morganti@comunicazioneitaliana.it\tunsubscribed\t2026-03-14 14:00:35\t2026-03-16 08:44:14\ndoc_claudio2002@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:44:06\ngianluca.rancati@gmail.com\tunsubscribed\t2026-03-04 17:49:13\t2026-03-16 08:43:43\ninfo@clickgeneration.it\tunsubscribed\t2026-03-14 14:00:36\t2026-03-16 08:42:55\nfrancescorubino222@gmail.com\tunsubscribed\t2026-03-04 17:49:12\t2026-03-16 08:42:40\nmarco.spallino@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:41:58\nriccardo.giugno@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:41:45\nbelumat@libero.it\tunsubscribed\t2026-03-14 14:00:34\t2026-03-16 08:41:29\nedoangelone@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:40:51\nmariaamalia.pelle@studenti.unitn.it\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 08:40:48\ngiorgia.rinaldoni@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:40:28\ninfo@mountainmaps.it\tunsubscribed\t2026-03-14 14:00:36\t2026-03-16 08:40:11\ngmandelli@swlink.it\tunsubscribed\t2026-03-04 17:49:14\t2026-03-16 08:40:09\nemanuele.meazzo@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:40:07\nemilio.radius@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:39:53\nantonello.bartiromo@dpixel.it\tunsubscribed\t2026-03-14 14:00:34\t2026-03-16 08:39:49\nalfonso.marra57@gmail.com\tunsubscribed\t2026-03-14 07:30:07\t2026-03-16 08:39:35\nassunta.castagnino@studiomottolabon.it\tunsubscribed\t2026-03-14 07:30:08\t2026-03-16 08:39:29\nmattia.antignani@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:38:51\na.zara@area38.it\tunsubscribed\t2026-03-14 14:00:33\t2026-03-16 08:38:03\ngirgolu_2000@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:38:02\ncesaremoretto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:57\nmariodanielfalbo@gmail.com\tunsubscribed\t2026-03-14 07:30:14\t2026-03-16 08:37:18\nstefano.luconi@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:16\ns.ghisolfi@step.it\tunsubscribed\t2026-03-04 17:49:24\t2026-03-16 08:37:14\nmaurizio.marras1971@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:11\njarvis.andrea@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:08\ndavide.leale@yahoo.it\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:37:06\nrigamarco@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:36:45\npasquale.spani@fastwebnet.it\tunsubscribed\t2026-03-04 17:49:22\t2026-03-16 08:36:36\nmichelesessa1@gmail.com\tunsubscribed\t2026-03-04 17:49:21\t2026-03-16 08:36:22\ngiorgio.pirani@autogasnord.it\tunsubscribed\t2026-03-04 17:49:13\t2026-03-16 08:36:13\ngallic23@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:35:50\nfabio.rizzotto@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:35:46\nvender.pa@gmail.com\tunsubscribed\t2026-03-14 07:30:18\t2026-03-16 08:35:36\nchiaradenigriss@gmail.com\tunsubscribed\t2026-03-14 07:30:08\t2026-03-16 08:35:35\nstefano.fasola@brunofarmaceutici.it\tunsubscribed\t2026-03-04 17:49:25\t2026-03-16 08:35:35\ngiampiero.a.f.giunta@gmail.com\tunsubscribed\t2026-03-14 07:30:11\t2026-03-16 08:35:10\ndavid.bottai@wearespoat.com\tunsubscribed\t2026-03-14 07:30:09\t2026-03-16 08:34:57\nfilippo.salmaso@gmail.com\tunsubscribed\t2026-03-13 20:15:51\t2026-03-16 08:34:45\nelena.rocca.er@gmail.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-14 10:54:18\nlorenza.sbarbaro@libero.it\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 21:02:35\ngiuseppe@milliegroup.com\tunsubscribed\t2026-03-04 17:49:14\t2026-03-13 20:02:10\nc.padovani@yard.it\tunsubscribed\t2026-03-04 17:49:07\t2026-03-13 20:02:10\nfilippo.devita@vodafone.com\tunsubscribed\t2026-03-04 17:49:11\t2026-03-13 20:02:10\nandrea.tugnoli@enerxenia.it\tunsubscribed\t2026-03-04 17:49:06\t2026-03-13 20:02:10\ncarmine.tufano@igt.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 20:02:10\nchristian.tufariello@cegeka.it\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 20:02:10\nciro_marciello@carrefour.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 20:02:10\neros.valzasina@melfore.com\tunsubscribed\t2026-03-04 17:49:11\t2026-03-13 20:02:10\nachille.sassi@a2a.eu\tunsubscribed\t2026-03-04 17:49:04\t2026-03-13 20:02:10\ndchevrel@hidglobal.com\tunsubscribed\t2026-03-04 17:49:09\t2026-03-13 20:02:10\nandrea.grimaldi@enerxenia.it\tunsubscribed\t2026-03-04 17:49:06\t2026-03-13 20:02:10\nalessandro_bondi@libero.it\tunsubscribed\t2026-03-04 17:49:05\t2026-03-13 20:02:10\ne.rizzoli@step.it\tunsubscribed\t2026-03-04 17:49:10\t2026-03-13 20:02:09\nluca.coresi@rgp.com\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 20:02:09\ndlarocca@salesforce.com\tunsubscribed\t2026-03-04 17:49:10\t2026-03-13 20:02:09\nnicola.tortora@cardif.com\tunsubscribed\t2026-03-04 17:49:21\t2026-03-13 20:02:09\npaolo.mainardi@monrif.net\tunsubscribed\t2026-03-04 17:49:22\t2026-03-13 20:02:09\nmichele_moscato@carrefour.com\tunsubscribed\t2026-03-04 17:49:21\t2026-03-13 20:02:09\nlivio.roncalli@esselunga.it\tunsubscribed\t2026-03-04 17:49:16\t2026-03-13 20:02:09\ninfo@ondaenergia.it\tunsubscribed\t2026-03-04 17:49:15\t2026-03-13 20:02:09\nriccardo.samela@cardif.com\tunsubscribed\t2026-03-04 17:49:23\t2026-03-13 20:02:09\nmartinignacio.isolabella@acsm-agam.it\tunsubscribed\t2026-03-04 17:49:19\t2026-03-13 20:02:09\nfabio_coppo@carrefour.com\tunsubscribed\t2026-03-04 17:49:11\t2026-03-13 20:02:09\nmariaelena_viggiano@yahoo.it\tunsubscribed\t2026-03-04 17:49:19\t2026-03-13 20:02:09\nroberto.limentani@camst.it\tunsubscribed\t2026-03-04 17:49:24\t2026-03-13 20:02:09\nmarco.caverzasio@fastwebnet.it\tunsubscribed\t2026-03-04 17:49:18\t2026-03-13 20:02:09\ngiovanni.perrone@acsm-agam.it\tunsubscribed\t2026-03-04 17:49:13\t2026-03-13 20:02:09\nluca.villani@eu.jll.com\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 20:02:09\nv.egidi@finnat.it\tunsubscribed\t2026-03-04 17:49:26\t2026-03-13 20:02:09\nugo.muffolini@beretta.com\tunsubscribed\t2026-03-04 17:49:26\t2026-03-13 20:02:09\nluca.magni@elmec.it\tunsubscribed\t2026-03-04 17:49:17\t2026-03-13 20:02:09\ninfo@unicoenergia.com\tunsubscribed\t2026-03-04 17:49:15\t2026-03-13 20:02:09\nmarco.bozzoli@libero.it\tunsubscribed\t2026-03-04 17:49:18\t2026-03-13 17:56:53\ncarmine.auletta@gmail.com\tunsubscribed\t2026-03-04 17:49:08\t2026-03-13 17:56:34\nsergio.togni1@gmail.com\tunsubscribed\t2026-03-04 17:49:24\t2026-03-13 17:50:29\nd.francescorubino@gmail.com\tunsubscribed\t2026-03-04 17:49:09\t2026-03-13 17:44:45\npla.saponaro@gmail.com\tunsubscribed\t2026-03-04 17:49:23\t2026-03-13 17:39:20\n",
+  "stderr": "",
+  "execution_time_ms": 79
+}

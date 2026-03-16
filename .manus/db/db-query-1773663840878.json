@@ -1,0 +1,62 @@
+{
+  "query": "\nSELECT status, COUNT(*) as totale FROM subscribers GROUP BY status;\n\nSELECT email, unsubscribedAt \nFROM subscribers \nWHERE status = 'unsubscribed' AND unsubscribedAt IS NOT NULL\nORDER BY unsubscribedAt DESC\nLIMIT 10;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT status, COUNT(*) as totale FROM subscribers GROUP BY status;\n\nSELECT email, unsubscribedAt \nFROM subscribers \nWHERE status = 'unsubscribed' AND unsubscribedAt IS NOT NULL\nORDER BY unsubscribedAt DESC\nLIMIT 10;\n",
+  "rows": [
+    {
+      "status": "active",
+      "totale": "5648"
+    },
+    {
+      "status": "unsubscribed",
+      "totale": "167"
+    },
+    {
+      "status": "email",
+      "totale": "unsubscribedAt"
+    },
+    {
+      "status": "claudiabuonocore87@gmail.com",
+      "totale": "2026-03-16 12:20:14"
+    },
+    {
+      "status": "r.izzolino@yahoo.it",
+      "totale": "2026-03-16 11:55:24"
+    },
+    {
+      "status": "lialapiccione@yahoo.it",
+      "totale": "2026-03-16 11:31:14"
+    },
+    {
+      "status": "j@ymarino.it",
+      "totale": "2026-03-16 11:28:56"
+    },
+    {
+      "status": "gianluca@carucci.org",
+      "totale": "2026-03-16 11:14:31"
+    },
+    {
+      "status": "pietropaolo.raeli@gmail.com",
+      "totale": "2026-03-16 11:13:20"
+    },
+    {
+      "status": "andrearusso81@gmail.com",
+      "totale": "2026-03-16 11:12:01"
+    },
+    {
+      "status": "clara.covini@gmail.com",
+      "totale": "2026-03-16 11:06:05"
+    },
+    {
+      "status": "biagio.dibenedetto@gmail.com",
+      "totale": "2026-03-16 10:58:33"
+    },
+    {
+      "status": "pasgia@libero.it",
+      "totale": "2026-03-16 10:51:46"
+    }
+  ],
+  "messages": [],
+  "stdout": "status\ttotale\nactive\t5648\nunsubscribed\t167\nemail\tunsubscribedAt\nclaudiabuonocore87@gmail.com\t2026-03-16 12:20:14\nr.izzolino@yahoo.it\t2026-03-16 11:55:24\nlialapiccione@yahoo.it\t2026-03-16 11:31:14\nj@ymarino.it\t2026-03-16 11:28:56\ngianluca@carucci.org\t2026-03-16 11:14:31\npietropaolo.raeli@gmail.com\t2026-03-16 11:13:20\nandrearusso81@gmail.com\t2026-03-16 11:12:01\nclara.covini@gmail.com\t2026-03-16 11:06:05\nbiagio.dibenedetto@gmail.com\t2026-03-16 10:58:33\npasgia@libero.it\t2026-03-16 10:51:46\n",
+  "stderr": "",
+  "execution_time_ms": 82
+}
