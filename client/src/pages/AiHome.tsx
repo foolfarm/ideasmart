@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
+import { AdAiTop, AdAiMid1, AdAiMid2, AdAiBottom } from "@/components/AdUnit";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
@@ -189,7 +190,12 @@ export default function AiHome() {
 
           <Divider />
         </header>
-        <BreakingNewsTicker />
+          <BreakingNewsTicker />
+
+          {/* ── BANNER TOP (sotto navbar) ── */}
+          <div className="max-w-6xl mx-auto px-4 py-3">
+            <AdAiTop />
+          </div>
 
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
@@ -353,6 +359,9 @@ export default function AiHome() {
             </div>
           )}
 
+          {/* ── BANNER MID 1 (tra notizie e startup) ── */}
+          <AdAiMid1 className="my-4" />
+
           {/* SEZIONE 3: Startup del Giorno */}
           {startupData && (
             <div className="mt-8">
@@ -484,6 +493,9 @@ export default function AiHome() {
             </div>
           )}
 
+          {/* ── BANNER MID 2 (tra reportage e analisi) ── */}
+          <AdAiMid2 className="my-4" />
+
           {/* SEZIONE 5: Analisi di mercato */}
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
@@ -542,6 +554,9 @@ export default function AiHome() {
               </div>
             </div>
           )}
+
+          {/* ── BANNER BOTTOM (prima della newsletter) ── */}
+          <AdAiBottom className="mt-8 mb-2" />
 
           {/* SEZIONE 7: Newsletter */}
           <div className="mt-10">

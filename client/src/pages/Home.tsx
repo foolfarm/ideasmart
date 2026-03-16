@@ -9,6 +9,7 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import { AdHomeBanner } from "@/components/AdUnit";
 
 const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
@@ -519,6 +520,9 @@ export default function Home() {
             </div>
           )}
 
+          {/* ── BANNER HOME (tra sezioni) ── */}
+          <AdHomeBanner className="my-6" />
+
           {/* Sezione 4: Nuovi Canali — Finance, Health, Sport, Luxury */}
           <div className="mt-8">
             <Divider thick />
@@ -579,6 +583,9 @@ export default function Home() {
               })}
             </div>
           </div>
+
+          {/* ── BANNER HOME BOTTOM (prima del footer) ── */}
+          <AdHomeBanner className="mt-8 mb-2" />
 
           {/* Footer testata */}
           <div className="mt-12">

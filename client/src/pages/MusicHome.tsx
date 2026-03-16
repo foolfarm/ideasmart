@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
+import { AdMusicTop, AdMusicMid1, AdMusicMid2, AdMusicBottom } from "@/components/AdUnit";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
@@ -191,6 +192,11 @@ export default function MusicHome() {
         </header>
         <BreakingNewsTicker />
 
+        {/* ── BANNER TOP (sotto navbar) ── */}
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <AdMusicTop />
+        </div>
+
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
           {/* SEZIONE 1: Hero + Sidebar editoriale */}
@@ -352,6 +358,9 @@ export default function MusicHome() {
             </div>
           )}
 
+          {/* ── BANNER MID 1 ── */}
+          <AdMusicMid1 className="my-4" />
+
           {/* SEZIONE 3: Artista del Giorno */}
           {artistData && (
             <div className="mt-8">
@@ -464,6 +473,9 @@ export default function MusicHome() {
             </div>
           )}
 
+          {/* ── BANNER MID 2 ── */}
+          <AdMusicMid2 className="my-4" />
+
           {/* SEZIONE 5: Analisi */}
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
@@ -522,6 +534,9 @@ export default function MusicHome() {
               </div>
             </div>
           )}
+
+          {/* ── BANNER BOTTOM ── */}
+          <AdMusicBottom className="mt-8 mb-2" />
 
           {/* SEZIONE 7: Newsletter */}
           <div className="mt-10">

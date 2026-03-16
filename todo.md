@@ -840,3 +840,12 @@
 ## Google Analytics (16 Mar 2026)
 
 - [x] Aggiungere tag Google Analytics G-R9KESLT3MN nell'head di index.html
+
+## Spazi Pubblicitari AdSense (16 Mar 2026)
+
+- [ ] Creare componente AdUnit riutilizzabile (banner 728x90, rettangolo 300x250, sidebar 160x600, in-feed)
+- [ ] Inserire banner leaderboard sotto la navbar in tutte le pagine canale
+- [ ] Inserire rettangolo in-content tra le notizie (dopo la 3a notizia) in tutte le pagine canale
+- [ ] Inserire banner sidebar nelle pagine canale con sidebar
+- [ ] Inserire banner footer prima del form iscrizione newsletter
+- [ ] Inserire banner in-feed nella Home principale tra le sezioni canale
