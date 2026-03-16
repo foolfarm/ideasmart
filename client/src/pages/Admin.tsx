@@ -55,6 +55,8 @@ export default function Admin() {
   });
 
   const [sendingDark, setSendingDark] = useState(false);
+  const [sendingChannelPreview, setSendingChannelPreview] = useState(false);
+  const [sendingChannelNewsletter, setSendingChannelNewsletter] = useState<string | null>(null);
   const [refreshingNews, setRefreshingNews] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
   const [sendingItsMusic, setSendingItsMusic] = useState(false);
@@ -65,6 +67,31 @@ export default function Admin() {
   const [refreshingLuxury, setRefreshingLuxury] = useState(false);
   const [publishingLinkedIn, setPublishingLinkedIn] = useState(false);
   const [linkedInResult, setLinkedInResult] = useState<{ published: number; total: number; posts: Array<{ section: string; title: string; success: boolean; error?: string }> } | null>(null);
+
+  const sendChannelPreviewMutation = trpc.admin.sendDailyChannelPreview.useMutation({
+    onSuccess: (data) => {
+      setSendingChannelPreview(false);
+      setLastResult(`✓ Preview ${data.channel} inviata a info@ideasmart.ai — ${data.newsCount} notizie`);
+      toast.success(`👁️ Preview ${data.channel} inviata!`);
+    },
+    onError: (err) => {
+      setSendingChannelPreview(false);
+      toast.error("Errore preview: " + err.message);
+    },
+  });
+
+  const sendChannelNewsletterMutation = trpc.admin.sendChannelNewsletter.useMutation({
+    onSuccess: (data) => {
+      setSendingChannelNewsletter(null);
+      setLastResult(`✓ Newsletter ${data.channel} inviata a ${data.recipientCount} iscritti — ${data.newsCount} notizie`);
+      toast.success(`📧 ${data.channel}: ${data.recipientCount} iscritti raggiunti!`);
+      historyQuery.refetch();
+    },
+    onError: (err) => {
+      setSendingChannelNewsletter(null);
+      toast.error("Errore invio: " + err.message);
+    },
+  });
 
   const triggerItsMusicMutation = trpc.admin.triggerItsMusicNewsletter.useMutation({
     onSuccess: (data) => {
@@ -549,6 +576,92 @@ export default function Admin() {
                 style={{ background: "rgba(236,72,153,0.3)", color: "#f9a8d4", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(236,72,153,0.4)" }}>
                 {refreshingLuxury ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-pink-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Luxury...</span> : "💎 Aggiorna Lifestyle & Luxury →"}
               </button>
+            </div>
+
+            {/* Newsletter Giornaliera per Canale */}
+            <div className="rounded-2xl border border-[#00e5c8]/20 p-6" style={{ background: "rgba(0,229,200,0.03)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+                📧 Newsletter Giornaliera per Canale
+              </p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Automatica ogni giorno — Preview 07:00 · Invio 07:30 CET</p>
+              <div className="mb-4 rounded-lg border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-white/8">
+                      <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Giorno</th>
+                      <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Canale</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { day: "Lunedì", channel: "AI4Business News", color: "#00e5c8" },
+                      { day: "Martedì", channel: "Startup News", color: "#ff5500" },
+                      { day: "Mercoledì", channel: "Finance & Markets", color: "#1a56db" },
+                      { day: "Giovedì", channel: "Sport & Business", color: "#059669" },
+                      { day: "Venerdì", channel: "ITsMusic", color: "#9333ea" },
+                      { day: "Sabato", channel: "Lifestyle & Luxury", color: "#d97706" },
+                      { day: "Domenica", channel: "Health & Biotech", color: "#dc2626" },
+                    ].map((row) => (
+                      <tr key={row.day} className="border-b border-white/4 last:border-0">
+                        <td className="px-3 py-2 text-white/50">{row.day}</td>
+                        <td className="px-3 py-2 font-bold" style={{ color: row.color }}>{row.channel}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="space-y-2">
+                <button
+                  onClick={() => {
+                    setSendingChannelPreview(true);
+                    sendChannelPreviewMutation.mutate();
+                  }}
+                  disabled={sendingChannelPreview}
+                  className="w-full px-4 py-2.5 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                  style={{ background: "rgba(0,229,200,0.15)", color: "#00e5c8", border: "1px solid rgba(0,229,200,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  {sendingChannelPreview ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="w-4 h-4 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin" />
+                      Invio preview...
+                    </span>
+                  ) : (
+                    "👁️ Invia Preview Canale di Oggi →"
+                  )}
+                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { key: "ai", label: "AI", color: "#00e5c8" },
+                    { key: "startup", label: "Startup", color: "#ff5500" },
+                    { key: "finance", label: "Finance", color: "#1a56db" },
+                    { key: "sport", label: "Sport", color: "#059669" },
+                    { key: "music", label: "Music", color: "#9333ea" },
+                    { key: "luxury", label: "Luxury", color: "#d97706" },
+                    { key: "health", label: "Health", color: "#dc2626" },
+                  ].map((ch) => (
+                    <button
+                      key={ch.key}
+                      onClick={() => {
+                        if (activeCount === 0) { toast.error("Nessun iscritto attivo"); return; }
+                        setSendingChannelNewsletter(ch.key);
+                        sendChannelNewsletterMutation.mutate({ channelKey: ch.key as "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health", testOnly: false });
+                      }}
+                      disabled={sendingChannelNewsletter !== null}
+                      className="px-3 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+                      style={{ background: `${ch.color}22`, color: ch.color, border: `1px solid ${ch.color}44`, fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {sendingChannelNewsletter === ch.key ? (
+                        <span className="flex items-center justify-center gap-1">
+                          <span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                          ...
+                        </span>
+                      ) : (
+                        `📧 ${ch.label}`
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* LinkedIn Autopost */}

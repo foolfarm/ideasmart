@@ -6,27 +6,55 @@
  * Routine configurate (tutti gli orari sono in CET/CEST — ora italiana):
  *
  *  ┌─────────────────────────────────────────────────────────────────────────┐
- *  │  AGGIORNAMENTO CONTENUTI — ogni giorno                                   │
- *  │  00:00 — News AI (20 notizie da scraping RSS reale)                     │
- *  │  00:05 — Editoriale AI del giorno + Startup del giorno                  │
- *  │  00:15 — 4 Reportage su startup AI italiane (ogni lunedì)               │
- *  │  00:20 — 4 Analisi di mercato AI (ogni lunedì)                          │
- *  │  00:30 — News musicali (20 notizie da scraping RSS reale)               │
- *  │  00:35 — Editoriale musicale + Artista della settimana                  │
- *  │  00:45 — 4 Reportage musicali (ogni lunedì)                             │
- *  │  00:50 — 4 Analisi mercato musicale (ogni lunedì)                       │
- *  │  01:00 — News Startup (20 notizie da scraping RSS reale)                │
+ *  │  AGGIORNAMENTO CONTENUTI — ogni giorno (tutti i 7 canali)               │
+ *  │  00:00 — News AI (scraping RSS reale)                                   │
+ *  │  00:05 — Editoriale AI + Startup del giorno                             │
+ *  │  00:15 — Reportage AI (ogni lunedì)                                     │
+ *  │  00:20 — Analisi di mercato AI (ogni lunedì)                            │
+ *  │  00:30 — News Musicali (scraping RSS reale)                             │
+ *  │  00:35 — Editoriale Music + Artista della settimana                     │
+ *  │  00:45 — Reportage Music (ogni lunedì)                                  │
+ *  │  00:50 — Analisi mercato Music (ogni lunedì)                            │
+ *  │  01:00 — News Startup (scraping RSS reale)                              │
  *  │  01:05 — Editoriale Startup + Startup della Settimana                   │
- *  │  01:15 — 4 Reportage Startup (ogni lunedì)                              │
- *  │  01:20 — 4 Analisi Mercato Startup (ogni lunedì)                        │
+ *  │  01:15 — Reportage Startup (ogni lunedì)                                │
+ *  │  01:20 — Analisi Mercato Startup (ogni lunedì)                          │
+ *  │  01:30 — News Finance (scraping RSS reale)                              │
+ *  │  01:35 — Editoriale Finance + Deal of Week                              │
+ *  │  01:45 — Reportage Finance (ogni lunedì)                                │
+ *  │  01:50 — Analisi Finance (ogni lunedì)                                  │
+ *  │  02:00 — Audit notturno URL notizie                                     │
+ *  │  02:15 — News Health (scraping RSS reale)                               │
+ *  │  02:20 — Editoriale Health + Deal of Week                               │
+ *  │  02:30 — Reportage Health (ogni lunedì)                                 │
+ *  │  02:35 — Analisi Health (ogni lunedì)                                   │
+ *  │  02:45 — News Sport (scraping RSS reale)                                │
+ *  │  02:50 — Editoriale Sport + Deal of Week                                │
+ *  │  02:55 — Reportage Sport (ogni lunedì)                                  │
+ *  │  02:58 — Analisi Sport (ogni lunedì)                                    │
+ *  │  03:05 — News Luxury (scraping RSS reale)                               │
+ *  │  03:10 — Editoriale Luxury + Deal of Week                               │
+ *  │  03:20 — Reportage Luxury (ogni lunedì)                                 │
+ *  │  03:25 — Analisi Luxury (ogni lunedì)                                   │
  *  │                                                                          │
- *  │  AUDIT NOTTURNO — ogni giorno                                            │
- *  │  02:00 — Audit URL notizie: verifica raggiungibilità e sostituisce      │
- *  │          le notizie con link non validi con notizie fresche da RSS       │
+ *  │  NEWSLETTER GIORNALIERA PER CANALE                                       │
+ *  │  Lunedì    07:00 — Preview AI4Business → info@ideasmart.ai              │
+ *  │  Lunedì    07:30 — Newsletter AI4Business → tutti gli iscritti          │
+ *  │  Martedì   07:00 — Preview Startup → info@ideasmart.ai                  │
+ *  │  Martedì   07:30 — Newsletter Startup → tutti gli iscritti              │
+ *  │  Mercoledì 07:00 — Preview Finance → info@ideasmart.ai                  │
+ *  │  Mercoledì 07:30 — Newsletter Finance → tutti gli iscritti              │
+ *  │  Giovedì   07:00 — Preview Sport → info@ideasmart.ai                    │
+ *  │  Giovedì   07:30 — Newsletter Sport → tutti gli iscritti                │
+ *  │  Venerdì   07:00 — Preview ITsMusic → info@ideasmart.ai                 │
+ *  │  Venerdì   07:30 — Newsletter ITsMusic → tutti gli iscritti             │
+ *  │  Sabato    07:00 — Preview Luxury → info@ideasmart.ai                   │
+ *  │  Sabato    07:30 — Newsletter Luxury → tutti gli iscritti               │
+ *  │  Domenica  07:00 — Preview Health → info@ideasmart.ai                   │
+ *  │  Domenica  07:30 — Newsletter Health → tutti gli iscritti               │
  *  │                                                                          │
- *  │  NEWSLETTER — solo lunedì                                                │
- *  │  Lunedì 07:30 — Newsletter di TEST a info@ideasmart.ai (preview)          │
- *  │  Lunedì 09:30 — Newsletter MASSIVA a tutti gli iscritti attivi          │
+ *  │  LINKEDIN AUTOPOST — ogni giorno                                         │
+ *  │  10:00 — Post editoriale AI/Startup su LinkedIn                         │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
  * node-cron usa il fuso orario del server. Il server gira in UTC.
@@ -43,31 +71,25 @@ import { generateLuxuryEditorial, generateLuxuryDealOfWeek, generateLuxuryReport
 import { runDailyContentRefresh } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
-import { sendWeeklyNewsletter } from "./newsletterScheduler";
 import {
   generateMusicEditorial,
   generateArtistOfWeek,
   generateMusicReportage,
   generateMusicMarketAnalysis,
 } from "./musicScheduler";
-import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
   generateStartupEditorial,
   generateStartupOfWeek,
   generateStartupReportage,
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
-import { sendTestNewsletter } from "./newsletterTestSender";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
 import { publishDailyLinkedInPosts } from "./linkedinPublisher";
+import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 
 const TZ = "Europe/Rome";
 
 // ─── Chiavi per evitare doppi invii ──────────────────────────────────────────
-let lastNewsletterSentKey: string | null = null;
-let lastMusicNewsletterSentKey: string | null = null;
-let lastTestNewsletterSentKey: string | null = null;
-
 function getWeekKey(): string {
   const now = new Date();
   const d = new Date(now.toLocaleString("en-US", { timeZone: TZ }));
@@ -87,300 +109,238 @@ export function startAllSchedulers(): void {
   // SEZIONE /ai — AI4Business News
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 1. NEWS AI — ogni giorno alle 00:00 CET (SCRAPING RSS REALE) ──────────
   cron.schedule("0 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio scraping RSS News AI (fonti reali)...");
-    try {
-      await refreshAINewsFromRSS();
-      console.log("[SchedulerManager] ✅ News AI aggiornate da fonti RSS reali");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore scraping RSS News AI:", err);
-    }
+    console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio scraping RSS News AI...");
+    try { await refreshAINewsFromRSS(); console.log("[SchedulerManager] ✅ News AI aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ News AI:", err); }
   }, { timezone: TZ });
 
-  // ── 2. EDITORIALE AI + STARTUP DEL GIORNO — ogni giorno alle 00:05 CET ──
   cron.schedule("5 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:05 CET — Avvio Editoriale AI + Startup del giorno...");
-    try {
-      await runDailyContentRefresh();
-      console.log("[SchedulerManager] ✅ Editoriale e Startup del giorno aggiornati");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore Editoriale/Startup AI:", err);
-    }
+    console.log("[SchedulerManager] ⏰ 00:05 CET — Editoriale AI + Startup del giorno...");
+    try { await runDailyContentRefresh(); console.log("[SchedulerManager] ✅ Editoriale e Startup AI aggiornati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Editoriale/Startup AI:", err); }
   }, { timezone: TZ });
 
-  // ── 3. REPORTAGE AI — ogni lunedì alle 00:15 CET ─────────────────────────
   cron.schedule("15 0 * * 1", async () => {
-    console.log("[SchedulerManager] ⏰ Lunedì 00:15 CET — Avvio generazione Reportage AI...");
-    try {
-      await generateWeeklyReportage();
-      console.log("[SchedulerManager] ✅ Reportage AI generati con successo");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore generazione Reportage AI:", err);
-    }
+    console.log("[SchedulerManager] ⏰ Lunedì 00:15 CET — Reportage AI...");
+    try { await generateWeeklyReportage(); console.log("[SchedulerManager] ✅ Reportage AI generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Reportage AI:", err); }
   }, { timezone: TZ });
 
-  // ── 4. ANALISI DI MERCATO AI — ogni lunedì alle 00:20 CET ────────────────
   cron.schedule("20 0 * * 1", async () => {
-    console.log("[SchedulerManager] ⏰ Lunedì 00:20 CET — Avvio generazione Analisi di Mercato AI...");
-    try {
-      await generateMarketAnalysis();
-      console.log("[SchedulerManager] ✅ Analisi di Mercato AI generate con successo");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore generazione Analisi di Mercato AI:", err);
-    }
+    console.log("[SchedulerManager] ⏰ Lunedì 00:20 CET — Analisi Mercato AI...");
+    try { await generateMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Mercato AI generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Analisi Mercato AI:", err); }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /music — ITsMusic
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 5. NEWS MUSICALI — ogni giorno alle 00:30 CET (SCRAPING RSS REALE) ─────
   cron.schedule("30 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:30 CET — Avvio scraping RSS News Musicali (fonti reali)...");
-    try {
-      await refreshMusicNewsFromRSS();
-      console.log("[SchedulerManager] ✅ News Musicali aggiornate da fonti RSS reali");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore scraping RSS News Musicali:", err);
-    }
+    console.log("[SchedulerManager] ⏰ 00:30 CET — Avvio scraping RSS News Musicali...");
+    try { await refreshMusicNewsFromRSS(); console.log("[SchedulerManager] ✅ News Musicali aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ News Musicali:", err); }
   }, { timezone: TZ });
 
-  // ── 6. EDITORIALE MUSICALE + ARTISTA — ogni giorno alle 00:35 CET ────────
   cron.schedule("35 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:35 CET — Avvio Editoriale Musicale + Artista della settimana...");
-    try {
-      await generateMusicEditorial();
-      await generateArtistOfWeek();
-      console.log("[SchedulerManager] ✅ Editoriale Musicale e Artista aggiornati");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore Editoriale/Artista Musicale:", err);
-    }
+    console.log("[SchedulerManager] ⏰ 00:35 CET — Editoriale Music + Artista...");
+    try { await generateMusicEditorial(); await generateArtistOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Music aggiornato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Editoriale Music:", err); }
   }, { timezone: TZ });
 
-  // ── 7. REPORTAGE MUSICALI — ogni lunedì alle 00:45 CET ───────────────────
   cron.schedule("45 0 * * 1", async () => {
-    console.log("[SchedulerManager] ⏰ Lunedì 00:45 CET — Avvio generazione Reportage Musicali...");
-    try {
-      await generateMusicReportage();
-      console.log("[SchedulerManager] ✅ Reportage Musicali generati con successo");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore generazione Reportage Musicali:", err);
-    }
+    try { await generateMusicReportage(); console.log("[SchedulerManager] ✅ Reportage Music generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Reportage Music:", err); }
   }, { timezone: TZ });
 
-  // ── 8. ANALISI MERCATO MUSICALE — ogni lunedì alle 00:50 CET ─────────────
   cron.schedule("50 0 * * 1", async () => {
-    console.log("[SchedulerManager] ⏰ Lunedì 00:50 CET — Avvio generazione Analisi Mercato Musicale...");
-    try {
-      await generateMusicMarketAnalysis();
-      console.log("[SchedulerManager] ✅ Analisi Mercato Musicale generate con successo");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore generazione Analisi Mercato Musicale:", err);
-    }
+    try { await generateMusicMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Music generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Analisi Music:", err); }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /startup — Startup News
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 9. NEWS STARTUP — ogni giorno alle 01:00 CET (SCRAPING RSS REALE) ──────
   cron.schedule("0 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio scraping RSS Startup News (fonti reali)...");
-    try {
-      await refreshStartupNewsFromRSS();
-      console.log("[SchedulerManager] ✅ Startup News aggiornate da fonti RSS reali");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore scraping RSS Startup News:", err);
-    }
+    console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio scraping RSS Startup News...");
+    try { await refreshStartupNewsFromRSS(); console.log("[SchedulerManager] ✅ Startup News aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Startup News:", err); }
   }, { timezone: TZ });
 
-  // ── 10. EDITORIALE STARTUP + STARTUP DELLA SETTIMANA — ogni giorno alle 01:05 CET ──
   cron.schedule("5 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:05 CET — Avvio Editoriale Startup + Startup della Settimana...");
-    try {
-      await generateStartupEditorial();
-      await generateStartupOfWeek();
-      console.log("[SchedulerManager] ✅ Editoriale Startup e Startup della Settimana aggiornati");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore Editoriale/Startup della Settimana:", err);
-    }
+    console.log("[SchedulerManager] ⏰ 01:05 CET — Editoriale Startup + Startup della Settimana...");
+    try { await generateStartupEditorial(); await generateStartupOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Startup aggiornato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Editoriale Startup:", err); }
   }, { timezone: TZ });
 
-  // ── 11. REPORTAGE STARTUP — ogni lunedì alle 01:15 CET ───────────────────
   cron.schedule("15 1 * * 1", async () => {
-    console.log("[SchedulerManager] ⏰ Lunedì 01:15 CET — Avvio generazione Reportage Startup...");
-    try {
-      await generateStartupReportage();
-      console.log("[SchedulerManager] ✅ Reportage Startup generati con successo");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore generazione Reportage Startup:", err);
-    }
+    try { await generateStartupReportage(); console.log("[SchedulerManager] ✅ Reportage Startup generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Reportage Startup:", err); }
   }, { timezone: TZ });
 
-  // ── 12. ANALISI MERCATO STARTUP — ogni lunedì alle 01:20 CET ─────────────
   cron.schedule("20 1 * * 1", async () => {
-    console.log("[SchedulerManager] ⏰ Lunedì 01:20 CET — Avvio generazione Analisi Mercato Startup...");
-    try {
-      await generateStartupMarketAnalysis();
-      console.log("[SchedulerManager] ✅ Analisi Mercato Startup generate con successo");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore generazione Analisi Mercato Startup:", err);
-    }
+    try { await generateStartupMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Startup generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Analisi Startup:", err); }
   }, { timezone: TZ });
 
-  // ═════════════════════════════════════════════════════════════  // ══════════════════════════════════════════════════════════════════════════
+  // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /finance — Finance & Markets
   // ══════════════════════════════════════════════════════════════════════════
+
   cron.schedule("30 1 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 01:30 CET — Avvio scraping Finance news...");
-    try { await refreshFinanceNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Finance news:", err); }
+    try { await refreshFinanceNewsFromRSS(); console.log("[SchedulerManager] ✅ Finance news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Finance news:", err); }
   }, { timezone: TZ });
+
   cron.schedule("35 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:35 CET — Avvio editoriale Finance...");
-    try { await generateFinanceEditorial(); await generateFinanceDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Finance editorial:", err); }
+    console.log("[SchedulerManager] ⏰ 01:35 CET — Editoriale Finance...");
+    try { await generateFinanceEditorial(); await generateFinanceDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Finance aggiornato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Finance editorial:", err); }
   }, { timezone: TZ });
+
   cron.schedule("45 1 * * 1", async () => {
-    try { await generateFinanceReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Finance reportage:", err); }
+    try { await generateFinanceReportage(); console.log("[SchedulerManager] ✅ Reportage Finance generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Finance reportage:", err); }
   }, { timezone: TZ });
+
   cron.schedule("50 1 * * 1", async () => {
-    try { await generateFinanceMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Finance market analysis:", err); }
+    try { await generateFinanceMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Finance generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Finance market analysis:", err); }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // AUDIT NOTTURNO — ogni giorno alle 02:00 CET
+  // ══════════════════════════════════════════════════════════════════════════
+
+  cron.schedule("0 2 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 02:00 CET — Audit notturno URL notizie...");
+    try { await runNightlyAudit(); console.log("[SchedulerManager] ✅ Audit notturno completato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Audit notturno:", err); }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /health — Health & Biotech
   // ══════════════════════════════════════════════════════════════════════════
+
   cron.schedule("15 2 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 02:15 CET — Avvio scraping Health news...");
-    try { await refreshHealthNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Health news:", err); }
+    try { await refreshHealthNewsFromRSS(); console.log("[SchedulerManager] ✅ Health news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Health news:", err); }
   }, { timezone: TZ });
+
   cron.schedule("20 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:20 CET — Avvio editoriale Health...");
-    try { await generateHealthEditorial(); await generateHealthDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Health editorial:", err); }
+    console.log("[SchedulerManager] ⏰ 02:20 CET — Editoriale Health...");
+    try { await generateHealthEditorial(); await generateHealthDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Health aggiornato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Health editorial:", err); }
   }, { timezone: TZ });
+
   cron.schedule("30 2 * * 1", async () => {
-    try { await generateHealthReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Health reportage:", err); }
+    try { await generateHealthReportage(); console.log("[SchedulerManager] ✅ Reportage Health generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Health reportage:", err); }
   }, { timezone: TZ });
+
   cron.schedule("35 2 * * 1", async () => {
-    try { await generateHealthMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Health market analysis:", err); }
+    try { await generateHealthMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Health generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Health market analysis:", err); }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /sport — Sport & Business
   // ══════════════════════════════════════════════════════════════════════════
+
   cron.schedule("45 2 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 02:45 CET — Avvio scraping Sport news...");
-    try { await refreshSportNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Sport news:", err); }
+    try { await refreshSportNewsFromRSS(); console.log("[SchedulerManager] ✅ Sport news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Sport news:", err); }
   }, { timezone: TZ });
+
   cron.schedule("50 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:50 CET — Avvio editoriale Sport...");
-    try { await generateSportEditorial(); await generateSportDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Sport editorial:", err); }
+    console.log("[SchedulerManager] ⏰ 02:50 CET — Editoriale Sport...");
+    try { await generateSportEditorial(); await generateSportDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Sport aggiornato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Sport editorial:", err); }
   }, { timezone: TZ });
+
   cron.schedule("55 2 * * 1", async () => {
-    try { await generateSportReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Sport reportage:", err); }
+    try { await generateSportReportage(); console.log("[SchedulerManager] ✅ Reportage Sport generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Sport reportage:", err); }
   }, { timezone: TZ });
+
   cron.schedule("58 2 * * 1", async () => {
-    try { await generateSportMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Sport market analysis:", err); }
+    try { await generateSportMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Sport generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Sport market analysis:", err); }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /luxury — Lifestyle & Luxury
   // ══════════════════════════════════════════════════════════════════════════
+
   cron.schedule("5 3 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 03:05 CET — Avvio scraping Luxury news...");
-    try { await refreshLuxuryNewsFromRSS(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury news:", err); }
+    try { await refreshLuxuryNewsFromRSS(); console.log("[SchedulerManager] ✅ Luxury news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Luxury news:", err); }
   }, { timezone: TZ });
+
   cron.schedule("10 3 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 03:10 CET — Avvio editoriale Luxury...");
-    try { await generateLuxuryEditorial(); await generateLuxuryDealOfWeek(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury editorial:", err); }
+    console.log("[SchedulerManager] ⏰ 03:10 CET — Editoriale Luxury...");
+    try { await generateLuxuryEditorial(); await generateLuxuryDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Luxury aggiornato"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Luxury editorial:", err); }
   }, { timezone: TZ });
+
   cron.schedule("20 3 * * 1", async () => {
-    try { await generateLuxuryReportage(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury reportage:", err); }
+    try { await generateLuxuryReportage(); console.log("[SchedulerManager] ✅ Reportage Luxury generati"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Luxury reportage:", err); }
   }, { timezone: TZ });
+
   cron.schedule("25 3 * * 1", async () => {
-    try { await generateLuxuryMarketAnalysis(); } catch (err) { console.error("[SchedulerManager] ❌ Luxury market analysis:", err); }
-  }, { timezone: TZ });
-
-  // ══════════
-  // AUDIT NOTTURNO — ogni giorno alle 02:00 CET // ══════════════════════════════════════════════════════════════════════════
-
-  // ── 13. AUDIT NOTTURNO — ogni giorno alle 02:00 CET ──────────────────────
-  // Verifica raggiungibilità URL di tutte le notizie.
-  // Sostituisce le notizie con link non validi con notizie fresche da RSS.
-  cron.schedule("0 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:00 CET — Avvio audit notturno URL notizie...");
-    try {
-      await runNightlyAudit();
-      console.log("[SchedulerManager] ✅ Audit notturno completato");
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore audit notturno:", err);
-    }
+    try { await generateLuxuryMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Luxury generate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Luxury market analysis:", err); }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // NEWSLETTER — solo lunedì
+  // NEWSLETTER GIORNALIERA PER CANALE
   // ══════════════════════════════════════════════════════════════════════════
+  // Ogni giorno alle 07:00 viene inviata una preview a info@ideasmart.ai
+  // Ogni giorno alle 07:30 viene inviata la newsletter massiva al canale del giorno:
+  //   Lunedì    → AI4Business News
+  //   Martedì   → Startup News
+  //   Mercoledì → Finance & Markets
+  //   Giovedì   → Sport & Business
+  //   Venerdì   → ITsMusic
+  //   Sabato    → Lifestyle & Luxury
+  //   Domenica  → Health & Biotech
 
-  // ── 14. NEWSLETTER TEST — ogni lunedì alle 07:30 CET ─────────────────────
-  // Invia una newsletter di test a info@ideasmart.ai con i contenuti reali dal DB.
-  // Permette la valutazione del contenuto prima dell'invio massivo alle 09:30.
-  cron.schedule("30 7 * * 1", async () => {
-    const weekKey = getWeekKey();
-    const testKey = `test-${weekKey}`;
-
-    console.log("[SchedulerManager] ⏰ Lunedì 07:30 CET — Invio newsletter di TEST a info@ideasmart.ai...");
-
-    if (lastTestNewsletterSentKey === testKey) {
-      console.log(`[SchedulerManager] ⏭️ Newsletter di test già inviata per ${weekKey}, skip`);
-      return;
-    }
-
+  // ── PREVIEW (07:00 CET) — tutti i giorni ─────────────────────────────────
+  cron.schedule("0 7 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter del giorno...");
     try {
-      lastTestNewsletterSentKey = testKey;
-      await sendTestNewsletter();
-      console.log("[SchedulerManager] ✅ Newsletter di test inviata a info@ideasmart.ai");
+      const result = await sendDailyChannelPreview();
+      if (result.success) {
+        console.log(`[SchedulerManager] ✅ Preview ${result.channel} inviata a info@ideasmart.ai`);
+      } else {
+        console.log(`[SchedulerManager] ℹ️ Preview: ${result.channel} — ${result.error || "skip"}`);
+      }
     } catch (err) {
-      lastTestNewsletterSentKey = null; // reset per permettere retry
-      console.error("[SchedulerManager] ❌ Errore invio newsletter di test:", err);
+      console.error("[SchedulerManager] ❌ Errore preview newsletter:", err);
     }
   }, { timezone: TZ });
 
-  // ── 15. NEWSLETTER MASSIVA — ogni lunedì alle 09:30 CET ──────────────────
-  // Invia la newsletter a tutti gli iscritti attivi (AI4Business + ITsMusic).
-  // Spostato da 10:00 a 09:30 come richiesto.
-  cron.schedule("30 9 * * 1", async () => {
-    const weekKey = getWeekKey();
-    const sendKey = `${weekKey}-monday`;
-
-    console.log("[SchedulerManager] ⏰ Lunedì 09:30 CET — Verifica invio Newsletter massiva...");
-
-    if (lastNewsletterSentKey === sendKey) {
-      console.log(`[SchedulerManager] ⏭️ Newsletter già inviata per ${sendKey}, skip`);
-      return;
-    }
-
-    // Invia AI4Business News
+  // ── INVIO MASSIVO (07:30 CET) — tutti i giorni ───────────────────────────
+  cron.schedule("30 7 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 07:30 CET — Invio newsletter massiva del giorno...");
     try {
-      lastNewsletterSentKey = sendKey;
-      await sendWeeklyNewsletter();
-      console.log("[SchedulerManager] ✅ AI4Business News inviata con successo (Lunedì 09:30)");
+      const result = await sendDailyChannelNewsletter();
+      if (result.success && result.recipientCount > 0) {
+        console.log(`[SchedulerManager] ✅ Newsletter ${result.channel}: ${result.recipientCount} iscritti, ${result.newsCount} notizie`);
+      } else if (result.recipientCount === 0 && result.success) {
+        console.log(`[SchedulerManager] ℹ️ Newsletter ${result.channel}: già inviata oggi o nessun iscritto`);
+      } else {
+        console.error(`[SchedulerManager] ❌ Newsletter ${result.channel}: ${result.error}`);
+      }
     } catch (err) {
-      lastNewsletterSentKey = null;
-      console.error("[SchedulerManager] ❌ Errore invio AI4Business News:", err);
-    }
-
-    // Invia ITsMusic
-    if (lastMusicNewsletterSentKey === sendKey) {
-      console.log(`[SchedulerManager] ⏭️ ITsMusic già inviata per ${sendKey}, skip`);
-      return;
-    }
-    try {
-      lastMusicNewsletterSentKey = sendKey;
-      await sendItsMusicNewsletter();
-      console.log("[SchedulerManager] ✅ ITsMusic inviata con successo (Lunedì 09:30)");
-    } catch (err) {
-      lastMusicNewsletterSentKey = null;
-      console.error("[SchedulerManager] ❌ Errore invio ITsMusic:", err);
+      console.error("[SchedulerManager] ❌ Errore invio newsletter massiva:", err);
     }
   }, { timezone: TZ });
 
@@ -388,12 +348,8 @@ export function startAllSchedulers(): void {
   // LINKEDIN AUTOPOST — ogni giorno alle 10:00 CET
   // ══════════════════════════════════════════════════════════════════════════
 
-  // ── 16. LINKEDIN AUTOPOST — ogni giorno alle 10:00 CET ───────────────────
-  // Pubblica 1 post editoriale giornaliero su LinkedIn (AI o Startup in alternanza).
-  // Testo generato con LLM — tono HumanLess, analisi da senior analyst. Immagine da Pexels.
-  // Token LinkedIn scade ogni 2 mesi — aggiornare in Secrets.
   cron.schedule("0 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:00 CET — Avvio pubblicazione LinkedIn editoriale del giorno...");
+    console.log("[SchedulerManager] ⏰ 10:00 CET — Pubblicazione LinkedIn editoriale del giorno...");
     try {
       const result = await publishDailyLinkedInPosts();
       console.log(`[SchedulerManager] ✅ LinkedIn: ${result.published}/1 post pubblicati`);
@@ -419,8 +375,16 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale Startup → ogni giorno alle 01:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
   console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");
+  console.log("[SchedulerManager]   💰 News Finance     → ogni giorno alle 01:30 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   ✍️  Editoriale Finance → ogni giorno alle 01:35 CET");
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
-  console.log("[SchedulerManager]   🧪 Newsletter TEST  → ogni lunedì alle 08:30 CET → info@ideasmart.ai");
-  console.log("[SchedulerManager]   📧 Newsletter       → ogni lunedì alle 09:30 CET (invio massivo)");
-  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET (editoriale AI/Startup — tono HumanLess, analisi da senior analyst)");
+  console.log("[SchedulerManager]   🏥 News Health      → ogni giorno alle 02:15 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   ✍️  Editoriale Health → ogni giorno alle 02:20 CET");
+  console.log("[SchedulerManager]   ⚽ News Sport       → ogni giorno alle 02:45 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   ✍️  Editoriale Sport → ogni giorno alle 02:50 CET");
+  console.log("[SchedulerManager]   💎 News Luxury      → ogni giorno alle 03:05 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   ✍️  Editoriale Luxury → ogni giorno alle 03:10 CET");
+  console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
+  console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
+  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET");
 }

@@ -1005,6 +1005,42 @@ Rispondi con questo JSON:
       await generateLuxuryMarketAnalysis();
       return { success: true, message: "Lifestyle & Luxury aggiornato con successo" };
     }),
+    // ── Newsletter Giornaliera per Canale — Preview (07:00 CET) ─────────────────────────
+    sendDailyChannelPreview: adminProcedure.mutation(async () => {
+      const { sendDailyChannelPreview } = await import("./dailyChannelNewsletter");
+      const result = await sendDailyChannelPreview();
+      const { getLatestNews } = await import("./db");
+      const { getTodayChannel } = await import("./dailyChannelNewsletter");
+      const channel = getTodayChannel();
+      const newsCount = channel ? (await getLatestNews(12, channel.key)).length : 0;
+      return {
+        success: result.success,
+        channel: result.channel,
+        subject: result.subject,
+        newsCount,
+        error: result.error,
+      };
+    }),
+
+    // ── Newsletter Giornaliera per Canale — Invio Massivo ────────────────────────────────
+    sendChannelNewsletter: adminProcedure
+      .input(z.object({
+        channelKey: z.enum(["ai", "startup", "finance", "sport", "music", "luxury", "health"]),
+        testOnly: z.boolean().default(false),
+      }))
+      .mutation(async ({ input }) => {
+        const { sendChannelNewsletterManual } = await import("./dailyChannelNewsletter");
+        const result = await sendChannelNewsletterManual(input.channelKey, input.testOnly);
+        return {
+          success: result.success,
+          channel: result.channel,
+          recipientCount: result.recipientCount,
+          newsCount: result.newsCount,
+          subject: result.subject,
+          error: result.error,
+        };
+      }),
+
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure.mutation(async () => {
       console.log("[AdminRouter] Avvio pubblicazione manuale LinkedIn...");

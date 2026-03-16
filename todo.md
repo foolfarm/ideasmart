@@ -775,3 +775,14 @@
 - [x] Integrare PWAInstallBanner in App.tsx (visibile su tutte le pagine)
 - [x] Registrare service worker nell'index.html
 - [x] Banner si mostra dopo 3 secondi sulla prima visita mobile, si nasconde per 7 giorni dopo dismiss
+
+## Nuovi task (16 Mar 2026 — Scheduler Automatici e Newsletter Giornaliera)
+
+- [x] Scheduler notturno unificato per tutti i 7 canali (00:00-03:25 CET ogni giorno)
+- [x] Sistema newsletter giornaliera per canale (un canale al giorno)
+- [x] Preview newsletter alle 07:00 CET → info@ideasmart.ai per revisione
+- [x] Invio massivo newsletter alle 07:30 CET → tutti gli iscritti attivi
+- [x] Calendario: Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health
+- [x] Procedure admin: sendDailyChannelPreview, sendChannelNewsletter (7 canali)
+- [x] Pannello Admin aggiornato con tabella calendario e pulsanti per ogni canale
+- [x] Test per dailyChannelNewsletter (16 test) e schedulerManager (11 test) — 35/35 passano

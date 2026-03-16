@@ -117,14 +117,14 @@ describe("schedulerManager", () => {
     }
   });
 
-  it("dovrebbe programmare la newsletter di test alle 08:30 il lunedì", async () => {
+  it("dovrebbe programmare la preview newsletter alle 07:00 ogni giorno", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // La newsletter di test è programmata il lunedì alle 07:30 CET
-    const testNewsletterCall = calls.find(c => c[0] === "30 7 * * 1");
-    expect(testNewsletterCall).toBeDefined();
+    // La preview newsletter è programmata ogni giorno alle 07:00 CET
+    const previewCall = calls.find(c => c[0] === "0 7 * * *");
+    expect(previewCall).toBeDefined();
   });
 
   it("dovrebbe programmare LinkedIn autopost alle 10:00 ogni giorno", async () => {
@@ -136,13 +136,14 @@ describe("schedulerManager", () => {
     expect(linkedInCall).toBeDefined();
   });
 
-  it("dovrebbe programmare la newsletter massiva alle 09:30 il lunedì", async () => {
+  it("dovrebbe programmare la newsletter massiva alle 07:30 ogni giorno", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const massiveNewsletterCall = calls.find(c => c[0] === "30 9 * * 1");
-    expect(massiveNewsletterCall).toBeDefined();
+    // La newsletter massiva per canale è programmata ogni giorno alle 07:30 CET
+    const massiveCall = calls.find(c => c[0] === "30 7 * * *");
+    expect(massiveCall).toBeDefined();
   });
 
   it("dovrebbe programmare l'audit notturno alle 02:00 ogni giorno", async () => {
