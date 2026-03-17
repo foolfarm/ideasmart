@@ -101,7 +101,18 @@ export default function EditorialDetail() {
         )}
 
         {/* Meta */}
-        <div className="flex items-center gap-4 mb-8 pb-4 border-b border-[#1a2744]/20">
+        <div className="flex flex-wrap items-center gap-4 mb-8 pb-4 border-b border-[#1a2744]/20">
+          {/* Firma autore */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-[#1a2744] flex items-center justify-center">
+              <span className="text-white text-xs font-bold" style={{ fontFamily: "'Space Mono', monospace" }}>AL</span>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-[#1a2744]" style={{ fontFamily: "'Playfair Display', serif" }}>Adrian Lenice</p>
+              <p className="font-mono text-xs text-[#1a2744]/50 tracking-widest uppercase">Direttore Editoriale</p>
+            </div>
+          </div>
+          <div className="w-px h-8 bg-[#1a2744]/20 hidden sm:block" />
           <div className="flex items-center gap-2 text-sm text-[#1a2744]/60">
             <Calendar className="w-4 h-4" />
             <span className="font-mono">{editorial.dateLabel}</span>

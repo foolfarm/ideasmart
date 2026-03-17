@@ -81,6 +81,17 @@ export default function StartupOfDayDetail() {
 
         <p className="text-xl text-[#1a2744]/70 italic mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>{spotlight.tagline}</p>
 
+        {/* Firma autore */}
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#1a2744]/20">
+          <div className="w-8 h-8 rounded-full bg-[#1a2744] flex items-center justify-center flex-shrink-0">
+            <span className="text-white text-xs font-bold" style={{ fontFamily: "'Space Mono', monospace" }}>AL</span>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-[#1a2744]" style={{ fontFamily: "'Playfair Display', serif" }}>Adrian Lenice</p>
+            <p className="font-mono text-xs text-[#1a2744]/50 tracking-widest uppercase">Direttore Editoriale</p>
+          </div>
+        </div>
+
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-4 mb-8 pb-4 border-b border-[#1a2744]/20">
           <span className="font-mono text-xs tracking-widest uppercase px-2 py-1" style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}>{spotlight.category}</span>

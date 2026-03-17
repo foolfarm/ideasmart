@@ -949,3 +949,10 @@
 - [ ] Newsletter settimanale Basket (Venerdì ore 10:00 CET)
 - [ ] Newsletter quotidiana News Italia (ogni giorno ore 10:00 CET)
 - [ ] Widget Threat Alert Cybersecurity (LLM da notizie CERT-AGID e ACN)
+
+## Task (17 Mar 2026 — Firma editoriale Adrian Lenice)
+
+- [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in EditorialDetail.tsx
+- [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in MarketAnalysisDetail.tsx
+- [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in ReportageDetail.tsx
+- [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in StartupOfDayDetail.tsx
