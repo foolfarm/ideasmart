@@ -88,6 +88,7 @@ import {
 import { runNightlyAudit } from "./nightlyAuditScheduler";
 import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
+import { invalidateAll, invalidateBySection, CACHE_KEYS } from "./cache";
 
 const TZ = "Europe/Rome";
 
@@ -357,6 +358,35 @@ export function startAllSchedulers(): void {
     console.log("[SchedulerManager] ⏰ 05:00 CET — Avvio scraping Basket news...");
     try { await refreshBasketNewsFromRSS(); console.log("[SchedulerManager] ✅ Basket news aggiornate"); }
     catch (err) { console.error("[SchedulerManager] ❌ Basket news:", err); }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // INVALIDAZIONE CACHE — 05:30 CET (dopo tutti gli scheduler di scraping)
+  // ══════════════════════════════════════════════════════════════════════════
+  // Tutti gli scheduler di scraping e generazione contenuti terminano entro le 05:15.
+  // Alle 05:30 invalidiamo l'intera cache in-memory così il prossimo utente
+  // riceve i contenuti freschi del giorno. La cache si ripopola automaticamente
+  // alla prima richiesta (lazy) o tramite warm-up programmato.
+  cron.schedule("30 5 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 05:30 CET — Invalidazione cache post-scraping...");
+    try {
+      invalidateAll();
+      console.log("[SchedulerManager] ✅ Cache invalidata — contenuti freschi disponibili al prossimo accesso");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
+    }
+  }, { timezone: TZ });
+
+  // ── Invalidazione cache parziale dopo LinkedIn (10:05 CET) ───────────────
+  // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.
+  // Invalidiamo solo la chiave getPuntoDelGiorno per non toccare le altre.
+  cron.schedule("5 10 * * *", async () => {
+    try {
+      invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn post");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache Punto del Giorno:", err);
+    }
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════

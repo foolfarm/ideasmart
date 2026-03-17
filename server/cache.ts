@@ -93,6 +93,15 @@ export function invalidateAll(): void {
 }
 
 /**
+ * Invalidate a single cache key by exact match.
+ * Alias for invalidateCache with exact key (no wildcard).
+ */
+export function invalidateBySection(key: string): void {
+  store.delete(key);
+  console.log(`[Cache] Invalidated key "${key}"`);
+}
+
+/**
  * Return current cache statistics for monitoring.
  */
 export function getCacheStats(): { keys: string[]; size: number; fresh: number; stale: number } {

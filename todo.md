@@ -1001,3 +1001,12 @@
 - [x] Aggiungere Cache-Control headers HTTP per CDN/browser (public, max-age=60, stale-while-revalidate=300)
 - [x] Aggiungere warm-up automatico della cache 60s dopo l'avvio del server
 - [x] Performance verificata: prima chiamata 179ms → dalla cache 8ms (22x più veloce)
+
+## Task (17 Mar 2026 — Invalidazione Cache Post-Scraping)
+
+- [ ] Aggiungere invalidazione cache al termine di rssNewsScheduler (tutte le sezioni)
+- [ ] Aggiungere invalidazione cache al termine di dailyContentScheduler (editoriale, startup del giorno)
+- [ ] Aggiungere invalidazione cache al termine di weeklyReportageScheduler
+- [ ] Aggiungere invalidazione cache al termine di marketAnalysisScheduler
+- [ ] Aggiungere invalidazione cache al termine di linkedinPublisher (punto del giorno)
+- [ ] Verificare che il warm-up post-invalidazione ripopoli la cache automaticamente
