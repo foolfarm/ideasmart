@@ -873,3 +873,7 @@
 ## Task (17 Mar 2026 — Navbar canali sport/motori)
 
 - [x] Aggiungere Motori, Tennis, Basket alla barra di navigazione principale (Navbar) e alla barra secondaria della Home
+
+## Task (17 Mar 2026 — Fix definitivo AdUnit cache)
+
+- [x] Risolvere definitivamente errore AdNewsBottom/AdUnit cache Vite — pulita cache node_modules/.vite, riavviato server
