@@ -19,6 +19,10 @@ const SECTION_COLORS = {
   health: { accent: "#0369a1", light: "#eff6ff", label: "Health & Biotech", path: "/health" },
   sport: { accent: "#b45309", light: "#fffbeb", label: "Sport & Business", path: "/sport" },
   luxury: { accent: "#7c3aed", light: "#faf5ff", label: "Lifestyle & Luxury", path: "/luxury" },
+  news: { accent: "#1a1f2e", light: "#f1f5f9", label: "News Italia", path: "/news" },
+  motori: { accent: "#dc2626", light: "#fef2f2", label: "Motori", path: "/motori" },
+  tennis: { accent: "#65a30d", light: "#f7fee7", label: "Tennis", path: "/tennis" },
+  basket: { accent: "#ea580c", light: "#fff7ed", label: "Basket", path: "/basket" },
 };
 
 function formatDateIT(date: Date): string {
@@ -42,7 +46,7 @@ function ThinDivider() {
   return <div className="w-full border-t border-[#1a1a2e]/20" />;
 }
 
-type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket";
 function SectionLabel({ section }: { section: SectionKey }) {
   const s = SECTION_COLORS[section];
   return (
@@ -218,6 +222,10 @@ export default function Home() {
   const { data: healthNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "health" });
   const { data: sportNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "sport" });
   const { data: luxuryNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "luxury" });
+  const { data: newsNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "news" });
+  const { data: motoriNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "motori" });
+  const { data: tennisNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "tennis" });
+  const { data: basketNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "basket" });
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
 
   const heroNews = useMemo(() => {
@@ -395,7 +403,7 @@ export default function Home() {
               </div>
               <ThinDivider />
 
-              {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec) => {
+              {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec) => {
                 const s = SECTION_COLORS[sec];
                 return (
                   <Link key={sec} href={s.path}>
@@ -584,6 +592,67 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Sezione 5: News Italia, Motori, Tennis, Basket */}
+          <div className="mt-8">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                News &amp; Sport
+              </span>
+            </div>
+            <ThinDivider />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-2">
+              {(["news", "motori", "tennis", "basket"] as const).map((sec, colIdx) => {
+                const newsForSection = sec === "news" ? newsNews : sec === "motori" ? motoriNews : sec === "tennis" ? tennisNews : basketNews;
+                const items = (newsForSection || []).slice(0, 3);
+                const s = SECTION_COLORS[sec];
+                return (
+                  <div key={sec} className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
+                    <div className="py-2">
+                      <Link href={s.path}>
+                        <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                          {s.label}
+                        </span>
+                      </Link>
+                    </div>
+                    <div className="border-t-2" style={{ borderColor: s.accent }} />
+                    {items.length > 0 ? (
+                      items.map((item, i) => (
+                        <div key={item.id}>
+                          <div className="py-2.5">
+                            <a href={item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`}
+                              target="_blank" rel="noopener noreferrer">
+                              <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
+                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                                {item.title}
+                              </span>
+                            </a>
+                            {item.sourceName && (
+                              <p className="mt-0.5 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+                                {item.sourceName}
+                              </p>
+                            )}
+                          </div>
+                          {i < items.length - 1 && <ThinDivider />}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">In arrivo…</div>
+                    )}
+                    <Link href={s.path}>
+                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+                        Tutte le notizie →
+                      </span>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* ── BANNER HOME BOTTOM (prima del footer) ── */}
           <AdHomeBanner className="mt-8 mb-2" />
 
@@ -596,7 +665,7 @@ export default function Home() {
                 {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
-                {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec) => {
+                {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec) => {
                   const s = SECTION_COLORS[sec];
                   return (
                     <Link key={sec} href={s.path}>

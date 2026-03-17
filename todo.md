@@ -849,3 +849,10 @@
 - [ ] Inserire banner sidebar nelle pagine canale con sidebar
 - [ ] Inserire banner footer prima del form iscrizione newsletter
 - [ ] Inserire banner in-feed nella Home principale tra le sezioni canale
+
+## Nuovi task (17 Mar 2026 — Nuovi canali + RSS italiani)
+
+- [x] Integrare 60 fonti RSS italiane (Politica, Cronaca, Finanza) in NEWS_SOURCES di rssSources.ts
+- [x] Aggiungere News, Motori, Tennis, Basket nel menu di navigazione principale (Navbar)
+- [x] Aggiungere i 4 nuovi canali nella sidebar "I Canali" della Home
+- [x] Aggiungere sezioni news di News, Motori, Tennis, Basket nella Home page
