@@ -20,18 +20,44 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
-  // Prevent browser from caching Vite dev modules — stale cached bundles cause
-  // React dispatcher mismatch ("Cannot read properties of null (reading 'useState')")
-  // when the server restarts and regenerates chunk hashes.
-  // We must intercept res.setHeader because Vite overwrites Cache-Control after our middleware.
+  // Intercept Vite's 504 "Outdated Optimize Dep" responses and convert them to a
+  // JS reload script. Must be placed BEFORE vite.middlewares so we can wrap res.writeHead
+  // and res.end before Vite calls them.
   app.use((req, res, next) => {
-    const isViteModule = 
+    const isViteAsset =
       req.url?.includes('/node_modules/.vite/') ||
-      req.url?.startsWith('/@vite/') ||
       req.url?.startsWith('/@fs/') ||
+      req.url?.startsWith('/@vite/') ||
       req.url?.startsWith('/src/');
-    
-    if (isViteModule) {
+
+    if (isViteAsset) {
+      const RELOAD_SCRIPT = 'if(typeof window!=="undefined"){console.warn("[IdeaSmart] Stale bundle, reloading...");setTimeout(()=>window.location.reload(),50);}';
+      const RELOAD_LEN = Buffer.byteLength(RELOAD_SCRIPT, 'utf8');
+
+      // Intercept res.statusCode setter — Vite sets statusCode=504 directly (not via writeHead)
+      // We use Object.defineProperty to intercept this assignment.
+      let _statusCode = res.statusCode;
+      const proto = Object.getPrototypeOf(res);
+      try {
+        Object.defineProperty(res, 'statusCode', {
+          get() { return _statusCode; },
+          set(code: number) {
+            _statusCode = code;
+            if (code === 504) {
+              // Redirect to 200 and prepare reload script headers
+              _statusCode = 200;
+              res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+              res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+              res.setHeader('Content-Length', RELOAD_LEN);
+            }
+          },
+          configurable: true,
+        });
+      } catch (_) {
+        // defineProperty may fail in some environments; fall back gracefully
+      }
+
+      // Override Cache-Control for all Vite dev modules
       const originalSetHeader = res.setHeader.bind(res);
       (res as any).setHeader = function(name: string, value: any) {
         if (name.toLowerCase() === 'cache-control') {
@@ -39,12 +65,27 @@ export async function setupVite(app: Express, server: Server) {
         }
         return originalSetHeader(name, value);
       };
-      res.setHeader('Pragma', 'no-cache');
+
+      // Intercept res.end — when Vite calls end() after setting statusCode=504,
+      // we serve the reload script instead of the empty body.
+      const originalEnd = res.end.bind(res);
+      (res as any).end = function(chunk?: any, ...args: any[]) {
+        // Check if this was originally a 504 (now remapped to 200)
+        // We detect it by checking if Content-Type is our JS type and chunk is empty
+        const ct = res.getHeader('Content-Type');
+        const isStale = ct === 'application/javascript; charset=utf-8' && 
+                        (!chunk || chunk === '' || (Buffer.isBuffer(chunk) && chunk.length === 0));
+        if (isStale) {
+          return originalEnd(RELOAD_SCRIPT, 'utf8');
+        }
+        return originalEnd(chunk, ...args);
+      };
     }
     next();
   });
 
   app.use(vite.middlewares);
+
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 

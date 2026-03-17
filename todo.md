@@ -928,3 +928,7 @@
 ## Task (17 Mar 2026 — Fix React duplicate PERMANENTE)
 
 - [x] Risolvere definitivamente React duplicate instances con fix strutturale in vite.config.ts
+
+## Task (17 Mar 2026 — Fix cache browser React)
+
+- [x] Eliminare cache browser persistente che usa bundle stantii con hash vecchi
