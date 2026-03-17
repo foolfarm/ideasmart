@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import compression from "compression";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -39,6 +40,20 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  // ── Compressione gzip/deflate per tutte le risposte ≥1KB ──────────────────────
+  // Riduce la dimensione delle risposte JSON tRPC del 70-85%
+  app.use(compression({
+    level: 6,          // Bilanciamento velocità/compressione (1=veloce, 9=massimo)
+    threshold: 1024,   // Comprimi solo risposte ≥1KB
+    filter: (req, res) => {
+      // Non comprimere le immagini (già compresse)
+      const contentType = res.getHeader('Content-Type') as string || '';
+      if (contentType.startsWith('image/')) return false;
+      return compression.filter(req, res);
+    },
+  }));
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -232,15 +247,24 @@ setTimeout(async () => {
     await cached(CACHE_KEYS.HOME_DATA, () => getHomeNewsData(), DEFAULT_TTL_MS);
     console.log('[Cache Warmup] ✅ Homepage data cached');
 
-    // Pre-popola editoriali, startup, reportage, market per le sezioni più visitate
-    const topSections = ['ai', 'startup', 'music', 'finance', 'health', 'sport', 'luxury', 'news'];
-    await Promise.all(topSections.flatMap(section => [
-      cached(CACHE_KEYS.EDITORIAL_LATEST(section), () => getLatestEditorial(section as any), EDITORIAL_TTL_MS),
-      cached(CACHE_KEYS.STARTUP_LATEST(section), () => getLatestStartupOfDay(section as any), EDITORIAL_TTL_MS),
-      cached(CACHE_KEYS.REPORTAGE_LATEST(section), () => getLatestWeeklyReportage(section as any), EDITORIAL_TTL_MS),
-      cached(CACHE_KEYS.MARKET_LATEST(section), () => getLatestMarketAnalysis(section as any), EDITORIAL_TTL_MS),
-    ]));
-    console.log('[Cache Warmup] ✅ Sezioni principali cached');
+    // Pre-popola tutte le 14 sezioni (news + editoriali + startup + reportage + market)
+    const allSections = ['ai', 'startup', 'music', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
+    const { getLatestNewsFiltered } = await import('../db');
+
+    // Stagger il warm-up in batch da 4 sezioni per non sovraccaricare il DB
+    for (let i = 0; i < allSections.length; i += 4) {
+      const batch = allSections.slice(i, i + 4);
+      await Promise.all(batch.flatMap(section => [
+        cached(CACHE_KEYS.NEWS_LATEST(section, 20), () => getLatestNewsFiltered(20, section as any), DEFAULT_TTL_MS),
+        cached(CACHE_KEYS.EDITORIAL_LATEST(section), () => getLatestEditorial(section as any), EDITORIAL_TTL_MS),
+        cached(CACHE_KEYS.STARTUP_LATEST(section), () => getLatestStartupOfDay(section as any), EDITORIAL_TTL_MS),
+        cached(CACHE_KEYS.REPORTAGE_LATEST(section), () => getLatestWeeklyReportage(section as any), EDITORIAL_TTL_MS),
+        cached(CACHE_KEYS.MARKET_LATEST(section), () => getLatestMarketAnalysis(section as any), EDITORIAL_TTL_MS),
+      ]));
+      // Piccola pausa tra i batch per non saturare il DB
+      await new Promise(r => setTimeout(r, 500));
+    }
+    console.log('[Cache Warmup] ✅ Tutte le 14 sezioni cached (news + editoriali + startup + reportage + market)');
     console.log('[Cache Warmup] 🎉 Cache warm-up completato!');
   } catch (err) {
     console.error('[Cache Warmup] Errore (non critico):', err);

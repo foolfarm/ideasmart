@@ -143,10 +143,12 @@ export const appRouter = router({
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        const items = await db.select().from(marketAnalysisTable).where(eq(marketAnalysisTable.id, input.id)).limit(1);
-        return items[0] ?? null;
+        return cached(`market:byId:${input.id}`, async () => {
+          const db = await getDbInstance();
+          if (!db) return null;
+          const items = await db.select().from(marketAnalysisTable).where(eq(marketAnalysisTable.id, input.id)).limit(1);
+          return items[0] ?? null;
+        }, 30 * 60 * 1000);
       }),
   }),
 
@@ -164,10 +166,12 @@ export const appRouter = router({
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        const items = await db.select().from(weeklyReportageTable).where(eq(weeklyReportageTable.id, input.id)).limit(1);
-        return items[0] ?? null;
+        return cached(`reportage:byId:${input.id}`, async () => {
+          const db = await getDbInstance();
+          if (!db) return null;
+          const items = await db.select().from(weeklyReportageTable).where(eq(weeklyReportageTable.id, input.id)).limit(1);
+          return items[0] ?? null;
+        }, 30 * 60 * 1000);
       }),
   }),
 
@@ -185,10 +189,12 @@ export const appRouter = router({
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        const items = await db.select().from(dailyEditorialTable).where(eq(dailyEditorialTable.id, input.id)).limit(1);
-        return items[0] ?? null;
+        return cached(`editorial:byId:${input.id}`, async () => {
+          const db = await getDbInstance();
+          if (!db) return null;
+          const items = await db.select().from(dailyEditorialTable).where(eq(dailyEditorialTable.id, input.id)).limit(1);
+          return items[0] ?? null;
+        }, 30 * 60 * 1000);
       }),
   }),
 
@@ -206,10 +212,12 @@ export const appRouter = router({
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        const items = await db.select().from(startupOfDayTable).where(eq(startupOfDayTable.id, input.id)).limit(1);
-        return items[0] ?? null;
+        return cached(`startup:byId:${input.id}`, async () => {
+          const db = await getDbInstance();
+          if (!db) return null;
+          const items = await db.select().from(startupOfDayTable).where(eq(startupOfDayTable.id, input.id)).limit(1);
+          return items[0] ?? null;
+        }, 30 * 60 * 1000);
       }),
   }),
 
@@ -268,24 +276,31 @@ export const appRouter = router({
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        const items = await db.select().from(newsItemsTable)
-          .where(eq(newsItemsTable.id, input.id))
-          .limit(1);
-        if (!items.length) return null;
-        const item = items[0];
-        return {
-          id: item.id,
-          title: item.title,
-          summary: item.summary,
-          category: item.category,
-          sourceName: item.sourceName ?? '',
-          sourceUrl: item.sourceUrl ?? '#',
-          publishedAt: item.publishedAt ?? '',
-          imageUrl: item.imageUrl ?? null,
-          section: item.section,
-        };
+        // Cache 30 minuti — il contenuto di un articolo è stabile
+        return cached(
+          `news:byId:${input.id}`,
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return null;
+            const items = await db.select().from(newsItemsTable)
+              .where(eq(newsItemsTable.id, input.id))
+              .limit(1);
+            if (!items.length) return null;
+            const item = items[0];
+            return {
+              id: item.id,
+              title: item.title,
+              summary: item.summary,
+              category: item.category,
+              sourceName: item.sourceName ?? '',
+              sourceUrl: item.sourceUrl ?? '#',
+              publishedAt: item.publishedAt ?? '',
+              imageUrl: item.imageUrl ?? null,
+              section: item.section,
+            };
+          },
+          30 * 60 * 1000
+        );
       }),
 
     // Recupera notizie correlate per sezione/categoria
@@ -296,26 +311,32 @@ export const appRouter = router({
         limit: z.number().min(1).max(6).default(4),
       }))
       .query(async ({ input }) => {
-        const db = await getDbInstance();
-        if (!db) return [];
-        const items = await db.select().from(newsItemsTable)
-          .where(eq(newsItemsTable.section, input.section as any))
-          .orderBy(desc(newsItemsTable.createdAt))
-          .limit(input.limit + 1);
-        // Escludi la notizia corrente
-        return items
-          .filter((item: typeof items[0]) => item.id !== input.id)
-          .slice(0, input.limit)
-          .map((item: typeof items[0]) => ({
-            id: item.id,
-            title: item.title,
-            summary: item.summary,
-            category: item.category,
-            sourceName: item.sourceName ?? '',
-            sourceUrl: item.sourceUrl ?? '#',
-            publishedAt: item.publishedAt ?? '',
-            imageUrl: item.imageUrl ?? null,
-          }));
+        // Cache 15 minuti — le correlate cambiano con i nuovi articoli
+        return cached(
+          CACHE_KEYS.NEWS_RELATED(input.id),
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return [];
+            const items = await db.select().from(newsItemsTable)
+              .where(eq(newsItemsTable.section, input.section as any))
+              .orderBy(desc(newsItemsTable.createdAt))
+              .limit(input.limit + 1);
+            return items
+              .filter((item: typeof items[0]) => item.id !== input.id)
+              .slice(0, input.limit)
+              .map((item: typeof items[0]) => ({
+                id: item.id,
+                title: item.title,
+                summary: item.summary,
+                category: item.category,
+                sourceName: item.sourceName ?? '',
+                sourceUrl: item.sourceUrl ?? '#',
+                publishedAt: item.publishedAt ?? '',
+                imageUrl: item.imageUrl ?? null,
+              }));
+          },
+          EDITORIAL_TTL_MS
+        );
       }),
 
     // Recupera tutte le notizie con filtri per l'Edicola

@@ -1010,3 +1010,11 @@
 - [ ] Aggiungere invalidazione cache al termine di marketAnalysisScheduler
 - [ ] Aggiungere invalidazione cache al termine di linkedinPublisher (punto del giorno)
 - [ ] Verificare che il warm-up post-invalidazione ripopoli la cache automaticamente
+
+## Task (17 Mar 2026 — Ottimizzazione Cache Avanzata)
+- [x] Estendere cache a news.getById (TTL 30min) e news.getRelated (TTL 15min)
+- [x] Estendere cache a marketAnalysis.getById, reportage.getById, editorial.getById, startupOfDay.getById (TTL 30min)
+- [x] Warm-up proattivo completo: tutte le 14 sezioni × 5 tipi di contenuto (70 chiavi cache)
+- [x] Aggiungere compressione gzip con Express compression middleware (risparmio 70% — 44KB → 14KB)
+- [x] Warm-up con stagger in batch da 4 sezioni per non sovraccaricare il DB
+- [x] Tutti i 36 test passano
