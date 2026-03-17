@@ -885,3 +885,8 @@
 ## Task (17 Mar 2026 — Fix definitivo HMR WebSocket)
 
 - [x] Correggere configurazione HMR Vite — configurazione già corretta (clientPort:443, protocol:wss), errore è transitorio al riavvio server
+
+## Task (17 Mar 2026 — Stile giornale barra canali)
+
+- [x] Uniformare barra canali sopra ticker: stile editoriale sobrio, nessun colore, tutti gli 11 canali
+- [x] Uniformare sidebar I Canali: stesso stile, tutti gli 11 canali visibili

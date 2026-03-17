@@ -315,16 +315,16 @@ export default function Home() {
 
           <Divider thick />
 
-          <nav className="flex flex-wrap items-center justify-center gap-0 py-2">
+          <nav className="flex flex-wrap items-center justify-center gap-0 py-2 border-t border-[#1a1a2e]/15">
             {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec, i) => {
               const s = SECTION_COLORS[sec];
               return (
                 <Link key={sec} href={s.path}>
-                  <span className="px-6 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                  <span className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
                     style={{
-                      fontFamily: "'Space Mono', monospace",
-                      color: s.accent,
-                      borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.2)" : "none",
+                      fontFamily: "'Playfair Display', Georgia, serif",
+                      borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.18)" : "none",
+                      letterSpacing: "0.08em",
                     }}>
                     {s.label}
                   </span>
@@ -332,21 +332,19 @@ export default function Home() {
               );
             })}
             <Link href="/edicola">
-              <span className="px-6 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+              <span className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
                 style={{
-                  fontFamily: "'Space Mono', monospace",
-                  color: "#1a1a2e",
-                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  borderLeft: "1px solid rgba(26,26,46,0.18)",
                 }}>
-                📰 Edicola
+                Edicola
               </span>
             </Link>
             <Link href="/manifesto">
-              <span className="px-6 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+              <span className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
                 style={{
-                  fontFamily: "'Space Mono', monospace",
-                  color: "#0a6e5c",
-                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  borderLeft: "1px solid rgba(26,26,46,0.18)",
                 }}>
                 Manifesto
               </span>
@@ -402,17 +400,15 @@ export default function Home() {
                 </span>
               </div>
               <ThinDivider />
-
               {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec) => {
                 const s = SECTION_COLORS[sec];
                 return (
                   <Link key={sec} href={s.path}>
-                    <div className="py-2.5 flex items-center justify-between group cursor-pointer hover:opacity-70 transition-opacity border-b border-[#1a1a2e]/10">
-                      <span className="text-sm font-bold"
-                        style={{ color: s.accent, fontFamily: "'Playfair Display', Georgia, serif" }}>
+                    <div className="py-2.5 flex items-center justify-between group cursor-pointer hover:opacity-50 transition-opacity border-b border-[#1a1a2e]/10">
+                      <span className="text-sm font-bold text-[#1a1a2e]"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                         {s.label}
-                      </span>
-                      <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors"
+                      </span>                     <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors"
                         style={{ fontFamily: "'Space Mono', monospace" }}>
                         →
                       </span>
