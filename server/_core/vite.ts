@@ -114,6 +114,7 @@ export async function setupVite(app: Express, server: Server) {
   // Vite hardcodes __HMR_HOSTNAME__=null which causes the browser to use importMetaUrl.hostname
   // from the module URL (localhost:5173) instead of the proxy domain.
   // We intercept the /@vite/client request and replace the socketHost line dynamically.
+  // Compatible with Vite 5, 6, and 7 (pattern: `${null || importMetaUrl.hostname}:...`)
   app.use('/@vite/client', (req, res, next) => {
     const proxyDomain = (req.headers['x-forwarded-host'] as string) || (req.headers['host'] as string) || '';
     const hostname = proxyDomain.split(':')[0];
@@ -138,16 +139,28 @@ export async function setupVite(app: Express, server: Server) {
       if (!intercepted) {
         intercepted = true;
         if (chunk) body += typeof chunk === 'string' ? chunk : chunk.toString('utf8');
-        // Patch: replace null hostname with the actual proxy hostname
-        const patched = body
-          .replace(
-            /const socketHost = `\$\{null \|\| importMetaUrl\.hostname\}/,
-            `const socketHost = \`\${"${hostname}"}`
-          )
-          .replace(
-            /const directSocketHost = "localhost:\d+\/"/,
-            `const directSocketHost = "${hostname}:443/"`
-          );
+
+        let patched = body;
+
+        // Vite 7 pattern: `${null || importMetaUrl.hostname}:${hmrPort || importMetaUrl.port}${...}`
+        // Replace only the hostname part, keeping the port expression intact
+        patched = patched.replace(
+          /`\$\{null \|\| importMetaUrl\.hostname\}:\$\{/g,
+          `\`\${"${hostname}"}:\${`
+        );
+
+        // Vite 5/6 legacy pattern (fallback): `${null || importMetaUrl.hostname}`
+        patched = patched.replace(
+          /`\$\{null \|\| importMetaUrl\.hostname\}/g,
+          `\`\${"${hostname}"}`
+        );
+
+        // Replace directSocketHost (localhost:PORT/) with proxy hostname:443/
+        patched = patched.replace(
+          /const directSocketHost = "localhost:\d+\/"/g,
+          `const directSocketHost = "${hostname}:443/"`
+        );
+
         const buf = Buffer.from(patched, 'utf8');
         res.setHeader('Content-Length', buf.length);
         return originalEnd(buf);
