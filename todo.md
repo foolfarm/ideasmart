@@ -890,3 +890,7 @@
 
 - [x] Uniformare barra canali sopra ticker: stile editoriale sobrio, nessun colore, tutti gli 11 canali
 - [x] Uniformare sidebar I Canali: stesso stile, tutti gli 11 canali visibili
+
+## Task (17 Mar 2026 — Fix definitivo AdUnit export)
+
+- [x] Rifattorizzare AdUnit.tsx con export nominati espliciti per ogni componente — eliminato pattern factory che causava problemi di cache Vite
