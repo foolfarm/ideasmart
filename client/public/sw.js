@@ -1,12 +1,16 @@
 // IDEASMART Service Worker — PWA offline-first caching
 // In development mode (Vite dev server), this SW self-unregisters to prevent
 // caching issues with @vite/client HMR WebSocket connections.
-const CACHE_NAME = 'ideasmart-v4';
+const CACHE_NAME = 'ideasmart-v5';
 
 // Self-unregister in dev mode: check if the server is Vite dev server
-// by looking for the /@vite/ path availability
+// by verifying that /@vite/client responds with JavaScript (not HTML fallback).
+// In production, Express serves index.html (text/html) for unknown paths.
+// In dev, Vite serves the real @vite/client (text/javascript).
 fetch('/@vite/client', { method: 'HEAD' }).then((res) => {
-  if (res.ok) {
+  const ct = res.headers.get('content-type') || '';
+  const isDevMode = res.ok && ct.includes('javascript');
+  if (isDevMode) {
     // We're in dev mode — unregister this SW and clear all caches
     caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k)))).then(() => {
       return self.registration.unregister();
@@ -18,8 +22,9 @@ fetch('/@vite/client', { method: 'HEAD' }).then((res) => {
     });
   }
 }).catch(() => {
-  // In production, /@vite/client doesn't exist — keep the SW active
+  // Network error — keep the SW active
 });
+
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',

@@ -971,3 +971,8 @@
 - [x] Identificato causa root definitiva: il SW vecchio (v1) cachava /@vite/client e veniva servito prima che il nuovo SW si attivasse
 - [x] usePWA.ts: in dev mode (import.meta.env.DEV), non registrare il SW ma disregistrare quelli esistenti
 - [x] sw.js v4: aggiunto auto-disregistrazione in dev mode (fetch /@vite/client HEAD → se 200 = dev → clear cache + unregister + reload tabs)
+
+## Bug Fix (17 Mar 2026 — SW reload loop in produzione)
+
+- [x] Identificato bug critico: in produzione Express serve index.html (text/html) per /@vite/client, causando res.ok=true e attivando il reload loop del SW
+- [x] sw.js v5: la detection dev mode ora controlla Content-Type (text/javascript = dev, text/html = produzione) invece di solo res.ok
