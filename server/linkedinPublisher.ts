@@ -500,11 +500,14 @@ export async function publishDailyLinkedInPosts(): Promise<{
         const dateLabel = today.toISOString().split('T')[0]; // YYYY-MM-DD
 
         // Costruisci URL LinkedIn dal postId (formato: urn:li:ugcPost:XXXXXXXX)
+        // LinkedIn accetta sia il formato lungo che il formato corto lnkd.in/XXXX
+        // Usiamo il formato diretto della pagina profilo che funziona sempre
         let linkedinUrl: string | undefined;
         if (result.postId && result.postId !== 'unknown') {
-          // Estrai il numero numerico dall'URN se presente
-          const numericId = result.postId.replace(/^urn:li:ugcPost:/, '');
-          linkedinUrl = `https://www.linkedin.com/feed/update/${result.postId.startsWith('urn:') ? result.postId : `urn:li:ugcPost:${numericId}`}/`;
+          // Estrai l'ID numerico dall'URN (es. urn:li:ugcPost:7307123456789 -> 7307123456789)
+          const numericId = result.postId.replace(/^urn:li:ugcPost:/, '').replace(/^urn:li:share:/, '');
+          // Usa il formato diretto che LinkedIn mostra nella barra degli indirizzi
+          linkedinUrl = `https://www.linkedin.com/posts/andreacinelli_${numericId}`;
         }
 
         // Estrai hashtags dal testo del post

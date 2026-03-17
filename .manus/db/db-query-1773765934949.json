@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, linkedinUrl, dateLabel FROM linkedin_posts ORDER BY id DESC LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, linkedinUrl, dateLabel FROM linkedin_posts ORDER BY id DESC LIMIT 3;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "AI nel Core Business: Il 72% delle Startup Europee ha Fatto il Salto Qualitativo",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:dJ4-WAeK/",
+      "dateLabel": "2026-03-17"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tlinkedinUrl\tdateLabel\n1\tAI nel Core Business: Il 72% delle Startup Europee ha Fatto il Salto Qualitativo\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:dJ4-WAeK/\t2026-03-17\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

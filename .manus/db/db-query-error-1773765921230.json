@@ -1,0 +1,18 @@
+{
+  "query": "DESCRIBE linkedin_posts; SELECT id, title, linkedin_url, published_at FROM linkedin_posts LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute DESCRIBE linkedin_posts; SELECT id, title, linkedin_url, published_at FROM linkedin_posts LIMIT 5;",
+  "returncode": 1,
+  "logs": [
+    "Field\tType\tNull\tKey\tDefault\tExtra",
+    "id\tint\tNO\tPRI\tNULL\tauto_increment",
+    "dateLabel\tvarchar(20)\tNO\tUNI\tNULL\t",
+    "postText\ttext\tNO\t\tNULL\t",
+    "linkedinUrl\tvarchar(1000)\tYES\t\tNULL\t",
+    "title\tvarchar(500)\tYES\t\tNULL\t",
+    "section\tenum('ai','music','startup','finance','health','sport','luxury','news','motori','tennis','basket','gossip','cybersecurity','sondaggi')\tNO\t\tai\t",
+    "imageUrl\tvarchar(1000)\tYES\t\tNULL\t",
+    "hashtags\tvarchar(500)\tYES\t\tNULL\t",
+    "createdAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP",
+    "ERROR 1054 (42S22) at line 1: Unknown column 'linkedin_url' in 'field list'"
+  ]
+}
