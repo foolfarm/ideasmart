@@ -956,3 +956,12 @@
 - [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in MarketAnalysisDetail.tsx
 - [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in ReportageDetail.tsx
 - [x] Aggiungere firma "Adrian Lenice — Direttore Editoriale" in StartupOfDayDetail.tsx
+
+## Task (17 Mar 2026 — Fix HMR WebSocket DEFINITIVO)
+
+- [x] Identificato causa root: Service Worker cachava il vecchio @vite/client (senza patch HMR)
+- [x] Aggiornato sw.js: CACHE_NAME da v1 a v3 per invalidare la cache vecchia
+- [x] Aggiornato sw.js: esclusi /@vite/*, /@fs/*, /src/*, /node_modules/*, /__manus__/* dalla cache
+- [x] Aggiornato middleware patch @vite/client: usa Referer e Origin come fallback per rilevare il dominio proxy
+- [x] Aggiornato middleware patch @vite/client: sostituisce socketHost, serverHost e directSocketHost con valori hardcoded (3000-xxx:443/)
+- [x] Verificato: curl con Referer e Host corretti restituisce @vite/client patchato correttamente

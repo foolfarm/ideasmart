@@ -116,10 +116,49 @@ export async function setupVite(app: Express, server: Server) {
   // We intercept the /@vite/client request and replace the socketHost line dynamically.
   // Compatible with Vite 5, 6, and 7 (pattern: `${null || importMetaUrl.hostname}:...`)
   app.use('/@vite/client', (req, res, next) => {
-    // Priority: x-forwarded-host > Host header
-    // The Manus proxy sets the Host header to the proxy domain (e.g. 3000-xxx.manus.computer)
-    const proxyDomain = (req.headers['x-forwarded-host'] as string) || (req.headers['host'] as string) || '';
-    const hostname = proxyDomain.split(':')[0];
+    // Priority: x-forwarded-host > Host > Referer > Origin
+    // The Manus proxy may set different headers depending on configuration.
+    // We try multiple sources to find the proxy domain.
+    let hostname = '';
+
+    // 1. x-forwarded-host (set by some proxies)
+    const xfh = req.headers['x-forwarded-host'] as string;
+    if (xfh) hostname = xfh.split(':')[0];
+
+    // 2. Host header (set by the proxy to the proxy domain)
+    if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
+      const host = req.headers['host'] as string || '';
+      const h = host.split(':')[0];
+      if (h && h !== 'localhost' && h !== '127.0.0.1') hostname = h;
+    }
+
+    // 3. Referer header (browser always sends this when loading sub-resources)
+    if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
+      const referer = req.headers['referer'] as string || '';
+      try {
+        const refUrl = new URL(referer);
+        const h = refUrl.hostname;
+        if (h && h !== 'localhost' && h !== '127.0.0.1') hostname = h;
+      } catch (_) {}
+    }
+
+    // 4. Origin header
+    if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
+      const origin = req.headers['origin'] as string || '';
+      try {
+        const originUrl = new URL(origin);
+        const h = originUrl.hostname;
+        if (h && h !== 'localhost' && h !== '127.0.0.1') hostname = h;
+      } catch (_) {}
+    }
+
+    // 5. Use cached proxyHost from earlier requests
+    if ((!hostname || hostname === 'localhost' || hostname === '127.0.0.1') && proxyHost) {
+      hostname = proxyHost;
+    }
+
+    console.log(`[HMR Patch] @vite/client request - resolved hostname: ${hostname || 'none'} (host: ${req.headers['host']}, xfh: ${req.headers['x-forwarded-host']}, referer: ${req.headers['referer']})`);
+
     if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
       return next();
     }
@@ -145,7 +184,13 @@ export async function setupVite(app: Express, server: Server) {
         let patched = body;
 
         // Vite 7 pattern: `${null || importMetaUrl.hostname}:${hmrPort || importMetaUrl.port}${...}`
-        // Replace only the hostname part, keeping the port expression intact
+        // Replace the ENTIRE socketHost template literal with a hardcoded value
+        patched = patched.replace(
+          /`\$\{null \|\| importMetaUrl\.hostname\}:\$\{hmrPort \|\| importMetaUrl\.port\}\$\{"?\/"?\}`/g,
+          `"${hostname}:443/"`
+        );
+
+        // Fallback: replace just the hostname part if full pattern didn't match
         patched = patched.replace(
           /`\$\{null \|\| importMetaUrl\.hostname\}:\$\{/g,
           `\`\${"${hostname}"}:\${`
@@ -155,6 +200,12 @@ export async function setupVite(app: Express, server: Server) {
         patched = patched.replace(
           /`\$\{null \|\| importMetaUrl\.hostname\}/g,
           `\`\${"${hostname}"}`
+        );
+
+        // Replace serverHost (localhost:5173/) with proxy hostname:443/
+        patched = patched.replace(
+          /const serverHost = "localhost:\d+\/"/g,
+          `const serverHost = "${hostname}:443/"`
         );
 
         // Replace directSocketHost (localhost:PORT/) with proxy hostname:443/

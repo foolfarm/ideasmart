@@ -1,5 +1,5 @@
 // IDEASMART Service Worker — PWA offline-first caching
-const CACHE_NAME = 'ideasmart-v1';
+const CACHE_NAME = 'ideasmart-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -36,6 +36,16 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET and API requests
   if (event.request.method !== 'GET') return;
   if (url.pathname.startsWith('/api/')) return;
+
+  // Skip Vite dev server assets — must always be fetched fresh
+  // so that the HMR hostname patch is applied on every request
+  if (
+    url.pathname.startsWith('/@vite/') ||
+    url.pathname.startsWith('/@fs/') ||
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/node_modules/') ||
+    url.pathname.startsWith('/__manus__/')
+  ) return;
 
   // For navigation requests: network-first, fallback to cache
   if (event.request.mode === 'navigate') {
