@@ -11,7 +11,7 @@ import { protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { fixAllSourceUrls } from "../urlAuditFix";
 import { publishDailyLinkedInPosts } from "../linkedinPublisher";
-import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshAllNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS } from "../rssNewsScheduler";
+import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshAllNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS, refreshNewsGeneraliFromRSS, refreshMotoriNewsFromRSS, refreshTennisNewsFromRSS, refreshBasketNewsFromRSS } from "../rssNewsScheduler";
 import { getDb } from "../db";
 import { newsItems, sourceReports } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
@@ -31,7 +31,7 @@ export const adminRouter = router({
    */
   fixSourceUrls: adminProcedure
     .input(z.object({
-      section: z.enum(["ai", "music", "startup", "gossip", "cybersecurity", "sondaggi", "all"]).default("all"),
+      section: z.enum(["ai", "music", "startup", "gossip", "cybersecurity", "sondaggi", "news", "motori", "tennis", "basket", "all"]).default("all"),
     }))
     .mutation(async ({ input }) => {
       console.log(`[AdminRouter] Avvio fix sourceUrl per sezione: ${input.section}`);
@@ -59,7 +59,7 @@ export const adminRouter = router({
    */
   triggerRssScraping: adminProcedure
     .input(z.object({
-      section: z.enum(["ai", "music", "startup", "gossip", "cybersecurity", "sondaggi", "all"]).default("all"),
+      section: z.enum(["ai", "music", "startup", "gossip", "cybersecurity", "sondaggi", "news", "motori", "tennis", "basket", "all"]).default("all"),
     }))
     .mutation(async ({ input }) => {
       console.log(`[AdminRouter] Trigger manuale scraping RSS: ${input.section}`);
@@ -77,6 +77,10 @@ export const adminRouter = router({
           gossip: refreshGossipNewsFromRSS,
           cybersecurity: refreshCybersecurityNewsFromRSS,
           sondaggi: refreshSondaggiNewsFromRSS,
+          news: refreshNewsGeneraliFromRSS,
+          motori: refreshMotoriNewsFromRSS,
+          tennis: refreshTennisNewsFromRSS,
+          basket: refreshBasketNewsFromRSS,
         };
         const scraper = scrapers[input.section];
         if (scraper) setImmediate(() => scraper().catch(console.error));

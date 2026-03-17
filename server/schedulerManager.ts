@@ -65,7 +65,7 @@
  */
 
 import cron from "node-cron";
-import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshFinanceNewsFromRSS, refreshHealthNewsFromRSS, refreshSportNewsFromRSS, refreshLuxuryNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS } from "./rssNewsScheduler";
+import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshFinanceNewsFromRSS, refreshHealthNewsFromRSS, refreshSportNewsFromRSS, refreshLuxuryNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS, refreshNewsGeneraliFromRSS, refreshMotoriNewsFromRSS, refreshTennisNewsFromRSS, refreshBasketNewsFromRSS } from "./rssNewsScheduler";
 import { generateFinanceEditorial, generateFinanceDealOfWeek, generateFinanceReportage, generateFinanceMarketAnalysis } from "./financeScheduler";
 import { generateHealthEditorial, generateHealthDealOfWeek, generateHealthReportage, generateHealthMarketAnalysis } from "./healthScheduler";
 import { generateSportEditorial, generateSportDealOfWeek, generateSportReportage, generateSportMarketAnalysis } from "./sportScheduler";
@@ -331,6 +331,34 @@ export function startAllSchedulers(): void {
     catch (err) { console.error("[SchedulerManager] ❌ Sondaggi news:", err); }
   }, { timezone: TZ });
 
+  // ── News Italia (04:15 CET) ───────────────────────────────────────────────
+  cron.schedule("0 4 15 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 04:15 CET — Avvio scraping News Italia...");
+    try { await refreshNewsGeneraliFromRSS(); console.log("[SchedulerManager] ✅ News Italia aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ News Italia:", err); }
+  }, { timezone: TZ });
+
+  // ── Motori (04:30 CET) ────────────────────────────────────────────────────
+  cron.schedule("0 30 4 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 04:30 CET — Avvio scraping Motori news...");
+    try { await refreshMotoriNewsFromRSS(); console.log("[SchedulerManager] ✅ Motori news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Motori news:", err); }
+  }, { timezone: TZ });
+
+  // ── Tennis (04:45 CET) ────────────────────────────────────────────────────
+  cron.schedule("0 45 4 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 04:45 CET — Avvio scraping Tennis news...");
+    try { await refreshTennisNewsFromRSS(); console.log("[SchedulerManager] ✅ Tennis news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Tennis news:", err); }
+  }, { timezone: TZ });
+
+  // ── Basket (05:00 CET) ────────────────────────────────────────────────────
+  cron.schedule("0 0 5 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 05:00 CET — Avvio scraping Basket news...");
+    try { await refreshBasketNewsFromRSS(); console.log("[SchedulerManager] ✅ Basket news aggiornate"); }
+    catch (err) { console.error("[SchedulerManager] ❌ Basket news:", err); }
+  }, { timezone: TZ });
+
   // ══════════════════════════════════════════════════════════════════════════
   // NEWSLETTER GIORNALIERA PER CANALE
   // ══════════════════════════════════════════════════════════════════════════
@@ -419,6 +447,10 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🗞️  News Gossip       → ogni giorno alle 03:30 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   🔐 News Cybersec    → ogni giorno alle 03:45 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   📊 News Sondaggi    → ogni giorno alle 04:00 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   🇮🇹 News Italia      → ogni giorno alle 04:15 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   🚗 News Motori      → ogni giorno alle 04:30 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   🎾 News Tennis      → ogni giorno alle 04:45 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   🏀 News Basket      → ogni giorno alle 05:00 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
   console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET");

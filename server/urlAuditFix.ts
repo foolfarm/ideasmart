@@ -159,7 +159,7 @@ export async function fixAllSourceUrls(options: {
 
     await Promise.all(batch.map(async (row) => {
       const url = row.sourceUrl || "";
-      const sec = row.section as "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+      const sec = row.section as "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
       result.checked++;
 
       // URL non valido o troppo corto → usa fallback
