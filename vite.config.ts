@@ -166,8 +166,7 @@ export default defineConfig({
     dedupe: ["react", "react-dom", "@trpc/react-query", "@tanstack/react-query"],
   },
   optimizeDeps: {
-    // Force Vite to re-bundle deps and ensure a single React instance
-    force: true,
+    // Do NOT use force:true — it changes hashes on every restart causing browser cache mismatches
     include: [
       "react",
       "react-dom",
@@ -176,9 +175,9 @@ export default defineConfig({
       "react/jsx-dev-runtime",
       "@tanstack/react-query",
       "@trpc/react-query",
+      "@trpc/client",
     ],
     esbuildOptions: {
-      // Ensure all CJS modules that use React share the same instance
       define: {
         global: "globalThis",
       },

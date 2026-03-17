@@ -20,6 +20,30 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
+  // Prevent browser from caching Vite dev modules — stale cached bundles cause
+  // React dispatcher mismatch ("Cannot read properties of null (reading 'useState')")
+  // when the server restarts and regenerates chunk hashes.
+  // We must intercept res.setHeader because Vite overwrites Cache-Control after our middleware.
+  app.use((req, res, next) => {
+    const isViteModule = 
+      req.url?.includes('/node_modules/.vite/') ||
+      req.url?.startsWith('/@vite/') ||
+      req.url?.startsWith('/@fs/') ||
+      req.url?.startsWith('/src/');
+    
+    if (isViteModule) {
+      const originalSetHeader = res.setHeader.bind(res);
+      (res as any).setHeader = function(name: string, value: any) {
+        if (name.toLowerCase() === 'cache-control') {
+          return originalSetHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+        }
+        return originalSetHeader(name, value);
+      };
+      res.setHeader('Pragma', 'no-cache');
+    }
+    next();
+  });
+
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
@@ -39,7 +63,12 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx?v=${nanoid()}"`
       );
       const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      res.status(200).set({ 
+        "Content-Type": "text/html",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+      }).end(page);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);

@@ -924,3 +924,7 @@
 - [x] Aggiornare Home.tsx con i tre nuovi canali nella navigazione e nelle sezioni news
 - [x] Aggiungere route in App.tsx per i tre nuovi canali
 - [x] Aggiornare SECTION_COLORS in Home.tsx con i tre nuovi canali
+
+## Task (17 Mar 2026 — Fix React duplicate PERMANENTE)
+
+- [x] Risolvere definitivamente React duplicate instances con fix strutturale in vite.config.ts
