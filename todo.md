@@ -898,3 +898,7 @@
 ## Task (17 Mar 2026 — Fix React duplicate definitivo)
 
 - [x] Pulizia completa node_modules e reinstallazione per eliminare React duplicate — cache pulita, server riavviato
+
+## Task (17 Mar 2026 — Fix React dedupe vite.config)
+
+- [x] Aggiungere resolve.dedupe React in vite.config.ts per eliminare definitivamente React duplicate

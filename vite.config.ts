@@ -159,7 +159,11 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "client", "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      // Force single React instance to prevent "multiple copies of React" error
+      "react": path.resolve(import.meta.dirname, "node_modules", "react"),
+      "react-dom": path.resolve(import.meta.dirname, "node_modules", "react-dom"),
     },
+    dedupe: ["react", "react-dom", "@trpc/react-query", "@tanstack/react-query"],
   },
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
