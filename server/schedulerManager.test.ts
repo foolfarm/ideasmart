@@ -99,12 +99,12 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 32 cron job quando avviato", async () => {
+  it("dovrebbe registrare 35 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 32 scheduler: 16 originali + 16 nuovi canali (Finance, Health, Sport, Luxury: 4 cron ciascuno)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(32);
+    // 35 scheduler: 32 originali + 3 nuovi canali (Gossip, Cybersecurity, Sondaggi: 1 cron ciascuno)
+    expect(cron.default.schedule).toHaveBeenCalledTimes(35);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {

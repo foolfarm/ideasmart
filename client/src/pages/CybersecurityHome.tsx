@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import { AdCyberTop, AdCyberMid1, AdCyberBottom } from "@/components/AdUnit";
 
 const ACCENT = "#27ae60";
 const ACCENT_LIGHT = "#eafaf1";
@@ -149,6 +150,7 @@ export default function CybersecurityHome() {
           <BreakingNewsTicker />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-16">
+          <AdCyberTop />
           {heroNews && (
             <div className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
@@ -255,6 +257,7 @@ export default function CybersecurityHome() {
               </div>
             </div>
           )}
+          <AdCyberMid1 />
 
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
@@ -262,7 +265,7 @@ export default function CybersecurityHome() {
               <div className="py-3 flex items-center gap-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
                   style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}>
-                  Threat Analysis & Report
+                  Deal Flownalysis & Report
                 </span>
                 <div className="flex-1 border-t border-[#1a1a2e]/20" />
               </div>
@@ -369,6 +372,8 @@ export default function CybersecurityHome() {
               </div>
             </div>
           </div>
+
+          <AdCyberBottom />
 
           <ArchiveSection section="cybersecurity" accentColor={ACCENT} skipCount={10} />
 

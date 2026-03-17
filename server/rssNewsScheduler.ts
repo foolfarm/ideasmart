@@ -18,7 +18,7 @@ import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
-import { scrapeAINews, scrapeMusicNews, scrapeStartupNews, scrapeFinanceNews, scrapeHealthNews, scrapeSportNews, scrapeLuxuryNews, scrapeNewsGenerali, scrapeMotoriNews, scrapeTennisNews, scrapeBasketNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
+import { scrapeAINews, scrapeMusicNews, scrapeStartupNews, scrapeFinanceNews, scrapeHealthNews, scrapeSportNews, scrapeLuxuryNews, scrapeNewsGenerali, scrapeMotoriNews, scrapeTennisNews, scrapeBasketNews, scrapeGossipNews, scrapeCybersecurityNews, scrapeSondaggiNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
 
@@ -33,7 +33,7 @@ function getWeekLabel(): string {
  * Verifica ogni sourceUrl prima di salvare.
  */
 async function saveScrapedNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket",
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi",
   articles: Awaited<ReturnType<typeof scrapeAINews>>
 ): Promise<void> {
   const db = await getDb();
@@ -296,6 +296,54 @@ export async function refreshBasketNewsFromRSS(): Promise<void> {
   }
 }
 
+export async function refreshGossipNewsFromRSS(): Promise<void> {
+  console.log("[RssNewsScheduler] 🗞️ Avvio scraping Business Gossip news da RSS...");
+  try {
+    const articles = await scrapeGossipNews();
+    if (articles.length === 0) {
+      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Gossip recuperato dai feed RSS");
+      return;
+    }
+    await saveScrapedNews("gossip", articles);
+    console.log(`[RssNewsScheduler] ✅ Gossip news aggiornate: ${articles.length} articoli da fonti reali`);
+  } catch (err) {
+    console.error("[RssNewsScheduler] ❌ Errore scraping Gossip news:", err);
+    throw err;
+  }
+}
+
+export async function refreshCybersecurityNewsFromRSS(): Promise<void> {
+  console.log("[RssNewsScheduler] 🔐 Avvio scraping Cybersecurity news da RSS...");
+  try {
+    const articles = await scrapeCybersecurityNews();
+    if (articles.length === 0) {
+      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Cybersecurity recuperato dai feed RSS");
+      return;
+    }
+    await saveScrapedNews("cybersecurity", articles);
+    console.log(`[RssNewsScheduler] ✅ Cybersecurity news aggiornate: ${articles.length} articoli da fonti reali`);
+  } catch (err) {
+    console.error("[RssNewsScheduler] ❌ Errore scraping Cybersecurity news:", err);
+    throw err;
+  }
+}
+
+export async function refreshSondaggiNewsFromRSS(): Promise<void> {
+  console.log("[RssNewsScheduler] 📊 Avvio scraping Sondaggi news da RSS...");
+  try {
+    const articles = await scrapeSondaggiNews();
+    if (articles.length === 0) {
+      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Sondaggi recuperato dai feed RSS");
+      return;
+    }
+    await saveScrapedNews("sondaggi", articles);
+    console.log(`[RssNewsScheduler] ✅ Sondaggi news aggiornate: ${articles.length} articoli da fonti reali`);
+  } catch (err) {
+    console.error("[RssNewsScheduler] ❌ Errore scraping Sondaggi news:", err);
+    throw err;
+  }
+}
+
 /**
  * Aggiorna tutte e sette le sezioni in sequenza.
  * Usato dal cron job giornaliero alle 00:00 CET.
@@ -325,6 +373,12 @@ export async function refreshAllNewsFromRSS(): Promise<void> {
   await refreshTennisNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Tennis fallita:", err));
   await new Promise(r => setTimeout(r, 20_000));
   await refreshBasketNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Basket fallita:", err));
+  await new Promise(r => setTimeout(r, 20_000));
+  await refreshGossipNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Gossip fallita:", err));
+  await new Promise(r => setTimeout(r, 20_000));
+  await refreshCybersecurityNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Cybersecurity fallita:", err));
+  await new Promise(r => setTimeout(r, 20_000));
+  await refreshSondaggiNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Sondaggi fallita:", err));
 
   const elapsed = Math.round((Date.now() - start) / 1000);
   console.log(`[RssNewsScheduler] ✅ Refresh completo terminato in ${elapsed}s`);

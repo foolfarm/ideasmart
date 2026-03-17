@@ -63,7 +63,7 @@ function isValidUrl(url: string): boolean {
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function auditRecentNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket",
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi",
   limit = 25
 ): Promise<{ fixed: number; ok: number; failed: number }> {
   const db = await getDb();
@@ -122,7 +122,7 @@ export async function auditRecentNews(
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function fixAllSourceUrls(options: {
-  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
   batchSize?: number;
   delayMs?: number;
 } = {}): Promise<AuditResult> {

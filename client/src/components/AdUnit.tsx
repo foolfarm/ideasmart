@@ -69,6 +69,18 @@ export const AD_SLOTS = {
   BASKET_MID1:     "8948908650",
   BASKET_MID2:     "3313438599",
   BASKET_BOTTOM:   "8723745625",
+  GOSSIP_TOP:      "8723745625",
+  GOSSIP_MID1:     "8948908650",
+  GOSSIP_MID2:     "3313438599",
+  GOSSIP_BOTTOM:   "8723745625",
+  CYBER_TOP:       "8723745625",
+  CYBER_MID1:      "8948908650",
+  CYBER_MID2:      "3313438599",
+  CYBER_BOTTOM:    "8723745625",
+  SONDAGGI_TOP:    "8723745625",
+  SONDAGGI_MID1:   "8948908650",
+  SONDAGGI_MID2:   "3313438599",
+  SONDAGGI_BOTTOM: "8723745625",
 } as const;
 
 // ─── Tipi ──────────────────────────────────────────────────────────────────────
@@ -286,6 +298,48 @@ export function AdBasketMid2({ className = "" }: { className?: string }) {
 }
 export function AdBasketBottom({ className = "" }: { className?: string }) {
   return <AdUnit slot={AD_SLOTS.BASKET_BOTTOM} format="horizontal" className={className} style={{ margin: "32px auto", maxWidth: "970px" }} />;
+}
+
+// ─── Business Gossip ─────────────────────────────────────────────────────────
+export function AdGossipTop({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.GOSSIP_TOP} format="horizontal" className={className} style={{ margin: "16px auto", maxWidth: "970px" }} />;
+}
+export function AdGossipMid1({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.GOSSIP_MID1} format="auto" layout="in-article" className={className} style={{ margin: "24px 0" }} />;
+}
+export function AdGossipMid2({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.GOSSIP_MID2} format="auto" layout="in-article" className={className} style={{ margin: "24px 0" }} />;
+}
+export function AdGossipBottom({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.GOSSIP_BOTTOM} format="horizontal" className={className} style={{ margin: "32px auto", maxWidth: "970px" }} />;
+}
+
+// ─── Cybersecurity ────────────────────────────────────────────────────────────
+export function AdCyberTop({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.CYBER_TOP} format="horizontal" className={className} style={{ margin: "16px auto", maxWidth: "970px" }} />;
+}
+export function AdCyberMid1({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.CYBER_MID1} format="auto" layout="in-article" className={className} style={{ margin: "24px 0" }} />;
+}
+export function AdCyberMid2({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.CYBER_MID2} format="auto" layout="in-article" className={className} style={{ margin: "24px 0" }} />;
+}
+export function AdCyberBottom({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.CYBER_BOTTOM} format="horizontal" className={className} style={{ margin: "32px auto", maxWidth: "970px" }} />;
+}
+
+// ─── Sondaggi ─────────────────────────────────────────────────────────────────
+export function AdSondaggiTop({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.SONDAGGI_TOP} format="horizontal" className={className} style={{ margin: "16px auto", maxWidth: "970px" }} />;
+}
+export function AdSondaggiMid1({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.SONDAGGI_MID1} format="auto" layout="in-article" className={className} style={{ margin: "24px 0" }} />;
+}
+export function AdSondaggiMid2({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.SONDAGGI_MID2} format="auto" layout="in-article" className={className} style={{ margin: "24px 0" }} />;
+}
+export function AdSondaggiBottom({ className = "" }: { className?: string }) {
+  return <AdUnit slot={AD_SLOTS.SONDAGGI_BOTTOM} format="horizontal" className={className} style={{ margin: "32px auto", maxWidth: "970px" }} />;
 }
 
 // ─── Componenti generici @deprecated ──────────────────────────────────────────

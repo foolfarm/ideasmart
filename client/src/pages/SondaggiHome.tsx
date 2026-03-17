@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import { AdSondaggiTop, AdSondaggiMid1, AdSondaggiBottom } from "@/components/AdUnit";
 
 const ACCENT = "#2980b9";
 const ACCENT_LIGHT = "#eaf4fb";
@@ -149,6 +150,7 @@ export default function SondaggiHome() {
           <BreakingNewsTicker />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-16">
+          <AdSondaggiTop />
           {heroNews && (
             <div className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
@@ -255,6 +257,8 @@ export default function SondaggiHome() {
               </div>
             </div>
           )}
+
+          <AdSondaggiMid1 />
 
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
@@ -369,6 +373,8 @@ export default function SondaggiHome() {
               </div>
             </div>
           </div>
+
+          <AdSondaggiBottom />
 
           <ArchiveSection section="sondaggi" accentColor={ACCENT} skipCount={10} />
 

@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import { AdGossipTop, AdGossipMid1, AdGossipBottom } from "@/components/AdUnit";
 
 const ACCENT = "#9b59b6";
 const ACCENT_LIGHT = "#f5eef8";
@@ -149,6 +150,7 @@ export default function GossipHome() {
           <BreakingNewsTicker />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-16">
+          <AdGossipTop />
           {heroNews && (
             <div className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
@@ -255,6 +257,8 @@ export default function GossipHome() {
               </div>
             </div>
           )}
+
+          <AdGossipMid1 />
 
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
@@ -369,6 +373,8 @@ export default function GossipHome() {
               </div>
             </div>
           </div>
+
+          <AdGossipBottom />
 
           <ArchiveSection section="gossip" accentColor={ACCENT} skipCount={10} />
 
