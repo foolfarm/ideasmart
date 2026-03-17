@@ -9,6 +9,7 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 
 const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
@@ -653,7 +654,8 @@ export default function Home() {
             </div>
           </div>
 
-          
+          {/* Sezione: Punto del Giorno — Post LinkedIn di Andrea Cinelli */}
+          <PuntoDelGiorno />
 
           {/* Footer testata */}
           <div className="mt-12">

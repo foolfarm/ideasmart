@@ -304,3 +304,28 @@ export const sourceReports = mysqlTable("source_reports", {
 });
 export type SourceReport = typeof sourceReports.$inferSelect;
 export type InsertSourceReport = typeof sourceReports.$inferInsert;
+
+// ── LinkedIn Posts (Punto del Giorno) ──────────────────────────────────────
+// Ogni giorno il publisher LinkedIn salva il post pubblicato per mostrarlo
+// nella sezione "Punto del Giorno" della Home di Ideasmart.
+export const linkedinPosts = mysqlTable("linkedin_posts", {
+  id: int("id").autoincrement().primaryKey(),
+  // Data del post (YYYY-MM-DD)
+  dateLabel: varchar("dateLabel", { length: 20 }).notNull().unique(),
+  // Testo completo del post LinkedIn
+  postText: text("postText").notNull(),
+  // URL del post LinkedIn (es. https://www.linkedin.com/posts/...)
+  linkedinUrl: varchar("linkedinUrl", { length: 1000 }),
+  // Titolo editoriale estratto (prima riga o generato)
+  title: varchar("title", { length: 500 }),
+  // Sezione tematica del post (ai, startup, ecc.)
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"]).default("ai").notNull(),
+  // Immagine allegata al post
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  // Hashtag estratti dal post
+  hashtags: varchar("hashtags", { length: 500 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type LinkedinPost = typeof linkedinPosts.$inferSelect;
+export type InsertLinkedinPost = typeof linkedinPosts.$inferInsert;

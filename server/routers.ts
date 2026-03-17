@@ -331,6 +331,30 @@ export const appRouter = router({
         };
       }),
 
+    // Punto del Giorno: recupera il post LinkedIn più recente di Andrea Cinelli
+    getPuntoDelGiorno: publicProcedure
+      .query(async () => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+        const posts = await db.select().from(linkedinPostsTable)
+          .orderBy(desc(linkedinPostsTable.createdAt))
+          .limit(1);
+        if (!posts.length) return null;
+        const post = posts[0];
+        return {
+          id: post.id,
+          dateLabel: post.dateLabel,
+          postText: post.postText,
+          linkedinUrl: post.linkedinUrl ?? null,
+          title: post.title ?? null,
+          section: post.section,
+          imageUrl: post.imageUrl ?? null,
+          hashtags: post.hashtags ?? null,
+          createdAt: post.createdAt,
+        };
+      }),
+
     // Barometro Politico: estrae intenzioni di voto dai sondaggi recenti tramite LLM
     getBarometro: publicProcedure
       .query(async () => {

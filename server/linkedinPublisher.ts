@@ -19,8 +19,9 @@
 
 import { ENV } from "./_core/env";
 import { invokeLLM } from "./_core/llm";
-import { getLatestEditorial } from "./db";
+import { getLatestEditorial, getDb } from "./db";
 import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
+import { linkedinPosts } from "../drizzle/schema";
 
 const SITE_BASE_URL = "https://ideasmart.ai";
 
@@ -490,6 +491,55 @@ export async function publishDailyLinkedInPosts(): Promise<{
 
   if (result.success) {
     console.log(`[LinkedIn] ✅ Post pubblicato con successo per sezione '${section}'`);
+
+    // Salva il post nel DB per la sezione "Punto del Giorno" nella Home
+    try {
+      const db = await getDb();
+      if (db) {
+        const today = new Date();
+        const dateLabel = today.toISOString().split('T')[0]; // YYYY-MM-DD
+
+        // Costruisci URL LinkedIn dal postId (formato: urn:li:ugcPost:XXXXXXXX)
+        let linkedinUrl: string | undefined;
+        if (result.postId && result.postId !== 'unknown') {
+          // Estrai il numero numerico dall'URN se presente
+          const numericId = result.postId.replace(/^urn:li:ugcPost:/, '');
+          linkedinUrl = `https://www.linkedin.com/feed/update/${result.postId.startsWith('urn:') ? result.postId : `urn:li:ugcPost:${numericId}`}/`;
+        }
+
+        // Estrai hashtags dal testo del post
+        const hashtagMatches = postText.match(/#[\w]+/g);
+        const hashtags = hashtagMatches ? hashtagMatches.slice(0, 10).join(' ') : '';
+
+        // Usa il titolo dell'editoriale come titolo del post
+        const title = editorial.title;
+
+        await db.insert(linkedinPosts)
+          .values({
+            dateLabel,
+            postText,
+            linkedinUrl: linkedinUrl ?? null,
+            title,
+            section: section as any,
+            imageUrl: imageUrl ?? null,
+            hashtags,
+          })
+          .onDuplicateKeyUpdate({
+            set: {
+              postText,
+              linkedinUrl: linkedinUrl ?? null,
+              title,
+              imageUrl: imageUrl ?? null,
+              hashtags,
+            },
+          });
+        console.log(`[LinkedIn] 💾 Post salvato nel DB per Punto del Giorno (${dateLabel})`);
+      }
+    } catch (dbErr) {
+      console.error('[LinkedIn] ⚠️ Errore salvataggio post nel DB:', dbErr);
+      // Non blocca il flusso principale
+    }
+
     return { published: 1, errors: [], posts };
   } else {
     console.error(`[LinkedIn] ❌ Pubblicazione fallita:`, result.error);

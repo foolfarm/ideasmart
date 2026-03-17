@@ -162,6 +162,13 @@
       "when": 1773754341099,
       "tag": "0022_natural_shard",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1773761810019,
+      "tag": "0023_far_black_tarantula",
+      "breakpoints": true
     }
   ]
 }
