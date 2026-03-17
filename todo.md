@@ -902,3 +902,8 @@
 ## Task (17 Mar 2026 — Fix React dedupe vite.config)
 
 - [x] Aggiungere resolve.dedupe React in vite.config.ts per eliminare definitivamente React duplicate
+
+## Task (17 Mar 2026 — Fix React duplicate DEFINITIVO)
+
+- [x] Forzare rigenerazione completa chunk Vite con optimizeDeps.force per eliminare React duplicate
+- [x] Verificare che il browser non usi più chunk-MO2SMAW5.js (vecchio hash)

@@ -165,6 +165,25 @@ export default defineConfig({
     },
     dedupe: ["react", "react-dom", "@trpc/react-query", "@tanstack/react-query"],
   },
+  optimizeDeps: {
+    // Force Vite to re-bundle deps and ensure a single React instance
+    force: true,
+    include: [
+      "react",
+      "react-dom",
+      "react-dom/client",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+      "@tanstack/react-query",
+      "@trpc/react-query",
+    ],
+    esbuildOptions: {
+      // Ensure all CJS modules that use React share the same instance
+      define: {
+        global: "globalThis",
+      },
+    },
+  },
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
   publicDir: path.resolve(import.meta.dirname, "client", "public"),
