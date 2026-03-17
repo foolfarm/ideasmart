@@ -164,9 +164,9 @@ async function selectAndTranslate(
       instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di basket italiani. Privilegia NBA, Serie A, Eurolega e Nazionale italiana. Titoli precisi con nomi dei giocatori e squadre.",
     },
     gossip: {
-      label: "Business Gossip",
-      categories: ["CEO & Executive Moves", "Deal & M&A", "Startup Drama", "VC & Investitori", "Big Tech Inside", "Licenziamenti & Ristrutturazioni", "Nuovi Prodotti & Lancio", "Rumor & Indiscrezioni", "Cultura Aziendale", "Controversie", "IPO & Mercati", "Italia Business"],
-      instructions: "Seleziona le 20 notizie più interessanti e rilevanti del mondo business e startup. Privilegia movimenti di CEO, deal sorprendenti, rumor di mercato, gossip corporate e notizie inattese. Tono vivace ma professionale.",
+      label: "Business Gossip Italia",
+      categories: ["CEO & Executive Moves", "Deal & M&A Italia", "Round & Funding", "VC & Investitori", "Borsa & Mercati", "Licenziamenti & Ristrutturazioni", "Nuovi Prodotti & Lancio", "Rumor & Indiscrezioni", "Startup Drama", "Controversie Corporate", "IPO & Quotazioni", "Retroscena & Insider"],
+      instructions: "Seleziona le 20 notizie più interessanti e rilevanti del mondo business e startup ITALIANO. PRIORITÀ ASSOLUTA: movimenti di CEO/manager italiani, deal M&A in Italia, round di finanziamento startup italiane, notizie di borsa italiana, retroscena corporate, gossip insider dal mondo finanziario e imprenditoriale italiano. Privilegia notizie con nomi di persone, cifre e dettagli concreti. Tono vivace ma professionale. ESCLUDI notizie generiche senza protagonisti identificabili.",
     },
     cybersecurity: {
       label: "Cybersecurity",
