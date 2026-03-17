@@ -1,36 +1,33 @@
 /**
  * BreakingNewsTicker — Barra di scorrimento automatico con le ultime notizie
  * Stile: giornale digitale, scorrimento continuo da destra a sinistra
- * Usato in: Home, AiHome, MusicHome, StartupHome
+ * Aggiornato: include notizie di tutti gli 11 canali
  */
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 
+type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket";
+
 interface TickerItem {
   id: number;
   title: string;
-  category: string;
-  section: "ai" | "music" | "startup";
+  section: SectionKey;
 }
 
-function getSectionPath(section: string): string {
-  if (section === "music") return "music";
-  if (section === "startup") return "startup";
-  return "ai";
-}
-
-function getSectionColor(section: string): string {
-  if (section === "music") return "#5b21b6";
-  if (section === "startup") return "#c2410c";
-  return "#0a6e5c";
-}
-
-function getSectionLabel(section: string): string {
-  if (section === "music") return "MUSIC";
-  if (section === "startup") return "STARTUP";
-  return "AI";
-}
+const SECTION_META: Record<SectionKey, { label: string; color: string; path: string }> = {
+  ai:      { label: "AI",      color: "#00b4a0", path: "ai" },
+  music:   { label: "MUSIC",   color: "#7c3aed", path: "music" },
+  startup: { label: "STARTUP", color: "#e84f00", path: "startup" },
+  finance: { label: "FINANCE", color: "#16a34a", path: "finance" },
+  health:  { label: "HEALTH",  color: "#0891b2", path: "health" },
+  sport:   { label: "SPORT",   color: "#dc2626", path: "sport" },
+  luxury:  { label: "LUXURY",  color: "#b45309", path: "luxury" },
+  news:    { label: "NEWS",    color: "#64748b", path: "news" },
+  motori:  { label: "MOTORI",  color: "#ef4444", path: "motori" },
+  tennis:  { label: "TENNIS",  color: "#65a30d", path: "tennis" },
+  basket:  { label: "BASKET",  color: "#ea580c", path: "basket" },
+};
 
 export default function BreakingNewsTicker() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -38,18 +35,35 @@ export default function BreakingNewsTicker() {
   const posRef = useRef(0);
   const pausedRef = useRef(false);
 
-  // Fetch latest news from all three sections
-  const { data: aiNews } = trpc.news.getLatest.useQuery({ limit: 5, section: "ai" });
-  const { data: musicNews } = trpc.news.getLatest.useQuery({ limit: 5, section: "music" });
-  const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 5, section: "startup" });
+  // Fetch 3 notizie per ciascuno degli 11 canali
+  const { data: aiNews }      = trpc.news.getLatest.useQuery({ limit: 3, section: "ai" });
+  const { data: musicNews }   = trpc.news.getLatest.useQuery({ limit: 3, section: "music" });
+  const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 3, section: "startup" });
+  const { data: financeNews } = trpc.news.getLatest.useQuery({ limit: 3, section: "finance" });
+  const { data: healthNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "health" });
+  const { data: sportNews }   = trpc.news.getLatest.useQuery({ limit: 3, section: "sport" });
+  const { data: luxuryNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "luxury" });
+  const { data: newsNews }    = trpc.news.getLatest.useQuery({ limit: 3, section: "news" });
+  const { data: motoriNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "motori" });
+  const { data: tennisNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "tennis" });
+  const { data: basketNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "basket" });
 
-  const allItems: TickerItem[] = [
-    ...(aiNews || []).slice(0, 5).map(n => ({ id: n.id, title: n.title, category: n.category, section: "ai" as const })),
-    ...(musicNews || []).slice(0, 5).map(n => ({ id: n.id, title: n.title, category: n.category, section: "music" as const })),
-    ...(startupNews || []).slice(0, 5).map(n => ({ id: n.id, title: n.title, category: n.category, section: "startup" as const })),
+  // Interleave le notizie di tutti i canali per varietà nel ticker
+  const allItems: TickerItem[] = [];
+  const sources: [SectionKey, typeof aiNews][] = [
+    ["ai", aiNews], ["news", newsNews], ["sport", sportNews], ["motori", motoriNews],
+    ["startup", startupNews], ["tennis", tennisNews], ["finance", financeNews],
+    ["basket", basketNews], ["music", musicNews], ["health", healthNews], ["luxury", luxuryNews],
   ];
+  const maxLen = Math.max(...sources.map(([, d]) => (d || []).length));
+  for (let i = 0; i < maxLen; i++) {
+    for (const [sec, data] of sources) {
+      const item = (data || [])[i];
+      if (item) allItems.push({ id: item.id, title: item.title, section: sec });
+    }
+  }
 
-  // Duplicate items for seamless loop
+  // Duplica per loop continuo
   const displayItems = allItems.length > 0 ? [...allItems, ...allItems] : [];
 
   useEffect(() => {
@@ -86,7 +100,7 @@ export default function BreakingNewsTicker() {
       onMouseLeave={() => { pausedRef.current = false; }}
     >
       <div className="flex items-center h-full">
-        {/* Label "BREAKING" */}
+        {/* Label "LIVE" */}
         <div
           className="flex-shrink-0 flex items-center px-3 h-full text-[10px] font-bold uppercase tracking-widest z-10"
           style={{
@@ -108,16 +122,15 @@ export default function BreakingNewsTicker() {
             style={{ willChange: "transform" }}
           >
             {displayItems.map((item, idx) => {
-              const color = getSectionColor(item.section);
-              const label = getSectionLabel(item.section);
-              const path = `/${getSectionPath(item.section)}/news/${item.id}`;
+              const meta = SECTION_META[item.section];
+              const path = `/${meta.path}/news/${item.id}`;
               return (
                 <span key={`${item.id}-${idx}`} className="inline-flex items-center gap-2 px-5">
                   <span
                     className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-sm flex-shrink-0"
-                    style={{ background: color + "30", color: color, fontFamily: "'Space Mono', monospace" }}
+                    style={{ background: meta.color + "30", color: meta.color, fontFamily: "'Space Mono', monospace" }}
                   >
-                    {label}
+                    {meta.label}
                   </span>
                   <Link href={path}>
                     <span

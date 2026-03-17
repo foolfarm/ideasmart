@@ -856,3 +856,8 @@
 - [x] Aggiungere News, Motori, Tennis, Basket nel menu di navigazione principale (Navbar)
 - [x] Aggiungere i 4 nuovi canali nella sidebar "I Canali" della Home
 - [x] Aggiungere sezioni news di News, Motori, Tennis, Basket nella Home page
+
+## Task (17 Mar 2026 — Scraping + Ticker LIVE)
+
+- [x] Avviare scraping RSS per news, motori, tennis, basket
+- [x] Aggiornare ticker LIVE per includere notizie di tutti i canali

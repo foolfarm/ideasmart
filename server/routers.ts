@@ -989,6 +989,42 @@ Rispondi con questo JSON:
       await generateLuxuryMarketAnalysis();
       return { success: true, message: "Lifestyle & Luxury aggiornato con successo" };
     }),
+    // ── Refresh News Generali ────────────────────────────────────────────────────────────
+    refreshNewsAll: adminProcedure.mutation(async () => {
+      const { refreshNewsGeneraliFromRSS } = await import("./rssNewsScheduler");
+      await refreshNewsGeneraliFromRSS();
+      return { success: true, message: "News Italia aggiornate con successo" };
+    }),
+
+    // ── Refresh Motori ───────────────────────────────────────────────────────────────────
+    refreshMotoriAll: adminProcedure.mutation(async () => {
+      const { refreshMotoriNewsFromRSS } = await import("./rssNewsScheduler");
+      await refreshMotoriNewsFromRSS();
+      return { success: true, message: "Motori aggiornato con successo" };
+    }),
+
+    // ── Refresh Tennis ───────────────────────────────────────────────────────────────────
+    refreshTennisAll: adminProcedure.mutation(async () => {
+      const { refreshTennisNewsFromRSS } = await import("./rssNewsScheduler");
+      await refreshTennisNewsFromRSS();
+      return { success: true, message: "Tennis aggiornato con successo" };
+    }),
+
+    // ── Refresh Basket ───────────────────────────────────────────────────────────────────
+    refreshBasketAll: adminProcedure.mutation(async () => {
+      const { refreshBasketNewsFromRSS } = await import("./rssNewsScheduler");
+      await refreshBasketNewsFromRSS();
+      return { success: true, message: "Basket aggiornato con successo" };
+    }),
+
+    // ── Refresh TUTTI i canali RSS ────────────────────────────────────────────────────────
+    refreshAllRSSChannels: adminProcedure.mutation(async () => {
+      const { refreshAllNewsFromRSS } = await import("./rssNewsScheduler");
+      // Avvia in background per non bloccare la risposta
+      refreshAllNewsFromRSS().catch(err => console.error("[Admin] Errore refreshAllRSS:", err));
+      return { success: true, message: "Refresh di tutti i canali avviato in background" };
+    }),
+
     // ── Newsletter Giornaliera per Canale — Preview (07:00 CET) ─────────────────────────
     sendDailyChannelPreview: adminProcedure.mutation(async () => {
       const { sendDailyChannelPreview } = await import("./dailyChannelNewsletter");
