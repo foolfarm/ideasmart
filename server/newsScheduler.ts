@@ -17,7 +17,7 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 // Categorie editoriali per le news AI
 const NEWS_CATEGORIES = [
   "Modelli Generativi",
-  "AI Agentiva",
+  "Agenti AI Autonomi",
   "Big Tech",
   "Startup & Funding",
   "AI & Hardware",

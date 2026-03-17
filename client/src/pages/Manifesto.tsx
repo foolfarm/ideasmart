@@ -56,9 +56,9 @@ Il direttore editoriale di un sistema HumanLess è un architetto di sistemi cogn
   {
     number: "VI",
     title: "Le implicazioni per il business italiano",
-    body: `IDEASMART non è un esperimento accademico. È una dimostrazione operativa di un principio che ogni azienda italiana dovrebbe comprendere: l'AI agentiva non è uno strumento per fare le stesse cose più velocemente. È un'infrastruttura per fare cose che prima erano impossibili.
+    body: `IDEASMART non è un esperimento accademico. È una dimostrazione operativa di un principio che ogni azienda italiana dovrebbe comprendere: un sistema di agenti AI autonomi non è uno strumento per fare le stesse cose più velocemente. È un'infrastruttura per fare cose che prima erano impossibili.
 
-Una redazione di 50 giornalisti non può monitorare 200 fonti in tempo reale, produrre analisi strutturate su tre settori distinti, mantenere coerenza editoriale su centinaia di articoli al mese e farlo a costo marginale zero. Un sistema agentico lo fa.
+Una redazione di 50 giornalisti non può monitorare 200 fonti in tempo reale, produrre analisi strutturate su tre settori distinti, mantenere coerenza editoriale su centinaia di articoli al mese e farlo a costo marginale zero. Un sistema di agenti AI autonomi lo fa.
 
 La domanda per le PMI italiane non è "l'AI sostituirà i miei dipendenti?" La domanda corretta è: "Quali processi nella mia azienda hanno la stessa struttura del problema che IDEASMART ha risolto?" La risposta, nella maggior parte dei casi, è: molti più di quanti pensiate.`,
   },
@@ -291,7 +291,7 @@ export default function Manifesto() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
               {[
                 { code: "AI", label: "AI4Business", color: "#00e5c8", path: "/ai",
-                  desc: "Intelligenza artificiale applicata al business. Modelli generativi, AI agentiva, automazione industriale, impatto sulle PMI italiane. Fonti: MIT Technology Review, VentureBeat AI, The Decoder, Stanford AI Index." },
+                  desc: "Intelligenza artificiale applicata al business. Modelli generativi, agenti AI autonomi, automazione industriale, impatto sulle PMI italiane. Fonti: MIT Technology Review, VentureBeat AI, The Decoder, Stanford AI Index." },
                 { code: "MUSIC", label: "ITsMusic", color: "#ec4899", path: "/music",
                   desc: "L'economia della musica nell'era digitale. Streaming, diritti, AI generativa applicata alla produzione musicale, deal e acquisizioni nel settore. Fonti: Music Business Worldwide, Billboard, Pitchfork." },
                 { code: "STARTUP", label: "Startup News", color: "#ff5500", path: "/startup",

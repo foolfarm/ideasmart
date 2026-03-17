@@ -85,7 +85,7 @@ ${marketData.keyFinding}`;
   return `Basandoti sull'editoriale di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
 
 TEMA EDITORIALE: ${title}
-TREND CHIAVE: ${keyTrend || "AI agentiva e trasformazione digitale"}
+TREND CHIAVE: ${keyTrend || "Agenti AI autonomi e trasformazione digitale"}
 CONTENUTO EDITORIALE:
 ${body.slice(0, 1200)}
 ${dataSection}

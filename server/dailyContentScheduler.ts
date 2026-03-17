@@ -50,7 +50,7 @@ Restituisci un JSON con questa struttura esatta:
   "authorNote": "Nota finale del direttore (1-2 frasi, max 150 caratteri, riflessione personale sul tema)"
 }
 
-Temi da considerare per oggi: modelli generativi, AI agentiva, automazione del lavoro, AI per le PMI italiane, regolamentazione europea, investimenti in AI, startup AI emergenti, impatto sull'occupazione, AI nella produzione industriale.`;
+Temi da considerare per oggi: modelli generativi, agenti AI autonomi, automazione del lavoro, AI per le PMI italiane, regolamentazione europea, investimenti in AI, startup AI emergenti, impatto sull'occupazione, AI nella produzione industriale.`;
 
   const response = await invokeLLM({
     messages: [
