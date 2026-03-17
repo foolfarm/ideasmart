@@ -965,3 +965,9 @@
 - [x] Aggiornato middleware patch @vite/client: usa Referer e Origin come fallback per rilevare il dominio proxy
 - [x] Aggiornato middleware patch @vite/client: sostituisce socketHost, serverHost e directSocketHost con valori hardcoded (3000-xxx:443/)
 - [x] Verificato: curl con Referer e Host corretti restituisce @vite/client patchato correttamente
+
+## Task (17 Mar 2026 — Fix HMR WebSocket ROUND 2)
+
+- [x] Identificato causa root definitiva: il SW vecchio (v1) cachava /@vite/client e veniva servito prima che il nuovo SW si attivasse
+- [x] usePWA.ts: in dev mode (import.meta.env.DEV), non registrare il SW ma disregistrare quelli esistenti
+- [x] sw.js v4: aggiunto auto-disregistrazione in dev mode (fetch /@vite/client HEAD → se 200 = dev → clear cache + unregister + reload tabs)

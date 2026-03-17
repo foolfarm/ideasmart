@@ -25,11 +25,23 @@ export function usePWA(): UsePWAReturn {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    // Register service worker
+    // Register service worker only in production
+    // In development mode, the SW causes caching issues with Vite's @vite/client
+    // which prevents the HMR WebSocket from connecting correctly
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch((err) => {
-        console.warn("[PWA] SW registration failed:", err);
-      });
+      if (import.meta.env.PROD) {
+        navigator.serviceWorker.register("/sw.js").catch((err) => {
+          console.warn("[PWA] SW registration failed:", err);
+        });
+      } else {
+        // In dev mode: unregister any existing SW to clear stale caches
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const registration of registrations) {
+            registration.unregister();
+            console.log("[PWA] SW unregistered in dev mode");
+          }
+        });
+      }
     }
 
     // Detect iOS
