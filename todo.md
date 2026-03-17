@@ -907,3 +907,8 @@
 
 - [x] Forzare rigenerazione completa chunk Vite con optimizeDeps.force per eliminare React duplicate
 - [x] Verificare che il browser non usi più chunk-MO2SMAW5.js (vecchio hash)
+
+## Task (17 Mar 2026 — Rimozione sezioni Pubblicità)
+
+- [x] Trovare tutti i file con sezioni pubblicità (AdSlot, PUBBLICITÀ, AdBanner, ecc.)
+- [x] Rimuovere le sezioni pubblicità da tutte le pagine

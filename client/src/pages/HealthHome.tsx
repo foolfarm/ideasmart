@@ -7,7 +7,6 @@ import { Link } from "wouter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
-import { AdHealthTop, AdHealthMid1, AdHealthMid2, AdHealthBottom } from "@/components/AdUnit";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
@@ -152,12 +151,6 @@ export default function HealthHome() {
         <div className="max-w-6xl mx-auto px-4">
           <BreakingNewsTicker />
         </div>
-
-        {/* ── BANNER TOP (sotto navbar) ── */}
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <AdHealthTop />
-        </div>
-
         <main className="max-w-6xl mx-auto px-4 pb-16">
           {/* SEZIONE 1: Hero + Secondarie */}
           {heroNews && (
@@ -266,8 +259,7 @@ export default function HealthHome() {
             </div>
           )}
 
-          {/* ── BANNER MID 1 ── */}
-          <AdHealthMid1 className="my-4" />
+          
 
           {/* SEZIONE 3: Notizie rimanenti (griglia 3 col) */}
           {remainingNews.length > 0 && (
@@ -328,8 +320,7 @@ export default function HealthHome() {
             </div>
           )}
 
-          {/* ── BANNER MID 2 ── */}
-          <AdHealthMid2 className="my-4" />
+          
 
           {/* SEZIONE 5: Reportage */}
           {reportageItems && reportageItems.length > 0 && (
@@ -388,8 +379,7 @@ export default function HealthHome() {
             </div>
           )}
 
-          {/* ── BANNER BOTTOM ── */}
-          <AdHealthBottom className="mt-8 mb-2" />
+          
 
           {/* SEZIONE 7: Newsletter */}
           <div className="mt-10">

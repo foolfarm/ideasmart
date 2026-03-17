@@ -7,7 +7,6 @@ import { Link } from "wouter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
-import { AdMotoriTop, AdMotoriMid1, AdMotoriMid2, AdMotoriBottom } from "@/components/AdUnit";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
@@ -149,11 +148,6 @@ export default function MotoriHome() {
         <div className="max-w-6xl mx-auto px-4">
           <BreakingNewsTicker />
         </div>
-
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <AdMotoriTop />
-        </div>
-
         <main className="max-w-6xl mx-auto px-4 pb-16">
           {heroNews && (
             <div className="mt-6">
@@ -241,7 +235,7 @@ export default function MotoriHome() {
             </div>
           )}
 
-          <AdMotoriMid1 className="my-4" />
+          
 
           {remainingNews.length > 0 && (
             <div className="mt-8">
@@ -300,7 +294,7 @@ export default function MotoriHome() {
             </div>
           )}
 
-          <AdMotoriMid2 className="my-4" />
+          
 
           {reportageItems && reportageItems.length > 0 && (
             <div className="mt-8">
@@ -357,7 +351,7 @@ export default function MotoriHome() {
             </div>
           )}
 
-          <AdMotoriBottom className="mt-8 mb-2" />
+          
 
           <div className="mt-10">
             <Divider thick />

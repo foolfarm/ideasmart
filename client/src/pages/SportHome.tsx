@@ -7,7 +7,6 @@ import { Link } from "wouter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
-import { AdSportTop, AdSportMid1, AdSportMid2, AdSportBottom } from "@/components/AdUnit";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
@@ -152,12 +151,6 @@ export default function SportHome() {
         <div className="max-w-6xl mx-auto px-4">
           <BreakingNewsTicker />
         </div>
-
-        {/* ── BANNER TOP (sotto navbar) ── */}
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <AdSportTop />
-        </div>
-
         <main className="max-w-6xl mx-auto px-4 pb-16">
           {/* SEZIONE 1: Hero + Secondarie */}
           {heroNews && (
@@ -266,8 +259,7 @@ export default function SportHome() {
             </div>
           )}
 
-          {/* ── BANNER MID 1 ── */}
-          <AdSportMid1 className="my-4" />
+          
 
           {/* SEZIONE 3: Notizie rimanenti (griglia 3 col) */}
           {remainingNews.length > 0 && (
@@ -328,8 +320,7 @@ export default function SportHome() {
             </div>
           )}
 
-          {/* ── BANNER MID 2 ── */}
-          <AdSportMid2 className="my-4" />
+          
 
           {/* SEZIONE 5: Reportage */}
           {reportageItems && reportageItems.length > 0 && (
@@ -388,8 +379,7 @@ export default function SportHome() {
             </div>
           )}
 
-          {/* ── BANNER BOTTOM ── */}
-          <AdSportBottom className="mt-8 mb-2" />
+          
 
           {/* SEZIONE 7: Newsletter */}
           <div className="mt-10">
