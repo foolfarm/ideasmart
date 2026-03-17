@@ -10,6 +10,7 @@ import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import { AdSondaggiTop, AdSondaggiMid1, AdSondaggiBottom } from "@/components/AdUnit";
+import BarometroPolitico from "@/components/BarometroPolitico";
 
 const ACCENT = "#2980b9";
 const ACCENT_LIGHT = "#eaf4fb";
@@ -193,6 +194,8 @@ export default function SondaggiHome() {
               </div>
             </div>
           )}
+
+          <BarometroPolitico />
 
           {editorial && (
             <div className="mt-8">

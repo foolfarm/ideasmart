@@ -331,6 +331,76 @@ export const appRouter = router({
         };
       }),
 
+    // Barometro Politico: estrae intenzioni di voto dai sondaggi recenti tramite LLM
+    getBarometro: publicProcedure
+      .query(async () => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        // Prendi le ultime 30 notizie sondaggi per trovare dati percentuali
+        const items = await db.select().from(newsItemsTable)
+          .where(eq(newsItemsTable.section, 'sondaggi'))
+          .orderBy(desc(newsItemsTable.createdAt))
+          .limit(30);
+        if (!items.length) return null;
+
+        // Costruisci testo con titoli e sommari per l'LLM
+        const newsText = items.map(n => `TITOLO: ${n.title}\nSOMMARIO: ${n.summary}\nFONTE: ${n.sourceName ?? ''}\nDATA: ${n.publishedAt ?? ''}`).join('\n\n---\n\n');
+
+        try {
+          const response = await invokeLLM({
+            messages: [
+              {
+                role: 'system',
+                content: `Sei un analista politico italiano esperto di sondaggi. Analizza le notizie fornite ed estrai i dati sulle intenzioni di voto dei partiti italiani. Se non ci sono dati percentuali espliciti, stima le tendenze basandoti sul contesto. Restituisci SEMPRE dati per i principali partiti italiani (FdI, PD, M5S, Lega, FI, AVS, Az/IV, altri). I valori devono sommare a circa 100%.`
+              },
+              {
+                role: 'user',
+                content: `Analizza queste notizie sui sondaggi italiani ed estrai/stima le intenzioni di voto per i principali partiti:\n\n${newsText}\n\nRestituisci i dati in formato JSON con i partiti e le loro percentuali. Includi anche la fonte e la data del sondaggio più recente trovato.`
+              }
+            ],
+            response_format: {
+              type: 'json_schema',
+              json_schema: {
+                name: 'barometro_politico',
+                strict: true,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    partiti: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          nome: { type: 'string', description: 'Nome del partito (abbreviazione)' },
+                          nomeCompleto: { type: 'string', description: 'Nome completo del partito' },
+                          percentuale: { type: 'number', description: 'Percentuale intenzioni di voto (0-100)' },
+                          colore: { type: 'string', description: 'Colore hex del partito (es. #1a3a6e per FdI)' },
+                          variazione: { type: 'number', description: 'Variazione rispetto al sondaggio precedente (positivo = crescita)' },
+                        },
+                        required: ['nome', 'nomeCompleto', 'percentuale', 'colore', 'variazione'],
+                        additionalProperties: false,
+                      }
+                    },
+                    fonte: { type: 'string', description: 'Nome istituto sondaggistico' },
+                    data: { type: 'string', description: 'Data del sondaggio (gg/mm/aaaa)' },
+                    nota: { type: 'string', description: 'Nota metodologica o contesto breve' },
+                  },
+                  required: ['partiti', 'fonte', 'data', 'nota'],
+                  additionalProperties: false,
+                },
+              },
+            },
+          });
+
+          const content = response.choices[0]?.message?.content;
+          if (!content) return null;
+          return JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
+        } catch (err) {
+          console.error('[Barometro] Errore LLM:', err);
+          return null;
+        }
+      }),
+
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
