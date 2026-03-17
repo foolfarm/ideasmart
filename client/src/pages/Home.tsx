@@ -308,7 +308,7 @@ export default function Home() {
             </Link>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              La Prima Testata Giornalistica HumanLess · AI · Musica · Startup · Finance · Health · Sport · Luxury · News · Motori · Tennis · Basket
+              La Prima Testata Giornalistica HumanLess italiana
             </p>
           </div>
 
