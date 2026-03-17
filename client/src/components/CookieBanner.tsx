@@ -169,9 +169,9 @@ export default function CookieBanner() {
               onChange={setAnalytics}
             />
             <CategoryRow
-              title="Cookie Pubblicitari"
-              description="Utilizzati per mostrare annunci pertinenti in base ai tuoi interessi. Condividono dati con partner pubblicitari di terze parti."
-              examples="Google AdSense, cookie DART di Google"
+              title="Cookie di Profilazione"
+              description="Utilizzati per tracciare le preferenze di navigazione e personalizzare i contenuti in base ai tuoi interessi."
+              examples="Cookie di sessione estesa, preferenze contenuti, personalizzazione newsletter"
               checked={advertising}
               onChange={setAdvertising}
             />
@@ -244,7 +244,7 @@ export default function CookieBanner() {
                   className="text-xs leading-relaxed"
                   style={{ color: "#6b7280", fontFamily: "'DM Sans', sans-serif" }}
                 >
-                  Usiamo cookie tecnici (necessari), analitici e pubblicitari (Google AdSense) per migliorare la tua esperienza e mostrare contenuti pertinenti. Puoi scegliere quali accettare.{" "}
+                  Usiamo cookie tecnici (necessari), analitici e di profilazione per migliorare la tua esperienza e personalizzare i contenuti. Puoi scegliere quali accettare.{" "}
                   <a href="/privacy" style={{ color: "#00b4a0", textDecoration: "underline" }}>
                     Privacy Policy
                   </a>

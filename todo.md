@@ -936,3 +936,7 @@
 ## Task (17 Mar 2026 — Fix HMR WebSocket)
 
 - [x] Configurare HMR Vite per funzionare attraverso il proxy Manus sulla porta 3000
+
+## Task (17 Mar 2026 — Fix WebSocket HMR localhost:5173)
+
+- [ ] Risolvere errore WebSocket HMR che tenta di connettersi a localhost:5173 invece del proxy Manus

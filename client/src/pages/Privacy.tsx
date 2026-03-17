@@ -99,7 +99,6 @@ export default function Privacy() {
               ["#finalita", "Finalità"],
               ["#newsletter", "Newsletter"],
               ["#cookie", "Cookie"],
-              ["#adsense", "Google AdSense"],
               ["#diritti", "Diritti"],
               ["#disclaimer", "Disclaimer"],
               ["#contatti", "Contatti"],
@@ -197,7 +196,7 @@ export default function Privacy() {
 
           <Section id="cookie" title="5. Cookie Policy">
             <P>
-              Il sito utilizza cookie tecnici necessari al funzionamento e cookie di terze parti per l'analisi statistica e la pubblicità. Di seguito la classificazione:
+              Il sito utilizza cookie tecnici necessari al funzionamento e cookie di terze parti per l'analisi statistica. Di seguito la classificazione:
             </P>
             <ul className="space-y-2 ml-2">
               <Li>
@@ -207,7 +206,7 @@ export default function Privacy() {
                 <strong>Cookie analitici di terze parti</strong> — Google Analytics (anonimizzato) per statistiche aggregate di navigazione. Richiedono consenso.
               </Li>
               <Li>
-                <strong>Cookie pubblicitari</strong> — Google AdSense per la visualizzazione di annunci pertinenti. Richiedono consenso esplicito.
+                <strong>Cookie di profilazione</strong> — utilizzati per personalizzare i contenuti in base alle preferenze di navigazione. Richiedono consenso esplicito.
               </Li>
             </ul>
             <P>
@@ -215,18 +214,12 @@ export default function Privacy() {
             </P>
           </Section>
 
-          <Section id="adsense" title="6. Google AdSense e Pubblicità">
+          <Section id="adsense" title="6. Personalizzazione dei Contenuti">
             <P>
-              Il sito utilizza <strong>Google AdSense</strong> (Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA) per la visualizzazione di annunci pubblicitari. Google AdSense utilizza cookie e tecnologie simili per mostrare annunci basati sulle visite precedenti dell'utente a questo sito e ad altri siti web.
+              Il sito può utilizzare cookie di profilazione per personalizzare i contenuti editoriali in base alle preferenze di navigazione dell'utente. Questi cookie non vengono utilizzati per scopi pubblicitari commerciali di terze parti.
             </P>
             <P>
-              Google, in qualità di fornitore di terze parti, utilizza cookie per pubblicare annunci. L'utilizzo del cookie DART da parte di Google consente la pubblicazione di annunci agli utenti in base alle loro visite al presente sito e ad altri siti su Internet. Gli utenti possono disattivare il cookie DART visitando la pagina delle norme sulla privacy della rete di contenuti e degli annunci di Google all'indirizzo{" "}
-              <a href="https://www.google.com/privacy_ads.html" target="_blank" rel="noopener noreferrer" style={{ color: "#00b4a0" }}>
-                google.com/privacy_ads.html
-              </a>.
-            </P>
-            <P>
-              Il trasferimento dei dati negli USA avviene sulla base delle Clausole Contrattuali Standard approvate dalla Commissione Europea (art. 46 GDPR).
+              L'utente può disabilitare i cookie di profilazione in qualsiasi momento tramite il pannello preferenze cookie del sito o le impostazioni del browser.
             </P>
           </Section>
 
@@ -262,7 +255,7 @@ export default function Privacy() {
               <strong>Contenuti generati dall'AI.</strong> Parte dei contenuti pubblicati su questo sito è generata o assistita da sistemi di intelligenza artificiale. Tali contenuti sono revisionati dalla redazione ma potrebbero non riflettere sempre opinioni o posizioni ufficiali. IDEASMART non garantisce la completezza o l'assenza di errori nei contenuti AI-assisted.
             </P>
             <P>
-              <strong>Pubblicità.</strong> Il sito ospita annunci pubblicitari tramite Google AdSense. La presenza di annunci non implica raccomandazione o approvazione dei prodotti o servizi pubblicizzati. IDEASMART non è responsabile per il contenuto degli annunci di terze parti.
+              <strong>Contenuti editoriali.</strong> I contenuti pubblicati su IDEASMART sono selezionati e curati dalla redazione. La menzione di prodotti, servizi o aziende nei contenuti editoriali non implica raccomandazione o approvazione commerciale. IDEASMART non è responsabile per le decisioni prese dagli utenti sulla base dei contenuti pubblicati.
             </P>
             <P>
               <strong>Proprietà intellettuale.</strong> Tutti i contenuti originali pubblicati su IDEASMART (testi, grafica, loghi, layout) sono protetti da copyright. È vietata la riproduzione, anche parziale, senza autorizzazione scritta, salvo citazione con attribuzione e link alla fonte originale.

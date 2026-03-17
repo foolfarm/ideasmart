@@ -7,9 +7,20 @@ import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
 export async function setupVite(app: Express, server: Server) {
+  // Detect the proxy host dynamically from the first HTTP request.
+  // The Manus proxy uses a subdomain like 3000-xxx.manus.computer — we need to tell
+  // the Vite HMR client to connect to that host (not localhost:5173).
+  let proxyHost: string | undefined;
+
   const serverOptions = {
     middlewareMode: true,
-    hmr: { server },
+    hmr: { 
+      server,
+      // clientPort 443 + protocol wss: browser connects via the Manus HTTPS proxy
+      clientPort: 443,
+      protocol: 'wss',
+      // host will be patched below once we know the proxy domain
+    } as any,
     allowedHosts: true as const,
   };
 
@@ -18,6 +29,21 @@ export async function setupVite(app: Express, server: Server) {
     configFile: false,
     server: serverOptions,
     appType: "custom",
+  });
+
+  // Patch HMR host on first request so the browser connects to the correct proxy domain
+  app.use((req, _res, next) => {
+    if (!proxyHost) {
+      const host = req.headers['x-forwarded-host'] as string || req.headers['host'] as string;
+      if (host && !host.startsWith('localhost') && !host.startsWith('127.')) {
+        proxyHost = host.split(':')[0];
+        // Patch the Vite HMR config so subsequent client scripts use the right host
+        try {
+          (vite as any).config.server.hmr.host = proxyHost;
+        } catch (_) {}
+      }
+    }
+    next();
   });
 
   // Intercept Vite's 504 "Outdated Optimize Dep" responses and convert them to a
@@ -81,6 +107,54 @@ export async function setupVite(app: Express, server: Server) {
         return originalEnd(chunk, ...args);
       };
     }
+    next();
+  });
+
+  // Patch @vite/client on-the-fly to inject the correct proxy host for HMR WebSocket.
+  // Vite hardcodes __HMR_HOSTNAME__=null which causes the browser to use importMetaUrl.hostname
+  // from the module URL (localhost:5173) instead of the proxy domain.
+  // We intercept the /@vite/client request and replace the socketHost line dynamically.
+  app.use('/@vite/client', (req, res, next) => {
+    const proxyDomain = (req.headers['x-forwarded-host'] as string) || (req.headers['host'] as string) || '';
+    const hostname = proxyDomain.split(':')[0];
+    if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
+      return next();
+    }
+    // Let Vite serve the file first, then intercept the response
+    const originalWrite = res.write.bind(res);
+    const originalEnd = res.end.bind(res);
+    let body = '';
+    let intercepted = false;
+
+    (res as any).write = function(chunk: any, ...args: any[]) {
+      if (!intercepted) {
+        body += typeof chunk === 'string' ? chunk : chunk.toString('utf8');
+        return true;
+      }
+      return originalWrite(chunk, ...args);
+    };
+
+    (res as any).end = function(chunk?: any, ...args: any[]) {
+      if (!intercepted) {
+        intercepted = true;
+        if (chunk) body += typeof chunk === 'string' ? chunk : chunk.toString('utf8');
+        // Patch: replace null hostname with the actual proxy hostname
+        const patched = body
+          .replace(
+            /const socketHost = `\$\{null \|\| importMetaUrl\.hostname\}/,
+            `const socketHost = \`\${"${hostname}"}`
+          )
+          .replace(
+            /const directSocketHost = "localhost:\d+\/"/,
+            `const directSocketHost = "${hostname}:443/"`
+          );
+        const buf = Buffer.from(patched, 'utf8');
+        res.setHeader('Content-Length', buf.length);
+        return originalEnd(buf);
+      }
+      return originalEnd(chunk, ...args);
+    };
+
     next();
   });
 
