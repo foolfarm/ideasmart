@@ -34,7 +34,7 @@ import { notifyOwner } from "./_core/notification";
 
 // ─── Configurazione canali ────────────────────────────────────────────────────
 
-export type ChannelKey = "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health";
+export type ChannelKey = "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health" | "news" | "motori" | "tennis" | "basket";
 
 interface ChannelConfig {
   key: ChannelKey;

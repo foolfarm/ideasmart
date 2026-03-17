@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE daily_editorial SET title = 'Agenti AI Autonomi: l\\'Italia Deve Agire Ora', subtitle = 'Dall\\'automazione ripetitiva all\\'intelligenza autonoma: il salto che le imprese italiane non possono rimandare.', keyTrend = 'Agenti AI Autonomi', body = REPLACE(REPLACE(body, 'l\\'AI agentiva', 'i sistemi AI autonomi'), 'AI agentiva', 'sistemi AI autonomi'), authorNote = 'I sistemi AI autonomi non sono fantascienza: sono la realtà emergente. Dobbiamo guidare questa transizione con intelligenza e lungimiranza, non subirla.' WHERE id = 300001;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute UPDATE daily_editorial SET title = 'Agenti AI Autonomi: l\\'Italia Deve Agire Ora', subtitle = 'Dall\\'automazione ripetitiva all\\'intelligenza autonoma: il salto che le imprese italiane non possono rimandare.', keyTrend = 'Agenti AI Autonomi', body = REPLACE(REPLACE(body, 'l\\'AI agentiva', 'i sistemi AI autonomi'), 'AI agentiva', 'sistemi AI autonomi'), authorNote = 'I sistemi AI autonomi non sono fantascienza: sono la realtà emergente. Dobbiamo guidare questa transizione con intelligenza e lungimiranza, non subirla.' WHERE id = 300001;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 62
+}

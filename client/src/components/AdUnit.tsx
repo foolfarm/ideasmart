@@ -107,6 +107,30 @@ export const AD_SLOTS = {
   LUXURY_MID1:     "8948908650",
   LUXURY_MID2:     "3313438599",
   LUXURY_BOTTOM:   "8723745625",
+
+  // Sezione News Generali
+  NEWS_TOP:        "8723745625",
+  NEWS_MID1:       "8948908650",
+  NEWS_MID2:       "3313438599",
+  NEWS_BOTTOM:     "8723745625",
+
+  // Sezione Motori
+  MOTORI_TOP:      "8723745625",
+  MOTORI_MID1:     "8948908650",
+  MOTORI_MID2:     "3313438599",
+  MOTORI_BOTTOM:   "8723745625",
+
+  // Sezione Tennis
+  TENNIS_TOP:      "8723745625",
+  TENNIS_MID1:     "8948908650",
+  TENNIS_MID2:     "3313438599",
+  TENNIS_BOTTOM:   "8723745625",
+
+  // Sezione Basket
+  BASKET_TOP:      "8723745625",
+  BASKET_MID1:     "8948908650",
+  BASKET_MID2:     "3313438599",
+  BASKET_BOTTOM:   "8723745625",
 } as const;
 
 // ─── Tipi ──────────────────────────────────────────────────────────────────────
@@ -269,6 +293,34 @@ export const AdLuxuryTop    = _luxury.Top;
 export const AdLuxuryMid1   = _luxury.Mid1;
 export const AdLuxuryMid2   = _luxury.Mid2;
 export const AdLuxuryBottom = _luxury.Bottom;
+
+// ─── News Generali ────────────────────────────────────────────────────────────
+const _news = makeChannelAds(AD_SLOTS.NEWS_TOP, AD_SLOTS.NEWS_MID1, AD_SLOTS.NEWS_MID2, AD_SLOTS.NEWS_BOTTOM);
+export const AdNewsTop    = _news.Top;
+export const AdNewsMid1   = _news.Mid1;
+export const AdNewsMid2   = _news.Mid2;
+export const AdNewsBottom = _news.Bottom;
+
+// ─── Motori ───────────────────────────────────────────────────────────────────
+const _motori = makeChannelAds(AD_SLOTS.MOTORI_TOP, AD_SLOTS.MOTORI_MID1, AD_SLOTS.MOTORI_MID2, AD_SLOTS.MOTORI_BOTTOM);
+export const AdMotoriTop    = _motori.Top;
+export const AdMotoriMid1   = _motori.Mid1;
+export const AdMotoriMid2   = _motori.Mid2;
+export const AdMotoriBottom = _motori.Bottom;
+
+// ─── Tennis ───────────────────────────────────────────────────────────────────
+const _tennis = makeChannelAds(AD_SLOTS.TENNIS_TOP, AD_SLOTS.TENNIS_MID1, AD_SLOTS.TENNIS_MID2, AD_SLOTS.TENNIS_BOTTOM);
+export const AdTennisTop    = _tennis.Top;
+export const AdTennisMid1   = _tennis.Mid1;
+export const AdTennisMid2   = _tennis.Mid2;
+export const AdTennisBottom = _tennis.Bottom;
+
+// ─── Basket ───────────────────────────────────────────────────────────────────
+const _basket = makeChannelAds(AD_SLOTS.BASKET_TOP, AD_SLOTS.BASKET_MID1, AD_SLOTS.BASKET_MID2, AD_SLOTS.BASKET_BOTTOM);
+export const AdBasketTop    = _basket.Top;
+export const AdBasketMid1   = _basket.Mid1;
+export const AdBasketMid2   = _basket.Mid2;
+export const AdBasketBottom = _basket.Bottom;
 
 // ─── Componenti generici @deprecated ──────────────────────────────────────────
 /** @deprecated Usare i componenti nominati sopra */

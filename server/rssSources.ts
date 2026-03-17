@@ -15,7 +15,7 @@ export interface RssSource {
   name: string;
   homepage: string;
   feedUrl: string;
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket";
   language: "it" | "en";
   priority: number;
   tags?: string[];
@@ -447,13 +447,17 @@ export const SECTION_FALLBACKS: Record<string, string> = {
   health: "https://www.statnews.com",
   sport: "https://www.sportbusiness.com",
   luxury: "https://www.businessoffashion.com",
+  news: "https://www.ansa.it",
+  motori: "https://www.autosprint.it",
+  tennis: "https://www.ubitennis.com",
+  basket: "https://www.sportando.basketball",
 };
 
 /**
  * Estrae il dominio da un URL e restituisce la homepage sicura dalla whitelist.
  * Se il dominio non è in whitelist, restituisce la homepage del dominio stesso.
  */
-export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"): string {
+export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket"): string {
   try {
     const parsed = new URL(url);
     const domain = parsed.hostname.replace(/^www\./, "");
@@ -589,4 +593,87 @@ export const LUXURY_SOURCES: RssSource[] = [
   { name: "Forbes Italia Lusso", homepage: "https://forbes.it", feedUrl: "https://forbes.it/feed", section: "luxury", language: "it", priority: 1 },
 ];
 
-export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES];
+// ─── 8. News Generali ────────────────────────────────────────────────────────
+export const NEWS_SOURCES: RssSource[] = [
+  // Agenzie e quotidiani italiani
+  { name: "ANSA", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml", section: "news", language: "it", priority: 1 },
+  { name: "ANSA Politica", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/politica/politica_rss.xml", section: "news", language: "it", priority: 1 },
+  { name: "ANSA Economia", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/economia/economia_rss.xml", section: "news", language: "it", priority: 1 },
+  { name: "ANSA Esteri", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/mondo/mondo_rss.xml", section: "news", language: "it", priority: 1 },
+  { name: "ANSA Cronaca", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/cronaca/cronaca_rss.xml", section: "news", language: "it", priority: 1 },
+  { name: "Repubblica", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/homepage/rss2.0.xml", section: "news", language: "it", priority: 1 },
+  { name: "Corriere della Sera", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/homepage.xml", section: "news", language: "it", priority: 1 },
+  { name: "Il Sole 24 Ore", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/italia.xml", section: "news", language: "it", priority: 1 },
+  { name: "La Stampa", homepage: "https://www.lastampa.it", feedUrl: "https://www.lastampa.it/rss.xml", section: "news", language: "it", priority: 1 },
+  { name: "Il Fatto Quotidiano", homepage: "https://www.ilfattoquotidiano.it", feedUrl: "https://www.ilfattoquotidiano.it/feed", section: "news", language: "it", priority: 1 },
+  { name: "Tgcom24", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/home.xml", section: "news", language: "it", priority: 2 },
+  { name: "Sky TG24", homepage: "https://tg24.sky.it", feedUrl: "https://tg24.sky.it/rss", section: "news", language: "it", priority: 1 },
+  { name: "Fanpage", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/feed", section: "news", language: "it", priority: 2 },
+  { name: "Open Online", homepage: "https://www.open.online", feedUrl: "https://www.open.online/feed", section: "news", language: "it", priority: 2 },
+  { name: "HuffPost Italia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/feeds/index.xml", section: "news", language: "it", priority: 2 },
+  // Internazionali
+  { name: "BBC News", homepage: "https://www.bbc.com", feedUrl: "https://feeds.bbci.co.uk/news/rss.xml", section: "news", language: "en", priority: 1 },
+  { name: "Reuters", homepage: "https://www.reuters.com", feedUrl: "https://feeds.reuters.com/reuters/topNews", section: "news", language: "en", priority: 1 },
+  { name: "AP News", homepage: "https://apnews.com", feedUrl: "https://apnews.com/rss", section: "news", language: "en", priority: 1 },
+  { name: "The Guardian", homepage: "https://www.theguardian.com", feedUrl: "https://www.theguardian.com/world/rss", section: "news", language: "en", priority: 1 },
+  { name: "Al Jazeera", homepage: "https://www.aljazeera.com", feedUrl: "https://www.aljazeera.com/xml/rss/all.xml", section: "news", language: "en", priority: 1 },
+  // Glamour & Spettacolo
+  { name: "Vanity Fair Italia", homepage: "https://www.vanityfair.it", feedUrl: "https://www.vanityfair.it/feed", section: "news", language: "it", priority: 2, tags: ["glamour"] },
+  { name: "Vogue Italia", homepage: "https://www.vogue.it", feedUrl: "https://www.vogue.it/feed", section: "news", language: "it", priority: 2, tags: ["glamour"] },
+  { name: "People", homepage: "https://people.com", feedUrl: "https://people.com/feed", section: "news", language: "en", priority: 2, tags: ["glamour"] },
+];
+
+// ─── 9. Motori ───────────────────────────────────────────────────────────────
+export const MOTORI_SOURCES: RssSource[] = [
+  { name: "Autosprint", homepage: "https://www.autosprint.it", feedUrl: "https://www.autosprint.it/feed", section: "motori", language: "it", priority: 1 },
+  { name: "Quattroruote", homepage: "https://www.quattroruote.it", feedUrl: "https://www.quattroruote.it/rss/news.xml", section: "motori", language: "it", priority: 1 },
+  { name: "Motorionline", homepage: "https://www.motorionline.com", feedUrl: "https://www.motorionline.com/feed", section: "motori", language: "it", priority: 1 },
+  { name: "Automoto.it", homepage: "https://www.automoto.it", feedUrl: "https://www.automoto.it/rss/news.xml", section: "motori", language: "it", priority: 1 },
+  { name: "Corriere Motori", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/motori.xml", section: "motori", language: "it", priority: 1 },
+  { name: "La Gazzetta Motori", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/motori.xml", section: "motori", language: "it", priority: 1 },
+  { name: "Autocar", homepage: "https://www.autocar.co.uk", feedUrl: "https://www.autocar.co.uk/rss", section: "motori", language: "en", priority: 1 },
+  { name: "Car and Driver", homepage: "https://www.caranddriver.com", feedUrl: "https://www.caranddriver.com/rss/all.xml", section: "motori", language: "en", priority: 1 },
+  { name: "Motor Trend", homepage: "https://www.motortrend.com", feedUrl: "https://www.motortrend.com/rss/all.xml", section: "motori", language: "en", priority: 1 },
+  { name: "Road and Track", homepage: "https://www.roadandtrack.com", feedUrl: "https://www.roadandtrack.com/rss/all.xml", section: "motori", language: "en", priority: 1 },
+  { name: "Autoblog", homepage: "https://www.autoblog.com", feedUrl: "https://www.autoblog.com/rss.xml", section: "motori", language: "en", priority: 2 },
+  { name: "Jalopnik", homepage: "https://jalopnik.com", feedUrl: "https://jalopnik.com/rss", section: "motori", language: "en", priority: 2 },
+  { name: "Electrek", homepage: "https://electrek.co", feedUrl: "https://electrek.co/feed", section: "motori", language: "en", priority: 1, tags: ["elettrico"] },
+  { name: "InsideEVs", homepage: "https://insideevs.com", feedUrl: "https://insideevs.com/rss/articles/all", section: "motori", language: "en", priority: 1, tags: ["elettrico"] },
+  { name: "Formula 1", homepage: "https://www.formula1.com", feedUrl: "https://www.formula1.com/content/fom-website/en/latest/all.xml", section: "motori", language: "en", priority: 1, tags: ["f1"] },
+  { name: "Motorsport.com", homepage: "https://it.motorsport.com", feedUrl: "https://it.motorsport.com/rss/news/all", section: "motori", language: "it", priority: 1, tags: ["f1", "motorsport"] },
+  { name: "Autosport", homepage: "https://www.autosport.com", feedUrl: "https://www.autosport.com/rss/feed/all", section: "motori", language: "en", priority: 1, tags: ["motorsport"] },
+];
+
+// ─── 10. Tennis ──────────────────────────────────────────────────────────────
+export const TENNIS_SOURCES: RssSource[] = [
+  { name: "Tennis World Italia", homepage: "https://www.tennisworlditalia.com", feedUrl: "https://www.tennisworlditalia.com/feed", section: "tennis", language: "it", priority: 1 },
+  { name: "Ubitennis", homepage: "https://www.ubitennis.com", feedUrl: "https://www.ubitennis.com/feed", section: "tennis", language: "it", priority: 1 },
+  { name: "SuperTennis", homepage: "https://www.supertennis.tv", feedUrl: "https://www.supertennis.tv/feed", section: "tennis", language: "it", priority: 1 },
+  { name: "Corriere Sport Tennis", homepage: "https://www.corrieredellosport.it", feedUrl: "https://www.corrieredellosport.it/rss", section: "tennis", language: "it", priority: 2 },
+  { name: "Gazzetta Tennis", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/tennis.xml", section: "tennis", language: "it", priority: 1 },
+  { name: "Tennis.com", homepage: "https://www.tennis.com", feedUrl: "https://www.tennis.com/rss", section: "tennis", language: "en", priority: 1 },
+  { name: "Tennis World USA", homepage: "https://www.tennisworldusa.org", feedUrl: "https://www.tennisworldusa.org/feed", section: "tennis", language: "en", priority: 1 },
+  { name: "WTA Official", homepage: "https://www.wtatennis.com", feedUrl: "https://www.wtatennis.com/rss", section: "tennis", language: "en", priority: 1 },
+  { name: "ATP Official", homepage: "https://www.atptour.com", feedUrl: "https://www.atptour.com/en/media/rss-feed/xml-feed", section: "tennis", language: "en", priority: 1 },
+  { name: "Tennis Abstract", homepage: "https://www.tennisabstract.com", feedUrl: "https://www.tennisabstract.com/blog/feed", section: "tennis", language: "en", priority: 2 },
+  { name: "Essentially Sports Tennis", homepage: "https://www.essentiallysports.com", feedUrl: "https://www.essentiallysports.com/tennis/feed", section: "tennis", language: "en", priority: 2 },
+  { name: "The Tennis Podcast", homepage: "https://thetennispodcast.net", feedUrl: "https://thetennispodcast.net/feed", section: "tennis", language: "en", priority: 2 },
+];
+
+// ─── 11. Basket ──────────────────────────────────────────────────────────────
+export const BASKET_SOURCES: RssSource[] = [
+  { name: "Sportando", homepage: "https://www.sportando.basketball", feedUrl: "https://www.sportando.basketball/feed", section: "basket", language: "en", priority: 1 },
+  { name: "Basket Universo", homepage: "https://www.basketuniverso.it", feedUrl: "https://www.basketuniverso.it/feed", section: "basket", language: "it", priority: 1 },
+  { name: "Pianeta Basket", homepage: "https://www.pianetabasket.com", feedUrl: "https://www.pianetabasket.com/feed", section: "basket", language: "it", priority: 1 },
+  { name: "Gazzetta Basket", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/basket.xml", section: "basket", language: "it", priority: 1 },
+  { name: "Corriere Sport Basket", homepage: "https://www.corrieredellosport.it", feedUrl: "https://www.corrieredellosport.it/rss", section: "basket", language: "it", priority: 2 },
+  { name: "NBA.com", homepage: "https://www.nba.com", feedUrl: "https://www.nba.com/news/rss.xml", section: "basket", language: "en", priority: 1 },
+  { name: "ESPN NBA", homepage: "https://www.espn.com", feedUrl: "https://www.espn.com/espn/rss/nba/news", section: "basket", language: "en", priority: 1 },
+  { name: "The Athletic NBA", homepage: "https://theathletic.com", feedUrl: "https://theathletic.com/nba/feed", section: "basket", language: "en", priority: 1 },
+  { name: "Bleacher Report NBA", homepage: "https://bleacherreport.com", feedUrl: "https://bleacherreport.com/nba.rss", section: "basket", language: "en", priority: 2 },
+  { name: "HoopsHype", homepage: "https://hoopshype.com", feedUrl: "https://hoopshype.com/feed", section: "basket", language: "en", priority: 2 },
+  { name: "EuroLeague", homepage: "https://www.euroleaguebasketball.net", feedUrl: "https://www.euroleaguebasketball.net/euroleague/news/rss", section: "basket", language: "en", priority: 1 },
+  { name: "Lega Basket", homepage: "https://www.legabasket.it", feedUrl: "https://www.legabasket.it/rss", section: "basket", language: "it", priority: 1 },
+];
+
+export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES];

@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, dateLabel, title, subtitle, keyTrend FROM daily_editorial WHERE section = 'ai' ORDER BY id DESC LIMIT 2;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, dateLabel, title, subtitle, keyTrend FROM daily_editorial WHERE section = 'ai' ORDER BY id DESC LIMIT 2;",
+  "rows": [
+    {
+      "id": "450001",
+      "dateLabel": "2026-03-17",
+      "title": "Agenti AI Autonomi: la Nuova Leva Competitiva per le Imprese Italiane",
+      "subtitle": "Dalla generazione di contenuti all'automazione intelligente: come i sistemi AI autonomi stanno trasformando strategia e produttività.",
+      "keyTrend": "Agenti AI Autonomi"
+    },
+    {
+      "id": "300001",
+      "dateLabel": "2026-03-16",
+      "title": "Agenti AI Autonomi: l'Italia Deve Agire Ora",
+      "subtitle": "Dall'automazione ripetitiva all'intelligenza autonoma: il salto che le imprese italiane non possono rimandare.",
+      "keyTrend": "Agenti AI Autonomi"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tdateLabel\ttitle\tsubtitle\tkeyTrend\n450001\t2026-03-17\tAgenti AI Autonomi: la Nuova Leva Competitiva per le Imprese Italiane\tDalla generazione di contenuti all'automazione intelligente: come i sistemi AI autonomi stanno trasformando strategia e produttività.\tAgenti AI Autonomi\n300001\t2026-03-16\tAgenti AI Autonomi: l'Italia Deve Agire Ora\tDall'automazione ripetitiva all'intelligenza autonoma: il salto che le imprese italiane non possono rimandare.\tAgenti AI Autonomi\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}

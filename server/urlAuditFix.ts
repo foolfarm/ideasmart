@@ -63,7 +63,7 @@ function isValidUrl(url: string): boolean {
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function auditRecentNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury",
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket",
   limit = 25
 ): Promise<{ fixed: number; ok: number; failed: number }> {
   const db = await getDb();

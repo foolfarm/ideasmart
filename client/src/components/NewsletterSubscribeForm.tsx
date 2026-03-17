@@ -2,7 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music';
+type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket';
 
 const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: string }> = {
   ai:      { label: 'AI',      day: 'Lun', color: '#00b4a0' },
@@ -12,9 +12,13 @@ const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: stri
   music:   { label: 'Music',   day: 'Ven', color: '#7c3aed' },
   luxury:  { label: 'Luxury',  day: 'Sab', color: '#b45309' },
   health:  { label: 'Health',  day: 'Dom', color: '#dc2626' },
+  news:    { label: 'News',    day: 'Lun', color: '#c0392b' },
+  motori:  { label: 'Motori',  day: 'Mar', color: '#e67e22' },
+  tennis:  { label: 'Tennis',  day: 'Mer', color: '#27ae60' },
+  basket:  { label: 'Basket',  day: 'Gio', color: '#8e44ad' },
 };
 
-const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music'];
+const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket'];
 
 interface Props {
   /** Canale pre-selezionato (pagina corrente) */

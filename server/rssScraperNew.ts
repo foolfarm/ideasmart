@@ -20,7 +20,7 @@
 import Parser from "rss-parser";
 import axios from "axios";
 import { invokeLLM } from "./_core/llm";
-import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
+import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, NEWS_SOURCES, MOTORI_SOURCES, TENNIS_SOURCES, BASKET_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
 const rssParser = new Parser({
@@ -100,7 +100,7 @@ async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fe
  */
 async function selectAndTranslate(
   articles: Awaited<ReturnType<typeof fetchAllFeeds>>,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket"
 ): Promise<ScrapedArticle[]> {
   if (articles.length === 0) {
     console.warn(`[RssScraper] Nessun articolo disponibile per ${section}`);
@@ -142,6 +142,26 @@ async function selectAndTranslate(
       label: "Lifestyle & Luxury",
       categories: ["Moda & Lusso", "Made in Italy", "Orologeria & Gioielleria", "Automotive Luxury", "Arte & Collezionismo", "Vino & Gastronomia", "Travel & Hospitality", "Real Estate Luxury", "Brand Strategy", "Sostenibilità nel Lusso", "Retail & E-commerce Luxury", "Acquisizioni nel Lusso"],
       instructions: "Seleziona le notizie più rilevanti per imprenditori del made in Italy, manager del lusso e investitori. Privilegia strategie di brand, acquisizioni LVMH/Kering/Richemont, trend di mercato, innovazione nel retail luxury.",
+    },
+    news: {
+      label: "News Generali",
+      categories: ["Politica Italiana", "Politica Internazionale", "Economia", "Esteri", "Cronaca", "Glamour & Spettacolo", "Ambiente", "Società", "Giustizia", "Europa", "Medio Oriente", "USA & Americhe"],
+      instructions: "Seleziona le 20 notizie più importanti del giorno per un lettore italiano informato. Privilegia notizie di politica, economia, esteri e cronaca. Includi almeno 2 notizie di glamour/spettacolo. Titoli chiari e diretti, senza sensazionalismo.",
+    },
+    motori: {
+      label: "Motori",
+      categories: ["Formula 1", "MotoGP & Motorsport", "Auto Elettriche", "Nuovi Modelli", "Mercato Auto", "Tecnologia Auto", "Supercar & Hypercar", "SUV & Crossover", "Auto d'Epoca", "Moto", "Industria Automotive", "Guida Autonoma"],
+      instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di motori italiani. Privilegia F1, nuovi modelli, elettrico, motorsport e notizie dall'industria automotive. Titoli appassionati e diretti.",
+    },
+    tennis: {
+      label: "Tennis",
+      categories: ["ATP Tour", "WTA Tour", "Grand Slam", "Tennis Italiano", "Sinner & Azzurri", "Ranking ATP/WTA", "Davis Cup & Billie Jean King", "Next Gen", "Analisi Tattica", "Mercato & Coaching", "Tornei Masters", "ITF & Challenger"],
+      instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di tennis italiani. Privilegia Sinner, Berrettini e gli altri azzurri, Grand Slam, ATP/WTA Tour. Titoli precisi con nomi dei giocatori.",
+    },
+    basket: {
+      label: "Basket",
+      categories: ["NBA", "Serie A Basket", "Eurolega", "Nazionale Italiana", "Mercato & Trasferimenti", "Analisi Tattica", "Statistiche", "Giovani Talenti", "Coach & Staff", "Infortuni", "Playoff", "Draft NBA"],
+      instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di basket italiani. Privilegia NBA, Serie A, Eurolega e Nazionale italiana. Titoli precisi con nomi dei giocatori e squadre.",
     },
   } as const;
 
@@ -299,7 +319,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
  */
 export async function sanitizeSourceUrl(
   url: string,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket"
 ): Promise<string> {
   try {
     const parsed = new URL(url);
@@ -360,4 +380,28 @@ export async function scrapeLuxuryNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Luxury news...");
   const articles = await fetchAllFeeds(LUXURY_SOURCES);
   return selectAndTranslate(articles, "luxury");
+}
+
+export async function scrapeNewsGenerali(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping News Generali...");
+  const articles = await fetchAllFeeds(NEWS_SOURCES);
+  return selectAndTranslate(articles, "news");
+}
+
+export async function scrapeMotoriNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Motori news...");
+  const articles = await fetchAllFeeds(MOTORI_SOURCES);
+  return selectAndTranslate(articles, "motori");
+}
+
+export async function scrapeTennisNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Tennis news...");
+  const articles = await fetchAllFeeds(TENNIS_SOURCES);
+  return selectAndTranslate(articles, "tennis");
+}
+
+export async function scrapeBasketNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Basket news...");
+  const articles = await fetchAllFeeds(BASKET_SOURCES);
+  return selectAndTranslate(articles, "basket");
 }

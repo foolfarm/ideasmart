@@ -14,6 +14,10 @@ import FinanceHome from "./pages/FinanceHome";
 import HealthHome from "./pages/HealthHome";
 import SportHome from "./pages/SportHome";
 import LuxuryHome from "./pages/LuxuryHome";
+import NewsHome from "./pages/NewsHome";
+import MotoriHome from "./pages/MotoriHome";
+import TennisHome from "./pages/TennisHome";
+import BasketHome from "./pages/BasketHome";
 import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
 import AuditDashboard from "./pages/AuditDashboard";
@@ -46,6 +50,10 @@ function Router() {
       <Route path="/health" component={HealthHome} />
       <Route path="/sport" component={SportHome} />
       <Route path="/luxury" component={LuxuryHome} />
+      <Route path="/news" component={NewsHome} />
+      <Route path="/motori" component={MotoriHome} />
+      <Route path="/tennis" component={TennisHome} />
+      <Route path="/basket" component={BasketHome} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
       <Route path="/admin/rss-monitor" component={AdminRssMonitor} />

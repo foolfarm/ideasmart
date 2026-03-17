@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { trpc } from "@/lib/trpc";
 
-type Section = 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury';
+type Section = 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket';
 
 interface ArchiveSectionProps {
   section: Section;
