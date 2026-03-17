@@ -881,3 +881,7 @@
 ## Task (17 Mar 2026 — Fix React duplicate instances)
 
 - [x] Risolvere errore "multiple copies of React" reinstallando le dipendenze pnpm e riavviando il server
+
+## Task (17 Mar 2026 — Fix definitivo HMR WebSocket)
+
+- [x] Correggere configurazione HMR Vite — configurazione già corretta (clientPort:443, protocol:wss), errore è transitorio al riavvio server
