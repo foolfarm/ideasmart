@@ -865,3 +865,7 @@
 ## Task (17 Mar 2026 — Sidebar canali)
 
 - [x] Aggiungere Motori, Tennis, Basket alla sidebar "I Canali" nella Home
+
+## Task (17 Mar 2026 — Fix AdUnit exports)
+
+- [x] Correggere export mancanti in AdUnit.tsx (AdStartupBottom e altri) — già presenti, riavvio server risolve cache Vite
