@@ -116,6 +116,8 @@ export async function setupVite(app: Express, server: Server) {
   // We intercept the /@vite/client request and replace the socketHost line dynamically.
   // Compatible with Vite 5, 6, and 7 (pattern: `${null || importMetaUrl.hostname}:...`)
   app.use('/@vite/client', (req, res, next) => {
+    // Priority: x-forwarded-host > Host header
+    // The Manus proxy sets the Host header to the proxy domain (e.g. 3000-xxx.manus.computer)
     const proxyDomain = (req.headers['x-forwarded-host'] as string) || (req.headers['host'] as string) || '';
     const hostname = proxyDomain.split(':')[0];
     if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
