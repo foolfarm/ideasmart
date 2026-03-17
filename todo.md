@@ -877,3 +877,7 @@
 ## Task (17 Mar 2026 — Fix definitivo AdUnit cache)
 
 - [x] Risolvere definitivamente errore AdNewsBottom/AdUnit cache Vite — pulita cache node_modules/.vite, riavviato server
+
+## Task (17 Mar 2026 — Fix React duplicate instances)
+
+- [x] Risolvere errore "multiple copies of React" reinstallando le dipendenze pnpm e riavviando il server
