@@ -15,7 +15,7 @@ export interface RssSource {
   name: string;
   homepage: string;
   feedUrl: string;
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket";
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
   language: "it" | "en";
   priority: number;
   tags?: string[];
@@ -451,13 +451,16 @@ export const SECTION_FALLBACKS: Record<string, string> = {
   motori: "https://www.autosprint.it",
   tennis: "https://www.ubitennis.com",
   basket: "https://www.sportando.basketball",
+  gossip: "https://www.businessinsider.com",
+  cybersecurity: "https://thehackernews.com",
+  sondaggi: "https://www.youtrend.it",
 };
 
 /**
  * Estrae il dominio da un URL e restituisce la homepage sicura dalla whitelist.
  * Se il dominio non è in whitelist, restituisce la homepage del dominio stesso.
  */
-export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket"): string {
+export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi"): string {
   try {
     const parsed = new URL(url);
     const domain = parsed.hostname.replace(/^www\./, "");
@@ -736,4 +739,110 @@ export const BASKET_SOURCES: RssSource[] = [
   { name: "Lega Basket", homepage: "https://www.legabasket.it", feedUrl: "https://www.legabasket.it/rss", section: "basket", language: "it", priority: 1 },
 ];
 
-export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES];
+export const GOSSIP_SOURCES: RssSource[] = [
+  // Media + insider tech/business
+  { name: "Business Insider", homepage: "https://www.businessinsider.com", feedUrl: "https://www.businessinsider.com/rss", section: "gossip", language: "en", priority: 1 },
+  { name: "Axios", homepage: "https://www.axios.com", feedUrl: "https://www.axios.com/feed", section: "gossip", language: "en", priority: 1 },
+  { name: "Techmeme", homepage: "https://techmeme.com", feedUrl: "https://techmeme.com/feed.xml", section: "gossip", language: "en", priority: 1 },
+  { name: "Reuters Business", homepage: "https://www.reuters.com", feedUrl: "https://www.reuters.com/business/rss", section: "gossip", language: "en", priority: 1 },
+  { name: "Fast Company", homepage: "https://www.fastcompany.com", feedUrl: "https://www.fastcompany.com/rss", section: "gossip", language: "en", priority: 2 },
+  // Startup gossip / VC / deal flow
+  { name: "Crunchbase News", homepage: "https://news.crunchbase.com", feedUrl: "https://news.crunchbase.com/feed", section: "gossip", language: "en", priority: 1 },
+  { name: "Dealroom Blog", homepage: "https://dealroom.co", feedUrl: "https://dealroom.co/blog/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "PitchBook News", homepage: "https://pitchbook.com", feedUrl: "https://pitchbook.com/news/rss", section: "gossip", language: "en", priority: 1 },
+  { name: "Strictly VC", homepage: "https://strictlyvc.com", feedUrl: "https://strictlyvc.com/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "AVC (Fred Wilson)", homepage: "https://avc.com", feedUrl: "https://avc.com/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "Tom Tunguz", homepage: "https://tomtunguz.com", feedUrl: "https://tomtunguz.com/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "Both Sides of the Table", homepage: "https://bothsidesofthetable.com", feedUrl: "https://bothsidesofthetable.com/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "a16z Blog", homepage: "https://a16z.com", feedUrl: "https://a16z.com/feed", section: "gossip", language: "en", priority: 1 },
+  // Executive moves / corporate
+  { name: "CNBC Business", homepage: "https://www.cnbc.com", feedUrl: "https://www.cnbc.com/id/100003114/device/rss/rss.html", section: "gossip", language: "en", priority: 1 },
+  { name: "Business of Fashion", homepage: "https://www.businessoffashion.com", feedUrl: "https://www.businessoffashion.com/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "The Verge", homepage: "https://www.theverge.com", feedUrl: "https://www.theverge.com/rss/index.xml", section: "gossip", language: "en", priority: 1 },
+  { name: "VentureBeat", homepage: "https://venturebeat.com", feedUrl: "https://venturebeat.com/feed", section: "gossip", language: "en", priority: 1 },
+  // Gossip soft power (CEO, culture, trend)
+  { name: "Stratechery", homepage: "https://stratechery.com", feedUrl: "https://stratechery.com/feed", section: "gossip", language: "en", priority: 1 },
+  { name: "Not Boring", homepage: "https://notboring.co", feedUrl: "https://notboring.co/feed", section: "gossip", language: "en", priority: 1 },
+  { name: "CB Insights Research", homepage: "https://www.cbinsights.com", feedUrl: "https://www.cbinsights.com/research/feed", section: "gossip", language: "en", priority: 2 },
+  { name: "Visual Capitalist", homepage: "https://www.visualcapitalist.com", feedUrl: "https://www.visualcapitalist.com/feed", section: "gossip", language: "en", priority: 1 },
+  // Italia business gossip
+  { name: "Affari Italiani", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss", section: "gossip", language: "it", priority: 1 },
+  { name: "Milano Finanza", homepage: "https://www.milanofinanza.it", feedUrl: "https://www.milanofinanza.it/rss", section: "gossip", language: "it", priority: 1 },
+  { name: "Wall Street Italia", homepage: "https://www.wallstreetitalia.com", feedUrl: "https://www.wallstreetitalia.com/feed", section: "gossip", language: "it", priority: 1 },
+  { name: "StartupItalia", homepage: "https://www.startupitalia.eu", feedUrl: "https://www.startupitalia.eu/feed", section: "gossip", language: "it", priority: 1 },
+  { name: "EconomyUp", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "gossip", language: "it", priority: 1 },
+  { name: "Il Sole 24 Ore Finanza", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/finanza.xml", section: "gossip", language: "it", priority: 1 },
+  { name: "Corriere Economia", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/economia.xml", section: "gossip", language: "it", priority: 1 },
+  { name: "Repubblica Economia", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/economia/rss2.0.xml", section: "gossip", language: "it", priority: 1 },
+  { name: "Open Online Economia", homepage: "https://www.open.online", feedUrl: "https://www.open.online/tag/economia/feed", section: "gossip", language: "it", priority: 2 },
+  { name: "Il Post Economia", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/economia/feed", section: "gossip", language: "it", priority: 2 },
+];
+
+export const CYBERSECURITY_SOURCES: RssSource[] = [
+  // Security news
+  { name: "Krebs on Security", homepage: "https://krebsonsecurity.com", feedUrl: "https://krebsonsecurity.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Schneier on Security", homepage: "https://www.schneier.com", feedUrl: "https://www.schneier.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Dark Reading", homepage: "https://www.darkreading.com", feedUrl: "https://www.darkreading.com/rss.xml", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "SecurityWeek", homepage: "https://www.securityweek.com", feedUrl: "https://www.securityweek.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "The Hacker News", homepage: "https://thehackernews.com", feedUrl: "https://thehackernews.com/rss.xml", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "BleepingComputer", homepage: "https://www.bleepingcomputer.com", feedUrl: "https://www.bleepingcomputer.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Threatpost", homepage: "https://threatpost.com", feedUrl: "https://threatpost.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Infosecurity Magazine", homepage: "https://www.infosecurity-magazine.com", feedUrl: "https://www.infosecurity-magazine.com/rss/news/", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "CSO Online", homepage: "https://www.csoonline.com", feedUrl: "https://www.csoonline.com/index.rss", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Help Net Security", homepage: "https://www.helpnetsecurity.com", feedUrl: "https://www.helpnetsecurity.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  // Enterprise security
+  { name: "Security Magazine", homepage: "https://www.securitymagazine.com", feedUrl: "https://www.securitymagazine.com/rss/topic/2236", section: "cybersecurity", language: "en", priority: 2 },
+  { name: "Cybersecurity Insiders", homepage: "https://www.cybersecurity-insiders.com", feedUrl: "https://www.cybersecurity-insiders.com/feed", section: "cybersecurity", language: "en", priority: 2 },
+  { name: "SC Magazine", homepage: "https://www.scmagazine.com", feedUrl: "https://www.scmagazine.com/rss", section: "cybersecurity", language: "en", priority: 2 },
+  { name: "Cybersecurity Dive", homepage: "https://www.cybersecuritydive.com", feedUrl: "https://www.cybersecuritydive.com/feeds/news/", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Palo Alto Networks Blog", homepage: "https://www.paloaltonetworks.com", feedUrl: "https://www.paloaltonetworks.com/blog/feed", section: "cybersecurity", language: "en", priority: 2 },
+  { name: "CrowdStrike Blog", homepage: "https://www.crowdstrike.com", feedUrl: "https://www.crowdstrike.com/blog/feed", section: "cybersecurity", language: "en", priority: 2 },
+  // Threat intelligence
+  { name: "Recorded Future", homepage: "https://www.recordedfuture.com", feedUrl: "https://www.recordedfuture.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Talos Intelligence", homepage: "https://blog.talosintelligence.com", feedUrl: "https://blog.talosintelligence.com/feeds/posts/default", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "SANS Internet Storm Center", homepage: "https://isc.sans.edu", feedUrl: "https://isc.sans.edu/rssfeed.xml", section: "cybersecurity", language: "en", priority: 1 },
+  { name: "Malwarebytes Blog", homepage: "https://www.malwarebytes.com", feedUrl: "https://www.malwarebytes.com/blog/feed", section: "cybersecurity", language: "en", priority: 2 },
+  { name: "ESET Blog", homepage: "https://www.eset.com", feedUrl: "https://www.eset.com/blog/feed", section: "cybersecurity", language: "en", priority: 2 },
+  { name: "Securelist (Kaspersky)", homepage: "https://securelist.com", feedUrl: "https://securelist.com/feed", section: "cybersecurity", language: "en", priority: 1 },
+  // Italia cybersecurity
+  { name: "Cybersecurity360", homepage: "https://www.cybersecurity360.it", feedUrl: "https://www.cybersecurity360.it/feed", section: "cybersecurity", language: "it", priority: 1 },
+  { name: "SecurityOpenLab", homepage: "https://www.securityopenlab.it", feedUrl: "https://www.securityopenlab.it/feed", section: "cybersecurity", language: "it", priority: 1 },
+  { name: "Corriere Comunicazioni", homepage: "https://www.corrierecomunicazioni.it", feedUrl: "https://www.corrierecomunicazioni.it/feed", section: "cybersecurity", language: "it", priority: 2 },
+  { name: "Key4biz", homepage: "https://www.key4biz.it", feedUrl: "https://www.key4biz.it/feed", section: "cybersecurity", language: "it", priority: 2 },
+  { name: "Agenda Digitale", homepage: "https://www.agendadigitale.eu", feedUrl: "https://www.agendadigitale.eu/feed", section: "cybersecurity", language: "it", priority: 1 },
+  { name: "CybersecurityItalia", homepage: "https://www.cybersecurityitalia.it", feedUrl: "https://www.cybersecurityitalia.it/feed", section: "cybersecurity", language: "it", priority: 1 },
+  { name: "SecurityInfo.it", homepage: "https://www.securityinfo.it", feedUrl: "https://www.securityinfo.it/feed", section: "cybersecurity", language: "it", priority: 1 },
+  { name: "ICT Security Magazine", homepage: "https://www.ictsecuritymagazine.com", feedUrl: "https://www.ictsecuritymagazine.com/feed", section: "cybersecurity", language: "it", priority: 2 },
+  { name: "Digital4.biz", homepage: "https://www.digital4.biz", feedUrl: "https://www.digital4.biz/feed", section: "cybersecurity", language: "it", priority: 2 },
+  { name: "TechCompany360", homepage: "https://www.techcompany360.it", feedUrl: "https://www.techcompany360.it/feed", section: "cybersecurity", language: "it", priority: 2 },
+];
+
+export const SONDAGGI_SOURCES: RssSource[] = [
+  // Polls & surveys global
+  { name: "YouGov UK", homepage: "https://yougov.co.uk", feedUrl: "https://yougov.co.uk/news/rss", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Ipsos Global", homepage: "https://www.ipsos.com", feedUrl: "https://www.ipsos.com/en/rss.xml", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Gallup", homepage: "https://www.gallup.com", feedUrl: "https://www.gallup.com/rss", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Pew Research", homepage: "https://www.pewresearch.org", feedUrl: "https://www.pewresearch.org/feed", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Our World in Data", homepage: "https://ourworldindata.org", feedUrl: "https://ourworldindata.org/rss", section: "sondaggi", language: "en", priority: 1 },
+  { name: "OECD Newsroom", homepage: "https://www.oecd.org", feedUrl: "https://www.oecd.org/newsroom/rss.xml", section: "sondaggi", language: "en", priority: 1 },
+  { name: "IMF News", homepage: "https://www.imf.org", feedUrl: "https://www.imf.org/en/News/RSS", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Visual Capitalist", homepage: "https://www.visualcapitalist.com", feedUrl: "https://www.visualcapitalist.com/feed", section: "sondaggi", language: "en", priority: 1 },
+  // Opinion & analysis
+  { name: "Project Syndicate", homepage: "https://www.project-syndicate.org", feedUrl: "https://www.project-syndicate.org/rss", section: "sondaggi", language: "en", priority: 1 },
+  { name: "The Economist", homepage: "https://www.economist.com", feedUrl: "https://www.economist.com/rss.xml", section: "sondaggi", language: "en", priority: 1 },
+  { name: "The Guardian Opinion", homepage: "https://www.theguardian.com", feedUrl: "https://www.theguardian.com/commentisfree/rss", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Brookings Institution", homepage: "https://www.brookings.edu", feedUrl: "https://www.brookings.edu/feed", section: "sondaggi", language: "en", priority: 1 },
+  { name: "RAND Corporation", homepage: "https://www.rand.org", feedUrl: "https://www.rand.org/rss", section: "sondaggi", language: "en", priority: 1 },
+  { name: "Carnegie Endowment", homepage: "https://carnegieendowment.org", feedUrl: "https://carnegieendowment.org/rss", section: "sondaggi", language: "en", priority: 2 },
+  // Italia sondaggi / opinione
+  { name: "Ipsos Italia", homepage: "https://www.ipsos.com/it-it", feedUrl: "https://www.ipsos.com/it-it/rss", section: "sondaggi", language: "it", priority: 1 },
+  { name: "SWG", homepage: "https://www.swg.it", feedUrl: "https://www.swg.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "YouTrend", homepage: "https://www.youtrend.it", feedUrl: "https://www.youtrend.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Termometro Politico", homepage: "https://www.termometropolitico.it", feedUrl: "https://www.termometropolitico.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Linkiesta", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Il Post", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Open Online", homepage: "https://www.open.online", feedUrl: "https://www.open.online/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "HuffPost Italia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/feed", section: "sondaggi", language: "it", priority: 2 },
+];
+
+export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES, ...GOSSIP_SOURCES, ...CYBERSECURITY_SOURCES, ...SONDAGGI_SOURCES];

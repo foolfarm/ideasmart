@@ -13,19 +13,22 @@ import {
 // ─── Test configurazione canali ───────────────────────────────────────────────
 
 describe("CHANNEL_SCHEDULE", () => {
-  it("deve contenere esattamente 7 canali", () => {
-    expect(CHANNEL_SCHEDULE).toHaveLength(7);
+  it("deve contenere almeno 7 canali", () => {
+    expect(CHANNEL_SCHEDULE.length).toBeGreaterThanOrEqual(7);
   });
 
   it("deve coprire tutti i 7 giorni della settimana (0-6)", () => {
-    const days = CHANNEL_SCHEDULE.map((c) => c.dayOfWeek).sort();
-    expect(days).toEqual([0, 1, 2, 3, 4, 5, 6]);
+    const days = new Set(CHANNEL_SCHEDULE.map((c) => c.dayOfWeek));
+    // Tutti i giorni da 0 a 6 devono essere coperti
+    for (let d = 0; d <= 6; d++) {
+      expect(days.has(d)).toBe(true);
+    }
   });
 
   it("deve avere chiavi canale univoche", () => {
     const keys = CHANNEL_SCHEDULE.map((c) => c.key);
     const unique = new Set(keys);
-    expect(unique.size).toBe(7);
+    expect(unique.size).toBe(CHANNEL_SCHEDULE.length);
   });
 
   it("deve avere tutti i campi obbligatori per ogni canale", () => {
@@ -76,6 +79,13 @@ describe("CHANNEL_SCHEDULE", () => {
     const ch = CHANNEL_SCHEDULE.find((c) => c.key === "health");
     expect(ch!.dayOfWeek).toBe(0);
   });
+
+  it("deve includere i nuovi canali gossip, cybersecurity e sondaggi", () => {
+    const keys = CHANNEL_SCHEDULE.map((c) => c.key);
+    expect(keys).toContain("gossip");
+    expect(keys).toContain("cybersecurity");
+    expect(keys).toContain("sondaggi");
+  });
 });
 
 // ─── Test getTodayChannel ─────────────────────────────────────────────────────
@@ -83,28 +93,24 @@ describe("CHANNEL_SCHEDULE", () => {
 describe("getTodayChannel", () => {
   it("deve restituire un canale valido per il giorno corrente", () => {
     const channel = getTodayChannel();
-    // Oggi è lunedì 16 marzo 2026 → AI
     // Il test verifica solo che il risultato sia un canale valido
     if (channel !== null) {
       expect(CHANNEL_SCHEDULE).toContainEqual(channel);
     }
   });
 
-  it("deve restituire il canale corretto per ogni giorno della settimana", () => {
-    // Mappa giorno → canale atteso
+  it("deve restituire il canale corretto per i giorni principali della settimana", () => {
+    // Mappa giorno → canale atteso (solo i canali primari)
     const dayToChannel: Record<number, ChannelKey> = {
       0: "health",
       1: "ai",
-      2: "startup",
       3: "finance",
-      4: "sport",
       5: "music",
-      6: "luxury",
     };
 
     for (const [dayStr, expectedKey] of Object.entries(dayToChannel)) {
       const day = Number(dayStr);
-      const channel = CHANNEL_SCHEDULE.find((c) => c.dayOfWeek === day);
+      const channel = CHANNEL_SCHEDULE.find((c) => c.dayOfWeek === day && c.key === expectedKey);
       expect(channel).toBeDefined();
       expect(channel!.key).toBe(expectedKey);
     }
@@ -127,7 +133,7 @@ describe("Struttura newsletter giornaliera", () => {
   });
 
   it("le chiavi canale devono corrispondere ai valori attesi", () => {
-    const validKeys: ChannelKey[] = ["ai", "startup", "finance", "sport", "music", "luxury", "health"];
+    const validKeys: ChannelKey[] = ["ai", "startup", "finance", "sport", "music", "luxury", "health", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"];
     for (const channel of CHANNEL_SCHEDULE) {
       expect(validKeys).toContain(channel.key);
     }

@@ -912,3 +912,15 @@
 
 - [x] Trovare tutti i file con sezioni pubblicità (AdSlot, PUBBLICITÀ, AdBanner, ecc.)
 - [x] Rimuovere le sezioni pubblicità da tutte le pagine
+
+## Task (17 Mar 2026 — Nuovi canali: Business Gossip, Cybersecurity, Sondaggi)
+
+- [x] Creare GossipHome.tsx (Business Gossip) con stesso formato MotoriHome
+- [x] Creare CybersecurityHome.tsx con stesso formato MotoriHome
+- [x] Creare SondaggiHome.tsx con stesso formato MotoriHome
+- [x] Aggiungere fonti RSS per i tre nuovi canali in rssSources.ts
+- [x] Aggiungere scheduler per i tre nuovi canali
+- [x] Aggiornare Navbar con i tre nuovi canali
+- [x] Aggiornare Home.tsx con i tre nuovi canali nella navigazione e nelle sezioni news
+- [x] Aggiungere route in App.tsx per i tre nuovi canali
+- [x] Aggiornare SECTION_COLORS in Home.tsx con i tre nuovi canali

@@ -20,7 +20,7 @@
 import Parser from "rss-parser";
 import axios from "axios";
 import { invokeLLM } from "./_core/llm";
-import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, NEWS_SOURCES, MOTORI_SOURCES, TENNIS_SOURCES, BASKET_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
+import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, NEWS_SOURCES, MOTORI_SOURCES, TENNIS_SOURCES, BASKET_SOURCES, GOSSIP_SOURCES, CYBERSECURITY_SOURCES, SONDAGGI_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
 const rssParser = new Parser({
@@ -100,7 +100,7 @@ async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fe
  */
 async function selectAndTranslate(
   articles: Awaited<ReturnType<typeof fetchAllFeeds>>,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi"
 ): Promise<ScrapedArticle[]> {
   if (articles.length === 0) {
     console.warn(`[RssScraper] Nessun articolo disponibile per ${section}`);
@@ -162,6 +162,21 @@ async function selectAndTranslate(
       label: "Basket",
       categories: ["NBA", "Serie A Basket", "Eurolega", "Nazionale Italiana", "Mercato & Trasferimenti", "Analisi Tattica", "Statistiche", "Giovani Talenti", "Coach & Staff", "Infortuni", "Playoff", "Draft NBA"],
       instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di basket italiani. Privilegia NBA, Serie A, Eurolega e Nazionale italiana. Titoli precisi con nomi dei giocatori e squadre.",
+    },
+    gossip: {
+      label: "Business Gossip",
+      categories: ["CEO & Executive Moves", "Deal & M&A", "Startup Drama", "VC & Investitori", "Big Tech Inside", "Licenziamenti & Ristrutturazioni", "Nuovi Prodotti & Lancio", "Rumor & Indiscrezioni", "Cultura Aziendale", "Controversie", "IPO & Mercati", "Italia Business"],
+      instructions: "Seleziona le 20 notizie più interessanti e rilevanti del mondo business e startup. Privilegia movimenti di CEO, deal sorprendenti, rumor di mercato, gossip corporate e notizie inattese. Tono vivace ma professionale.",
+    },
+    cybersecurity: {
+      label: "Cybersecurity",
+      categories: ["Data Breach", "Ransomware & Malware", "Vulnerabilità & Patch", "Threat Intelligence", "Zero-Day", "Sicurezza Cloud", "Identità & Accessi", "AI & Sicurezza", "Normative & Compliance", "Attacchi Stato-Nazione", "Sicurezza Mobile", "Italia & Cybersecurity"],
+      instructions: "Seleziona le 20 notizie più rilevanti per CISO, security manager e professionisti IT italiani. Privilegia breach significativi, nuove vulnerabilità, attacchi ransomware, normative NIS2/GDPR e trend di sicurezza.",
+    },
+    sondaggi: {
+      label: "Sondaggi & Opinioni",
+      categories: ["Sondaggi Politici", "Sondaggi Economici", "Opinione Pubblica", "Trend Sociali", "Ricerche di Mercato", "Previsioni & Outlook", "Analisi Geopolitica", "Consenso & Fiducia", "Dati & Statistiche", "Report Istituzionali", "Sentiment Aziendale", "Futuro & Scenari"],
+      instructions: "Seleziona le 20 notizie più interessanti tra sondaggi, ricerche, analisi di opinione e dati statistici. Privilegia sondaggi politici italiani, ricerche economiche, trend sociali e report istituzionali. Tono analitico e basato sui dati.",
     },
   } as const;
 
@@ -319,7 +334,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
  */
 export async function sanitizeSourceUrl(
   url: string,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi"
 ): Promise<string> {
   try {
     const parsed = new URL(url);
@@ -404,4 +419,22 @@ export async function scrapeBasketNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Basket news...");
   const articles = await fetchAllFeeds(BASKET_SOURCES);
   return selectAndTranslate(articles, "basket");
+}
+
+export async function scrapeGossipNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Business Gossip news...");
+  const articles = await fetchAllFeeds(GOSSIP_SOURCES);
+  return selectAndTranslate(articles, "gossip");
+}
+
+export async function scrapeCybersecurityNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Cybersecurity news...");
+  const articles = await fetchAllFeeds(CYBERSECURITY_SOURCES);
+  return selectAndTranslate(articles, "cybersecurity");
+}
+
+export async function scrapeSondaggiNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Sondaggi news...");
+  const articles = await fetchAllFeeds(SONDAGGI_SOURCES);
+  return selectAndTranslate(articles, "sondaggi");
 }

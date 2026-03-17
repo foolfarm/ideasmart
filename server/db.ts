@@ -258,7 +258,7 @@ export async function getNewsletterHistory() {
 }
 
 // ── News Items ───────────────────────────────────────────────────────────────
-export async function getLatestNews(limit = 20, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLatestNews(limit = 20, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(newsItems)
@@ -317,7 +317,7 @@ export async function getNewsRefreshHistory() {
 }
 
 // ── Daily Editorial ──────────────────────────────────────────────────────────────────────────────────
-export async function getLatestEditorial(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLatestEditorial(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(dailyEditorial)
@@ -327,7 +327,7 @@ export async function getLatestEditorial(section: 'ai' | 'music' | 'startup' | '
   return result.length > 0 ? result[0] : null;
 }
 
-export async function getTodayEditorial(dateLabel: string, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getTodayEditorial(dateLabel: string, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(dailyEditorial)
@@ -343,7 +343,7 @@ export async function saveEditorial(data: InsertDailyEditorial) {
 }
 
 // ── Startup of the Day ──────────────────────────────────────────────────────────────────────────────
-export async function getLatestStartupOfDay(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLatestStartupOfDay(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(startupOfDay)
@@ -353,7 +353,7 @@ export async function getLatestStartupOfDay(section: 'ai' | 'music' | 'startup' 
   return result.length > 0 ? result[0] : null;
 }
 
-export async function getTodayStartup(dateLabel: string, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getTodayStartup(dateLabel: string, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(startupOfDay)
@@ -371,7 +371,7 @@ export async function saveStartupOfDay(data: InsertStartupOfDay) {
 // ── Weekly Reportage ─────────────────────────────────────────────────────────
 import { weeklyReportage, InsertWeeklyReportage, marketAnalysis, InsertMarketAnalysis } from "../drizzle/schema";
 
-export async function getLatestWeeklyReportage(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLatestWeeklyReportage(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return [];
   // Prende i 4 reportage della settimana più recente per la sezione specificata
@@ -399,7 +399,7 @@ export async function deleteReportageByWeek(weekLabel: string) {
 }
 
 // ── Market Analysis ─────────────────────────────────────────────────────────────────────────────────────────────
-export async function getLatestMarketAnalysis(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLatestMarketAnalysis(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return [];
   const latest = await db.select({ weekLabel: marketAnalysis.weekLabel })
@@ -611,7 +611,7 @@ import { contentAudit } from "../drizzle/schema";
  * Se una notizia ha un audit recente con score < 40, viene esclusa.
  * Le notizie senza audit (non ancora verificate) vengono incluse.
  */
-export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return [];
 
@@ -668,7 +668,7 @@ export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' 
 /**
  * Conta le notizie filtrate (score < 40 o non raggiungibili) per una sezione.
  */
-export async function countFilteredNews(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function countFilteredNews(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return { total: 0, filtered: 0, visible: 0 };
 
@@ -737,7 +737,7 @@ export async function replaceNewsItem(id: number, newContent: {
 /**
  * Recupera le notizie con audit score < 40 o non raggiungibili per una sezione.
  */
-export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' = 'ai') {
+export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' = 'ai') {
   const db = await getDb();
   if (!db) return [];
 
@@ -784,7 +784,7 @@ export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'fin
 
 // ── Channel Preferences ──────────────────────────────────────────────────────
 
-export type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket';
+export type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi';
 export const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music'];
 
 /**

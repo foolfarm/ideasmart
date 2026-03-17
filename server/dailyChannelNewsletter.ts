@@ -34,7 +34,7 @@ import { notifyOwner } from "./_core/notification";
 
 // ─── Configurazione canali ────────────────────────────────────────────────────
 
-export type ChannelKey = "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health" | "news" | "motori" | "tennis" | "basket";
+export type ChannelKey = "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
 
 interface ChannelConfig {
   key: ChannelKey;
@@ -109,6 +109,33 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
     siteSection: "/health",
     accentColor: "#dc2626",
     tagline: "Salute, Biotech e AI in Medicina",
+  },
+  {
+    key: "gossip",
+    name: "Business Gossip",
+    shortName: "Gossip",
+    dayOfWeek: 2, // Martedì (rotazione estesa)
+    siteSection: "/gossip",
+    accentColor: "#9b59b6",
+    tagline: "Insider News, M&A, Executive Moves e Deal Flow",
+  },
+  {
+    key: "cybersecurity",
+    name: "Cybersecurity",
+    shortName: "Cyber",
+    dayOfWeek: 4, // Giovedì (rotazione estesa)
+    siteSection: "/cybersecurity",
+    accentColor: "#27ae60",
+    tagline: "Sicurezza Informatica, Threat Intelligence e Enterprise Security",
+  },
+  {
+    key: "sondaggi",
+    name: "Sondaggi & Dati",
+    shortName: "Sondaggi",
+    dayOfWeek: 6, // Sabato (rotazione estesa)
+    siteSection: "/sondaggi",
+    accentColor: "#2980b9",
+    tagline: "Polls, Survey, Opinion e Data Journalism",
   },
 ];
 

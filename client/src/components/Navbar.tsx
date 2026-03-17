@@ -18,6 +18,9 @@ const CHANNELS = [
   { label: "Motori", href: "/motori", color: "#ef4444" },
   { label: "Tennis", href: "/tennis", color: "#65a30d" },
   { label: "Basket", href: "/basket", color: "#ea580c" },
+  { label: "Business Gossip", href: "/gossip", color: "#db2777" },
+  { label: "Cybersecurity", href: "/cybersecurity", color: "#0ea5e9" },
+  { label: "Sondaggi", href: "/sondaggi", color: "#8b5cf6" },
 ];
 
 export default function Navbar() {

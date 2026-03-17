@@ -22,6 +22,9 @@ const SECTION_COLORS = {
   motori: { accent: "#dc2626", light: "#fef2f2", label: "Motori", path: "/motori" },
   tennis: { accent: "#65a30d", light: "#f7fee7", label: "Tennis", path: "/tennis" },
   basket: { accent: "#ea580c", light: "#fff7ed", label: "Basket", path: "/basket" },
+  gossip: { accent: "#db2777", light: "#fdf2f8", label: "Business Gossip", path: "/gossip" },
+  cybersecurity: { accent: "#0ea5e9", light: "#f0f9ff", label: "Cybersecurity", path: "/cybersecurity" },
+  sondaggi: { accent: "#8b5cf6", light: "#f5f3ff", label: "Sondaggi", path: "/sondaggi" },
 };
 
 function formatDateIT(date: Date): string {
@@ -45,7 +48,7 @@ function ThinDivider() {
   return <div className="w-full border-t border-[#1a1a2e]/20" />;
 }
 
-type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket";
+type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
 function SectionLabel({ section }: { section: SectionKey }) {
   const s = SECTION_COLORS[section];
   return (
@@ -225,6 +228,9 @@ export default function Home() {
   const { data: motoriNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "motori" });
   const { data: tennisNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "tennis" });
   const { data: basketNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "basket" });
+  const { data: gossipNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "gossip" as any });
+  const { data: cybersecurityNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "cybersecurity" as any });
+  const { data: sondaggiNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "sondaggi" as any });
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
 
   const heroNews = useMemo(() => {
@@ -315,7 +321,7 @@ export default function Home() {
           <Divider thick />
 
           <nav className="flex flex-wrap items-center justify-center gap-0 py-2 border-t border-[#1a1a2e]/15">
-            {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec, i) => {
+            {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as const).map((sec, i) => {
               const s = SECTION_COLORS[sec];
               return (
                 <Link key={sec} href={s.path}>
@@ -399,7 +405,7 @@ export default function Home() {
                 </span>
               </div>
               <ThinDivider />
-              {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec) => {
+              {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
                 const s = SECTION_COLORS[sec];
                 return (
                   <Link key={sec} href={s.path}>
@@ -596,9 +602,9 @@ export default function Home() {
               </span>
             </div>
             <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-2">
-              {(["news", "motori", "tennis", "basket"] as const).map((sec, colIdx) => {
-                const newsForSection = sec === "news" ? newsNews : sec === "motori" ? motoriNews : sec === "tennis" ? tennisNews : basketNews;
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-0 mt-2">
+              {(["news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as SectionKey[]).map((sec, colIdx) => {
+                const newsForSection = sec === "news" ? newsNews : sec === "motori" ? motoriNews : sec === "tennis" ? tennisNews : sec === "basket" ? basketNews : sec === "gossip" ? (gossipNews as typeof basketNews) : sec === "cybersecurity" ? (cybersecurityNews as typeof basketNews) : (sondaggiNews as typeof basketNews);
                 const items = (newsForSection || []).slice(0, 3);
                 const s = SECTION_COLORS[sec];
                 return (
@@ -658,7 +664,7 @@ export default function Home() {
                 {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
-                {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec) => {
+                {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
                   const s = SECTION_COLORS[sec];
                   return (
                     <Link key={sec} href={s.path}>

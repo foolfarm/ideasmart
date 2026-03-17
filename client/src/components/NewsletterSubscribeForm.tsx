@@ -2,7 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket';
+type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi';
 
 const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: string }> = {
   ai:      { label: 'AI',      day: 'Lun', color: '#00b4a0' },
@@ -15,10 +15,13 @@ const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: stri
   news:    { label: 'News',    day: 'Lun', color: '#c0392b' },
   motori:  { label: 'Motori',  day: 'Mar', color: '#e67e22' },
   tennis:  { label: 'Tennis',  day: 'Mer', color: '#27ae60' },
-  basket:  { label: 'Basket',  day: 'Gio', color: '#8e44ad' },
+  basket:       { label: 'Basket',       day: 'Gio', color: '#8e44ad' },
+  gossip:       { label: 'Gossip',       day: 'Mar', color: '#9b59b6' },
+  cybersecurity: { label: 'Cyber',      day: 'Gio', color: '#27ae60' },
+  sondaggi:     { label: 'Sondaggi',    day: 'Sab', color: '#2980b9' },
 };
 
-const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket'];
+const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
 
 interface Props {
   /** Canale pre-selezionato (pagina corrente) */
@@ -62,7 +65,7 @@ export default function NewsletterSubscribeForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    subscribeMutation.mutate({ email, channels: selectedChannels });
+    subscribeMutation.mutate({ email, channels: selectedChannels as any });
   };
 
   if (subscribed) {

@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 
-type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket";
+type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
 
 interface TickerItem {
   id: number;
@@ -25,8 +25,11 @@ const SECTION_META: Record<SectionKey, { label: string; color: string; path: str
   luxury:  { label: "LUXURY",  color: "#b45309", path: "luxury" },
   news:    { label: "NEWS",    color: "#64748b", path: "news" },
   motori:  { label: "MOTORI",  color: "#ef4444", path: "motori" },
-  tennis:  { label: "TENNIS",  color: "#65a30d", path: "tennis" },
-  basket:  { label: "BASKET",  color: "#ea580c", path: "basket" },
+  tennis:       { label: "TENNIS",  color: "#65a30d", path: "tennis" },
+  basket:       { label: "BASKET",  color: "#ea580c", path: "basket" },
+  gossip:       { label: "GOSSIP",  color: "#9b59b6", path: "gossip" },
+  cybersecurity: { label: "CYBER",  color: "#27ae60", path: "cybersecurity" },
+  sondaggi:     { label: "SONDAGGI", color: "#2980b9", path: "sondaggi" },
 };
 
 export default function BreakingNewsTicker() {
@@ -46,7 +49,10 @@ export default function BreakingNewsTicker() {
   const { data: newsNews }    = trpc.news.getLatest.useQuery({ limit: 3, section: "news" });
   const { data: motoriNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "motori" });
   const { data: tennisNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "tennis" });
-  const { data: basketNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "basket" });
+  const { data: basketNews }      = trpc.news.getLatest.useQuery({ limit: 3, section: "basket" });
+  const { data: gossipNews }       = trpc.news.getLatest.useQuery({ limit: 3, section: "gossip" });
+  const { data: cyberNews }        = trpc.news.getLatest.useQuery({ limit: 3, section: "cybersecurity" });
+  const { data: sondaggiNews }     = trpc.news.getLatest.useQuery({ limit: 3, section: "sondaggi" });
 
   // Interleave le notizie di tutti i canali per varietà nel ticker
   const allItems: TickerItem[] = [];
@@ -54,6 +60,7 @@ export default function BreakingNewsTicker() {
     ["ai", aiNews], ["news", newsNews], ["sport", sportNews], ["motori", motoriNews],
     ["startup", startupNews], ["tennis", tennisNews], ["finance", financeNews],
     ["basket", basketNews], ["music", musicNews], ["health", healthNews], ["luxury", luxuryNews],
+    ["gossip", gossipNews], ["cybersecurity", cyberNews], ["sondaggi", sondaggiNews],
   ];
   const maxLen = Math.max(...sources.map(([, d]) => (d || []).length));
   for (let i = 0; i < maxLen; i++) {
