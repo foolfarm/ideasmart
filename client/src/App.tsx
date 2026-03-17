@@ -39,6 +39,7 @@ import NotFound from "./pages/NotFound";
 import Manifesto from "./pages/Manifesto";
 import ChannelPreferences from "./pages/ChannelPreferences";
 import PWAInstallBanner from "./components/PWAInstallBanner";
+import GenericNewsArticle from "./pages/GenericNewsArticle";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -71,6 +72,8 @@ function Router() {
       <Route path="/ai/news/:id" component={NewsArticle} />
       <Route path="/music/news/:id" component={MusicNewsArticle} />
       <Route path="/startup/news/:id" component={StartupNewsArticle} />
+      {/* Route generica per tutti i canali — deve stare DOPO le route specifiche */}
+      <Route path="/:section/news/:id" component={GenericNewsArticle} />
       <Route path="/:section/editoriale/:id" component={EditorialDetail} />
       <Route path="/:section/reportage/:id" component={ReportageDetail} />
       <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />

@@ -39,7 +39,8 @@ describe("CHANNEL_SCHEDULE", () => {
       expect(channel.siteSection).toBeTruthy();
       expect(channel.accentColor).toMatch(/^#[0-9a-fA-F]{6}$/);
       expect(channel.tagline).toBeTruthy();
-      expect(channel.dayOfWeek).toBeGreaterThanOrEqual(0);
+      // dayOfWeek === -1 è il flag speciale per i canali inviati ogni giorno (es. News Italia)
+      expect(channel.dayOfWeek).toBeGreaterThanOrEqual(-1);
       expect(channel.dayOfWeek).toBeLessThanOrEqual(6);
     }
   });

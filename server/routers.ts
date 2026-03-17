@@ -425,6 +425,74 @@ export const appRouter = router({
         }
       }),
 
+    getThreatAlert: publicProcedure
+      .query(async () => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        // Prendi le ultime 40 notizie cybersecurity per trovare minacce
+        const items = await db.select().from(newsItemsTable)
+          .where(eq(newsItemsTable.section, 'cybersecurity'))
+          .orderBy(desc(newsItemsTable.createdAt))
+          .limit(40);
+        if (!items.length) return null;
+
+        const newsText = items.map(n => `TITOLO: ${n.title}\nSOMMARIO: ${n.summary}\nFONTE: ${n.sourceName ?? ''}\nDATA: ${n.publishedAt ?? ''}`).join('\n\n---\n\n');
+
+        try {
+          const response = await invokeLLM({
+            messages: [
+              {
+                role: 'system',
+                content: `Sei un analista di cybersecurity italiano esperto di threat intelligence. Analizza le notizie fornite ed estrai le principali minacce cyber della settimana in Italia e nel mondo. Identifica ransomware, phishing, vulnerabilità critiche, data breach e attacchi APT. Restituisci sempre 5-7 minacce ordinate per gravità.`
+              },
+              {
+                role: 'user',
+                content: `Analizza queste notizie cybersecurity ed estrai le principali minacce della settimana:\n\n${newsText}\n\nRestituisci i dati in formato JSON con le minacce, il livello di rischio e le raccomandazioni.`
+              }
+            ],
+            response_format: {
+              type: 'json_schema',
+              json_schema: {
+                name: 'threat_alert',
+                strict: true,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    minacce: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          tipo: { type: 'string', description: 'Tipo di minaccia (Ransomware, Phishing, Vulnerabilità, Data Breach, APT, DDoS, altro)' },
+                          nome: { type: 'string', description: 'Nome o identificativo della minaccia' },
+                          descrizione: { type: 'string', description: 'Descrizione breve della minaccia (max 120 caratteri)' },
+                          livelloRischio: { type: 'string', description: 'Livello di rischio: CRITICO, ALTO, MEDIO, BASSO' },
+                          settoreColpito: { type: 'string', description: 'Settore principalmente colpito (PA, Finance, Healthcare, Industria, Privati, ecc.)' },
+                          fonte: { type: 'string', description: 'Fonte della notizia (CERT-AGID, ACN, Cybersecurity360, ecc.)' },
+                        },
+                        required: ['tipo', 'nome', 'descrizione', 'livelloRischio', 'settoreColpito', 'fonte'],
+                        additionalProperties: false,
+                      }
+                    },
+                    aggiornato: { type: 'string', description: 'Data aggiornamento (gg/mm/aaaa)' },
+                    sommario: { type: 'string', description: 'Sommario del panorama delle minacce della settimana (max 200 caratteri)' },
+                  },
+                  required: ['minacce', 'aggiornato', 'sommario'],
+                  additionalProperties: false,
+                },
+              },
+            },
+          });
+
+          const content = response.choices[0]?.message?.content;
+          if (!content) return null;
+          return JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
+        } catch (err) {
+          console.error('[ThreatAlert] Errore LLM:', err);
+          return null;
+        }
+      }),
+
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))

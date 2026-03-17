@@ -137,6 +137,42 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
     accentColor: "#2980b9",
     tagline: "Polls, Survey, Opinion e Data Journalism",
   },
+  {
+    key: "news",
+    name: "News Italia",
+    shortName: "News",
+    dayOfWeek: -1, // Ogni giorno — gestito separatamente
+    siteSection: "/news",
+    accentColor: "#c0392b",
+    tagline: "Le notizie più importanti dall'Italia",
+  },
+  {
+    key: "motori",
+    name: "Motori",
+    shortName: "Motori",
+    dayOfWeek: 3, // Mercoledì
+    siteSection: "/motori",
+    accentColor: "#e67e22",
+    tagline: "Auto, Moto, Formula 1 e Mobilità del Futuro",
+  },
+  {
+    key: "tennis",
+    name: "Tennis",
+    shortName: "Tennis",
+    dayOfWeek: 4, // Giovedì (rotazione estesa)
+    siteSection: "/tennis",
+    accentColor: "#27ae60",
+    tagline: "ATP, WTA, Slam e Business del Tennis",
+  },
+  {
+    key: "basket",
+    name: "Basket",
+    shortName: "Basket",
+    dayOfWeek: 5, // Venerdì (rotazione estesa)
+    siteSection: "/basket",
+    accentColor: "#e74c3c",
+    tagline: "NBA, EuroLeague, Serie A e Business del Basket",
+  },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -157,12 +193,25 @@ function getDayKey(date: Date): string {
   return date.toISOString().slice(0, 10); // "YYYY-MM-DD"
 }
 
-/** Restituisce il canale da inviare oggi in base al giorno della settimana (ora italiana) */
-export function getTodayChannel(): ChannelConfig | null {
+/** Restituisce i canali da inviare oggi in base al giorno della settimana (ora italiana) */
+export function getTodayChannels(): ChannelConfig[] {
   const now = new Date();
   const italianNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Rome" }));
   const dayOfWeek = italianNow.getDay();
-  return CHANNEL_SCHEDULE.find((c) => c.dayOfWeek === dayOfWeek) ?? null;
+  const channels: ChannelConfig[] = [];
+  // News Italia si invia ogni giorno (dayOfWeek === -1 è il flag "ogni giorno")
+  const newsItalia = CHANNEL_SCHEDULE.find((c) => c.key === "news");
+  if (newsItalia) channels.push(newsItalia);
+  // Canale del giorno specifico
+  const dayChannel = CHANNEL_SCHEDULE.find((c) => c.dayOfWeek === dayOfWeek);
+  if (dayChannel && dayChannel.key !== "news") channels.push(dayChannel);
+  return channels;
+}
+
+/** @deprecated Usa getTodayChannels() */
+export function getTodayChannel(): ChannelConfig | null {
+  const channels = getTodayChannels();
+  return channels.find((c) => c.key !== "news") ?? channels[0] ?? null;
 }
 
 /** Chiave per evitare doppi invii nello stesso giorno */
@@ -223,6 +272,8 @@ async function buildChannelNewsletter(
         }
       : null,
     news: news.map((n) => ({
+      id: n.id ?? null,
+      section: channel.key,
       title: n.title,
       summary: n.summary,
       category: n.category,

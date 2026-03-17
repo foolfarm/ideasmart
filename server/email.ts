@@ -65,6 +65,8 @@ export function buildMonthlyNewsletterHtml(opts: {
   month: string;         // es. "Marzo 2026"
   issueNumber: string;   // es. "03"
   news: Array<{
+    id?: number | null;
+    section?: string | null;
     category: string;
     title: string;
     summary: string;
@@ -118,10 +120,17 @@ export function buildMonthlyNewsletterHtml(opts: {
   const newsItemsHtml = news.slice(0, 20).map((item, idx) => {
     const num = String(idx + 1).padStart(2, "0");
     const color = categoryColors[item.category] ?? categoryColors["default"];
-    const titleEl = item.url
-      ? `<a href="${item.url}" target="_blank" style="font-size:13px;font-weight:700;color:#0a1628;text-decoration:none;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</a>`
+    // Usa URL interno Ideasmart se disponibile id e section, altrimenti usa url esterno
+    const ideasmartUrl = (item.id && item.section)
+      ? `${baseUrl}/${item.section}/news/${item.id}`
+      : null;
+    const linkUrl = ideasmartUrl ?? item.url ?? null;
+    const titleEl = linkUrl
+      ? `<a href="${linkUrl}" style="font-size:13px;font-weight:700;color:#0a1628;text-decoration:none;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</a>`
       : `<span style="font-size:13px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</span>`;
-    const sourceEl = item.source ? ` &mdash; <em style="color:#9ca3af;">${item.source}</em>` : "";
+    const sourceEl = item.source
+      ? ` &mdash; <em style="color:#9ca3af;">${item.source}</em>${ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su IDEASMART →</a>` : ""}`
+      : (ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su IDEASMART →</a>` : "");
     const isLast = idx === Math.min(news.length, 20) - 1;
     const rowBg = idx % 2 === 0 ? "#ffffff" : "#f9f7f4";
 
@@ -691,7 +700,7 @@ export function buildFullNewsletterHtml(opts: {
   dateLabel: string;
   editorial?: { title: string; subtitle?: string | null; body: string; keyTrend?: string | null; authorNote?: string | null } | null;
   startup?: { name: string; tagline: string; description: string; category: string; funding?: string | null; whyToday: string; websiteUrl?: string | null; aiScore?: number | null } | null;
-  news: Array<{ title: string; summary: string; category: string; sourceName?: string | null; sourceUrl?: string | null }>;
+  news: Array<{ id?: number | null; section?: string | null; title: string; summary: string; category: string; sourceName?: string | null; sourceUrl?: string | null }>;
   reportages: Array<{ startupName: string; category: string; headline: string; subheadline?: string | null; bodyText: string; quote?: string | null; stat1Value?: string | null; stat1Label?: string | null; stat2Value?: string | null; stat2Label?: string | null; stat3Value?: string | null; stat3Label?: string | null; websiteUrl?: string | null; ctaLabel?: string | null; ctaUrl?: string | null }>;
   analyses: Array<{ title: string; category: string; summary: string; source: string; dataPoint1?: string | null; dataPoint2?: string | null; dataPoint3?: string | null; keyInsight?: string | null; italyRelevance?: string | null }>;
   unsubscribeUrl?: string;
@@ -750,6 +759,11 @@ export function buildFullNewsletterHtml(opts: {
     const color = getColor(item.category);
     const bgPill = `${color}18`;
     const isEven = idx % 2 === 1;
+    // Costruisce URL interno Ideasmart se disponibile id e section, altrimenti usa sourceUrl
+    const ideasmartUrl = (item.id && item.section)
+      ? `${baseUrl}/${item.section}/news/${item.id}`
+      : null;
+    const articleLink = ideasmartUrl ?? item.sourceUrl ?? null;
     return `
   <tr>
     <td style="padding:0;border-bottom:1px solid ${BORDER};background:${isEven ? CREAM2 : WHITE};">
@@ -766,9 +780,9 @@ export function buildFullNewsletterHtml(opts: {
             <div style="margin-bottom:5px;">
               <span style="display:inline-block;font-size:9px;font-weight:700;color:${color};background:${bgPill};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border-radius:3px;padding:2px 8px;">${item.category}</span>
             </div>
-            <div style="font-size:14px;font-weight:700;color:${NAVY};font-family:Georgia,'Times New Roman',serif;line-height:1.35;margin-bottom:5px;">${item.title}</div>
+            ${articleLink ? `<a href="${articleLink}" style="font-size:14px;font-weight:700;color:${NAVY};font-family:Georgia,'Times New Roman',serif;line-height:1.35;margin-bottom:5px;display:block;text-decoration:none;">${item.title}</a>` : `<div style="font-size:14px;font-weight:700;color:${NAVY};font-family:Georgia,'Times New Roman',serif;line-height:1.35;margin-bottom:5px;">${item.title}</div>`}
             <div style="font-size:12px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.65;">${item.summary}</div>
-            ${item.sourceName ? `<div style="margin-top:5px;"><span style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">via </span>${item.sourceUrl ? `<a href="${item.sourceUrl}" style="font-size:10px;color:${color};text-decoration:none;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</a>` : `<span style="font-size:10px;color:${color};font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</span>`}</div>` : ""}
+            ${item.sourceName ? `<div style="margin-top:5px;"><span style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">via </span><span style="font-size:10px;color:${color};font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${item.sourceName}</span>${ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su IDEASMART →</a>` : ""}</div>` : (ideasmartUrl ? `<div style="margin-top:5px;"><a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su IDEASMART →</a></div>` : "")}
           </td>
         </tr>
       </table>

@@ -10,6 +10,7 @@ import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import { AdCyberTop, AdCyberMid1, AdCyberBottom } from "@/components/AdUnit";
+import ThreatAlert from "@/components/ThreatAlert";
 
 const ACCENT = "#27ae60";
 const ACCENT_LIGHT = "#eafaf1";
@@ -258,6 +259,9 @@ export default function CybersecurityHome() {
             </div>
           )}
           <AdCyberMid1 />
+
+          {/* Widget Threat Alert — minacce cyber della settimana */}
+          <ThreatAlert />
 
           {analyses && analyses.length > 0 && (
             <div className="mt-8">

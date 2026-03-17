@@ -940,3 +940,12 @@
 ## Task (17 Mar 2026 — Fix WebSocket HMR localhost:5173)
 
 - [ ] Risolvere errore WebSocket HMR che tenta di connettersi a localhost:5173 invece del proxy Manus
+
+## Nuovi task (17 Mar 2026 — Newsletter nuovi canali + Threat Alert + Fix link)
+
+- [ ] Fix link newsletter: puntare alle pagine articolo su Ideasmart (/{section}/{id}) invece che alla fonte esterna
+- [ ] Newsletter settimanale Motori (Mercoledì ore 10:00 CET)
+- [ ] Newsletter settimanale Tennis (Giovedì ore 10:00 CET)
+- [ ] Newsletter settimanale Basket (Venerdì ore 10:00 CET)
+- [ ] Newsletter quotidiana News Italia (ogni giorno ore 10:00 CET)
+- [ ] Widget Threat Alert Cybersecurity (LLM da notizie CERT-AGID e ACN)
