@@ -202,6 +202,7 @@ export default defineConfig({
       "127.0.0.1",
     ],
     hmr: {
+      // The Manus proxy tunnels WebSocket on the same port/host as HTTP (port 443 via wss).
       clientPort: 443,
       protocol: "wss",
     },

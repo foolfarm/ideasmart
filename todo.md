@@ -932,3 +932,7 @@
 ## Task (17 Mar 2026 — Fix cache browser React)
 
 - [x] Eliminare cache browser persistente che usa bundle stantii con hash vecchi
+
+## Task (17 Mar 2026 — Fix HMR WebSocket)
+
+- [x] Configurare HMR Vite per funzionare attraverso il proxy Manus sulla porta 3000
