@@ -15,6 +15,7 @@ import { fixAllSourceUrls } from "../urlAuditFix";
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
+import { invalidateAll } from "../cache";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -101,6 +102,38 @@ async function startServer() {
     }
   });
 
+  // ── Cache-Control headers per le risposte tRPC pubbliche ────────────────────
+  // Le procedure pubbliche (news, editorial, ecc.) sono cachate in-memory lato server.
+  // Aggiungiamo anche un header HTTP per il CDN/browser: max-age=60s (1 minuto).
+  // Le procedure protette (admin, auth) non vengono cachate.
+  app.use("/api/trpc", (req, res, next) => {
+    const url = req.url || '';
+    const isPublicRead = req.method === 'GET' && (
+      url.includes('news.getLatest') ||
+      url.includes('news.getHomeData') ||
+      url.includes('news.getById') ||
+      url.includes('news.getRelated') ||
+      url.includes('news.getAll') ||
+      url.includes('editorial.getLatest') ||
+      url.includes('editorial.getById') ||
+      url.includes('reportage.getLatestWeek') ||
+      url.includes('reportage.getById') ||
+      url.includes('marketAnalysis.getLatest') ||
+      url.includes('marketAnalysis.getById') ||
+      url.includes('startupOfDay.getLatest') ||
+      url.includes('startupOfDay.getById') ||
+      url.includes('sistema.getPuntoDelGiorno') ||
+      url.includes('sistema.getBarometro') ||
+      url.includes('sistema.getThreatAlert')
+    );
+    if (isPublicRead) {
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    } else {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    }
+    next();
+  });
+
   // tRPC API
   app.use(
     "/api/trpc",
@@ -182,3 +215,34 @@ setTimeout(async () => {
     console.error("[Startup] Errore refresh contenuti iniziale:", err);
   }
 }, 30_000);
+
+// ─── Cache warm-up: pre-popola la cache in-memory all'avvio ──────────────────────────────────────────────────
+// Parte 60 secondi dopo l'avvio (dopo scraping e fix URL) per garantire che il
+// DB sia già popolato. Questo assicura che il primo utente del giorno non aspetti.
+setTimeout(async () => {
+  try {
+    console.log('[Cache Warmup] 🔥 Avvio pre-riscaldamento cache...');
+    const { getHomeNewsData, getLatestEditorial, getLatestStartupOfDay, getLatestWeeklyReportage, getLatestMarketAnalysis } = await import('../db');
+    const { cached, invalidateAll: _inv, CACHE_KEYS, DEFAULT_TTL_MS, EDITORIAL_TTL_MS } = await import('../cache');
+
+    // Invalida tutto per ripartire da zero con dati freschi
+    invalidateAll();
+
+    // Pre-popola homepage (la più importante)
+    await cached(CACHE_KEYS.HOME_DATA, () => getHomeNewsData(), DEFAULT_TTL_MS);
+    console.log('[Cache Warmup] ✅ Homepage data cached');
+
+    // Pre-popola editoriali, startup, reportage, market per le sezioni più visitate
+    const topSections = ['ai', 'startup', 'music', 'finance', 'health', 'sport', 'luxury', 'news'];
+    await Promise.all(topSections.flatMap(section => [
+      cached(CACHE_KEYS.EDITORIAL_LATEST(section), () => getLatestEditorial(section as any), EDITORIAL_TTL_MS),
+      cached(CACHE_KEYS.STARTUP_LATEST(section), () => getLatestStartupOfDay(section as any), EDITORIAL_TTL_MS),
+      cached(CACHE_KEYS.REPORTAGE_LATEST(section), () => getLatestWeeklyReportage(section as any), EDITORIAL_TTL_MS),
+      cached(CACHE_KEYS.MARKET_LATEST(section), () => getLatestMarketAnalysis(section as any), EDITORIAL_TTL_MS),
+    ]));
+    console.log('[Cache Warmup] ✅ Sezioni principali cached');
+    console.log('[Cache Warmup] 🎉 Cache warm-up completato!');
+  } catch (err) {
+    console.error('[Cache Warmup] Errore (non critico):', err);
+  }
+}, 60_000);

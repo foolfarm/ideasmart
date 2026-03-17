@@ -983,3 +983,21 @@
 - [x] Aggiunta funzione getHomeNewsData() in server/db.ts che recupera tutte le sezioni in parallelo con Promise.all
 - [x] Aggiunta procedura news.getHomeData nel router tRPC (singola query, risposta 44KB < 68KB limite)
 - [x] Aggiornata Home.tsx per usare trpc.news.getHomeData.useQuery() invece di 14 query separate
+
+## Task (17 Mar 2026 — Cache in-memory lato server)
+- [ ] Creare server/cache.ts con sistema di cache in-memory (TTL, warm-up, invalidazione)
+- [ ] Integrare cache in news.getHomeData (TTL 10 minuti)
+- [ ] Integrare cache in news.getLatest per ogni sezione/canale (TTL 10 minuti)
+- [ ] Integrare cache in editorial, marketAnalysis, reportage, startupOfDay (TTL 15 minuti)
+- [ ] Aggiungere HTTP Cache-Control headers alle risposte tRPC pubbliche
+- [ ] Warm-up automatico della cache all'avvio del server
+
+## Task (17 Mar 2026 — Cache Layer In-Memory)
+
+- [x] Implementare modulo cache in-memory con TTL e stale-while-revalidate (server/cache.ts)
+- [x] Integrare cache in news.getHomeData, news.getLatest (TTL 10min)
+- [x] Integrare cache in editorial.getLatest, reportage.getLatestWeek, marketAnalysis.getLatest, startupOfDay.getLatest (TTL 15min)
+- [x] Integrare cache in sistema.getPuntoDelGiorno, getBarometro, getThreatAlert (TTL 30min — chiamate LLM costose)
+- [x] Aggiungere Cache-Control headers HTTP per CDN/browser (public, max-age=60, stale-while-revalidate=300)
+- [x] Aggiungere warm-up automatico della cache 60s dopo l'avvio del server
+- [x] Performance verificata: prima chiamata 179ms → dalla cache 8ms (22x più veloce)

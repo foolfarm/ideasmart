@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { adminRouter as adminToolsRouter } from "./routers/adminRouter";
+import { cached, invalidateAll, getCacheStats, CACHE_KEYS, DEFAULT_TTL_MS, EDITORIAL_TTL_MS } from "./cache";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
@@ -133,7 +134,11 @@ export const appRouter = router({
     getLatest: publicProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
       .query(async ({ input }) => {
-        return getLatestMarketAnalysis(input.section);
+        return cached(
+          CACHE_KEYS.MARKET_LATEST(input.section),
+          () => getLatestMarketAnalysis(input.section),
+          EDITORIAL_TTL_MS
+        );
       }),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
@@ -150,7 +155,11 @@ export const appRouter = router({
     getLatestWeek: publicProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
       .query(async ({ input }) => {
-        return getLatestWeeklyReportage(input.section);
+        return cached(
+          CACHE_KEYS.REPORTAGE_LATEST(input.section),
+          () => getLatestWeeklyReportage(input.section),
+          EDITORIAL_TTL_MS
+        );
       }),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
@@ -167,7 +176,11 @@ export const appRouter = router({
     getLatest: publicProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
       .query(async ({ input }) => {
-        return getLatestEditorial(input.section);
+        return cached(
+          CACHE_KEYS.EDITORIAL_LATEST(input.section),
+          () => getLatestEditorial(input.section),
+          EDITORIAL_TTL_MS
+        );
       }),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
@@ -184,7 +197,11 @@ export const appRouter = router({
     getLatest: publicProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
       .query(async ({ input }) => {
-        return getLatestStartupOfDay(input.section);
+        return cached(
+          CACHE_KEYS.STARTUP_LATEST(input.section),
+          () => getLatestStartupOfDay(input.section),
+          EDITORIAL_TTL_MS
+        );
       }),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
@@ -202,7 +219,11 @@ export const appRouter = router({
       .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
       .query(async ({ input }) => {
         // Usa il filtro audit: esclude notizie con score < 40 o URL non raggiungibili
-        const items = await getLatestNewsFiltered(input.limit, input.section);
+        const items = await cached(
+          CACHE_KEYS.NEWS_LATEST(input.section, input.limit),
+          () => getLatestNewsFiltered(input.limit, input.section),
+          DEFAULT_TTL_MS
+        );
         return items.map((item) => ({
           id: item.id,
           title: item.title,
@@ -222,7 +243,11 @@ export const appRouter = router({
     // Recupera tutte le notizie per la homepage in una singola chiamata ottimizzata
     // Evita il problema di batch tRPC troppo grandi (>68KB) che causano errore 502
     getHomeData: publicProcedure.query(async () => {
-      return getHomeNewsData();
+      return cached(
+        CACHE_KEYS.HOME_DATA,
+        () => getHomeNewsData(),
+        DEFAULT_TTL_MS
+      );
     }),
 
     // Statistiche filtro audit per la dashboard admin
@@ -341,30 +366,40 @@ export const appRouter = router({
     // Punto del Giorno: recupera il post LinkedIn più recente di Andrea Cinelli
     getPuntoDelGiorno: publicProcedure
       .query(async () => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
-        const posts = await db.select().from(linkedinPostsTable)
-          .orderBy(desc(linkedinPostsTable.createdAt))
-          .limit(1);
-        if (!posts.length) return null;
-        const post = posts[0];
-        return {
-          id: post.id,
-          dateLabel: post.dateLabel,
-          postText: post.postText,
-          linkedinUrl: post.linkedinUrl ?? null,
-          title: post.title ?? null,
-          section: post.section,
-          imageUrl: post.imageUrl ?? null,
-          hashtags: post.hashtags ?? null,
-          createdAt: post.createdAt,
-        };
+        return cached(
+          CACHE_KEYS.PUNTO_DEL_GIORNO,
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return null;
+            const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+            const posts = await db.select().from(linkedinPostsTable)
+              .orderBy(desc(linkedinPostsTable.createdAt))
+              .limit(1);
+            if (!posts.length) return null;
+            const post = posts[0];
+            return {
+              id: post.id,
+              dateLabel: post.dateLabel,
+              postText: post.postText,
+              linkedinUrl: post.linkedinUrl ?? null,
+              title: post.title ?? null,
+              section: post.section,
+              imageUrl: post.imageUrl ?? null,
+              hashtags: post.hashtags ?? null,
+              createdAt: post.createdAt,
+            };
+          },
+          EDITORIAL_TTL_MS
+        );
       }),
 
     // Barometro Politico: estrae intenzioni di voto dai sondaggi recenti tramite LLM
     getBarometro: publicProcedure
       .query(async () => {
+        // TTL 30 minuti: la chiamata LLM è costosa, i sondaggi cambiano raramente
+        return cached(
+          CACHE_KEYS.BAROMETRO,
+          async () => {
         const db = await getDbInstance();
         if (!db) return null;
         // Prendi le ultime 30 notizie sondaggi per trovare dati percentuali
@@ -430,10 +465,17 @@ export const appRouter = router({
           console.error('[Barometro] Errore LLM:', err);
           return null;
         }
+          },
+          30 * 60 * 1000 // 30 minuti
+        );
       }),
 
     getThreatAlert: publicProcedure
       .query(async () => {
+        // TTL 30 minuti: la chiamata LLM è costosa, le minacce cambiano raramente
+        return cached(
+          CACHE_KEYS.THREAT_ALERT,
+          async () => {
         const db = await getDbInstance();
         if (!db) return null;
         // Prendi le ultime 40 notizie cybersecurity per trovare minacce
@@ -498,6 +540,9 @@ export const appRouter = router({
           console.error('[ThreatAlert] Errore LLM:', err);
           return null;
         }
+          },
+          30 * 60 * 1000 // 30 minuti
+        );
       }),
 
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
