@@ -976,3 +976,10 @@
 
 - [x] Identificato bug critico: in produzione Express serve index.html (text/html) per /@vite/client, causando res.ok=true e attivando il reload loop del SW
 - [x] sw.js v5: la detection dev mode ora controlla Content-Type (text/javascript = dev, text/html = produzione) invece di solo res.ok
+
+## Bug Fix (17 Mar 2026 — Caricamento notizie bloccato in produzione)
+
+- [x] Identificato causa root: la homepage faceva 14+ query tRPC separate in batch, la risposta superava i 68KB causando errore 502 dal proxy Manus
+- [x] Aggiunta funzione getHomeNewsData() in server/db.ts che recupera tutte le sezioni in parallelo con Promise.all
+- [x] Aggiunta procedura news.getHomeData nel router tRPC (singola query, risposta 44KB < 68KB limite)
+- [x] Aggiornata Home.tsx per usare trpc.news.getHomeData.useQuery() invece di 14 query separate

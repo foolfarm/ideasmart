@@ -23,6 +23,7 @@ import {
   ensureUnsubscribeTokens,
   getLatestNews,
   getLatestNewsFiltered,
+  getHomeNewsData,
   countFilteredNews,
   getLowScoreNews,
   replaceNewsItem,
@@ -216,6 +217,12 @@ export const appRouter = router({
 
     getRefreshHistory: publicProcedure.query(async () => {
       return getNewsRefreshHistory();
+    }),
+
+    // Recupera tutte le notizie per la homepage in una singola chiamata ottimizzata
+    // Evita il problema di batch tRPC troppo grandi (>68KB) che causano errore 502
+    getHomeData: publicProcedure.query(async () => {
+      return getHomeNewsData();
     }),
 
     // Statistiche filtro audit per la dashboard admin

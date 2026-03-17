@@ -903,3 +903,51 @@ export async function addSubscriberWithChannels(data: {
   });
   return { success: true };
 }
+
+// ── Home page aggregated data ──────────────────────────────────────────────────────────────────────
+// Recupera tutte le notizie necessarie per la homepage in una singola chiamata,
+// evitando il problema di batch tRPC troppo grandi che causano errore 502.
+export type HomeSection = 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi';
+
+export interface HomeSectionItem {
+  id: number;
+  title: string;
+  summary: string;
+  category: string;
+  sourceName: string;
+  sourceUrl: string;
+  publishedAt: string;
+  imageUrl: string | null;
+  section: HomeSection;
+}
+
+export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSectionItem[]>> {
+  const sections: HomeSection[] = ['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
+  const limits: Record<HomeSection, number> = {
+    ai: 8, music: 6, startup: 6, finance: 4, health: 4, sport: 4,
+    luxury: 4, news: 4, motori: 4, tennis: 4, basket: 4, gossip: 4,
+    cybersecurity: 4, sondaggi: 4,
+  };
+
+  const results = await Promise.all(
+    sections.map(async (section) => {
+      const items = await getLatestNewsFiltered(limits[section], section);
+      return {
+        section,
+        items: items.map((item) => ({
+          id: item.id,
+          title: item.title,
+          summary: item.summary,
+          category: item.category,
+          sourceName: item.sourceName ?? '',
+          sourceUrl: item.sourceUrl ?? '#',
+          publishedAt: item.publishedAt ?? '',
+          imageUrl: item.imageUrl ?? null,
+          section,
+        })),
+      };
+    })
+  );
+
+  return Object.fromEntries(results.map(r => [r.section, r.items])) as Record<HomeSection, HomeSectionItem[]>;
+}

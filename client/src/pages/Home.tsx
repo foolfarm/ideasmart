@@ -218,21 +218,25 @@ function NewsRow({ item, section }: {
 export default function Home() {
   const today = useMemo(() => new Date(), []);
 
-  const { data: aiNews } = trpc.news.getLatest.useQuery({ limit: 8, section: "ai" });
-  const { data: musicNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "music" });
-  const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "startup" });
-  const { data: financeNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "finance" });
-  const { data: healthNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "health" });
-  const { data: sportNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "sport" });
-  const { data: luxuryNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "luxury" });
-  const { data: newsNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "news" });
-  const { data: motoriNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "motori" });
-  const { data: tennisNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "tennis" });
-  const { data: basketNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "basket" });
-  const { data: gossipNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "gossip" as any });
-  const { data: cybersecurityNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "cybersecurity" as any });
-  const { data: sondaggiNews } = trpc.news.getLatest.useQuery({ limit: 4, section: "sondaggi" as any });
+  // Singola query ottimizzata per la homepage — evita batch tRPC >68KB che causano 502 in produzione
+  const { data: homeData } = trpc.news.getHomeData.useQuery();
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
+
+  // Estrae i dati per sezione dalla risposta aggregata
+  const aiNews = homeData?.ai ?? [];
+  const musicNews = homeData?.music ?? [];
+  const startupNews = homeData?.startup ?? [];
+  const financeNews = homeData?.finance ?? [];
+  const healthNews = homeData?.health ?? [];
+  const sportNews = homeData?.sport ?? [];
+  const luxuryNews = homeData?.luxury ?? [];
+  const newsNews = homeData?.news ?? [];
+  const motoriNews = homeData?.motori ?? [];
+  const tennisNews = homeData?.tennis ?? [];
+  const basketNews = homeData?.basket ?? [];
+  const gossipNews = homeData?.gossip ?? [];
+  const cybersecurityNews = homeData?.cybersecurity ?? [];
+  const sondaggiNews = homeData?.sondaggi ?? [];
 
   const heroNews = useMemo(() => {
     const all = aiNews || [];
