@@ -1,7 +1,7 @@
 // IDEASMART Service Worker — PWA offline-first caching
 // In development mode (Vite dev server), this SW self-unregisters to prevent
 // caching issues with @vite/client HMR WebSocket connections.
-const CACHE_NAME = 'ideasmart-v5';
+const CACHE_NAME = 'ideasmart-v6';
 
 // Self-unregister in dev mode: check if the server is Vite dev server
 // by verifying that /@vite/client responds with JavaScript (not HTML fallback).
