@@ -894,3 +894,7 @@
 ## Task (17 Mar 2026 — Fix definitivo AdUnit export)
 
 - [x] Rifattorizzare AdUnit.tsx con export nominati espliciti per ogni componente — eliminato pattern factory che causava problemi di cache Vite
+
+## Task (17 Mar 2026 — Fix React duplicate definitivo)
+
+- [x] Pulizia completa node_modules e reinstallazione per eliminare React duplicate — cache pulita, server riavviato
