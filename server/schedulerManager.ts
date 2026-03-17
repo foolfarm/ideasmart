@@ -53,8 +53,10 @@
  *  │  Domenica  07:00 — Preview Health → info@ideasmart.ai                   │
  *  │  Domenica  07:30 — Newsletter Health → tutti gli iscritti               │
  *  │                                                                          │
- *  │  LINKEDIN AUTOPOST — ogni giorno                                         │
+ *  │  LINKEDIN AUTOPOST + PUNTO DEL GIORNO — ogni giorno                      │
  *  │  10:00 — Post editoriale AI/Startup su LinkedIn                         │
+ *  │          → salva automaticamente il testo nel DB (tabella linkedin_posts)│
+ *  │          → alimenta la sezione "Punto del Giorno" nella Home             │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
  * node-cron usa il fuso orario del server. Il server gira in UTC.
@@ -420,4 +422,5 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
   console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET");
+  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato automaticamente alle 10:00 CET (via LinkedIn publisher → DB)");
 }
