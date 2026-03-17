@@ -869,3 +869,7 @@
 ## Task (17 Mar 2026 — Fix AdUnit exports)
 
 - [x] Correggere export mancanti in AdUnit.tsx (AdStartupBottom e altri) — già presenti, riavvio server risolve cache Vite
+
+## Task (17 Mar 2026 — Navbar canali sport/motori)
+
+- [x] Aggiungere Motori, Tennis, Basket alla barra di navigazione principale (Navbar) e alla barra secondaria della Home

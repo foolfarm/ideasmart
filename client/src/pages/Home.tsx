@@ -309,14 +309,14 @@ export default function Home() {
             </Link>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              La Prima Testata Giornalistica HumanLess · AI · Musica · Startup · Finance · Health · Sport · Luxury
+              La Prima Testata Giornalistica HumanLess · AI · Musica · Startup · Finance · Health · Sport · Luxury · News · Motori · Tennis · Basket
             </p>
           </div>
 
           <Divider thick />
 
-          <nav className="flex items-center justify-center gap-0 py-2">
-            {(["ai", "music", "startup", "finance", "health", "sport", "luxury"] as const).map((sec, i) => {
+          <nav className="flex flex-wrap items-center justify-center gap-0 py-2">
+            {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket"] as const).map((sec, i) => {
               const s = SECTION_COLORS[sec];
               return (
                 <Link key={sec} href={s.path}>
