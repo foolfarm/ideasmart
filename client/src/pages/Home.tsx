@@ -459,6 +459,9 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Sezione: Punto del Giorno — Post LinkedIn di Andrea Cinelli */}
+          <PuntoDelGiorno />
+
           {/* Sezione 2: Griglia 3 colonne */}
           <div className="mt-6">
             <Divider thick />
@@ -653,9 +656,6 @@ export default function Home() {
               })}
             </div>
           </div>
-
-          {/* Sezione: Punto del Giorno — Post LinkedIn di Andrea Cinelli */}
-          <PuntoDelGiorno />
 
           {/* Footer testata */}
           <div className="mt-12">

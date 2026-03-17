@@ -62,13 +62,13 @@ export default function PuntoDelGiorno() {
   const hashtagText = post?.hashtags || paragraphs.find(p => p.startsWith("#")) || "";
 
   return (
-    <section className="mt-10">
+    <section className="mt-8">
       {/* Header sezione */}
       <div className="w-full border-t-4" style={{ borderColor: INK }} />
       <div className="py-3 flex items-center gap-4">
         <span
-          className="text-[10px] font-bold uppercase tracking-[0.25em]"
-          style={{ color: ACCENT, fontFamily: "'Space Grotesk', sans-serif" }}
+          className="text-[11px] font-bold uppercase tracking-[0.25em]"
+          style={{ color: "#1a1a2e", fontFamily: "'Space Mono', monospace" }}
         >
           Punto del Giorno
         </span>
@@ -76,7 +76,7 @@ export default function PuntoDelGiorno() {
         {post?.dateLabel && (
           <span
             className="text-[10px] uppercase tracking-widest"
-            style={{ color: INK + "60", fontFamily: "'JetBrains Mono', monospace" }}
+            style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}
           >
             {formatDateIT(post.dateLabel)}
           </span>
@@ -85,8 +85,8 @@ export default function PuntoDelGiorno() {
 
       {/* Card principale */}
       <div
-        className="rounded-lg overflow-hidden border"
-        style={{ borderColor: INK + "15", background: "#fafaf8" }}
+        className="overflow-hidden border-t border-b"
+        style={{ borderColor: INK + "20", background: "#faf8f3" }}
       >
         <div className="grid grid-cols-1 md:grid-cols-3">
           {/* Immagine (se presente) */}
@@ -117,13 +117,13 @@ export default function PuntoDelGiorno() {
                   <div>
                     <p
                       className="text-xs font-bold"
-                      style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                      style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
                       Andrea Cinelli
                     </p>
                     <p
                       className="text-[10px]"
-                      style={{ color: INK + "55", fontFamily: "'JetBrains Mono', monospace" }}
+                      style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
                     >
                       Founder & CEO FoolFarm · LinkedIn
                     </p>
@@ -131,8 +131,8 @@ export default function PuntoDelGiorno() {
                   {/* Badge sezione */}
                   {post?.section && (
                     <span
-                      className="ml-auto px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest"
-                      style={{ background: ACCENT_LIGHT, color: "#0a6e5c", fontFamily: "'JetBrains Mono', monospace" }}
+                      className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+                      style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}
                     >
                       {post.section === "ai" ? "AI4Business" : post.section === "startup" ? "Startup" : post.section}
                     </span>
@@ -142,8 +142,8 @@ export default function PuntoDelGiorno() {
                 {/* Titolo */}
                 {post?.title && (
                   <h2
-                    className="text-xl md:text-2xl font-black leading-tight mb-4"
-                    style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                    className="text-xl md:text-3xl font-bold leading-tight mb-4"
+                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
                     {post.title}
                   </h2>
@@ -155,7 +155,7 @@ export default function PuntoDelGiorno() {
                     <p
                       key={i}
                       className="text-sm leading-relaxed"
-                      style={{ color: INK + "cc", fontFamily: "'DM Sans', sans-serif" }}
+                      style={{ color: INK + "cc", fontFamily: "'Source Serif 4', Georgia, serif" }}
                     >
                       {para}
                     </p>
@@ -163,7 +163,7 @@ export default function PuntoDelGiorno() {
                   {bodyParagraphs.length > 3 && (
                     <p
                       className="text-sm italic"
-                      style={{ color: INK + "55", fontFamily: "'DM Sans', sans-serif" }}
+                      style={{ color: INK + "55", fontFamily: "'Source Serif 4', Georgia, serif" }}
                     >
                       …continua su LinkedIn
                     </p>
