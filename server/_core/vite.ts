@@ -103,6 +103,20 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx"`,
         `src="/src/main.tsx?v=${nanoid()}"`
       );
+
+      // Inject the current Vite browserHash as the epoch for stale-bundle detection.
+      // When Vite regenerates deps (new hash), the browser will detect the mismatch
+      // via sessionStorage and force a hard reload before React loads.
+      let viteEpoch = 'dev';
+      try {
+        const metaPath = path.resolve(import.meta.dirname, '../..', 'node_modules/.vite/deps/_metadata.json');
+        if (fs.existsSync(metaPath)) {
+          const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+          viteEpoch = meta.browserHash || meta.hash || 'dev';
+        }
+      } catch (_) {}
+      template = template.replace('__VITE_EPOCH__', viteEpoch);
+
       const page = await vite.transformIndexHtml(url, template);
       res.status(200).set({ 
         "Content-Type": "text/html",

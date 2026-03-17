@@ -106,6 +106,30 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Stale bundle detection: if Vite deps have changed, force a reload before React loads -->
+    <script>
+      (function() {
+        try {
+          var CACHE_KEY = 'ideasmart_vite_epoch';
+          var CURRENT_EPOCH = '__VITE_EPOCH__';
+          var stored = sessionStorage.getItem(CACHE_KEY);
+          if (stored && stored !== CURRENT_EPOCH) {
+            // Epoch changed — clear all caches and hard reload
+            sessionStorage.setItem(CACHE_KEY, CURRENT_EPOCH);
+            if ('caches' in window) {
+              caches.keys().then(function(names) {
+                names.forEach(function(name) { caches.delete(name); });
+              });
+            }
+            window.location.reload(true);
+            return;
+          }
+          if (!stored) {
+            sessionStorage.setItem(CACHE_KEY, CURRENT_EPOCH);
+          }
+        } catch(e) {}
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
     <!-- PWA Service Worker Registration -->
     <script>
