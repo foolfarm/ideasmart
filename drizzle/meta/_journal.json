@@ -169,6 +169,13 @@
       "when": 1773761810019,
       "tag": "0023_far_black_tarantula",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1773788510219,
+      "tag": "0024_sweet_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

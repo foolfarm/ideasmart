@@ -89,6 +89,10 @@ import { runNightlyAudit } from "./nightlyAuditScheduler";
 import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { invalidateAll, invalidateBySection, CACHE_KEYS } from "./cache";
+import { saveBarometroSnapshot, getDb } from "./db";
+import { invokeLLM } from "./_core/llm";
+import { newsItems as newsItemsTable } from "../drizzle/schema";
+import { eq, desc } from "drizzle-orm";
 
 const TZ = "Europe/Rome";
 
@@ -374,6 +378,68 @@ export function startAllSchedulers(): void {
       console.log("[SchedulerManager] ✅ Cache invalidata — contenuti freschi disponibili al prossimo accesso");
     } catch (err) {
       console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
+    }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SNAPSHOT BAROMETRO POLITICO — 05:45 CET (dopo invalidazione cache)
+  // ══════════════════════════════════════════════════════════════════════════
+  // Ogni giorno alle 05:45 salviamo uno snapshot del barometro politico
+  // per alimentare il grafico storico a 4 settimane nel widget Sondaggi.
+  cron.schedule("45 5 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 05:45 CET — Salvataggio snapshot barometro politico...");
+    try {
+      const db = await getDb();
+      if (!db) { console.warn("[BarometroSnapshot] DB non disponibile"); return; }
+      const items = await db.select().from(newsItemsTable)
+        .where(eq(newsItemsTable.section, 'sondaggi'))
+        .orderBy(desc(newsItemsTable.createdAt))
+        .limit(30);
+      if (!items.length) { console.warn("[BarometroSnapshot] Nessuna notizia sondaggi disponibile"); return; }
+      const newsText = items.map(n => `TITOLO: ${n.title}\nSOMMARIO: ${n.summary}\nFONTE: ${n.sourceName ?? ''}\nDATA: ${n.publishedAt ?? ''}`).join('\n\n---\n\n');
+      const response = await invokeLLM({
+        messages: [
+          { role: 'system', content: 'Sei un analista politico italiano esperto di sondaggi. Estrai le intenzioni di voto dai sondaggi. Restituisci SEMPRE dati per i principali partiti italiani (FdI, PD, M5S, Lega, FI, AVS, Az/IV). I valori devono sommare a circa 100%.' },
+          { role: 'user', content: `Analizza queste notizie ed estrai le intenzioni di voto:\n\n${newsText}\n\nRestituisci JSON con partiti e percentuali.` }
+        ],
+        response_format: {
+          type: 'json_schema',
+          json_schema: {
+            name: 'barometro_snapshot',
+            strict: true,
+            schema: {
+              type: 'object',
+              properties: {
+                partiti: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      nome: { type: 'string' },
+                      nomeCompleto: { type: 'string' },
+                      percentuale: { type: 'number' },
+                      colore: { type: 'string' },
+                    },
+                    required: ['nome', 'nomeCompleto', 'percentuale', 'colore'],
+                    additionalProperties: false,
+                  }
+                },
+                fonte: { type: 'string' },
+              },
+              required: ['partiti', 'fonte'],
+              additionalProperties: false,
+            },
+          },
+        },
+      });
+      const content = response.choices[0]?.message?.content;
+      if (!content) { console.warn("[BarometroSnapshot] LLM non ha restituito dati"); return; }
+      const parsed = JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD
+      await saveBarometroSnapshot(today, parsed.partiti, parsed.fonte ?? 'Elaborazione AI');
+      console.log(`[BarometroSnapshot] ✅ Snapshot salvato per ${today} — ${parsed.partiti.length} partiti`);
+    } catch (err) {
+      console.error("[BarometroSnapshot] ❌ Errore salvataggio snapshot:", err);
     }
   }, { timezone: TZ });
 

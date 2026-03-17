@@ -1,4 +1,4 @@
-import { eq, desc, count, and, or, inArray } from "drizzle-orm";
+import { eq, desc, count, and, or, inArray, gte } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
@@ -6,6 +6,7 @@ import {
   subscribers, newsletterSends, users, newsItems, newsRefreshLog,
   dailyEditorial, startupOfDay,
   InsertDailyEditorial, InsertStartupOfDay,
+  barometroSnapshots,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -950,4 +951,55 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
   );
 
   return Object.fromEntries(results.map(r => [r.section, r.items])) as Record<HomeSection, HomeSectionItem[]>;
+}
+
+// ── Barometro Snapshots ─────────────────────────────────────────────────────
+
+/** Salva uno snapshot giornaliero del barometro politico */
+export async function saveBarometroSnapshot(
+  dateLabel: string,
+  partiti: Array<{ nome: string; nomeCompleto: string; percentuale: number; colore: string }>,
+  fonte: string
+): Promise<void> {
+  if (!partiti || partiti.length === 0) return;
+  // Elimina eventuali snapshot esistenti per la stessa data (idempotente)
+  const dbConn = await getDb();
+  if (!dbConn) return;
+  await dbConn.delete(barometroSnapshots).where(eq(barometroSnapshots.dateLabel, dateLabel));
+  // Inserisce i nuovi snapshot
+  await dbConn.insert(barometroSnapshots).values(
+    partiti.map(p => ({
+      dateLabel,
+      partito: p.nome,
+      partitoNome: p.nomeCompleto,
+      percentuale: p.percentuale,
+      colore: p.colore,
+      fonte,
+    }))
+  );
+}
+
+/** Recupera gli snapshot degli ultimi N giorni per il grafico storico */
+export async function getBarometroHistory(days: number = 28): Promise<
+  Array<{ dateLabel: string; partito: string; partitoNome: string | null; percentuale: number; colore: string | null }>
+> {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days);
+  const cutoffLabel = cutoff.toISOString().slice(0, 10);
+
+  const dbConn = await getDb();
+  if (!dbConn) return [];
+  const rows = await dbConn
+    .select()
+    .from(barometroSnapshots)
+    .where(gte(barometroSnapshots.dateLabel, cutoffLabel))
+    .orderBy(barometroSnapshots.dateLabel);
+
+  return rows.map((r: typeof barometroSnapshots.$inferSelect) => ({
+    dateLabel: r.dateLabel,
+    partito: r.partito,
+    partitoNome: r.partitoNome ?? null,
+    percentuale: r.percentuale,
+    colore: r.colore ?? null,
+  }));
 }

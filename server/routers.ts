@@ -39,6 +39,8 @@ import {
   getAllActiveNotificationPreferences,
   getNewsletterCampaignStats,
   getSubscribersWithTracking,
+  getBarometroHistory,
+  saveBarometroSnapshot,
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 import { generateStartupNews, generateStartupEditorial, generateStartupOfWeek, generateStartupReportage, generateStartupMarketAnalysis } from "./startupScheduler";
@@ -488,6 +490,18 @@ export const appRouter = router({
         }
           },
           30 * 60 * 1000 // 30 minuti
+        );
+      }),
+
+    // Storico intenzioni di voto (ultimi 28 giorni)
+    getBarometroHistory: publicProcedure
+      .input(z.object({ days: z.number().min(7).max(90).default(28) }).optional())
+      .query(async ({ input }) => {
+        const days = input?.days ?? 28;
+        return cached(
+          `barometro_history_${days}`,
+          () => getBarometroHistory(days),
+          15 * 60 * 1000 // 15 minuti
         );
       }),
 

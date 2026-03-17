@@ -87,6 +87,24 @@ vi.mock("./nightlyAuditScheduler", () => ({
   runNightlyAudit: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock("./db", () => ({
+  saveBarometroSnapshot: vi.fn().mockResolvedValue(undefined),
+  getDb: vi.fn().mockResolvedValue(null),
+}));
+
+vi.mock("./_core/llm", () => ({
+  invokeLLM: vi.fn().mockResolvedValue({ choices: [{ message: { content: JSON.stringify({ partiti: [], fonte: 'Test' }) } }] }),
+}));
+
+vi.mock("../drizzle/schema", () => ({
+  newsItems: {},
+}));
+
+vi.mock("drizzle-orm", () => ({
+  eq: vi.fn(),
+  desc: vi.fn(),
+}));
+
 // ─── Test ─────────────────────────────────────────────────────────────────────
 
 describe("schedulerManager", () => {
@@ -99,13 +117,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 41 cron job quando avviato", async () => {
+  it("dovrebbe registrare 42 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 41 scheduler: 39 originali + 2 nuovi per invalidazione cache
-    //   (05:30 CET invalidazione globale post-scraping + 10:05 CET invalidazione Punto del Giorno)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(41);
+    // 42 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro
+    //   (05:30 CET invalidazione globale, 10:05 CET invalidazione Punto del Giorno, 05:45 snapshot barometro)
+    expect(cron.default.schedule).toHaveBeenCalledTimes(42);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {

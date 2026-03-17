@@ -1018,3 +1018,22 @@
 - [x] Aggiungere compressione gzip con Express compression middleware (risparmio 70% — 44KB → 14KB)
 - [x] Warm-up con stagger in batch da 4 sezioni per non sovraccaricare il DB
 - [x] Tutti i 36 test passano
+
+## Task (18 Mar 2026 — Grafico Storico Sondaggi)
+- [ ] Aggiungere tabella barometro_snapshots al DB (data, partito, percentuale)
+- [ ] Creare procedura tRPC sondaggi.getHistory per recuperare gli ultimi 28 giorni
+- [ ] Aggiungere salvataggio automatico snapshot giornaliero nello scheduler (dopo getBarometro)
+- [ ] Implementare grafico storico con Recharts nel widget Sondaggi della homepage
+- [ ] Popolare dati storici iniziali (ultimi 28 giorni) per avere il grafico subito visibile
+- [ ] Aggiungere cache alla procedura getHistory (TTL 60min)
+
+## Task (18 Mar 2026 — Grafico Storico Barometro Politico)
+
+- [x] Aggiungere tabella barometro_snapshots al DB (data, partito, percentuale, colore, fonte)
+- [x] Aggiungere funzioni DB: getBarometroHistory, saveBarometroSnapshot
+- [x] Aggiungere procedura tRPC news.getBarometroHistory (TTL 15min, lazy load)
+- [x] Riscrivere componente BarometroPolitico con tab switcher "Oggi" / "4 Settimane"
+- [x] Implementare grafico storico a linee con Recharts (LineChart, Tooltip personalizzato, Legend)
+- [x] Aggiungere cron job 05:45 CET per salvataggio snapshot giornaliero barometro
+- [x] Aggiornare test schedulerManager (41 → 42 cron job)
+- [x] Tutti i 36 test passano

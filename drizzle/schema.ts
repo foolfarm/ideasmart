@@ -329,3 +329,25 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
 
 export type LinkedinPost = typeof linkedinPosts.$inferSelect;
 export type InsertLinkedinPost = typeof linkedinPosts.$inferInsert;
+
+// ── Barometro Snapshots (Storico Intenzioni di Voto) ──────────────────────
+// Ogni giorno lo scheduler salva uno snapshot del barometro politico
+// per consentire la visualizzazione del grafico storico a 4 settimane.
+export const barometroSnapshots = mysqlTable("barometro_snapshots", {
+  id: int("id").autoincrement().primaryKey(),
+  // Data dello snapshot (YYYY-MM-DD) — un record per giorno per partito
+  dateLabel: varchar("dateLabel", { length: 20 }).notNull(),
+  // Nome abbreviato del partito (es. FdI, PD, M5S)
+  partito: varchar("partito", { length: 50 }).notNull(),
+  // Nome completo del partito
+  partitoNome: varchar("partitoNome", { length: 200 }),
+  // Percentuale intenzione di voto
+  percentuale: float("percentuale").notNull(),
+  // Colore del partito (hex)
+  colore: varchar("colore", { length: 20 }),
+  // Fonte del sondaggio
+  fonte: varchar("fonte", { length: 200 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type BarometroSnapshot = typeof barometroSnapshots.$inferSelect;
+export type InsertBarometroSnapshot = typeof barometroSnapshots.$inferInsert;
