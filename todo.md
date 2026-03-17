@@ -861,3 +861,7 @@
 
 - [x] Avviare scraping RSS per news, motori, tennis, basket
 - [x] Aggiornare ticker LIVE per includere notizie di tutti i canali
+
+## Task (17 Mar 2026 — Sidebar canali)
+
+- [x] Aggiungere Motori, Tennis, Basket alla sidebar "I Canali" nella Home
