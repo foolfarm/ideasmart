@@ -174,9 +174,9 @@ async function selectAndTranslate(
       instructions: "Seleziona le 20 notizie più rilevanti per CISO, security manager e professionisti IT italiani. Privilegia breach significativi, nuove vulnerabilità, attacchi ransomware, normative NIS2/GDPR e trend di sicurezza.",
     },
     sondaggi: {
-      label: "Sondaggi & Opinioni",
-      categories: ["Sondaggi Politici", "Sondaggi Economici", "Opinione Pubblica", "Trend Sociali", "Ricerche di Mercato", "Previsioni & Outlook", "Analisi Geopolitica", "Consenso & Fiducia", "Dati & Statistiche", "Report Istituzionali", "Sentiment Aziendale", "Futuro & Scenari"],
-      instructions: "Seleziona le 20 notizie più interessanti tra sondaggi, ricerche, analisi di opinione e dati statistici. Privilegia sondaggi politici italiani, ricerche economiche, trend sociali e report istituzionali. Tono analitico e basato sui dati.",
+      label: "Sondaggi & Dati Italia",
+      categories: ["Sondaggi Politici Italiani", "Intenzioni di Voto", "Gradimento Governo", "Sondaggi Economici", "Opinione Pubblica", "Trend Sociali", "Ricerche ISTAT/Censis", "Dati & Statistiche", "Report Istituzionali", "Consenso & Fiducia", "Analisi Partiti", "Scenari Elettorali"],
+      instructions: "Seleziona le 20 notizie più interessanti tra sondaggi, ricerche e dati italiani. PRIORITÀ ASSOLUTA: sondaggi politici italiani (intenzioni di voto, gradimento governo/partiti, scenari elettorali), dati ISTAT/Censis/Eurispes, ricerche di istituti italiani (SWG, YouTrend, Tecnè, Demopolis, Noto, EMG). Privilegia contenuti con dati numerici, percentuali, confronti temporali. Tono analitico e basato sui dati. ESCLUDI notizie generiche senza dati.",
     },
   } as const;
 

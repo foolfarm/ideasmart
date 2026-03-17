@@ -818,31 +818,58 @@ export const CYBERSECURITY_SOURCES: RssSource[] = [
 ];
 
 export const SONDAGGI_SOURCES: RssSource[] = [
-  // Polls & surveys global
-  { name: "YouGov UK", homepage: "https://yougov.co.uk", feedUrl: "https://yougov.co.uk/news/rss", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Ipsos Global", homepage: "https://www.ipsos.com", feedUrl: "https://www.ipsos.com/en/rss.xml", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Gallup", homepage: "https://www.gallup.com", feedUrl: "https://www.gallup.com/rss", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Pew Research", homepage: "https://www.pewresearch.org", feedUrl: "https://www.pewresearch.org/feed", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Our World in Data", homepage: "https://ourworldindata.org", feedUrl: "https://ourworldindata.org/rss", section: "sondaggi", language: "en", priority: 1 },
-  { name: "OECD Newsroom", homepage: "https://www.oecd.org", feedUrl: "https://www.oecd.org/newsroom/rss.xml", section: "sondaggi", language: "en", priority: 1 },
-  { name: "IMF News", homepage: "https://www.imf.org", feedUrl: "https://www.imf.org/en/News/RSS", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Visual Capitalist", homepage: "https://www.visualcapitalist.com", feedUrl: "https://www.visualcapitalist.com/feed", section: "sondaggi", language: "en", priority: 1 },
-  // Opinion & analysis
-  { name: "Project Syndicate", homepage: "https://www.project-syndicate.org", feedUrl: "https://www.project-syndicate.org/rss", section: "sondaggi", language: "en", priority: 1 },
-  { name: "The Economist", homepage: "https://www.economist.com", feedUrl: "https://www.economist.com/rss.xml", section: "sondaggi", language: "en", priority: 1 },
-  { name: "The Guardian Opinion", homepage: "https://www.theguardian.com", feedUrl: "https://www.theguardian.com/commentisfree/rss", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Brookings Institution", homepage: "https://www.brookings.edu", feedUrl: "https://www.brookings.edu/feed", section: "sondaggi", language: "en", priority: 1 },
-  { name: "RAND Corporation", homepage: "https://www.rand.org", feedUrl: "https://www.rand.org/rss", section: "sondaggi", language: "en", priority: 1 },
-  { name: "Carnegie Endowment", homepage: "https://carnegieendowment.org", feedUrl: "https://carnegieendowment.org/rss", section: "sondaggi", language: "en", priority: 2 },
-  // Italia sondaggi / opinione
+  // ── Istituti di sondaggi italiani (core) ──────────────────────────────────
   { name: "Ipsos Italia", homepage: "https://www.ipsos.com/it-it", feedUrl: "https://www.ipsos.com/it-it/rss", section: "sondaggi", language: "it", priority: 1 },
   { name: "SWG", homepage: "https://www.swg.it", feedUrl: "https://www.swg.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Demos & Pi", homepage: "https://www.demos.it", feedUrl: "https://www.demos.it/feed", section: "sondaggi", language: "it", priority: 1 },
   { name: "YouTrend", homepage: "https://www.youtrend.it", feedUrl: "https://www.youtrend.it/feed", section: "sondaggi", language: "it", priority: 1 },
   { name: "Termometro Politico", homepage: "https://www.termometropolitico.it", feedUrl: "https://www.termometropolitico.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Linkiesta", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Demopolis", homepage: "https://www.demopolis.it", feedUrl: "https://www.demopolis.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "EMG Different", homepage: "https://www.emg-different.com", feedUrl: "https://www.emg-different.com/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Eumetra", homepage: "https://www.eumetra.com", feedUrl: "https://www.eumetra.com/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "IXE'", homepage: "https://www.ixe.it", feedUrl: "https://www.ixe.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Tecnè Media", homepage: "https://www.tecnemedia.it", feedUrl: "https://www.tecnemedia.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Lab2101", homepage: "https://www.lab2101.it", feedUrl: "https://www.lab2101.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Winpoll", homepage: "https://www.winpoll.it", feedUrl: "https://www.winpoll.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Noto Sondaggi", homepage: "https://www.noto.it", feedUrl: "https://www.noto.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Quorum", homepage: "https://www.quorum.it", feedUrl: "https://www.quorum.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Euromedia Research", homepage: "https://www.euromediaresearch.it", feedUrl: "https://www.euromediaresearch.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  // ── Aggregatori sondaggi italiani ─────────────────────────────────────────
+  { name: "Sondaggi Bidimedia", homepage: "https://www.sondaggibidimedia.com", feedUrl: "https://www.sondaggibidimedia.com/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Scenari Politici", homepage: "https://www.scenaripolitici.com", feedUrl: "https://www.scenaripolitici.com/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Money.it", homepage: "https://www.money.it", feedUrl: "https://www.money.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Il Riformista", homepage: "https://www.ilriformista.it", feedUrl: "https://www.ilriformista.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Affari Italiani", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Open Online", homepage: "https://www.open.online", feedUrl: "https://www.open.online/feed", section: "sondaggi", language: "it", priority: 1 },
   { name: "Il Post", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Open Online", homepage: "https://www.open.online", feedUrl: "https://www.open.online/feed", section: "sondaggi", language: "it", priority: 2 },
   { name: "HuffPost Italia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  // ── Data journalism / opinione pubblica ───────────────────────────────────
+  { name: "DataPizza", homepage: "https://www.datapizza.tech", feedUrl: "https://www.datapizza.tech/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Il Sole 24 Ore Info-Data", homepage: "https://www.info-data.ilsole24ore.com", feedUrl: "https://www.info-data.ilsole24ore.com/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "LaVoce.info", homepage: "https://www.lavoce.info", feedUrl: "https://www.lavoce.info/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Neodemos", homepage: "https://www.neodemos.info", feedUrl: "https://www.neodemos.info/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "inGenere", homepage: "https://www.ingenere.it", feedUrl: "https://www.ingenere.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Etica Economia", homepage: "https://www.eticaeconomia.it", feedUrl: "https://www.eticaeconomia.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Linkiesta", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Il Post Dati", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/dati/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Openpolis", homepage: "https://www.openpolis.it", feedUrl: "https://www.openpolis.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  // ── Think tank / policy / società ─────────────────────────────────────────
+  { name: "Aspen Institute Italia", homepage: "https://www.aspeninstitute.it", feedUrl: "https://www.aspeninstitute.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "ISPI", homepage: "https://www.ispionline.it", feedUrl: "https://www.ispionline.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "IAI", homepage: "https://www.iai.it", feedUrl: "https://www.iai.it/it/rss.xml", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Treccani", homepage: "https://www.treccani.it", feedUrl: "https://www.treccani.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Censis", homepage: "https://www.censis.it", feedUrl: "https://www.censis.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Eurispes", homepage: "https://www.eurispes.eu", feedUrl: "https://www.eurispes.eu/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "ISTAT", homepage: "https://www.istat.it", feedUrl: "https://www.istat.it/feed", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Banca d'Italia", homepage: "https://www.bancaditalia.it", feedUrl: "https://www.bancaditalia.it/rss", section: "sondaggi", language: "it", priority: 1 },
+  { name: "OCPI", homepage: "https://www.ocpi.it", feedUrl: "https://www.ocpi.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "Fondazione Veronesi", homepage: "https://www.fondazioneveronesi.it", feedUrl: "https://www.fondazioneveronesi.it/feed", section: "sondaggi", language: "it", priority: 2 },
+  // ── Politica / opinione / media ───────────────────────────────────────────
+  { name: "Repubblica Politica", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/politica/rss2.0.xml", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Corriere Politica", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/politica.xml", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Il Sole 24 Ore Politica", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/politica.xml", section: "sondaggi", language: "it", priority: 1 },
+  { name: "Fanpage Politica", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/politica/feed", section: "sondaggi", language: "it", priority: 2 },
+  { name: "TGCom24 Politica", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/politica.xml", section: "sondaggi", language: "it", priority: 2 },
 ];
 
 export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES, ...GOSSIP_SOURCES, ...CYBERSECURITY_SOURCES, ...SONDAGGI_SOURCES];

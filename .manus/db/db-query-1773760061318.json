@@ -1,0 +1,90 @@
+{
+  "query": "SELECT title, category FROM news_items WHERE section = 'sondaggi' LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT title, category FROM news_items WHERE section = 'sondaggi' LIMIT 20;",
+  "rows": [
+    {
+      "title": "Sondaggio Lab21: Cresce Futuro Nazionale, Centrosinistra Stabile",
+      "category": "Sondaggi Politici Italiani"
+    },
+    {
+      "title": "Fiducia in Meloni e Governo in Calo, Conte Preferito a Schlein",
+      "category": "Gradimento Governo"
+    },
+    {
+      "title": "Sondaggio Eumetra: FDI Perde, PD Guadagna. AVS Sorpassa Lega",
+      "category": "Intenzioni di Voto"
+    },
+    {
+      "title": "Sondaggio SWG (9 marzo 2026): Le Nuove Intenzioni di Voto",
+      "category": "Intenzioni di Voto"
+    },
+    {
+      "title": "Sondaggio Termometro Politico (6 marzo 2026): Scenari Elettorali",
+      "category": "Scenari Elettorali"
+    },
+    {
+      "title": "Referendum Giustizia: Anm Difende Sé Stessa, Non la Costituzione",
+      "category": "Opinione Pubblica"
+    },
+    {
+      "title": "Referendum Giustizia: Travaglio Attacca FdI su Clientelismo",
+      "category": "Analisi Partiti"
+    },
+    {
+      "title": "Processo Becciu da Rifare: Annullate Condanne per Errori Procedurali",
+      "category": "Dati & Statistiche"
+    },
+    {
+      "title": "L'allarme della Corte dei Conti del Lazio sulla Crisi Bellica",
+      "category": "Sondaggi Economici"
+    },
+    {
+      "title": "Aumenti Prezzi Carburanti nell'Ultima Settimana: Dati Ministero",
+      "category": "Sondaggi Economici"
+    },
+    {
+      "title": "Due Grosse Aziende di Abbigliamento Indagate per Caporalato",
+      "category": "Trend Sociali"
+    },
+    {
+      "title": "Referendum Giustizia: Il Caso Palamara e le Correnti CSM",
+      "category": "Opinione Pubblica"
+    },
+    {
+      "title": "Eni Scopre Due Nuovi Giacimenti di Gas Naturale al Largo della Libia",
+      "category": "Sondaggi Economici"
+    },
+    {
+      "title": "Il Punto sul Referendum della Giustizia del 22 e 23 Marzo",
+      "category": "Scenari Elettorali"
+    },
+    {
+      "title": "Focus: Il Referendum sulla Magistratura – Guida al Voto",
+      "category": "Report Istituzionali"
+    },
+    {
+      "title": "L'IA Cambierà il Nostro Modo di Lavorare? Un'Analisi Approfondita",
+      "category": "Trend Sociali"
+    },
+    {
+      "title": "Referendum Giustizia: Le Ragioni del “Sì”",
+      "category": "Analisi Partiti"
+    },
+    {
+      "title": "Referendum Giustizia: Le Ragioni del “No”",
+      "category": "Analisi Partiti"
+    },
+    {
+      "title": "Dopo il Covid, Famiglie Italiane Investono di Più in Btp",
+      "category": "Sondaggi Economici"
+    },
+    {
+      "title": "Come è Cambiata la Fruizione delle Biblioteche Post-Pandemia",
+      "category": "Dati & Statistiche"
+    }
+  ],
+  "messages": [],
+  "stdout": "title\tcategory\nSondaggio Lab21: Cresce Futuro Nazionale, Centrosinistra Stabile\tSondaggi Politici Italiani\nFiducia in Meloni e Governo in Calo, Conte Preferito a Schlein\tGradimento Governo\nSondaggio Eumetra: FDI Perde, PD Guadagna. AVS Sorpassa Lega\tIntenzioni di Voto\nSondaggio SWG (9 marzo 2026): Le Nuove Intenzioni di Voto\tIntenzioni di Voto\nSondaggio Termometro Politico (6 marzo 2026): Scenari Elettorali\tScenari Elettorali\nReferendum Giustizia: Anm Difende Sé Stessa, Non la Costituzione\tOpinione Pubblica\nReferendum Giustizia: Travaglio Attacca FdI su Clientelismo\tAnalisi Partiti\nProcesso Becciu da Rifare: Annullate Condanne per Errori Procedurali\tDati & Statistiche\nL'allarme della Corte dei Conti del Lazio sulla Crisi Bellica\tSondaggi Economici\nAumenti Prezzi Carburanti nell'Ultima Settimana: Dati Ministero\tSondaggi Economici\nDue Grosse Aziende di Abbigliamento Indagate per Caporalato\tTrend Sociali\nReferendum Giustizia: Il Caso Palamara e le Correnti CSM\tOpinione Pubblica\nEni Scopre Due Nuovi Giacimenti di Gas Naturale al Largo della Libia\tSondaggi Economici\nIl Punto sul Referendum della Giustizia del 22 e 23 Marzo\tScenari Elettorali\nFocus: Il Referendum sulla Magistratura – Guida al Voto\tReport Istituzionali\nL'IA Cambierà il Nostro Modo di Lavorare? Un'Analisi Approfondita\tTrend Sociali\nReferendum Giustizia: Le Ragioni del “Sì”\tAnalisi Partiti\nReferendum Giustizia: Le Ragioni del “No”\tAnalisi Partiti\nDopo il Covid, Famiglie Italiane Investono di Più in Btp\tSondaggi Economici\nCome è Cambiata la Fruizione delle Biblioteche Post-Pandemia\tDati & Statistiche\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}
