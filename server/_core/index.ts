@@ -60,6 +60,47 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
+  // ── ads.txt — Moneytizer/Azerion + Google AdSense (aggiornamento dinamico) ──
+  // Scarica le righe aggiornate da Moneytizer e le merge con la riga AdSense.
+  // Cache in-memory di 6 ore per evitare troppe richieste upstream.
+  let adsTxtCache: { content: string; expiresAt: number } | null = null;
+
+  app.get("/ads.txt", async (_req, res) => {
+    try {
+      const now = Date.now();
+      if (!adsTxtCache || now > adsTxtCache.expiresAt) {
+        // Scarica le righe Moneytizer
+        const upstream = await fetch(
+          "https://ads.themoneytizer.com/ads_txt.php?site_id=139643&id=130217"
+        ).then((r) => r.text()).catch(() => "");
+
+        // Riga Google AdSense (da aggiungere sempre)
+        const adSenseLine = "google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0";
+
+        // Merge: Moneytizer + AdSense, deduplicato
+        const lines = [
+          ...upstream.split("\n").map((l) => l.trim()).filter(Boolean),
+          adSenseLine,
+        ];
+        const unique = Array.from(new Set(lines));
+        adsTxtCache = {
+          content: unique.join("\n") + "\n",
+          expiresAt: now + 6 * 60 * 60 * 1000, // 6 ore
+        };
+        console.log(`[ads.txt] Aggiornato: ${unique.length} righe`);
+      }
+
+      res.set("Content-Type", "text/plain; charset=utf-8");
+      res.set("Cache-Control", "public, max-age=21600"); // 6 ore
+      res.send(adsTxtCache.content);
+    } catch (err) {
+      console.error("[ads.txt] Errore:", err);
+      // Fallback minimo se tutto fallisce
+      res.set("Content-Type", "text/plain; charset=utf-8");
+      res.send("google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0\n");
+    }
+  });
+
   // ── Email Open Tracking Pixel ──────────────────────────────────────────────
   // GET /api/track/open?sid=TOKEN&cid=CAMPAIGN_ID&sub=SUBJECT
   app.get("/api/track/open", async (req, res) => {

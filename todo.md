@@ -1064,3 +1064,8 @@
 - [x] Inserire tag Clickio Consent CMP nell'head di index.html (sopra AdSense/GTM)
 - [x] Inserire tag Core Web Vitals Clickio nell'head di index.html
 - [x] Aggiungere link "Your Privacy Choices" nel footer del sito
+
+## Nuovi task (18 Mar 2026 — ads.txt Moneytizer/Azerion)
+
+- [x] Creare endpoint Express GET /ads.txt che scarica dinamicamente le righe da Moneytizer e le merge con Google AdSense
+- [x] Verificare che https://ideasmart.ai/ads.txt risponda correttamente
