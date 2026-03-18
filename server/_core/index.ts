@@ -62,58 +62,10 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
-  // ── ads.txt — Moneytizer (base statica) + Clickio/Azerion + Google AdSense ──
-  // Base statica: 813 righe Moneytizer garantite (da file locale).
-  // Aggiornamento dinamico: Clickio/Azerion scaricato ogni 6 ore.
-  // Deduplicazione automatica su tutte le fonti.
-  const MONEYTIZER_BASE_PATH = path.join(import.meta.dirname, "../ads_txt_moneytizer_base.txt");
-  let moneytizerBaseLines: string[] = [];
-  try {
-    const raw = fs.readFileSync(MONEYTIZER_BASE_PATH, "utf-8");
-    moneytizerBaseLines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
-    console.log(`[ads.txt] Base Moneytizer caricata: ${moneytizerBaseLines.length} righe`);
-  } catch (e) {
-    console.error("[ads.txt] Impossibile leggere il file base Moneytizer:", e);
-  }
-
-  let adsTxtCache: { content: string; expiresAt: number } | null = null;
-
-  app.get("/ads.txt", async (_req, res) => {
-    try {
-      const now = Date.now();
-      if (!adsTxtCache || now > adsTxtCache.expiresAt) {
-        // Scarica le righe Clickio/Azerion (aggiornamento dinamico)
-        const clickio = await fetch(
-          "https://clickiocdn.com/ads_txt/248045.txt"
-        ).then((r) => r.text()).catch(() => "");
-
-        // Riga Google AdSense proprietaria (da includere sempre)
-        const adSenseLine = "google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0";
-
-        // Merge: base Moneytizer (813 righe garantite) + Clickio/Azerion + AdSense, deduplicato
-        const lines = [
-          ...moneytizerBaseLines,
-          ...clickio.split("\n").map((l) => l.trim()).filter(Boolean),
-          adSenseLine,
-        ];
-        const unique = Array.from(new Set(lines));
-        adsTxtCache = {
-          content: unique.join("\n") + "\n",
-          expiresAt: now + 6 * 60 * 60 * 1000, // 6 ore
-        };
-        console.log(`[ads.txt] Aggiornato: ${unique.length} righe (Moneytizer base + Clickio + AdSense)`);
-      }
-
-      res.set("Content-Type", "text/plain; charset=utf-8");
-      res.set("Cache-Control", "public, max-age=21600"); // 6 ore
-      res.send(adsTxtCache.content);
-    } catch (err) {
-      console.error("[ads.txt] Errore:", err);
-      // Fallback: servire almeno la base Moneytizer
-      res.set("Content-Type", "text/plain; charset=utf-8");
-      res.send(moneytizerBaseLines.join("\n") + "\n" + "google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0\n");
-    }
-  });
+  // ── ads.txt — servito come file statico da client/public/ads.txt ──────────
+  // Il file è generato con tutte le righe Moneytizer + AdSense + Clickio normalizzate.
+  // Per aggiornarlo: rigenerare client/public/ads.txt con lo script Python in /home/ubuntu/upload/
+  console.log("[ads.txt] Servito come file statico da client/public/ads.txt");
 
   // ── Email Open Tracking Pixel ──────────────────────────────────────────────
   // GET /api/track/open?sid=TOKEN&cid=CAMPAIGN_ID&sub=SUBJECT
