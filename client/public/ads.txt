@@ -1,8 +1,4 @@
 OWNERDOMAIN=ideasmart.ai
-MANAGERDOMAIN=themoneytizer.com
-themoneytizer.com,130217,DIRECT
-improvedigital.com,1602_130217,DIRECT
-improvedigital.com,1033_130217,DIRECT
 smartadserver.com,1097,DIRECT,060d053dcf45cbf3
 pubmatic.com,156439,RESELLER,5d62403b186f2ace
 pubmatic.com,154037,RESELLER,5d62403b186f2ace
