@@ -43,11 +43,33 @@ export interface ScrapedArticle {
   sourceHomepage: string;   // Homepage del dominio (fallback se articolo non raggiungibile)
   publishedAt: string;
   language: "it" | "en";
+  videoUrl?: string;        // URL embed YouTube/Vimeo se disponibile nel feed RSS
 }
 
 /**
  * Recupera articoli da un singolo feed RSS
  */
+/**
+ * Estrae l'URL embed di YouTube/Vimeo da un item RSS se disponibile
+ */
+function extractVideoUrl(item: Record<string, unknown>): string | undefined {
+  // YouTube feed: <yt:videoId> o link youtube.com
+  const ytId = (item as Record<string, unknown>)["yt:videoId"] as string | undefined;
+  if (ytId) return `https://www.youtube.com/embed/${ytId}`;
+  // media:content con type video
+  const media = (item as Record<string, unknown>)["mediaContent"] as Record<string, unknown> | undefined;
+  if (media) {
+    const mediaType = (media["$"] as Record<string, string> | undefined)?.["type"] || "";
+    const mediaUrl = (media["$"] as Record<string, string> | undefined)?.["url"] || "";
+    if (mediaType.startsWith("video") && mediaUrl) return mediaUrl;
+  }
+  // Link YouTube diretto nell'URL articolo
+  const link = (item as Record<string, unknown>)["link"] as string | undefined;
+  const ytMatch = link?.match(/youtube\.com\/watch\?v=([\w-]+)/) || link?.match(/youtu\.be\/([\w-]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+  return undefined;
+}
+
 async function fetchFeed(source: RssSource): Promise<Array<{
   title: string;
   content: string;
@@ -55,6 +77,7 @@ async function fetchFeed(source: RssSource): Promise<Array<{
   pubDate: string;
   sourceName: string;
   sourceHomepage: string;
+  videoUrl?: string;
 }>> {
   try {
     const feed = await rssParser.parseURL(source.feedUrl);
@@ -74,6 +97,7 @@ async function fetchFeed(source: RssSource): Promise<Array<{
         pubDate: item.pubDate || new Date().toISOString(),
         sourceName: source.name,
         sourceHomepage: source.homepage,
+        videoUrl: extractVideoUrl(item as unknown as Record<string, unknown>),
       }));
   } catch (err) {
     console.warn(`[RssScraper] Feed non raggiungibile: ${source.feedUrl} — ${(err as Error).message}`);
@@ -183,9 +207,32 @@ async function selectAndTranslate(
   const cfg = sectionConfig[section];
   const today = new Date().toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
 
+  // ITALIA FIRST: ordina gli articoli mettendo le fonti italiane in cima.
+  // Identifica articoli italiani dal dominio .it o dal nome fonte noto.
+  const itDomainPatterns = [
+    ".it/", "ansa.it", "corriere.it", "repubblica.it", "ilpost.it",
+    "sole24ore", "ilsole24ore", "wired.it", "forbes.it", "gazzetta.it",
+    "corrieredellosport", "tuttosport", "autosprint", "motorionline",
+    "supertennis", "tennis.it", "fitp.it", "legabasket", "italbasket",
+    "agendadigitale", "digital4", "innovationpost", "corrierecomunicazioni",
+    "punto-informatico", "tomshw.it", "hwupgrade", "ilfattoquotidiano",
+    "lastampa", "agi.it", "tgcom24", "sky.it", "rainews", "adnkronos",
+    "askanews", "italpress", "ilgiornale", "libero.it", "panorama.it",
+    "espresso.it", "linkiesta", "startupitalia", "economyup", "milanofinanza",
+    "borsaitaliana", "smartworld", "hdblog", "everyeye", "gamereactor.it",
+  ];
+  const isItalian = (a: { sourceName: string; link: string }) =>
+    itDomainPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p.replace(".it/", "").replace(".it", "")));
+  const italianArticles = articles.filter(isItalian);
+  const internationalArticles = articles.filter(a => !isItalian(a));
+  // Componi: prima gli italiani, poi gli internazionali, max 60 totali
+  const sortedArticles = [...italianArticles, ...internationalArticles].slice(0, 60);
+  const italianCount = italianArticles.length;
+  console.log(`[RssScraper] Italia first: ${italianCount} italiani + ${sortedArticles.length - italianCount} internazionali per ${section}`);
+
   // Prepara lista articoli per il prompt (max 60 per non superare il context)
-  const articlesForPrompt = articles.slice(0, 60).map((a, i) => 
-    `[${i}] FONTE: ${a.sourceName} | TITOLO: ${a.title} | ESTRATTO: ${a.content.slice(0, 150)}`
+  const articlesForPrompt = sortedArticles.map((a, i) => 
+    `[${i}]${i < italianCount ? " 🇮🇹" : ""} FONTE: ${a.sourceName} | TITOLO: ${a.title} | ESTRATTO: ${a.content.slice(0, 150)}`
   ).join("\n");
 
   const prompt = `Sei il redattore capo di ${cfg.label} by IDEASMART. Oggi è ${today}.
@@ -202,7 +249,9 @@ COMPITO: Seleziona i 20 articoli più rilevanti per il nostro pubblico e per ogn
 
 CRITERI: ${cfg.instructions}
 
-IMPORTANTE: 
+IMPORTANTE — ITALIA FIRST:
+- Gli articoli marcati 🇮🇹 provengono da fonti italiane: PRIVILEGIALI nella selezione.
+- Includi almeno 8-10 articoli da fonti italiane (🇮🇹) nei 20 selezionati, se disponibili.
 - Seleziona SOLO articoli dalla lista fornita (usa sourceIndex per riferimento)
 - Traduci e adatta i titoli in italiano giornalistico
 - Distribuisci le categorie in modo equilibrato
@@ -267,6 +316,7 @@ Rispondi SOLO con JSON valido.`;
         sourceHomepage: original.sourceHomepage, // Homepage per fallback
         publishedAt: pubDate,
         language: "it",
+        videoUrl: original.videoUrl,        // URL embed video se disponibile
       });
     }
 

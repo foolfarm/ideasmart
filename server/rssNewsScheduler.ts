@@ -89,6 +89,7 @@ async function saveScrapedNews(
       weekLabel,
       position: i + 1,
       imageUrl,
+      videoUrl: article.videoUrl ?? null,
     });
     saved++;
   }

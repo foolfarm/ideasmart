@@ -84,6 +84,7 @@ export const newsItems = mysqlTable("news_items", {
   weekLabel: varchar("weekLabel", { length: 50 }).notNull(),
   position: int("position").default(0).notNull(),
   imageUrl: varchar("imageUrl", { length: 1000 }),
+  videoUrl: varchar("videoUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

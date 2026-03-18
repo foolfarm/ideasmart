@@ -176,6 +176,13 @@
       "when": 1773788510219,
       "tag": "0024_sweet_goblin_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1773826717295,
+      "tag": "0025_cuddly_virginia_dare",
+      "breakpoints": true
     }
   ]
 }

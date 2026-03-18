@@ -919,15 +919,18 @@ export interface HomeSectionItem {
   sourceUrl: string;
   publishedAt: string;
   imageUrl: string | null;
+  videoUrl: string | null;
   section: HomeSection;
 }
 
 export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSectionItem[]>> {
-  const sections: HomeSection[] = ['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
+  // Ordine editoriale: News Italia first, poi le altre sezioni bilanciate
+  const sections: HomeSection[] = ['news', 'ai', 'startup', 'finance', 'sport', 'motori', 'tennis', 'basket', 'health', 'luxury', 'music', 'gossip', 'cybersecurity', 'sondaggi'];
   const limits: Record<HomeSection, number> = {
-    ai: 8, music: 6, startup: 6, finance: 4, health: 4, sport: 4,
-    luxury: 4, news: 4, motori: 4, tennis: 4, basket: 4, gossip: 4,
-    cybersecurity: 4, sondaggi: 4,
+    // News Italia e sezioni principali: più articoli per una home più ricca
+    news: 8, ai: 8, startup: 6, finance: 6, sport: 6,
+    motori: 5, tennis: 5, basket: 5, health: 5, luxury: 5,
+    music: 5, gossip: 5, cybersecurity: 5, sondaggi: 5,
   };
 
   const results = await Promise.all(
@@ -944,6 +947,7 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           sourceUrl: item.sourceUrl ?? '#',
           publishedAt: item.publishedAt ?? '',
           imageUrl: item.imageUrl ?? null,
+          videoUrl: (item as typeof item & { videoUrl?: string | null }).videoUrl ?? null,
           section,
         })),
       };

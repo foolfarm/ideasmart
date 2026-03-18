@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, email, status, unsubscribedAt FROM subscribers WHERE email = 'enicolini74@gmail.com';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, email, status, unsubscribedAt FROM subscribers WHERE email = 'enicolini74@gmail.com';",
+  "rows": [
+    {
+      "id": "120792",
+      "email": "enicolini74@gmail.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-18 09:29:32"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tstatus\tunsubscribedAt\n120792\tenicolini74@gmail.com\tunsubscribed\t2026-03-18 09:29:32\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

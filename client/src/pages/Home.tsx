@@ -1,6 +1,6 @@
 /**
- * IDEASMART — Prima Pagina di Giornale
- * Layout editoriale classico: testata, notizia del giorno, colonne canali, griglia sezioni, elenco misto.
+ * IDEASMART — Prima Pagina di Giornale Multisezionale
+ * Layout editoriale: testata, News Italia in apertura, tutte le 14 sezioni bilanciate, video.
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accenti per sezione.
  * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
@@ -50,6 +50,7 @@ function ThinDivider() {
 }
 
 type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
+
 function SectionLabel({ section }: { section: SectionKey }) {
   const s = SECTION_COLORS[section];
   return (
@@ -62,50 +63,65 @@ function SectionLabel({ section }: { section: SectionKey }) {
   );
 }
 
-function HeroNews({ news, editorial }: {
-  news: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; section?: string; sourceUrl?: string };
+type NewsItem = {
+  id: number;
+  title: string;
+  summary: string;
+  category: string;
+  sourceName: string;
+  sourceUrl: string;
+  publishedAt: string;
+  imageUrl: string | null;
+  videoUrl?: string | null;
+  section?: string;
+};
+
+/** Hero news: grande titolo + immagine + sommario */
+function HeroNewsBlock({ item, section, editorial }: {
+  item: NewsItem;
+  section: SectionKey;
   editorial?: { id?: number; title: string; subtitle?: string | null; body: string } | null;
 }) {
-  const section = (news.section as "ai" | "music" | "startup") || "ai";
   const s = SECTION_COLORS[section];
-  // Se c'è un editoriale, link interno all'editoriale; altrimenti link diretto alla fonte della notizia
   const href = editorial?.id
     ? `/${section}/editoriale/${editorial.id}`
-    : (news.sourceUrl && news.sourceUrl !== '#' ? news.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(news.title)}`);
+    : (item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`);
   const isExternal = !editorial?.id;
-  const bodyText = editorial?.body || news.summary;
+  const displayTitle = editorial?.title || item.title;
+  const displayBody = editorial?.body || item.summary;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+    <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-0">
       <div className="pr-0 md:pr-6 py-4">
         <SectionLabel section={section} />
         {isExternal ? (
-          <a href={href} rel="noopener noreferrer">
+          <a href={href} target="_blank" rel="noopener noreferrer">
             <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              {editorial?.title || news.title}
+              {displayTitle}
             </h2>
           </a>
         ) : (
           <Link href={href}>
             <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              {editorial?.title || news.title}
+              {displayTitle}
             </h2>
           </Link>
         )}
-        {(editorial?.subtitle || news.category) && (
+        {(editorial?.subtitle || item.category) && (
           <p className="mt-2 text-base font-semibold text-[#1a1a2e]/60 italic"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            {editorial?.subtitle || news.category}
+            {editorial?.subtitle || item.category}
           </p>
         )}
         <ThinDivider />
         <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/80"
           style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-          {bodyText.slice(0, 320)}{bodyText.length > 320 ? "…" : ""}
+          {displayBody.slice(0, 300)}{displayBody.length > 300 ? "…" : ""}
         </p>
         {isExternal ? (
-          <a href={href} rel="noopener noreferrer">
+          <a href={href} target="_blank" rel="noopener noreferrer">
             <span className="mt-4 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
               style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
               Leggi l'articolo originale →
@@ -119,41 +135,52 @@ function HeroNews({ news, editorial }: {
             </span>
           </Link>
         )}
+        {item.sourceName && (
+          <p className="mt-2 text-[10px] text-[#1a1a2e]/35 italic"
+            style={{ fontFamily: "'Space Mono', monospace" }}>
+            Fonte: {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
+          </p>
+        )}
       </div>
       <div className="py-4 pl-0 md:pl-6 border-l-0 md:border-l border-[#1a1a2e]/20">
-        {news.imageUrl ? (
+        {item.videoUrl ? (
+          <div className="w-full aspect-video" style={{ border: "1px solid rgba(26,26,46,0.15)" }}>
+            <iframe
+              src={item.videoUrl}
+              title={item.title}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        ) : item.imageUrl ? (
           isExternal ? (
-            <a href={href} rel="noopener noreferrer">
-              <img src={news.imageUrl} alt={news.title}
-                className="w-full h-56 md:h-72 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              <img src={item.imageUrl} alt={item.title}
+                className="w-full h-56 md:h-64 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
                 style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
             </a>
           ) : (
             <Link href={href}>
-              <img src={news.imageUrl} alt={news.title}
-                className="w-full h-56 md:h-72 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
+              <img src={item.imageUrl} alt={item.title}
+                className="w-full h-56 md:h-64 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
                 style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
             </Link>
           )
         ) : (
-          <div className="w-full h-56 md:h-72 flex items-center justify-center"
+          <div className="w-full h-56 md:h-64 flex items-center justify-center"
             style={{ background: s.light, border: `1px solid ${s.accent}30` }}>
             <span className="text-4xl opacity-30">📰</span>
           </div>
-        )}
-        {news.sourceName && (
-          <p className="mt-2 text-xs text-[#1a1a2e]/40 italic"
-            style={{ fontFamily: "'Space Mono', monospace" }}>
-            Fonte: {news.sourceName}{news.publishedAt ? ` · ${formatShortDate(news.publishedAt)}` : ""}
-          </p>
         )}
       </div>
     </div>
   );
 }
 
+/** Card notizia con immagine opzionale */
 function NewsCard({ item, section, showImage = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string };
+  item: NewsItem;
   section: SectionKey;
   showImage?: boolean;
 }) {
@@ -161,14 +188,24 @@ function NewsCard({ item, section, showImage = false }: {
   const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
     <div className="py-3">
-      {showImage && item.imageUrl && (
-        <a href={href} rel="noopener noreferrer">
+      {showImage && item.videoUrl ? (
+        <div className="w-full aspect-video mb-2" style={{ border: "1px solid rgba(26,26,46,0.1)" }}>
+          <iframe
+            src={item.videoUrl}
+            title={item.title}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      ) : showImage && item.imageUrl ? (
+        <a href={href} target="_blank" rel="noopener noreferrer">
           <img src={item.imageUrl} alt={item.title}
             className="w-full h-32 object-cover mb-2 grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
         </a>
-      )}
-      <a href={href} rel="noopener noreferrer">
+      ) : null}
+      <a href={href} target="_blank" rel="noopener noreferrer">
         <h3 className="text-base font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer"
           style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
           {item.title}
@@ -182,23 +219,24 @@ function NewsCard({ item, section, showImage = false }: {
         <p className="mt-1 text-[10px] text-[#1a1a2e]/35"
           style={{ fontFamily: "'Space Mono', monospace" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
+          {item.videoUrl && <span className="ml-2 text-[#dc2626]">▶ VIDEO</span>}
         </p>
       )}
     </div>
   );
 }
 
+/** Riga notizia compatta per elenchi */
 function NewsRow({ item, section }: {
-  item: { id: number; title: string; summary: string; category: string; sourceName?: string; publishedAt?: string; sourceUrl?: string };
+  item: NewsItem;
   section: SectionKey;
 }) {
-  const s = SECTION_COLORS[section];
   const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
     <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
       <SectionLabel section={section} />
       <div>
-        <a href={href} rel="noopener noreferrer">
+        <a href={href} target="_blank" rel="noopener noreferrer">
           <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
             {item.title}
@@ -208,8 +246,104 @@ function NewsRow({ item, section }: {
           <span className="ml-2 text-[10px] text-[#1a1a2e]/35"
             style={{ fontFamily: "'Space Mono', monospace" }}>
             {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
+            {item.videoUrl && <span className="ml-1 text-[#dc2626]">▶</span>}
           </span>
         )}
+      </div>
+    </div>
+  );
+}
+
+/** Colonna sezione con titolo, lista notizie e link "tutte le notizie" */
+function SectionColumn({ section, items, colIdx, showFirstImage = false }: {
+  section: SectionKey;
+  items: NewsItem[];
+  colIdx: number;
+  showFirstImage?: boolean;
+}) {
+  const s = SECTION_COLORS[section];
+  return (
+    <div className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
+      <div className="py-2">
+        <Link href={s.path}>
+          <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
+            style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+            {s.label}
+          </span>
+        </Link>
+      </div>
+      <div className="border-t-2" style={{ borderColor: s.accent }} />
+      {items.length > 0 ? (
+        items.map((item, i) => (
+          <div key={item.id}>
+            <NewsCard item={item} section={section} showImage={showFirstImage && i === 0} />
+            {i < items.length - 1 && <ThinDivider />}
+          </div>
+        ))
+      ) : (
+        <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">In arrivo…</div>
+      )}
+      <Link href={s.path}>
+        <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
+          Tutte le notizie →
+        </span>
+      </Link>
+    </div>
+  );
+}
+
+/** Sezione video: mostra le notizie con videoUrl disponibile */
+function VideoSection({ allItems }: { allItems: Array<NewsItem & { section: SectionKey }> }) {
+  const videoItems = useMemo(() =>
+    allItems.filter(n => n.videoUrl).slice(0, 4),
+    [allItems]
+  );
+  if (videoItems.length === 0) return null;
+  return (
+    <div className="mt-8">
+      <Divider thick />
+      <div className="py-3 flex items-center gap-3">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+          style={{ fontFamily: "'Space Mono', monospace" }}>
+          Video del Giorno
+        </span>
+        <span className="text-[10px] text-[#dc2626] font-bold">▶ LIVE</span>
+      </div>
+      <ThinDivider />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-3">
+        {videoItems.map(item => {
+          const s = SECTION_COLORS[item.section];
+          return (
+            <div key={`${item.section}-${item.id}`} className="flex flex-col">
+              <div className="w-full aspect-video" style={{ border: "1px solid rgba(26,26,46,0.15)" }}>
+                <iframe
+                  src={item.videoUrl!}
+                  title={item.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+              <div className="mt-2">
+                <SectionLabel section={item.section} />
+                <a href={item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`}
+                  target="_blank" rel="noopener noreferrer">
+                  <p className="mt-1 text-sm font-bold text-[#1a1a2e] hover:underline leading-snug line-clamp-2"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                    {item.title}
+                  </p>
+                </a>
+                {item.sourceName && (
+                  <p className="mt-0.5 text-[10px] text-[#1a1a2e]/35"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    {item.sourceName}
+                  </p>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -218,73 +352,59 @@ function NewsRow({ item, section }: {
 export default function Home() {
   const today = useMemo(() => new Date(), []);
 
-  // Singola query ottimizzata per la homepage — evita batch tRPC >68KB che causano 502 in produzione
+  // Singola query ottimizzata per la homepage
   const { data: homeData } = trpc.news.getHomeData.useQuery();
+  const { data: newsEditorial } = trpc.editorial.getLatest.useQuery({ section: "news" });
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
 
-  // Estrae i dati per sezione dalla risposta aggregata
+  // Estrae i dati per sezione
+  const newsNews = homeData?.news ?? [];
   const aiNews = homeData?.ai ?? [];
-  const musicNews = homeData?.music ?? [];
   const startupNews = homeData?.startup ?? [];
   const financeNews = homeData?.finance ?? [];
-  const healthNews = homeData?.health ?? [];
   const sportNews = homeData?.sport ?? [];
-  const luxuryNews = homeData?.luxury ?? [];
-  const newsNews = homeData?.news ?? [];
   const motoriNews = homeData?.motori ?? [];
   const tennisNews = homeData?.tennis ?? [];
   const basketNews = homeData?.basket ?? [];
+  const healthNews = homeData?.health ?? [];
+  const luxuryNews = homeData?.luxury ?? [];
+  const musicNews = homeData?.music ?? [];
   const gossipNews = homeData?.gossip ?? [];
   const cybersecurityNews = homeData?.cybersecurity ?? [];
   const sondaggiNews = homeData?.sondaggi ?? [];
 
+  // Hero: prima notizia di News Italia con immagine, altrimenti la prima disponibile
   const heroNews = useMemo(() => {
+    const all = newsNews || [];
+    return all.find(n => n.imageUrl) || all[0] || null;
+  }, [newsNews]);
+
+  // Seconda notizia di apertura: prima notizia AI con immagine
+  const aiHero = useMemo(() => {
     const all = aiNews || [];
     return all.find(n => n.imageUrl) || all[0] || null;
   }, [aiNews]);
 
-  const aiSecondary = useMemo(() => {
-    if (!aiNews) return [];
-    return aiNews.filter(n => n.id !== heroNews?.id).slice(0, 2);
-  }, [aiNews, heroNews]);
-
-  type MixedNewsItem = { id: number; title: string; summary: string; category: string; sourceName: string; sourceUrl: string; publishedAt: string; imageUrl: string | null; section: SectionKey };
-
-  const mixedNews = useMemo(() => {
-    const ai: MixedNewsItem[] = (aiNews || []).filter(n => n.id !== heroNews?.id).slice(2, 5).map(n => ({ ...n, section: "ai" as const }));
-    const music: MixedNewsItem[] = (musicNews || []).slice(2, 5).map(n => ({ ...n, section: "music" as const }));
-    const startup: MixedNewsItem[] = (startupNews || []).slice(2, 5).map(n => ({ ...n, section: "startup" as const }));
-    const result: MixedNewsItem[] = [];
-    const maxLen = Math.max(ai.length, music.length, startup.length);
-    for (let i = 0; i < maxLen; i++) {
-      if (ai[i]) result.push(ai[i]);
-      if (music[i]) result.push(music[i]);
-      if (startup[i]) result.push(startup[i]);
-    }
-    return result;
-  }, [aiNews, musicNews, startupNews, heroNews]);
-
-  const newChannelsNews = useMemo(() => {
-    const finance: MixedNewsItem[] = (financeNews || []).slice(0, 3).map(n => ({ ...n, section: "finance" as const }));
-    const health: MixedNewsItem[] = (healthNews || []).slice(0, 3).map(n => ({ ...n, section: "health" as const }));
-    const sport: MixedNewsItem[] = (sportNews || []).slice(0, 3).map(n => ({ ...n, section: "sport" as const }));
-    const luxury: MixedNewsItem[] = (luxuryNews || []).slice(0, 3).map(n => ({ ...n, section: "luxury" as const }));
-    const result: MixedNewsItem[] = [];
-    const maxLen = Math.max(finance.length, health.length, sport.length, luxury.length);
-    for (let i = 0; i < maxLen; i++) {
-      if (finance[i]) result.push(finance[i]);
-      if (health[i]) result.push(health[i]);
-      if (sport[i]) result.push(sport[i]);
-      if (luxury[i]) result.push(luxury[i]);
-    }
-    return result;
-  }, [financeNews, healthNews, sportNews, luxuryNews]);
+  // Aggregato di tutti gli item con sezione per la sezione video
+  type MixedItem = NewsItem & { section: SectionKey };
+  const allItemsWithSection = useMemo((): MixedItem[] => {
+    const sections: Array<[SectionKey, NewsItem[]]> = [
+      ["news", newsNews], ["ai", aiNews], ["startup", startupNews],
+      ["finance", financeNews], ["sport", sportNews], ["motori", motoriNews],
+      ["tennis", tennisNews], ["basket", basketNews], ["health", healthNews],
+      ["luxury", luxuryNews], ["music", musicNews], ["gossip", gossipNews],
+      ["cybersecurity", cybersecurityNews], ["sondaggi", sondaggiNews],
+    ];
+    return sections.flatMap(([sec, items]) => items.map(n => ({ ...n, section: sec })));
+  }, [newsNews, aiNews, startupNews, financeNews, sportNews, motoriNews,
+    tennisNews, basketNews, healthNews, luxuryNews, musicNews, gossipNews,
+    cybersecurityNews, sondaggiNews]);
 
   return (
     <>
       <SEOHead
         title="IDEASMART — Testata Giornalistica HumanLess"
-        description="La prima testata giornalistica HumanLess: AI, Musica, Startup, Finance, Health, Sport e Luxury. Informazione senza agenda, solo notizie."
+        description="La prima testata giornalistica HumanLess italiana: News, AI, Startup, Finance, Sport, Motori, Tennis, Basket, Health, Luxury, Music, Gossip, Cybersecurity, Sondaggi."
         canonical="https://ideasmart.ai"
         ogSiteName="IDEASMART"
       />
@@ -295,7 +415,7 @@ export default function Home() {
 
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a2e" }}>
 
-        {/* TESTATA */}
+        {/* ── TESTATA ── */}
         <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-[#1a1a2e]/50 uppercase tracking-widest"
@@ -329,16 +449,16 @@ export default function Home() {
 
           <Divider thick />
 
+          {/* Barra navigazione sezioni */}
           <nav className="flex flex-wrap items-center justify-center gap-0 py-2 border-t border-[#1a1a2e]/15">
-            {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as const).map((sec, i) => {
+            {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec, i) => {
               const s = SECTION_COLORS[sec];
               return (
                 <Link key={sec} href={s.path}>
-                  <span className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
+                  <span className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
                     style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontFamily: "'Space Mono', monospace",
                       borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.18)" : "none",
-                      letterSpacing: "0.08em",
                     }}>
                     {s.label}
                   </span>
@@ -346,20 +466,14 @@ export default function Home() {
               );
             })}
             <Link href="/edicola">
-              <span className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  borderLeft: "1px solid rgba(26,26,46,0.18)",
-                }}>
+              <span className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
+                style={{ fontFamily: "'Space Mono', monospace", borderLeft: "1px solid rgba(26,26,46,0.18)" }}>
                 Edicola
               </span>
             </Link>
             <Link href="/manifesto">
-              <span className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  borderLeft: "1px solid rgba(26,26,46,0.18)",
-                }}>
+              <span className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
+                style={{ fontFamily: "'Space Mono', monospace", borderLeft: "1px solid rgba(26,26,46,0.18)" }}>
                 Manifesto
               </span>
             </Link>
@@ -367,45 +481,56 @@ export default function Home() {
 
           <Divider />
         </header>
+
         <BreakingNewsTicker />
 
-        {/* CORPO */}
+        {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
-          {/* Sezione 1: Notizia del giorno + Sidebar */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-0 mt-0">
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 1 — NEWS ITALIA (apertura principale)
+              Layout: hero grande + sidebar con elenco notizie Italia
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-0 mt-0">
 
+            {/* Hero News Italia */}
             <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
               <div className="py-3">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                   style={{ fontFamily: "'Space Mono', monospace" }}>
-                  Notizia del Giorno
+                  Apertura — News Italia
                 </span>
               </div>
               <ThinDivider />
-
               {heroNews ? (
-                <HeroNews news={{ ...heroNews, section: "ai" }} editorial={aiEditorial} />
+                <HeroNewsBlock item={heroNews} section="news" editorial={newsEditorial} />
               ) : (
                 <div className="py-12 text-center text-[#1a1a2e]/30">
                   <p style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>Caricamento notizie…</p>
                 </div>
               )}
-
               <ThinDivider />
-
-              {aiSecondary.length > 0 && (
+              {/* Griglia 2 col con le successive notizie News Italia */}
+              {newsNews.filter(n => n.id !== heroNews?.id).slice(0, 4).length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 mt-2">
-                  {aiSecondary.map((item, i) => (
-                    <div key={item.id} className={i > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
-                      <NewsCard item={item} section="ai" showImage />
+                  {newsNews.filter(n => n.id !== heroNews?.id).slice(0, 4).map((item, i) => (
+                    <div key={item.id} className={i % 2 !== 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
+                      <NewsCard item={item} section="news" showImage={i < 2} />
                     </div>
                   ))}
                 </div>
               )}
+              <div className="mt-3">
+                <Link href="/news">
+                  <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                    style={{ color: SECTION_COLORS.news.accent, fontFamily: "'Space Mono', monospace" }}>
+                    Tutte le notizie italiane →
+                  </span>
+                </Link>
+              </div>
             </div>
 
-            {/* Sidebar */}
+            {/* Sidebar: I Canali + Editoriale AI */}
             <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
               <div className="py-3">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
@@ -414,15 +539,16 @@ export default function Home() {
                 </span>
               </div>
               <ThinDivider />
-              {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
+              {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
                 const s = SECTION_COLORS[sec];
                 return (
                   <Link key={sec} href={s.path}>
-                    <div className="py-2.5 flex items-center justify-between group cursor-pointer hover:opacity-50 transition-opacity border-b border-[#1a1a2e]/10">
+                    <div className="py-2 flex items-center justify-between group cursor-pointer hover:opacity-50 transition-opacity border-b border-[#1a1a2e]/10">
                       <span className="text-sm font-bold text-[#1a1a2e]"
                         style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                         {s.label}
-                      </span>                     <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors"
+                      </span>
+                      <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors"
                         style={{ fontFamily: "'Space Mono', monospace" }}>
                         →
                       </span>
@@ -430,13 +556,12 @@ export default function Home() {
                   </Link>
                 );
               })}
-
               {aiEditorial && (
-                <div className="mt-5">
+                <div className="mt-4">
                   <div className="py-2">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                       style={{ fontFamily: "'Space Mono', monospace" }}>
-                      Editoriale
+                      Editoriale AI
                     </span>
                   </div>
                   <ThinDivider />
@@ -451,7 +576,7 @@ export default function Home() {
                         {aiEditorial.subtitle}
                       </p>
                     )}
-                    <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-5"
+                    <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-4"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                       {aiEditorial.body}
                     </p>
@@ -467,201 +592,184 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Sezione: Punto del Giorno — Analisi editoriale giornaliera di Adrian Lenice */}
+          {/* Punto del Giorno */}
           <PuntoDelGiorno />
 
-          {/* Sezione 2: Griglia 3 colonne */}
-          <div className="mt-6">
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 2 — AI4BUSINESS + STARTUP NEWS (2 colonne grandi)
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-8">
             <Divider thick />
             <div className="py-3">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                Dalle Redazioni
+                Innovazione & Tecnologia
               </span>
             </div>
             <ThinDivider />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
-              {(["ai", "music", "startup"] as const).map((sec, colIdx) => {
-                const newsForSection = sec === "ai" ? aiNews : sec === "music" ? musicNews : startupNews;
-                const items = (newsForSection || []).filter(n => n.id !== heroNews?.id).slice(0, 3);
-                const s = SECTION_COLORS[sec];
-                return (
-                  <div key={sec} className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-5" : "pr-5"}>
-                    <div className="py-2">
-                      <Link href={s.path}>
-                        <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-                          {s.label}
-                        </span>
-                      </Link>
-                    </div>
-                    <div className="border-t-2" style={{ borderColor: s.accent }} />
-                    {items.length > 0 ? (
-                      items.map((item, i) => (
-                        <div key={item.id}>
-                          <NewsCard item={item} section={sec} showImage={i === 0} />
-                          {i < items.length - 1 && <ThinDivider />}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">Caricamento…</div>
-                    )}
-                    <Link href={s.path}>
-                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-                        Tutte le notizie →
-                      </span>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Sezione 3: Elenco misto */}
-          {mixedNews.length > 0 && (
-            <div className="mt-8">
-              <Divider thick />
-              <div className="py-3">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                  style={{ fontFamily: "'Space Mono', monospace" }}>
-                  Altre Notizie del Giorno
-                </span>
-              </div>
-              <ThinDivider />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
-                {mixedNews.map((item, i) => (
-                  <div key={`${item.section}-${item.id}`}>
-                    <NewsRow item={item} section={item.section} />
-                    {i < mixedNews.length - 1 && <ThinDivider />}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
+              {/* AI Hero */}
+              <div className="pr-0 md:pr-6 border-r-0 md:border-r border-[#1a1a2e]/20">
+                <div className="py-2">
+                  <Link href="/ai">
+                    <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                      style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
+                      AI4Business
+                    </span>
+                  </Link>
+                </div>
+                <div className="border-t-2" style={{ borderColor: SECTION_COLORS.ai.accent }} />
+                {aiHero ? (
+                  <HeroNewsBlock item={aiHero} section="ai" editorial={aiEditorial} />
+                ) : (
+                  <div className="py-8 text-center text-[#1a1a2e]/25 text-sm">Caricamento…</div>
+                )}
+                {aiNews.filter(n => n.id !== aiHero?.id).slice(0, 2).map((item, i) => (
+                  <div key={item.id}>
+                    <ThinDivider />
+                    <NewsCard item={item} section="ai" />
                   </div>
                 ))}
+                <Link href="/ai">
+                  <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                    style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
+                    Tutte le notizie AI →
+                  </span>
+                </Link>
               </div>
-            </div>
-          )}
-
-          
-
-          {/* Sezione 4: Nuovi Canali — Finance, Health, Sport, Luxury */}
-          <div className="mt-8">
-            <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                I Nuovi Canali
-              </span>
-            </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-2">
-              {(["finance", "health", "sport", "luxury"] as const).map((sec, colIdx) => {
-                const newsForSection = sec === "finance" ? financeNews : sec === "health" ? healthNews : sec === "sport" ? sportNews : luxuryNews;
-                const items = (newsForSection || []).slice(0, 3);
-                const s = SECTION_COLORS[sec];
-                return (
-                  <div key={sec} className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
-                    <div className="py-2">
-                      <Link href={s.path}>
-                        <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-                          {s.label}
-                        </span>
-                      </Link>
-                    </div>
-                    <div className="border-t-2" style={{ borderColor: s.accent }} />
-                    {items.length > 0 ? (
-                      items.map((item, i) => (
-                        <div key={item.id}>
-                          <div className="py-2.5">
-                            <a href={item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`}
-                              target="_blank" rel="noopener noreferrer">
-                              <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
-                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                                {item.title}
-                              </span>
-                            </a>
-                            {item.sourceName && (
-                              <p className="mt-0.5 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
-                                {item.sourceName}
-                              </p>
-                            )}
-                          </div>
-                          {i < items.length - 1 && <ThinDivider />}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">In arrivo…</div>
-                    )}
-                    <Link href={s.path}>
-                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-                        Tutte le notizie →
-                      </span>
-                    </Link>
+              {/* Startup */}
+              <div className="pl-0 md:pl-6 mt-6 md:mt-0">
+                <div className="py-2">
+                  <Link href="/startup">
+                    <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                      style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
+                      Startup News
+                    </span>
+                  </Link>
+                </div>
+                <div className="border-t-2" style={{ borderColor: SECTION_COLORS.startup.accent }} />
+                {startupNews.slice(0, 4).map((item, i) => (
+                  <div key={item.id}>
+                    <NewsCard item={item} section="startup" showImage={i === 0} />
+                    {i < 3 && <ThinDivider />}
                   </div>
-                );
-              })}
+                ))}
+                <Link href="/startup">
+                  <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                    style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
+                    Tutte le notizie Startup →
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Sezione 5: News Italia, Motori, Tennis, Basket */}
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 3 — FINANCE, SPORT, MOTORI (3 colonne)
+          ══════════════════════════════════════════════════════════════ */}
           <div className="mt-8">
             <Divider thick />
             <div className="py-3">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                News &amp; Sport
+                Economia, Sport & Motori
               </span>
             </div>
             <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-0 mt-2">
-              {(["news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as SectionKey[]).map((sec, colIdx) => {
-                const newsForSection = sec === "news" ? newsNews : sec === "motori" ? motoriNews : sec === "tennis" ? tennisNews : sec === "basket" ? basketNews : sec === "gossip" ? (gossipNews as typeof basketNews) : sec === "cybersecurity" ? (cybersecurityNews as typeof basketNews) : (sondaggiNews as typeof basketNews);
-                const items = (newsForSection || []).slice(0, 3);
-                const s = SECTION_COLORS[sec];
-                return (
-                  <div key={sec} className={colIdx > 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
-                    <div className="py-2">
-                      <Link href={s.path}>
-                        <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                          style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-                          {s.label}
-                        </span>
-                      </Link>
-                    </div>
-                    <div className="border-t-2" style={{ borderColor: s.accent }} />
-                    {items.length > 0 ? (
-                      items.map((item, i) => (
-                        <div key={item.id}>
-                          <div className="py-2.5">
-                            <a href={item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`}
-                              target="_blank" rel="noopener noreferrer">
-                              <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
-                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                                {item.title}
-                              </span>
-                            </a>
-                            {item.sourceName && (
-                              <p className="mt-0.5 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
-                                {item.sourceName}
-                              </p>
-                            )}
-                          </div>
-                          {i < items.length - 1 && <ThinDivider />}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="py-6 text-center text-[#1a1a2e]/25 text-sm">In arrivo…</div>
-                    )}
-                    <Link href={s.path}>
-                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
-                        Tutte le notizie →
-                      </span>
-                    </Link>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+              <SectionColumn section="finance" items={financeNews.slice(0, 4)} colIdx={0} showFirstImage />
+              <SectionColumn section="sport" items={sportNews.slice(0, 4)} colIdx={1} showFirstImage />
+              <SectionColumn section="motori" items={motoriNews.slice(0, 4)} colIdx={2} showFirstImage />
+            </div>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 4 — TENNIS, BASKET, HEALTH (3 colonne)
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-8">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                Sport, Salute & Benessere
+              </span>
+            </div>
+            <ThinDivider />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+              <SectionColumn section="tennis" items={tennisNews.slice(0, 4)} colIdx={0} />
+              <SectionColumn section="basket" items={basketNews.slice(0, 4)} colIdx={1} />
+              <SectionColumn section="health" items={healthNews.slice(0, 4)} colIdx={2} />
+            </div>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 5 — VIDEO DEL GIORNO (se disponibili)
+          ══════════════════════════════════════════════════════════════ */}
+          <VideoSection allItems={allItemsWithSection} />
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 6 — LUXURY, MUSIC, GOSSIP (3 colonne)
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-8">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                Lifestyle, Musica & Gossip Business
+              </span>
+            </div>
+            <ThinDivider />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+              <SectionColumn section="luxury" items={luxuryNews.slice(0, 4)} colIdx={0} showFirstImage />
+              <SectionColumn section="music" items={musicNews.slice(0, 4)} colIdx={1} showFirstImage />
+              <SectionColumn section="gossip" items={gossipNews.slice(0, 4)} colIdx={2} />
+            </div>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 7 — CYBERSECURITY + SONDAGGI (2 colonne)
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-8">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                Sicurezza & Opinione Pubblica
+              </span>
+            </div>
+            <ThinDivider />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
+              <div className="pr-0 md:pr-6 border-r-0 md:border-r border-[#1a1a2e]/20">
+                <SectionColumn section="cybersecurity" items={cybersecurityNews.slice(0, 5)} colIdx={0} />
+              </div>
+              <div className="pl-0 md:pl-6 mt-6 md:mt-0">
+                <SectionColumn section="sondaggi" items={sondaggiNews.slice(0, 5)} colIdx={0} />
+              </div>
+            </div>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO 8 — RASSEGNA COMPLETA (elenco misto tutte le sezioni)
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-8">
+            <Divider thick />
+            <div className="py-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                Rassegna Completa del Giorno
+              </span>
+            </div>
+            <ThinDivider />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
+              {allItemsWithSection
+                .filter(n => n.id % 3 === 0) // campionamento distribuito
+                .slice(0, 20)
+                .map((item, i) => (
+                  <div key={`rassegna-${item.section}-${item.id}`}>
+                    <NewsRow item={item} section={item.section} />
+                    {i < 19 && <ThinDivider />}
                   </div>
-                );
-              })}
+                ))}
             </div>
           </div>
 
@@ -673,12 +781,12 @@ export default function Home() {
                 style={{ fontFamily: "'Space Mono', monospace" }}>
                 {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess`}
               </p>
-              <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
-                {(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
+              <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
+                {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
                   const s = SECTION_COLORS[sec];
                   return (
                     <Link key={sec} href={s.path}>
-                      <span className="text-xs hover:underline cursor-pointer"
+                      <span className="text-[10px] hover:underline cursor-pointer"
                         style={{ color: s.accent, fontFamily: "'Space Mono', monospace" }}>
                         {s.label}
                       </span>
@@ -686,13 +794,13 @@ export default function Home() {
                   );
                 })}
                 <Link href="/manifesto">
-                  <span className="text-xs hover:underline cursor-pointer font-bold"
+                  <span className="text-[10px] hover:underline cursor-pointer font-bold"
                     style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
                     Manifesto HumanLess
                   </span>
                 </Link>
                 <Link href="/privacy">
-                  <span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40"
+                  <span className="text-[10px] hover:underline cursor-pointer text-[#1a1a2e]/40"
                     style={{ fontFamily: "'Space Mono', monospace" }}>
                     Privacy Policy
                   </span>
@@ -700,6 +808,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+
         </main>
       </div>
     </>

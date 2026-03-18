@@ -1,0 +1,59 @@
+{
+  "query": "SELECT email, name, status, source, subscribedAt FROM subscribers WHERE email IN ('giovanni.ciarlariello@kireygroup.com', 'alessandra.girardo@kireygroup.com', 'roberto.marzocca@kireygroup.com', 'marco.amari@kireygroup.com', 'marco.marino@kireygroup.com', 'marco.sala@brightstarlottery.com', 'edoardo.riccobono@camperiosim.com') ORDER BY subscribedAt DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT email, name, status, source, subscribedAt FROM subscribers WHERE email IN ('giovanni.ciarlariello@kireygroup.com', 'alessandra.girardo@kireygroup.com', 'roberto.marzocca@kireygroup.com', 'marco.amari@kireygroup.com', 'marco.marino@kireygroup.com', 'marco.sala@brightstarlottery.com', 'edoardo.riccobono@camperiosim.com') ORDER BY subscribedAt DESC;",
+  "rows": [
+    {
+      "email": "alessandra.girardo@kireygroup.com",
+      "name": "Alessandra Girardo",
+      "status": "active",
+      "source": "manual_import",
+      "subscribedAt": "2026-03-18 09:31:59"
+    },
+    {
+      "email": "giovanni.ciarlariello@kireygroup.com",
+      "name": "Giovanni Ciarlariello",
+      "status": "active",
+      "source": "manual_import",
+      "subscribedAt": "2026-03-18 09:31:59"
+    },
+    {
+      "email": "marco.amari@kireygroup.com",
+      "name": "Marco Amari",
+      "status": "active",
+      "source": "manual_import",
+      "subscribedAt": "2026-03-18 09:31:59"
+    },
+    {
+      "email": "marco.marino@kireygroup.com",
+      "name": "Marco Marinò",
+      "status": "active",
+      "source": "manual_import",
+      "subscribedAt": "2026-03-18 09:31:59"
+    },
+    {
+      "email": "marco.sala@brightstarlottery.com",
+      "name": "Marco Sala",
+      "status": "active",
+      "source": "manual_import",
+      "subscribedAt": "2026-03-18 09:31:59"
+    },
+    {
+      "email": "roberto.marzocca@kireygroup.com",
+      "name": "Roberto Marzocca",
+      "status": "active",
+      "source": "manual_import",
+      "subscribedAt": "2026-03-18 09:31:59"
+    },
+    {
+      "email": "edoardo.riccobono@camperiosim.com",
+      "name": "Edoardo Riccobono",
+      "status": "active",
+      "source": "manual",
+      "subscribedAt": "2026-03-16 08:54:18"
+    }
+  ],
+  "messages": [],
+  "stdout": "email\tname\tstatus\tsource\tsubscribedAt\nalessandra.girardo@kireygroup.com\tAlessandra Girardo\tactive\tmanual_import\t2026-03-18 09:31:59\ngiovanni.ciarlariello@kireygroup.com\tGiovanni Ciarlariello\tactive\tmanual_import\t2026-03-18 09:31:59\nmarco.amari@kireygroup.com\tMarco Amari\tactive\tmanual_import\t2026-03-18 09:31:59\nmarco.marino@kireygroup.com\tMarco Marinò\tactive\tmanual_import\t2026-03-18 09:31:59\nmarco.sala@brightstarlottery.com\tMarco Sala\tactive\tmanual_import\t2026-03-18 09:31:59\nroberto.marzocca@kireygroup.com\tRoberto Marzocca\tactive\tmanual_import\t2026-03-18 09:31:59\nedoardo.riccobono@camperiosim.com\tEdoardo Riccobono\tactive\tmanual\t2026-03-16 08:54:18\n",
+  "stderr": "",
+  "execution_time_ms": 76
+}
