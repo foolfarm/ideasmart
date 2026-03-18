@@ -1041,3 +1041,10 @@
 ## Task (18 Mar 2026 — Firma Direttore Responsabile)
 
 - [x] Aggiungere "Adrian Lenice, Direttore Responsabile" sotto il sottotitolo nell'header della homepage
+
+## Task URGENTE (18 Mar 2026 — Fix Link Newsletter)
+
+- [ ] Trovare tutti i link errati nel template newsletter (www.idesmart.it → ideasmart.ai)
+- [ ] Correggere il dominio base usato per generare i link nella newsletter
+- [ ] Aggiungere validazione automatica dei link prima di ogni invio
+- [ ] Verificare che tutti i link puntino a pagine esistenti su ideasmart.ai

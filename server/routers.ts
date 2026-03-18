@@ -1003,9 +1003,11 @@ Rispondi con questo JSON:
 
         const html = buildFullNewsletterHtml({
           dateLabel,
-          editorial: editorial ?? null,
-          startup: startup ?? null,
+          editorial: editorial ? { ...editorial, id: editorial.id, section: editorial.section } : null,
+          startup: startup ? { ...startup, id: startup.id, section: startup.section } : null,
           news: news.map(n => ({
+            id: n.id,
+            section: n.section,
             title: n.title,
             summary: n.summary,
             category: n.category,
@@ -1013,6 +1015,8 @@ Rispondi con questo JSON:
             sourceUrl: n.sourceUrl,
           })),
           reportages: reportages.map(r => ({
+            id: r.id,
+            section: r.section,
             startupName: r.startupName,
             category: r.category,
             headline: r.headline,
@@ -1030,6 +1034,8 @@ Rispondi con questo JSON:
             ctaUrl: r.ctaUrl,
           })),
           analyses: analyses.map(a => ({
+            id: a.id,
+            section: a.section,
             title: a.title,
             category: a.category,
             summary: a.summary,

@@ -698,11 +698,11 @@ export function buildWelcomeEmailHtml(opts: {
 // ─── NEWSLETTER COMPLETA (news + editoriale + startup + reportage + analisi) ──
 export function buildFullNewsletterHtml(opts: {
   dateLabel: string;
-  editorial?: { title: string; subtitle?: string | null; body: string; keyTrend?: string | null; authorNote?: string | null } | null;
-  startup?: { name: string; tagline: string; description: string; category: string; funding?: string | null; whyToday: string; websiteUrl?: string | null; aiScore?: number | null } | null;
+  editorial?: { id?: number | null; section?: string | null; title: string; subtitle?: string | null; body: string; keyTrend?: string | null; authorNote?: string | null } | null;
+  startup?: { id?: number | null; section?: string | null; name: string; tagline: string; description: string; category: string; funding?: string | null; whyToday: string; websiteUrl?: string | null; aiScore?: number | null } | null;
   news: Array<{ id?: number | null; section?: string | null; title: string; summary: string; category: string; sourceName?: string | null; sourceUrl?: string | null }>;
-  reportages: Array<{ startupName: string; category: string; headline: string; subheadline?: string | null; bodyText: string; quote?: string | null; stat1Value?: string | null; stat1Label?: string | null; stat2Value?: string | null; stat2Label?: string | null; stat3Value?: string | null; stat3Label?: string | null; websiteUrl?: string | null; ctaLabel?: string | null; ctaUrl?: string | null }>;
-  analyses: Array<{ title: string; category: string; summary: string; source: string; dataPoint1?: string | null; dataPoint2?: string | null; dataPoint3?: string | null; keyInsight?: string | null; italyRelevance?: string | null }>;
+  reportages: Array<{ id?: number | null; section?: string | null; startupName: string; category: string; headline: string; subheadline?: string | null; bodyText: string; quote?: string | null; stat1Value?: string | null; stat1Label?: string | null; stat2Value?: string | null; stat2Label?: string | null; stat3Value?: string | null; stat3Label?: string | null; websiteUrl?: string | null; ctaLabel?: string | null; ctaUrl?: string | null }>;
+  analyses: Array<{ id?: number | null; section?: string | null; title: string; category: string; summary: string; source: string; dataPoint1?: string | null; dataPoint2?: string | null; dataPoint3?: string | null; keyInsight?: string | null; italyRelevance?: string | null }>;
   unsubscribeUrl?: string;
   trackingPixelUrl?: string;
   channelName?: string;
@@ -829,10 +829,16 @@ export function buildFullNewsletterHtml(opts: {
               </td></tr>
             </table>` : ""}
             ${statsHtml ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;"><tr>${statsHtml}</tr></table>` : ""}
-            ${rep.websiteUrl || rep.ctaUrl ? `
-            <table cellpadding="0" cellspacing="0" border="0">
+            ${rep.id ? `
+            <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
               <tr><td style="background:${color};border-radius:6px;padding:11px 26px;">
-                <a href="${rep.ctaUrl || rep.websiteUrl}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.ctaLabel || "Scopri di più"} →</a>
+                <a href="${baseUrl}/${rep.section || "ai"}/reportage/${rep.id}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi il reportage completo →</a>
+              </td></tr>
+            </table>` : ""}
+            ${rep.websiteUrl ? `
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="background:transparent;border:1px solid ${color};border-radius:6px;padding:10px 24px;">
+                <a href="${rep.websiteUrl}" target="_blank" style="font-size:12px;font-weight:600;color:${color};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.ctaLabel || "Visita il sito"} →</a>
               </td></tr>
             </table>` : ""}
           </td>
@@ -869,6 +875,7 @@ export function buildFullNewsletterHtml(opts: {
               </tr>
             </table>` : ""}
             ${a.keyInsight ? `<div style="margin-top:10px;padding:10px 14px;border-left:3px solid ${color};background:${colorBg};border-radius:0 6px 6px 0;"><span style="font-size:12px;font-style:italic;color:${NAVY2};font-family:Georgia,'Times New Roman',serif;">&ldquo;${a.keyInsight}&rdquo;</span></div>` : ""}
+            ${a.id ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;"><tr><td style="background:${color};border-radius:6px;padding:10px 22px;"><a href="${baseUrl}/${a.section || "ai"}/analisi/${a.id}" target="_blank" style="font-size:12px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi l'analisi completa →</a></td></tr></table>` : ""}
           </td>
         </tr>
       </table>
@@ -953,10 +960,10 @@ export function buildFullNewsletterHtml(opts: {
                 ${editorial.keyTrend ? `<div style="font-size:8px;font-weight:700;color:${TEAL};text-transform:uppercase;letter-spacing:0.14em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:10px;">&#9670; ${editorial.keyTrend}</div>` : ""}
                 <div style="font-size:22px;font-weight:700;color:${NAVY};font-family:Georgia,'Times New Roman',serif;line-height:1.25;margin-bottom:7px;">${editorial.title}</div>
                 ${editorial.subtitle ? `<div style="font-size:13px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-style:italic;">${editorial.subtitle}</div>` : ""}
-              </td></tr>
-              <tr><td style="padding:18px 28px;background:${WHITE};">
+              </td></tr>              <tr><td style="padding:18px 28px;background:${WHITE};}">
                 <p style="font-size:14px;line-height:1.85;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;">${editorial.body.replace(/\n/g, "<br>")}</p>
                 ${editorial.authorNote ? `<p style="font-size:12px;font-style:italic;color:${MUTED};font-family:Georgia,'Times New Roman',serif;margin:10px 0 0;padding-top:10px;border-top:1px solid ${BORDER};">${editorial.authorNote}</p>` : ""}
+                ${editorial.id ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;"><tr><td style="background:${TEAL};border-radius:6px;padding:11px 26px;"><a href="${baseUrl}/${editorial.section || "ai"}/editoriale/${editorial.id}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi l'editoriale completo →</a></td></tr></table>` : ""}
               </td></tr>
             </table>
           </td>
@@ -982,7 +989,8 @@ export function buildFullNewsletterHtml(opts: {
                 <p style="font-size:13px;line-height:1.7;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">${startup.whyToday}</p>
                 ${startup.funding ? `<div style="margin-bottom:12px;"><span style="font-size:11px;font-weight:700;color:${ORANGE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; Funding: ${startup.funding}</span></div>` : ""}
                 ${startup.aiScore ? `<div style="margin-bottom:14px;"><span style="font-size:11px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">AI Score: <strong style="color:${ORANGE};">${startup.aiScore}/100</strong></span></div>` : ""}
-                ${startup.websiteUrl ? `<table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:${ORANGE};border-radius:6px;padding:11px 26px;"><a href="${startup.websiteUrl}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito →</a></td></tr></table>` : ""}
+                ${startup.id ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td style="background:${ORANGE};border-radius:6px;padding:11px 26px;"><a href="${baseUrl}/${startup.section || "ai"}/spotlight/${startup.id}" target="_blank" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi l'analisi completa →</a></td></tr></table>` : ""}
+                ${startup.websiteUrl ? `<table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:transparent;border:1px solid ${ORANGE};border-radius:6px;padding:10px 24px;"><a href="${startup.websiteUrl}" target="_blank" style="font-size:12px;font-weight:600;color:${ORANGE};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Visita il sito →</a></td></tr></table>` : ""}
               </td></tr>
             </table>
           </td>

@@ -84,6 +84,8 @@ async function buildNewsletterFromDb(): Promise<{
   const html = buildFullNewsletterHtml({
     dateLabel,
     editorial: editorial ? {
+      id: editorial.id,
+      section: editorial.section,
       title: editorial.title,
       subtitle: editorial.subtitle ?? null,
       body: editorial.body,
@@ -91,6 +93,8 @@ async function buildNewsletterFromDb(): Promise<{
       authorNote: editorial.authorNote ?? null,
     } : null,
     startup: startup ? {
+      id: startup.id,
+      section: startup.section,
       name: startup.name,
       tagline: startup.tagline,
       description: startup.description,
@@ -101,6 +105,8 @@ async function buildNewsletterFromDb(): Promise<{
       aiScore: startup.aiScore ?? null,
     } : null,
     news: newsAI.map(n => ({
+      id: n.id ?? null,
+      section: n.section,
       title: n.title,
       summary: n.summary,
       category: n.category,
@@ -108,6 +114,8 @@ async function buildNewsletterFromDb(): Promise<{
       sourceUrl: n.sourceUrl ?? null,
     })),
     reportages: reportages.map(r => ({
+      id: r.id,
+      section: r.section,
       startupName: r.startupName,
       category: r.category,
       headline: r.headline,
@@ -125,6 +133,8 @@ async function buildNewsletterFromDb(): Promise<{
       ctaUrl: r.ctaUrl ?? null,
     })),
     analyses: analyses.map(a => ({
+      id: a.id,
+      section: a.section,
       title: a.title,
       category: a.category,
       summary: a.summary,

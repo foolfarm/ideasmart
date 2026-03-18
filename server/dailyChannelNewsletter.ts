@@ -252,6 +252,8 @@ async function buildChannelNewsletter(
     dateLabel,
     editorial: editorial
       ? {
+          id: editorial.id,
+          section: editorial.section,
           title: editorial.title,
           subtitle: editorial.subtitle ?? null,
           body: editorial.body,
@@ -261,6 +263,8 @@ async function buildChannelNewsletter(
       : null,
     startup: startup
       ? {
+          id: startup.id,
+          section: startup.section,
           name: startup.name,
           tagline: startup.tagline,
           description: startup.description,
@@ -281,6 +285,8 @@ async function buildChannelNewsletter(
       sourceUrl: n.sourceUrl ?? null,
     })),
     reportages: reportages.map((r) => ({
+      id: r.id,
+      section: r.section,
       startupName: r.startupName,
       category: r.category,
       headline: r.headline,
@@ -298,6 +304,8 @@ async function buildChannelNewsletter(
       ctaUrl: r.ctaUrl ?? null,
     })),
     analyses: analyses.map((a) => ({
+      id: a.id,
+      section: a.section,
       title: a.title,
       category: a.category,
       summary: a.summary,
