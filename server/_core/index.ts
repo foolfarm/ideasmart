@@ -70,16 +70,22 @@ async function startServer() {
       const now = Date.now();
       if (!adsTxtCache || now > adsTxtCache.expiresAt) {
         // Scarica le righe Moneytizer
-        const upstream = await fetch(
+        const moneytizer = await fetch(
           "https://ads.themoneytizer.com/ads_txt.php?site_id=139643&id=130217"
         ).then((r) => r.text()).catch(() => "");
 
-        // Riga Google AdSense (da aggiungere sempre)
+        // Scarica le righe Clickio/Azerion (aggiornamento dinamico)
+        const clickio = await fetch(
+          "https://clickiocdn.com/ads_txt/248045.txt"
+        ).then((r) => r.text()).catch(() => "");
+
+        // Riga Google AdSense proprietaria (da includere sempre)
         const adSenseLine = "google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0";
 
-        // Merge: Moneytizer + AdSense, deduplicato
+        // Merge: Moneytizer + Clickio/Azerion + AdSense, deduplicato
         const lines = [
-          ...upstream.split("\n").map((l) => l.trim()).filter(Boolean),
+          ...moneytizer.split("\n").map((l) => l.trim()).filter(Boolean),
+          ...clickio.split("\n").map((l) => l.trim()).filter(Boolean),
           adSenseLine,
         ];
         const unique = Array.from(new Set(lines));
@@ -87,7 +93,7 @@ async function startServer() {
           content: unique.join("\n") + "\n",
           expiresAt: now + 6 * 60 * 60 * 1000, // 6 ore
         };
-        console.log(`[ads.txt] Aggiornato: ${unique.length} righe`);
+        console.log(`[ads.txt] Aggiornato: ${unique.length} righe (Moneytizer + Clickio + AdSense)`);
       }
 
       res.set("Content-Type", "text/plain; charset=utf-8");
