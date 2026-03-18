@@ -321,6 +321,10 @@ export default function Home() {
               style={{ fontFamily: "'Space Mono', monospace" }}>
               La Prima Testata Giornalistica HumanLess italiana
             </p>
+            <p className="mt-1 text-[11px] text-[#1a1a2e]/40 italic"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.02em" }}>
+              Adrian Lenice, Direttore Responsabile
+            </p>
           </div>
 
           <Divider thick />

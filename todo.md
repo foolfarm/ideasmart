@@ -1037,3 +1037,7 @@
 - [x] Aggiungere cron job 05:45 CET per salvataggio snapshot giornaliero barometro
 - [x] Aggiornare test schedulerManager (41 → 42 cron job)
 - [x] Tutti i 36 test passano
+
+## Task (18 Mar 2026 — Firma Direttore Responsabile)
+
+- [x] Aggiungere "Adrian Lenice, Direttore Responsabile" sotto il sottotitolo nell'header della homepage
