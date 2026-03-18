@@ -87,6 +87,12 @@ vi.mock("./nightlyAuditScheduler", () => ({
   runNightlyAudit: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock("./newsletterLinkAudit", () => ({
+  runNewsletterLinkAudit: vi.fn().mockResolvedValue({ okCount: 10, brokenCount: 0, internalBroken: [], shouldBlockSend: false }),
+  isNewsletterBlockedByAudit: vi.fn().mockReturnValue(false),
+  setNewsletterBlockedByAudit: vi.fn(),
+}));
+
 vi.mock("./db", () => ({
   saveBarometroSnapshot: vi.fn().mockResolvedValue(undefined),
   getDb: vi.fn().mockResolvedValue(null),
@@ -117,13 +123,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 42 cron job quando avviato", async () => {
+  it("dovrebbe registrare 43 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 42 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro
-    //   (05:30 CET invalidazione globale, 10:05 CET invalidazione Punto del Giorno, 05:45 snapshot barometro)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(42);
+    // 43 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro + 1 audit link newsletter
+    //   (05:30 CET invalidazione globale, 10:05 CET invalidazione Punto del Giorno, 05:45 snapshot barometro, 06:45 audit link)
+    expect(cron.default.schedule).toHaveBeenCalledTimes(43);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -181,6 +187,15 @@ describe("schedulerManager", () => {
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
     const rssAiCall = calls.find(c => c[0] === "0 0 * * *");
     expect(rssAiCall).toBeDefined();
+  });
+
+  it("dovrebbe programmare l'audit link newsletter alle 06:45 ogni giorno", async () => {
+    const cron = await import("node-cron");
+    const { startAllSchedulers } = await import("./schedulerManager");
+    startAllSchedulers();
+    const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    const auditLinkCall = calls.find(c => c[0] === "45 6 * * *");
+    expect(auditLinkCall).toBeDefined();
   });
 
   it("NON dovrebbe programmare newsletter il venerdì (rimosso)", async () => {

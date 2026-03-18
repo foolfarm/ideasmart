@@ -386,7 +386,7 @@ export const appRouter = router({
         };
       }),
 
-    // Punto del Giorno: recupera il post LinkedIn più recente di Andrea Cinelli
+    // Punto del Giorno: recupera il post LinkedIn più recente (autore: Adrian Lenice)
     getPuntoDelGiorno: publicProcedure
       .query(async () => {
         return cached(

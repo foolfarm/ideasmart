@@ -467,7 +467,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Sezione: Punto del Giorno — Post LinkedIn di Andrea Cinelli */}
+          {/* Sezione: Punto del Giorno — Analisi editoriale giornaliera di Adrian Lenice */}
           <PuntoDelGiorno />
 
           {/* Sezione 2: Griglia 3 colonne */}

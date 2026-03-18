@@ -88,6 +88,7 @@ import {
 import { runNightlyAudit } from "./nightlyAuditScheduler";
 import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
+import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
 import { invalidateAll, invalidateBySection, CACHE_KEYS } from "./cache";
 import { saveBarometroSnapshot, getDb } from "./db";
 import { invokeLLM } from "./_core/llm";
@@ -468,6 +469,25 @@ export function startAllSchedulers(): void {
   //   Sabato    → Lifestyle & Luxury
   //   Domenica  → Health & Biotech
 
+  // ── AUDIT LINK (06:45 CET) — tutti i giorni ──────────────────────────────
+  cron.schedule("45 6 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 06:45 CET — Audit link newsletter pre-invio...");
+    try {
+      const report = await runNewsletterLinkAudit();
+      if (report) {
+        if (report.shouldBlockSend) {
+          setNewsletterBlockedByAudit(true);
+          console.warn(`[SchedulerManager] 🚨 AUDIT: ${report.internalBroken.length} link interni rotti — INVIO BLOCCATO`);
+        } else {
+          setNewsletterBlockedByAudit(false);
+          console.log(`[SchedulerManager] ✅ AUDIT OK: ${report.okCount} link verificati, ${report.brokenCount} esterni non raggiungibili`);
+        }
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore audit link newsletter:", err);
+    }
+  }, { timezone: TZ });
+
   // ── PREVIEW (07:00 CET) — tutti i giorni ─────────────────────────────────
   cron.schedule("0 7 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter del giorno...");
@@ -486,6 +506,11 @@ export function startAllSchedulers(): void {
   // ── INVIO MASSIVO (07:30 CET) — tutti i giorni ───────────────────────────
   cron.schedule("30 7 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 07:30 CET — Invio newsletter massiva del giorno...");
+    // Controlla se l'audit ha bloccato l'invio per link interni rotti
+    if (isNewsletterBlockedByAudit()) {
+      console.warn("[SchedulerManager] 🚨 INVIO BLOCCATO dall'audit link (06:45) — link interni rotti rilevati. Correggi e forza l'invio dalla dashboard.");
+      return;
+    }
     try {
       const result = await sendDailyChannelNewsletter();
       if (result.success && result.recipientCount > 0) {
@@ -547,6 +572,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🚗 News Motori      → ogni giorno alle 04:30 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   🎾 News Tennis      → ogni giorno alle 04:45 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   🏀 News Basket      → ogni giorno alle 05:00 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
   console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET");

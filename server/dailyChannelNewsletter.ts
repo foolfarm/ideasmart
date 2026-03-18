@@ -220,7 +220,7 @@ const testSentDays = new Map<string, boolean>(); // dayKey → true
 
 // ─── Costruzione newsletter dal DB ───────────────────────────────────────────
 
-async function buildChannelNewsletter(
+export async function buildChannelNewsletter(
   channel: ChannelConfig,
   isTest: boolean
 ): Promise<{ html: string; subject: string; newsCount: number }> {

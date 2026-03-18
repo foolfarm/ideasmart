@@ -1,13 +1,12 @@
 /**
- * PuntoDelGiorno — Sezione Home che mostra il post LinkedIn giornaliero di Andrea Cinelli
- * Stile: editoriale, carta/inchiostro, con link al post LinkedIn originale
+ * PuntoDelGiorno — Sezione Home con l'analisi editoriale giornaliera di IDEASMART
+ * Stile: editoriale, carta/inchiostro — autore: Adrian Lenice, Direttore Responsabile
  */
 import { trpc } from "@/lib/trpc";
 
 const INK = "#0a0f1e";
 const ACCENT = "#00e5c8";
 const ACCENT_LIGHT = "#e6fff9";
-const LINKEDIN_BLUE = "#0a66c2";
 
 function formatDateIT(dateLabel: string): string {
   try {
@@ -58,7 +57,6 @@ export default function PuntoDelGiorno() {
   // Separa l'ultimo paragrafo (hashtags) dal corpo
   const hashtagLine = paragraphs.findIndex(p => p.startsWith("#") || p.match(/^[📊🔗]/));
   const bodyParagraphs = hashtagLine > 0 ? paragraphs.slice(0, hashtagLine) : paragraphs;
-  const ctaLine = paragraphs.find(p => p.includes("IDEASMART →") || p.includes("ideasmart.ai"));
   const hashtagText = post?.hashtags || paragraphs.find(p => p.startsWith("#")) || "";
 
   return (
@@ -106,26 +104,26 @@ export default function PuntoDelGiorno() {
               <PuntoSkeleton />
             ) : (
               <>
-                {/* Firma autore */}
+                {/* Firma autore — Adrian Lenice, anonima */}
                 <div className="flex items-center gap-3 mb-4">
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                    style={{ background: LINKEDIN_BLUE }}
+                    style={{ background: ACCENT }}
                   >
-                    AC
+                    AL
                   </div>
                   <div>
                     <p
                       className="text-xs font-bold"
                       style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
-                      Andrea Cinelli
+                      Adrian Lenice
                     </p>
                     <p
                       className="text-[10px]"
                       style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
                     >
-                      Founder & CEO FoolFarm · LinkedIn
+                      Direttore Responsabile · IDEASMART
                     </p>
                   </div>
                   {/* Badge sezione */}
@@ -165,44 +163,22 @@ export default function PuntoDelGiorno() {
                       className="text-sm italic"
                       style={{ color: INK + "55", fontFamily: "'Source Serif 4', Georgia, serif" }}
                     >
-                      …continua su LinkedIn
+                      …continua
                     </p>
                   )}
                 </div>
 
-                {/* CTA e hashtags */}
-                <div className="mt-5 pt-4 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
-                  style={{ borderColor: INK + "12" }}>
-                  {/* Hashtags */}
-                  {hashtagText && (
+                {/* Hashtags (solo se presenti) */}
+                {hashtagText && (
+                  <div className="mt-5 pt-4 border-t" style={{ borderColor: INK + "12" }}>
                     <p
-                      className="text-[10px] flex-1"
-                      style={{ color: LINKEDIN_BLUE, fontFamily: "'JetBrains Mono', monospace" }}
+                      className="text-[10px]"
+                      style={{ color: ACCENT, fontFamily: "'JetBrains Mono', monospace" }}
                     >
                       {hashtagText.slice(0, 120)}{hashtagText.length > 120 ? "…" : ""}
                     </p>
-                  )}
-
-                  {/* Link al post LinkedIn */}
-                  {post?.linkedinUrl && (
-                    <a
-                      href={post.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded font-bold text-xs uppercase tracking-widest transition-all hover:opacity-80"
-                      style={{
-                        background: LINKEDIN_BLUE,
-                        color: "#fff",
-                        fontFamily: "'JetBrains Mono', monospace",
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                      Leggi su LinkedIn
-                    </a>
-                  )}
-                </div>
+                  </div>
+                )}
               </>
             )}
           </div>

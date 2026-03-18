@@ -1048,3 +1048,13 @@
 - [ ] Correggere il dominio base usato per generare i link nella newsletter
 - [ ] Aggiungere validazione automatica dei link prima di ogni invio
 - [ ] Verificare che tutti i link puntino a pagine esistenti su ideasmart.ai
+
+## Nuovi task (18 Mar 2026 — Validazione link newsletter + Punto del Giorno)
+
+- [x] Routine validazione link pre-invio newsletter: funzione linkAudit che verifica HTTP 200 per ogni URL della newsletter (06:45 CET, blocca invio se link interni rotti)
+- [ ] Scheduler audit mattutino: cron job alle 06:45 CET che esegue audit e invia report a info@ideasmart.ai
+- [ ] Blocco invio newsletter se link non validi (con soglia configurabile)
+- [ ] Sezione Punto del Giorno: rimuovere riferimento "Andrea Cinelli / Founder & CEO FoolFarm · LinkedIn"
+- [ ] Sezione Punto del Giorno: rimuovere link "Leggi su LinkedIn"
+- [ ] Sezione Punto del Giorno: sostituire autore con "Adrian Lenice — Direttore Responsabile" (anonima)
+- [x] Sezione Punto del Giorno anonima: rimosso riferimento ad Andrea Cinelli/FoolFarm/LinkedIn, sostituito con Adrian Lenice (Direttore Responsabile IDEASMART)
