@@ -1058,3 +1058,9 @@
 - [ ] Sezione Punto del Giorno: rimuovere link "Leggi su LinkedIn"
 - [ ] Sezione Punto del Giorno: sostituire autore con "Adrian Lenice — Direttore Responsabile" (anonima)
 - [x] Sezione Punto del Giorno anonima: rimosso riferimento ad Andrea Cinelli/FoolFarm/LinkedIn, sostituito con Adrian Lenice (Direttore Responsabile IDEASMART)
+
+## Nuovi task (18 Mar 2026 — Clickio Consent CMP)
+
+- [x] Inserire tag Clickio Consent CMP nell'head di index.html (sopra AdSense/GTM)
+- [x] Inserire tag Core Web Vitals Clickio nell'head di index.html
+- [x] Aggiungere link "Your Privacy Choices" nel footer del sito
