@@ -17,6 +17,8 @@ import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
 import { invalidateAll } from "../cache";
+import fs from "fs";
+import path from "path";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -60,20 +62,26 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
-  // ── ads.txt — Moneytizer/Azerion + Google AdSense (aggiornamento dinamico) ──
-  // Scarica le righe aggiornate da Moneytizer e le merge con la riga AdSense.
-  // Cache in-memory di 6 ore per evitare troppe richieste upstream.
+  // ── ads.txt — Moneytizer (base statica) + Clickio/Azerion + Google AdSense ──
+  // Base statica: 813 righe Moneytizer garantite (da file locale).
+  // Aggiornamento dinamico: Clickio/Azerion scaricato ogni 6 ore.
+  // Deduplicazione automatica su tutte le fonti.
+  const MONEYTIZER_BASE_PATH = path.join(import.meta.dirname, "../ads_txt_moneytizer_base.txt");
+  let moneytizerBaseLines: string[] = [];
+  try {
+    const raw = fs.readFileSync(MONEYTIZER_BASE_PATH, "utf-8");
+    moneytizerBaseLines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
+    console.log(`[ads.txt] Base Moneytizer caricata: ${moneytizerBaseLines.length} righe`);
+  } catch (e) {
+    console.error("[ads.txt] Impossibile leggere il file base Moneytizer:", e);
+  }
+
   let adsTxtCache: { content: string; expiresAt: number } | null = null;
 
   app.get("/ads.txt", async (_req, res) => {
     try {
       const now = Date.now();
       if (!adsTxtCache || now > adsTxtCache.expiresAt) {
-        // Scarica le righe Moneytizer
-        const moneytizer = await fetch(
-          "https://ads.themoneytizer.com/ads_txt.php?site_id=139643&id=130217"
-        ).then((r) => r.text()).catch(() => "");
-
         // Scarica le righe Clickio/Azerion (aggiornamento dinamico)
         const clickio = await fetch(
           "https://clickiocdn.com/ads_txt/248045.txt"
@@ -82,9 +90,9 @@ async function startServer() {
         // Riga Google AdSense proprietaria (da includere sempre)
         const adSenseLine = "google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0";
 
-        // Merge: Moneytizer + Clickio/Azerion + AdSense, deduplicato
+        // Merge: base Moneytizer (813 righe garantite) + Clickio/Azerion + AdSense, deduplicato
         const lines = [
-          ...moneytizer.split("\n").map((l) => l.trim()).filter(Boolean),
+          ...moneytizerBaseLines,
           ...clickio.split("\n").map((l) => l.trim()).filter(Boolean),
           adSenseLine,
         ];
@@ -93,7 +101,7 @@ async function startServer() {
           content: unique.join("\n") + "\n",
           expiresAt: now + 6 * 60 * 60 * 1000, // 6 ore
         };
-        console.log(`[ads.txt] Aggiornato: ${unique.length} righe (Moneytizer + Clickio + AdSense)`);
+        console.log(`[ads.txt] Aggiornato: ${unique.length} righe (Moneytizer base + Clickio + AdSense)`);
       }
 
       res.set("Content-Type", "text/plain; charset=utf-8");
@@ -101,9 +109,9 @@ async function startServer() {
       res.send(adsTxtCache.content);
     } catch (err) {
       console.error("[ads.txt] Errore:", err);
-      // Fallback minimo se tutto fallisce
+      // Fallback: servire almeno la base Moneytizer
       res.set("Content-Type", "text/plain; charset=utf-8");
-      res.send("google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0\n");
+      res.send(moneytizerBaseLines.join("\n") + "\n" + "google.com, pub-7185482526978993, DIRECT, f08c47fec0942fa0\n");
     }
   });
 
