@@ -1078,19 +1078,19 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Banner Tradedoubler 300x250 pre-footer */}
-          <div className="mt-8 flex justify-center">
+          {/* Banner Tradedoubler leaderboard 728x90 pre-footer */}
+          <div className="mt-4 flex justify-center">
             <div>
               <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
               <a
-                href="https://clk.tradedoubler.com/click?p=357545&a=3477790&g=25611646"
+                href="https://clk.tradedoubler.com/click?p=384511&a=3477790&g=25996460"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img
-                  src={`https://imp.tradedoubler.com/imp?type(img)g(25611646)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                  width="300"
-                  height="250"
+                  src={`https://imp.tradedoubler.com/imp?type(img)g(25996460)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                  width="728"
+                  height="90"
                   alt="Pubblicità"
                   style={{ display: "block", maxWidth: "100%", height: "auto" }}
                 />
