@@ -692,6 +692,12 @@ export default function Business() {
                 </p>
                 <p className="text-[#00e5c8] font-bold">Andrea Cinelli</p>
                 <p className="text-white/40 text-sm">Founder & CEO FoolFarm · Direttore Responsabile IdeaSmart</p>
+                <Link
+                  href="/chi-siamo"
+                  className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-white/50 hover:text-[#00e5c8] transition-colors"
+                >
+                  Scopri la storia di IdeaSmart →
+                </Link>
               </div>
             </div>
           </FadeUp>
@@ -939,6 +945,7 @@ export default function Business() {
             <span className="ml-2 text-xs text-[#00e5c8] tracking-widest">BUSINESS</span>
           </span>
           <div className="flex items-center gap-6 text-xs text-white/30">
+            <Link href="/chi-siamo"><span className="hover:text-[#00e5c8] transition-colors cursor-pointer font-semibold">Chi Siamo</span></Link>
             <Link href="/privacy"><span className="hover:text-white/60 transition-colors cursor-pointer">Privacy Policy</span></Link>
             <a href="mailto:info@ideasmart.ai" className="hover:text-white/60 transition-colors">info@ideasmart.ai</a>
             <Link href="/"><span className="hover:text-white/60 transition-colors cursor-pointer">ideasmart.ai</span></Link>

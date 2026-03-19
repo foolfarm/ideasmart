@@ -1130,3 +1130,8 @@
 - [x] Rimuovere tutti e tre gli script HilltopAds da index.html (19 Mar 2026)
 - [x] Creare pagina /chi-siamo con storia editoriale di IdeaSmart (19 Mar 2026)
 - [x] Aggiungere link Chi Siamo nella navigazione (Navbar desktop+mobile) e nel footer (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — Link Chi Siamo da Business)
+
+- [x] Aggiungere link /chi-siamo nella sezione case study della pagina /business (19 Mar 2026)
+- [x] Aggiungere link /chi-siamo nel footer della pagina /business (19 Mar 2026)
