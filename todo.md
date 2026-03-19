@@ -37,6 +37,7 @@
 - [x] Banner Tradedoubler 300x250 nello spazio immagine hero del blocco News Italia (g=26055766)
 - [x] Banner leaderboard Tradedoubler 728x90 sotto la sezione Punto del Giorno (g=25809148)
 - [x] Banner skyscraper Tradedoubler 120x600 al posto dell'immagine nel blocco AI4Business hero (g=25854308)
+- [x] Manchette destra testata: sostituire Feltrinelli con nuovo banner Tradedoubler 300x250 (g=25914926)
 
 ## Performance Round 2 (19 Mar 2026)
 

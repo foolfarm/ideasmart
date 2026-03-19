@@ -678,14 +678,14 @@ export default function Home() {
                 className="w-[130px] h-[130px] border overflow-hidden flex items-center justify-center"
                 style={{ borderColor: "rgba(26,26,46,0.20)", background: "#f5f2ec" }}
               >
-                {/* Banner Tradedoubler 130x130 (adattato da 300x250) */}
+                {/* Banner Tradedoubler 130x130 (g=25914926) */}
                 <a
-                  href="https://clk.tradedoubler.com/click?p=71740&a=3477790&g=26101400"
+                  href="https://clk.tradedoubler.com/click?p=354184&a=3477790&g=25914926"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <img
-                    src="https://imp.tradedoubler.com/imp?type(img)g(26101400)a(3477790)"
+                    src={`https://imp.tradedoubler.com/imp?type(img)g(25914926)a(3477790)${Math.random().toString().substring(2, 11)}`}
                     width="130"
                     height="130"
                     alt="Pubblicità"
