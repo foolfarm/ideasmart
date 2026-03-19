@@ -1213,3 +1213,7 @@
 
 - [x] Spostare link "Tecnologia" nella seconda riga navbar (accanto a Edicola, Manifesto, Chi Siamo) — rimuovere dalla riga desktop in alto
 - [x] Aggiungere blocco "Verify in numeri" nella pagina /tecnologia con metriche concrete
+
+## Redesign /tecnologia (19 Mar 2026)
+
+- [x] Riscrivere pagina /tecnologia con look editoriale del giornale (carta bianca, Playfair, Source Serif 4, Space Mono, bordi inchiostro) — allineata a Chi Siamo e Business

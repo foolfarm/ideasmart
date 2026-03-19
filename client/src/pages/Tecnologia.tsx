@@ -1,812 +1,600 @@
 /**
- * IDEASMART — Pagina Tecnologia
- * Design: Editoriale carta bianca (#faf8f3), Playfair Display, Source Serif 4, Space Mono
- * Contenuto: Storytelling su IdeaSmart come piattaforma agentica e Verify come algoritmo proprietario
+ * IDEASMART — Tecnologia
+ * Layout editoriale coerente con le pagine sezione del sito.
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accento teal (#0a6e5c).
+ * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useMemo } from "react";
 import { Link } from "wouter";
-import Navbar from "@/components/Navbar";
+import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
-// ─── Animation helper ─────────────────────────────────────────────────────────
-function FadeUp({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+const ACCENT = "#0a6e5c";
+const ACCENT_LIGHT = "#e6f4f1";
+const INK = "#1a1a2e";
+const ORANGE = "#ff5500";
+
+function formatDateIT(date: Date): string {
+  return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+}
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+}
+function ThinDivider() {
+  return <div className="w-full border-t border-[#1a1a2e]/15" />;
+}
+function SectionBadge({ label, color = ACCENT, bg = ACCENT_LIGHT }: { label: string; color?: string; bg?: string }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+    <span
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+      style={{ background: bg, color, fontFamily: "'Space Mono', monospace" }}
     >
-      {children}
-    </motion.div>
+      {label}
+    </span>
   );
 }
 
-// ─── Agenti della redazione ────────────────────────────────────────────────────
+// ─── Dati ────────────────────────────────────────────────────────────────────
+
+const STATS = [
+  { value: "450+", label: "Fonti monitorate" },
+  { value: "~1.200", label: "Articoli analizzati/giorno" },
+  { value: "63%", label: "Contenuti scartati" },
+  { value: "6", label: "Dimensioni di verifica" },
+  { value: "5", label: "Agenti nel flusso" },
+  { value: "0", label: "Redattori umani" },
+];
+
 const AGENTS = [
-  {
-    name: "Scouting Agent",
-    icon: "◎",
-    desc: "Intercetta le notizie dalla rete globale in tempo reale, monitorando oltre 450 fonti RSS e feed specializzati.",
-    color: "#1a3a5c",
-  },
-  {
-    name: "Verify Agent",
-    icon: "⬡",
-    desc: "Analizza e valida ogni contenuto su sei dimensioni di qualità informativa. Il cuore del sistema.",
-    color: "#0a3d2e",
-  },
-  {
-    name: "Balancing Agent",
-    icon: "⊖",
-    desc: "Riequilibra bias e distorsioni narrative, garantendo pluralità di prospettive su ogni argomento.",
-    color: "#3a1a5c",
-  },
-  {
-    name: "Synthesis Agent",
-    icon: "◈",
-    desc: "Costruisce articoli chiari, leggibili e informativamente densi a partire dai contenuti validati.",
-    color: "#5c1a1a",
-  },
-  {
-    name: "Publishing Agent",
-    icon: "▷",
-    desc: "Distribuisce i contenuti in tempo reale su tutti i canali editoriali, con metadati e categorizzazione automatica.",
-    color: "#1a4a1a",
-  },
+  { name: "Scouting Agent", role: "Intercetta le notizie dalla rete globale in tempo reale, monitorando oltre 450 fonti RSS e feed specializzati.", icon: "◎" },
+  { name: "Verify Agent", role: "Analizza e valida ogni contenuto su sei dimensioni di qualità informativa. Il cuore del sistema.", icon: "⬡" },
+  { name: "Balancing Agent", role: "Riequilibra bias e distorsioni narrative, garantendo pluralità di prospettive su ogni argomento.", icon: "⊖" },
+  { name: "Synthesis Agent", role: "Costruisce articoli chiari, leggibili e informativamente densi a partire dai contenuti validati.", icon: "◈" },
+  { name: "Publishing Agent", role: "Distribuisce i contenuti in tempo reale su tutti i canali editoriali, con metadati e categorizzazione automatica.", icon: "▷" },
 ];
 
-// ─── Dimensioni Verify ────────────────────────────────────────────────────────
 const VERIFY_DIMS = [
-  { label: "Attendibilità della fonte", desc: "Storico editoriale, autorevolezza, track record di accuratezza" },
-  { label: "Coerenza tra fonti multiple", desc: "Cross-validazione su almeno tre fonti indipendenti" },
-  { label: "Neutralità del linguaggio", desc: "Analisi semantica per rilevare carica emotiva e framing" },
-  { label: "Bilanciamento delle prospettive", desc: "Presenza di punti di vista contrapposti sullo stesso fatto" },
-  { label: "Livello di distorsione narrativa", desc: "Rilevamento di omissioni, enfasi selettive e agenda implicita" },
-  { label: "Presenza di agenda implicita", desc: "Identificazione di interessi economici o politici sottostanti" },
+  { n: "01", label: "Attendibilità della fonte", desc: "Storico editoriale, autorevolezza, track record di accuratezza" },
+  { n: "02", label: "Coerenza tra fonti multiple", desc: "Cross-validazione su almeno tre fonti indipendenti" },
+  { n: "03", label: "Neutralità del linguaggio", desc: "Analisi semantica per rilevare carica emotiva e framing" },
+  { n: "04", label: "Bilanciamento delle prospettive", desc: "Presenza di punti di vista contrapposti sullo stesso fatto" },
+  { n: "05", label: "Livello di distorsione narrativa", desc: "Rilevamento di omissioni, enfasi selettive e agenda implicita" },
+  { n: "06", label: "Presenza di agenda implicita", desc: "Identificazione di interessi economici o politici sottostanti" },
 ];
 
-// ─── Steps del processo ───────────────────────────────────────────────────────
 const PROCESS_STEPS = [
-  { n: "01", title: "Raccolta massiva", desc: "Migliaia di fonti analizzate in tempo reale da 14 verticali tematici" },
-  { n: "02", title: "Validazione algoritmica", desc: "Verify confronta, incrocia e pesa ogni contenuto su sei dimensioni" },
-  { n: "03", title: "Riduzione del rumore", desc: "Eliminazione automatica di contenuti distorti o sotto soglia qualitativa" },
-  { n: "04", title: "Sintesi intelligente", desc: "Generazione di articoli chiari, oggettivi e informativamente densi" },
-  { n: "05", title: "Distribuzione", desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale" },
+  { n: "01", title: "Raccolta massiva", desc: "Migliaia di fonti analizzate in tempo reale da 14 verticali tematici." },
+  { n: "02", title: "Validazione algoritmica", desc: "Verify confronta, incrocia e pesa ogni contenuto su sei dimensioni." },
+  { n: "03", title: "Riduzione del rumore", desc: "Eliminazione automatica di contenuti distorti o sotto soglia qualitativa." },
+  { n: "04", title: "Sintesi intelligente", desc: "Generazione di articoli chiari, oggettivi e informativamente densi." },
+  { n: "05", title: "Distribuzione", desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale." },
 ];
 
 export default function Tecnologia() {
-  return (
-    <div style={{ background: "#faf8f3", minHeight: "100vh", fontFamily: "'Source Serif 4', Georgia, serif" }}>
-      <Navbar />
+  const today = useMemo(() => new Date(), []);
 
-      {/* ─── HERO ──────────────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: "#0d1b2a", paddingTop: "96px", paddingBottom: "80px" }}
-      >
-        {/* Griglia decorativa */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(0,229,200,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,200,0.04) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        <div className="relative max-w-5xl mx-auto px-6">
-          <FadeUp>
-            <p
-              className="text-xs font-mono tracking-[0.25em] uppercase mb-6"
-              style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}
+  return (
+    <>
+      <SEOHead
+        title="Tecnologia — IDEASMART"
+        description="Come funziona IdeaSmart: la piattaforma editoriale agentica con Verify, l'algoritmo proprietario che valida ogni notizia su sei dimensioni di qualità informativa."
+        canonical="https://ideasmart.ai/tecnologia"
+        ogSiteName="IDEASMART"
+      />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+      `}</style>
+      <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
+
+        {/* ── TESTATA ── */}
+        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
+          <div className="flex items-center justify-between mb-2">
+            <Link href="/">
+              <span
+                className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
+                style={{ fontFamily: "'Space Mono', monospace" }}
+              >
+                ← IdeaSmart
+              </span>
+            </Link>
+            <span
+              className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Space Mono', monospace" }}
             >
-              Tecnologia — IdeaSmart
-            </p>
+              {formatDateIT(today)}
+            </span>
+          </div>
+          <Divider thick />
+          <div className="text-center py-6">
+            <SectionBadge label="Tecnologia" />
             <h1
-              className="text-4xl md:text-6xl font-bold leading-tight mb-8"
-              style={{ color: "#f5f2ec", fontFamily: "'Playfair Display', Georgia, serif", maxWidth: "780px" }}
+              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e]"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
             >
               L'informazione non è più un'opinione.
-              <span style={{ color: "#00e5c8" }}> È un calcolo.</span>
             </h1>
             <p
-              className="text-lg md:text-xl leading-relaxed mb-10"
-              style={{ color: "#94a3b8", maxWidth: "640px", fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50"
+              style={{ fontFamily: "'Space Mono', monospace" }}
             >
-              IdeaSmart è la prima piattaforma editoriale agentica che trasforma il caos delle notizie
-              in informazione verificata, pesata e oggettiva. Grazie a{" "}
-              <strong style={{ color: "#00e5c8" }}>Verify</strong>, il nostro algoritmo proprietario,
-              ogni contenuto viene analizzato, validato e bilanciato prima di essere pubblicato.
+              È un calcolo.
             </p>
-            <div className="flex flex-wrap gap-4">
-              {["Nessun bias", "Nessuna agenda", "Solo informazione qualificata"].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-4 py-2 rounded-full text-sm font-mono font-semibold"
+          </div>
+          <Divider />
+        </header>
+
+        <BreakingNewsTicker />
+
+        {/* ── CORPO ── */}
+        <main className="max-w-6xl mx-auto px-4 pb-16">
+
+          {/* ── INTRO ── */}
+          <section className="py-10 grid md:grid-cols-[2fr_1fr] gap-10">
+            <div>
+              <SectionBadge label="La piattaforma" />
+              <h2
+                className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e]"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                La prima testata editoriale completamente agentica.
+              </h2>
+              <div
+                className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              >
+                <p>
+                  IdeaSmart non è una redazione tradizionale. È un sistema autonomo composto da agenti AI specializzati che replicano — e migliorano — il lavoro di una newsroom. Ogni notizia viene raccolta, verificata, bilanciata, sintetizzata e pubblicata senza intervento umano diretto.
+                </p>
+                <p>
+                  Non perché l'uomo non serva. Ma perché vogliamo eliminare i suoi bias. La differenza tra IdeaSmart e il giornalismo tradizionale è semplice: <strong style={{ color: INK }}>loro interpretano, noi misuriamo.</strong> L'informazione non è più soggettiva. Diventa un output calcolato.
+                </p>
+                <p>
+                  Al centro di tutto c'è <strong style={{ color: ACCENT }}>Verify</strong>, il nostro algoritmo proprietario: il sistema che analizza, valida e pesa ogni contenuto prima che raggiunga il lettore.
+                </p>
+              </div>
+            </div>
+
+            {/* Citazione */}
+            <div className="flex flex-col justify-center">
+              <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: ACCENT }}>
+                <p
+                  className="text-xl font-bold italic leading-snug text-[#1a1a2e]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  "Non promettiamo neutralità. La costruiamo a livello architetturale."
+                </p>
+                <footer
+                  className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
+                  style={{ fontFamily: "'Space Mono', monospace" }}
+                >
+                  — IdeaSmart, Manifesto Editoriale
+                </footer>
+              </blockquote>
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── STATISTICHE ── */}
+          <section className="py-8">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-0">
+              {STATS.map((s, i) => (
+                <div
+                  key={i}
+                  className="text-center py-5 px-3"
+                  style={{ borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none" }}
+                >
+                  <div
+                    className="text-3xl font-black"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: i === 5 ? ORANGE : INK }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a2e]/45"
+                    style={{ fontFamily: "'Space Mono', monospace" }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── IL PROBLEMA ── */}
+          <section className="py-10 grid md:grid-cols-[1fr_1fr] gap-10">
+            <div>
+              <SectionBadge label="Il problema" />
+              <h2
+                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Oggi l'informazione è rotta.
+              </h2>
+              <div
+                className="space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              >
+                <p>
+                  Polarizzata, manipolata, rumorosa, inefficiente. La sovrabbondanza di contenuti non ha prodotto più chiarezza: ha prodotto più confusione. Non sai più cosa è vero, cosa è rilevante, a chi credere.
+                </p>
+                <p>
+                  IdeaSmart elimina il problema alla radice: non scegliamo una narrativa. <strong style={{ color: INK }}>Costruiamo un sistema che le neutralizza tutte.</strong>
+                </p>
+              </div>
+            </div>
+            <div>
+              <SectionBadge label="Il nostro approccio" />
+              <h2
+                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Zero bias. Davvero.
+              </h2>
+              <div className="space-y-3">
+                {[
+                  { tag: "Humanless", desc: "Nessuna interferenza editoriale umana nel flusso di pubblicazione" },
+                  { tag: "Agenda-free", desc: "Nessun interesse politico o economico che orienta la selezione" },
+                  { tag: "Self-auditing", desc: "Ogni contenuto è verificato dal sistema stesso prima e dopo la pubblicazione" },
+                ].map((item) => (
+                  <div
+                    key={item.tag}
+                    className="flex gap-3 py-3"
+                    style={{ borderBottom: "1px solid rgba(26,26,46,0.10)" }}
+                  >
+                    <span
+                      className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm flex-shrink-0 h-fit mt-0.5"
+                      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                    >
+                      {item.tag}
+                    </span>
+                    <p
+                      className="text-sm leading-relaxed text-[#1a1a2e]/70"
+                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    >
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── LA REDAZIONE AGENTICA ── */}
+          <section className="py-10">
+            <SectionBadge label="Architettura" />
+            <h2
+              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              Una redazione completamente agentica
+            </h2>
+            <p
+              className="text-base leading-relaxed text-[#1a1a2e]/65 mb-8 max-w-2xl"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
+              Cinque agenti specializzati replicano — e migliorano — ogni fase del lavoro di una newsroom tradizionale, operando in sequenza senza interruzioni.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-5">
+              {AGENTS.map((a, i) => (
+                <div
+                  key={i}
+                  className="py-5 px-4"
                   style={{
-                    background: "rgba(0,229,200,0.1)",
-                    color: "#00e5c8",
-                    border: "1px solid rgba(0,229,200,0.25)",
-                    fontFamily: "'Space Mono', monospace",
+                    borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.10)" : "none",
+                    borderTop: "1px solid rgba(26,26,46,0.10)",
+                    borderBottom: "1px solid rgba(26,26,46,0.10)",
                   }}
                 >
-                  ✓ {tag}
-                </span>
+                  <div
+                    className="text-xl mb-2 font-mono"
+                    style={{ color: ACCENT }}
+                  >
+                    {a.icon}
+                  </div>
+                  <div
+                    className="text-sm font-bold text-[#1a1a2e] mb-1"
+                    style={{ fontFamily: "'Space Mono', monospace" }}
+                  >
+                    {a.name}
+                  </div>
+                  <div
+                    className="text-xs leading-relaxed text-[#1a1a2e]/55"
+                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  >
+                    {a.role}
+                  </div>
+                </div>
               ))}
             </div>
-          </FadeUp>
-        </div>
-      </section>
+          </section>
 
-      {/* ─── IL PROBLEMA ─────────────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <FadeUp>
-            <p
-              className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-              style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-            >
-              Il problema
-            </p>
+          <ThinDivider />
+
+          {/* ── VERIFY ── */}
+          <section className="py-10">
+            <SectionBadge label="Verify — Algoritmo proprietario" color={ACCENT} bg={ACCENT_LIGHT} />
             <h2
-              className="text-3xl md:text-4xl font-bold leading-tight mb-6"
-              style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] mb-4"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
-              Oggi l'informazione è rotta.
+              Non verifichiamo le notizie. Le pesiamo.
             </h2>
-            <p className="text-base leading-relaxed mb-6" style={{ color: "#4b5563" }}>
-              Polarizzata, manipolata, rumorosa, inefficiente. Il risultato è che non sai più cosa è
-              vero, cosa è rilevante, a chi credere. La sovrabbondanza di contenuti non ha prodotto
-              più chiarezza: ha prodotto più confusione.
-            </p>
-            <p className="text-base leading-relaxed" style={{ color: "#4b5563" }}>
-              IdeaSmart elimina il problema alla radice: non scegliamo una narrativa.{" "}
-              <strong style={{ color: "#1a1f2e" }}>Costruiamo un sistema che le neutralizza tutte.</strong>
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.15}>
-            <div
-              className="rounded-2xl p-8"
-              style={{ background: "#fff", border: "1px solid #e5e7eb" }}
+            <p
+              className="text-base leading-relaxed text-[#1a1a2e]/70 mb-8 max-w-2xl"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              {[
-                { label: "Fonti polarizzate", value: "94%", sub: "dei media online mostra bias rilevabile" },
-                { label: "Contenuti duplicati", value: "67%", sub: "delle notizie sono rielaborazioni della stessa fonte" },
-                { label: "Agenda implicita", value: "3 su 5", sub: "articoli contengono framing orientato" },
-              ].map((stat) => (
+              Verify è l'algoritmo proprietario che rappresenta il vero vantaggio competitivo di IdeaSmart. Ogni notizia riceve un <strong style={{ color: INK }}>punteggio dinamico di qualità informativa</strong> basato su sei dimensioni distinte. Solo i contenuti che superano la soglia entrano nel flusso editoriale.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+              {VERIFY_DIMS.map((dim, i) => (
                 <div
-                  key={stat.label}
-                  className="py-5 border-b last:border-0"
-                  style={{ borderColor: "#f3f4f6" }}
+                  key={dim.n}
+                  className="py-5 px-0 flex gap-5"
+                  style={{
+                    borderTop: "1px solid rgba(26,26,46,0.10)",
+                    borderRight: i % 2 === 0 ? "1px solid rgba(26,26,46,0.10)" : "none",
+                    paddingRight: i % 2 === 0 ? "2rem" : "0",
+                    paddingLeft: i % 2 === 1 ? "2rem" : "0",
+                  }}
                 >
-                  <div className="flex items-baseline justify-between mb-1">
-                    <span className="text-sm font-semibold" style={{ color: "#374151" }}>
-                      {stat.label}
-                    </span>
-                    <span
-                      className="text-2xl font-bold"
-                      style={{ color: "#0d1b2a", fontFamily: "'Playfair Display', serif" }}
+                  <span
+                    className="text-[10px] font-bold flex-shrink-0 w-8 text-right mt-0.5"
+                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                  >
+                    {dim.n}
+                  </span>
+                  <div>
+                    <p className="text-sm font-bold text-[#1a1a2e] mb-1">{dim.label}</p>
+                    <p
+                      className="text-xs leading-relaxed text-[#1a1a2e]/55"
+                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
                     >
-                      {stat.value}
-                    </span>
+                      {dim.desc}
+                    </p>
                   </div>
-                  <p className="text-xs" style={{ color: "#9ca3af" }}>
-                    {stat.sub}
-                  </p>
                 </div>
               ))}
             </div>
-          </FadeUp>
-        </div>
-      </section>
+          </section>
 
-      {/* ─── REDAZIONE AGENTICA ──────────────────────────────────────────────── */}
-      <section style={{ background: "#f5f2ec", padding: "80px 0" }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <FadeUp>
-            <div className="text-center mb-14">
-              <p
-                className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-                style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-              >
-                Architettura
-              </p>
-              <h2
-                className="text-3xl md:text-4xl font-bold mb-4"
-                style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Una redazione completamente agentica
-              </h2>
-              <p
-                className="text-base leading-relaxed mx-auto"
-                style={{ color: "#4b5563", maxWidth: "560px" }}
-              >
-                IdeaSmart non è una redazione tradizionale. È un sistema autonomo composto da agenti AI
-                specializzati che replicano — e migliorano — il lavoro di una newsroom.
-              </p>
-            </div>
-          </FadeUp>
-          <div className="grid md:grid-cols-5 gap-4">
-            {AGENTS.map((agent, i) => (
-              <FadeUp key={agent.name} delay={i * 0.08}>
+          <ThinDivider />
+
+          {/* ── VERIFY IN NUMERI ── */}
+          <section className="py-10">
+            <SectionBadge label="Verify in numeri" />
+            <h2
+              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              L'algoritmo al lavoro, ogni giorno
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mb-8">
+              {[
+                {
+                  title: "Soglia qualitativa dinamica",
+                  desc: "Il punteggio minimo per la pubblicazione si adatta al volume di fonti disponibili: in caso di breaking news con poche fonti, la soglia si abbassa per garantire tempestività senza sacrificare l'accuratezza.",
+                },
+                {
+                  title: "Cross-validazione multi-fonte",
+                  desc: "Ogni fatto viene incrociato su almeno 3 fonti indipendenti. Se la coerenza è sotto il 70%, il contenuto viene segnalato come 'non confermato' e pubblicato con disclaimer esplicito.",
+                },
+                {
+                  title: "Audit continuo post-pubblicazione",
+                  desc: "Verify non si ferma alla pubblicazione: monitora le correzioni e gli aggiornamenti delle fonti originali. Se un fatto viene smentito, il sistema aggiorna automaticamente l'articolo.",
+                },
+              ].map((item, i) => (
                 <div
-                  className="rounded-xl p-5 h-full flex flex-col"
-                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
+                  key={item.title}
+                  className="py-5 px-5"
+                  style={{
+                    borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.10)" : "none",
+                    borderTop: "1px solid rgba(26,26,46,0.10)",
+                    borderBottom: "1px solid rgba(26,26,46,0.10)",
+                  }}
                 >
                   <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-4 font-mono"
-                    style={{ background: agent.color, color: "#fff" }}
-                  >
-                    {agent.icon}
-                  </div>
-                  <p
-                    className="text-sm font-bold mb-2"
-                    style={{ color: "#1a1f2e", fontFamily: "'Space Mono', monospace" }}
-                  >
-                    {agent.name}
-                  </p>
-                  <p className="text-xs leading-relaxed flex-1" style={{ color: "#6b7280" }}>
-                    {agent.desc}
-                  </p>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-          <FadeUp delay={0.4}>
-            <p
-              className="text-center text-sm italic mt-10"
-              style={{ color: "#9ca3af", fontFamily: "'Source Serif 4', serif" }}
-            >
-              Tutto senza intervento umano diretto — non perché l'uomo non serva, ma perché vogliamo
-              eliminare i suoi bias.
-            </p>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ─── VERIFY ──────────────────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <FadeUp>
-          <div className="flex items-center gap-3 mb-6">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center font-mono text-lg font-bold"
-              style={{ background: "#0a3d2e", color: "#00e5c8" }}
-            >
-              ⬡
-            </div>
-            <p
-              className="text-xs font-mono tracking-[0.2em] uppercase"
-              style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-            >
-              Verify — Algoritmo proprietario
-            </p>
-          </div>
-          <h2
-            className="text-3xl md:text-4xl font-bold leading-tight mb-6"
-            style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif", maxWidth: "640px" }}
-          >
-            Non verifichiamo le notizie.
-            <br />
-            <span style={{ color: "#00b89a" }}>Le pesiamo.</span>
-          </h2>
-          <p
-            className="text-base leading-relaxed mb-12"
-            style={{ color: "#4b5563", maxWidth: "600px" }}
-          >
-            Verify è l'algoritmo proprietario che rappresenta il vero vantaggio competitivo di
-            IdeaSmart. Ogni notizia viene valutata su sei dimensioni distinte, ricevendo un{" "}
-            <strong style={{ color: "#1a1f2e" }}>punteggio dinamico di qualità informativa</strong>.
-            Solo i contenuti che superano la soglia entrano nel flusso editoriale.
-          </p>
-        </FadeUp>
-        <div className="grid md:grid-cols-2 gap-4">
-          {VERIFY_DIMS.map((dim, i) => (
-            <FadeUp key={dim.label} delay={i * 0.07}>
-              <div
-                className="rounded-xl p-5 flex gap-4"
-                style={{ background: "#fff", border: "1px solid #e5e7eb" }}
-              >
-                <div
-                  className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-sm font-mono font-bold mt-0.5"
-                  style={{ background: "#e6faf8", color: "#00b89a" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div>
-                  <p className="text-sm font-bold mb-1" style={{ color: "#1a1f2e" }}>
-                    {dim.label}
-                  </p>
-                  <p className="text-xs leading-relaxed" style={{ color: "#6b7280" }}>
-                    {dim.desc}
-                  </p>
-                </div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── VERIFY IN NUMERI ─────────────────────────────────────────────── */}
-      <section style={{ background: "#f5f2ec", padding: "72px 0" }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <FadeUp>
-            <div className="text-center mb-12">
-              <p
-                className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-                style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-              >
-                Verify in numeri
-              </p>
-              <h2
-                className="text-3xl md:text-4xl font-bold mb-4"
-                style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                L'algoritmo al lavoro, ogni giorno
-              </h2>
-              <p
-                className="text-base leading-relaxed mx-auto"
-                style={{ color: "#4b5563", maxWidth: "520px" }}
-              >
-                Dati operativi del sistema Verify aggiornati quotidianamente.
-              </p>
-            </div>
-          </FadeUp>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            {[
-              { value: "450+", label: "Fonti monitorate", sub: "RSS, feed e media specializzati in 14 verticali" },
-              { value: "~1.200", label: "Articoli analizzati/giorno", sub: "Processati da Scouting Agent in tempo reale" },
-              { value: "63%", label: "Contenuti scartati", sub: "Non superano la soglia qualitativa di Verify" },
-              { value: "6", label: "Dimensioni di verifica", sub: "Per ogni singolo contenuto prima della pubblicazione" },
-            ].map((stat, i) => (
-              <FadeUp key={stat.label} delay={i * 0.08}>
-                <div
-                  className="rounded-xl p-6 text-center h-full flex flex-col justify-between"
-                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
-                >
-                  <p
-                    className="text-4xl font-bold mb-2"
-                    style={{ color: "#0d1b2a", fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {stat.value}
-                  </p>
-                  <p
-                    className="text-xs font-bold uppercase tracking-widest mb-2"
-                    style={{ color: "#1a1f2e", fontFamily: "'Space Mono', monospace", fontSize: "10px" }}
-                  >
-                    {stat.label}
-                  </p>
-                  <p className="text-xs leading-relaxed" style={{ color: "#9ca3af" }}>
-                    {stat.sub}
-                  </p>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              {
-                icon: "⬡",
-                title: "Soglia qualitativa dinamica",
-                desc: "Il punteggio minimo per la pubblicazione si adatta al volume di fonti disponibili: in caso di breaking news con poche fonti, la soglia si abbassa per garantire tempestività senza sacrificare l'accuratezza.",
-                color: "#0a3d2e",
-              },
-              {
-                icon: "◎",
-                title: "Cross-validazione multi-fonte",
-                desc: "Ogni fatto viene incrociato su almeno 3 fonti indipendenti. Se la coerenza è sotto il 70%, il contenuto viene segnalato come 'non confermato' e pubblicato con disclaimer esplicito.",
-                color: "#1a3a5c",
-              },
-              {
-                icon: "⊖",
-                title: "Audit continuo post-pubblicazione",
-                desc: "Verify non si ferma alla pubblicazione: monitora le correzioni e gli aggiornamenti delle fonti originali. Se un fatto viene smentito, il sistema aggiorna automaticamente l'articolo.",
-                color: "#3a1a5c",
-              },
-            ].map((item, i) => (
-              <FadeUp key={item.title} delay={i * 0.1}>
-                <div
-                  className="rounded-xl p-6 h-full"
-                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
-                >
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-mono mb-4"
-                    style={{ background: item.color, color: "#fff" }}
-                  >
-                    {item.icon}
-                  </div>
-                  <p
-                    className="text-sm font-bold mb-2"
-                    style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', serif" }}
+                    className="text-sm font-bold text-[#1a1a2e] mb-2"
+                    style={{ fontFamily: "'Space Mono', monospace" }}
                   >
                     {item.title}
-                  </p>
-                  <p className="text-xs leading-relaxed" style={{ color: "#6b7280" }}>
+                  </div>
+                  <p
+                    className="text-sm leading-relaxed text-[#1a1a2e]/60"
+                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  >
                     {item.desc}
                   </p>
                 </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── COME FUNZIONA ───────────────────────────────────────────────────── */}
-      <section style={{ background: "#0d1b2a", padding: "80px 0" }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <FadeUp>
-            <div className="text-center mb-14">
-              <p
-                className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-                style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}
-              >
-                Il processo
-              </p>
-              <h2
-                className="text-3xl md:text-4xl font-bold mb-4"
-                style={{ color: "#f5f2ec", fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Come funziona IdeaSmart
-              </h2>
+              ))}
             </div>
-          </FadeUp>
-          <div className="relative">
-            {/* Linea verticale */}
-            <div
-              className="absolute left-[19px] top-0 bottom-0 w-px hidden md:block"
-              style={{ background: "rgba(0,229,200,0.15)" }}
-            />
-            <div className="space-y-6">
+          </section>
+
+          <ThinDivider />
+
+          {/* ── COME FUNZIONA ── */}
+          <section className="py-10">
+            <SectionBadge label="Il processo" />
+            <h2
+              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              Come funziona IdeaSmart
+            </h2>
+            <div className="space-y-0">
               {PROCESS_STEPS.map((step, i) => (
-                <FadeUp key={step.n} delay={i * 0.1}>
-                  <div className="flex gap-6 items-start">
-                    <div
-                      className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-mono font-bold z-10"
-                      style={{ background: "#0d1b2a", border: "2px solid #00e5c8", color: "#00e5c8" }}
-                    >
-                      {step.n}
+                <div key={step.n}>
+                  <div className="grid grid-cols-[80px_1fr] gap-6 py-5">
+                    <div className="text-right">
+                      <span
+                        className="text-[10px] font-bold uppercase tracking-widest text-[#1a1a2e]/40"
+                        style={{ fontFamily: "'Space Mono', monospace" }}
+                      >
+                        {step.n}
+                      </span>
                     </div>
-                    <div
-                      className="flex-1 rounded-xl p-5"
-                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
-                    >
+                    <div>
                       <p
-                        className="text-base font-bold mb-1"
-                        style={{ color: "#f5f2ec", fontFamily: "'Playfair Display', serif" }}
+                        className="text-base font-bold text-[#1a1a2e] mb-1"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                       >
                         {step.title}
                       </p>
-                      <p className="text-sm leading-relaxed" style={{ color: "#94a3b8" }}>
+                      <p
+                        className="text-sm leading-relaxed text-[#1a1a2e]/65"
+                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                      >
                         {step.desc}
                       </p>
                     </div>
                   </div>
-                </FadeUp>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── APPROCCIO: DALL'OPINIONE AL DATO ───────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          <FadeUp>
-            <p
-              className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-              style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-            >
-              Il nostro approccio
-            </p>
-            <h2
-              className="text-3xl md:text-4xl font-bold leading-tight mb-6"
-              style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Dall'opinione al dato
-            </h2>
-            <p className="text-base leading-relaxed mb-6" style={{ color: "#4b5563" }}>
-              La differenza tra IdeaSmart e il giornalismo tradizionale è semplice: loro interpretano,
-              noi misuriamo. L'informazione non è più soggettiva. Diventa un output calcolato.
-            </p>
-            <div
-              className="rounded-xl p-6"
-              style={{ background: "#f5f2ec", border: "1px solid #e5e7eb" }}
-            >
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: "Giornalismo tradizionale", items: ["Interpreta", "Seleziona", "Opina", "Agenda"] },
-                  { label: "IdeaSmart", items: ["Misura", "Valida", "Calcola", "Algoritmo"] },
-                ].map((col) => (
-                  <div key={col.label}>
-                    <p
-                      className="text-xs font-mono font-bold mb-3 uppercase tracking-widest"
-                      style={{ color: col.label === "IdeaSmart" ? "#00b89a" : "#9ca3af" }}
-                    >
-                      {col.label}
-                    </p>
-                    <ul className="space-y-2">
-                      {col.items.map((item) => (
-                        <li
-                          key={item}
-                          className="text-sm font-semibold"
-                          style={{ color: col.label === "IdeaSmart" ? "#1a1f2e" : "#9ca3af" }}
-                        >
-                          {col.label === "IdeaSmart" ? "✓ " : "× "}
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FadeUp>
-          <FadeUp delay={0.15}>
-            <p
-              className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-              style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-            >
-              Zero bias. Davvero.
-            </p>
-            <h3
-              className="text-2xl font-bold mb-6"
-              style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Neutralità costruita a livello architetturale
-            </h3>
-            <p className="text-base leading-relaxed mb-8" style={{ color: "#4b5563" }}>
-              Non promettiamo neutralità. La costruiamo nel codice. IdeaSmart è progettata per essere
-              strutturalmente immune ai bias editoriali.
-            </p>
-            <div className="space-y-4">
-              {[
-                {
-                  tag: "Humanless",
-                  desc: "Nessuna interferenza editoriale umana nel flusso di pubblicazione",
-                  color: "#1a3a5c",
-                },
-                {
-                  tag: "Agenda-free",
-                  desc: "Nessun interesse politico o economico che orienta la selezione",
-                  color: "#0a3d2e",
-                },
-                {
-                  tag: "Self-auditing",
-                  desc: "Ogni contenuto è verificato dal sistema stesso prima e dopo la pubblicazione",
-                  color: "#3a1a5c",
-                },
-              ].map((item) => (
-                <div
-                  key={item.tag}
-                  className="flex gap-4 rounded-xl p-4"
-                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
-                >
-                  <span
-                    className="px-2 py-1 rounded text-xs font-mono font-bold flex-shrink-0 h-fit"
-                    style={{ background: item.color, color: "#fff" }}
-                  >
-                    {item.tag}
-                  </span>
-                  <p className="text-sm leading-relaxed" style={{ color: "#4b5563" }}>
-                    {item.desc}
-                  </p>
+                  {i < PROCESS_STEPS.length - 1 && <ThinDivider />}
                 </div>
               ))}
             </div>
-          </FadeUp>
-        </div>
-      </section>
+          </section>
 
-      {/* ─── VISION ──────────────────────────────────────────────────────────── */}
-      <section style={{ background: "#f5f2ec", padding: "80px 0" }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <FadeUp>
-            <div className="text-center mb-12">
-              <p
-                className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-                style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-              >
-                Vision
-              </p>
+          <ThinDivider />
+
+          {/* ── VISION ── */}
+          <section className="py-10 grid md:grid-cols-[2fr_1fr] gap-10">
+            <div>
+              <SectionBadge label="Vision" />
               <h2
-                className="text-3xl md:text-4xl font-bold mb-6"
-                style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
                 Costruire il primo layer di verità algoritmica globale
               </h2>
-              <p
-                className="text-base leading-relaxed mx-auto mb-10"
-                style={{ color: "#4b5563", maxWidth: "580px" }}
+              <div
+                className="space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
-                Vogliamo diventare l'infrastruttura di riferimento per l'informazione verificata.
-                Non una testata. Un nuovo standard.
-              </p>
+                <p>
+                  Vogliamo diventare l'infrastruttura di riferimento per l'informazione verificata: per utenti, per aziende, per piattaforme, per sistemi AI.
+                </p>
+                <p>
+                  IdeaSmart non è un giornale, non è un blog, non è un aggregatore. È un <strong style={{ color: INK }}>sistema di validazione dell'informazione</strong>, un motore di verità computazionale, una newsroom autonoma. Non una testata. Un nuovo standard.
+                </p>
+              </div>
             </div>
-          </FadeUp>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
-            {[
-              { label: "Per gli utenti", desc: "Informazione affidabile senza dover filtrare il rumore" },
-              { label: "Per le aziende", desc: "Intelligence di mercato verificata e debiasata" },
-              { label: "Per le piattaforme", desc: "Layer di validazione contenuti integrabile via API" },
-              { label: "Per i sistemi AI", desc: "Dataset di training puliti e verificati algoritmicamente" },
-            ].map((item, i) => (
-              <FadeUp key={item.label} delay={i * 0.08}>
+            <div className="flex flex-col gap-3">
+              {[
+                { label: "Per gli utenti", desc: "Informazione affidabile senza dover filtrare il rumore" },
+                { label: "Per le aziende", desc: "Intelligence di mercato verificata e debiasata" },
+                { label: "Per le piattaforme", desc: "Layer di validazione contenuti integrabile via API" },
+                { label: "Per i sistemi AI", desc: "Dataset di training puliti e verificati algoritmicamente" },
+              ].map((item) => (
                 <div
-                  className="rounded-xl p-5 h-full"
-                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
+                  key={item.label}
+                  className="py-3"
+                  style={{ borderBottom: "1px solid rgba(26,26,46,0.10)" }}
                 >
                   <p
-                    className="text-sm font-bold mb-2"
-                    style={{ color: "#1a1f2e", fontFamily: "'Space Mono', monospace", fontSize: "11px" }}
+                    className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
                   >
                     {item.label}
                   </p>
-                  <p className="text-xs leading-relaxed" style={{ color: "#6b7280" }}>
+                  <p
+                    className="text-sm text-[#1a1a2e]/65"
+                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  >
                     {item.desc}
                   </p>
                 </div>
-              </FadeUp>
-            ))}
-          </div>
-
-          {/* Posizionamento */}
-          <FadeUp delay={0.3}>
-            <div
-              className="rounded-2xl p-8 md:p-12 text-center"
-              style={{ background: "#0d1b2a" }}
-            >
-              <p
-                className="text-xs font-mono tracking-[0.2em] uppercase mb-6"
-                style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}
-              >
-                Posizionamento
-              </p>
-              <h3
-                className="text-2xl md:text-3xl font-bold mb-8"
-                style={{ color: "#f5f2ec", fontFamily: "'Playfair Display', serif" }}
-              >
-                IdeaSmart non è:
-              </h3>
-              <div className="flex flex-wrap justify-center gap-3 mb-8">
-                {["un giornale", "un blog", "un aggregatore"].map((item) => (
-                  <span
-                    key={item}
-                    className="px-4 py-2 rounded-full text-sm font-mono"
-                    style={{
-                      background: "rgba(255,255,255,0.06)",
-                      color: "#94a3b8",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      textDecoration: "line-through",
-                    }}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <h3
-                className="text-2xl md:text-3xl font-bold mb-8"
-                style={{ color: "#f5f2ec", fontFamily: "'Playfair Display', serif" }}
-              >
-                È:
-              </h3>
-              <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  "un sistema di validazione dell'informazione",
-                  "un motore di verità computazionale",
-                  "una newsroom autonoma",
-                ].map((item) => (
-                  <span
-                    key={item}
-                    className="px-4 py-2 rounded-full text-sm font-mono font-semibold"
-                    style={{
-                      background: "rgba(0,229,200,0.1)",
-                      color: "#00e5c8",
-                      border: "1px solid rgba(0,229,200,0.3)",
-                    }}
-                  >
-                    ✓ {item}
-                  </span>
-                ))}
-              </div>
+              ))}
             </div>
-          </FadeUp>
-        </div>
-      </section>
+          </section>
 
-      {/* ─── CTA ─────────────────────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <FadeUp>
-          <div className="text-center">
-            <p
-              className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
-              style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-            >
-              Scopri IdeaSmart
-            </p>
+          <Divider thick />
+
+          {/* ── CTA ── */}
+          <section className="py-10 text-center">
+            <SectionBadge label="Scopri IdeaSmart" color={ORANGE} bg="#fff3ee" />
             <h2
-              className="text-3xl md:text-4xl font-bold mb-6"
-              style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a2e]"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               Vuoi capire come funziona davvero l'informazione senza filtri?
             </h2>
             <p
-              className="text-base leading-relaxed mb-10 mx-auto"
-              style={{ color: "#4b5563", maxWidth: "520px" }}
+              className="mt-3 text-base text-[#1a1a2e]/65 max-w-xl mx-auto"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              Esplora i 14 canali editoriali di IdeaSmart, iscriviti alla newsletter settimanale
-              o scopri come collaborare con noi.
+              Esplora i 14 canali editoriali di IdeaSmart, iscriviti alla newsletter settimanale o scopri come collaborare con noi.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold transition-all hover:scale-105"
-                style={{
-                  background: "#0d1b2a",
-                  color: "#fff",
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                Esplora IdeaSmart →
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/">
+                <span
+                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all hover:opacity-80"
+                  style={{
+                    background: INK,
+                    color: "#fff",
+                    fontFamily: "'Space Mono', monospace",
+                  }}
+                >
+                  Esplora IdeaSmart →
+                </span>
               </Link>
-              <Link
-                href="/chi-siamo"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold transition-all hover:scale-105 border"
-                style={{
-                  background: "transparent",
-                  color: "#1a1f2e",
-                  borderColor: "#d1d5db",
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                Chi siamo →
+              <Link href="/chi-siamo">
+                <span
+                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all hover:opacity-80 border border-[#1a1a2e]/20"
+                  style={{
+                    background: "transparent",
+                    color: INK,
+                    fontFamily: "'Space Mono', monospace",
+                  }}
+                >
+                  Chi siamo →
+                </span>
               </Link>
-              <Link
-                href="/advertise"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold transition-all hover:scale-105 border"
-                style={{
-                  background: "transparent",
-                  color: "#e84f00",
-                  borderColor: "#e84f0030",
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                Collabora con noi →
+              <Link href="/advertise">
+                <span
+                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all hover:opacity-80"
+                  style={{
+                    background: "#fff3ee",
+                    color: ORANGE,
+                    fontFamily: "'Space Mono', monospace",
+                  }}
+                >
+                  Collabora con noi →
+                </span>
               </Link>
             </div>
-          </div>
-        </FadeUp>
-      </section>
+          </section>
 
-      {/* ─── FOOTER ──────────────────────────────────────────────────────────── */}
-      <footer
-        className="border-t py-10"
-        style={{ borderColor: "#e5e7eb", background: "#faf8f3" }}
-      >
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <p
-            className="text-xs font-mono mb-2"
-            style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
-          >
-            IDEASMART — Tecnologia
-          </p>
-          <p className="text-xs" style={{ color: "#d1d5db" }}>
-            © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
-            <a href="/" style={{ color: "#9ca3af" }}>
-              ideasmart.ai
-            </a>
-          </p>
-        </div>
-      </footer>
-    </div>
+        </main>
+
+        {/* ── FOOTER ── */}
+        <footer
+          className="border-t py-8"
+          style={{ borderColor: "rgba(26,26,46,0.15)", background: "#faf8f3" }}
+        >
+          <div className="max-w-6xl mx-auto px-4 text-center">
+            <p
+              className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
+              style={{ color: "rgba(26,26,46,0.35)", fontFamily: "'Space Mono', monospace" }}
+            >
+              IDEASMART — Tecnologia
+            </p>
+            <p
+              className="text-xs"
+              style={{ color: "rgba(26,26,46,0.25)", fontFamily: "'Space Mono', monospace" }}
+            >
+              © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
+              <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
+                ideasmart.ai
+              </a>
+            </p>
+          </div>
+        </footer>
+
+      </div>
+    </>
   );
 }
