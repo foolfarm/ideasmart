@@ -140,13 +140,6 @@ export default function Navbar() {
           {/* CTA + mobile menu */}
           <div className="flex items-center gap-2">
             <Link
-              href="/tecnologia"
-              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-100"
-              style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
-            >
-              Tecnologia
-            </Link>
-            <Link
               href="/chi-siamo"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-100"
               style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}

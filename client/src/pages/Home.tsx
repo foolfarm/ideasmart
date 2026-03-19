@@ -517,6 +517,15 @@ function SectionNav() {
             Chi Siamo
           </span>
         </Link>
+        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <Link href="/tecnologia">
+          <span
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#00b89a]"
+            style={{ fontFamily: "'Space Mono', monospace" }}
+          >
+            Tecnologia
+          </span>
+        </Link>
         <div className="ml-auto flex items-center">
           <Link href="/business">
             <span

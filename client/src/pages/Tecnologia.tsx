@@ -337,6 +337,110 @@ export default function Tecnologia() {
         </div>
       </section>
 
+      {/* ─── VERIFY IN NUMERI ─────────────────────────────────────────────── */}
+      <section style={{ background: "#f5f2ec", padding: "72px 0" }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <FadeUp>
+            <div className="text-center mb-12">
+              <p
+                className="text-xs font-mono tracking-[0.2em] uppercase mb-4"
+                style={{ color: "#9ca3af", fontFamily: "'Space Mono', monospace" }}
+              >
+                Verify in numeri
+              </p>
+              <h2
+                className="text-3xl md:text-4xl font-bold mb-4"
+                style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                L'algoritmo al lavoro, ogni giorno
+              </h2>
+              <p
+                className="text-base leading-relaxed mx-auto"
+                style={{ color: "#4b5563", maxWidth: "520px" }}
+              >
+                Dati operativi del sistema Verify aggiornati quotidianamente.
+              </p>
+            </div>
+          </FadeUp>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            {[
+              { value: "450+", label: "Fonti monitorate", sub: "RSS, feed e media specializzati in 14 verticali" },
+              { value: "~1.200", label: "Articoli analizzati/giorno", sub: "Processati da Scouting Agent in tempo reale" },
+              { value: "63%", label: "Contenuti scartati", sub: "Non superano la soglia qualitativa di Verify" },
+              { value: "6", label: "Dimensioni di verifica", sub: "Per ogni singolo contenuto prima della pubblicazione" },
+            ].map((stat, i) => (
+              <FadeUp key={stat.label} delay={i * 0.08}>
+                <div
+                  className="rounded-xl p-6 text-center h-full flex flex-col justify-between"
+                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
+                >
+                  <p
+                    className="text-4xl font-bold mb-2"
+                    style={{ color: "#0d1b2a", fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {stat.value}
+                  </p>
+                  <p
+                    className="text-xs font-bold uppercase tracking-widest mb-2"
+                    style={{ color: "#1a1f2e", fontFamily: "'Space Mono', monospace", fontSize: "10px" }}
+                  >
+                    {stat.label}
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: "#9ca3af" }}>
+                    {stat.sub}
+                  </p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              {
+                icon: "⬡",
+                title: "Soglia qualitativa dinamica",
+                desc: "Il punteggio minimo per la pubblicazione si adatta al volume di fonti disponibili: in caso di breaking news con poche fonti, la soglia si abbassa per garantire tempestività senza sacrificare l'accuratezza.",
+                color: "#0a3d2e",
+              },
+              {
+                icon: "◎",
+                title: "Cross-validazione multi-fonte",
+                desc: "Ogni fatto viene incrociato su almeno 3 fonti indipendenti. Se la coerenza è sotto il 70%, il contenuto viene segnalato come 'non confermato' e pubblicato con disclaimer esplicito.",
+                color: "#1a3a5c",
+              },
+              {
+                icon: "⊖",
+                title: "Audit continuo post-pubblicazione",
+                desc: "Verify non si ferma alla pubblicazione: monitora le correzioni e gli aggiornamenti delle fonti originali. Se un fatto viene smentito, il sistema aggiorna automaticamente l'articolo.",
+                color: "#3a1a5c",
+              },
+            ].map((item, i) => (
+              <FadeUp key={item.title} delay={i * 0.1}>
+                <div
+                  className="rounded-xl p-6 h-full"
+                  style={{ background: "#fff", border: "1px solid #e5e7eb" }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-mono mb-4"
+                    style={{ background: item.color, color: "#fff" }}
+                  >
+                    {item.icon}
+                  </div>
+                  <p
+                    className="text-sm font-bold mb-2"
+                    style={{ color: "#1a1f2e", fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {item.title}
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: "#6b7280" }}>
+                    {item.desc}
+                  </p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── COME FUNZIONA ───────────────────────────────────────────────────── */}
       <section style={{ background: "#0d1b2a", padding: "80px 0" }}>
         <div className="max-w-5xl mx-auto px-6">

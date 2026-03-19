@@ -1208,3 +1208,8 @@
 - [ ] Diagnosticare causa caricamento lento notizie homepage
 - [ ] Ottimizzare sistema cache per notizie homepage
 - [ ] Aggiungere skeleton loading per feedback visivo immediato
+
+## Navbar e Tecnologia (19 Mar 2026 — v2)
+
+- [x] Spostare link "Tecnologia" nella seconda riga navbar (accanto a Edicola, Manifesto, Chi Siamo) — rimuovere dalla riga desktop in alto
+- [x] Aggiungere blocco "Verify in numeri" nella pagina /tecnologia con metriche concrete
