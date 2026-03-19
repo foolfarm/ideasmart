@@ -1089,3 +1089,7 @@
 - [x] Ripristinare Google Consent Mode v2 standalone (senza CMP esterno) nell'head di index.html
 - [x] Collegare useCookieConsent a gtag consent update: aggiornamento in tempo reale dopo scelta utente
 - [x] Ripristino consenso Google al caricamento pagina (utenti che avevano già scelto)
+
+## Nuovi task (19 Mar 2026 — Fix LinkedIn duplicati)
+
+- [x] Fix LinkedIn duplicati: aggiunto controllo idempotenza nel linkedinPublisher (verifica DB prima di pubblicare) (19 Mar 2026)

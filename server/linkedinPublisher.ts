@@ -393,6 +393,30 @@ export async function publishDailyLinkedInPosts(): Promise<{
 }> {
   console.log("[LinkedIn] 🚀 Avvio pubblicazione giornaliera editoriale...");
 
+  // ── Controllo idempotenza: evita doppi post se il server è riavviato ─────────
+  // Verifica se esiste già un post pubblicato oggi nel DB.
+  // Questo protegge da scenari in cui dev server e server di produzione
+  // sono entrambi attivi alle 10:00 e tentano di pubblicare simultaneamente.
+  try {
+    const db = await getDb();
+    if (db) {
+      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+      const { eq } = await import('drizzle-orm');
+      const existing = await db.select({ id: linkedinPostsTable.id })
+        .from(linkedinPostsTable)
+        .where(eq(linkedinPostsTable.dateLabel, today))
+        .limit(1);
+      if (existing.length > 0) {
+        console.log(`[LinkedIn] ⏭️ Post già pubblicato oggi (${today}) — pubblicazione saltata per evitare duplicati.`);
+        return { published: 0, errors: [], posts: [] };
+      }
+    }
+  } catch (checkErr) {
+    // Se il controllo fallisce, procedi comunque con la pubblicazione
+    console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo con la pubblicazione:', checkErr);
+  }
+
   // Seleziona la sezione in base al giorno della settimana
   const dayOfWeek = new Date().getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mer, 4=Gio, 5=Ven, 6=Sab
   const section: "ai" | "startup" = [1, 3, 5, 0].includes(dayOfWeek) ? "ai" : "startup";
