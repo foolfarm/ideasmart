@@ -450,33 +450,88 @@ export default function Home() {
           <Divider thick />
 
           {/* Barra navigazione sezioni */}
-          <nav className="flex flex-wrap items-center justify-center gap-0 py-2 border-t border-[#1a1a2e]/15">
-            {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec, i) => {
-              const s = SECTION_COLORS[sec];
-              return (
-                <Link key={sec} href={s.path}>
-                  <span className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
+          {/* Menu navigazione elegante — due righe: canali editoriali + pagine istituzionali */}
+          <nav className="border-t border-[#1a1a2e] overflow-hidden">
+            {/* Riga 1: canali editoriali con accent color al hover */}
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex items-stretch min-w-max">
+                {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec, i) => {
+                  const s = SECTION_COLORS[sec];
+                  return (
+                    <Link key={sec} href={s.path}>
+                      <span
+                        className="group relative flex items-center px-4 py-2.5 text-[9.5px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200 text-[#1a1a2e] hover:text-white"
+                        style={{
+                          fontFamily: "'Space Mono', monospace",
+                          borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none",
+                          ['--accent' as string]: s.accent,
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = s.accent; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = '#1a1a2e'; }}
+                      >
+                        {s.label}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Riga 2: pagine istituzionali + maquette Business */}
+            <div
+              className="flex flex-wrap items-center border-t"
+              style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}
+            >
+              {/* Edicola */}
+              <Link href="/edicola">
+                <span
+                  className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#1a1a2e]"
+                  style={{ fontFamily: "'Space Mono', monospace" }}
+                >
+                  Edicola
+                </span>
+              </Link>
+              <span className="text-[#1a1a2e]/15 text-xs">|</span>
+              {/* Manifesto */}
+              <Link href="/manifesto">
+                <span
+                  className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0a6e5c]"
+                  style={{ fontFamily: "'Space Mono', monospace" }}
+                >
+                  Manifesto
+                </span>
+              </Link>
+              <span className="text-[#1a1a2e]/15 text-xs">|</span>
+              {/* Chi Siamo */}
+              <Link href="/chi-siamo">
+                <span
+                  className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0369a1]"
+                  style={{ fontFamily: "'Space Mono', monospace" }}
+                >
+                  Chi Siamo
+                </span>
+              </Link>
+
+              {/* Separatore + maquette Business */}
+              <div className="ml-auto flex items-center">
+                <Link href="/business">
+                  <span
+                    className="flex items-center gap-2 px-5 py-2 text-[9px] font-black uppercase tracking-[0.14em] cursor-pointer transition-all duration-200"
                     style={{
                       fontFamily: "'Space Mono', monospace",
-                      borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.18)" : "none",
-                    }}>
-                    {s.label}
+                      background: "#1a1a2e",
+                      color: "#ff5500",
+                      letterSpacing: "0.14em",
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ff5500'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1a1a2e'; (e.currentTarget as HTMLElement).style.color = '#ff5500'; }}
+                  >
+                    <span style={{ fontSize: "10px" }}>▶</span>
+                    IdeaSmart Business
                   </span>
                 </Link>
-              );
-            })}
-            <Link href="/edicola">
-              <span className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
-                style={{ fontFamily: "'Space Mono', monospace", borderLeft: "1px solid rgba(26,26,46,0.18)" }}>
-                Edicola
-              </span>
-            </Link>
-            <Link href="/manifesto">
-              <span className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-50 cursor-pointer text-[#1a1a2e]"
-                style={{ fontFamily: "'Space Mono', monospace", borderLeft: "1px solid rgba(26,26,46,0.18)" }}>
-                Manifesto
-              </span>
-            </Link>
+              </div>
+            </div>
           </nav>
 
           <Divider />

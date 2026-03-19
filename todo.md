@@ -1135,3 +1135,9 @@
 
 - [x] Aggiungere link /chi-siamo nella sezione case study della pagina /business (19 Mar 2026)
 - [x] Aggiungere link /chi-siamo nel footer della pagina /business (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — Menu elegante + Chi Siamo + Business maquette)
+
+- [x] Ridisegnare menu navigazione Home: due righe eleganti con hover accent color + scrollabile (19 Mar 2026)
+- [x] Aggiungere Chi Siamo accanto a Manifesto nel menu riga 2 (19 Mar 2026)
+- [x] Maquette IdeaSmart Business: pulsante dark #1a1a2e + arancio #ff5500 in fondo alla riga 2 (19 Mar 2026)
