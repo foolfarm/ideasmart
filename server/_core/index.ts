@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import compression from "compression";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -43,7 +45,48 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // ── Compressione gzip/deflate per tutte le risposte ≥1KB ──────────────────────
+    // ── Trust proxy: necessario per rate limiting corretto dietro CDN/load balancer ────────────────
+  // Manus usa un reverse proxy che aggiunge X-Forwarded-For
+  app.set('trust proxy', 1);
+
+  // ── Security Headers (Helmet) ─────────────────────────────────────────────────────────────
+  // X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, ecc.
+  app.use(helmet({
+    contentSecurityPolicy: false, // Disabilitato: AdSense + Google Fonts richiedono CSP permissiva
+    crossOriginEmbedderPolicy: false, // Disabilitato: necessario per AdSense iframes
+    hsts: {
+      maxAge: 31536000,        // 1 anno
+      includeSubDomains: true,
+      preload: true,
+    },
+  }));
+
+  // ── Rate Limiting ─────────────────────────────────────────────────────────────
+  // Protegge le API tRPC e le route sensibili da abusi e DDoS
+  const apiLimiter = rateLimit({
+    windowMs: 60 * 1000,    // 1 minuto
+    limit: 120,             // max 120 richieste/minuto per IP
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    message: { error: 'Troppe richieste. Riprova tra un minuto.' },
+    skip: (req) => {
+      const ip = req.ip || '';
+      return ip === '127.0.0.1' || ip === '::1';
+    },
+  });
+  app.use('/api/trpc', apiLimiter);
+
+  // Rate limiter più restrittivo per le route di autenticazione
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,  // 15 minuti
+    limit: 20,                  // max 20 tentativi di login per IP
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    message: { error: 'Troppi tentativi di accesso. Riprova tra 15 minuti.' },
+  });
+  app.use('/api/oauth', authLimiter);
+
+  // ── Compressione gzip/deflate per tutte le risposte ≥1KB ────────────────────
   // Riduce la dimensione delle risposte JSON tRPC del 70-85%
   app.use(compression({
     level: 6,          // Bilanciamento velocità/compressione (1=veloce, 9=massimo)
@@ -56,9 +99,9 @@ async function startServer() {
     },
   }));
 
-  // Configure body parser with larger size limit for file uploads
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  // Body parser — limite ridotto a 2MB (era 50MB: eccessivo e rischioso per DoS)
+  app.use(express.json({ limit: "2mb" }));
+  app.use(express.urlencoded({ limit: "2mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 

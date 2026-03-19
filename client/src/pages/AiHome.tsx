@@ -48,7 +48,7 @@ function NewsCard({ item, showImage = false, large = false }: {
     <div className="py-3">
       {showImage && item.imageUrl && (
         <a href={href} rel="noopener noreferrer">
-          <img src={item.imageUrl} alt={item.title}
+          <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
             className={`w-full ${large ? "h-52" : "h-32"} object-cover mb-3 cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all`}
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
         </a>
@@ -232,7 +232,7 @@ export default function AiHome() {
                   <div className="py-4 pl-0 md:pl-5 border-l-0 md:border-l border-[#1a1a2e]/20">
                     {heroNews.imageUrl ? (
                       <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
-                        <img src={heroNews.imageUrl} alt={heroNews.title}
+                        <img src={heroNews.imageUrl} alt={heroNews.title} loading="lazy" decoding="async"
                           className="w-full h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
                           style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
                       </a>

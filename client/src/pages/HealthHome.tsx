@@ -43,7 +43,7 @@ function NewsCard({ item, showImage = false }: {
     <div className="py-3">
       {showImage && item.imageUrl && (
         <a href={href} target="_blank" rel="noopener noreferrer">
-          <img src={item.imageUrl} alt={item.title}
+          <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
             className="w-full h-32 object-cover mb-3 cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
         </a>
@@ -163,7 +163,7 @@ export default function HealthHome() {
                   {heroNews.imageUrl && (
                     <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`}
                       target="_blank" rel="noopener noreferrer">
-                      <img src={heroNews.imageUrl} alt={heroNews.title}
+                      <img src={heroNews.imageUrl} alt={heroNews.title} loading="lazy" decoding="async"
                         className="w-full h-64 md:h-80 object-cover mb-4 grayscale-[10%] hover:grayscale-0 transition-all"
                         style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
                     </a>

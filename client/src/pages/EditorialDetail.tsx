@@ -128,7 +128,7 @@ export default function EditorialDetail() {
         {/* Immagine */}
         {editorial.imageUrl && (
           <figure className="mb-8">
-            <img src={editorial.imageUrl} alt={editorial.title} className="w-full h-64 md:h-96 object-cover" />
+            <img src={editorial.imageUrl} alt={editorial.title} loading="lazy" decoding="async" className="w-full h-64 md:h-96 object-cover" />
           </figure>
         )}
 

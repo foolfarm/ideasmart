@@ -97,6 +97,19 @@ import { eq, desc } from "drizzle-orm";
 
 const TZ = "Europe/Rome";
 
+// ─── Job Lock: previene sovrapposizioni tra cron job concorrenti ─────────────────────────────
+// Se un job è già in esecuzione, il cron successivo viene saltato (skip).
+// Questo previene accumuli di job in coda se un job impiega più del previsto.
+const _jobLocks: Record<string, boolean> = {};
+function withLock<T>(jobName: string, fn: () => Promise<T>): Promise<T | null> {
+  if (_jobLocks[jobName]) {
+    console.warn(`[SchedulerManager] ⚠️ Skip ${jobName}: già in esecuzione`);
+    return Promise.resolve(null);
+  }
+  _jobLocks[jobName] = true;
+  return fn().finally(() => { _jobLocks[jobName] = false; });
+}
+
 // ─── Chiavi per evitare doppi invii ──────────────────────────────────────────
 function getWeekKey(): string {
   const now = new Date();
@@ -119,14 +132,18 @@ export function startAllSchedulers(): void {
 
   cron.schedule("0 0 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio scraping RSS News AI...");
-    try { await refreshAINewsFromRSS(); console.log("[SchedulerManager] ✅ News AI aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ News AI:", err); }
+    await withLock("rss-ai", async () => {
+      try { await refreshAINewsFromRSS(); console.log("[SchedulerManager] ✅ News AI aggiornate"); }
+      catch (err) { console.error("[SchedulerManager] ❌ News AI:", err); }
+    });
   }, { timezone: TZ });
 
   cron.schedule("5 0 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 00:05 CET — Editoriale AI + Startup del giorno...");
-    try { await runDailyContentRefresh(); console.log("[SchedulerManager] ✅ Editoriale e Startup AI aggiornati"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Editoriale/Startup AI:", err); }
+    await withLock("editorial-ai", async () => {
+      try { await runDailyContentRefresh(); console.log("[SchedulerManager] ✅ Editoriale e Startup AI aggiornati"); }
+      catch (err) { console.error("[SchedulerManager] ❌ Editoriale/Startup AI:", err); }
+    });
   }, { timezone: TZ });
 
   cron.schedule("15 0 * * 1", async () => {

@@ -127,7 +127,7 @@ export default function ReportageDetail() {
         {/* Immagine */}
         {rep.imageUrl && (
           <figure className="mb-8">
-            <img src={rep.imageUrl} alt={rep.headline} className="w-full h-64 md:h-80 object-cover" />
+            <img src={rep.imageUrl} alt={rep.headline} loading="lazy" decoding="async" className="w-full h-64 md:h-80 object-cover" />
           </figure>
         )}
 

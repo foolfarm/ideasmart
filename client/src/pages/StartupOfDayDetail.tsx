@@ -71,7 +71,7 @@ export default function StartupOfDayDetail() {
         {/* Immagine */}
         {spotlight.imageUrl && (
           <figure className="mb-8">
-            <img src={spotlight.imageUrl} alt={spotlight.name} className="w-full h-64 md:h-80 object-cover" />
+            <img src={spotlight.imageUrl} alt={spotlight.name} loading="lazy" decoding="async" className="w-full h-64 md:h-80 object-cover" />
           </figure>
         )}
 

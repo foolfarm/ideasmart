@@ -196,13 +196,13 @@ function HeroNewsBlock({ item, section, editorial }: {
         ) : item.imageUrl ? (
           isExternal ? (
             <a href={href} target="_blank" rel="noopener noreferrer">
-              <img src={item.imageUrl} alt={item.title}
+              <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
                 className="w-full h-56 md:h-64 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
                 style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
             </a>
           ) : (
             <Link href={href}>
-              <img src={item.imageUrl} alt={item.title}
+              <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
                 className="w-full h-56 md:h-64 object-cover grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
                 style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
             </Link>
@@ -240,7 +240,7 @@ function NewsCard({ item, section, showImage = false }: {
         </div>
       ) : showImage && item.imageUrl ? (
         <a href={href} target="_blank" rel="noopener noreferrer">
-          <img src={item.imageUrl} alt={item.title}
+          <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
             className="w-full h-32 object-cover mb-2 grayscale-[20%] hover:grayscale-0 transition-all cursor-pointer"
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
         </a>

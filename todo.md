@@ -1223,3 +1223,12 @@
 - [x] Riscrivere Advertise.tsx con look editoriale del giornale (carta bianca, Playfair, Source Serif 4, Space Mono)
 - [x] Aggiungere link /tecnologia nella sezione "Come lavoriamo" di ChiSiamo.tsx
 - [x] Trasformare sezione processo in /tecnologia in diagramma visivo interattivo
+
+## Audit Hardening & Performance (19 Mar 2026)
+
+- [x] Analisi sicurezza: HTTP headers, rate limiting, input validation, CORS
+- [x] Analisi performance: bundle size, lazy loading, query N+1, cache
+- [x] Analisi efficienza aggiornamenti: cron jobs, scraping, deduplicazione
+- [x] Fix sicurezza: helmet (HSTS, X-Frame, X-Content-Type), rate limiter 100req/15min, trust proxy
+- [x] Fix performance: lazy loading img su 17 pagine, indici DB newsItems(section, position), font non-critici media=print
+- [x] Fix efficienza: job lock anti-sovrapposizione cron, ridotto body parser 50mb→2mb

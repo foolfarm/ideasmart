@@ -1,4 +1,4 @@
-import { boolean, float, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, float, index, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -86,7 +86,12 @@ export const newsItems = mysqlTable("news_items", {
   imageUrl: varchar("imageUrl", { length: 1000 }),
   videoUrl: varchar("videoUrl", { length: 1000 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (t) => ({
+  // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)
+  sectionIdx: index("idx_news_section").on(t.section),
+  // Indice composto section+position: ottimizza ORDER BY position nelle query per sezione
+  sectionPositionIdx: index("idx_news_section_position").on(t.section, t.position),
+}));
 
 export type NewsItem = typeof newsItems.$inferSelect;
 export type InsertNewsItem = typeof newsItems.$inferInsert;
