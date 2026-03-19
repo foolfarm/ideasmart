@@ -1,6 +1,7 @@
 /**
  * useCookieConsent — gestione consenso cookie GDPR
  * Persiste le preferenze nel localStorage con chiave "ideasmart_cookie_consent"
+ * Aggiorna Google Consent Mode v2 (gtag) in tempo reale dopo la scelta dell'utente.
  */
 import { useState, useEffect, useCallback } from "react";
 
@@ -48,6 +49,23 @@ function saveConsent(consent: CookieConsent) {
   );
 }
 
+/**
+ * Aggiorna Google Consent Mode v2 in base alle preferenze dell'utente.
+ * Chiamato sia al caricamento (se già deciso) sia dopo ogni scelta.
+ */
+function updateGoogleConsent(consent: CookieConsent) {
+  if (typeof window === "undefined" || typeof (window as any).gtag !== "function") return;
+  const gtag = (window as any).gtag;
+  gtag("consent", "update", {
+    ad_storage:              consent.advertising ? "granted" : "denied",
+    ad_user_data:            consent.advertising ? "granted" : "denied",
+    ad_personalization:      consent.advertising ? "granted" : "denied",
+    analytics_storage:       consent.analytics   ? "granted" : "denied",
+    functionality_storage:   consent.necessary   ? "granted" : "denied",
+    personalization_storage: consent.advertising ? "granted" : "denied",
+  });
+}
+
 export function useCookieConsent(): CookieConsentState {
   const [consent, setConsent] = useState<CookieConsent | null>(null);
   const [hasDecided, setHasDecided] = useState(false);
@@ -57,6 +75,8 @@ export function useCookieConsent(): CookieConsentState {
     if (stored) {
       setConsent(stored);
       setHasDecided(true);
+      // Ripristina il consenso Google al caricamento della pagina
+      updateGoogleConsent(stored);
     }
   }, []);
 
@@ -65,6 +85,7 @@ export function useCookieConsent(): CookieConsentState {
     saveConsent(c);
     setConsent(c);
     setHasDecided(true);
+    updateGoogleConsent(c);
   }, []);
 
   const rejectAll = useCallback(() => {
@@ -72,6 +93,7 @@ export function useCookieConsent(): CookieConsentState {
     saveConsent(c);
     setConsent(c);
     setHasDecided(true);
+    updateGoogleConsent(c);
   }, []);
 
   const saveCustom = useCallback((prefs: Omit<CookieConsent, "necessary">) => {
@@ -79,6 +101,7 @@ export function useCookieConsent(): CookieConsentState {
     saveConsent(c);
     setConsent(c);
     setHasDecided(true);
+    updateGoogleConsent(c);
   }, []);
 
   const resetConsent = useCallback(() => {

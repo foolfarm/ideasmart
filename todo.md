@@ -1082,3 +1082,10 @@
 - [x] Rimuovere Google Consent Mode v2 (era configurato per Clickio) dall'head di index.html
 - [x] Rimuovere link "Your Privacy Choices" da footer Home.tsx, AiHome.tsx, MusicHome.tsx, StartupHome.tsx
 - [x] Verificare ads.txt: nessuna riga Clickio/Azerion presente (solo AdSense + reseller network)
+
+## Nuovi task (19 Mar 2026 — AdSense Auto Ads)
+
+- [x] Attivare Google AdSense Auto Ads (enable_page_level_ads: true, overlays bottom) in index.html
+- [x] Ripristinare Google Consent Mode v2 standalone (senza CMP esterno) nell'head di index.html
+- [x] Collegare useCookieConsent a gtag consent update: aggiornamento in tempo reale dopo scelta utente
+- [x] Ripristino consenso Google al caricamento pagina (utenti che avevano già scelto)
