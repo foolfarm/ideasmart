@@ -583,7 +583,7 @@ export default function StartupHome() {
                 <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>AI4Business</span></Link>
                 <Link href="/music"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#5b21b6", fontFamily: "'Space Mono', monospace" }}>ITsMusic</span></Link>
                 <Link href="/privacy"><span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>Privacy Policy</span></Link>
-                <a className="clickio-cmp-settings-text clickio-cmp-settings-display" style={{ display: "none", fontFamily: "'Space Mono', monospace", fontSize: "12px", color: "rgba(26,26,46,0.4)", textDecoration: "none", cursor: "pointer" }} href="#">Your Privacy Choices</a>
+
               </div>
             </div>
           </div>

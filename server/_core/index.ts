@@ -63,8 +63,8 @@ async function startServer() {
   registerOAuthRoutes(app);
 
   // ── ads.txt — servito come file statico da client/public/ads.txt ──────────
-  // Il file è generato con tutte le righe Moneytizer + AdSense + Clickio normalizzate.
-  // Per aggiornarlo: rigenerare client/public/ads.txt con lo script Python in /home/ubuntu/upload/
+  // Il file contiene le righe AdSense (pub-7185482526978993) + reseller network.
+  // Per aggiornarlo: modificare direttamente client/public/ads.txt
   console.log("[ads.txt] Servito come file statico da client/public/ads.txt");
 
   // ── Email Open Tracking Pixel ──────────────────────────────────────────────

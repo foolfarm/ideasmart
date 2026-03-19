@@ -807,14 +807,7 @@ export default function Home() {
                     Privacy Policy
                   </span>
                 </Link>
-                {/* Clickio Consent — link per rivedere/modificare le impostazioni privacy */}
-                <a
-                  className="clickio-cmp-settings-text clickio-cmp-settings-display"
-                  style={{ display: "none", fontFamily: "'Space Mono', monospace", fontSize: "10px", color: "rgba(26,26,46,0.4)", textDecoration: "none", cursor: "pointer" }}
-                  href="#"
-                >
-                  Your Privacy Choices
-                </a>
+
               </div>
             </div>
           </div>

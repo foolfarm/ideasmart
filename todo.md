@@ -1074,3 +1074,11 @@
 ## SEO fix (18 Mar 2026)
 - [ ] Aggiungere H2 nella home page (/)
 - [ ] Accorciare meta description a max 160 caratteri
+
+## Nuovi task (19 Mar 2026 — Rimozione Clickio)
+
+- [x] Rimuovere tag CMP Clickio (consent_248045.js) dall'head di index.html
+- [x] Rimuovere tag Core Web Vitals Clickio (248045_wv.js) dall'head di index.html
+- [x] Rimuovere Google Consent Mode v2 (era configurato per Clickio) dall'head di index.html
+- [x] Rimuovere link "Your Privacy Choices" da footer Home.tsx, AiHome.tsx, MusicHome.tsx, StartupHome.tsx
+- [x] Verificare ads.txt: nessuna riga Clickio/Azerion presente (solo AdSense + reseller network)
