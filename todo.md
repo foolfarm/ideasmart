@@ -1157,3 +1157,14 @@
 - [x] Procedura tRPC: news.getSectionCounts (conteggio notizie per sezione, cache 10 min) (19 Mar 2026)
 - [x] SectionNav: badge numerico accanto al nome di ogni sezione nel menu riga 1 (19 Mar 2026)
 - [x] Stile badge: accent color su sfondo light per sezione inattiva, bianco trasparente per sezione attiva (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — Business page restyling)
+
+- [ ] Sostituire piano Revenue Sharing con piano Custom (€ a progetto) in /business
+- [ ] Riscrivere Business.tsx con layout editoriale IdeaSmart (bianco carta, inchiostro, Playfair)
+
+## Nuovi task (19 Mar 2026 — Performance caricamento notizie)
+
+- [ ] Diagnosticare causa caricamento lento notizie homepage
+- [ ] Ottimizzare sistema cache per notizie homepage
+- [ ] Aggiungere skeleton loading per feedback visivo immediato

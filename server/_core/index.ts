@@ -239,8 +239,8 @@ setTimeout(async () => {
 }, 30_000);
 
 // ─── Cache warm-up: pre-popola la cache in-memory all'avvio ──────────────────────────────────────────────────
-// Parte 60 secondi dopo l'avvio (dopo scraping e fix URL) per garantire che il
-// DB sia già popolato. Questo assicura che il primo utente del giorno non aspetti.
+// Parte 5 secondi dopo l'avvio: il DB è sempre già popolato in produzione.
+// Warm-up immediato garantisce che il primo visitatore non aspetti.
 setTimeout(async () => {
   try {
     console.log('[Cache Warmup] 🔥 Avvio pre-riscaldamento cache...');
@@ -276,4 +276,4 @@ setTimeout(async () => {
   } catch (err) {
     console.error('[Cache Warmup] Errore (non critico):', err);
   }
-}, 60_000);
+}, 5_000); // 5 secondi: il DB è sempre già popolato in produzione
