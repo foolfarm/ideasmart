@@ -92,6 +92,21 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-16_792fe740.png" />
     <!-- ─────────────────────────────────────────────────────────────────── -->
 
+    <!-- ─── Performance: DNS prefetch per risorse esterne ──────────────── -->
+    <!-- Riduce la latenza di connessione per CDN e servizi esterni -->
+    <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://assets.calendly.com" />
+    <!-- ─── Performance: Prefetch delle sezioni più visitate ────────────── -->
+    <!-- Il browser scarica questi chunk JS in background mentre l'utente legge la homepage -->
+    <!-- Nota: i path reali dei chunk vengono generati da Vite con hash; questi sono hint generici -->
+    <link rel="prefetch" href="/ai" as="document" />
+    <link rel="prefetch" href="/startup" as="document" />
+    <link rel="prefetch" href="/sondaggi" as="document" />
+    <link rel="prefetch" href="/news" as="document" />
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

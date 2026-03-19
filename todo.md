@@ -29,6 +29,12 @@
 - [x] Code splitting manuale Vite: vendor-react, vendor-trpc, vendor-radix, vendor-charts, vendor-motion
 - [x] Cache HTTP ottimale per file statici in produzione: /assets immutable 1 anno, index.html no-cache
 
+## Performance Round 2 (19 Mar 2026)
+
+- [x] Compressione gzip/Brotli sul server Express — già attiva (level 6, threshold 1KB)
+- [x] Prefetch link per /ai, /startup, /sondaggi, /news in index.html + dns-prefetch CDN
+- [x] Skeleton loader specifici per ThreatAlert (struttura reale: badge, titolo, testo, footer)
+
 ## In sospeso
 
 - [ ] Aggiungere secondo banner pubblicitario nella sezione startup (tra le card)

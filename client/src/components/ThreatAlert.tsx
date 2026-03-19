@@ -43,28 +43,71 @@ const TIPO_COLORS: Record<string, string> = {
   DDoS: "#0891b2",
 };
 
+// ─── Skeleton specifico che replica la struttura reale della card ─────────────
+// Mostra l'esatta anatomia della card (badge tipo, badge rischio, titolo, testo, footer)
+// così l'utente capisce cosa sta arrivando e non vede schede nere vuote
+function ThreatCardSkeleton() {
+  return (
+    <div
+      className="rounded-lg border p-4"
+      style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)" }}
+    >
+      {/* Header: badge tipo + badge rischio */}
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="h-4 w-20 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.12)" }} />
+        <div className="h-4 w-16 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.08)" }} />
+      </div>
+      {/* Titolo minaccia */}
+      <div className="h-4 w-4/5 rounded mb-1.5 animate-pulse" style={{ background: "rgba(255,255,255,0.15)" }} />
+      <div className="h-4 w-3/5 rounded mb-3 animate-pulse" style={{ background: "rgba(255,255,255,0.10)" }} />
+      {/* Descrizione: 3 righe */}
+      <div className="space-y-1.5 mb-3">
+        <div className="h-3 w-full rounded animate-pulse" style={{ background: "rgba(255,255,255,0.07)" }} />
+        <div className="h-3 w-11/12 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.07)" }} />
+        <div className="h-3 w-4/6 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.07)" }} />
+      </div>
+      {/* Footer: settore + fonte */}
+      <div className="flex items-center justify-between pt-2 border-t border-white/10">
+        <div className="h-3 w-24 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.08)" }} />
+        <div className="h-3 w-16 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.08)" }} />
+      </div>
+    </div>
+  );
+}
+
 export default function ThreatAlert() {
   const { data, isLoading } = trpc.news.getThreatAlert.useQuery(undefined, {
     staleTime: 1000 * 60 * 60 * 4, // 4 ore: dati LLM cambiano raramente
+    refetchOnWindowFocus: false,
     retry: 1,
   });
 
   if (isLoading) {
     return (
-      <section className="py-8 bg-[#0a1628]">
+      <section className="py-8 bg-[#0a1628] border-t border-white/10">
         <div className="max-w-[1200px] mx-auto px-4">
-          <div className="flex items-center gap-3 mb-6">
-            <Shield className="w-5 h-5 text-[#27ae60]" />
-            <span
-              className="text-xs font-bold uppercase tracking-[0.18em] text-[#27ae60]"
-              style={{ fontFamily: "'Space Mono', monospace" }}
-            >
-              Threat Alert
-            </span>
+          {/* Header skeleton */}
+          <div className="flex items-start justify-between mb-6 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-[#27ae60]/20 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-[#27ae60]" />
+              </div>
+              <div>
+                <span
+                  className="text-xs font-bold uppercase tracking-[0.18em] text-[#27ae60] block"
+                  style={{ fontFamily: "'Space Mono', monospace" }}
+                >
+                  Threat Alert
+                </span>
+                <div className="h-3 w-32 rounded mt-1 animate-pulse" style={{ background: "rgba(255,255,255,0.10)" }} />
+              </div>
+            </div>
+            <div className="h-3 w-48 rounded animate-pulse hidden sm:block" style={{ background: "rgba(255,255,255,0.07)" }} />
           </div>
+          {/* 6 card skeleton con struttura reale */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-24 bg-white/5 rounded-lg animate-pulse" />
+              <ThreatCardSkeleton key={i} />
             ))}
           </div>
         </div>
