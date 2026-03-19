@@ -4,8 +4,8 @@
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accenti per sezione.
  * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
-import { useMemo } from "react";
-import { Link } from "wouter";
+import { useMemo, useRef, useState, useEffect } from "react";
+import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
@@ -451,88 +451,7 @@ export default function Home() {
 
           {/* Barra navigazione sezioni */}
           {/* Menu navigazione elegante — due righe: canali editoriali + pagine istituzionali */}
-          <nav className="border-t border-[#1a1a2e] overflow-hidden">
-            {/* Riga 1: canali editoriali con accent color al hover */}
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex items-stretch min-w-max">
-                {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec, i) => {
-                  const s = SECTION_COLORS[sec];
-                  return (
-                    <Link key={sec} href={s.path}>
-                      <span
-                        className="group relative flex items-center px-4 py-2.5 text-[9.5px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200 text-[#1a1a2e] hover:text-white"
-                        style={{
-                          fontFamily: "'Space Mono', monospace",
-                          borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none",
-                          ['--accent' as string]: s.accent,
-                        }}
-                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = s.accent; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = '#1a1a2e'; }}
-                      >
-                        {s.label}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Riga 2: pagine istituzionali + maquette Business */}
-            <div
-              className="flex flex-wrap items-center border-t"
-              style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}
-            >
-              {/* Edicola */}
-              <Link href="/edicola">
-                <span
-                  className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#1a1a2e]"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
-                >
-                  Edicola
-                </span>
-              </Link>
-              <span className="text-[#1a1a2e]/15 text-xs">|</span>
-              {/* Manifesto */}
-              <Link href="/manifesto">
-                <span
-                  className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0a6e5c]"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
-                >
-                  Manifesto
-                </span>
-              </Link>
-              <span className="text-[#1a1a2e]/15 text-xs">|</span>
-              {/* Chi Siamo */}
-              <Link href="/chi-siamo">
-                <span
-                  className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0369a1]"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
-                >
-                  Chi Siamo
-                </span>
-              </Link>
-
-              {/* Separatore + maquette Business */}
-              <div className="ml-auto flex items-center">
-                <Link href="/business">
-                  <span
-                    className="flex items-center gap-2 px-5 py-2 text-[9px] font-black uppercase tracking-[0.14em] cursor-pointer transition-all duration-200"
-                    style={{
-                      fontFamily: "'Space Mono', monospace",
-                      background: "#1a1a2e",
-                      color: "#ff5500",
-                      letterSpacing: "0.14em",
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ff5500'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1a1a2e'; (e.currentTarget as HTMLElement).style.color = '#ff5500'; }}
-                  >
-                    <span style={{ fontSize: "10px" }}>▶</span>
-                    IdeaSmart Business
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </nav>
+          <SectionNav />
 
           <Divider />
         </header>
@@ -882,5 +801,139 @@ export default function Home() {
         </main>
       </div>
     </>
+  );
+}
+
+// ─── SectionNav: menu con sezione attiva + freccia scorrimento mobile ────────
+function SectionNav() {
+  const [location] = useLocation();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    check();
+    el.addEventListener("scroll", check);
+    window.addEventListener("resize", check);
+    return () => { el.removeEventListener("scroll", check); window.removeEventListener("resize", check); };
+  }, []);
+
+  const SECTIONS = ["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const;
+
+  return (
+    <nav className="border-t border-[#1a1a2e] overflow-hidden">
+      {/* Riga 1: canali editoriali con accent color al hover + indicatore sezione attiva */}
+      <div className="relative">
+        <div ref={scrollRef} className="overflow-x-auto scrollbar-hide">
+          <div className="flex items-stretch min-w-max">
+            {SECTIONS.map((sec, i) => {
+              const s = SECTION_COLORS[sec];
+              const isActive = location === s.path || location.startsWith(s.path + "/");
+              return (
+                <Link key={sec} href={s.path}>
+                  <span
+                    className="relative flex items-center px-4 py-2.5 text-[9.5px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200"
+                    style={{
+                      fontFamily: "'Space Mono', monospace",
+                      borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none",
+                      background: isActive ? s.accent : "",
+                      color: isActive ? "#fff" : "#1a1a2e",
+                    }}
+                    onMouseEnter={e => {
+                      if (!isActive) {
+                        (e.currentTarget as HTMLElement).style.background = s.accent;
+                        (e.currentTarget as HTMLElement).style.color = "#fff";
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (!isActive) {
+                        (e.currentTarget as HTMLElement).style.background = "";
+                        (e.currentTarget as HTMLElement).style.color = "#1a1a2e";
+                      }
+                    }}
+                  >
+                    {s.label}
+                    {isActive && (
+                      <span
+                        className="absolute bottom-0 left-0 right-0 h-[2px]"
+                        style={{ background: "#fff", opacity: 0.6 }}
+                      />
+                    )}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+        {/* Freccia scorrimento mobile */}
+        {canScrollRight && (
+          <button
+            className="absolute right-0 top-0 bottom-0 flex items-center justify-center w-8 pointer-events-auto"
+            style={{
+              background: "linear-gradient(to right, transparent, #faf8f3 70%)",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => scrollRef.current?.scrollBy({ left: 120, behavior: "smooth" })}
+            aria-label="Scorri menu"
+          >
+            <span style={{ fontSize: "14px", color: "#1a1a2e", fontWeight: "bold" }}>›</span>
+          </button>
+        )}
+      </div>
+
+      {/* Riga 2: pagine istituzionali + maquette Business */}
+      <div
+        className="flex flex-wrap items-center border-t"
+        style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}
+      >
+        <Link href="/edicola">
+          <span
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#1a1a2e]"
+            style={{ fontFamily: "'Space Mono', monospace" }}
+          >
+            Edicola
+          </span>
+        </Link>
+        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <Link href="/manifesto">
+          <span
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0a6e5c]"
+            style={{ fontFamily: "'Space Mono', monospace" }}
+          >
+            Manifesto
+          </span>
+        </Link>
+        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <Link href="/chi-siamo">
+          <span
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0369a1]"
+            style={{ fontFamily: "'Space Mono', monospace" }}
+          >
+            Chi Siamo
+          </span>
+        </Link>
+        <div className="ml-auto flex items-center">
+          <Link href="/business">
+            <span
+              className="flex items-center gap-2 px-5 py-2 text-[9px] font-black uppercase tracking-[0.14em] cursor-pointer transition-all duration-200"
+              style={{
+                fontFamily: "'Space Mono', monospace",
+                background: "#1a1a2e",
+                color: "#ff5500",
+                letterSpacing: "0.14em",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#ff5500"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#1a1a2e"; (e.currentTarget as HTMLElement).style.color = "#ff5500"; }}
+            >
+              <span style={{ fontSize: "10px" }}>▶</span>
+              IdeaSmart Business
+            </span>
+          </Link>
+        </div>
+      </div>
+    </nav>
   );
 }

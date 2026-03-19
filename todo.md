@@ -1141,3 +1141,8 @@
 - [x] Ridisegnare menu navigazione Home: due righe eleganti con hover accent color + scrollabile (19 Mar 2026)
 - [x] Aggiungere Chi Siamo accanto a Manifesto nel menu riga 2 (19 Mar 2026)
 - [x] Maquette IdeaSmart Business: pulsante dark #1a1a2e + arancio #ff5500 in fondo alla riga 2 (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — Menu: sezione attiva + freccia mobile)
+
+- [x] Indicatore sezione attiva nel menu riga 1 (useLocation + accent color permanente + underline bianco) (19 Mar 2026)
+- [x] Freccia scorrimento orizzontale su mobile (lato destro menu riga 1, scompare quando non serve) (19 Mar 2026)
