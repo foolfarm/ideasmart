@@ -15,6 +15,7 @@ import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRS
 import { getDb } from "../db";
 import { newsItems, sourceReports } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
+import { fetchAllSendgridStats } from "../sendgridStats";
 
 // Middleware admin
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -206,6 +207,26 @@ export const adminRouter = router({
         })
         .where(eq(sourceReports.id, input.reportId));
       return { success: true };
+    }),
+
+  /**
+   * Recupera le statistiche SendGrid degli ultimi N giorni.
+   * Include global stats, unsubscribes, bounces e spam reports.
+   */
+  getSendgridStats: adminProcedure
+    .input(z.object({
+      days: z.number().int().min(1).max(90).default(30),
+    }))
+    .query(async ({ input }) => {
+      try {
+        const result = await fetchAllSendgridStats(input.days);
+        return { success: true, data: result };
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "Errore recupero statistiche SendGrid",
+        });
+      }
     }),
 
   /**

@@ -255,6 +255,16 @@ export default function Admin() {
             >
               📡 Monitor RSS
             </button>
+            <span className="text-white/20">·</span>
+            <button
+              onClick={() => navigate("/admin/sendgrid-stats")}
+              className="text-xs font-bold transition-colors"
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#22c55e")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+            >
+              📧 Email Stats
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />

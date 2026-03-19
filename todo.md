@@ -1093,3 +1093,11 @@
 ## Nuovi task (19 Mar 2026 — Fix LinkedIn duplicati)
 
 - [x] Fix LinkedIn duplicati: aggiunto controllo idempotenza nel linkedinPublisher (verifica DB prima di pubblicare) (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — SendGrid Stats Admin)
+
+- [x] Procedure tRPC: adminTools.getSendgridStats (global stats, unsubscribes, bounces, spam reports) (19 Mar 2026)
+- [x] Pagina admin /admin/sendgrid-stats con dashboard statistiche SendGrid (19 Mar 2026)
+- [x] Navigazione admin: aggiunto link "Email Stats" nella barra header admin (19 Mar 2026)
+- [x] server/sendgridStats.ts: helper fetchAllSendgridStats con global stats, bounces, spam, unsubscribes (19 Mar 2026)
+- [x] ENV: aggiunto sendgridApiKey, sendgridFromEmail, sendgridFromName in env.ts (19 Mar 2026)

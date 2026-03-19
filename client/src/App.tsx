@@ -23,6 +23,7 @@ import Admin from "./pages/Admin";
 import AdminNewsletterPerformance from "./pages/AdminNewsletterPerformance";
 import AuditDashboard from "./pages/AuditDashboard";
 import AdminRssMonitor from "./pages/AdminRssMonitor";
+import AdminSendgridStats from "./pages/AdminSendgridStats";
 import Privacy from "./pages/Privacy";
 import Unsubscribe from "./pages/Unsubscribe";
 import NotificationPreferences from "./pages/NotificationPreferences";
@@ -63,6 +64,7 @@ function Router() {
       <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
       <Route path="/admin/rss-monitor" component={AdminRssMonitor} />
       <Route path="/admin/audit" component={AuditDashboard} />
+      <Route path="/admin/sendgrid-stats" component={AdminSendgridStats} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/unsubscribe" component={Unsubscribe} />
       <Route path="/preferenze-newsletter" component={ChannelPreferences} />
