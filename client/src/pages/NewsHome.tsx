@@ -97,10 +97,10 @@ function NewsRow({ item }: {
 export default function NewsHome() {
   const today = useMemo(() => new Date(), []);
   const [activeTab, setActiveTab] = useState<Subsection>("Tutte");
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 30, section: "news" });
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "news" });
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "news" });
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "news" });
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 30, section: "news" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "news" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "news" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "news" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
 
   const allNews = newsData || [];
 

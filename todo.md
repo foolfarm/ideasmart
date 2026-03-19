@@ -18,6 +18,17 @@
 - [x] Admin dashboard per gestione iscritti e invio newsletter
 - [x] Test invio email confermato (ac@foolfarm.com)
 
+## Ottimizzazioni Performance (19 Mar 2026)
+
+- [x] Audit completo performance: identificati widget Cybersecurity (schede nere) e Sondaggi (skeleton infinito) come colli di bottiglia LLM
+- [x] Fix warm-up cache server: ridotto da 60s a 5s per barometro e threatAlert
+- [x] Aggiunto warm-up automatico all'avvio per getBarometro e getThreatAlert (server/llmWidgets.ts)
+- [x] Lazy loading per tutte le 35 pagine non-critiche in App.tsx (skeleton loader generico)
+- [x] staleTime 5 minuti + refetchOnWindowFocus:false su tutte le 14 pagine sezione
+- [x] staleTime 4 ore per widget BarometroPolitico e ThreatAlert (dati LLM cambiano raramente)
+- [x] Code splitting manuale Vite: vendor-react, vendor-trpc, vendor-radix, vendor-charts, vendor-motion
+- [x] Cache HTTP ottimale per file statici in produzione: /assets immutable 1 anno, index.html no-cache
+
 ## In sospeso
 
 - [ ] Aggiungere secondo banner pubblicitario nella sezione startup (tra le card)

@@ -92,11 +92,11 @@ function NewsRow({ item }: {
 
 export default function SportHome() {
   const today = useMemo(() => new Date(), []);
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "sport" });
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "sport" });
-  const { data: startupData } = trpc.startupOfDay.getLatest.useQuery({ section: "sport" });
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "sport" });
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "sport" });
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "sport" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "sport" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: startupData } = trpc.startupOfDay.getLatest.useQuery({ section: "sport" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "sport" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "sport" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
   const news = newsData || [];
   const heroNews = news.find(n => n.imageUrl) || news[0] || null;
   const secondaryNews = news.filter(n => n.id !== heroNews?.id).slice(0, 2);

@@ -92,10 +92,10 @@ function NewsRow({ item }: {
 
 export default function BasketHome() {
   const today = useMemo(() => new Date(), []);
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "basket" });
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "basket" });
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "basket" });
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "basket" });
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "basket" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "basket" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "basket" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "basket" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
   const news = newsData || [];
   const heroNews = news.find(n => n.imageUrl) || news[0] || null;
   const secondaryNews = news.filter(n => n.id !== heroNews?.id).slice(0, 2);

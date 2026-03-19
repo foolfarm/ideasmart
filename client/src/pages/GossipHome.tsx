@@ -93,10 +93,10 @@ function NewsRow({ item }: {
 
 export default function GossipHome() {
   const today = useMemo(() => new Date(), []);
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "gossip" });
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "gossip" });
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "gossip" });
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "gossip" });
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "gossip" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "gossip" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "gossip" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "gossip" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
   const news = newsData || [];
   const heroNews = news.find(n => n.imageUrl) || news[0] || null;
   const secondaryNews = news.filter(n => n.id !== heroNews?.id).slice(0, 2);

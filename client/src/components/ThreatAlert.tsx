@@ -45,7 +45,7 @@ const TIPO_COLORS: Record<string, string> = {
 
 export default function ThreatAlert() {
   const { data, isLoading } = trpc.news.getThreatAlert.useQuery(undefined, {
-    staleTime: 1000 * 60 * 60, // 1 ora di cache
+    staleTime: 1000 * 60 * 60 * 4, // 4 ore: dati LLM cambiano raramente
     retry: 1,
   });
 

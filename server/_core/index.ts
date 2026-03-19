@@ -277,3 +277,39 @@ setTimeout(async () => {
     console.error('[Cache Warmup] Errore (non critico):', err);
   }
 }, 5_000); // 5 secondi: il DB è sempre già popolato in produzione
+
+// ─── Cache warm-up LLM widget (barometro + threatAlert) ──────────────────────
+// Parte 90 secondi dopo l'avvio: aspetta che il warm-up principale sia completato
+// e che il DB sia sicuramente popolato. Questi widget chiamano l'LLM (5-15s ciascuno)
+// quindi vengono pre-calcolati in background per evitare attese al primo accesso.
+setTimeout(async () => {
+  try {
+    const { cached, CACHE_KEYS } = await import('../cache');
+    const { computeBarometro, computeThreatAlert } = await import('../llmWidgets');
+    const LLM_WIDGET_TTL = 30 * 60 * 1000; // 30 minuti
+
+    console.log('[Cache Warmup LLM] 🔥 Avvio pre-calcolo widget LLM (barometro + threatAlert)...');
+
+    // Calcola in parallelo per risparmiare tempo (entrambi ~5-15s)
+    const [barometroResult, threatResult] = await Promise.allSettled([
+      cached(CACHE_KEYS.BAROMETRO, () => computeBarometro(), LLM_WIDGET_TTL),
+      cached(CACHE_KEYS.THREAT_ALERT, () => computeThreatAlert(), LLM_WIDGET_TTL),
+    ]);
+
+    if (barometroResult.status === 'fulfilled' && barometroResult.value) {
+      console.log('[Cache Warmup LLM] ✅ Barometro Politico pre-calcolato e cached');
+    } else {
+      console.warn('[Cache Warmup LLM] ⚠️ Barometro: nessun dato (sezione sondaggi vuota o errore LLM)');
+    }
+
+    if (threatResult.status === 'fulfilled' && threatResult.value) {
+      console.log('[Cache Warmup LLM] ✅ Threat Alert pre-calcolato e cached');
+    } else {
+      console.warn('[Cache Warmup LLM] ⚠️ ThreatAlert: nessun dato (sezione cybersecurity vuota o errore LLM)');
+    }
+
+    console.log('[Cache Warmup LLM] 🎉 Widget LLM warm-up completato!');
+  } catch (err) {
+    console.error('[Cache Warmup LLM] Errore (non critico):', err);
+  }
+}, 90_000); // 90 secondi: dopo il warm-up principale (5s) + scraping iniziale (45s)

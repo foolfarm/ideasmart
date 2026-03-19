@@ -189,6 +189,31 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Code splitting manuale: separa le librerie pesanti in chunk dedicati
+    // per migliorare il caching del browser e ridurre il bundle iniziale
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core — cambia raramente, cache lunga
+          'vendor-react': ['react', 'react-dom', 'react/jsx-runtime'],
+          // tRPC + React Query — infrastruttura dati
+          'vendor-trpc': ['@trpc/client', '@trpc/react-query', '@tanstack/react-query', 'superjson'],
+          // UI components Radix — grandi ma stabili
+          'vendor-radix': [
+            '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select', '@radix-ui/react-tabs',
+            '@radix-ui/react-tooltip', '@radix-ui/react-popover',
+            '@radix-ui/react-accordion', '@radix-ui/react-scroll-area',
+          ],
+          // Grafici — usati solo in BarometroPolitico
+          'vendor-charts': ['recharts'],
+          // Animazioni — usate solo in Home
+          'vendor-motion': ['framer-motion'],
+          // Routing
+          'vendor-router': ['wouter'],
+        },
+      },
+    },
   },
   server: {
     host: true,

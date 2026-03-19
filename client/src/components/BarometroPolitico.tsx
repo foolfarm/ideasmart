@@ -146,7 +146,7 @@ export default function BarometroPolitico() {
   const [activeTab, setActiveTab] = useState<"oggi" | "storico">("oggi");
 
   const { data, isLoading, error } = trpc.news.getBarometro.useQuery(undefined, {
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60 * 4, // 4 ore: dati LLM cambiano raramente
     refetchOnWindowFocus: false,
   });
 

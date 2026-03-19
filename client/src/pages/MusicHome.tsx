@@ -99,11 +99,11 @@ function NewsRow({ item }: {
 export default function MusicHome() {
   const today = useMemo(() => new Date(), []);
 
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "music" });
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "music" });
-  const { data: artistData } = trpc.startupOfDay.getLatest.useQuery({ section: "music" });
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "music" });
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "music" });
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "music" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "music" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: artistData } = trpc.startupOfDay.getLatest.useQuery({ section: "music" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "music" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "music" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
 
 
   const news = newsData || [];

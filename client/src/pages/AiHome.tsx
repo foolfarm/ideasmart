@@ -99,11 +99,11 @@ function NewsRow({ item }: {
 export default function AiHome() {
   const today = useMemo(() => new Date(), []);
 
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "ai" });
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "ai" });
-  const { data: startupData } = trpc.startupOfDay.getLatest.useQuery({ section: "ai" });
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "ai" });
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "ai" });
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: startupData } = trpc.startupOfDay.getLatest.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
 
 
   const news = newsData || [];
