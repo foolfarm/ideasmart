@@ -1262,3 +1262,8 @@
 - [x] Creare componente ReadersCounter riutilizzabile (dato reale dal DB + animazione)
 - [x] Integrare contatore nella riga istituzionale della Home
 - [x] Integrare contatore nelle 14 pagine sezione con script Python
+
+## Contatore lettori in /advertise (19 Mar 2026)
+
+- [x] Analizzare struttura Advertise.tsx e trovare punti di inserimento ottimali
+- [x] Integrare LiveReadersBlock (count-up + pallino pulsante) nella hero e griglia statistiche di Advertise.tsx

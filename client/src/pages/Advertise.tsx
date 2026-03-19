@@ -4,7 +4,7 @@
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accento teal (#0a6e5c).
  * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ function SectionBadge({ label, color = ACCENT, bg = ACCENT_LIGHT }: { label: str
 // ─── Dati ────────────────────────────────────────────────────────────────────
 
 const AUDIENCE_STATS = [
-  { value: "5.400+", label: "Iscritti newsletter" },
+  { value: "5.400+", label: "Iscritti newsletter" }, // sostituito dinamicamente nel JSX
   { value: "8.000+", label: "Visitatori unici/mese" },
   { value: "42%", label: "Open rate newsletter" },
   { value: "4,2 min", label: "Tempo medio sul sito" },
@@ -112,6 +112,74 @@ const FORMATS = [
     highlight: false,
   },
 ];
+
+// ─── Hook count-up ─────────────────────────────────────────────────────────
+function useCountUp(target: number, duration = 1200) {
+  const [count, setCount] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!target) return;
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - elapsed, 3);
+      setCount(Math.round(eased * target));
+      if (elapsed < 1) rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [target, duration]);
+  return count;
+}
+
+// ─── Blocco Live Readers ─────────────────────────────────────────────────────
+function LiveReadersBlock({ count }: { count: number }) {
+  const animated = useCountUp(count, 1400);
+  return (
+    <div
+      className="flex items-center gap-6 py-5 px-6 my-6"
+      style={{
+        background: "#f0faf7",
+        borderLeft: `4px solid #0a6e5c`,
+      }}
+    >
+      {/* Pallino pulsante */}
+      <div className="relative flex-shrink-0">
+        <span
+          className="absolute inline-flex h-4 w-4 rounded-full opacity-75 animate-ping"
+          style={{ background: "#0a6e5c" }}
+        />
+        <span
+          className="relative inline-flex rounded-full h-4 w-4"
+          style={{ background: "#0a6e5c" }}
+        />
+      </div>
+      {/* Numero */}
+      <div>
+        <div
+          className="text-4xl font-black leading-none"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#1a1a2e" }}
+        >
+          {animated.toLocaleString("it-IT")}
+        </div>
+        <div
+          className="mt-1 text-[10px] uppercase tracking-[0.2em]"
+          style={{ fontFamily: "'Space Mono', monospace", color: "rgba(26,26,46,0.5)" }}
+        >
+          Lettori attivi iscritti alla newsletter
+        </div>
+      </div>
+      {/* Testo descrittivo */}
+      <div
+        className="hidden md:block ml-auto text-sm leading-relaxed max-w-xs"
+        style={{ fontFamily: "'Source Serif 4', Georgia, serif", color: "rgba(26,26,46,0.65)" }}
+      >
+        Professionisti B2B italiani che ricevono ogni settimana le analisi di IdeaSmart.
+        <strong style={{ color: "#0a6e5c" }}> Dato aggiornato in tempo reale.</strong>
+      </div>
+    </div>
+  );
+}
 
 // ─── Componente principale ────────────────────────────────────────────────────
 
@@ -207,6 +275,9 @@ export default function Advertise() {
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-16">
 
+          {/* ── LIVE READERS BLOCK ── */}
+          <LiveReadersBlock count={subscriberCount ?? 5400} />
+
           {/* ── INTRO ── */}
           <section className="py-10 grid md:grid-cols-[2fr_1fr] gap-10">
             <div>
@@ -260,9 +331,11 @@ export default function Advertise() {
                 >
                   <div
                     className="text-3xl font-black"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: INK }}
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: i === 0 ? ACCENT : INK }}
                   >
-                    {s.value}
+                    {i === 0 && subscriberCount
+                      ? `${subscriberCount.toLocaleString("it-IT")}+`
+                      : s.value}
                   </div>
                   <div
                     className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a2e]/45"
