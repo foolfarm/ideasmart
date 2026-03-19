@@ -444,10 +444,10 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── Invalidazione cache parziale dopo LinkedIn (10:05 CET) ───────────────
+  // ── Invalidazione cache parziale dopo LinkedIn (10:35 CET) ───────────────
   // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.
   // Invalidiamo solo la chiave getPuntoDelGiorno per non toccare le altre.
-  cron.schedule("5 10 * * *", async () => {
+  cron.schedule("35 10 * * *", async () => {
     try {
       invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
       console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn post");
@@ -526,11 +526,11 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // LINKEDIN AUTOPOST — ogni giorno alle 10:00 CET
+  // LINKEDIN AUTOPOST — ogni giorno alle 10:30 CET
   // ══════════════════════════════════════════════════════════════════════════
 
-  cron.schedule("0 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:00 CET — Pubblicazione LinkedIn editoriale del giorno...");
+  cron.schedule("30 10 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 10:30 CET — Pubblicazione LinkedIn editoriale del giorno...");
     try {
       const result = await publishDailyLinkedInPosts();
       console.log(`[SchedulerManager] ✅ LinkedIn: ${result.published}/1 post pubblicati`);
@@ -575,6 +575,6 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
-  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:00 CET");
-  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato automaticamente alle 10:00 CET (via LinkedIn publisher → DB)");
+  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:30 CET");
+  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato automaticamente alle 10:30 CET (via LinkedIn publisher → DB)");
 }
