@@ -1235,13 +1235,17 @@
 
 ## Caching Intelligente DB (19 Mar 2026)
 
-- [ ] Analisi cache esistente e query DB più frequenti
-- [ ] Estendere cache manager: TTL differenziato, LRU eviction, statistiche hit/miss
-- [ ] Integrare caching nelle procedure tRPC più frequenti (news, editorial, reportage, startup)
-- [ ] Invalidazione selettiva cache al termine dei cron job
-- [ ] Endpoint /api/cache-stats per monitoraggio
-- [ ] Test vitest per il sistema di caching
+- [x] Analisi cache esistente e query DB più frequenti
+- [x] Estendere cache manager: TTL differenziato, LRU eviction, statistiche hit/miss
+- [x] Integrare caching nelle procedure tRPC più frequenti (news, editorial, reportage, startup)
+- [x] Invalidazione selettiva cache al termine dei cron job (tutti i 14 canali)
+- [x] Endpoint /api/cache-stats protetto da JWT_SECRET
+- [x] Test vitest per il sistema di caching (17 test, tutti passano)
 
 ## Fix Logo Navbar (19 Mar 2026)
 
 - [x] Logo IdeaSmart nella Navbar deve essere un link cliccabile che porta alla homepage (/) — già funzionante, verificato nel browser
+
+## Link Tecnologia nelle pagine sezione (19 Mar 2026)
+
+- [x] Aggiungere link "Tecnologia" nella riga istituzionale di tutte le 14 pagine sezione (AiHome, MusicHome, StartupHome, FinanceHome, HealthHome, SportHome, LuxuryHome, NewsHome, MotoriHome, TennisHome, BasketHome, GossipHome, CybersecurityHome, SondaggiHome)

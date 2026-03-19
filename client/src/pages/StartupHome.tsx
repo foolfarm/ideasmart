@@ -185,6 +185,36 @@ export default function StartupHome() {
                 📰 Edicola
               </span>
             </Link>
+            <Link href="/manifesto">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#1a1a2e",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Manifesto
+              </span>
+            </Link>
+            <Link href="/chi-siamo">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#1a1a2e",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Chi Siamo
+              </span>
+            </Link>
+            <Link href="/tecnologia">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#00b89a",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Tecnologia
+              </span>
+            </Link>
           </nav>
 
           <Divider />

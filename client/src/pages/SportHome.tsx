@@ -146,6 +146,48 @@ export default function SportHome() {
             </p>
           </div>
           <Divider thick />
+          <nav className="flex items-center justify-center gap-0 py-2 flex-wrap">
+            <Link href="/edicola">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#1a1a2e",
+                }}>
+                📰 Edicola
+              </span>
+            </Link>
+            <Link href="/manifesto">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#1a1a2e",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Manifesto
+              </span>
+            </Link>
+            <Link href="/chi-siamo">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#1a1a2e",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Chi Siamo
+              </span>
+            </Link>
+            <Link href="/tecnologia">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#00b89a",
+                  borderLeft: "1px solid rgba(26,26,46,0.2)",
+                }}>
+                Tecnologia
+              </span>
+            </Link>
+          </nav>
+          <div className="w-full border-t border-[#1a1a2e]/20" />
         </header>
 
         {/* BREAKING NEWS TICKER */}
