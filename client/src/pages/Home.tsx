@@ -810,6 +810,38 @@ export default function Home() {
           {/* Punto del Giorno */}
           <PuntoDelGiorno />
 
+          {/* ── BANNER PUBBLICITARIO LEADERBOARD 728x90 (Tradedoubler) ── */}
+          <div className="my-6 flex flex-col items-center">
+            <p className="text-[9px] uppercase tracking-[0.2em] text-[#1a1a2e]/30 mb-1"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              Pubblicità
+            </p>
+            <div
+              className="overflow-hidden flex items-center justify-center"
+              style={{
+                width: "728px",
+                height: "90px",
+                maxWidth: "100%",
+                border: "1px solid rgba(26,26,46,0.08)",
+                background: "#f5f2ec",
+              }}
+            >
+              <a
+                href="https://clk.tradedoubler.com/click?p=328374&a=3477790&g=25809148"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={`https://imp.tradedoubler.com/imp?type(img)g(25809148)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                  width="728"
+                  height="90"
+                  alt="Pubblicità"
+                  style={{ display: "block", width: "728px", height: "90px", maxWidth: "100%", objectFit: "cover" }}
+                />
+              </a>
+            </div>
+          </div>
+
           {/* ═══════════════════════════════════════════════════════════
               BLOCCO 2 — AI4BUSINESS + STARTUP NEWS (2 colonne grandi)
           ══════════════════════════════════════════════════════════════ */}

@@ -35,6 +35,7 @@
 - [x] Manchette sinistra: banner IdeaSmart Business ("Crea il tuo giornale AI powered")
 - [x] Manchette destra: banner Tradedoubler (300x250 adattato a formato manchette)
 - [x] Banner Tradedoubler 300x250 nello spazio immagine hero del blocco News Italia (g=26055766)
+- [x] Banner leaderboard Tradedoubler 728x90 sotto la sezione Punto del Giorno (g=25809148)
 
 ## Performance Round 2 (19 Mar 2026)
 
