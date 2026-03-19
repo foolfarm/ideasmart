@@ -1249,3 +1249,9 @@
 ## Link Tecnologia nelle pagine sezione (19 Mar 2026)
 
 - [x] Aggiungere link "Tecnologia" nella riga istituzionale di tutte le 14 pagine sezione (AiHome, MusicHome, StartupHome, FinanceHome, HealthHome, SportHome, LuxuryHome, NewsHome, MotoriHome, TennisHome, BasketHome, GossipHome, CybersecurityHome, SondaggiHome)
+
+## Riga istituzionale: Advertise + Hover (19 Mar 2026)
+
+- [x] Aggiungere link "Advertise" nella riga istituzionale della Home (dopo Tecnologia)
+- [x] Aggiungere link "Advertise" nella riga istituzionale di tutte le 14 pagine sezione
+- [x] Aggiungere hover effect distintivo (underline + colore) su tutti i link istituzionali

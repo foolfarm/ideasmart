@@ -493,7 +493,7 @@ function SectionNav() {
       >
         <Link href="/edicola">
           <span
-            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#1a1a2e]"
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#1a1a2e] hover:underline decoration-[#1a1a2e] underline-offset-2"
             style={{ fontFamily: "'Space Mono', monospace" }}
           >
             Edicola
@@ -502,7 +502,7 @@ function SectionNav() {
         <span className="text-[#1a1a2e]/15 text-xs">|</span>
         <Link href="/manifesto">
           <span
-            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0a6e5c]"
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#0a6e5c] hover:underline decoration-[#0a6e5c] underline-offset-2"
             style={{ fontFamily: "'Space Mono', monospace" }}
           >
             Manifesto
@@ -511,7 +511,7 @@ function SectionNav() {
         <span className="text-[#1a1a2e]/15 text-xs">|</span>
         <Link href="/chi-siamo">
           <span
-            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#0369a1]"
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#0369a1] hover:underline decoration-[#0369a1] underline-offset-2"
             style={{ fontFamily: "'Space Mono', monospace" }}
           >
             Chi Siamo
@@ -520,10 +520,19 @@ function SectionNav() {
         <span className="text-[#1a1a2e]/15 text-xs">|</span>
         <Link href="/tecnologia">
           <span
-            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-colors text-[#1a1a2e]/60 hover:text-[#00b89a]"
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#00b89a] hover:underline decoration-[#00b89a] underline-offset-2"
             style={{ fontFamily: "'Space Mono', monospace" }}
           >
             Tecnologia
+          </span>
+        </Link>
+        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <Link href="/advertise">
+          <span
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#ff5500]/70 hover:text-[#ff5500] hover:underline decoration-[#ff5500] underline-offset-2"
+            style={{ fontFamily: "'Space Mono', monospace" }}
+          >
+            Advertise
           </span>
         </Link>
         <div className="ml-auto flex items-center">

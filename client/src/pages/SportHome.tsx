@@ -148,7 +148,7 @@ export default function SportHome() {
           <Divider thick />
           <nav className="flex items-center justify-center gap-0 py-2 flex-wrap">
             <Link href="/edicola">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
                 style={{
                   fontFamily: "'Space Mono', monospace",
                   color: "#1a1a2e",
@@ -157,7 +157,7 @@ export default function SportHome() {
               </span>
             </Link>
             <Link href="/manifesto">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
                 style={{
                   fontFamily: "'Space Mono', monospace",
                   color: "#1a1a2e",
@@ -167,7 +167,7 @@ export default function SportHome() {
               </span>
             </Link>
             <Link href="/chi-siamo">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
                 style={{
                   fontFamily: "'Space Mono', monospace",
                   color: "#1a1a2e",
@@ -177,13 +177,24 @@ export default function SportHome() {
               </span>
             </Link>
             <Link href="/tecnologia">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 cursor-pointer"
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
                 style={{
                   fontFamily: "'Space Mono', monospace",
                   color: "#00b89a",
                   borderLeft: "1px solid rgba(26,26,46,0.2)",
                 }}>
                 Tecnologia
+              </span>
+            </Link>
+            <span className="text-[#1a1a2e]/20 mx-1">|</span>
+            <Link href="/advertise">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-all hover:opacity-100 hover:underline underline-offset-2 cursor-pointer"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: "#ff5500",
+                  opacity: 0.7,
+                }}>
+                Advertise
               </span>
             </Link>
           </nav>
