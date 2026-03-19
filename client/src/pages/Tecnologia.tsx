@@ -4,7 +4,7 @@
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accento teal (#0a6e5c).
  * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
@@ -69,6 +69,226 @@ const PROCESS_STEPS = [
   { n: "04", title: "Sintesi intelligente", desc: "Generazione di articoli chiari, oggettivi e informativamente densi." },
   { n: "05", title: "Distribuzione", desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale." },
 ];
+
+// ─── Diagramma processo interattivo ─────────────────────────────────────────
+
+const PROCESS_DETAILS = [
+  {
+    n: "01",
+    title: "Raccolta massiva",
+    desc: "Migliaia di fonti analizzate in tempo reale da 14 verticali tematici.",
+    detail: "Lo Scouting Agent monitora continuamente oltre 450 feed RSS, API di notizie e fonti specializzate. Ogni ora vengono analizzati migliaia di segnali provenienti da tutto il mondo, filtrati per lingua, rilevanza e freschezza.",
+    icon: "◎",
+    stat: "450+ fonti",
+  },
+  {
+    n: "02",
+    title: "Validazione algoritmica",
+    desc: "Verify confronta, incrocia e pesa ogni contenuto su sei dimensioni.",
+    detail: "Il Verify Agent assegna a ogni contenuto un punteggio dinamico su sei dimensioni: attendibilità della fonte, coerenza multi-fonte, neutralità del linguaggio, bilanciamento delle prospettive, distorsione narrativa e agenda implicita. Solo i contenuti sopra soglia proseguono.",
+    icon: "⬡",
+    stat: "6 dimensioni",
+  },
+  {
+    n: "03",
+    title: "Riduzione del rumore",
+    desc: "Eliminazione automatica di contenuti distorti o sotto soglia qualitativa.",
+    detail: "Il 63% dei contenuti analizzati viene scartato automaticamente. Vengono eliminati duplicati, contenuti con punteggio Verify insufficiente, notizie non verificabili su almeno tre fonti indipendenti e contenuti con carica emotiva eccessiva.",
+    icon: "⊖",
+    stat: "63% scartati",
+  },
+  {
+    n: "04",
+    title: "Sintesi intelligente",
+    desc: "Generazione di articoli chiari, oggettivi e informativamente densi.",
+    detail: "Il Synthesis Agent trasforma i contenuti validati in articoli leggibili, con struttura editoriale coerente, titoli ottimizzati e sintesi informativa. Il linguaggio viene calibrato per massimizzare la chiarezza senza sacrificare la densità informativa.",
+    icon: "◈",
+    stat: "~1.200/giorno",
+  },
+  {
+    n: "05",
+    title: "Distribuzione",
+    desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale.",
+    detail: "Il Publishing Agent distribuisce i contenuti sui 14 canali tematici di IdeaSmart, assegna metadati, categorie e tag, e ottimizza la presentazione per ogni contesto: homepage, newsletter, feed RSS, API. Tutto in tempo reale, senza intervento umano.",
+    icon: "▷",
+    stat: "14 canali",
+  },
+];
+
+function ProcessDiagram() {
+  const [active, setActive] = useState<number>(0);
+  const step = PROCESS_DETAILS[active];
+
+  return (
+    <section className="py-10">
+      <SectionBadge label="Il processo" />
+      <h2
+        className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
+        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+      >
+        Come funziona IdeaSmart
+      </h2>
+
+      {/* Diagramma desktop: flow orizzontale */}
+      <div className="hidden md:block">
+        {/* Step bar */}
+        <div className="flex items-stretch relative">
+          {PROCESS_DETAILS.map((s, i) => (
+            <button
+              key={s.n}
+              onClick={() => setActive(i)}
+              className="flex-1 text-left transition-all cursor-pointer group"
+              style={{
+                borderTop: `3px solid ${active === i ? "#0a6e5c" : "rgba(26,26,46,0.15)"}`,
+                paddingTop: "1rem",
+                paddingRight: i < PROCESS_DETAILS.length - 1 ? "1.5rem" : "0",
+                background: "transparent",
+                border: "none",
+                outline: "none",
+              }}
+            >
+              <div
+                className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: active === i ? "#0a6e5c" : "rgba(26,26,46,0.35)",
+                }}
+              >
+                {s.n}
+              </div>
+              <div
+                className="text-sm font-bold leading-tight"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  color: active === i ? "#1a1a2e" : "rgba(26,26,46,0.5)",
+                }}
+              >
+                {s.title}
+              </div>
+              <div
+                className="mt-1 text-[10px] uppercase tracking-widest"
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  color: active === i ? "#0a6e5c" : "rgba(26,26,46,0.25)",
+                }}
+              >
+                {s.stat}
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Dettaglio step attivo */}
+        <div
+          className="mt-6 grid grid-cols-[auto_1fr] gap-8 p-6"
+          style={{ background: "#f0faf7", borderLeft: "4px solid #0a6e5c" }}
+        >
+          <div
+            className="text-4xl font-black text-[#0a6e5c] w-12 text-center leading-none"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
+            {step.icon}
+          </div>
+          <div>
+            <p
+              className="text-lg font-bold text-[#1a1a2e] mb-2"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              {step.title}
+            </p>
+            <p
+              className="text-base leading-relaxed text-[#1a1a2e]/75"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
+              {step.detail}
+            </p>
+          </div>
+        </div>
+
+        {/* Frecce di navigazione */}
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => setActive((a) => Math.max(0, a - 1))}
+            disabled={active === 0}
+            className="text-xs font-bold uppercase tracking-widest disabled:opacity-20 transition-opacity hover:opacity-60"
+            style={{ fontFamily: "'Space Mono', monospace", color: "#0a6e5c", background: "none", border: "none", cursor: active === 0 ? "default" : "pointer" }}
+          >
+            ← Precedente
+          </button>
+          <div className="flex gap-2 items-center">
+            {PROCESS_DETAILS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                className="w-2 h-2 rounded-full transition-all"
+                style={{
+                  background: active === i ? "#0a6e5c" : "rgba(26,26,46,0.20)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => setActive((a) => Math.min(PROCESS_DETAILS.length - 1, a + 1))}
+            disabled={active === PROCESS_DETAILS.length - 1}
+            className="text-xs font-bold uppercase tracking-widest disabled:opacity-20 transition-opacity hover:opacity-60"
+            style={{ fontFamily: "'Space Mono', monospace", color: "#0a6e5c", background: "none", border: "none", cursor: active === PROCESS_DETAILS.length - 1 ? "default" : "pointer" }}
+          >
+            Successivo →
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile: accordion verticale */}
+      <div className="md:hidden space-y-0">
+        {PROCESS_DETAILS.map((s, i) => (
+          <div key={s.n}>
+            <button
+              onClick={() => setActive(active === i ? -1 : i)}
+              className="w-full text-left py-4 flex items-center justify-between"
+              style={{ background: "none", border: "none", cursor: "pointer", borderTop: "1px solid rgba(26,26,46,0.12)" }}
+            >
+              <div className="flex items-center gap-4">
+                <span
+                  className="text-[10px] font-bold uppercase tracking-widest w-8"
+                  style={{ fontFamily: "'Space Mono', monospace", color: active === i ? "#0a6e5c" : "rgba(26,26,46,0.35)" }}
+                >
+                  {s.n}
+                </span>
+                <span
+                  className="text-sm font-bold"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif", color: active === i ? "#1a1a2e" : "rgba(26,26,46,0.65)" }}
+                >
+                  {s.title}
+                </span>
+              </div>
+              <span
+                className="text-xs"
+                style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}
+              >
+                {active === i ? "−" : "+"}
+              </span>
+            </button>
+            {active === i && (
+              <div
+                className="pb-4 pl-12 pr-2"
+                style={{ borderTop: "1px solid rgba(10,110,92,0.2)" }}
+              >
+                <p
+                  className="pt-3 text-sm leading-relaxed text-[#1a1a2e]/70"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                >
+                  {s.detail}
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function Tecnologia() {
   const today = useMemo(() => new Date(), []);
@@ -416,47 +636,8 @@ export default function Tecnologia() {
 
           <ThinDivider />
 
-          {/* ── COME FUNZIONA ── */}
-          <section className="py-10">
-            <SectionBadge label="Il processo" />
-            <h2
-              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Come funziona IdeaSmart
-            </h2>
-            <div className="space-y-0">
-              {PROCESS_STEPS.map((step, i) => (
-                <div key={step.n}>
-                  <div className="grid grid-cols-[80px_1fr] gap-6 py-5">
-                    <div className="text-right">
-                      <span
-                        className="text-[10px] font-bold uppercase tracking-widest text-[#1a1a2e]/40"
-                        style={{ fontFamily: "'Space Mono', monospace" }}
-                      >
-                        {step.n}
-                      </span>
-                    </div>
-                    <div>
-                      <p
-                        className="text-base font-bold text-[#1a1a2e] mb-1"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                      >
-                        {step.title}
-                      </p>
-                      <p
-                        className="text-sm leading-relaxed text-[#1a1a2e]/65"
-                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                      >
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                  {i < PROCESS_STEPS.length - 1 && <ThinDivider />}
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* ── COME FUNZIONA — DIAGRAMMA INTERATTIVO ── */}
+          <ProcessDiagram />
 
           <ThinDivider />
 

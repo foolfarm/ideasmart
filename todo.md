@@ -1217,3 +1217,9 @@
 ## Redesign /tecnologia (19 Mar 2026)
 
 - [x] Riscrivere pagina /tecnologia con look editoriale del giornale (carta bianca, Playfair, Source Serif 4, Space Mono, bordi inchiostro) — allineata a Chi Siamo e Business
+
+## Coerenza grafica e UX (19 Mar 2026 — v3)
+
+- [x] Riscrivere Advertise.tsx con look editoriale del giornale (carta bianca, Playfair, Source Serif 4, Space Mono)
+- [x] Aggiungere link /tecnologia nella sezione "Come lavoriamo" di ChiSiamo.tsx
+- [x] Trasformare sezione processo in /tecnologia in diagramma visivo interattivo

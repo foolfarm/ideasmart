@@ -231,6 +231,16 @@ export default function ChiSiamo() {
                 </div>
               ))}
             </div>
+            <div className="mt-6">
+              <Link href="/tecnologia">
+                <span
+                  className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest cursor-pointer transition-colors hover:opacity-70"
+                  style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                >
+                  Scopri come funziona la tecnologia →
+                </span>
+              </Link>
+            </div>
           </section>
 
           <ThinDivider />
