@@ -1583,6 +1583,60 @@ Rispondi con questo JSON:
         return { success: true };
       }),
   }),
+
+  // ── IdeaSmart Business — Demo Request ────────────────────────────────────
+  business: router({
+    requestDemo: publicProcedure
+      .input(z.object({
+        name: z.string().min(2, "Nome obbligatorio"),
+        email: z.string().email("Email non valida"),
+        role: z.string().min(1, "Ruolo obbligatorio"),
+        sectors: z.array(z.string()).min(1, "Seleziona almeno un settore"),
+        message: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const sectorsStr = input.sectors.join(", ");
+        const subject = `🚀 Nuova richiesta demo IdeaSmart Business — ${input.name}`;
+        const htmlAdmin = `
+          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 32px;">
+            <div style="background: #0a0f1e; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+              <h1 style="color: #00e5c8; font-size: 22px; margin: 0; font-weight: 900;">IDEA<span style="color: #ffffff;">SMART</span> <span style="color: #ff5500; font-size: 14px; letter-spacing: 2px;">BUSINESS</span></h1>
+              <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin: 4px 0 0; letter-spacing: 2px;">NUOVA RICHIESTA DEMO</p>
+            </div>
+            <div style="background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e5e7eb;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px; width: 140px;">Nome</td><td style="padding: 10px 0; color: #111827; font-size: 15px; font-weight: 600;">${input.name}</td></tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Email</td><td style="padding: 10px 0;"><a href="mailto:${input.email}" style="color: #00e5c8; font-size: 15px;">${input.email}</a></td></tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Ruolo</td><td style="padding: 10px 0; color: #111827; font-size: 15px;">${input.role}</td></tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Settori</td><td style="padding: 10px 0; color: #111827; font-size: 15px;">${sectorsStr}</td></tr>
+                ${input.message ? `<tr><td style="padding: 10px 0; color: #9ca3af; font-size: 13px; vertical-align: top;">Note</td><td style="padding: 10px 0; color: #374151; font-size: 14px; line-height: 1.6;">${input.message}</td></tr>` : ""}
+              </table>
+            </div>
+            <div style="margin-top: 20px; padding: 16px; background: #fff3ee; border-radius: 8px; border-left: 3px solid #ff5500;">
+              <p style="color: #ff5500; font-size: 13px; font-weight: 700; margin: 0 0 4px;">Azione richiesta</p>
+              <p style="color: #4b5563; font-size: 13px; margin: 0;">Rispondere entro 24 ore a <strong>${input.email}</strong> per schedulare la demo.</p>
+            </div>
+          </div>
+        `;
+        await sendEmail({ to: "ac@acinelli.com", subject, html: htmlAdmin });
+        const htmlConfirm = `
+          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 32px;">
+            <div style="background: #0a0f1e; padding: 24px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
+              <h1 style="color: #00e5c8; font-size: 24px; margin: 0; font-weight: 900;">IDEA<span style="color: #ffffff;">SMART</span> <span style="color: #ff5500; font-size: 14px;">BUSINESS</span></h1>
+            </div>
+            <div style="background: #ffffff; border-radius: 12px; padding: 32px; border: 1px solid #e5e7eb; text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
+              <h2 style="color: #0a0f1e; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo per IdeaSmart Business. Ti contatteremo entro <strong>24 ore</strong> per schedulare una call gratuita di 30 minuti.</p>
+              <a href="https://ideasmart.ai/business" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri IdeaSmart Business →</a>
+            </div>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">IDEASMART · info@ideasmart.ai · <a href="https://ideasmart.ai" style="color: #00e5c8;">ideasmart.ai</a></p>
+          </div>
+        `;
+        await sendEmail({ to: input.email, subject: `La tua demo IdeaSmart Business è confermata — ti ricontatteremo presto`, html: htmlConfirm });
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -1101,3 +1101,20 @@
 - [x] Navigazione admin: aggiunto link "Email Stats" nella barra header admin (19 Mar 2026)
 - [x] server/sendgridStats.ts: helper fetchAllSendgridStats con global stats, bounces, spam, unsubscribes (19 Mar 2026)
 - [x] ENV: aggiunto sendgridApiKey, sendgridFromEmail, sendgridFromName in env.ts (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — IdeaSmart Business)
+
+- [ ] Pagina /business: hero con value proposition "Lancia la tua testata agente"
+- [ ] Pagina /business: demo interattiva della redazione agente (simulazione live)
+- [ ] Pagina /business: case study IdeaSmart (metriche reali, notizie/giorno, sezioni)
+- [ ] Pagina /business: sezione pricing/modelli (full service + revenue sharing)
+- [ ] Pagina /business: CTA form per prenotare una call/demo
+- [ ] Navigazione: aggiungere link Business nel menu principale
+- [ ] Route /business in App.tsx
+
+## Nuovi task (19 Mar 2026 — IdeaSmart Business)
+
+- [x] Pagina /business: hero, demo interattiva redazione agente, case study IdeaSmart, pricing (Starter/Professional/Revenue Sharing), FAQ, form CTA (19 Mar 2026)
+- [x] Procedura tRPC: business.requestDemo con email notifica admin + conferma utente (19 Mar 2026)
+- [x] Route /business in App.tsx (19 Mar 2026)
+- [x] Link "IdeaSmart Business" nel footer della Home (19 Mar 2026)

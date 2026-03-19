@@ -41,6 +41,7 @@ import Manifesto from "./pages/Manifesto";
 import ChannelPreferences from "./pages/ChannelPreferences";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import GenericNewsArticle from "./pages/GenericNewsArticle";
+import Business from "./pages/Business";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -70,6 +71,7 @@ function Router() {
       <Route path="/preferenze-newsletter" component={ChannelPreferences} />
       <Route path="/notifiche" component={NotificationPreferences} />
       <Route path="/advertise" component={Advertise} />
+      <Route path="/business" component={Business} />
       <Route path="/edicola" component={Edicola} />
       <Route path="/ai/news/:id" component={NewsArticle} />
       <Route path="/music/news/:id" component={MusicNewsArticle} />

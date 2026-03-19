@@ -795,6 +795,12 @@ export default function Home() {
                     </Link>
                   );
                 })}
+                <Link href="/business">
+                  <span className="text-[10px] hover:underline cursor-pointer font-bold"
+                    style={{ color: "#ff5500", fontFamily: "'Space Mono', monospace" }}>
+                    IdeaSmart Business
+                  </span>
+                </Link>
                 <Link href="/manifesto">
                   <span className="text-[10px] hover:underline cursor-pointer font-bold"
                     style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
