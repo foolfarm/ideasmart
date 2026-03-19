@@ -142,8 +142,28 @@ function HeroNewsBlock({ item, section, editorial }: {
           </p>
         )}
       </div>
-      <div className="py-4 pl-0 md:pl-6 border-l-0 md:border-l border-[#1a1a2e]/20">
-        {item.videoUrl ? (
+      <div className="py-4 pl-0 md:pl-6 border-l-0 md:border-l border-[#1a1a2e]/20 flex items-start justify-center">
+        {/* Spazio pubblicitario: banner Tradedoubler 300x250 per il blocco News Italia principale */}
+        {section === "news" ? (
+          <div
+            className="flex items-center justify-center overflow-hidden"
+            style={{ width: "300px", height: "250px", maxWidth: "100%", border: "1px solid rgba(26,26,46,0.10)", background: "#f5f2ec" }}
+          >
+            <a
+              href="https://clk.tradedoubler.com/click?p=328374&a=3477790&g=26055766"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={`https://imp.tradedoubler.com/imp?type(img)g(26055766)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                width="300"
+                height="250"
+                alt="Pubblicità"
+                style={{ display: "block", width: "300px", height: "250px", objectFit: "cover" }}
+              />
+            </a>
+          </div>
+        ) : item.videoUrl ? (
           <div className="w-full aspect-video" style={{ border: "1px solid rgba(26,26,46,0.15)" }}>
             <iframe
               src={item.videoUrl}
@@ -582,21 +602,79 @@ export default function Home() {
 
           <Divider thick />
 
-          <div className="text-center py-5">
-            <Link href="/">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
-                IdeaSmart
-              </h1>
-            </Link>
-            <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
-              style={{ fontFamily: "'Space Mono', monospace" }}>
-              La Prima Testata Giornalistica HumanLess italiana
-            </p>
-            <p className="mt-1 text-[11px] text-[#1a1a2e]/40 italic"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.02em" }}>
-              Adrian Lenice, Direttore Responsabile
-            </p>
+          {/* ── TESTATA CON MANCHETTE (layout 3 colonne: manchette | brand | manchette) ── */}
+          <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_140px] items-center gap-4 py-4 md:py-5">
+
+            {/* MANCHETTE SINISTRA — IdeaSmart Business */}
+            <div className="hidden md:flex justify-end">
+              <Link href="/business">
+                <div
+                  className="w-[130px] h-[130px] border-2 flex flex-col items-center justify-center text-center p-3 cursor-pointer hover:shadow-md transition-all group"
+                  style={{ borderColor: "#ff5500", background: "#fff4f0" }}
+                >
+                  <span
+                    className="text-[8px] font-bold uppercase tracking-[0.15em] block mb-1.5"
+                    style={{ color: "#ff5500", fontFamily: "'Space Mono', monospace" }}
+                  >
+                    IdeaSmart Business
+                  </span>
+                  <span
+                    className="text-[13px] font-black leading-tight block mb-2.5"
+                    style={{ color: "#1a1a2e", fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    Crea il tuo giornale AI powered
+                  </span>
+                  <span
+                    className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5"
+                    style={{ background: "#ff5500", color: "#fff", fontFamily: "'Space Mono', monospace" }}
+                  >
+                    Scopri →
+                  </span>
+                </div>
+              </Link>
+            </div>
+
+            {/* BRAND CENTRALE */}
+            <div className="text-center">
+              <Link href="/">
+                <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
+                  IdeaSmart
+                </h1>
+              </Link>
+              <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                La Prima Testata Giornalistica HumanLess italiana
+              </p>
+              <p className="mt-1 text-[11px] text-[#1a1a2e]/40 italic"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.02em" }}>
+                Adrian Lenice, Direttore Responsabile
+              </p>
+            </div>
+
+            {/* MANCHETTE DESTRA — Banner Tradedoubler */}
+            <div className="hidden md:flex justify-start">
+              <div
+                className="w-[130px] h-[130px] border overflow-hidden flex items-center justify-center"
+                style={{ borderColor: "rgba(26,26,46,0.20)", background: "#f5f2ec" }}
+              >
+                {/* Banner Tradedoubler 130x130 (adattato da 300x250) */}
+                <a
+                  href="https://clk.tradedoubler.com/click?p=71740&a=3477790&g=26101400"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="https://imp.tradedoubler.com/imp?type(img)g(26101400)a(3477790)"
+                    width="130"
+                    height="130"
+                    alt="Pubblicità"
+                    style={{ display: "block", width: "130px", height: "130px", objectFit: "cover" }}
+                  />
+                </a>
+              </div>
+            </div>
+
           </div>
 
           <Divider thick />

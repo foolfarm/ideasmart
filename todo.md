@@ -29,6 +29,13 @@
 - [x] Code splitting manuale Vite: vendor-react, vendor-trpc, vendor-radix, vendor-charts, vendor-motion
 - [x] Cache HTTP ottimale per file statici in produzione: /assets immutable 1 anno, index.html no-cache
 
+## Navbar e Manchette (19 Mar 2026)
+
+- [x] Barra canali visibile in tutte le pagine sezione (non solo Home)
+- [x] Manchette sinistra: banner IdeaSmart Business ("Crea il tuo giornale AI powered")
+- [x] Manchette destra: banner Tradedoubler (300x250 adattato a formato manchette)
+- [x] Banner Tradedoubler 300x250 nello spazio immagine hero del blocco News Italia (g=26055766)
+
 ## Performance Round 2 (19 Mar 2026)
 
 - [x] Compressione gzip/Brotli sul server Express — già attiva (level 6, threshold 1KB)

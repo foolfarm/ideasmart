@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import SectionChannelBar from "@/components/SectionChannelBar";
 
 const ACCENT = "#0369a1";
 const ACCENT_LIGHT = "#eff6ff";
@@ -150,6 +151,7 @@ export default function HealthHome() {
         {/* BREAKING NEWS TICKER */}
         <div className="max-w-6xl mx-auto px-4">
           <BreakingNewsTicker />
+        <SectionChannelBar />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-16">
           {/* SEZIONE 1: Hero + Secondarie */}

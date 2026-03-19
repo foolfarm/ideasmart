@@ -10,6 +10,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import SectionChannelBar from "@/components/SectionChannelBar";
 
 const ACCENT = "#5b21b6";
 const ACCENT_LIGHT = "#ede9fe";
@@ -190,6 +191,7 @@ export default function MusicHome() {
           <Divider />
         </header>
         <BreakingNewsTicker />
+        <SectionChannelBar />
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
           {/* SEZIONE 1: Hero + Sidebar editoriale */}

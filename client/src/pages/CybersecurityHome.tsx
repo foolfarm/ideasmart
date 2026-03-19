@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import SectionChannelBar from "@/components/SectionChannelBar";
 import { AdCyberTop, AdCyberMid1, AdCyberBottom } from "@/components/AdUnit";
 import ThreatAlert from "@/components/ThreatAlert";
 
@@ -149,6 +150,7 @@ export default function CybersecurityHome() {
 
         <div className="max-w-6xl mx-auto px-4">
           <BreakingNewsTicker />
+        <SectionChannelBar />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-16">
           <AdCyberTop />

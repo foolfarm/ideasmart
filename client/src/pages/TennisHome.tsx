@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import SectionChannelBar from "@/components/SectionChannelBar";
 
 const ACCENT = "#27ae60";
 const ACCENT_LIGHT = "#f0fdf4";
@@ -147,6 +148,7 @@ export default function TennisHome() {
 
         <div className="max-w-6xl mx-auto px-4">
           <BreakingNewsTicker />
+        <SectionChannelBar />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-16">
           {heroNews && (
