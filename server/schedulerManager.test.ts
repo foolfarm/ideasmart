@@ -152,12 +152,12 @@ describe("schedulerManager", () => {
     expect(previewCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn autopost alle 10:00 ogni giorno", async () => {
+  it("dovrebbe programmare LinkedIn autopost alle 10:30 ogni giorno", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const linkedInCall = calls.find(c => c[0] === "0 10 * * *");
+    const linkedInCall = calls.find(c => c[0] === "30 10 * * *");
     expect(linkedInCall).toBeDefined();
   });
 

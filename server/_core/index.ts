@@ -18,7 +18,7 @@ import { fixAllSourceUrls } from "../urlAuditFix";
 import { getDb } from "../db";
 import { subscribers, emailOpens } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
-import { invalidateAll } from "../cache";
+import { invalidateAll, getCacheStats } from "../cache";
 import fs from "fs";
 import path from "path";
 
@@ -165,6 +165,18 @@ async function startServer() {
     } catch (err) {
       console.error("[Track] Errore tracking apertura:", err);
     }
+  });
+
+  // ── Cache Stats endpoint (solo admin, protetto da JWT_SECRET) ──────────────────
+  // GET /api/cache-stats — restituisce hit/miss/size/TTL per ogni chiave in cache
+  app.get("/api/cache-stats", (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const stats = getCacheStats();
+    return res.json(stats);
   });
 
   // ── Cache-Control headers per le risposte tRPC pubbliche ────────────────────

@@ -89,7 +89,7 @@ import { runNightlyAudit } from "./nightlyAuditScheduler";
 import { publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
-import { invalidateAll, invalidateBySection, CACHE_KEYS } from "./cache";
+import { invalidateAll, invalidateBySection, invalidateSection, CACHE_KEYS } from "./cache";
 import { saveBarometroSnapshot, getDb } from "./db";
 import { invokeLLM } from "./_core/llm";
 import { newsItems as newsItemsTable } from "../drizzle/schema";
@@ -133,7 +133,7 @@ export function startAllSchedulers(): void {
   cron.schedule("0 0 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio scraping RSS News AI...");
     await withLock("rss-ai", async () => {
-      try { await refreshAINewsFromRSS(); console.log("[SchedulerManager] ✅ News AI aggiornate"); }
+      try { await refreshAINewsFromRSS(); invalidateSection('ai'); console.log("[SchedulerManager] ✅ News AI aggiornate + cache invalidata"); }
       catch (err) { console.error("[SchedulerManager] ❌ News AI:", err); }
     });
   }, { timezone: TZ });
@@ -164,7 +164,7 @@ export function startAllSchedulers(): void {
 
   cron.schedule("30 0 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 00:30 CET — Avvio scraping RSS News Musicali...");
-    try { await refreshMusicNewsFromRSS(); console.log("[SchedulerManager] ✅ News Musicali aggiornate"); }
+    try { await refreshMusicNewsFromRSS(); invalidateSection('music'); console.log("[SchedulerManager] ✅ News Musicali aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ News Musicali:", err); }
   }, { timezone: TZ });
 
@@ -190,7 +190,7 @@ export function startAllSchedulers(): void {
 
   cron.schedule("0 1 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio scraping RSS Startup News...");
-    try { await refreshStartupNewsFromRSS(); console.log("[SchedulerManager] ✅ Startup News aggiornate"); }
+    try { await refreshStartupNewsFromRSS(); invalidateSection('startup'); console.log("[SchedulerManager] ✅ Startup News aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ Startup News:", err); }
   }, { timezone: TZ });
 
@@ -216,7 +216,7 @@ export function startAllSchedulers(): void {
 
   cron.schedule("30 1 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 01:30 CET — Avvio scraping Finance news...");
-    try { await refreshFinanceNewsFromRSS(); console.log("[SchedulerManager] ✅ Finance news aggiornate"); }
+    try { await refreshFinanceNewsFromRSS(); invalidateSection('finance'); console.log("[SchedulerManager] ✅ Finance news aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ Finance news:", err); }
   }, { timezone: TZ });
 
@@ -252,7 +252,7 @@ export function startAllSchedulers(): void {
 
   cron.schedule("15 2 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 02:15 CET — Avvio scraping Health news...");
-    try { await refreshHealthNewsFromRSS(); console.log("[SchedulerManager] ✅ Health news aggiornate"); }
+    try { await refreshHealthNewsFromRSS(); invalidateSection('health'); console.log("[SchedulerManager] ✅ Health news aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ Health news:", err); }
   }, { timezone: TZ });
 
@@ -278,7 +278,7 @@ export function startAllSchedulers(): void {
 
   cron.schedule("45 2 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 02:45 CET — Avvio scraping Sport news...");
-    try { await refreshSportNewsFromRSS(); console.log("[SchedulerManager] ✅ Sport news aggiornate"); }
+    try { await refreshSportNewsFromRSS(); invalidateSection('sport'); console.log("[SchedulerManager] ✅ Sport news aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ Sport news:", err); }
   }, { timezone: TZ });
 
@@ -304,7 +304,7 @@ export function startAllSchedulers(): void {
 
   cron.schedule("5 3 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 03:05 CET — Avvio scraping Luxury news...");
-    try { await refreshLuxuryNewsFromRSS(); console.log("[SchedulerManager] ✅ Luxury news aggiornate"); }
+    try { await refreshLuxuryNewsFromRSS(); invalidateSection('luxury'); console.log("[SchedulerManager] ✅ Luxury news aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ Luxury news:", err); }
   }, { timezone: TZ });
 

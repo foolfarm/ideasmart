@@ -1232,3 +1232,16 @@
 - [x] Fix sicurezza: helmet (HSTS, X-Frame, X-Content-Type), rate limiter 100req/15min, trust proxy
 - [x] Fix performance: lazy loading img su 17 pagine, indici DB newsItems(section, position), font non-critici media=print
 - [x] Fix efficienza: job lock anti-sovrapposizione cron, ridotto body parser 50mb→2mb
+
+## Caching Intelligente DB (19 Mar 2026)
+
+- [ ] Analisi cache esistente e query DB più frequenti
+- [ ] Estendere cache manager: TTL differenziato, LRU eviction, statistiche hit/miss
+- [ ] Integrare caching nelle procedure tRPC più frequenti (news, editorial, reportage, startup)
+- [ ] Invalidazione selettiva cache al termine dei cron job
+- [ ] Endpoint /api/cache-stats per monitoraggio
+- [ ] Test vitest per il sistema di caching
+
+## Fix Logo Navbar (19 Mar 2026)
+
+- [x] Logo IdeaSmart nella Navbar deve essere un link cliccabile che porta alla homepage (/) — già funzionante, verificato nel browser

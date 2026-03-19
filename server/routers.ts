@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { adminRouter as adminToolsRouter } from "./routers/adminRouter";
-import { cached, invalidateAll, getCacheStats, CACHE_KEYS, DEFAULT_TTL_MS, EDITORIAL_TTL_MS } from "./cache";
+import { cached, invalidateAll, getCacheStats, CACHE_KEYS, DEFAULT_TTL_MS, EDITORIAL_TTL_MS, TTL_SECTION_COUNT_MS, TTL_SUBSCRIBER_COUNT_MS, TTL_PUNTO_DEL_GIORNO_MS, TTL_LLM_WIDGET_MS, TTL_EDITORIAL_MS, invalidateSection } from "./cache";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
@@ -150,7 +150,7 @@ export const appRouter = router({
           if (!db) return null;
           const items = await db.select().from(marketAnalysisTable).where(eq(marketAnalysisTable.id, input.id)).limit(1);
           return items[0] ?? null;
-        }, 30 * 60 * 1000);
+        }, TTL_EDITORIAL_MS);
       }),
   }),
 
@@ -173,7 +173,7 @@ export const appRouter = router({
           if (!db) return null;
           const items = await db.select().from(weeklyReportageTable).where(eq(weeklyReportageTable.id, input.id)).limit(1);
           return items[0] ?? null;
-        }, 30 * 60 * 1000);
+        }, TTL_EDITORIAL_MS);
       }),
   }),
 
@@ -196,7 +196,7 @@ export const appRouter = router({
           if (!db) return null;
           const items = await db.select().from(dailyEditorialTable).where(eq(dailyEditorialTable.id, input.id)).limit(1);
           return items[0] ?? null;
-        }, 30 * 60 * 1000);
+        }, TTL_EDITORIAL_MS);
       }),
   }),
 
@@ -219,7 +219,7 @@ export const appRouter = router({
           if (!db) return null;
           const items = await db.select().from(startupOfDayTable).where(eq(startupOfDayTable.id, input.id)).limit(1);
           return items[0] ?? null;
-        }, 30 * 60 * 1000);
+        }, TTL_EDITORIAL_MS);
       }),
   }),
 
@@ -301,7 +301,7 @@ export const appRouter = router({
               section: item.section,
             };
           },
-          30 * 60 * 1000
+          TTL_EDITORIAL_MS // 20 min: articolo stabile
         );
       }),
 
@@ -489,10 +489,9 @@ export const appRouter = router({
           return null;
         }
           },
-          30 * 60 * 1000 // 30 minuti
+           TTL_LLM_WIDGET_MS // 30 min: widget LLM costoso
         );
       }),
-
     // Storico intenzioni di voto (ultimi 28 giorni)
     getBarometroHistory: publicProcedure
       .input(z.object({ days: z.number().min(7).max(90).default(28) }).optional())
@@ -501,10 +500,9 @@ export const appRouter = router({
         return cached(
           `barometro_history_${days}`,
           () => getBarometroHistory(days),
-          15 * 60 * 1000 // 15 minuti
+           TTL_SECTION_COUNT_MS // 5 minuti: storico barometro
         );
       }),
-
     getThreatAlert: publicProcedure
       .query(async () => {
         // TTL 30 minuti: la chiamata LLM è costosa, le minacce cambiano raramente
@@ -576,10 +574,9 @@ export const appRouter = router({
           return null;
         }
           },
-          30 * 60 * 1000 // 30 minuti
+           TTL_LLM_WIDGET_MS // 30 min: widget LLM costoso
         );
       }),
-
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
@@ -655,7 +652,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           );
           return Object.fromEntries(results) as Record<string, number>;
         },
-        10 * 60 * 1000 // 10 minuti
+        TTL_SECTION_COUNT_MS // 5 minuti: badge nav
       );
     }),
   }),
@@ -719,9 +716,13 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return result;
       }),
 
-    // Conta iscritti attivi (pubblico, per social proof)
+    // Conta iscritti attivi (pubblico, per social proof) — cachato 1 ora
     getActiveCount: publicProcedure.query(async () => {
-      return getActiveSubscriberCount();
+      return cached(
+        CACHE_KEYS.SUBSCRIBER_COUNT,
+        () => getActiveSubscriberCount(),
+        TTL_SUBSCRIBER_COUNT_MS
+      );
     }),
 
     // Disiscrizione tramite email (legacy, richiede autenticazione)
