@@ -4,6 +4,7 @@
  */
 import { useMemo } from "react";
 import { Link } from "wouter";
+import ReadersCounter from "@/components/ReadersCounter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
@@ -195,6 +196,8 @@ export default function TennisHome() {
                 Advertise
               </span>
             </Link>
+            <span className="text-[#1a1a2e]/15 text-xs mx-1">·</span>
+            <ReadersCounter />
           </nav>
           <div className="w-full border-t border-[#1a1a2e]/20" />
         </header>

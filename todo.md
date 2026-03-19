@@ -1255,3 +1255,10 @@
 - [x] Aggiungere link "Advertise" nella riga istituzionale della Home (dopo Tecnologia)
 - [x] Aggiungere link "Advertise" nella riga istituzionale di tutte le 14 pagine sezione
 - [x] Aggiungere hover effect distintivo (underline + colore) su tutti i link istituzionali
+
+## Contatore Lettori Attivi (19 Mar 2026)
+
+- [x] Analizzare procedura getActiveCount nel router tRPC
+- [x] Creare componente ReadersCounter riutilizzabile (dato reale dal DB + animazione)
+- [x] Integrare contatore nella riga istituzionale della Home
+- [x] Integrare contatore nelle 14 pagine sezione con script Python

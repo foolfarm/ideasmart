@@ -10,6 +10,7 @@ import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
+import ReadersCounter from "@/components/ReadersCounter";
 
 const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
@@ -535,6 +536,8 @@ function SectionNav() {
             Advertise
           </span>
         </Link>
+        <span className="text-[#1a1a2e]/15 text-xs mx-1">·</span>
+        <ReadersCounter />
         <div className="ml-auto flex items-center">
           <Link href="/business">
             <span
