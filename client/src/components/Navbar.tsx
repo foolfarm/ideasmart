@@ -140,6 +140,13 @@ export default function Navbar() {
           {/* CTA + mobile menu */}
           <div className="flex items-center gap-2">
             <Link
+              href="/tecnologia"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-100"
+              style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
+            >
+              Tecnologia
+            </Link>
+            <Link
               href="/chi-siamo"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-100"
               style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
@@ -256,6 +263,14 @@ export default function Navbar() {
               </>
             )}
             <div className="border-t border-gray-100 my-2" />
+            <Link
+              href="/tecnologia"
+              className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors hover:bg-gray-50 mb-1"
+              style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Tecnologia →
+            </Link>
             <Link
               href="/chi-siamo"
               className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors hover:bg-gray-50 mb-1"

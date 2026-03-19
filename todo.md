@@ -29,6 +29,15 @@
 - [x] Code splitting manuale Vite: vendor-react, vendor-trpc, vendor-radix, vendor-charts, vendor-motion
 - [x] Cache HTTP ottimale per file statici in produzione: /assets immutable 1 anno, index.html no-cache
 
+## Pagina Advertise / Media Kit (19 Mar 2026)
+
+- [x] Procedura tRPC advertise.sendInquiry per modulo contatto inserzionisti
+- [x] Pagina Advertise.tsx: media kit, statistiche audience, formati pubblicitari, modulo contatto
+- [x] Route /advertise in App.tsx + link nel footer
+- [x] Link "Advertise" nella navbar accanto a "Chi Siamo"
+- [x] Pagina Tecnologia.tsx: storytelling IdeaSmart/Verify (contenuto da file allegato)
+- [x] Link "Tecnologia" nella navbar accanto a "Advertise"
+
 ## Navbar e Manchette (19 Mar 2026)
 
 - [x] Barra canali visibile in tutte le pagine sezione (non solo Home)

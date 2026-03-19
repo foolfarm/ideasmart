@@ -70,6 +70,7 @@ const Manifesto = lazy(() => import("./pages/Manifesto"));
 const ChannelPreferences = lazy(() => import("./pages/ChannelPreferences"));
 const Business = lazy(() => import("./pages/Business"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
+const Tecnologia = lazy(() => import("./pages/Tecnologia"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -114,6 +115,7 @@ function Router() {
         <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
         <Route path="/chi-siamo" component={ChiSiamo} />
         <Route path="/manifesto" component={Manifesto} />
+        <Route path="/tecnologia" component={Tecnologia} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
