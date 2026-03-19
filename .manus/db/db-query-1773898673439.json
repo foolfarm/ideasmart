@@ -1,0 +1,80 @@
+{
+  "query": "SELECT section, COUNT(*) as total, MAX(createdAt) as ultimo_scraping FROM news_items GROUP BY section ORDER BY section;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as total, MAX(createdAt) as ultimo_scraping FROM news_items GROUP BY section ORDER BY section;",
+  "rows": [
+    {
+      "section": "ai",
+      "total": "20",
+      "ultimo_scraping": "2026-03-18 23:00:29"
+    },
+    {
+      "section": "music",
+      "total": "23",
+      "ultimo_scraping": "2026-03-18 23:30:40"
+    },
+    {
+      "section": "startup",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 00:00:48"
+    },
+    {
+      "section": "finance",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 00:30:48"
+    },
+    {
+      "section": "health",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:34:24"
+    },
+    {
+      "section": "sport",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:34:44"
+    },
+    {
+      "section": "luxury",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:35:03"
+    },
+    {
+      "section": "news",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:33:55"
+    },
+    {
+      "section": "motori",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:35:32"
+    },
+    {
+      "section": "tennis",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:35:54"
+    },
+    {
+      "section": "basket",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:36:26"
+    },
+    {
+      "section": "gossip",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 02:30:59"
+    },
+    {
+      "section": "cybersecurity",
+      "total": "20",
+      "ultimo_scraping": "2026-03-19 05:37:00"
+    },
+    {
+      "section": "sondaggi",
+      "total": "7",
+      "ultimo_scraping": "2026-03-19 05:37:23"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotal\tultimo_scraping\nai\t20\t2026-03-18 23:00:29\nmusic\t23\t2026-03-18 23:30:40\nstartup\t20\t2026-03-19 00:00:48\nfinance\t20\t2026-03-19 00:30:48\nhealth\t20\t2026-03-19 05:34:24\nsport\t20\t2026-03-19 05:34:44\nluxury\t20\t2026-03-19 05:35:03\nnews\t20\t2026-03-19 05:33:55\nmotori\t20\t2026-03-19 05:35:32\ntennis\t20\t2026-03-19 05:35:54\nbasket\t20\t2026-03-19 05:36:26\ngossip\t20\t2026-03-19 02:30:59\ncybersecurity\t20\t2026-03-19 05:37:00\nsondaggi\t7\t2026-03-19 05:37:23\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

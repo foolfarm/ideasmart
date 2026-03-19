@@ -78,7 +78,8 @@
 ## Nuovi task (12 Mar 2026 — SEO + Notifiche)
 
 - [ ] SEO: titolo pagina tra 30-60 caratteri (attuale: 27)
-- [ ] SEO: descrizione meta tra 50-160 caratteri (attuale: 209)
+- [x] SEO: descrizione meta tra 50-160 caratteri — ridotta a 153 caratteri (19 Mar 2026)
+- [x] SEO: aggiunto H2 sr-only con parole chiave principali (19 Mar 2026)
 - [ ] SEO: ridurre parole chiave da 13 a 3-8 concentrate
 - [ ] SEO: aggiornare index.html con meta tag ottimizzati
 - [ ] Notifiche: sistema di notifiche personalizzate per utenti iscritti
@@ -1069,3 +1070,7 @@
 
 - [x] Creare endpoint Express GET /ads.txt che scarica dinamicamente le righe da Moneytizer e le merge con Google AdSense
 - [x] Verificare che https://ideasmart.ai/ads.txt risponda correttamente
+
+## SEO fix (18 Mar 2026)
+- [ ] Aggiungere H2 nella home page (/)
+- [ ] Accorciare meta description a max 160 caratteri

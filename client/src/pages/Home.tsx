@@ -404,7 +404,7 @@ export default function Home() {
     <>
       <SEOHead
         title="IDEASMART — Testata Giornalistica HumanLess"
-        description="La prima testata giornalistica HumanLess italiana: News, AI, Startup, Finance, Sport, Motori, Tennis, Basket, Health, Luxury, Music, Gossip, Cybersecurity, Sondaggi."
+        description="La prima testata giornalistica HumanLess italiana: notizie su AI, Startup, Finance, Sport, Motori, Tennis, Health, Luxury, Music, Gossip e Cybersecurity."
         canonical="https://ideasmart.ai"
         ogSiteName="IDEASMART"
       />
@@ -486,6 +486,8 @@ export default function Home() {
 
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-12">
+          {/* H2 per SEO — visivamente nascosto */}
+          <h2 className="sr-only">Ultime notizie: AI, Startup, Finance, Sport, Motori, Tennis, Health, Luxury, Music, Gossip, Cybersecurity e Sondaggi</h2>
 
           {/* ═══════════════════════════════════════════════════════════
               BLOCCO 1 — NEWS ITALIA (apertura principale)
