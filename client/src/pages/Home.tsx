@@ -143,8 +143,28 @@ function HeroNewsBlock({ item, section, editorial }: {
         )}
       </div>
       <div className="py-4 pl-0 md:pl-6 border-l-0 md:border-l border-[#1a1a2e]/20 flex items-start justify-center">
-        {/* Spazio pubblicitario: banner Tradedoubler 300x250 per il blocco News Italia principale */}
-        {section === "news" ? (
+        {/* Spazio pubblicitario: banner Tradedoubler per i blocchi principali */}
+        {section === "ai" ? (
+          /* Skyscraper 120x600 per il blocco AI4Business */
+          <div
+            className="flex items-center justify-center overflow-hidden mx-auto"
+            style={{ width: "120px", height: "600px", maxWidth: "100%", border: "1px solid rgba(26,26,46,0.10)", background: "#f5f2ec" }}
+          >
+            <a
+              href="https://clk.tradedoubler.com/click?p=377429&a=3477790&g=25854308"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={`https://imp.tradedoubler.com/imp?type(img)g(25854308)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                width="120"
+                height="600"
+                alt="Pubblicità"
+                style={{ display: "block", width: "120px", height: "600px", objectFit: "cover" }}
+              />
+            </a>
+          </div>
+        ) : section === "news" ? (
           <div
             className="flex items-center justify-center overflow-hidden"
             style={{ width: "300px", height: "250px", maxWidth: "100%", border: "1px solid rgba(26,26,46,0.10)", background: "#f5f2ec" }}
