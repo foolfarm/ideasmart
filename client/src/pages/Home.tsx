@@ -795,6 +795,12 @@ export default function Home() {
                     </Link>
                   );
                 })}
+                <Link href="/chi-siamo">
+                  <span className="text-[10px] hover:underline cursor-pointer font-bold"
+                    style={{ color: "#0369a1", fontFamily: "'Space Mono', monospace" }}>
+                    Chi Siamo
+                  </span>
+                </Link>
                 <Link href="/business">
                   <span className="text-[10px] hover:underline cursor-pointer font-bold"
                     style={{ color: "#ff5500", fontFamily: "'Space Mono', monospace" }}>

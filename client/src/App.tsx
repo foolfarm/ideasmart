@@ -42,6 +42,7 @@ import ChannelPreferences from "./pages/ChannelPreferences";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import GenericNewsArticle from "./pages/GenericNewsArticle";
 import Business from "./pages/Business";
+import ChiSiamo from "./pages/ChiSiamo";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -82,6 +83,7 @@ function Router() {
       <Route path="/:section/reportage/:id" component={ReportageDetail} />
       <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />
       <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
+      <Route path="/chi-siamo" component={ChiSiamo} />
       <Route path="/manifesto" component={Manifesto} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />

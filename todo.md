@@ -1118,3 +1118,15 @@
 - [x] Procedura tRPC: business.requestDemo con email notifica admin + conferma utente (19 Mar 2026)
 - [x] Route /business in App.tsx (19 Mar 2026)
 - [x] Link "IdeaSmart Business" nel footer della Home (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — Navbar Business + Calendly)
+
+- [ ] Aggiungere link "Business" nel Navbar principale
+- [ ] Integrare widget Calendly nella pagina /business come CTA principale
+
+## Nuovi task (19 Mar 2026 — Calendly + HilltopAds removal + Chi Siamo)
+
+- [x] Integrare Calendly nella pagina /business (link: https://calendly.com/andyiltoscano/30min) (19 Mar 2026)
+- [x] Rimuovere tutti e tre gli script HilltopAds da index.html (19 Mar 2026)
+- [x] Creare pagina /chi-siamo con storia editoriale di IdeaSmart (19 Mar 2026)
+- [x] Aggiungere link Chi Siamo nella navigazione (Navbar desktop+mobile) e nel footer (19 Mar 2026)

@@ -140,6 +140,25 @@ export default function Navbar() {
           {/* CTA + mobile menu */}
           <div className="flex items-center gap-2">
             <Link
+              href="/chi-siamo"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-100"
+              style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
+            >
+              Chi Siamo
+            </Link>
+            <Link
+              href="/business"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
+              style={{
+                color: "#ff5500",
+                borderColor: "#ff550030",
+                background: "#fff4f0",
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+            >
+              🚀 Business
+            </Link>
+            <Link
               href="/advertise"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{
@@ -237,6 +256,22 @@ export default function Navbar() {
               </>
             )}
             <div className="border-t border-gray-100 my-2" />
+            <Link
+              href="/chi-siamo"
+              className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors hover:bg-gray-50 mb-1"
+              style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Chi Siamo →
+            </Link>
+            <Link
+              href="/business"
+              className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors mb-1"
+              style={{ color: "#ff5500", background: "#fff4f0", fontFamily: "'DM Sans', sans-serif" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              🚀 IdeaSmart Business →
+            </Link>
             <Link
               href="/advertise"
               className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors"

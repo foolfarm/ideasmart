@@ -901,8 +901,13 @@ export default function Business() {
             </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <div className="bg-white border border-[#e8e4dc] rounded-2xl p-6 md:p-8 shadow-sm">
-              <DemoForm />
+            <div className="bg-white border border-[#e8e4dc] rounded-2xl overflow-hidden shadow-sm">
+              {/* Calendly inline widget */}
+              <div
+                className="calendly-inline-widget"
+                data-url="https://calendly.com/andyiltoscano/30min?hide_gdpr_banner=1&primary_color=ff5500"
+                style={{ minWidth: "320px", height: "700px" }}
+              />
             </div>
           </FadeUp>
 
