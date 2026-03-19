@@ -1146,3 +1146,14 @@
 
 - [x] Indicatore sezione attiva nel menu riga 1 (useLocation + accent color permanente + underline bianco) (19 Mar 2026)
 - [x] Freccia scorrimento orizzontale su mobile (lato destro menu riga 1, scompare quando non serve) (19 Mar 2026)
+
+## Nuovi task (19 Mar 2026 — Allineamento layout /chi-siamo e /business)
+
+- [ ] Riscrivere ChiSiamo.tsx con layout editoriale IdeaSmart (testata, palette, tipografia, Navbar, footer)
+- [ ] Riscrivere Business.tsx con layout editoriale IdeaSmart (mantenendo demo interattiva e Calendly)
+
+## Nuovi task (19 Mar 2026 — Contatore notizie live nel menu)
+
+- [x] Procedura tRPC: news.getSectionCounts (conteggio notizie per sezione, cache 10 min) (19 Mar 2026)
+- [x] SectionNav: badge numerico accanto al nome di ogni sezione nel menu riga 1 (19 Mar 2026)
+- [x] Stile badge: accent color su sfondo light per sezione inattiva, bianco trasparente per sezione attiva (19 Mar 2026)

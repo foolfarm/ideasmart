@@ -51,7 +51,7 @@ import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
 import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
-import { eq, isNull, and, desc } from "drizzle-orm";
+import { eq, isNull, and, desc, count } from "drizzle-orm";
 import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, runFullAudit, auditReportage } from "./auditContent";
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 
@@ -638,8 +638,27 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
         return { replaced, total: lowScoreNews.length, message: `Sostituite ${replaced} notizie su ${lowScoreNews.length}` };
       }),
+    // Contatore notizie per sezione — usato dal SectionNav per mostrare badge live
+    getSectionCounts: publicProcedure.query(async () => {
+      return cached(
+        'news:section_counts',
+        async () => {
+          const db = await getDbInstance();
+          if (!db) return {} as Record<string, number>;
+          const sections = ['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'] as const;
+          const results = await Promise.all(
+            sections.map(async (section) => {
+              const rows = await db.select({ cnt: count() }).from(newsItemsTable)
+                .where(eq(newsItemsTable.section, section));
+              return [section, rows[0]?.cnt ?? 0] as const;
+            })
+          );
+          return Object.fromEntries(results) as Record<string, number>;
+        },
+        10 * 60 * 1000 // 10 minuti
+      );
+    }),
   }),
-
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

@@ -804,11 +804,15 @@ export default function Home() {
   );
 }
 
-// ─── SectionNav: menu con sezione attiva + freccia scorrimento mobile ────────
+// ─── SectionNav: menu con sezione attiva + freccia scorrimento mobile + badge contatori ────────
 function SectionNav() {
   const [location] = useLocation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const { data: sectionCounts } = trpc.news.getSectionCounts.useQuery(undefined, {
+    staleTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -855,6 +859,19 @@ function SectionNav() {
                     }}
                   >
                     {s.label}
+                    {sectionCounts && sectionCounts[sec] > 0 && (
+                      <span
+                        className="ml-1.5 text-[8px] font-bold px-1 py-0.5 rounded-sm"
+                        style={{
+                          background: isActive ? "rgba(255,255,255,0.25)" : s.light,
+                          color: isActive ? "#fff" : s.accent,
+                          fontFamily: "'Space Mono', monospace",
+                          lineHeight: 1,
+                        }}
+                      >
+                        {sectionCounts[sec]}
+                      </span>
+                    )}
                     {isActive && (
                       <span
                         className="absolute bottom-0 left-0 right-0 h-[2px]"

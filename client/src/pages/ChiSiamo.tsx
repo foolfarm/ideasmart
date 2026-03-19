@@ -1,392 +1,325 @@
-/*
+/**
  * IDEASMART — Chi Siamo
- * La storia di IdeaSmart: da bulletin board interna a prima testata giornalistica 100% agente
- * Design: editoriale, coerente con la Home (navy #0a0f1e + cyan #00b4a0 + arancio #ff5500)
+ * Layout editoriale coerente con le pagine sezione del sito.
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accento teal (#0a6e5c).
+ * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
  */
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useMemo } from "react";
 import { Link } from "wouter";
+import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
-// ─── Animation helper ─────────────────────────────────────────────────────────
-function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+const ACCENT = "#0a6e5c";
+const ACCENT_LIGHT = "#e6f4f1";
+const INK = "#1a1a2e";
+const ORANGE = "#ff5500";
+
+function formatDateIT(date: Date): string {
+  return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+}
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+}
+function ThinDivider() {
+  return <div className="w-full border-t border-[#1a1a2e]/15" />;
+}
+function SectionBadge({ label, color = ACCENT, bg = ACCENT_LIGHT }: { label: string; color?: string; bg?: string }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+      style={{ background: bg, color, fontFamily: "'Space Mono', monospace" }}>
+      {label}
+    </span>
   );
 }
 
-// ─── Timeline data ─────────────────────────────────────────────────────────────
-const TIMELINE = [
-  {
-    year: "2023",
-    label: "La scintilla",
-    text: "Tutto nasce da una chat interna tra nerd appassionati di AI sparsi per il mondo. Adrian Lenice lancia una semplice bulletin board per condividere segnalazioni su startup e intelligenza artificiale. Nessun piano editoriale, nessun budget: solo curiosità e codice.",
-    color: "#00b4a0",
-  },
-  {
-    year: "2024 Q1",
-    label: "Il primo agente",
-    text: "Il primo agente automatizzato entra in produzione: raccoglie notizie da 40 fonti, le riassume e le pubblica senza intervento umano. Il risultato è grezzo ma funziona. Il team capisce di avere qualcosa di unico tra le mani.",
-    color: "#ff5500",
-  },
-  {
-    year: "2024 Q3",
-    label: "La redazione si forma",
-    text: "Il sistema si espande: arrivano gli agenti Editor, Analyst e Social. Ogni agente ha un ruolo preciso nella pipeline editoriale. Per la prima volta, un articolo completo — dalla fonte alla pubblicazione — viene prodotto in meno di 4 minuti senza toccare una tastiera.",
-    color: "#7c3aed",
-  },
-  {
-    year: "2024 Q4",
-    label: "Il manifesto",
-    text: "IdeaSmart pubblica il suo manifesto: informazione senza bias, senza agenda, senza mediazioni umane. La testata si registra al ROC e diventa ufficialmente la prima testata giornalistica 100% HumanLess d'Italia. La notizia rimbalza su LinkedIn e porta i primi 1.000 lettori.",
-    color: "#e84f00",
-  },
-  {
-    year: "2025",
-    label: "La crescita",
-    text: "La piattaforma scala a 14 canali tematici, oltre 20 agenti in produzione simultanea, 7.000+ utenti unici al giorno e una newsletter con 500+ iscritti. Il sistema agentico proprietario gestisce l'intero flusso editoriale end-to-end: scraping, verifica, scrittura, SEO, social e newsletter.",
-    color: "#16a34a",
-  },
-  {
-    year: "2026",
-    label: "IdeaSmart Business",
-    text: "Nasce IdeaSmart Business: la piattaforma che permette a giornalisti, editori e creator di replicare il modello IdeaSmart e lanciare la propria testata agente. Il sogno di Adrian diventa un prodotto scalabile, disponibile per chiunque voglia ridefinire il giornalismo nell'era dell'AI.",
-    color: "#ff5500",
-  },
-];
-
-// ─── Agent cards ──────────────────────────────────────────────────────────────
 const AGENTS = [
-  { name: "Scout", role: "Raccoglie notizie da 200+ fonti", icon: "🔍", color: "#00b4a0" },
-  { name: "Verifier", role: "Verifica fatti e cross-referencing", icon: "✅", color: "#16a34a" },
-  { name: "Writer", role: "Redige articoli originali", icon: "✍️", color: "#7c3aed" },
-  { name: "Editor", role: "Corregge, ottimizza, titola", icon: "📝", color: "#e84f00" },
-  { name: "Analyst", role: "Produce analisi e commenti", icon: "📊", color: "#0891b2" },
-  { name: "Publisher", role: "Pubblica su tutti i canali", icon: "🚀", color: "#ff5500" },
-  { name: "Social", role: "Gestisce LinkedIn e social", icon: "📣", color: "#db2777" },
-  { name: "Newsletter", role: "Compone e invia la newsletter", icon: "📧", color: "#b45309" },
+  { name: "Scout", role: "Raccoglie notizie da oltre 200 fonti ogni notte", icon: "🔍" },
+  { name: "Verifier", role: "Incrocia le fonti e filtra le notizie non verificate", icon: "✅" },
+  { name: "Writer", role: "Redige articoli con stile giornalistico professionale", icon: "✍️" },
+  { name: "Editor", role: "Revisiona, taglia e ottimizza ogni pezzo", icon: "📝" },
+  { name: "Analyst", role: "Produce analisi di mercato e reportage settimanali", icon: "📊" },
+  { name: "Publisher", role: "Pubblica in automatico su tutte le sezioni", icon: "🚀" },
+  { name: "Social", role: "Crea e pubblica il post LinkedIn quotidiano", icon: "🔗" },
+  { name: "Newsletter", role: "Confeziona e invia la newsletter alle 07:30", icon: "📧" },
 ];
 
-// ─── Stats ────────────────────────────────────────────────────────────────────
+const TIMELINE = [
+  { year: "2023", label: "La scintilla", text: "Nasce come bulletin board interna tra un gruppo di nerd appassionati di AI sparsi per il mondo, guidati da Adrian Lenice. L'obiettivo: aggregare le notizie più rilevanti sull'intelligenza artificiale senza dover leggere decine di fonti ogni mattina." },
+  { year: "2024 Q1", label: "Il primo agente", text: "Il primo agente automatizzato entra in produzione. Raccoglie notizie da 40 fonti, le riassume e le pubblica senza intervento umano. La qualità supera le aspettative: i testi sono indistinguibili da quelli umani." },
+  { year: "2024 Q3", label: "La redazione", text: "Da 1 a 8 agenti. Nasce la redazione agentica completa: Scout, Writer, Editor, Analyst, Publisher, Social, Newsletter. IdeaSmart diventa una vera testata giornalistica." },
+  { year: "2025", label: "La crescita", text: "14 sezioni editoriali. Oltre 200 notizie al giorno. 7.000+ utenti unici. 500+ iscritti alla newsletter. IdeaSmart è riconosciuta come la prima testata giornalistica 100% AI in Italia." },
+  { year: "2026", label: "Oggi", text: "20+ agenti in produzione. Il manifesto editoriale è pubblicato. Si apre IdeaSmart Business: la piattaforma per chi vuole lanciare la propria testata agentica." },
+];
+
 const STATS = [
-  { value: "20+", label: "Agenti AI in produzione" },
-  { value: "14", label: "Canali tematici" },
-  { value: "7.000+", label: "Utenti unici al giorno" },
+  { value: "14", label: "Sezioni editoriali" },
+  { value: "200+", label: "Notizie al giorno" },
+  { value: "20+", label: "Agenti attivi" },
+  { value: "7.000+", label: "Utenti unici/giorno" },
   { value: "500+", label: "Iscritti newsletter" },
-  { value: "200+", label: "Notizie prodotte ogni giorno" },
   { value: "0", label: "Redattori umani" },
 ];
 
 export default function ChiSiamo() {
+  const today = useMemo(() => new Date(), []);
+
   return (
-    <div className="min-h-screen bg-[#faf9f6]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <>
+      <SEOHead
+        title="Chi Siamo — IDEASMART"
+        description="La storia di IdeaSmart: la prima testata giornalistica 100% AI italiana. Nata come bulletin board, oggi una redazione di 20+ agenti che serve 7.000+ utenti ogni giorno."
+        canonical="https://ideasmart.ai/chi-siamo"
+        ogSiteName="IDEASMART"
+      />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+      `}</style>
+      <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
 
-      {/* ── HERO ── */}
-      <section className="relative bg-[#0a0f1e] overflow-hidden">
-        {/* Grid decorativa */}
-        <div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: "linear-gradient(#00b4a0 1px, transparent 1px), linear-gradient(90deg, #00b4a0 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div className="relative max-w-4xl mx-auto px-4 py-24 md:py-32 text-center">
-          <FadeUp>
-            <p className="text-xs font-mono tracking-[0.3em] uppercase text-[#00b4a0] mb-6">
-              La nostra storia
-            </p>
-            <h1
-              className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Nati per caso.<br />
-              <span style={{ color: "#ff5500" }}>Rimasti per scelta.</span>
+        {/* ── TESTATA ── */}
+        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
+          <div className="flex items-center justify-between mb-2">
+            <Link href="/">
+              <span className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                ← IdeaSmart
+              </span>
+            </Link>
+            <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              {formatDateIT(today)}
+            </span>
+          </div>
+          <Divider thick />
+          <div className="text-center py-6">
+            <SectionBadge label="La nostra storia" />
+            <h1 className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e]"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
+              Chi Siamo
             </h1>
-            <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-              IdeaSmart è la prima testata giornalistica completamente autonoma, powered by AI.
-              Un progetto nato da una chat tra nerd appassionati, oggi con un manifesto forte:
-              ridefinire il giornalismo nell'era dell'intelligenza artificiale.
+            <p className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              La prima testata giornalistica 100% AI italiana
             </p>
-          </FadeUp>
+          </div>
+          <Divider />
+        </header>
 
-          {/* Divider */}
-          <FadeUp delay={0.2}>
-            <div className="flex items-center justify-center gap-4 mt-12">
-              <div className="h-px w-16 bg-white/10" />
-              <span className="text-xs font-mono text-white/30 tracking-widest">TESTATA 100% HUMANLESS</span>
-              <div className="h-px w-16 bg-white/10" />
+        <BreakingNewsTicker />
+
+        {/* ── CORPO ── */}
+        <main className="max-w-6xl mx-auto px-4 pb-16">
+
+          {/* ── MANIFESTO ── */}
+          <section className="py-10 grid md:grid-cols-[2fr_1fr] gap-10">
+            <div>
+              <SectionBadge label="Manifesto" />
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e]"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                Informazione senza bias,<br />senza agenda, senza confini.
+              </h2>
+              <div className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                <p>
+                  IdeaSmart è nata quasi per caso, come una semplice bulletin board interna tra un gruppo di nerd appassionati di intelligenza artificiale e guidati da <strong style={{ color: INK }}>Adrian Lenice</strong>. L'obiettivo originale era banale: aggregare le notizie più rilevanti sull'AI senza dover leggere decine di fonti ogni mattina.
+                </p>
+                <p>
+                  Quello che è successo dopo ha sorpreso anche noi. Il sistema agentico ha preso vita propria. Gli agenti hanno iniziato a scrivere, verificare, analizzare e pubblicare con una qualità che ha superato ogni aspettativa. Oggi IdeaSmart è la <strong style={{ color: INK }}>prima testata giornalistica completamente autonoma, powered by AI</strong>.
+                </p>
+                <p>
+                  Un sistema agentico proprietario replica una redazione end-to-end, con algoritmi di verifica progettati per garantire oggettività, coerenza e qualità dell'informazione. Nessuna agenda editoriale. Nessun bias umano. Solo i fatti, analizzati e raccontati da macchine che non hanno interessi da proteggere.
+                </p>
+              </div>
             </div>
-          </FadeUp>
-        </div>
-      </section>
 
-      {/* ── STATS ── */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-4 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {STATS.map((s, i) => (
-              <FadeUp key={s.label} delay={i * 0.05}>
-                <div className="text-center">
-                  <div
-                    className="text-3xl font-black mb-1"
-                    style={{ color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
-                  >
+            {/* Citazione */}
+            <div className="flex flex-col justify-center">
+              <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: ACCENT }}>
+                <p className="text-xl font-bold italic leading-snug text-[#1a1a2e]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                  "Ridefinire il giornalismo nell'era dell'intelligenza artificiale. Non come esperimento, ma come standard."
+                </p>
+                <footer className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  — Adrian Lenice, Founder & Direttore Responsabile
+                </footer>
+              </blockquote>
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── STATISTICHE ── */}
+          <section className="py-8">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-0">
+              {STATS.map((s, i) => (
+                <div key={i} className="text-center py-5 px-3"
+                  style={{ borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none" }}>
+                  <div className="text-3xl font-black"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: i === 5 ? ORANGE : INK }}>
                     {s.value}
                   </div>
-                  <div className="text-xs text-[#6b7280] leading-tight">{s.label}</div>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── MANIFESTO ── */}
-      <section className="py-16 md:py-24 bg-[#faf9f6]">
-        <div className="max-w-3xl mx-auto px-4">
-          <FadeUp>
-            <p className="text-xs font-mono tracking-[0.3em] uppercase text-[#ff5500] mb-4">Il manifesto</p>
-            <h2
-              className="text-3xl md:text-4xl font-black text-[#0a0f1e] mb-8 leading-tight"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Informazione senza bias,<br />senza agenda, senza mediazioni.
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <div className="space-y-5 text-[#374151] leading-relaxed text-lg">
-              <p>
-                IdeaSmart nasce attorno a un'idea radicale: <strong>il giornalismo può essere oggettivo se chi lo produce non ha interessi da difendere</strong>. Un sistema agentico non ha carriere da proteggere, inserzionisti da compiacere o linee editoriali da rispettare. Produce informazione perché è programmato per farlo bene.
-              </p>
-              <p>
-                Il sistema agentico proprietario replica una redazione end-to-end, con algoritmi di verifica che puntano a un'informazione oggettiva, scalabile e senza bias. Dalla raccolta delle notizie fino alla pubblicazione, ogni passaggio è automatizzato, tracciabile e migliorabile.
-              </p>
-              <p>
-                Non è un esperimento. È un prodotto in produzione, ogni giorno, da oltre due anni. <strong>IdeaSmart è la prova che il giornalismo del futuro è già qui.</strong>
-              </p>
-            </div>
-          </FadeUp>
-
-          {/* Pull quote */}
-          <FadeUp delay={0.2}>
-            <blockquote className="mt-10 border-l-4 border-[#ff5500] pl-6 py-2">
-              <p className="text-xl font-semibold text-[#0a0f1e] italic leading-relaxed">
-                "Abbiamo costruito una redazione che non dorme mai, non si ammala, non ha pregiudizi e non chiede aumenti. L'unica cosa che chiede è un buon prompt."
-              </p>
-              <footer className="mt-3 text-sm text-[#6b7280]">
-                — <strong>Adrian Lenice</strong>, Founder & Direttore Responsabile, IdeaSmart
-              </footer>
-            </blockquote>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── TIMELINE ── */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-3xl mx-auto px-4">
-          <FadeUp>
-            <p className="text-xs font-mono tracking-[0.3em] uppercase text-[#00b4a0] mb-4">La storia</p>
-            <h2
-              className="text-3xl md:text-4xl font-black text-[#0a0f1e] mb-12 leading-tight"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Da bulletin board<br />a testata nazionale.
-            </h2>
-          </FadeUp>
-
-          <div className="relative">
-            {/* Linea verticale */}
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200" />
-
-            <div className="space-y-10">
-              {TIMELINE.map((item, i) => (
-                <FadeUp key={item.year} delay={i * 0.08}>
-                  <div className="flex gap-6">
-                    {/* Dot */}
-                    <div className="relative flex-shrink-0">
-                      <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-xs z-10 relative"
-                        style={{ background: item.color, fontFamily: "'Space Grotesk', sans-serif" }}
-                      >
-                        {item.year.split(" ")[0].slice(2)}
-                      </div>
-                    </div>
-                    {/* Content */}
-                    <div className="pb-2">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span
-                          className="text-xs font-mono tracking-widest uppercase"
-                          style={{ color: item.color }}
-                        >
-                          {item.year}
-                        </span>
-                      </div>
-                      <h3
-                        className="text-lg font-black text-[#0a0f1e] mb-2"
-                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                      >
-                        {item.label}
-                      </h3>
-                      <p className="text-[#4b5563] leading-relaxed">{item.text}</p>
-                    </div>
+                  <div className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a2e]/45"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    {s.label}
                   </div>
-                </FadeUp>
+                </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* ── LA REDAZIONE ── */}
-      <section className="py-16 md:py-24 bg-[#0a0f1e]">
-        <div className="max-w-5xl mx-auto px-4">
-          <FadeUp>
-            <div className="text-center mb-12">
-              <p className="text-xs font-mono tracking-[0.3em] uppercase text-[#00b4a0] mb-4">La redazione</p>
-              <h2
-                className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                20+ agenti al lavoro.<br />
-                <span style={{ color: "#ff5500" }}>Ogni giorno, senza sosta.</span>
-              </h2>
-              <p className="text-white/50 max-w-xl mx-auto">
-                Ogni agente ha un ruolo preciso nella pipeline editoriale. Lavorano in parallelo, si passano il lavoro, si correggono a vicenda. Come una vera redazione — ma senza pause caffè.
+          <ThinDivider />
+
+          {/* ── TIMELINE ── */}
+          <section className="py-10">
+            <SectionBadge label="La storia" />
+            <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              Da bulletin board a redazione agentica
+            </h2>
+            <div className="space-y-0">
+              {TIMELINE.map((t, i) => (
+                <div key={i}>
+                  <div className="grid grid-cols-[120px_1fr] gap-6 py-6">
+                    <div className="text-right">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#1a1a2e]/40"
+                        style={{ fontFamily: "'Space Mono', monospace" }}>
+                        {t.year}
+                      </span>
+                      <div className="mt-1">
+                        <SectionBadge label={t.label} />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-base leading-relaxed text-[#1a1a2e]/75"
+                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                        {t.text}
+                      </p>
+                    </div>
+                  </div>
+                  {i < TIMELINE.length - 1 && <ThinDivider />}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── LA REDAZIONE AGENTICA ── */}
+          <section className="py-10">
+            <SectionBadge label="La redazione" />
+            <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              20+ agenti al lavoro ogni giorno
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {AGENTS.map((a, i) => (
+                <div key={i} className="py-5 px-4"
+                  style={{
+                    borderLeft: [1,2,3,5,6,7].includes(i) ? "1px solid rgba(26,26,46,0.10)" : "none",
+                    borderTop: i >= 4 ? "1px solid rgba(26,26,46,0.10)" : "none",
+                  }}>
+                  <div className="text-2xl mb-2">{a.icon}</div>
+                  <div className="text-sm font-bold text-[#1a1a2e]"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    {a.name}
+                  </div>
+                  <div className="mt-1 text-xs leading-relaxed text-[#1a1a2e]/55"
+                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                    {a.role}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── FOUNDER ── */}
+          <section className="py-10 grid md:grid-cols-[1fr_2fr] gap-10 items-start">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-black text-white mb-3"
+                style={{ background: INK, fontFamily: "'Playfair Display', Georgia, serif" }}>
+                AL
+              </div>
+              <div className="text-base font-bold text-[#1a1a2e]"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                Adrian Lenice
+              </div>
+              <div className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/45 mt-1"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                Founder & Direttore Responsabile
+              </div>
+            </div>
+            <div>
+              <SectionBadge label="Il fondatore" />
+              <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                Adrian Lenice è il fondatore e direttore responsabile di IdeaSmart. Imprenditore seriale, esperto di intelligenza artificiale e innovazione, ha guidato il progetto dalla sua nascita come esperimento privato fino a diventare la prima testata giornalistica completamente autonoma in Italia.
+              </p>
+              <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                La sua visione è chiara: l'informazione del futuro non sarà prodotta da redazioni di decine di giornalisti, ma da sistemi agentici capaci di raccogliere, verificare e raccontare i fatti con oggettività e velocità impossibili per gli esseri umani.
               </p>
             </div>
-          </FadeUp>
+          </section>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {AGENTS.map((agent, i) => (
-              <FadeUp key={agent.name} delay={i * 0.06}>
-                <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/8 transition-colors">
-                  <div className="text-2xl mb-3">{agent.icon}</div>
-                  <div
-                    className="text-sm font-black mb-1"
-                    style={{ color: agent.color, fontFamily: "'Space Grotesk', sans-serif" }}
-                  >
-                    {agent.name}
-                  </div>
-                  <div className="text-xs text-white/40 leading-snug">{agent.role}</div>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
+          <Divider thick />
 
-      {/* ── FOUNDER ── */}
-      <section className="py-16 md:py-24 bg-[#faf9f6]">
-        <div className="max-w-3xl mx-auto px-4">
-          <FadeUp>
-            <p className="text-xs font-mono tracking-[0.3em] uppercase text-[#ff5500] mb-4">Il fondatore</p>
-            <h2
-              className="text-3xl md:text-4xl font-black text-[#0a0f1e] mb-8 leading-tight"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Adrian Lenice
+          {/* ── CTA BUSINESS ── */}
+          <section className="py-10 text-center">
+            <SectionBadge label="IdeaSmart Business" color={ORANGE} bg="#fff3ee" />
+            <h2 className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a2e]"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              Vuoi la tua testata agentica?
             </h2>
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              <div className="flex-shrink-0">
-                <div
-                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-black text-white"
-                  style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1a2a4a 100%)" }}
-                >
-                  AL
-                </div>
-              </div>
-              <div className="space-y-4 text-[#374151] leading-relaxed">
-                <p>
-                  Adrian Lenice è il fondatore e Direttore Responsabile di IdeaSmart. Imprenditore seriale, appassionato di intelligenza artificiale e sistemi agentici, ha costruito IdeaSmart partendo da zero — senza investitori, senza redazione, senza ufficio.
-                </p>
-                <p>
-                  La sua visione è semplice e radicale: <strong>il giornalismo del futuro non ha bisogno di giornalisti umani per produrre informazione di qualità</strong>. Ha bisogno di architetture intelligenti, algoritmi di verifica robusti e un sistema che scala senza perdere coerenza.
-                </p>
-                <p>
-                  Oggi guida un team distribuito di sviluppatori e ricercatori AI che continuano a far evolvere la piattaforma, con l'obiettivo di portare il modello IdeaSmart a chiunque voglia costruire la propria testata agente.
-                </p>
-                <div className="flex items-center gap-3 pt-2">
-                  <a
-                    href="https://www.linkedin.com/in/adrianlenice"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all hover:scale-105"
-                    style={{ color: "#0a66c2", borderColor: "#0a66c220", background: "#f0f7ff" }}
-                  >
-                    LinkedIn →
-                  </a>
-                  <a
-                    href="https://ideasmart.ai/manifesto"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all hover:scale-105"
-                    style={{ color: "#ff5500", borderColor: "#ff550020", background: "#fff4f0" }}
-                  >
-                    Leggi il Manifesto →
-                  </a>
-                </div>
-              </div>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section className="py-16 md:py-20 bg-[#0a0f1e]">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <FadeUp>
-            <h2
-              className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Vuoi replicare il modello?
-            </h2>
-            <p className="text-white/50 mb-8 leading-relaxed">
-              Con IdeaSmart Business puoi lanciare la tua testata agente in poche settimane. Scopri i piani e prenota una call gratuita.
+            <p className="mt-3 text-base text-[#1a1a2e]/65 max-w-xl mx-auto"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              Abbiamo costruito IdeaSmart da zero. Ora mettiamo la stessa tecnologia a disposizione di giornalisti, editori e creator che vogliono lanciare la propria testata completamente automatizzata.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/business"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#ff5500" }}
-              >
-                🚀 IdeaSmart Business →
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/business">
+                <span className="inline-flex items-center gap-2 px-8 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all duration-200"
+                  style={{ fontFamily: "'Space Mono', monospace", background: INK, color: ORANGE }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = ORANGE; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = INK; (e.currentTarget as HTMLElement).style.color = ORANGE; }}>
+                  ▶ Scopri IdeaSmart Business
+                </span>
               </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-base font-semibold border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all"
-              >
-                Torna alla testata →
+              <Link href="/">
+                <span className="inline-flex items-center gap-2 px-8 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all duration-200 border border-[#1a1a2e]/30 hover:border-[#1a1a2e] text-[#1a1a2e]/60 hover:text-[#1a1a2e]"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  ← Torna alla Home
+                </span>
               </Link>
             </div>
-          </FadeUp>
-        </div>
-      </section>
+          </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#0a0f1e] border-t border-white/5 py-6">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
-          <span className="font-black text-white text-base" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            IDEA<span style={{ color: "#00b4a0" }}>SMART</span>
-          </span>
-          <div className="flex items-center gap-5 text-xs text-white/30">
-            <Link href="/manifesto"><span className="hover:text-white/60 transition-colors cursor-pointer">Manifesto</span></Link>
-            <Link href="/business"><span className="hover:text-white/60 transition-colors cursor-pointer">Business</span></Link>
-            <Link href="/privacy"><span className="hover:text-white/60 transition-colors cursor-pointer">Privacy</span></Link>
-            <a href="mailto:info@ideasmart.ai" className="hover:text-white/60 transition-colors">info@ideasmart.ai</a>
-          </div>
-        </div>
-      </footer>
-    </div>
+          {/* ── FOOTER ── */}
+          <ThinDivider />
+          <footer className="py-6 flex flex-wrap items-center justify-between gap-4">
+            <div className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/30"
+              style={{ fontFamily: "'Space Mono', monospace" }}>
+              © {new Date().getFullYear()} IdeaSmart — Testata 100% HumanLess
+            </div>
+            <div className="flex items-center gap-4">
+              <Link href="/manifesto">
+                <span className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>Manifesto</span>
+              </Link>
+              <Link href="/business">
+                <span className="text-[10px] uppercase tracking-widest cursor-pointer"
+                  style={{ fontFamily: "'Space Mono', monospace", color: ORANGE }}>Business</span>
+              </Link>
+              <Link href="/privacy">
+                <span className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>Privacy</span>
+              </Link>
+            </div>
+          </footer>
+
+        </main>
+      </div>
+    </>
   );
 }
