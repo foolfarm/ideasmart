@@ -967,19 +967,19 @@ export default function Home() {
               <SectionColumn section="sport" items={sportNews.slice(0, 4)} colIdx={1} showFirstImage />
               <SectionColumn section="motori" items={motoriNews.slice(0, 4)} colIdx={2} showFirstImage />
             </div>
-            {/* Banner Tradedoubler 300x250 sotto il blocco Economia/Sport/Motori */}
+            {/* Banner Tradedoubler leaderboard 728x90 sotto il blocco Economia/Sport/Motori */}
             <div className="mt-4 flex justify-center">
               <div>
                 <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
                 <a
-                  href="https://clk.tradedoubler.com/click?p=357545&a=3477790&g=25611646"
+                  href="https://clk.tradedoubler.com/click?p=357545&a=3477790&g=25611636"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <img
-                    src={`https://imp.tradedoubler.com/imp?type(img)g(25611646)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                    width="300"
-                    height="250"
+                    src={`https://imp.tradedoubler.com/imp?type(img)g(25611636)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                    width="728"
+                    height="90"
                     alt="Pubblicità"
                     style={{ display: "block", maxWidth: "100%", height: "auto" }}
                   />

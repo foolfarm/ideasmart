@@ -39,7 +39,7 @@
 - [x] Banner skyscraper Tradedoubler 120x600 al posto dell'immagine nel blocco AI4Business hero (g=25854308)
 - [x] Manchette destra testata: sostituire Feltrinelli con nuovo banner Tradedoubler 300x250 (g=25914926)
 - [x] Banner 300x250 sotto link "Tutte le Notizie Startup" (g=25650800)
-- [x] Banner 300x250 sotto link "Tutte le Notizie" del blocco Finance/Economia (g=25611646)
+- [x] Banner 300x250 sotto link "Tutte le Notizie" del blocco Finance/Economia (g=25611646) — SOSTITUITO con leaderboard 728x90 (g=25611636)
 - [x] ~~Banner 300x250 sopra il footer (parte bassa homepage) (g=25611646)~~ — RIMOSSO (Octopus Energy)
 - [x] Banner leaderboard 728x90 dopo il banner 300x250 pre-footer (g=25996460)
 
