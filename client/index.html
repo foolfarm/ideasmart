@@ -127,19 +127,12 @@
       });
     </script>
 
-    <!-- Google AdSense + Auto Ads
-         data-ad-client abilita Auto Ads: Google inserisce automaticamente
-         gli annunci nei punti ottimali della pagina (in-page, anchor, vignette). -->
+    <!-- Google AdSense Auto Ads
+         Lo script async con data-ad-client attiva automaticamente Auto Ads.
+         NON aggiungere push() con enable_page_level_ads: causa TagError che blocca la pagina. -->
     <meta name="google-adsense-account" content="ca-pub-7185482526978993">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7185482526978993"
      crossorigin="anonymous"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-7185482526978993",
-        enable_page_level_ads: true,
-        overlays: { bottom: true }
-      });
-    </script>
   </head>
   <body>
     <div id="root"></div>
