@@ -927,6 +927,25 @@ export default function Home() {
                     Tutte le notizie Startup →
                   </span>
                 </Link>
+                {/* Banner Tradedoubler 300x250 sotto Tutte le notizie Startup */}
+                <div className="mt-4 flex justify-center">
+                  <div>
+                    <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
+                    <a
+                      href="https://clk.tradedoubler.com/click?p=360031&a=3477790&g=25650800"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={`https://imp.tradedoubler.com/imp?type(img)g(25650800)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                        width="300"
+                        height="250"
+                        alt="Pubblicità"
+                        style={{ display: "block", maxWidth: "100%", height: "auto" }}
+                      />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -947,6 +966,25 @@ export default function Home() {
               <SectionColumn section="finance" items={financeNews.slice(0, 4)} colIdx={0} showFirstImage />
               <SectionColumn section="sport" items={sportNews.slice(0, 4)} colIdx={1} showFirstImage />
               <SectionColumn section="motori" items={motoriNews.slice(0, 4)} colIdx={2} showFirstImage />
+            </div>
+            {/* Banner Tradedoubler 300x250 sotto il blocco Economia/Sport/Motori */}
+            <div className="mt-4 flex justify-center">
+              <div>
+                <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
+                <a
+                  href="https://clk.tradedoubler.com/click?p=357545&a=3477790&g=25611646"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={`https://imp.tradedoubler.com/imp?type(img)g(25611646)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                    width="300"
+                    height="250"
+                    alt="Pubblicità"
+                    style={{ display: "block", maxWidth: "100%", height: "auto" }}
+                  />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -1040,6 +1078,25 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Banner Tradedoubler 300x250 pre-footer */}
+          <div className="mt-8 flex justify-center">
+            <div>
+              <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
+              <a
+                href="https://clk.tradedoubler.com/click?p=357545&a=3477790&g=25611646"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={`https://imp.tradedoubler.com/imp?type(img)g(25611646)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                  width="300"
+                  height="250"
+                  alt="Pubblicità"
+                  style={{ display: "block", maxWidth: "100%", height: "auto" }}
+                />
+              </a>
+            </div>
+          </div>
           {/* Footer testata */}
           <div className="mt-12">
             <Divider thick />
