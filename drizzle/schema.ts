@@ -1,4 +1,4 @@
-import { boolean, float, index, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, float, index, uniqueIndex, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -334,8 +334,8 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   hashtags: varchar("hashtags", { length: 500 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
-  // Indice composto data+slot: un post mattina e uno pomeriggio per giorno
-  dateSlotIdx: index("idx_linkedin_date_slot").on(table.dateLabel, table.slot),
+  // UNIQUE constraint data+slot: garantisce un solo post per slot per giorno (idempotenza)
+  dateSlotUniq: uniqueIndex("uq_linkedin_date_slot").on(table.dateLabel, table.slot),
 }));
 
 export type LinkedinPost = typeof linkedinPosts.$inferSelect;

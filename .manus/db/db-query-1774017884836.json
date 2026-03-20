@@ -1,0 +1,34 @@
+{
+  "query": "SELECT id, dateLabel, slot, title, linkedinUrl, createdAt FROM linkedin_posts WHERE dateLabel = '2026-03-20' ORDER BY createdAt ASC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, dateLabel, slot, title, linkedinUrl, createdAt FROM linkedin_posts WHERE dateLabel = '2026-03-20' ORDER BY createdAt ASC;",
+  "rows": [
+    {
+      "id": "90001",
+      "dateLabel": "2026-03-20",
+      "slot": "morning",
+      "title": "Agenti Autonomi: La Nuova Frontiera dell'AI per il Business Italiano",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7440697299426504704",
+      "createdAt": "2026-03-20 09:54:37"
+    },
+    {
+      "id": "120001",
+      "dateLabel": "2026-03-20",
+      "slot": "afternoon",
+      "title": "AI Generativa e B2B: L'Onda che Ridefinisce il Valore d'Impresa",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7440759135001911296",
+      "createdAt": "2026-03-20 14:00:21"
+    },
+    {
+      "id": "120002",
+      "dateLabel": "2026-03-20",
+      "slot": "afternoon",
+      "title": "AI Generativa e B2B: L'Onda che Ridefinisce il Valore d'Impresa",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7440759237837762560",
+      "createdAt": "2026-03-20 14:00:46"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tdateLabel\tslot\ttitle\tlinkedinUrl\tcreatedAt\n90001\t2026-03-20\tmorning\tAgenti Autonomi: La Nuova Frontiera dell'AI per il Business Italiano\thttps://www.linkedin.com/posts/andreacinelli_7440697299426504704\t2026-03-20 09:54:37\n120001\t2026-03-20\tafternoon\tAI Generativa e B2B: L'Onda che Ridefinisce il Valore d'Impresa\thttps://www.linkedin.com/posts/andreacinelli_7440759135001911296\t2026-03-20 14:00:21\n120002\t2026-03-20\tafternoon\tAI Generativa e B2B: L'Onda che Ridefinisce il Valore d'Impresa\thttps://www.linkedin.com/posts/andreacinelli_7440759237837762560\t2026-03-20 14:00:46\n",
+  "stderr": "",
+  "execution_time_ms": 121
+}

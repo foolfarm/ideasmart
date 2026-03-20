@@ -1290,3 +1290,12 @@
 - [x] Script `scripts/triggerLinkedIn.ts` per pubblicazione manuale futura
 - [x] Test schedulerManager aggiornati: mock `publishLinkedInPost`, test cron 15:00, conteggio 44 cron job
 - [x] 59 test Vitest passano tutti ✅
+
+## Bugfix Doppio Post LinkedIn (20 Mar 2026)
+
+- [x] Identificata causa root: indice `idx_linkedin_date_slot` era un normale INDEX (non UNIQUE), quindi `onDuplicateKeyUpdate` non si attivava mai e ogni INSERT creava una nuova riga
+- [x] Schema DB: sostituito `index("idx_linkedin_date_slot")` con `uniqueIndex("uq_linkedin_date_slot")` — garantisce un solo post per slot per giorno a livello DB
+- [x] Migrazione 0028 applicata: `ALTER TABLE linkedin_posts ADD CONSTRAINT uq_linkedin_date_slot UNIQUE(dateLabel, slot)`
+- [x] Eliminato il post duplicato (id=120002) dal DB
+- [x] linkedinPublisher.ts: rafforzato controllo idempotenza — il check DB viene eseguito SEMPRE (anche con force=true), con log espliciti per entrambi i casi
+- [x] 59 test Vitest passano tutti ✅

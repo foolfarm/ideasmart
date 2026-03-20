@@ -421,28 +421,33 @@ export async function publishLinkedInPost(
   console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);
 
   // ── Controllo idempotenza: evita doppi post ──────────────────────────────
-  if (!force) {
-    try {
-      const db = await getDb();
-      if (db) {
-        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-        const existing = await db.select({ id: linkedinPosts.id })
-          .from(linkedinPosts)
-          .where(and(
-            eq(linkedinPosts.dateLabel, today),
-            eq(linkedinPosts.slot, slot)
-          ))
-          .limit(1);
-        if (existing.length > 0) {
+  // Il controllo viene SEMPRE eseguito, anche in modalità force.
+  // La modalità force bypassa solo il blocco per i cron automatici (non per i trigger manuali).
+  // Il UNIQUE constraint DB (uq_linkedin_date_slot) è il secondo livello di protezione.
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD (UTC)
+  try {
+    const db = await getDb();
+    if (db) {
+      const existing = await db.select({ id: linkedinPosts.id })
+        .from(linkedinPosts)
+        .where(and(
+          eq(linkedinPosts.dateLabel, today),
+          eq(linkedinPosts.slot, slot)
+        ))
+        .limit(1);
+      if (existing.length > 0) {
+        if (force) {
+          console.log(`[LinkedIn] ⚡ Modalità FORCE: post slot ${slotLabel} già presente nel DB (id=${existing[0].id}), ma force=true — procedo con nuovo post.`);
+        } else {
           console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today}) — saltato.`);
           return { published: 0, errors: [], posts: [] };
         }
+      } else if (force) {
+        console.log(`[LinkedIn] ⚡ Modalità FORCE attiva per slot ${slotLabel} — nessun post esistente, procedo.`);
       }
-    } catch (checkErr) {
-      console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo:', checkErr);
     }
-  } else {
-    console.log(`[LinkedIn] ⚡ Modalità FORCE: bypass controllo idempotenza per slot ${slotLabel}`);
+  } catch (checkErr) {
+    console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo con cautela:', checkErr);
   }
 
   // Seleziona la sezione in base al giorno e allo slot
