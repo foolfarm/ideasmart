@@ -8,7 +8,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
-import { publishDailyLinkedInPosts } from "./linkedinPublisher";
+import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
 import {
   addSubscriber,
@@ -403,6 +403,7 @@ export const appRouter = router({
             return {
               id: post.id,
               dateLabel: post.dateLabel,
+              slot: (post as any).slot ?? 'morning',
               postText: post.postText,
               linkedinUrl: post.linkedinUrl ?? null,
               title: post.title ?? null,
@@ -411,6 +412,37 @@ export const appRouter = router({
               hashtags: post.hashtags ?? null,
               createdAt: post.createdAt,
             };
+          },
+          EDITORIAL_TTL_MS
+        );
+      }),
+
+    // Punto del Giorno (doppio): recupera ENTRAMBI i post LinkedIn di oggi (mattino + pomeriggio)
+    getPuntoDelGiornoAll: publicProcedure
+      .query(async () => {
+        return cached(
+          CACHE_KEYS.PUNTO_DEL_GIORNO + '_all',
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return [];
+            const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+            const { eq: eqOp } = await import('drizzle-orm');
+            // Prendi gli ultimi 2 post (mattino + pomeriggio di oggi o ieri se pomeriggio non ancora pubblicato)
+            const posts = await db.select().from(linkedinPostsTable)
+              .orderBy(desc(linkedinPostsTable.createdAt))
+              .limit(2);
+            return posts.map(post => ({
+              id: post.id,
+              dateLabel: post.dateLabel,
+              slot: (post as any).slot ?? 'morning',
+              postText: post.postText,
+              linkedinUrl: post.linkedinUrl ?? null,
+              title: post.title ?? null,
+              section: post.section,
+              imageUrl: post.imageUrl ?? null,
+              hashtags: post.hashtags ?? null,
+              createdAt: post.createdAt,
+            }));
           },
           EDITORIAL_TTL_MS
         );
@@ -1337,24 +1369,31 @@ Rispondi con questo JSON:
       }),
 
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
-    publishLinkedIn: adminProcedure.mutation(async () => {
-      console.log("[AdminRouter] Avvio pubblicazione manuale LinkedIn...");
-      const result = await publishDailyLinkedInPosts();
-      return {
-        success: result.published > 0,
-        published: result.published,
-        total: result.posts.length,
-        errors: result.errors,
-        posts: result.posts.map((p) => ({
-          section: p.section,
-          title: p.title.slice(0, 80),
-          success: p.success,
-          postId: p.postId,
-          error: p.error,
-        })),
-        message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn`,
-      };
-    }),
+    publishLinkedIn: adminProcedure
+      .input(z.object({
+        slot: z.enum(["morning", "afternoon"]).default("morning"),
+        force: z.boolean().default(true),
+      }).optional())
+      .mutation(async ({ input }) => {
+        const slot = input?.slot ?? "morning";
+        const force = input?.force ?? true;
+        console.log(`[AdminRouter] Avvio pubblicazione manuale LinkedIn — slot: ${slot}, force: ${force}`);
+        const result = await publishLinkedInPost(slot, force);
+        return {
+          success: result.published > 0,
+          published: result.published,
+          total: result.posts.length,
+          errors: result.errors,
+          posts: result.posts.map((p) => ({
+            section: p.section,
+            title: p.title.slice(0, 80),
+            success: p.success,
+            postId: p.postId,
+            error: p.error,
+          })),
+          message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn (slot: ${slot})`,
+        };
+      }),
   }),
 
   // ── Comments (public) ──────────────────────────────────────────────────────────────

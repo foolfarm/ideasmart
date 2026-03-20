@@ -86,7 +86,7 @@ import {
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
-import { publishDailyLinkedInPosts } from "./linkedinPublisher";
+import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
 import { invalidateAll, invalidateBySection, invalidateSection, CACHE_KEYS } from "./cache";
@@ -543,20 +543,43 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // LINKEDIN AUTOPOST — ogni giorno alle 10:30 CET
+  // LINKEDIN AUTOPOST — 2 post giornalieri: 10:30 CET (mattino) + 15:00 CET (pomeriggio)
   // ══════════════════════════════════════════════════════════════════════════
 
+  // Post mattino — 10:30 CET
   cron.schedule("30 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:30 CET — Pubblicazione LinkedIn editoriale del giorno...");
-    try {
-      const result = await publishDailyLinkedInPosts();
-      console.log(`[SchedulerManager] ✅ LinkedIn: ${result.published}/1 post pubblicati`);
-      if (result.errors.length > 0) {
-        console.error("[SchedulerManager] ⚠️ LinkedIn errori:", result.errors);
+    console.log("[SchedulerManager] ⏰ 10:30 CET — Pubblicazione LinkedIn MATTINO...");
+    await withLock("linkedin-morning", async () => {
+      try {
+        const result = await publishLinkedInPost("morning");
+        console.log(`[SchedulerManager] ✅ LinkedIn MATTINO: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn MATTINO errori:", result.errors);
+        }
+        // Invalida cache Punto del Giorno
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn MATTINO:", err);
       }
-    } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore pubblicazione LinkedIn:", err);
-    }
+    });
+  }, { timezone: TZ });
+
+  // Post pomeriggio — 15:00 CET
+  cron.schedule("0 15 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 15:00 CET — Pubblicazione LinkedIn POMERIGGIO...");
+    await withLock("linkedin-afternoon", async () => {
+      try {
+        const result = await publishLinkedInPost("afternoon");
+        console.log(`[SchedulerManager] ✅ LinkedIn POMERIGGIO: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn POMERIGGIO errori:", result.errors);
+        }
+        // Invalida cache Punto del Giorno
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn POMERIGGIO:", err);
+      }
+    });
   }, { timezone: TZ });
 
   // ── Log riepilogo ─────────────────────────────────────────────────────────
@@ -592,6 +615,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
-  console.log("[SchedulerManager]   💼 LinkedIn Autopost → ogni giorno alle 10:30 CET");
-  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato automaticamente alle 10:30 CET (via LinkedIn publisher → DB)");
+  console.log("[SchedulerManager]   💼 LinkedIn MATTINO  → ogni giorno alle 10:30 CET (AI o Startup, alternanza settimanale)");
+  console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
+  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 2 volte al giorno: 10:30 e 15:00 CET");
 }

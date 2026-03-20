@@ -83,6 +83,12 @@ vi.mock("./newsletterTestSender", () => ({
   sendTestNewsletter: vi.fn().mockResolvedValue({ success: true, subject: "[TEST] IDEASMART", newsCount: 10 }),
 }));
 
+vi.mock("./linkedinPublisher", () => ({
+  publishLinkedInPost: vi.fn().mockResolvedValue({ published: 1, errors: [], posts: [{ section: 'ai', title: 'Test', success: true }] }),
+  publishDailyLinkedInPosts: vi.fn().mockResolvedValue({ published: 1, errors: [], posts: [{ section: 'ai', title: 'Test', success: true }] }),
+  SUPPORTED_SECTIONS: ['ai', 'startup'],
+}));
+
 vi.mock("./nightlyAuditScheduler", () => ({
   runNightlyAudit: vi.fn().mockResolvedValue(undefined),
 }));
@@ -123,13 +129,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 43 cron job quando avviato", async () => {
+  it("dovrebbe registrare 44 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 43 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro + 1 audit link newsletter
+    // 44 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro + 1 audit link newsletter + 1 LinkedIn pomeriggio (15:00)
     //   (05:30 CET invalidazione globale, 10:05 CET invalidazione Punto del Giorno, 05:45 snapshot barometro, 06:45 audit link)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(43);
+    expect(cron.default.schedule).toHaveBeenCalledTimes(44);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -152,13 +158,22 @@ describe("schedulerManager", () => {
     expect(previewCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn autopost alle 10:30 ogni giorno", async () => {
+  it("dovrebbe programmare LinkedIn MATTINO alle 10:30 ogni giorno", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const linkedInCall = calls.find(c => c[0] === "30 10 * * *");
-    expect(linkedInCall).toBeDefined();
+    const linkedInMorningCall = calls.find(c => c[0] === "30 10 * * *");
+    expect(linkedInMorningCall).toBeDefined();
+  });
+
+  it("dovrebbe programmare LinkedIn POMERIGGIO alle 15:00 ogni giorno", async () => {
+    const cron = await import("node-cron");
+    const { startAllSchedulers } = await import("./schedulerManager");
+    startAllSchedulers();
+    const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    const linkedInAfternoonCall = calls.find(c => c[0] === "0 15 * * *");
+    expect(linkedInAfternoonCall).toBeDefined();
   });
 
   it("dovrebbe programmare la newsletter massiva alle 07:30 ogni giorno", async () => {

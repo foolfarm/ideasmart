@@ -1,9 +1,11 @@
 /**
  * IDEASMART — LinkedIn Autopost
  *
- * Pubblica 1 post giornaliero alle 10:00 CET su LinkedIn — tono HumanLess, dati da fonti autorevoli.
+ * Pubblica 2 post giornalieri su LinkedIn:
+ *  - Slot MORNING: 10:30 CET — Editoriale AI o Startup (alternanza settimanale)
+ *  - Slot AFTERNOON: 15:00 CET — Notizia di approfondimento dalla sezione opposta
  *
- * Flusso:
+ * Flusso per ogni slot:
  *  1. Recupera l'editoriale del giorno (AI o Startup, alternanza settimanale)
  *  2. Cerca dati/statistiche da fonti di market intelligence (McKinsey, Gartner,
  *     CBInsights, WEF, a16z, ecc.) via Perplexity Sonar API
@@ -22,8 +24,12 @@ import { invokeLLM } from "./_core/llm";
 import { getLatestEditorial, getDb } from "./db";
 import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
 import { linkedinPosts } from "../drizzle/schema";
+import { eq, and } from "drizzle-orm";
 
 const SITE_BASE_URL = "https://ideasmart.ai";
+
+// ── Slot giornalieri ─────────────────────────────────────────────────────────
+export type LinkedInSlot = "morning" | "afternoon";
 
 // ── Sezioni supportate (no musica) ──────────────────────────────────────────
 const SUPPORTED_SECTIONS: Array<"ai" | "startup"> = ["ai", "startup"];
@@ -40,6 +46,19 @@ const SECTION_META: Record<string, { label: string; hashtags: string[]; path: st
     path: "/startup",
   },
 };
+
+// ── Seleziona la sezione in base al giorno e allo slot ───────────────────────
+/**
+ * Morning: AI nei giorni pari (Lun, Mer, Ven, Dom), Startup nei dispari
+ * Afternoon: sezione opposta rispetto al mattino (per diversificare i contenuti)
+ */
+function selectSection(slot: LinkedInSlot): "ai" | "startup" {
+  const dayOfWeek = new Date().getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mer, 4=Gio, 5=Ven, 6=Sab
+  const morningSection: "ai" | "startup" = [1, 3, 5, 0].includes(dayOfWeek) ? "ai" : "startup";
+  if (slot === "morning") return morningSection;
+  // Afternoon: sezione opposta
+  return morningSection === "ai" ? "startup" : "ai";
+}
 
 // ── Prompt LLM: stile senior analyst Gartner ────────────────────────────────
 
@@ -63,7 +82,8 @@ function buildGartnerPrompt(
   body: string,
   keyTrend: string,
   section: string,
-  marketData: MarketIntelligenceResult | null
+  marketData: MarketIntelligenceResult | null,
+  slot: LinkedInSlot
 ): string {
   const meta = SECTION_META[section] ?? SECTION_META.ai;
 
@@ -83,7 +103,13 @@ DATO CHIAVE DA EVIDENZIARE:
 ${marketData.keyFinding}`;
   }
 
+  const slotNote = slot === "morning"
+    ? "Questo è il POST DEL MATTINO (10:30): tono analitico e strategico, dati e implicazioni per i decision maker."
+    : "Questo è il POST DEL POMERIGGIO (15:00): tono più operativo e pratico, focus su casi d'uso concreti e takeaway immediati per i professionisti.";
+
   return `Basandoti sull'editoriale di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
+
+${slotNote}
 
 TEMA EDITORIALE: ${title}
 TREND CHIAVE: ${keyTrend || "Agenti AI autonomi e trasformazione digitale"}
@@ -293,7 +319,7 @@ async function publishToLinkedIn(
         "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
       },
     };
-    console.log("[LinkedIn] 🔗 Formato: ARTICLE (link preview, nessuna immagine)");
+    console.log("[LinkedIn] 🔗 Formato: ARTICLE (link preview nel feed)");
   }
 
   try {
@@ -342,10 +368,11 @@ async function generateLinkedInPostText(
   body: string,
   keyTrend: string,
   section: string,
-  marketData: MarketIntelligenceResult | null
+  marketData: MarketIntelligenceResult | null,
+  slot: LinkedInSlot
 ): Promise<string> {
   try {
-    const prompt = buildGartnerPrompt(title, body, keyTrend, section, marketData);
+    const prompt = buildGartnerPrompt(title, body, keyTrend, section, marketData, slot);
     const response = await invokeLLM({
       messages: [
         { role: "system", content: SYSTEM_PROMPT_GARTNER },
@@ -374,55 +401,55 @@ async function generateLinkedInPostText(
   }
 }
 
-// ── Funzione principale ───────────────────────────────────────────────────────
+// ── Funzione principale per un singolo slot ──────────────────────────────────
 /**
- * Pubblica 1 post giornaliero su LinkedIn basato sull'editoriale del giorno.
- * Alterna tra sezione 'ai' e 'startup' in base al giorno della settimana:
- * - Lunedì, Mercoledì, Venerdì, Domenica → AI4Business
- * - Martedì, Giovedì, Sabato → Startup News
+ * Pubblica un post LinkedIn per lo slot specificato (morning o afternoon).
+ * Controlla idempotenza: se il post per questo slot è già stato pubblicato oggi, salta.
  *
- * Il post include dati da fonti di market intelligence (McKinsey, Gartner, CBInsights)
- * e un'immagine da feed RSS autorevoli (VentureBeat, CBInsights, TechCrunch AI).
- *
- * Chiamata dallo scheduler giornaliero alle 10:00 CET.
+ * @param slot - 'morning' (10:30 CET) o 'afternoon' (15:00 CET)
+ * @param force - Se true, bypassa il controllo idempotenza (per trigger manuali)
  */
-export async function publishDailyLinkedInPosts(): Promise<{
+export async function publishLinkedInPost(
+  slot: LinkedInSlot,
+  force = false
+): Promise<{
   published: number;
   errors: string[];
   posts: Array<{ section: string; title: string; success: boolean; postId?: string; error?: string }>;
 }> {
-  console.log("[LinkedIn] 🚀 Avvio pubblicazione giornaliera editoriale...");
+  const slotLabel = slot === "morning" ? "MATTINO (10:30)" : "POMERIGGIO (15:00)";
+  console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);
 
-  // ── Controllo idempotenza: evita doppi post se il server è riavviato ─────────
-  // Verifica se esiste già un post pubblicato oggi nel DB.
-  // Questo protegge da scenari in cui dev server e server di produzione
-  // sono entrambi attivi alle 10:00 e tentano di pubblicare simultaneamente.
-  try {
-    const db = await getDb();
-    if (db) {
-      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-      const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
-      const { eq } = await import('drizzle-orm');
-      const existing = await db.select({ id: linkedinPostsTable.id })
-        .from(linkedinPostsTable)
-        .where(eq(linkedinPostsTable.dateLabel, today))
-        .limit(1);
-      if (existing.length > 0) {
-        console.log(`[LinkedIn] ⏭️ Post già pubblicato oggi (${today}) — pubblicazione saltata per evitare duplicati.`);
-        return { published: 0, errors: [], posts: [] };
+  // ── Controllo idempotenza: evita doppi post ──────────────────────────────
+  if (!force) {
+    try {
+      const db = await getDb();
+      if (db) {
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const existing = await db.select({ id: linkedinPosts.id })
+          .from(linkedinPosts)
+          .where(and(
+            eq(linkedinPosts.dateLabel, today),
+            eq(linkedinPosts.slot, slot)
+          ))
+          .limit(1);
+        if (existing.length > 0) {
+          console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today}) — saltato.`);
+          return { published: 0, errors: [], posts: [] };
+        }
       }
+    } catch (checkErr) {
+      console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo:', checkErr);
     }
-  } catch (checkErr) {
-    // Se il controllo fallisce, procedi comunque con la pubblicazione
-    console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo con la pubblicazione:', checkErr);
+  } else {
+    console.log(`[LinkedIn] ⚡ Modalità FORCE: bypass controllo idempotenza per slot ${slotLabel}`);
   }
 
-  // Seleziona la sezione in base al giorno della settimana
-  const dayOfWeek = new Date().getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mer, 4=Gio, 5=Ven, 6=Sab
-  const section: "ai" | "startup" = [1, 3, 5, 0].includes(dayOfWeek) ? "ai" : "startup";
+  // Seleziona la sezione in base al giorno e allo slot
+  const section = selectSection(slot);
   const meta = SECTION_META[section];
 
-  console.log(`[LinkedIn] 📅 Giorno ${dayOfWeek} → Sezione: ${meta.label}`);
+  console.log(`[LinkedIn] 📅 Slot: ${slotLabel} → Sezione: ${meta.label}`);
 
   // 1. Recupera l'editoriale del giorno
   let editorial;
@@ -459,7 +486,6 @@ export async function publishDailyLinkedInPosts(): Promise<{
   }
 
   // 3. Determina l'immagine da usare
-  // Priorità: immagine da fonte market intelligence > immagine editoriale DB
   let imageUrl: string | null | undefined = null;
   let imageSource = "";
 
@@ -482,14 +508,15 @@ export async function publishDailyLinkedInPosts(): Promise<{
     editorial.body,
     editorial.keyTrend ?? "",
     section,
-    marketData
+    marketData,
+    slot
   );
 
   // 5. URL di destinazione: pagina sezione su IDEASMART
   const articleUrl = `${SITE_BASE_URL}${meta.path}`;
 
   // 6. Pubblica su LinkedIn
-  console.log(`[LinkedIn] 🚀 Pubblicazione post — Sezione: ${meta.label}`);
+  console.log(`[LinkedIn] 🚀 Pubblicazione post — Slot: ${slotLabel} — Sezione: ${meta.label}`);
   console.log(`[LinkedIn]    Titolo: ${editorial.title.slice(0, 60)}...`);
   console.log(`[LinkedIn]    Immagine: ${imageUrl ? `✅ (${imageSource})` : "❌ assente"}`);
   console.log(`[LinkedIn]    Dati market intel: ${marketData ? "✅" : "❌"}`);
@@ -514,7 +541,7 @@ export async function publishDailyLinkedInPosts(): Promise<{
   ];
 
   if (result.success) {
-    console.log(`[LinkedIn] ✅ Post pubblicato con successo per sezione '${section}'`);
+    console.log(`[LinkedIn] ✅ Post slot ${slotLabel} pubblicato con successo`);
 
     // Salva il post nel DB per la sezione "Punto del Giorno" nella Home
     try {
@@ -523,14 +550,10 @@ export async function publishDailyLinkedInPosts(): Promise<{
         const today = new Date();
         const dateLabel = today.toISOString().split('T')[0]; // YYYY-MM-DD
 
-        // Costruisci URL LinkedIn dal postId (formato: urn:li:ugcPost:XXXXXXXX)
-        // LinkedIn accetta sia il formato lungo che il formato corto lnkd.in/XXXX
-        // Usiamo il formato diretto della pagina profilo che funziona sempre
+        // Costruisci URL LinkedIn dal postId
         let linkedinUrl: string | undefined;
         if (result.postId && result.postId !== 'unknown') {
-          // Estrai l'ID numerico dall'URN (es. urn:li:ugcPost:7307123456789 -> 7307123456789)
           const numericId = result.postId.replace(/^urn:li:ugcPost:/, '').replace(/^urn:li:share:/, '');
-          // Usa il formato diretto che LinkedIn mostra nella barra degli indirizzi
           linkedinUrl = `https://www.linkedin.com/posts/andreacinelli_${numericId}`;
         }
 
@@ -538,15 +561,13 @@ export async function publishDailyLinkedInPosts(): Promise<{
         const hashtagMatches = postText.match(/#[\w]+/g);
         const hashtags = hashtagMatches ? hashtagMatches.slice(0, 10).join(' ') : '';
 
-        // Usa il titolo dell'editoriale come titolo del post
-        const title = editorial.title;
-
         await db.insert(linkedinPosts)
           .values({
             dateLabel,
+            slot,
             postText,
             linkedinUrl: linkedinUrl ?? null,
-            title,
+            title: editorial.title,
             section: section as any,
             imageUrl: imageUrl ?? null,
             hashtags,
@@ -555,23 +576,35 @@ export async function publishDailyLinkedInPosts(): Promise<{
             set: {
               postText,
               linkedinUrl: linkedinUrl ?? null,
-              title,
+              title: editorial.title,
               imageUrl: imageUrl ?? null,
               hashtags,
             },
           });
-        console.log(`[LinkedIn] 💾 Post salvato nel DB per Punto del Giorno (${dateLabel})`);
+        console.log(`[LinkedIn] 💾 Post slot ${slotLabel} salvato nel DB (${dateLabel})`);
       }
     } catch (dbErr) {
       console.error('[LinkedIn] ⚠️ Errore salvataggio post nel DB:', dbErr);
-      // Non blocca il flusso principale
     }
 
     return { published: 1, errors: [], posts };
   } else {
-    console.error(`[LinkedIn] ❌ Pubblicazione fallita:`, result.error);
+    console.error(`[LinkedIn] ❌ Pubblicazione slot ${slotLabel} fallita:`, result.error);
     return { published: 0, errors: [result.error ?? "Errore sconosciuto"], posts };
   }
+}
+
+// ── Funzione legacy per compatibilità con lo scheduler ──────────────────────
+/**
+ * @deprecated Usa publishLinkedInPost(slot) direttamente.
+ * Mantenuta per compatibilità con lo scheduler esistente.
+ */
+export async function publishDailyLinkedInPosts(): Promise<{
+  published: number;
+  errors: string[];
+  posts: Array<{ section: string; title: string; success: boolean; postId?: string; error?: string }>;
+}> {
+  return publishLinkedInPost("morning");
 }
 
 // Export per compatibilità

@@ -1267,3 +1267,26 @@
 
 - [x] Analizzare struttura Advertise.tsx e trovare punti di inserimento ottimali
 - [x] Integrare LiveReadersBlock (count-up + pallino pulsante) nella hero e griglia statistiche di Advertise.tsx
+
+## LinkedIn Doppio Post Giornaliero (20 Mar 2026)
+
+- [ ] Pubblicare manualmente il post LinkedIn di oggi (mattina)
+- [ ] Aggiungere cron alle 15:00 CET per secondo post LinkedIn pomeridiano
+- [ ] Aggiornare linkedinPublisher per gestire due post giornalieri (mattina AI/Startup + pomeriggio Finance/News)
+- [ ] Aggiornare sezione "Punto del Giorno" nella Home per mostrare entrambi i post LinkedIn del giorno
+- [ ] Aggiornare la procedura tRPC getPuntoDelGiorno per restituire entrambi i post
+
+## LinkedIn Doppio Post Giornaliero (20 Mar 2026)
+
+- [x] Schema DB: aggiunto campo `slot` (morning/afternoon) alla tabella `linkedin_posts`, rimosso unique constraint su `dateLabel`, aggiunto indice composto `dateLabel+slot`
+- [x] Migrazione DB applicata con successo (drizzle/0027_panoramic_gertrude_yorkes.sql)
+- [x] linkedinPublisher.ts: riscritta funzione `publishLinkedInPost(slot, force)` con supporto slot morning/afternoon e trigger manuale (force=true bypassa idempotenza)
+- [x] linkedinPublisher.ts: aggiunta logica `selectSection(slot)` — mattino e pomeriggio usano sezioni opposte (AI vs Startup)
+- [x] schedulerManager.ts: aggiunto cron 15:00 CET per post pomeriggio LinkedIn, aggiornato cron 10:30 per usare `publishLinkedInPost("morning")`
+- [x] routers.ts: aggiunta procedure `getPuntoDelGiornoAll` che restituisce entrambi i post del giorno
+- [x] routers.ts: aggiornata procedure `publishLinkedIn` (admin) con input `slot` e `force`
+- [x] PuntoDelGiorno.tsx: aggiornato per mostrare entrambi i post (mattino + pomeriggio) con badge orario colorati (verde teal 10:30, arancione 15:00)
+- [x] Pubblicazione manuale post LinkedIn di oggi (20 Mar 2026) — slot morning — ID: urn:li:share:7440697299426504704
+- [x] Script `scripts/triggerLinkedIn.ts` per pubblicazione manuale futura
+- [x] Test schedulerManager aggiornati: mock `publishLinkedInPost`, test cron 15:00, conteggio 44 cron job
+- [x] 59 test Vitest passano tutti ✅

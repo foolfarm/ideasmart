@@ -317,7 +317,9 @@ export type InsertSourceReport = typeof sourceReports.$inferInsert;
 export const linkedinPosts = mysqlTable("linkedin_posts", {
   id: int("id").autoincrement().primaryKey(),
   // Data del post (YYYY-MM-DD)
-  dateLabel: varchar("dateLabel", { length: 20 }).notNull().unique(),
+  dateLabel: varchar("dateLabel", { length: 20 }).notNull(),
+  // Slot del post: morning (10:30 CET) o afternoon (15:00 CET)
+  slot: mysqlEnum("slot", ["morning", "afternoon"]).default("morning").notNull(),
   // Testo completo del post LinkedIn
   postText: text("postText").notNull(),
   // URL del post LinkedIn (es. https://www.linkedin.com/posts/...)
@@ -331,7 +333,10 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   // Hashtag estratti dal post
   hashtags: varchar("hashtags", { length: 500 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => ({
+  // Indice composto data+slot: un post mattina e uno pomeriggio per giorno
+  dateSlotIdx: index("idx_linkedin_date_slot").on(table.dateLabel, table.slot),
+}));
 
 export type LinkedinPost = typeof linkedinPosts.$inferSelect;
 export type InsertLinkedinPost = typeof linkedinPosts.$inferInsert;
