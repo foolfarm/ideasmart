@@ -86,6 +86,7 @@ import {
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
+import { runMorningHealthReport } from "./morningHealthReport";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
@@ -505,6 +506,16 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
+  // ── MORNING HEALTH REPORT (08:00 CET) — tutti i giorni ─────────────────
+  cron.schedule("0 8 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 08:00 CET — Invio Morning Health Report...");
+    try {
+      await runMorningHealthReport();
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore Morning Health Report:", err);
+    }
+  }, { timezone: TZ });
+
   // ── PREVIEW (07:00 CET) — tutti i giorni ─────────────────────────────────
   cron.schedule("0 7 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter del giorno...");
@@ -707,6 +718,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
+  console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO  → ogni giorno alle 10:30 CET (AI o Startup, alternanza settimanale)");
   console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
   console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");

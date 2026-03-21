@@ -1336,3 +1336,9 @@
 - [x] Aggiornare schedulerManager.ts: cron 17:30 CET + catch-up sera
 - [x] Aggiornare PuntoDelGiorno.tsx: mostrare anche slot sera (viola/indaco)
 - [x] Aggiornare test schedulerManager per il nuovo cron
+
+## Morning Health Report (08:00 CET)
+
+- [ ] Creare server/morningHealthReport.ts con verifica sezioni e composizione email HTML
+- [ ] Aggiungere cron 08:00 CET nel schedulerManager
+- [ ] Aggiornare test schedulerManager (conteggio cron)
