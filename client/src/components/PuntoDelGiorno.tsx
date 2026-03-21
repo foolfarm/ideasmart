@@ -1,6 +1,6 @@
 /**
  * PuntoDelGiorno — Sezione Home con le analisi editoriali giornaliere di IDEASMART
- * Mostra ENTRAMBI i post LinkedIn del giorno: mattino (10:30) e pomeriggio (15:00)
+ * Mostra i 3 post LinkedIn del giorno: mattino (10:30), pomeriggio (15:00), sera (17:30)
  * Stile: editoriale, carta/inchiostro — autore: Adrian Lenice, Direttore Responsabile
  */
 import { trpc } from "@/lib/trpc";
@@ -71,9 +71,8 @@ function PostCard({ post, isLoading }: { post?: PostItem; isLoading: boolean }) 
   const bodyParagraphs = hashtagLine > 0 ? paragraphs.slice(0, hashtagLine) : paragraphs;
   const hashtagText = post.hashtags || paragraphs.find(p => p.startsWith("#")) || "";
 
-  const isMorning = post.slot === "morning";
-  const slotLabel = isMorning ? "10:30" : "15:00";
-  const slotColor = isMorning ? "#00b89a" : "#ff5500";
+  const slotLabel = post.slot === "morning" ? "10:30" : post.slot === "afternoon" ? "15:00" : "17:30";
+  const slotColor = post.slot === "morning" ? "#00b89a" : post.slot === "afternoon" ? "#ff5500" : "#7c3aed";
 
   return (
     <div
@@ -211,15 +210,17 @@ export default function PuntoDelGiorno() {
   // Separa i post per slot
   const morningPost = posts?.find(p => p.slot === "morning");
   const afternoonPost = posts?.find(p => p.slot === "afternoon");
+  const eveningPost = posts?.find(p => p.slot === "evening");
   // Fallback: se non ci sono slot differenziati, usa il primo post come morning
   const firstPost = posts?.[0];
   const secondPost = posts?.[1];
 
   const displayMorning = morningPost ?? firstPost;
   const displayAfternoon = afternoonPost ?? (firstPost?.slot !== "morning" ? undefined : secondPost);
+  const displayEvening = eveningPost;
 
   // Data di riferimento (dal post più recente)
-  const dateLabel = displayMorning?.dateLabel ?? displayAfternoon?.dateLabel ?? "";
+  const dateLabel = displayMorning?.dateLabel ?? displayAfternoon?.dateLabel ?? displayEvening?.dateLabel ?? "";
 
   return (
     <section className="mt-8">
@@ -270,6 +271,21 @@ export default function PuntoDelGiorno() {
             </span>
           </div>
           <PostCard post={displayAfternoon} isLoading={false} />
+        </div>
+      )}
+
+      {/* Post sera (solo se presente) — Vibe Coding / AI / Mercato */}
+      {displayEvening && (
+        <div className="mt-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span
+              className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5"
+              style={{ color: "#7c3aed", background: "#7c3aed12", fontFamily: "'Space Mono', monospace" }}
+            >
+              ● Sera — Vibe Coding &amp; AI
+            </span>
+          </div>
+          <PostCard post={displayEvening} isLoading={false} />
         </div>
       )}
     </section>

@@ -1,9 +1,10 @@
 /**
  * IDEASMART — LinkedIn Autopost
  *
- * Pubblica 2 post giornalieri su LinkedIn:
+ * Pubblica 3 post giornalieri su LinkedIn:
  *  - Slot MORNING: 10:30 CET — Editoriale AI o Startup (alternanza settimanale)
  *  - Slot AFTERNOON: 15:00 CET — Notizia di approfondimento dalla sezione opposta
+ *  - Slot EVENING: 17:30 CET — Vibe coding, AI e startup, come cambia il mercato
  *
  * Flusso per ogni slot:
  *  1. Recupera l'editoriale del giorno (AI o Startup, alternanza settimanale)
@@ -29,7 +30,7 @@ import { eq, and } from "drizzle-orm";
 const SITE_BASE_URL = "https://ideasmart.ai";
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "afternoon";
+export type LinkedInSlot = "morning" | "afternoon" | "evening";
 
 // ── Sezioni supportate (no musica) ──────────────────────────────────────────
 const SUPPORTED_SECTIONS: Array<"ai" | "startup"> = ["ai", "startup"];
@@ -51,8 +52,10 @@ const SECTION_META: Record<string, { label: string; hashtags: string[]; path: st
 /**
  * Morning: AI nei giorni pari (Lun, Mer, Ven, Dom), Startup nei dispari
  * Afternoon: sezione opposta rispetto al mattino (per diversificare i contenuti)
+ * Evening: sempre 'ai' (tema fisso: vibe coding / AI / startup / mercato)
  */
 function selectSection(slot: LinkedInSlot): "ai" | "startup" {
+  if (slot === "evening") return "ai"; // sera: sempre AI (tema vibe coding/mercato)
   const dayOfWeek = new Date().getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mer, 4=Gio, 5=Ven, 6=Sab
   const morningSection: "ai" | "startup" = [1, 3, 5, 0].includes(dayOfWeek) ? "ai" : "startup";
   if (slot === "morning") return morningSection;
@@ -105,7 +108,9 @@ ${marketData.keyFinding}`;
 
   const slotNote = slot === "morning"
     ? "Questo è il POST DEL MATTINO (10:30): tono analitico e strategico, dati e implicazioni per i decision maker."
-    : "Questo è il POST DEL POMERIGGIO (15:00): tono più operativo e pratico, focus su casi d'uso concreti e takeaway immediati per i professionisti.";
+    : slot === "afternoon"
+    ? "Questo è il POST DEL POMERIGGIO (15:00): tono più operativo e pratico, focus su casi d'uso concreti e takeaway immediati per i professionisti."
+    : `Questo è il POST DELLA SERA (17:30): tema VIBE CODING e come l'AI sta ridefinendo il modo di costruire software, fare startup e competere nel mercato. Parla di come il vibe coding (scrivere codice con AI in modo intuitivo, senza barriere tecniche) sta abbassando le barriere all'ingresso per gli imprenditori italiani. Focus su: impatto sul mercato del lavoro tech, nuove opportunità per i non-tecnici, come le startup stanno accelerando il time-to-market con AI. Tono: imprenditore che ha vissuto questa transizione in prima persona, non teorico.`;
 
   return `Basandoti sull'editoriale di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
 
@@ -417,7 +422,7 @@ export async function publishLinkedInPost(
   errors: string[];
   posts: Array<{ section: string; title: string; success: boolean; postId?: string; error?: string }>;
 }> {
-  const slotLabel = slot === "morning" ? "MATTINO (10:30)" : "POMERIGGIO (15:00)";
+  const slotLabel = slot === "morning" ? "MATTINO (10:30)" : slot === "afternoon" ? "POMERIGGIO (15:00)" : "SERA (17:30)";
   console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);
 
   // ── Controllo idempotenza: evita doppi post ──────────────────────────────

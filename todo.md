@@ -1328,3 +1328,11 @@
 - [x] Pulsante "Aggiorna Tutti i Canali" per avvio batch in background
 - [x] Link "Salute Sistema" nella navigazione admin
 - [x] Tutti i 59 test passano
+
+## LinkedIn Terzo Post Sera (17:30 CET) — Vibe Coding / AI / Startup / Mercato
+
+- [x] Aggiornare schema DB: aggiungere slot 'evening' nella enum linkedin_posts
+- [x] Aggiornare linkedinPublisher.ts: logica generazione post sera con tema vibe coding/AI/startup/mercato
+- [x] Aggiornare schedulerManager.ts: cron 17:30 CET + catch-up sera
+- [x] Aggiornare PuntoDelGiorno.tsx: mostrare anche slot sera (viola/indaco)
+- [x] Aggiornare test schedulerManager per il nuovo cron

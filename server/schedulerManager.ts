@@ -582,6 +582,24 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
+  // Post sera — 17:30 CET (tema: vibe coding, AI e startup, come cambia il mercato)
+  cron.schedule("30 17 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 17:30 CET — Pubblicazione LinkedIn SERA (Vibe Coding / AI / Mercato)...");
+    await withLock("linkedin-evening", async () => {
+      try {
+        const result = await publishLinkedInPost("evening");
+        console.log(`[SchedulerManager] ✅ LinkedIn SERA: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn SERA errori:", result.errors);
+        }
+        // Invalida cache Punto del Giorno
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn SERA:", err);
+      }
+    });
+  }, { timezone: TZ });
+
   // ══════════════════════════════════════════════════════════════════════════
   // CATCH-UP LINKEDIN — all'avvio, recupera i post mancati se il cron era offline
   // ══════════════════════════════════════════════════════════════════════════
@@ -633,6 +651,24 @@ export function startAllSchedulers(): void {
           console.log("[SchedulerManager] ✅ CATCH-UP: post POMERIGGIO già presente nel DB, nessuna azione.");
         }
       }
+
+      // Controlla se il post sera (17:30) è mancato
+      if (currentMinutes >= 17 * 60 + 30) {
+        const existingEvening = await catchUpDb.select({ id: lpTable.id })
+          .from(lpTable)
+          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "evening")))
+          .limit(1);
+        if (existingEvening.length === 0) {
+          console.log("[SchedulerManager] 🔄 CATCH-UP: post SERA mancato, pubblico ora...");
+          await withLock("linkedin-evening", async () => {
+            const result = await publishLinkedInPost("evening");
+            console.log(`[SchedulerManager] ✅ CATCH-UP SERA: ${result.published}/1 post pubblicati`);
+            invalidateBySection("home");
+          });
+        } else {
+          console.log("[SchedulerManager] ✅ CATCH-UP: post SERA già presente nel DB, nessuna azione.");
+        }
+      }
     } catch (err) {
       console.error("[SchedulerManager] ⚠️ CATCH-UP LinkedIn fallito (non critico):", err);
     }
@@ -673,5 +709,6 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO  → ogni giorno alle 10:30 CET (AI o Startup, alternanza settimanale)");
   console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
-  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 2 volte al giorno: 10:30 e 15:00 CET");
+  console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");
+  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 3 volte al giorno: 10:30, 15:00 e 17:30 CET");
 }

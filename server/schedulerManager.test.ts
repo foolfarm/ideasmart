@@ -129,13 +129,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 44 cron job quando avviato", async () => {
+  it("dovrebbe registrare 45 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 44 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro + 1 audit link newsletter + 1 LinkedIn pomeriggio (15:00)
+    // 45 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro + 1 audit link newsletter + 1 LinkedIn pomeriggio (15:00) + 1 LinkedIn sera (17:30)
     //   (05:30 CET invalidazione globale, 10:05 CET invalidazione Punto del Giorno, 05:45 snapshot barometro, 06:45 audit link)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(44);
+    expect(cron.default.schedule).toHaveBeenCalledTimes(45);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -174,6 +174,15 @@ describe("schedulerManager", () => {
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
     const linkedInAfternoonCall = calls.find(c => c[0] === "0 15 * * *");
     expect(linkedInAfternoonCall).toBeDefined();
+  });
+
+  it("dovrebbe programmare LinkedIn SERA alle 17:30 ogni giorno (Vibe Coding / AI / Mercato)", async () => {
+    const cron = await import("node-cron");
+    const { startAllSchedulers } = await import("./schedulerManager");
+    startAllSchedulers();
+    const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    const linkedInEveningCall = calls.find(c => c[0] === "30 17 * * *");
+    expect(linkedInEveningCall).toBeDefined();
   });
 
   it("dovrebbe programmare la newsletter massiva alle 07:30 ogni giorno", async () => {
