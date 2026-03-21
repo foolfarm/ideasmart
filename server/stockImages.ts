@@ -245,31 +245,55 @@ async function searchPexels(query: string, orientation: "landscape" | "square" =
   }
 }
 
-// ── Fallback: URL Unsplash deterministici per categoria ──────────────────────
 
-function getUnsplashFallback(category: string, seed: string): string {
-  // Mappa categorie a collezioni Unsplash specifiche (ID collezioni pubbliche)
-  const collectionMap: Record<string, string> = {
-    "AI & Hardware": "artificial-intelligence,technology",
-    "AI & Startup": "startup,technology,office",
-    "Startup & Funding": "business,investment,startup",
-    "AI & Fintech": "finance,banking,technology",
-    "AI & Salute": "healthcare,medical,technology",
-    "AI & Lavoro": "work,office,technology",
-    "AI & Difesa": "security,technology,network",
-    "Modelli Generativi": "artificial-intelligence,neural-network",
-    "Cybersecurity": "cybersecurity,security,technology",
-    "Robotica": "robot,automation,technology",
-    "default": "technology,innovation,digital",
-  };
 
-  const keywords = collectionMap[category] || collectionMap["default"];
-  // Usa un seed deterministico basato sul titolo per evitare immagini duplicate
-  const hash = seed.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return `https://source.unsplash.com/800x450/?${keywords}&sig=${hash}`;
+// ── API pubblica ──────────────────────────────────────────────────────────────────────────────────
+
+// Keyword ultra-generiche per categoria — garantiscono sempre risultati su Pexels
+const PEXELS_GUARANTEED_KEYWORDS: Record<string, string[]> = {
+  // Tech / AI
+  "AI & Hardware": ["technology", "computer", "digital"],
+  "AI & Startup": ["office", "business", "startup"],
+  "Startup & Funding": ["business", "investment", "office"],
+  "AI & Fintech": ["finance", "banking", "money"],
+  "AI & Salute": ["healthcare", "medical", "hospital"],
+  "AI & Lavoro": ["work", "office", "people"],
+  "AI & Difesa": ["security", "technology", "network"],
+  "Modelli Generativi": ["technology", "computer", "abstract"],
+  "Cybersecurity": ["security", "technology", "network"],
+  "Robotica": ["robot", "technology", "automation"],
+  // Music
+  "Rock & Indie": ["concert", "music", "guitar"],
+  "AI Music": ["music", "headphones", "audio"],
+  "Industria Musicale": ["music", "studio", "microphone"],
+  "Tour & Live": ["concert", "stage", "crowd"],
+  "Artisti Emergenti": ["musician", "music", "guitar"],
+  "Streaming & Digital": ["music", "headphones", "phone"],
+  "Vinile & Fisico": ["vinyl", "record", "music"],
+  "Produzione Musicale": ["studio", "music", "microphone"],
+  "Festival & Concerti": ["concert", "festival", "crowd"],
+  // Startup
+  "Startup Italiana": ["office", "startup", "team"],
+  "Startup Internazionale": ["startup", "office", "team"],
+  "Fintech": ["finance", "technology", "banking"],
+  "Healthtech": ["health", "technology", "medical"],
+  "Greentech": ["nature", "renewable", "green"],
+  "SaaS & B2B": ["software", "computer", "office"],
+  "Funding & VC": ["business", "investment", "meeting"],
+  // Default
+  "default": ["technology", "business", "office"],
+};
+
+async function getPexelsFallback(category: string): Promise<string | null> {
+  const keywords = PEXELS_GUARANTEED_KEYWORDS[category] || PEXELS_GUARANTEED_KEYWORDS["default"];
+  // Prova ogni keyword in ordine finché una funziona
+  for (const kw of keywords) {
+    const url = await searchPexels(kw);
+    if (url) return url;
+  }
+  // Ultima risorsa: "nature" e "city" hanno sempre risultati su Pexels
+  return await searchPexels("city") || await searchPexels("nature") || null;
 }
-
-// ── API pubblica ─────────────────────────────────────────────────────────────
 
 /**
  * Cerca un'immagine stock coerente con il titolo e la categoria dell'articolo.
@@ -319,9 +343,9 @@ export async function findStockImage(
     }
   }
 
-  // 5. Fallback Unsplash
+  // 5. Fallback Pexels con keyword ultra-generiche garantite (sostituisce Unsplash deprecato)
   if (!url) {
-    url = getUnsplashFallback(category, title);
+    url = await getPexelsFallback(category);
   }
 
   return url;
