@@ -1299,3 +1299,13 @@
 - [x] Eliminato il post duplicato (id=120002) dal DB
 - [x] linkedinPublisher.ts: rafforzato controllo idempotenza — il check DB viene eseguito SEMPRE (anche con force=true), con log espliciti per entrambi i casi
 - [x] 59 test Vitest passano tutti ✅
+
+## Fix Strutturale EMFILE + Stabilità Server (21 Mar 2026)
+
+- [x] Aumentare limiti OS permanenti: inotify max_user_watches=524288, max_user_instances=8192
+- [x] Aggiungere concurrency limiter (max 5 fetch parallele) in rssScraperNew.ts — causa root EMFILE
+- [x] Aggiungere graceful uncaughtException handler: EMFILE non crasha più il server
+- [x] Aggiungere unhandledRejection handler: promise rejection non crasha il server
+- [x] Aggiungere notifica owner su EMFILE e crash critici
+- [x] Aggiungere health watchdog: rileva event loop bloccato ogni 30 minuti
+- [x] Tutti i 59 test passano

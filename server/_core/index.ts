@@ -6,6 +6,43 @@ import { rateLimit } from "express-rate-limit";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { notifyOwner } from "./notification";
+
+// ─── Graceful Error Handler: previene crash EMFILE e altri errori critici ────
+// EMFILE (too many open files) si verifica quando lo scraper RSS apre troppe
+// connessioni HTTP simultanee. Invece di crashare, logghiamo e notifichiamo.
+process.on("uncaughtException", async (err: NodeJS.ErrnoException) => {
+  const code = err.code || "UNKNOWN";
+  const msg = err.message || String(err);
+  console.error(`[Server] ❌ uncaughtException (${code}): ${msg}`);
+  if (code === "EMFILE" || code === "ENFILE") {
+    // EMFILE: troppi file aperti — NON crashare, solo loggare e notificare
+    console.error("[Server] ⚠️ EMFILE rilevato — il server continua a girare. Verifica i limiti OS.");
+    try {
+      await notifyOwner({
+        title: "⚠️ EMFILE su IdeaSmart",
+        content: `Server ha rilevato EMFILE (too many open files) alle ${new Date().toISOString()}. Il server continua a girare. Controlla i log per dettagli.`
+      });
+    } catch { /* notifica non critica */ }
+  } else {
+    // Altri errori critici: notifica e poi lascia crashare (il supervisor riavvia)
+    console.error("[Server] 💥 Errore critico non gestito — il server si riavvierà.");
+    try {
+      await notifyOwner({
+        title: "💥 Crash IdeaSmart",
+        content: `Errore critico: ${code} — ${msg.slice(0, 200)} alle ${new Date().toISOString()}`
+      });
+    } catch { /* notifica non critica */ }
+    process.exit(1);
+  }
+});
+
+process.on("unhandledRejection", (reason) => {
+  const msg = reason instanceof Error ? reason.message : String(reason);
+  console.error(`[Server] ⚠️ unhandledRejection: ${msg.slice(0, 200)}`);
+  // Non crashare per promise rejection — solo loggare
+});
+
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -368,3 +405,24 @@ setTimeout(async () => {
     console.error('[Cache Warmup LLM] Errore (non critico):', err);
   }
 }, 90_000); // 90 secondi: dopo il warm-up principale (5s) + scraping iniziale (45s)
+
+// ─── Health Watchdog: rileva se il server è bloccato e notifica ──────────────
+// Ogni 30 minuti verifica che il server risponda correttamente.
+// Se rileva un problema (es. event loop bloccato), notifica Andrea.
+let _lastHeartbeat = Date.now();
+setInterval(() => { _lastHeartbeat = Date.now(); }, 60_000); // heartbeat ogni minuto
+
+setInterval(async () => {
+  const now = Date.now();
+  const elapsed = now - _lastHeartbeat;
+  // Se il heartbeat non è stato aggiornato da più di 3 minuti, l'event loop è bloccato
+  if (elapsed > 3 * 60 * 1000) {
+    console.error(`[Watchdog] ⚠️ Event loop bloccato da ${Math.round(elapsed / 1000)}s — possibile deadlock`);
+    try {
+      await notifyOwner({
+        title: "⚠️ IdeaSmart: server lento",
+        content: `Il server non risponde da ${Math.round(elapsed / 60000)} minuti (${new Date().toISOString()}). Potrebbe essere necessario un riavvio.`
+      });
+    } catch { /* notifica non critica */ }
+  }
+}, 30 * 60 * 1000); // controlla ogni 30 minuti

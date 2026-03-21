@@ -106,10 +106,36 @@ async function fetchFeed(source: RssSource): Promise<Array<{
 }
 
 /**
- * Recupera articoli da tutte le fonti di una sezione
+ * Esegue un array di task asincroni con concorrenza limitata.
+ * Previene EMFILE (too many open files) limitando le connessioni HTTP simultanee.
+ */
+async function pLimit<T>(tasks: Array<() => Promise<T>>, concurrency: number): Promise<PromiseSettledResult<T>[]> {
+  const results: PromiseSettledResult<T>[] = [];
+  let idx = 0;
+  async function worker() {
+    while (idx < tasks.length) {
+      const i = idx++;
+      try {
+        results[i] = { status: 'fulfilled', value: await tasks[i]() };
+      } catch (reason) {
+        results[i] = { status: 'rejected', reason };
+      }
+    }
+  }
+  const workers = Array.from({ length: Math.min(concurrency, tasks.length) }, worker);
+  await Promise.all(workers);
+  return results;
+}
+
+/**
+ * Recupera articoli da tutte le fonti di una sezione.
+ * Usa un concurrency limiter (max 5 fetch parallele) per evitare EMFILE.
  */
 async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fetchFeed> extends Promise<infer T> ? T : never> {
-  const results = await Promise.allSettled(sources.map(s => fetchFeed(s)));
+  // MAX 5 connessioni HTTP simultanee per evitare EMFILE (too many open files)
+  const CONCURRENCY = 5;
+  const tasks = sources.map(s => () => fetchFeed(s));
+  const results = await pLimit(tasks, CONCURRENCY);
   const all: Awaited<ReturnType<typeof fetchFeed>> = [];
   results.forEach(r => {
     if (r.status === "fulfilled") all.push(...r.value);
