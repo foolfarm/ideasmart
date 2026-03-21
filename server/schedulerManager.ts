@@ -582,6 +582,62 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // CATCH-UP LINKEDIN — all'avvio, recupera i post mancati se il cron era offline
+  // ══════════════════════════════════════════════════════════════════════════
+  setTimeout(async () => {
+    try {
+      const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
+      const hourCET = nowCET.getHours();
+      const minuteCET = nowCET.getMinutes();
+      const currentMinutes = hourCET * 60 + minuteCET;
+      const today = new Date().toISOString().split("T")[0];
+
+      const catchUpDb = await getDb();
+      if (!catchUpDb) return;
+      const { linkedinPosts: lpTable } = await import("../drizzle/schema");
+      const { and: andOp } = await import("drizzle-orm");
+
+      // Controlla se il post mattino (10:30) è mancato
+      if (currentMinutes >= 10 * 60 + 30) {
+        const existingMorning = await catchUpDb.select({ id: lpTable.id })
+          .from(lpTable)
+          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "morning")))
+          .limit(1);
+        if (existingMorning.length === 0) {
+          console.log("[SchedulerManager] 🔄 CATCH-UP: post MATTINO mancato, pubblico ora...");
+          await withLock("linkedin-morning", async () => {
+            const result = await publishLinkedInPost("morning");
+            console.log(`[SchedulerManager] ✅ CATCH-UP MATTINO: ${result.published}/1 post pubblicati`);
+            invalidateBySection("home");
+          });
+        } else {
+          console.log("[SchedulerManager] ✅ CATCH-UP: post MATTINO già presente nel DB, nessuna azione.");
+        }
+      }
+
+      // Controlla se il post pomeriggio (15:00) è mancato
+      if (currentMinutes >= 15 * 60) {
+        const existingAfternoon = await catchUpDb.select({ id: lpTable.id })
+          .from(lpTable)
+          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "afternoon")))
+          .limit(1);
+        if (existingAfternoon.length === 0) {
+          console.log("[SchedulerManager] 🔄 CATCH-UP: post POMERIGGIO mancato, pubblico ora...");
+          await withLock("linkedin-afternoon", async () => {
+            const result = await publishLinkedInPost("afternoon");
+            console.log(`[SchedulerManager] ✅ CATCH-UP POMERIGGIO: ${result.published}/1 post pubblicati`);
+            invalidateBySection("home");
+          });
+        } else {
+          console.log("[SchedulerManager] ✅ CATCH-UP: post POMERIGGIO già presente nel DB, nessuna azione.");
+        }
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ⚠️ CATCH-UP LinkedIn fallito (non critico):", err);
+    }
+  }, 30_000); // Attende 30s dopo l'avvio per dare tempo al DB di connettersi
+
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");
   console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET (scraping RSS reale)");
