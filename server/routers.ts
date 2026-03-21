@@ -1396,6 +1396,137 @@ Rispondi con questo JSON:
       }),
   }),
 
+  // ── System Health & Trigger Manuale Scraping ──────────────────────────────────────
+  health: router({
+    // Restituisce lo stato di salute di tutte le sezioni: ultima notizia, count oggi, timestamp
+    getSystemHealth: adminProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const { newsItems } = await import("../drizzle/schema");
+      const { eq, desc, sql: sqlExpr, and, gte } = await import("drizzle-orm");
+
+      const SECTIONS = [
+        { key: "news", label: "News Italia", icon: "🇮🇹" },
+        { key: "ai", label: "AI4Business", icon: "🤖" },
+        { key: "startup", label: "Startup News", icon: "🚀" },
+        { key: "finance", label: "Finance & Markets", icon: "📈" },
+        { key: "sport", label: "Sport & Business", icon: "⚽" },
+        { key: "motori", label: "Motori", icon: "🏎️" },
+        { key: "tennis", label: "Tennis", icon: "🎾" },
+        { key: "basket", label: "Basket", icon: "🏀" },
+        { key: "health", label: "Health & Biotech", icon: "🏥" },
+        { key: "luxury", label: "Lifestyle & Luxury", icon: "💎" },
+        { key: "music", label: "ITsMusic", icon: "🎵" },
+        { key: "gossip", label: "Business Gossip", icon: "💬" },
+        { key: "cybersecurity", label: "Cybersecurity", icon: "🔒" },
+        { key: "sondaggi", label: "Sondaggi", icon: "📊" },
+      ] as const;
+
+      // Inizio giornata odierna (UTC)
+      const todayStart = new Date();
+      todayStart.setUTCHours(0, 0, 0, 0);
+
+      const sectionStats = await Promise.all(
+        SECTIONS.map(async (s) => {
+          const [latest] = await db
+            .select({ title: newsItems.title, createdAt: newsItems.createdAt, publishedAt: newsItems.publishedAt })
+            .from(newsItems)
+            .where(eq(newsItems.section, s.key))
+            .orderBy(desc(newsItems.createdAt))
+            .limit(1);
+
+          const [countRow] = await db
+            .select({ count: sqlExpr<number>`count(*)` })
+            .from(newsItems)
+            .where(and(
+              eq(newsItems.section, s.key),
+              gte(newsItems.createdAt, todayStart)
+            ));
+
+          const [totalRow] = await db
+            .select({ count: sqlExpr<number>`count(*)` })
+            .from(newsItems)
+            .where(eq(newsItems.section, s.key));
+
+          return {
+            key: s.key,
+            label: s.label,
+            icon: s.icon,
+            latestTitle: latest?.title ?? null,
+            latestCreatedAt: latest?.createdAt ?? null,
+            latestPublishedAt: latest?.publishedAt ?? null,
+            todayCount: Number(countRow?.count ?? 0),
+            totalCount: Number(totalRow?.count ?? 0),
+          };
+        })
+      );
+
+      return {
+        sections: sectionStats,
+        serverTime: new Date(),
+        uptime: process.uptime(),
+      };
+    }),
+
+    // Trigger manuale scraping per una sezione specifica
+    triggerSectionScraping: adminProcedure
+      .input(z.object({
+        section: z.enum(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi", "all"]),
+      }))
+      .mutation(async ({ input }) => {
+        const { section } = input;
+        console.log(`[Admin] Trigger manuale scraping sezione: ${section}`);
+
+        const {
+          refreshAINewsFromRSS,
+          refreshStartupNewsFromRSS,
+          refreshFinanceNewsFromRSS,
+          refreshSportNewsFromRSS,
+          refreshHealthNewsFromRSS,
+          refreshMusicNewsFromRSS,
+          refreshNewsGeneraliFromRSS,
+          refreshMotoriNewsFromRSS,
+          refreshTennisNewsFromRSS,
+          refreshBasketNewsFromRSS,
+          refreshGossipNewsFromRSS,
+          refreshCybersecurityNewsFromRSS,
+          refreshSondaggiNewsFromRSS,
+          refreshLuxuryNewsFromRSS,
+          refreshAllNewsFromRSS,
+        } = await import("./rssNewsScheduler");
+
+        const scraperMap: Record<string, () => Promise<void>> = {
+          ai: refreshAINewsFromRSS,
+          startup: refreshStartupNewsFromRSS,
+          finance: refreshFinanceNewsFromRSS,
+          sport: refreshSportNewsFromRSS,
+          health: refreshHealthNewsFromRSS,
+          music: refreshMusicNewsFromRSS,
+          news: refreshNewsGeneraliFromRSS,
+          motori: refreshMotoriNewsFromRSS,
+          tennis: refreshTennisNewsFromRSS,
+          basket: refreshBasketNewsFromRSS,
+          gossip: refreshGossipNewsFromRSS,
+          cybersecurity: refreshCybersecurityNewsFromRSS,
+          sondaggi: refreshSondaggiNewsFromRSS,
+          luxury: refreshLuxuryNewsFromRSS,
+        };
+
+        if (section === "all") {
+          // Avvia tutti in background
+          refreshAllNewsFromRSS().catch(err => console.error("[Admin] Errore refreshAll:", err));
+          return { success: true, message: "Scraping di tutti i canali avviato in background" };
+        }
+
+        const scraper = scraperMap[section];
+        if (!scraper) throw new TRPCError({ code: "BAD_REQUEST", message: `Sezione non supportata: ${section}` });
+
+        // Avvia in background per non bloccare la risposta HTTP
+        scraper().catch(err => console.error(`[Admin] Errore scraping ${section}:`, err));
+        return { success: true, message: `Scraping ${section} avviato in background` };
+      }),
+  }),
+
   // ── Comments (public) ──────────────────────────────────────────────────────────────
   comments: router({
     // Aggiungi un commento a un articolo

@@ -8,6 +8,37 @@ import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { notifyOwner } from "./notification";
 
+// ─── Helper: invia notifica email + Manus su errori critici del server ────
+async function notifyServerError(subject: string, body: string): Promise<void> {
+  const timestamp = new Date().toISOString();
+  const html = `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2 style="color: #dc2626; border-bottom: 2px solid #dc2626; padding-bottom: 8px;">
+        🚨 ${subject}
+      </h2>
+      <p style="color: #374151; font-size: 16px;">${body}</p>
+      <p style="color: #6b7280; font-size: 13px; margin-top: 24px;">
+        Timestamp: ${timestamp}<br>
+        Server: IdeaSmart — AI for Business<br>
+        <a href="https://www.ideasmart.ai" style="color: #2563eb;">ideasmart.ai</a>
+      </p>
+    </div>
+  `;
+  // Invia sia notifica Manus che email a info@andreacinelli.com
+  await Promise.allSettled([
+    notifyOwner({ title: subject, content: `${body} (${timestamp})` }),
+    // Importazione dinamica per evitare dipendenze circolari al boot
+    import("../email").then(({ sendEmail }) =>
+      sendEmail({
+        to: "info@andreacinelli.com",
+        subject: `[IdeaSmart] ${subject}`,
+        html,
+        text: `${subject}\n\n${body}\n\nTimestamp: ${timestamp}`,
+      })
+    ),
+  ]);
+}
+
 // ─── Graceful Error Handler: previene crash EMFILE e altri errori critici ────
 // EMFILE (too many open files) si verifica quando lo scraper RSS apre troppe
 // connessioni HTTP simultanee. Invece di crashare, logghiamo e notifichiamo.
@@ -19,19 +50,19 @@ process.on("uncaughtException", async (err: NodeJS.ErrnoException) => {
     // EMFILE: troppi file aperti — NON crashare, solo loggare e notificare
     console.error("[Server] ⚠️ EMFILE rilevato — il server continua a girare. Verifica i limiti OS.");
     try {
-      await notifyOwner({
-        title: "⚠️ EMFILE su IdeaSmart",
-        content: `Server ha rilevato EMFILE (too many open files) alle ${new Date().toISOString()}. Il server continua a girare. Controlla i log per dettagli.`
-      });
+      await notifyServerError(
+        "⚠️ EMFILE su IdeaSmart",
+        "Il server ha rilevato EMFILE (too many open files). Il server continua a girare. Controlla i log per dettagli."
+      );
     } catch { /* notifica non critica */ }
   } else {
     // Altri errori critici: notifica e poi lascia crashare (il supervisor riavvia)
     console.error("[Server] 💥 Errore critico non gestito — il server si riavvierà.");
     try {
-      await notifyOwner({
-        title: "💥 Crash IdeaSmart",
-        content: `Errore critico: ${code} — ${msg.slice(0, 200)} alle ${new Date().toISOString()}`
-      });
+      await notifyServerError(
+        "💥 Crash IdeaSmart",
+        `Errore critico: ${code} — ${msg.slice(0, 300)}. Il server si riavvierà automaticamente.`
+      );
     } catch { /* notifica non critica */ }
     process.exit(1);
   }

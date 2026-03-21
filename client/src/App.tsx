@@ -60,6 +60,7 @@ const AdminNewsletterPerformance = lazy(() => import("./pages/AdminNewsletterPer
 const AuditDashboard = lazy(() => import("./pages/AuditDashboard"));
 const AdminRssMonitor = lazy(() => import("./pages/AdminRssMonitor"));
 const AdminSendgridStats = lazy(() => import("./pages/AdminSendgridStats"));
+const AdminSystemHealth = lazy(() => import("./pages/AdminSystemHealth"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const NotificationPreferences = lazy(() => import("./pages/NotificationPreferences"));
@@ -97,6 +98,7 @@ function Router() {
         <Route path="/admin/rss-monitor" component={AdminRssMonitor} />
         <Route path="/admin/audit" component={AuditDashboard} />
         <Route path="/admin/sendgrid-stats" component={AdminSendgridStats} />
+        <Route path="/admin/system-health" component={AdminSystemHealth} />
         <Route path="/privacy" component={Privacy} />
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />

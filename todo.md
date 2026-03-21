@@ -1309,3 +1309,22 @@
 - [x] Aggiungere notifica owner su EMFILE e crash critici
 - [x] Aggiungere health watchdog: rileva event loop bloccato ogni 30 minuti
 - [x] Tutti i 59 test passano
+
+## Admin: Salute Sistema + Notifiche Email + Trigger Manuale (21 Mar 2026)
+
+- [ ] Notifiche email (SendGrid) su crash/EMFILE del server a info@andreacinelli.com
+- [ ] Procedure tRPC: getSystemHealth (stato sezioni) e triggerSectionScraping (scraping manuale)
+- [ ] Pannello admin "Salute del Sistema": ultima notizia per sezione, stato scraping, timestamp
+- [ ] Pulsanti trigger manuale scraping per ogni sezione nell'admin
+- [ ] Aggiornare test schedulerManager per nuove procedure
+
+## Admin: Salute Sistema + Notifiche Email Crash (21 marzo 2026)
+
+- [x] Notifiche email su crash/EMFILE del server via SendGrid (server/_core/index.ts)
+- [x] Procedure tRPC `health.getSystemHealth` con stats per tutte le 14 sezioni
+- [x] Procedure tRPC `health.triggerSectionScraping` per trigger manuale per sezione
+- [x] Pagina `/admin/system-health` con pannello visuale stato sezioni
+- [x] Pulsanti trigger manuale scraping per ogni singola sezione
+- [x] Pulsante "Aggiorna Tutti i Canali" per avvio batch in background
+- [x] Link "Salute Sistema" nella navigazione admin
+- [x] Tutti i 59 test passano

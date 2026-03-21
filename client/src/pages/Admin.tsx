@@ -265,6 +265,16 @@ export default function Admin() {
             >
               📧 Email Stats
             </button>
+            <span className="text-white/20">·</span>
+            <button
+              onClick={() => navigate("/admin/system-health")}
+              className="text-xs font-bold transition-colors"
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#f97316")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+            >
+              🟠 Salute Sistema
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
