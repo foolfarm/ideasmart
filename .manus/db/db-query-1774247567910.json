@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, email, status, subscribedAt FROM subscribers WHERE email = 'carloalberto.carnevale@gmail.com';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, email, status, subscribedAt FROM subscribers WHERE email = 'carloalberto.carnevale@gmail.com';",
+  "rows": [
+    {
+      "id": "311",
+      "email": "carloalberto.carnevale@gmail.com",
+      "status": "active",
+      "subscribedAt": "2026-03-04 17:49:07"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tstatus\tsubscribedAt\n311\tcarloalberto.carnevale@gmail.com\tactive\t2026-03-04 17:49:07\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

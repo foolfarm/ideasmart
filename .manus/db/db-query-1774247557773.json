@@ -1,0 +1,61 @@
+{
+  "query": "SHOW TABLES;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SHOW TABLES;",
+  "rows": [
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "article_comments"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "barometro_snapshots"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "content_audit"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "daily_editorial"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "email_opens"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "linkedin_posts"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "market_analysis"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "news_items"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "news_refresh_log"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "newsletter_sends"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "notification_preferences"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "source_reports"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "startup_of_day"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "subscribers"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "users"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "weekly_reportage"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_UyPaon6i3Ec4nvfPz6kUfg\n__drizzle_migrations\narticle_comments\nbarometro_snapshots\ncontent_audit\ndaily_editorial\nemail_opens\nlinkedin_posts\nmarket_analysis\nnews_items\nnews_refresh_log\nnewsletter_sends\nnotification_preferences\nsource_reports\nstartup_of_day\nsubscribers\nusers\nweekly_reportage\n",
+  "stderr": "",
+  "execution_time_ms": 48
+}

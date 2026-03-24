@@ -1,0 +1,100 @@
+{
+  "query": "SELECT id, subject, section, status, recipientCount, sentAt, createdAt FROM newsletter_sends ORDER BY createdAt DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, subject, section, status, recipientCount, sentAt, createdAt FROM newsletter_sends ORDER BY createdAt DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "210001",
+      "subject": "IDEASMART — AI4Business News · lunedì 23 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-23 06:30:27",
+      "createdAt": "2026-03-23 06:30:27"
+    },
+    {
+      "id": "180001",
+      "subject": "IDEASMART — Health & Biotech · domenica 22 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-22 06:30:32",
+      "createdAt": "2026-03-22 06:30:33"
+    },
+    {
+      "id": "150001",
+      "subject": "IDEASMART — Lifestyle & Luxury · sabato 21 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-21 06:30:34",
+      "createdAt": "2026-03-21 06:30:33"
+    },
+    {
+      "id": "120001",
+      "subject": "IDEASMART — ITsMusic · venerdì 20 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-20 06:30:26",
+      "createdAt": "2026-03-20 06:30:26"
+    },
+    {
+      "id": "90001",
+      "subject": "IDEASMART — Sport & Business · giovedì 19 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-19 06:30:37",
+      "createdAt": "2026-03-19 06:30:36"
+    },
+    {
+      "id": "60001",
+      "subject": "IDEASMART — Finance & Markets · mercoledì 18 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-18 06:30:43",
+      "createdAt": "2026-03-18 06:30:43"
+    },
+    {
+      "id": "30001",
+      "subject": "IDEASMART — Startup News · martedì 17 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-17 06:30:44",
+      "createdAt": "2026-03-17 06:30:44"
+    },
+    {
+      "id": "4",
+      "subject": "IDEASMART — AI4Business News · lunedì 16 marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-16 08:35:12",
+      "createdAt": "2026-03-16 08:35:11"
+    },
+    {
+      "id": "3",
+      "subject": "IDEASMART — AI · Finance · Health · Sport · Luxury · N° 03 · marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "5772",
+      "sentAt": "2026-03-16 08:34:40",
+      "createdAt": "2026-03-16 08:34:40"
+    },
+    {
+      "id": "2",
+      "subject": "IDEASMART — AI · Finance · Health · Sport · Luxury · N° 03 · marzo 2026",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-16 08:32:07",
+      "createdAt": "2026-03-16 08:32:07"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsubject\tsection\tstatus\trecipientCount\tsentAt\tcreatedAt\n210001\tIDEASMART — AI4Business News · lunedì 23 marzo 2026\tai4business\tsent\t0\t2026-03-23 06:30:27\t2026-03-23 06:30:27\n180001\tIDEASMART — Health & Biotech · domenica 22 marzo 2026\tai4business\tsent\t0\t2026-03-22 06:30:32\t2026-03-22 06:30:33\n150001\tIDEASMART — Lifestyle & Luxury · sabato 21 marzo 2026\tai4business\tsent\t0\t2026-03-21 06:30:34\t2026-03-21 06:30:33\n120001\tIDEASMART — ITsMusic · venerdì 20 marzo 2026\tai4business\tsent\t0\t2026-03-20 06:30:26\t2026-03-20 06:30:26\n90001\tIDEASMART — Sport & Business · giovedì 19 marzo 2026\tai4business\tsent\t0\t2026-03-19 06:30:37\t2026-03-19 06:30:36\n60001\tIDEASMART — Finance & Markets · mercoledì 18 marzo 2026\tai4business\tsent\t0\t2026-03-18 06:30:43\t2026-03-18 06:30:43\n30001\tIDEASMART — Startup News · martedì 17 marzo 2026\tai4business\tsent\t0\t2026-03-17 06:30:44\t2026-03-17 06:30:44\n4\tIDEASMART — AI4Business News · lunedì 16 marzo 2026\tai4business\tsent\t0\t2026-03-16 08:35:12\t2026-03-16 08:35:11\n3\tIDEASMART — AI · Finance · Health · Sport · Luxury · N° 03 · marzo 2026\tai4business\tsent\t5772\t2026-03-16 08:34:40\t2026-03-16 08:34:40\n2\tIDEASMART — AI · Finance · Health · Sport · Luxury · N° 03 · marzo 2026\tai4business\tsent\t0\t2026-03-16 08:32:07\t2026-03-16 08:32:07\n",
+  "stderr": "",
+  "execution_time_ms": 65
+}

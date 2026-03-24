@@ -29,6 +29,7 @@ import {
   getActiveSubscribers,
   getActiveSubscribersByChannel,
   createNewsletterSend,
+  updateNewsletterSendRecipientCount,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
 
@@ -471,10 +472,13 @@ export async function sendDailyChannelNewsletter(): Promise<{
       }
     }
 
-    // 5. Marca come inviata per oggi
+    // 5. Aggiorna recipientCount nel DB con il totale reale
+    await updateNewsletterSendRecipientCount(subject, totalSent);
+
+    // 6. Marca come inviata per oggi
     sentDays.set(dayKey, true);
 
-    // 6. Notifica owner
+    // 7. Notifica owner
     await notifyOwner({
       title: `📧 Newsletter ${channel.name} inviata — ${new Date().toLocaleDateString("it-IT")}`,
       content: `Newsletter giornaliera "${channel.name}" inviata con successo a ${totalSent}/${subscribers.length} iscritti.\n\nNotizie: ${newsCount}.\n\nCanale: ${channel.siteSection}`,
@@ -564,6 +568,9 @@ export async function sendChannelNewsletterManual(
       else sendError = result.error;
     }
   }
+
+  // Aggiorna recipientCount nel DB con il totale reale
+  await updateNewsletterSendRecipientCount(subject, totalSent);
 
   await notifyOwner({
     title: `📧 Newsletter ${channel.name} inviata manualmente — ${new Date().toLocaleDateString("it-IT")}`,

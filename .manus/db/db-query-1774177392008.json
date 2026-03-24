@@ -1,0 +1,65 @@
+{
+  "query": "\nSELECT \n  section,\n  COUNT(*) as notizie_oggi,\n  MAX(createdAt) as ultima_inserita\nFROM news_items \nWHERE createdAt >= '2026-03-22 00:00:00'\nGROUP BY section\nORDER BY section ASC;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  section,\n  COUNT(*) as notizie_oggi,\n  MAX(createdAt) as ultima_inserita\nFROM news_items \nWHERE createdAt >= '2026-03-22 00:00:00'\nGROUP BY section\nORDER BY section ASC;\n",
+  "rows": [
+    {
+      "section": "startup",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 00:01:13"
+    },
+    {
+      "section": "finance",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 00:30:43"
+    },
+    {
+      "section": "health",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 01:16:10"
+    },
+    {
+      "section": "sport",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 01:45:29"
+    },
+    {
+      "section": "luxury",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 02:07:13"
+    },
+    {
+      "section": "motori",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 03:31:20"
+    },
+    {
+      "section": "tennis",
+      "notizie_oggi": "15",
+      "ultima_inserita": "2026-03-22 03:45:50"
+    },
+    {
+      "section": "basket",
+      "notizie_oggi": "15",
+      "ultima_inserita": "2026-03-22 04:01:17"
+    },
+    {
+      "section": "gossip",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 02:32:55"
+    },
+    {
+      "section": "cybersecurity",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 02:47:50"
+    },
+    {
+      "section": "sondaggi",
+      "notizie_oggi": "20",
+      "ultima_inserita": "2026-03-22 03:02:44"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tnotizie_oggi\tultima_inserita\nstartup\t20\t2026-03-22 00:01:13\nfinance\t20\t2026-03-22 00:30:43\nhealth\t20\t2026-03-22 01:16:10\nsport\t20\t2026-03-22 01:45:29\nluxury\t20\t2026-03-22 02:07:13\nmotori\t20\t2026-03-22 03:31:20\ntennis\t15\t2026-03-22 03:45:50\nbasket\t15\t2026-03-22 04:01:17\ngossip\t20\t2026-03-22 02:32:55\ncybersecurity\t20\t2026-03-22 02:47:50\nsondaggi\t20\t2026-03-22 03:02:44\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}

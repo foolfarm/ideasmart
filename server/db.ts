@@ -245,6 +245,15 @@ export async function createNewsletterSend(data: { subject: string; htmlContent:
   });
 }
 
+export async function updateNewsletterSendRecipientCount(subject: string, recipientCount: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  // Aggiorna il recipientCount sull'ultimo record con questo subject
+  await db.update(newsletterSends)
+    .set({ recipientCount })
+    .where(eq(newsletterSends.subject, subject));
+}
+
 export async function getNewsletterHistory() {
   const db = await getDb();
   if (!db) return [];

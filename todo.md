@@ -1342,3 +1342,10 @@
 - [ ] Creare server/morningHealthReport.ts con verifica sezioni e composizione email HTML
 - [ ] Aggiungere cron 08:00 CET nel schedulerManager
 - [ ] Aggiornare test schedulerManager (conteggio cron)
+
+## Nuovi task (24 Mar 2026 — Keep-alive e catch-up newsletter)
+
+- [x] Keep-alive scheduler: ping HTTP al server ogni 12 ore per evitare ibernazione sandbox
+- [x] Catch-up newsletter: all'avvio del server, se la newsletter del giorno non è stata inviata (recipientCount=0 o record mancante) e sono passate le 07:30 CET, forzare l'invio entro 60 secondi
+- [x] Fix recipientCount nel DB: aggiornamento del contatore reale dopo ogni invio (sendDailyChannelNewsletter + sendChannelNewsletterManual)
+- [x] Invio manuale newsletter AI4Business News di oggi (lunedì 24 marzo 2026)

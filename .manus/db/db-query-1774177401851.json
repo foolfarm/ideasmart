@@ -1,0 +1,52 @@
+{
+  "query": "SELECT DISTINCT section FROM news_items ORDER BY section;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT DISTINCT section FROM news_items ORDER BY section;",
+  "rows": [
+    {
+      "section": "ai"
+    },
+    {
+      "section": "music"
+    },
+    {
+      "section": "startup"
+    },
+    {
+      "section": "finance"
+    },
+    {
+      "section": "health"
+    },
+    {
+      "section": "sport"
+    },
+    {
+      "section": "luxury"
+    },
+    {
+      "section": "news"
+    },
+    {
+      "section": "motori"
+    },
+    {
+      "section": "tennis"
+    },
+    {
+      "section": "basket"
+    },
+    {
+      "section": "gossip"
+    },
+    {
+      "section": "cybersecurity"
+    },
+    {
+      "section": "sondaggi"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\nai\nmusic\nstartup\nfinance\nhealth\nsport\nluxury\nnews\nmotori\ntennis\nbasket\ngossip\ncybersecurity\nsondaggi\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}

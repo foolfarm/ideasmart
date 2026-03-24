@@ -685,6 +685,76 @@ export function startAllSchedulers(): void {
     }
   }, 30_000); // Attende 30s dopo l'avvio per dare tempo al DB di connettersi
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // KEEP-ALIVE — ping HTTP al server ogni 12 ore per prevenire l'ibernazione del sandbox
+  // ══════════════════════════════════════════════════════════════════════════
+  setInterval(async () => {
+    try {
+      const port = process.env.PORT || "3000";
+      const url = `http://localhost:${port}/api/trpc/health.ping`;
+      const res = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(10_000) });
+      console.log(`[KeepAlive] 🏓 Ping server → HTTP ${res.status} — server attivo`);
+    } catch (err) {
+      console.warn(`[KeepAlive] ⚠️ Ping fallito (non critico): ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }, 12 * 60 * 60 * 1000); // ogni 12 ore
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // CATCH-UP NEWSLETTER — all'avvio, invia la newsletter del giorno se mancata
+  // ══════════════════════════════════════════════════════════════════════════
+  setTimeout(async () => {
+    try {
+      const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
+      const hourCET = nowCET.getHours();
+      const minuteCET = nowCET.getMinutes();
+      const currentMinutes = hourCET * 60 + minuteCET;
+
+      // Il catch-up newsletter si attiva solo se sono passate le 07:30 CET
+      if (currentMinutes < 7 * 60 + 30) {
+        console.log("[SchedulerManager] ℹ️ CATCH-UP newsletter: sono le " + `${hourCET}:${String(minuteCET).padStart(2,'0')} CET, prima delle 07:30 — nessun catch-up necessario`);
+        return;
+      }
+
+      // Controlla se la newsletter del giorno è già stata inviata con successo (recipientCount > 0)
+      const catchUpDb = await getDb();
+      if (!catchUpDb) return;
+
+      const { newsletterSends: nlSendsTable } = await import("../drizzle/schema");
+      const { gte, and: andOp2, gt } = await import("drizzle-orm");
+
+      // Cerca un invio di oggi con recipientCount > 0 (invio reale, non il record vuoto iniziale)
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const successfulSend = await catchUpDb.select({ id: nlSendsTable.id, recipientCount: nlSendsTable.recipientCount })
+        .from(nlSendsTable)
+        .where(andOp2(
+          gte(nlSendsTable.createdAt, todayStart),
+          gt(nlSendsTable.recipientCount, 0)
+        ))
+        .limit(1);
+
+      if (successfulSend.length > 0) {
+        console.log(`[SchedulerManager] ✅ CATCH-UP newsletter: già inviata oggi (${successfulSend[0].recipientCount} destinatari) — nessuna azione`);
+        return;
+      }
+
+      // Newsletter non inviata: forza l'invio ora
+      console.log("[SchedulerManager] 🔄 CATCH-UP newsletter: nessun invio riuscito oggi — forzo l'invio ora...");
+      const { sendDailyChannelNewsletter: sendNL } = await import("./dailyChannelNewsletter");
+      const result = await sendNL();
+      if (result.success && result.recipientCount > 0) {
+        console.log(`[SchedulerManager] ✅ CATCH-UP newsletter: ${result.channel} inviata a ${result.recipientCount} iscritti`);
+      } else if (result.recipientCount === 0 && result.channel === 'none') {
+        console.log("[SchedulerManager] ℹ️ CATCH-UP newsletter: nessun canale configurato per oggi");
+      } else {
+        console.warn(`[SchedulerManager] ⚠️ CATCH-UP newsletter: ${result.channel} — ${result.error || 'nessun iscritto o già inviata'}`);
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ⚠️ CATCH-UP newsletter fallito (non critico):", err);
+    }
+  }, 60_000); // Attende 60s dopo l'avvio per dare tempo al DB e alla cache di inizializzarsi
+
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");
   console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET (scraping RSS reale)");
@@ -723,4 +793,6 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
   console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");
   console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 3 volte al giorno: 10:30, 15:00 e 17:30 CET");
+  console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 12 ore per prevenire ibernazione sandbox");
+  console.log("[SchedulerManager]   🔄 Catch-up NL     → all'avvio, forza invio newsletter se mancata (dopo le 07:30 CET)");
 }
