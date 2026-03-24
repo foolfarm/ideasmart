@@ -1,0 +1,75 @@
+{
+  "query": "\nUPDATE subscribers\nSET status = 'unsubscribed', unsubscribedAt = NOW()\nWHERE email IN (\n  'andrea.cinelli@foolfarm.com',\n  'a.cinelli@foolfarm.com',\n  'acinelli@foolfarm.com',\n  'andreacinelli@foolfarm.com',\n  'ceo@foolfarm.com',\n  'ac@acinelli.com',\n  'andrea@foolersclub.com',\n  'admin@foolfarm.com',\n  'jobs@foolfarm.com',\n  'updates@foolfarm.com',\n  'teamfoolcapital@foolfarm.com',\n  'garage@foolfarm.com',\n  'foolcapital@foolfarm.com'\n)\nAND status != 'unsubscribed';\n\nSELECT email, status, unsubscribedAt\nFROM subscribers\nWHERE email IN (\n  'andrea.cinelli@foolfarm.com',\n  'a.cinelli@foolfarm.com',\n  'acinelli@foolfarm.com',\n  'andreacinelli@foolfarm.com',\n  'ceo@foolfarm.com',\n  'ac@acinelli.com',\n  'andrea@foolersclub.com',\n  'admin@foolfarm.com',\n  'jobs@foolfarm.com',\n  'updates@foolfarm.com',\n  'teamfoolcapital@foolfarm.com',\n  'garage@foolfarm.com',\n  'foolcapital@foolfarm.com'\n);\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nUPDATE subscribers\nSET status = 'unsubscribed', unsubscribedAt = NOW()\nWHERE email IN (\n  'andrea.cinelli@foolfarm.com',\n  'a.cinelli@foolfarm.com',\n  'acinelli@foolfarm.com',\n  'andreacinelli@foolfarm.com',\n  'ceo@foolfarm.com',\n  'ac@acinelli.com',\n  'andrea@foolersclub.com',\n  'admin@foolfarm.com',\n  'jobs@foolfarm.com',\n  'updates@foolfarm.com',\n  'teamfoolcapital@foolfarm.com',\n  'garage@foolfarm.com',\n  'foolcapital@foolfarm.com'\n)\nAND status != 'unsubscribed';\n\nSELECT email, status, unsubscribedAt\nFROM subscribers\nWHERE email IN (\n  'andrea.cinelli@foolfarm.com',\n  'a.cinelli@foolfarm.com',\n  'acinelli@foolfarm.com',\n  'andreacinelli@foolfarm.com',\n  'ceo@foolfarm.com',\n  'ac@acinelli.com',\n  'andrea@foolersclub.com',\n  'admin@foolfarm.com',\n  'jobs@foolfarm.com',\n  'updates@foolfarm.com',\n  'teamfoolcapital@foolfarm.com',\n  'garage@foolfarm.com',\n  'foolcapital@foolfarm.com'\n);\n",
+  "rows": [
+    {
+      "email": "andrea.cinelli@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "a.cinelli@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "acinelli@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "andreacinelli@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "ceo@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "ac@acinelli.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "andrea@foolersclub.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "admin@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "jobs@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "updates@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "teamfoolcapital@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "garage@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    },
+    {
+      "email": "foolcapital@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-24 08:45:02"
+    }
+  ],
+  "messages": [],
+  "stdout": "email\tstatus\tunsubscribedAt\nandrea.cinelli@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\na.cinelli@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nacinelli@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nandreacinelli@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nceo@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nac@acinelli.com\tunsubscribed\t2026-03-24 08:45:02\nandrea@foolersclub.com\tunsubscribed\t2026-03-24 08:45:02\nadmin@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\njobs@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nupdates@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nteamfoolcapital@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\ngarage@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\nfoolcapital@foolfarm.com\tunsubscribed\t2026-03-24 08:45:02\n",
+  "stderr": "",
+  "execution_time_ms": 83
+}

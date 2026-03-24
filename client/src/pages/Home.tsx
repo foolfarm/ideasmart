@@ -732,7 +732,7 @@ export default function Home() {
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-12">
           {/* H2 per SEO — visivamente nascosto */}
-          <h2 className="sr-only">Ultime notizie: AI, Startup, Finance, Sport, Motori, Tennis, Health, Luxury, Music, Gossip, Cybersecurity e Sondaggi</h2>
+          <h2 className="sr-only">Notizie AI, Startup, Finance, Sport, Tech e Business — aggiornate ogni giorno</h2>
 
           {/* ═══════════════════════════════════════════════════════════
               BLOCCO 1 — NEWS ITALIA (apertura principale)
