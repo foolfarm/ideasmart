@@ -54,6 +54,7 @@ import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, m
 import { eq, isNull, and, desc, count, gte, sql } from "drizzle-orm";
 import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, runFullAudit, auditReportage } from "./auditContent";
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
+import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -469,6 +470,30 @@ export const appRouter = router({
             }));
           },
           EDITORIAL_TTL_MS
+        );
+      }),
+
+    // Breaking news attive (selezionate ogni ora dall'AI)
+    getBreakingNews: publicProcedure
+      .query(async () => {
+        return cached(
+          'news:breakingNews',
+          async () => {
+            const items = await getActiveBreakingNews();
+            return items.map(item => ({
+              id: item.id,
+              title: item.title,
+              summary: item.summary,
+              sourceUrl: item.sourceUrl,
+              sourceName: item.sourceName,
+              section: item.section,
+              urgencyScore: item.urgencyScore,
+              breakingReason: item.breakingReason ?? '',
+              publishedAt: item.publishedAt ?? '',
+              createdAt: item.createdAt,
+            }));
+          },
+          1000 * 60 * 5 // 5 minuti di cache
         );
       }),
 

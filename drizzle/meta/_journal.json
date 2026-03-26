@@ -218,6 +218,13 @@
       "when": 1774512865343,
       "tag": "0030_tiresome_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1774514514544,
+      "tag": "0031_next_gunslinger",
+      "breakpoints": true
     }
   ]
 }

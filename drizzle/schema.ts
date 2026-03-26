@@ -366,3 +366,37 @@ export const barometroSnapshots = mysqlTable("barometro_snapshots", {
 });
 export type BarometroSnapshot = typeof barometroSnapshots.$inferSelect;
 export type InsertBarometroSnapshot = typeof barometroSnapshots.$inferInsert;
+
+// ── Breaking News (selezionate ogni ora via AI dalle ultime notizie) ──────────
+// L'AI analizza le ultime 100 notizie da tutti i canali e seleziona le 3-5
+// più urgenti/straordinarie da mostrare in cima alla homepage.
+export const breakingNews = mysqlTable("breaking_news", {
+  id: int("id").autoincrement().primaryKey(),
+  // Titolo della notizia breaking (può essere riformulato dall'AI per enfatizzare l'urgenza)
+  title: varchar("title", { length: 500 }).notNull(),
+  // Sommario breve (1-2 frasi) che spiega perché è breaking
+  summary: text("summary").notNull(),
+  // URL dell'articolo originale
+  sourceUrl: varchar("sourceUrl", { length: 1000 }).notNull(),
+  // Nome della fonte (es. "Corriere della Sera", "TechCrunch")
+  sourceName: varchar("sourceName", { length: 255 }).notNull(),
+  // Sezione tematica di provenienza
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"]).default("news").notNull(),
+  // Punteggio urgenza 1-10 assegnato dall'AI (10 = massima urgenza)
+  urgencyScore: int("urgencyScore").default(5).notNull(),
+  // Motivo per cui è breaking (spiegazione breve dell'AI)
+  breakingReason: varchar("breakingReason", { length: 500 }),
+  // Data di pubblicazione originale dell'articolo
+  publishedAt: varchar("publishedAt", { length: 50 }),
+  // Se la notizia è ancora attiva (false = archiviata dopo 6 ore)
+  isActive: boolean("isActive").default(true).notNull(),
+  // ID dell'articolo originale nella tabella news_items (per evitare duplicati)
+  newsItemId: int("newsItemId"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (t) => ({
+  // Indice su isActive+createdAt: ottimizza la query "ultime breaking attive"
+  activeCreatedIdx: index("idx_breaking_active_created").on(t.isActive, t.createdAt),
+}));
+
+export type BreakingNewsItem = typeof breakingNews.$inferSelect;
+export type InsertBreakingNewsItem = typeof breakingNews.$inferInsert;

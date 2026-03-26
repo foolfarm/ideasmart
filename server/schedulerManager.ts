@@ -86,6 +86,7 @@ import {
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
+import { generateBreakingNews } from "./breakingNewsGenerator";
 import { runMorningHealthReport } from "./morningHealthReport";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
@@ -755,6 +756,44 @@ export function startAllSchedulers(): void {
     }
   }, 60_000); // Attende 60s dopo l'avvio per dare tempo al DB e alla cache di inizializzarsi
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BREAKING NEWS — ogni ora alle :05 (5 minuti dopo l'ora, dopo l'aggiornamento news)
+  // ═══════════════════════════════════════════════════════════════════════════
+  cron.schedule(
+    "0 5 * * * *", // ogni ora alle :05 (secondi=0, minuti=5)
+    () => withLock("breakingNews", async () => {
+      console.log("[SchedulerManager] 🚨 Breaking News: analisi notizie recenti...");
+      try {
+        const result = await generateBreakingNews();
+        if (result.selected > 0) {
+          console.log(`[SchedulerManager] ✅ Breaking News: ${result.selected} selezionate, ${result.archived} archiviate`);
+        } else if (result.error) {
+          console.warn(`[SchedulerManager] ⚠️ Breaking News: ${result.error}`);
+        } else {
+          console.log("[SchedulerManager] ℹ️ Breaking News: nessuna notizia urgente questa ora");
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Breaking News errore:", err);
+      }
+    }),
+    { timezone: TZ }
+  );
+
+  // Breaking news: esegui anche subito all'avvio (dopo 90s per dare tempo al DB)
+  setTimeout(async () => {
+    try {
+      console.log("[SchedulerManager] 🚨 Breaking News: prima analisi all'avvio...");
+      const result = await generateBreakingNews();
+      if (result.selected > 0) {
+        console.log(`[SchedulerManager] ✅ Breaking News avvio: ${result.selected} selezionate`);
+      } else {
+        console.log("[SchedulerManager] ℹ️ Breaking News avvio: nessuna notizia urgente");
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Breaking News avvio errore:", err);
+    }
+  }, 90_000);
+
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");
   console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET (scraping RSS reale)");
@@ -795,4 +834,5 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 3 volte al giorno: 10:30, 15:00 e 17:30 CET");
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 12 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   🔄 Catch-up NL     → all'avvio, forza invio newsletter se mancata (dopo le 07:30 CET)");
+  console.log("[SchedulerManager]   🚨 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
 }

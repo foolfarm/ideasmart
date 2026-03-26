@@ -1355,3 +1355,21 @@
 - [x] Post LinkedIn 15:30 del 25/03 su Openclaw e la sua rivoluzione
 - [x] Post LinkedIn 18:00 del 25/03 sul Vibe Coding
 - [x] Sezione "Più letti della settimana" nella homepage con viewCount reale
+
+## Breaking News (26 Mar 2026)
+
+- [ ] Schema DB: tabella breaking_news (id, title, summary, sourceUrl, sourceName, section, urgencyScore, publishedAt, createdAt, isActive)
+- [ ] Funzione LLM: selectBreakingNews — ogni ora analizza le ultime 100 notizie da tutti i canali e seleziona le 3-5 più urgenti/straordinarie
+- [ ] Cron job ogni ora: genera breaking news e salva nel DB
+- [ ] tRPC procedure: news.getBreakingNews (ultime breaking attive, max 5)
+- [x] Componente BreakingNewsSection con stile allerta editoriale (rosso/arancio, BREAKING badge, ticker)
+- [ ] Integrazione in cima alla homepage (sopra il breaking news ticker esistente)
+
+## Breaking News (26 Mar 2026)
+
+- [ ] Schema DB: tabella breaking_news (id, title, summary, sourceUrl, sourceName, section, urgencyScore, publishedAt, createdAt, isActive)
+- [ ] Funzione LLM: selectBreakingNews — ogni ora analizza le ultime 100 notizie da tutti i canali e seleziona le 3-5 più urgenti/straordinarie
+- [ ] Cron job ogni ora: genera breaking news e salva nel DB
+- [ ] tRPC procedure: news.getBreakingNews (ultime breaking attive, max 5)
+- [x] Componente BreakingNewsSection con stile allerta editoriale (rosso/arancio, BREAKING badge, ticker)
+- [ ] Integrazione in cima alla homepage (sopra il breaking news ticker esistente)

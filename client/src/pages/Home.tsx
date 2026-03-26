@@ -9,6 +9,7 @@ import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import ReadersCounter from "@/components/ReadersCounter";
 import TopArticoli from "@/components/TopArticoli";
@@ -728,6 +729,7 @@ export default function Home() {
           <Divider />
         </header>
 
+        <BreakingNewsSection />
         <BreakingNewsTicker />
 
         {/* ── CORPO ── */}
