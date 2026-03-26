@@ -743,116 +743,77 @@ export default function Home() {
           <h2 className="sr-only">Notizie AI, Startup, Finance, Sport, Tech e Business — aggiornate ogni giorno</h2>
 
           {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 1 — NEWS ITALIA (apertura principale)
-              Layout: hero grande + sidebar con elenco notizie Italia
+              BLOCCO 1 — I CANALI (griglia orizzontale full-width)
+              Le notizie generali sono rimosse: ogni canale ha la sua pagina
           ══════════════════════════════════════════════════════════════ */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-0 mt-0">
-
-            {/* Hero News Italia */}
-            <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
-              <div className="py-3">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                  style={{ fontFamily: "'Space Mono', monospace" }}>
-                  Apertura — News Italia
-                </span>
-              </div>
-              <ThinDivider />
-              {heroNews ? (
-                <HeroNewsBlock item={heroNews} section="news" editorial={newsEditorial} />
-              ) : homeLoading ? (
-                <div className="py-6 space-y-3 animate-pulse">
-                  <div className="h-4 bg-[#1a1a2e]/10 rounded w-1/4" />
-                  <div className="h-8 bg-[#1a1a2e]/10 rounded w-3/4" />
-                  <div className="h-8 bg-[#1a1a2e]/10 rounded w-2/3" />
-                  <div className="h-48 bg-[#1a1a2e]/8 rounded" />
-                  <div className="h-4 bg-[#1a1a2e]/10 rounded w-full" />
-                  <div className="h-4 bg-[#1a1a2e]/10 rounded w-5/6" />
-                </div>
-              ) : (
-                <div className="py-12 text-center text-[#1a1a2e]/30">
-                  <p style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>Nessuna notizia disponibile</p>
-                </div>
-              )}
-              <ThinDivider />
-              {/* Griglia 2 col con le successive notizie News Italia */}
-              {newsNews.filter(n => n.id !== heroNews?.id).slice(0, 4).length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 mt-2">
-                  {newsNews.filter(n => n.id !== heroNews?.id).slice(0, 4).map((item, i) => (
-                    <div key={item.id} className={i % 2 !== 0 ? "border-l border-[#1a1a2e]/20 pl-4" : "pr-4"}>
-                      <NewsCard item={item} section="news" showImage={i < 2} />
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="mt-3">
-                <Link href="/news">
-                  <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: SECTION_COLORS.news.accent, fontFamily: "'Space Mono', monospace" }}>
-                    Tutte le notizie italiane →
+          <div className="mt-0">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-0">
+              {/* Griglia canali full-width */}
+              <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
+                <div className="py-3">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    I Canali — Esplora le sezioni
                   </span>
-                </Link>
+                </div>
+                <ThinDivider />
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-0 mt-1">
+                  {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
+                    const s = SECTION_COLORS[sec];
+                    return (
+                      <Link key={sec} href={s.path}>
+                        <div className="py-2.5 px-1 flex items-center justify-between group cursor-pointer hover:opacity-60 transition-opacity border-b border-[#1a1a2e]/10">
+                          <span className="text-sm font-bold text-[#1a1a2e] truncate"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                            {s.label}
+                          </span>
+                          <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors ml-1 shrink-0"
+                            style={{ fontFamily: "'Space Mono', monospace" }}>
+                            →
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Sidebar: I Canali + Editoriale AI */}
-            <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
-              <div className="py-3">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                  style={{ fontFamily: "'Space Mono', monospace" }}>
-                  I Canali
-                </span>
-              </div>
-              <ThinDivider />
-              {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
-                const s = SECTION_COLORS[sec];
-                return (
-                  <Link key={sec} href={s.path}>
-                    <div className="py-2 flex items-center justify-between group cursor-pointer hover:opacity-50 transition-opacity border-b border-[#1a1a2e]/10">
-                      <span className="text-sm font-bold text-[#1a1a2e]"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                        {s.label}
-                      </span>
-                      <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors"
+              {/* Sidebar: Editoriale AI */}
+              <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
+                {aiEditorial && (
+                  <div>
+                    <div className="py-3">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                         style={{ fontFamily: "'Space Mono', monospace" }}>
-                        →
+                        Editoriale AI
                       </span>
                     </div>
-                  </Link>
-                );
-              })}
-              {aiEditorial && (
-                <div className="mt-4">
-                  <div className="py-2">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                      style={{ fontFamily: "'Space Mono', monospace" }}>
-                      Editoriale AI
-                    </span>
-                  </div>
-                  <ThinDivider />
-                  <div className="py-3">
-                    <p className="text-sm font-bold text-[#1a1a2e] leading-snug"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                      {aiEditorial.title}
-                    </p>
-                    {aiEditorial.subtitle && (
-                      <p className="mt-1 text-xs italic text-[#1a1a2e]/55"
-                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                        {aiEditorial.subtitle}
+                    <ThinDivider />
+                    <div className="py-3">
+                      <p className="text-sm font-bold text-[#1a1a2e] leading-snug"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                        {aiEditorial.title}
                       </p>
-                    )}
-                    <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-4"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                      {aiEditorial.body}
-                    </p>
-                    <Link href="/ai">
-                      <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline"
-                        style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
-                        Leggi tutto →
-                      </span>
-                    </Link>
+                      {aiEditorial.subtitle && (
+                        <p className="mt-1 text-xs italic text-[#1a1a2e]/55"
+                          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                          {aiEditorial.subtitle}
+                        </p>
+                      )}
+                      <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-6"
+                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                        {aiEditorial.body}
+                      </p>
+                      <Link href="/ai">
+                        <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline"
+                          style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
+                          Leggi tutto →
+                        </span>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
 

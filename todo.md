@@ -1389,3 +1389,8 @@
 - [ ] Pagina /research con lista ricerche, filtri per categoria e call to action
 - [ ] Blocco "Ricerca del Giorno" in homepage che punta a /research
 - [ ] Aggiungere /research alla barra di navigazione
+
+## Nuovi task (26 Mar 2026 — Home focus Research)
+
+- [x] Rimuovere sezione "Apertura News Italia" dalla Home (notizie generali)
+- [x] Integrare generazione ricerche /research nel job di aggiornamento giornaliero automatico

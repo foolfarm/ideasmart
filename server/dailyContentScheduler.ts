@@ -3,6 +3,7 @@
  * Genera ogni 24 ore:
  *  1. Editoriale AI giornaliero sui trend dell'intelligenza artificiale
  *  2. Startup del Giorno: una startup AI emergente identificata via LLM + ricerca web
+ *  3. 20 Ricerche IdeaSmart Research su Startup, Venture Capital e AI Trends
  */
 
 import { invokeLLM } from "./_core/llm";
@@ -13,6 +14,7 @@ import {
   saveStartupOfDay,
 } from "./db";
 import { findEditorialImage, findStartupImage } from "./stockImages";
+import { generateDailyResearch } from "./researchGenerator";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -217,6 +219,20 @@ async function runDailyContentRefresh() {
       console.log(`[DailyContent] Startup saved: "${startup.name}"`);
     } else {
       console.log("[DailyContent] Startup of the day already exists for today, skipping.");
+    }
+    // 3. Ricerche IdeaSmart Research (20 ricerche giornaliere)
+    console.log("[DailyContent] Generating daily research reports...");
+    try {
+      const researchResult = await generateDailyResearch();
+      if (researchResult.generated > 0) {
+        console.log(`[DailyContent] Research: ${researchResult.generated} reports generated.`);
+      } else if (researchResult.error) {
+        console.error(`[DailyContent] Research error: ${researchResult.error}`);
+      } else {
+        console.log("[DailyContent] Research already exists for today, skipping.");
+      }
+    } catch (researchErr) {
+      console.error("[DailyContent] Research generation failed:", researchErr);
     }
   } catch (err) {
     console.error("[DailyContent] Refresh failed:", err);
