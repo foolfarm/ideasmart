@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT 'news_articles' as tbl, COUNT(*) as total, MAX(created_at) as last_insert FROM news_articles\nUNION ALL\nSELECT 'research_reports', COUNT(*), MAX(created_at) FROM research_reports\nUNION ALL\nSELECT 'editorials', COUNT(*), MAX(created_at) FROM editorials\nUNION ALL\nSELECT 'startups_of_day', COUNT(*), MAX(created_at) FROM startups_of_day;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT 'news_articles' as tbl, COUNT(*) as total, MAX(created_at) as last_insert FROM news_articles\nUNION ALL\nSELECT 'research_reports', COUNT(*), MAX(created_at) FROM research_reports\nUNION ALL\nSELECT 'editorials', COUNT(*), MAX(created_at) FROM editorials\nUNION ALL\nSELECT 'startups_of_day', COUNT(*), MAX(created_at) FROM startups_of_day;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 2: Table 'uypaon6i3ec4nvfpz6kufg.news_articles' doesn't exist"
+  ]
+}

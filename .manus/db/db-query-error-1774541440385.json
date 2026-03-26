@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT week_label, COUNT(*) as cnt FROM news_items GROUP BY week_label ORDER BY week_label DESC LIMIT 5;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT week_label, COUNT(*) as cnt FROM news_items GROUP BY week_label ORDER BY week_label DESC LIMIT 5;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 2: Unknown column 'week_label' in 'group statement'"
+  ]
+}

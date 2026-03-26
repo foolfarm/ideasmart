@@ -1,0 +1,80 @@
+{
+  "query": "\nSELECT weekLabel, section, COUNT(*) as cnt FROM news_items GROUP BY weekLabel, section ORDER BY weekLabel DESC LIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT weekLabel, section, COUNT(*) as cnt FROM news_items GROUP BY weekLabel, section ORDER BY weekLabel DESC LIMIT 20;\n",
+  "rows": [
+    {
+      "weekLabel": "2026-03-26",
+      "section": "sondaggi",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "news",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "health",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "startup",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "basket",
+      "cnt": "13"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "tennis",
+      "cnt": "15"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "motori",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "gossip",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "cybersecurity",
+      "cnt": "5"
+    },
+    {
+      "weekLabel": "2026-03-26",
+      "section": "finance",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-25",
+      "section": "ai",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-25",
+      "section": "music",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-25",
+      "section": "luxury",
+      "cnt": "20"
+    },
+    {
+      "weekLabel": "2026-03-25",
+      "section": "sport",
+      "cnt": "20"
+    }
+  ],
+  "messages": [],
+  "stdout": "weekLabel\tsection\tcnt\n2026-03-26\tsondaggi\t20\n2026-03-26\tnews\t20\n2026-03-26\thealth\t20\n2026-03-26\tstartup\t20\n2026-03-26\tbasket\t13\n2026-03-26\ttennis\t15\n2026-03-26\tmotori\t20\n2026-03-26\tgossip\t20\n2026-03-26\tcybersecurity\t5\n2026-03-26\tfinance\t20\n2026-03-25\tai\t20\n2026-03-25\tmusic\t20\n2026-03-25\tluxury\t20\n2026-03-25\tsport\t20\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

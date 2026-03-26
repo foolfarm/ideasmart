@@ -1394,3 +1394,9 @@
 
 - [x] Rimuovere sezione "Apertura News Italia" dalla Home (notizie generali)
 - [x] Integrare generazione ricerche /research nel job di aggiornamento giornaliero automatico
+
+## Nuovi task (26 Mar 2026 — Dettaglio ricerca + Startup del Giorno in Home)
+
+- [ ] Creare pagina dettaglio ricerca /research/:id (testo completo, grafici, fonti, CTA)
+- [ ] Aggiungere route /research/:id in App.tsx e collegare link dalle card
+- [ ] Spostare sezione Startup del Giorno subito dopo Ricerca del Giorno nella Home

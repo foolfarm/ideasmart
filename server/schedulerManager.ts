@@ -819,6 +819,60 @@ export function startAllSchedulers(): void {
     { timezone: TZ }
   );
 
+  // ── Catch-up news all'avvio: se il server parte dopo le 06:00 CET e una sezione
+  //    non ha notizie di oggi, le genera subito (evita pagine vuote dopo deploy)
+  setTimeout(async () => {
+    try {
+      const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
+      const hourCET = nowCET.getHours();
+      const minuteCET = nowCET.getMinutes();
+      const currentMinutes = hourCET * 60 + minuteCET;
+      // Solo se sono passate le 06:00 CET (tutti gli scheduler notturni dovrebbero essere già girati)
+      if (currentMinutes < 6 * 60) {
+        console.log(`[SchedulerManager] ℹ️ Catch-up news: sono le ${hourCET}:${String(minuteCET).padStart(2,'0')} CET, prima delle 06:00 — nessun catch-up necessario`);
+        return;
+      }
+      const catchUpNewsDb = await getDb();
+      if (!catchUpNewsDb) return;
+      const { newsItems: niTable } = await import("../drizzle/schema");
+      const { and: andOp3, gte: gteOp, lt: ltOp } = await import("drizzle-orm");
+      const todayStr = nowCET.toISOString().split("T")[0];
+      const todayStart = new Date(todayStr + "T00:00:00.000Z");
+      const todayEnd = new Date(todayStr + "T23:59:59.999Z");
+      // Sezioni con scheduler notturno che potrebbero mancare dopo un deploy diurno
+      const sectionsToCheck: Array<{ section: 'ai' | 'music' | 'sport' | 'luxury'; label: string; refreshFn: () => Promise<void> }> = [
+        { section: 'ai', label: 'AI4Business', refreshFn: async () => { await refreshAINewsFromRSS(); } },
+        { section: 'music', label: 'ITsMusic', refreshFn: async () => { await refreshMusicNewsFromRSS(); } },
+        { section: 'sport', label: 'Sport & Business', refreshFn: async () => { await refreshSportNewsFromRSS(); } },
+        { section: 'luxury', label: 'Lifestyle & Luxury', refreshFn: async () => { await refreshLuxuryNewsFromRSS(); } },
+      ];
+      for (const { section, label, refreshFn } of sectionsToCheck) {
+        const existing = await catchUpNewsDb.select({ id: niTable.id })
+          .from(niTable)
+          .where(andOp3(
+            eq(niTable.section, section),
+            gteOp(niTable.createdAt, todayStart),
+            ltOp(niTable.createdAt, todayEnd)
+          ))
+          .limit(1);
+        if (existing.length === 0) {
+          console.log(`[SchedulerManager] 🔄 CATCH-UP news: sezione '${section}' (${label}) non ha notizie di oggi — avvio refresh...`);
+          try {
+            await refreshFn();
+            invalidateSection(section);
+            console.log(`[SchedulerManager] ✅ CATCH-UP news: '${section}' aggiornata`);
+          } catch (err) {
+            console.error(`[SchedulerManager] ❌ CATCH-UP news '${section}' errore:`, err);
+          }
+        } else {
+          console.log(`[SchedulerManager] ℹ️ CATCH-UP news: '${section}' ha già notizie di oggi — skip`);
+        }
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Catch-up news all'avvio errore:", err);
+    }
+  }, 60_000); // 1 minuto dopo l'avvio
+
   // Research: esegui anche subito all'avvio se non ci sono ricerche di oggi
   setTimeout(async () => {
     try {

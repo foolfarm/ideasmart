@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT 'news_items' as tbl, COUNT(*) as total, MAX(created_at) as last_insert FROM news_items\nUNION ALL\nSELECT 'research_reports', COUNT(*), MAX(created_at) FROM research_reports\nUNION ALL\nSELECT 'daily_editorial', COUNT(*), MAX(created_at) FROM daily_editorial\nUNION ALL\nSELECT 'startup_of_day', COUNT(*), MAX(created_at) FROM startup_of_day\nUNION ALL\nSELECT 'breaking_news', COUNT(*), MAX(created_at) FROM breaking_news;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT 'news_items' as tbl, COUNT(*) as total, MAX(created_at) as last_insert FROM news_items\nUNION ALL\nSELECT 'research_reports', COUNT(*), MAX(created_at) FROM research_reports\nUNION ALL\nSELECT 'daily_editorial', COUNT(*), MAX(created_at) FROM daily_editorial\nUNION ALL\nSELECT 'startup_of_day', COUNT(*), MAX(created_at) FROM startup_of_day\nUNION ALL\nSELECT 'breaking_news', COUNT(*), MAX(created_at) FROM breaking_news;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 2: Unknown column 'created_at' in ''"
+  ]
+}

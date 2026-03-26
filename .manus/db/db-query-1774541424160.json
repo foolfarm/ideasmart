@@ -1,0 +1,30 @@
+{
+  "query": "\nSELECT 'news_items' as tbl, COUNT(*) as total FROM news_items\nUNION ALL\nSELECT 'research_reports', COUNT(*) FROM research_reports\nUNION ALL\nSELECT 'daily_editorial', COUNT(*) FROM daily_editorial\nUNION ALL\nSELECT 'startup_of_day', COUNT(*) FROM startup_of_day\nUNION ALL\nSELECT 'breaking_news', COUNT(*) FROM breaking_news;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT 'news_items' as tbl, COUNT(*) as total FROM news_items\nUNION ALL\nSELECT 'research_reports', COUNT(*) FROM research_reports\nUNION ALL\nSELECT 'daily_editorial', COUNT(*) FROM daily_editorial\nUNION ALL\nSELECT 'startup_of_day', COUNT(*) FROM startup_of_day\nUNION ALL\nSELECT 'breaking_news', COUNT(*) FROM breaking_news;\n",
+  "rows": [
+    {
+      "tbl": "startup_of_day",
+      "total": "69"
+    },
+    {
+      "tbl": "research_reports",
+      "total": "10"
+    },
+    {
+      "tbl": "breaking_news",
+      "total": "34"
+    },
+    {
+      "tbl": "news_items",
+      "total": "253"
+    },
+    {
+      "tbl": "daily_editorial",
+      "total": "69"
+    }
+  ],
+  "messages": [],
+  "stdout": "tbl\ttotal\nstartup_of_day\t69\nresearch_reports\t10\nbreaking_news\t34\nnews_items\t253\ndaily_editorial\t69\n",
+  "stderr": "",
+  "execution_time_ms": 79
+}
