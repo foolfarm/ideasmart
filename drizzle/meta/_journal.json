@@ -232,6 +232,13 @@
       "when": 1774533428881,
       "tag": "0032_glamorous_omega_red",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1774534871969,
+      "tag": "0033_premium_maggott",
+      "breakpoints": true
     }
   ]
 }

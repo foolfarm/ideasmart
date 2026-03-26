@@ -1,0 +1,1 @@
+ALTER TABLE `research_reports` ADD `image_url` varchar(1000);

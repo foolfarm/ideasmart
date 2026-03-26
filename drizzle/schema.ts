@@ -410,6 +410,7 @@ export const researchReports = mysqlTable("research_reports", {
   keyFindings: text("key_findings").notNull(), // JSON array di stringhe
   source: varchar("source", { length: 200 }).notNull(), // es. "Gartner", "CB Insights", "Statista"
   sourceUrl: varchar("source_url", { length: 1000 }),
+  imageUrl: varchar("image_url", { length: 1000 }),
   category: varchar("category", { length: 100 }).notNull(), // "startup" | "venture_capital" | "ai_trends" | "technology" | "market"
   region: varchar("region", { length: 100 }).notNull().default("global"), // "global" | "europe" | "italy"
   dateLabel: varchar("date_label", { length: 10 }).notNull(), // YYYY-MM-DD

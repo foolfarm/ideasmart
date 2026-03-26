@@ -12,7 +12,6 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import ReadersCounter from "@/components/ReadersCounter";
-import TopArticoli from "@/components/TopArticoli";
 import RicercaDelGiorno from "@/components/RicercaDelGiorno";
 
 const SECTION_COLORS = {
@@ -733,6 +732,11 @@ export default function Home() {
         <BreakingNewsSection />
         <BreakingNewsTicker />
 
+        {/* ── IDEASMART RESEARCH — Ricerca del Giorno (in cima, al posto del banner) ── */}
+        <div className="max-w-6xl mx-auto px-4 mt-4">
+          <RicercaDelGiorno />
+        </div>
+
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-12">
           {/* H2 per SEO — visivamente nascosto */}
@@ -855,13 +859,7 @@ export default function Home() {
           {/* Punto del Giorno */}
           <PuntoDelGiorno />
 
-          {/* ── PIÙ LETTI DELLA SETTIMANA ── */}
-          <div className="mt-6">
-            <TopArticoli limit={10} />
-          </div>
-
-          {/* ── IDEASMART RESEARCH — Ricerca del Giorno ── */}
-          <RicercaDelGiorno />
+          {/* TopArticoli rimosso su richiesta */}
 
           {/* ── BANNER PUBBLICITARIO LEADERBOARD 728x90 (Tradedoubler) ── */}
           <div className="my-6 flex flex-col items-center">

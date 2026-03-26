@@ -1,6 +1,6 @@
 /**
  * IDEASMART Research Generator
- * Ogni giorno genera 10 ricerche su Startup, Venture Capital e AI Trends
+ * Ogni giorno genera 20 ricerche su Startup, Venture Capital e AI Trends
  * attingendo da fonti specializzate come Gartner, CB Insights, Statista.
  */
 import { invokeLLM } from "./_core/llm";
@@ -43,6 +43,46 @@ const RESEARCH_CATEGORIES = [
 
 // ── Regioni ──────────────────────────────────────────────────────────────────
 const REGIONS = ["global", "europe", "italy"];
+// ── Immagini tematiche per categoria (Unsplash) ──────────────────────────────
+const CATEGORY_IMAGES: Record<string, string[]> = {
+  startup: [
+    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+  ],
+  venture_capital: [
+    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+    "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&q=80",
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&q=80",
+  ],
+  ai_trends: [
+    "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80",
+    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
+    "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80",
+    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
+  ],
+  technology: [
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+  ],
+  market: [
+    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+    "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=800&q=80",
+    "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80",
+    "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+  ],
+};
+
+function getImageForCategory(category: string, index: number): string {
+  const imgs = CATEGORY_IMAGES[category] ?? CATEGORY_IMAGES["ai_trends"];
+  return imgs[index % imgs.length];
+}
+
+
 
 interface ResearchItem {
   title: string;
@@ -60,7 +100,7 @@ interface LLMResearchResponse {
 }
 
 /**
- * Genera 10 ricerche giornaliere su Startup, VC e AI Trends usando l'AI.
+ * Genera 20 ricerche giornaliere su Startup, VC e AI Trends usando l'AI.
  */
 export async function generateDailyResearch(): Promise<{
   generated: number;
@@ -97,7 +137,7 @@ export async function generateDailyResearch(): Promise<{
         {
           role: "system",
           content: `Sei un senior research analyst di IDEASMART, specializzato in Startup, Venture Capital e AI Trends.
-Il tuo compito è generare 10 ricerche originali e approfondite per la sezione "IDEASMART Research".
+Il tuo compito è generare 20 ricerche originali e approfondite per la sezione "IDEASMART Research".
 
 Ogni ricerca deve:
 1. Essere basata su dati reali e aggiornati di fonti autorevoli (Gartner, CB Insights, Statista, McKinsey, Dealroom, PitchBook, ecc.)
@@ -117,10 +157,11 @@ Genera ricerche diverse ogni giorno — oggi è ${dateFormatted}.`,
         },
         {
           role: "user",
-          content: `Genera 10 ricerche originali per IDEASMART Research di oggi (${today}).
-Includi una mix di: 3-4 ricerche AI Trends, 3 Venture Capital/Startup, 2 Mercati, 1-2 Tecnologia.
-Almeno 3 devono riguardare il mercato europeo o italiano.
-La prima deve essere la "Ricerca del Giorno" più importante.`,
+          content: `Genera 20 ricerche originali per IDEASMART Research di oggi (${today}).
+Includi una mix di: 6-7 ricerche AI Trends, 5 Venture Capital/Startup, 4 Mercati, 3-4 Tecnologia.
+Almeno 6 devono riguardare il mercato europeo o italiano.
+La prima deve essere la "Ricerca del Giorno" più importante.
+Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight actionable per investitori e founder.`,
         },
       ],
       response_format: {
@@ -208,7 +249,7 @@ La prima deve essere la "Ricerca del Giorno" più importante.`,
 
     // Salva le ricerche nel DB
     let savedCount = 0;
-    for (const item of researches.slice(0, 10)) {
+    for (const item of researches.slice(0, 20)) {
       try {
         await db.insert(researchReports).values({
           title: item.title.slice(0, 299),
@@ -216,6 +257,7 @@ La prima deve essere la "Ricerca del Giorno" più importante.`,
           keyFindings: JSON.stringify(item.keyFindings ?? []),
           source: item.source.slice(0, 199),
           sourceUrl: item.sourceUrl?.slice(0, 999) || null,
+          imageUrl: getImageForCategory(item.category, savedCount),
           category: item.category,
           region: item.region,
           dateLabel: today,
