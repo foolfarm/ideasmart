@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, title, slot, dateLabel, linkedinUrl FROM linkedin_posts WHERE LOWER(title) LIKE '%vibe%' ORDER BY dateLabel DESC LIMIT 10;\nSELECT id, section, title, dateLabel FROM daily_editorial WHERE LOWER(title) LIKE '%vibe%' ORDER BY dateLabel DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, slot, dateLabel, linkedinUrl FROM linkedin_posts WHERE LOWER(title) LIKE '%vibe%' ORDER BY dateLabel DESC LIMIT 10;\nSELECT id, section, title, dateLabel FROM daily_editorial WHERE LOWER(title) LIKE '%vibe%' ORDER BY dateLabel DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "390003",
+      "title": "Vibe Coding: come l'AI sta abbassando le barriere per costruire software e fare startup",
+      "slot": "evening",
+      "dateLabel": "2026-03-25",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442556559341289472"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tslot\tdateLabel\tlinkedinUrl\n390003\tVibe Coding: come l'AI sta abbassando le barriere per costruire software e fare startup\tevening\t2026-03-25\thttps://www.linkedin.com/posts/andreacinelli_7442556559341289472\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}

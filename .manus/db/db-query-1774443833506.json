@@ -1,0 +1,80 @@
+{
+  "query": "SELECT id, section, status, recipientCount, sentAt FROM newsletter_sends ORDER BY sentAt DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, section, status, recipientCount, sentAt FROM newsletter_sends ORDER BY sentAt DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "300002",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "6972",
+      "sentAt": "2026-03-25 12:33:08"
+    },
+    {
+      "id": "300001",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-25 12:32:30"
+    },
+    {
+      "id": "270002",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "6992",
+      "sentAt": "2026-03-25 06:39:17"
+    },
+    {
+      "id": "270001",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "6992",
+      "sentAt": "2026-03-25 06:30:30"
+    },
+    {
+      "id": "240004",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "7073",
+      "sentAt": "2026-03-24 08:08:18"
+    },
+    {
+      "id": "240003",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "7073",
+      "sentAt": "2026-03-24 08:07:12"
+    },
+    {
+      "id": "240002",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "7073",
+      "sentAt": "2026-03-24 08:01:28"
+    },
+    {
+      "id": "240001",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "7073",
+      "sentAt": "2026-03-24 08:00:49"
+    },
+    {
+      "id": "210001",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-23 06:30:27"
+    },
+    {
+      "id": "180001",
+      "section": "ai4business",
+      "status": "sent",
+      "recipientCount": "0",
+      "sentAt": "2026-03-22 06:30:32"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsection\tstatus\trecipientCount\tsentAt\n300002\tai4business\tsent\t6972\t2026-03-25 12:33:08\n300001\tai4business\tsent\t0\t2026-03-25 12:32:30\n270002\tai4business\tsent\t6992\t2026-03-25 06:39:17\n270001\tai4business\tsent\t6992\t2026-03-25 06:30:30\n240004\tai4business\tsent\t7073\t2026-03-24 08:08:18\n240003\tai4business\tsent\t7073\t2026-03-24 08:07:12\n240002\tai4business\tsent\t7073\t2026-03-24 08:01:28\n240001\tai4business\tsent\t7073\t2026-03-24 08:00:49\n210001\tai4business\tsent\t0\t2026-03-23 06:30:27\n180001\tai4business\tsent\t0\t2026-03-22 06:30:32\n",
+  "stderr": "",
+  "execution_time_ms": 65
+}

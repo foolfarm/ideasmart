@@ -1,0 +1,122 @@
+{
+  "query": "DESCRIBE subscribers;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute DESCRIBE subscribers;",
+  "rows": [
+    {
+      "Field": "id",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": "NULL",
+      "Extra": "auto_increment"
+    },
+    {
+      "Field": "email",
+      "Type": "varchar(320)",
+      "Null": "NO",
+      "Key": "UNI",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "name",
+      "Type": "varchar(255)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "status",
+      "Type": "enum('active','unsubscribed')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "active",
+      "Extra": ""
+    },
+    {
+      "Field": "source",
+      "Type": "varchar(64)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "website",
+      "Extra": ""
+    },
+    {
+      "Field": "subscribedAt",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": ""
+    },
+    {
+      "Field": "unsubscribedAt",
+      "Type": "timestamp",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "unsubscribeToken",
+      "Type": "varchar(128)",
+      "Null": "YES",
+      "Key": "UNI",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "totalSent",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "",
+      "Default": "0",
+      "Extra": ""
+    },
+    {
+      "Field": "totalOpened",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "",
+      "Default": "0",
+      "Extra": ""
+    },
+    {
+      "Field": "lastSentAt",
+      "Type": "timestamp",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "lastOpenedAt",
+      "Type": "timestamp",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "newsletter",
+      "Type": "enum('ai4business','itsmusic','startup','news','motori','tennis','basket','gossip','cybersecurity','sondaggi','both')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "ai4business",
+      "Extra": ""
+    },
+    {
+      "Field": "channels",
+      "Type": "text",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\nid\tint\tNO\tPRI\tNULL\tauto_increment\nemail\tvarchar(320)\tNO\tUNI\tNULL\t\nname\tvarchar(255)\tYES\t\tNULL\t\nstatus\tenum('active','unsubscribed')\tNO\t\tactive\t\nsource\tvarchar(64)\tNO\t\twebsite\t\nsubscribedAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\t\nunsubscribedAt\ttimestamp\tYES\t\tNULL\t\nunsubscribeToken\tvarchar(128)\tYES\tUNI\tNULL\t\ntotalSent\tint\tNO\t\t0\t\ntotalOpened\tint\tNO\t\t0\t\nlastSentAt\ttimestamp\tYES\t\tNULL\t\nlastOpenedAt\ttimestamp\tYES\t\tNULL\t\nnewsletter\tenum('ai4business','itsmusic','startup','news','motori','tennis','basket','gossip','cybersecurity','sondaggi','both')\tNO\t\tai4business\t\nchannels\ttext\tYES\t\tNULL\t\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

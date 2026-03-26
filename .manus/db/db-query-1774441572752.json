@@ -1,0 +1,58 @@
+{
+  "query": "\nSELECT slot, section, dateLabel, linkedinUrl, LEFT(postText, 80) as preview, createdAt\nFROM linkedin_posts\nWHERE DATE(createdAt) >= DATE_SUB(CURDATE(), INTERVAL 2 DAY)\nORDER BY createdAt DESC\nLIMIT 10;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT slot, section, dateLabel, linkedinUrl, LEFT(postText, 80) as preview, createdAt\nFROM linkedin_posts\nWHERE DATE(createdAt) >= DATE_SUB(CURDATE(), INTERVAL 2 DAY)\nORDER BY createdAt DESC\nLIMIT 10;\n",
+  "rows": [
+    {
+      "slot": "evening",
+      "section": "ai",
+      "dateLabel": "2026-03-24",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442246495052931072",
+      "preview": "Il 24 marzo 2026, il 68% delle nuove startup europee che hanno chiuso un seed ro",
+      "createdAt": "2026-03-24 16:30:35"
+    },
+    {
+      "slot": "afternoon",
+      "section": "ai",
+      "dateLabel": "2026-03-24",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442208698053079040",
+      "preview": "Il 24 marzo 2026, il 68% delle aziende europee con oltre 250 dipendenti ha già a",
+      "createdAt": "2026-03-24 14:00:23"
+    },
+    {
+      "slot": "morning",
+      "section": "startup",
+      "dateLabel": "2026-03-24",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442140719445733376",
+      "preview": "Il 2025 ha segnato un punto di svolta per l'ecosistema startup italiano, con gli",
+      "createdAt": "2026-03-24 09:30:13"
+    },
+    {
+      "slot": "evening",
+      "section": "ai",
+      "dateLabel": "2026-03-23",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7441935134649372672",
+      "preview": "Il 23 marzo 2026 è stata una data spartiacque per l'AI in Italia, non per un eve",
+      "createdAt": "2026-03-23 19:53:21"
+    },
+    {
+      "slot": "afternoon",
+      "section": "startup",
+      "dateLabel": "2026-03-23",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7441932478371598336",
+      "preview": "Il report Italian Tech Alliance 2025 indica un incremento del 42% nelle startup ",
+      "createdAt": "2026-03-23 19:42:47"
+    },
+    {
+      "slot": "morning",
+      "section": "ai",
+      "dateLabel": "2026-03-23",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7441778320289210368",
+      "preview": "Il 23 marzo 2026 non è una data casuale, ma un segnale: l'AI generativa e gli ag",
+      "createdAt": "2026-03-23 09:30:13"
+    }
+  ],
+  "messages": [],
+  "stdout": "slot\tsection\tdateLabel\tlinkedinUrl\tpreview\tcreatedAt\nevening\tai\t2026-03-24\thttps://www.linkedin.com/posts/andreacinelli_7442246495052931072\tIl 24 marzo 2026, il 68% delle nuove startup europee che hanno chiuso un seed ro\t2026-03-24 16:30:35\nafternoon\tai\t2026-03-24\thttps://www.linkedin.com/posts/andreacinelli_7442208698053079040\tIl 24 marzo 2026, il 68% delle aziende europee con oltre 250 dipendenti ha già a\t2026-03-24 14:00:23\nmorning\tstartup\t2026-03-24\thttps://www.linkedin.com/posts/andreacinelli_7442140719445733376\tIl 2025 ha segnato un punto di svolta per l'ecosistema startup italiano, con gli\t2026-03-24 09:30:13\nevening\tai\t2026-03-23\thttps://www.linkedin.com/posts/andreacinelli_7441935134649372672\tIl 23 marzo 2026 è stata una data spartiacque per l'AI in Italia, non per un eve\t2026-03-23 19:53:21\nafternoon\tstartup\t2026-03-23\thttps://www.linkedin.com/posts/andreacinelli_7441932478371598336\tIl report Italian Tech Alliance 2025 indica un incremento del 42% nelle startup \t2026-03-23 19:42:47\nmorning\tai\t2026-03-23\thttps://www.linkedin.com/posts/andreacinelli_7441778320289210368\tIl 23 marzo 2026 non è una data casuale, ma un segnale: l'AI generativa e gli ag\t2026-03-23 09:30:13\n",
+  "stderr": "",
+  "execution_time_ms": 67
+}

@@ -1,0 +1,8 @@
+{
+  "query": "\n-- Post LinkedIn di oggi e ieri\nSELECT slot, status, publishedAt, content\nFROM linkedin_posts\nWHERE DATE(publishedAt) >= DATE_SUB(CURDATE(), INTERVAL 2 DAY)\nORDER BY publishedAt DESC\nLIMIT 10;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \n-- Post LinkedIn di oggi e ieri\nSELECT slot, status, publishedAt, content\nFROM linkedin_posts\nWHERE DATE(publishedAt) >= DATE_SUB(CURDATE(), INTERVAL 2 DAY)\nORDER BY publishedAt DESC\nLIMIT 10;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 3: Unknown column 'publishedat' in 'where clause'"
+  ]
+}

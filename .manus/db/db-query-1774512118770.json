@@ -1,0 +1,9 @@
+{
+  "query": "SELECT id, title, section, sourceUrl, createdAt FROM news_items WHERE title LIKE '%Vibe Cod%' OR title LIKE '%vibe cod%' ORDER BY section, createdAt DESC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, section, sourceUrl, createdAt FROM news_items WHERE title LIKE '%Vibe Cod%' OR title LIKE '%vibe cod%' ORDER BY section, createdAt DESC LIMIT 20;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 64
+}

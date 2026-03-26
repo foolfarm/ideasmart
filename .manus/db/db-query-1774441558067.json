@@ -1,0 +1,80 @@
+{
+  "query": "\n-- Ultimo aggiornamento news per sezione\nSELECT section, COUNT(*) as total, MAX(publishedAt) as last_update\nFROM news_items\nGROUP BY section\nORDER BY last_update DESC\nLIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \n-- Ultimo aggiornamento news per sezione\nSELECT section, COUNT(*) as total, MAX(publishedAt) as last_update\nFROM news_items\nGROUP BY section\nORDER BY last_update DESC\nLIMIT 20;\n",
+  "rows": [
+    {
+      "section": "motori",
+      "total": "20",
+      "last_update": "2026-03-25"
+    },
+    {
+      "section": "sport",
+      "total": "15",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "tennis",
+      "total": "15",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "gossip",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "news",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "finance",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "sondaggi",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "startup",
+      "total": "4",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "health",
+      "total": "9",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "ai",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "luxury",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "cybersecurity",
+      "total": "20",
+      "last_update": "2026-03-24"
+    },
+    {
+      "section": "music",
+      "total": "20",
+      "last_update": "2026-03-23"
+    },
+    {
+      "section": "basket",
+      "total": "15",
+      "last_update": "2026-03-22"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotal\tlast_update\nmotori\t20\t2026-03-25\nsport\t15\t2026-03-24\ntennis\t15\t2026-03-24\ngossip\t20\t2026-03-24\nnews\t20\t2026-03-24\nfinance\t20\t2026-03-24\nsondaggi\t20\t2026-03-24\nstartup\t4\t2026-03-24\nhealth\t9\t2026-03-24\nai\t20\t2026-03-24\nluxury\t20\t2026-03-24\ncybersecurity\t20\t2026-03-24\nmusic\t20\t2026-03-23\nbasket\t15\t2026-03-22\n",
+  "stderr": "",
+  "execution_time_ms": 690
+}

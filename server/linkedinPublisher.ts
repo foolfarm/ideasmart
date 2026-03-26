@@ -243,7 +243,7 @@ async function uploadImageToLinkedIn(
 }
 
 // ── Step 3: Pubblica post su LinkedIn ────────────────────────────────────────
-async function publishToLinkedIn(
+export async function publishToLinkedIn(
   text: string,
   articleUrl: string,
   imageUrl: string | null | undefined,

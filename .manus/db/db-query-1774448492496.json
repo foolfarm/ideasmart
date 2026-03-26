@@ -1,0 +1,55 @@
+{
+  "query": "SELECT email, status, unsubscribedAt FROM subscribers WHERE email IN (\n  'ndreaorioli@foolfarm.com',\n  'azionistifoolfarm@foolfarm.com',\n  'cda@foolfarm.com',\n  'foolers@foolfarm.com',\n  'foolfarmteam@foolfarm.com',\n  'hr@foolfarm.com',\n  'andrea.cinelli@inventia.biz',\n  'help@free-now.com',\n  'info@swappie.com',\n  'support@satispay.com',\n  'mteoleonard@gmail.com',\n  'jannottig@gmail.com',\n  'edita.g@fluentis.com'\n) ORDER BY email;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT email, status, unsubscribedAt FROM subscribers WHERE email IN (\n  'ndreaorioli@foolfarm.com',\n  'azionistifoolfarm@foolfarm.com',\n  'cda@foolfarm.com',\n  'foolers@foolfarm.com',\n  'foolfarmteam@foolfarm.com',\n  'hr@foolfarm.com',\n  'andrea.cinelli@inventia.biz',\n  'help@free-now.com',\n  'info@swappie.com',\n  'support@satispay.com',\n  'mteoleonard@gmail.com',\n  'jannottig@gmail.com',\n  'edita.g@fluentis.com'\n) ORDER BY email;",
+  "rows": [
+    {
+      "email": "cda@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "edita.g@fluentis.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "foolfarmteam@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "help@free-now.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "hr@foolfarm.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "info@swappie.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "jannottig@gmail.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "mteoleonard@gmail.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    },
+    {
+      "email": "support@satispay.com",
+      "status": "unsubscribed",
+      "unsubscribedAt": "2026-03-25 14:21:25"
+    }
+  ],
+  "messages": [],
+  "stdout": "email\tstatus\tunsubscribedAt\ncda@foolfarm.com\tunsubscribed\t2026-03-25 14:21:25\nedita.g@fluentis.com\tunsubscribed\t2026-03-25 14:21:25\nfoolfarmteam@foolfarm.com\tunsubscribed\t2026-03-25 14:21:25\nhelp@free-now.com\tunsubscribed\t2026-03-25 14:21:25\nhr@foolfarm.com\tunsubscribed\t2026-03-25 14:21:25\ninfo@swappie.com\tunsubscribed\t2026-03-25 14:21:25\njannottig@gmail.com\tunsubscribed\t2026-03-25 14:21:25\nmteoleonard@gmail.com\tunsubscribed\t2026-03-25 14:21:25\nsupport@satispay.com\tunsubscribed\t2026-03-25 14:21:25\n",
+  "stderr": "",
+  "execution_time_ms": 77
+}

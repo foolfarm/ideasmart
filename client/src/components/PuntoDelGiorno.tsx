@@ -207,17 +207,10 @@ export default function PuntoDelGiorno() {
   // Non mostrare nulla se non ci sono dati e non sta caricando
   if (!isLoading && (!posts || posts.length === 0)) return null;
 
-  // Separa i post per slot
-  const morningPost = posts?.find(p => p.slot === "morning");
-  const afternoonPost = posts?.find(p => p.slot === "afternoon");
-  const eveningPost = posts?.find(p => p.slot === "evening");
-  // Fallback: se non ci sono slot differenziati, usa il primo post come morning
-  const firstPost = posts?.[0];
-  const secondPost = posts?.[1];
-
-  const displayMorning = morningPost ?? firstPost;
-  const displayAfternoon = afternoonPost ?? (firstPost?.slot !== "morning" ? undefined : secondPost);
-  const displayEvening = eveningPost;
+  // Separa i post per slot — ogni slot è unico grazie alla deduplicazione server-side
+  const displayMorning = posts?.find(p => p.slot === "morning");
+  const displayAfternoon = posts?.find(p => p.slot === "afternoon");
+  const displayEvening = posts?.find(p => p.slot === "evening");
 
   // Data di riferimento (dal post più recente)
   const dateLabel = displayMorning?.dateLabel ?? displayAfternoon?.dateLabel ?? displayEvening?.dateLabel ?? "";
@@ -255,7 +248,7 @@ export default function PuntoDelGiorno() {
               ● Mattino
             </span>
           </div>
-          <PostCard post={displayMorning} isLoading={isLoading && !displayMorning} />
+          <PostCard post={displayMorning} isLoading={isLoading && !posts} />
         </div>
       )}
 

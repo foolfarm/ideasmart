@@ -1349,3 +1349,8 @@
 - [x] Catch-up newsletter: all'avvio del server, se la newsletter del giorno non è stata inviata (recipientCount=0 o record mancante) e sono passate le 07:30 CET, forzare l'invio entro 60 secondi
 - [x] Fix recipientCount nel DB: aggiornamento del contatore reale dopo ogni invio (sendDailyChannelNewsletter + sendChannelNewsletterManual)
 - [x] Invio manuale newsletter AI4Business News di oggi (lunedì 24 marzo 2026)
+
+## Nuovi task (25 Mar 2026 — Post LinkedIn temi personalizzati)
+
+- [x] Post LinkedIn 15:30 del 25/03 su Openclaw e la sua rivoluzione
+- [x] Post LinkedIn 18:00 del 25/03 sul Vibe Coding

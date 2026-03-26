@@ -427,11 +427,35 @@ export const appRouter = router({
             if (!db) return [];
             const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
             const { eq: eqOp } = await import('drizzle-orm');
-            // Prendi gli ultimi 2 post (mattino + pomeriggio di oggi o ieri se pomeriggio non ancora pubblicato)
-            const posts = await db.select().from(linkedinPostsTable)
-              .orderBy(desc(linkedinPostsTable.createdAt))
-              .limit(2);
-            return posts.map(post => ({
+            // Prendi i post di oggi (tutti e 3 gli slot: morning, afternoon, evening)
+            // Se oggi non ci sono post, prendi quelli di ieri
+            const todayLabel = new Date().toISOString().split('T')[0];
+            const yesterdayDate = new Date();
+            yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+            const yesterdayLabel = yesterdayDate.toISOString().split('T')[0];
+
+            let posts = await db.select().from(linkedinPostsTable)
+              .where(eqOp(linkedinPostsTable.dateLabel, todayLabel))
+              .orderBy(linkedinPostsTable.slot)
+              .limit(3);
+
+            // Fallback a ieri se oggi non ci sono ancora post
+            if (posts.length === 0) {
+              posts = await db.select().from(linkedinPostsTable)
+                .where(eqOp(linkedinPostsTable.dateLabel, yesterdayLabel))
+                .orderBy(linkedinPostsTable.slot)
+                .limit(3);
+            }
+
+            // Deduplicazione per slot: tieni solo un post per slot (il più recente)
+            const slotMap = new Map<string, typeof posts[0]>();
+            for (const post of posts) {
+              const slot = (post as any).slot ?? 'morning';
+              if (!slotMap.has(slot)) slotMap.set(slot, post);
+            }
+            const dedupedPosts = Array.from(slotMap.values());
+
+            return dedupedPosts.map(post => ({
               id: post.id,
               dateLabel: post.dateLabel,
               slot: (post as any).slot ?? 'morning',

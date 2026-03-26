@@ -1,0 +1,31 @@
+{
+  "query": "SELECT id, title, slot, dateLabel, linkedinUrl FROM linkedin_posts WHERE dateLabel = '2026-03-25' ORDER BY slot;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, slot, dateLabel, linkedinUrl FROM linkedin_posts WHERE dateLabel = '2026-03-25' ORDER BY slot;",
+  "rows": [
+    {
+      "id": "390001",
+      "title": "L'AI Autonoma: La Nuova Frontiera del Business Italiano",
+      "slot": "morning",
+      "dateLabel": "2026-03-25",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442548817951891457"
+    },
+    {
+      "id": "390002",
+      "title": "OpenClaw e la rivoluzione degli agenti AI autonomi nel business italiano",
+      "slot": "afternoon",
+      "dateLabel": "2026-03-25",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442556489308872704"
+    },
+    {
+      "id": "390003",
+      "title": "Vibe Coding: come l'AI sta abbassando le barriere per costruire software e fare startup",
+      "slot": "evening",
+      "dateLabel": "2026-03-25",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442556559341289472"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tslot\tdateLabel\tlinkedinUrl\n390001\tL'AI Autonoma: La Nuova Frontiera del Business Italiano\tmorning\t2026-03-25\thttps://www.linkedin.com/posts/andreacinelli_7442548817951891457\n390002\tOpenClaw e la rivoluzione degli agenti AI autonomi nel business italiano\tafternoon\t2026-03-25\thttps://www.linkedin.com/posts/andreacinelli_7442556489308872704\n390003\tVibe Coding: come l'AI sta abbassando le barriere per costruire software e fare startup\tevening\t2026-03-25\thttps://www.linkedin.com/posts/andreacinelli_7442556559341289472\n",
+  "stderr": "",
+  "execution_time_ms": 67
+}

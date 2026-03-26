@@ -1,0 +1,15 @@
+{
+  "query": "\n-- Post LinkedIn di oggi 25 marzo\nSELECT slot, section, dateLabel, linkedinUrl, createdAt\nFROM linkedin_posts\nWHERE DATE(createdAt) = CURDATE()\nORDER BY createdAt DESC;\n\n-- Canali aggiornati oggi 25 marzo\nSELECT section, COUNT(*) as notizie, MAX(publishedAt) as ultimo_aggiornamento\nFROM news_items\nWHERE DATE(publishedAt) = CURDATE()\nGROUP BY section;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \n-- Post LinkedIn di oggi 25 marzo\nSELECT slot, section, dateLabel, linkedinUrl, createdAt\nFROM linkedin_posts\nWHERE DATE(createdAt) = CURDATE()\nORDER BY createdAt DESC;\n\n-- Canali aggiornati oggi 25 marzo\nSELECT section, COUNT(*) as notizie, MAX(publishedAt) as ultimo_aggiornamento\nFROM news_items\nWHERE DATE(publishedAt) = CURDATE()\nGROUP BY section;\n",
+  "rows": [
+    {
+      "section": "motori",
+      "notizie": "2",
+      "ultimo_aggiornamento": "2026-03-25"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tnotizie\tultimo_aggiornamento\nmotori\t2\t2026-03-25\n",
+  "stderr": "",
+  "execution_time_ms": 64
+}
