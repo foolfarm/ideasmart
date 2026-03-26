@@ -102,7 +102,7 @@ export async function generateBreakingNews(): Promise<{
       .orderBy(desc(newsItemsTable.createdAt))
       .limit(100) as BreakingCandidate[];
 
-    // Fallback: se ci sono meno di 20 notizie nelle ultime 2 ore, prendi le ultime 6 ore
+    // Fallback 1: se ci sono meno di 20 notizie nelle ultime 2 ore, prendi le ultime 6 ore
     if (candidates.length < 20) {
       const sixHoursAgoFallback = new Date(Date.now() - 6 * 60 * 60 * 1000);
       candidates = await db
@@ -117,6 +117,24 @@ export async function generateBreakingNews(): Promise<{
         })
         .from(newsItemsTable)
         .where(gte(newsItemsTable.createdAt, sixHoursAgoFallback))
+        .orderBy(desc(newsItemsTable.createdAt))
+        .limit(100) as BreakingCandidate[];
+    }
+    // Fallback 2: se ancora meno di 10, prendi le ultime 24 ore
+    if (candidates.length < 10) {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      candidates = await db
+        .select({
+          id: newsItemsTable.id,
+          title: newsItemsTable.title,
+          summary: newsItemsTable.summary,
+          sourceUrl: newsItemsTable.sourceUrl,
+          sourceName: newsItemsTable.sourceName,
+          section: newsItemsTable.section,
+          publishedAt: newsItemsTable.publishedAt,
+        })
+        .from(newsItemsTable)
+        .where(gte(newsItemsTable.createdAt, twentyFourHoursAgo))
         .orderBy(desc(newsItemsTable.createdAt))
         .limit(100) as BreakingCandidate[];
     }
@@ -164,18 +182,20 @@ Una BREAKING NEWS deve soddisfare ALMENO UNO di questi criteri:
 - Evento improvviso e inaspettato di portata nazionale o internazionale
 - Decisione politica/economica/tecnologica di grande impatto immediato
 - Catastrofe naturale, incidente grave, attentato
-- Annuncio straordinario di un'azienda tech/AI di primo piano (acquisizione miliardaria, lancio rivoluzionario)
-- Crollo o rally estremo di mercati finanziari (>5%)
-- Scoperta scientifica o medica rivoluzionaria
-- Evento sportivo straordinario (record mondiale, risultato clamoroso)
+- Annuncio straordinario di un'azienda tech/AI di primo piano (acquisizione miliardaria, lancio rivoluzionario, nuovo modello AI importante)
+- Crollo o rally significativo di mercati finanziari (>2%)
+- Scoperta scientifica o medica rilevante
+- Evento sportivo di grande rilievo (vittoria importante, record)
+- Notizia di forte impatto sull'ecosistema startup, VC o AI italiano/europeo
+- Trend o sviluppo tecnologico di rilievo che sta cambiando il mercato
+- Lancio di prodotto o servizio significativo nel mondo tech/AI/startup
 
 NON sono breaking news:
-- Notizie di routine, aggiornamenti normali, analisi di tendenza
-- Notizie già note da giorni
+- Notizie di routine senza impatto significativo
 - Gossip o notizie di entertainment a basso impatto
 
-Seleziona SOLO le notizie che meritano davvero il badge BREAKING. Se nessuna lo merita, restituisci un array vuoto.
-Massimo 5 breaking news, ordinate per urgenza decrescente.`,
+Seleziona le 3-5 notizie più rilevanti e di impatto. Se le notizie disponibili sono di routine, scegli comunque le più interessanti e significative tra quelle presenti.
+Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`,
         },
         {
           role: "user",

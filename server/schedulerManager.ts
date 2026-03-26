@@ -87,6 +87,7 @@ import {
 } from "./startupScheduler";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
 import { generateBreakingNews } from "./breakingNewsGenerator";
+import { generateDailyResearch } from "./researchGenerator";
 import { runMorningHealthReport } from "./morningHealthReport";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
@@ -793,6 +794,45 @@ export function startAllSchedulers(): void {
       console.error("[SchedulerManager] ❌ Breaking News avvio errore:", err);
     }
   }, 90_000);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // IDEASMART RESEARCH — ogni giorno alle 06:00 CET
+  // Genera 10 ricerche su Startup, VC e AI Trends da fonti specializzate
+  // ═══════════════════════════════════════════════════════════════════════════
+  cron.schedule(
+    "0 0 6 * * *", // ogni giorno alle 06:00 CET
+    () => withLock("researchGeneration", async () => {
+      console.log("[SchedulerManager] 🔬 IDEASMART Research: generazione ricerche giornaliere...");
+      try {
+        const result = await generateDailyResearch();
+        if (result.generated > 0) {
+          console.log(`[SchedulerManager] ✅ Research: ${result.generated} ricerche generate`);
+        } else if (result.error) {
+          console.warn(`[SchedulerManager] ⚠️ Research: ${result.error}`);
+        } else {
+          console.log("[SchedulerManager] ℹ️ Research: ricerche già presenti oggi");
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Research errore:", err);
+      }
+    }),
+    { timezone: TZ }
+  );
+
+  // Research: esegui anche subito all'avvio se non ci sono ricerche di oggi
+  setTimeout(async () => {
+    try {
+      console.log("[SchedulerManager] 🔬 Research: verifica ricerche all'avvio...");
+      const result = await generateDailyResearch();
+      if (result.generated > 0) {
+        console.log(`[SchedulerManager] ✅ Research avvio: ${result.generated} ricerche generate`);
+      } else {
+        console.log("[SchedulerManager] ℹ️ Research avvio: ricerche già presenti");
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Research avvio errore:", err);
+    }
+  }, 120_000); // 2 minuti dopo l'avvio
 
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");

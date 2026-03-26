@@ -1,0 +1,14 @@
+{
+  "query": "SELECT COUNT(*) as total, MAX(createdAt) as last_created FROM breaking_news WHERE isActive = 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as total, MAX(createdAt) as last_created FROM breaking_news WHERE isActive = 1;",
+  "rows": [
+    {
+      "total": "0",
+      "last_created": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\tlast_created\n0\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

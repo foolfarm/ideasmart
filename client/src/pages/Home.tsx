@@ -13,6 +13,7 @@ import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import ReadersCounter from "@/components/ReadersCounter";
 import TopArticoli from "@/components/TopArticoli";
+import RicercaDelGiorno from "@/components/RicercaDelGiorno";
 
 const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
@@ -858,6 +859,9 @@ export default function Home() {
           <div className="mt-6">
             <TopArticoli limit={10} />
           </div>
+
+          {/* ── IDEASMART RESEARCH — Ricerca del Giorno ── */}
+          <RicercaDelGiorno />
 
           {/* ── BANNER PUBBLICITARIO LEADERBOARD 728x90 (Tradedoubler) ── */}
           <div className="my-6 flex flex-col items-center">

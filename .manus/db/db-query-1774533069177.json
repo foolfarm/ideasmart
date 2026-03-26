@@ -1,0 +1,25 @@
+{
+  "query": "SELECT COUNT(*) as total_6h FROM news_items WHERE createdAt >= DATE_SUB(NOW(), INTERVAL 6 HOUR);\nSELECT COUNT(*) as total_24h FROM news_items WHERE createdAt >= DATE_SUB(NOW(), INTERVAL 24 HOUR);\nSELECT COUNT(*) as total_all FROM news_items;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as total_6h FROM news_items WHERE createdAt >= DATE_SUB(NOW(), INTERVAL 6 HOUR);\nSELECT COUNT(*) as total_24h FROM news_items WHERE createdAt >= DATE_SUB(NOW(), INTERVAL 24 HOUR);\nSELECT COUNT(*) as total_all FROM news_items;",
+  "rows": [
+    {
+      "total_6h": "0"
+    },
+    {
+      "total_6h": "total_24h"
+    },
+    {
+      "total_6h": "193"
+    },
+    {
+      "total_6h": "total_all"
+    },
+    {
+      "total_6h": "253"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_6h\n0\ntotal_24h\n193\ntotal_all\n253\n",
+  "stderr": "",
+  "execution_time_ms": 65
+}

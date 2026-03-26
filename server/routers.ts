@@ -55,6 +55,8 @@ import { eq, isNull, and, desc, count, gte, sql } from "drizzle-orm";
 import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, runFullAudit, auditReportage } from "./auditContent";
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
+import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
+import { researchReports } from "../drizzle/schema";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -554,6 +556,73 @@ export const appRouter = router({
             })
             .where(eq(newsItemsTable.id, input.id));
           // La cache top weekly si aggiornerà automaticamente alla scadenza (15 min)
+          return { ok: true };
+        } catch {
+          return { ok: false };
+        }
+      }),
+
+    // ── IDEASMART Research ──────────────────────────────────────────────────
+    getResearchReports: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(20).default(10) }))
+      .query(async ({ input }) => {
+        return cached(
+          `research:today:${input.limit}`,
+          async () => {
+            const reports = await getTodayResearch();
+            return reports.slice(0, input.limit).map(r => ({
+              id: r.id,
+              title: r.title,
+              summary: r.summary,
+              keyFindings: (() => { try { return JSON.parse(r.keyFindings); } catch { return []; } })(),
+              source: r.source,
+              sourceUrl: r.sourceUrl ?? null,
+              category: r.category,
+              region: r.region,
+              dateLabel: r.dateLabel,
+              isResearchOfDay: r.isResearchOfDay,
+              viewCount: r.viewCount,
+              createdAt: r.createdAt,
+            }));
+          },
+          1000 * 60 * 30
+        );
+      }),
+
+    getResearchOfDay: publicProcedure
+      .query(async () => {
+        return cached(
+          'research:ofDay',
+          async () => {
+            const report = await getResearchOfDay();
+            if (!report) return null;
+            return {
+              id: report.id,
+              title: report.title,
+              summary: report.summary,
+              keyFindings: (() => { try { return JSON.parse(report.keyFindings); } catch { return []; } })(),
+              source: report.source,
+              sourceUrl: report.sourceUrl ?? null,
+              category: report.category,
+              region: report.region,
+              dateLabel: report.dateLabel,
+              viewCount: report.viewCount,
+              createdAt: report.createdAt,
+            };
+          },
+          1000 * 60 * 30
+        );
+      }),
+
+    trackResearchView: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { ok: false };
+        try {
+          await db.update(researchReports)
+            .set({ viewCount: sql`${researchReports.viewCount} + 1` })
+            .where(eq(researchReports.id, input.id));
           return { ok: true };
         } catch {
           return { ok: false };

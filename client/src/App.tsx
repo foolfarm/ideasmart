@@ -43,6 +43,7 @@ const BasketHome = lazy(() => import("./pages/BasketHome"));
 const GossipHome = lazy(() => import("./pages/GossipHome"));
 const CybersecurityHome = lazy(() => import("./pages/CybersecurityHome"));
 const SondaggiHome = lazy(() => import("./pages/SondaggiHome"));
+const Research = lazy(() => import("./pages/Research"));
 
 // ─── Pagine articolo (lazy) ───────────────────────────────────────────────────
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
@@ -105,6 +106,7 @@ function Router() {
         <Route path="/notifiche" component={NotificationPreferences} />
         <Route path="/advertise" component={Advertise} />
         <Route path="/business" component={Business} />
+        <Route path="/research" component={Research} />
         <Route path="/edicola" component={Edicola} />
         <Route path="/ai/news/:id" component={NewsArticle} />
         <Route path="/music/news/:id" component={MusicNewsArticle} />

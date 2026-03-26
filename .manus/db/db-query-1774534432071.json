@@ -1,0 +1,100 @@
+{
+  "query": "SELECT id, title, category, region, source, is_research_of_day, date_label FROM research_reports WHERE date_label = CURDATE() ORDER BY is_research_of_day DESC, id DESC LIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, category, region, source, is_research_of_day, date_label FROM research_reports WHERE date_label = CURDATE() ORDER BY is_research_of_day DESC, id DESC LIMIT 15;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "L'Impatto Trasformativo della GenAI sull'Efficienza Aziendale: Proiezioni e Sfide per il 2026-2028",
+      "category": "ai_trends",
+      "region": "global",
+      "source": "McKinsey Global Institute",
+      "is_research_of_day": "1",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "10",
+      "title": "Il Mercato dei Dati Sintetici: Soluzione alla Privacy e Acceleratore per lo Sviluppo AI",
+      "category": "ai_trends",
+      "region": "global",
+      "source": "Forrester Research",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "9",
+      "title": "La Crescita delle Startup B2B SaaS in Italia: Fattori di Successo e Sfide di Scaling",
+      "category": "startup",
+      "region": "italy",
+      "source": "Italian Tech Alliance",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "8",
+      "title": "Il Mercato del Lavoro nell'Era dell'AI: Nuovi Ruoli, Riqualificazione e il Divario di Competenze",
+      "category": "ai_trends",
+      "region": "global",
+      "source": "World Economic Forum",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "7",
+      "title": "La Convergenza di AI e IoT (AIoT): Il Futuro dell'Automazione Industriale e Smart Cities",
+      "category": "technology",
+      "region": "global",
+      "source": "IDC",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "6",
+      "title": "Il Ruolo Crescente dei Fondi di 'Impact Investing' nel Finanziare Startup Sostenibili",
+      "category": "venture_capital",
+      "region": "global",
+      "source": "Global Impact Investing Network (GIIN)",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "5",
+      "title": "Il Mercato Globale della Cybersecurity AI: Crescita Esplosiva e Consolidamento Strategico",
+      "category": "technology",
+      "region": "global",
+      "source": "Gartner",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "4",
+      "title": "AI Act Europeo: Impatto sulla Competitività delle Startup AI e Nuove Opportunità di Compliance-as-a-Service",
+      "category": "ai_trends",
+      "region": "europe",
+      "source": "European Investment Fund",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "3",
+      "title": "L'Ascesa delle Startup GreenTech in Italia: Oltre 1 Miliardo di Euro di Investimenti nel 2025",
+      "category": "startup",
+      "region": "italy",
+      "source": "EY Startup Barometer Italy",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    },
+    {
+      "id": "2",
+      "title": "Il Declino dei Mega-Round e la Ricerca di Profittabilità nel VC Europeo 2026",
+      "category": "venture_capital",
+      "region": "europe",
+      "source": "Dealroom",
+      "is_research_of_day": "0",
+      "date_label": "2026-03-26"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\tregion\tsource\tis_research_of_day\tdate_label\n1\tL'Impatto Trasformativo della GenAI sull'Efficienza Aziendale: Proiezioni e Sfide per il 2026-2028\tai_trends\tglobal\tMcKinsey Global Institute\t1\t2026-03-26\n10\tIl Mercato dei Dati Sintetici: Soluzione alla Privacy e Acceleratore per lo Sviluppo AI\tai_trends\tglobal\tForrester Research\t0\t2026-03-26\n9\tLa Crescita delle Startup B2B SaaS in Italia: Fattori di Successo e Sfide di Scaling\tstartup\titaly\tItalian Tech Alliance\t0\t2026-03-26\n8\tIl Mercato del Lavoro nell'Era dell'AI: Nuovi Ruoli, Riqualificazione e il Divario di Competenze\tai_trends\tglobal\tWorld Economic Forum\t0\t2026-03-26\n7\tLa Convergenza di AI e IoT (AIoT): Il Futuro dell'Automazione Industriale e Smart Cities\ttechnology\tglobal\tIDC\t0\t2026-03-26\n6\tIl Ruolo Crescente dei Fondi di 'Impact Investing' nel Finanziare Startup Sostenibili\tventure_capital\tglobal\tGlobal Impact Investing Network (GIIN)\t0\t2026-03-26\n5\tIl Mercato Globale della Cybersecurity AI: Crescita Esplosiva e Consolidamento Strategico\ttechnology\tglobal\tGartner\t0\t2026-03-26\n4\tAI Act Europeo: Impatto sulla Competitività delle Startup AI e Nuove Opportunità di Compliance-as-a-Service\tai_trends\teurope\tEuropean Investment Fund\t0\t2026-03-26\n3\tL'Ascesa delle Startup GreenTech in Italia: Oltre 1 Miliardo di Euro di Investimenti nel 2025\tstartup\titaly\tEY Startup Barometer Italy\t0\t2026-03-26\n2\tIl Declino dei Mega-Round e la Ricerca di Profittabilità nel VC Europeo 2026\tventure_capital\teurope\tDealroom\t0\t2026-03-26\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

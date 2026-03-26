@@ -147,6 +147,18 @@ export default function Navbar() {
               Chi Siamo
             </Link>
             <Link
+              href="/research"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
+              style={{
+                color: "#00b8a0",
+                borderColor: "#00e5c830",
+                background: "#f0fdfb",
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+            >
+              🔬 Research
+            </Link>
+            <Link
               href="/business"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{

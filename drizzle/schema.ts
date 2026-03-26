@@ -1,4 +1,5 @@
 import { boolean, float, index, uniqueIndex, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { sql } from "drizzle-orm";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -400,3 +401,26 @@ export const breakingNews = mysqlTable("breaking_news", {
 
 export type BreakingNewsItem = typeof breakingNews.$inferSelect;
 export type InsertBreakingNewsItem = typeof breakingNews.$inferInsert;
+
+// ── IDEASMART Research ───────────────────────────────────────────────────────
+export const researchReports = mysqlTable("research_reports", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 300 }).notNull(),
+  summary: text("summary").notNull(),
+  keyFindings: text("key_findings").notNull(), // JSON array di stringhe
+  source: varchar("source", { length: 200 }).notNull(), // es. "Gartner", "CB Insights", "Statista"
+  sourceUrl: varchar("source_url", { length: 1000 }),
+  category: varchar("category", { length: 100 }).notNull(), // "startup" | "venture_capital" | "ai_trends" | "technology" | "market"
+  region: varchar("region", { length: 100 }).notNull().default("global"), // "global" | "europe" | "italy"
+  dateLabel: varchar("date_label", { length: 10 }).notNull(), // YYYY-MM-DD
+  isResearchOfDay: boolean("is_research_of_day").notNull().default(false),
+  viewCount: int("view_count").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => ({
+  dateIdx: index("idx_research_date").on(t.dateLabel),
+  categoryIdx: index("idx_research_category").on(t.category),
+  researchOfDayIdx: index("idx_research_of_day").on(t.isResearchOfDay, t.dateLabel),
+}));
+
+export type ResearchReport = typeof researchReports.$inferSelect;
+export type InsertResearchReport = typeof researchReports.$inferInsert;

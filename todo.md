@@ -1373,3 +1373,19 @@
 - [ ] tRPC procedure: news.getBreakingNews (ultime breaking attive, max 5)
 - [x] Componente BreakingNewsSection con stile allerta editoriale (rosso/arancio, BREAKING badge, ticker)
 - [ ] Integrazione in cima alla homepage (sopra il breaking news ticker esistente)
+
+## LinkedIn Nuovi Orari + Approvazione (26 Mar 2026)
+- [ ] Modificare orari LinkedIn: 4 slot (10:30, 12:30, 14:30, 16:30)
+- [ ] Aggiornare temi: Trend AI / News AI / AI Coding & Vibe Coding / VC italiano
+- [ ] Implementare flusso approvazione: genera testo, invia notifica ad Andrea, pubblica solo dopo OK
+- [ ] Aggiungere procedura tRPC approveLinkedInPost e rejectLinkedInPost
+- [ ] Fix Punto del Giorno: massimo 3 post, sempre gli ultimi pubblicati
+
+## IDEASMART Research (26 Mar 2026)
+- [ ] Tabella DB research_reports (titolo, sommario, fonte, categoria, dataLabel, isFeatured)
+- [ ] Funzione AI generateDailyResearch: 10 ricerche da Gartner, CB Insights, Statista, ecc.
+- [ ] Cron giornaliero alle 06:00 CET per generare le 10 ricerche
+- [ ] Procedura tRPC getResearchReports e getResearchOfDay
+- [ ] Pagina /research con lista ricerche, filtri per categoria e call to action
+- [ ] Blocco "Ricerca del Giorno" in homepage che punta a /research
+- [ ] Aggiungere /research alla barra di navigazione
