@@ -211,6 +211,13 @@
       "when": 1774098320161,
       "tag": "0029_moaning_annihilus",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1774512865343,
+      "tag": "0030_tiresome_hellion",
+      "breakpoints": true
     }
   ]
 }

@@ -1354,3 +1354,4 @@
 
 - [x] Post LinkedIn 15:30 del 25/03 su Openclaw e la sua rivoluzione
 - [x] Post LinkedIn 18:00 del 25/03 sul Vibe Coding
+- [x] Sezione "Più letti della settimana" nella homepage con viewCount reale

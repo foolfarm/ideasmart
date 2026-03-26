@@ -51,7 +51,7 @@ import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
 import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
-import { eq, isNull, and, desc, count } from "drizzle-orm";
+import { eq, isNull, and, desc, count, gte, sql } from "drizzle-orm";
 import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, runFullAudit, auditReportage } from "./auditContent";
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 
@@ -470,6 +470,69 @@ export const appRouter = router({
           },
           EDITORIAL_TTL_MS
         );
+      }),
+
+    // Top articoli della settimana: ordinati per viewCount degli ultimi 7 giorni
+    getTopArticlesWeekly: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(20).default(10) }))
+      .query(async ({ input }) => {
+        return cached(
+          `news:topWeekly:${input.limit}`,
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return [];
+            // Prendi i più visti della settimana (ultimi 7 giorni)
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            const items = await db.select().from(newsItemsTable)
+              .where(gte(newsItemsTable.createdAt, sevenDaysAgo))
+              .orderBy(desc(newsItemsTable.viewCount), desc(newsItemsTable.createdAt))
+              .limit(input.limit);
+            // Se non ci sono abbastanza articoli con views, completa con i più recenti
+            if (items.length < input.limit) {
+              const recentItems = await db.select().from(newsItemsTable)
+                .orderBy(desc(newsItemsTable.createdAt))
+                .limit(input.limit);
+              const existingIds = new Set(items.map(i => i.id));
+              const extra = recentItems.filter(i => !existingIds.has(i.id));
+              items.push(...extra.slice(0, input.limit - items.length));
+            }
+            return items.slice(0, input.limit).map((item, idx) => ({
+              id: item.id,
+              rank: idx + 1,
+              title: item.title,
+              summary: item.summary,
+              category: item.category,
+              section: item.section,
+              sourceName: item.sourceName ?? '',
+              sourceUrl: item.sourceUrl ?? '#',
+              publishedAt: item.publishedAt ?? '',
+              imageUrl: item.imageUrl ?? null,
+              viewCount: item.viewCount ?? 0,
+            }));
+          },
+          1000 * 60 * 15 // 15 minuti di cache
+        );
+      }),
+
+    // Traccia una visualizzazione articolo (incrementa viewCount)
+    trackView: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { ok: false };
+        try {
+          await db.update(newsItemsTable)
+            .set({
+              viewCount: sql`${newsItemsTable.viewCount} + 1`,
+              lastViewedAt: new Date(),
+            })
+            .where(eq(newsItemsTable.id, input.id));
+          // La cache top weekly si aggiornerà automaticamente alla scadenza (15 min)
+          return { ok: true };
+        } catch {
+          return { ok: false };
+        }
       }),
 
     // Barometro Politico: estrae intenzioni di voto dai sondaggi recenti tramite LLM

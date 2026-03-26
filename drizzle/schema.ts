@@ -85,6 +85,10 @@ export const newsItems = mysqlTable("news_items", {
   position: int("position").default(0).notNull(),
   imageUrl: varchar("imageUrl", { length: 1000 }),
   videoUrl: varchar("videoUrl", { length: 1000 }),
+  // Contatore visualizzazioni: incrementato ogni volta che un utente apre l'articolo
+  viewCount: int("viewCount").default(0).notNull(),
+  // Data dell'ultima visualizzazione (per calcolo trend settimanale)
+  lastViewedAt: timestamp("lastViewedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (t) => ({
   // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)

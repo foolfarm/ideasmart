@@ -11,6 +11,7 @@ import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import ReadersCounter from "@/components/ReadersCounter";
+import TopArticoli from "@/components/TopArticoli";
 
 const SECTION_COLORS = {
   ai: { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business", path: "/ai" },
@@ -850,6 +851,11 @@ export default function Home() {
 
           {/* Punto del Giorno */}
           <PuntoDelGiorno />
+
+          {/* ── PIÙ LETTI DELLA SETTIMANA ── */}
+          <div className="mt-6">
+            <TopArticoli limit={10} />
+          </div>
 
           {/* ── BANNER PUBBLICITARIO LEADERBOARD 728x90 (Tradedoubler) ── */}
           <div className="my-6 flex flex-col items-center">
