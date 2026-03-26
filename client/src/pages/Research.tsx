@@ -653,67 +653,135 @@ export default function Research() {
             </div>
           )}
 
-          {/* ── CALL TO ACTION ─────────────────────────────────────────────── */}
-          <div className="mt-16 border-2 border-[#1a1a2e] overflow-hidden" style={{ background: "#1a1a2e" }}>
-            <div className="p-8 md:p-12">
-              <div className="max-w-3xl">
-                <span
-                  className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1.5 mb-6"
-                  style={{ background: "#ff5500", color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}
-                >
-                  <FlaskConical className="w-3 h-3" />
-                  IDEASMART Research Team
-                </span>
+          {/* ── CHI È IDEASMART RESEARCH ──────────────────────────────────── */}
+          <div className="mt-16 border-2 border-[#1a1a2e]" style={{ background: "#f5f2ec" }}>
+            {/* Header sezione */}
+            <div className="border-b-2 border-[#1a1a2e] px-8 py-4 flex items-center gap-3">
+              <FlaskConical className="w-5 h-5" style={{ color: "#1a1a2e" }} />
+              <span
+                className="text-[11px] font-black uppercase tracking-[0.3em] text-[#1a1a2e]"
+                style={{ fontFamily: "'Space Mono', monospace" }}
+              >
+                Chi è IdeaSmart Research
+              </span>
+            </div>
 
+            <div className="p-8 md:p-10 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-8">
+              {/* Testo identitario */}
+              <div>
                 <h2
-                  className="text-3xl md:text-4xl font-black text-[#faf8f3] leading-tight mb-4"
+                  className="text-2xl md:text-3xl font-black text-[#1a1a2e] leading-tight mb-4"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  Hai bisogno di una ricerca<br />
-                  <span style={{ color: "#00e5c8" }}>dedicata al tuo business?</span>
+                  L'area di ricerca agentica<br />
+                  <span style={{ color: "#0a6e5c" }}>di IdeaSmart</span>
                 </h2>
 
                 <p
-                  className="text-[#faf8f3]/60 text-base leading-relaxed mb-8"
+                  className="text-[#1a1a2e]/70 text-base leading-relaxed mb-4"
                   style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
                 >
-                  Il team IDEASMART Research offre analisi specialistiche su misura per investitori, founder e manager. Ricerche approfondite su Venture Capital, AI Trends tecnologici, analisi di mercato e scouting di investimento.
+                  <strong>IdeaSmart Research</strong> è l'unità di intelligenza artificiale agentica di IdeaSmart dedicata alla produzione di ricerche di mercato, analisi di settore e intelligence competitiva. Ogni giorno, agenti AI autonomi raccolgono, sintetizzano e verificano dati dalle principali fonti mondiali — Gartner, CB Insights, McKinsey, Statista, Dealroom, EIF — per produrre 20 ricerche originali su Startup, Venture Capital e AI Trends.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <p
+                  className="text-[#1a1a2e]/60 text-sm leading-relaxed mb-6"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                >
+                  Il nostro approccio combina la velocità dell'AI con il rigore metodologico della ricerca accademica: ogni report include key findings verificati, dati quantitativi, fonti primarie e prospettive di mercato a 12-36 mesi. Siamo la prima testata italiana a produrre ricerche di mercato in modo completamente automatizzato e scalabile.
+                </p>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-0">
                   {[
-                    { icon: <TrendingUp className="w-4 h-4" />, title: "Venture Capital", desc: "Analisi deal flow, valutazioni e trend VC italiani ed europei" },
-                    { icon: <Cpu className="w-4 h-4" />, title: "AI & Tech Trends", desc: "Ricerche su adozione AI, tecnologie emergenti e scenari futuri" },
-                    { icon: <BarChart3 className="w-4 h-4" />, title: "Market Intelligence", desc: "Analisi competitive, sizing di mercato e opportunità di investimento" },
-                  ].map((item, i) => (
-                    <div key={i} className="border border-[#faf8f3]/10 p-5" style={{ background: "rgba(250,248,243,0.08)" }}>
-                      <div className="mb-3" style={{ color: "#00e5c8" }}>{item.icon}</div>
-                      <p className="font-bold text-sm mb-1" style={{ color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}>
-                        {item.title}
+                    { num: "20",    label: "Ricerche al giorno" },
+                    { num: "5",     label: "Categorie coperte" },
+                    { num: "50+",   label: "Fonti monitorate" },
+                    { num: "100%",  label: "AI-powered" },
+                  ].map((stat, i) => (
+                    <div
+                      key={i}
+                      className="border border-[#1a1a2e]/15 p-3 text-center"
+                      style={{ background: "#faf8f3" }}
+                    >
+                      <p
+                        className="text-2xl font-black text-[#1a1a2e] leading-none mb-1"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                      >
+                        {stat.num}
                       </p>
-                      <p className="text-xs leading-relaxed" style={{ color: "#faf8f3", opacity: 0.5, fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                        {item.desc}
+                      <p
+                        className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/50"
+                        style={{ fontFamily: "'Space Mono', monospace" }}
+                      >
+                        {stat.label}
                       </p>
                     </div>
                   ))}
                 </div>
+              </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+              {/* Pannello CTA ricerche dedicate */}
+              <div
+                className="border-2 border-[#1a1a2e] p-6 flex flex-col"
+                style={{ background: "#1a1a2e" }}
+              >
+                <span
+                  className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.22em] px-2.5 py-1 mb-5 self-start"
+                  style={{ background: "#ff5500", color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}
+                >
+                  <FlaskConical className="w-3 h-3" />
+                  Ricerche Dedicate
+                </span>
+
+                <h3
+                  className="text-xl font-black text-[#faf8f3] leading-tight mb-3"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Hai bisogno di una ricerca<br />
+                  <span style={{ color: "#00e5c8" }}>su misura?</span>
+                </h3>
+
+                <p
+                  className="text-[#faf8f3]/55 text-sm leading-relaxed mb-5 flex-1"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                >
+                  Commissiona ricerche specialistiche su Venture Capital, AI Trends, analisi di mercato e scouting di investimento. Pensate per investitori, founder e manager.
+                </p>
+
+                <div className="space-y-2">
+                  {[
+                    { icon: <TrendingUp className="w-3 h-3" />, label: "Venture Capital & Deal Flow" },
+                    { icon: <Cpu className="w-3 h-3" />, label: "AI & Tech Trends" },
+                    { icon: <BarChart3 className="w-3 h-3" />, label: "Market Intelligence" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <span style={{ color: "#00e5c8" }}>{item.icon}</span>
+                      <span
+                        className="text-[10px] text-[#faf8f3]/60 uppercase tracking-widest"
+                        style={{ fontFamily: "'Space Mono', monospace" }}
+                      >
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 space-y-2">
                   <a
                     href="mailto:research@ideasmart.ai"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
                     style={{ background: "#00e5c8", color: "#1a1a2e", fontFamily: "'Space Mono', monospace" }}
                   >
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-3.5 h-3.5" />
                     research@ideasmart.ai
                   </a>
                   <a
                     href="/business"
-                    className="inline-flex items-center justify-center gap-2 border border-[#faf8f3]/20 px-6 py-3.5 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
+                    className="flex items-center justify-center gap-2 w-full border border-[#faf8f3]/20 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
                     style={{ color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}
                   >
-                    Scopri IdeaSmart Business
-                    <ArrowRight className="w-4 h-4" />
+                    IdeaSmart Business
+                    <ArrowRight className="w-3 h-3" />
                   </a>
                 </div>
               </div>
