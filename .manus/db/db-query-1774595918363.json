@@ -1,0 +1,90 @@
+{
+  "query": "SELECT section, weekLabel, COUNT(*) as count FROM news_items GROUP BY section, weekLabel ORDER BY weekLabel DESC, section ASC LIMIT 40;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, weekLabel, COUNT(*) as count FROM news_items GROUP BY section, weekLabel ORDER BY weekLabel DESC, section ASC LIMIT 40;",
+  "rows": [
+    {
+      "section": "ai",
+      "weekLabel": "2026-03-27",
+      "count": "9"
+    },
+    {
+      "section": "music",
+      "weekLabel": "2026-03-27",
+      "count": "8"
+    },
+    {
+      "section": "startup",
+      "weekLabel": "2026-03-27",
+      "count": "2"
+    },
+    {
+      "section": "finance",
+      "weekLabel": "2026-03-27",
+      "count": "20"
+    },
+    {
+      "section": "sport",
+      "weekLabel": "2026-03-27",
+      "count": "20"
+    },
+    {
+      "section": "luxury",
+      "weekLabel": "2026-03-27",
+      "count": "20"
+    },
+    {
+      "section": "motori",
+      "weekLabel": "2026-03-27",
+      "count": "20"
+    },
+    {
+      "section": "tennis",
+      "weekLabel": "2026-03-27",
+      "count": "15"
+    },
+    {
+      "section": "basket",
+      "weekLabel": "2026-03-27",
+      "count": "14"
+    },
+    {
+      "section": "gossip",
+      "weekLabel": "2026-03-27",
+      "count": "20"
+    },
+    {
+      "section": "sondaggi",
+      "weekLabel": "2026-03-27",
+      "count": "6"
+    },
+    {
+      "section": "ai",
+      "weekLabel": "2026-03-26",
+      "count": "11"
+    },
+    {
+      "section": "music",
+      "weekLabel": "2026-03-26",
+      "count": "12"
+    },
+    {
+      "section": "health",
+      "weekLabel": "2026-03-26",
+      "count": "20"
+    },
+    {
+      "section": "news",
+      "weekLabel": "2026-03-26",
+      "count": "20"
+    },
+    {
+      "section": "cybersecurity",
+      "weekLabel": "2026-03-26",
+      "count": "5"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tweekLabel\tcount\nai\t2026-03-27\t9\nmusic\t2026-03-27\t8\nstartup\t2026-03-27\t2\nfinance\t2026-03-27\t20\nsport\t2026-03-27\t20\nluxury\t2026-03-27\t20\nmotori\t2026-03-27\t20\ntennis\t2026-03-27\t15\nbasket\t2026-03-27\t14\ngossip\t2026-03-27\t20\nsondaggi\t2026-03-27\t6\nai\t2026-03-26\t11\nmusic\t2026-03-26\t12\nhealth\t2026-03-26\t20\nnews\t2026-03-26\t20\ncybersecurity\t2026-03-26\t5\n",
+  "stderr": "",
+  "execution_time_ms": 76
+}

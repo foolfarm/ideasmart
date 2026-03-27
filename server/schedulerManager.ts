@@ -839,12 +839,22 @@ export function startAllSchedulers(): void {
       const todayStr = nowCET.toISOString().split("T")[0];
       const todayStart = new Date(todayStr + "T00:00:00.000Z");
       const todayEnd = new Date(todayStr + "T23:59:59.999Z");
-      // Sezioni con scheduler notturno che potrebbero mancare dopo un deploy diurno
-      const sectionsToCheck: Array<{ section: 'ai' | 'music' | 'sport' | 'luxury'; label: string; refreshFn: () => Promise<void> }> = [
+      // Tutte le sezioni: catch-up completo se mancano notizie di oggi
+      const sectionsToCheck: Array<{ section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi'; label: string; refreshFn: () => Promise<void> }> = [
         { section: 'ai', label: 'AI4Business', refreshFn: async () => { await refreshAINewsFromRSS(); } },
         { section: 'music', label: 'ITsMusic', refreshFn: async () => { await refreshMusicNewsFromRSS(); } },
+        { section: 'startup', label: 'Startup News', refreshFn: async () => { await refreshStartupNewsFromRSS(); } },
+        { section: 'finance', label: 'Finance & Markets', refreshFn: async () => { await refreshFinanceNewsFromRSS(); } },
+        { section: 'health', label: 'Health & Biotech', refreshFn: async () => { await refreshHealthNewsFromRSS(); } },
         { section: 'sport', label: 'Sport & Business', refreshFn: async () => { await refreshSportNewsFromRSS(); } },
         { section: 'luxury', label: 'Lifestyle & Luxury', refreshFn: async () => { await refreshLuxuryNewsFromRSS(); } },
+        { section: 'news', label: 'News Italia', refreshFn: async () => { await refreshNewsGeneraliFromRSS(); } },
+        { section: 'motori', label: 'Motori', refreshFn: async () => { await refreshMotoriNewsFromRSS(); } },
+        { section: 'tennis', label: 'Tennis', refreshFn: async () => { await refreshTennisNewsFromRSS(); } },
+        { section: 'basket', label: 'Basket', refreshFn: async () => { await refreshBasketNewsFromRSS(); } },
+        { section: 'gossip', label: 'Business Gossip', refreshFn: async () => { await refreshGossipNewsFromRSS(); } },
+        { section: 'cybersecurity', label: 'Cybersecurity', refreshFn: async () => { await refreshCybersecurityNewsFromRSS(); } },
+        { section: 'sondaggi', label: 'Sondaggi', refreshFn: async () => { await refreshSondaggiNewsFromRSS(); } },
       ];
       for (const { section, label, refreshFn } of sectionsToCheck) {
         const existing = await catchUpNewsDb.select({ id: niTable.id })

@@ -1,0 +1,31 @@
+{
+  "query": "SELECT slot, section, title, createdAt, linkedinUrl FROM linkedin_posts WHERE dateLabel = '2026-03-26' ORDER BY createdAt ASC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT slot, section, title, createdAt, linkedinUrl FROM linkedin_posts WHERE dateLabel = '2026-03-26' ORDER BY createdAt ASC;",
+  "rows": [
+    {
+      "slot": "morning",
+      "section": "startup",
+      "title": "Deeptech Italiano: Dalla Promessa alla Leadership Globale",
+      "createdAt": "2026-03-26 09:30:22",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442865528211267584"
+    },
+    {
+      "slot": "afternoon",
+      "section": "ai",
+      "title": "AI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia",
+      "createdAt": "2026-03-26 14:00:18",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442933455061123072"
+    },
+    {
+      "slot": "evening",
+      "section": "ai",
+      "title": "AI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia",
+      "createdAt": "2026-03-26 16:30:14",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442971184788406272"
+    }
+  ],
+  "messages": [],
+  "stdout": "slot\tsection\ttitle\tcreatedAt\tlinkedinUrl\nmorning\tstartup\tDeeptech Italiano: Dalla Promessa alla Leadership Globale\t2026-03-26 09:30:22\thttps://www.linkedin.com/posts/andreacinelli_7442865528211267584\nafternoon\tai\tAI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia\t2026-03-26 14:00:18\thttps://www.linkedin.com/posts/andreacinelli_7442933455061123072\nevening\tai\tAI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia\t2026-03-26 16:30:14\thttps://www.linkedin.com/posts/andreacinelli_7442971184788406272\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}
