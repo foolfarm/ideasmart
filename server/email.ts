@@ -703,13 +703,14 @@ export function buildFullNewsletterHtml(opts: {
   news: Array<{ id?: number | null; section?: string | null; title: string; summary: string; category: string; sourceName?: string | null; sourceUrl?: string | null }>;
   reportages: Array<{ id?: number | null; section?: string | null; startupName: string; category: string; headline: string; subheadline?: string | null; bodyText: string; quote?: string | null; stat1Value?: string | null; stat1Label?: string | null; stat2Value?: string | null; stat2Label?: string | null; stat3Value?: string | null; stat3Label?: string | null; websiteUrl?: string | null; ctaLabel?: string | null; ctaUrl?: string | null }>;
   analyses: Array<{ id?: number | null; section?: string | null; title: string; category: string; summary: string; source: string; dataPoint1?: string | null; dataPoint2?: string | null; dataPoint3?: string | null; keyInsight?: string | null; italyRelevance?: string | null }>;
+  researches?: Array<{ id?: number | null; title: string; summary: string; category: string; source: string; sourceUrl?: string | null; isResearchOfDay?: boolean | null }>;
   unsubscribeUrl?: string;
   trackingPixelUrl?: string;
   channelName?: string;
   frequencyLabel?: string;
   isTest?: boolean;
 }): string {
-  const { dateLabel, editorial, startup, news, reportages, analyses, unsubscribeUrl, trackingPixelUrl, channelName, frequencyLabel, isTest } = opts;
+  const { dateLabel, editorial, startup, news, reportages, analyses, researches, unsubscribeUrl, trackingPixelUrl, channelName, frequencyLabel, isTest } = opts;
   const baseUrl = `https://ideasmart.ai`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
@@ -1045,6 +1046,72 @@ export function buildFullNewsletterHtml(opts: {
             </table>
           </td>
         </tr>` : ""}
+
+        ${researches && researches.length > 0 ? `
+        <!-- RICERCHE DEL GIORNO — sezione teal scuro stile premium -->
+        <tr>
+          <td style="background:#0a1628;border-top:3px solid #00b4a0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="padding:16px 28px 12px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                      <span style="font-size:8px;font-weight:700;color:#00b4a0;letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9650; IDEASMART RESEARCH</span>
+                    </td>
+                    <td align="right">
+                      <a href="https://ideasmart.ai/research" style="font-size:8px;font-weight:700;color:#00b4a0;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.1em;">TUTTE LE RICERCHE &rarr;</a>
+                    </td>
+                  </tr>
+                </table>
+                <div style="font-size:20px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;margin-top:8px;margin-bottom:4px;">Ricerche del Giorno</div>
+                <div style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Analisi quotidiane su Startup, Venture Capital e AI Trends &mdash; dati dalle principali fonti di ricerca globali ed europee.</div>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+        ${researches.map((r, idx) => {
+          const catColors: Record<string, string> = {
+            ai_trends: '#00b4a0', venture_capital: '#1a56db', startup: '#e84f00', technology: '#7c3aed', market: '#059669'
+          };
+          const catLabels: Record<string, string> = {
+            ai_trends: 'AI TRENDS', venture_capital: 'VENTURE CAPITAL', startup: 'STARTUP', technology: 'TECNOLOGIA', market: 'MERCATI'
+          };
+          const color = catColors[r.category] ?? '#00b4a0';
+          const catLabel = catLabels[r.category] ?? r.category.toUpperCase();
+          const isRoD = r.isResearchOfDay;
+          const researchUrl = r.id ? `https://ideasmart.ai/research/${r.id}` : 'https://ideasmart.ai/research';
+          let keyFindings: string[] = [];
+          return `
+        <tr>
+          <td style="background:${idx % 2 === 0 ? '#0d1f3c' : '#0a1628'};padding:16px 28px;border-top:1px solid #1a2744;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  <span style="font-size:8px;font-weight:700;color:${color};background:${color}22;border:1px solid ${color}44;border-radius:4px;padding:2px 8px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${catLabel}</span>
+                  ${isRoD ? `<span style="font-size:8px;font-weight:700;color:#ff5500;background:#ff550022;border:1px solid #ff550044;border-radius:4px;padding:2px 8px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-left:6px;">&#9670; RICERCA DEL GIORNO</span>` : ''}
+                </td>
+                <td align="right" style="font-size:9px;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${r.source}</td>
+              </tr>
+              <tr><td colspan="2" style="padding-top:8px;">
+                <a href="${researchUrl}" style="font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;font-family:Georgia,'Times New Roman',serif;line-height:1.3;">${r.title}</a>
+              </td></tr>
+              <tr><td colspan="2" style="padding-top:6px;">
+                <div style="font-size:12px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">${r.summary.slice(0, 200)}${r.summary.length > 200 ? '&hellip;' : ''}</div>
+              </td></tr>
+              <tr><td colspan="2" style="padding-top:10px;">
+                <a href="${researchUrl}" style="font-size:11px;font-weight:700;color:${color};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi la ricerca completa &rarr;</a>
+              </td></tr>
+            </table>
+          </td>
+        </tr>`;
+        }).join('')}
+        <tr><td style="background:#0a1628;padding:12px 28px 20px;">
+          <table cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td style="background:#00b4a0;border-radius:6px;padding:12px 28px;">
+              <a href="https://ideasmart.ai/research" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Vai a IdeaSmart Research &rarr;</a>
+            </td></tr>
+          </table>
+        </td></tr>` : ''}
 
         <!-- CTA FINALE —  crema con bordo teal -->
         <tr>

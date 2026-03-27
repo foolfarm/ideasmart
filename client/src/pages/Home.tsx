@@ -971,7 +971,7 @@ export default function Home() {
                 {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess`}
               </p>
               <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
-                {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
+                {(["ai", "startup"] as const).map((sec) => {
                   const s = SECTION_COLORS[sec];
                   return (
                     <Link key={sec} href={s.path}>

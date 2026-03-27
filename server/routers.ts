@@ -1533,7 +1533,7 @@ Rispondi con questo JSON:
     // ── Newsletter Giornaliera per Canale — Invio Massivo ────────────────────────────────
     sendChannelNewsletter: adminProcedure
       .input(z.object({
-        channelKey: z.enum(["ai", "startup", "finance", "sport", "music", "luxury", "health"]),
+        channelKey: z.enum(["ai", "startup"]),
         testOnly: z.boolean().default(false),
       }))
       .mutation(async ({ input }) => {

@@ -1,22 +1,18 @@
 /**
- * dailyChannelNewsletter.ts — Newsletter Giornaliera per Canale IDEASMART
+ * dailyChannelNewsletter.ts — Newsletter Giornaliera IDEASMART Research
  * ─────────────────────────────────────────────────────────────────────────────
- * Ogni giorno invia una newsletter dedicata a un singolo canale:
+ * Pivot: la newsletter si concentra su Ricerche del Giorno + AI4Business + Startup News.
  *
- *   Lunedì    → AI4Business News
- *   Martedì   → Startup News
- *   Mercoledì → Finance & Markets
- *   Giovedì   → Sport & Business
- *   Venerdì   → ITsMusic
- *   Sabato    → Lifestyle & Luxury
- *   Domenica  → Health & Biotech
+ *   Lunedì    → AI4Business News + Ricerche del Giorno
+ *   Martedì   → Startup News + Ricerche del Giorno
+ *   (altri giorni: nessun invio canale specifico)
  *
  * Flusso:
  *   07:00 CET — Preview di test inviata a ac@acinelli.com per revisione
  *   07:30 CET — Invio massivo a tutti gli iscritti attivi
  *
  * Il template grafico è identico per tutti i canali (buildFullNewsletterHtml),
- * con accent color e branding specifici per ciascun canale.
+ * con la sezione Ricerche del Giorno inclusa in ogni invio.
  */
 
 import { sendEmail, buildFullNewsletterHtml } from "./email";
@@ -32,10 +28,11 @@ import {
   updateNewsletterSendRecipientCount,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
+import { getTodayResearch } from "./researchGenerator";
 
 // ─── Configurazione canali ────────────────────────────────────────────────────
 
-export type ChannelKey = "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
+export type ChannelKey = "ai" | "startup";
 
 interface ChannelConfig {
   key: ChannelKey;
@@ -66,114 +63,6 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
     accentColor: "#ff5500",
     tagline: "Startup, Innovazione e Venture Capital",
   },
-  {
-    key: "finance",
-    name: "Finance & Markets",
-    shortName: "Finance",
-    dayOfWeek: 3, // Mercoledì
-    siteSection: "/finance",
-    accentColor: "#1a56db",
-    tagline: "Mercati Finanziari, Macro e M&A",
-  },
-  {
-    key: "sport",
-    name: "Sport & Business",
-    shortName: "Sport",
-    dayOfWeek: 4, // Giovedì
-    siteSection: "/sport",
-    accentColor: "#059669",
-    tagline: "Business dello Sport, Deal e Valutazioni",
-  },
-  {
-    key: "music",
-    name: "ITsMusic",
-    shortName: "Music",
-    dayOfWeek: 5, // Venerdì
-    siteSection: "/music",
-    accentColor: "#9333ea",
-    tagline: "Rock, Indie e AI Music",
-  },
-  {
-    key: "luxury",
-    name: "Lifestyle & Luxury",
-    shortName: "Luxury",
-    dayOfWeek: 6, // Sabato
-    siteSection: "/luxury",
-    accentColor: "#d97706",
-    tagline: "Lusso, Made in Italy e Brand Strategy",
-  },
-  {
-    key: "health",
-    name: "Health & Biotech",
-    shortName: "Health",
-    dayOfWeek: 0, // Domenica
-    siteSection: "/health",
-    accentColor: "#dc2626",
-    tagline: "Salute, Biotech e AI in Medicina",
-  },
-  {
-    key: "gossip",
-    name: "Business Gossip",
-    shortName: "Gossip",
-    dayOfWeek: 2, // Martedì (rotazione estesa)
-    siteSection: "/gossip",
-    accentColor: "#9b59b6",
-    tagline: "Insider News, M&A, Executive Moves e Deal Flow",
-  },
-  {
-    key: "cybersecurity",
-    name: "Cybersecurity",
-    shortName: "Cyber",
-    dayOfWeek: 4, // Giovedì (rotazione estesa)
-    siteSection: "/cybersecurity",
-    accentColor: "#27ae60",
-    tagline: "Sicurezza Informatica, Threat Intelligence e Enterprise Security",
-  },
-  {
-    key: "sondaggi",
-    name: "Sondaggi & Dati",
-    shortName: "Sondaggi",
-    dayOfWeek: 6, // Sabato (rotazione estesa)
-    siteSection: "/sondaggi",
-    accentColor: "#2980b9",
-    tagline: "Polls, Survey, Opinion e Data Journalism",
-  },
-  {
-    key: "news",
-    name: "News Italia",
-    shortName: "News",
-    dayOfWeek: -1, // Ogni giorno — gestito separatamente
-    siteSection: "/news",
-    accentColor: "#c0392b",
-    tagline: "Le notizie più importanti dall'Italia",
-  },
-  {
-    key: "motori",
-    name: "Motori",
-    shortName: "Motori",
-    dayOfWeek: 3, // Mercoledì
-    siteSection: "/motori",
-    accentColor: "#e67e22",
-    tagline: "Auto, Moto, Formula 1 e Mobilità del Futuro",
-  },
-  {
-    key: "tennis",
-    name: "Tennis",
-    shortName: "Tennis",
-    dayOfWeek: 4, // Giovedì (rotazione estesa)
-    siteSection: "/tennis",
-    accentColor: "#27ae60",
-    tagline: "ATP, WTA, Slam e Business del Tennis",
-  },
-  {
-    key: "basket",
-    name: "Basket",
-    shortName: "Basket",
-    dayOfWeek: 5, // Venerdì (rotazione estesa)
-    siteSection: "/basket",
-    accentColor: "#e74c3c",
-    tagline: "NBA, EuroLeague, Serie A e Business del Basket",
-  },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -200,19 +89,16 @@ export function getTodayChannels(): ChannelConfig[] {
   const italianNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Rome" }));
   const dayOfWeek = italianNow.getDay();
   const channels: ChannelConfig[] = [];
-  // News Italia si invia ogni giorno (dayOfWeek === -1 è il flag "ogni giorno")
-  const newsItalia = CHANNEL_SCHEDULE.find((c) => c.key === "news");
-  if (newsItalia) channels.push(newsItalia);
-  // Canale del giorno specifico
+  // Solo AI4Business (lunedì) e Startup News (martedì)
   const dayChannel = CHANNEL_SCHEDULE.find((c) => c.dayOfWeek === dayOfWeek);
-  if (dayChannel && dayChannel.key !== "news") channels.push(dayChannel);
+  if (dayChannel) channels.push(dayChannel);
   return channels;
 }
 
 /** @deprecated Usa getTodayChannels() */
 export function getTodayChannel(): ChannelConfig | null {
   const channels = getTodayChannels();
-  return channels.find((c) => c.key !== "news") ?? channels[0] ?? null;
+  return channels[0] ?? null;
 }
 
 /** Chiave per evitare doppi invii nello stesso giorno */
@@ -228,13 +114,14 @@ export async function buildChannelNewsletter(
   const now = new Date();
   const dateLabel = getDateLabel(now);
 
-  // Recupera contenuti dal DB per il canale specifico
-  const [news, editorial, startup, reportages, analyses] = await Promise.all([
+  // Recupera contenuti dal DB per il canale specifico + ricerche del giorno
+  const [news, editorial, startup, reportages, analyses, todayResearches] = await Promise.all([
     getLatestNews(12, channel.key),
     getLatestEditorial(channel.key),
     getLatestStartupOfDay(channel.key),
     getLatestWeeklyReportage(channel.key),
     getLatestMarketAnalysis(channel.key),
+    getTodayResearch(),
   ]);
 
   console.log(`[DailyNewsletter] Contenuti per canale ${channel.name}:`);
@@ -243,11 +130,12 @@ export async function buildChannelNewsletter(
   console.log(`[DailyNewsletter]   Startup/Featured: ${startup ? startup.name : "nessuna"}`);
   console.log(`[DailyNewsletter]   Reportage: ${reportages.length}`);
   console.log(`[DailyNewsletter]   Analisi: ${analyses.length}`);
+  console.log(`[DailyNewsletter]   Ricerche: ${todayResearches.length}`);
 
   const dayNames = ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"];
   const dayName = dayNames[channel.dayOfWeek];
   const frequencyLabel = `Ogni ${dayName} · ${channel.tagline}`;
-  const subject = `IDEASMART — ${channel.name} · ${dateLabel}`;
+  const subject = `IDEASMART Research — ${channel.name} · ${dateLabel}`;
 
   const html = buildFullNewsletterHtml({
     dateLabel,
@@ -316,6 +204,18 @@ export async function buildChannelNewsletter(
       dataPoint3: a.dataPoint3 ?? null,
       keyInsight: a.keyInsight ?? null,
       italyRelevance: a.italyRelevance ?? null,
+    })),
+    researches: [
+      ...todayResearches.filter(r => r.isResearchOfDay),
+      ...todayResearches.filter(r => !r.isResearchOfDay),
+    ].slice(0, 20).map((r) => ({
+      id: r.id,
+      title: r.title,
+      summary: r.summary,
+      category: r.category,
+      source: r.source,
+      sourceUrl: r.sourceUrl ?? null,
+      isResearchOfDay: r.isResearchOfDay,
     })),
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     channelName: channel.name,

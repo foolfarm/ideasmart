@@ -581,7 +581,7 @@ export default function Admin() {
                       onClick={() => {
                         if (activeCount === 0) { toast.error("Nessun iscritto attivo"); return; }
                         setSendingChannelNewsletter(ch.key);
-                        sendChannelNewsletterMutation.mutate({ channelKey: ch.key as "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health", testOnly: false });
+                        sendChannelNewsletterMutation.mutate({ channelKey: ch.key as "ai" | "startup", testOnly: false });
                       }}
                       disabled={sendingChannelNewsletter !== null}
                       className="px-3 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
