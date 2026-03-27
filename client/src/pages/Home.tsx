@@ -554,6 +554,142 @@ function SectionNav() {
   );
 }
 
+// ─── Categorie research (fallback immagini) ─────────────────────────────────
+const RESEARCH_CATEGORY_IMAGES: Record<string, string> = {
+  startup:         "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80",
+  venture_capital: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80",
+  ai_trends:       "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
+  technology:      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+  market:          "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=600&q=80",
+};
+
+const RESEARCH_CATEGORY_LABELS: Record<string, { label: string; accent: string; bg: string }> = {
+  startup:         { label: "Startup",         accent: "#c2410c", bg: "#fff0e6" },
+  venture_capital: { label: "Venture Capital", accent: "#15803d", bg: "#f0fdf4" },
+  ai_trends:       { label: "AI Trends",       accent: "#0a6e5c", bg: "#e6f4f1" },
+  technology:      { label: "Tecnologia",      accent: "#7c3aed", bg: "#faf5ff" },
+  market:          { label: "Mercati",         accent: "#0369a1", bg: "#eff6ff" },
+};
+
+function ResearchGrid() {
+  const { data: reports, isLoading } = trpc.news.getResearchReports.useQuery(
+    { limit: 6 },
+    { staleTime: 10 * 60 * 1000, refetchOnWindowFocus: false }
+  );
+
+  if (isLoading || !reports || reports.length === 0) return null;
+
+  return (
+    <div className="mt-10">
+      <Divider thick />
+      <div className="py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+            style={{ fontFamily: "'Space Mono', monospace" }}>
+            IdeaSmart Research
+          </span>
+          <span className="text-[10px] text-[#0a6e5c] font-bold uppercase tracking-widest"
+            style={{ fontFamily: "'Space Mono', monospace" }}>
+            — 20 ricerche ogni giorno su AI, Startup & VC
+          </span>
+        </div>
+        <Link href="/research">
+          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+            style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
+            Tutte le ricerche →
+          </span>
+        </Link>
+      </div>
+      <div className="border-t-2" style={{ borderColor: "#0a6e5c" }} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 mt-2">
+        {reports.map((r, i) => {
+          const cat = RESEARCH_CATEGORY_LABELS[r.category] ?? { label: r.category, accent: "#1a1a2e", bg: "#f5f2ec" };
+          const imgUrl = (r as any).imageUrl || RESEARCH_CATEGORY_IMAGES[r.category] || RESEARCH_CATEGORY_IMAGES["ai_trends"];
+          const keyFindings = Array.isArray(r.keyFindings) ? r.keyFindings : [];
+          return (
+            <div
+              key={r.id}
+              className={`py-4 ${
+                i % 3 !== 0 ? 'pl-4 border-l border-[#1a1a2e]/15' : ''
+              } ${i >= 3 ? 'border-t border-[#1a1a2e]/15 mt-2 pt-4' : ''}`}
+            >
+              {/* Immagine */}
+              <Link href="/research">
+                <div className="relative overflow-hidden mb-3 cursor-pointer" style={{ height: "120px" }}>
+                  <img
+                    src={imgUrl}
+                    alt={r.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover grayscale-[15%] hover:grayscale-0 transition-all"
+                    style={{ border: "1px solid rgba(26,26,46,0.12)" }}
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span
+                      className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5"
+                      style={{ background: cat.bg, color: cat.accent, fontFamily: "'Space Mono', monospace" }}
+                    >
+                      {cat.label}
+                    </span>
+                  </div>
+                  {r.isResearchOfDay && (
+                    <div className="absolute top-2 right-2">
+                      <span
+                        className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5"
+                        style={{ background: "#1a1a2e", color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}
+                      >
+                        ★ Del Giorno
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+              {/* Fonte */}
+              <p className="text-[10px] text-[#1a1a2e]/35 mb-1"
+                style={{ fontFamily: "'Space Mono', monospace" }}>
+                {r.source} · {r.dateLabel}
+              </p>
+              {/* Titolo */}
+              <Link href="/research">
+                <h3
+                  className="text-sm font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer mb-2"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {r.title}
+                </h3>
+              </Link>
+              {/* Summary */}
+              <p className="text-xs leading-relaxed text-[#1a1a2e]/60 line-clamp-2 mb-2"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                {r.summary}
+              </p>
+              {/* Key finding principale */}
+              {keyFindings[0] && (
+                <p className="text-[10px] text-[#1a1a2e]/50 italic line-clamp-2"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                  <span className="font-bold not-italic" style={{ color: cat.accent }}>1.</span> {keyFindings[0]}
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-4">
+        <ThinDivider />
+        <div className="py-3 text-center">
+          <Link href="/research">
+            <span
+              className="inline-block text-[10px] font-bold uppercase tracking-widest px-6 py-2 border-2 border-[#0a6e5c] text-[#0a6e5c] hover:bg-[#0a6e5c] hover:text-white transition-colors cursor-pointer"
+              style={{ fontFamily: "'Space Mono', monospace" }}
+            >
+              Vedi tutte le 20 ricerche di oggi →
+            </span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const today = useMemo(() => new Date(), []);
 
@@ -609,10 +745,10 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="IDEASMART Research — AI, Startup & Venture Capital"
+        title="IDEASMART RESEARCH — AI, Startup & Venture Capital"
         description="Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee."
         canonical="https://ideasmart.ai"
-        ogSiteName="IDEASMART"
+        ogSiteName="IDEASMART RESEARCH"
       />
 
       <style>{`
@@ -648,19 +784,19 @@ export default function Home() {
                 >
                   <span
                     className="text-[8px] font-bold uppercase tracking-[0.15em] block mb-1.5"
-                    style={{ color: "#ff5500", fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}
                   >
-                    IdeaSmart Business
+                    IdeaSmart Research
                   </span>
                   <span
                     className="text-[13px] font-black leading-tight block mb-2.5"
                     style={{ color: "#1a1a2e", fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
-                    Crea il tuo giornale AI powered
+                    20 ricerche ogni giorno su AI, Startup e Venture Capital
                   </span>
                   <span
                     className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5"
-                    style={{ background: "#ff5500", color: "#fff", fontFamily: "'Space Mono', monospace" }}
+                    style={{ background: "#0a6e5c", color: "#fff", fontFamily: "'Space Mono', monospace" }}
                   >
                     Scopri →
                   </span>
@@ -673,7 +809,7 @@ export default function Home() {
               <Link href="/">
                 <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
-                  IdeaSmart
+                  IDEASMART <span style={{ color: "#0a6e5c" }}>RESEARCH</span>
                 </h1>
               </Link>
               <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
@@ -733,84 +869,8 @@ export default function Home() {
           {/* H2 per SEO — visivamente nascosto */}
           <h2 className="sr-only">Ricerche AI, Startup News e AI4Business — aggiornate ogni giorno</h2>
 
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 1 — I CANALI (solo AI4Business e Startup News)
-          ══════════════════════════════════════════════════════════════ */}
-          <div className="mt-0">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-0">
-              {/* Griglia canali: solo AI4Business e Startup News */}
-              <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
-                <div className="py-3">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                    style={{ fontFamily: "'Space Mono', monospace" }}>
-                    I Canali
-                  </span>
-                </div>
-                <ThinDivider />
-                <div className="grid grid-cols-2 gap-0 mt-1">
-                  {(["ai", "startup"] as const).map((sec) => {
-                    const s = SECTION_COLORS[sec];
-                    return (
-                      <Link key={sec} href={s.path}>
-                        <div className="py-2.5 px-1 flex items-center justify-between group cursor-pointer hover:opacity-60 transition-opacity border-b border-[#1a1a2e]/10">
-                          <span className="text-sm font-bold text-[#1a1a2e] truncate"
-                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                            {s.label}
-                          </span>
-                          <span className="text-xs text-[#1a1a2e]/30 group-hover:text-[#1a1a2e]/60 transition-colors ml-1 shrink-0"
-                            style={{ fontFamily: "'Space Mono', monospace" }}>
-                            →
-                          </span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Sidebar: Editoriale AI */}
-              <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
-                {aiEditorial && (
-                  <div>
-                    <div className="py-3">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                        style={{ fontFamily: "'Space Mono', monospace" }}>
-                        Editoriale AI
-                      </span>
-                    </div>
-                    <ThinDivider />
-                    <div className="py-3">
-                      <p className="text-sm font-bold text-[#1a1a2e] leading-snug"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                        {aiEditorial.title}
-                      </p>
-                      {aiEditorial.subtitle && (
-                        <p className="mt-1 text-xs italic text-[#1a1a2e]/55"
-                          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                          {aiEditorial.subtitle}
-                        </p>
-                      )}
-                      <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-6"
-                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                        {aiEditorial.body}
-                      </p>
-                      <Link href="/ai">
-                        <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline"
-                          style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
-                          Leggi tutto →
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
           {/* Punto del Giorno */}
           <PuntoDelGiorno />
-
-          {/* TopArticoli rimosso su richiesta */}
 
           {/* ── BANNER PUBBLICITARIO LEADERBOARD 728x90 (Tradedoubler) ── */}
           <div className="my-6 flex flex-col items-center">
@@ -845,92 +905,187 @@ export default function Home() {
           </div>
 
           {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 2 — AI4BUSINESS + STARTUP NEWS (2 colonne grandi)
+              BLOCCO AI4BUSINESS — Hero + 5 notizie + Editoriale sidebar
           ══════════════════════════════════════════════════════════════ */}
           <div className="mt-8">
             <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                Innovazione & Tecnologia
-              </span>
+            <div className="py-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  AI4Business
+                </span>
+                <span className="text-[10px] text-[#0a6e5c] font-bold uppercase tracking-widest"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  — Intelligenza Artificiale per il Business
+                </span>
+              </div>
+              <Link href="/ai">
+                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                  style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
+                  Tutte le notizie →
+                </span>
+              </Link>
             </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
-              {/* AI Hero */}
-              <div className="pr-0 md:pr-6 border-r-0 md:border-r border-[#1a1a2e]/20">
-                <div className="py-2">
-                  <Link href="/ai">
-                    <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                      style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
-                      AI4Business
-                    </span>
-                  </Link>
-                </div>
-                <div className="border-t-2" style={{ borderColor: SECTION_COLORS.ai.accent }} />
+            <div className="border-t-2" style={{ borderColor: SECTION_COLORS.ai.accent }} />
+            {/* Layout: hero a sinistra + sidebar editoriale a destra */}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-0 mt-2">
+              {/* Colonna sinistra: hero + notizie in griglia */}
+              <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
                 {aiHero ? (
                   <HeroNewsBlock item={aiHero} section="ai" editorial={aiEditorial} />
                 ) : (
                   <div className="py-8 text-center text-[#1a1a2e]/25 text-sm">Caricamento…</div>
                 )}
-                {aiNews.filter(n => n.id !== aiHero?.id).slice(0, 2).map((item, i) => (
-                  <div key={item.id}>
+                {/* Griglia 3 colonne: prossime 6 notizie AI */}
+                {aiNews.filter(n => n.id !== aiHero?.id).length > 0 && (
+                  <div className="mt-4">
                     <ThinDivider />
-                    <NewsCard item={item} section="ai" />
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 mt-2">
+                      {aiNews.filter(n => n.id !== aiHero?.id).slice(0, 6).map((item, i) => (
+                        <div key={item.id} className={`py-3 ${i % 3 !== 0 ? 'pl-4 border-l border-[#1a1a2e]/15' : ''}`}>
+                          <NewsCard item={item} section="ai" showImage={i < 3} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-                <Link href="/ai">
-                  <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
-                    Tutte le notizie AI →
-                  </span>
-                </Link>
+                )}
+                {/* Ulteriori notizie AI in lista compatta */}
+                {aiNews.filter(n => n.id !== aiHero?.id).length > 6 && (
+                  <div className="mt-4">
+                    <ThinDivider />
+                    <div className="py-2">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#1a1a2e]/35"
+                        style={{ fontFamily: "'Space Mono', monospace" }}>
+                        Altre notizie AI
+                      </span>
+                    </div>
+                    {aiNews.filter(n => n.id !== aiHero?.id).slice(6, 11).map((item) => (
+                      <div key={item.id}>
+                        <ThinDivider />
+                        <NewsRow item={item} section="ai" />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              {/* Startup */}
-              <div className="pl-0 md:pl-6 mt-6 md:mt-0">
-                <div className="py-2">
-                  <Link href="/startup">
-                    <span className="text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                      style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
-                      Startup News
-                    </span>
-                  </Link>
-                </div>
-                <div className="border-t-2" style={{ borderColor: SECTION_COLORS.startup.accent }} />
-                {startupNews.slice(0, 4).map((item, i) => (
-                  <div key={item.id}>
-                    <NewsCard item={item} section="startup" showImage={i === 0} />
-                    {i < 3 && <ThinDivider />}
+              {/* Sidebar destra: Editoriale AI + banner */}
+              <div className="pl-0 lg:pl-6 mt-6 lg:mt-0">
+                {aiEditorial && (
+                  <div className="mb-6">
+                    <div className="py-2">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                        style={{ fontFamily: "'Space Mono', monospace" }}>
+                        Editoriale AI
+                      </span>
+                    </div>
+                    <div className="border-t-2" style={{ borderColor: SECTION_COLORS.ai.accent }} />
+                    <div className="py-3">
+                      <p className="text-sm font-bold text-[#1a1a2e] leading-snug"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                        {aiEditorial.title}
+                      </p>
+                      {aiEditorial.subtitle && (
+                        <p className="mt-1 text-xs italic text-[#1a1a2e]/55"
+                          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                          {aiEditorial.subtitle}
+                        </p>
+                      )}
+                      <p className="mt-2 text-xs leading-relaxed text-[#1a1a2e]/65 line-clamp-8"
+                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                        {aiEditorial.body}
+                      </p>
+                      <Link href="/ai">
+                        <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline"
+                          style={{ color: SECTION_COLORS.ai.accent, fontFamily: "'Space Mono', monospace" }}>
+                          Leggi tutto →
+                        </span>
+                      </Link>
+                    </div>
                   </div>
-                ))}
-                <Link href="/startup">
-                  <span className="mt-2 inline-block text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
-                    Tutte le notizie Startup →
-                  </span>
-                </Link>
-                {/* Banner Tradedoubler 300x250 sotto Tutte le notizie Startup */}
+                )}
+                {/* Banner 300x250 */}
                 <div className="mt-4 flex justify-center">
                   <div>
                     <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
-                    <a
-                      href="https://clk.tradedoubler.com/click?p=360031&a=3477790&g=25650800"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src={`https://imp.tradedoubler.com/imp?type(img)g(25650800)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                        width="300"
-                        height="250"
-                        alt="Pubblicità"
-                        style={{ display: "block", maxWidth: "100%", height: "auto" }}
-                      />
+                    <a href="https://clk.tradedoubler.com/click?p=360031&a=3477790&g=25650800" target="_blank" rel="noopener noreferrer">
+                      <img src={`https://imp.tradedoubler.com/imp?type(img)g(25650800)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                        width="300" height="250" alt="Pubblicità"
+                        style={{ display: "block", maxWidth: "100%", height: "auto" }} />
                     </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO STARTUP NEWS — Hero + griglia 6 notizie + lista compatta
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-10">
+            <Divider thick />
+            <div className="py-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  Startup News
+                </span>
+                <span className="text-[10px] text-[#c2410c] font-bold uppercase tracking-widest"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  — Ecosistema, Funding & Innovazione
+                </span>
+              </div>
+              <Link href="/startup">
+                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                  style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
+                  Tutte le notizie →
+                </span>
+              </Link>
+            </div>
+            <div className="border-t-2" style={{ borderColor: SECTION_COLORS.startup.accent }} />
+            {/* Prima notizia: hero con immagine */}
+            {startupNews[0] && (
+              <div className="mt-2">
+                <HeroNewsBlock item={startupNews[0]} section="startup" />
+              </div>
+            )}
+            {/* Griglia 3 colonne: prossime 6 notizie Startup */}
+            {startupNews.slice(1, 7).length > 0 && (
+              <div className="mt-4">
+                <ThinDivider />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 mt-2">
+                  {startupNews.slice(1, 7).map((item, i) => (
+                    <div key={item.id} className={`py-3 ${i % 3 !== 0 ? 'pl-4 border-l border-[#1a1a2e]/15' : ''}`}>
+                      <NewsCard item={item} section="startup" showImage={i < 3} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Lista compatta: ultime 5 notizie Startup */}
+            {startupNews.slice(7, 12).length > 0 && (
+              <div className="mt-4">
+                <ThinDivider />
+                <div className="py-2">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#1a1a2e]/35"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    Altre notizie Startup
+                  </span>
+                </div>
+                {startupNews.slice(7, 12).map((item) => (
+                  <div key={item.id}>
+                    <ThinDivider />
+                    <NewsRow item={item} section="startup" />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════
+              BLOCCO RICERCHE — Griglia 6 card research reports
+          ══════════════════════════════════════════════════════════════ */}
+          <ResearchGrid />
 
           {/* Blocchi 3-8 rimossi: pivot verso Research + AI4Business + Startup News */}
 

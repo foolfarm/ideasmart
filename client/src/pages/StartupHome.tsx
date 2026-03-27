@@ -119,7 +119,7 @@ export default function StartupHome() {
         title="Startup News — IDEASMART"
         description="Notizie aggiornate ogni giorno sull'ecosistema startup italiano ed europeo. Editoriale, analisi e startup del giorno."
         canonical="https://ideasmart.ai/startup"
-        ogSiteName="IDEASMART"
+        ogSiteName="IDEASMART RESEARCH"
       />
 
       <style>{`
@@ -134,7 +134,7 @@ export default function StartupHome() {
             <Link href="/">
               <span className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                ← IdeaSmart
+                ← IDEASMART RESEARCH
               </span>
             </Link>
             <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
@@ -176,26 +176,7 @@ export default function StartupHome() {
                 {label}
               </span>
             ))}
-            <Link href="/edicola">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  color: "#1a1a2e",
-                  borderLeft: "1px solid rgba(26,26,46,0.2)",
-                }}>
-                📰 Edicola
-              </span>
-            </Link>
-            <Link href="/manifesto">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  color: "#1a1a2e",
-                  borderLeft: "1px solid rgba(26,26,46,0.2)",
-                }}>
-                Manifesto
-              </span>
-            </Link>
+
             <Link href="/chi-siamo">
               <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
                 style={{
@@ -622,7 +603,7 @@ export default function StartupHome() {
             <Divider thick />
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <p className="text-xs text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
-                {`© ${today.getFullYear()} IdeaSmart · Startup News`}
+                {`© ${today.getFullYear()} IDEASMART RESEARCH · Startup News`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 <Link href="/"><span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>← Home</span></Link>

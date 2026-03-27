@@ -57,14 +57,14 @@ export default function Navbar() {
                 className="text-xl sm:text-2xl font-black tracking-tight"
                 style={{ color: "#1a1f2e", fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                IDEA<span style={{ color: "#00b4a0" }}>SMART</span>
+                IDEA<span style={{ color: "#00b4a0" }}>SMART</span> <span style={{ color: "#0a6e5c", fontSize: "0.75em" }}>RESEARCH</span>
               </span>
             </Link>
             <span
               className="hidden sm:block text-xs font-mono tracking-widest uppercase"
               style={{ color: "#6b7280", fontFamily: "'JetBrains Mono', monospace" }}
             >
-              AI FOR BUSINESS
+              AI · Startup · Venture Capital
             </span>
           </div>
 

@@ -581,6 +581,7 @@ export const appRouter = router({
               region: r.region,
               dateLabel: r.dateLabel,
               isResearchOfDay: r.isResearchOfDay,
+              imageUrl: r.imageUrl ?? null,
               viewCount: r.viewCount,
               createdAt: r.createdAt,
             }));

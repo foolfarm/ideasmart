@@ -937,7 +937,7 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
   const sections: HomeSection[] = ['news', 'ai', 'startup', 'finance', 'sport', 'motori', 'tennis', 'basket', 'health', 'luxury', 'music', 'gossip', 'cybersecurity', 'sondaggi'];
   const limits: Record<HomeSection, number> = {
     // News Italia e sezioni principali: più articoli per una home più ricca
-    news: 8, ai: 8, startup: 6, finance: 6, sport: 6,
+    news: 8, ai: 12, startup: 12, finance: 6, sport: 6,
     motori: 5, tennis: 5, basket: 5, health: 5, luxury: 5,
     music: 5, gossip: 5, cybersecurity: 5, sondaggi: 5,
   };

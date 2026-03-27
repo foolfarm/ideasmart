@@ -120,7 +120,7 @@ export default function AiHome() {
         title="AI4Business News — IDEASMART"
         description="Notizie aggiornate ogni giorno sull'Intelligenza Artificiale per il business italiano. Editoriale, analisi e startup del giorno."
         canonical="https://ideasmart.ai/ai"
-        ogSiteName="IDEASMART"
+        ogSiteName="IDEASMART RESEARCH"
       />
 
       <style>{`
@@ -135,7 +135,7 @@ export default function AiHome() {
             <Link href="/">
               <span className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                ← IdeaSmart
+                ← IDEASMART RESEARCH
               </span>
             </Link>
             <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
@@ -630,7 +630,7 @@ export default function AiHome() {
             <Divider thick />
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <p className="text-xs text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
-                {`© ${today.getFullYear()} IdeaSmart · AI4Business News`}
+                {`© ${today.getFullYear()} IDEASMART RESEARCH · AI4Business News`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 <Link href="/"><span className="text-xs hover:underline cursor-pointer text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>← Home</span></Link>

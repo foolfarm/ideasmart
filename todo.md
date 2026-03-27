@@ -1407,3 +1407,13 @@
 - [ ] Home: riscrivere con Ricerche del Giorno + AI4Business + Startup News
 - [ ] Scheduler: disabilitare aggiornamenti per music, finance, health, sport, luxury, news, motori, tennis, basket, gossip, cybersecurity, sondaggi
 - [ ] Catch-up: rimuovere le sezioni disabilitate dal catch-up automatico
+
+## Nuovi task (27 Mar 2026 — Aumento notizie Home)
+
+- [x] Rimossa sezione "I Canali" vuota (solo 2 link testuali senza notizie)
+- [x] Blocco AI4Business espanso: hero + griglia 3 colonne (6 notizie con immagini) + lista compatta 5 notizie
+- [x] Blocco Startup News espanso: hero + griglia 3 colonne (6 notizie con immagini) + lista compatta 5 notizie
+- [x] Aggiunta sezione ResearchGrid: griglia 3 colonne con 6 card research reports (immagine, categoria, fonte, titolo, summary, key finding)
+- [x] Aumentato limite query DB: ai=12, startup=12 (era 8 e 6)
+- [x] Aggiunto imageUrl nella risposta getResearchReports del router
+- [x] Sidebar Editoriale AI spostata nel blocco AI4Business con design migliorato
