@@ -1400,3 +1400,10 @@
 - [ ] Creare pagina dettaglio ricerca /research/:id (testo completo, grafici, fonti, CTA)
 - [ ] Aggiungere route /research/:id in App.tsx e collegare link dalle card
 - [ ] Spostare sezione Startup del Giorno subito dopo Ricerca del Giorno nella Home
+
+## Pivot IdeaSmart Research (27 Mar 2026)
+- [ ] Navbar: rimuovere tutti i canali tranne AI4Business e Startup News
+- [ ] Barra SectionNav: aggiornare con solo 2 canali attivi
+- [ ] Home: riscrivere con Ricerche del Giorno + AI4Business + Startup News
+- [ ] Scheduler: disabilitare aggiornamenti per music, finance, health, sport, luxury, news, motori, tennis, basket, gossip, cybersecurity, sondaggi
+- [ ] Catch-up: rimuovere le sezioni disabilitate dal catch-up automatico

@@ -1,13 +1,12 @@
 /**
  * BreakingNewsTicker — Barra di scorrimento automatico con le ultime notizie
- * Stile: giornale digitale, scorrimento continuo da destra a sinistra
- * Aggiornato: include notizie di tutti gli 11 canali
+ * Pivot IdeaSmart Research: mostra solo AI4Business e Startup News
  */
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 
-type SectionKey = "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
+type SectionKey = "ai" | "startup";
 
 interface TickerItem {
   id: number;
@@ -16,20 +15,8 @@ interface TickerItem {
 }
 
 const SECTION_META: Record<SectionKey, { label: string; color: string; path: string }> = {
-  ai:      { label: "AI",      color: "#00b4a0", path: "ai" },
-  music:   { label: "MUSIC",   color: "#7c3aed", path: "music" },
-  startup: { label: "STARTUP", color: "#e84f00", path: "startup" },
-  finance: { label: "FINANCE", color: "#16a34a", path: "finance" },
-  health:  { label: "HEALTH",  color: "#0891b2", path: "health" },
-  sport:   { label: "SPORT",   color: "#dc2626", path: "sport" },
-  luxury:  { label: "LUXURY",  color: "#b45309", path: "luxury" },
-  news:    { label: "NEWS",    color: "#64748b", path: "news" },
-  motori:  { label: "MOTORI",  color: "#ef4444", path: "motori" },
-  tennis:       { label: "TENNIS",  color: "#65a30d", path: "tennis" },
-  basket:       { label: "BASKET",  color: "#ea580c", path: "basket" },
-  gossip:       { label: "GOSSIP",  color: "#9b59b6", path: "gossip" },
-  cybersecurity: { label: "CYBER",  color: "#27ae60", path: "cybersecurity" },
-  sondaggi:     { label: "SONDAGGI", color: "#2980b9", path: "sondaggi" },
+  ai:      { label: "AI4BUSINESS", color: "#00b4a0", path: "ai" },
+  startup: { label: "STARTUP",     color: "#e84f00", path: "startup" },
 };
 
 export default function BreakingNewsTicker() {
@@ -38,29 +25,15 @@ export default function BreakingNewsTicker() {
   const posRef = useRef(0);
   const pausedRef = useRef(false);
 
-  // Fetch 3 notizie per ciascuno degli 11 canali
-  const { data: aiNews }      = trpc.news.getLatest.useQuery({ limit: 3, section: "ai" });
-  const { data: musicNews }   = trpc.news.getLatest.useQuery({ limit: 3, section: "music" });
-  const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 3, section: "startup" });
-  const { data: financeNews } = trpc.news.getLatest.useQuery({ limit: 3, section: "finance" });
-  const { data: healthNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "health" });
-  const { data: sportNews }   = trpc.news.getLatest.useQuery({ limit: 3, section: "sport" });
-  const { data: luxuryNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "luxury" });
-  const { data: newsNews }    = trpc.news.getLatest.useQuery({ limit: 3, section: "news" });
-  const { data: motoriNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "motori" });
-  const { data: tennisNews }  = trpc.news.getLatest.useQuery({ limit: 3, section: "tennis" });
-  const { data: basketNews }      = trpc.news.getLatest.useQuery({ limit: 3, section: "basket" });
-  const { data: gossipNews }       = trpc.news.getLatest.useQuery({ limit: 3, section: "gossip" });
-  const { data: cyberNews }        = trpc.news.getLatest.useQuery({ limit: 3, section: "cybersecurity" });
-  const { data: sondaggiNews }     = trpc.news.getLatest.useQuery({ limit: 3, section: "sondaggi" });
+  // Solo AI4Business e Startup News
+  const { data: aiNews }      = trpc.news.getLatest.useQuery({ limit: 6, section: "ai" });
+  const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "startup" });
 
-  // Interleave le notizie di tutti i canali per varietà nel ticker
+  // Interleave le notizie dei 2 canali attivi
   const allItems: TickerItem[] = [];
   const sources: [SectionKey, typeof aiNews][] = [
-    ["ai", aiNews], ["news", newsNews], ["sport", sportNews], ["motori", motoriNews],
-    ["startup", startupNews], ["tennis", tennisNews], ["finance", financeNews],
-    ["basket", basketNews], ["music", musicNews], ["health", healthNews], ["luxury", luxuryNews],
-    ["gossip", gossipNews], ["cybersecurity", cyberNews], ["sondaggi", sondaggiNews],
+    ["ai", aiNews],
+    ["startup", startupNews],
   ];
   const maxLen = Math.max(...sources.map(([, d]) => (d || []).length));
   for (let i = 0; i < maxLen; i++) {

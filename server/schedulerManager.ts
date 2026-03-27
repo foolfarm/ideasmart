@@ -162,30 +162,12 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /music — ITsMusic
+  // SEZIONE /music — ITsMusic [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("30 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:30 CET — Avvio scraping RSS News Musicali...");
-    try { await refreshMusicNewsFromRSS(); invalidateSection('music'); console.log("[SchedulerManager] ✅ News Musicali aggiornate + cache invalidata"); }
-    catch (err) { console.error("[SchedulerManager] ❌ News Musicali:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("35 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:35 CET — Editoriale Music + Artista...");
-    try { await generateMusicEditorial(); await generateArtistOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Music aggiornato"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Editoriale Music:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("45 0 * * 1", async () => {
-    try { await generateMusicReportage(); console.log("[SchedulerManager] ✅ Reportage Music generati"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Reportage Music:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("50 0 * * 1", async () => {
-    try { await generateMusicMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Music generate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Analisi Music:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("30 0 * * *", ...) — refreshMusicNewsFromRSS DISABILITATO
+  // cron.schedule("35 0 * * *", ...) — generateMusicEditorial DISABILITATO
+  // cron.schedule("45 0 * * 1", ...) — generateMusicReportage DISABILITATO
+  // cron.schedule("50 0 * * 1", ...) — generateMusicMarketAnalysis DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /startup — Startup News
@@ -214,30 +196,12 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /finance — Finance & Markets
+  // SEZIONE /finance — Finance & Markets [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("30 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:30 CET — Avvio scraping Finance news...");
-    try { await refreshFinanceNewsFromRSS(); invalidateSection('finance'); console.log("[SchedulerManager] ✅ Finance news aggiornate + cache invalidata"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Finance news:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("35 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:35 CET — Editoriale Finance...");
-    try { await generateFinanceEditorial(); await generateFinanceDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Finance aggiornato"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Finance editorial:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("45 1 * * 1", async () => {
-    try { await generateFinanceReportage(); console.log("[SchedulerManager] ✅ Reportage Finance generati"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Finance reportage:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("50 1 * * 1", async () => {
-    try { await generateFinanceMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Finance generate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Finance market analysis:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("30 1 * * *", ...) — refreshFinanceNewsFromRSS DISABILITATO
+  // cron.schedule("35 1 * * *", ...) — generateFinanceEditorial DISABILITATO
+  // cron.schedule("45 1 * * 1", ...) — generateFinanceReportage DISABILITATO
+  // cron.schedule("50 1 * * 1", ...) — generateFinanceMarketAnalysis DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
   // AUDIT NOTTURNO — ogni giorno alle 02:00 CET
@@ -250,140 +214,47 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /health — Health & Biotech
+  // SEZIONE /health — Health & Biotech [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("15 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:15 CET — Avvio scraping Health news...");
-    try { await refreshHealthNewsFromRSS(); invalidateSection('health'); console.log("[SchedulerManager] ✅ Health news aggiornate + cache invalidata"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Health news:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("20 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:20 CET — Editoriale Health...");
-    try { await generateHealthEditorial(); await generateHealthDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Health aggiornato"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Health editorial:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("30 2 * * 1", async () => {
-    try { await generateHealthReportage(); console.log("[SchedulerManager] ✅ Reportage Health generati"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Health reportage:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("35 2 * * 1", async () => {
-    try { await generateHealthMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Health generate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Health market analysis:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("15 2 * * *", ...) — refreshHealthNewsFromRSS DISABILITATO
+  // cron.schedule("20 2 * * *", ...) — generateHealthEditorial DISABILITATO
+  // cron.schedule("30 2 * * 1", ...) — generateHealthReportage DISABILITATO
+  // cron.schedule("35 2 * * 1", ...) — generateHealthMarketAnalysis DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /sport — Sport & Business
+  // SEZIONE /sport — Sport & Business [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("45 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:45 CET — Avvio scraping Sport news...");
-    try { await refreshSportNewsFromRSS(); invalidateSection('sport'); console.log("[SchedulerManager] ✅ Sport news aggiornate + cache invalidata"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Sport news:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("50 2 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 02:50 CET — Editoriale Sport...");
-    try { await generateSportEditorial(); await generateSportDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Sport aggiornato"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Sport editorial:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("55 2 * * 1", async () => {
-    try { await generateSportReportage(); console.log("[SchedulerManager] ✅ Reportage Sport generati"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Sport reportage:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("58 2 * * 1", async () => {
-    try { await generateSportMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Sport generate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Sport market analysis:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("45 2 * * *", ...) — refreshSportNewsFromRSS DISABILITATO
+  // cron.schedule("50 2 * * *", ...) — generateSportEditorial DISABILITATO
+  // cron.schedule("55 2 * * 1", ...) — generateSportReportage DISABILITATO
+  // cron.schedule("58 2 * * 1", ...) — generateSportMarketAnalysis DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /luxury — Lifestyle & Luxury
+  // SEZIONE /luxury — Lifestyle & Luxury [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("5 3 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 03:05 CET — Avvio scraping Luxury news...");
-    try { await refreshLuxuryNewsFromRSS(); invalidateSection('luxury'); console.log("[SchedulerManager] ✅ Luxury news aggiornate + cache invalidata"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Luxury news:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("10 3 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 03:10 CET — Editoriale Luxury...");
-    try { await generateLuxuryEditorial(); await generateLuxuryDealOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Luxury aggiornato"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Luxury editorial:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("20 3 * * 1", async () => {
-    try { await generateLuxuryReportage(); console.log("[SchedulerManager] ✅ Reportage Luxury generati"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Luxury reportage:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("25 3 * * 1", async () => {
-    try { await generateLuxuryMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Luxury generate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Luxury market analysis:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("5 3 * * *", ...) — refreshLuxuryNewsFromRSS DISABILITATO
+  // cron.schedule("10 3 * * *", ...) — generateLuxuryEditorial DISABILITATO
+  // cron.schedule("20 3 * * 1", ...) — generateLuxuryReportage DISABILITATO
+  // cron.schedule("25 3 * * 1", ...) — generateLuxuryMarketAnalysis DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /gossip — Business Gossip
+  // SEZIONE /gossip — Business Gossip [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("30 3 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 03:30 CET — Avvio scraping Business Gossip news...");
-    try { await refreshGossipNewsFromRSS(); console.log("[SchedulerManager] ✅ Gossip news aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Gossip news:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("30 3 * * *", ...) — refreshGossipNewsFromRSS DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /cybersecurity — Cybersecurity
+  // SEZIONE /cybersecurity — Cybersecurity [DISABILITATO — pivot IdeaSmart Research]
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("45 3 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 03:45 CET — Avvio scraping Cybersecurity news...");
-    try { await refreshCybersecurityNewsFromRSS(); console.log("[SchedulerManager] ✅ Cybersecurity news aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Cybersecurity news:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("45 3 * * *", ...) — refreshCybersecurityNewsFromRSS DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /sondaggi — Sondaggi & Dati
+  // SEZIONI DISABILITATE — pivot IdeaSmart Research (27 Mar 2026)
   // ══════════════════════════════════════════════════════════════════════════
-
-  cron.schedule("0 4 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 04:00 CET — Avvio scraping Sondaggi news...");
-    try { await refreshSondaggiNewsFromRSS(); console.log("[SchedulerManager] ✅ Sondaggi news aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Sondaggi news:", err); }
-  }, { timezone: TZ });
-
-  // ── News Italia (04:15 CET) ───────────────────────────────────────────────
-  cron.schedule("0 4 15 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 04:15 CET — Avvio scraping News Italia...");
-    try { await refreshNewsGeneraliFromRSS(); console.log("[SchedulerManager] ✅ News Italia aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ News Italia:", err); }
-  }, { timezone: TZ });
-
-  // ── Motori (04:30 CET) ────────────────────────────────────────────────────
-  cron.schedule("0 30 4 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 04:30 CET — Avvio scraping Motori news...");
-    try { await refreshMotoriNewsFromRSS(); console.log("[SchedulerManager] ✅ Motori news aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Motori news:", err); }
-  }, { timezone: TZ });
-
-  // ── Tennis (04:45 CET) ────────────────────────────────────────────────────
-  cron.schedule("0 45 4 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 04:45 CET — Avvio scraping Tennis news...");
-    try { await refreshTennisNewsFromRSS(); console.log("[SchedulerManager] ✅ Tennis news aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Tennis news:", err); }
-  }, { timezone: TZ });
-
-  // ── Basket (05:00 CET) ────────────────────────────────────────────────────
-  cron.schedule("0 0 5 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 05:00 CET — Avvio scraping Basket news...");
-    try { await refreshBasketNewsFromRSS(); console.log("[SchedulerManager] ✅ Basket news aggiornate"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Basket news:", err); }
-  }, { timezone: TZ });
+  // cron.schedule("0 4 * * *", ...) — refreshSondaggiNewsFromRSS DISABILITATO
+  // cron.schedule("0 4 15 * * *", ...) — refreshNewsGeneraliFromRSS DISABILITATO
+  // cron.schedule("0 30 4 * * *", ...) — refreshMotoriNewsFromRSS DISABILITATO
+  // cron.schedule("0 45 4 * * *", ...) — refreshTennisNewsFromRSS DISABILITATO
+  // cron.schedule("0 0 5 * * *", ...) — refreshBasketNewsFromRSS DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
   // INVALIDAZIONE CACHE — 05:30 CET (dopo tutti gli scheduler di scraping)
@@ -839,22 +710,10 @@ export function startAllSchedulers(): void {
       const todayStr = nowCET.toISOString().split("T")[0];
       const todayStart = new Date(todayStr + "T00:00:00.000Z");
       const todayEnd = new Date(todayStr + "T23:59:59.999Z");
-      // Tutte le sezioni: catch-up completo se mancano notizie di oggi
-      const sectionsToCheck: Array<{ section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi'; label: string; refreshFn: () => Promise<void> }> = [
+      // Pivot IdeaSmart Research: solo AI4Business e Startup News nel catch-up
+      const sectionsToCheck: Array<{ section: 'ai' | 'startup'; label: string; refreshFn: () => Promise<void> }> = [
         { section: 'ai', label: 'AI4Business', refreshFn: async () => { await refreshAINewsFromRSS(); } },
-        { section: 'music', label: 'ITsMusic', refreshFn: async () => { await refreshMusicNewsFromRSS(); } },
         { section: 'startup', label: 'Startup News', refreshFn: async () => { await refreshStartupNewsFromRSS(); } },
-        { section: 'finance', label: 'Finance & Markets', refreshFn: async () => { await refreshFinanceNewsFromRSS(); } },
-        { section: 'health', label: 'Health & Biotech', refreshFn: async () => { await refreshHealthNewsFromRSS(); } },
-        { section: 'sport', label: 'Sport & Business', refreshFn: async () => { await refreshSportNewsFromRSS(); } },
-        { section: 'luxury', label: 'Lifestyle & Luxury', refreshFn: async () => { await refreshLuxuryNewsFromRSS(); } },
-        { section: 'news', label: 'News Italia', refreshFn: async () => { await refreshNewsGeneraliFromRSS(); } },
-        { section: 'motori', label: 'Motori', refreshFn: async () => { await refreshMotoriNewsFromRSS(); } },
-        { section: 'tennis', label: 'Tennis', refreshFn: async () => { await refreshTennisNewsFromRSS(); } },
-        { section: 'basket', label: 'Basket', refreshFn: async () => { await refreshBasketNewsFromRSS(); } },
-        { section: 'gossip', label: 'Business Gossip', refreshFn: async () => { await refreshGossipNewsFromRSS(); } },
-        { section: 'cybersecurity', label: 'Cybersecurity', refreshFn: async () => { await refreshCybersecurityNewsFromRSS(); } },
-        { section: 'sondaggi', label: 'Sondaggi', refreshFn: async () => { await refreshSondaggiNewsFromRSS(); } },
       ];
       for (const { section, label, refreshFn } of sectionsToCheck) {
         const existing = await catchUpNewsDb.select({ id: niTable.id })

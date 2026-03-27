@@ -1,26 +1,13 @@
-/*
- * IDEASMART Navbar — Light Editorial / Tech Magazine
- * Sticky top nav con logo, link canali e CTA newsletter
- * Aggiornato: aggiunto dropdown Canali con tutti i 11 canali
+/**
+ * IDEASMART Navbar — Pivot Research Edition
+ * Solo 2 canali attivi: AI4Business e Startup News
  */
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 
 const CHANNELS = [
   { label: "AI4Business", href: "/ai", color: "#00b4a0" },
-  { label: "ITsMusic", href: "/music", color: "#7c3aed" },
   { label: "Startup News", href: "/startup", color: "#e84f00" },
-  { label: "Finance & Markets", href: "/finance", color: "#16a34a" },
-  { label: "Health & Biotech", href: "/health", color: "#0891b2" },
-  { label: "Sport & Business", href: "/sport", color: "#dc2626" },
-  { label: "Lifestyle & Luxury", href: "/luxury", color: "#b45309" },
-  { label: "News Italia", href: "/news", color: "#1a1f2e" },
-  { label: "Motori", href: "/motori", color: "#ef4444" },
-  { label: "Tennis", href: "/tennis", color: "#65a30d" },
-  { label: "Basket", href: "/basket", color: "#ea580c" },
-  { label: "Business Gossip", href: "/gossip", color: "#db2777" },
-  { label: "Cybersecurity", href: "/cybersecurity", color: "#0ea5e9" },
-  { label: "Sondaggi", href: "/sondaggi", color: "#8b5cf6" },
 ];
 
 export default function Navbar() {
@@ -52,14 +39,6 @@ export default function Navbar() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
   };
-
-  const homeNavItems = [
-    { label: "News", id: "news" },
-    { label: "Editoriale", id: "editoriale-dinamico" },
-    { label: "Startup", id: "startup-del-giorno" },
-    { label: "Reportage", id: "reportage-1" },
-    { label: "Analisi", id: "analisi-mercato" },
-  ];
 
   return (
     <nav
@@ -107,7 +86,7 @@ export default function Navbar() {
                 </svg>
               </button>
               {channelsOpen && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
                   {CHANNELS.map((ch) => (
                     <Link
                       key={ch.href}
@@ -124,17 +103,21 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Home scroll items — solo sulla home */}
-            {isHome && homeNavItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
-                style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
-              >
-                {item.label}
-              </button>
-            ))}
+            {/* Link diretti AI4Business e Startup */}
+            <Link
+              href="/ai"
+              className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
+              style={{ color: "#00b4a0", fontFamily: "'DM Sans', sans-serif" }}
+            >
+              AI4Business
+            </Link>
+            <Link
+              href="/startup"
+              className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
+              style={{ color: "#e84f00", fontFamily: "'DM Sans', sans-serif" }}
+            >
+              Startup News
+            </Link>
           </div>
 
           {/* CTA + mobile menu */}
@@ -231,12 +214,12 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div
           className="md:hidden overflow-hidden transition-all duration-300"
-          style={{ maxHeight: menuOpen ? "600px" : "0px" }}
+          style={{ maxHeight: menuOpen ? "400px" : "0px" }}
         >
           <div className="border-t border-gray-100 py-3 bg-white">
-            {/* Sezione canali nel mobile */}
+            {/* I 2 canali attivi */}
             <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mb-1">I Canali</p>
-            <div className="grid grid-cols-2 gap-1 px-2 mb-3">
+            <div className="flex flex-col gap-1 px-2 mb-3">
               {CHANNELS.map((ch) => (
                 <Link
                   key={ch.href}
@@ -250,31 +233,14 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            {/* Sezione scroll home (solo se sulla home) */}
-            {isHome && (
-              <>
-                <div className="border-t border-gray-100 my-2" />
-                <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mb-1">Sezioni</p>
-                {homeNavItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollTo(item.id)}
-                    className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors hover:bg-gray-50"
-                    style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </>
-            )}
             <div className="border-t border-gray-100 my-2" />
             <Link
-              href="/tecnologia"
-              className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors hover:bg-gray-50 mb-1"
-              style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
+              href="/research"
+              className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors mb-1"
+              style={{ color: "#00b8a0", background: "#f0fdfb", fontFamily: "'DM Sans', sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
-              Tecnologia →
+              🔬 Research →
             </Link>
             <Link
               href="/chi-siamo"

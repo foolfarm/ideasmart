@@ -412,7 +412,7 @@ function SectionNav() {
     return () => { el.removeEventListener("scroll", check); window.removeEventListener("resize", check); };
   }, []);
 
-  const SECTIONS = ["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const;
+  const SECTIONS = ["ai", "startup"] as const;
 
   return (
     <nav className="border-t border-[#1a1a2e] overflow-hidden">
@@ -740,25 +740,24 @@ export default function Home() {
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-12">
           {/* H2 per SEO — visivamente nascosto */}
-          <h2 className="sr-only">Notizie AI, Startup, Finance, Sport, Tech e Business — aggiornate ogni giorno</h2>
+          <h2 className="sr-only">Ricerche AI, Startup News e AI4Business — aggiornate ogni giorno</h2>
 
           {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 1 — I CANALI (griglia orizzontale full-width)
-              Le notizie generali sono rimosse: ogni canale ha la sua pagina
+              BLOCCO 1 — I CANALI (solo AI4Business e Startup News)
           ══════════════════════════════════════════════════════════════ */}
           <div className="mt-0">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-0">
-              {/* Griglia canali full-width */}
+              {/* Griglia canali: solo AI4Business e Startup News */}
               <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/20">
                 <div className="py-3">
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                     style={{ fontFamily: "'Space Mono', monospace" }}>
-                    I Canali — Esplora le sezioni
+                    I Canali
                   </span>
                 </div>
                 <ThinDivider />
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-0 mt-1">
-                  {(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const).map((sec) => {
+                <div className="grid grid-cols-2 gap-0 mt-1">
+                  {(["ai", "startup"] as const).map((sec) => {
                     const s = SECTION_COLORS[sec];
                     return (
                       <Link key={sec} href={s.path}>
@@ -942,133 +941,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 3 — FINANCE, SPORT, MOTORI (3 colonne)
-          ══════════════════════════════════════════════════════════════ */}
-          <div className="mt-8">
-            <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                Economia, Sport & Motori
-              </span>
-            </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
-              <SectionColumn section="finance" items={financeNews.slice(0, 4)} colIdx={0} showFirstImage />
-              <SectionColumn section="sport" items={sportNews.slice(0, 4)} colIdx={1} showFirstImage />
-              <SectionColumn section="motori" items={motoriNews.slice(0, 4)} colIdx={2} showFirstImage />
-            </div>
-            {/* Banner Tradedoubler leaderboard 728x90 sotto il blocco Economia/Sport/Motori */}
-            <div className="mt-4 flex justify-center">
-              <div>
-                <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1" style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
-                <a
-                  href="https://clk.tradedoubler.com/click?p=357545&a=3477790&g=25611636"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={`https://imp.tradedoubler.com/imp?type(img)g(25611636)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                    width="728"
-                    height="90"
-                    alt="Pubblicità"
-                    style={{ display: "block", maxWidth: "100%", height: "auto" }}
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 4 — TENNIS, BASKET, HEALTH (3 colonne)
-          ══════════════════════════════════════════════════════════════ */}
-          <div className="mt-8">
-            <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                Sport, Salute & Benessere
-              </span>
-            </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
-              <SectionColumn section="tennis" items={tennisNews.slice(0, 4)} colIdx={0} />
-              <SectionColumn section="basket" items={basketNews.slice(0, 4)} colIdx={1} />
-              <SectionColumn section="health" items={healthNews.slice(0, 4)} colIdx={2} />
-            </div>
-          </div>
-
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 5 — VIDEO DEL GIORNO (se disponibili)
-          ══════════════════════════════════════════════════════════════ */}
-          <VideoSection allItems={allItemsWithSection} />
-
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 6 — LUXURY, MUSIC, GOSSIP (3 colonne)
-          ══════════════════════════════════════════════════════════════ */}
-          <div className="mt-8">
-            <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                Lifestyle, Musica & Gossip Business
-              </span>
-            </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
-              <SectionColumn section="luxury" items={luxuryNews.slice(0, 4)} colIdx={0} showFirstImage />
-              <SectionColumn section="music" items={musicNews.slice(0, 4)} colIdx={1} showFirstImage />
-              <SectionColumn section="gossip" items={gossipNews.slice(0, 4)} colIdx={2} />
-            </div>
-          </div>
-
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 7 — CYBERSECURITY + SONDAGGI (2 colonne)
-          ══════════════════════════════════════════════════════════════ */}
-          <div className="mt-8">
-            <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                Sicurezza & Opinione Pubblica
-              </span>
-            </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
-              <div className="pr-0 md:pr-6 border-r-0 md:border-r border-[#1a1a2e]/20">
-                <SectionColumn section="cybersecurity" items={cybersecurityNews.slice(0, 5)} colIdx={0} />
-              </div>
-              <div className="pl-0 md:pl-6 mt-6 md:mt-0">
-                <SectionColumn section="sondaggi" items={sondaggiNews.slice(0, 5)} colIdx={0} />
-              </div>
-            </div>
-          </div>
-
-          {/* ═══════════════════════════════════════════════════════════
-              BLOCCO 8 — RASSEGNA COMPLETA (elenco misto tutte le sezioni)
-          ══════════════════════════════════════════════════════════════ */}
-          <div className="mt-8">
-            <Divider thick />
-            <div className="py-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                Rassegna Completa del Giorno
-              </span>
-            </div>
-            <ThinDivider />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
-              {allItemsWithSection
-                .filter(n => n.id % 3 === 0) // campionamento distribuito
-                .slice(0, 20)
-                .map((item, i) => (
-                  <div key={`rassegna-${item.section}-${item.id}`}>
-                    <NewsRow item={item} section={item.section} />
-                    {i < 19 && <ThinDivider />}
-                  </div>
-                ))}
-            </div>
-          </div>
+          {/* Blocchi 3-8 rimossi: pivot verso Research + AI4Business + Startup News */}
 
           {/* Banner Tradedoubler leaderboard 728x90 pre-footer */}
           <div className="mt-4 flex justify-center">
