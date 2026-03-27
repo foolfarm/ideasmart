@@ -494,21 +494,12 @@ function SectionNav() {
         className="flex flex-wrap items-center border-t"
         style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}
       >
-        <Link href="/edicola">
+        <Link href="/research">
           <span
-            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#1a1a2e] hover:underline decoration-[#1a1a2e] underline-offset-2"
+            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#0a6e5c]/80 hover:text-[#0a6e5c] hover:underline decoration-[#0a6e5c] underline-offset-2"
             style={{ fontFamily: "'Space Mono', monospace" }}
           >
-            Edicola
-          </span>
-        </Link>
-        <span className="text-[#1a1a2e]/15 text-xs">|</span>
-        <Link href="/manifesto">
-          <span
-            className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#0a6e5c] hover:underline decoration-[#0a6e5c] underline-offset-2"
-            style={{ fontFamily: "'Space Mono', monospace" }}
-          >
-            Manifesto
+            Research
           </span>
         </Link>
         <span className="text-[#1a1a2e]/15 text-xs">|</span>
@@ -618,8 +609,8 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="IDEASMART — Testata Giornalistica HumanLess"
-        description="La prima testata giornalistica HumanLess italiana: notizie su AI, Startup, Finance, Sport, Motori, Tennis, Health, Luxury, Music, Gossip e Cybersecurity."
+        title="IDEASMART Research — AI, Startup & Venture Capital"
+        description="Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee."
         canonical="https://ideasmart.ai"
         ogSiteName="IDEASMART"
       />
@@ -639,7 +630,7 @@ export default function Home() {
             </span>
             <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              Testata 100% HumanLess
+              Research · AI · Startup · Venture Capital
             </span>
           </div>
 
@@ -687,11 +678,11 @@ export default function Home() {
               </Link>
               <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                La Prima Testata Giornalistica HumanLess italiana
+                Analisi quotidiane su Startup, Venture Capital e AI Trends
               </p>
               <p className="mt-1 text-[11px] text-[#1a1a2e]/40 italic"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.02em" }}>
-                Adrian Lenice, Direttore Responsabile
+                Dati dalle principali fonti di ricerca globali ed europee
               </p>
             </div>
 
@@ -968,7 +959,7 @@ export default function Home() {
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <p className="text-xs text-[#1a1a2e]/40"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                {`© ${today.getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess`}
+                {`© ${today.getFullYear()} IdeaSmart Research · AI · Startup · Venture Capital`}
               </p>
               <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
                 {(["ai", "startup"] as const).map((sec) => {
@@ -994,10 +985,10 @@ export default function Home() {
                     IdeaSmart Business
                   </span>
                 </Link>
-                <Link href="/manifesto">
+                <Link href="/research">
                   <span className="text-[10px] hover:underline cursor-pointer font-bold"
                     style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
-                    Manifesto HumanLess
+                    IdeaSmart Research
                   </span>
                 </Link>
                 <Link href="/privacy">

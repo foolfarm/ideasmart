@@ -163,12 +163,8 @@ function SectionNav() {
 
       {/* Riga 2: pagine istituzionali */}
       <div className="flex flex-wrap items-center border-t" style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}>
-        <Link href="/edicola">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#1a1a2e] hover:underline decoration-[#1a1a2e] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Edicola</span>
-        </Link>
-        <span className="text-[#1a1a2e]/15 text-xs">|</span>
-        <Link href="/manifesto">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#0a6e5c] hover:underline decoration-[#0a6e5c] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Manifesto</span>
+        <Link href="/research">
+          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#0a6e5c]/80 hover:text-[#0a6e5c] hover:underline decoration-[#0a6e5c] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Research</span>
         </Link>
         <span className="text-[#1a1a2e]/15 text-xs">|</span>
         <Link href="/chi-siamo">
@@ -458,7 +454,7 @@ export default function Research() {
               className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
               style={{ fontFamily: "'Space Mono', monospace" }}
             >
-              Testata 100% HumanLess
+              Research · AI · Startup · Venture Capital
             </span>
           </div>
 
@@ -510,13 +506,13 @@ export default function Research() {
                 className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
                 style={{ fontFamily: "'Space Mono', monospace" }}
               >
-                La Prima Testata Giornalistica HumanLess italiana
+                Analisi quotidiane su Startup, Venture Capital e AI Trends
               </p>
               <p
                 className="mt-1 text-[11px] text-[#1a1a2e]/40 italic"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.02em" }}
               >
-                Adrian Lenice, Direttore Responsabile
+                Dati dalle principali fonti di ricerca globali ed europee
               </p>
             </div>
 
@@ -794,7 +790,7 @@ export default function Research() {
           className="text-center text-xs py-6 border-t border-[#1a1a2e]/10"
           style={{ color: "#1a1a2e", opacity: 0.3, fontFamily: "'Space Mono', monospace" }}
         >
-          © {new Date().getFullYear()} IdeaSmart · Testata Giornalistica 100% HumanLess
+          © {new Date().getFullYear()} IdeaSmart Research · AI · Startup · Venture Capital
         </div>
       </div>
     </>
