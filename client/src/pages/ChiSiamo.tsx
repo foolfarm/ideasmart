@@ -276,6 +276,54 @@ export default function ChiSiamo() {
 
           <Divider thick />
 
+          {/* ── BANNER RECRUITING ── */}
+          <section className="py-10">
+            <div
+              className="p-8 border-2 text-center relative overflow-hidden"
+              style={{ borderColor: ACCENT, background: "rgba(10,110,92,0.04)" }}
+            >
+              <div className="relative">
+                <SectionBadge label="Open Positions" />
+                <h2
+                  className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a2e] mb-3"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Vuoi Collaborare con Noi?<br />
+                  <span style={{ color: ACCENT }}>Cerchiamo Firme d'Eccellenza.</span>
+                </h2>
+                <p
+                  className="text-base leading-relaxed mb-6 max-w-2xl mx-auto text-[#1a1a2e]/65"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                >
+                  IdeaSmart Business è una community selettiva di senior advisor, founder con exit, ex partner di fondi VC e opinion leader di settore. Stiamo allargando il team con profili di assoluta eccellenza.
+                  <br /><br />
+                  <strong className="text-[#1a1a2e]">La sezione è molto selettiva. Candidati adesso e scrivici a{" "}
+                    <a href="mailto:info@ideasmart.ai?subject=Candidatura IdeaSmart Business" className="underline" style={{ color: ACCENT }}>info@ideasmart.ai</a>
+                  </strong>
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <a
+                    href="mailto:info@ideasmart.ai?subject=Candidatura IdeaSmart Business"
+                    className="inline-flex items-center gap-2 px-8 py-3 text-sm font-bold uppercase tracking-widest transition-all duration-200"
+                    style={{ fontFamily: "'Space Mono', monospace", background: INK, color: "#0a6e5c" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = ACCENT; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = INK; (e.currentTarget as HTMLElement).style.color = ACCENT; }}
+                  >
+                    Candidati Ora → info@ideasmart.ai
+                  </a>
+                </div>
+                <p
+                  className="mt-4 text-[10px] uppercase tracking-widest text-[#1a1a2e]/35"
+                  style={{ fontFamily: "'Space Mono', monospace" }}
+                >
+                  Selezione continua · Solo profili senior · Riservatezza garantita
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <Divider thick />
+
           {/* ── CTA BUSINESS ── */}
           <section className="py-10 text-center">
             <SectionBadge label="IdeaSmart Business" color={ORANGE} bg="#fff3ee" />

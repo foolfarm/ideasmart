@@ -1504,3 +1504,10 @@
 - [x] Positioning statement con citazione di Andrea Cinelli
 - [x] FAQ accordion (4 domande chiave)
 - [x] CTA contatto: form + email diretta business@ideasmart.ai + link LinkedIn
+
+## Nuovi task (28 Mar 2026 — Team anonimo Business + Banner recruiting)
+
+- [x] Rimuovere Andrea Cinelli dalla sezione team di Business.tsx
+- [x] Sostituire i profili team con 6 figure anonime autorevoli: Ex Big 5, Ex Investment Banking, Founder 3 Exit, Ex Partner VC, Opinion Leader AI, Ex C-Level Fortune 500
+- [x] Aggiungere banner recruiting in fondo a Business.tsx ("Vuoi collaborare con noi? Candidati a info@ideasmart.ai")
+- [x] Aggiungere banner recruiting in fondo a ChiSiamo.tsx (stile teal coerente con la palette della pagina)

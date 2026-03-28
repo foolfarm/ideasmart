@@ -114,32 +114,52 @@ const DIFFERENTIATORS = [
 
 const TEAM_PROFILES = [
   {
-    initials: "AC",
-    name: "Andrea Cinelli",
-    role: "Founder & Lead Advisor",
-    background: "Imprenditore seriale con 20+ anni nell'ecosistema tech italiano ed europeo. Fondatore di FoolFarm, IdeaSmart e multiple exit di successo. Opinion leader su AI e Venture Capital.",
-    expertise: ["AI Strategy", "Venture Capital", "Startup Ecosystem"],
+    initials: "B5",
+    label: "Ex Big 5 — Strategy & AI",
+    role: "AI Strategy & Corporate Transformation",
+    background: "Ex Partner di una delle prime cinque società di consulenza strategica globale. 25+ anni di advisory su trasformazione digitale, AI adoption e corporate strategy per aziende Fortune 500 in Europa e Nord America.",
+    expertise: ["AI Strategy", "Corporate Transformation", "Board Advisory"],
+    tag: "EX BIG 5 CONSULTING",
   },
   {
-    initials: "SR",
-    name: "Senior Advisor — Finance",
+    initials: "IB",
+    label: "Ex Investment Banking — M&A",
     role: "M&A & Capital Markets",
-    background: "Ex Managing Director in una primaria investment bank europea. 30+ anni in operazioni M&A tech, IPO e capital markets. Background in Top 500 company.",
+    background: "Ex Managing Director in una primaria investment bank europea. 30+ anni in operazioni M&A tech, IPO e capital markets. Ha strutturato deal per un valore complessivo superiore a €2 miliardi nel settore tech e AI.",
     expertise: ["M&A Advisory", "Capital Markets", "Deal Structuring"],
+    tag: "EX INVESTMENT BANKING",
   },
   {
-    initials: "TA",
-    name: "Senior Advisor — Technology",
-    role: "AI Innovation & Digital Transformation",
-    background: "Ex CTO di un gruppo Fortune 500 europeo. Pioniere nell'adozione enterprise dell'AI. Ha guidato trasformazioni digitali con budget superiori a €500M.",
-    expertise: ["AI Architecture", "Digital Transformation", "Tech Due Diligence"],
+    initials: "FX",
+    label: "Founder con Exit — Tech",
+    role: "Startup Strategy & Venture",
+    background: "Fondatore seriale con tre exit di successo nel settore SaaS e AI (due acquisizioni strategiche, una IPO). Mentor di oltre 60 startup in portafoglio. Profonda conoscenza dell'ecosistema VC europeo e israeliano.",
+    expertise: ["Startup Strategy", "Fundraising", "Exit Planning"],
+    tag: "FOUNDER · 3 EXIT",
   },
   {
-    initials: "VL",
-    name: "Senior Advisor — Venture",
-    role: "VC Strategy & Portfolio",
-    background: "Partner fondatore di un fondo VC con €200M AUM. 15+ anni nell'ecosistema VC europeo. Portfolio di 40+ investimenti in AI, deeptech e SaaS.",
-    expertise: ["VC Strategy", "Portfolio Management", "Fundraising"],
+    initials: "VC",
+    label: "Ex Partner VC — Deeptech",
+    role: "VC Strategy & Portfolio Management",
+    background: "Ex Partner fondatore di un fondo VC deeptech con €300M AUM. 18+ anni nell'ecosistema VC europeo. Portfolio di 50+ investimenti in AI, robotica e biotech. Board member in 12 società in portafoglio.",
+    expertise: ["VC Strategy", "Portfolio Management", "Deep Tech"],
+    tag: "EX VENTURE CAPITAL",
+  },
+  {
+    initials: "OL",
+    label: "Opinion Leader — AI & Innovation",
+    role: "AI Thought Leadership & Media",
+    background: "Tra le voci più seguite in Italia su AI e innovazione tecnologica. Editorialista per primarie testate economiche, speaker a Davos, Web Summit e Slush. Autore di due libri sull'impatto dell'AI sull'economia.",
+    expertise: ["AI Thought Leadership", "Media & PR", "Innovation Keynotes"],
+    tag: "OPINION LEADER · AI",
+  },
+  {
+    initials: "CX",
+    label: "Ex C-Level Fortune 500",
+    role: "Digital Transformation & AI Governance",
+    background: "Ex Chief Digital Officer di un gruppo industriale Fortune 500 europeo. Ha guidato la trasformazione digitale di un'organizzazione da 40.000 dipendenti con un budget di €800M. Pioniere nell'adozione enterprise dell'AI generativa.",
+    expertise: ["AI Governance", "Digital Transformation", "Change Management"],
+    tag: "EX FORTUNE 500 C-LEVEL",
   },
 ];
 
@@ -583,7 +603,7 @@ export default function Business() {
                       className="text-base font-bold"
                       style={{ color: WHITE, fontFamily: "'Playfair Display', serif" }}
                     >
-                      {member.name}
+                      {member.label}
                     </h3>
                     <p
                       className="text-xs"
@@ -627,6 +647,59 @@ export default function Business() {
             <p className="text-xs" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
               Per ogni mandato, selezioniamo gli advisor con l'esperienza più rilevante per il settore e la fase del cliente. Il network IdeaSmart include oltre 50 senior professional in AI, tech, finance e venture capital.
             </p>
+          </div>
+
+          {/* ── BANNER RECRUITING ── */}
+          <div
+            className="mt-12 p-8 border-2 text-center relative overflow-hidden"
+            style={{ borderColor: GOLD, background: `linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 100%)` }}
+          >
+            {/* Griglia decorativa */}
+            <div
+              className="absolute inset-0 opacity-[0.03]"
+              style={{
+                backgroundImage: `linear-gradient(${GOLD} 1px, transparent 1px), linear-gradient(90deg, ${GOLD} 1px, transparent 1px)`,
+                backgroundSize: "40px 40px",
+              }}
+            />
+            <div className="relative">
+              <span
+                className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] px-3 py-1 border mb-4"
+                style={{ color: GOLD, borderColor: GOLD + "60", fontFamily: "'Space Mono', monospace" }}
+              >
+                Open Positions
+              </span>
+              <h3
+                className="text-2xl md:text-3xl font-bold mb-3"
+                style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Vuoi Collaborare con Noi?<br />
+                <span style={{ color: GOLD }}>Cerchiamo Firme d'Eccellenza.</span>
+              </h3>
+              <p
+                className="text-sm leading-relaxed mb-6 max-w-2xl mx-auto"
+                style={{ color: "rgba(255,255,255,0.65)", fontFamily: "'Source Serif 4', serif" }}
+              >
+                IdeaSmart Business è una community selettiva di senior advisor, founder con exit, ex partner di fondi VC e opinion leader di settore. Stiamo allargando il team con profili di assoluta eccellenza: ex Big 5, C-Level Fortune 500, imprenditori con track record documentato.
+                <br /><br />
+                <strong style={{ color: GOLD_LIGHT }}>La selezione è rigorosa. I mandati sono esclusivi. La reputazione del network è il nostro asset principale.</strong>
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <a
+                  href="mailto:info@ideasmart.ai?subject=Candidatura IdeaSmart Business"
+                  className="px-8 py-3 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-90"
+                  style={{ background: GOLD, color: NAVY, fontFamily: "'Space Mono', monospace" }}
+                >
+                  Candidati Ora → info@ideasmart.ai
+                </a>
+              </div>
+              <p
+                className="mt-4 text-[10px] uppercase tracking-widest"
+                style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'Space Mono', monospace" }}
+              >
+                Selezione continua · Solo profili senior · Riservatezza garantita
+              </p>
+            </div>
           </div>
         </div>
       </section>
