@@ -1,12 +1,13 @@
 /**
- * PuntoDelGiorno — Sezione Home con le analisi editoriali giornaliere di IDEASMART
- * Mostra i 3 post LinkedIn del giorno: mattino (10:30), pomeriggio (15:00), sera (17:30)
- * Stile: editoriale, carta/inchiostro — autore: Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research
+ * PuntoDelGiorno — Sezione editoriale Home
+ * Mostra il post del mattino di Andrea Cinelli come colonna editoriale di qualità
+ * Stile: prima pagina di giornale — sfondo carta, bordo verde, font leggibili
  */
 import { trpc } from "@/lib/trpc";
 
-const INK = "#0a0f1e";
-const ACCENT = "#00e5c8";
+const INK = "#1a1a2e";
+const ACCENT = "#0a6e5c";
+const PAPER = "#faf8f3";
 
 function formatDateIT(dateLabel: string): string {
   try {
@@ -23,20 +24,6 @@ function formatDateIT(dateLabel: string): string {
   }
 }
 
-function PuntoSkeleton() {
-  return (
-    <div className="animate-pulse space-y-3">
-      <div className="h-4 rounded w-1/3" style={{ background: INK + "15" }} />
-      <div className="h-6 rounded w-2/3" style={{ background: INK + "20" }} />
-      <div className="space-y-2">
-        {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-3 rounded" style={{ background: INK + "10", width: i === 4 ? "60%" : "100%" }} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 type PostItem = {
   id: number;
   dateLabel: string;
@@ -50,73 +37,104 @@ type PostItem = {
   createdAt: Date;
 };
 
-function PostCard({ post, isLoading, showAuthor = false }: { post?: PostItem; isLoading: boolean; showAuthor?: boolean }) {
-  if (isLoading) {
-    return (
-      <div className="p-6 md:p-8">
-        <PuntoSkeleton />
-      </div>
-    );
-  }
-  if (!post) return null;
+export default function PuntoDelGiorno() {
+  const { data: posts, isLoading } = trpc.news.getPuntoDelGiornoAll.useQuery(undefined, {
+    staleTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+  });
 
-  const paragraphs = post.postText
-    ? post.postText
-        .split(/\n{2,}/)
-        .map(p => p.trim())
-        .filter(p => p.length > 0)
+  if (!isLoading && (!posts || posts.length === 0)) return null;
+
+  const post = posts?.find(p => p.slot === "morning") ?? posts?.[0];
+  const dateLabel = post?.dateLabel ?? "";
+
+  // Parsing paragrafi
+  const paragraphs = post?.postText
+    ? post.postText.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 0)
     : [];
-
   const hashtagLine = paragraphs.findIndex(p => p.startsWith("#") || p.match(/^[📊🔗]/));
   const bodyParagraphs = hashtagLine > 0 ? paragraphs.slice(0, hashtagLine) : paragraphs;
-  const hashtagText = post.hashtags || paragraphs.find(p => p.startsWith("#")) || "";
 
-  const slotLabel = post.slot === "morning" ? "10:30" : post.slot === "afternoon" ? "15:00" : "17:30";
-  const slotColor = post.slot === "morning" ? "#00b89a" : post.slot === "afternoon" ? "#ff5500" : "#7c3aed";
+  const sectionLabel = post?.section === "ai" ? "AI4Business"
+    : post?.section === "startup" ? "Startup News"
+    : post?.section === "finance" ? "Finance"
+    : post?.section ?? "";
+
+  const sectionColor = post?.section === "ai" ? "#0a6e5c"
+    : post?.section === "startup" ? "#c2410c"
+    : post?.section === "finance" ? "#0369a1"
+    : ACCENT;
 
   return (
-    <div
-      className="overflow-hidden border-t border-b"
-      style={{ borderColor: INK + "20", background: "#faf8f3" }}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-3">
-        {/* Immagine (se presente) */}
-        {post.imageUrl && (
-          <div className="md:col-span-1 h-48 md:h-auto overflow-hidden">
-            <img
-              src={post.imageUrl}
-              alt={post.title ?? "Punto del Giorno"}
-              className="w-full h-full object-cover grayscale-[15%] hover:grayscale-0 transition-all duration-500"
-              loading="lazy"
-            />
-          </div>
+    <section>
+      {/* ── Header sezione ── */}
+      <div className="border-t-[3px]" style={{ borderColor: ACCENT }} />
+      <div className="py-2 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="h-[3px] w-6" style={{ background: ACCENT }} />
+          <span
+            className="text-[11px] font-bold uppercase tracking-[0.25em]"
+            style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+          >
+            Punto del Giorno
+          </span>
+        </div>
+        {dateLabel && (
+          <span
+            className="text-[10px] uppercase tracking-widest"
+            style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
+          >
+            {formatDateIT(dateLabel)}
+          </span>
         )}
+      </div>
 
-        {/* Contenuto */}
-        <div className={`p-6 md:p-8 ${post.imageUrl ? "md:col-span-2" : "md:col-span-3"}`}>
-          {/* Firma autore + badge slot — solo sul primo post */}
-          <div className="flex items-center gap-3 mb-4">
-            {showAuthor && (
-              <>
-                <a href="/andrea-cinelli" className="flex-shrink-0">
-                  <img
-                    src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg"
-                    alt="Andrea Cinelli"
-                    className="w-10 h-10 rounded-full object-cover object-top border-2"
-                    style={{ borderColor: ACCENT }}
-                  />
-                </a>
+      {/* ── Corpo editoriale ── */}
+      {isLoading && !post ? (
+        <div className="animate-pulse border-l-4 pl-6 py-6" style={{ borderColor: ACCENT, background: PAPER }}>
+          <div className="h-5 rounded w-2/3 mb-3" style={{ background: INK + "15" }} />
+          <div className="space-y-2">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="h-3 rounded" style={{ background: INK + "10", width: i === 4 ? "55%" : "100%" }} />
+            ))}
+          </div>
+        </div>
+      ) : post ? (
+        <div
+          className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-0 border-l-4"
+          style={{ borderColor: ACCENT, background: PAPER }}
+        >
+          {/* Colonna sinistra: immagine + firma */}
+          <div className="flex flex-col">
+            {post.imageUrl && (
+              <div className="overflow-hidden" style={{ height: "220px" }}>
+                <img
+                  src={post.imageUrl}
+                  alt={post.title ?? "Punto del Giorno"}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            {/* Firma autore */}
+            <div className="p-5 border-t" style={{ borderColor: INK + "12" }}>
+              <div className="flex items-center gap-3 mb-3">
+                <img
+                  src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg"
+                  alt="Andrea Cinelli"
+                  className="w-12 h-12 rounded-full object-cover object-top border-2 flex-shrink-0"
+                  style={{ borderColor: ACCENT }}
+                />
                 <div>
-                  <a
-                    href="/andrea-cinelli"
-                    className="text-xs font-bold hover:underline"
-                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                  <p
+                    className="font-bold leading-tight"
+                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif", fontSize: "15px" }}
                   >
                     Andrea Cinelli
-                  </a>
+                  </p>
                   <p
-                    className="text-[10px]"
-                    style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
+                    className="text-[11px] mt-0.5 leading-snug"
+                    style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}
                   >
                     Opinion Leader & Editorialista IdeaSmart Research
                   </p>
@@ -124,149 +142,90 @@ function PostCard({ post, isLoading, showAuthor = false }: { post?: PostItem; is
                     href="https://www.linkedin.com/in/andreacinelli"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[9px] font-bold uppercase tracking-widest hover:underline"
+                    className="text-[10px] font-bold uppercase tracking-widest hover:underline mt-1 inline-block"
                     style={{ color: "#0077b5", fontFamily: "'Space Mono', monospace" }}
                   >
                     Seguimi su LinkedIn →
                   </a>
                 </div>
-              </>
-            )}
-            {/* Badge orario slot */}
-            <span
-              className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest border"
-              style={{
-                color: slotColor,
-                borderColor: slotColor + "40",
-                fontFamily: "'Space Mono', monospace",
-                background: slotColor + "08",
-              }}
-            >
-              {slotLabel}
-            </span>
-            {/* Badge sezione */}
-            {post.section && (
-              <span
-                className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest"
-                style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}
-              >
-                {post.section === "ai" ? "AI4Business" : post.section === "startup" ? "Startup" : post.section}
-              </span>
-            )}
+              </div>
+              {/* Badge slot + sezione */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border"
+                  style={{ color: "#00b89a", borderColor: "#00b89a40", background: "#00b89a08", fontFamily: "'Space Mono', monospace" }}
+                >
+                  10:30
+                </span>
+                {sectionLabel && (
+                  <span
+                    className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+                    style={{ color: sectionColor, fontFamily: "'Space Mono', monospace" }}
+                  >
+                    {sectionLabel}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* Titolo */}
-          {post.title && (
-            <h2
-              className="text-xl md:text-2xl font-bold leading-tight mb-4"
-              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              {post.title}
-            </h2>
-          )}
-
-          {/* Corpo del post — primi 3 paragrafi */}
-          <div className="space-y-3">
-            {bodyParagraphs.slice(0, 3).map((para, i) => (
-              <p
-                key={i}
-                className="text-sm leading-relaxed"
-                style={{ color: INK + "cc", fontFamily: "'Source Serif 4', Georgia, serif" }}
+          {/* Colonna destra: testo editoriale */}
+          <div className="p-6 md:p-8 border-l" style={{ borderColor: INK + "10" }}>
+            {/* Titolo */}
+            {post.title && (
+              <h2
+                className="font-bold leading-tight mb-5"
+                style={{
+                  color: INK,
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: "clamp(22px, 2.5vw, 28px)",
+                  lineHeight: 1.2,
+                }}
               >
-                {para}
-              </p>
-            ))}
-            {bodyParagraphs.length > 3 && (
-              <p
-                className="text-sm italic"
-                style={{ color: INK + "55", fontFamily: "'Source Serif 4', Georgia, serif" }}
-              >
-                …continua
-              </p>
+                {post.title}
+              </h2>
             )}
-          </div>
 
-          {/* Footer: hashtags + link LinkedIn */}
-          <div className="mt-5 pt-4 border-t flex items-center justify-between gap-4" style={{ borderColor: INK + "12" }}>
-            {hashtagText && (
-              <p
-                className="text-[10px] flex-1 min-w-0 truncate"
-                style={{ color: ACCENT, fontFamily: "'JetBrains Mono', monospace" }}
-              >
-                {hashtagText.slice(0, 120)}{hashtagText.length > 120 ? "…" : ""}
-              </p>
-            )}
+            {/* Corpo — tutti i paragrafi */}
+            <div className="space-y-4">
+              {bodyParagraphs.map((para, i) => (
+                <p
+                  key={i}
+                  style={{
+                    color: INK + "cc",
+                    fontFamily: "'Source Serif 4', Georgia, serif",
+                    fontSize: "16px",
+                    lineHeight: 1.75,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
+
+            {/* Footer: link LinkedIn */}
             {post.linkedinUrl && (
-              <a
-                href={post.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest hover:underline"
-                style={{ color: "#0077b5", fontFamily: "'Space Mono', monospace" }}
-              >
-                LinkedIn →
-              </a>
+              <div className="mt-6 pt-4 border-t flex items-center justify-between" style={{ borderColor: INK + "12" }}>
+                <p
+                  className="text-[11px]"
+                  style={{ color: INK + "40", fontFamily: "'Space Mono', monospace" }}
+                >
+                  Pubblicato su LinkedIn · {new Date(post.createdAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}
+                </p>
+                <a
+                  href={post.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-bold uppercase tracking-widest hover:underline"
+                  style={{ color: "#0077b5", fontFamily: "'Space Mono', monospace" }}
+                >
+                  Leggi su LinkedIn →
+                </a>
+              </div>
             )}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-export default function PuntoDelGiorno() {
-  const { data: posts, isLoading } = trpc.news.getPuntoDelGiornoAll.useQuery(undefined, {
-    staleTime: 1000 * 60 * 30, // 30 minuti di cache
-    refetchOnWindowFocus: false,
-  });
-
-  // Non mostrare nulla se non ci sono dati e non sta caricando
-  if (!isLoading && (!posts || posts.length === 0)) return null;
-
-  // Mostra solo il post del mattino (un solo articolo)
-  const displayMorning = posts?.find(p => p.slot === "morning") ?? posts?.[0];
-
-  // Data di riferimento
-  const dateLabel = displayMorning?.dateLabel ?? "";
-
-  return (
-    <section className="mt-8">
-      {/* Header sezione */}
-      <div className="w-full border-t-4" style={{ borderColor: INK }} />
-      <div className="py-3 flex items-center gap-4">
-        <span
-          className="text-[11px] font-bold uppercase tracking-[0.25em]"
-          style={{ color: "#1a1a2e", fontFamily: "'Space Mono', monospace" }}
-        >
-          Punto del Giorno
-        </span>
-        <div className="flex-1 border-t" style={{ borderColor: INK + "20" }} />
-        {dateLabel && (
-          <span
-            className="text-[10px] uppercase tracking-widest"
-            style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}
-          >
-            {formatDateIT(dateLabel)}
-          </span>
-        )}
-      </div>
-
-      {/* Post mattino */}
-      {(isLoading || displayMorning) && (
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5"
-              style={{ color: "#00b89a", background: "#00b89a12", fontFamily: "'Space Mono', monospace" }}
-            >
-              ● Mattino
-            </span>
-          </div>
-          <PostCard post={displayMorning} isLoading={isLoading && !posts} showAuthor={true} />
-        </div>
-      )}
-
-      {/* Solo il post del mattino */}
+      ) : null}
     </section>
   );
 }

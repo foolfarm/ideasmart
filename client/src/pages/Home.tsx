@@ -102,12 +102,7 @@ function HeroArticle({ item, section, editorial }: {
   const TitleEl = (
     <h2
       className="mt-2 leading-tight text-[#1a1a2e] hover:underline"
-      style={{
-        fontFamily: "'Playfair Display', Georgia, serif",
-        fontSize: "clamp(26px, 3vw, 38px)",
-        fontWeight: 800,
-        lineHeight: 1.2,
-      }}
+      style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(30px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
     >
       {title}
     </h2>
@@ -147,7 +142,7 @@ function HeroArticle({ item, section, editorial }: {
             {editorial.subtitle}
           </p>
         )}
-        <p className="mt-3 text-[15px] leading-relaxed text-[#1a1a2e]/75"
+        <p className="mt-3 text-[17px] leading-relaxed text-[#1a1a2e]/75"
           style={{ fontFamily: "'Source Serif 4', Georgia, serif", lineHeight: 1.7 }}>
           {body.slice(0, 320)}{body.length > 320 ? "…" : ""}
         </p>
@@ -190,7 +185,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
           {item.title}
         </h3>
       </a>
-      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
+      <p className="mt-2 text-[16px] leading-relaxed text-[#1a1a2e]/65 line-clamp-3"
         style={{ fontFamily: "'Source Serif 4', Georgia, serif", lineHeight: 1.65 }}>
         {item.summary}
       </p>
@@ -205,6 +200,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
 // ─── SIDEBAR NEWS ITEM — titolo 15px + fonte ─────────────────────────────────
 function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKey }) {
   const s = SECTION_COLORS[section];
+  // font aumentati per leggibilità
   const href = NewsItemHref(item);
   return (
     <div className="py-3">
@@ -224,18 +220,13 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
       <a href={href} target="_blank" rel="noopener noreferrer">
         <p
           className="text-[#1a1a2e] hover:underline leading-snug"
-          style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "15px",
-            fontWeight: 600,
-            lineHeight: 1.4,
-          }}
+          style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "17px", fontWeight: 700, lineHeight: 1.35 }}
         >
           {item.title}
         </p>
       </a>
       {item.summary && (
-        <p className="mt-1 text-[13px] text-[#1a1a2e]/55 line-clamp-2"
+        <p className="mt-1 text-[15px] text-[#1a1a2e]/55 line-clamp-2"
           style={{ fontFamily: "'Source Serif 4', Georgia, serif", lineHeight: 1.5 }}>
           {item.summary}
         </p>
@@ -595,68 +586,9 @@ export default function Home() {
                     <Divider />
                   </div>
 
-                  {/* SECONDA RIGA: Finance + Health + Sport */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
-
-                    {/* Finance */}
-                    <div className="md:pr-4 md:border-r border-[#1a1a2e]/15 pb-4 md:pb-0">
-                      <SectionLabel label="Finance & Markets" accent={SECTION_COLORS.finance.accent} />
-                      {financeNews.slice(0, 1).map(item => (
-                        <SecondaryArticle key={item.id} item={item} section="finance" showImage={!!item.imageUrl} />
-                      ))}
-                      {financeNews.slice(1, 3).map((item, i) => (
-                        <div key={item.id}>
-                          <ThinDivider />
-                          <SecondaryArticle item={item} section="finance" />
-                        </div>
-                      ))}
-                      <div className="mt-2">
-                        <Link href="/finance">
-                          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
-                            style={{ color: SECTION_COLORS.finance.accent, fontFamily: "'Space Mono', monospace" }}>
-                            Finance →
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-
-                    {/* Health */}
-                    <div className="md:px-4 md:border-r border-[#1a1a2e]/15 pt-4 md:pt-0 border-t md:border-t-0">
-                      <SectionLabel label="Health & Biotech" accent={SECTION_COLORS.health.accent} />
-                      {healthNews.slice(0, 3).map((item, i) => (
-                        <div key={item.id}>
-                          {i > 0 && <ThinDivider />}
-                          <SecondaryArticle item={item} section="health" showImage={i === 0 && !!item.imageUrl} />
-                        </div>
-                      ))}
-                      <div className="mt-2">
-                        <Link href="/health">
-                          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
-                            style={{ color: SECTION_COLORS.health.accent, fontFamily: "'Space Mono', monospace" }}>
-                            Health →
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-
-                    {/* Sport */}
-                    <div className="md:pl-4 pt-4 md:pt-0 border-t md:border-t-0">
-                      <SectionLabel label="Sport & Business" accent={SECTION_COLORS.sport.accent} />
-                      {sportNews.slice(0, 3).map((item, i) => (
-                        <div key={item.id}>
-                          {i > 0 && <ThinDivider />}
-                          <SecondaryArticle item={item} section="sport" showImage={i === 0 && !!item.imageUrl} />
-                        </div>
-                      ))}
-                      <div className="mt-2">
-                        <Link href="/sport">
-                          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
-                            style={{ color: SECTION_COLORS.sport.accent, fontFamily: "'Space Mono', monospace" }}>
-                            Sport →
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
+                  {/* ── PUNTO DEL GIORNO — colonna editoriale a metà pagina ── */}
+                  <div className="my-8">
+                    <PuntoDelGiorno />
                   </div>
 
                   {/* STRISCIA RESEARCH */}
@@ -693,11 +625,11 @@ export default function Home() {
                                   style={{ background: accent, color: "#fff", fontFamily: "'Space Mono', monospace" }}>
                                   {r.category.replace("_", " ")}
                                 </span>
-                                <h4 className="text-[14px] font-bold leading-snug text-[#1a1a2e] group-hover:underline line-clamp-3"
+                                <h4 className="text-[16px] font-bold leading-snug text-[#1a1a2e] group-hover:underline line-clamp-3"
                                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                                   {r.title}
                                 </h4>
-                                <p className="mt-1 text-[12px] text-[#1a1a2e]/50 line-clamp-2"
+                                <p className="mt-1 text-[14px] text-[#1a1a2e]/50 line-clamp-2"
                                   style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                                   {r.summary}
                                 </p>
@@ -913,11 +845,6 @@ export default function Home() {
               </div>
             </section>
           )}
-
-          {/* ── PUNTO DEL GIORNO ── (posizionato dopo la griglia Prima Pagina) */}
-          <div className="mt-10">
-            <PuntoDelGiorno />
-          </div>
 
           {/* ── FOOTER ── */}
           <div className="mt-12">

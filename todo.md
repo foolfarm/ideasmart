@@ -1585,3 +1585,13 @@
 - [x] Mantenere Breaking News e ticker invariati
 - [x] Aggiungere promo IdeaSmart Business nella sidebar
 - [x] Aggiungere Research del Giorno nella sidebar
+
+## Leggibilità Home e Punto del Giorno (28 Mar 2026)
+
+- [ ] Aumentare font size: SidebarNewsItem titolo da text-[14px] a text-[16px], sommario da text-[13px] a text-[15px]
+- [ ] Aumentare font size: SecondaryArticle titolo da text-[18px] a text-[20px], sommario da text-[15px] a text-[16px]
+- [ ] Aumentare font size: HeroArticle titolo da text-[28px] a text-[32px], sommario da text-[15px] a text-[17px]
+- [ ] Aumentare font size: Research card titolo da text-[14px] a text-[16px], sommario da text-[12px] a text-[14px]
+- [ ] Rimuovere sezioni Finance/Health/Sport dalla seconda riga della griglia
+- [ ] Spostare PuntoDelGiorno a metà pagina come colonna editoriale (dopo griglia AI+Startup, prima di Research)
+- [ ] Ridisegnare PuntoDelGiorno come sezione editoriale a piena larghezza con sfondo carta
