@@ -1574,3 +1574,14 @@
 - [x] Aggiornare buildGartnerPrompt con slotNote specifiche per ogni sezione (finance, health, sport, luxury)
 - [x] Aggiornare il tipo LinkedInSection e la logica di selezione sezione
 - [x] Testare TypeScript — nessun errore di compilazione
+
+## Redesign Home — Layout Prima Pagina Giornale (28 Mar 2026)
+
+- [x] Ridisegnare Home con layout 2 colonne (70%) + sidebar destra (30%) stile Sole 24 Ore
+- [x] Colonna principale: hero AI grande (320px immagine, titolo 32-38px) + griglia 2col Startup/AI + seconda riga Finance/Health/Sport
+- [x] Sidebar destra: stream 30 notizie miste con badge sezione colorato + sommario 2 righe
+- [x] Font size aumentati: body 15px, sommari 15px, titoli secondari 18-22px, hero 26-38px
+- [x] Mantenere Punto del Giorno come sezione dedicata sopra la griglia principale
+- [x] Mantenere Breaking News e ticker invariati
+- [x] Aggiungere promo IdeaSmart Business nella sidebar
+- [x] Aggiungere Research del Giorno nella sidebar
