@@ -323,8 +323,8 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   id: int("id").autoincrement().primaryKey(),
   // Data del post (YYYY-MM-DD)
   dateLabel: varchar("dateLabel", { length: 20 }).notNull(),
-  // Slot del post: morning (10:30 CET), afternoon (15:00 CET) o evening (17:30 CET)
-  slot: mysqlEnum("slot", ["morning", "afternoon", "evening"]).default("morning").notNull(),
+  // Slot del post: morning (10:30 CET), startup-afternoon (13:00 CET), afternoon (15:00 CET) o evening (17:30 CET)
+  slot: mysqlEnum("slot", ["morning", "startup-afternoon", "afternoon", "evening"]).default("morning").notNull(),
   // Testo completo del post LinkedIn
   postText: text("postText").notNull(),
   // URL del post LinkedIn (es. https://www.linkedin.com/posts/...)

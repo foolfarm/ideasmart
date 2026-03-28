@@ -90,6 +90,39 @@ import { generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch } from "./researchGenerator";
 import { runMorningHealthReport } from "./morningHealthReport";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
+import { sendEmail } from "./email";
+
+// ── Helper: invia alert email al team operativo ───────────────────────────────
+async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<void> {
+  const ALERT_EMAIL = "info@ideasmart.ai";
+  try {
+    const result = await sendEmail({
+      to: ALERT_EMAIL,
+      subject: `⚠️ [IDEASMART SCHEDULER] ${subject}`,
+      html: `
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a1628;color:#e2e8f0;padding:28px;border-radius:8px;">
+          <div style="border-left:4px solid #f59e0b;padding-left:16px;margin-bottom:20px;">
+            <p style="font-size:11px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 4px;">⚠ Scheduler Alert</p>
+            <h2 style="font-size:18px;color:#ffffff;margin:0;">${subject}</h2>
+          </div>
+          <div style="background:#0f2040;border-radius:6px;padding:20px;font-size:14px;line-height:1.7;color:#cbd5e1;">
+            ${bodyHtml}
+          </div>
+          <p style="font-size:11px;color:#64748b;margin-top:20px;">
+            Questo alert è stato generato automaticamente dallo scheduler di <strong style="color:#00b4a0;">IDEASMART</strong>.<br>
+            Timestamp: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} CET
+          </p>
+        </div>`,
+    });
+    if (result.success) {
+      console.log(`[SchedulerAlert] ✅ Alert email inviata a ${ALERT_EMAIL}: "${subject}"`);
+    } else {
+      console.warn(`[SchedulerAlert] ⚠️ Alert email fallita: ${result.error}`);
+    }
+  } catch (alertErr) {
+    console.error("[SchedulerAlert] ❌ Errore invio alert:", alertErr);
+  }
+}
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
 import { invalidateAll, invalidateBySection, invalidateSection, CACHE_KEYS } from "./cache";
@@ -396,12 +429,36 @@ export function startAllSchedulers(): void {
 
           if (existing.length === 0) {
             console.log(`[SchedulerManager] 🔄 VERIFICA 07:00: sezione '${section}' (${label}) non ha notizie di oggi — avvio refresh...`);
+            // Invia alert email: il cron notturno era offline o ha fallito
+            sendSchedulerAlert(
+              `Notizie mancanti: ${label}`,
+              `<p>La verifica delle <strong>07:00 CET</strong> ha rilevato che la sezione <strong>${label}</strong> non aveva notizie per oggi.</p>
+               <p>Il cron notturno (00:00 CET) potrebbe essere stato offline o aver fallito silenziosamente.</p>
+               <p>La rigenerazione automatica è stata avviata adesso.</p>
+               <ul style="margin:12px 0;padding-left:20px;">
+                 <li>Sezione: <strong>${label}</strong> (<code>${section}</code>)</li>
+                 <li>Data: <strong>${todayLabel}</strong></li>
+                 <li>Azione: rigenerazione RSS avviata alle 07:00 CET</li>
+               </ul>`
+            ).catch(() => {});
             try {
               await refreshFn();
               invalidateSection(section);
               console.log(`[SchedulerManager] ✅ VERIFICA 07:00: '${section}' aggiornata con successo`);
             } catch (refreshErr) {
+              const errMsg = refreshErr instanceof Error ? refreshErr.message : String(refreshErr);
               console.error(`[SchedulerManager] ❌ VERIFICA 07:00: refresh '${section}' fallito:`, refreshErr);
+              // Alert aggiuntivo: anche la rigenerazione è fallita
+              sendSchedulerAlert(
+                `ERRORE rigenerazione ${label}`,
+                `<p style="color:#f87171;">La rigenerazione automatica della sezione <strong>${label}</strong> è <strong>fallita</strong>.</p>
+                 <p>Intervento manuale richiesto dalla dashboard admin.</p>
+                 <ul style="margin:12px 0;padding-left:20px;">
+                   <li>Sezione: <strong>${label}</strong></li>
+                   <li>Data: <strong>${todayLabel}</strong></li>
+                   <li>Errore: <code>${errMsg}</code></li>
+                 </ul>`
+              ).catch(() => {});
             }
           } else {
             console.log(`[SchedulerManager] ✅ VERIFICA 07:00: '${section}' (${label}) ha già notizie di oggi — OK`);
@@ -424,11 +481,34 @@ export function startAllSchedulers(): void {
         const result = await generateDailyResearch();
         if (result.generated > 0) {
           console.log(`[SchedulerManager] ✅ VERIFICA 07:15: ${result.generated} ricerche generate (erano mancanti)`);
+          // Alert email: le ricerche erano mancanti e sono state rigenerate
+          const todayLabelR = new Date().toLocaleDateString("en-CA", { timeZone: TZ });
+          sendSchedulerAlert(
+            `Ricerche mancanti: ${result.generated} rigenerate`,
+            `<p>La verifica delle <strong>07:15 CET</strong> ha rilevato che le ricerche giornaliere erano assenti per oggi.</p>
+             <p>Il cron notturno (05:30 CET) potrebbe essere stato offline o aver fallito silenziosamente.</p>
+             <p>La rigenerazione automatica ha prodotto <strong>${result.generated} ricerche</strong>.</p>
+             <ul style="margin:12px 0;padding-left:20px;">
+               <li>Sezione: <strong>IdeaSmart Research</strong></li>
+               <li>Data: <strong>${todayLabelR}</strong></li>
+               <li>Ricerche generate: <strong>${result.generated}</strong></li>
+             </ul>`
+          ).catch(() => {});
         } else {
           console.log("[SchedulerManager] ✅ VERIFICA 07:15: ricerche già presenti — OK");
         }
       } catch (err) {
+        const errMsg = err instanceof Error ? err.message : String(err);
         console.error("[SchedulerManager] ❌ Verifica ricerche errore:", err);
+        // Alert email: la rigenerazione delle ricerche è fallita
+        sendSchedulerAlert(
+          "ERRORE rigenerazione Ricerche",
+          `<p style="color:#f87171;">La rigenerazione automatica delle ricerche giornaliere è <strong>fallita</strong>.</p>
+           <p>Intervento manuale richiesto dalla dashboard admin.</p>
+           <ul style="margin:12px 0;padding-left:20px;">
+             <li>Errore: <code>${errMsg}</code></li>
+           </ul>`
+        ).catch(() => {});
       }
     });
   }, { timezone: TZ });
@@ -564,6 +644,24 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
+  // Post Startup pomeridiano — 13:00 CET (dedicato esclusivamente alle Startup News)
+  cron.schedule("0 13 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 13:00 CET — Pubblicazione LinkedIn STARTUP POMERIGGIO...");
+    await withLock("linkedin-startup-afternoon", async () => {
+      try {
+        const result = await publishLinkedInPost("startup-afternoon");
+        console.log(`[SchedulerManager] ✅ LinkedIn STARTUP POMERIGGIO: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn STARTUP POMERIGGIO errori:", result.errors);
+        }
+        // Invalida cache Punto del Giorno
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn STARTUP POMERIGGIO:", err);
+      }
+    });
+  }, { timezone: TZ });
+
   // Post pomeriggio — 15:00 CET
   cron.schedule("0 15 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 15:00 CET — Pubblicazione LinkedIn POMERIGGIO...");
@@ -631,6 +729,24 @@ export function startAllSchedulers(): void {
           });
         } else {
           console.log("[SchedulerManager] ✅ CATCH-UP: post MATTINO già presente nel DB, nessuna azione.");
+        }
+      }
+
+      // Controlla se il post Startup pomeridiano (13:00) è mancato
+      if (currentMinutes >= 13 * 60) {
+        const existingStartupAfternoon = await catchUpDb.select({ id: lpTable.id })
+          .from(lpTable)
+          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "startup-afternoon")))
+          .limit(1);
+        if (existingStartupAfternoon.length === 0) {
+          console.log("[SchedulerManager] 🔄 CATCH-UP: post STARTUP POMERIGGIO mancato, pubblico ora...");
+          await withLock("linkedin-startup-afternoon", async () => {
+            const result = await publishLinkedInPost("startup-afternoon");
+            console.log(`[SchedulerManager] ✅ CATCH-UP STARTUP POMERIGGIO: ${result.published}/1 post pubblicati`);
+            invalidateBySection("home");
+          });
+        } else {
+          console.log("[SchedulerManager] ✅ CATCH-UP: post STARTUP POMERIGGIO già presente nel DB, nessuna azione.");
         }
       }
 
@@ -908,6 +1024,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO  → ogni giorno alle 10:30 CET (AI o Startup, alternanza settimanale)");
+  console.log("[SchedulerManager]   💼 LinkedIn STARTUP  → ogni giorno alle 13:00 CET (Startup News, sempre)");
   console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
   console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");
   console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 3 volte al giorno: 10:30, 15:00 e 17:30 CET");

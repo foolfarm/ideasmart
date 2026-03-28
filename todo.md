@@ -1426,3 +1426,10 @@
 - [x] Aumentato limite query DB: ai=12, startup=12 (era 8 e 6)
 - [x] Aggiunto imageUrl nella risposta getResearchReports del router
 - [x] Sidebar Editoriale AI spostata nel blocco AI4Business con design migliorato
+
+## Nuovi task (28 Mar 2026 — Alert email + LinkedIn Startup pomeridiano)
+
+- [x] Alert email a info@ideasmart.ai quando verifica 07:00 rigenera notizie mancanti
+- [x] Alert email a info@ideasmart.ai quando verifica 07:15 rigenera ricerche mancanti
+- [x] Secondo post LinkedIn pomeridiano dedicato alle Startup News (slot 13:00 CET)
+- [x] Aggiornare log riepilogo scheduler con nuovi cron

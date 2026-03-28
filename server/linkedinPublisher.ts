@@ -30,7 +30,7 @@ import { eq, and } from "drizzle-orm";
 const SITE_BASE_URL = "https://ideasmart.ai";
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "afternoon" | "evening";
+export type LinkedInSlot = "morning" | "afternoon" | "startup-afternoon" | "evening";
 
 // ── Sezioni supportate (no musica) ──────────────────────────────────────────
 const SUPPORTED_SECTIONS: Array<"ai" | "startup"> = ["ai", "startup"];
@@ -56,10 +56,11 @@ const SECTION_META: Record<string, { label: string; hashtags: string[]; path: st
  */
 function selectSection(slot: LinkedInSlot): "ai" | "startup" {
   if (slot === "evening") return "ai"; // sera: sempre AI (tema vibe coding/mercato)
+  if (slot === "startup-afternoon") return "startup"; // 13:00: sempre Startup News
   const dayOfWeek = new Date().getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mer, 4=Gio, 5=Ven, 6=Sab
   const morningSection: "ai" | "startup" = [1, 3, 5, 0].includes(dayOfWeek) ? "ai" : "startup";
   if (slot === "morning") return morningSection;
-  // Afternoon: sezione opposta
+  // Afternoon: sezione opposta rispetto al mattino
   return morningSection === "ai" ? "startup" : "ai";
 }
 
@@ -108,6 +109,8 @@ ${marketData.keyFinding}`;
 
   const slotNote = slot === "morning"
     ? "Questo è il POST DEL MATTINO (10:30): tono analitico e strategico, dati e implicazioni per i decision maker."
+    : slot === "startup-afternoon"
+    ? "Questo è il POST STARTUP POMERIDIANO (13:00): dedicato esclusivamente all'ecosistema Startup italiano ed europeo. Scegli la notizia startup più rilevante del giorno e costruisci un post che: (1) evidenzi il round di finanziamento, la tecnologia o il pivot con dati precisi, (2) spieghi perché questa startup è rilevante per il mercato italiano, (3) offra un insight su cosa possono imparare gli imprenditori italiani da questo caso. Tono: mentor che ha fatto startup, non giornalista. Includi sempre il link a ideasmart.ai/startup."
     : slot === "afternoon"
     ? "Questo è il POST DEL POMERIGGIO (15:00): tono più operativo e pratico, focus su casi d'uso concreti e takeaway immediati per i professionisti."
     : `Questo è il POST DELLA SERA (17:30): tema VIBE CODING e come l'AI sta ridefinendo il modo di costruire software, fare startup e competere nel mercato. Parla di come il vibe coding (scrivere codice con AI in modo intuitivo, senza barriere tecniche) sta abbassando le barriere all'ingresso per gli imprenditori italiani. Focus su: impatto sul mercato del lavoro tech, nuove opportunità per i non-tecnici, come le startup stanno accelerando il time-to-market con AI. Tono: imprenditore che ha vissuto questa transizione in prima persona, non teorico.`;
@@ -422,7 +425,7 @@ export async function publishLinkedInPost(
   errors: string[];
   posts: Array<{ section: string; title: string; success: boolean; postId?: string; error?: string }>;
 }> {
-  const slotLabel = slot === "morning" ? "MATTINO (10:30)" : slot === "afternoon" ? "POMERIGGIO (15:00)" : "SERA (17:30)";
+  const slotLabel = slot === "morning" ? "MATTINO (10:30)" : slot === "startup-afternoon" ? "STARTUP POMERIGGIO (13:00)" : slot === "afternoon" ? "POMERIGGIO (15:00)" : "SERA (17:30)";
   console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);
 
   // ── Controllo idempotenza: evita doppi post ──────────────────────────────
