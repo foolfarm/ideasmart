@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT \n  dateLabel,\n  slot,\n  section,\n  status,\n  title,\n  linkedinUrl,\n  publishedAt,\n  createdAt\nFROM linkedin_posts\nWHERE dateLabel >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 3 DAY), '%Y-%m-%d')\nORDER BY dateLabel DESC, \n  FIELD(slot, 'morning', 'startup-afternoon', 'afternoon', 'evening')\nLIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  dateLabel,\n  slot,\n  section,\n  status,\n  title,\n  linkedinUrl,\n  publishedAt,\n  createdAt\nFROM linkedin_posts\nWHERE dateLabel >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 3 DAY), '%Y-%m-%d')\nORDER BY dateLabel DESC, \n  FIELD(slot, 'morning', 'startup-afternoon', 'afternoon', 'evening')\nLIMIT 20;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 2: Unknown column 'status' in 'field list'"
+  ]
+}

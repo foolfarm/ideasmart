@@ -475,6 +475,33 @@ export const appRouter = router({
         );
       }),
 
+    // Archivio editoriali dell'autore (per pagina /andrea-cinelli)
+    getAuthorPosts: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(100).default(30) }).optional())
+      .query(async ({ input }) => {
+        const limit = input?.limit ?? 30;
+        const db = await getDbInstance();
+        if (!db) return [];
+        const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+        const { desc: descOp, eq: eqOp } = await import('drizzle-orm');
+        const posts = await db.select().from(linkedinPostsTable)
+          .where(eqOp(linkedinPostsTable.slot, 'morning'))
+          .orderBy(descOp(linkedinPostsTable.createdAt))
+          .limit(limit);
+        return posts.map(post => ({
+          id: post.id,
+          dateLabel: post.dateLabel,
+          slot: (post as any).slot ?? 'morning',
+          postText: post.postText,
+          linkedinUrl: post.linkedinUrl ?? null,
+          title: post.title ?? null,
+          section: post.section,
+          imageUrl: post.imageUrl ?? null,
+          hashtags: post.hashtags ?? null,
+          createdAt: post.createdAt,
+        }));
+      }),
+
     // Breaking news attive (selezionate ogni ora dall'AI)
     getBreakingNews: publicProcedure
       .query(async () => {

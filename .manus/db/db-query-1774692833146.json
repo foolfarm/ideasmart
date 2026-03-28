@@ -1,0 +1,114 @@
+{
+  "query": "\nSELECT \n  dateLabel,\n  slot,\n  section,\n  title,\n  linkedinUrl,\n  createdAt\nFROM linkedin_posts\nWHERE dateLabel >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 4 DAY), '%Y-%m-%d')\nORDER BY dateLabel DESC, \n  FIELD(slot, 'morning', 'startup-afternoon', 'afternoon', 'evening')\nLIMIT 20;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  dateLabel,\n  slot,\n  section,\n  title,\n  linkedinUrl,\n  createdAt\nFROM linkedin_posts\nWHERE dateLabel >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 4 DAY), '%Y-%m-%d')\nORDER BY dateLabel DESC, \n  FIELD(slot, 'morning', 'startup-afternoon', 'afternoon', 'evening')\nLIMIT 20;\n",
+  "rows": [
+    {
+      "dateLabel": "2026-03-28",
+      "slot": "morning",
+      "section": "startup",
+      "title": "Deeptech: Il Futuro dell'Italia tra Innovazione e Capitali",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443582869928804352",
+      "createdAt": "2026-03-28 09:00:13"
+    },
+    {
+      "dateLabel": "2026-03-27",
+      "slot": "morning",
+      "section": "ai",
+      "title": "AI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443227994690711552",
+      "createdAt": "2026-03-27 09:30:44"
+    },
+    {
+      "dateLabel": "2026-03-27",
+      "slot": "afternoon",
+      "section": "startup",
+      "title": "Deeptech Italiano: Dalla Promessa alla Leadership Globale",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443296101279006720",
+      "createdAt": "2026-03-27 14:00:16"
+    },
+    {
+      "dateLabel": "2026-03-27",
+      "slot": "evening",
+      "section": "ai",
+      "title": "AI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443333701867831296",
+      "createdAt": "2026-03-27 16:30:20"
+    },
+    {
+      "dateLabel": "2026-03-26",
+      "slot": "morning",
+      "section": "startup",
+      "title": "Deeptech Italiano: Dalla Promessa alla Leadership Globale",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442865528211267584",
+      "createdAt": "2026-03-26 09:30:22"
+    },
+    {
+      "dateLabel": "2026-03-26",
+      "slot": "afternoon",
+      "section": "ai",
+      "title": "AI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442933455061123072",
+      "createdAt": "2026-03-26 14:00:18"
+    },
+    {
+      "dateLabel": "2026-03-26",
+      "slot": "evening",
+      "section": "ai",
+      "title": "AI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442971184788406272",
+      "createdAt": "2026-03-26 16:30:14"
+    },
+    {
+      "dateLabel": "2026-03-25",
+      "slot": "morning",
+      "section": "ai",
+      "title": "L'AI Autonoma: La Nuova Frontiera del Business Italiano",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442548817951891457",
+      "createdAt": "2026-03-25 12:31:54"
+    },
+    {
+      "dateLabel": "2026-03-25",
+      "slot": "afternoon",
+      "section": "ai",
+      "title": "OpenClaw e la rivoluzione degli agenti AI autonomi nel business italiano",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442556489308872704",
+      "createdAt": "2026-03-25 13:02:23"
+    },
+    {
+      "dateLabel": "2026-03-25",
+      "slot": "evening",
+      "section": "ai",
+      "title": "Vibe Coding: come l'AI sta abbassando le barriere per costruire software e fare startup",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442556559341289472",
+      "createdAt": "2026-03-25 13:02:40"
+    },
+    {
+      "dateLabel": "2026-03-24",
+      "slot": "morning",
+      "section": "startup",
+      "title": "AI e il Rinascimento delle Startup Italiane: Oltre l'Hype",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442140719445733376",
+      "createdAt": "2026-03-24 09:30:13"
+    },
+    {
+      "dateLabel": "2026-03-24",
+      "slot": "afternoon",
+      "section": "ai",
+      "title": "AI Autonoma: Il Nuovo Imperativo per il Business Italiano",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442208698053079040",
+      "createdAt": "2026-03-24 14:00:23"
+    },
+    {
+      "dateLabel": "2026-03-24",
+      "slot": "evening",
+      "section": "ai",
+      "title": "AI Autonoma: Il Nuovo Imperativo per il Business Italiano",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7442246495052931072",
+      "createdAt": "2026-03-24 16:30:35"
+    }
+  ],
+  "messages": [],
+  "stdout": "dateLabel\tslot\tsection\ttitle\tlinkedinUrl\tcreatedAt\n2026-03-28\tmorning\tstartup\tDeeptech: Il Futuro dell'Italia tra Innovazione e Capitali\thttps://www.linkedin.com/posts/andreacinelli_7443582869928804352\t2026-03-28 09:00:13\n2026-03-27\tmorning\tai\tAI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro\thttps://www.linkedin.com/posts/andreacinelli_7443227994690711552\t2026-03-27 09:30:44\n2026-03-27\tafternoon\tstartup\tDeeptech Italiano: Dalla Promessa alla Leadership Globale\thttps://www.linkedin.com/posts/andreacinelli_7443296101279006720\t2026-03-27 14:00:16\n2026-03-27\tevening\tai\tAI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro\thttps://www.linkedin.com/posts/andreacinelli_7443333701867831296\t2026-03-27 16:30:20\n2026-03-26\tmorning\tstartup\tDeeptech Italiano: Dalla Promessa alla Leadership Globale\thttps://www.linkedin.com/posts/andreacinelli_7442865528211267584\t2026-03-26 09:30:22\n2026-03-26\tafternoon\tai\tAI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia\thttps://www.linkedin.com/posts/andreacinelli_7442933455061123072\t2026-03-26 14:00:18\n2026-03-26\tevening\tai\tAI: La Nuova Frontiera del Business Italiano tra Autonomia e Strategia\thttps://www.linkedin.com/posts/andreacinelli_7442971184788406272\t2026-03-26 16:30:14\n2026-03-25\tmorning\tai\tL'AI Autonoma: La Nuova Frontiera del Business Italiano\thttps://www.linkedin.com/posts/andreacinelli_7442548817951891457\t2026-03-25 12:31:54\n2026-03-25\tafternoon\tai\tOpenClaw e la rivoluzione degli agenti AI autonomi nel business italiano\thttps://www.linkedin.com/posts/andreacinelli_7442556489308872704\t2026-03-25 13:02:23\n2026-03-25\tevening\tai\tVibe Coding: come l'AI sta abbassando le barriere per costruire software e fare startup\thttps://www.linkedin.com/posts/andreacinelli_7442556559341289472\t2026-03-25 13:02:40\n2026-03-24\tmorning\tstartup\tAI e il Rinascimento delle Startup Italiane: Oltre l'Hype\thttps://www.linkedin.com/posts/andreacinelli_7442140719445733376\t2026-03-24 09:30:13\n2026-03-24\tafternoon\tai\tAI Autonoma: Il Nuovo Imperativo per il Business Italiano\thttps://www.linkedin.com/posts/andreacinelli_7442208698053079040\t2026-03-24 14:00:23\n2026-03-24\tevening\tai\tAI Autonoma: Il Nuovo Imperativo per il Business Italiano\thttps://www.linkedin.com/posts/andreacinelli_7442246495052931072\t2026-03-24 16:30:35\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}

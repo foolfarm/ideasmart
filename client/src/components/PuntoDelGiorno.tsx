@@ -98,25 +98,37 @@ function PostCard({ post, isLoading, showAuthor = false }: { post?: PostItem; is
           <div className="flex items-center gap-3 mb-4">
             {showAuthor && (
               <>
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                  style={{ background: ACCENT }}
-                >
-                  AC
-                </div>
+                <a href="/andrea-cinelli" className="flex-shrink-0">
+                  <img
+                    src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg"
+                    alt="Andrea Cinelli"
+                    className="w-10 h-10 rounded-full object-cover object-top border-2"
+                    style={{ borderColor: ACCENT }}
+                  />
+                </a>
                 <div>
-                  <p
-                    className="text-xs font-bold"
+                  <a
+                    href="/andrea-cinelli"
+                    className="text-xs font-bold hover:underline"
                     style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
                     Andrea Cinelli
-                  </p>
+                  </a>
                   <p
                     className="text-[10px]"
                     style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
                   >
                     Opinion Leader & Editorialista IdeaSmart Research
                   </p>
+                  <a
+                    href="https://www.linkedin.com/in/andreacinelli"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[9px] font-bold uppercase tracking-widest hover:underline"
+                    style={{ color: "#0077b5", fontFamily: "'Space Mono', monospace" }}
+                  >
+                    Seguimi su LinkedIn →
+                  </a>
                 </div>
               </>
             )}

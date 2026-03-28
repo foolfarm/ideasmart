@@ -1484,3 +1484,22 @@
 - [x] Limitare firma Andrea Cinelli a un solo articolo per pagina (solo il post Mattino nel PuntoDelGiorno)
 - [x] Rimuovere firma dai post Pomeriggio e Sera nel PuntoDelGiorno
 - [x] Aggiornare firma nel publisher LinkedIn: "Andrea Cinelli | Opinion Leader & Editorialista IdeaSmart Research"
+
+## Nuovi task (28 Mar 2026 — Pagina autore Andrea Cinelli)
+
+- [x] Caricare foto profilo Andrea Cinelli su CDN (andrea-cinelli-profile_2084610f.jpeg)
+- [x] Aggiornare avatar PuntoDelGiorno con foto reale (solo post Mattino, w-10 h-10 rounded-full)
+- [x] Aggiungere link profilo LinkedIn sotto la firma nel post Mattino
+- [x] Creare pagina /andrea-cinelli con bio, archivio editoriali (30 post) e CTA contatto
+- [x] Aggiungere route /andrea-cinelli in App.tsx
+- [x] Linkare la firma nel PuntoDelGiorno alla pagina /andrea-cinelli (nome + avatar cliccabili)
+
+## Nuovi task (28 Mar 2026 — Redesign IdeaSmart Business)
+
+- [ ] Riscrivere pagina /business come landing page consulting premium AI Innovation / M&A / Venture Capital
+- [ ] Sezione hero con positioning statement forte
+- [ ] Sezione servizi verticali (4 aree: AI Strategy, M&A Advisory, VC Research, Board Support)
+- [ ] Sezione team senior advisor con credenziali Top 500 / exit
+- [ ] Sezione clienti target (investitori, aziende, scaleup, fondi)
+- [ ] Sezione metodologia e differenziatori
+- [ ] CTA contatto diretto (email + form)

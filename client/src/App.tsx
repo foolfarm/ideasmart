@@ -74,6 +74,7 @@ const ChannelPreferences = lazy(() => import("./pages/ChannelPreferences"));
 const Business = lazy(() => import("./pages/Business"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
 const Tecnologia = lazy(() => import("./pages/Tecnologia"));
+const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -109,6 +110,7 @@ function Router() {
         <Route path="/advertise" component={Advertise} />
         <Route path="/business" component={Business} />
         <Route path="/research" component={Research} />
+        <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/edicola" component={Edicola} />
         <Route path="/ai/news/:id" component={NewsArticle} />
         <Route path="/music/news/:id" component={MusicNewsArticle} />
