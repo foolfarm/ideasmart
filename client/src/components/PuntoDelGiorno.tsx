@@ -223,13 +223,11 @@ export default function PuntoDelGiorno() {
   // Non mostrare nulla se non ci sono dati e non sta caricando
   if (!isLoading && (!posts || posts.length === 0)) return null;
 
-  // Separa i post per slot — ogni slot è unico grazie alla deduplicazione server-side
-  const displayMorning = posts?.find(p => p.slot === "morning");
-  const displayAfternoon = posts?.find(p => p.slot === "afternoon");
-  const displayEvening = posts?.find(p => p.slot === "evening");
+  // Mostra solo il post del mattino (un solo articolo)
+  const displayMorning = posts?.find(p => p.slot === "morning") ?? posts?.[0];
 
-  // Data di riferimento (dal post più recente)
-  const dateLabel = displayMorning?.dateLabel ?? displayAfternoon?.dateLabel ?? displayEvening?.dateLabel ?? "";
+  // Data di riferimento
+  const dateLabel = displayMorning?.dateLabel ?? "";
 
   return (
     <section className="mt-8">
@@ -268,35 +266,7 @@ export default function PuntoDelGiorno() {
         </div>
       )}
 
-      {/* Post pomeriggio (solo se presente) */}
-      {displayAfternoon && (
-        <div className="mt-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5"
-              style={{ color: "#ff5500", background: "#ff550012", fontFamily: "'Space Mono', monospace" }}
-            >
-              ● Pomeriggio
-            </span>
-          </div>
-          <PostCard post={displayAfternoon} isLoading={false} showAuthor={false} />
-        </div>
-      )}
-
-      {/* Post sera (solo se presente) — Vibe Coding / AI / Mercato */}
-      {displayEvening && (
-        <div className="mt-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5"
-              style={{ color: "#7c3aed", background: "#7c3aed12", fontFamily: "'Space Mono', monospace" }}
-            >
-              ● Sera — Vibe Coding &amp; AI
-            </span>
-          </div>
-          <PostCard post={displayEvening} isLoading={false} showAuthor={false} />
-        </div>
-      )}
+      {/* Solo il post del mattino */}
     </section>
   );
 }

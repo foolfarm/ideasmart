@@ -252,12 +252,6 @@ function SectionNav() {
   const navSections: Array<{ key: SectionKey; label: string; path: string }> = [
     { key: "ai",      label: "AI4Business", path: "/ai" },
     { key: "startup", label: "Startup News", path: "/startup" },
-    { key: "finance", label: "Finance",      path: "/finance" },
-    { key: "health",  label: "Health",       path: "/health" },
-    { key: "sport",   label: "Sport",        path: "/sport" },
-    { key: "luxury",  label: "Luxury",       path: "/luxury" },
-    { key: "news",    label: "News Italia",  path: "/news" },
-    { key: "motori",  label: "Motori",       path: "/motori" },
   ];
   return (
     <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
@@ -290,12 +284,6 @@ function SectionNav() {
         <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a2e] hover:text-white transition-colors cursor-pointer border-l border-[#1a1a2e]/15"
           style={{ fontFamily: "'Space Mono', monospace", color: "#1a1a2e" }}>
           Chi Siamo
-        </span>
-      </Link>
-      <Link href="/tecnologia">
-        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a2e] hover:text-white transition-colors cursor-pointer border-l border-[#1a1a2e]/15"
-          style={{ fontFamily: "'Space Mono', monospace", color: "#1a1a2e" }}>
-          Tecnologia
         </span>
       </Link>
       <Link href="/business">
