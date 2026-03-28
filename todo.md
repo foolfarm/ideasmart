@@ -1440,3 +1440,23 @@
 - [x] Aggiornare i prompt LLM per generare articoli firmati "Andrea Cinelli"
 - [x] Aggiornare il publisher LinkedIn per includere il nome autore nei post (prima persona + firma)
 - [x] Aggiornare i record esistenti nel DB (24 post LinkedIn aggiornati con firma)
+
+## Nuovi task (28 Mar 2026 — Redesign Home newsroom Sole 24 Ore)
+
+- [ ] Ridisegnare Home con layout editoriale asimmetrico stile newsroom finanziaria
+- [ ] Griglia hero + colonne miste: articolo grande + 2-3 colonne laterali
+- [ ] Mescolare notizie Research/AI/Startup/VC in un unico flusso editoriale
+- [ ] Tipografia da giornale finanziario (serif per titoli, sans per corpo)
+- [ ] Sezioni tematiche orizzontali con separatori editoriali
+- [ ] Nessuna foto ripetuta: ogni articolo con immagine diversa o senza immagine (stile FT)
+
+## Nuovi task (28 Mar 2026 — Redesign Home Newsroom)
+
+- [x] Ridisegnare completamente la Home con layout newsroom editoriale stile Sole 24 Ore
+- [x] Blocco 1 Primo Piano: 3 colonne — AI Hero | Startup Hero | Flusso misto ultime notizie
+- [x] Foto AI hero e Startup hero sempre diverse (nessuna ripetizione immagine)
+- [x] Striscia Research: 6 card orizzontali con immagine, badge categoria, key finding
+- [x] Blocco Approfondimenti: 2 colonne editoriali AI + Startup con editoriale in evidenza
+- [x] Blocco Finance & Markets: hero + lista + banner 300x250
+- [x] Flusso misto interleaved AI+Startup nella colonna "Ultime notizie"
+- [x] Rimosso HeroNewsBlock con foto ripetuta — sostituito con HeroArticle e MediumArticle
