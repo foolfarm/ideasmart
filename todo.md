@@ -1532,3 +1532,11 @@
 - [x] Aggiornare la Timeline: "Da progetto interno a leader nella ricerca tecnologica agentica"
 - [x] Rinominare 8 agenti con terminologia di analisi: Market Scout, Data Verifier, Research Writer, Senior Analyst, Data Modeler, Publisher, Social Analyst, Intelligence Curator
 - [x] Aggiornare badge sezione da "La redazione" a "Il sistema agentico"
+
+## Nuovi task (28 Mar 2026 — Chi Siamo: team photo, firme, testimonial, 100+ clienti)
+
+- [x] Generare immagine professionale del team con Adrian Lenice al centro stile Steve Jobs (boardroom notturna, turtleneck nero)
+- [x] Caricare immagine team su CDN e inserirla nella pagina Chi Siamo con caption overlay
+- [x] Aggiungere sezione "Alcune firme di IdeaSmart" con Andrea Cinelli (foto reale, bio, link LinkedIn linkedin.com/in/cinellia)
+- [x] Aggiungere 4 testimonial anonimi da top company: Fondo VC Londra, Fortune 500 Milano, Family Office Svizzera, Scaleup Berlino
+- [x] Aggiornare KPI: "100+" clienti in Italia e nel mondo (sostituisce "3 aree di analisi")

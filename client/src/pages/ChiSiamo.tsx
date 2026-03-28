@@ -54,10 +54,44 @@ const TIMELINE = [
 const STATS = [
   { value: "20+", label: "Ricerche originali/giorno" },
   { value: "450+", label: "Fonti monitorate" },
-  { value: "3", label: "Aree di analisi" },
+  { value: "100+", label: "Clienti in Italia e nel mondo" },
   { value: "30+", label: "Anni esperienza del team" },
   { value: "00:00", label: "Aggiornamento CET" },
   { value: "100%", label: "Dati verificati" },
+];
+
+const TESTIMONIALS = [
+  {
+    quote: "IdeaSmart Research ci ha fornito in 48 ore un'analisi competitiva sul mercato AI europeo che avrebbe richiesto al nostro team interno almeno tre settimane. La qualità degli insight era paragonabile a quella di una top boutique di ricerca.",
+    role: "Partner, Fondo VC pan-europeo — Londra",
+    sector: "Venture Capital",
+  },
+  {
+    quote: "Abbiamo utilizzato i report di IdeaSmart Research per supportare la due diligence su un'acquisizione nel settore AI generativa. La profondità dell'analisi e la velocità di consegna hanno fatto la differenza nel processo decisionale del board.",
+    role: "Chief Strategy Officer, Gruppo industriale Fortune 500 — Milano",
+    sector: "M&A Advisory",
+  },
+  {
+    quote: "Come family office, avevamo bisogno di una visione strutturata sul mercato delle startup AI in Italia e in Europa. IdeaSmart Research ci ha consegnato un Executive Report che ha orientato le nostre scelte di allocazione per il 2025.",
+    role: "Investment Director, Family Office — Svizzera",
+    sector: "Investment Research",
+  },
+  {
+    quote: "Il team di IdeaSmart Business ha affiancato il nostro CDA in una fase critica di reshaping strategico. La combinazione di analisi agentica e consulenza senior ha prodotto un output di qualità eccezionale in tempi che non avremmo mai immaginato possibili.",
+    role: "CEO, Scaleup tecnologica — Berlino",
+    sector: "Board Advisory",
+  },
+];
+
+const SIGNATURES = [
+  {
+    name: "Andrea Cinelli",
+    role: "Opinion Leader & Editorialista",
+    bio: "Imprenditore seriale, CEO e opinion leader nel settore dell'innovazione digitale, AI e Venture Capital. Autore degli editoriali quotidiani di IdeaSmart Research.",
+    linkedin: "https://www.linkedin.com/in/cinellia/",
+    initials: "AC",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg",
+  },
 ];
 
 export default function ChiSiamo() {
@@ -245,6 +279,36 @@ export default function ChiSiamo() {
 
           <ThinDivider />
 
+          {/* ── FOTO TEAM ── */}
+          <section className="py-10">
+            <SectionBadge label="Il Team" />
+            <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              Senior advisor, founder con exit, ex Big 5 e opinion leader
+            </h2>
+            <div className="relative overflow-hidden rounded-sm mb-4" style={{ maxHeight: 480 }}>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-team-photo-PRcUiUE3Qcn8EPGZxJKRpk.webp"
+                alt="Il team di IdeaSmart Research"
+                className="w-full object-cover object-center"
+                style={{ maxHeight: 480 }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6"
+                style={{ background: "linear-gradient(to top, rgba(10,15,30,0.85) 0%, transparent 100%)" }}>
+                <p className="text-white text-sm font-bold uppercase tracking-widest"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  Adrian Lenice & il team IdeaSmart Research
+                </p>
+                <p className="text-white/60 text-xs mt-1"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                  Ex consulenti Big 5 · Founder con exit · Ex Investment Banking · Partner VC · Opinion Leader AI
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <ThinDivider />
+
           {/* ── FOUNDER ── */}
           <section className="py-10 grid md:grid-cols-[1fr_2fr] gap-10 items-start">
             <div className="flex flex-col items-center text-center">
@@ -271,6 +335,91 @@ export default function ChiSiamo() {
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                 La sua visione è chiara: la ricerca di mercato del futuro non sarà prodotta da team di analisti con settimane di lavoro, ma da sistemi agentici capaci di raccogliere segnali globali, incrociare dati e produrre insight con una velocità e una scala impossibili per qualsiasi team umano. IdeaSmart Research è la prova che questa visione è già realtà.
               </p>
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── FIRME IDEASMART ── */}
+          <section className="py-10">
+            <SectionBadge label="Alcune firme di IdeaSmart" />
+            <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              Gli opinion leader che firmano i nostri editoriali
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {SIGNATURES.map((s, i) => (
+                <div key={i} className="flex gap-4 items-start p-5 border border-[#1a1a2e]/10 hover:border-[#1a1a2e]/25 transition-colors">
+                  <div className="flex-shrink-0">
+                    {s.photo ? (
+                      <img src={s.photo} alt={s.name}
+                        className="w-16 h-16 rounded-full object-cover object-top"
+                        style={{ border: `2px solid ${ACCENT}` }}
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-lg font-black text-white"
+                        style={{ background: INK }}>
+                        {s.initials}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-base font-bold text-[#1a1a2e]"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      {s.name}
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest mt-0.5 mb-2"
+                      style={{ fontFamily: "'Space Mono', monospace", color: ACCENT }}>
+                      {s.role}
+                    </div>
+                    <p className="text-sm leading-relaxed text-[#1a1a2e]/65"
+                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                      {s.bio}
+                    </p>
+                    {s.linkedin && (
+                      <a href={s.linkedin} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-70"
+                        style={{ fontFamily: "'Space Mono', monospace", color: ACCENT }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        Seguimi su LinkedIn →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <ThinDivider />
+
+          {/* ── TESTIMONIAL ── */}
+          <section className="py-10">
+            <SectionBadge label="Cosa dicono di noi" />
+            <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-2"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              100+ clienti in Italia e nel mondo si affidano a IdeaSmart Research
+            </h2>
+            <p className="text-sm text-[#1a1a2e]/50 mb-8"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              Le testimonianze sono riportate in forma anonima per tutelare la riservatezza dei nostri clienti.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {TESTIMONIALS.map((t, i) => (
+                <div key={i} className="p-6 border-l-4"
+                  style={{ borderLeftColor: ACCENT, background: "rgba(10,110,92,0.03)" }}>
+                  <SectionBadge label={t.sector} />
+                  <blockquote className="mt-3 text-base leading-relaxed text-[#1a1a2e]/80 italic"
+                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                    “{t.quote}”
+                  </blockquote>
+                  <p className="mt-4 text-[10px] uppercase tracking-widest text-[#1a1a2e]/45"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    — {t.role}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 
