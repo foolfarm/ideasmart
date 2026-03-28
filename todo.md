@@ -1524,3 +1524,11 @@
 - [x] Aggiornare la Timeline: rimossi tutti i riferimenti a testata giornalistica, sostituiti con piattaforma di ricerca/analisi
 - [x] Riscrivere la CTA finale: "Analisi a supporto delle tue decisioni. Con i migliori esperti del settore." + link IdeaSmart Research Business
 - [x] Aggiornare SEO title e meta description della pagina Chi Siamo
+
+## Nuovi task (28 Mar 2026 — Chi Siamo: nuova narrazione posizionamento)
+
+- [x] Aggiornare hero/headline: "La prima società italiana di Ricerca di Mercato ed Executive Reports in ambito tecnologico basata su tecnologia agentica"
+- [x] Aggiornare il manifesto: "Ricerca di mercato senza bias, senza agenda, senza confini"
+- [x] Aggiornare la Timeline: "Da progetto interno a leader nella ricerca tecnologica agentica"
+- [x] Rinominare 8 agenti con terminologia di analisi: Market Scout, Data Verifier, Research Writer, Senior Analyst, Data Modeler, Publisher, Social Analyst, Intelligence Curator
+- [x] Aggiornare badge sezione da "La redazione" a "Il sistema agentico"

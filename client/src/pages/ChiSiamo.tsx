@@ -33,14 +33,14 @@ function SectionBadge({ label, color = ACCENT, bg = ACCENT_LIGHT }: { label: str
 }
 
 const AGENTS = [
-  { name: "Scout", role: "Raccoglie notizie da oltre 200 fonti ogni notte", icon: "🔍" },
-  { name: "Verifier", role: "Incrocia le fonti e filtra le notizie non verificate", icon: "✅" },
-  { name: "Writer", role: "Redige articoli con stile giornalistico professionale", icon: "✍️" },
-  { name: "Editor", role: "Revisiona, taglia e ottimizza ogni pezzo", icon: "📝" },
-  { name: "Analyst", role: "Produce analisi di mercato e reportage settimanali", icon: "📊" },
-  { name: "Publisher", role: "Pubblica in automatico su tutte le sezioni", icon: "🚀" },
-  { name: "Social", role: "Crea e pubblica il post LinkedIn quotidiano", icon: "🔗" },
-  { name: "Newsletter", role: "Confeziona e invia la newsletter alle 07:30", icon: "📧" },
+  { name: "Market Scout", role: "Monitora oltre 450 fonti globali ogni notte: fonti accademiche, report di settore, feed VC e M&A", icon: "🔍" },
+  { name: "Data Verifier", role: "Incrocia e valida i dati da fonti multiple, filtra i segnali non verificati o di bassa qualità", icon: "✅" },
+  { name: "Research Writer", role: "Produce Executive Report strutturati: executive summary, key findings, implicazioni strategiche", icon: "✍️" },
+  { name: "Senior Analyst", role: "Genera analisi di mercato approfondite su AI Innovation, Venture Capital, M&A e Startup Ecosystem", icon: "📊" },
+  { name: "Data Modeler", role: "Elabora modelli quantitativi, trend e proiezioni di mercato su base storica e predittiva", icon: "📈" },
+  { name: "Publisher", role: "Distribuisce i report in automatico sulla piattaforma ogni giorno alle 00:00 CET", icon: "🚀" },
+  { name: "Social Analyst", role: "Sintetizza i key insight del giorno in formato LinkedIn per opinion leader e decision maker", icon: "🔗" },
+  { name: "Intelligence Curator", role: "Seleziona e invia la newsletter settimanale con i report più rilevanti per il target di riferimento", icon: "📧" },
 ];
 
 const TIMELINE = [
@@ -99,7 +99,7 @@ export default function ChiSiamo() {
             </h1>
             <p className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}>
-              La prima testata giornalistica 100% AI italiana
+              La prima società italiana di Ricerca di Mercato ed Executive Reports in ambito tecnologico basata su tecnologia agentica
             </p>
           </div>
           <Divider />
@@ -116,7 +116,7 @@ export default function ChiSiamo() {
               <SectionBadge label="Manifesto" />
               <h2 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e]"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                Informazione senza bias,<br />senza agenda, senza confini.
+                  Ricerca di mercato senza bias,<br />senza agenda, senza confini.
               </h2>
               <div className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
@@ -175,7 +175,7 @@ export default function ChiSiamo() {
             <SectionBadge label="La storia" />
             <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              Da bulletin board a redazione agentica
+              Da progetto interno a leader nella ricerca tecnologica agentica
             </h2>
             <div className="space-y-0">
               {TIMELINE.map((t, i) => (
@@ -207,10 +207,10 @@ export default function ChiSiamo() {
 
           {/* ── LA REDAZIONE AGENTICA ── */}
           <section className="py-10">
-            <SectionBadge label="La redazione" />
+            <SectionBadge label="Il sistema agentico" />
             <h2 className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              20+ agenti al lavoro ogni giorno
+              8 agenti specializzati al lavoro ogni giorno
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4">
               {AGENTS.map((a, i) => (
