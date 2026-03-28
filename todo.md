@@ -1545,3 +1545,12 @@
 
 - [x] Rigenerare foto team con personaggi completamente inventati, volti italiani, ambientazione italiana (Milano, Duomo in background, luce dorata italiana)
 - [x] Aggiornare URL foto team nella pagina Chi Siamo con la nuova immagine
+
+## Task Business Page Redesign (28 Mar 2026)
+
+- [x] Uniformare header/navbar della pagina /business con il resto del sito (stile editoriale bianco carta)
+- [x] Ristrutturare /business in due offerte distinte: A) Piattaforma AI Agentica (IdeaSmart Intelligence) e B) Consulenza & Advisory (IdeaSmart Advisory)
+- [x] Hero section con titolo e sottotitolo coerenti con il posizionamento di ricerca/analisi
+- [x] Sezione A: piattaforma AI agentica con news personalizzate 24h, algoritmo Verify, abbonamento
+- [x] Sezione B: consulenza, ricerca e advisory su AI, M&A, partnership tecnologiche
+- [x] CTA chiare per entrambe le offerte

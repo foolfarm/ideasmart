@@ -1,240 +1,298 @@
 /**
- * IDEASMART BUSINESS — Advisory & Research Landing Page
- * Servizio di consulenza e ricerca su AI Innovation, M&A e Venture Capital
- * Design: Navy profondo (#0a0f1e) + Gold (#c9a84c) + Bianco carta (#faf8f3)
- * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label)
+ * IDEASMART BUSINESS — Pagina servizi premium
+ * Layout editoriale coerente con il resto del sito (stile Il Sole 24 Ore).
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), teal (#0a6e5c), arancio (#ff5500).
+ * Due offerte: A) Piattaforma AI Agentica · B) Consulenza & Advisory
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { toast } from "sonner";
-import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import Navbar from "@/components/Navbar";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
-const NAVY = "#0a0f1e";
-const NAVY_MID = "#111827";
-const NAVY_LIGHT = "#1e2a45";
-const GOLD = "#c9a84c";
-const GOLD_LIGHT = "#e8d5a3";
-const PAPER = "#faf8f3";
-const WHITE = "#ffffff";
-const MUTED = "rgba(255,255,255,0.55)";
+const INK     = "#1a1a2e";
+const TEAL    = "#0a6e5c";
+const TEAL_LT = "#e6f4f1";
+const ORANGE  = "#ff5500";
+const ORANGE_LT = "#fff0e6";
+const GOLD    = "#c9a84c";
+const GOLD_LT = "#fdf8ec";
+const PAPER   = "#faf8f3";
+const MUTED   = "#1a1a2e99";
 
-// ── Dati ──────────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function formatDateIT(date: Date) {
+  return date.toLocaleDateString("it-IT", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+}
 
-const SERVICES = [
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+}
+
+function ThinDivider() {
+  return <div className="w-full border-t border-[#1a1a2e]/15" />;
+}
+
+function SectionBadge({
+  label, color = TEAL, bg = TEAL_LT,
+}: { label: string; color?: string; bg?: string }) {
+  return (
+    <span
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+      style={{ background: bg, color, fontFamily: "'Space Mono', monospace" }}
+    >
+      {label}
+    </span>
+  );
+}
+
+// ── Dati Piattaforma (Offerta A) ──────────────────────────────────────────────
+const PLATFORM_FEATURES = [
+  {
+    icon: "⚡",
+    title: "Aggiornamento 24/7",
+    desc: "Il sistema agentico monitora oltre 450 fonti globali in tempo reale. Ogni mattina alle 00:00 CET trovi il tuo briefing personalizzato già pronto.",
+  },
+  {
+    icon: "🔬",
+    title: "Algoritmo Verify™",
+    desc: "Ogni dato viene incrociato su almeno 3 fonti indipendenti prima di essere pubblicato. Zero notizie non verificate, zero allarmi falsi.",
+  },
+  {
+    icon: "🎯",
+    title: "Personalizzazione verticale",
+    desc: "Scegli le tue aree di interesse: AI Innovation, Venture Capital, M&A, Startup Ecosystem. Il feed si adatta al tuo profilo decisionale.",
+  },
+  {
+    icon: "📊",
+    title: "Executive Report quotidiani",
+    desc: "Non solo notizie: ogni giorno 20+ analisi strutturate con executive summary, key findings e implicazioni strategiche pronte per il board.",
+  },
+  {
+    icon: "🔗",
+    title: "Intelligence LinkedIn",
+    desc: "I key insight del giorno sintetizzati in formato LinkedIn da Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research.",
+  },
+  {
+    icon: "📧",
+    title: "Newsletter settimanale",
+    desc: "Ogni venerdì mattina: i 5 report più rilevanti della settimana, curati dall'Intelligence Curator agentico. Direttamente nella tua inbox.",
+  },
+];
+
+const PLATFORM_PLANS = [
+  {
+    name: "Free",
+    price: "Gratis",
+    period: "",
+    badge: null,
+    color: INK,
+    bg: "#f1f5f9",
+    features: [
+      "Accesso alle notizie AI4Business e Startup News",
+      "5 Executive Report al mese",
+      "Newsletter settimanale",
+      "Punto del Giorno (post LinkedIn)",
+    ],
+    cta: "Inizia gratis",
+    href: "/",
+    outline: true,
+  },
+  {
+    name: "Research Pro",
+    price: "€49",
+    period: "/mese",
+    badge: "PIÙ POPOLARE",
+    color: TEAL,
+    bg: TEAL_LT,
+    features: [
+      "Tutti i contenuti Free",
+      "20+ Executive Report al giorno",
+      "Ricerche di mercato illimitate",
+      "Feed personalizzato per settore",
+      "Alert real-time su M&A e VC deals",
+      "Archivio storico 12 mesi",
+    ],
+    cta: "Prova 14 giorni gratis",
+    href: "mailto:business@ideasmart.ai?subject=Research Pro",
+    outline: false,
+  },
+  {
+    name: "Enterprise",
+    price: "Su misura",
+    period: "",
+    badge: null,
+    color: GOLD,
+    bg: GOLD_LT,
+    features: [
+      "Tutti i contenuti Research Pro",
+      "Feed white-label per il tuo team",
+      "API access ai dati IdeaSmart",
+      "Briefing personalizzati per il board",
+      "Integrazione Slack / Teams",
+      "Account manager dedicato",
+    ],
+    cta: "Contattaci",
+    href: "mailto:business@ideasmart.ai?subject=Enterprise",
+    outline: true,
+  },
+];
+
+// ── Dati Advisory (Offerta B) ─────────────────────────────────────────────────
+const ADVISORY_SERVICES = [
   {
     id: "ai-strategy",
-    icon: "◈",
-    title: "AI Innovation Strategy",
-    subtitle: "Trasformazione AI per il board e il C-Level",
-    description:
-      "Supportiamo board e C-Level nella definizione di strategie di adozione dell'intelligenza artificiale: roadmap tecnologica, governance dei dati, identificazione dei casi d'uso ad alto impatto e valutazione del ROI. Non teorie — piani operativi costruiti con chi ha già guidato trasformazioni simili.",
-    deliverables: ["AI Readiness Assessment", "Roadmap strategica 12-36 mesi", "Business case e ROI modelling", "Governance framework"],
     tag: "AI STRATEGY",
+    icon: "◈",
+    color: TEAL,
+    bg: TEAL_LT,
+    title: "AI Innovation Strategy",
+    subtitle: "Trasformazione AI per board e C-Level",
+    desc: "Supportiamo board e C-Level nella definizione di strategie di adozione dell'intelligenza artificiale: roadmap tecnologica, governance dei dati, identificazione dei casi d'uso ad alto impatto e valutazione del ROI. Non teorie — piani operativi costruiti con chi ha già guidato trasformazioni simili.",
+    deliverables: ["AI Readiness Assessment", "Roadmap strategica 12-36 mesi", "Business case e ROI modelling", "Governance framework"],
   },
   {
     id: "ma-advisory",
+    tag: "M&A ADVISORY",
     icon: "◉",
+    color: ORANGE,
+    bg: ORANGE_LT,
     title: "M&A Advisory AI & Tech",
     subtitle: "Due diligence e valutazione di asset tecnologici",
-    description:
-      "Offriamo supporto specializzato nelle operazioni di M&A nel settore tech e AI: due diligence tecnologica, valutazione della proprietà intellettuale, analisi del team e del prodotto, identificazione di target strategici e supporto nelle negoziazioni. Esperienza diretta in oltre 40 operazioni completate.",
+    desc: "Supporto specializzato nelle operazioni di M&A nel settore tech e AI: due diligence tecnologica, valutazione della proprietà intellettuale, analisi del team e del prodotto, identificazione di target strategici e supporto nelle negoziazioni. Esperienza diretta in oltre 40 operazioni completate.",
     deliverables: ["Tech Due Diligence", "IP & Asset Valuation", "Target Identification", "Deal Structuring Support"],
-    tag: "M&A ADVISORY",
+  },
+  {
+    id: "partnership",
+    tag: "PARTNERSHIP TECH",
+    icon: "◎",
+    color: GOLD,
+    bg: GOLD_LT,
+    title: "Ricerca di Partnership Tecnologiche",
+    subtitle: "Identificazione e scouting di partner strategici",
+    desc: "Identifichiamo e valutiamo opportunità di partnership tecnologica per aziende che vogliono accelerare l'adozione AI o espandere il proprio ecosistema. Dall'analisi del mercato all'introduzione diretta: sfruttiamo la nostra rete di 100+ operatori del settore per connettere le realtà giuste.",
+    deliverables: ["Partner Landscape Mapping", "Shortlist qualificata", "Introduzioni dirette", "Term sheet support"],
   },
   {
     id: "vc-research",
-    icon: "◎",
+    tag: "VC RESEARCH",
+    icon: "◇",
+    color: "#15803d",
+    bg: "#f0fdf4",
     title: "Venture Capital Research",
     subtitle: "Ricerche di mercato per decisioni di investimento",
-    description:
-      "Ricerche verticali e personalizzate per fondi VC, family office e investitori istituzionali: analisi di settore, landscape competitivo, benchmark di valutazione, trend di mercato e identificazione delle opportunità di investimento più rilevanti nell'ecosistema AI e deeptech europeo.",
+    desc: "Ricerche verticali e personalizzate per fondi VC, family office e investitori istituzionali: analisi di settore, landscape competitivo, benchmark di valutazione, trend di mercato e identificazione delle opportunità di investimento più rilevanti nell'ecosistema AI e deeptech europeo.",
     deliverables: ["Sector Deep Dives", "Competitive Landscape", "Valuation Benchmarks", "Deal Flow Intelligence"],
-    tag: "VC RESEARCH",
-  },
-  {
-    id: "board-support",
-    icon: "◇",
-    title: "Board & C-Level Advisory",
-    subtitle: "Affiancamento strategico continuativo",
-    description:
-      "Un advisor senior al fianco del board e del management team per decisioni strategiche su tecnologia, mercati e investimenti. Non consulenza episodica — una presenza continuativa che porta 30 anni di esperienza operativa direttamente nelle riunioni che contano.",
-    deliverables: ["Board Advisory Retainer", "Strategic Briefings mensili", "Market Intelligence settimanale", "Access al network IdeaSmart"],
-    tag: "BOARD ADVISORY",
   },
 ];
 
-const CLIENTS = [
-  {
-    icon: "⬡",
-    title: "Fondi Venture Capital",
-    description: "Deal flow intelligence, sector research e supporto nella due diligence tecnica per fondi early-stage e growth.",
-  },
-  {
-    icon: "⬢",
-    title: "Corporate & Large Enterprise",
-    description: "AI strategy, M&A advisory e trasformazione digitale per aziende Fortune 500 e Top 100 italiane.",
-  },
-  {
-    icon: "⬣",
-    title: "Scaleup & Growth Company",
-    description: "Supporto strategico per scaleup in fase di crescita: fundraising positioning, go-to-market e board preparation.",
-  },
-  {
-    icon: "⬤",
-    title: "Family Office & Investitori",
-    description: "Research personalizzata e advisory per investitori privati che vogliono esposizione intelligente all'ecosistema AI e tech.",
-  },
-];
-
-const DIFFERENTIATORS = [
-  {
-    number: "30+",
-    label: "Anni di esperienza",
-    detail: "Il team senior ha guidato trasformazioni in aziende Fortune 500, completato exit di successo e gestito fondi di investimento.",
-  },
-  {
-    number: "20",
-    label: "Ricerche al giorno",
-    detail: "IdeaSmart Research pubblica ogni giorno 20 analisi originali su AI, Startup e Venture Capital — la base dati del nostro advisory.",
-  },
-  {
-    number: "40+",
-    label: "Operazioni M&A",
-    detail: "Esperienza diretta in operazioni di M&A nel settore tech, con deal size da €2M a €200M.",
-  },
-  {
-    number: "100%",
-    label: "Verticale AI & VC",
-    detail: "Non siamo una consulenza generalista. Ogni advisor del team lavora esclusivamente su AI, tech e venture capital.",
-  },
-];
-
-const TEAM_PROFILES = [
+const ADVISORY_TEAM = [
   {
     initials: "B5",
-    label: "Ex Big 5 — Strategy & AI",
+    tag: "EX BIG 5",
     role: "AI Strategy & Corporate Transformation",
-    background: "Ex Partner di una delle prime cinque società di consulenza strategica globale. 25+ anni di advisory su trasformazione digitale, AI adoption e corporate strategy per aziende Fortune 500 in Europa e Nord America.",
-    expertise: ["AI Strategy", "Corporate Transformation", "Board Advisory"],
-    tag: "EX BIG 5 CONSULTING",
+    bg: TEAL_LT,
+    color: TEAL,
+    detail: "Ex Partner di una delle prime cinque società di consulenza strategica globale. 25+ anni di advisory su trasformazione digitale e AI adoption per aziende Fortune 500.",
   },
   {
     initials: "IB",
-    label: "Ex Investment Banking — M&A",
-    role: "M&A & Capital Markets",
-    background: "Ex Managing Director in una primaria investment bank europea. 30+ anni in operazioni M&A tech, IPO e capital markets. Ha strutturato deal per un valore complessivo superiore a €2 miliardi nel settore tech e AI.",
-    expertise: ["M&A Advisory", "Capital Markets", "Deal Structuring"],
     tag: "EX INVESTMENT BANKING",
+    role: "M&A & Capital Markets",
+    bg: ORANGE_LT,
+    color: ORANGE,
+    detail: "Ex Managing Director in una primaria investment bank europea. 30+ anni in operazioni M&A tech, IPO e capital markets. Deal value complessivo >€2 miliardi.",
   },
   {
     initials: "FX",
-    label: "Founder con Exit — Tech",
-    role: "Startup Strategy & Venture",
-    background: "Fondatore seriale con tre exit di successo nel settore SaaS e AI (due acquisizioni strategiche, una IPO). Mentor di oltre 60 startup in portafoglio. Profonda conoscenza dell'ecosistema VC europeo e israeliano.",
-    expertise: ["Startup Strategy", "Fundraising", "Exit Planning"],
     tag: "FOUNDER · 3 EXIT",
+    role: "Startup Strategy & Venture",
+    bg: GOLD_LT,
+    color: GOLD,
+    detail: "Fondatore seriale con tre exit di successo nel settore SaaS e AI. Mentor di oltre 60 startup in portafoglio. Profonda conoscenza dell'ecosistema VC europeo.",
   },
   {
     initials: "VC",
-    label: "Ex Partner VC — Deeptech",
-    role: "VC Strategy & Portfolio Management",
-    background: "Ex Partner fondatore di un fondo VC deeptech con €300M AUM. 18+ anni nell'ecosistema VC europeo. Portfolio di 50+ investimenti in AI, robotica e biotech. Board member in 12 società in portafoglio.",
-    expertise: ["VC Strategy", "Portfolio Management", "Deep Tech"],
     tag: "EX VENTURE CAPITAL",
-  },
-  {
-    initials: "OL",
-    label: "Opinion Leader — AI & Innovation",
-    role: "AI Thought Leadership & Media",
-    background: "Tra le voci più seguite in Italia su AI e innovazione tecnologica. Editorialista per primarie testate economiche, speaker a Davos, Web Summit e Slush. Autore di due libri sull'impatto dell'AI sull'economia.",
-    expertise: ["AI Thought Leadership", "Media & PR", "Innovation Keynotes"],
-    tag: "OPINION LEADER · AI",
-  },
-  {
-    initials: "CX",
-    label: "Ex C-Level Fortune 500",
-    role: "Digital Transformation & AI Governance",
-    background: "Ex Chief Digital Officer di un gruppo industriale Fortune 500 europeo. Ha guidato la trasformazione digitale di un'organizzazione da 40.000 dipendenti con un budget di €800M. Pioniere nell'adozione enterprise dell'AI generativa.",
-    expertise: ["AI Governance", "Digital Transformation", "Change Management"],
-    tag: "EX FORTUNE 500 C-LEVEL",
+    role: "VC Strategy & Portfolio Management",
+    bg: "#f0fdf4",
+    color: "#15803d",
+    detail: "Ex Partner fondatore di un fondo VC deeptech con €300M AUM. 18+ anni nell'ecosistema VC europeo. Portfolio di 50+ investimenti in AI, robotica e biotech.",
   },
 ];
 
-const FAQS = [
+const ADVISORY_FORMATS = [
   {
-    q: "Come si differenzia IdeaSmart Business da una consulenza tradizionale?",
-    a: "IdeaSmart Business combina la profondità di ricerca di una think tank (20 analisi quotidiane su AI e VC) con l'esperienza operativa di advisor che hanno lavorato in Top 500, completato exit e gestito fondi. Non offriamo framework teorici — offriamo insight basati su dati reali e decisioni prese in prima persona.",
+    icon: "📋",
+    title: "Project-based",
+    desc: "Ricerche e advisory su singoli progetti con deliverable definiti e timeline chiara. Ideale per due diligence, ricerche di mercato puntuali, scouting di partner.",
   },
   {
-    q: "Quali sono i formati di engagement disponibili?",
-    a: "Offriamo tre formati: (1) Project-based — ricerche e advisory su singoli progetti con deliverable definiti; (2) Retainer mensile — presenza continuativa del team per supporto strategico ricorrente; (3) Board Advisory — un senior advisor come membro del board o advisory board con presenza alle riunioni chiave.",
+    icon: "🔄",
+    title: "Retainer mensile",
+    desc: "Presenza continuativa del team per supporto strategico ricorrente. Briefing mensili, alert su deal flow, accesso diretto agli advisor senior.",
   },
   {
-    q: "In quanto tempo viene consegnata una ricerca di mercato?",
-    a: "Una ricerca di mercato standard (20-30 pagine) viene consegnata in 5-7 giorni lavorativi. Per ricerche più approfondite o che richiedono interviste con esperti del settore, i tempi sono di 2-3 settimane. Offriamo anche briefing rapidi (48 ore) per decisioni urgenti.",
-  },
-  {
-    q: "Lavorate anche con startup early-stage?",
-    a: "Sì, ma con un approccio selettivo. Lavoriamo con startup che hanno già una traction dimostrabile e si trovano in fase di fundraising Series A o successiva, o che stanno preparando un'operazione di M&A. Per startup pre-revenue, il nostro contributo è più efficace in fase di board preparation e investor storytelling.",
+    icon: "🏛️",
+    title: "Board Advisory",
+    desc: "Un senior advisor come membro dell'advisory board con presenza alle riunioni chiave. Il formato più intensivo per chi vuole un partner strategico a lungo termine.",
   },
 ];
 
 // ── Componenti ────────────────────────────────────────────────────────────────
 
-function GoldDivider() {
-  return <div className="w-12 h-0.5 my-4" style={{ background: GOLD }} />;
-}
-
-function ServiceCard({ service, index }: { service: typeof SERVICES[0]; index: number }) {
+function ServiceAccordion({ service }: { service: typeof ADVISORY_SERVICES[0] }) {
   const [open, setOpen] = useState(false);
   return (
     <div
-      className="border p-6 cursor-pointer transition-all duration-300 group"
-      style={{
-        borderColor: open ? GOLD : "rgba(201,168,76,0.25)",
-        background: open ? "rgba(201,168,76,0.06)" : "transparent",
-      }}
+      className="border-b cursor-pointer group"
+      style={{ borderColor: `${INK}20` }}
       onClick={() => setOpen(!open)}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-xl" style={{ color: GOLD }}>{service.icon}</span>
-            <span
-              className="text-[9px] font-bold uppercase tracking-[0.25em] px-2 py-0.5 border"
-              style={{ color: GOLD, borderColor: GOLD + "40", fontFamily: "'Space Mono', monospace" }}
-            >
-              {service.tag}
-            </span>
-          </div>
-          <h3
-            className="text-xl font-bold mb-1 group-hover:text-white transition-colors"
-            style={{ color: GOLD_LIGHT, fontFamily: "'Playfair Display', Georgia, serif" }}
+      <div className="flex items-start justify-between gap-4 py-5">
+        <div className="flex items-start gap-4 flex-1">
+          <div
+            className="w-10 h-10 rounded-sm flex items-center justify-center text-lg flex-shrink-0 mt-0.5"
+            style={{ background: service.bg, color: service.color }}
           >
-            {service.title}
-          </h3>
-          <p className="text-sm" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-            {service.subtitle}
-          </p>
+            {service.icon}
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <SectionBadge label={service.tag} color={service.color} bg={service.bg} />
+            </div>
+            <h3
+              className="text-lg font-bold leading-tight"
+              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              {service.title}
+            </h3>
+            <p className="text-sm mt-0.5" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+              {service.subtitle}
+            </p>
+          </div>
         </div>
-        <span className="text-2xl mt-1 transition-transform duration-300" style={{ color: GOLD, transform: open ? "rotate(45deg)" : "rotate(0deg)" }}>
+        <span
+          className="text-xl transition-transform duration-200 mt-1 flex-shrink-0"
+          style={{ color: MUTED, transform: open ? "rotate(45deg)" : "none" }}
+        >
           +
         </span>
       </div>
-
       {open && (
-        <div className="mt-5 pt-5 border-t" style={{ borderColor: "rgba(201,168,76,0.2)" }}>
-          <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'Source Serif 4', serif" }}>
-            {service.description}
+        <div className="pb-6 pl-14">
+          <p className="text-sm leading-relaxed mb-4" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+            {service.desc}
           </p>
           <div className="grid grid-cols-2 gap-2">
-            {service.deliverables.map((d, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <span style={{ color: GOLD }}>→</span>
-                <span className="text-xs" style={{ color: GOLD_LIGHT, fontFamily: "'Space Mono', monospace" }}>{d}</span>
+            {service.deliverables.map((d) => (
+              <div key={d} className="flex items-center gap-2 text-xs font-semibold" style={{ color: service.color }}>
+                <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: service.color }} />
+                {d}
               </div>
             ))}
           </div>
@@ -244,643 +302,559 @@ function ServiceCard({ service, index }: { service: typeof SERVICES[0]; index: n
   );
 }
 
-function ContactForm() {
-  const [form, setForm] = useState({ name: "", company: "", email: "", service: "", message: "" });
-  const [sent, setSent] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.email || !form.message) {
-      toast.error("Compila almeno nome, email e messaggio");
-      return;
-    }
-    // Simula invio
-    await new Promise(r => setTimeout(r, 800));
-    setSent(true);
-    toast.success("Richiesta inviata. Ti contatteremo entro 24 ore.");
-  };
-
-  if (sent) {
-    return (
-      <div className="text-center py-12">
-        <div className="text-4xl mb-4" style={{ color: GOLD }}>✓</div>
-        <p className="text-lg font-bold mb-2" style={{ color: WHITE, fontFamily: "'Playfair Display', serif" }}>
-          Richiesta ricevuta
-        </p>
-        <p className="text-sm" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-          Un membro del team ti contatterà entro 24 ore lavorative.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}>
-            Nome e Cognome *
-          </label>
-          <input
-            type="text"
-            value={form.name}
-            onChange={e => setForm({ ...form, name: e.target.value })}
-            className="w-full px-3 py-2 text-sm bg-transparent border outline-none focus:border-[#c9a84c] transition-colors"
-            style={{ borderColor: "rgba(201,168,76,0.3)", color: WHITE, fontFamily: "'Source Serif 4', serif" }}
-            placeholder="Andrea Rossi"
-          />
-        </div>
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}>
-            Azienda / Fondo
-          </label>
-          <input
-            type="text"
-            value={form.company}
-            onChange={e => setForm({ ...form, company: e.target.value })}
-            className="w-full px-3 py-2 text-sm bg-transparent border outline-none focus:border-[#c9a84c] transition-colors"
-            style={{ borderColor: "rgba(201,168,76,0.3)", color: WHITE, fontFamily: "'Source Serif 4', serif" }}
-            placeholder="Nome azienda o fondo"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}>
-          Email *
-        </label>
-        <input
-          type="email"
-          value={form.email}
-          onChange={e => setForm({ ...form, email: e.target.value })}
-          className="w-full px-3 py-2 text-sm bg-transparent border outline-none focus:border-[#c9a84c] transition-colors"
-          style={{ borderColor: "rgba(201,168,76,0.3)", color: WHITE, fontFamily: "'Source Serif 4', serif" }}
-          placeholder="andrea@azienda.com"
-        />
-      </div>
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}>
-          Area di interesse
-        </label>
-        <select
-          value={form.service}
-          onChange={e => setForm({ ...form, service: e.target.value })}
-          className="w-full px-3 py-2 text-sm bg-transparent border outline-none focus:border-[#c9a84c] transition-colors"
-          style={{ borderColor: "rgba(201,168,76,0.3)", color: form.service ? WHITE : "rgba(255,255,255,0.4)", fontFamily: "'Source Serif 4', serif", background: NAVY_MID }}
-        >
-          <option value="" style={{ background: NAVY_MID }}>Seleziona un servizio</option>
-          <option value="ai-strategy" style={{ background: NAVY_MID }}>AI Innovation Strategy</option>
-          <option value="ma-advisory" style={{ background: NAVY_MID }}>M&A Advisory AI & Tech</option>
-          <option value="vc-research" style={{ background: NAVY_MID }}>Venture Capital Research</option>
-          <option value="board-support" style={{ background: NAVY_MID }}>Board & C-Level Advisory</option>
-          <option value="other" style={{ background: NAVY_MID }}>Altro / Non so ancora</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}>
-          Descrivi la tua esigenza *
-        </label>
-        <textarea
-          value={form.message}
-          onChange={e => setForm({ ...form, message: e.target.value })}
-          rows={4}
-          className="w-full px-3 py-2 text-sm bg-transparent border outline-none focus:border-[#c9a84c] transition-colors resize-none"
-          style={{ borderColor: "rgba(201,168,76,0.3)", color: WHITE, fontFamily: "'Source Serif 4', serif" }}
-          placeholder="Descrivici brevemente il contesto e l'obiettivo della tua richiesta..."
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full py-3 text-sm font-bold uppercase tracking-widest transition-all duration-200 hover:opacity-90"
-        style={{ background: GOLD, color: NAVY, fontFamily: "'Space Mono', monospace" }}
-      >
-        Invia Richiesta →
-      </button>
-      <p className="text-[10px] text-center" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
-        Risposta garantita entro 24 ore lavorative · Riservatezza totale
-      </p>
-    </form>
-  );
-}
-
-// ── Pagina principale ─────────────────────────────────────────────────────────
+// ── Pagina ────────────────────────────────────────────────────────────────────
 
 export default function Business() {
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const today = useMemo(() => new Date(), []);
 
   return (
-    <div style={{ background: NAVY, minHeight: "100vh", color: WHITE }}>
+    <>
       <SEOHead
-        title="IdeaSmart Business — Advisory & Research su AI, M&A e Venture Capital"
-        description="Consulenza strategica e ricerche di mercato su AI Innovation, M&A e Venture Capital. Un team di senior advisor con 30+ anni di esperienza a supporto di investitori, aziende, scaleup e fondi."
+        title="IdeaSmart Business — Piattaforma AI & Advisory"
+        description="Due offerte per chi decide: la piattaforma AI agentica IdeaSmart Intelligence con 20+ ricerche al giorno, e il servizio di consulenza senior su AI Innovation, M&A e partnership tecnologiche."
+        canonical="https://ideasmart.ai/business"
+        ogSiteName="IDEASMART Research"
       />
-      <Navbar />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+      `}</style>
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_LIGHT} 100%)` }}
-      >
-        {/* Griglia decorativa */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `linear-gradient(${GOLD} 1px, transparent 1px), linear-gradient(90deg, ${GOLD} 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
+      <div className="min-h-screen" style={{ background: PAPER, color: INK }}>
 
-        <div className="relative max-w-6xl mx-auto px-4 pt-20 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left */}
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-0.5" style={{ background: GOLD }} />
-                <span
-                  className="text-[10px] font-bold uppercase tracking-[0.3em]"
-                  style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
+        {/* ── NAVBAR STANDARD ── */}
+        <Navbar />
+
+        {/* ── TESTATA ── */}
+        <header className="max-w-6xl mx-auto px-4 pt-24 pb-0">
+          <div className="flex items-center justify-between mb-2">
+            <Link href="/">
+              <span
+                className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
+                style={{ fontFamily: "'Space Mono', monospace" }}
+              >
+                ← IdeaSmart
+              </span>
+            </Link>
+            <span
+              className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Space Mono', monospace" }}
+            >
+              {formatDateIT(today)}
+            </span>
+          </div>
+          <Divider thick />
+          <div className="text-center py-6">
+            <SectionBadge label="IdeaSmart Business" />
+            <h1
+              className="mt-3 text-4xl md:text-6xl font-black tracking-tight"
+              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+            >
+              Due strumenti.<br />
+              <span style={{ color: TEAL }}>Una sola missione.</span>
+            </h1>
+            <p
+              className="mt-3 text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+              style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
+            >
+              Informazione AI agentica personalizzata 24 ore su 24 — e consulenza senior su AI, M&A e partnership tecnologiche.
+              Per chi prende decisioni che contano.
+            </p>
+          </div>
+          <Divider />
+        </header>
+
+        <BreakingNewsTicker />
+
+        {/* ── INDICE OFFERTE ── */}
+        <section className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Card A */}
+            <a
+              href="#piattaforma"
+              className="group block border-2 rounded-sm p-6 transition-all duration-200 hover:shadow-md"
+              style={{ borderColor: TEAL, background: TEAL_LT }}
+            >
+              <div className="flex items-start gap-4">
+                <div
+                  className="w-12 h-12 rounded-sm flex items-center justify-center text-2xl flex-shrink-0"
+                  style={{ background: TEAL, color: "#fff" }}
                 >
-                  IdeaSmart Business
-                </span>
+                  A
+                </div>
+                <div>
+                  <SectionBadge label="Piattaforma" color={TEAL} bg="#c8ede8" />
+                  <h2
+                    className="mt-2 text-xl font-bold leading-tight"
+                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    IdeaSmart Intelligence
+                  </h2>
+                  <p className="mt-1 text-sm leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+                    La piattaforma AI agentica con news e ricerche personalizzate ogni giorno, basata sull'algoritmo Verify™.
+                  </p>
+                  <span
+                    className="inline-block mt-3 text-xs font-bold uppercase tracking-wider"
+                    style={{ color: TEAL, fontFamily: "'Space Mono', monospace" }}
+                  >
+                    Scopri la piattaforma →
+                  </span>
+                </div>
               </div>
+            </a>
 
-              <h1
-                className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6"
-                style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Advisory & Research<br />
-                <span style={{ color: GOLD }}>AI · M&A · Venture Capital</span>
-              </h1>
-
-              <p
-                className="text-base leading-relaxed mb-8"
-                style={{ color: "rgba(255,255,255,0.70)", fontFamily: "'Source Serif 4', Georgia, serif", maxWidth: "480px" }}
-              >
-                Un team di senior advisor con 30+ anni di esperienza in Top 500, exit di successo e gestione di fondi VC. Ricerche di mercato verticali e consulenza strategica a supporto delle decisioni di investimento nell'ecosistema AI e Venture Capital.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href="#contact"
-                  className="px-6 py-3 text-sm font-bold uppercase tracking-widest text-center transition-opacity hover:opacity-90"
-                  style={{ background: GOLD, color: NAVY, fontFamily: "'Space Mono', monospace" }}
+            {/* Card B */}
+            <a
+              href="#advisory"
+              className="group block border-2 rounded-sm p-6 transition-all duration-200 hover:shadow-md"
+              style={{ borderColor: GOLD, background: GOLD_LT }}
+            >
+              <div className="flex items-start gap-4">
+                <div
+                  className="w-12 h-12 rounded-sm flex items-center justify-center text-2xl flex-shrink-0"
+                  style={{ background: GOLD, color: "#fff" }}
                 >
-                  Richiedi una Consulenza →
-                </a>
-                <a
-                  href="#services"
-                  className="px-6 py-3 text-sm font-bold uppercase tracking-widest text-center border transition-colors hover:border-[#c9a84c]"
-                  style={{ borderColor: "rgba(201,168,76,0.4)", color: GOLD_LIGHT, fontFamily: "'Space Mono', monospace" }}
-                >
-                  Scopri i Servizi
-                </a>
+                  B
+                </div>
+                <div>
+                  <SectionBadge label="Consulenza" color={GOLD} bg="#f5e9c8" />
+                  <h2
+                    className="mt-2 text-xl font-bold leading-tight"
+                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    IdeaSmart Advisory
+                  </h2>
+                  <p className="mt-1 text-sm leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+                    Consulenza e ricerca senior su AI Innovation, M&A e ricerca di partnership tecnologiche. Per board, fondi e scaleup.
+                  </p>
+                  <span
+                    className="inline-block mt-3 text-xs font-bold uppercase tracking-wider"
+                    style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
+                  >
+                    Scopri l'advisory →
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <ThinDivider />
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            OFFERTA A — PIATTAFORMA AI AGENTICA
+        ══════════════════════════════════════════════════════════════════════ */}
+        <section id="piattaforma" className="max-w-6xl mx-auto px-4 py-12">
+
+          {/* Intestazione sezione */}
+          <div className="flex items-center gap-3 mb-2">
+            <div
+              className="w-8 h-8 rounded-sm flex items-center justify-center text-sm font-black text-white"
+              style={{ background: TEAL }}
+            >
+              A
+            </div>
+            <SectionBadge label="IdeaSmart Intelligence Platform" color={TEAL} bg={TEAL_LT} />
+          </div>
+          <Divider thick />
+
+          <div className="grid md:grid-cols-[2fr_1fr] gap-10 pt-8">
+            <div>
+              <h2
+                className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Il tuo briefing AI personalizzato.<br />
+                <span style={{ color: TEAL }}>Ogni mattina alle 00:00 CET.</span>
+              </h2>
+              <div
+                className="text-base leading-relaxed space-y-3"
+                style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
+              >
+                <p>
+                  IdeaSmart Intelligence è la piattaforma di informazione AI agentica che lavora mentre dormi. Otto agenti specializzati monitorano oltre <strong style={{ color: INK }}>450 fonti globali</strong> ogni notte: fonti accademiche, report di settore, feed VC e M&A, media specializzati internazionali.
+                </p>
+                <p>
+                  L'algoritmo proprietario <strong style={{ color: INK }}>Verify™</strong> incrocia ogni dato su almeno tre fonti indipendenti prima di pubblicarlo. Il risultato: ogni mattina trovi sul tuo feed 20+ ricerche originali e 40+ notizie verificate, pronte per le tue decisioni.
+                </p>
+                <p>
+                  Non è un aggregatore di notizie. È un <strong style={{ color: INK }}>sistema di intelligence personalizzato</strong> che si adatta al tuo profilo: scegli le aree che ti interessano — AI Innovation, Venture Capital, M&A, Startup Ecosystem — e il feed si costruisce intorno alle tue priorità.
+                </p>
               </div>
             </div>
 
-            {/* Right — Credenziali */}
-            <div className="grid grid-cols-2 gap-4">
-              {DIFFERENTIATORS.map((d, i) => (
-                <div
-                  key={i}
-                  className="p-5 border"
-                  style={{ borderColor: "rgba(201,168,76,0.2)", background: "rgba(201,168,76,0.04)" }}
+            {/* Citazione */}
+            <div className="flex flex-col justify-start pt-2">
+              <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: TEAL }}>
+                <p
+                  className="text-lg font-bold italic leading-snug"
+                  style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  <p
-                    className="text-3xl font-bold mb-1"
-                    style={{ color: GOLD, fontFamily: "'Playfair Display', serif" }}
+                  "In 3 anni di sviluppo agentico, abbiamo costruito il sistema di ricerca automatizzata più avanzato d'Italia. Oggi lo mettiamo a disposizione di chi decide."
+                </p>
+                <footer
+                  className="mt-3 text-xs uppercase tracking-widest"
+                  style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+                >
+                  — Adrian Lenice, Founder & CEO IdeaSmart Research
+                </footer>
+              </blockquote>
+
+              {/* KPI */}
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {[
+                  { v: "20+", l: "Ricerche/giorno" },
+                  { v: "450+", l: "Fonti monitorate" },
+                  { v: "00:00", l: "Aggiornamento CET" },
+                  { v: "100%", l: "Dati verificati" },
+                ].map(({ v, l }) => (
+                  <div key={l} className="text-center p-3 rounded-sm" style={{ background: TEAL_LT }}>
+                    <div
+                      className="text-2xl font-black"
+                      style={{ color: TEAL, fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {v}
+                    </div>
+                    <div
+                      className="text-[10px] uppercase tracking-wider mt-0.5"
+                      style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+                    >
+                      {l}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Feature grid */}
+          <div className="mt-10">
+            <ThinDivider />
+            <h3
+              className="mt-6 mb-5 text-xs font-bold uppercase tracking-[0.2em]"
+              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+            >
+              Cosa include la piattaforma
+            </h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {PLATFORM_FEATURES.map((f) => (
+                <div
+                  key={f.title}
+                  className="border p-4 rounded-sm"
+                  style={{ borderColor: `${INK}15`, background: "#fff" }}
+                >
+                  <div className="text-2xl mb-2">{f.icon}</div>
+                  <h4
+                    className="font-bold text-sm mb-1"
+                    style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
                   >
-                    {d.number}
-                  </p>
-                  <p
-                    className="text-xs font-bold uppercase tracking-wider mb-2"
-                    style={{ color: GOLD_LIGHT, fontFamily: "'Space Mono', monospace" }}
-                  >
-                    {d.label}
-                  </p>
+                    {f.title}
+                  </h4>
                   <p className="text-xs leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-                    {d.detail}
+                    {f.desc}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── POSITIONING STATEMENT ─────────────────────────────────────────── */}
-      <section
-        className="py-12 border-y"
-        style={{ borderColor: "rgba(201,168,76,0.2)", background: "rgba(201,168,76,0.04)" }}
-      >
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <blockquote
-            className="text-xl md:text-2xl font-bold leading-relaxed"
-            style={{ color: GOLD_LIGHT, fontFamily: "'Playfair Display', Georgia, serif" }}
-          >
-            "Non siamo una consulenza generalista. Siamo il team che ha vissuto dall'interno le trasformazioni che oggi consigliamo. Ogni ricerca che pubblichiamo, ogni advisory che offriamo, nasce da decisioni prese in prima persona — non da framework teorici."
-          </blockquote>
-          <p className="mt-4 text-sm" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
-            — Andrea Cinelli, Founder IdeaSmart Business
-          </p>
-        </div>
-      </section>
-
-      {/* ── SERVIZI ──────────────────────────────────────────────────────── */}
-      <section id="services" className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="mb-12">
-            <span
-              className="text-[10px] font-bold uppercase tracking-[0.3em]"
-              style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
+          {/* Piani */}
+          <div className="mt-12">
+            <ThinDivider />
+            <h3
+              className="mt-6 mb-5 text-xs font-bold uppercase tracking-[0.2em]"
+              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
             >
-              Aree di Intervento
-            </span>
-            <GoldDivider />
-            <h2
-              className="text-3xl md:text-4xl font-bold"
-              style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Quattro Servizi Verticali.<br />
-              <span style={{ color: GOLD }}>Un Solo Focus: AI & Venture Capital.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {SERVICES.map((service, i) => (
-              <ServiceCard key={service.id} service={service} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CLIENTI TARGET ───────────────────────────────────────────────── */}
-      <section
-        className="py-20 border-y"
-        style={{ borderColor: "rgba(201,168,76,0.15)", background: NAVY_MID }}
-      >
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="mb-12">
-            <span
-              className="text-[10px] font-bold uppercase tracking-[0.3em]"
-              style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
-            >
-              Chi Serviamo
-            </span>
-            <GoldDivider />
-            <h2
-              className="text-3xl font-bold"
-              style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Supporto Specializzato<br />
-              <span style={{ color: GOLD }}>per Chi Decide.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {CLIENTS.map((client, i) => (
-              <div
-                key={i}
-                className="p-6 border transition-all duration-300 hover:border-[#c9a84c]/60 group"
-                style={{ borderColor: "rgba(201,168,76,0.2)" }}
-              >
-                <span className="text-3xl block mb-4" style={{ color: GOLD }}>{client.icon}</span>
-                <h3
-                  className="text-base font-bold mb-2 group-hover:text-[#c9a84c] transition-colors"
-                  style={{ color: GOLD_LIGHT, fontFamily: "'Playfair Display', serif" }}
+              Piani di abbonamento
+            </h3>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {PLATFORM_PLANS.map((plan) => (
+                <div
+                  key={plan.name}
+                  className="border-2 rounded-sm p-5 flex flex-col"
+                  style={{
+                    borderColor: plan.color,
+                    background: plan.bg,
+                  }}
                 >
-                  {client.title}
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-                  {client.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TEAM ─────────────────────────────────────────────────────────── */}
-      <section id="team" className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="mb-12">
-            <span
-              className="text-[10px] font-bold uppercase tracking-[0.3em]"
-              style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
-            >
-              Il Team
-            </span>
-            <GoldDivider />
-            <h2
-              className="text-3xl font-bold"
-              style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Senior Advisor con Esperienza Operativa.<br />
-              <span style={{ color: GOLD }}>Non Consulenti Teorici.</span>
-            </h2>
-            <p
-              className="mt-4 text-sm leading-relaxed max-w-2xl"
-              style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
-            >
-              Ogni membro del team ha guidato trasformazioni reali: come CTO di Fortune 500, come partner di fondi VC, come founder con exit di successo. Questo è il profilo minimo per entrare nel team IdeaSmart Business.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {TEAM_PROFILES.map((member, i) => (
-              <div
-                key={i}
-                className="p-6 border"
-                style={{ borderColor: "rgba(201,168,76,0.2)", background: "rgba(201,168,76,0.03)" }}
-              >
-                <div className="flex items-start gap-4 mb-4">
+                  {plan.badge && (
+                    <div className="mb-2">
+                      <SectionBadge label={plan.badge} color={plan.color} bg={`${plan.color}20`} />
+                    </div>
+                  )}
                   <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-                    style={{ background: GOLD + "20", color: GOLD, fontFamily: "'Space Mono', monospace", border: `1px solid ${GOLD}40` }}
+                    className="text-lg font-black mb-1"
+                    style={{ color: plan.color, fontFamily: "'Space Grotesk', sans-serif" }}
                   >
-                    {member.initials}
+                    {plan.name}
                   </div>
-                  <div>
-                    <h3
-                      className="text-base font-bold"
-                      style={{ color: WHITE, fontFamily: "'Playfair Display', serif" }}
-                    >
-                      {member.label}
-                    </h3>
-                    <p
-                      className="text-xs"
-                      style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
-                    >
-                      {member.role}
-                    </p>
-                  </div>
-                </div>
-                <p
-                  className="text-sm leading-relaxed mb-4"
-                  style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
-                >
-                  {member.background}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {member.expertise.map((tag, j) => (
+                  <div className="flex items-baseline gap-1 mb-4">
                     <span
-                      key={j}
-                      className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 border"
-                      style={{ color: GOLD_LIGHT, borderColor: GOLD + "30", fontFamily: "'Space Mono', monospace" }}
+                      className="text-3xl font-black"
+                      style={{ color: INK, fontFamily: "'Playfair Display', serif" }}
                     >
-                      {tag}
+                      {plan.price}
                     </span>
-                  ))}
+                    {plan.period && (
+                      <span className="text-sm" style={{ color: MUTED }}>
+                        {plan.period}
+                      </span>
+                    )}
+                  </div>
+                  <ul className="space-y-2 flex-1 mb-5">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-xs" style={{ color: MUTED }}>
+                        <span className="mt-0.5 flex-shrink-0" style={{ color: plan.color }}>✓</span>
+                        <span style={{ fontFamily: "'Source Serif 4', serif" }}>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={plan.href}
+                    className="block text-center py-2.5 px-4 text-sm font-bold rounded-sm transition-all duration-200 hover:opacity-90"
+                    style={
+                      plan.outline
+                        ? { border: `2px solid ${plan.color}`, color: plan.color, background: "transparent", fontFamily: "'Space Grotesk', sans-serif" }
+                        : { background: plan.color, color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }
+                    }
+                  >
+                    {plan.cta}
+                  </a>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          <div
-            className="mt-8 p-6 border text-center"
-            style={{ borderColor: "rgba(201,168,76,0.3)", background: "rgba(201,168,76,0.05)" }}
-          >
-            <p
-              className="text-sm font-bold mb-1"
-              style={{ color: GOLD_LIGHT, fontFamily: "'Playfair Display', serif" }}
-            >
-              Il team si espande in base al progetto
-            </p>
-            <p className="text-xs" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-              Per ogni mandato, selezioniamo gli advisor con l'esperienza più rilevante per il settore e la fase del cliente. Il network IdeaSmart include oltre 50 senior professional in AI, tech, finance e venture capital.
-            </p>
-          </div>
-
-          {/* ── BANNER RECRUITING ── */}
-          <div
-            className="mt-12 p-8 border-2 text-center relative overflow-hidden"
-            style={{ borderColor: GOLD, background: `linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 100%)` }}
-          >
-            {/* Griglia decorativa */}
-            <div
-              className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `linear-gradient(${GOLD} 1px, transparent 1px), linear-gradient(90deg, ${GOLD} 1px, transparent 1px)`,
-                backgroundSize: "40px 40px",
-              }}
-            />
-            <div className="relative">
-              <span
-                className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] px-3 py-1 border mb-4"
-                style={{ color: GOLD, borderColor: GOLD + "60", fontFamily: "'Space Mono', monospace" }}
-              >
-                Open Positions
-              </span>
-              <h3
-                className="text-2xl md:text-3xl font-bold mb-3"
-                style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Vuoi Collaborare con Noi?<br />
-                <span style={{ color: GOLD }}>Cerchiamo Firme d'Eccellenza.</span>
-              </h3>
-              <p
-                className="text-sm leading-relaxed mb-6 max-w-2xl mx-auto"
-                style={{ color: "rgba(255,255,255,0.65)", fontFamily: "'Source Serif 4', serif" }}
-              >
-                IdeaSmart Business è una community selettiva di senior advisor, founder con exit, ex partner di fondi VC e opinion leader di settore. Stiamo allargando il team con profili di assoluta eccellenza: ex Big 5, C-Level Fortune 500, imprenditori con track record documentato.
-                <br /><br />
-                <strong style={{ color: GOLD_LIGHT }}>La selezione è rigorosa. I mandati sono esclusivi. La reputazione del network è il nostro asset principale.</strong>
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <a
-                  href="mailto:info@ideasmart.ai?subject=Candidatura IdeaSmart Business"
-                  className="px-8 py-3 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-90"
-                  style={{ background: GOLD, color: NAVY, fontFamily: "'Space Mono', monospace" }}
-                >
-                  Candidati Ora → info@ideasmart.ai
-                </a>
-              </div>
-              <p
-                className="mt-4 text-[10px] uppercase tracking-widest"
-                style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'Space Mono', monospace" }}
-              >
-                Selezione continua · Solo profili senior · Riservatezza garantita
-              </p>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section
-        className="py-20 border-t"
-        style={{ borderColor: "rgba(201,168,76,0.15)", background: NAVY_MID }}
-      >
-        <div className="max-w-3xl mx-auto px-4">
-          <div className="mb-10">
-            <span
-              className="text-[10px] font-bold uppercase tracking-[0.3em]"
-              style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
-            >
-              Domande Frequenti
-            </span>
-            <GoldDivider />
-            <h2
-              className="text-2xl font-bold"
-              style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Come Funziona
-            </h2>
-          </div>
-
-          <div className="space-y-3">
-            {FAQS.map((faq, i) => (
-              <div
-                key={i}
-                className="border cursor-pointer"
-                style={{ borderColor: activeFaq === i ? GOLD + "60" : "rgba(201,168,76,0.2)" }}
-                onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-              >
-                <div className="flex items-center justify-between p-5">
-                  <p
-                    className="text-sm font-bold pr-4"
-                    style={{ color: activeFaq === i ? GOLD_LIGHT : WHITE, fontFamily: "'Source Serif 4', serif" }}
-                  >
-                    {faq.q}
-                  </p>
-                  <span className="text-xl flex-shrink-0 transition-transform duration-200" style={{ color: GOLD, transform: activeFaq === i ? "rotate(45deg)" : "none" }}>
-                    +
-                  </span>
-                </div>
-                {activeFaq === i && (
-                  <div className="px-5 pb-5 border-t" style={{ borderColor: "rgba(201,168,76,0.2)" }}>
-                    <p className="text-sm leading-relaxed pt-4" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-                      {faq.a}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CONTACT ──────────────────────────────────────────────────────── */}
-      <section id="contact" className="py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {/* Left */}
+          <Divider thick />
+        </div>
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            OFFERTA B — CONSULENZA & ADVISORY
+        ══════════════════════════════════════════════════════════════════════ */}
+        <section id="advisory" className="max-w-6xl mx-auto px-4 py-12">
+
+          {/* Intestazione sezione */}
+          <div className="flex items-center gap-3 mb-2">
+            <div
+              className="w-8 h-8 rounded-sm flex items-center justify-center text-sm font-black text-white"
+              style={{ background: GOLD }}
+            >
+              B
+            </div>
+            <SectionBadge label="IdeaSmart Advisory" color={GOLD} bg={GOLD_LT} />
+          </div>
+          <Divider thick />
+
+          <div className="grid md:grid-cols-[2fr_1fr] gap-10 pt-8">
             <div>
-              <span
-                className="text-[10px] font-bold uppercase tracking-[0.3em]"
-                style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
-              >
-                Contatti
-              </span>
-              <GoldDivider />
               <h2
-                className="text-3xl font-bold mb-4"
-                style={{ color: WHITE, fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                Inizia la Conversazione.<br />
-                <span style={{ color: GOLD }}>Risposta in 24 Ore.</span>
+                Consulenza senior su AI, M&A<br />
+                <span style={{ color: GOLD }}>e partnership tecnologiche.</span>
               </h2>
-              <p
-                className="text-sm leading-relaxed mb-8"
+              <div
+                className="text-base leading-relaxed space-y-3"
                 style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
               >
-                Ogni mandato inizia con una conversazione. Raccontaci il contesto, l'obiettivo e la tempistica — il team valuterà come possiamo essere più utili e ti risponderà entro 24 ore lavorative.
-              </p>
-
-              <div className="space-y-4">
-                <a
-                  href="mailto:business@ideasmart.ai"
-                  className="flex items-center gap-3 group"
-                >
-                  <div
-                    className="w-10 h-10 border flex items-center justify-center flex-shrink-0"
-                    style={{ borderColor: GOLD + "40" }}
-                  >
-                    <span style={{ color: GOLD }}>@</span>
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest mb-0.5" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>Email diretta</p>
-                    <p className="text-sm font-bold group-hover:text-[#c9a84c] transition-colors" style={{ color: GOLD_LIGHT, fontFamily: "'Space Mono', monospace" }}>
-                      business@ideasmart.ai
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://www.linkedin.com/in/andreacinelli"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 group"
-                >
-                  <div
-                    className="w-10 h-10 border flex items-center justify-center flex-shrink-0"
-                    style={{ borderColor: GOLD + "40" }}
-                  >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" style={{ color: GOLD }}>
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest mb-0.5" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>LinkedIn</p>
-                    <p className="text-sm font-bold group-hover:text-[#c9a84c] transition-colors" style={{ color: GOLD_LIGHT, fontFamily: "'Space Mono', monospace" }}>
-                      Andrea Cinelli
-                    </p>
-                  </div>
-                </a>
-              </div>
-
-              {/* Link alla ricerca */}
-              <div
-                className="mt-8 p-4 border"
-                style={{ borderColor: "rgba(201,168,76,0.25)", background: "rgba(201,168,76,0.05)" }}
-              >
-                <p className="text-xs font-bold mb-1" style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}>
-                  OGNI GIORNO SU IDEASMART RESEARCH
+                <p>
+                  IdeaSmart Advisory è il servizio di consulenza e ricerca dedicato a chi ha bisogno di supporto professionale nelle decisioni strategiche su <strong style={{ color: INK }}>AI Innovation, M&A e ricerca di partnership tecnologiche</strong>.
                 </p>
-                <p className="text-xs leading-relaxed mb-3" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-                  20 ricerche originali su AI, Startup e Venture Capital. La base dati che alimenta il nostro advisory — disponibile gratuitamente ogni giorno.
+                <p>
+                  Il team è composto da senior advisor con background in Big 5, investment banking, venture capital e imprenditoria seriale. Profili che hanno guidato trasformazioni, completato exit e gestito fondi — non teorici, ma operatori con cicatrici sul campo.
                 </p>
-                <Link
-                  href="/research"
-                  className="text-xs font-bold uppercase tracking-widest hover:underline"
-                  style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
-                >
-                  Leggi le ricerche di oggi →
-                </Link>
+                <p>
+                  La differenza rispetto a una consulenza tradizionale: ogni engagement è supportato dalla <strong style={{ color: INK }}>base dati IdeaSmart Research</strong> — 20+ analisi quotidiane, 450+ fonti monitorate, intelligence in tempo reale sull'ecosistema AI e VC europeo.
+                </p>
               </div>
             </div>
 
-            {/* Right — Form */}
-            <div
-              className="p-8 border"
-              style={{ borderColor: "rgba(201,168,76,0.25)", background: "rgba(201,168,76,0.04)" }}
-            >
-              <p
-                className="text-lg font-bold mb-6"
-                style={{ color: WHITE, fontFamily: "'Playfair Display', serif" }}
+            {/* Team */}
+            <div>
+              <h3
+                className="text-xs font-bold uppercase tracking-[0.2em] mb-4"
+                style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
               >
-                Richiedi un primo incontro
-              </p>
-              <ContactForm />
+                Il team advisory
+              </h3>
+              <div className="space-y-3">
+                {ADVISORY_TEAM.map((m) => (
+                  <div
+                    key={m.initials}
+                    className="flex items-start gap-3 p-3 rounded-sm border"
+                    style={{ borderColor: `${INK}10`, background: "#fff" }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-sm flex items-center justify-center text-xs font-black flex-shrink-0"
+                      style={{ background: m.bg, color: m.color }}
+                    >
+                      {m.initials}
+                    </div>
+                    <div>
+                      <div className="mb-0.5">
+                        <SectionBadge label={m.tag} color={m.color} bg={m.bg} />
+                      </div>
+                      <div
+                        className="text-xs font-bold"
+                        style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                      >
+                        {m.role}
+                      </div>
+                      <p className="text-xs mt-0.5 leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+                        {m.detail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── FOOTER STRIP ─────────────────────────────────────────────────── */}
-      <div
-        className="py-6 border-t text-center"
-        style={{ borderColor: "rgba(201,168,76,0.2)" }}
-      >
-        <p className="text-[10px] uppercase tracking-widest" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
-          IdeaSmart Business · Advisory & Research · AI Innovation · M&A · Venture Capital
-        </p>
-        <Link
-          href="/"
-          className="text-[10px] uppercase tracking-widest hover:underline mt-1 block"
-          style={{ color: GOLD + "80", fontFamily: "'Space Mono', monospace" }}
+          {/* Servizi accordion */}
+          <div className="mt-10">
+            <ThinDivider />
+            <h3
+              className="mt-6 mb-2 text-xs font-bold uppercase tracking-[0.2em]"
+              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+            >
+              I servizi advisory
+            </h3>
+            <div>
+              {ADVISORY_SERVICES.map((s) => (
+                <ServiceAccordion key={s.id} service={s} />
+              ))}
+            </div>
+          </div>
+
+          {/* Formati di engagement */}
+          <div className="mt-10">
+            <ThinDivider />
+            <h3
+              className="mt-6 mb-5 text-xs font-bold uppercase tracking-[0.2em]"
+              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+            >
+              Formati di engagement
+            </h3>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {ADVISORY_FORMATS.map((f) => (
+                <div
+                  key={f.title}
+                  className="border p-5 rounded-sm"
+                  style={{ borderColor: `${GOLD}40`, background: GOLD_LT }}
+                >
+                  <div className="text-2xl mb-2">{f.icon}</div>
+                  <h4
+                    className="font-bold text-sm mb-2"
+                    style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {f.title}
+                  </h4>
+                  <p className="text-xs leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+                    {f.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Advisory */}
+          <div
+            className="mt-10 p-8 rounded-sm border-2 text-center"
+            style={{ borderColor: GOLD, background: GOLD_LT }}
+          >
+            <SectionBadge label="Inizia una conversazione" color={GOLD} bg={`${GOLD}25`} />
+            <h3
+              className="mt-3 text-2xl md:text-3xl font-bold"
+              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              Parliamo del tuo progetto.
+            </h3>
+            <p
+              className="mt-2 text-sm max-w-lg mx-auto leading-relaxed"
+              style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
+            >
+              Ogni engagement inizia con una call esplorativa di 30 minuti. Nessun impegno, nessun costo. Solo una conversazione tra professionisti.
+            </p>
+            <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="mailto:business@ideasmart.ai?subject=IdeaSmart Advisory — Richiesta di contatto"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-sm transition-all hover:opacity-90 text-white"
+                style={{ background: GOLD, fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Scrivici a business@ideasmart.ai →
+              </a>
+              <a
+                href="https://www.linkedin.com/in/cinellia/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-sm border-2 transition-all hover:opacity-80"
+                style={{ borderColor: GOLD, color: GOLD, background: "transparent", fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Contatta su LinkedIn
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* ── BANNER RECRUITING ── */}
+        <section className="max-w-6xl mx-auto px-4 pb-10">
+          <ThinDivider />
+          <div
+            className="mt-6 p-6 rounded-sm border flex flex-col sm:flex-row items-center justify-between gap-4"
+            style={{ borderColor: `${TEAL}30`, background: TEAL_LT }}
+          >
+            <div>
+              <SectionBadge label="Collabora con noi" color={TEAL} bg={`${TEAL}20`} />
+              <h3
+                className="mt-2 text-lg font-bold"
+                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Cerchiamo firme d'eccellenza.
+              </h3>
+              <p className="text-sm mt-1" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
+                Ex Big 5, ex VC, founder con exit, C-Level Fortune 500. Se hai un track record straordinario e vuoi portare il tuo know-how nel network IdeaSmart Advisory, scrivici.
+              </p>
+            </div>
+            <a
+              href="mailto:business@ideasmart.ai?subject=Collaborazione IdeaSmart Advisory"
+              className="flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-sm border-2 transition-all hover:opacity-80 whitespace-nowrap"
+              style={{ borderColor: TEAL, color: TEAL, background: "transparent", fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Candidati →
+            </a>
+          </div>
+        </section>
+
+        {/* ── FOOTER ── */}
+        <footer
+          className="border-t mt-4 py-8"
+          style={{ borderColor: `${INK}20`, background: "#f1f5f9" }}
         >
-          ← Torna a IdeaSmart Research
-        </Link>
+          <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <span
+                className="text-lg font-black"
+                style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                IDEA<span style={{ color: TEAL }}>SMART</span>{" "}
+                <span style={{ color: TEAL, fontSize: "0.75em" }}>RESEARCH</span>
+              </span>
+              <p className="text-xs mt-0.5" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
+                AI · Startup · Venture Capital
+              </p>
+            </div>
+            <div className="flex gap-4 text-xs" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
+              <Link href="/" className="hover:underline">Home</Link>
+              <Link href="/chi-siamo" className="hover:underline">Chi Siamo</Link>
+              <Link href="/research" className="hover:underline">Research</Link>
+              <a href="mailto:business@ideasmart.ai" className="hover:underline">business@ideasmart.ai</a>
+            </div>
+          </div>
+        </footer>
+
       </div>
-    </div>
+    </>
   );
 }
