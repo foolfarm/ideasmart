@@ -1,7 +1,7 @@
 /**
  * PuntoDelGiorno — Sezione Home con le analisi editoriali giornaliere di IDEASMART
  * Mostra i 3 post LinkedIn del giorno: mattino (10:30), pomeriggio (15:00), sera (17:30)
- * Stile: editoriale, carta/inchiostro — autore: Adrian Lenice, Direttore Responsabile
+ * Stile: editoriale, carta/inchiostro — autore: Andrea Cinelli, Direttore Responsabile
  */
 import { trpc } from "@/lib/trpc";
 
@@ -107,7 +107,7 @@ function PostCard({ post, isLoading }: { post?: PostItem; isLoading: boolean }) 
                 className="text-xs font-bold"
                 style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                Adrian Lenice
+                Andrea Cinelli
               </p>
               <p
                 className="text-[10px]"

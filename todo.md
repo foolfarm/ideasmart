@@ -1433,3 +1433,10 @@
 - [x] Alert email a info@ideasmart.ai quando verifica 07:15 rigenera ricerche mancanti
 - [x] Secondo post LinkedIn pomeridiano dedicato alle Startup News (slot 13:00 CET)
 - [x] Aggiornare log riepilogo scheduler con nuovi cron
+
+## Nuovi task (28 Mar 2026 — Autore articoli: Andrea Cinelli)
+
+- [x] Sostituire "Andrian Lenice" con "Andrea Cinelli" in tutti i file sorgente (8 file)
+- [x] Aggiornare i prompt LLM per generare articoli firmati "Andrea Cinelli"
+- [x] Aggiornare il publisher LinkedIn per includere il nome autore nei post (prima persona + firma)
+- [x] Aggiornare i record esistenti nel DB (24 post LinkedIn aggiornati con firma)

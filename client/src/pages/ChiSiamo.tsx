@@ -44,7 +44,7 @@ const AGENTS = [
 ];
 
 const TIMELINE = [
-  { year: "2023", label: "La scintilla", text: "Nasce come bulletin board interna tra un gruppo di nerd appassionati di AI sparsi per il mondo, guidati da Adrian Lenice. L'obiettivo: aggregare le notizie più rilevanti sull'intelligenza artificiale senza dover leggere decine di fonti ogni mattina." },
+  { year: "2023", label: "La scintilla", text: "Nasce come bulletin board interna tra un gruppo di nerd appassionati di AI sparsi per il mondo, guidati da Andrea Cinelli. L'obiettivo: aggregare le notizie più rilevanti sull'intelligenza artificiale senza dover leggere decine di fonti ogni mattina." },
   { year: "2024 Q1", label: "Il primo agente", text: "Il primo agente automatizzato entra in produzione. Raccoglie notizie da 40 fonti, le riassume e le pubblica senza intervento umano. La qualità supera le aspettative: i testi sono indistinguibili da quelli umani." },
   { year: "2024 Q3", label: "La redazione", text: "Da 1 a 8 agenti. Nasce la redazione agentica completa: Scout, Writer, Editor, Analyst, Publisher, Social, Newsletter. IdeaSmart diventa una vera testata giornalistica." },
   { year: "2025", label: "La crescita", text: "14 sezioni editoriali. Oltre 200 notizie al giorno. 7.000+ utenti unici. 500+ iscritti alla newsletter. IdeaSmart è riconosciuta come la prima testata giornalistica 100% AI in Italia." },
@@ -121,7 +121,7 @@ export default function ChiSiamo() {
               <div className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                 <p>
-                  IdeaSmart è nata quasi per caso, come una semplice bulletin board interna tra un gruppo di nerd appassionati di intelligenza artificiale e guidati da <strong style={{ color: INK }}>Adrian Lenice</strong>. L'obiettivo originale era banale: aggregare le notizie più rilevanti sull'AI senza dover leggere decine di fonti ogni mattina.
+                  IdeaSmart è nata quasi per caso, come una semplice bulletin board interna tra un gruppo di nerd appassionati di intelligenza artificiale e guidati da <strong style={{ color: INK }}>Andrea Cinelli</strong>. L'obiettivo originale era banale: aggregare le notizie più rilevanti sull'AI senza dover leggere decine di fonti ogni mattina.
                 </p>
                 <p>
                   Quello che è successo dopo ha sorpreso anche noi. Il sistema agentico ha preso vita propria. Gli agenti hanno iniziato a scrivere, verificare, analizzare e pubblicare con una qualità che ha superato ogni aspettativa. Oggi IdeaSmart è la <strong style={{ color: INK }}>prima testata giornalistica completamente autonoma, powered by AI</strong>.
@@ -141,7 +141,7 @@ export default function ChiSiamo() {
                 </p>
                 <footer className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
                   style={{ fontFamily: "'Space Mono', monospace" }}>
-                  — Adrian Lenice, Founder & Direttore Responsabile
+                  — Andrea Cinelli, Founder & Direttore Responsabile
                 </footer>
               </blockquote>
             </div>
@@ -254,7 +254,7 @@ export default function ChiSiamo() {
               </div>
               <div className="text-base font-bold text-[#1a1a2e]"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                Adrian Lenice
+                Andrea Cinelli
               </div>
               <div className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/45 mt-1"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
@@ -265,7 +265,7 @@ export default function ChiSiamo() {
               <SectionBadge label="Il fondatore" />
               <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                Adrian Lenice è il fondatore e direttore responsabile di IdeaSmart. Imprenditore seriale, esperto di intelligenza artificiale e innovazione, ha guidato il progetto dalla sua nascita come esperimento privato fino a diventare la prima testata giornalistica completamente autonoma in Italia.
+                Andrea Cinelli è il fondatore e direttore responsabile di IdeaSmart. Imprenditore seriale, esperto di intelligenza artificiale e innovazione, ha guidato il progetto dalla sua nascita come esperimento privato fino a diventare la prima testata giornalistica completamente autonoma in Italia.
               </p>
               <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>

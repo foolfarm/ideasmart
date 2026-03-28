@@ -1,0 +1,13 @@
+{
+  "query": "\n-- Aggiorna i post senza hashtag (aggiungi firma in fondo)\nUPDATE linkedin_posts \nSET postText = CONCAT(postText, '\\n\\nAndrea Cinelli | Founder, IDEASMART')\nWHERE postText NOT LIKE '%Andrea Cinelli%';\n\nSELECT COUNT(*) as senza_firma_dopo FROM linkedin_posts WHERE postText NOT LIKE '%Andrea Cinelli%';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \n-- Aggiorna i post senza hashtag (aggiungi firma in fondo)\nUPDATE linkedin_posts \nSET postText = CONCAT(postText, '\\n\\nAndrea Cinelli | Founder, IDEASMART')\nWHERE postText NOT LIKE '%Andrea Cinelli%';\n\nSELECT COUNT(*) as senza_firma_dopo FROM linkedin_posts WHERE postText NOT LIKE '%Andrea Cinelli%';\n",
+  "rows": [
+    {
+      "senza_firma_dopo": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "senza_firma_dopo\n0\n",
+  "stderr": "",
+  "execution_time_ms": 73
+}

@@ -86,7 +86,7 @@ export default function MarketAnalysisDetail() {
             <span className="text-white text-xs font-bold" style={{ fontFamily: "'Space Mono', monospace" }}>AL</span>
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#1a2744]" style={{ fontFamily: "'Playfair Display', serif" }}>Adrian Lenice</p>
+            <p className="text-sm font-semibold text-[#1a2744]" style={{ fontFamily: "'Playfair Display', serif" }}>Andrea Cinelli</p>
             <p className="font-mono text-xs text-[#1a2744]/50 tracking-widest uppercase">Direttore Editoriale</p>
           </div>
         </div>

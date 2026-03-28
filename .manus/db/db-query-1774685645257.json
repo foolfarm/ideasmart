@@ -1,0 +1,13 @@
+{
+  "query": "\nSELECT COUNT(*) as senza_firma FROM linkedin_posts \nWHERE postText NOT LIKE '%Andrea Cinelli%';\n\nUPDATE linkedin_posts \nSET postText = CONCAT(\n  SUBSTRING_INDEX(postText, '#', 1),\n  '\\nAndrea Cinelli | Founder, IDEASMART\\n',\n  CONCAT('#', SUBSTRING(postText, LOCATE('#', postText) + 1))\n)\nWHERE postText NOT LIKE '%Andrea Cinelli%'\n  AND postText LIKE '%#%';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT COUNT(*) as senza_firma FROM linkedin_posts \nWHERE postText NOT LIKE '%Andrea Cinelli%';\n\nUPDATE linkedin_posts \nSET postText = CONCAT(\n  SUBSTRING_INDEX(postText, '#', 1),\n  '\\nAndrea Cinelli | Founder, IDEASMART\\n',\n  CONCAT('#', SUBSTRING(postText, LOCATE('#', postText) + 1))\n)\nWHERE postText NOT LIKE '%Andrea Cinelli%'\n  AND postText LIKE '%#%';\n",
+  "rows": [
+    {
+      "senza_firma": "24"
+    }
+  ],
+  "messages": [],
+  "stdout": "senza_firma\n24\n",
+  "stderr": "",
+  "execution_time_ms": 80
+}

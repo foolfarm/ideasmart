@@ -1,0 +1,8 @@
+{
+  "query": "\n-- Conta i post LinkedIn che non contengono ancora la firma\nSELECT COUNT(*) as senza_firma FROM linkedin_posts \nWHERE post_text NOT LIKE '%Andrea Cinelli%';\n\n-- Aggiorna i post esistenti aggiungendo la firma prima degli hashtag\nUPDATE linkedin_posts \nSET post_text = CONCAT(\n  SUBSTRING_INDEX(post_text, '#', 1),\n  '\\nAndrea Cinelli | Founder, IDEASMART\\n',\n  CONCAT('#', SUBSTRING(post_text, LOCATE('#', post_text) + 1))\n)\nWHERE post_text NOT LIKE '%Andrea Cinelli%'\n  AND post_text LIKE '%#%';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \n-- Conta i post LinkedIn che non contengono ancora la firma\nSELECT COUNT(*) as senza_firma FROM linkedin_posts \nWHERE post_text NOT LIKE '%Andrea Cinelli%';\n\n-- Aggiorna i post esistenti aggiungendo la firma prima degli hashtag\nUPDATE linkedin_posts \nSET post_text = CONCAT(\n  SUBSTRING_INDEX(post_text, '#', 1),\n  '\\nAndrea Cinelli | Founder, IDEASMART\\n',\n  CONCAT('#', SUBSTRING(post_text, LOCATE('#', post_text) + 1))\n)\nWHERE post_text NOT LIKE '%Andrea Cinelli%'\n  AND post_text LIKE '%#%';\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 3: Unknown column 'post_text' in 'where clause'"
+  ]
+}

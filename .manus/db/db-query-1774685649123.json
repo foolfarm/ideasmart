@@ -1,0 +1,13 @@
+{
+  "query": "SELECT COUNT(*) as con_firma FROM linkedin_posts WHERE postText LIKE '%Andrea Cinelli%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as con_firma FROM linkedin_posts WHERE postText LIKE '%Andrea Cinelli%';",
+  "rows": [
+    {
+      "con_firma": "23"
+    }
+  ],
+  "messages": [],
+  "stdout": "con_firma\n23\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}
