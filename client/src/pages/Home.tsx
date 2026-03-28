@@ -498,9 +498,6 @@ export default function Home() {
         {/* ══ CORPO ════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-          {/* ── PUNTO DEL GIORNO ── */}
-          <PuntoDelGiorno />
-
           {/* ── BANNER LEADERBOARD ── */}
           <div className="my-5 flex flex-col items-center">
             <p className="text-[9px] uppercase tracking-[0.2em] text-[#1a1a2e]/30 mb-1"
@@ -928,6 +925,11 @@ export default function Home() {
               </div>
             </section>
           )}
+
+          {/* ── PUNTO DEL GIORNO ── (posizionato dopo la griglia Prima Pagina) */}
+          <div className="mt-10">
+            <PuntoDelGiorno />
+          </div>
 
           {/* ── FOOTER ── */}
           <div className="mt-12">

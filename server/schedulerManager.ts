@@ -580,13 +580,13 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // LINKEDIN AUTOPOST — 2 post giornalieri: 10:30 CET (mattino) + 15:00 CET (pomeriggio)
+  // LINKEDIN AUTOPOST — 3 post giornalieri: 10:30 CET (mattino AI) + 13:00 CET (startup) + 17:30 CET (sera)
   // ══════════════════════════════════════════════════════════════════════════
 
   // ══════════════════════════════════════════════════════════════════════════
   // VERIFICA GIORNALIERA LINKEDIN — 10:00 CET
   // Controlla che i post LinkedIn del giorno siano stati pubblicati.
-  // Se il cron delle 10:30 / 15:00 / 17:30 era offline, pubblica subito.
+  // Se il cron delle 10:30 / 13:00 / 17:30 era offline, pubblica subito.
   // Questo cron gira 30 minuti PRIMA del post mattino per garantire
   // che almeno un post sia sempre pubblicato ogni giorno.
   // ══════════════════════════════════════════════════════════════════════════
@@ -662,23 +662,8 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post pomeriggio — 15:00 CET
-  cron.schedule("0 15 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 15:00 CET — Pubblicazione LinkedIn POMERIGGIO...");
-    await withLock("linkedin-afternoon", async () => {
-      try {
-        const result = await publishLinkedInPost("afternoon");
-        console.log(`[SchedulerManager] ✅ LinkedIn POMERIGGIO: ${result.published}/1 post pubblicati`);
-        if (result.errors.length > 0) {
-          console.error("[SchedulerManager] ⚠️ LinkedIn POMERIGGIO errori:", result.errors);
-        }
-        // Invalida cache Punto del Giorno
-        invalidateBySection("home");
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore LinkedIn POMERIGGIO:", err);
-      }
-    });
-  }, { timezone: TZ });
+  // [DISABILITATO] Slot 15:00 CET (afternoon) — rimosso, ora solo 3 slot: 10:30 / 13:00 / 17:30
+  // cron.schedule("0 15 * * *", ...) — linkedin-afternoon DISABILITATO
 
   // Post sera — 17:30 CET (tema: vibe coding, AI e startup, come cambia il mercato)
   cron.schedule("30 17 * * *", async () => {
@@ -750,23 +735,7 @@ export function startAllSchedulers(): void {
         }
       }
 
-      // Controlla se il post pomeriggio (15:00) è mancato
-      if (currentMinutes >= 15 * 60) {
-        const existingAfternoon = await catchUpDb.select({ id: lpTable.id })
-          .from(lpTable)
-          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "afternoon")))
-          .limit(1);
-        if (existingAfternoon.length === 0) {
-          console.log("[SchedulerManager] 🔄 CATCH-UP: post POMERIGGIO mancato, pubblico ora...");
-          await withLock("linkedin-afternoon", async () => {
-            const result = await publishLinkedInPost("afternoon");
-            console.log(`[SchedulerManager] ✅ CATCH-UP POMERIGGIO: ${result.published}/1 post pubblicati`);
-            invalidateBySection("home");
-          });
-        } else {
-          console.log("[SchedulerManager] ✅ CATCH-UP: post POMERIGGIO già presente nel DB, nessuna azione.");
-        }
-      }
+      // [DISABILITATO] Catch-up slot afternoon 15:00 — rimosso (ora solo 3 slot: 10:30 / 13:00 / 17:30)
 
       // Controlla se il post sera (17:30) è mancato
       if (currentMinutes >= 17 * 60 + 30) {
