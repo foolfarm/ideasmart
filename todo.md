@@ -1511,3 +1511,9 @@
 - [x] Sostituire i profili team con 6 figure anonime autorevoli: Ex Big 5, Ex Investment Banking, Founder 3 Exit, Ex Partner VC, Opinion Leader AI, Ex C-Level Fortune 500
 - [x] Aggiungere banner recruiting in fondo a Business.tsx ("Vuoi collaborare con noi? Candidati a info@ideasmart.ai")
 - [x] Aggiungere banner recruiting in fondo a ChiSiamo.tsx (stile teal coerente con la palette della pagina)
+
+## Nuovi task (28 Mar 2026 — Chi Siamo: fondatore e slogan)
+
+- [x] Sostituire Andrea Cinelli con Adrian Lenice come fondatore nella pagina Chi Siamo
+- [x] Aggiornare lo slogan: "Ridefinire la ricerca di mercato nell'era dell'AI... per chi investe in AI, VC e Startup"
+- [x] Aggiornare la bio del fondatore: Adrian Lenice, Founder & CEO, 30+ anni ecosistema tech/VC europeo

@@ -121,13 +121,13 @@ export default function ChiSiamo() {
               <div className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                 <p>
-                  IdeaSmart è nata quasi per caso, come una semplice bulletin board interna tra un gruppo di nerd appassionati di intelligenza artificiale e guidati da <strong style={{ color: INK }}>Andrea Cinelli</strong>. L'obiettivo originale era banale: aggregare le notizie più rilevanti sull'AI senza dover leggere decine di fonti ogni mattina.
+                  IdeaSmart Research nasce dalla visione di <strong style={{ color: INK }}>Adrian Lenice</strong>, imprenditore seriale e investitore con oltre 30 anni di esperienza nell'ecosistema tech e finanziario europeo. L'obiettivo: costruire la prima piattaforma di ricerca e analisi di mercato completamente automatizzata su AI, Venture Capital, M&A e Startup.
                 </p>
                 <p>
-                  Quello che è successo dopo ha sorpreso anche noi. Il sistema agentico ha preso vita propria. Gli agenti hanno iniziato a scrivere, verificare, analizzare e pubblicare con una qualità che ha superato ogni aspettativa. Oggi IdeaSmart è la <strong style={{ color: INK }}>prima testata giornalistica completamente autonoma, powered by AI</strong>.
+                  Quello che è successo dopo ha superato ogni aspettativa. Il sistema agentico ha preso vita propria, producendo ogni giorno 20+ ricerche originali, 40+ notizie verificate e analisi di mercato che competono con le migliori boutique di ricerca europee. Oggi IdeaSmart Research è il <strong style={{ color: INK }}>punto di riferimento italiano per chi investe e opera nell'ecosistema AI e Venture Capital</strong>.
                 </p>
                 <p>
-                  Un sistema agentico proprietario replica una redazione end-to-end, con algoritmi di verifica progettati per garantire oggettività, coerenza e qualità dell'informazione. Nessuna agenda editoriale. Nessun bias umano. Solo i fatti, analizzati e raccontati da macchine che non hanno interessi da proteggere.
+                  Un sistema agentico proprietario replica un team di analisti end-to-end: raccoglie segnali da oltre 450 fonti globali, incrocia dati, produce report strutturati e li distribuisce ogni giorno alle 00:00 CET. Nessuna agenda editoriale. Nessun bias. Solo dati, analizzati con la velocità e la scala impossibili per un team umano.
                 </p>
               </div>
             </div>
@@ -137,11 +137,11 @@ export default function ChiSiamo() {
               <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: ACCENT }}>
                 <p className="text-xl font-bold italic leading-snug text-[#1a1a2e]"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                  "Ridefinire il giornalismo nell'era dell'intelligenza artificiale. Non come esperimento, ma come standard."
+                  "Ridefinire la ricerca di mercato nell’era dell’intelligenza artificiale. Non come esperimento, ma come nuovo standard per chi investe in AI, Venture Capital e Startup."
                 </p>
                 <footer className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
                   style={{ fontFamily: "'Space Mono', monospace" }}>
-                  — Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research
+                  — Adrian Lenice, Founder & CEO IdeaSmart Research
                 </footer>
               </blockquote>
             </div>
@@ -254,22 +254,22 @@ export default function ChiSiamo() {
               </div>
               <div className="text-base font-bold text-[#1a1a2e]"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                Andrea Cinelli
+                Adrian Lenice
               </div>
               <div className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/45 mt-1"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                Opinion Leader & Editorialista IdeaSmart Research
+                Founder & CEO IdeaSmart Research
               </div>
             </div>
             <div>
               <SectionBadge label="Il fondatore" />
               <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                Andrea Cinelli è il Opinion Leader & Editorialista di IdeaSmart Research. Imprenditore seriale, esperto di intelligenza artificiale e innovazione, ha guidato il progetto dalla sua nascita come esperimento privato fino a diventare la prima testata giornalistica completamente autonoma in Italia.
+                Adrian Lenice è il fondatore e CEO di IdeaSmart Research. Imprenditore seriale con oltre 30 anni di esperienza nell'ecosistema tech, finanziario e venture capital europeo, ha costruito e ceduto con successo più aziende nel settore dell'innovazione digitale. Ha guidato IdeaSmart dalla sua nascita come progetto interno fino a farne la prima piattaforma italiana di ricerca e analisi di mercato completamente automatizzata su AI, Venture Capital, M&A e Startup.
               </p>
               <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                La sua visione è chiara: l'informazione del futuro non sarà prodotta da redazioni di decine di giornalisti, ma da sistemi agentici capaci di raccogliere, verificare e raccontare i fatti con oggettività e velocità impossibili per gli esseri umani.
+                La sua visione è chiara: la ricerca di mercato del futuro non sarà prodotta da team di analisti con settimane di lavoro, ma da sistemi agentici capaci di raccogliere segnali globali, incrociare dati e produrre insight con una velocità e una scala impossibili per qualsiasi team umano. IdeaSmart Research è la prova che questa visione è già realtà.
               </p>
             </div>
           </section>
