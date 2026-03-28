@@ -1565,3 +1565,12 @@
 - [x] Aggiungere pool di immagini usate di recente per evitare ripetizioni (ultimi 7 giorni)
 - [x] Aggiungere colonna postHash nella tabella per tracking contenuto duplicato
 - [x] Testare e verificare che i fix funzionino (TypeScript OK, migrazione DB applicata)
+
+## Differenziazione Slot LinkedIn (28 Mar 2026)
+
+- [x] Ridisegnare selectSection: mattino fisso AI, startup-afternoon fisso Startup, afternoon in rotazione (finance/health/sport/luxury), sera in rotazione (finance/health/sport/luxury offset +2)
+- [x] Aggiungere SECTION_META per finance, health, sport, luxury con hashtag e path dedicati
+- [x] Aggiornare SUPPORTED_SECTIONS per includere le nuove sezioni
+- [x] Aggiornare buildGartnerPrompt con slotNote specifiche per ogni sezione (finance, health, sport, luxury)
+- [x] Aggiornare il tipo LinkedInSection e la logica di selezione sezione
+- [x] Testare TypeScript — nessun errore di compilazione
