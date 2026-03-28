@@ -533,7 +533,7 @@ export default function Home() {
                       {startupHero && (
                         <SecondaryArticle item={startupHero} section="startup" showImage={!!startupHero.imageUrl} />
                       )}
-                      {startupRest.slice(0, 2).map((item, i) => (
+                      {startupRest.slice(0, 4).map((item, i) => (
                         <div key={item.id}>
                           <ThinDivider />
                           <SecondaryArticle item={item} section="startup" />
@@ -552,7 +552,7 @@ export default function Home() {
                     {/* Colonna AI secondary */}
                     <div className="md:pl-5 pt-4">
                       <SectionLabel label="AI4Business" accent={SECTION_COLORS.ai.accent} />
-                      {aiRest.slice(0, 3).map((item, i) => (
+                      {aiRest.slice(0, 5).map((item, i) => (
                         <div key={item.id}>
                           {i > 0 && <ThinDivider />}
                           <SecondaryArticle item={item} section="ai" showImage={i === 0 && !!item.imageUrl} />
@@ -653,6 +653,31 @@ export default function Home() {
                     </div>
                   )}
 
+                  {/* TERZA RIGA: Startup approfondimenti */}
+                  {startupRest.length > 5 && (
+                    <div className="mt-8">
+                      <Divider thick />
+                      <div className="py-2 flex items-center justify-between">
+                        <SectionLabel label="Startup News — Approfondimenti" accent={SECTION_COLORS.startup.accent} />
+                        <Link href="/startup">
+                          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
+                            style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
+                            Tutte →
+                          </span>
+                        </Link>
+                      </div>
+                      <div className="border-t-2" style={{ borderColor: SECTION_COLORS.startup.accent }} />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
+                        {startupRest.slice(5, 13).map((item, i) => (
+                          <div key={item.id}
+                            className={`${i % 2 === 0 ? "md:pr-5 md:border-r border-[#1a1a2e]/15" : "md:pl-5"} ${i > 1 ? "border-t border-[#1a1a2e]/12" : ""}`}>
+                            <SecondaryArticle item={item} section="startup" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* STARTUP EDITORIALE */}
                   {startupEditorial && (
                     <div className="mt-8">
@@ -710,7 +735,7 @@ export default function Home() {
                       </div>
                       <div className="border-t-2" style={{ borderColor: SECTION_COLORS.ai.accent }} />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
-                        {aiRest.slice(3, 9).map((item, i) => (
+                        {aiRest.slice(5, 15).map((item, i) => (
                           <div key={item.id}
                             className={`${i % 2 === 0 ? "md:pr-5 md:border-r border-[#1a1a2e]/15" : "md:pl-5"} ${i > 1 ? "border-t border-[#1a1a2e]/12" : ""}`}>
                             <SecondaryArticle item={item} section="ai" />
