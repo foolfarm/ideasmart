@@ -1517,3 +1517,10 @@
 - [x] Sostituire Andrea Cinelli con Adrian Lenice come fondatore nella pagina Chi Siamo
 - [x] Aggiornare lo slogan: "Ridefinire la ricerca di mercato nell'era dell'AI... per chi investe in AI, VC e Startup"
 - [x] Aggiornare la bio del fondatore: Adrian Lenice, Founder & CEO, 30+ anni ecosistema tech/VC europeo
+
+## Nuovi task (28 Mar 2026 — Chi Siamo: KPI, Timeline e CTA)
+
+- [x] Aggiornare i KPI statistici: 20+ ricerche/giorno, 450+ fonti, 3 aree analisi, 30+ anni esperienza, 00:00 aggiornamento, 100% dati verificati
+- [x] Aggiornare la Timeline: rimossi tutti i riferimenti a testata giornalistica, sostituiti con piattaforma di ricerca/analisi
+- [x] Riscrivere la CTA finale: "Analisi a supporto delle tue decisioni. Con i migliori esperti del settore." + link IdeaSmart Research Business
+- [x] Aggiornare SEO title e meta description della pagina Chi Siamo

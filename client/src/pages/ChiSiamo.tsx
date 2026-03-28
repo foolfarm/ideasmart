@@ -44,20 +44,20 @@ const AGENTS = [
 ];
 
 const TIMELINE = [
-  { year: "2023", label: "La scintilla", text: "Nasce come bulletin board interna tra un gruppo di nerd appassionati di AI sparsi per il mondo, guidati da Andrea Cinelli. L'obiettivo: aggregare le notizie più rilevanti sull'intelligenza artificiale senza dover leggere decine di fonti ogni mattina." },
-  { year: "2024 Q1", label: "Il primo agente", text: "Il primo agente automatizzato entra in produzione. Raccoglie notizie da 40 fonti, le riassume e le pubblica senza intervento umano. La qualità supera le aspettative: i testi sono indistinguibili da quelli umani." },
-  { year: "2024 Q3", label: "La redazione", text: "Da 1 a 8 agenti. Nasce la redazione agentica completa: Scout, Writer, Editor, Analyst, Publisher, Social, Newsletter. IdeaSmart diventa una vera testata giornalistica." },
-  { year: "2025", label: "La crescita", text: "14 sezioni editoriali. Oltre 200 notizie al giorno. 7.000+ utenti unici. 500+ iscritti alla newsletter. IdeaSmart è riconosciuta come la prima testata giornalistica 100% AI in Italia." },
-  { year: "2026", label: "Oggi", text: "20+ agenti in produzione. Il manifesto editoriale è pubblicato. Si apre IdeaSmart Business: la piattaforma per chi vuole lanciare la propria testata agentica." },
+  { year: "2023", label: "La scintilla", text: "Nasce come progetto interno tra un gruppo di professionisti dell'AI e del Venture Capital guidati da Adrian Lenice. L'obiettivo: aggregare e analizzare automaticamente i segnali di mercato più rilevanti su AI, Startup e Venture Capital senza dover leggere decine di fonti ogni mattina." },
+  { year: "2024 Q1", label: "Il primo sistema agentico", text: "Il primo agente di analisi entra in produzione. Raccoglie dati da 40 fonti specializzate, li incrocia e produce report strutturati senza intervento umano. La qualità delle analisi supera le aspettative: insight comparabili a quelli di boutique di ricerca con team dedicati." },
+  { year: "2024 Q3", label: "La piattaforma", text: "Da 1 a 8 agenti specializzati. Nasce la piattaforma di analisi completa: Scout, Analyst, Researcher, Writer, Publisher. IdeaSmart Research diventa un punto di riferimento per investitori e operatori del settore AI e Venture Capital." },
+  { year: "2025", label: "La crescita", text: "3 aree di analisi verticale: AI Innovation, Venture Capital & M&A, Startup Ecosystem. Oltre 20 ricerche originali al giorno da 450+ fonti globali. Il team di senior advisor si consolida con profili ex Big 5, ex Investment Banking e founder con exit di successo." },
+  { year: "2026", label: "Oggi", text: "IdeaSmart Research è la prima piattaforma italiana di ricerca e analisi di mercato completamente automatizzata su AI, Venture Capital, M&A e Startup. Si apre IdeaSmart Business: il servizio di consulenza dedicata per investitori, aziende, scaleup e fondi che vogliono supporto professionale nelle decisioni di investimento." },
 ];
 
 const STATS = [
-  { value: "14", label: "Sezioni editoriali" },
-  { value: "200+", label: "Notizie al giorno" },
-  { value: "20+", label: "Agenti attivi" },
-  { value: "7.000+", label: "Utenti unici/giorno" },
-  { value: "500+", label: "Iscritti newsletter" },
-  { value: "0", label: "Redattori umani" },
+  { value: "20+", label: "Ricerche originali/giorno" },
+  { value: "450+", label: "Fonti monitorate" },
+  { value: "3", label: "Aree di analisi" },
+  { value: "30+", label: "Anni esperienza del team" },
+  { value: "00:00", label: "Aggiornamento CET" },
+  { value: "100%", label: "Dati verificati" },
 ];
 
 export default function ChiSiamo() {
@@ -66,10 +66,10 @@ export default function ChiSiamo() {
   return (
     <>
       <SEOHead
-        title="Chi Siamo — IDEASMART"
-        description="La storia di IdeaSmart: la prima testata giornalistica 100% AI italiana. Nata come bulletin board, oggi una redazione di 20+ agenti che serve 7.000+ utenti ogni giorno."
+        title="Chi Siamo — IDEASMART Research"
+        description="IdeaSmart Research: la prima piattaforma italiana di ricerca e analisi di mercato automatizzata su AI Innovation, Venture Capital, M&A e Startup. 20+ ricerche originali al giorno da 450+ fonti globali."
         canonical="https://ideasmart.ai/chi-siamo"
-        ogSiteName="IDEASMART"
+        ogSiteName="IDEASMART Research"
       />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
@@ -326,14 +326,15 @@ export default function ChiSiamo() {
 
           {/* ── CTA BUSINESS ── */}
           <section className="py-10 text-center">
-            <SectionBadge label="IdeaSmart Business" color={ORANGE} bg="#fff3ee" />
+            <SectionBadge label="IdeaSmart Research Business" color={ORANGE} bg="#fff3ee" />
             <h2 className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a2e]"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              Vuoi la tua testata agentica?
+              Analisi a supporto delle tue decisioni.<br />
+              <span style={{ color: ACCENT }}>Con i migliori esperti del settore.</span>
             </h2>
-            <p className="mt-3 text-base text-[#1a1a2e]/65 max-w-xl mx-auto"
+            <p className="mt-3 text-base text-[#1a1a2e]/65 max-w-2xl mx-auto"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-              Abbiamo costruito IdeaSmart da zero. Ora mettiamo la stessa tecnologia a disposizione di giornalisti, editori e creator che vogliono lanciare la propria testata completamente automatizzata.
+              Hai bisogno di un'analisi approfondita per una decisione di investimento? Stai valutando un'acquisizione nel settore AI? Vuoi supporto per il reshaping aziendale o per la strategia di un fondo? IdeaSmart Research Business mette a tua disposizione un team di senior advisor con oltre 30 anni di esperienza in AI Innovation, M&A e Venture Capital.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/business">
@@ -341,7 +342,7 @@ export default function ChiSiamo() {
                   style={{ fontFamily: "'Space Mono', monospace", background: INK, color: ORANGE }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = ORANGE; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = INK; (e.currentTarget as HTMLElement).style.color = ORANGE; }}>
-                  ▶ Scopri IdeaSmart Business
+                  ▶ Scopri IdeaSmart Research Business
                 </span>
               </Link>
               <Link href="/">
