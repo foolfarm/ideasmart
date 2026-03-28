@@ -63,6 +63,15 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
     accentColor: "#ff5500",
     tagline: "Startup, Innovazione e Venture Capital",
   },
+  {
+    key: "ai",
+    name: "AI4Business News",
+    shortName: "AI",
+    dayOfWeek: 5, // Venerdì — seconda newsletter settimanale AI4Business + Ricerche del Giorno
+    siteSection: "/ai",
+    accentColor: "#00e5c8",
+    tagline: "Intelligenza Artificiale per il Business",
+  },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

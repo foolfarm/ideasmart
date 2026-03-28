@@ -1595,3 +1595,14 @@
 - [ ] Rimuovere sezioni Finance/Health/Sport dalla seconda riga della griglia
 - [ ] Spostare PuntoDelGiorno a metà pagina come colonna editoriale (dopo griglia AI+Startup, prima di Research)
 - [ ] Ridisegnare PuntoDelGiorno come sezione editoriale a piena larghezza con sfondo carta
+
+## Aggiornamento Pianificazione Automatica (28 Mar 2026)
+- [ ] Disabilitare cron barometro politico 05:45 (sezione Sondaggi in stand by)
+- [ ] Aggiungere newsletter venerdì: AI4Business + Ricerche del Giorno a tutti gli iscritti
+- [ ] Aggiornare commento header schedulerManager con la nuova pianificazione
+
+## Aggiornamento Pianificazione (28 Mar 2026)
+
+- [x] Disabilitare cron barometro politico 05:45 (sezione Sondaggi in stand by)
+- [x] Aggiungere newsletter venerdì: AI4Business + Ricerche del Giorno a tutti gli iscritti (dayOfWeek: 5)
+- [x] Aggiornare commento header schedulerManager con la nuova pianificazione ufficiale

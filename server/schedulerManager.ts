@@ -6,57 +6,38 @@
  * Routine configurate (tutti gli orari sono in CET/CEST — ora italiana):
  *
  *  ┌─────────────────────────────────────────────────────────────────────────┐
- *  │  AGGIORNAMENTO CONTENUTI — ogni giorno (tutti i 7 canali)               │
+ *  │  AGGIORNAMENTO CONTENUTI — ogni giorno (sezioni attive: AI, Startup)     │
  *  │  00:00 — News AI (scraping RSS reale)                                   │
  *  │  00:05 — Editoriale AI + Startup del giorno                             │
  *  │  00:15 — Reportage AI (ogni lunedì)                                     │
  *  │  00:20 — Analisi di mercato AI (ogni lunedì)                            │
- *  │  00:30 — News Musicali (scraping RSS reale)                             │
- *  │  00:35 — Editoriale Music + Artista della settimana                     │
- *  │  00:45 — Reportage Music (ogni lunedì)                                  │
- *  │  00:50 — Analisi mercato Music (ogni lunedì)                            │
  *  │  01:00 — News Startup (scraping RSS reale)                              │
  *  │  01:05 — Editoriale Startup + Startup della Settimana                   │
  *  │  01:15 — Reportage Startup (ogni lunedì)                                │
  *  │  01:20 — Analisi Mercato Startup (ogni lunedì)                          │
- *  │  01:30 — News Finance (scraping RSS reale)                              │
- *  │  01:35 — Editoriale Finance + Deal of Week                              │
- *  │  01:45 — Reportage Finance (ogni lunedì)                                │
- *  │  01:50 — Analisi Finance (ogni lunedì)                                  │
  *  │  02:00 — Audit notturno URL notizie                                     │
- *  │  02:15 — News Health (scraping RSS reale)                               │
- *  │  02:20 — Editoriale Health + Deal of Week                               │
- *  │  02:30 — Reportage Health (ogni lunedì)                                 │
- *  │  02:35 — Analisi Health (ogni lunedì)                                   │
- *  │  02:45 — News Sport (scraping RSS reale)                                │
- *  │  02:50 — Editoriale Sport + Deal of Week                                │
- *  │  02:55 — Reportage Sport (ogni lunedì)                                  │
- *  │  02:58 — Analisi Sport (ogni lunedì)                                    │
- *  │  03:05 — News Luxury (scraping RSS reale)                               │
- *  │  03:10 — Editoriale Luxury + Deal of Week                               │
- *  │  03:20 — Reportage Luxury (ogni lunedì)                                 │
- *  │  03:25 — Analisi Luxury (ogni lunedì)                                   │
+ *  │  05:30 — Invalidazione cache (contenuti freschi disponibili)             │
+ *  │  06:00 — Generazione 10 ricerche AI/Startup/VC (Research)               │
+ *  │  06:45 — Audit link newsletter pre-invio                                │
+ *  │  [DISABILITATO] 05:45 — Snapshot barometro politico (Sondaggi stand by) │
+ *  │  [DISABILITATO] Finance, Health, Sport, Luxury, Music, Motori, ecc.      │
  *  │                                                                          │
- *  │  NEWSLETTER GIORNALIERA PER CANALE                                       │
- *  │  Lunedì    07:00 — Preview AI4Business → info@ideasmart.ai              │
- *  │  Lunedì    07:30 — Newsletter AI4Business → tutti gli iscritti          │
- *  │  Martedì   07:00 — Preview Startup → info@ideasmart.ai                  │
- *  │  Martedì   07:30 — Newsletter Startup → tutti gli iscritti              │
- *  │  Mercoledì 07:00 — Preview Finance → info@ideasmart.ai                  │
- *  │  Mercoledì 07:30 — Newsletter Finance → tutti gli iscritti              │
- *  │  Giovedì   07:00 — Preview Sport → info@ideasmart.ai                    │
- *  │  Giovedì   07:30 — Newsletter Sport → tutti gli iscritti                │
- *  │  Venerdì   07:00 — Preview ITsMusic → info@ideasmart.ai                 │
- *  │  Venerdì   07:30 — Newsletter ITsMusic → tutti gli iscritti             │
- *  │  Sabato    07:00 — Preview Luxury → info@ideasmart.ai                   │
- *  │  Sabato    07:30 — Newsletter Luxury → tutti gli iscritti               │
- *  │  Domenica  07:00 — Preview Health → info@ideasmart.ai                   │
- *  │  Domenica  07:30 — Newsletter Health → tutti gli iscritti               │
+ *  │  NEWSLETTER SETTIMANALE                                                  │
+ *  │  Lunedì    07:00 — Preview AI4Business → ac@acinelli.com               │
+ *  │  Lunedì    07:30 — Newsletter AI4Business + Ricerche → tutti iscritti   │
+ *  │  Martedì   07:00 — Preview Startup News → ac@acinelli.com              │
+ *  │  Martedì   07:30 — Newsletter Startup News + Ricerche → tutti iscritti │
+ *  │  Mercoledì — Nessun invio                                              │
+ *  │  Giovedì   — Nessun invio                                              │
+ *  │  Venerdì   07:00 — Preview AI4Business → ac@acinelli.com               │
+ *  │  Venerdì   07:30 — Newsletter AI4Business + Ricerche → tutti iscritti   │
+ *  │  Sabato    — Nessun invio                                              │
+ *  │  Domenica  — Nessun invio                                              │
  *  │                                                                          │
- *  │  LINKEDIN AUTOPOST + PUNTO DEL GIORNO — ogni giorno                      │
- *  │  10:00 — Post editoriale AI/Startup su LinkedIn                         │
- *  │          → salva automaticamente il testo nel DB (tabella linkedin_posts)│
- *  │          → alimenta la sezione "Punto del Giorno" nella Home             │
+ *  │  LINKEDIN AUTOPOST — 3 slot giornalieri                                  │
+ *  │  10:30 — Post mattino: AI4Business (fisso)                              │
+ *  │  13:00 — Post pomeriggio: Startup News (fisso)                          │
+ *  │  17:30 — Post sera: AI4Business o Startup (rotazione settimanale)       │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
  * node-cron usa il fuso orario del server. Il server gira in UTC.
@@ -307,11 +288,13 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SNAPSHOT BAROMETRO POLITICO — 05:45 CET (dopo invalidazione cache)
+  // SNAPSHOT BAROMETRO POLITICO — [DISABILITATO — sezione Sondaggi in stand by, 28 Mar 2026]
   // ══════════════════════════════════════════════════════════════════════════
   // Ogni giorno alle 05:45 salviamo uno snapshot del barometro politico
   // per alimentare il grafico storico a 4 settimane nel widget Sondaggi.
-  cron.schedule("45 5 * * *", async () => {
+  // cron.schedule("45 5 * * *", async () => { // DISABILITATO
+  if (false) { // DISABILITATO — sezione Sondaggi in stand by
+  (async () => {
     console.log("[SchedulerManager] ⏰ 05:45 CET — Salvataggio snapshot barometro politico...");
     try {
       const db = await getDb();
@@ -366,7 +349,7 @@ export function startAllSchedulers(): void {
     } catch (err) {
       console.error("[BarometroSnapshot] ❌ Errore salvataggio snapshot:", err);
     }
-  }, { timezone: TZ });
+  })(); } // fine blocco DISABILITATO barometro
 
   // ── Invalidazione cache parziale dopo LinkedIn (10:35 CET) ───────────────
   // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.
