@@ -1,0 +1,20 @@
+{
+  "query": "\nSELECT section, DATE(createdAt) as data, COUNT(*) as totale\nFROM news_items\nWHERE section IN ('ai','startup') AND DATE(createdAt) >= '2026-03-27'\nGROUP BY section, DATE(createdAt)\nORDER BY data DESC, section;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT section, DATE(createdAt) as data, COUNT(*) as totale\nFROM news_items\nWHERE section IN ('ai','startup') AND DATE(createdAt) >= '2026-03-27'\nGROUP BY section, DATE(createdAt)\nORDER BY data DESC, section;\n",
+  "rows": [
+    {
+      "section": "startup",
+      "data": "2026-03-28",
+      "totale": "20"
+    },
+    {
+      "section": "ai",
+      "data": "2026-03-27",
+      "totale": "20"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tdata\ttotale\nstartup\t2026-03-28\t20\nai\t2026-03-27\t20\n",
+  "stderr": "",
+  "execution_time_ms": 74
+}

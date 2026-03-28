@@ -360,6 +360,79 @@ export function startAllSchedulers(): void {
   //   Sabato    → Lifestyle & Luxury
   //   Domenica  → Health & Biotech
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // VERIFICA GIORNALIERA NOTIZIE — 07:00 CET
+  // Controlla che AI4Business e Startup abbiano notizie di oggi.
+  // Se mancano (es. il cron notturno era offline), le genera subito.
+  // Questo è un secondo livello di sicurezza rispetto al catch-up all'avvio.
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 7 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 07:00 CET — Verifica giornaliera notizie AI4Business e Startup...");
+    await withLock("daily-news-check", async () => {
+      try {
+        const checkDb = await getDb();
+        if (!checkDb) { console.warn("[SchedulerManager] ⚠️ Verifica notizie: DB non disponibile"); return; }
+        const { newsItems: niCheckTable } = await import("../drizzle/schema");
+        const { and: andCheck, gte: gteCheck, lt: ltCheck } = await import("drizzle-orm");
+        const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
+        const todayLabel = nowCET.toLocaleDateString("en-CA", { timeZone: TZ }); // YYYY-MM-DD
+        const todayStart = new Date(todayLabel + "T00:00:00+01:00");
+        const todayEnd = new Date(todayLabel + "T23:59:59+01:00");
+
+        const sectionsToVerify: Array<{ section: 'ai' | 'startup'; label: string; refreshFn: () => Promise<void> }> = [
+          { section: 'ai', label: 'AI4Business', refreshFn: async () => { await refreshAINewsFromRSS(); } },
+          { section: 'startup', label: 'Startup News', refreshFn: async () => { await refreshStartupNewsFromRSS(); } },
+        ];
+
+        for (const { section, label, refreshFn } of sectionsToVerify) {
+          const existing = await checkDb.select({ id: niCheckTable.id })
+            .from(niCheckTable)
+            .where(andCheck(
+              eq(niCheckTable.section, section),
+              gteCheck(niCheckTable.createdAt, todayStart),
+              ltCheck(niCheckTable.createdAt, todayEnd)
+            ))
+            .limit(1);
+
+          if (existing.length === 0) {
+            console.log(`[SchedulerManager] 🔄 VERIFICA 07:00: sezione '${section}' (${label}) non ha notizie di oggi — avvio refresh...`);
+            try {
+              await refreshFn();
+              invalidateSection(section);
+              console.log(`[SchedulerManager] ✅ VERIFICA 07:00: '${section}' aggiornata con successo`);
+            } catch (refreshErr) {
+              console.error(`[SchedulerManager] ❌ VERIFICA 07:00: refresh '${section}' fallito:`, refreshErr);
+            }
+          } else {
+            console.log(`[SchedulerManager] ✅ VERIFICA 07:00: '${section}' (${label}) ha già notizie di oggi — OK`);
+          }
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Verifica giornaliera notizie errore:", err);
+      }
+    });
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // VERIFICA GIORNALIERA RESEARCH — 07:15 CET
+  // Controlla che le ricerche di oggi siano presenti; se mancano, le genera.
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("15 7 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 07:15 CET — Verifica ricerche giornaliere...");
+    await withLock("daily-research-check", async () => {
+      try {
+        const result = await generateDailyResearch();
+        if (result.generated > 0) {
+          console.log(`[SchedulerManager] ✅ VERIFICA 07:15: ${result.generated} ricerche generate (erano mancanti)`);
+        } else {
+          console.log("[SchedulerManager] ✅ VERIFICA 07:15: ricerche già presenti — OK");
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Verifica ricerche errore:", err);
+      }
+    });
+  }, { timezone: TZ });
+
   // ── AUDIT LINK (06:45 CET) — tutti i giorni ──────────────────────────────
   cron.schedule("45 6 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 06:45 CET — Audit link newsletter pre-invio...");
@@ -429,6 +502,49 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 2 post giornalieri: 10:30 CET (mattino) + 15:00 CET (pomeriggio)
   // ══════════════════════════════════════════════════════════════════════════
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // VERIFICA GIORNALIERA LINKEDIN — 10:00 CET
+  // Controlla che i post LinkedIn del giorno siano stati pubblicati.
+  // Se il cron delle 10:30 / 15:00 / 17:30 era offline, pubblica subito.
+  // Questo cron gira 30 minuti PRIMA del post mattino per garantire
+  // che almeno un post sia sempre pubblicato ogni giorno.
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 10 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 10:00 CET — Verifica giornaliera post LinkedIn...");
+    await withLock("daily-linkedin-check", async () => {
+      try {
+        const liCheckDb = await getDb();
+        if (!liCheckDb) { console.warn("[SchedulerManager] ⚠️ Verifica LinkedIn: DB non disponibile"); return; }
+        const { linkedinPosts: lpCheckTable } = await import("../drizzle/schema");
+        const { and: andLi } = await import("drizzle-orm");
+        const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
+        const today = nowCET.toLocaleDateString("en-CA", { timeZone: TZ }); // YYYY-MM-DD
+
+        // Controlla se esiste almeno un post di oggi (qualsiasi slot)
+        const existingToday = await liCheckDb.select({ id: lpCheckTable.id, slot: lpCheckTable.slot })
+          .from(lpCheckTable)
+          .where(eq(lpCheckTable.dateLabel, today))
+          .limit(3);
+
+        const publishedSlots = existingToday.map(p => p.slot);
+
+        if (publishedSlots.length === 0) {
+          // Nessun post oggi: pubblica subito il post mattino
+          console.log("[SchedulerManager] 🔄 VERIFICA 10:00: nessun post LinkedIn oggi — pubblico post mattino ora...");
+          await withLock("linkedin-morning", async () => {
+            const result = await publishLinkedInPost("morning");
+            console.log(`[SchedulerManager] ✅ VERIFICA 10:00: LinkedIn MATTINO: ${result.published}/1 post pubblicati`);
+            invalidateBySection("home");
+          });
+        } else {
+          console.log(`[SchedulerManager] ✅ VERIFICA 10:00: LinkedIn ha già ${publishedSlots.length} post oggi (${publishedSlots.join(", ")}) — OK`);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Verifica giornaliera LinkedIn errore:", err);
+      }
+    });
+  }, { timezone: TZ });
 
   // Post mattino — 10:30 CET
   cron.schedule("30 10 * * *", async () => {
@@ -570,7 +686,7 @@ export function startAllSchedulers(): void {
     } catch (err) {
       console.warn(`[KeepAlive] ⚠️ Ping fallito (non critico): ${err instanceof Error ? err.message : String(err)}`);
     }
-  }, 12 * 60 * 60 * 1000); // ogni 12 ore
+  }, 4 * 60 * 60 * 1000); // ogni 4 ore (ridotto da 12h per prevenire ibernazione sandbox)
 
   // ══════════════════════════════════════════════════════════════════════════
   // CATCH-UP NEWSLETTER — all'avvio, invia la newsletter del giorno se mancata
@@ -795,7 +911,10 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
   console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");
   console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 3 volte al giorno: 10:30, 15:00 e 17:30 CET");
-  console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 12 ore per prevenire ibernazione sandbox");
+  console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   🔄 Catch-up NL     → all'avvio, forza invio newsletter se mancata (dopo le 07:30 CET)");
+  console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI4Business + Startup, rigenera se mancanti)");
+  console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
+  console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 10:00 CET (pubblica se nessun post oggi)");
   console.log("[SchedulerManager]   🚨 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
 }

@@ -1408,6 +1408,15 @@
 - [ ] Scheduler: disabilitare aggiornamenti per music, finance, health, sport, luxury, news, motori, tennis, basket, gossip, cybersecurity, sondaggi
 - [ ] Catch-up: rimuovere le sezioni disabilitate dal catch-up automatico
 
+## Nuovi task (28 Mar 2026 — Routine automatiche robuste)
+
+- [x] Keep-alive ridotto da 12h a 4h per prevenire ibernazione sandbox
+- [x] Aggiunto cron VERIFICA NOTIZIE alle 07:00 CET: controlla AI4Business e Startup, rigenera se mancanti
+- [x] Aggiunto cron VERIFICA RESEARCH alle 07:15 CET: rigenera le ricerche se mancanti
+- [x] Aggiunto cron VERIFICA LINKEDIN alle 10:00 CET: pubblica il post mattino se nessun post è stato pubblicato oggi
+- [x] Forzato refresh manuale notizie AI di oggi (40 notizie generate)
+- [x] Verificato: AI=40, Startup=20, Research=20 per il 28 marzo 2026
+
 ## Nuovi task (27 Mar 2026 — Aumento notizie Home)
 
 - [x] Rimossa sezione "I Canali" vuota (solo 2 link testuali senza notizie)
