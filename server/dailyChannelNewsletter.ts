@@ -58,7 +58,7 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
     key: "startup",
     name: "Startup News",
     shortName: "Startup",
-    dayOfWeek: 2, // Martedì
+    dayOfWeek: 3, // Mercoledì (spostato da martedì per cadenza Lun/Mer/Ven)
     siteSection: "/startup",
     accentColor: "#ff5500",
     tagline: "Startup, Innovazione e Venture Capital",

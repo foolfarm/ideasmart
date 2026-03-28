@@ -310,10 +310,10 @@ function SectionLabel({ label, accent }: { label: string; accent: string }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <div className="h-[3px] w-6" style={{ background: accent }} />
-      <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
-        style={{ color: accent, fontFamily: "'Space Mono', monospace" }}>
+      <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0 p-0"
+        style={{ color: accent, fontFamily: "'Space Mono', monospace", fontSize: "10px", lineHeight: 1 }}>
         {label}
-      </span>
+      </h2>
     </div>
   );
 }
@@ -880,7 +880,7 @@ export default function Home() {
                 {`© ${today.getFullYear()} IdeaSmart Research · AI · Startup · Venture Capital`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
-                {(["ai", "startup", "finance", "health", "sport"] as const).map(sec => (
+                {(["ai", "startup"] as const).map(sec => (
                   <Link key={sec} href={SECTION_COLORS[sec].path}>
                     <span className="text-[10px] hover:underline cursor-pointer"
                       style={{ color: SECTION_COLORS[sec].accent, fontFamily: "'Space Mono', monospace" }}>

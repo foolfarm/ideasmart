@@ -520,33 +520,67 @@ export default function Admin() {
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
                 📧 Newsletter Giornaliera per Canale
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Automatica ogni giorno — Preview 07:00 · Invio 07:30 CET</p>
-              <div className="mb-4 rounded-lg border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
-                <table className="w-full text-xs">
-                  <thead>
-                    <tr className="border-b border-white/8">
-                      <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Giorno</th>
-                      <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Canale</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { day: "Lunedì", channel: "AI4Business News", color: "#00e5c8" },
-                      { day: "Martedì", channel: "Startup News", color: "#ff5500" },
-                      { day: "Mercoledì", channel: "Finance & Markets", color: "#1a56db" },
-                      { day: "Giovedì", channel: "Sport & Business", color: "#059669" },
-                      { day: "Venerdì", channel: "ITsMusic", color: "#9333ea" },
-                      { day: "Sabato", channel: "Lifestyle & Luxury", color: "#d97706" },
-                      { day: "Domenica", channel: "Health & Biotech", color: "#dc2626" },
-                    ].map((row) => (
-                      <tr key={row.day} className="border-b border-white/4 last:border-0">
-                        <td className="px-3 py-2 text-white/50">{row.day}</td>
-                        <td className="px-3 py-2 font-bold" style={{ color: row.color }}>{row.channel}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cadenza Lun/Mer/Ven — Preview 07:00 · Invio 07:30 CET</p>
+              {/* Prossimi Invii Newsletter */}
+              {(() => {
+                const now = new Date();
+                const todayDow = now.getDay();
+                const startupSubs = subscribers.filter(s => s.status === "active" && (s.newsletter === "startup" || s.newsletter === "both")).length;
+                const schedule = [
+                  { dow: 1, dayName: "Lunedì",    channel: "AI4Business News",  color: "#00e5c8", subs: aiSubscribers },
+                  { dow: 3, dayName: "Mercoledì", channel: "Startup News",       color: "#ff5500", subs: startupSubs },
+                  { dow: 5, dayName: "Venerdì",   channel: "AI4Business News",  color: "#00e5c8", subs: aiSubscribers },
+                ];
+                const upcoming = [...schedule, ...schedule, ...schedule]
+                  .map((s, i) => {
+                    const baseDow = s.dow;
+                    const week = Math.floor(i / schedule.length);
+                    let daysAhead = (baseDow - todayDow + 7) % 7 + week * 7;
+                    if (daysAhead === 0 && i >= schedule.length) daysAhead = 7;
+                    const date = new Date(now);
+                    date.setDate(now.getDate() + daysAhead);
+                    const isToday = daysAhead === 0;
+                    const isTomorrow = daysAhead === 1;
+                    const label = isToday ? "Oggi" : isTomorrow ? "Domani" : s.dayName;
+                    const dateStr = date.toLocaleDateString("it-IT", { day: "numeric", month: "short" });
+                    return { ...s, label, dateStr, daysAhead, isToday };
+                  })
+                  .filter((s, i, arr) => arr.findIndex(x => x.daysAhead === s.daysAhead) === i)
+                  .sort((a, b) => a.daysAhead - b.daysAhead)
+                  .slice(0, 4);
+                return (
+                  <div className="mb-4 rounded-lg border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
+                    <div className="px-3 py-2 border-b border-white/8">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Prossimi Invii</span>
+                      <span className="text-[10px] text-white/20 ml-2">· Preview 07:00 · Invio 07:30 CET</span>
+                    </div>
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-white/8">
+                          <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Data</th>
+                          <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Canale</th>
+                          <th className="px-3 py-2 text-right text-white/30 font-bold uppercase tracking-wider">Iscritti</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {upcoming.map((row, i) => (
+                          <tr key={i} className={`border-b border-white/4 last:border-0 ${row.isToday ? "bg-white/5" : ""}`}>
+                            <td className="px-3 py-2">
+                              <span className={`font-bold ${row.isToday ? "text-yellow-400" : "text-white/70"}`}>{row.label}</span>
+                              <span className="text-white/30 ml-1">{row.dateStr}</span>
+                            </td>
+                            <td className="px-3 py-2 font-bold" style={{ color: row.color }}>{row.channel}</td>
+                            <td className="px-3 py-2 text-right">
+                              <span className="font-bold text-white/80">{row.subs}</span>
+                              <span className="text-white/30 ml-1">attivi</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })()}
               <div className="space-y-2">
                 <button
                   onClick={() => {

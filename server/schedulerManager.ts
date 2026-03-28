@@ -25,9 +25,9 @@
  *  │  NEWSLETTER SETTIMANALE                                                  │
  *  │  Lunedì    07:00 — Preview AI4Business → ac@acinelli.com               │
  *  │  Lunedì    07:30 — Newsletter AI4Business + Ricerche → tutti iscritti   │
- *  │  Martedì   07:00 — Preview Startup News → ac@acinelli.com              │
- *  │  Martedì   07:30 — Newsletter Startup News + Ricerche → tutti iscritti │
- *  │  Mercoledì — Nessun invio                                              │
+ *  │  Martedì   — Nessun invio                                              │
+ *  │  Mercoledì 07:00 — Preview Startup News → ac@acinelli.com              │
+ *  │  Mercoledì 07:30 — Newsletter Startup News + Ricerche → tutti iscritti │
  *  │  Giovedì   — Nessun invio                                              │
  *  │  Venerdì   07:00 — Preview AI4Business → ac@acinelli.com               │
  *  │  Venerdì   07:30 — Newsletter AI4Business + Ricerche → tutti iscritti   │

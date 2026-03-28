@@ -65,6 +65,13 @@
 - [ ] Implementare scraping RSS feeds reali (opzionale, ora si usa LLM)
 - [ ] Verificare mittente newsletter@ideasmart.it su SendGrid
 
+## Task completati (29 Mar 2026 — Pulizia e SEO)
+
+- [x] A) Newsletter Startup spostata da martedì (2) a mercoledì (3) — cadenza Lun/Mer/Ven
+- [x] B) Footer Home: rimossi link Finance/Health/Sport/Luxury (già pulito)
+- [x] C) Admin dashboard: aggiunta sezione "Prossimi Invii Newsletter" con data, canale e iscritti attivi
+- [x] D) SEO: SectionLabel ora usa tag H2 semantico (AI4Business, Startup News, Research del Giorno)
+
 ## Nuovi task (12 Mar 2026)
 
 - [x] Schema DB: tabella daily_editorial (editoriale AI giornaliero)
@@ -1606,3 +1613,11 @@
 - [x] Disabilitare cron barometro politico 05:45 (sezione Sondaggi in stand by)
 - [x] Aggiungere newsletter venerdì: AI4Business + Ricerche del Giorno a tutti gli iscritti (dayOfWeek: 5)
 - [x] Aggiornare commento header schedulerManager con la nuova pianificazione ufficiale
+
+## Task 28 Mar 2026 — Newsletter, Footer, Admin SEO
+
+- [ ] A) Spostare newsletter Startup da martedì (dayOfWeek:2) a mercoledì (dayOfWeek:3)
+- [ ] A) Aggiornare commento header schedulerManager: Lunedì AI, Mercoledì Startup, Venerdì AI
+- [ ] B) Rimuovere Finance & Markets, Health & Biotech, Sport & Business dal footer
+- [ ] C) Aggiungere sezione "Prossimi Invii Newsletter" nella dashboard admin (data, canale, iscritti attivi)
+- [ ] D) Aggiungere H2 SEO visibile nella Home per risolvere il problema SEO (nessun H2 trovato)
