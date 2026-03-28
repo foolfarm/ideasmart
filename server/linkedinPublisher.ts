@@ -20,12 +20,35 @@
  * Sezioni supportate: 'ai' e 'startup' (no musica)
  */
 
+import { createHash } from "crypto";
 import { ENV } from "./_core/env";
 import { invokeLLM } from "./_core/llm";
 import { getLatestEditorial, getDb } from "./db";
 import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
+import { findEditorialImage } from "./stockImages";
 import { linkedinPosts } from "../drizzle/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc, gte } from "drizzle-orm";
+
+// ── Timezone CET/CEST ────────────────────────────────────────────────────────
+const TZ_ROME = "Europe/Rome";
+
+/**
+ * Restituisce la data corrente nel fuso orario Europe/Rome (CET/CEST)
+ * nel formato YYYY-MM-DD. Evita il bug UTC vs CET che causava doppi post.
+ */
+function getTodayCET(): string {
+  return new Date().toLocaleDateString("sv-SE", { timeZone: TZ_ROME }); // sv-SE = YYYY-MM-DD
+}
+
+/**
+ * Calcola l'hash SHA-256 del testo del post (primi 500 caratteri normalizzati).
+ * Usato per rilevare contenuti duplicati indipendentemente dal giorno/slot.
+ */
+function computePostHash(text: string): string {
+  // Normalizza: minuscolo, rimuovi spazi multipli, prendi i primi 500 char
+  const normalized = text.toLowerCase().replace(/\s+/g, " ").trim().slice(0, 500);
+  return createHash("sha256").update(normalized).digest("hex").slice(0, 16); // 16 char hex
+}
 
 const SITE_BASE_URL = "https://ideasmart.ai";
 
@@ -432,14 +455,17 @@ export async function publishLinkedInPost(
   console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);
 
   // ── Controllo idempotenza: evita doppi post ──────────────────────────────
-  // Il controllo viene SEMPRE eseguito, anche in modalità force.
-  // La modalità force bypassa solo il blocco per i cron automatici (non per i trigger manuali).
+  // Usa la data CET (Europe/Rome) per evitare il bug UTC vs CET che causava
+  // doppi post quando il server si riavviava dopo mezzanotte UTC ma prima di
+  // mezzanotte CET (es. 23:00 UTC = 00:00 CET del giorno successivo).
   // Il UNIQUE constraint DB (uq_linkedin_date_slot) è il secondo livello di protezione.
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD (UTC)
+  const today = getTodayCET(); // YYYY-MM-DD in CET/CEST
+  let recentImageUrls: string[] = []; // Immagini usate di recente (per evitare ripetizioni)
   try {
     const db = await getDb();
     if (db) {
-      const existing = await db.select({ id: linkedinPosts.id })
+      // Controllo slot: esiste già un post per questo slot oggi?
+      const existing = await db.select({ id: linkedinPosts.id, postText: linkedinPosts.postText })
         .from(linkedinPosts)
         .where(and(
           eq(linkedinPosts.dateLabel, today),
@@ -450,11 +476,27 @@ export async function publishLinkedInPost(
         if (force) {
           console.log(`[LinkedIn] ⚡ Modalità FORCE: post slot ${slotLabel} già presente nel DB (id=${existing[0].id}), ma force=true — procedo con nuovo post.`);
         } else {
-          console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today}) — saltato.`);
+          console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today} CET) — saltato.`);
           return { published: 0, errors: [], posts: [] };
         }
       } else if (force) {
         console.log(`[LinkedIn] ⚡ Modalità FORCE attiva per slot ${slotLabel} — nessun post esistente, procedo.`);
+      }
+
+      // Recupera le immagini usate negli ultimi 7 giorni per evitare ripetizioni
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const sevenDaysAgoLabel = sevenDaysAgo.toLocaleDateString("sv-SE", { timeZone: TZ_ROME });
+      const recentPosts = await db.select({ imageUrl: linkedinPosts.imageUrl })
+        .from(linkedinPosts)
+        .where(gte(linkedinPosts.dateLabel, sevenDaysAgoLabel))
+        .orderBy(desc(linkedinPosts.createdAt))
+        .limit(20);
+      recentImageUrls = recentPosts
+        .map(p => p.imageUrl)
+        .filter((u): u is string => !!u);
+      if (recentImageUrls.length > 0) {
+        console.log(`[LinkedIn] 🖼️ Esclusione ${recentImageUrls.length} immagini usate di recente`);
       }
     }
   } catch (checkErr) {
@@ -502,20 +544,42 @@ export async function publishLinkedInPost(
   }
 
   // 3. Determina l'immagine da usare
+  // Priorità: immagine da fonte autorevole RSS > Pexels tematica > immagine editoriale
+  // In tutti i casi, si escludono le immagini usate negli ultimi 7 giorni.
   let imageUrl: string | null | undefined = null;
   let imageSource = "";
 
-  if (marketImage) {
+  if (marketImage && !recentImageUrls.includes(marketImage.imageUrl)) {
+    // Immagine da RSS autorevole, non usata di recente
     imageUrl = marketImage.imageUrl;
     imageSource = marketImage.source;
     console.log(`[LinkedIn] 🖼️ Immagine da fonte autorevole: ${imageSource}`);
     console.log(`[LinkedIn]    "${marketImage.title.slice(0, 60)}"`);
-  } else if (editorial.imageUrl) {
-    imageUrl = editorial.imageUrl;
-    imageSource = "editoriale";
-    console.log("[LinkedIn] 🖼️ Uso immagine dall'editoriale (fallback)");
   } else {
-    console.warn("[LinkedIn] ⚠️ Nessuna immagine disponibile");
+    // Cerca immagine tematica su Pexels, coerente col tema del post
+    console.log("[LinkedIn] 🔍 Ricerca immagine tematica su Pexels...");
+    const pexelsImage = await findEditorialImage(
+      editorial.title,
+      editorial.keyTrend ?? "",
+      section,
+      recentImageUrls
+    );
+    if (pexelsImage) {
+      imageUrl = pexelsImage;
+      imageSource = "Pexels (tematica)";
+      console.log(`[LinkedIn] 🖼️ Immagine tematica Pexels trovata`);
+    } else if (editorial.imageUrl && !recentImageUrls.includes(editorial.imageUrl)) {
+      imageUrl = editorial.imageUrl;
+      imageSource = "editoriale";
+      console.log("[LinkedIn] 🖼️ Uso immagine dall'editoriale (fallback)");
+    } else if (editorial.imageUrl) {
+      // Ultima risorsa: usa l'immagine editoriale anche se già usata
+      imageUrl = editorial.imageUrl;
+      imageSource = "editoriale (riuso)";
+      console.log("[LinkedIn] ⚠️ Immagine editoriale già usata di recente, ma è l'unica disponibile");
+    } else {
+      console.warn("[LinkedIn] ⚠️ Nessuna immagine disponibile");
+    }
   }
 
   // 4. Genera il testo del post con LLM in stile Gartner
@@ -528,10 +592,45 @@ export async function publishLinkedInPost(
     slot
   );
 
-  // 5. URL di destinazione: pagina sezione su IDEASMART
+  // 5. Controllo hash duplicati: blocca se testo identico già pubblicato negli ultimi 7 giorni
+  const postHash = computePostHash(postText);
+  try {
+    const db = await getDb();
+    if (db) {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const sevenDaysAgoLabel = sevenDaysAgo.toLocaleDateString("sv-SE", { timeZone: TZ_ROME });
+      const duplicates = await db.select({ id: linkedinPosts.id, dateLabel: linkedinPosts.dateLabel, slot: linkedinPosts.slot })
+        .from(linkedinPosts)
+        .where(and(
+          eq(linkedinPosts.postHash, postHash),
+          gte(linkedinPosts.dateLabel, sevenDaysAgoLabel)
+        ))
+        .limit(1);
+      if (duplicates.length > 0) {
+        const dup = duplicates[0];
+        if (!force) {
+          console.warn(`[LinkedIn] 🚫 CONTENUTO DUPLICATO rilevato! Hash ${postHash} già presente nel DB (slot ${dup.slot} del ${dup.dateLabel}) — pubblicazione bloccata.`);
+          return {
+            published: 0,
+            errors: [`Contenuto duplicato: testo identico già pubblicato il ${dup.dateLabel} (slot ${dup.slot})`],
+            posts: [{ section, title: editorial.title, success: false, error: "Contenuto duplicato" }],
+          };
+        } else {
+          console.warn(`[LinkedIn] ⚠️ CONTENUTO DUPLICATO ma force=true: procedo comunque (hash ${postHash})`);
+        }
+      } else {
+        console.log(`[LinkedIn] ✅ Hash contenuto unico: ${postHash}`);
+      }
+    }
+  } catch (hashCheckErr) {
+    console.warn('[LinkedIn] ⚠️ Controllo hash duplicati fallito, procedo:', hashCheckErr);
+  }
+
+  // 6. URL di destinazione: pagina sezione su IDEASMART
   const articleUrl = `${SITE_BASE_URL}${meta.path}`;
 
-  // 6. Pubblica su LinkedIn
+  // 7. Pubblica su LinkedIn
   console.log(`[LinkedIn] 🚀 Pubblicazione post — Slot: ${slotLabel} — Sezione: ${meta.label}`);
   console.log(`[LinkedIn]    Titolo: ${editorial.title.slice(0, 60)}...`);
   console.log(`[LinkedIn]    Immagine: ${imageUrl ? `✅ (${imageSource})` : "❌ assente"}`);
@@ -587,6 +686,7 @@ export async function publishLinkedInPost(
             section: section as any,
             imageUrl: imageUrl ?? null,
             hashtags,
+            postHash,
           })
           .onDuplicateKeyUpdate({
             set: {
@@ -595,6 +695,7 @@ export async function publishLinkedInPost(
               title: editorial.title,
               imageUrl: imageUrl ?? null,
               hashtags,
+              postHash,
             },
           });
         console.log(`[LinkedIn] 💾 Post slot ${slotLabel} salvato nel DB (${dateLabel})`);

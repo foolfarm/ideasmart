@@ -207,7 +207,11 @@ function extractKeywordsFromTitle(title: string, isMusic = false): string {
 
 // ── Ricerca immagine su Pexels ────────────────────────────────────────────────
 
-async function searchPexels(query: string, orientation: "landscape" | "square" = "landscape"): Promise<string | null> {
+async function searchPexels(
+  query: string,
+  orientation: "landscape" | "square" = "landscape",
+  excludeUrls: string[] = []
+): Promise<string | null> {
   const apiKey = process.env.PEXELS_API_KEY;
   if (!apiKey) {
     console.warn("[StockImages] PEXELS_API_KEY not set, using fallback");
@@ -215,7 +219,9 @@ async function searchPexels(query: string, orientation: "landscape" | "square" =
   }
 
   try {
-    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=${orientation}&size=medium`;
+    // Usa una pagina casuale tra 1 e 3 per aumentare la varietà dei risultati
+    const randomPage = Math.floor(Math.random() * 3) + 1;
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=15&page=${randomPage}&orientation=${orientation}&size=medium`;
     const res = await fetch(url, {
       headers: { Authorization: apiKey },
     });
@@ -226,15 +232,21 @@ async function searchPexels(query: string, orientation: "landscape" | "square" =
     }
 
     const data: PexelsResponse = await res.json();
-    const photos = data.photos || [];
+    let photos = data.photos || [];
 
     if (photos.length === 0) {
       console.warn(`[StockImages] No Pexels results for "${query}"`);
       return null;
     }
 
-    // Scegli una foto casuale tra le prime 5 per varietà
-    const idx = Math.floor(Math.random() * Math.min(photos.length, 5));
+    // Escludi le immagini già usate di recente
+    if (excludeUrls.length > 0) {
+      const filtered = photos.filter(p => !excludeUrls.some(u => u.includes(String(p.id))));
+      if (filtered.length > 0) photos = filtered;
+    }
+
+    // Scegli una foto casuale tra le disponibili per varietà
+    const idx = Math.floor(Math.random() * Math.min(photos.length, 10));
     const photo = photos[idx];
 
     // Usa large per qualità migliore (max 1280px)
@@ -360,6 +372,7 @@ export async function findNewsImage(title: string, category: string): Promise<st
 
 // ── Keyword curate per editoriali LinkedIn ──────────────────────────────────
 // Queste keyword sono visivamente inequivocabili: niente crypto, niente trading.
+// Pool ampliata per garantire massima varietà tra i 4 post giornalieri.
 
 const LINKEDIN_AI_KEYWORDS = [
   "robot arm factory automation",
@@ -372,6 +385,16 @@ const LINKEDIN_AI_KEYWORDS = [
   "futuristic technology interface",
   "AI computer vision screen",
   "smart city technology",
+  "neural network visualization",
+  "server data center technology",
+  "programmer coding laptop night",
+  "business analytics dashboard",
+  "autonomous robot warehouse",
+  "AI chip processor technology",
+  "tech executive meeting boardroom",
+  "cloud computing network",
+  "cybersecurity digital protection",
+  "machine learning algorithm",
 ];
 
 const LINKEDIN_STARTUP_KEYWORDS = [
@@ -385,53 +408,143 @@ const LINKEDIN_STARTUP_KEYWORDS = [
   "founder startup laptop",
   "accelerator program startup",
   "business strategy whiteboard",
+  "entrepreneur success celebration",
+  "startup funding investment",
+  "tech founder interview",
+  "product launch startup",
+  "team collaboration modern office",
+  "business plan presentation",
+  "startup incubator workspace",
+  "young entrepreneur technology",
+  "scale up business growth",
+  "innovation lab prototype",
+];
+
+// ── Mapping tematico avanzato: keyword del titolo → query Pexels pertinente ──
+// Garantisce che ogni post abbia un'immagine visivamente coerente con il tema.
+const THEME_KEYWORD_MAP: Array<{ patterns: RegExp; query: string }> = [
+  // AI & Modelli
+  { patterns: /gpt|chatgpt|openai|llm|language model|modello linguistico/i, query: "AI chatbot conversation interface" },
+  { patterns: /gemini|google ai|bard/i, query: "Google technology AI innovation" },
+  { patterns: /claude|anthropic/i, query: "AI assistant technology screen" },
+  { patterns: /deepseek|mistral|llama/i, query: "open source AI code programming" },
+  { patterns: /agent[ie]|agentic|autonomous ai/i, query: "autonomous robot AI agent" },
+  // Robotica & Automazione
+  { patterns: /robot|robotica|automazione|automation/i, query: "industrial robot automation factory" },
+  { patterns: /drone|uav/i, query: "drone technology aerial" },
+  { patterns: /veicolo autonomo|self.driving|autonomous vehicle/i, query: "self driving car technology" },
+  // Hardware & Chip
+  { patterns: /chip|semiconduttore|semiconductor|nvidia|gpu|processore/i, query: "semiconductor chip processor technology" },
+  { patterns: /quantum|quantistico/i, query: "quantum computing technology" },
+  // Cloud & Infrastruttura
+  { patterns: /cloud|aws|azure|google cloud/i, query: "cloud computing data center" },
+  { patterns: /data center|datacenter|server/i, query: "server data center infrastructure" },
+  { patterns: /cybersecurity|sicurezza|hacker|breach/i, query: "cybersecurity digital protection" },
+  // Startup & Funding
+  { patterns: /funding|round|serie [abc]|seed|investimento/i, query: "startup funding investment pitch" },
+  { patterns: /ipo|borsa|mercato|stock/i, query: "stock market business finance" },
+  { patterns: /acquisizione|acquisition|merger|m&a/i, query: "business merger acquisition handshake" },
+  { patterns: /unicorn|unicorno/i, query: "successful startup growth unicorn" },
+  // Settori verticali
+  { patterns: /salute|health|medic|biotech|pharma/i, query: "healthcare technology medical AI" },
+  { patterns: /fintech|banca|banking|pagamenti|payment/i, query: "fintech digital banking app" },
+  { patterns: /energia|energy|green|sostenib|climate/i, query: "renewable energy green technology" },
+  { patterns: /educazione|education|learning|formazione/i, query: "e-learning education technology" },
+  { patterns: /retail|ecommerce|e-commerce|shopping/i, query: "e-commerce retail technology" },
+  { patterns: /manifattura|manufacturing|industria/i, query: "smart manufacturing industry 4.0" },
+  // Lavoro & Organizzazione
+  { patterns: /lavoro|work|occupazione|jobs|workforce/i, query: "future of work remote office" },
+  { patterns: /ceo|cto|leadership|executive|board/i, query: "executive leadership business meeting" },
+  { patterns: /strategia|strategy|decisione|decision/i, query: "business strategy planning meeting" },
 ];
 
 /**
+ * Estrae la query Pexels più pertinente al tema del titolo del post.
+ * Usa il mapping tematico avanzato prima di ricorrere alle keyword generiche.
+ */
+function getThematicQuery(title: string, keyTrend: string, section: "ai" | "startup"): string {
+  const text = `${title} ${keyTrend}`.toLowerCase();
+
+  // Cerca il primo pattern che corrisponde al tema
+  for (const { patterns, query } of THEME_KEYWORD_MAP) {
+    if (patterns.test(text)) {
+      return query;
+    }
+  }
+
+  // Fallback: keyword generica per sezione
+  return section === "startup"
+    ? "startup entrepreneur innovation office"
+    : "artificial intelligence technology innovation";
+}
+
+/**
  * Versione specializzata per editoriale LinkedIn.
- * Usa keyword visivamente pertinenti per AI o Startup,
- * evitando immagini crypto/finanza/trading.
+ * Usa keyword visivamente pertinenti e tematicamente coerenti con il post,
+ * evitando immagini crypto/finanza/trading e immagini già usate di recente.
+ *
+ * @param title - Titolo dell'editoriale
+ * @param keyTrend - Trend chiave dell'editoriale
+ * @param section - Sezione tematica (ai o startup)
+ * @param recentImageUrls - URL immagini usate di recente (da escludere per varietà)
  */
 export async function findEditorialImage(
   title: string,
   keyTrend: string,
-  section: "ai" | "startup" = "ai"
+  section: "ai" | "startup" = "ai",
+  recentImageUrls: string[] = []
 ): Promise<string | null> {
   const isStartup = section === "startup";
   const pool = isStartup ? LINKEDIN_STARTUP_KEYWORDS : LINKEDIN_AI_KEYWORDS;
 
-  // 1. Prova con keyword estratte dal titolo + sezione
+  // 1. Query tematica specifica basata sul contenuto del titolo
+  const thematicQuery = getThematicQuery(title, keyTrend, section);
+  let url = await searchPexels(thematicQuery, "landscape", recentImageUrls);
+  if (url) {
+    console.log(`[StockImages] 🎯 Immagine tematica trovata: "${thematicQuery}"`);
+    return url;
+  }
+
+  // 2. Prova con keyword estratte dal titolo + sezione
   const titleKws = extractKeywordsFromTitle(title, false);
-  const query1 = isStartup
+  const query2 = isStartup
     ? `${titleKws} startup entrepreneur`
     : `${titleKws} artificial intelligence technology`;
-  let url = await searchPexels(query1);
+  url = await searchPexels(query2, "landscape", recentImageUrls);
+  if (url) {
+    console.log(`[StockImages] 📝 Immagine da titolo trovata: "${query2}"`);
+    return url;
+  }
 
-  // 2. Prova con keyTrend + sezione (se diverso dal titolo)
-  if (!url && keyTrend && keyTrend.length > 3) {
-    const query2 = isStartup
+  // 3. Prova con keyTrend + sezione (se diverso dal titolo)
+  if (keyTrend && keyTrend.length > 3) {
+    const query3 = isStartup
       ? `${keyTrend} startup`
       : `${keyTrend} technology AI`;
-    url = await searchPexels(query2);
+    url = await searchPexels(query3, "landscape", recentImageUrls);
+    if (url) {
+      console.log(`[StockImages] 📊 Immagine da keyTrend trovata: "${query3}"`);
+      return url;
+    }
   }
 
-  // 3. Prova con keyword curate dalla pool (casuale)
-  if (!url) {
-    const randomKw = pool[Math.floor(Math.random() * pool.length)];
-    url = await searchPexels(randomKw);
+  // 4. Prova con keyword curate dalla pool (casuale, escludendo immagini recenti)
+  // Usa un indice deterministico basato sull'ora per evitare ripetizioni tra slot
+  const hourSlot = new Date().getHours();
+  const poolIdx = hourSlot % pool.length;
+  url = await searchPexels(pool[poolIdx], "landscape", recentImageUrls);
+  if (url) {
+    console.log(`[StockImages] 🎲 Immagine da pool (slot ${poolIdx}): "${pool[poolIdx]}"`);
+    return url;
   }
 
-  // 4. Seconda keyword curata (diversa dalla precedente)
-  if (!url) {
-    const idx2 = Math.floor(Math.random() * pool.length);
-    url = await searchPexels(pool[idx2]);
-  }
+  // 5. Seconda keyword dalla pool (offset +5 per diversificare)
+  const poolIdx2 = (poolIdx + 5) % pool.length;
+  url = await searchPexels(pool[poolIdx2], "landscape", recentImageUrls);
+  if (url) return url;
 
-  // 5. Fallback assoluto con keyword sicure
-  if (!url) {
-    url = await searchPexels(isStartup ? "startup office team" : "technology innovation office");
-  }
-
+  // 6. Fallback assoluto senza esclusioni
+  url = await searchPexels(isStartup ? "startup office team" : "technology innovation office");
   return url;
 }
 

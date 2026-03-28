@@ -337,10 +337,14 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   imageUrl: varchar("imageUrl", { length: 1000 }),
   // Hashtag estratti dal post
   hashtags: varchar("hashtags", { length: 500 }),
+  // Hash SHA-256 del testo del post (per deduplication contenuto)
+  postHash: varchar("postHash", { length: 64 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
   // UNIQUE constraint data+slot: garantisce un solo post per slot per giorno (idempotenza)
   dateSlotUniq: uniqueIndex("uq_linkedin_date_slot").on(table.dateLabel, table.slot),
+  // Index su postHash per ricerca rapida duplicati
+  postHashIdx: index("idx_linkedin_post_hash").on(table.postHash),
 }));
 
 export type LinkedinPost = typeof linkedinPosts.$inferSelect;

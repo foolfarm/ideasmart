@@ -1554,3 +1554,14 @@
 - [x] Sezione A: piattaforma AI agentica con news personalizzate 24h, algoritmo Verify, abbonamento
 - [x] Sezione B: consulenza, ricerca e advisory su AI, M&A, partnership tecnologiche
 - [x] CTA chiare per entrambe le offerte
+
+## Fix LinkedIn Duplicati e Immagini (28 Mar 2026)
+
+- [x] Aggiungere campo postHash (SHA-256 del testo) alla tabella linkedin_posts
+- [x] Aggiungere controllo hash prima della pubblicazione: blocca se testo identico già pubblicato negli ultimi 7 giorni
+- [x] Correggere controllo idempotenza: usare timezone CET/CEST (Europe/Rome) per dateLabel, non UTC
+- [x] Aggiungere controllo testo simile tra slot dello stesso giorno (similarity check)
+- [x] Migliorare selezione immagine tematica: estrarre keyword dal titolo del post e usarle per Pexels
+- [x] Aggiungere pool di immagini usate di recente per evitare ripetizioni (ultimi 7 giorni)
+- [x] Aggiungere colonna postHash nella tabella per tracking contenuto duplicato
+- [x] Testare e verificare che i fix funzionino (TypeScript OK, migrazione DB applicata)
