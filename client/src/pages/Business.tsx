@@ -470,7 +470,7 @@ export default function Business() {
               className="mt-1 text-[10px] font-bold"
               style={{ fontFamily: "'Space Mono', monospace", color: ACCENT }}
             >
-              — Andrea Cinelli, Founder IdeaSmart
+              — Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research
             </p>
           </div>
         </div>
@@ -640,7 +640,7 @@ export default function Business() {
               className="text-xs mt-0.5"
               style={{ fontFamily: "'Space Mono', monospace", color: `${INK}40` }}
             >
-              Founder & CEO FoolFarm · Direttore Responsabile IdeaSmart
+              Opinion Leader & Editorialista IdeaSmart Research
             </p>
             <Link
               href="/chi-siamo"

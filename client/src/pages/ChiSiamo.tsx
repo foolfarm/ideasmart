@@ -141,7 +141,7 @@ export default function ChiSiamo() {
                 </p>
                 <footer className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
                   style={{ fontFamily: "'Space Mono', monospace" }}>
-                  — Andrea Cinelli, Founder & Direttore Responsabile
+                  — Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research
                 </footer>
               </blockquote>
             </div>
@@ -258,14 +258,14 @@ export default function ChiSiamo() {
               </div>
               <div className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/45 mt-1"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                Founder & Direttore Responsabile
+                Opinion Leader & Editorialista IdeaSmart Research
               </div>
             </div>
             <div>
               <SectionBadge label="Il fondatore" />
               <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                Andrea Cinelli è il fondatore e direttore responsabile di IdeaSmart. Imprenditore seriale, esperto di intelligenza artificiale e innovazione, ha guidato il progetto dalla sua nascita come esperimento privato fino a diventare la prima testata giornalistica completamente autonoma in Italia.
+                Andrea Cinelli è il Opinion Leader & Editorialista di IdeaSmart Research. Imprenditore seriale, esperto di intelligenza artificiale e innovazione, ha guidato il progetto dalla sua nascita come esperimento privato fino a diventare la prima testata giornalistica completamente autonoma in Italia.
               </p>
               <p className="mt-3 text-base leading-relaxed text-[#1a1a2e]/75"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>

@@ -1,7 +1,7 @@
 /**
  * PuntoDelGiorno — Sezione Home con le analisi editoriali giornaliere di IDEASMART
  * Mostra i 3 post LinkedIn del giorno: mattino (10:30), pomeriggio (15:00), sera (17:30)
- * Stile: editoriale, carta/inchiostro — autore: Andrea Cinelli, Direttore Responsabile
+ * Stile: editoriale, carta/inchiostro — autore: Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research
  */
 import { trpc } from "@/lib/trpc";
 
@@ -50,7 +50,7 @@ type PostItem = {
   createdAt: Date;
 };
 
-function PostCard({ post, isLoading }: { post?: PostItem; isLoading: boolean }) {
+function PostCard({ post, isLoading, showAuthor = false }: { post?: PostItem; isLoading: boolean; showAuthor?: boolean }) {
   if (isLoading) {
     return (
       <div className="p-6 md:p-8">
@@ -94,28 +94,32 @@ function PostCard({ post, isLoading }: { post?: PostItem; isLoading: boolean }) 
 
         {/* Contenuto */}
         <div className={`p-6 md:p-8 ${post.imageUrl ? "md:col-span-2" : "md:col-span-3"}`}>
-          {/* Firma autore + badge slot */}
+          {/* Firma autore + badge slot — solo sul primo post */}
           <div className="flex items-center gap-3 mb-4">
-            <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-              style={{ background: ACCENT }}
-            >
-              AL
-            </div>
-            <div>
-              <p
-                className="text-xs font-bold"
-                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Andrea Cinelli
-              </p>
-              <p
-                className="text-[10px]"
-                style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
-              >
-                Direttore Responsabile · IDEASMART
-              </p>
-            </div>
+            {showAuthor && (
+              <>
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                  style={{ background: ACCENT }}
+                >
+                  AC
+                </div>
+                <div>
+                  <p
+                    className="text-xs font-bold"
+                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    Andrea Cinelli
+                  </p>
+                  <p
+                    className="text-[10px]"
+                    style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
+                  >
+                    Opinion Leader & Editorialista IdeaSmart Research
+                  </p>
+                </div>
+              </>
+            )}
             {/* Badge orario slot */}
             <span
               className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest border"
@@ -248,7 +252,7 @@ export default function PuntoDelGiorno() {
               ● Mattino
             </span>
           </div>
-          <PostCard post={displayMorning} isLoading={isLoading && !posts} />
+          <PostCard post={displayMorning} isLoading={isLoading && !posts} showAuthor={true} />
         </div>
       )}
 
@@ -263,7 +267,7 @@ export default function PuntoDelGiorno() {
               ● Pomeriggio
             </span>
           </div>
-          <PostCard post={displayAfternoon} isLoading={false} />
+          <PostCard post={displayAfternoon} isLoading={false} showAuthor={false} />
         </div>
       )}
 
@@ -278,7 +282,7 @@ export default function PuntoDelGiorno() {
               ● Sera — Vibe Coding &amp; AI
             </span>
           </div>
-          <PostCard post={displayEvening} isLoading={false} />
+          <PostCard post={displayEvening} isLoading={false} showAuthor={false} />
         </div>
       )}
     </section>

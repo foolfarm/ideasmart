@@ -1477,3 +1477,10 @@
 - [x] Creare pagina /venture-capital con notizie Finance + ricerche VC + startup + CTA ricerche dedicate
 - [x] Aggiungere route /venture-capital in App.tsx
 - [x] Link "Venture Capital →" nel blocco Finance della Home
+
+## Nuovi task (28 Mar 2026 — Firma Andrea Cinelli)
+
+- [x] Aggiornare titolo Andrea Cinelli: "Direttore Responsabile · IDEASMART" → "Opinion Leader & Editorialista IdeaSmart Research" (8 file)
+- [x] Limitare firma Andrea Cinelli a un solo articolo per pagina (solo il post Mattino nel PuntoDelGiorno)
+- [x] Rimuovere firma dai post Pomeriggio e Sera nel PuntoDelGiorno
+- [x] Aggiornare firma nel publisher LinkedIn: "Andrea Cinelli | Opinion Leader & Editorialista IdeaSmart Research"

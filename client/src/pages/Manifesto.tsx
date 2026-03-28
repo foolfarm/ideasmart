@@ -47,7 +47,7 @@ Questo non è un vantaggio marginale. È un cambio di paradigma nella relazione 
   {
     number: "V",
     title: "Il ruolo dell'intelligenza umana in un sistema HumanLess",
-    body: `Andrea Cinelli, Direttore Responsabile di IDEASMART, non scrive gli articoli. Definisce i protocolli editoriali. Stabilisce i criteri di qualità. Seleziona le fonti primarie. Valuta i risultati. Interviene quando il sistema produce output che non rispettano gli standard definiti.
+    body: `Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research, non scrive gli articoli. Definisce i protocolli editoriali. Stabilisce i criteri di qualità. Seleziona le fonti primarie. Valuta i risultati. Interviene quando il sistema produce output che non rispettano gli standard definiti.
 
 Questa è la forma più alta di direzione editoriale: non produrre contenuto, ma progettare i sistemi che producono contenuto di qualità superiore a quello che qualsiasi singolo essere umano potrebbe produrre in modo sostenibile.
 
@@ -173,7 +173,7 @@ export default function Manifesto() {
           {/* Meta */}
           <div className="flex items-center gap-4 text-xs text-[#1a1a2e]/40 mb-2"
             style={{ fontFamily: "'Space Mono', monospace" }}>
-            <span>Andrea Cinelli, Direttore Responsabile</span>
+            <span>Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research</span>
             <span>·</span>
             <span>IDEASMART Editorial Board</span>
             <span>·</span>
@@ -222,7 +222,7 @@ export default function Manifesto() {
               className="mt-4 text-sm text-[#1a1a2e]/50"
               style={{ fontFamily: "'Space Mono', monospace" }}
             >
-              — Andrea Cinelli, Direttore Responsabile di IDEASMART
+              — Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research
             </footer>
           </blockquote>
 
@@ -360,7 +360,7 @@ export default function Manifesto() {
                 Andrea Cinelli
                 <br />
                 <span className="font-normal text-[#1a1a2e]/50">
-                  Direttore Responsabile · IDEASMART
+                  Opinion Leader & Editorialista IdeaSmart Research
                 </span>
               </div>
             </div>
