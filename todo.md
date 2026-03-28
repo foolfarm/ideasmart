@@ -1540,3 +1540,8 @@
 - [x] Aggiungere sezione "Alcune firme di IdeaSmart" con Andrea Cinelli (foto reale, bio, link LinkedIn linkedin.com/in/cinellia)
 - [x] Aggiungere 4 testimonial anonimi da top company: Fondo VC Londra, Fortune 500 Milano, Family Office Svizzera, Scaleup Berlino
 - [x] Aggiornare KPI: "100+" clienti in Italia e nel mondo (sostituisce "3 aree di analisi")
+
+## Nuovi task (28 Mar 2026 — Rigenera foto team italiana)
+
+- [x] Rigenerare foto team con personaggi completamente inventati, volti italiani, ambientazione italiana (Milano, Duomo in background, luce dorata italiana)
+- [x] Aggiornare URL foto team nella pagina Chi Siamo con la nuova immagine

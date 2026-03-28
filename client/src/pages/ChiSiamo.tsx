@@ -288,7 +288,7 @@ export default function ChiSiamo() {
             </h2>
             <div className="relative overflow-hidden rounded-sm mb-4" style={{ maxHeight: 480 }}>
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-team-photo-PRcUiUE3Qcn8EPGZxJKRpk.webp"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-team-italian-CVGhfjRcrHNLGtRsaThccC.webp"
                 alt="Il team di IdeaSmart Research"
                 className="w-full object-cover object-center"
                 style={{ maxHeight: 480 }}
