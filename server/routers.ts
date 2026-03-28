@@ -590,6 +590,35 @@ export const appRouter = router({
         );
       }),
 
+    getResearchByCategory: publicProcedure
+      .input(z.object({ category: z.string(), limit: z.number().min(1).max(20).default(10) }))
+      .query(async ({ input }) => {
+        return cached(
+          `research:category:${input.category}:${input.limit}`,
+          async () => {
+            const reports = await getTodayResearch();
+            return reports
+              .filter(r => r.category === input.category)
+              .slice(0, input.limit)
+              .map(r => ({
+                id: r.id,
+                title: r.title,
+                summary: r.summary,
+                keyFindings: (() => { try { return JSON.parse(r.keyFindings); } catch { return []; } })(),
+                source: r.source,
+                sourceUrl: r.sourceUrl ?? null,
+                category: r.category,
+                region: r.region,
+                dateLabel: r.dateLabel,
+                isResearchOfDay: r.isResearchOfDay,
+                imageUrl: r.imageUrl ?? null,
+                viewCount: r.viewCount,
+                createdAt: r.createdAt,
+              }));
+          },
+          1000 * 60 * 30
+        );
+      }),
     getResearchOfDay: publicProcedure
       .query(async () => {
         return cached(

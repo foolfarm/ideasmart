@@ -33,6 +33,7 @@ const AiHome = lazy(() => import("./pages/AiHome"));
 const MusicHome = lazy(() => import("./pages/MusicHome"));
 const StartupHome = lazy(() => import("./pages/StartupHome"));
 const FinanceHome = lazy(() => import("./pages/FinanceHome"));
+const VentureCapital = lazy(() => import("./pages/VentureCapital"));
 const HealthHome = lazy(() => import("./pages/HealthHome"));
 const SportHome = lazy(() => import("./pages/SportHome"));
 const LuxuryHome = lazy(() => import("./pages/LuxuryHome"));
@@ -84,6 +85,7 @@ function Router() {
         <Route path="/music" component={MusicHome} />
         <Route path="/startup" component={StartupHome} />
         <Route path="/finance" component={FinanceHome} />
+        <Route path="/venture-capital" component={VentureCapital} />
         <Route path="/health" component={HealthHome} />
         <Route path="/sport" component={SportHome} />
         <Route path="/luxury" component={LuxuryHome} />

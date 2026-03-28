@@ -1460,3 +1460,20 @@
 - [x] Blocco Finance & Markets: hero + lista + banner 300x250
 - [x] Flusso misto interleaved AI+Startup nella colonna "Ultime notizie"
 - [x] Rimosso HeroNewsBlock con foto ripetuta — sostituito con HeroArticle e MediumArticle
+
+## Nuovi task (28 Mar 2026 — Miglioramenti Home + Pagina VC)
+
+- [ ] Aggiungere RicercaDelGiorno come quarta colonna nel blocco Primo Piano
+- [ ] Inserire ticker di aggiornamento ("Aggiornato oggi alle 00:00") nei titoli dei blocchi
+- [ ] Creare pagina /venture-capital con notizie Finance + ricerche VC
+- [ ] Aggiungere /venture-capital nella navbar (SectionNav) e nel footer
+- [ ] Aggiungere route /venture-capital in App.tsx
+
+## Nuovi task (28 Mar 2026 — Tre miglioramenti Home)
+
+- [x] Aggiungere RicercaDelGiorno come quarta colonna nel blocco Primo Piano (query getResearchOfDay)
+- [x] Inserire ticker di aggiornamento nei titoli dei blocchi principali (Primo Piano, Research, Approfondimenti, Finance)
+- [x] Aggiungere procedura tRPC getResearchByCategory per filtrare ricerche per categoria
+- [x] Creare pagina /venture-capital con notizie Finance + ricerche VC + startup + CTA ricerche dedicate
+- [x] Aggiungere route /venture-capital in App.tsx
+- [x] Link "Venture Capital →" nel blocco Finance della Home

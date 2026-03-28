@@ -416,6 +416,13 @@ export default function Home() {
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" }, queryOpts);
   const { data: startupEditorial } = trpc.editorial.getLatest.useQuery({ section: "startup" }, queryOpts);
   const { data: researchReports } = trpc.news.getResearchReports.useQuery({ limit: 6 }, queryOpts);
+  const { data: researchOfDay } = trpc.news.getResearchOfDay.useQuery(undefined, queryOpts);
+
+  // Ticker di aggiornamento: "Aggiornato oggi alle 00:00"
+  const updateTicker = useMemo(() => {
+    const now = new Date();
+    return `Aggiornato oggi alle ${now.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })} · ${now.getFullYear()}`;
+  }, []);
 
   const aiNews     = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -561,26 +568,32 @@ export default function Home() {
 
           {/* ══════════════════════════════════════════════════════════════════
               BLOCCO 1 — APERTURA PRIMA PAGINA
-              Layout: [AI Hero grande] | [Startup Hero] | [Colonna notizie miste]
+              Layout: [AI Hero] | [Startup Hero] | [Notizie miste] | [Research del Giorno]
           ══════════════════════════════════════════════════════════════════ */}
           {!homeLoading && (
             <section className="mt-6">
               <Divider thick />
-              <div className="py-2 flex items-center gap-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+              <div className="py-2 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    Primo Piano
+                  </span>
+                  <span className="text-[10px] text-[#1a1a2e]/25" style={{ fontFamily: "'Space Mono', monospace" }}>—</span>
+                  <span className="text-[10px] text-[#0a6e5c] font-bold uppercase tracking-widest"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    AI · Startup · Venture Capital
+                  </span>
+                </div>
+                <span className="text-[9px] text-[#1a1a2e]/30 italic"
                   style={{ fontFamily: "'Space Mono', monospace" }}>
-                  Primo Piano
-                </span>
-                <span className="text-[10px] text-[#1a1a2e]/25" style={{ fontFamily: "'Space Mono', monospace" }}>—</span>
-                <span className="text-[10px] text-[#0a6e5c] font-bold uppercase tracking-widest"
-                  style={{ fontFamily: "'Space Mono', monospace" }}>
-                  AI · Startup · Venture Capital
+                  {updateTicker}
                 </span>
               </div>
               <Divider />
 
-              {/* Griglia 3 colonne: hero AI | hero Startup | notizie miste */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-4">
+              {/* Griglia 4 colonne: hero AI | hero Startup | notizie miste | Research del Giorno */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-4">
 
                 {/* COL 1 — Hero AI (più grande) */}
                 <div className="md:col-span-1 pr-0 md:pr-5 pb-4 md:pb-0 border-b md:border-b-0 md:border-r border-[#1a1a2e]/15">
@@ -615,7 +628,7 @@ export default function Home() {
                 </div>
 
                 {/* COL 3 — Flusso misto AI+Startup (lista compatta) */}
-                <div className="md:col-span-1 pl-0 md:pl-5 pt-4 md:pt-0">
+                <div className="md:col-span-1 pl-0 md:pl-5 pt-4 md:pt-0 border-b md:border-b-0 md:border-r border-[#1a1a2e]/15">
                   <div className="py-1 mb-2">
                     <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                       style={{ fontFamily: "'Space Mono', monospace" }}>
@@ -623,7 +636,7 @@ export default function Home() {
                     </span>
                   </div>
                   <div className="border-t-2 border-[#1a1a2e] mb-1" />
-                  {mixedFeed.slice(2, 14).map((item, i) => (
+                  {mixedFeed.slice(2, 10).map((item, i) => (
                     <div key={`${item.section}-${item.id}`}>
                       {i > 0 && <ThinDivider />}
                       <CompactRow item={item} section={item.section} />
@@ -640,6 +653,96 @@ export default function Home() {
                       <span className="text-[9px] font-bold uppercase tracking-widest hover:underline"
                         style={{ color: SECTION_COLORS.startup.accent, fontFamily: "'Space Mono', monospace" }}>
                         Tutte le Startup →
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* COL 4 — Ricerca del Giorno (verticale compatta) */}
+                <div className="md:col-span-1 pl-0 md:pl-5 pt-4 md:pt-0">
+                  <div className="py-1 mb-2 flex items-center justify-between">
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em]"
+                      style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
+                      Research
+                    </span>
+                    <Link href="/research">
+                      <span className="text-[9px] uppercase tracking-widest hover:underline"
+                        style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
+                        Tutte →
+                      </span>
+                    </Link>
+                  </div>
+                  <div className="border-t-2 mb-3" style={{ borderColor: "#0a6e5c" }} />
+
+                  {/* Ricerca del Giorno in evidenza */}
+                  {researchOfDay && (() => {
+                    const cat = RESEARCH_CATEGORY_LABELS[researchOfDay.category] ?? { label: researchOfDay.category, accent: "#0a6e5c", bg: "#e6f4f1" };
+                    const imgUrl = RESEARCH_CATEGORY_IMAGES[researchOfDay.category] ?? RESEARCH_CATEGORY_IMAGES["ai_trends"];
+                    const kf = Array.isArray(researchOfDay.keyFindings) ? researchOfDay.keyFindings : [];
+                    return (
+                      <Link href="/research">
+                        <article className="cursor-pointer group mb-3">
+                          <div className="relative overflow-hidden mb-2" style={{ height: "110px" }}>
+                            <img src={imgUrl} alt={researchOfDay.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,26,46,0.7) 0%, transparent 60%)" }} />
+                            <div className="absolute bottom-2 left-2">
+                              <span className="inline-block text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5"
+                                style={{ background: "#1a1a2e", color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}>
+                                ★ Ricerca del Giorno
+                              </span>
+                            </div>
+                          </div>
+                          <ResearchBadge label={cat.label} accent={cat.accent} bg={cat.bg} />
+                          <h4 className="mt-1 text-xs font-bold leading-snug text-[#1a1a2e] group-hover:underline line-clamp-3"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                            {researchOfDay.title}
+                          </h4>
+                          {kf[0] && (
+                            <p className="mt-1 text-[10px] text-[#1a1a2e]/50 italic line-clamp-2"
+                              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                              <span className="font-bold not-italic" style={{ color: cat.accent }}>→</span> {kf[0]}
+                            </p>
+                          )}
+                          <p className="mt-1 text-[9px] text-[#1a1a2e]/35"
+                            style={{ fontFamily: "'Space Mono', monospace" }}>
+                            {researchOfDay.source}
+                          </p>
+                        </article>
+                      </Link>
+                    );
+                  })()}
+
+                  {/* 3 ricerche compatte extra */}
+                  {researchReports && researchReports.slice(0, 3).map((r, i) => {
+                    if (researchOfDay && r.id === researchOfDay.id) return null;
+                    const cat = RESEARCH_CATEGORY_LABELS[r.category] ?? { label: r.category, accent: "#0a6e5c", bg: "#e6f4f1" };
+                    return (
+                      <div key={r.id}>
+                        {i > 0 && <ThinDivider />}
+                        <Link href="/research">
+                          <article className="py-2 cursor-pointer group">
+                            <ResearchBadge label={cat.label} accent={cat.accent} bg={cat.bg} />
+                            <h5 className="mt-0.5 text-[11px] font-bold leading-snug text-[#1a1a2e] group-hover:underline line-clamp-2"
+                              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                              {r.title}
+                            </h5>
+                            <p className="mt-0.5 text-[9px] text-[#1a1a2e]/35"
+                              style={{ fontFamily: "'Space Mono', monospace" }}>
+                              {r.source}
+                            </p>
+                          </article>
+                        </Link>
+                      </div>
+                    );
+                  })}
+
+                  <ThinDivider />
+                  <div className="py-2 text-center">
+                    <Link href="/research">
+                      <span className="text-[9px] font-bold uppercase tracking-widest hover:underline"
+                        style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
+                        20 ricerche di oggi →
                       </span>
                     </Link>
                   </div>
@@ -664,6 +767,10 @@ export default function Home() {
                   <span className="text-[10px] text-[#0a6e5c] font-bold uppercase tracking-widest"
                     style={{ fontFamily: "'Space Mono', monospace" }}>
                     — 20 ricerche ogni giorno su AI, Startup & VC
+                  </span>
+                  <span className="hidden sm:inline text-[9px] text-[#1a1a2e]/30 italic"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    {updateTicker}
                   </span>
                 </div>
                 <Link href="/research">
@@ -704,10 +811,14 @@ export default function Home() {
           {!homeLoading && (aiRest.length > 2 || startupRest.length > 2) && (
             <section className="mt-10">
               <Divider thick />
-              <div className="py-2">
+              <div className="py-2 flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
                   style={{ fontFamily: "'Space Mono', monospace" }}>
                   Approfondimenti
+                </span>
+                <span className="text-[9px] text-[#1a1a2e]/30 italic"
+                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                  {updateTicker}
                 </span>
               </div>
               <Divider />
@@ -875,13 +986,25 @@ export default function Home() {
                     style={{ fontFamily: "'Space Mono', monospace" }}>
                     — Venture Capital · Mercati · Investimenti
                   </span>
-                </div>
-                <Link href="/finance">
-                  <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: SECTION_COLORS.finance.accent, fontFamily: "'Space Mono', monospace" }}>
-                    Tutte le notizie →
+                  <span className="hidden sm:inline text-[9px] text-[#1a1a2e]/30 italic"
+                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                    {updateTicker}
                   </span>
-                </Link>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Link href="/venture-capital">
+                    <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                      style={{ color: "#15803d", fontFamily: "'Space Mono', monospace" }}>
+                      Venture Capital →
+                    </span>
+                  </Link>
+                  <Link href="/finance">
+                    <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                      style={{ color: SECTION_COLORS.finance.accent, fontFamily: "'Space Mono', monospace" }}>
+                      Tutte →
+                    </span>
+                  </Link>
+                </div>
               </div>
               <div className="border-t-2" style={{ borderColor: SECTION_COLORS.finance.accent }} />
 
