@@ -1496,10 +1496,11 @@
 
 ## Nuovi task (28 Mar 2026 — Redesign IdeaSmart Business)
 
-- [ ] Riscrivere pagina /business come landing page consulting premium AI Innovation / M&A / Venture Capital
-- [ ] Sezione hero con positioning statement forte
-- [ ] Sezione servizi verticali (4 aree: AI Strategy, M&A Advisory, VC Research, Board Support)
-- [ ] Sezione team senior advisor con credenziali Top 500 / exit
-- [ ] Sezione clienti target (investitori, aziende, scaleup, fondi)
-- [ ] Sezione metodologia e differenziatori
-- [ ] CTA contatto diretto (email + form)
+- [x] Riscrivere pagina /business come landing page consulting premium AI Innovation / M&A / Venture Capital
+- [x] Sezione hero con 4 KPI (30+ anni, 20 ricerche/giorno, 40+ M&A, 100% verticale AI)
+- [x] Sezione servizi verticali accordion (AI Strategy, M&A Advisory, VC Research, Board Advisory)
+- [x] Sezione team senior advisor con credenziali Top 500 / exit (4 profili)
+- [x] Sezione clienti target (Fondi VC, Corporate, Scaleup, Family Office)
+- [x] Positioning statement con citazione di Andrea Cinelli
+- [x] FAQ accordion (4 domande chiave)
+- [x] CTA contatto: form + email diretta business@ideasmart.ai + link LinkedIn
