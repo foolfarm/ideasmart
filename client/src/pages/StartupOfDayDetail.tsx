@@ -5,6 +5,7 @@ import { useParams, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, MapPin, Calendar, Linkedin } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
+import SaveArticleButton from "@/components/SaveArticleButton";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai", spotlightLabel: "Startup del Giorno" },
@@ -94,8 +95,9 @@ export default function StartupOfDayDetail() {
           </div>
         </div>
 
-        {/* Meta */}
+        {/* Meta + Save */}
         <div className="flex flex-wrap items-center gap-4 mb-8 pb-4 border-b border-[#1a1a1a]/20">
+          <SaveArticleButton contentType="startup" contentId={spotlight.id} title={spotlight.name} section={section} />
           <span className="font-mono text-xs tracking-widest uppercase px-2 py-1" style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}>{spotlight.category}</span>
           {spotlight.country && (
             <div className="flex items-center gap-1 text-sm text-[#1a1a1a]/60">

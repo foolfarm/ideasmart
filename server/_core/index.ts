@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cookieParser from "cookie-parser";
 import compression from "compression";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
@@ -170,8 +171,67 @@ async function startServer() {
   // Body parser — limite ridotto a 2MB (era 50MB: eccessivo e rischioso per DoS)
   app.use(express.json({ limit: "2mb" }));
   app.use(express.urlencoded({ limit: "2mb", extended: true }));
+  // Cookie parser — necessario per leggere req.cookies nelle procedure tRPC
+  app.use(cookieParser());
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // ── Auth endpoints dedicati — bypassano tRPC per impostare cookie correttamente ──
+  // tRPC v11 serializza la risposta prima che Express possa aggiungere Set-Cookie.
+  // Questi endpoint Express nativi garantiscono che il cookie venga impostato.
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { email, password } = req.body || {};
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email e password richiesti" });
+      }
+      const { getDb } = await import("../db");
+      const { siteUsers } = await import("../../drizzle/schema");
+      const { eq } = await import("drizzle-orm");
+      const { createHash, randomBytes } = await import("crypto");
+      const db = await getDb();
+      if (!db) return res.status(500).json({ error: "Database non disponibile" });
+      const rows = await db.select().from(siteUsers).where(eq(siteUsers.email, email.toLowerCase())).limit(1);
+      if (rows.length === 0) return res.status(401).json({ error: "Email o password non corretti." });
+      const user = rows[0];
+      if (!user.emailVerified) return res.status(403).json({ error: "Devi prima confermare la tua email." });
+      const hash = createHash("sha256").update(password + (process.env.JWT_SECRET || "ideasmart_secret")).digest("hex");
+      if (user.passwordHash !== hash) return res.status(401).json({ error: "Email o password non corretti." });
+      const sessionToken = randomBytes(64).toString("hex");
+      const sessionExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      await db.update(siteUsers).set({ sessionToken, sessionExpiresAt, lastLoginAt: new Date() }).where(eq(siteUsers.id, user.id));
+      const isProduction = process.env.NODE_ENV === "production";
+      res.cookie("ideasmart_session", sessionToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        path: "/",
+      });
+      return res.json({ ok: true, username: user.username });
+    } catch (err) {
+      console.error("[Auth] Login error:", err);
+      return res.status(500).json({ error: "Errore interno" });
+    }
+  });
+
+  app.post("/api/auth/logout", async (req, res) => {
+    try {
+      const sessionToken = req.cookies?.ideasmart_session;
+      if (sessionToken) {
+        const { getDb } = await import("../db");
+        const { siteUsers } = await import("../../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const db = await getDb();
+        if (db) await db.update(siteUsers).set({ sessionToken: null, sessionExpiresAt: null }).where(eq(siteUsers.sessionToken, sessionToken));
+      }
+      res.clearCookie("ideasmart_session", { path: "/" });
+      return res.json({ ok: true });
+    } catch (err) {
+      console.error("[Auth] Logout error:", err);
+      return res.status(500).json({ error: "Errore interno" });
+    }
+  });
 
   // ── ads.txt — servito come file statico da client/public/ads.txt ──────────
   // Il file contiene le righe AdSense (pub-7185482526978993) + reseller network.

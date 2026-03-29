@@ -3,7 +3,6 @@
  */
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import SEOHead from "@/components/SEOHead";
@@ -24,17 +23,31 @@ export default function Accedi() {
   const params = new URLSearchParams(window.location.search);
   const returnTo = params.get("returnTo") || "/";
 
-  const loginMutation = trpc.siteAuth.login.useMutation({
-    onSuccess: () => {
-      navigate(returnTo);
-    },
-    onError: (err) => setFieldError(err.message),
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFieldError(null);
-    loginMutation.mutate({ email: form.email.trim(), password: form.password });
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: form.email.trim(), password: form.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setFieldError(data.error || "Errore durante il login.");
+      } else {
+        // Forza un reload completo per aggiornare lo stato auth
+        window.location.href = returnTo;
+      }
+    } catch {
+      setFieldError("Errore di rete. Riprova.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -105,11 +118,11 @@ export default function Accedi() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loginMutation.isPending}
+              disabled={isLoading}
               className="w-full py-3.5 text-xs font-bold uppercase tracking-widest transition-opacity hover:opacity-80 disabled:opacity-50"
               style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: SF }}
             >
-              {loginMutation.isPending ? "Accesso in corso..." : "Accedi →"}
+              {isLoading ? "Accesso in corso..." : "Accedi →"}
             </button>
           </form>
 

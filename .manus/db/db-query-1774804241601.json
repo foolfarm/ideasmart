@@ -1,0 +1,16 @@
+{
+  "query": "SELECT username, email, sessionToken, sessionExpiresAt FROM site_users WHERE sessionToken IS NOT NULL LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT username, email, sessionToken, sessionExpiresAt FROM site_users WHERE sessionToken IS NOT NULL LIMIT 3;",
+  "rows": [
+    {
+      "username": "andyiltoscano",
+      "email": "ac@foolfarm.com",
+      "sessionToken": "0d15173eebc4144c94200e93ddcf513e5b21976ac36b8f08d4bdbd6d2cb161a89a249aa3acabcd0caa71020b334d216fe7cd48a8c7b90c361b6ea64e894b69eb",
+      "sessionExpiresAt": "2026-04-28 17:04:16"
+    }
+  ],
+  "messages": [],
+  "stdout": "username\temail\tsessionToken\tsessionExpiresAt\nandyiltoscano\tac@foolfarm.com\t0d15173eebc4144c94200e93ddcf513e5b21976ac36b8f08d4bdbd6d2cb161a89a249aa3acabcd0caa71020b334d216fe7cd48a8c7b90c361b6ea64e894b69eb\t2026-04-28 17:04:16\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}
