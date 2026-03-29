@@ -1646,3 +1646,29 @@
 - [x] Scheduler: job cron ogni 12 ore (06:30 e 18:30 CET) + prima aggregazione 3 min dopo avvio
 - [x] Home.tsx: sezione "Prossimi Eventi" con grid 3 colonne, data box, badge categoria, location, orario
 - [x] Sezione visibile solo quando ci sono eventi nel DB (conditional rendering)
+
+## Nuovi task (29 Mar 2026 — Ristrutturazione Intelligence/Business)
+
+- [ ] Home: aggiungere banner "IdeaSmart Intelligence" sotto il ticker live (prima dei canali)
+- [ ] Navbar: rinominare "▶ IdeaSmart Business" in "Intelligence" in tutte le pagine
+- [ ] /business: nuovo hero "Intelligence che lavora. Decisioni che contano."
+- [ ] /business: 3 tier pricing (RADAR €39/mese, INTEL €199/mese, ENTERPRISE custom da €499)
+- [ ] /business: sezione "Come funziona" con 8 agenti e Verify™ come reason to believe
+- [ ] /business: sezione Advisory ridimensionata come servizio complementare
+- [ ] /business: social proof con metriche concrete (clienti attivi, report generati, alert inviati)
+
+## Task completati (29 Mar 2026 — Intelligence + Prossimi Eventi)
+
+- [x] Fix header /business: rimossa testata personalizzata, uniformata alla Navbar standard
+- [x] Sezione "Prossimi Eventi" nella Home: Luma ICS + RSS italiani, aggiornamento ogni 12h
+- [x] Schema DB: tabella tech_events per eventi Tech/AI italiani
+- [x] Backend eventsAggregator.ts: aggregazione da Luma ICS e RSS (EconomyUp, AgendaDigitale, InnovationPost, BeBeez)
+- [x] tRPC procedure events.getUpcoming
+- [x] Scheduler: job aggregazione eventi ogni 12h alle 06:30 e 18:30 CET
+- [x] Banner Intelligence nella Home: dopo BreakingNewsTicker, link a /intelligence, CTA "100+ decision-maker attivi"
+- [x] Strip pre-footer Intelligence nella Home: "CEO, founder, investitori: il tuo briefing settimanale personalizzato è a un click"
+- [x] Rinomina voce menu: "▶ IdeaSmart Business" → "▶ Intelligence" (link a /intelligence, colore cyan)
+- [x] Footer Home: aggiornato link da /business a /intelligence
+- [x] Nuova pagina /intelligence: 8 sezioni (Hero, Problema, Come funziona, Piani, Tecnologia, Advisory, Social Proof, CTA)
+- [x] Pricing 3 tier: RADAR €39/mese, INTEL €199/mese (highlighted), ENTERPRISE su misura
+- [x] Route /intelligence in App.tsx + redirect da /business a /intelligence

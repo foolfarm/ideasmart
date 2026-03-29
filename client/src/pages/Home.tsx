@@ -277,10 +277,10 @@ function SectionNav() {
           Chi Siamo
         </span>
       </Link>
-      <Link href="/business">
-        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#ff5500] hover:text-white transition-colors cursor-pointer border-l border-[#1a1a2e]/15"
-          style={{ fontFamily: "'Space Mono', monospace", color: "#ff5500" }}>
-          ▶ IdeaSmart Business
+      <Link href="/intelligence">
+        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#00e5c8] hover:text-[#0a0f1e] transition-colors cursor-pointer border-l border-[#1a1a2e]/15"
+          style={{ fontFamily: "'Space Mono', monospace", color: "#00e5c8" }}>
+          ▶ Intelligence
         </span>
       </Link>
     </nav>
@@ -474,8 +474,32 @@ export default function Home() {
         {/* ══ BREAKING NEWS ════════════════════════════════════════════════════ */}
         <BreakingNewsSection />
         <BreakingNewsTicker />
+        <div style={{ background: "#0a0f1e", borderBottom: "2px solid #00e5c8" }}>
+          <div className="max-w-[1280px] mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0">
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em] block mb-0.5" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>IdeaSmart Intelligence</span>
+                <p className="text-[14px] font-bold leading-snug" style={{ color: "#ffffff", fontFamily: "'Playfair Display', Georgia, serif", maxWidth: "600px" }}>
+                  Non leggere le notizie. <span style={{ color: "#00e5c8" }}>Usale per decidere.</span>
+                </p>
+                <p className="text-[11px] mt-0.5 hidden sm:block" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+                  Competitive monitoring, alert scenario-based e briefing personalizzati per CEO, founder e investitori.
+                </p>
+              </div>
+            </div>
+            <div className="flex-shrink-0 flex flex-col items-center gap-1.5">
+              <Link href="/intelligence">
+                <span className="inline-flex items-center gap-1.5 px-5 py-2.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
+                  style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
+                  Scopri Intelligence →
+                </span>
+              </Link>
+              <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}>Già 100+ decision-maker attivi</span>
+            </div>
+          </div>
+        </div>
 
-        {/* ══ CORPO ════════════════════════════════════════════════════════════ */}
+        {/* ══ CORPO ═══════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
           {/* ── BANNER LEADERBOARD ── */}
@@ -954,6 +978,20 @@ export default function Home() {
             </section>
           )}
 
+          {/* ── STRIP PRE-FOOTER INTELLIGENCE ── */}
+          <div className="mt-10 py-5 px-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+            style={{ background: "#0a0f1e", borderTop: "1px solid rgba(0,229,200,0.2)", borderBottom: "1px solid rgba(0,229,200,0.2)" }}>
+            <p className="text-[13px] text-center sm:text-left" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+              CEO, founder, investitori: il tuo briefing settimanale personalizzato è a un click.
+            </p>
+            <Link href="/intelligence">
+              <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90 border"
+                style={{ borderColor: "#00e5c8", color: "#00e5c8", fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
+                Attiva Intelligence →
+              </span>
+            </Link>
+          </div>
+
           {/* ── FOOTER ── */}
           <div className="mt-12">
             <Divider thick />
@@ -973,7 +1011,7 @@ export default function Home() {
                 ))}
                 {[
                   { href: "/chi-siamo", label: "Chi Siamo", color: "#0369a1" },
-                  { href: "/business", label: "IdeaSmart Business", color: "#ff5500" },
+                  { href: "/intelligence", label: "Intelligence", color: "#00e5c8" },
                   { href: "/research", label: "Research", color: "#0a6e5c" },
                   { href: "/privacy", label: "Privacy Policy", color: "#1a1a2e" },
                 ].map(item => (

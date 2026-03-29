@@ -72,6 +72,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Manifesto = lazy(() => import("./pages/Manifesto"));
 const ChannelPreferences = lazy(() => import("./pages/ChannelPreferences"));
 const Business = lazy(() => import("./pages/Business"));
+const Intelligence = lazy(() => import("./pages/Intelligence"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
 const Tecnologia = lazy(() => import("./pages/Tecnologia"));
 const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
@@ -108,7 +109,8 @@ function Router() {
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />
         <Route path="/notifiche" component={NotificationPreferences} />
         <Route path="/advertise" component={Advertise} />
-        <Route path="/business" component={Business} />
+        <Route path="/intelligence" component={Intelligence} />
+        <Route path="/business">{() => { window.location.replace("/intelligence"); return null; }}</Route>
         <Route path="/research" component={Research} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/edicola" component={Edicola} />
