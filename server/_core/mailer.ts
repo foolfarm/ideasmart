@@ -22,14 +22,16 @@ async function sendEmail({ to, subject, html, text }: SendGridPayload): Promise<
     return;
   }
 
+  // SendGrid richiede: text/plain PRIMA di text/html
+  const content: Array<{ type: string; value: string }> = [];
+  if (text) content.push({ type: "text/plain", value: text });
+  content.push({ type: "text/html", value: html });
+
   const body = {
     personalizations: [{ to: [{ email: to }] }],
     from: { email: fromEmail, name: fromName },
     subject,
-    content: [
-      { type: "text/html", value: html },
-      ...(text ? [{ type: "text/plain", value: text }] : []),
-    ],
+    content,
   };
 
   const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
