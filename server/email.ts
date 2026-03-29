@@ -1113,22 +1113,33 @@ export function buildFullNewsletterHtml(opts: {
           </table>
         </td></tr>` : ''}
 
-        <!-- CTA FINALE —  crema con bordo teal -->
+        <!-- BANNER PROMO IDEASMART — sopra il footer -->
         <tr>
-          <td style="border-top:3px solid ${TEAL};">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};">
-              <tr><td align="center" style="padding:36px 28px;">
-                <div style="font-size:11px;font-weight:700;color:${TEAL};text-transform:uppercase;letter-spacing:0.15em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:12px;">&#9670; Continua a leggere</div>
-                <div style="font-size:24px;font-weight:700;color:${NAVY};font-family:Georgia,'Times New Roman',serif;margin-bottom:8px;">Tutte le news su <span style="color:${TEAL};">ideasmart.ai</span></div>
-                <div style="font-size:12px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:24px;">Aggiornato ogni giorno &bull; 100% AI-driven &bull; Gratis</div>
-                <table cellpadding="0" cellspacing="0" border="0" align="center">
-                  <tr>
-                    <td style="background:${TEAL};border-radius:6px;padding:14px 36px;">
-                      <a href="${baseUrl}" style="font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.02em;">Vai al sito →</a>
-                    </td>
-                  </tr>
-                </table>
-              </td></tr>
+          <td style="background:${NAVY};border-top:3px solid ${TEAL};padding:28px 28px 24px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding-bottom:12px;">
+                  <div style="font-size:9px;font-weight:700;color:${TEAL};letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">&#9670; SCOPRI IDEASMART</div>
+                  <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;line-height:1.2;margin-bottom:8px;">Investitori, appassionati di tecnologia e startup trovano tutto ci&ograve; che cercano</div>
+                  <div style="font-size:12px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;margin-bottom:16px;">Oltre <strong style="color:${TEAL};">4.000 fonti</strong> monitorate ogni giorno &mdash; AI, Startup, Venture Capital, Deal &amp; Funding, Ricerche di mercato. <strong style="color:#ffffff;">Completamente gratis.</strong></div>
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:${TEAL};border-radius:6px;padding:12px 28px;">
+                        <a href="${baseUrl}" style="font-size:13px;font-weight:700;color:#0a1628;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.02em;">Visita ideasmart.ai →</a>
+                      </td>
+                      <td style="padding-left:12px;">
+                        <a href="${baseUrl}/dealroom" style="font-size:12px;font-weight:600;color:${TEAL};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">DEALROOM &rarr;</a>
+                      </td>
+                      <td style="padding-left:12px;">
+                        <a href="${baseUrl}/ai" style="font-size:12px;font-weight:600;color:#9ca3af;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">AI News &rarr;</a>
+                      </td>
+                      <td style="padding-left:12px;">
+                        <a href="${baseUrl}/startup" style="font-size:12px;font-weight:600;color:#9ca3af;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Startup &rarr;</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
             </table>
           </td>
         </tr>

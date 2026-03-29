@@ -32,7 +32,7 @@ import { getTodayResearch } from "./researchGenerator";
 
 // ─── Configurazione canali ────────────────────────────────────────────────────
 
-export type ChannelKey = "ai" | "startup";
+export type ChannelKey = "ai" | "startup" | "dealroom";
 
 interface ChannelConfig {
   key: ChannelKey;
@@ -47,7 +47,7 @@ interface ChannelConfig {
 export const CHANNEL_SCHEDULE: ChannelConfig[] = [
   {
     key: "ai",
-    name: "AI4Business News",
+    name: "AI News",
     shortName: "AI",
     dayOfWeek: 1, // Lunedì
     siteSection: "/ai",
@@ -58,19 +58,19 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
     key: "startup",
     name: "Startup News",
     shortName: "Startup",
-    dayOfWeek: 3, // Mercoledì (spostato da martedì per cadenza Lun/Mer/Ven)
+    dayOfWeek: 3, // Mercoledì
     siteSection: "/startup",
     accentColor: "#ff5500",
     tagline: "Startup, Innovazione e Venture Capital",
   },
   {
-    key: "ai",
-    name: "AI4Business News",
-    shortName: "AI",
-    dayOfWeek: 5, // Venerdì — seconda newsletter settimanale AI4Business + Ricerche del Giorno
-    siteSection: "/ai",
-    accentColor: "#00e5c8",
-    tagline: "Intelligenza Artificiale per il Business",
+    key: "dealroom",
+    name: "DEALROOM News",
+    shortName: "DEALROOM",
+    dayOfWeek: 5, // Venerdì — newsletter dedicata ai round di finanziamento e deal VC
+    siteSection: "/dealroom",
+    accentColor: "#0f0f0f",
+    tagline: "Round, Funding, VC, M&A — i deal della settimana",
   },
 ];
 

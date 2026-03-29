@@ -8,6 +8,7 @@ import { Link, useLocation } from "wouter";
 const CHANNELS = [
   { label: "AI NEWS", href: "/ai", color: "#1a1a1a" },
   { label: "STARTUP NEWS", href: "/startup", color: "#2a2a2a" },
+  { label: "DEALROOM", href: "/dealroom", color: "#0f0f0f" },
 ];
 
 export default function Navbar() {
@@ -103,7 +104,7 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Link diretti AI NEWS e Startup */}
+            {/* Link diretti AI NEWS, Startup e DEALROOM */}
             <Link
               href="/ai"
               className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
@@ -117,6 +118,14 @@ export default function Navbar() {
               style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               STARTUP NEWS
+            </Link>
+            <Link
+              href="/dealroom"
+              className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100 flex items-center gap-1.5"
+              style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+            >
+              DEALROOM
+              <span className="inline-flex items-center justify-center px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded" style={{ background: "#0f0f0f", color: "#ffffff" }}>NEW</span>
             </Link>
           </div>
 
@@ -217,7 +226,7 @@ export default function Navbar() {
           style={{ maxHeight: menuOpen ? "400px" : "0px" }}
         >
           <div className="border-t border-gray-100 py-3 bg-white">
-            {/* I 2 canali attivi */}
+            {/* I 3 canali attivi */}
             <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mb-1">I Canali</p>
             <div className="flex flex-col gap-1 px-2 mb-3">
               {CHANNELS.map((ch) => (

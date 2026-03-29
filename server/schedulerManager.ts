@@ -22,15 +22,15 @@
  *  │  [DISABILITATO] 05:45 — Snapshot barometro politico (Sondaggi stand by) │
  *  │  [DISABILITATO] Finance, Health, Sport, Luxury, Music, Motori, ecc.      │
  *  │                                                                          │
- *  │  NEWSLETTER SETTIMANALE                                                  │
- *  │  Lunedì    07:00 — Preview AI4Business → ac@acinelli.com               │
- *  │  Lunedì    07:30 — Newsletter AI4Business + Ricerche → tutti iscritti   │
+ *  │  NEWSLETTER SETTIMANALE (3 canali, 3 giorni)                             │
+ *  │  Lunedì    07:00 — Preview AI News → ac@acinelli.com                   │
+ *  │  Lunedì    07:30 — Newsletter AI News + Ricerche → tutti iscritti       │
  *  │  Martedì   — Nessun invio                                              │
  *  │  Mercoledì 07:00 — Preview Startup News → ac@acinelli.com              │
  *  │  Mercoledì 07:30 — Newsletter Startup News + Ricerche → tutti iscritti │
  *  │  Giovedì   — Nessun invio                                              │
- *  │  Venerdì   07:00 — Preview AI4Business → ac@acinelli.com               │
- *  │  Venerdì   07:30 — Newsletter AI4Business + Ricerche → tutti iscritti   │
+ *  │  Venerdì   07:00 — Preview DEALROOM News → ac@acinelli.com             │
+ *  │  Venerdì   07:30 — Newsletter DEALROOM News (deal sett.) → tutti iscr. │
  *  │  Sabato    — Nessun invio                                              │
  *  │  Domenica  — Nessun invio                                              │
  *  │                                                                          │

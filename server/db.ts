@@ -794,8 +794,8 @@ export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'fin
 
 // ── Channel Preferences ──────────────────────────────────────────────────────
 
-export type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi';
-export const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music'];
+export type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom';
+export const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'dealroom', 'finance', 'health', 'sport', 'luxury', 'music'];
 
 /**
  * Restituisce i canali scelti da un iscritto.
