@@ -490,21 +490,56 @@ export default function Home() {
         {/* ══ CORPO ═══════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-          {/* ── STRIP METRICHE ── */}
-          <div className="my-4 py-3 border-y flex flex-wrap items-center justify-center gap-x-6 gap-y-1"
-            style={{ borderColor: "rgba(26,26,46,0.12)", background: "rgba(26,26,46,0.03)" }}>
-            {[
-              { value: "14", label: "canali tematici" },
-              { value: "20+", label: "ricerche/giorno" },
-              { value: "450+", label: "fonti monitorate" },
-              { value: "6.905", label: "lettori attivi" },
-            ].map((m) => (
-              <div key={m.label} className="flex items-baseline gap-1.5">
-                <span className="text-[18px] font-bold" style={{ color: "#0a6e5c", fontFamily: "'Space Grotesk', Arial, sans-serif" }}>{m.value}</span>
-                <span className="text-[11px] text-[#1a1a2e]/50" style={{ fontFamily: "'DM Sans', Arial, sans-serif" }}>{m.label}</span>
+          {/* Strip metriche spostata dopo i contenuti — vedi posizione corretta sotto */}
+
+          {/* ── RICERCA DEL GIORNO — card grande in evidenza (come da prompt) ── */}
+          {researchReports && researchReports.length > 0 && (() => {
+            const r = researchReports[0];
+            const accent = r.category === "startup" ? "#c2410c"
+              : r.category === "venture_capital" ? "#15803d"
+              : r.category === "ai_trends" ? "#0a6e5c"
+              : r.category === "technology" ? "#7c3aed"
+              : "#0369a1";
+            return (
+              <div className="mt-4 mb-2">
+                <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#0a6e5c" }}>
+                  <div className="flex items-center gap-2">
+                    <div className="h-[3px] w-6" style={{ background: "#0a6e5c" }} />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>Ricerca del Giorno</span>
+                  </div>
+                  <Link href="/research">
+                    <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>Vedi tutte le ricerche →</span>
+                  </Link>
+                </div>
+                <Link href="/research">
+                  <article className="group mt-3 p-5 border-l-4 hover:bg-[#f8faf9] transition-colors cursor-pointer" style={{ borderColor: accent, background: "rgba(10,110,92,0.03)" }}>
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                      <div className="flex-1">
+                        <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: accent, color: "#fff", fontFamily: "'Space Mono', monospace" }}>
+                          {r.category.replace("_", " ")}
+                        </span>
+                        <h2 className="text-[22px] sm:text-[26px] font-bold leading-tight group-hover:underline" style={{ color: "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                          {r.title}
+                        </h2>
+                        <p className="mt-2 text-[14px] leading-relaxed" style={{ color: "rgba(26,26,46,0.65)", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                          {r.summary}
+                        </p>
+                        <div className="mt-3 flex items-center gap-3">
+                          <span className="text-[10px] uppercase tracking-widest" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "'Space Mono', monospace" }}>{r.source}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: accent, fontFamily: "'Space Mono', monospace" }}>Leggi la ricerca →</span>
+                        </div>
+                      </div>
+                      {r.imageUrl && (
+                        <div className="flex-shrink-0 w-full sm:w-[200px] h-[120px] overflow-hidden">
+                          <img src={r.imageUrl} alt={r.title} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                </Link>
               </div>
-            ))}
-          </div>
+            );
+          })()}
 
           {/* ══════════════════════════════════════════════════════════════════
               PRIMA PAGINA — Layout giornale
@@ -964,6 +999,22 @@ export default function Home() {
               </div>
             </section>
           )}
+
+          {/* ── STRIP METRICHE — dopo i contenuti editoriali (come da prompt) ── */}
+          <div className="mt-10 py-6 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-0"
+            style={{ background: "rgba(10,15,30,0.04)", borderTop: "2px solid rgba(10,110,92,0.15)", borderBottom: "2px solid rgba(10,110,92,0.15)" }}>
+            {[
+              { value: "14", label: "canali\ntematici" },
+              { value: "20+", label: "ricerche\nal giorno" },
+              { value: "450+", label: "fonti\nmonitorate" },
+              { value: "6.905", label: "lettori\nattivi" },
+            ].map((m, i) => (
+              <div key={m.label} className={`flex flex-col items-center justify-center py-2 ${i < 3 ? "sm:border-r border-[#1a1a2e]/10" : ""}`}>
+                <span className="text-[28px] sm:text-[32px] font-black leading-none" style={{ color: "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>{m.value}</span>
+                <span className="text-[10px] uppercase tracking-widest mt-1 text-center whitespace-pre-line" style={{ color: "rgba(26,26,46,0.45)", fontFamily: "'Space Mono', monospace" }}>{m.label}</span>
+              </div>
+            ))}
+          </div>
 
           {/* ── STRIP PRE-FOOTER INTELLIGENCE ── */}
           <div className="mt-10 py-5 px-6 flex flex-col sm:flex-row items-center justify-between gap-3"

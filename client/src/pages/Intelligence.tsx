@@ -26,7 +26,7 @@ function SectionLabel({ label }: { label: string }) {
 
 // ─── Pricing Card ─────────────────────────────────────────────────────────────
 function PricingCard({
-  name, price, subtitle, features, cta, subCta, highlighted = false,
+  name, price, subtitle, features, cta, subCta, highlighted = false, ctaHref, ctaAriaLabel,
 }: {
   name: string;
   price: string;
@@ -35,19 +35,22 @@ function PricingCard({
   cta: string;
   subCta?: string;
   highlighted?: boolean;
+  ctaHref: string;
+  ctaAriaLabel: string;
 }) {
   return (
     <div className="relative flex flex-col p-6 rounded-lg"
       style={{
         background: highlighted ? "#0a0f1e" : "#fff",
         border: highlighted ? "2px solid #00e5c8" : "1px solid rgba(26,26,46,0.12)",
-        boxShadow: highlighted ? "0 0 40px rgba(0,229,200,0.12)" : "none",
+        boxShadow: highlighted ? "0 0 40px rgba(0,229,200,0.12), 0 4px 24px rgba(0,0,0,0.08)" : "none",
+        transform: highlighted ? "translateY(-4px)" : "none",
       }}>
       {highlighted && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
           <span className="px-3 py-1 text-[9px] font-bold uppercase tracking-widest"
-            style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
-            Più popolare
+            style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
+            PIÙ SCELTO
           </span>
         </div>
       )}
@@ -67,21 +70,25 @@ function PricingCard({
             </span>
           )}
         </div>
-        <p className="text-[12px]" style={{ color: highlighted ? "rgba(255,255,255,0.65)" : "rgba(26,26,46,0.6)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+        <p className="text-[12px] italic" style={{ color: highlighted ? "rgba(255,255,255,0.55)" : "rgba(26,26,46,0.5)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
           {subtitle}
         </p>
       </div>
       <Divider color={highlighted ? "#00e5c8" : "#1a1a2e"} opacity={highlighted ? 0.2 : 0.08} />
-      <ul className="mt-4 mb-6 flex flex-col gap-2 flex-1">
+      <ul className="mt-4 mb-6 flex flex-col gap-2 flex-1" role="list" aria-label={`Funzionalità piano ${name}`}>
         {features.map((f, i) => (
           <li key={i} className="flex items-start gap-2 text-[12px]"
             style={{ color: highlighted ? "rgba(255,255,255,0.8)" : "rgba(26,26,46,0.75)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
-            <span style={{ color: "#00e5c8", flexShrink: 0, marginTop: "2px" }}>✓</span>
+            <span style={{ color: "#00e5c8", flexShrink: 0, marginTop: "2px" }} aria-hidden="true">✓</span>
             {f}
           </li>
         ))}
       </ul>
-      <a href="mailto:intelligence@ideasmart.biz"
+      <a
+        href={ctaHref}
+        aria-label={ctaAriaLabel}
+        data-cta-name={name.toLowerCase()}
+        data-plan={name.toLowerCase()}
         className="block text-center py-3 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90"
         style={{
           background: highlighted ? "#00e5c8" : "transparent",
@@ -110,10 +117,23 @@ export default function Intelligence() {
   return (
     <>
       <SEOHead
-        title="IdeaSmart Intelligence — Non leggere le notizie. Usale per decidere."
-        description="Competitive monitoring, alert scenario-based e briefing personalizzati per CEO, founder e investitori. 450+ fonti, 20+ analisi/giorno, aggiornamento 00:00 CET."
+        title="IdeaSmart Intelligence — Competitive Monitoring & AI Briefing per Decision-Maker"
+        description="Monitoriamo i tuoi competitor, tracciamo i deal e ti consegniamo briefing personalizzati ogni giorno. Powered by 8 agenti AI e 450+ fonti globali."
         ogSiteName="IDEASMART INTELLIGENCE"
-        keywords="intelligence AI, competitive monitoring, briefing CEO, startup Italia, venture capital, decision maker"
+        ogType="website"
+        keywords="intelligence AI, competitive monitoring, briefing CEO, startup Italia, venture capital, decision maker, M&A, fondi investimento"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "IdeaSmart Intelligence",
+          "description": "Competitive monitoring e AI briefing personalizzati per CEO, founder e investitori.",
+          "brand": { "@type": "Brand", "name": "IdeaSmart" },
+          "offers": [
+            { "@type": "Offer", "name": "RADAR", "price": "39", "priceCurrency": "EUR" },
+            { "@type": "Offer", "name": "INTEL", "price": "199", "priceCurrency": "EUR" },
+            { "@type": "Offer", "name": "ENTERPRISE", "description": "Prezzo su misura" }
+          ]
+        }}
       />
       <div style={{ background: "#f5f2ec", minHeight: "100vh" }}>
         <Navbar />
@@ -157,7 +177,9 @@ export default function Intelligence() {
                 ))}
               </div>
 
-              <a href="#piani"
+              <a href="#pricing"
+                aria-label="Vai alla sezione prezzi"
+                data-cta-name="hero-pricing"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
                 style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
                 Scegli il tuo piano →
@@ -188,7 +210,7 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 3 — COME FUNZIONA ═════════════════════════════════════════ */}
-        <section className="py-16" style={{ background: "#fff" }}>
+        <section id="come-funziona" className="py-16" style={{ background: "#fff" }}>
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="Come funziona" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-12 leading-tight"
@@ -236,7 +258,7 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 4 — I PIANI ═══════════════════════════════════════════════ */}
-        <section id="piani" className="py-16" style={{ background: "#f5f2ec" }}>
+        <section id="pricing" className="py-16" style={{ background: "#f5f2ec" }}>
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="I piani" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-3 leading-tight"
@@ -260,7 +282,7 @@ export default function Intelligence() {
             <p className="text-[13px] mb-10" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "'Space Mono', monospace" }}>
               14 giorni gratis su tutti i piani. Nessuna carta richiesta.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 md:[&>*:nth-child(1)]:order-1 md:[&>*:nth-child(2)]:order-2 md:[&>*:nth-child(3)]:order-3">
               <PricingCard
                 name="RADAR"
                 price={radarPrice}
@@ -275,6 +297,8 @@ export default function Intelligence() {
                 ]}
                 cta="Prova 14 giorni gratis"
                 subCta="Nessuna carta richiesta"
+                ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20trial%20RADAR"
+                ctaAriaLabel="Attiva prova gratuita piano RADAR"
               />
               <PricingCard
                 name="INTEL"
@@ -292,6 +316,8 @@ export default function Intelligence() {
                 cta="Attiva INTEL — 14 giorni gratis"
                 subCta="Il piano scelto dal 70% dei decision-maker"
                 highlighted
+                ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20trial%20INTEL"
+                ctaAriaLabel="Attiva prova gratuita piano INTEL - 14 giorni gratis"
               />
               <PricingCard
                 name="ENTERPRISE"
@@ -307,6 +333,8 @@ export default function Intelligence() {
                   "Account manager dedicato",
                 ]}
                 cta="Parliamone — prenota una call"
+                ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20ENTERPRISE%20Intelligence"
+                ctaAriaLabel="Contatta il team per il piano Enterprise"
               />
             </div>
           </div>
@@ -341,7 +369,10 @@ export default function Intelligence() {
                 </div>
               ))}
             </div>
-            <a href="#piani" className="text-[11px] font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+            <a href="/tecnologia"
+              aria-label="Scopri tutti gli 8 agenti AI di IdeaSmart Intelligence"
+              data-cta-name="tecnologia-agents"
+              className="text-[11px] font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
               style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>
               Scopri tutti gli 8 agenti →
             </a>
@@ -400,6 +431,7 @@ export default function Intelligence() {
               style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
               I numeri parlano.
             </h2>
+            {/* TODO: Client logos row */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
               {[
                 { value: "100+", label: "decision-maker attivi" },
@@ -437,13 +469,16 @@ export default function Intelligence() {
               Nessuna carta di credito. Nessun impegno. Configura il tuo profilo in 2 minuti e domani mattina trovi il tuo primo briefing personalizzato pronto.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="mailto:intelligence@ideasmart.biz"
+              <a href="mailto:intelligence@ideasmart.biz?subject=Attivazione%20prova%20gratuita%20Intelligence"
+                aria-label="Attiva la prova gratuita di IdeaSmart Intelligence"
+                data-cta-name="cta-finale"
                 className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
                 style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
                 Attiva la prova gratuita →
               </a>
               <a href="mailto:intelligence@ideasmart.biz"
                 className="text-[12px] hover:opacity-70 transition-opacity"
+                aria-label="Scrivi direttamente a intelligence@ideasmart.biz"
                 style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}>
                 Oppure scrivici a intelligence@ideasmart.biz
               </a>

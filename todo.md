@@ -1712,3 +1712,40 @@
 - [x] Toggle annuale/mensile nella sezione pricing di /intelligence (RADAR €33/€39, INTEL €169/€199)
 - [x] Pagina /intelligence con 8 sezioni complete e copy definitivo
 - [x] Redirect automatico da /business a /intelligence
+
+## Task da completare (29 Mar 2026 — Implementazione completa prompt)
+
+### Homepage
+- [ ] Contenuti editoriali dinamici: "Ricerca del Giorno" (card grande) + top 4-6 notizie (griglia 2-3 col)
+- [ ] Strip metriche riposizionata: dopo i contenuti editoriali (non dopo il ticker)
+- [ ] Strip CTA pre-footer: "CEO, founder, investitori: il tuo briefing settimanale personalizzato è a un click" + "Attiva Intelligence →"
+- [ ] Link "Vedi tutte le ricerche →" e "Vedi tutte le notizie →" nelle sezioni contenuti
+
+### Pagina /intelligence
+- [ ] Smooth scroll funzionante: CTA hero → id="pricing", "Scopri come funziona" → id="come-funziona"
+- [ ] CTA mailto pre-compilati: RADAR/INTEL → intelligence@ideasmart.biz?subject=Richiesta trial RADAR/INTEL
+- [ ] ENTERPRISE/Advisory → advisory@ideasmart.biz
+- [ ] SEO: title "IdeaSmart Intelligence — Competitive Monitoring & AI Briefing per Decision-Maker"
+- [ ] SEO: meta description, Open Graph tags, Twitter Card
+- [ ] Analytics: data-* attributes su tutti i CTA (data-cta-name, data-plan)
+- [ ] Commento <!-- TODO: Client logos row --> nella sezione social proof
+- [ ] Mobile: INTEL mostrata per prima nella griglia pricing (order CSS)
+- [ ] Link "Scopri tutti gli 8 agenti" → /tecnologia (non #piani)
+- [ ] ARIA labels su tutti i CTA buttons
+
+## Task completati (29 Mar 2026 — Intelligence.tsx completamento prompt)
+
+- [x] /intelligence: smooth scroll anchor id="pricing" e id="come-funziona"
+- [x] /intelligence: CTA mailto pre-compilati con subject (Richiesta trial RADAR / INTEL / ENTERPRISE)
+- [x] /intelligence: analytics data-attributes (data-cta-name, data-plan) su tutti i CTA
+- [x] /intelligence: mobile INTEL-first nella griglia pricing (order-first su mobile)
+- [x] /intelligence: link /tecnologia nella sezione agenti (sostituisce #piani)
+- [x] /intelligence: badge "PIU' SCELTO" (sostituisce "Piu' popolare")
+- [x] /intelligence: TODO client logos comment nella sezione social proof
+- [x] /intelligence: ARIA labels su tutti i CTA principali
+- [x] /intelligence: PricingCard riceve ctaHref e ctaAriaLabel come props
+- [x] Homepage: Ricerca del Giorno come card grande in evidenza sopra la griglia notizie
+- [x] Homepage: strip metriche spostata dopo i contenuti editoriali (prima della CTA pre-footer)
+- [x] Homepage: manchette sinistra rimossa, header simmetrico
+- [x] Homepage: barra canali secondaria (News Italia, Finance, Health, Cybersecurity, Sport, Lifestyle)
+- [x] Homepage: box Intelligence dark nella sidebar al posto del banner 300x250
