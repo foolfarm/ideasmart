@@ -392,10 +392,19 @@ export async function refreshDealroomNewsFromRSS(): Promise<void> {
   try {
     const articles = await scrapeDealroomNews();
     if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Dealroom recuperato dai feed RSS");
+      console.warn("[RssNewsScheduler] \u26a0\ufe0f Nessun articolo Dealroom recuperato dai feed RSS");
       return;
     }
-    await saveScrapedNews("dealroom", articles);
+    // Deduplicazione per titolo normalizzato
+    const seen = new Set<string>();
+    const deduped = articles.filter((a) => {
+      const key = a.title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 60);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    console.log(`[RssNewsScheduler] Dedup: ${articles.length} \u2192 ${deduped.length} articoli unici`);
+    await saveScrapedNews("dealroom", deduped);
     console.log(`[RssNewsScheduler] ✅ Dealroom news aggiornate: ${articles.length} articoli da fonti reali`);
   } catch (err) {
     console.error("[RssNewsScheduler] ❌ Errore scraping Dealroom news:", err);

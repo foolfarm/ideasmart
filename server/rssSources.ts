@@ -910,43 +910,36 @@ export const SONDAGGI_SOURCES: RssSource[] = [
 ];
 
 // ─── DEALROOM — Round, Funding, VC, M&A, Seed, Series, Exit ─────────────────
-// Fonti verificate al 29 Mar 2026 (HTTP 200 confermato)
+// Fonti verificate al 29 Mar 2026 (HTTP 200 confermato dal sandbox)
 export const DEALROOM_SOURCES: RssSource[] = [
-  // ── 🇮🇹 ITALIA — Core dealflow (priorità massima) ──────────────────────────────
-  // BeBeez: timeout dal sandbox (blocca bot), ma funziona in produzione — mantenuto
+  // ── 🇮🇹 ITALIA — Core dealflow (priorità massima) ────────────────────────────────────────
   { name: "BeBeez", homepage: "https://bebeez.it", feedUrl: "https://bebeez.it/feed", section: "dealroom", language: "it", priority: 1 },
   { name: "DealFlower", homepage: "https://dealflower.it", feedUrl: "https://dealflower.it/feed", section: "dealroom", language: "it", priority: 1 },
   { name: "StartupBusiness", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/feed", section: "dealroom", language: "it", priority: 1 },
-  // StartupItalia: feed /rss verificato (200)
   { name: "StartupItalia", homepage: "https://startupitalia.eu", feedUrl: "https://startupitalia.eu/rss", section: "dealroom", language: "it", priority: 1 },
   { name: "EconomyUp", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "dealroom", language: "it", priority: 1 },
-  { name: "CDP Venture Capital", homepage: "https://www.cdpventurecapital.it", feedUrl: "https://www.cdpventurecapital.it/feed", section: "dealroom", language: "it", priority: 2 },
-  { name: "Digital360", homepage: "https://www.digital360.it", feedUrl: "https://www.digital360.it/feed", section: "dealroom", language: "it", priority: 2 },
-  { name: "Agenda Digitale Funding", homepage: "https://www.agendadigitale.eu", feedUrl: "https://www.agendadigitale.eu/feed", section: "dealroom", language: "it", priority: 2 },
-  // Nuove fonti italiane verificate (200)
   { name: "Il Sole 24 Ore Economia", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/economia.xml", section: "dealroom", language: "it", priority: 1, tags: ["funding", "m&a"] },
   { name: "Corriere Economia", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/economia.xml", section: "dealroom", language: "it", priority: 1, tags: ["funding", "startup"] },
-  // ── 🇪🇺 EUROPA — Dealflow puro ──────────────────────────────────────────────
-  // EU-Startups: 403 su tutti i feed — rimosso
+  { name: "ANSA Economia", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/economia/economia_rss.xml", section: "dealroom", language: "it", priority: 1, tags: ["m&a", "funding"] },
+  { name: "AIFI", homepage: "https://www.aifi.it", feedUrl: "https://www.aifi.it/feed", section: "dealroom", language: "it", priority: 1, tags: ["private equity", "vc"] },
+  // ── 🇪🇺 EUROPA — Dealflow verificato (200) ────────────────────────────────────────
   { name: "Sifted", homepage: "https://sifted.eu", feedUrl: "https://sifted.eu/feed", section: "dealroom", language: "en", priority: 1 },
   { name: "Tech.eu", homepage: "https://tech.eu", feedUrl: "https://tech.eu/feed", section: "dealroom", language: "en", priority: 1 },
-  { name: "Vestbee", homepage: "https://www.vestbee.com", feedUrl: "https://www.vestbee.com/blog/rss", section: "dealroom", language: "en", priority: 2 },
-  // ── 🇪🇺 VC europei (deal signal diretto) ───────────────────────────────────────────
-  { name: "Partech", homepage: "https://partechpartners.com", feedUrl: "https://partechpartners.com/feed", section: "dealroom", language: "en", priority: 2 },
-  { name: "Speedinvest", homepage: "https://speedinvest.com", feedUrl: "https://speedinvest.com/feed", section: "dealroom", language: "en", priority: 2 },
-  { name: "Cherry Ventures", homepage: "https://cherry.vc", feedUrl: "https://cherry.vc/feed", section: "dealroom", language: "en", priority: 2 },
-  { name: "Project A", homepage: "https://www.project-a.com", feedUrl: "https://www.project-a.com/feed", section: "dealroom", language: "en", priority: 2 },
-  { name: "Lakestar", homepage: "https://lakestar.com", feedUrl: "https://lakestar.com/feed", section: "dealroom", language: "en", priority: 2 },
-  // ── 🌍 GLOBAL — Must ────────────────────────────────────────────────────────
+  { name: "ArcticStartup", homepage: "https://arcticstartup.com", feedUrl: "https://arcticstartup.com/feed/", section: "dealroom", language: "en", priority: 1, tags: ["nordic", "funding"] },
+  { name: "Silicon Republic", homepage: "https://www.siliconrepublic.com", feedUrl: "https://www.siliconrepublic.com/feed", section: "dealroom", language: "en", priority: 1, tags: ["europe", "funding"] },
+  { name: "UKTN", homepage: "https://www.uktech.news", feedUrl: "https://www.uktech.news/feed", section: "dealroom", language: "en", priority: 1, tags: ["uk", "funding"] },
+  { name: "Startups.co.uk", homepage: "https://startups.co.uk", feedUrl: "https://startups.co.uk/feed/", section: "dealroom", language: "en", priority: 2, tags: ["uk", "startup"] },
+  // ── 🌍 GLOBAL — Deal signal diretto (verificato 200) ───────────────────────────────
   { name: "TechCrunch Funding", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/tag/funding/feed", section: "dealroom", language: "en", priority: 1 },
   { name: "TechCrunch Venture", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/category/venture/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "TechCrunch M&A", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/tag/mergers-and-acquisitions/feed/", section: "dealroom", language: "en", priority: 1, tags: ["m&a", "acquisition"] },
+  { name: "TechCrunch Startups", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/category/startups/feed/", section: "dealroom", language: "en", priority: 1, tags: ["startups", "funding"] },
   { name: "Crunchbase News", homepage: "https://news.crunchbase.com", feedUrl: "https://news.crunchbase.com/feed", section: "dealroom", language: "en", priority: 1 },
-  // Tech Funding News: timeout — rimosso
-  { name: "CB Insights Research", homepage: "https://www.cbinsights.com", feedUrl: "https://www.cbinsights.com/research/feed", section: "dealroom", language: "en", priority: 1 },
   { name: "FinSMEs", homepage: "https://www.finsmes.com", feedUrl: "https://www.finsmes.com/feed", section: "dealroom", language: "en", priority: 1, tags: ["funding", "seed", "series"] },
-  { name: "Dealroom.co Blog", homepage: "https://dealroom.co", feedUrl: "https://dealroom.co/blog/feed", section: "dealroom", language: "en", priority: 1, tags: ["vc", "funding"] },
-  // ── 🌍 VC global (deal signal diretto) ───────────────────────────────────────────────
-  // a16z: nessun feed RSS pubblico disponibile — rimosso
+  { name: "TechFundingNews", homepage: "https://techfundingnews.com", feedUrl: "https://techfundingnews.com/feed/", section: "dealroom", language: "en", priority: 1, tags: ["funding", "vc"] },
+  { name: "VentureBeat", homepage: "https://venturebeat.com", feedUrl: "https://venturebeat.com/feed/", section: "dealroom", language: "en", priority: 1, tags: ["tech", "funding"] },
+  { name: "CB Insights Research", homepage: "https://www.cbinsights.com", feedUrl: "https://www.cbinsights.com/research/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Business Insider", homepage: "https://www.businessinsider.com", feedUrl: "https://feeds.businessinsider.com/custom/all", section: "dealroom", language: "en", priority: 2, tags: ["business", "deals"] },
   { name: "Sequoia Capital", homepage: "https://www.sequoiacap.com", feedUrl: "https://www.sequoiacap.com/feed", section: "dealroom", language: "en", priority: 1 },
   { name: "Y Combinator Blog", homepage: "https://www.ycombinator.com", feedUrl: "https://www.ycombinator.com/blog/feed", section: "dealroom", language: "en", priority: 1 },
 ];

@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, title, category FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, category FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 10",
+  "rows": [
+    {
+      "id": "3210177",
+      "title": "Guida ai migliori POS portatili 2026 per imprese e professionisti",
+      "category": "Venture Capital Italia"
+    },
+    {
+      "id": "3210176",
+      "title": "BeBeez Magazine n. 40: Le sfide del mercato finanziario",
+      "category": "Venture Capital Italia"
+    },
+    {
+      "id": "3210175",
+      "title": "Mercato globale fotografia cresce del 19%, spinto da nuovi collezionisti",
+      "category": "Venture Capital Global"
+    },
+    {
+      "id": "3210174",
+      "title": "Kruso Kapital lancia Art-Kredit al Milan Bergamo Airport",
+      "category": "Deal Italiano"
+    },
+    {
+      "id": "3210173",
+      "title": "Private Debt Italia 2025: record a 44 mld euro, trainato dai buyout",
+      "category": "Deal Italiano"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\n3210177\tGuida ai migliori POS portatili 2026 per imprese e professionisti\tVenture Capital Italia\n3210176\tBeBeez Magazine n. 40: Le sfide del mercato finanziario\tVenture Capital Italia\n3210175\tMercato globale fotografia cresce del 19%, spinto da nuovi collezionisti\tVenture Capital Global\n3210174\tKruso Kapital lancia Art-Kredit al Milan Bergamo Airport\tDeal Italiano\n3210173\tPrivate Debt Italia 2025: record a 44 mld euro, trainato dai buyout\tDeal Italiano\n",
+  "stderr": "",
+  "execution_time_ms": 64
+}

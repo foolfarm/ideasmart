@@ -1,0 +1,52 @@
+{
+  "query": "SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 10",
+  "rows": [
+    {
+      "id": "3300073",
+      "title": "Sandrini Metalli: da Valcamonica alle Olimpiadi, +6,8% nel 2025",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300072",
+      "title": "La Cucina italiana nel mondo vale 251 miliardi, punta a 300",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300071",
+      "title": "8 startup di YC Demo Day che hanno attratto l'interesse dei VC",
+      "category": "Deal Globale",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300070",
+      "title": "SoftBank si prepara a IPO OpenAI nel 2026 con prestito da 40 miliardi",
+      "category": "Deal Globale",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300069",
+      "title": "Flacks Group chiede prestito statale per ex Ilva, rifiuta condizioni",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300068",
+      "title": "M-Cube cresce nel 2025: 70 milioni di ricavi con riassetto e piattaforma",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300067",
+      "title": "Il libro di Dettori: futuro imprese, VC e innovazione",
+      "category": "Venture Capital Italia",
+      "sourceName": "StartupBusiness"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\tsourceName\n3300073\tSandrini Metalli: da Valcamonica alle Olimpiadi, +6,8% nel 2025\tDeal Italiano\tIl Sole 24 Ore Economia\n3300072\tLa Cucina italiana nel mondo vale 251 miliardi, punta a 300\tDeal Italiano\tIl Sole 24 Ore Economia\n3300071\t8 startup di YC Demo Day che hanno attratto l'interesse dei VC\tDeal Globale\tTechCrunch Venture\n3300070\tSoftBank si prepara a IPO OpenAI nel 2026 con prestito da 40 miliardi\tDeal Globale\tTechCrunch Venture\n3300069\tFlacks Group chiede prestito statale per ex Ilva, rifiuta condizioni\tDeal Italiano\tIl Sole 24 Ore Economia\n3300068\tM-Cube cresce nel 2025: 70 milioni di ricavi con riassetto e piattaforma\tDeal Italiano\tIl Sole 24 Ore Economia\n3300067\tIl libro di Dettori: futuro imprese, VC e innovazione\tVenture Capital Italia\tStartupBusiness\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

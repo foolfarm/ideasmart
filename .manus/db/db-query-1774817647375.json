@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 10",
+  "rows": [
+    {
+      "id": "3300026",
+      "title": "YC Demo Day: 8 startup che hanno attratto gli investitori VC",
+      "category": "Venture Capital Global",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300025",
+      "title": "Flacks Group rifiuta condizioni ex Ilva, chiede prestito statale",
+      "category": "M&A & Acquisizioni",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300024",
+      "title": "Sandrini Metalli: da Valcamonica alle Olimpiadi, +6,8% nel 2025",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300023",
+      "title": "M-Cube: riassetto e crescita spingono i ricavi a 70 milioni nel 2025",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300022",
+      "title": "SoftBank: prestito da 40 miliardi, ipotesi IPO OpenAI nel 2026",
+      "category": "Exit & IPO",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300021",
+      "title": "Il libro di Dettori: futuro imprese, VC e innovazione",
+      "category": "Venture Capital Italia",
+      "sourceName": "StartupBusiness"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\tsourceName\n3300026\tYC Demo Day: 8 startup che hanno attratto gli investitori VC\tVenture Capital Global\tTechCrunch Venture\n3300025\tFlacks Group rifiuta condizioni ex Ilva, chiede prestito statale\tM&A & Acquisizioni\tIl Sole 24 Ore Economia\n3300024\tSandrini Metalli: da Valcamonica alle Olimpiadi, +6,8% nel 2025\tDeal Italiano\tIl Sole 24 Ore Economia\n3300023\tM-Cube: riassetto e crescita spingono i ricavi a 70 milioni nel 2025\tDeal Italiano\tIl Sole 24 Ore Economia\n3300022\tSoftBank: prestito da 40 miliardi, ipotesi IPO OpenAI nel 2026\tExit & IPO\tTechCrunch Venture\n3300021\tIl libro di Dettori: futuro imprese, VC e innovazione\tVenture Capital Italia\tStartupBusiness\n",
+  "stderr": "",
+  "execution_time_ms": 66
+}

@@ -1856,3 +1856,12 @@
 
 - [x] Fix: link DEALROOM aggiunto alla SectionNav della Home page (navSections array)
 - [x] Fix: pagina /dealroom — rimosso RequireAuth (login wall), aggiornato SectionChannelBar con solo 3 canali attivi (AI, Startup, Dealroom), rimosso import RequireAuth
+
+## Task (29 Mar 2026 — Riscrittura pagina DEALROOM)
+
+- [x] Rimuovere testata DEALROOM + filtri + sidebar "Cos'è DEALROOM" dalla pagina /dealroom
+- [x] Riscrivere layout pagina /dealroom come AI/Startup (notizia del giorno + griglia + lista)
+- [x] Lanciare scraping manuale massivo per popolare con più notizie deal/funding/round
+- [x] Fix: prompt classificazione DEALROOM — pre-filtro keyword + prompt ultra-selettivo LLM
+- [x] Deduplicazione backend per titolo normalizzato in refreshDealroomNewsFromRSS
+- [x] Deduplicazione frontend per titolo in DealroomHome.tsx

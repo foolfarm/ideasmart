@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC",
+  "rows": [
+    {
+      "id": "3300100",
+      "title": "YC Demo Day: 8 startup che gli investitori stanno corteggiando, dagli hotel lunari al bestiame",
+      "category": "Angel & Pre-seed",
+      "sourceName": "TechCrunch Startups"
+    },
+    {
+      "id": "3300099",
+      "title": "YC Demo Day: 8 startup che gli investitori stanno corteggiando, dagli hotel lunari al bestiame",
+      "category": "Angel & Pre-seed",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300098",
+      "title": "SoftBank si assicura un prestito da 40 miliardi di dollari, si avvicina l'IPO di OpenAI nel 2026",
+      "category": "VC Fund",
+      "sourceName": "TechCrunch Venture"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\tsourceName\n3300100\tYC Demo Day: 8 startup che gli investitori stanno corteggiando, dagli hotel lunari al bestiame\tAngel & Pre-seed\tTechCrunch Startups\n3300099\tYC Demo Day: 8 startup che gli investitori stanno corteggiando, dagli hotel lunari al bestiame\tAngel & Pre-seed\tTechCrunch Venture\n3300098\tSoftBank si assicura un prestito da 40 miliardi di dollari, si avvicina l'IPO di OpenAI nel 2026\tVC Fund\tTechCrunch Venture\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}

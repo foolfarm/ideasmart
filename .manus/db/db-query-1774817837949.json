@@ -1,0 +1,130 @@
+{
+  "query": "SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 20",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC LIMIT 20",
+  "rows": [
+    {
+      "id": "3300066",
+      "title": "Gli sviluppatori avvertono: l'AI rallenta le approvazioni Apple",
+      "category": "Deal Globale",
+      "sourceName": "Business Insider"
+    },
+    {
+      "id": "3300065",
+      "title": "Logistica Veneto: introvabile metà degli addetti richiesti nel 2025",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300064",
+      "title": "Sostenere lista Cda Mps per stabilità e governance",
+      "category": "Deal Italiano",
+      "sourceName": "ANSA Economia"
+    },
+    {
+      "id": "3300063",
+      "title": "Addio a un co-fondatore di xAI di Elon Musk",
+      "category": "Venture Capital Global",
+      "sourceName": "TechCrunch Startups"
+    },
+    {
+      "id": "3300062",
+      "title": "L'AI rompe gli schemi: i PM spediscono codice",
+      "category": "Venture Capital Global",
+      "sourceName": "VentureBeat"
+    },
+    {
+      "id": "3300061",
+      "title": "Gip: nessun controllo giudiziario per Dama-Paul&Shark e Aspesi",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300060",
+      "title": "Lombardia e Catalogna: sinergia industriale per l'Europa",
+      "category": "Deal Europeo",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300059",
+      "title": "Transizione 5.0: Orsini chiede tavolo urgente con il Governo",
+      "category": "Deal Italiano",
+      "sourceName": "ANSA Economia"
+    },
+    {
+      "id": "3300058",
+      "title": "Il paradosso dell'oro: a picco ma pronto a una nuova corsa",
+      "category": "Deal Globale",
+      "sourceName": "ANSA Economia"
+    },
+    {
+      "id": "3300057",
+      "title": "Tre CEO di startup AI rivelano cosa cercano nei candidati",
+      "category": "Angel & Pre-seed",
+      "sourceName": "Business Insider"
+    },
+    {
+      "id": "3300056",
+      "title": "L'AI rivoluziona lo sviluppo software: 170% di throughput con meno personale",
+      "category": "Venture Capital Global",
+      "sourceName": "VentureBeat"
+    },
+    {
+      "id": "3300055",
+      "title": "YC Demo Day: 8 startup che hanno attratto l'attenzione dei VC",
+      "category": "Venture Capital Global",
+      "sourceName": "TechCrunch Startups"
+    },
+    {
+      "id": "3300054",
+      "title": "Sandrini Metalli: dalla Valcamonica alle Olimpiadi di Milano-Cortina",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300053",
+      "title": "La battaglia delle torri: anche Tim dice addio a Inwit",
+      "category": "Deal Italiano",
+      "sourceName": "ANSA Economia"
+    },
+    {
+      "id": "3300052",
+      "title": "Bankitalia nomina commissari per affiancare cda Bff",
+      "category": "Deal Italiano",
+      "sourceName": "ANSA Economia"
+    },
+    {
+      "id": "3300051",
+      "title": "Flacks Group chiede prestito statale per rilanciare ex Ilva",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300050",
+      "title": "M-Cube: riassetto e crescita spingono i ricavi a 70 milioni nel 2025",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    },
+    {
+      "id": "3300049",
+      "title": "YC Demo Day: 8 startup che hanno attratto l'attenzione dei VC",
+      "category": "Venture Capital Global",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300048",
+      "title": "SoftBank si prepara alla quotazione OpenAI con mega prestito",
+      "category": "Venture Capital Global",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "id": "3300047",
+      "title": "Il libro di Dettori svela il futuro di imprese e VC",
+      "category": "Venture Capital Italia",
+      "sourceName": "StartupBusiness"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\tsourceName\n3300066\tGli sviluppatori avvertono: l'AI rallenta le approvazioni Apple\tDeal Globale\tBusiness Insider\n3300065\tLogistica Veneto: introvabile metà degli addetti richiesti nel 2025\tDeal Italiano\tIl Sole 24 Ore Economia\n3300064\tSostenere lista Cda Mps per stabilità e governance\tDeal Italiano\tANSA Economia\n3300063\tAddio a un co-fondatore di xAI di Elon Musk\tVenture Capital Global\tTechCrunch Startups\n3300062\tL'AI rompe gli schemi: i PM spediscono codice\tVenture Capital Global\tVentureBeat\n3300061\tGip: nessun controllo giudiziario per Dama-Paul&Shark e Aspesi\tDeal Italiano\tIl Sole 24 Ore Economia\n3300060\tLombardia e Catalogna: sinergia industriale per l'Europa\tDeal Europeo\tIl Sole 24 Ore Economia\n3300059\tTransizione 5.0: Orsini chiede tavolo urgente con il Governo\tDeal Italiano\tANSA Economia\n3300058\tIl paradosso dell'oro: a picco ma pronto a una nuova corsa\tDeal Globale\tANSA Economia\n3300057\tTre CEO di startup AI rivelano cosa cercano nei candidati\tAngel & Pre-seed\tBusiness Insider\n3300056\tL'AI rivoluziona lo sviluppo software: 170% di throughput con meno personale\tVenture Capital Global\tVentureBeat\n3300055\tYC Demo Day: 8 startup che hanno attratto l'attenzione dei VC\tVenture Capital Global\tTechCrunch Startups\n3300054\tSandrini Metalli: dalla Valcamonica alle Olimpiadi di Milano-Cortina\tDeal Italiano\tIl Sole 24 Ore Economia\n3300053\tLa battaglia delle torri: anche Tim dice addio a Inwit\tDeal Italiano\tANSA Economia\n3300052\tBankitalia nomina commissari per affiancare cda Bff\tDeal Italiano\tANSA Economia\n3300051\tFlacks Group chiede prestito statale per rilanciare ex Ilva\tDeal Italiano\tIl Sole 24 Ore Economia\n3300050\tM-Cube: riassetto e crescita spingono i ricavi a 70 milioni nel 2025\tDeal Italiano\tIl Sole 24 Ore Economia\n3300049\tYC Demo Day: 8 startup che hanno attratto l'attenzione dei VC\tVenture Capital Global\tTechCrunch Venture\n3300048\tSoftBank si prepara alla quotazione OpenAI con mega prestito\tVenture Capital Global\tTechCrunch Venture\n3300047\tIl libro di Dettori svela il futuro di imprese e VC\tVenture Capital Italia\tStartupBusiness\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}

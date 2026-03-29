@@ -231,7 +231,7 @@ async function selectAndTranslate(
     dealroom: {
       label: "DEALROOM — Funding & VC",
       categories: ["Seed Round", "Series A", "Series B", "Series C+", "Venture Capital Italia", "Venture Capital Europa", "Venture Capital Global", "M&A & Acquisizioni", "Exit & IPO", "VC Fund", "Deal Italiano", "Deal Europeo", "Deal Globale", "Corporate VC", "Angel & Pre-seed"],
-      instructions: "Seleziona le 20 notizie più rilevanti su round di finanziamento, deal VC, M&A, seed, exit e investimenti. PRIORITÀ ASSOLUTA: deal italiani (startup italiane che raccolgono fondi, acquisizioni di aziende italiane, VC italiani che investono), poi europei, poi globali. Privilegia notizie con cifre concrete (importo del round, valutazione, investitori), nomi di startup e founder. ESCLUDI notizie generiche senza dati di deal specifici. Tono professionale e data-driven.",
+      instructions: "SEI UN FILTRO DEAL FINANZIARIO ULTRA-SELETTIVO. Seleziona SOLO notizie dove una TRANSAZIONE FINANZIARIA è avvenuta o sta per avvenire. Una transazione è ESCLUSIVAMENTE: 1) Un round di finanziamento (seed, Series A/B/C/D, growth) con importo e/o investitore nominato, 2) Un'acquisizione M&A con acquirente e target nominati, 3) Una IPO o quotazione in borsa, 4) La chiusura di un nuovo fondo VC/PE con importo, 5) Un investimento corporate venture con cifra. PAROLE CHIAVE OBBLIGATORIE nel titolo o descrizione: raccoglie, chiude round, finanziamento, investimento, acquisisce, acquisizione, IPO, quotazione, Series A/B/C, seed round, funding, raises, acquires, merger, fund close. ESCLUDI TUTTO IL RESTO: notizie di crescita aziendale senza deal (es. 'ricavi a 70M'), notizie su cucina/cibo/export, notizie su metalli/olimpiadi/sport, notizie su governance/banche/commissari, notizie su politica industriale, notizie su AI/tech senza round, libri/opinioni, guide prodotto. TEST: c'è un VERBO DI TRANSAZIONE (raccoglie, acquisisce, chiude fondo, va in IPO)? Se NO → SCARTA. PRIORITÀ: 1) Deal italiani, 2) Deal europei, 3) Deal globali >50M$.",
     },
   } as const;
 
@@ -523,5 +523,28 @@ export async function scrapeSondaggiNews(): Promise<ScrapedArticle[]> {
 export async function scrapeDealroomNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Dealroom news (round, funding, VC, M&A, exit)...");
   const articles = await fetchAllFeeds(DEALROOM_SOURCES);
-  return selectAndTranslate(articles, "dealroom");
+
+  // Pre-filtro: scarta articoli che NON contengono parole chiave deal/funding nel titolo o descrizione
+  const DEAL_KEYWORDS = [
+    // Italiano
+    "raccoglie", "raccolta", "finanziamento", "round", "investimento", "investitori",
+    "acquisisce", "acquisizione", "acquisita", "ipo", "quotazione", "quotata",
+    "fondo", "fund", "venture", "seed", "series", "milioni", "miliardi",
+    "startup", "scaleup", "exit", "m&a", "merger", "buyout", "leveraged",
+    "private equity", "angel", "pre-seed", "growth", "valutazione",
+    // Inglese
+    "raises", "raised", "funding", "funded", "acquires", "acquired",
+    "acquisition", "merger", "ipo", "valuation", "investment", "investor",
+    "closes", "closed", "round", "series", "seed", "venture", "capital",
+    "billion", "million", "unicorn", "decacorn",
+  ];
+
+  const preFiltered = articles.filter((a) => {
+    const text = `${a.title} ${a.content || ""}`.toLowerCase();
+    return DEAL_KEYWORDS.some((kw) => text.includes(kw));
+  });
+
+  console.log(`[RssScraper] Pre-filtro DEALROOM: ${articles.length} raw → ${preFiltered.length} con keyword deal/funding`);
+
+  return selectAndTranslate(preFiltered, "dealroom");
 }
