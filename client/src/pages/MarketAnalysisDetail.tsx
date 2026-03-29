@@ -4,6 +4,7 @@
 import { useParams, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, TrendingUp } from "lucide-react";
+import RequireAuth from "@/components/RequireAuth";
 
 const SECTION_CONFIG = {
   ai: { label: "AI4Business", color: "#0a7ea4", path: "/ai" },
@@ -41,6 +42,7 @@ export default function MarketAnalysisDetail() {
   const dataPoints = [analysis.dataPoint1, analysis.dataPoint2, analysis.dataPoint3].filter(Boolean);
 
   return (
+    <RequireAuth overlay>
     <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -187,5 +189,6 @@ export default function MarketAnalysisDetail() {
         </div>
       </article>
     </div>
+    </RequireAuth>
   );
 }

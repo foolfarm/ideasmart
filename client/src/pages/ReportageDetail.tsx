@@ -5,6 +5,7 @@
 import { useParams, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import RequireAuth from "@/components/RequireAuth";
 
 const SECTION_CONFIG = {
   ai: { label: "AI4Business", color: "#0a7ea4", path: "/ai" },
@@ -55,6 +56,7 @@ export default function ReportageDetail() {
   const features = [rep.feature1, rep.feature2, rep.feature3, rep.feature4].filter(Boolean);
 
   return (
+    <RequireAuth overlay>
     <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Testata */}
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
@@ -218,5 +220,6 @@ export default function ReportageDetail() {
         </div>
       </article>
     </div>
+    </RequireAuth>
   );
 }

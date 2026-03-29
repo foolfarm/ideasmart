@@ -16,6 +16,24 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
+// ── Site Users (registrazione nativa: username + email + password) ────────────
+export const siteUsers = mysqlTable("site_users", {
+  id: int("id").autoincrement().primaryKey(),
+  username: varchar("username", { length: 64 }).notNull().unique(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  passwordHash: varchar("passwordHash", { length: 255 }).notNull(),
+  emailVerified: boolean("emailVerified").default(false).notNull(),
+  verificationToken: varchar("verificationToken", { length: 128 }).unique(),
+  verificationTokenExpiresAt: timestamp("verificationTokenExpiresAt"),
+  sessionToken: varchar("sessionToken", { length: 255 }).unique(),
+  sessionExpiresAt: timestamp("sessionExpiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  lastLoginAt: timestamp("lastLoginAt"),
+});
+
+export type SiteUser = typeof siteUsers.$inferSelect;
+export type InsertSiteUser = typeof siteUsers.$inferInsert;
+
 // ── Newsletter Subscribers ──────────────────────────────────────────────────
 export const subscribers = mysqlTable("subscribers", {
   id: int("id").autoincrement().primaryKey(),

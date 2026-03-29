@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import RequireAuth from "@/components/RequireAuth";
 
 /**
  * StartupNewsArticle — redirect automatico alla fonte originale.
@@ -61,6 +62,7 @@ export default function StartupNewsArticle() {
   const sourceUrl = news.sourceUrl && news.sourceUrl !== "#" ? news.sourceUrl : null;
 
   return (
+    <RequireAuth overlay>
     <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
       <div className="text-center max-w-lg px-4">
         <div className="w-8 h-8 border-2 border-[#2a2a2a] border-t-transparent rounded-full animate-spin mx-auto mb-6" />
@@ -94,5 +96,6 @@ export default function StartupNewsArticle() {
         </div>
       </div>
     </div>
+    </RequireAuth>
   );
 }

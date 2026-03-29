@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { adminRouter as adminToolsRouter } from "./routers/adminRouter";
+import { siteAuthRouter } from "./routers/siteAuth";
 import { cached, invalidateAll, getCacheStats, CACHE_KEYS, DEFAULT_TTL_MS, EDITORIAL_TTL_MS, TTL_SECTION_COUNT_MS, TTL_SUBSCRIBER_COUNT_MS, TTL_PUNTO_DEL_GIORNO_MS, TTL_LLM_WIDGET_MS, TTL_EDITORIAL_MS, invalidateSection } from "./cache";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
@@ -70,6 +71,7 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 export const appRouter = router({
   system: systemRouter,
   adminTools: adminToolsRouter,
+  siteAuth: siteAuthRouter,
 
   // ── Notification Preferences (public) ─────────────────────────────────────
   notifications: router({

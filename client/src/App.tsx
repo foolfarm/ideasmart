@@ -76,6 +76,9 @@ const Intelligence = lazy(() => import("./pages/Intelligence"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
 const Tecnologia = lazy(() => import("./pages/Tecnologia"));
 const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
+const Registrati = lazy(() => import("./pages/Registrati"));
+const Accedi = lazy(() => import("./pages/Accedi"));
+const VerificaEmail = lazy(() => import("./pages/VerificaEmail"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -126,6 +129,9 @@ function Router() {
         <Route path="/chi-siamo" component={ChiSiamo} />
         <Route path="/manifesto" component={Manifesto} />
         <Route path="/tecnologia" component={Tecnologia} />
+        <Route path="/registrati" component={Registrati} />
+        <Route path="/accedi" component={Accedi} />
+        <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>

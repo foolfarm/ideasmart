@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft } from "lucide-react";
+import RequireAuth from "@/components/RequireAuth";
 
 /**
  * GenericNewsArticle — pagina articolo generica per tutti i canali.
@@ -95,6 +96,7 @@ export default function GenericNewsArticle() {
   }
 
   return (
+    <RequireAuth overlay>
     <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
       <div className="text-center max-w-md px-4">
         <div className="w-8 h-8 border-2 border-[#0a7ea4] border-t-transparent rounded-full animate-spin mx-auto mb-6" />
@@ -126,5 +128,6 @@ export default function GenericNewsArticle() {
         </Link>
       </div>
     </div>
+    </RequireAuth>
   );
 }
