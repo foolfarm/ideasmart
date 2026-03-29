@@ -447,17 +447,8 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Manchette destra — banner */}
-            <div className="hidden md:flex justify-start">
-              <div className="w-[150px] h-[140px] border overflow-hidden flex items-center justify-center"
-                style={{ borderColor: "rgba(26,26,46,0.20)", background: "#f5f2ec" }}>
-                <a href="https://clk.tradedoubler.com/click?p=354184&a=3477790&g=25914926" target="_blank" rel="noopener noreferrer">
-                  <img src={`https://imp.tradedoubler.com/imp?type(img)g(25914926)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                    width="150" height="140" alt="Pubblicità"
-                    style={{ display: "block", width: "150px", height: "140px", objectFit: "cover" }} />
-                </a>
-              </div>
-            </div>
+            {/* Manchette destra — placeholder vuoto per mantenere il layout a 3 colonne */}
+            <div className="hidden md:block w-[150px]" />
           </div>
 
           <Divider thick />
@@ -502,18 +493,20 @@ export default function Home() {
         {/* ══ CORPO ═══════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-          {/* ── BANNER LEADERBOARD ── */}
-          <div className="my-5 flex flex-col items-center">
-            <p className="text-[9px] uppercase tracking-[0.2em] text-[#1a1a2e]/30 mb-1"
-              style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
-            <div className="overflow-hidden flex items-center justify-center"
-              style={{ width: "728px", height: "90px", maxWidth: "100%", border: "1px solid rgba(26,26,46,0.08)", background: "#f5f2ec" }}>
-              <a href="https://clk.tradedoubler.com/click?p=328374&a=3477790&g=25809148" target="_blank" rel="noopener noreferrer">
-                <img src={`https://imp.tradedoubler.com/imp?type(img)g(25809148)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                  width="728" height="90" alt="Pubblicità"
-                  style={{ display: "block", width: "728px", height: "90px", maxWidth: "100%", objectFit: "cover" }} />
-              </a>
-            </div>
+          {/* ── STRIP METRICHE ── */}
+          <div className="my-4 py-3 border-y flex flex-wrap items-center justify-center gap-x-6 gap-y-1"
+            style={{ borderColor: "rgba(26,26,46,0.12)", background: "rgba(26,26,46,0.03)" }}>
+            {[
+              { value: "14", label: "canali tematici" },
+              { value: "20+", label: "ricerche/giorno" },
+              { value: "450+", label: "fonti monitorate" },
+              { value: "6.905", label: "lettori attivi" },
+            ].map((m) => (
+              <div key={m.label} className="flex items-baseline gap-1.5">
+                <span className="text-[18px] font-bold" style={{ color: "#0a6e5c", fontFamily: "'Space Grotesk', Arial, sans-serif" }}>{m.value}</span>
+                <span className="text-[11px] text-[#1a1a2e]/50" style={{ fontFamily: "'DM Sans', Arial, sans-serif" }}>{m.label}</span>
+              </div>
+            ))}
           </div>
 
           {/* ══════════════════════════════════════════════════════════════════
@@ -594,20 +587,8 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* SEPARATORE + BANNER */}
+                  {/* SEPARATORE */}
                   <div className="my-6">
-                    <Divider />
-                    <div className="py-4 flex justify-center">
-                      <div>
-                        <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1"
-                          style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
-                        <a href="https://clk.tradedoubler.com/click?p=384511&a=3477790&g=25996460" target="_blank" rel="noopener noreferrer">
-                          <img src={`https://imp.tradedoubler.com/imp?type(img)g(25996460)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                            width="728" height="90" alt="Pubblicità"
-                            style={{ display: "block", maxWidth: "100%", height: "auto" }} />
-                        </a>
-                      </div>
-                    </div>
                     <Divider />
                   </div>
 
@@ -775,15 +756,24 @@ export default function Home() {
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
 
-                  {/* Banner 300x250 */}
-                  <div className="mb-5">
-                    <p className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 text-center mb-1"
-                      style={{ fontFamily: "'Space Mono', monospace" }}>Pubblicità</p>
-                    <a href="https://clk.tradedoubler.com/click?p=360031&a=3477790&g=25650800" target="_blank" rel="noopener noreferrer">
-                      <img src={`https://imp.tradedoubler.com/imp?type(img)g(25650800)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                        width="300" height="250" alt="Pubblicità"
-                        style={{ display: "block", maxWidth: "100%", height: "auto" }} />
-                    </a>
+                  {/* Box Intelligence sidebar */}
+                  <div className="mb-5 p-4" style={{ background: "#0a0f1e", border: "1px solid #00e5c8" }}>
+                    <span className="text-[9px] font-bold uppercase tracking-widest block mb-2" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>IdeaSmart Intelligence</span>
+                    <p className="text-[13px] font-bold leading-snug mb-2" style={{ color: "#ffffff", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      Il tuo briefing AI ogni settimana.
+                    </p>
+                    <p className="text-[11px] mb-3" style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'DM Sans', Arial, sans-serif", lineHeight: "1.5" }}>
+                      Competitive monitoring, alert scenario-based e analisi personalizzate per chi decide.
+                    </p>
+                    <div className="flex flex-col gap-1.5">
+                      <Link href="/intelligence">
+                        <span className="block text-center text-[11px] font-bold uppercase tracking-widest py-2 transition-opacity hover:opacity-80"
+                          style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
+                          Scopri i piani →
+                        </span>
+                      </Link>
+                      <span className="text-[10px] text-center" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Da €39/mese · 100+ decision-maker</span>
+                    </div>
                   </div>
 
                   {/* Ultime Notizie — stream */}

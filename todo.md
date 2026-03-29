@@ -1672,3 +1672,10 @@
 - [x] Nuova pagina /intelligence: 8 sezioni (Hero, Problema, Come funziona, Piani, Tecnologia, Advisory, Social Proof, CTA)
 - [x] Pricing 3 tier: RADAR €39/mese, INTEL €199/mese (highlighted), ENTERPRISE su misura
 - [x] Route /intelligence in App.tsx + redirect da /business a /intelligence
+
+## Nuovi task (29 Mar 2026 — Homepage redesign)
+
+- [x] Rimuovere banner Tradedoubler leaderboard e manchette dalla homepage (4 banner rimossi)
+- [x] Aggiungere strip metriche: 14 canali · 20+ ricerche/giorno · 450+ fonti · 6.905 lettori
+- [x] Contenuti reali già presenti in homepage (hero AI, griglia Startup/AI, 6 card research, editoriale)
+- [x] Banner Intelligence prominente dopo il ticker + box Intelligence in sidebar al posto del banner 300x250
