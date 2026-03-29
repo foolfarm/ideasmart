@@ -437,26 +437,7 @@ export default function Home() {
               <ReadersCounter />
             </div>
           </div>
-          {/* Barra canali secondaria */}
-          <div className="border-b border-[#1a1a1a]/10 bg-[#f5f2ec]/60 overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-0">
-              {[
-                { label: "News Italia", path: "/news" },
-                { label: "Finance & Markets", path: "/finance" },
-                { label: "Health & Biotech", path: "/health" },
-                { label: "Cybersecurity", path: "/cybersecurity" },
-                { label: "Sport & Business", path: "/sport" },
-                { label: "Lifestyle", path: "/luxury" },
-              ].map((c) => (
-                <Link key={c.path} href={c.path}>
-                  <span className="flex items-center px-3 py-1.5 text-[10px] uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a]/8 transition-colors cursor-pointer border-r border-[#1a1a1a]/10"
-                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a", opacity: 0.55 }}>
-                    {c.label}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
+
         </header>
 
         {/* ══ BANNER INTELLIGENCE — hero compatto, prima del Breaking News ══════ */}

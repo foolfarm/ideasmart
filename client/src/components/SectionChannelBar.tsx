@@ -24,7 +24,7 @@ const SECTION_COLORS = {
   sondaggi:     { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
 } as const;
 
-const SECTIONS = ["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const;
+const SECTIONS = ["ai", "startup", "music", "motori", "tennis", "basket", "gossip", "sondaggi"] as const;
 type SectionKey = typeof SECTIONS[number];
 
 export default function SectionChannelBar() {
