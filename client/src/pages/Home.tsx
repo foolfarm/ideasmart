@@ -515,7 +515,7 @@ export default function Home() {
                     <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Vedi tutte le ricerche →</span>
                   </Link>
                 </div>
-                <Link href="/research">
+                <Link href={`/research/${r.id}`}>
                   <article className="group mt-3 p-5 border-l-4 hover:bg-[#f8faf9] transition-colors cursor-pointer" style={{ borderColor: accent, background: "rgba(10,110,92,0.03)" }}>
                     <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                       <div className="flex-1">
@@ -661,7 +661,7 @@ export default function Home() {
                             : r.category === "technology" ? "#2a2a2a"
                             : "#1a1a1a";
                           return (
-                            <Link key={r.id} href="/research">
+                            <Link key={r.id} href={`/research/${r.id}`}>
                               <article className="cursor-pointer group border border-[#1a1a1a]/10 p-3 hover:border-[#1a1a1a]/30 transition-colors">
                                 <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2"
                                   style={{ background: accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>

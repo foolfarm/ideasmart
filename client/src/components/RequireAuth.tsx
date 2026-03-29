@@ -6,6 +6,7 @@
  */
 import { Link } from "wouter";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
+import SharedPageHeader from "@/components/SharedPageHeader";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
@@ -91,5 +92,11 @@ export default function RequireAuth({ children, overlay = false }: RequireAuthPr
     );
   }
 
-  return paywall;
+  // Full-block paywall con testata per una migliore UX
+  return (
+    <div className="min-h-screen" style={{ background: "#faf8f3" }}>
+      <SharedPageHeader />
+      <div className="py-8">{paywall}</div>
+    </div>
+  );
 }

@@ -1791,3 +1791,10 @@
 - [ ] Ticker LIVE e Breaking News: da rosso/teal a nero/grigio
 - [ ] Logo: IDEASMART tutto nero, senza RESEARCH in verde
 - [ ] Rebrand completo: footer, title tag, /chi-siamo (già in lista)
+
+## Nuovi task (29 Mar 2026 — Paywall e Ricerche)
+
+- [ ] Paywall: redirect al login per utenti non loggati che aprono articoli news (AI, Startup)
+- [ ] Paywall: redirect al login per utenti non loggati che aprono ricerche
+- [ ] Navbar Ricerche: aggiungere badge contatore come AI NEWS 20 / STARTUP NEWS 20
+- [ ] Ricerche: correggere i link nelle card — ogni card deve linkare all'articolo corrispondente

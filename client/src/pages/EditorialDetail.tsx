@@ -49,7 +49,7 @@ export default function EditorialDetail() {
   }
 
   return (
-    <RequireAuth overlay>
+    <RequireAuth>
     <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Testata */}
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">

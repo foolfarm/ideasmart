@@ -83,7 +83,7 @@ function SectionNav() {
               }}
             >
               {item.label}
-              {count > 0 && (item.key === "ai" || item.key === "startup") && (
+              {count > 0 && (item.key === "ai" || item.key === "startup" || item.key === "research") && (
                 <span
                   className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
                   style={{ background: isActive ? "rgba(255,255,255,0.25)" : item.accent, color: "#fff" }}

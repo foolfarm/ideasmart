@@ -45,6 +45,7 @@ const GossipHome = lazy(() => import("./pages/GossipHome"));
 const CybersecurityHome = lazy(() => import("./pages/CybersecurityHome"));
 const SondaggiHome = lazy(() => import("./pages/SondaggiHome"));
 const Research = lazy(() => import("./pages/Research"));
+const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
 
 // ─── Pagine articolo (lazy) ───────────────────────────────────────────────────
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
@@ -115,6 +116,7 @@ function Router() {
         <Route path="/advertise" component={Advertise} />
         <Route path="/intelligence" component={Intelligence} />
         <Route path="/business">{() => { window.location.replace("/intelligence"); return null; }}</Route>
+        <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/edicola" component={Edicola} />

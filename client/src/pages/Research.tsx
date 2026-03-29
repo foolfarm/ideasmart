@@ -7,6 +7,7 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
+import RequireAuth from "@/components/RequireAuth";
 import {
   ExternalLink, TrendingUp, Globe, MapPin, BookOpen,
   ChevronDown, ChevronUp, Mail, ArrowRight,
@@ -126,12 +127,14 @@ function ResearchHeroCard({ report }: {
             </span>
           </div>
 
+          <Link href={`/research/${report.id}`}>
           <h2
-            className="text-2xl md:text-3xl font-black text-[#1a1a1a] leading-tight mb-4"
+            className="text-2xl md:text-3xl font-black text-[#1a1a1a] leading-tight mb-4 cursor-pointer hover:opacity-75 transition-opacity"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {report.title}
           </h2>
+          </Link>
 
           <p className="text-[#1a1a1a]/70 text-base leading-relaxed mb-5" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
             {report.summary}
@@ -153,18 +156,28 @@ function ResearchHeroCard({ report }: {
             </div>
           )}
 
-          {report.sourceUrl && (
-            <a
-              href={report.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackView.mutate({ id: report.id })}
-              className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              Fonte originale <ExternalLink className="w-3 h-3" />
-            </a>
-          )}
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href={`/research/${report.id}`}>
+              <span
+                className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
+                style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              >
+                Leggi la ricerca <ArrowRight className="w-3 h-3" />
+              </span>
+            </Link>
+            {report.sourceUrl && (
+              <a
+                href={report.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackView.mutate({ id: report.id })}
+                className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              >
+                Fonte originale <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -213,13 +226,14 @@ function ResearchCard({ report }: {
           </span>
         </div>
 
+        <Link href={`/research/${report.id}`}>
         <h3
           className="font-black text-[#1a1a1a] text-base leading-snug mb-2 cursor-pointer hover:opacity-70 transition-opacity"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
-          onClick={() => setExpanded(!expanded)}
         >
           {report.title}
         </h3>
+        </Link>
 
         {expanded && (
           <div className="mt-3 pt-3 border-t border-[#1a1a1a]/10">
@@ -256,13 +270,23 @@ function ResearchCard({ report }: {
           </div>
         )}
 
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-2 flex items-center gap-1 text-[9px] uppercase tracking-widest text-[#1a1a1a]/30 hover:text-[#1a1a1a]/60 transition-colors"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-        >
-          {expanded ? <><ChevronUp className="w-3 h-3" /> Meno</> : <><ChevronDown className="w-3 h-3" /> Leggi</>}
-        </button>
+        <div className="flex items-center gap-3 mt-2">
+          <Link href={`/research/${report.id}`}>
+            <span
+              className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
+              style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+            >
+              Leggi <ArrowRight className="w-3 h-3" />
+            </span>
+          </Link>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="flex items-center gap-1 text-[9px] uppercase tracking-widest text-[#1a1a1a]/30 hover:text-[#1a1a1a]/60 transition-colors"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+          >
+            {expanded ? <><ChevronUp className="w-3 h-3" /> Meno</> : <><ChevronDown className="w-3 h-3" /> Anteprima</>}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -298,7 +322,7 @@ export default function Research() {
     : otherReports.filter(r => r.category === activeCategory);
 
   return (
-    <>
+    <RequireAuth>
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
 
         <SharedPageHeader />
@@ -545,6 +569,6 @@ export default function Research() {
           <SharedPageFooter />
         </div>
       </div>
-    </>
+    </RequireAuth>
   );
 }

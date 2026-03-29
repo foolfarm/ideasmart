@@ -57,7 +57,7 @@ export default function ReportageDetail() {
   const features = [rep.feature1, rep.feature2, rep.feature3, rep.feature4].filter(Boolean);
 
   return (
-    <RequireAuth overlay>
+    <RequireAuth>
     <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Testata */}
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">

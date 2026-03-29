@@ -41,7 +41,7 @@ export default function StartupOfDayDetail() {
   }
 
   return (
-    <RequireAuth overlay>
+    <RequireAuth>
     <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">

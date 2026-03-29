@@ -691,6 +691,40 @@ export const appRouter = router({
         }
       }),
 
+    // Recupera una singola ricerca per ID (per la pagina dettaglio /research/:id)
+    getResearchById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return cached(
+          `research:byId:${input.id}`,
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return null;
+            const rows = await db.select().from(researchReports)
+              .where(eq(researchReports.id, input.id))
+              .limit(1);
+            if (!rows.length) return null;
+            const r = rows[0];
+            return {
+              id: r.id,
+              title: r.title,
+              summary: r.summary,
+              keyFindings: (() => { try { return JSON.parse(r.keyFindings); } catch { return []; } })() as string[],
+              source: r.source,
+              sourceUrl: r.sourceUrl ?? null,
+              category: r.category,
+              region: r.region,
+              dateLabel: r.dateLabel,
+              isResearchOfDay: r.isResearchOfDay,
+              imageUrl: r.imageUrl ?? null,
+              viewCount: r.viewCount,
+              createdAt: r.createdAt,
+            };
+          },
+          1000 * 60 * 60 // 1 ora
+        );
+      }),
+
     // Barometro Politico: estrae intenzioni di voto dai sondaggi recenti tramite LLM
     getBarometro: publicProcedure
       .query(async () => {
@@ -925,7 +959,10 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
               return [section, rows[0]?.cnt ?? 0] as const;
             })
           );
-          return Object.fromEntries(results) as Record<string, number>;
+          // Aggiunge il conteggio delle ricerche giornaliere
+          const researchRows = await db.select({ cnt: count() }).from(researchReports);
+          const researchCount = researchRows[0]?.cnt ?? 0;
+          return { ...Object.fromEntries(results), research: researchCount } as Record<string, number>;
         },
         TTL_SECTION_COUNT_MS // 5 minuti: badge nav
       );
