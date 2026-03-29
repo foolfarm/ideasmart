@@ -72,6 +72,14 @@
 - [x] C) Admin dashboard: aggiunta sezione "Prossimi Invii Newsletter" con data, canale e iscritti attivi
 - [x] D) SEO: SectionLabel ora usa tag H2 semantico (AI4Business, Startup News, Research del Giorno)
 
+## Task completati (29 Mar 2026 — DEALROOM integrazione)
+
+- [x] Aggiunto cron job DEALROOM alle 01:30 CET nello schedulerManager (refreshDealroomNewsFromRSS)
+- [x] Sezione DEALROOM aggiunta alla Home page (4 articoli principali + 4 in lista compatta)
+- [x] Link DEALROOM aggiunto nella sidebar e nel footer della Home page
+- [x] Widget "Prossimi Invii Newsletter" aggiunto nella dashboard Admin (Lun/Mer/Ven, canale, iscritti attivi)
+- [x] refreshDealroomNewsFromRSS aggiunto all'import dello schedulerManager
+
 ## Nuovi task (12 Mar 2026)
 
 - [x] Schema DB: tabella daily_editorial (editoriale AI giornaliero)

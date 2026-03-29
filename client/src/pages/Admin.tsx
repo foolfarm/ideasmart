@@ -357,6 +357,81 @@ export default function Admin() {
           )}
         </div>
 
+        {/* Widget Prossimi Invii Newsletter */}
+        {(() => {
+          const now = new Date();
+          // Calcola i prossimi 3 invii (Lunedì, Mercoledì, Venerdì alle 07:30)
+          const SEND_DAYS = [1, 3, 5]; // 1=Lunedì, 3=Mercoledì, 5=Venerdì
+          const SEND_HOUR = 7;
+          const SEND_MINUTE = 30;
+          const upcomingSends: Array<{ date: Date; label: string; channel: string; dayName: string }> = [];
+          let checkDate = new Date(now);
+          checkDate.setSeconds(0, 0);
+          while (upcomingSends.length < 3) {
+            checkDate = new Date(checkDate.getTime() + 60000); // avanza di 1 minuto
+            const dayOfWeek = checkDate.getDay();
+            if (SEND_DAYS.includes(dayOfWeek)) {
+              const candidate = new Date(checkDate);
+              candidate.setHours(SEND_HOUR, SEND_MINUTE, 0, 0);
+              if (candidate > now && !upcomingSends.find(s => s.date.toDateString() === candidate.toDateString())) {
+                const channel = dayOfWeek === 3 ? "Startup News" : "AI4Business";
+                const dayNames = ["", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
+                upcomingSends.push({
+                  date: candidate,
+                  label: candidate.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" }),
+                  channel,
+                  dayName: dayNames[dayOfWeek],
+                });
+              }
+            }
+            // Evita loop infinito: al massimo 30 giorni
+            if (checkDate.getTime() - now.getTime() > 30 * 24 * 3600000) break;
+          }
+          return (
+            <div className="rounded-2xl border border-blue-500/30 p-6 mb-8" style={{ background: "rgba(59,130,246,0.05)" }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-2 h-2 rounded-full bg-blue-400" />
+                <p className="text-sm font-bold uppercase tracking-wider" style={{ color: "#60a5fa", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Prossimi Invii Newsletter
+                </p>
+              </div>
+              <div className="space-y-3">
+                {upcomingSends.map((send, i) => (
+                  <div key={i} className="flex items-center justify-between py-2.5 px-3 rounded-lg" style={{ background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.15)" }}>
+                    <div className="flex items-center gap-3">
+                      <div className="flex flex-col items-center justify-center w-10 h-10 rounded-lg" style={{ background: "rgba(59,130,246,0.2)" }}>
+                        <span className="text-[16px] font-black leading-none" style={{ color: "#60a5fa" }}>
+                          {send.date.getDate()}
+                        </span>
+                        <span className="text-[8px] font-bold uppercase tracking-wide" style={{ color: "rgba(96,165,250,0.7)" }}>
+                          {send.date.toLocaleDateString("it-IT", { month: "short" }).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          {send.dayName} — {send.channel}
+                        </p>
+                        <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          {send.date.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })} alle 07:30
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-black" style={{ color: "#60a5fa", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        {activeCount}
+                      </p>
+                      <p className="text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.3)" }}>iscritti attivi</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.2)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                Invii automatici: Lunedì + Venerdì → AI4Business · Mercoledì → Startup News · Orario: 07:30 CET
+              </p>
+            </div>
+          );
+        })()}
+
         {/* Result banner */}
         {lastResult && (
           <div className="mb-6 p-4 rounded-xl border border-[#1a1a1a]/30" style={{ background: "rgba(0,229,200,0.06)" }}>

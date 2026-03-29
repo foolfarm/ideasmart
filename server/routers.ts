@@ -1775,7 +1775,7 @@ Rispondi con questo JSON:
     // Trigger manuale scraping per una sezione specifica
     triggerSectionScraping: adminProcedure
       .input(z.object({
-        section: z.enum(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi", "all"]),
+        section: z.enum(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi", "dealroom", "all"]),
       }))
       .mutation(async ({ input }) => {
         const { section } = input;

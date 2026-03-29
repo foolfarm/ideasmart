@@ -46,7 +46,7 @@
  */
 
 import cron from "node-cron";
-import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshFinanceNewsFromRSS, refreshHealthNewsFromRSS, refreshSportNewsFromRSS, refreshLuxuryNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS, refreshNewsGeneraliFromRSS, refreshMotoriNewsFromRSS, refreshTennisNewsFromRSS, refreshBasketNewsFromRSS } from "./rssNewsScheduler";
+import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshFinanceNewsFromRSS, refreshHealthNewsFromRSS, refreshSportNewsFromRSS, refreshLuxuryNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS, refreshNewsGeneraliFromRSS, refreshMotoriNewsFromRSS, refreshTennisNewsFromRSS, refreshBasketNewsFromRSS, refreshDealroomNewsFromRSS } from "./rssNewsScheduler";
 import { generateFinanceEditorial, generateFinanceDealOfWeek, generateFinanceReportage, generateFinanceMarketAnalysis } from "./financeScheduler";
 import { generateHealthEditorial, generateHealthDealOfWeek, generateHealthReportage, generateHealthMarketAnalysis } from "./healthScheduler";
 import { generateSportEditorial, generateSportDealOfWeek, generateSportReportage, generateSportMarketAnalysis } from "./sportScheduler";
@@ -208,6 +208,19 @@ export function startAllSchedulers(): void {
   cron.schedule("20 1 * * 1", async () => {
     try { await generateStartupMarketAnalysis(); console.log("[SchedulerManager] ✅ Analisi Startup generate"); }
     catch (err) { console.error("[SchedulerManager] ❌ Analisi Startup:", err); }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SEZIONE /dealroom — DEALROOM: Round, Funding, VC, M&A
+  // Scraping ogni giorno alle 01:30 CET (dopo Startup News)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  cron.schedule("30 1 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 01:30 CET — Avvio scraping RSS DEALROOM (round, funding, VC, M&A)...");
+    await withLock("rss-dealroom", async () => {
+      try { await refreshDealroomNewsFromRSS(); invalidateSection('dealroom'); console.log("[SchedulerManager] ✅ DEALROOM News aggiornate + cache invalidata"); }
+      catch (err) { console.error("[SchedulerManager] ❌ DEALROOM News:", err); }
+    });
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════

@@ -30,6 +30,7 @@ const SECTION_COLORS = {
   gossip:        { accent: "#2a2a2a", light: "#fdf2f8", label: "Business Gossip",     path: "/gossip" },
   cybersecurity: { accent: "#1a1a1a", light: "#f0f9ff", label: "Cybersecurity",       path: "/cybersecurity" },
   sondaggi:      { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",            path: "/sondaggi" },
+  dealroom:      { accent: "#0f0f0f", light: "#f0f9ff", label: "DEALROOM",            path: "/dealroom" },
 };
 
 type SectionKey = keyof typeof SECTION_COLORS;
@@ -380,6 +381,7 @@ export default function Home() {
   const healthNews  = homeData?.health  ?? [];
   const sportNews   = homeData?.sport   ?? [];
   const newsItalia  = homeData?.news    ?? [];
+  const dealroomNews = homeData?.dealroom ?? [];
 
   // Hero: primo articolo AI con immagine
   const aiHero = useMemo(() => aiNews.find(n => n.imageUrl) || aiNews[0] || null, [aiNews]);
@@ -695,6 +697,58 @@ export default function Home() {
                     </div>
                   )}
 
+                  {/* ── SEZIONE DEALROOM — Round, Funding, VC, M&A ── */}
+                  {dealroomNews.length > 0 && (
+                    <div className="mt-8">
+                      <Divider thick />
+                      <div className="py-2 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="h-[3px] w-6" style={{ background: "#0f0f0f" }} />
+                          <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
+                            style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                            DEALROOM — Round, Funding &amp; M&amp;A
+                          </span>
+                        </div>
+                        <Link href="/dealroom">
+                          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                            style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                            Tutte le deal →
+                          </span>
+                        </Link>
+                      </div>
+                      <div className="border-t-2" style={{ borderColor: "#0f0f0f" }} />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
+                        {dealroomNews.slice(0, 4).map((item, i) => (
+                          <div key={item.id}
+                            className={`${
+                              i % 2 === 0 ? "md:pr-5 md:border-r border-[#1a1a1a]/15" : "md:pl-5"
+                            } ${i > 1 ? "border-t border-[#1a1a1a]/12" : ""}`}>
+                            <SecondaryArticle item={item} section="dealroom" />
+                          </div>
+                        ))}
+                      </div>
+                      {dealroomNews.length > 4 && (
+                        <div className="mt-4 border-t border-[#1a1a1a]/10 pt-3">
+                          <div className="flex flex-col gap-0">
+                            {dealroomNews.slice(4, 8).map((item, i) => (
+                              <div key={item.id} className={i > 0 ? "border-t border-[#1a1a1a]/8" : ""}>
+                                <SidebarNewsItem item={item} section="dealroom" />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      <div className="mt-3">
+                        <Link href="/dealroom">
+                          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
+                            style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                            Vedi tutti i deal →
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+
                   {/* TERZA RIGA: Startup approfondimenti */}
                   {startupRest.length > 5 && (
                     <div className="mt-8">
@@ -846,10 +900,10 @@ export default function Home() {
                           STARTUP NEWS →
                         </span>
                       </Link>
-                      <Link href="/finance">
+                      <Link href="/dealroom">
                         <span className="text-[10px] font-bold uppercase tracking-widest hover:underline block"
-                          style={{ color: SECTION_COLORS.finance.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          Finance & Markets →
+                          style={{ color: SECTION_COLORS.dealroom.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          DEALROOM →
                         </span>
                       </Link>
                     </div>
@@ -1053,6 +1107,7 @@ export default function Home() {
                   </Link>
                 ))}
                 {[
+                  { href: "/dealroom", label: "DEALROOM", color: "#1a1a1a" },
                   { href: "/chi-siamo", label: "Chi Siamo", color: "#1a1a1a" },
                   { href: "/intelligence", label: "Intelligence", color: "#1a1a1a" },
                   { href: "/research", label: "RICERCHE", color: "#1a1a1a" },
