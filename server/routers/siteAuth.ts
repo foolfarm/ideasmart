@@ -35,12 +35,30 @@ export const siteAuthRouter = router({
       const db = await getDb();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database non disponibile" });
 
-      const existing = await db.select({ id: siteUsers.id })
+      const existing = await db.select()
         .from(siteUsers)
         .where(eq(siteUsers.email, input.email.toLowerCase()))
         .limit(1);
+
       if (existing.length > 0) {
-        throw new TRPCError({ code: "CONFLICT", message: "Email già registrata. Prova ad accedere." });
+        const existingUser = existing[0];
+        // Se l'email è già verificata → blocca con messaggio di accesso
+        if (existingUser.emailVerified) {
+          throw new TRPCError({ code: "CONFLICT", message: "Email già registrata. Prova ad accedere." });
+        }
+        // Se l'email NON è verificata → aggiorna il token e reinvia l'email
+        const newToken = generateToken();
+        const newExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        await db.update(siteUsers)
+          .set({
+            passwordHash: hashPassword(input.password),
+            verificationToken: newToken,
+            verificationTokenExpiresAt: newExpiry,
+          })
+          .where(eq(siteUsers.id, existingUser.id));
+        const verifyUrl = `${input.origin}/verifica-email?token=${newToken}`;
+        await sendVerificationEmail({ to: input.email, username: existingUser.username, verifyUrl });
+        return { ok: true, resent: true };
       }
 
       const existingUsername = await db.select({ id: siteUsers.id })
