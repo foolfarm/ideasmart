@@ -6,7 +6,8 @@
  */
 import { useState } from "react";
 import { Link } from "wouter";
-import Navbar from "@/components/Navbar";
+import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
 import SEOHead from "@/components/SEOHead";
 
 // ─── Divider ─────────────────────────────────────────────────────────────────
@@ -136,10 +137,10 @@ export default function Intelligence() {
         }}
       />
       <div style={{ background: "#f5f2ec", minHeight: "100vh" }}>
-        <Navbar />
+        <SharedPageHeader />
 
         {/* ══ SEZIONE 1 — HERO ══════════════════════════════════════════════════ */}
-        <section style={{ background: "#0f0f0f" }}>
+        <section style={{ background: "#1a1a1a" }}>
           <div className="max-w-[1100px] mx-auto px-4 py-16 sm:py-24">
             {/* Breadcrumb */}
             <div className="mb-8">
@@ -156,7 +157,7 @@ export default function Intelligence() {
               <h1 className="mb-6 leading-tight"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(2.2rem, 5vw, 3.8rem)", fontWeight: 900, color: "#fff" }}>
                 Intelligence che lavora.{" "}
-                <span style={{ color: "#1a1a1a" }}>Decisioni che contano.</span>
+                <span style={{ color: "rgba(255,255,255,0.45)" }}>Decisioni che contano.</span>
               </h1>
               <p className="mb-8 text-[16px] leading-relaxed"
                 style={{ color: "rgba(255,255,255,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", maxWidth: "620px" }}>
@@ -171,7 +172,7 @@ export default function Intelligence() {
                   { value: "00:00", label: "aggiornamento CET" },
                 ].map((m) => (
                   <div key={m.label}>
-                    <span className="text-[22px] font-black block" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.value}</span>
+                    <span className="text-[22px] font-black block" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.value}</span>
                     <span className="text-[10px] uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.label}</span>
                   </div>
                 ))}
@@ -181,7 +182,7 @@ export default function Intelligence() {
                 aria-label="Vai alla sezione prezzi"
                 data-cta-name="hero-pricing"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
-                style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                style={{ background: "#ffffff", color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Scegli il tuo piano →
               </a>
               <a
@@ -533,20 +534,7 @@ export default function Intelligence() {
           </div>
         </section>
 
-        {/* ══ FOOTER MINIMAL ════════════════════════════════════════════════════ */}
-        <div className="py-4 px-4 flex flex-col sm:flex-row items-center justify-between gap-2"
-          style={{ background: "#0f0f0f", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-            © {new Date().getFullYear()} IdeaSmart Intelligence · AI · Startup · Venture Capital
-          </p>
-          <div className="flex items-center gap-4">
-            <Link href="/"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Home</span></Link>
-            <Link href="/intelligence"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Intelligence</span></Link>
-            <Link href="/research"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Research</span></Link>
-            <Link href="/chi-siamo"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Chi Siamo</span></Link>
-            <Link href="/privacy"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy</span></Link>
-          </div>
-        </div>
+        <SharedPageFooter />
       </div>
     </>
   );
