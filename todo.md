@@ -1679,3 +1679,36 @@
 - [x] Aggiungere strip metriche: 14 canali · 20+ ricerche/giorno · 450+ fonti · 6.905 lettori
 - [x] Contenuti reali già presenti in homepage (hero AI, griglia Startup/AI, 6 card research, editoriale)
 - [x] Banner Intelligence prominente dopo il ticker + box Intelligence in sidebar al posto del banner 300x250
+
+## Nuovi task (29 Mar 2026 — Redesign Homepage + Intelligence v2)
+
+### Homepage
+- [ ] Aggiungere barra canali secondaria sotto nav principale (News Italia | Finance | Health | Cybersecurity | Sport | Lifestyle)
+- [ ] Rimuovere banner top "IdeaSmart Research — 20 ricerche ogni giorno" dall'header
+- [ ] Spostare strip metriche DOPO i contenuti editoriali (non prima)
+- [ ] Aggiungere strip CTA pre-footer: "CEO, founder, investitori: il tuo briefing settimanale personalizzato è a un click. [Attiva Intelligence →]"
+- [ ] Rimuovere manchette sinistra "20 ricerche ogni giorno" dall'header
+
+### Pagina /intelligence
+- [ ] Riscrivere Hero con copy definitivo ("Intelligence che lavora. Decisioni che contano.") e smooth scroll
+- [ ] Sezione Problema con testo definitivo
+- [ ] Sezione Come Funziona con 4 step e icone SVG
+- [ ] Sezione Pricing con 3 tier (RADAR €39, INTEL €199 highlighted, ENTERPRISE custom) e CTA mailto
+- [ ] Sezione Tecnologia con 8 agenti e griglia 2x2
+- [ ] Sezione Advisory compatta (senza bio team, senza testimonial)
+- [ ] Sezione Social Proof con 5 metriche grandi
+- [ ] Sezione CTA finale con trial gratuito
+- [ ] SEO: title, meta description, OG tags definitivi
+- [ ] Analytics: data-attributes sui CTA per tracking
+- [ ] Toggle pricing annuale/mensile con sconto
+
+## Task completati (29 Mar 2026 — Redesign Homepage + Intelligence)
+
+- [x] Barra canali secondaria in header (News Italia | Finance & Markets | Health & Biotech | Cybersecurity | Sport & Business | Lifestyle)
+- [x] Rimossa manchette sinistra "20 ricerche ogni giorno" dall'header
+- [x] Box Intelligence dark nella sidebar al posto del banner 300x250
+- [x] Strip metriche (14 canali · 20+ ricerche/giorno · 450+ fonti · 6.905 lettori) dopo il ticker
+- [x] Strip CTA pre-footer ("CEO, founder, investitori: il tuo briefing settimanale personalizzato è a un click")
+- [x] Toggle annuale/mensile nella sezione pricing di /intelligence (RADAR €33/€39, INTEL €169/€199)
+- [x] Pagina /intelligence con 8 sezioni complete e copy definitivo
+- [x] Redirect automatico da /business a /intelligence

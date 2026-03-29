@@ -4,6 +4,7 @@
  * Typography: Playfair Display (titoli), DM Sans (body), Space Mono (label/meta)
  * 8 sezioni: Hero → Problema → Come funziona → Piani → Tecnologia → Advisory → Social Proof → CTA finale
  */
+import { useState } from "react";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
@@ -102,6 +103,10 @@ function PricingCard({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function Intelligence() {
+  const [annual, setAnnual] = useState(false);
+  const radarPrice = annual ? "€33" : "€39";
+  const intelPrice = annual ? "€169" : "€199";
+
   return (
     <>
       <SEOHead
@@ -238,13 +243,27 @@ export default function Intelligence() {
               style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
               Scegli il livello di intelligence che ti serve.
             </h2>
+            {/* Toggle annuale/mensile */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-[11px]" style={{ fontFamily: "'Space Mono', monospace", color: annual ? "rgba(26,26,46,0.4)" : "#0a0f1e" }}>Mensile</span>
+              <button
+                onClick={() => setAnnual(!annual)}
+                className="relative flex-shrink-0"
+                style={{ width: "44px", height: "24px", borderRadius: "12px", border: "none", cursor: "pointer", background: annual ? "#0a6e5c" : "rgba(26,26,46,0.2)", transition: "background 0.2s" }}
+              >
+                <span style={{ position: "absolute", top: "3px", left: annual ? "23px" : "3px", width: "18px", height: "18px", borderRadius: "50%", background: "#ffffff", transition: "left 0.2s", display: "block" }} />
+              </button>
+              <span className="text-[11px]" style={{ fontFamily: "'Space Mono', monospace", color: annual ? "#0a6e5c" : "rgba(26,26,46,0.4)" }}>
+                Annuale <span style={{ fontSize: "9px", background: "#0a6e5c", color: "#fff", padding: "1px 5px", borderRadius: "3px", marginLeft: "4px" }}>-15%</span>
+              </span>
+            </div>
             <p className="text-[13px] mb-10" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "'Space Mono', monospace" }}>
               14 giorni gratis su tutti i piani. Nessuna carta richiesta.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <PricingCard
                 name="RADAR"
-                price="€39"
+                price={radarPrice}
                 subtitle="Per chi vuole restare informato senza perdere tempo."
                 features={[
                   "Dashboard segnali di mercato personalizzata",
@@ -259,7 +278,7 @@ export default function Intelligence() {
               />
               <PricingCard
                 name="INTEL"
-                price="€199"
+                price={intelPrice}
                 subtitle="Per chi deve prendere decisioni e portarle in board."
                 features={[
                   "Tutto quello di RADAR, più:",

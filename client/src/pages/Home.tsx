@@ -401,29 +401,8 @@ export default function Home() {
           </div>
           <Divider thick />
 
-          {/* Manchette 3 colonne */}
-          <div className="grid grid-cols-1 md:grid-cols-[160px_1fr_160px] items-center gap-4 py-4">
-            {/* Manchette sinistra */}
-            <div className="hidden md:flex justify-end">
-              <Link href="/research">
-                <div className="w-[150px] h-[140px] border-2 flex flex-col items-center justify-center text-center p-3 cursor-pointer hover:shadow-md transition-all"
-                  style={{ borderColor: "#0a6e5c", background: "#e6f4f1" }}>
-                  <span className="text-[8px] font-bold uppercase tracking-[0.15em] block mb-1.5"
-                    style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
-                    IdeaSmart Research
-                  </span>
-                  <span className="text-[14px] font-black leading-tight block mb-2.5"
-                    style={{ color: "#1a1a2e", fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    20 ricerche ogni giorno su AI, Startup e VC
-                  </span>
-                  <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5"
-                    style={{ background: "#0a6e5c", color: "#fff", fontFamily: "'Space Mono', monospace" }}>
-                    Scopri →
-                  </span>
-                </div>
-              </Link>
-            </div>
-
+          {/* Header centrato — manchette rimosse */}
+          <div className="py-6">
             {/* Brand centrale */}
             <div className="text-center">
               <Link href="/">
@@ -447,8 +426,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Manchette destra — placeholder vuoto per mantenere il layout a 3 colonne */}
-            <div className="hidden md:block w-[150px]" />
           </div>
 
           <Divider thick />
@@ -458,6 +435,26 @@ export default function Home() {
             <SectionNav />
             <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a2e]/15">
               <ReadersCounter />
+            </div>
+          </div>
+          {/* Barra canali secondaria */}
+          <div className="border-b border-[#1a1a2e]/10 bg-[#f5f2ec]/60 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center gap-0">
+              {[
+                { label: "News Italia", path: "/news" },
+                { label: "Finance & Markets", path: "/finance" },
+                { label: "Health & Biotech", path: "/health" },
+                { label: "Cybersecurity", path: "/cybersecurity" },
+                { label: "Sport & Business", path: "/sport" },
+                { label: "Lifestyle", path: "/luxury" },
+              ].map((c) => (
+                <Link key={c.path} href={c.path}>
+                  <span className="flex items-center px-3 py-1.5 text-[10px] uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a2e]/8 transition-colors cursor-pointer border-r border-[#1a1a2e]/10"
+                    style={{ fontFamily: "'Space Mono', monospace", color: "#1a1a2e", opacity: 0.55 }}>
+                    {c.label}
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </header>
@@ -858,25 +855,25 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* IdeaSmart Business promo */}
+                  {/* IdeaSmart Intelligence promo sidebar */}
                   <div className="mt-6 p-4 border-2"
-                    style={{ borderColor: "#ff5500", background: "#fff8f5" }}>
+                    style={{ borderColor: "#00e5c8", background: "#0a0f1e" }}>
                     <span className="text-[9px] font-bold uppercase tracking-widest block mb-2"
-                      style={{ color: "#ff5500", fontFamily: "'Space Mono', monospace" }}>
-                      IdeaSmart Business
+                      style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>
+                      IdeaSmart Intelligence
                     </span>
-                    <p className="text-[14px] font-bold leading-snug text-[#1a1a2e]"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                      Piattaforma AI Agentica + Advisory M&A e Tecnologia
+                    <p className="text-[14px] font-bold leading-snug"
+                      style={{ color: "#ffffff", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      Il tuo sistema di intelligence operativa.
                     </p>
-                    <p className="mt-2 text-[13px] text-[#1a1a2e]/65"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                      Intelligence personalizzata per le tue decisioni strategiche.
+                    <p className="mt-2 text-[12px]"
+                      style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'DM Sans', Arial, sans-serif", lineHeight: 1.5 }}>
+                      Competitive monitoring, deal tracking e briefing personalizzati. Da €39/mese.
                     </p>
-                    <Link href="/business">
+                    <Link href="/intelligence">
                       <span className="mt-3 inline-block text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 hover:opacity-80 transition-opacity"
-                        style={{ background: "#ff5500", color: "#fff", fontFamily: "'Space Mono', monospace" }}>
-                        Scopri →
+                        style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
+                        Scopri i piani →
                       </span>
                     </Link>
                   </div>
