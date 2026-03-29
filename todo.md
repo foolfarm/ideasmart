@@ -1621,3 +1621,9 @@
 - [ ] B) Rimuovere Finance & Markets, Health & Biotech, Sport & Business dal footer
 - [ ] C) Aggiungere sezione "Prossimi Invii Newsletter" nella dashboard admin (data, canale, iscritti attivi)
 - [ ] D) Aggiungere H2 SEO visibile nella Home per risolvere il problema SEO (nessun H2 trovato)
+
+## Task completati (29 Mar 2026 — Mailchimp + Autore + SendGrid)
+
+- [x] Template HTML Mailchimp promozionale IDEASMART AI for Business (FoolTalent, Foolshare, IIO.Ai) — file: ideasmart-mailchimp-template.html
+- [x] Pagina /andrea-cinelli: già implementata con bio, foto, LinkedIn, archivio editoriali e CTA
+- [x] Integrazione metriche SendGrid: già implementata in /admin/sendgrid-stats con grafici, tabelle e filtri
