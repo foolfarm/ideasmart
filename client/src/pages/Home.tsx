@@ -8,6 +8,7 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { useSiteAuth } from "@/hooks/useSiteAuth";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
@@ -305,6 +306,54 @@ function ReadersCounter() {
   );
 }
 
+// ─── AUTH BUTTONS (Home navbar) ─────────────────────────────────────────────
+function HomeAuthButtons() {
+  const { user, isLoading, isAuthenticated, logout } = useSiteAuth();
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+  if (isLoading) return null;
+  if (isAuthenticated) {
+    return (
+      <div className="flex items-center gap-0">
+        <Link href="/account">
+          <span
+            className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:bg-[#1a1a1a] hover:text-white transition-colors whitespace-nowrap"
+            style={{ fontFamily: SF, color: "#1a1a1a" }}
+          >
+            {user?.username}
+          </span>
+        </Link>
+        <button
+          onClick={logout}
+          className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest border-l border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white transition-colors"
+          style={{ fontFamily: SF, color: "rgba(26,26,26,0.5)", background: "transparent" }}
+        >
+          Esci
+        </button>
+      </div>
+    );
+  }
+  return (
+    <div className="flex items-center gap-0">
+      <Link href="/accedi">
+        <span
+          className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:bg-[#1a1a1a] hover:text-white transition-colors whitespace-nowrap border-r border-[#1a1a1a]/15"
+          style={{ fontFamily: SF, color: "#1a1a1a" }}
+        >
+          Accedi
+        </span>
+      </Link>
+      <Link href="/registrati">
+        <span
+          className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap"
+          style={{ fontFamily: SF, background: "#1a1a1a", color: "#ffffff" }}
+        >
+          Registrati
+        </span>
+      </Link>
+    </div>
+  );
+}
+
 // ─── SEZIONE LABEL (per nav interna) ─────────────────────────────────────────
 function SectionLabel({ label, accent }: { label: string; accent: string }) {
   return (
@@ -430,11 +479,14 @@ export default function Home() {
 
           <Divider thick />
 
-          {/* Nav sezioni */}
+          {/* Nav sezioni + auth */}
           <div className="flex items-center justify-between border-b border-[#1a1a1a]/15">
             <SectionNav />
-            <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/15">
-              <ReadersCounter />
+            <div className="flex items-center gap-0 border-l border-[#1a1a1a]/15">
+              <HomeAuthButtons />
+              <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/15">
+                <ReadersCounter />
+              </div>
             </div>
           </div>
 

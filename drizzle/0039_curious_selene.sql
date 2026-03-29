@@ -1,0 +1,1 @@
+ALTER TABLE `site_users` MODIFY COLUMN `topicPreferences` text;

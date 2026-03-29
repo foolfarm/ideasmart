@@ -15,6 +15,18 @@ import { toast } from "sonner";
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 
+const ALL_TOPICS = [
+  { key: "ai",              label: "AI & Tech",         desc: "Intelligenza artificiale, LLM, agenti AI" },
+  { key: "startup",         label: "Startup",            desc: "Funding, founder stories, ecosistema startup" },
+  { key: "research",        label: "Research",           desc: "Ricerche e analisi di mercato" },
+  { key: "venture_capital", label: "Venture Capital",    desc: "Deal, round, fondi VC europei e globali" },
+  { key: "finance",         label: "Finance & Markets",  desc: "Mercati finanziari, macro, M&A" },
+  { key: "health",          label: "Health & Biotech",   desc: "Biotech, pharma, digital health" },
+  { key: "cybersecurity",   label: "Cybersecurity",      desc: "Sicurezza informatica, threat intelligence" },
+  { key: "sport",           label: "Sport & Business",   desc: "Business dello sport, sponsorship, media rights" },
+  { key: "lifestyle",       label: "Lifestyle & Luxury", desc: "Economia del lusso, lifestyle brand" },
+];
+
 const SECTION_LABELS: Record<string, string> = {
   ai: "AI4Business",
   startup: "Startup News",
@@ -98,8 +110,9 @@ export default function Account() {
             </div>
           </div>
 
-          {/* Colonna destra: lista di lettura */}
-          <div className="md:col-span-2">
+          {/* Colonna destra: preferenze + lista di lettura */}
+          <div className="md:col-span-2 space-y-8">
+            <TopicPreferences />
             <ReadingList />
           </div>
         </div>
@@ -321,6 +334,76 @@ function ReadingList() {
           })}
         </div>
       )}
+    </div>
+  );
+}
+
+function TopicPreferences() {
+  const [selected, setSelected] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const { data: prefsData } = trpc.account.getPreferences.useQuery();
+
+  // Carica le preferenze iniziali una sola volta
+  if (prefsData && !loaded) {
+    setSelected(prefsData.topics);
+    setLoaded(true);
+  }
+
+  const saveMutation = trpc.account.savePreferences.useMutation({
+    onSuccess: () => { setSaved(true); toast.success("Preferenze salvate."); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  const toggle = (key: string) => {
+    setSaved(false);
+    setSelected(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
+  };
+
+  return (
+    <div style={{ fontFamily: SF }}>
+      <p className="text-[9px] uppercase tracking-[0.2em] mb-3" style={{ color: "rgba(26,26,26,0.4)" }}>
+        Preferenze notizie
+      </p>
+      <div style={{ height: "2px", background: "#1a1a1a", marginBottom: "16px" }} />
+      <p className="text-xs mb-4" style={{ color: "rgba(26,26,26,0.55)", lineHeight: 1.6 }}>
+        Seleziona i topic che ti interessano. Le sezioni scelte verranno evidenziate nella tua esperienza di lettura.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+        {ALL_TOPICS.map(t => {
+          const active = selected.includes(t.key);
+          return (
+            <button
+              key={t.key}
+              onClick={() => toggle(t.key)}
+              className="flex items-start gap-3 p-3 text-left transition-all border"
+              style={{
+                fontFamily: SF,
+                background: active ? "#1a1a1a" : "#fff",
+                borderColor: active ? "#1a1a1a" : "rgba(26,26,26,0.12)",
+                color: active ? "#fff" : "#1a1a1a",
+              }}
+            >
+              <span className="mt-0.5 text-sm">{active ? "✓" : "○"}</span>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest">{t.label}</p>
+                <p className="text-[10px] mt-0.5" style={{ color: active ? "rgba(255,255,255,0.55)" : "rgba(26,26,26,0.4)" }}>
+                  {t.desc}
+                </p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      <button
+        onClick={() => { setSaved(false); saveMutation.mutate({ topics: selected as any }); }}
+        disabled={saveMutation.isPending}
+        className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest hover:opacity-80 transition-opacity disabled:opacity-40"
+        style={{ background: "#1a1a1a", color: "#fff", fontFamily: SF }}
+      >
+        {saveMutation.isPending ? "Salvataggio…" : "Salva preferenze"}
+      </button>
     </div>
   );
 }

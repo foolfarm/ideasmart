@@ -152,9 +152,52 @@ export const accountRouter = router({
       await db.delete(savedArticles)
         .where(and(
           eq(savedArticles.id, input.id),
-          eq(savedArticles.siteUserId, user.id) // sicurezza: solo il proprietario
+          eq(savedArticles.siteUserId, user.id)
         ));
 
       return { ok: true };
+    }),
+
+  /** Legge le preferenze topic dell'utente loggato */
+  getPreferences: publicProcedure
+    .query(async ({ ctx }) => {
+      const { user } = await requireSiteUser(ctx);
+      const topics: string[] = user.topicPreferences
+        ? JSON.parse(user.topicPreferences)
+        : [];
+      return { topics };
+    }),
+
+  /** Salva le preferenze topic dell'utente loggato */
+  savePreferences: publicProcedure
+    .input(z.object({
+      topics: z.array(
+        z.enum(["ai", "startup", "research", "finance", "health", "sport", "venture_capital", "cybersecurity", "lifestyle"])
+      ).max(9),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const { user, db } = await requireSiteUser(ctx);
+
+      await db.update(siteUsers)
+        .set({ topicPreferences: JSON.stringify(input.topics) })
+        .where(eq(siteUsers.id, user.id));
+
+      return { ok: true };
+    }),
+
+  /** Restituisce il profilo completo dell'utente loggato (username, email, preferenze) */
+  getProfile: publicProcedure
+    .query(async ({ ctx }) => {
+      const { user } = await requireSiteUser(ctx);
+      return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        createdAt: user.createdAt,
+        topicPreferences: user.topicPreferences
+          ? JSON.parse(user.topicPreferences)
+          : [],
+      };
     }),
 });

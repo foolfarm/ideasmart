@@ -29,6 +29,8 @@ export const siteUsers = mysqlTable("site_users", {
   sessionExpiresAt: timestamp("sessionExpiresAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   lastLoginAt: timestamp("lastLoginAt"),
+  // JSON array of preferred topic keys: ["ai","startup","research","finance","health","sport"]
+  topicPreferences: text("topicPreferences"),
 });
 
 export type SiteUser = typeof siteUsers.$inferSelect;
