@@ -418,11 +418,11 @@ export default function Home() {
               </Link>
               <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a2e]/50"
                 style={{ fontFamily: "'Space Mono', monospace" }}>
-                Analisi quotidiane su Startup, Venture Capital e AI Trends
+                Intelligence quotidiana su AI, Startup e Venture Capital
               </p>
               <p className="mt-1 text-[12px] text-[#1a1a2e]/40 italic"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                Dati dalle principali fonti di ricerca globali ed europee
+                Ricerche verificate, alert e briefing per chi prende decisioni.
               </p>
             </div>
 
@@ -459,33 +459,75 @@ export default function Home() {
           </div>
         </header>
 
-        {/* ══ BREAKING NEWS ════════════════════════════════════════════════════ */}
-        <BreakingNewsSection />
-        <BreakingNewsTicker />
-        <div style={{ background: "#0a0f1e", borderBottom: "2px solid #00e5c8" }}>
-          <div className="max-w-[1280px] mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-4">
-              <div className="flex-shrink-0">
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em] block mb-0.5" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>IdeaSmart Intelligence</span>
-                <p className="text-[14px] font-bold leading-snug" style={{ color: "#ffffff", fontFamily: "'Playfair Display', Georgia, serif", maxWidth: "600px" }}>
-                  Non leggere le notizie. <span style={{ color: "#00e5c8" }}>Usale per decidere.</span>
-                </p>
-                <p className="text-[11px] mt-0.5 hidden sm:block" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+        {/* ══ BANNER INTELLIGENCE — hero compatto, prima del Breaking News ══════ */}
+        <div style={{
+          background: "linear-gradient(135deg, #0a0f1e 0%, #0d1a2e 60%, #0a1f1a 100%)",
+          borderBottom: "2px solid #00e5c8",
+          borderTop: "1px solid rgba(0,229,200,0.15)",
+          minHeight: "200px",
+        }}>
+          <div className="max-w-[1280px] mx-auto px-4 py-8 sm:py-10">
+            <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-10">
+
+              {/* Colonna sinistra 65% */}
+              <div className="flex-1 min-w-0">
+                <span className="text-[9px] font-bold uppercase tracking-[0.3em] block mb-3"
+                  style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace", letterSpacing: "0.3em" }}>
+                  IDEASMART INTELLIGENCE
+                </span>
+                <h2 className="mb-3 leading-tight font-black"
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "clamp(1.5rem, 3.5vw, 2.4rem)",
+                    color: "#ffffff",
+                    lineHeight: 1.15,
+                  }}>
+                  Non leggere le notizie.{" "}
+                  <span style={{ color: "#00e5c8" }}>Usale per decidere.</span>
+                </h2>
+                <p className="text-[13px] mb-4 leading-relaxed"
+                  style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', Arial, sans-serif", maxWidth: "560px" }}>
                   Competitive monitoring, alert scenario-based e briefing personalizzati per CEO, founder e investitori.
                 </p>
+                {/* Metriche inline */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {["450+ fonti", "8 agenti AI", "Aggiornamento 00:00 CET"].map((m, i) => (
+                    <span key={i} className="text-[10px] uppercase tracking-widest"
+                      style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>
+                      {i > 0 && <span style={{ marginRight: "12px", color: "rgba(0,229,200,0.3)" }}>·</span>}
+                      {m}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="flex-shrink-0 flex flex-col items-center gap-1.5">
-              <Link href="/intelligence">
-                <span className="inline-flex items-center gap-1.5 px-5 py-2.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
-                  style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
-                  Scopri Intelligence →
+
+              {/* Colonna destra 30-35% */}
+              <div className="flex-shrink-0 flex flex-col items-center sm:items-end justify-center gap-2 sm:min-w-[220px]">
+                <Link href="/intelligence">
+                  <span className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90 w-full sm:w-auto"
+                    style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
+                    SCOPRI INTELLIGENCE →
+                  </span>
+                </Link>
+                <span className="text-[10px] text-center"
+                  style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Mono', monospace" }}>
+                  Già 100+ decision-maker attivi
                 </span>
-              </Link>
-              <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}>Già 100+ decision-maker attivi</span>
+                <Link href="/">
+                  <span className="text-[10px] hover:opacity-70 transition-opacity cursor-pointer underline"
+                    style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'Space Mono', monospace" }}>
+                    o registrati gratis →
+                  </span>
+                </Link>
+              </div>
+
             </div>
           </div>
         </div>
+
+        {/* ══ BREAKING NEWS ════════════════════════════════════════════════════ */}
+        <BreakingNewsSection />
+        <BreakingNewsTicker />
 
         {/* ══ CORPO ═══════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">

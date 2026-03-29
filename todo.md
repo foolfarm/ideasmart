@@ -1763,3 +1763,8 @@
 - [x] 9) TOGGLE MENSILE/ANNUALE: RADAR €33/€39, INTEL €169/€199 (già presente)
 - [x] 10) BADGE INTEL: "PIÙ SCELTO" (già presente)
 - [x] 11) SEO TITLE: "IdeaSmart Intelligence — Competitive Monitoring & AI Briefing per Decision-Maker" (già presente)
+
+## Fix critiche (29 Mar 2026 — Feedback homepage v2)
+
+- [x] Tagline logo: cambiata in "INTELLIGENCE QUOTIDIANA SU AI, STARTUP E VENTURE CAPITAL / Ricerche verificate, alert e briefing per chi prende decisioni."
+- [x] Banner Intelligence: redesign completo — hero 200px+, gradiente dark (#0a0f1e→#0a1f1a), 2 colonne desktop (titolo grande + CTA destra), posizionato PRIMA del Breaking News
