@@ -243,8 +243,9 @@ function SectionNav() {
     staleTime: 15 * 60 * 1000, refetchOnWindowFocus: false,
   });
   const navSections: Array<{ key: SectionKey; label: string; path: string }> = [
-    { key: "ai",      label: "AI NEWS", path: "/ai" },
-    { key: "startup", label: "STARTUP NEWS", path: "/startup" },
+    { key: "ai",       label: "AI NEWS", path: "/ai" },
+    { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
+    { key: "dealroom", label: "DEALROOM", path: "/dealroom" },
   ];
   return (
     <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">

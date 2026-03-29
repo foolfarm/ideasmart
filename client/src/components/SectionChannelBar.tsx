@@ -1,30 +1,18 @@
 /**
  * SectionChannelBar — Barra canali editoriali condivisa tra tutte le pagine sezione
- * Mostra tutti i canali con evidenziazione del canale attivo, badge contatori, freccia scorrimento mobile.
- * Da includere in cima a ogni pagina sezione (AiHome, StartupHome, ecc.) subito dopo la testata.
+ * Solo 3 canali attivi: AI NEWS, STARTUP NEWS, DEALROOM
  */
 import { useRef, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 
 const SECTION_COLORS = {
-  ai:           { accent: "#1a1a1a", light: "#e6f4f1", label: "AI NEWS",      path: "/ai" },
-  music:        { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",          path: "/music" },
-  startup:      { accent: "#2a2a2a", light: "#fff0e6", label: "STARTUP NEWS",      path: "/startup" },
-  finance:      { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets", path: "/finance" },
-  health:       { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",  path: "/health" },
-  sport:        { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",  path: "/sport" },
-  luxury:       { accent: "#2a2a2a", light: "#faf5ff", label: "Lifestyle & Luxury",path: "/luxury" },
-  news:         { accent: "#1a1a1a", light: "#f1f5f9", label: "News Italia",        path: "/news" },
-  motori:       { accent: "#2a2a2a", light: "#fef2f2", label: "Motori",             path: "/motori" },
-  tennis:       { accent: "#2a2a2a", light: "#f7fee7", label: "Tennis",             path: "/tennis" },
-  basket:       { accent: "#2a2a2a", light: "#fff7ed", label: "Basket",             path: "/basket" },
-  gossip:       { accent: "#2a2a2a", light: "#fdf2f8", label: "Business Gossip",    path: "/gossip" },
-  cybersecurity:{ accent: "#1a1a1a", light: "#f0f9ff", label: "Cybersecurity",      path: "/cybersecurity" },
-  sondaggi:     { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
+  ai:       { accent: "#1a1a1a", light: "#e6f4f1", label: "AI NEWS",       path: "/ai" },
+  startup:  { accent: "#2a2a2a", light: "#fff0e6", label: "STARTUP NEWS",  path: "/startup" },
+  dealroom: { accent: "#1a4a2e", light: "#f0f7f3", label: "DEALROOM",      path: "/dealroom" },
 } as const;
 
-const SECTIONS = ["ai", "startup", "music", "motori", "tennis", "basket", "gossip", "sondaggi"] as const;
+const SECTIONS = ["ai", "startup", "dealroom"] as const;
 type SectionKey = typeof SECTIONS[number];
 
 export default function SectionChannelBar() {
@@ -50,7 +38,6 @@ export default function SectionChannelBar() {
     };
   }, []);
 
-  // Scrolla automaticamente al canale attivo al mount
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -58,8 +45,7 @@ export default function SectionChannelBar() {
       const s = SECTION_COLORS[sec];
       return location === s.path || location.startsWith(s.path + "/");
     });
-    if (activeIdx > 3) {
-      // Scorri per mostrare il canale attivo
+    if (activeIdx > 1) {
       const items = el.querySelectorAll("a");
       if (items[activeIdx]) {
         items[activeIdx].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
@@ -72,7 +58,6 @@ export default function SectionChannelBar() {
       className="border-t border-b overflow-hidden"
       style={{ borderColor: "rgba(26,26,46,0.15)", background: "#faf8f3" }}
     >
-      {/* Riga canali editoriali */}
       <div className="relative">
         <div ref={scrollRef} className="overflow-x-auto scrollbar-hide">
           <div className="flex items-stretch min-w-max">
@@ -128,7 +113,6 @@ export default function SectionChannelBar() {
             })}
           </div>
         </div>
-        {/* Freccia scorrimento mobile */}
         {canScrollRight && (
           <button
             className="absolute right-0 top-0 bottom-0 flex items-center justify-center w-8 pointer-events-auto"

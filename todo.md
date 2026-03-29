@@ -1851,3 +1851,8 @@
 - [x] 1) Pagina /dealroom con filtri interattivi: Funding (Pre-seed/Angel, Series A, Series B+, M&A/Exit, VC Fund) + Mercato (Italia, Europa, Globale) con contatori e reset
 - [x] 2) /preferenze-newsletter aggiornata: canale DEALROOM News (Venerdì, verde #1a4a2e) + enum zod aggiornato in routers.ts
 - [x] 3) Job notturno editoriale DEALROOM alle 01:35 CET (dealroomScheduler.ts) + cron job nello schedulerManager
+
+## Bug fix (29 Mar 2026 — Navbar DEALROOM)
+
+- [x] Fix: link DEALROOM aggiunto alla SectionNav della Home page (navSections array)
+- [x] Fix: pagina /dealroom — rimosso RequireAuth (login wall), aggiornato SectionChannelBar con solo 3 canali attivi (AI, Startup, Dealroom), rimosso import RequireAuth

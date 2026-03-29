@@ -14,7 +14,6 @@ import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import SectionChannelBar from "@/components/SectionChannelBar";
-import RequireAuth from "@/components/RequireAuth";
 
 const ACCENT = "#1a4a2e";
 const ACCENT_LIGHT = "#f0f7f3";
@@ -255,7 +254,6 @@ export default function DealroomHome() {
         <BreakingNewsTicker />
         <SectionChannelBar />
 
-        <RequireAuth>
           <main className="max-w-6xl mx-auto px-4 pb-12">
 
             {/* TESTATA SEZIONE */}
@@ -575,7 +573,6 @@ export default function DealroomHome() {
               <SharedPageFooter />
             </div>
           </main>
-        </RequireAuth>
       </div>
     </>
   );
