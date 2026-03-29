@@ -328,6 +328,7 @@ export default function Home() {
   const { data: startupEditorial } = trpc.editorial.getLatest.useQuery({ section: "startup" }, queryOpts);
   const { data: researchReports } = trpc.news.getResearchReports.useQuery({ limit: 6 }, queryOpts);
   const { data: researchOfDay } = trpc.news.getResearchOfDay.useQuery(undefined, queryOpts);
+  const { data: upcomingEvents } = trpc.events.getUpcoming.useQuery({ limit: 6, category: "all" }, queryOpts);
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -866,6 +867,88 @@ export default function Home() {
                     </Link>
                   </div>
 
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ── PROSSIMI EVENTI ── */}
+          {upcomingEvents && upcomingEvents.length > 0 && (
+            <section className="mt-10">
+              <Divider />
+              <div className="mt-8">
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.1rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a6e5c", marginBottom: "0.25rem" }}>
+                  Prossimi Eventi
+                </h2>
+                <p className="text-[11px] uppercase tracking-widest mb-6" style={{ color: "#1a1a2e", opacity: 0.45, fontFamily: "'Space Mono', monospace" }}>
+                  Tech · AI · Startup · Venture Capital · Italia
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {upcomingEvents.map((ev) => {
+                    const startDate = new Date(ev.startAt);
+                    const dayNum = startDate.toLocaleDateString("it-IT", { day: "2-digit" });
+                    const monthShort = startDate.toLocaleDateString("it-IT", { month: "short" }).toUpperCase();
+                    const weekday = startDate.toLocaleDateString("it-IT", { weekday: "short" }).toUpperCase();
+                    const timeStr = startDate.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+                    const categoryColors: Record<string, { bg: string; text: string; label: string }> = {
+                      ai:         { bg: "#e6f4f1", text: "#0a6e5c", label: "AI" },
+                      startup:    { bg: "#fff0e6", text: "#c2410c", label: "Startup" },
+                      vc:         { bg: "#eff6ff", text: "#0369a1", label: "Venture Capital" },
+                      tech:       { bg: "#f0fdf4", text: "#15803d", label: "Tech" },
+                      innovation: { bg: "#faf5ff", text: "#7c3aed", label: "Innovation" },
+                      other:      { bg: "#f1f5f9", text: "#475569", label: "Evento" },
+                    };
+                    const cat = categoryColors[ev.category] || categoryColors.other;
+                    return (
+                      <a
+                        key={ev.id}
+                        href={ev.eventUrl || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex gap-3 p-4 border border-[#1a1a2e]/10 rounded-lg hover:border-[#0a6e5c]/40 hover:shadow-sm transition-all group"
+                        style={{ background: "#fff" }}
+                      >
+                        {/* Data box */}
+                        <div className="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-md" style={{ background: "#0a0f1e" }}>
+                          <span className="text-[18px] font-black leading-none" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>{dayNum}</span>
+                          <span className="text-[9px] font-bold tracking-widest" style={{ color: "#fff", fontFamily: "'Space Mono', monospace" }}>{monthShort}</span>
+                          <span className="text-[8px] tracking-wide" style={{ color: "#fff", opacity: 0.6, fontFamily: "'Space Mono', monospace" }}>{weekday}</span>
+                        </div>
+                        {/* Contenuto */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded" style={{ background: cat.bg, color: cat.text }}>
+                              {cat.label}
+                            </span>
+                            {ev.isFree && (
+                              <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded" style={{ background: "#f0fdf4", color: "#15803d" }}>Free</span>
+                            )}
+                            {ev.isOnline && (
+                              <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded" style={{ background: "#eff6ff", color: "#0369a1" }}>Online</span>
+                            )}
+                          </div>
+                          <p className="text-[13px] font-bold leading-snug line-clamp-2 group-hover:text-[#0a6e5c] transition-colors" style={{ color: "#1a1a2e", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                            {ev.title}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1.5">
+                            {ev.location && (
+                              <span className="text-[10px]" style={{ color: "#1a1a2e", opacity: 0.5, fontFamily: "'Space Mono', monospace" }}>
+                                📍 {ev.location.slice(0, 30)}{ev.location.length > 30 ? "…" : ""}
+                              </span>
+                            )}
+                            <span className="text-[10px]" style={{ color: "#1a1a2e", opacity: 0.4, fontFamily: "'Space Mono', monospace" }}>
+                              {timeStr !== "00:00" ? `⏰ ${timeStr}` : ""}
+                            </span>
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 text-right">
+                  <span className="text-[10px] uppercase tracking-widest" style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace", opacity: 0.7 }}>
+                    Aggiornato ogni 12 ore · Fonte: Luma + RSS italiani
+                  </span>
                 </div>
               </div>
             </section>

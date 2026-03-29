@@ -56,7 +56,8 @@ import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, run
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
-import { researchReports } from "../drizzle/schema";
+import { researchReports, techEvents } from "../drizzle/schema";
+import { aggregateEvents } from "./eventsAggregator";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -2065,6 +2066,43 @@ Rispondi con questo JSON:
         return { success: true };
       }),
   }),
+
+  // ── Events ────────────────────────────────────────────────────────────────
+  events: router({
+    // Recupera i prossimi N eventi tech/AI/startup (default 6, max 20)
+    getUpcoming: publicProcedure
+      .input(z.object({
+        limit: z.number().min(1).max(20).default(6),
+        category: z.enum(["ai", "startup", "vc", "tech", "innovation", "other", "all"]).default("all"),
+      }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return [];
+        const now = new Date();
+        const { gte: gteOp, asc } = await import("drizzle-orm");
+        const conditions = [gteOp(techEvents.startAt, now)];
+        if (input.category !== "all") {
+          const { eq: eqOp } = await import("drizzle-orm");
+          conditions.push(eqOp(techEvents.category, input.category));
+        }
+        const { and: andOp } = await import("drizzle-orm");
+        const rows = await db
+          .select()
+          .from(techEvents)
+          .where(andOp(...conditions))
+          .orderBy(asc(techEvents.startAt))
+          .limit(input.limit);
+        return rows;
+      }),
+
+    // Trigger manuale aggregazione (solo admin)
+    triggerAggregation: adminProcedure
+      .mutation(async () => {
+        const result = await aggregateEvents();
+        return result;
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
+

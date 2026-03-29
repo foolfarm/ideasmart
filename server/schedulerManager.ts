@@ -111,6 +111,7 @@ import { saveBarometroSnapshot, getDb } from "./db";
 import { invokeLLM } from "./_core/llm";
 import { newsItems as newsItemsTable } from "../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
+import { aggregateEvents } from "./eventsAggregator";
 
 const TZ = "Europe/Rome";
 
@@ -985,5 +986,35 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI4Business + Startup, rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 10:00 CET (pubblica se nessun post oggi)");
-  console.log("[SchedulerManager]   🚨 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
+  console.log("[SchedulerManager]   🚀 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
+  console.log("[SchedulerManager]   📅 Events Aggregator → ogni 12 ore alle 06:30 e 18:30 CET (Luma ICS + RSS italiani)");
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EVENTS AGGREGATOR — ogni 12 ore (06:30 e 18:30 CET)
+  // Aggrega eventi Tech/AI/Startup italiani da Luma ICS + RSS feeds
+  // ═══════════════════════════════════════════════════════════════════════════
+  cron.schedule(
+    "0 30 6,18 * * *", // ogni giorno alle 06:30 e 18:30 CET
+    () => withLock("eventsAggregation", async () => {
+      console.log("[SchedulerManager] 📅 Events Aggregator: avvio aggregazione eventi...");
+      try {
+        const result = await aggregateEvents();
+        console.log(`[SchedulerManager] ✅ Events: ${result.inserted} eventi upsertati`);
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Events errore:", err);
+      }
+    }),
+    { timezone: TZ }
+  );
+
+  // Prima aggregazione all'avvio (dopo 3 minuti)
+  setTimeout(async () => {
+    try {
+      console.log("[SchedulerManager] 📅 Events: prima aggregazione all'avvio...");
+      const result = await aggregateEvents();
+      console.log(`[SchedulerManager] ✅ Events avvio: ${result.inserted} eventi caricati`);
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Events avvio errore:", err);
+    }
+  }, 3 * 60 * 1000); // 3 minuti dopo l'avvio
 }

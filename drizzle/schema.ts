@@ -429,3 +429,43 @@ export const researchReports = mysqlTable("research_reports", {
 
 export type ResearchReport = typeof researchReports.$inferSelect;
 export type InsertResearchReport = typeof researchReports.$inferInsert;
+
+// ── Tech/AI Events (aggregati da Luma ICS + RSS) ────────────────────────────
+// Aggiornati ogni 12 ore dallo scheduler. Mostra i prossimi eventi Tech/AI/Startup italiani.
+export const techEvents = mysqlTable("tech_events", {
+  id: int("id").autoincrement().primaryKey(),
+  // UID univoco dell'evento (da Luma o RSS guid) — usato per deduplication
+  externalUid: varchar("externalUid", { length: 500 }).notNull().unique(),
+  // Fonte: 'luma' | 'rss_economyup' | 'rss_agendadigitale' | ecc.
+  source: varchar("source", { length: 100 }).notNull(),
+  // Titolo dell'evento
+  title: varchar("title", { length: 500 }).notNull(),
+  // Descrizione breve (max 500 char)
+  description: text("description"),
+  // Luogo (es. "Milano, Lombardia" o "Online")
+  location: varchar("location", { length: 500 }),
+  // URL di registrazione / pagina evento
+  eventUrl: varchar("eventUrl", { length: 1000 }),
+  // Data/ora inizio evento (UTC timestamp ms)
+  startAt: timestamp("startAt").notNull(),
+  // Data/ora fine evento (UTC timestamp ms)
+  endAt: timestamp("endAt"),
+  // Categoria: 'ai' | 'startup' | 'vc' | 'tech' | 'innovation'
+  category: mysqlEnum("category", ["ai", "startup", "vc", "tech", "innovation", "other"]).default("tech").notNull(),
+  // Organizzatore
+  organizer: varchar("organizer", { length: 255 }),
+  // Se è un evento online
+  isOnline: boolean("isOnline").default(false).notNull(),
+  // Se è gratuito
+  isFree: boolean("isFree").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  // Indice su startAt: ottimizza la query "prossimi eventi futuri"
+  startAtIdx: index("idx_events_start_at").on(t.startAt),
+  // Indice su category+startAt: ottimizza filtro per categoria
+  categoryStartIdx: index("idx_events_category_start").on(t.category, t.startAt),
+}));
+
+export type TechEvent = typeof techEvents.$inferSelect;
+export type InsertTechEvent = typeof techEvents.$inferInsert;

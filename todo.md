@@ -1627,3 +1627,22 @@
 - [x] Template HTML Mailchimp promozionale IDEASMART AI for Business (FoolTalent, Foolshare, IIO.Ai) — file: ideasmart-mailchimp-template.html
 - [x] Pagina /andrea-cinelli: già implementata con bio, foto, LinkedIn, archivio editoriali e CTA
 - [x] Integrazione metriche SendGrid: già implementata in /admin/sendgrid-stats con grafici, tabelle e filtri
+
+## Nuovi task (29 Mar 2026 — Sezione Prossimi Eventi)
+
+- [ ] Creare schema DB tabella `events` per eventi Tech/AI/Startup italiani
+- [ ] Implementare job di aggregazione eventi da Luma ICS + RSS feeds italiani/europei
+- [ ] Creare procedura tRPC `news.getUpcomingEvents` per recupero eventi futuri
+- [ ] Costruire componente EventiSection nella Home con card evento (data, titolo, luogo, CTA)
+- [ ] Collegare aggiornamento automatico eventi al scheduler giornaliero
+
+## Task completati (29 Mar 2026 — Sezione Prossimi Eventi + Fix Header Business)
+
+- [x] Fix header pagina /business: rimossa testata personalizzata, uniformata alla Navbar standard del sito
+- [x] Schema DB: tabella tech_events (externalUid, source, title, location, startAt, category, isOnline, isFree)
+- [x] Migrazione DB: pnpm db:push eseguita con successo (tabella tech_events creata)
+- [x] eventsAggregator.ts: aggregazione eventi da Luma ICS (Milano Tech/AI) + RSS italiani (EconomyUp, AgendaDigitale, InnovationPost, BeBeez)
+- [x] tRPC procedure: events.getUpcoming (limit, category filter) e events.triggerAggregation (admin)
+- [x] Scheduler: job cron ogni 12 ore (06:30 e 18:30 CET) + prima aggregazione 3 min dopo avvio
+- [x] Home.tsx: sezione "Prossimi Eventi" con grid 3 colonne, data box, badge categoria, location, orario
+- [x] Sezione visibile solo quando ci sono eventi nel DB (conditional rendering)

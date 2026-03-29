@@ -5,7 +5,7 @@
  * Due offerte: A) Piattaforma AI Agentica · B) Consulenza & Advisory
  */
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
@@ -305,7 +305,6 @@ function ServiceAccordion({ service }: { service: typeof ADVISORY_SERVICES[0] })
 // ── Pagina ────────────────────────────────────────────────────────────────────
 
 export default function Business() {
-  const today = useMemo(() => new Date(), []);
 
   return (
     <>
@@ -324,26 +323,11 @@ export default function Business() {
         {/* ── NAVBAR STANDARD ── */}
         <Navbar />
 
-        {/* ── TESTATA ── */}
-        <header className="max-w-6xl mx-auto px-4 pt-24 pb-0">
-          <div className="flex items-center justify-between mb-2">
-            <Link href="/">
-              <span
-                className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "'Space Mono', monospace" }}
-              >
-                ← IdeaSmart
-              </span>
-            </Link>
-            <span
-              className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
-              style={{ fontFamily: "'Space Mono', monospace" }}
-            >
-              {formatDateIT(today)}
-            </span>
-          </div>
-          <Divider thick />
-          <div className="text-center py-6">
+        <BreakingNewsTicker />
+
+        {/* ── HERO ── */}
+        <section className="max-w-6xl mx-auto px-4 pt-20 pb-0">
+          <div className="text-center py-8">
             <SectionBadge label="IdeaSmart Business" />
             <h1
               className="mt-3 text-4xl md:text-6xl font-black tracking-tight"
@@ -361,9 +345,7 @@ export default function Business() {
             </p>
           </div>
           <Divider />
-        </header>
-
-        <BreakingNewsTicker />
+        </section>
 
         {/* ── INDICE OFFERTE ── */}
         <section className="max-w-6xl mx-auto px-4 py-8">
