@@ -449,7 +449,7 @@ export default function CybersecurityHome() {
                 <Link href="/"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>← Home</span></Link>
                 <Link href="/gossip"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#9b59b6", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Business Gossip</span></Link>
                 <Link href="/sondaggi"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#2980b9", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Sondaggi</span></Link>
-                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI4Business</span></Link>
+                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI NEWS</span></Link>
                 <Link href="/privacy"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy</span></Link>
               </div>
             </div>

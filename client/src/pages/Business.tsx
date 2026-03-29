@@ -93,7 +93,7 @@ const PLATFORM_PLANS = [
     color: INK,
     bg: "#f1f5f9",
     features: [
-      "Accesso alle notizie AI4Business e Startup News",
+      "Accesso alle notizie AI NEWS e STARTUP NEWS",
       "5 Executive Report al mese",
       "Newsletter settimanale",
       "Punto del Giorno (post LinkedIn)",

@@ -15,9 +15,9 @@ import {
 
 // ── Palette sezioni (identica alla Home) ─────────────────────────────────────
 const SECTION_COLORS = {
-  ai:            { accent: "#1a1a1a", light: "#e6f4f1", label: "AI4Business",       path: "/ai" },
+  ai:            { accent: "#1a1a1a", light: "#e6f4f1", label: "AI NEWS",       path: "/ai" },
   music:         { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",           path: "/music" },
-  startup:       { accent: "#2a2a2a", light: "#fff0e6", label: "Startup News",       path: "/startup" },
+  startup:       { accent: "#2a2a2a", light: "#fff0e6", label: "STARTUP NEWS",       path: "/startup" },
   finance:       { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets",  path: "/finance" },
   health:        { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",   path: "/health" },
   sport:         { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",   path: "/sport" },

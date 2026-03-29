@@ -289,7 +289,7 @@ export default function Admin() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
             { label: "Iscritti totali", value: subscribers.length, color: "#1a1a1a" },
-            { label: "AI4Business News", value: aiSubscribers, color: "#1a1a1a" },
+            { label: "AI NEWS News", value: aiSubscribers, color: "#1a1a1a" },
             { label: "ITsMusic", value: musicSubscribers, color: "#2a2a2a" },
             { label: "Newsletter inviate", value: history.length, color: "#0066ff" },
           ].map((stat) => (
@@ -527,9 +527,9 @@ export default function Admin() {
                 const todayDow = now.getDay();
                 const startupSubs = subscribers.filter(s => s.status === "active" && (s.newsletter === "startup" || s.newsletter === "both")).length;
                 const schedule = [
-                  { dow: 1, dayName: "Lunedì",    channel: "AI4Business News",  color: "#1a1a1a", subs: aiSubscribers },
-                  { dow: 3, dayName: "Mercoledì", channel: "Startup News",       color: "#2a2a2a", subs: startupSubs },
-                  { dow: 5, dayName: "Venerdì",   channel: "AI4Business News",  color: "#1a1a1a", subs: aiSubscribers },
+                  { dow: 1, dayName: "Lunedì",    channel: "AI NEWS News",  color: "#1a1a1a", subs: aiSubscribers },
+                  { dow: 3, dayName: "Mercoledì", channel: "STARTUP NEWS",       color: "#2a2a2a", subs: startupSubs },
+                  { dow: 5, dayName: "Venerdì",   channel: "AI NEWS News",  color: "#1a1a1a", subs: aiSubscribers },
                 ];
                 const upcoming = [...schedule, ...schedule, ...schedule]
                   .map((s, i) => {

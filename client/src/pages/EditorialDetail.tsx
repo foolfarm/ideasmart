@@ -6,11 +6,12 @@ import { useParams, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
+import SaveArticleButton from "@/components/SaveArticleButton";
 
 const SECTION_CONFIG = {
-  ai: { label: "AI4Business", color: "#0a7ea4", path: "/ai" },
+  ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
   music: { label: "ITsMusic", color: "#2a2a2a", path: "/music" },
-  startup: { label: "Startup News", color: "#2a2a2a", path: "/startup" },
+  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup" },
 };
 
 export default function EditorialDetail() {
@@ -104,6 +105,7 @@ export default function EditorialDetail() {
 
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-4 mb-8 pb-4 border-b border-[#1a1a1a]/20">
+          <SaveArticleButton contentType="editorial" contentId={editorial.id} title={editorial.title} section={section} />
           {/* Firma autore */}
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center">

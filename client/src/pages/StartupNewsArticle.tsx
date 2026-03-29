@@ -52,7 +52,7 @@ export default function StartupNewsArticle() {
           <Link href="/startup" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
             style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             <ArrowLeft className="w-4 h-4" />
-            Torna a Startup News
+            Torna a STARTUP NEWS
           </Link>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default function StartupNewsArticle() {
           <Link href="/startup" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
             style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             <ArrowLeft className="w-4 h-4" />
-            Torna a Startup News
+            Torna a STARTUP NEWS
           </Link>
         )}
         <div className="mt-4">

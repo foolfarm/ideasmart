@@ -614,8 +614,8 @@ export default function MusicHome() {
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 <Link href="/"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>← Home</span></Link>
-                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI4Business</span></Link>
-                <Link href="/startup"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Startup News</span></Link>
+                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI NEWS</span></Link>
+                <Link href="/startup"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>STARTUP NEWS</span></Link>
                 <Link href="/privacy"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy Policy</span></Link>
 
               </div>

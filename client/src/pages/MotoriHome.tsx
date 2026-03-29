@@ -447,7 +447,7 @@ export default function MotoriHome() {
                 <Link href="/news"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#c0392b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>News</span></Link>
                 <Link href="/tennis"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#27ae60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Tennis</span></Link>
                 <Link href="/basket"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#8e44ad", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Basket</span></Link>
-                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI4Business</span></Link>
+                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI NEWS</span></Link>
                 <Link href="/privacy"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy</span></Link>
               </div>
             </div>

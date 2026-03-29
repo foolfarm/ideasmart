@@ -32,8 +32,8 @@ export default function GenericNewsArticle() {
 
   // Mappa sezione → label e percorso di ritorno
   const sectionLabels: Record<string, { label: string; path: string }> = {
-    ai: { label: "AI4Business", path: "/ai" },
-    startup: { label: "Startup News", path: "/startup" },
+    ai: { label: "AI NEWS", path: "/ai" },
+    startup: { label: "STARTUP NEWS", path: "/startup" },
     finance: { label: "Finance & Markets", path: "/finance" },
     health: { label: "Health & Biotech", path: "/health" },
     sport: { label: "Sport & Business", path: "/sport" },

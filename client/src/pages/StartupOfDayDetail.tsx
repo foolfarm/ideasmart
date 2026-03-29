@@ -7,9 +7,9 @@ import { ArrowLeft, ExternalLink, MapPin, Calendar, Linkedin } from "lucide-reac
 import RequireAuth from "@/components/RequireAuth";
 
 const SECTION_CONFIG = {
-  ai: { label: "AI4Business", color: "#0a7ea4", path: "/ai", spotlightLabel: "Startup del Giorno" },
+  ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai", spotlightLabel: "Startup del Giorno" },
   music: { label: "ITsMusic", color: "#2a2a2a", path: "/music", spotlightLabel: "Artista del Giorno" },
-  startup: { label: "Startup News", color: "#2a2a2a", path: "/startup", spotlightLabel: "Startup della Settimana" },
+  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup", spotlightLabel: "Startup della Settimana" },
 };
 
 export default function StartupOfDayDetail() {

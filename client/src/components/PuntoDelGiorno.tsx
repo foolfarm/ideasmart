@@ -55,8 +55,8 @@ export default function PuntoDelGiorno() {
   const hashtagLine = paragraphs.findIndex(p => p.startsWith("#") || p.match(/^[📊🔗]/));
   const bodyParagraphs = hashtagLine > 0 ? paragraphs.slice(0, hashtagLine) : paragraphs;
 
-  const sectionLabel = post?.section === "ai" ? "AI4Business"
-    : post?.section === "startup" ? "Startup News"
+  const sectionLabel = post?.section === "ai" ? "AI NEWS"
+    : post?.section === "startup" ? "STARTUP NEWS"
     : post?.section === "finance" ? "Finance"
     : post?.section ?? "";
 

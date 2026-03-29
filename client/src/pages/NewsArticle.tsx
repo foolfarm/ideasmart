@@ -52,7 +52,7 @@ export default function NewsArticle() {
           <Link href="/ai" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
             style={{ color: "#0a7ea4", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             <ArrowLeft className="w-4 h-4" />
-            Torna ad AI4Business
+            Torna ad AI NEWS
           </Link>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function NewsArticle() {
           <Link href="/ai" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
             style={{ color: "#0a7ea4", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             <ArrowLeft className="w-4 h-4" />
-            Torna ad AI4Business
+            Torna ad AI NEWS
           </Link>
         )}
         <div className="mt-4">

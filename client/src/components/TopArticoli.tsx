@@ -20,7 +20,7 @@ const SECTION_COLORS: Record<string, string> = {
 };
 
 const SECTION_LABELS: Record<string, string> = {
-  ai: "AI4Business",
+  ai: "AI NEWS",
   startup: "Startup",
   finance: "Finance",
   health: "Health",

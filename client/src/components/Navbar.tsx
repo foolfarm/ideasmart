@@ -1,13 +1,13 @@
 /**
  * IDEASMART Navbar — Pivot Research Edition
- * Solo 2 canali attivi: AI4Business e Startup News
+ * Solo 2 canali attivi: AI NEWS e STARTUP NEWS
  */
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 
 const CHANNELS = [
-  { label: "AI4Business", href: "/ai", color: "#1a1a1a" },
-  { label: "Startup News", href: "/startup", color: "#2a2a2a" },
+  { label: "AI NEWS", href: "/ai", color: "#1a1a1a" },
+  { label: "STARTUP NEWS", href: "/startup", color: "#2a2a2a" },
 ];
 
 export default function Navbar() {
@@ -103,20 +103,20 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Link diretti AI4Business e Startup */}
+            {/* Link diretti AI NEWS e Startup */}
             <Link
               href="/ai"
               className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
               style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              AI4Business
+              AI NEWS
             </Link>
             <Link
               href="/startup"
               className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
               style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              Startup News
+              STARTUP NEWS
             </Link>
           </div>
 

@@ -1,5 +1,5 @@
 /**
- * IDEASMART — AI4Business News · Sezione AI
+ * IDEASMART — AI NEWS News · Sezione AI
  * Layout editoriale da giornale: testata sezione, editoriale del giorno, notizie in colonne, reportage, startup del giorno.
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento teal (#1a1a1a).
  */
@@ -118,7 +118,7 @@ export default function AiHome() {
   return (
     <>
       <SEOHead
-        title="AI4Business News — IDEASMART"
+        title="AI NEWS News — IDEASMART"
         description="Notizie aggiornate ogni giorno sull'Intelligenza Artificiale per il business italiano. Editoriale, analisi e startup del giorno."
         canonical="https://ideasmart.ai/ai"
         ogSiteName="IdeaSmart"
@@ -502,7 +502,7 @@ export default function AiHome() {
                 </span>
                 <h3 className="mt-2 text-2xl font-bold text-[#1a1a1a]"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Ricevi AI4Business News ogni settimana
+                  Ricevi AI NEWS News ogni settimana
                 </h3>
                 <p className="mt-2 text-sm text-[#1a1a1a]/65"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>

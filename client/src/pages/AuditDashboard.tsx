@@ -287,7 +287,7 @@ export default function AuditDashboard() {
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">Tutte le sezioni</option>
-                <option value="ai">AI4Business</option>
+                <option value="ai">AI NEWS</option>
                 <option value="music">ITsMusic</option>
               </select>
             </div>
@@ -342,7 +342,7 @@ export default function AuditDashboard() {
                     onChange={(e) => setReplaceSection(e.target.value as "ai" | "music")}
                     className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                   >
-                    <option value="ai">AI4Business</option>
+                    <option value="ai">AI NEWS</option>
                     <option value="music">ITsMusic</option>
                   </select>
                 </div>
@@ -380,7 +380,7 @@ export default function AuditDashboard() {
                 className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">Tutte le sezioni</option>
-                <option value="ai">AI4Business</option>
+                <option value="ai">AI NEWS</option>
                 <option value="music">ITsMusic</option>
               </select>
               <select
@@ -431,7 +431,7 @@ export default function AuditDashboard() {
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         <StatusBadge status={row.status as AuditStatus} />
                         <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium capitalize">
-                          {row.contentType} · {row.section === "ai" ? "AI4Business" : "ITsMusic"}
+                          {row.contentType} · {row.section === "ai" ? "AI NEWS" : "ITsMusic"}
                         </span>
                         <span className="text-xs text-gray-400">ID #{row.contentId}</span>
                       </div>

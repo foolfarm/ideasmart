@@ -16,9 +16,9 @@ import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
 const SECTION_COLORS = {
-  ai:            { accent: "#1a1a1a", light: "#f5f5f5", label: "AI4Business",        path: "/ai" },
+  ai:            { accent: "#1a1a1a", light: "#f5f5f5", label: "AI NEWS",        path: "/ai" },
   music:         { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",            path: "/music" },
-  startup:       { accent: "#2a2a2a", light: "#f5f5f5", label: "Startup News",        path: "/startup" },
+  startup:       { accent: "#2a2a2a", light: "#f5f5f5", label: "STARTUP NEWS",        path: "/startup" },
   finance:       { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets",   path: "/finance" },
   health:        { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",    path: "/health" },
   sport:         { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",    path: "/sport" },
@@ -242,8 +242,8 @@ function SectionNav() {
     staleTime: 15 * 60 * 1000, refetchOnWindowFocus: false,
   });
   const navSections: Array<{ key: SectionKey; label: string; path: string }> = [
-    { key: "ai",      label: "AI4Business", path: "/ai" },
-    { key: "startup", label: "Startup News", path: "/startup" },
+    { key: "ai",      label: "AI NEWS", path: "/ai" },
+    { key: "startup", label: "STARTUP NEWS", path: "/startup" },
   ];
   return (
     <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
@@ -269,7 +269,7 @@ function SectionNav() {
       <Link href="/research">
         <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-          Research
+          RICERCHE
         </span>
       </Link>
       <Link href="/chi-siamo">
@@ -278,12 +278,7 @@ function SectionNav() {
           Chi Siamo
         </span>
       </Link>
-      <Link href="/intelligence">
-        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-[#0f0f0f] transition-colors cursor-pointer border-l border-[#1a1a1a]/15"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-          ▶ Intelligence
-        </span>
-      </Link>
+      {/* ▶ Intelligence — nascosta temporaneamente */}
     </nav>
   );
 }
@@ -588,7 +583,7 @@ export default function Home() {
 
                     {/* Colonna Startup */}
                     <div className="md:pr-5 md:border-r border-[#1a1a1a]/15 pt-4">
-                      <SectionLabel label="Startup News" accent={SECTION_COLORS.startup.accent} />
+                      <SectionLabel label="STARTUP NEWS" accent={SECTION_COLORS.startup.accent} />
                       {startupHero && (
                         <SecondaryArticle item={startupHero} section="startup" showImage={!!startupHero.imageUrl} />
                       )}
@@ -610,7 +605,7 @@ export default function Home() {
 
                     {/* Colonna AI secondary */}
                     <div className="md:pl-5 pt-4">
-                      <SectionLabel label="AI4Business" accent={SECTION_COLORS.ai.accent} />
+                      <SectionLabel label="AI NEWS" accent={SECTION_COLORS.ai.accent} />
                       {aiRest.slice(0, 5).map((item, i) => (
                         <div key={item.id}>
                           {i > 0 && <ThinDivider />}
@@ -705,7 +700,7 @@ export default function Home() {
                     <div className="mt-8">
                       <Divider thick />
                       <div className="py-2 flex items-center justify-between">
-                        <SectionLabel label="Startup News — Approfondimenti" accent={SECTION_COLORS.startup.accent} />
+                        <SectionLabel label="STARTUP NEWS — Approfondimenti" accent={SECTION_COLORS.startup.accent} />
                         <Link href="/startup">
                           <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
                             style={{ color: SECTION_COLORS.startup.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -772,7 +767,7 @@ export default function Home() {
                     <div className="mt-8">
                       <Divider thick />
                       <div className="py-2 flex items-center justify-between">
-                        <SectionLabel label="AI4Business — Approfondimenti" accent={SECTION_COLORS.ai.accent} />
+                        <SectionLabel label="AI NEWS — Approfondimenti" accent={SECTION_COLORS.ai.accent} />
                         <Link href="/ai">
                           <span className="text-[10px] font-bold uppercase tracking-widest hover:underline"
                             style={{ color: SECTION_COLORS.ai.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -842,13 +837,13 @@ export default function Home() {
                       <Link href="/ai">
                         <span className="text-[10px] font-bold uppercase tracking-widest hover:underline block mb-1"
                           style={{ color: SECTION_COLORS.ai.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          AI4Business →
+                          AI NEWS →
                         </span>
                       </Link>
                       <Link href="/startup">
                         <span className="text-[10px] font-bold uppercase tracking-widest hover:underline block mb-1"
                           style={{ color: SECTION_COLORS.startup.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          Startup News →
+                          STARTUP NEWS →
                         </span>
                       </Link>
                       <Link href="/finance">
@@ -1060,7 +1055,7 @@ export default function Home() {
                 {[
                   { href: "/chi-siamo", label: "Chi Siamo", color: "#1a1a1a" },
                   { href: "/intelligence", label: "Intelligence", color: "#1a1a1a" },
-                  { href: "/research", label: "Research", color: "#1a1a1a" },
+                  { href: "/research", label: "RICERCHE", color: "#1a1a1a" },
                   { href: "/privacy", label: "Privacy Policy", color: "#1a1a1a" },
                 ].map(item => (
                   <Link key={item.href} href={item.href}>

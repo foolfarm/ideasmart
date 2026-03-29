@@ -14,9 +14,9 @@ const PAPER = "#faf8f3";
 
 const SECTION_CONFIG = {
   all:     { label: "Tutte le Sezioni", accent: INK,       light: "#f0ede6" },
-  ai:      { label: "AI4Business",      accent: "#1a1a1a", light: "#e6f4f1" },
+  ai:      { label: "AI NEWS",      accent: "#1a1a1a", light: "#e6f4f1" },
   music:   { label: "ITsMusic",         accent: "#2a2a2a", light: "#ede9fe" },
-  startup: { label: "Startup News",     accent: "#2a2a2a", light: "#fef3ee" },
+  startup: { label: "STARTUP NEWS",     accent: "#2a2a2a", light: "#fef3ee" },
 } as const;
 
 type SectionKey = keyof typeof SECTION_CONFIG;
@@ -443,9 +443,9 @@ export default function Edicola() {
               IDEASMART · Edicola Digitale · Aggiornata ogni giorno alle 00:00 CET
             </p>
             <div className="flex items-center gap-4">
-              <Link href="/ai"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI4Business</span></Link>
+              <Link href="/ai"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI NEWS</span></Link>
               <Link href="/music"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>ITsMusic</span></Link>
-              <Link href="/startup"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Startup News</span></Link>
+              <Link href="/startup"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>STARTUP NEWS</span></Link>
             </div>
           </div>
         </footer>

@@ -290,11 +290,11 @@ export default function Manifesto() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
               {[
-                { code: "AI", label: "AI4Business", color: "#1a1a1a", path: "/ai",
+                { code: "AI", label: "AI NEWS", color: "#1a1a1a", path: "/ai",
                   desc: "Intelligenza artificiale applicata al business. Modelli generativi, agenti AI autonomi, automazione industriale, impatto sulle PMI italiane. Fonti: MIT Technology Review, VentureBeat AI, The Decoder, Stanford AI Index." },
                 { code: "MUSIC", label: "ITsMusic", color: "#ec4899", path: "/music",
                   desc: "L'economia della musica nell'era digitale. Streaming, diritti, AI generativa applicata alla produzione musicale, deal e acquisizioni nel settore. Fonti: Music Business Worldwide, Billboard, Pitchfork." },
-                { code: "STARTUP", label: "Startup News", color: "#2a2a2a", path: "/startup",
+                { code: "STARTUP", label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup",
                   desc: "L'ecosistema startup italiano ed europeo. Funding rounds, exit, founder stories, trend di mercato VC. Fonti: Sifted, TechCrunch, Crunchbase, Il Sole 24 Ore Startup." },
                 { code: "FINANCE", label: "Finance & Markets", color: "#1a1a1a", path: "/finance",
                   desc: "Macro-economia, mercati finanziari, politica monetaria BCE, M&A. Analisi strutturata per CFO e imprenditori che devono decidere in contesto macro. Fonti: FT, Bloomberg, Goldman Sachs Research, IMF." },
@@ -392,7 +392,7 @@ export default function Manifesto() {
                       fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
-                    AI4Business →
+                    AI NEWS →
                   </div>
                 </Link>
                 <Link href="/startup">
@@ -404,7 +404,7 @@ export default function Manifesto() {
                       fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
-                    Startup News →
+                    STARTUP NEWS →
                   </div>
                 </Link>
                 <Link href="/music">

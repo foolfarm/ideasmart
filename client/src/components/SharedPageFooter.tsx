@@ -58,9 +58,9 @@ export default function SharedPageFooter() {
           </p>
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
             {[
-              { href: "/ai",           label: "AI4Business",   color: "#1a1a1a" },
-              { href: "/startup",      label: "Startup News",  color: "#2a2a2a" },
-              { href: "/research",     label: "Research",      color: "#1a1a1a" },
+              { href: "/ai",           label: "AI NEWS",   color: "#1a1a1a" },
+              { href: "/startup",      label: "STARTUP NEWS",  color: "#2a2a2a" },
+              { href: "/research",     label: "RICERCHE",      color: "#1a1a1a" },
               { href: "/chi-siamo",    label: "Chi Siamo",     color: "#1a1a1a" },
               { href: "/intelligence", label: "Intelligence",  color: "#1a1a1a" },
               { href: "/privacy",      label: "Privacy Policy",color: "#1a1a1a" },

@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Startup News · Sezione Startup
+ * IDEASMART — STARTUP NEWS · Sezione Startup
  * Layout editoriale da giornale: testata sezione, editoriale del giorno, notizie in colonne, startup del giorno, reportage.
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento arancione (#2a2a2a).
  */
@@ -117,7 +117,7 @@ export default function StartupHome() {
   return (
     <>
       <SEOHead
-        title="Startup News — IDEASMART"
+        title="STARTUP NEWS — IDEASMART"
         description="Notizie aggiornate ogni giorno sull'ecosistema startup italiano ed europeo. Editoriale, analisi e startup del giorno."
         canonical="https://ideasmart.ai/startup"
         ogSiteName="IdeaSmart"
@@ -494,7 +494,7 @@ export default function StartupHome() {
                 </span>
                 <h3 className="mt-2 text-2xl font-bold text-[#1a1a1a]"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Ricevi Startup News ogni settimana
+                  Ricevi STARTUP NEWS ogni settimana
                 </h3>
                 <p className="mt-2 text-sm text-[#1a1a1a]/65"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>

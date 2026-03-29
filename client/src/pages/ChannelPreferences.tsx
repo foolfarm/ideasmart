@@ -6,8 +6,8 @@ import { toast } from "sonner";
 type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music';
 
 const CHANNELS: { key: ChannelKey; label: string; subtitle: string; day: string; color: string; icon: string }[] = [
-  { key: 'ai',      label: 'AI4Business News',   subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#1a1a1a', icon: '🤖' },
-  { key: 'startup', label: 'Startup News',        subtitle: 'Le startup italiane più promettenti',                day: 'Martedì',   color: '#2a2a2a', icon: '🚀' },
+  { key: 'ai',      label: 'AI NEWS News',   subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#1a1a1a', icon: '🤖' },
+  { key: 'startup', label: 'STARTUP NEWS',        subtitle: 'Le startup italiane più promettenti',                day: 'Martedì',   color: '#2a2a2a', icon: '🚀' },
   { key: 'finance', label: 'Finance & Markets',   subtitle: 'Mercati, finanza e investimenti',                   day: 'Mercoledì', color: '#1a56db', icon: '📈' },
   { key: 'sport',   label: 'Sport & Business',    subtitle: 'Sport, management e business dello sport',          day: 'Giovedì',   color: '#059669', icon: '⚽' },
   { key: 'music',   label: 'ITsMusic',            subtitle: 'Musica, tecnologia e industria musicale',           day: 'Venerdì',   color: '#2a2a2a', icon: '🎵' },

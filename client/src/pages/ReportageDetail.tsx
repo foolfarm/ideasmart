@@ -6,11 +6,12 @@ import { useParams, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
+import SaveArticleButton from "@/components/SaveArticleButton";
 
 const SECTION_CONFIG = {
-  ai: { label: "AI4Business", color: "#0a7ea4", path: "/ai" },
+  ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
   music: { label: "ITsMusic", color: "#2a2a2a", path: "/music" },
-  startup: { label: "Startup News", color: "#2a2a2a", path: "/startup" },
+  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup" },
 };
 
 export default function ReportageDetail() {
@@ -113,8 +114,9 @@ export default function ReportageDetail() {
           </p>
         )}
 
-        {/* Firma autore */}
-        <div className="flex items-center gap-3 mb-6 pb-6 border-b border-[#1a1a1a]/20">
+        {/* Salva + Firma autore */}
+        <div className="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-[#1a1a1a]/20">
+          <SaveArticleButton contentType="reportage" contentId={rep.id} title={rep.headline} section={section} />
           <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center flex-shrink-0">
             <span className="text-white text-xs font-bold" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AL</span>
           </div>

@@ -45,11 +45,12 @@ function SectionNav() {
   });
 
   const navItems = [
-    { key: "ai",      label: "AI4Business", path: "/ai",          accent: "#1a1a1a" },
-    { key: "startup", label: "Startup News", path: "/startup",     accent: "#2a2a2a" },
-    { key: "research",label: "Research",     path: "/research",    accent: "#1a1a1a" },
-    { key: "chi-siamo",label: "Chi Siamo",   path: "/chi-siamo",   accent: "#1a1a1a" },
-    { key: "intelligence", label: "▶ Intelligence", path: "/intelligence", accent: "#1a1a1a" },
+    { key: "ai",       label: "AI NEWS",      path: "/ai",       accent: "#1a1a1a" },
+    { key: "startup",  label: "STARTUP NEWS", path: "/startup",  accent: "#2a2a2a" },
+    { key: "research", label: "RICERCHE",      path: "/research", accent: "#1a1a1a" },
+    { key: "chi-siamo",label: "Chi Siamo",    path: "/chi-siamo",accent: "#1a1a1a" },
+    // Intelligence nascosta temporaneamente
+    // { key: "intelligence", label: "▶ Intelligence" /* NASCOSTA */, path: "/intelligence", accent: "#1a1a1a" },
   ];
 
   return (

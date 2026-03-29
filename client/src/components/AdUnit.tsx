@@ -146,7 +146,7 @@ export function AdHomeBanner({ className = "" }: { className?: string }) {
   return <AdUnit slot={AD_SLOTS.HOME_BANNER} format="auto" className={className} style={{ margin: "32px auto", maxWidth: "970px" }} />;
 }
 
-// ─── AI4Business ──────────────────────────────────────────────────────────────
+// ─── AI NEWS ──────────────────────────────────────────────────────────────
 export function AdAiTop({ className = "" }: { className?: string }) {
   return <AdUnit slot={AD_SLOTS.AI_TOP} format="horizontal" className={className} style={{ margin: "16px auto", maxWidth: "970px" }} />;
 }
@@ -174,7 +174,7 @@ export function AdMusicBottom({ className = "" }: { className?: string }) {
   return <AdUnit slot={AD_SLOTS.MUSIC_BOTTOM} format="horizontal" className={className} style={{ margin: "32px auto", maxWidth: "970px" }} />;
 }
 
-// ─── Startup News ─────────────────────────────────────────────────────────────
+// ─── STARTUP NEWS ─────────────────────────────────────────────────────────────
 export function AdStartupTop({ className = "" }: { className?: string }) {
   return <AdUnit slot={AD_SLOTS.STARTUP_TOP} format="horizontal" className={className} style={{ margin: "16px auto", maxWidth: "970px" }} />;
 }

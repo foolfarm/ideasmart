@@ -18,7 +18,7 @@ const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvet
 const ALL_TOPICS = [
   { key: "ai",              label: "AI & Tech",         desc: "Intelligenza artificiale, LLM, agenti AI" },
   { key: "startup",         label: "Startup",            desc: "Funding, founder stories, ecosistema startup" },
-  { key: "research",        label: "Research",           desc: "Ricerche e analisi di mercato" },
+  { key: "research",        label: "RICERCHE",           desc: "Ricerche e analisi di mercato" },
   { key: "venture_capital", label: "Venture Capital",    desc: "Deal, round, fondi VC europei e globali" },
   { key: "finance",         label: "Finance & Markets",  desc: "Mercati finanziari, macro, M&A" },
   { key: "health",          label: "Health & Biotech",   desc: "Biotech, pharma, digital health" },
@@ -28,8 +28,8 @@ const ALL_TOPICS = [
 ];
 
 const SECTION_LABELS: Record<string, string> = {
-  ai: "AI4Business",
-  startup: "Startup News",
+  ai: "AI NEWS",
+  startup: "STARTUP NEWS",
   research: "Research",
   finance: "Finance",
   health: "Health",

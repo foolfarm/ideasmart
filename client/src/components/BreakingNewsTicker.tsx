@@ -1,6 +1,6 @@
 /**
  * BreakingNewsTicker — Barra di scorrimento automatico con le ultime notizie
- * Pivot IdeaSmart: mostra solo AI4Business e Startup News
+ * Pivot IdeaSmart: mostra solo AI NEWS e STARTUP NEWS
  */
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
@@ -25,7 +25,7 @@ export default function BreakingNewsTicker() {
   const posRef = useRef(0);
   const pausedRef = useRef(false);
 
-  // Solo AI4Business e Startup News
+  // Solo AI NEWS e STARTUP NEWS
   const { data: aiNews }      = trpc.news.getLatest.useQuery({ limit: 6, section: "ai" });
   const { data: startupNews } = trpc.news.getLatest.useQuery({ limit: 6, section: "startup" });
 

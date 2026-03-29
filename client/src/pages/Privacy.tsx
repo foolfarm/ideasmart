@@ -165,7 +165,7 @@ export default function Privacy() {
                 </thead>
                 <tbody>
                   {[
-                    ["Invio newsletter AI4Business News", "Consenso esplicito (art. 6.1.a GDPR)", "Fino alla disiscrizione"],
+                    ["Invio newsletter AI NEWS News", "Consenso esplicito (art. 6.1.a GDPR)", "Fino alla disiscrizione"],
                     ["Analisi aperture newsletter", "Legittimo interesse (art. 6.1.f GDPR)", "24 mesi"],
                     ["Sicurezza e prevenzione frodi", "Legittimo interesse (art. 6.1.f GDPR)", "12 mesi"],
                     ["Adempimenti legali e fiscali", "Obbligo legale (art. 6.1.c GDPR)", "10 anni"],
@@ -184,7 +184,7 @@ export default function Privacy() {
 
           <Section id="newsletter" title="4. Newsletter — Iscrizione e Disiscrizione">
             <P>
-              L'iscrizione alla newsletter <strong>AI4Business News by IDEASMART</strong> è volontaria e richiede la fornitura dell'indirizzo email. Iscrivendosi, l'utente acconsente esplicitamente a ricevere comunicazioni periodiche contenenti notizie, analisi e reportage sull'intelligenza artificiale applicata al business.
+              L'iscrizione alla newsletter <strong>AI NEWS News by IDEASMART</strong> è volontaria e richiede la fornitura dell'indirizzo email. Iscrivendosi, l'utente acconsente esplicitamente a ricevere comunicazioni periodiche contenenti notizie, analisi e reportage sull'intelligenza artificiale applicata al business.
             </P>
             <P>
               Ogni email contiene un link di disiscrizione immediata. La disiscrizione è gratuita, senza necessità di fornire motivazioni, e produce effetto entro 24 ore. In alternativa, è possibile richiedere la disiscrizione scrivendo a <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a>.

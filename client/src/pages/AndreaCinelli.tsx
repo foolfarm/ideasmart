@@ -17,8 +17,8 @@ const LINKEDIN_BLUE = "#0077b5";
 const PROFILE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg";
 
 const SECTION_COLORS: Record<string, { accent: string; label: string }> = {
-  ai:      { accent: "#1a1a1a", label: "AI4Business" },
-  startup: { accent: "#2a2a2a", label: "Startup News" },
+  ai:      { accent: "#1a1a1a", label: "AI NEWS" },
+  startup: { accent: "#2a2a2a", label: "STARTUP NEWS" },
   finance: { accent: "#1a1a1a", label: "Finance & Markets" },
 };
 

@@ -396,7 +396,7 @@ export default function VentureCapital() {
                 <Link href="/startup">
                   <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
                     style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                    Startup News →
+                    STARTUP NEWS →
                   </span>
                 </Link>
               </div>
@@ -488,10 +488,10 @@ export default function VentureCapital() {
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 {[
                   { href: "/", label: "Home", color: INK },
-                  { href: "/research", label: "Research", color: "#1a1a1a" },
+                  { href: "/research", label: "RICERCHE", color: "#1a1a1a" },
                   { href: "/finance", label: "Finance", color: "#1a1a1a" },
                   { href: "/startup", label: "Startup", color: "#1a1a1a" },
-                  { href: "/ai", label: "AI4Business", color: "#2a2a2a" },
+                  { href: "/ai", label: "AI NEWS", color: "#2a2a2a" },
                   { href: "/chi-siamo", label: "Chi Siamo", color: INK },
                 ].map(item => (
                   <Link key={item.href} href={item.href}>
