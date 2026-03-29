@@ -267,6 +267,13 @@
       "when": 1774785511764,
       "tag": "0037_mean_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "5",
+      "when": 1774793858308,
+      "tag": "0038_certain_maximus",
+      "breakpoints": true
     }
   ]
 }

@@ -440,72 +440,6 @@ export default function Home() {
 
         </header>
 
-        {/* ══ BANNER INTELLIGENCE — hero compatto, prima del Breaking News ══════ */}
-        <div style={{
-          background: "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)",
-          borderBottom: "2px solid #333333",
-          borderTop: "1px solid rgba(0,229,200,0.15)",
-          minHeight: "200px",
-        }}>
-          <div className="max-w-[1280px] mx-auto px-4 py-8 sm:py-10">
-            <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-10">
-
-              {/* Colonna sinistra 65% */}
-              <div className="flex-1 min-w-0">
-                <span className="text-[9px] font-bold uppercase tracking-[0.3em] block mb-3"
-                  style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.3em" }}>
-                  IDEASMART INTELLIGENCE
-                </span>
-                <h2 className="mb-3 leading-tight font-black"
-                  style={{
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                    fontSize: "clamp(1.5rem, 3.5vw, 2.4rem)",
-                    color: "#ffffff",
-                    lineHeight: 1.15,
-                  }}>
-                  Non leggere le notizie.{" "}
-                  <span style={{ color: "#1a1a1a" }}>Usale per decidere.</span>
-                </h2>
-                <p className="text-[13px] mb-4 leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", maxWidth: "560px" }}>
-                  Competitive monitoring, alert scenario-based e briefing personalizzati per CEO, founder e investitori.
-                </p>
-                {/* Metriche inline */}
-                <div className="flex flex-wrap items-center gap-3">
-                  {["450+ fonti", "8 agenti AI", "Aggiornamento 00:00 CET"].map((m, i) => (
-                    <span key={i} className="text-[10px] uppercase tracking-widest"
-                      style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                      {i > 0 && <span style={{ marginRight: "12px", color: "rgba(0,229,200,0.3)" }}>·</span>}
-                      {m}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Colonna destra 30-35% */}
-              <div className="flex-shrink-0 flex flex-col items-center sm:items-end justify-center gap-2 sm:min-w-[220px]">
-                <Link href="/intelligence">
-                  <span className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90 w-full sm:w-auto"
-                    style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", whiteSpace: "nowrap" }}>
-                    SCOPRI INTELLIGENCE →
-                  </span>
-                </Link>
-                <span className="text-[10px] text-center"
-                  style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Già 100+ decision-maker attivi
-                </span>
-                <Link href="/">
-                  <span className="text-[10px] hover:opacity-70 transition-opacity cursor-pointer underline"
-                    style={{ color: "rgba(255,255,255,0.3)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                    o registrati gratis →
-                  </span>
-                </Link>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
         {/* ══ BREAKING NEWS ════════════════════════════════════════════════════ */}
         <BreakingNewsSection />
         <BreakingNewsTicker />
@@ -811,24 +745,26 @@ export default function Home() {
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
 
-                  {/* Box Intelligence sidebar */}
-                  <div className="mb-5 p-4" style={{ background: "#0f0f0f", border: "1px solid #1a1a1a" }}>
-                    <span className="text-[9px] font-bold uppercase tracking-widest block mb-2" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>IdeaSmart Intelligence</span>
-                    <p className="text-[13px] font-bold leading-snug mb-2" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                      Il tuo briefing AI ogni settimana.
+                  {/* ── Banner iscrizione gratuita — sidebar ── */}
+                  <div className="mb-5 p-4 border-l-4" style={{ background: "#f5f3ee", borderColor: "#1a1a1a" }}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
+                      style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      IDEASMART
                     </p>
-                    <p className="text-[11px] mb-3" style={{ color: "rgba(255,255,255,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: "1.5" }}>
-                      Competitive monitoring, alert scenario-based e analisi personalizzate per chi decide.
+                    <p className="text-[15px] font-black leading-snug mb-1"
+                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.01em" }}>
+                      Ogni giorno 400 news, ricerche e notizie gratis.
                     </p>
-                    <div className="flex flex-col gap-1.5">
-                      <Link href="/intelligence">
-                        <span className="block text-center text-[11px] font-bold uppercase tracking-widest py-2 transition-opacity hover:opacity-80"
-                          style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          Scopri i piani →
-                        </span>
-                      </Link>
-                      <span className="text-[10px] text-center" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Da €39/mese · 100+ decision-maker</span>
-                    </div>
+                    <p className="text-[11px] mb-3"
+                      style={{ color: "rgba(26,26,26,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
+                      AI, Startup e Venture Capital — aggiornato ogni giorno.
+                    </p>
+                    <Link href="/registrati">
+                      <span className="block text-center text-[11px] font-bold uppercase tracking-widest py-2.5 transition-opacity hover:opacity-80 cursor-pointer"
+                        style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Iscriviti gratis →
+                      </span>
+                    </Link>
                   </div>
 
                   {/* Ultime Notizie — stream */}
@@ -913,24 +849,23 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* IdeaSmart Intelligence promo sidebar */}
-                  <div className="mt-6 p-4 border-2"
-                    style={{ borderColor: "#1a1a1a", background: "#0f0f0f" }}>
-                    <span className="text-[9px] font-bold uppercase tracking-widest block mb-2"
-                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                      IdeaSmart Intelligence
-                    </span>
-                    <p className="text-[14px] font-bold leading-snug"
-                      style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                      Il tuo sistema di intelligence operativa.
+                  {/* ── Intelligence promo compatta — sidebar bassa ── */}
+                  <div className="mt-6 p-4 border border-[#1a1a1a]/15">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-2"
+                      style={{ color: "rgba(26,26,26,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      ▶ Intelligence
                     </p>
-                    <p className="mt-2 text-[12px]"
-                      style={{ color: "rgba(255,255,255,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                      Competitive monitoring, deal tracking e briefing personalizzati. Da €39/mese.
+                    <p className="text-[13px] font-bold leading-snug mb-2"
+                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Non leggere le notizie. Usale per decidere.
+                    </p>
+                    <p className="text-[11px] mb-3"
+                      style={{ color: "rgba(26,26,26,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
+                      Briefing settimanale · 450+ fonti · 8 agenti AI
                     </p>
                     <Link href="/intelligence">
-                      <span className="mt-3 inline-block text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 hover:opacity-80 transition-opacity"
-                        style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 border border-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
+                        style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Scopri i piani →
                       </span>
                     </Link>

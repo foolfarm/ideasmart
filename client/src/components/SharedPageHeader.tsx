@@ -6,6 +6,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { useSiteAuth } from "@/hooks/useSiteAuth";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -100,19 +101,63 @@ function SectionNav() {
 export default function SharedPageHeader() {
   const today = new Date();
 
+  const { user, isLoading, isAuthenticated, logout } = useSiteAuth();
+
   return (
     <header
       className="max-w-[1280px] mx-auto px-4 pt-5 pb-0"
       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
-      {/* Riga data + tagline */}
+      {/* Riga data + tagline + auth */}
       <div className="flex items-center justify-between mb-2">
         <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest">
           {formatDateIT(today)}
         </span>
-        <span className="text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest">
-          Research · AI · Startup · Venture Capital
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="hidden sm:inline text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest">
+            Research · AI · Startup · Venture Capital
+          </span>
+          {!isLoading && (
+            isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <Link href="/account">
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
+                    style={{ color: "#1a1a1a" }}
+                  >
+                    {user?.username}
+                  </span>
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-[10px] font-bold uppercase tracking-widest border border-[#1a1a1a]/30 px-2 py-1 hover:bg-[#1a1a1a] hover:text-white transition-colors"
+                  style={{ color: "#1a1a1a", background: "transparent" }}
+                >
+                  Esci
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link href="/accedi">
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
+                    style={{ color: "#1a1a1a" }}
+                  >
+                    Accedi
+                  </span>
+                </Link>
+                <Link href="/registrati">
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 cursor-pointer hover:opacity-80 transition-opacity"
+                    style={{ background: "#1a1a1a", color: "#ffffff" }}
+                  >
+                    Registrati
+                  </span>
+                </Link>
+              </div>
+            )
+          )}
+        </div>
       </div>
 
       <Divider thick />

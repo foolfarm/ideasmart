@@ -487,3 +487,19 @@ export const techEvents = mysqlTable("tech_events", {
 
 export type TechEvent = typeof techEvents.$inferSelect;
 export type InsertTechEvent = typeof techEvents.$inferInsert;
+
+// ── Saved Articles (lista di lettura personale per siteUsers) ─────────────────
+export const savedArticles = mysqlTable("saved_articles", {
+  id: int("id").autoincrement().primaryKey(),
+  siteUserId: int("siteUserId").notNull(),
+  // Tipo di contenuto: news | editorial | reportage | analysis | startup | research
+  contentType: varchar("contentType", { length: 32 }).notNull(),
+  contentId: int("contentId").notNull(),
+  // Snapshot del titolo al momento del salvataggio (per mostrarlo anche se il contenuto viene rimosso)
+  title: varchar("title", { length: 512 }).notNull(),
+  section: varchar("section", { length: 64 }),
+  savedAt: timestamp("savedAt").defaultNow().notNull(),
+});
+
+export type SavedArticle = typeof savedArticles.$inferSelect;
+export type InsertSavedArticle = typeof savedArticles.$inferInsert;

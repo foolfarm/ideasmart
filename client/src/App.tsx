@@ -79,6 +79,7 @@ const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
 const Registrati = lazy(() => import("./pages/Registrati"));
 const Accedi = lazy(() => import("./pages/Accedi"));
 const VerificaEmail = lazy(() => import("./pages/VerificaEmail"));
+const Account = lazy(() => import("./pages/Account"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -129,6 +130,7 @@ function Router() {
         <Route path="/chi-siamo" component={ChiSiamo} />
         <Route path="/manifesto" component={Manifesto} />
         <Route path="/tecnologia" component={Tecnologia} />
+        <Route path="/account" component={Account} />
         <Route path="/registrati" component={Registrati} />
         <Route path="/accedi" component={Accedi} />
         <Route path="/verifica-email" component={VerificaEmail} />
