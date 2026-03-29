@@ -6,8 +6,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 
 const CHANNELS = [
-  { label: "AI4Business", href: "/ai", color: "#00b4a0" },
-  { label: "Startup News", href: "/startup", color: "#e84f00" },
+  { label: "AI4Business", href: "/ai", color: "#1a1a1a" },
+  { label: "Startup News", href: "/startup", color: "#2a2a2a" },
 ];
 
 export default function Navbar() {
@@ -55,14 +55,14 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-2">
               <span
                 className="text-xl sm:text-2xl font-black tracking-tight"
-                style={{ color: "#1a1f2e", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                IDEA<span style={{ color: "#00b4a0" }}>SMART</span> <span style={{ color: "#0a6e5c", fontSize: "0.75em" }}>RESEARCH</span>
+                IDEASMART
               </span>
             </Link>
             <span
               className="hidden sm:block text-xs font-mono tracking-widest uppercase"
-              style={{ color: "#6b7280", fontFamily: "'JetBrains Mono', monospace" }}
+              style={{ color: "#6b7280", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               AI · Startup · Venture Capital
             </span>
@@ -75,7 +75,7 @@ export default function Navbar() {
               <button
                 onClick={() => setChannelsOpen(!channelsOpen)}
                 className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100 flex items-center gap-1"
-                style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
+                style={{ color: "#374151", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 I Canali
                 <svg
@@ -93,7 +93,7 @@ export default function Navbar() {
                       href={ch.href}
                       onClick={() => setChannelsOpen(false)}
                       className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold hover:bg-gray-50 transition-colors"
-                      style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
+                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: ch.color }} />
                       {ch.label}
@@ -107,14 +107,14 @@ export default function Navbar() {
             <Link
               href="/ai"
               className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
-              style={{ color: "#00b4a0", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               AI4Business
             </Link>
             <Link
               href="/startup"
               className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-gray-100"
-              style={{ color: "#e84f00", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Startup News
             </Link>
@@ -125,7 +125,7 @@ export default function Navbar() {
             <Link
               href="/chi-siamo"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-100"
-              style={{ color: "#374151", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#374151", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Chi Siamo
             </Link>
@@ -134,9 +134,9 @@ export default function Navbar() {
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{
                 color: "#00b8a0",
-                borderColor: "#00e5c830",
+                borderColor: "#1a1a1a30",
                 background: "#f0fdfb",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
               }}
             >
               🔬 Research
@@ -145,10 +145,10 @@ export default function Navbar() {
               href="/intelligence"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{
-                color: "#00e5c8",
-                borderColor: "#00e5c830",
+                color: "#1a1a1a",
+                borderColor: "#1a1a1a30",
                 background: "#f0fffe",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
               }}
             >
               ▶ Intelligence
@@ -157,10 +157,10 @@ export default function Navbar() {
               href="/advertise"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{
-                color: "#e84f00",
-                borderColor: "#e84f0030",
+                color: "#2a2a2a",
+                borderColor: "#2a2a2a30",
                 background: "#fff2ec",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
               }}
             >
               Advertising
@@ -169,7 +169,7 @@ export default function Navbar() {
               <button
                 onClick={() => scrollTo("newsletter")}
                 className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:opacity-90 text-white"
-                style={{ background: "#1a1f2e", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Newsletter →
               </button>
@@ -177,7 +177,7 @@ export default function Navbar() {
               <Link
                 href="/"
                 className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:opacity-90 text-white"
-                style={{ background: "#1a1f2e", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 ← Home
               </Link>
@@ -192,18 +192,18 @@ export default function Navbar() {
               <div
                 className="w-6 h-0.5 mb-1.5 transition-all duration-300 origin-center"
                 style={{
-                  background: "#1a1f2e",
+                  background: "#1a1a1a",
                   transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none",
                 }}
               />
               <div
                 className="w-6 h-0.5 mb-1.5 transition-all duration-300"
-                style={{ background: "#1a1f2e", opacity: menuOpen ? 0 : 1 }}
+                style={{ background: "#1a1a1a", opacity: menuOpen ? 0 : 1 }}
               />
               <div
                 className="w-6 h-0.5 transition-all duration-300 origin-center"
                 style={{
-                  background: "#1a1f2e",
+                  background: "#1a1a1a",
                   transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none",
                 }}
               />
@@ -226,7 +226,7 @@ export default function Navbar() {
                   href={ch.href}
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
-                  style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: ch.color }} />
                   {ch.label}
@@ -237,7 +237,7 @@ export default function Navbar() {
             <Link
               href="/research"
               className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors mb-1"
-              style={{ color: "#00b8a0", background: "#f0fdfb", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#00b8a0", background: "#f0fdfb", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
               🔬 Research →
@@ -245,7 +245,7 @@ export default function Navbar() {
             <Link
               href="/chi-siamo"
               className="block w-full text-left px-4 py-3 text-base font-semibold rounded-lg transition-colors hover:bg-gray-50 mb-1"
-              style={{ color: "#1a1f2e", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
               Chi Siamo →
@@ -253,7 +253,7 @@ export default function Navbar() {
             <Link
               href="/intelligence"
               className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors mb-1"
-              style={{ color: "#00e5c8", background: "#f0fffe", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#1a1a1a", background: "#f0fffe", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
               ▶ Intelligence →
@@ -261,7 +261,7 @@ export default function Navbar() {
             <Link
               href="/advertise"
               className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors"
-              style={{ color: "#e84f00", background: "#fff2ec", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#2a2a2a", background: "#fff2ec", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
               Advertising →

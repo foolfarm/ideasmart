@@ -23,8 +23,8 @@ export default function ArchiveSection({
   section,
   accentColor,
   skipCount = 10,
-  fontMono = "'Space Mono', monospace",
-  fontSerif = "'Source Serif 4', Georgia, serif",
+  fontMono = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+  fontSerif = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
 }: ArchiveSectionProps) {
   const [offset, setOffset] = useState(skipCount);
   const [allItems, setAllItems] = useState<any[]>([]);
@@ -62,7 +62,7 @@ export default function ArchiveSection({
   if (!isExpanded && allItems.length === 0) {
     return (
       <div className="mt-8">
-        <div className="w-full border-t-4 border-[#1a1a2e]" />
+        <div className="w-full border-t-4 border-[#1a1a1a]" />
         <div className="py-3 flex items-center gap-4">
           <span
             className="text-[10px] font-bold uppercase tracking-[0.2em]"
@@ -70,7 +70,7 @@ export default function ArchiveSection({
           >
             Archivio
           </span>
-          <div className="flex-1 border-t border-[#1a1a2e]/20" />
+          <div className="flex-1 border-t border-[#1a1a1a]/20" />
         </div>
         <div className="py-4">
           <button
@@ -96,7 +96,7 @@ export default function ArchiveSection({
 
   return (
     <div className="mt-8">
-      <div className="w-full border-t-4 border-[#1a1a2e]" />
+      <div className="w-full border-t-4 border-[#1a1a1a]" />
       <div className="py-3 flex items-center gap-4">
         <span
           className="text-[10px] font-bold uppercase tracking-[0.2em]"
@@ -104,9 +104,9 @@ export default function ArchiveSection({
         >
           Archivio
         </span>
-        <div className="flex-1 border-t border-[#1a1a2e]/20" />
+        <div className="flex-1 border-t border-[#1a1a1a]/20" />
         <span
-          className="text-[10px] text-[#1a1a2e]/40"
+          className="text-[10px] text-[#1a1a1a]/40"
           style={{ fontFamily: fontMono }}
         >
           {allItems.length} articoli
@@ -133,8 +133,8 @@ export default function ArchiveSection({
                 className="block hover:opacity-70 transition-opacity"
               >
                 <h3
-                  className="text-base font-bold leading-snug text-[#1a1a2e] line-clamp-3"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="text-base font-bold leading-snug text-[#1a1a1a] line-clamp-3"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   {item.title}
                 </h3>
@@ -142,7 +142,7 @@ export default function ArchiveSection({
               {/* Summary */}
               {item.summary && (
                 <p
-                  className="mt-1 text-xs leading-relaxed text-[#1a1a2e]/60 line-clamp-2"
+                  className="mt-1 text-xs leading-relaxed text-[#1a1a1a]/60 line-clamp-2"
                   style={{ fontFamily: fontSerif }}
                 >
                   {item.summary}
@@ -150,13 +150,13 @@ export default function ArchiveSection({
               )}
               {/* Meta */}
               <div className="mt-2 flex items-center gap-2">
-                <span className="text-[10px] text-[#1a1a2e]/40" style={{ fontFamily: fontMono }}>
+                <span className="text-[10px] text-[#1a1a1a]/40" style={{ fontFamily: fontMono }}>
                   {item.sourceName}
                 </span>
                 {item.publishedAt && (
                   <>
-                    <span className="text-[10px] text-[#1a1a2e]/20">·</span>
-                    <span className="text-[10px] text-[#1a1a2e]/40" style={{ fontFamily: fontMono }}>
+                    <span className="text-[10px] text-[#1a1a1a]/20">·</span>
+                    <span className="text-[10px] text-[#1a1a1a]/40" style={{ fontFamily: fontMono }}>
                       {new Date(item.publishedAt).toLocaleDateString('it-IT', {
                         day: 'numeric', month: 'short', year: 'numeric',
                       })}
@@ -166,7 +166,7 @@ export default function ArchiveSection({
               </div>
             </div>
             {i < allItems.length - 1 && (
-              <div className="w-full border-t border-[#1a1a2e]/10" />
+              <div className="w-full border-t border-[#1a1a1a]/10" />
             )}
           </div>
         ))}
@@ -195,7 +195,7 @@ export default function ArchiveSection({
       )}
 
       {!hasMore && allItems.length > 0 && (
-        <p className="mt-4 pb-4 text-xs text-[#1a1a2e]/30" style={{ fontFamily: fontMono }}>
+        <p className="mt-4 pb-4 text-xs text-[#1a1a1a]/30" style={{ fontFamily: fontMono }}>
           — Fine archivio —
         </p>
       )}

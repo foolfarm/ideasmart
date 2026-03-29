@@ -12,7 +12,7 @@ interface ReportSourceButtonProps {
   articleType: "news" | "editorial" | "startup" | "reportage" | "analysis";
   articleId: number;
   sourceUrl?: string;
-  /** Colore accent della sezione (es. "#00e5c8") */
+  /** Colore accent della sezione (es. "#1a1a1a") */
   accentColor?: string;
 }
 
@@ -29,7 +29,7 @@ export default function ReportSourceButton({
   articleType,
   articleId,
   sourceUrl,
-  accentColor = "#00e5c8",
+  accentColor = "#1a1a1a",
 }: ReportSourceButtonProps) {
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState<"not_found" | "wrong_content" | "broken_link" | "spam" | "other">("not_found");
@@ -88,7 +88,7 @@ export default function ReportSourceButton({
           >
             <p
               className="text-xs font-bold mb-3 uppercase tracking-wider"
-              style={{ color: accentColor, fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ color: accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Segnala fonte errata
             </p>
@@ -148,7 +148,7 @@ export default function ReportSourceButton({
                 }}
                 disabled={reportMutation.isPending}
                 className="flex-1 py-1.5 rounded-lg text-xs font-bold transition-opacity disabled:opacity-50"
-                style={{ background: accentColor, color: "#0a0f1e" }}
+                style={{ background: accentColor, color: "#0f0f0f" }}
               >
                 {reportMutation.isPending ? "Invio..." : "Invia segnalazione"}
               </button>

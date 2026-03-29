@@ -8,20 +8,20 @@ import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 
 const SECTION_COLORS = {
-  ai:           { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business",      path: "/ai" },
-  music:        { accent: "#5b21b6", light: "#ede9fe", label: "ITsMusic",          path: "/music" },
-  startup:      { accent: "#c2410c", light: "#fff0e6", label: "Startup News",      path: "/startup" },
-  finance:      { accent: "#15803d", light: "#f0fdf4", label: "Finance & Markets", path: "/finance" },
-  health:       { accent: "#0369a1", light: "#eff6ff", label: "Health & Biotech",  path: "/health" },
-  sport:        { accent: "#b45309", light: "#fffbeb", label: "Sport & Business",  path: "/sport" },
-  luxury:       { accent: "#7c3aed", light: "#faf5ff", label: "Lifestyle & Luxury",path: "/luxury" },
-  news:         { accent: "#1a1f2e", light: "#f1f5f9", label: "News Italia",        path: "/news" },
-  motori:       { accent: "#dc2626", light: "#fef2f2", label: "Motori",             path: "/motori" },
-  tennis:       { accent: "#65a30d", light: "#f7fee7", label: "Tennis",             path: "/tennis" },
-  basket:       { accent: "#ea580c", light: "#fff7ed", label: "Basket",             path: "/basket" },
-  gossip:       { accent: "#db2777", light: "#fdf2f8", label: "Business Gossip",    path: "/gossip" },
-  cybersecurity:{ accent: "#0ea5e9", light: "#f0f9ff", label: "Cybersecurity",      path: "/cybersecurity" },
-  sondaggi:     { accent: "#8b5cf6", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
+  ai:           { accent: "#1a1a1a", light: "#e6f4f1", label: "AI4Business",      path: "/ai" },
+  music:        { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",          path: "/music" },
+  startup:      { accent: "#2a2a2a", light: "#fff0e6", label: "Startup News",      path: "/startup" },
+  finance:      { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets", path: "/finance" },
+  health:       { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",  path: "/health" },
+  sport:        { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",  path: "/sport" },
+  luxury:       { accent: "#2a2a2a", light: "#faf5ff", label: "Lifestyle & Luxury",path: "/luxury" },
+  news:         { accent: "#1a1a1a", light: "#f1f5f9", label: "News Italia",        path: "/news" },
+  motori:       { accent: "#2a2a2a", light: "#fef2f2", label: "Motori",             path: "/motori" },
+  tennis:       { accent: "#2a2a2a", light: "#f7fee7", label: "Tennis",             path: "/tennis" },
+  basket:       { accent: "#2a2a2a", light: "#fff7ed", label: "Basket",             path: "/basket" },
+  gossip:       { accent: "#2a2a2a", light: "#fdf2f8", label: "Business Gossip",    path: "/gossip" },
+  cybersecurity:{ accent: "#1a1a1a", light: "#f0f9ff", label: "Cybersecurity",      path: "/cybersecurity" },
+  sondaggi:     { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
 } as const;
 
 const SECTIONS = ["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const;
@@ -84,10 +84,10 @@ export default function SectionChannelBar() {
                   <span
                     className="relative flex items-center px-4 py-2.5 text-[9.5px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200"
                     style={{
-                      fontFamily: "'Space Mono', monospace",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none",
                       background: isActive ? s.accent : "",
-                      color: isActive ? "#fff" : "#1a1a2e",
+                      color: isActive ? "#fff" : "#1a1a1a",
                     }}
                     onMouseEnter={e => {
                       if (!isActive) {
@@ -98,7 +98,7 @@ export default function SectionChannelBar() {
                     onMouseLeave={e => {
                       if (!isActive) {
                         (e.currentTarget as HTMLElement).style.background = "";
-                        (e.currentTarget as HTMLElement).style.color = "#1a1a2e";
+                        (e.currentTarget as HTMLElement).style.color = "#1a1a1a";
                       }
                     }}
                   >
@@ -109,7 +109,7 @@ export default function SectionChannelBar() {
                         style={{
                           background: isActive ? "rgba(255,255,255,0.25)" : s.light,
                           color: isActive ? "#fff" : s.accent,
-                          fontFamily: "'Space Mono', monospace",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                           lineHeight: 1,
                         }}
                       >
@@ -140,7 +140,7 @@ export default function SectionChannelBar() {
             onClick={() => scrollRef.current?.scrollBy({ left: 120, behavior: "smooth" })}
             aria-label="Scorri canali"
           >
-            <span style={{ fontSize: "14px", color: "#1a1a2e", fontWeight: "bold" }}>›</span>
+            <span style={{ fontSize: "14px", color: "#1a1a1a", fontWeight: "bold" }}>›</span>
           </button>
         )}
       </div>

@@ -39,20 +39,20 @@ export default function AdminNewsletterPerformance() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
-        <div className="w-8 h-8 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+        <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
         <div className="text-center">
-          <p className="text-white/60 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="text-white/60 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Accesso riservato agli amministratori.
           </p>
-          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-bold" style={{ background: "#00e5c8", color: "#0a0f1e" }}>
+          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-bold" style={{ background: "#1a1a1a", color: "#0f0f0f" }}>
             Torna alla Home
           </button>
         </div>
@@ -73,8 +73,8 @@ export default function AdminNewsletterPerformance() {
 
   // Definizione canali con colori
   const CHANNELS = [
-    { key: "ai", label: "AI", color: "#00e5c8" },
-    { key: "startup", label: "Startup", color: "#ff5500" },
+    { key: "ai", label: "AI", color: "#1a1a1a" },
+    { key: "startup", label: "Startup", color: "#2a2a2a" },
     { key: "finance", label: "Finance", color: "#3b82f6" },
     { key: "sport", label: "Sport", color: "#22c55e" },
     { key: "music", label: "Music", color: "#a855f7" },
@@ -102,7 +102,7 @@ export default function AdminNewsletterPerformance() {
   });
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0f1e" }}>
+    <div className="min-h-screen" style={{ background: "#0f0f0f" }}>
 
       {/* Header */}
       <div className="border-b border-white/8" style={{ background: "#060a14" }}>
@@ -112,7 +112,7 @@ export default function AdminNewsletterPerformance() {
               ← Admin
             </button>
             <span className="text-white/20">/</span>
-            <span className="text-sm font-bold" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span className="text-sm font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Performance Newsletter
             </span>
           </div>
@@ -127,7 +127,7 @@ export default function AdminNewsletterPerformance() {
 
         {/* Segmentazione Canali */}
         <div className="rounded-2xl border border-white/8 p-5 mb-8" style={{ background: "rgba(255,255,255,0.02)" }}>
-          <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Iscritti Attivi per Canale</p>
+          <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Iscritti Attivi per Canale</p>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
             {channelStats.map(ch => (
               <button
@@ -140,7 +140,7 @@ export default function AdminNewsletterPerformance() {
                   cursor: "pointer",
                 }}
               >
-                <div className="text-2xl font-black mb-0.5" style={{ color: ch.color, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <div className="text-2xl font-black mb-0.5" style={{ color: ch.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   {ch.count}
                 </div>
                 <div className="text-xs text-white/40 uppercase tracking-wider">{ch.label}</div>
@@ -153,14 +153,14 @@ export default function AdminNewsletterPerformance() {
         {/* KPI Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
-            { label: "Email totali inviate", value: totalSent.toLocaleString("it-IT"), color: "#00e5c8", icon: "📤" },
-            { label: "Aperture totali", value: totalOpened.toLocaleString("it-IT"), color: "#00e5c8", icon: "👁" },
-            { label: "Tasso apertura medio", value: `${avgOpenRate}%`, color: avgOpenRate >= 20 ? "#00e5c8" : avgOpenRate >= 10 ? "#ff9900" : "#ff5500", icon: "📊" },
-            { label: "Disiscrizioni totali", value: totalUnsubscribed.toLocaleString("it-IT"), color: "#ff5500", icon: "🚫" },
+            { label: "Email totali inviate", value: totalSent.toLocaleString("it-IT"), color: "#1a1a1a", icon: "📤" },
+            { label: "Aperture totali", value: totalOpened.toLocaleString("it-IT"), color: "#1a1a1a", icon: "👁" },
+            { label: "Tasso apertura medio", value: `${avgOpenRate}%`, color: avgOpenRate >= 20 ? "#1a1a1a" : avgOpenRate >= 10 ? "#ff9900" : "#2a2a2a", icon: "📊" },
+            { label: "Disiscrizioni totali", value: totalUnsubscribed.toLocaleString("it-IT"), color: "#2a2a2a", icon: "🚫" },
           ].map((stat) => (
             <div key={stat.label} className="rounded-2xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
               <div className="text-2xl mb-1">{stat.icon}</div>
-              <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "'Space Grotesk', sans-serif" }}>
+              <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 {stat.value}
               </div>
               <div className="text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
@@ -179,9 +179,9 @@ export default function AdminNewsletterPerformance() {
               onClick={() => setTab(t.id as "campaigns" | "subscribers")}
               className="px-5 py-3 text-sm font-bold transition-all border-b-2 -mb-px"
               style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                color: tab === t.id ? "#00e5c8" : "rgba(255,255,255,0.35)",
-                borderBottomColor: tab === t.id ? "#00e5c8" : "transparent",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                color: tab === t.id ? "#1a1a1a" : "rgba(255,255,255,0.35)",
+                borderBottomColor: tab === t.id ? "#1a1a1a" : "transparent",
                 background: "transparent",
               }}
             >
@@ -194,7 +194,7 @@ export default function AdminNewsletterPerformance() {
         {tab === "campaigns" && (
           <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
             <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
-              <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ Storico Campagne Newsletter
               </p>
               <button onClick={() => campaignsQuery.refetch()} className="text-xs text-white/30 hover:text-white/60 transition-colors">
@@ -204,7 +204,7 @@ export default function AdminNewsletterPerformance() {
 
             {campaignsQuery.isLoading ? (
               <div className="p-8 text-center">
-                <div className="w-6 h-6 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin mx-auto" />
               </div>
             ) : campaigns.length === 0 ? (
               <div className="p-12 text-center">
@@ -226,10 +226,10 @@ export default function AdminNewsletterPerformance() {
                   <tbody>
                     {[...campaigns].reverse().map((c) => {
                       const rate = c.openRate ?? 0;
-                      const rateColor = rate >= 25 ? "#00e5c8" : rate >= 15 ? "#ff9900" : rate >= 5 ? "#ffcc00" : "#ff5500";
+                      const rateColor = rate >= 25 ? "#1a1a1a" : rate >= 15 ? "#ff9900" : rate >= 5 ? "#ffcc00" : "#2a2a2a";
                       return (
                         <tr key={c.id} className="border-b border-white/4 hover:bg-white/2 transition-colors">
-                          <td className="px-5 py-4 text-sm text-white/80 max-w-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                          <td className="px-5 py-4 text-sm text-white/80 max-w-xs" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                             <span className="line-clamp-2">{c.subject}</span>
                           </td>
                           <td className="px-5 py-4 text-xs text-white/40 text-center whitespace-nowrap">
@@ -238,12 +238,12 @@ export default function AdminNewsletterPerformance() {
                           <td className="px-5 py-4 text-sm text-white/70 text-center font-mono">
                             {(c.recipientCount ?? 0).toLocaleString("it-IT")}
                           </td>
-                          <td className="px-5 py-4 text-sm text-center font-mono" style={{ color: "#00e5c8" }}>
+                          <td className="px-5 py-4 text-sm text-center font-mono" style={{ color: "#1a1a1a" }}>
                             {(c.openedCount ?? 0).toLocaleString("it-IT")}
                           </td>
                           <td className="px-5 py-4 text-center">
                             <div className="flex flex-col items-center gap-1">
-                              <span className="text-sm font-black" style={{ color: rateColor, fontFamily: "'Space Grotesk', sans-serif" }}>
+                              <span className="text-sm font-black" style={{ color: rateColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                                 {rate}%
                               </span>
                               {/* Barra visuale */}
@@ -275,12 +275,12 @@ export default function AdminNewsletterPerformance() {
                 placeholder="Cerca per email o nome..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-[#00e5c8] transition-colors w-64"
+                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-[#1a1a1a] transition-colors w-64"
               />
               <select
                 value={filterStatus}
                 onChange={e => setFilterStatus(e.target.value as "all" | "active" | "unsubscribed")}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#00e5c8] transition-colors"
+                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#1a1a1a] transition-colors"
               >
                 <option value="all">Tutti gli stati</option>
                 <option value="active">Solo attivi</option>
@@ -289,7 +289,7 @@ export default function AdminNewsletterPerformance() {
               <select
                 value={filterOpened}
                 onChange={e => setFilterOpened(e.target.value as "all" | "opened" | "never")}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#00e5c8] transition-colors"
+                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#1a1a1a] transition-colors"
               >
                 <option value="all">Tutte le aperture</option>
                 <option value="opened">Ha aperto almeno 1 volta</option>
@@ -298,7 +298,7 @@ export default function AdminNewsletterPerformance() {
               <select
                 value={filterChannel}
                 onChange={e => setFilterChannel(e.target.value as typeof filterChannel)}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#00e5c8] transition-colors"
+                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#1a1a1a] transition-colors"
               >
                 <option value="all">Tutti i canali</option>
                 <option value="ai">AI</option>
@@ -316,7 +316,7 @@ export default function AdminNewsletterPerformance() {
 
             <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
               <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   ◆ Iscritti con Tracking ({filtered.length})
                 </p>
                 <button onClick={() => subscribersQuery.refetch()} className="text-xs text-white/30 hover:text-white/60 transition-colors">
@@ -326,7 +326,7 @@ export default function AdminNewsletterPerformance() {
 
               {subscribersQuery.isLoading ? (
                 <div className="p-8 text-center">
-                  <div className="w-6 h-6 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin mx-auto" />
+                  <div className="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin mx-auto" />
                 </div>
               ) : filtered.length === 0 ? (
                 <div className="p-8 text-center">
@@ -353,7 +353,7 @@ export default function AdminNewsletterPerformance() {
                         const isUnsub = sub.status === "unsubscribed";
                         return (
                           <tr key={sub.id} className="border-b border-white/4 hover:bg-white/2 transition-colors">
-                            <td className="px-4 py-3 text-sm text-white/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                            <td className="px-4 py-3 text-sm text-white/80" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                               {sub.email}
                             </td>
                             <td className="px-4 py-3 text-sm text-white/40">{sub.name ?? "—"}</td>
@@ -362,7 +362,7 @@ export default function AdminNewsletterPerformance() {
                                 className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
                                 style={{
                                   background: isUnsub ? "rgba(255,85,0,0.15)" : "rgba(0,229,200,0.15)",
-                                  color: isUnsub ? "#ff5500" : "#00e5c8",
+                                  color: isUnsub ? "#2a2a2a" : "#1a1a1a",
                                 }}
                               >
                                 {isUnsub ? "Disattivato" : "Attivo"}
@@ -373,7 +373,7 @@ export default function AdminNewsletterPerformance() {
                             </td>
                             <td className="px-4 py-3 text-center">
                               {hasOpened ? (
-                                <span className="inline-flex items-center gap-1 text-sm font-bold" style={{ color: "#00e5c8" }}>
+                                <span className="inline-flex items-center gap-1 text-sm font-bold" style={{ color: "#1a1a1a" }}>
                                   <span>👁</span>
                                   <span>{sub.totalOpened}</span>
                                 </span>
@@ -391,8 +391,8 @@ export default function AdminNewsletterPerformance() {
                               <div className="flex flex-wrap gap-1">
                                 {(sub.parsedChannels as string[] ?? []).map((ch: string) => {
                                   const chInfo = [
-                                    { key: "ai", label: "AI", color: "#00e5c8" },
-                                    { key: "startup", label: "ST", color: "#ff5500" },
+                                    { key: "ai", label: "AI", color: "#1a1a1a" },
+                                    { key: "startup", label: "ST", color: "#2a2a2a" },
                                     { key: "finance", label: "FI", color: "#3b82f6" },
                                     { key: "sport", label: "SP", color: "#22c55e" },
                                     { key: "music", label: "MU", color: "#a855f7" },

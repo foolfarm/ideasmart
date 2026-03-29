@@ -14,29 +14,29 @@ import {
 
 // ── Palette sezioni (identica alla Home) ─────────────────────────────────────
 const SECTION_COLORS = {
-  ai:            { accent: "#0a6e5c", light: "#e6f4f1", label: "AI4Business",       path: "/ai" },
-  music:         { accent: "#5b21b6", light: "#ede9fe", label: "ITsMusic",           path: "/music" },
-  startup:       { accent: "#c2410c", light: "#fff0e6", label: "Startup News",       path: "/startup" },
-  finance:       { accent: "#15803d", light: "#f0fdf4", label: "Finance & Markets",  path: "/finance" },
-  health:        { accent: "#0369a1", light: "#eff6ff", label: "Health & Biotech",   path: "/health" },
-  sport:         { accent: "#b45309", light: "#fffbeb", label: "Sport & Business",   path: "/sport" },
-  luxury:        { accent: "#7c3aed", light: "#faf5ff", label: "Lifestyle & Luxury", path: "/luxury" },
-  news:          { accent: "#1a1f2e", light: "#f1f5f9", label: "News Italia",        path: "/news" },
-  motori:        { accent: "#dc2626", light: "#fef2f2", label: "Motori",             path: "/motori" },
-  tennis:        { accent: "#65a30d", light: "#f7fee7", label: "Tennis",             path: "/tennis" },
-  basket:        { accent: "#ea580c", light: "#fff7ed", label: "Basket",             path: "/basket" },
-  gossip:        { accent: "#db2777", light: "#fdf2f8", label: "Business Gossip",    path: "/gossip" },
-  cybersecurity: { accent: "#0ea5e9", light: "#f0f9ff", label: "Cybersecurity",      path: "/cybersecurity" },
-  sondaggi:      { accent: "#8b5cf6", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
+  ai:            { accent: "#1a1a1a", light: "#e6f4f1", label: "AI4Business",       path: "/ai" },
+  music:         { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",           path: "/music" },
+  startup:       { accent: "#2a2a2a", light: "#fff0e6", label: "Startup News",       path: "/startup" },
+  finance:       { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets",  path: "/finance" },
+  health:        { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",   path: "/health" },
+  sport:         { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",   path: "/sport" },
+  luxury:        { accent: "#2a2a2a", light: "#faf5ff", label: "Lifestyle & Luxury", path: "/luxury" },
+  news:          { accent: "#1a1a1a", light: "#f1f5f9", label: "News Italia",        path: "/news" },
+  motori:        { accent: "#2a2a2a", light: "#fef2f2", label: "Motori",             path: "/motori" },
+  tennis:        { accent: "#2a2a2a", light: "#f7fee7", label: "Tennis",             path: "/tennis" },
+  basket:        { accent: "#2a2a2a", light: "#fff7ed", label: "Basket",             path: "/basket" },
+  gossip:        { accent: "#2a2a2a", light: "#fdf2f8", label: "Business Gossip",    path: "/gossip" },
+  cybersecurity: { accent: "#1a1a1a", light: "#f0f9ff", label: "Cybersecurity",      path: "/cybersecurity" },
+  sondaggi:      { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
 };
 
 // ── Config categorie ricerche ─────────────────────────────────────────────────
 const CATEGORY_CONFIG: Record<string, { label: string; icon: React.ReactNode; accentColor: string; bgColor: string }> = {
-  startup:         { label: "Startup",         icon: <Building2 className="w-3.5 h-3.5" />,  accentColor: "#c2410c", bgColor: "#fff0e6" },
-  venture_capital: { label: "Venture Capital", icon: <DollarSign className="w-3.5 h-3.5" />, accentColor: "#15803d", bgColor: "#f0fdf4" },
-  ai_trends:       { label: "AI Trends",       icon: <Cpu className="w-3.5 h-3.5" />,        accentColor: "#0a6e5c", bgColor: "#e6f4f1" },
-  technology:      { label: "Tecnologia",      icon: <BarChart3 className="w-3.5 h-3.5" />,  accentColor: "#7c3aed", bgColor: "#faf5ff" },
-  market:          { label: "Mercati",         icon: <TrendingUp className="w-3.5 h-3.5" />, accentColor: "#0369a1", bgColor: "#eff6ff" },
+  startup:         { label: "Startup",         icon: <Building2 className="w-3.5 h-3.5" />,  accentColor: "#2a2a2a", bgColor: "#fff0e6" },
+  venture_capital: { label: "Venture Capital", icon: <DollarSign className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f0fdf4" },
+  ai_trends:       { label: "AI Trends",       icon: <Cpu className="w-3.5 h-3.5" />,        accentColor: "#1a1a1a", bgColor: "#e6f4f1" },
+  technology:      { label: "Tecnologia",      icon: <BarChart3 className="w-3.5 h-3.5" />,  accentColor: "#2a2a2a", bgColor: "#faf5ff" },
+  market:          { label: "Mercati",         icon: <TrendingUp className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#eff6ff" },
 };
 
 const REGION_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
@@ -46,7 +46,7 @@ const REGION_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = 
 };
 
 function getCategoryConfig(cat: string) {
-  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a2e", bgColor: "#f5f2ec" };
+  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f5f2ec" };
 }
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
@@ -69,7 +69,7 @@ function formatDateIT(date: Date): string {
 }
 
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
 }
 
 // ── SectionNav (identica alla Home) ──────────────────────────────────────────
@@ -95,7 +95,7 @@ function SectionNav() {
   const SECTIONS = ["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const;
 
   return (
-    <nav className="border-t border-[#1a1a2e] overflow-hidden">
+    <nav className="border-t border-[#1a1a1a] overflow-hidden">
       {/* Riga 1: canali editoriali */}
       <div className="relative">
         <div ref={scrollRef} className="overflow-x-auto scrollbar-hide">
@@ -108,10 +108,10 @@ function SectionNav() {
                   <span
                     className="relative flex items-center px-4 py-2.5 text-[9.5px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200"
                     style={{
-                      fontFamily: "'Space Mono', monospace",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none",
                       background: isActive ? s.accent : "",
-                      color: isActive ? "#fff" : "#1a1a2e",
+                      color: isActive ? "#fff" : "#1a1a1a",
                     }}
                     onMouseEnter={e => {
                       if (!isActive) {
@@ -122,7 +122,7 @@ function SectionNav() {
                     onMouseLeave={e => {
                       if (!isActive) {
                         (e.currentTarget as HTMLElement).style.background = "";
-                        (e.currentTarget as HTMLElement).style.color = "#1a1a2e";
+                        (e.currentTarget as HTMLElement).style.color = "#1a1a1a";
                       }
                     }}
                   >
@@ -133,7 +133,7 @@ function SectionNav() {
                         style={{
                           background: isActive ? "rgba(255,255,255,0.25)" : s.light,
                           color: isActive ? "#fff" : s.accent,
-                          fontFamily: "'Space Mono', monospace",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                           lineHeight: 1,
                         }}
                       >
@@ -156,7 +156,7 @@ function SectionNav() {
             onClick={() => scrollRef.current?.scrollBy({ left: 120, behavior: "smooth" })}
             aria-label="Scorri menu"
           >
-            <span style={{ fontSize: "14px", color: "#1a1a2e", fontWeight: "bold" }}>›</span>
+            <span style={{ fontSize: "14px", color: "#1a1a1a", fontWeight: "bold" }}>›</span>
           </button>
         )}
       </div>
@@ -164,29 +164,29 @@ function SectionNav() {
       {/* Riga 2: pagine istituzionali */}
       <div className="flex flex-wrap items-center border-t" style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}>
         <Link href="/research">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#0a6e5c]/80 hover:text-[#0a6e5c] hover:underline decoration-[#0a6e5c] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Research</span>
+          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a1a]/80 hover:text-[#1a1a1a] hover:underline decoration-[#1a1a1a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Research</span>
         </Link>
-        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <span className="text-[#1a1a1a]/15 text-xs">|</span>
         <Link href="/chi-siamo">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#0369a1] hover:underline decoration-[#0369a1] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Chi Siamo</span>
+          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a1a]/60 hover:text-[#1a1a1a] hover:underline decoration-[#1a1a1a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Chi Siamo</span>
         </Link>
-        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <span className="text-[#1a1a1a]/15 text-xs">|</span>
         <Link href="/tecnologia">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a2e]/60 hover:text-[#00b89a] hover:underline decoration-[#00b89a] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Tecnologia</span>
+          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a1a]/60 hover:text-[#00b89a] hover:underline decoration-[#00b89a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Tecnologia</span>
         </Link>
-        <span className="text-[#1a1a2e]/15 text-xs">|</span>
+        <span className="text-[#1a1a1a]/15 text-xs">|</span>
         <Link href="/advertise">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#ff5500]/70 hover:text-[#ff5500] hover:underline decoration-[#ff5500] underline-offset-2" style={{ fontFamily: "'Space Mono', monospace" }}>Advertise</span>
+          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#2a2a2a]/70 hover:text-[#2a2a2a] hover:underline decoration-[#2a2a2a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Advertise</span>
         </Link>
-        <span className="text-[#1a1a2e]/15 text-xs mx-1">·</span>
+        <span className="text-[#1a1a1a]/15 text-xs mx-1">·</span>
         <ReadersCounter />
         <div className="ml-auto flex items-center">
           <Link href="/business">
             <span
               className="flex items-center gap-2 px-5 py-2 text-[9px] font-black uppercase tracking-[0.14em] cursor-pointer transition-all duration-200"
-              style={{ fontFamily: "'Space Mono', monospace", background: "#1a1a2e", color: "#ff5500", letterSpacing: "0.14em" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#ff5500"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#1a1a2e"; (e.currentTarget as HTMLElement).style.color = "#ff5500"; }}
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", background: "#1a1a1a", color: "#2a2a2a", letterSpacing: "0.14em" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#2a2a2a"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLElement).style.color = "#2a2a2a"; }}
             >
               <span style={{ fontSize: "10px" }}>▶</span>
               IdeaSmart Business
@@ -213,20 +213,20 @@ function ResearchHeroCard({ report }: {
   const imgUrl = getImageUrl(report);
 
   return (
-    <div className="border-2 border-[#1a1a2e] overflow-hidden" style={{ background: "#f5f2ec" }}>
+    <div className="border-2 border-[#1a1a1a] overflow-hidden" style={{ background: "#f5f2ec" }}>
       {/* Intestazione categoria */}
       <div
-        className="px-6 py-2.5 flex items-center gap-2 border-b border-[#1a1a2e]/10"
+        className="px-6 py-2.5 flex items-center gap-2 border-b border-[#1a1a1a]/10"
         style={{ background: catConfig.bgColor }}
       >
         <FlaskConical className="w-4 h-4" style={{ color: catConfig.accentColor }} />
         <span
           className="text-[10px] font-bold uppercase tracking-[0.25em]"
-          style={{ color: catConfig.accentColor, fontFamily: "'Space Mono', monospace" }}
+          style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           Ricerca del Giorno — {catConfig.label}
         </span>
-        <span className="ml-auto text-[10px] text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
+        <span className="ml-auto text-[10px] text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {report.dateLabel}
         </span>
       </div>
@@ -240,7 +240,7 @@ function ResearchHeroCard({ report }: {
             className="w-full h-56 md:h-full object-cover"
             style={{ minHeight: "240px" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a2e]/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#f5f2ec]/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#f5f2ec]/30" />
         </div>
 
         {/* Contenuto */}
@@ -248,38 +248,38 @@ function ResearchHeroCard({ report }: {
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span
               className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 border"
-              style={{ color: catConfig.accentColor, borderColor: catConfig.accentColor, background: catConfig.bgColor, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: catConfig.accentColor, borderColor: catConfig.accentColor, background: catConfig.bgColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {catConfig.icon} {catConfig.label}
             </span>
-            <span className="inline-flex items-center gap-1 text-[10px] text-[#1a1a2e]/50 uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <span className="inline-flex items-center gap-1 text-[10px] text-[#1a1a1a]/50 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {regionConfig.icon} {regionConfig.label}
             </span>
-            <span className="inline-flex items-center gap-1 text-[10px] text-[#1a1a2e]/50 uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <span className="inline-flex items-center gap-1 text-[10px] text-[#1a1a1a]/50 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               <BookOpen className="w-3 h-3" /> {report.source}
             </span>
           </div>
 
           <h2
-            className="text-2xl md:text-3xl font-black text-[#1a1a2e] leading-tight mb-4"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            className="text-2xl md:text-3xl font-black text-[#1a1a1a] leading-tight mb-4"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {report.title}
           </h2>
 
-          <p className="text-[#1a1a2e]/70 text-base leading-relaxed mb-5" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+          <p className="text-[#1a1a1a]/70 text-base leading-relaxed mb-5" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
             {report.summary}
           </p>
 
           {report.keyFindings.length > 0 && (
-            <div className="border border-[#1a1a2e]/15 p-4 mb-5" style={{ background: "#faf8f3" }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: catConfig.accentColor, fontFamily: "'Space Mono', monospace" }}>
+            <div className="border border-[#1a1a1a]/15 p-4 mb-5" style={{ background: "#faf8f3" }}>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Key Findings
               </p>
               <ul className="space-y-1.5">
                 {report.keyFindings.map((f, i) => (
-                  <li key={i} className="flex gap-2 text-[#1a1a2e]/70 text-sm leading-relaxed" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                    <span className="font-black shrink-0" style={{ color: catConfig.accentColor, fontFamily: "'Space Mono', monospace" }}>{i + 1}.</span>
+                  <li key={i} className="flex gap-2 text-[#1a1a1a]/70 text-sm leading-relaxed" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                    <span className="font-black shrink-0" style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{i + 1}.</span>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -293,8 +293,8 @@ function ResearchHeroCard({ report }: {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackView.mutate({ id: report.id })}
-              className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#1a1a2e]/50 hover:text-[#1a1a2e] transition-colors"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Fonte originale <ExternalLink className="w-3 h-3" />
             </a>
@@ -321,14 +321,14 @@ function ResearchCard({ report }: {
   const imgUrl = getImageUrl(report);
 
   return (
-    <div className="border border-[#1a1a2e]/15 overflow-hidden hover:border-[#1a1a2e]/40 transition-colors" style={{ background: "#f5f2ec" }}>
+    <div className="border border-[#1a1a1a]/15 overflow-hidden hover:border-[#1a1a1a]/40 transition-colors" style={{ background: "#f5f2ec" }}>
       {/* Immagine */}
       <div className="relative overflow-hidden" style={{ height: "160px" }}>
         <img src={imgUrl} alt={report.title} className="w-full h-full object-cover" />
         <div className="absolute top-3 left-3">
           <span
             className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5"
-            style={{ color: catConfig.accentColor, background: catConfig.bgColor, fontFamily: "'Space Mono', monospace" }}
+            style={{ color: catConfig.accentColor, background: catConfig.bgColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {catConfig.icon} {catConfig.label}
           </span>
@@ -338,37 +338,37 @@ function ResearchCard({ report }: {
       {/* Contenuto */}
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
-          <span className="inline-flex items-center gap-1 text-[9px] text-[#1a1a2e]/40 uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>
+          <span className="inline-flex items-center gap-1 text-[9px] text-[#1a1a1a]/40 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             {regionConfig.icon} {regionConfig.label}
           </span>
-          <span className="text-[#1a1a2e]/20 text-[9px]">·</span>
-          <span className="text-[9px] text-[#1a1a2e]/40 uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>
+          <span className="text-[#1a1a1a]/20 text-[9px]">·</span>
+          <span className="text-[9px] text-[#1a1a1a]/40 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             {report.source}
           </span>
         </div>
 
         <h3
-          className="font-black text-[#1a1a2e] text-base leading-snug mb-2 cursor-pointer hover:opacity-70 transition-opacity"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          className="font-black text-[#1a1a1a] text-base leading-snug mb-2 cursor-pointer hover:opacity-70 transition-opacity"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           onClick={() => setExpanded(!expanded)}
         >
           {report.title}
         </h3>
 
         {expanded && (
-          <div className="mt-3 pt-3 border-t border-[#1a1a2e]/10">
-            <p className="text-[#1a1a2e]/70 text-sm leading-relaxed mb-3" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+          <div className="mt-3 pt-3 border-t border-[#1a1a1a]/10">
+            <p className="text-[#1a1a1a]/70 text-sm leading-relaxed mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
               {report.summary}
             </p>
             {report.keyFindings.length > 0 && (
-              <div className="border border-[#1a1a2e]/10 p-3 mb-3" style={{ background: "#faf8f3" }}>
-                <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: catConfig.accentColor, fontFamily: "'Space Mono', monospace" }}>
+              <div className="border border-[#1a1a1a]/10 p-3 mb-3" style={{ background: "#faf8f3" }}>
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Key Findings
                 </p>
                 <ul className="space-y-1">
                   {report.keyFindings.map((f, i) => (
-                    <li key={i} className="flex gap-2 text-[#1a1a2e]/60 text-xs leading-relaxed" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                      <span className="font-black shrink-0" style={{ color: catConfig.accentColor, fontFamily: "'Space Mono', monospace" }}>{i + 1}.</span>
+                    <li key={i} className="flex gap-2 text-[#1a1a1a]/60 text-xs leading-relaxed" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                      <span className="font-black shrink-0" style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{i + 1}.</span>
                       <span>{f}</span>
                     </li>
                   ))}
@@ -381,8 +381,8 @@ function ResearchCard({ report }: {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackView.mutate({ id: report.id })}
-                className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-[#1a1a2e]/40 hover:text-[#1a1a2e] transition-colors"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Fonte <ExternalLink className="w-3 h-3" />
               </a>
@@ -392,8 +392,8 @@ function ResearchCard({ report }: {
 
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-2 flex items-center gap-1 text-[9px] uppercase tracking-widest text-[#1a1a2e]/30 hover:text-[#1a1a2e]/60 transition-colors"
-          style={{ fontFamily: "'Space Mono', monospace" }}
+          className="mt-2 flex items-center gap-1 text-[9px] uppercase tracking-widest text-[#1a1a1a]/30 hover:text-[#1a1a1a]/60 transition-colors"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           {expanded ? <><ChevronUp className="w-3 h-3" /> Meno</> : <><ChevronDown className="w-3 h-3" /> Leggi</>}
         </button>
@@ -406,10 +406,10 @@ function ResearchCard({ report }: {
 function ResearchSkeleton() {
   return (
     <div className="animate-pulse space-y-6">
-      <div className="h-72 bg-[#1a1a2e]/8 border border-[#1a1a2e]/10" />
+      <div className="h-72 bg-[#1a1a1a]/8 border border-[#1a1a1a]/10" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="h-48 bg-[#1a1a2e]/5 border border-[#1a1a2e]/10" />
+          <div key={i} className="h-48 bg-[#1a1a1a]/5 border border-[#1a1a1a]/10" />
         ))}
       </div>
     </div>
@@ -435,24 +435,24 @@ export default function Research() {
     <>
       {/* Font Google identici alla Home */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        /* SF Pro system font — no external loading needed */
       `}</style>
 
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a2e" }}>
+      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
 
         {/* ── TESTATA EDITORIALE (identica alla Home) ───────────────────────── */}
         <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
           {/* Riga data / tagline */}
           <div className="flex items-center justify-between mb-2">
             <span
-              className="text-xs text-[#1a1a2e]/50 uppercase tracking-widest"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="text-xs text-[#1a1a1a]/50 uppercase tracking-widest"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {formatDateIT(today)}
             </span>
             <span
-              className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Research · AI · Startup · Venture Capital
             </span>
@@ -468,23 +468,23 @@ export default function Research() {
               <Link href="/business">
                 <div
                   className="w-[130px] h-[130px] border-2 flex flex-col items-center justify-center text-center p-3 cursor-pointer hover:shadow-md transition-all"
-                  style={{ borderColor: "#ff5500", background: "#fff4f0" }}
+                  style={{ borderColor: "#2a2a2a", background: "#fff4f0" }}
                 >
                   <span
                     className="text-[8px] font-bold uppercase tracking-[0.15em] block mb-1.5"
-                    style={{ color: "#ff5500", fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     IdeaSmart Business
                   </span>
                   <span
                     className="text-[13px] font-black leading-tight block mb-2.5"
-                    style={{ color: "#1a1a2e", fontFamily: "'Playfair Display', Georgia, serif" }}
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Crea il tuo giornale AI powered
                   </span>
                   <span
                     className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5"
-                    style={{ background: "#ff5500", color: "#fff", fontFamily: "'Space Mono', monospace" }}
+                    style={{ background: "#2a2a2a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Scopri →
                   </span>
@@ -496,21 +496,21 @@ export default function Research() {
             <div className="text-center">
               <Link href="/">
                 <h1
-                  className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+                  className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
                 >
                   IdeaSmart
                 </h1>
               </Link>
               <p
-                className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a2e]/50"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a1a]/50"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Analisi quotidiane su Startup, Venture Capital e AI Trends
               </p>
               <p
-                className="mt-1 text-[11px] text-[#1a1a2e]/40 italic"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.02em" }}
+                className="mt-1 text-[11px] text-[#1a1a1a]/40 italic"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.02em" }}
               >
                 Dati dalle principali fonti di ricerca globali ed europee
               </p>
@@ -552,28 +552,28 @@ export default function Research() {
           <div className="flex items-end justify-between gap-4 mb-1">
             <div>
               <span
-                className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#1a1a2e]/40 block mb-1"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#1a1a1a]/40 block mb-1"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 ● IDEASMART Research
               </span>
               <h2
-                className="text-3xl md:text-4xl font-black text-[#1a1a2e] leading-none"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="text-3xl md:text-4xl font-black text-[#1a1a1a] leading-none"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Ricerche del Giorno
               </h2>
             </div>
             <p
-              className="hidden md:block text-[10px] text-[#1a1a2e]/40 uppercase tracking-widest text-right max-w-xs leading-relaxed"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="hidden md:block text-[10px] text-[#1a1a1a]/40 uppercase tracking-widest text-right max-w-xs leading-relaxed"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               20 ricerche · Gartner · CB Insights · McKinsey · Statista
             </p>
           </div>
           <p
-            className="text-[#1a1a2e]/55 text-sm mt-2 mb-4"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            className="text-[#1a1a1a]/55 text-sm mt-2 mb-4"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
           >
             Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee.
           </p>
@@ -583,10 +583,10 @@ export default function Research() {
         <div className="max-w-6xl mx-auto px-4 pb-12">
 
           {/* Filtri categoria */}
-          <div className="flex flex-wrap gap-2 mb-6 pb-4 border-b border-[#1a1a2e]/10">
+          <div className="flex flex-wrap gap-2 mb-6 pb-4 border-b border-[#1a1a1a]/10">
             {categories.map(cat => {
               const config = cat === "all"
-                ? { label: "Tutte", icon: null, accentColor: "#1a1a2e", bgColor: "#faf8f3" }
+                ? { label: "Tutte", icon: null, accentColor: "#1a1a1a", bgColor: "#faf8f3" }
                 : getCategoryConfig(cat);
               const isActive = activeCategory === cat;
               return (
@@ -595,10 +595,10 @@ export default function Research() {
                   onClick={() => setActiveCategory(cat)}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors"
                   style={{
-                    fontFamily: "'Space Mono', monospace",
-                    background: isActive ? "#1a1a2e" : "#faf8f3",
-                    color: isActive ? "#faf8f3" : "#1a1a2e",
-                    borderColor: isActive ? "#1a1a2e" : "#1a1a2e30",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                    background: isActive ? "#1a1a1a" : "#faf8f3",
+                    color: isActive ? "#faf8f3" : "#1a1a1a",
+                    borderColor: isActive ? "#1a1a1a" : "#1a1a1a30",
                   }}
                 >
                   {config.icon} {config.label}
@@ -611,11 +611,11 @@ export default function Research() {
             <ResearchSkeleton />
           ) : !reports || reports.length === 0 ? (
             <div className="text-center py-20">
-              <FlaskConical className="w-10 h-10 text-[#1a1a2e]/20 mx-auto mb-4" />
-              <p className="text-[#1a1a2e]/50 text-lg font-semibold" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              <FlaskConical className="w-10 h-10 text-[#1a1a1a]/20 mx-auto mb-4" />
+              <p className="text-[#1a1a1a]/50 text-lg font-semibold" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
                 Le ricerche di oggi sono in preparazione
               </p>
-              <p className="text-[#1a1a2e]/30 text-sm mt-2" style={{ fontFamily: "'Space Mono', monospace" }}>
+              <p className="text-[#1a1a1a]/30 text-sm mt-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Torna tra poco — vengono generate ogni mattina alle 06:00
               </p>
             </div>
@@ -630,14 +630,14 @@ export default function Research() {
               {filteredOthers.length > 0 && (
                 <div>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="h-px flex-1 bg-[#1a1a2e]/10" />
+                    <div className="h-px flex-1 bg-[#1a1a1a]/10" />
                     <h3
-                      className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#1a1a2e]/40"
-                      style={{ fontFamily: "'Space Mono', monospace" }}
+                      className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#1a1a1a]/40"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       Tutte le ricerche di oggi
                     </h3>
-                    <div className="h-px flex-1 bg-[#1a1a2e]/10" />
+                    <div className="h-px flex-1 bg-[#1a1a1a]/10" />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredOthers.map(report => (
@@ -649,16 +649,16 @@ export default function Research() {
             </div>
           )}
 
-          {/* ── CHI È IDEASMART RESEARCH ──────────────────────────────────── */}
-          <div className="mt-16 border-2 border-[#1a1a2e]" style={{ background: "#f5f2ec" }}>
+          {/* ── CHI È IdeaSmart ──────────────────────────────────── */}
+          <div className="mt-16 border-2 border-[#1a1a1a]" style={{ background: "#f5f2ec" }}>
             {/* Header sezione */}
-            <div className="border-b-2 border-[#1a1a2e] px-8 py-4 flex items-center gap-3">
-              <FlaskConical className="w-5 h-5" style={{ color: "#1a1a2e" }} />
+            <div className="border-b-2 border-[#1a1a1a] px-8 py-4 flex items-center gap-3">
+              <FlaskConical className="w-5 h-5" style={{ color: "#1a1a1a" }} />
               <span
-                className="text-[11px] font-black uppercase tracking-[0.3em] text-[#1a1a2e]"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="text-[11px] font-black uppercase tracking-[0.3em] text-[#1a1a1a]"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                Chi è IdeaSmart Research
+                Chi è IdeaSmart
               </span>
             </div>
 
@@ -666,23 +666,23 @@ export default function Research() {
               {/* Testo identitario */}
               <div>
                 <h2
-                  className="text-2xl md:text-3xl font-black text-[#1a1a2e] leading-tight mb-4"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="text-2xl md:text-3xl font-black text-[#1a1a1a] leading-tight mb-4"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   L'area di ricerca agentica<br />
-                  <span style={{ color: "#0a6e5c" }}>di IdeaSmart</span>
+                  <span style={{ color: "#1a1a1a" }}>di IdeaSmart</span>
                 </h2>
 
                 <p
-                  className="text-[#1a1a2e]/70 text-base leading-relaxed mb-4"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  className="text-[#1a1a1a]/70 text-base leading-relaxed mb-4"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
-                  <strong>IdeaSmart Research</strong> è l'unità di intelligenza artificiale agentica di IdeaSmart dedicata alla produzione di ricerche di mercato, analisi di settore e intelligence competitiva. Ogni giorno, agenti AI autonomi raccolgono, sintetizzano e verificano dati dalle principali fonti mondiali — Gartner, CB Insights, McKinsey, Statista, Dealroom, EIF — per produrre 20 ricerche originali su Startup, Venture Capital e AI Trends.
+                  <strong>IdeaSmart</strong> è l'unità di intelligenza artificiale agentica di IdeaSmart dedicata alla produzione di ricerche di mercato, analisi di settore e intelligence competitiva. Ogni giorno, agenti AI autonomi raccolgono, sintetizzano e verificano dati dalle principali fonti mondiali — Gartner, CB Insights, McKinsey, Statista, Dealroom, EIF — per produrre 20 ricerche originali su Startup, Venture Capital e AI Trends.
                 </p>
 
                 <p
-                  className="text-[#1a1a2e]/60 text-sm leading-relaxed mb-6"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  className="text-[#1a1a1a]/60 text-sm leading-relaxed mb-6"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   Il nostro approccio combina la velocità dell'AI con il rigore metodologico della ricerca accademica: ogni report include key findings verificati, dati quantitativi, fonti primarie e prospettive di mercato a 12-36 mesi. Siamo la prima testata italiana a produrre ricerche di mercato in modo completamente automatizzato e scalabile.
                 </p>
@@ -696,18 +696,18 @@ export default function Research() {
                   ].map((stat, i) => (
                     <div
                       key={i}
-                      className="border border-[#1a1a2e]/15 p-3 text-center"
+                      className="border border-[#1a1a1a]/15 p-3 text-center"
                       style={{ background: "#faf8f3" }}
                     >
                       <p
-                        className="text-2xl font-black text-[#1a1a2e] leading-none mb-1"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        className="text-2xl font-black text-[#1a1a1a] leading-none mb-1"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {stat.num}
                       </p>
                       <p
-                        className="text-[9px] uppercase tracking-widest text-[#1a1a2e]/50"
-                        style={{ fontFamily: "'Space Mono', monospace" }}
+                        className="text-[9px] uppercase tracking-widest text-[#1a1a1a]/50"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {stat.label}
                       </p>
@@ -718,12 +718,12 @@ export default function Research() {
 
               {/* Pannello CTA ricerche dedicate */}
               <div
-                className="border-2 border-[#1a1a2e] p-6 flex flex-col"
-                style={{ background: "#1a1a2e" }}
+                className="border-2 border-[#1a1a1a] p-6 flex flex-col"
+                style={{ background: "#1a1a1a" }}
               >
                 <span
                   className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.22em] px-2.5 py-1 mb-5 self-start"
-                  style={{ background: "#ff5500", color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}
+                  style={{ background: "#2a2a2a", color: "#faf8f3", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   <FlaskConical className="w-3 h-3" />
                   Ricerche Dedicate
@@ -731,15 +731,15 @@ export default function Research() {
 
                 <h3
                   className="text-xl font-black text-[#faf8f3] leading-tight mb-3"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Hai bisogno di una ricerca<br />
-                  <span style={{ color: "#00e5c8" }}>su misura?</span>
+                  <span style={{ color: "#1a1a1a" }}>su misura?</span>
                 </h3>
 
                 <p
                   className="text-[#faf8f3]/55 text-sm leading-relaxed mb-5 flex-1"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   Commissiona ricerche specialistiche su Venture Capital, AI Trends, analisi di mercato e scouting di investimento. Pensate per investitori, founder e manager.
                 </p>
@@ -751,10 +751,10 @@ export default function Research() {
                     { icon: <BarChart3 className="w-3 h-3" />, label: "Market Intelligence" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2">
-                      <span style={{ color: "#00e5c8" }}>{item.icon}</span>
+                      <span style={{ color: "#1a1a1a" }}>{item.icon}</span>
                       <span
                         className="text-[10px] text-[#faf8f3]/60 uppercase tracking-widest"
-                        style={{ fontFamily: "'Space Mono', monospace" }}
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {item.label}
                       </span>
@@ -766,7 +766,7 @@ export default function Research() {
                   <a
                     href="mailto:research@ideasmart.ai"
                     className="flex items-center justify-center gap-2 w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
-                    style={{ background: "#00e5c8", color: "#1a1a2e", fontFamily: "'Space Mono', monospace" }}
+                    style={{ background: "#1a1a1a", color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     <Mail className="w-3.5 h-3.5" />
                     research@ideasmart.ai
@@ -774,7 +774,7 @@ export default function Research() {
                   <a
                     href="/business"
                     className="flex items-center justify-center gap-2 w-full border border-[#faf8f3]/20 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
-                    style={{ color: "#faf8f3", fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: "#faf8f3", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     IdeaSmart Business
                     <ArrowRight className="w-3 h-3" />
@@ -787,10 +787,10 @@ export default function Research() {
 
         {/* Footer */}
         <div
-          className="text-center text-xs py-6 border-t border-[#1a1a2e]/10"
-          style={{ color: "#1a1a2e", opacity: 0.3, fontFamily: "'Space Mono', monospace" }}
+          className="text-center text-xs py-6 border-t border-[#1a1a1a]/10"
+          style={{ color: "#1a1a1a", opacity: 0.3, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
-          © {new Date().getFullYear()} IdeaSmart Research · AI · Startup · Venture Capital
+          © {new Date().getFullYear()} IdeaSmart · AI · Startup · Venture Capital
         </div>
       </div>
     </>

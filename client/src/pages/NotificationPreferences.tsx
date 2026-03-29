@@ -8,9 +8,9 @@ import { Link } from "wouter";
 
 // Palette colori IDEASMART
 const C = {
-  navy: "#0a0f1e",
-  cyan: "#00e5c8",
-  orange: "#ff5500",
+  navy: "#0f0f0f",
+  cyan: "#1a1a1a",
+  orange: "#2a2a2a",
   slate: "#1a2035",
   muted: "#8892a4",
 };

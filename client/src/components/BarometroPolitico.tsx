@@ -18,7 +18,7 @@ import {
 
 const ACCENT = "#2980b9";
 const ACCENT_LIGHT = "#eaf4fb";
-const INK = "#1a1a2e";
+const INK = "#1a1a1a";
 
 interface Partito {
   nome: string;
@@ -46,18 +46,18 @@ type HistoryRow = {
 function VariazioneIcon({ val }: { val: number }) {
   if (val > 0)
     return (
-      <span style={{ color: "#27ae60", fontFamily: "'Space Mono', monospace" }} className="text-[10px] font-bold">
+      <span style={{ color: "#27ae60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }} className="text-[10px] font-bold">
         ▲ +{val.toFixed(1)}
       </span>
     );
   if (val < 0)
     return (
-      <span style={{ color: "#e74c3c", fontFamily: "'Space Mono', monospace" }} className="text-[10px] font-bold">
+      <span style={{ color: "#e74c3c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }} className="text-[10px] font-bold">
         ▼ {val.toFixed(1)}
       </span>
     );
   return (
-    <span style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }} className="text-[10px]">
+    <span style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }} className="text-[10px]">
       — 0.0
     </span>
   );
@@ -122,7 +122,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   return (
     <div
       className="rounded-lg shadow-lg p-3 border text-xs"
-      style={{ background: "#fff", borderColor: INK + "20", fontFamily: "'Space Mono', monospace", minWidth: 140 }}
+      style={{ background: "#fff", borderColor: INK + "20", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", minWidth: 140 }}
     >
       <p className="font-bold mb-2" style={{ color: INK }}>
         {label}
@@ -178,19 +178,19 @@ export default function BarometroPolitico() {
 
   return (
     <div className="mt-8">
-      <div className="w-full border-t-4 border-[#1a1a2e]" />
+      <div className="w-full border-t-4 border-[#1a1a1a]" />
       <div className="py-3 flex items-center gap-4">
         <span
           className="text-[10px] font-bold uppercase tracking-[0.2em]"
-          style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+          style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           Barometro Politico
         </span>
-        <div className="flex-1 border-t border-[#1a1a2e]/20" />
+        <div className="flex-1 border-t border-[#1a1a1a]/20" />
         {barometro && (
           <span
-            className="text-[10px] text-[#1a1a2e]/40 uppercase tracking-widest"
-            style={{ fontFamily: "'Space Mono', monospace" }}
+            className="text-[10px] text-[#1a1a1a]/40 uppercase tracking-widest"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {barometro.fonte} · {barometro.data}
           </span>
@@ -205,14 +205,14 @@ export default function BarometroPolitico() {
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3
-              className="text-lg font-black text-[#1a1a2e]"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="text-lg font-black text-[#1a1a1a]"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Intenzioni di Voto
             </h3>
             <p
-              className="text-xs text-[#1a1a2e]/55 mt-0.5"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="text-xs text-[#1a1a1a]/55 mt-0.5"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
               Sondaggio più recente — aggiornato ogni notte
             </p>
@@ -229,7 +229,7 @@ export default function BarometroPolitico() {
                 style={{
                   background: activeTab === "oggi" ? ACCENT : "transparent",
                   color: activeTab === "oggi" ? "#fff" : ACCENT,
-                  fontFamily: "'Space Mono', monospace",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 }}
               >
                 Oggi
@@ -240,7 +240,7 @@ export default function BarometroPolitico() {
                 style={{
                   background: activeTab === "storico" ? ACCENT : "transparent",
                   color: activeTab === "storico" ? "#fff" : ACCENT,
-                  fontFamily: "'Space Mono', monospace",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 }}
               >
                 4 Settimane
@@ -248,7 +248,7 @@ export default function BarometroPolitico() {
             </div>
             <div
               className="flex-shrink-0 px-2 py-1 rounded text-[9px] font-bold uppercase tracking-widest"
-              style={{ background: ACCENT, color: "#fff", fontFamily: "'Space Mono', monospace" }}
+              style={{ background: ACCENT, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               LIVE
             </div>
@@ -260,12 +260,12 @@ export default function BarometroPolitico() {
           <>
             {isLoading && <BarometroSkeleton />}
             {error && (
-              <p className="text-sm text-[#1a1a2e]/50 text-center py-4" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              <p className="text-sm text-[#1a1a1a]/50 text-center py-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                 Dati non disponibili al momento. Riprova più tardi.
               </p>
             )}
             {!isLoading && !error && sortedPartiti.length === 0 && (
-              <p className="text-sm text-[#1a1a2e]/50 text-center py-4" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              <p className="text-sm text-[#1a1a1a]/50 text-center py-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                 Nessun dato disponibile. Lo scraping notturno aggiornerà il barometro.
               </p>
             )}
@@ -275,7 +275,7 @@ export default function BarometroPolitico() {
                   <div key={partito.nome} className="flex items-center gap-3">
                     <div
                       className="w-14 flex-shrink-0 text-right text-[11px] font-bold"
-                      style={{ color: INK, fontFamily: "'Space Mono', monospace" }}
+                      style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       title={partito.nomeCompleto}
                     >
                       {partito.nome}
@@ -293,7 +293,7 @@ export default function BarometroPolitico() {
                         className="absolute left-2 top-0 h-full flex items-center text-[11px] font-bold"
                         style={{
                           color: partito.percentuale / maxPerc > 0.35 ? "#fff" : INK,
-                          fontFamily: "'Space Mono', monospace",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                           zIndex: 1,
                         }}
                       >
@@ -317,14 +317,14 @@ export default function BarometroPolitico() {
             {!historyLoading && !hasHistory && (
               <div className="text-center py-8">
                 <p
-                  className="text-sm text-[#1a1a2e]/50 mb-1"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  className="text-sm text-[#1a1a1a]/50 mb-1"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   Lo storico si popola automaticamente ogni notte.
                 </p>
                 <p
-                  className="text-xs text-[#1a1a2e]/35"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="text-xs text-[#1a1a1a]/35"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   I dati storici saranno disponibili dopo il primo ciclo di scraping notturno.
                 </p>
@@ -337,12 +337,12 @@ export default function BarometroPolitico() {
                     <CartesianGrid strokeDasharray="3 3" stroke={INK + "10"} />
                     <XAxis
                       dataKey="date"
-                      tick={{ fontSize: 9, fontFamily: "'Space Mono', monospace", fill: INK + "80" }}
+                      tick={{ fontSize: 9, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fill: INK + "80" }}
                       tickLine={false}
                       axisLine={{ stroke: INK + "20" }}
                     />
                     <YAxis
-                      tick={{ fontSize: 9, fontFamily: "'Space Mono', monospace", fill: INK + "80" }}
+                      tick={{ fontSize: 9, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fill: INK + "80" }}
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(v) => `${v}%`}
@@ -350,7 +350,7 @@ export default function BarometroPolitico() {
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend
-                      wrapperStyle={{ fontSize: 9, fontFamily: "'Space Mono', monospace", paddingTop: 8 }}
+                      wrapperStyle={{ fontSize: 9, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", paddingTop: 8 }}
                       iconType="circle"
                       iconSize={8}
                     />
@@ -369,8 +369,8 @@ export default function BarometroPolitico() {
                   </LineChart>
                 </ResponsiveContainer>
                 <p
-                  className="mt-2 text-[9px] text-[#1a1a2e]/35 text-right"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="mt-2 text-[9px] text-[#1a1a1a]/35 text-right"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Dati: ultimi {chartData.length} giorni rilevati
                 </p>
@@ -382,8 +382,8 @@ export default function BarometroPolitico() {
         {/* Footer nota */}
         {activeTab === "oggi" && barometro?.nota && (
           <p
-            className="mt-4 text-[10px] text-[#1a1a2e]/40 italic border-t pt-3"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif", borderColor: INK + "15" }}
+            className="mt-4 text-[10px] text-[#1a1a1a]/40 italic border-t pt-3"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", borderColor: INK + "15" }}
           >
             {barometro.nota}
           </p>

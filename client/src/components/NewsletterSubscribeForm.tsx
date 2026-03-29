@@ -5,13 +5,13 @@ import { toast } from "sonner";
 type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi';
 
 const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: string }> = {
-  ai:      { label: 'AI',      day: 'Lun', color: '#00b4a0' },
-  startup: { label: 'Startup', day: 'Mar', color: '#e84f00' },
+  ai:      { label: 'AI',      day: 'Lun', color: '#1a1a1a' },
+  startup: { label: 'Startup', day: 'Mar', color: '#2a2a2a' },
   finance: { label: 'Finance', day: 'Mer', color: '#1a56db' },
   sport:   { label: 'Sport',   day: 'Gio', color: '#059669' },
-  music:   { label: 'Music',   day: 'Ven', color: '#7c3aed' },
-  luxury:  { label: 'Luxury',  day: 'Sab', color: '#b45309' },
-  health:  { label: 'Health',  day: 'Dom', color: '#dc2626' },
+  music:   { label: 'Music',   day: 'Ven', color: '#2a2a2a' },
+  luxury:  { label: 'Luxury',  day: 'Sab', color: '#2a2a2a' },
+  health:  { label: 'Health',  day: 'Dom', color: '#2a2a2a' },
   news:    { label: 'News',    day: 'Lun', color: '#c0392b' },
   motori:  { label: 'Motori',  day: 'Mar', color: '#e67e22' },
   tennis:  { label: 'Tennis',  day: 'Mer', color: '#27ae60' },
@@ -36,8 +36,8 @@ interface Props {
 export default function NewsletterSubscribeForm({
   defaultChannel,
   accentColor,
-  fontBody = "'Source Serif 4', Georgia, serif",
-  fontMono = "'Space Mono', monospace",
+  fontBody = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
+  fontMono = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
 }: Props) {
   const [email, setEmail] = useState("");
   const [showChannels, setShowChannels] = useState(false);
@@ -74,7 +74,7 @@ export default function NewsletterSubscribeForm({
         <p className="font-bold text-sm" style={{ color: accentColor, fontFamily: fontMono }}>
           ✓ Iscrizione confermata!
         </p>
-        <p className="text-xs mt-1 text-[#1a1a2e]/60" style={{ fontFamily: fontBody }}>
+        <p className="text-xs mt-1 text-[#1a1a1a]/60" style={{ fontFamily: fontBody }}>
           Riceverai {selectedChannels.length === 1 ? "il canale" : `${selectedChannels.length} canali`} scelti.
           Controlla la tua email.
         </p>
@@ -91,7 +91,7 @@ export default function NewsletterSubscribeForm({
           onChange={e => setEmail(e.target.value)}
           placeholder="La tua email"
           required
-          className="flex-1 px-3 py-2 text-sm border border-[#1a1a2e]/20 bg-white text-[#1a1a2e] focus:outline-none focus:border-current"
+          className="flex-1 px-3 py-2 text-sm border border-[#1a1a1a]/20 bg-white text-[#1a1a1a] focus:outline-none focus:border-current"
           style={{ fontFamily: fontBody }}
         />
         <button

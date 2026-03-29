@@ -5,14 +5,14 @@ type RiskLevel = "CRITICO" | "ALTO" | "MEDIO" | "BASSO";
 
 const RISK_CONFIG: Record<RiskLevel, { color: string; bg: string; border: string; icon: React.ReactNode; label: string }> = {
   CRITICO: {
-    color: "#dc2626",
+    color: "#2a2a2a",
     bg: "#fef2f2",
     border: "#fca5a5",
     icon: <AlertCircle className="w-3.5 h-3.5" />,
     label: "CRITICO",
   },
   ALTO: {
-    color: "#ea580c",
+    color: "#2a2a2a",
     bg: "#fff7ed",
     border: "#fdba74",
     icon: <AlertTriangle className="w-3.5 h-3.5" />,
@@ -35,10 +35,10 @@ const RISK_CONFIG: Record<RiskLevel, { color: string; bg: string; border: string
 };
 
 const TIPO_COLORS: Record<string, string> = {
-  Ransomware: "#dc2626",
-  Phishing: "#ea580c",
+  Ransomware: "#2a2a2a",
+  Phishing: "#2a2a2a",
   "Vulnerabilità": "#d97706",
-  "Data Breach": "#7c3aed",
+  "Data Breach": "#2a2a2a",
   APT: "#1d4ed8",
   DDoS: "#0891b2",
 };
@@ -95,7 +95,7 @@ export default function ThreatAlert() {
               <div>
                 <span
                   className="text-xs font-bold uppercase tracking-[0.18em] text-[#27ae60] block"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Threat Alert
                 </span>
@@ -129,13 +129,13 @@ export default function ThreatAlert() {
             <div>
               <span
                 className="text-xs font-bold uppercase tracking-[0.18em] text-[#27ae60] block"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Threat Alert
               </span>
               <span
                 className="text-[10px] text-white/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Aggiornato: {data.aggiornato}
               </span>
@@ -143,7 +143,7 @@ export default function ThreatAlert() {
           </div>
           <p
             className="text-xs text-white/50 max-w-xs text-right hidden sm:block"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic" }}
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", fontStyle: "italic" }}
           >
             {data.sommario}
           </p>
@@ -177,7 +177,7 @@ export default function ThreatAlert() {
                     style={{
                       color: tipoColor,
                       background: `${tipoColor}20`,
-                      fontFamily: "'Space Mono', monospace",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
                     {minaccia.tipo}
@@ -187,7 +187,7 @@ export default function ThreatAlert() {
                     style={{
                       color: risk.color,
                       background: `${risk.color}20`,
-                      fontFamily: "'Space Mono', monospace",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
                     {risk.icon}
@@ -198,7 +198,7 @@ export default function ThreatAlert() {
                 {/* Nome minaccia */}
                 <h4
                   className="text-sm font-bold text-white mb-1 leading-tight"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   {minaccia.nome}
                 </h4>
@@ -206,7 +206,7 @@ export default function ThreatAlert() {
                 {/* Descrizione */}
                 <p
                   className="text-xs text-white/60 mb-3 leading-relaxed"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   {minaccia.descrizione}
                 </p>
@@ -215,13 +215,13 @@ export default function ThreatAlert() {
                 <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
                   <span
                     className="text-[9px] text-white/40"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Settore: <span className="text-white/60">{minaccia.settoreColpito}</span>
                   </span>
                   <span
                     className="text-[9px] text-white/40 flex items-center gap-1"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     <ExternalLink className="w-2.5 h-2.5" />
                     {minaccia.fonte}
@@ -235,7 +235,7 @@ export default function ThreatAlert() {
         {/* Sommario mobile */}
         <p
           className="text-xs text-white/40 mt-4 text-center sm:hidden"
-          style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic" }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", fontStyle: "italic" }}
         >
           {data.sommario}
         </p>

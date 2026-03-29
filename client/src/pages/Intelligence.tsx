@@ -1,7 +1,7 @@
 /**
  * IDEASMART INTELLIGENCE — Pagina prodotto
- * Design: Dark navy (#0a0f1e) + Cyan (#00e5c8) + Off-white (#f5f2ec)
- * Typography: Playfair Display (titoli), DM Sans (body), Space Mono (label/meta)
+ * Design: Dark navy (#0f0f0f) + Cyan (#1a1a1a) + Off-white (#f5f2ec)
+ * Typography: SF Pro Display (titoli), SF Pro Text (body) — sistema Apple
  * 8 sezioni: Hero → Problema → Come funziona → Piani → Tecnologia → Advisory → Social Proof → CTA finale
  */
 import { useState } from "react";
@@ -10,7 +10,7 @@ import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
 
 // ─── Divider ─────────────────────────────────────────────────────────────────
-function Divider({ color = "#00e5c8", opacity = 0.2 }: { color?: string; opacity?: number }) {
+function Divider({ color = "#1a1a1a", opacity = 0.2 }: { color?: string; opacity?: number }) {
   return <div style={{ height: "1px", background: color, opacity }} />;
 }
 
@@ -18,7 +18,7 @@ function Divider({ color = "#00e5c8", opacity = 0.2 }: { color?: string; opacity
 function SectionLabel({ label }: { label: string }) {
   return (
     <span className="text-[10px] font-bold uppercase tracking-[0.25em] block mb-3"
-      style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>
+      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {label}
     </span>
   );
@@ -41,45 +41,45 @@ function PricingCard({
   return (
     <div className="relative flex flex-col p-6 rounded-lg"
       style={{
-        background: highlighted ? "#0a0f1e" : "#fff",
-        border: highlighted ? "2px solid #00e5c8" : "1px solid rgba(26,26,46,0.12)",
+        background: highlighted ? "#0f0f0f" : "#fff",
+        border: highlighted ? "2px solid #1a1a1a" : "1px solid rgba(26,26,46,0.12)",
         boxShadow: highlighted ? "0 0 40px rgba(0,229,200,0.12), 0 4px 24px rgba(0,0,0,0.08)" : "none",
         transform: highlighted ? "translateY(-4px)" : "none",
       }}>
       {highlighted && (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
           <span className="px-3 py-1 text-[9px] font-bold uppercase tracking-widest"
-            style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
+            style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", whiteSpace: "nowrap" }}>
             PIÙ SCELTO
           </span>
         </div>
       )}
       <div className="mb-4">
         <h3 className="text-[11px] font-bold uppercase tracking-[0.25em] mb-1"
-          style={{ color: highlighted ? "#00e5c8" : "#0a6e5c", fontFamily: "'Space Mono', monospace" }}>
+          style={{ color: highlighted ? "#1a1a1a" : "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {name}
         </h3>
         <div className="flex items-baseline gap-1 mb-1">
           <span className="text-[32px] font-black"
-            style={{ color: highlighted ? "#fff" : "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>
+            style={{ color: highlighted ? "#fff" : "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
             {price}
           </span>
           {price !== "Su misura" && (
-            <span className="text-[12px]" style={{ color: highlighted ? "rgba(255,255,255,0.5)" : "rgba(26,26,46,0.4)", fontFamily: "'Space Mono', monospace" }}>
+            <span className="text-[12px]" style={{ color: highlighted ? "rgba(255,255,255,0.5)" : "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               /mese
             </span>
           )}
         </div>
-        <p className="text-[12px] italic" style={{ color: highlighted ? "rgba(255,255,255,0.55)" : "rgba(26,26,46,0.5)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+        <p className="text-[12px] italic" style={{ color: highlighted ? "rgba(255,255,255,0.55)" : "rgba(26,26,46,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {subtitle}
         </p>
       </div>
-      <Divider color={highlighted ? "#00e5c8" : "#1a1a2e"} opacity={highlighted ? 0.2 : 0.08} />
+      <Divider color={highlighted ? "#1a1a1a" : "#1a1a1a"} opacity={highlighted ? 0.2 : 0.08} />
       <ul className="mt-4 mb-6 flex flex-col gap-2 flex-1" role="list" aria-label={`Funzionalità piano ${name}`}>
         {features.map((f, i) => (
           <li key={i} className="flex items-start gap-2 text-[12px]"
-            style={{ color: highlighted ? "rgba(255,255,255,0.8)" : "rgba(26,26,46,0.75)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
-            <span style={{ color: "#00e5c8", flexShrink: 0, marginTop: "2px" }} aria-hidden="true">✓</span>
+            style={{ color: highlighted ? "rgba(255,255,255,0.8)" : "rgba(26,26,46,0.75)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+            <span style={{ color: "#1a1a1a", flexShrink: 0, marginTop: "2px" }} aria-hidden="true">✓</span>
             {f}
           </li>
         ))}
@@ -91,16 +91,16 @@ function PricingCard({
         data-plan={name.toLowerCase()}
         className="block text-center py-3 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90"
         style={{
-          background: highlighted ? "#00e5c8" : "transparent",
-          color: highlighted ? "#0a0f1e" : "#0a6e5c",
-          border: highlighted ? "none" : "1.5px solid #0a6e5c",
-          fontFamily: "'Space Mono', monospace",
+          background: highlighted ? "#1a1a1a" : "transparent",
+          color: highlighted ? "#0f0f0f" : "#1a1a1a",
+          border: highlighted ? "none" : "1.5px solid #1a1a1a",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
         }}>
         {cta}
       </a>
       {subCta && (
         <p className="mt-2 text-center text-[10px]"
-          style={{ color: highlighted ? "rgba(255,255,255,0.35)" : "rgba(26,26,46,0.35)", fontFamily: "'Space Mono', monospace" }}>
+          style={{ color: highlighted ? "rgba(255,255,255,0.35)" : "rgba(26,26,46,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {subCta}
         </p>
       )}
@@ -139,13 +139,13 @@ export default function Intelligence() {
         <Navbar />
 
         {/* ══ SEZIONE 1 — HERO ══════════════════════════════════════════════════ */}
-        <section style={{ background: "#0a0f1e" }}>
+        <section style={{ background: "#0f0f0f" }}>
           <div className="max-w-[1100px] mx-auto px-4 py-16 sm:py-24">
             {/* Breadcrumb */}
             <div className="mb-8">
               <Link href="/">
                 <span className="text-[10px] uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
-                  style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Mono', monospace" }}>
+                  style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   ← IdeaSmart · Intelligence
                 </span>
               </Link>
@@ -154,12 +154,12 @@ export default function Intelligence() {
             <div className="max-w-[800px]">
               <SectionLabel label="NUOVO" />
               <h1 className="mb-6 leading-tight"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(2.2rem, 5vw, 3.8rem)", fontWeight: 900, color: "#fff" }}>
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(2.2rem, 5vw, 3.8rem)", fontWeight: 900, color: "#fff" }}>
                 Intelligence che lavora.{" "}
-                <span style={{ color: "#00e5c8" }}>Decisioni che contano.</span>
+                <span style={{ color: "#1a1a1a" }}>Decisioni che contano.</span>
               </h1>
               <p className="mb-8 text-[16px] leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans', Arial, sans-serif", maxWidth: "620px" }}>
+                style={{ color: "rgba(255,255,255,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", maxWidth: "620px" }}>
                 Monitoriamo i tuoi competitor, tracciamo i deal nel tuo mercato, e ogni settimana ti diciamo cosa è cambiato e perché ti riguarda. Non è un giornale. È il tuo sistema di intelligence operativa.
               </p>
 
@@ -171,8 +171,8 @@ export default function Intelligence() {
                   { value: "00:00", label: "aggiornamento CET" },
                 ].map((m) => (
                   <div key={m.label}>
-                    <span className="text-[22px] font-black block" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>{m.value}</span>
-                    <span className="text-[10px] uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Mono', monospace" }}>{m.label}</span>
+                    <span className="text-[22px] font-black block" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.value}</span>
+                    <span className="text-[10px] uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.label}</span>
                   </div>
                 ))}
               </div>
@@ -181,14 +181,14 @@ export default function Intelligence() {
                 aria-label="Vai alla sezione prezzi"
                 data-cta-name="hero-pricing"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
-                style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
+                style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Scegli il tuo piano →
               </a>
               <a
                 href="#come-funziona"
                 onClick={(e) => { e.preventDefault(); document.getElementById('come-funziona')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="block mt-4 text-[12px] hover:opacity-70 transition-opacity cursor-pointer"
-                style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}
+                style={{ color: "rgba(255,255,255,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Oppure scopri come funziona ↓
               </a>
@@ -202,16 +202,16 @@ export default function Intelligence() {
             <div className="max-w-[700px]">
               <SectionLabel label="Il problema che risolviamo" />
               <h2 className="text-[28px] sm:text-[36px] font-black mb-6 leading-tight"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#0f0f0f" }}>
                 Il 90% è rumore.
               </h2>
               <p className="text-[15px] leading-relaxed mb-4"
-                style={{ color: "rgba(26,26,46,0.7)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+                style={{ color: "rgba(26,26,46,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Ogni mattina, chi prende decisioni su AI, investimenti e tecnologia deve setacciare decine di fonti, report, newsletter e feed per capire cosa sta succedendo. Il 90% è rumore. Il 10% che conta è disperso, frammentato, non verificato.
               </p>
               <p className="text-[15px] leading-relaxed font-semibold"
-                style={{ color: "#0a0f1e", fontFamily: "'DM Sans', Arial, sans-serif" }}>
-                IdeaSmart Intelligence fa questo lavoro al posto tuo — 24 ore su 24, 7 giorni su 7 — e ti consegna solo quello che ti serve per decidere. Non articoli. <span style={{ color: "#0a6e5c" }}>Insight azionabili.</span>
+                style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                IdeaSmart Intelligence fa questo lavoro al posto tuo — 24 ore su 24, 7 giorni su 7 — e ti consegna solo quello che ti serve per decidere. Non articoli. <span style={{ color: "#1a1a1a" }}>Insight azionabili.</span>
               </p>
             </div>
           </div>
@@ -222,7 +222,7 @@ export default function Intelligence() {
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="Come funziona" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-12 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#0f0f0f" }}>
               4 passi. Zero attrito.
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -255,10 +255,10 @@ export default function Intelligence() {
                 <div key={s.step} className="p-5 rounded-lg" style={{ background: "#f5f2ec", border: "1px solid rgba(26,26,46,0.06)" }}>
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-[22px]">{s.icon}</span>
-                    <span className="text-[10px] font-bold" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>STEP {s.step}</span>
+                    <span className="text-[10px] font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>STEP {s.step}</span>
                   </div>
-                  <h3 className="text-[14px] font-bold mb-2" style={{ color: "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>{s.title}</h3>
-                  <p className="text-[12px] leading-relaxed" style={{ color: "rgba(26,26,46,0.6)", fontFamily: "'DM Sans', Arial, sans-serif" }}>{s.text}</p>
+                  <h3 className="text-[14px] font-bold mb-2" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>{s.title}</h3>
+                  <p className="text-[12px] leading-relaxed" style={{ color: "rgba(26,26,46,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{s.text}</p>
                 </div>
               ))}
             </div>
@@ -270,41 +270,41 @@ export default function Intelligence() {
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="I piani" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-3 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#0f0f0f" }}>
               Scegli il livello di intelligence che ti serve.
             </h2>
             {/* Toggle annuale/mensile */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-[11px]" style={{ fontFamily: "'Space Mono', monospace", color: annual ? "rgba(26,26,46,0.4)" : "#0a0f1e" }}>Mensile</span>
+              <span className="text-[11px]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: annual ? "rgba(26,26,46,0.4)" : "#0f0f0f" }}>Mensile</span>
               <button
                 onClick={() => setAnnual(!annual)}
                 className="relative flex-shrink-0"
-                style={{ width: "44px", height: "24px", borderRadius: "12px", border: "none", cursor: "pointer", background: annual ? "#0a6e5c" : "rgba(26,26,46,0.2)", transition: "background 0.2s" }}
+                style={{ width: "44px", height: "24px", borderRadius: "12px", border: "none", cursor: "pointer", background: annual ? "#1a1a1a" : "rgba(26,26,46,0.2)", transition: "background 0.2s" }}
               >
                 <span style={{ position: "absolute", top: "3px", left: annual ? "23px" : "3px", width: "18px", height: "18px", borderRadius: "50%", background: "#ffffff", transition: "left 0.2s", display: "block" }} />
               </button>
-              <span className="text-[11px]" style={{ fontFamily: "'Space Mono', monospace", color: annual ? "#0a6e5c" : "rgba(26,26,46,0.4)" }}>
-                Annuale <span style={{ fontSize: "9px", background: "#0a6e5c", color: "#fff", padding: "1px 5px", borderRadius: "3px", marginLeft: "4px" }}>-15%</span>
+              <span className="text-[11px]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: annual ? "#1a1a1a" : "rgba(26,26,46,0.4)" }}>
+                Annuale <span style={{ fontSize: "9px", background: "#1a1a1a", color: "#fff", padding: "1px 5px", borderRadius: "3px", marginLeft: "4px" }}>-15%</span>
               </span>
             </div>
-            <p className="text-[13px] mb-10" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "'Space Mono', monospace" }}>
+            <p className="text-[13px] mb-10" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               14 giorni gratis su tutti i piani. Nessuna carta richiesta.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
               {/* Piano FREE */}
               <div className="flex flex-col p-6 rounded-lg" style={{ background: "#fff", border: "1px solid rgba(26,26,46,0.08)" }}>
                 <div className="mb-4">
-                  <h3 className="text-[11px] font-bold uppercase tracking-[0.25em] mb-1" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "'Space Mono', monospace" }}>FREE</h3>
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.25em] mb-1" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>FREE</h3>
                   <div className="flex items-baseline gap-1 mb-1">
-                    <span className="text-[32px] font-black" style={{ color: "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>€0</span>
+                    <span className="text-[32px] font-black" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>€0</span>
                   </div>
-                  <p className="text-[12px] italic" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "'DM Sans', Arial, sans-serif" }}>Inizia a esplorare. Zero impegno.</p>
+                  <p className="text-[12px] italic" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Inizia a esplorare. Zero impegno.</p>
                 </div>
-                <Divider color="#1a1a2e" opacity={0.08} />
+                <Divider color="#1a1a1a" opacity={0.08} />
                 <ul className="mt-4 mb-6 flex flex-col gap-2 flex-1" role="list" aria-label="Funzionalità piano FREE">
                   {["5 articoli al giorno", "Tutti i titoli delle ricerche", "Newsletter settimanale gratuita", "Punto del Giorno editoriale"].map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px]" style={{ color: "rgba(26,26,46,0.75)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
-                      <span style={{ color: "#00e5c8", flexShrink: 0, marginTop: "2px" }} aria-hidden="true">✓</span>
+                    <li key={i} className="flex items-start gap-2 text-[12px]" style={{ color: "rgba(26,26,46,0.75)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <span style={{ color: "#1a1a1a", flexShrink: 0, marginTop: "2px" }} aria-hidden="true">✓</span>
                       {f}
                     </li>
                   ))}
@@ -315,7 +315,7 @@ export default function Intelligence() {
                   data-cta-name="free"
                   data-plan="free"
                   className="block text-center py-3 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-70"
-                  style={{ background: "transparent", color: "rgba(26,26,46,0.5)", border: "1.5px solid rgba(26,26,46,0.2)", fontFamily: "'Space Mono', monospace" }}
+                  style={{ background: "transparent", color: "rgba(26,26,46,0.5)", border: "1.5px solid rgba(26,26,46,0.2)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Registrati gratis →
                 </a>
@@ -378,15 +378,15 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 5 — LA TECNOLOGIA ═════════════════════════════════════════ */}
-        <section className="py-16" style={{ background: "#0a0f1e" }}>
+        <section className="py-16" style={{ background: "#0f0f0f" }}>
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="La tecnologia" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-6 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#fff" }}>
-              8 agenti. 450 fonti. <span style={{ color: "#00e5c8" }}>Zero bias.</span>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#fff" }}>
+              8 agenti. 450 fonti. <span style={{ color: "#1a1a1a" }}>Zero bias.</span>
             </h2>
             <p className="text-[15px] leading-relaxed mb-10 max-w-[700px]"
-              style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+              style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Il sistema agentico di IdeaSmart replica un team di 20 analisti. Ogni notte, i nostri agenti scandagliano fonti accademiche, report Gartner, CB Insights, McKinsey, feed VC, M&A tracker e media specializzati in 4 continenti. L'algoritmo proprietario Verify™ incrocia ogni segnale su almeno 3 fonti indipendenti prima di pubblicarlo. Il risultato arriva sulla tua dashboard alle 00:00 CET, ogni giorno.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -400,8 +400,8 @@ export default function Intelligence() {
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(0,229,200,0.12)" }}>
                   <span className="text-[20px] flex-shrink-0">{a.icon}</span>
                   <div>
-                    <p className="text-[12px] font-bold mb-0.5" style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>{a.name}</p>
-                    <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', Arial, sans-serif" }}>{a.desc}</p>
+                    <p className="text-[12px] font-bold mb-0.5" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{a.name}</p>
+                    <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{a.desc}</p>
                   </div>
                 </div>
               ))}
@@ -410,7 +410,7 @@ export default function Intelligence() {
               aria-label="Scopri tutti gli 8 agenti AI di IdeaSmart Intelligence"
               data-cta-name="tecnologia-agents"
               className="text-[11px] font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
-              style={{ color: "#00e5c8", fontFamily: "'Space Mono', monospace" }}>
+              style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Scopri tutti gli 8 agenti →
             </a>
           </div>
@@ -421,15 +421,15 @@ export default function Intelligence() {
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="Advisory" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-4 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#0f0f0f" }}>
               Quando i dati non bastano, c'è Advisory.
             </h2>
             <p className="text-[15px] leading-relaxed mb-4 max-w-[680px]"
-              style={{ color: "rgba(26,26,46,0.65)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+              style={{ color: "rgba(26,26,46,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               A volte i dati ti dicono <em>cosa</em> sta succedendo. Ma serve qualcuno che ti dica <em>cosa fare</em>. IdeaSmart Advisory è il nostro servizio di consulenza senior per le decisioni che richiedono un professionista al tavolo.
             </p>
             <p className="text-[14px] font-semibold mb-8"
-              style={{ color: "#0a0f1e", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+              style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Il team: ex partner Big 5, ex managing director investment banking, founder con exit, ex partner VC. Non teorici — operatori con cicatrici sul campo.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
@@ -441,22 +441,22 @@ export default function Intelligence() {
               ].map((s) => (
                 <div key={s.name} className="flex items-start gap-3 p-4 rounded-lg"
                   style={{ background: "#f5f2ec", border: "1px solid rgba(26,26,46,0.06)" }}>
-                  <span className="text-[18px] flex-shrink-0" style={{ color: "#0a6e5c" }}>{s.icon}</span>
+                  <span className="text-[18px] flex-shrink-0" style={{ color: "#1a1a1a" }}>{s.icon}</span>
                   <div>
-                    <p className="text-[12px] font-bold mb-0.5" style={{ color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>{s.name}</p>
-                    <p className="text-[12px]" style={{ color: "rgba(26,26,46,0.55)", fontFamily: "'DM Sans', Arial, sans-serif" }}>{s.desc}</p>
+                    <p className="text-[12px] font-bold mb-0.5" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{s.name}</p>
+                    <p className="text-[12px]" style={{ color: "rgba(26,26,46,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{s.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <p className="text-[11px] mb-4" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "'Space Mono', monospace" }}>
+            <p className="text-[11px] mb-4" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Project-based · Retainer mensile · Board Advisory
             </p>
             <a href="mailto:advisory@ideasmart.biz?subject=Richiesta%20consulenza%20Advisory"
               aria-label="Richiedi una consulenza Advisory"
               data-cta-name="advisory"
               className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90"
-              style={{ background: "#0a0f1e", color: "#fff", fontFamily: "'Space Mono', monospace" }}>
+              style={{ background: "#0f0f0f", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Parliamo del tuo progetto — 30 minuti, zero impegno →
             </a>
           </div>
@@ -467,7 +467,7 @@ export default function Intelligence() {
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="I numeri" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-10 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#0a0f1e" }}>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#0f0f0f" }}>
               I numeri parlano.
             </h2>
             {/* TODO: Client logos row */}
@@ -481,11 +481,11 @@ export default function Intelligence() {
               ].map((m) => (
                 <div key={m.label} className="text-center">
                   <span className="text-[32px] font-black block mb-1"
-                    style={{ color: "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                    style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
                     {m.value}
                   </span>
                   <span className="text-[10px] uppercase tracking-widest"
-                    style={{ color: "rgba(26,26,46,0.45)", fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "rgba(26,26,46,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     {m.label}
                   </span>
                 </div>
@@ -495,16 +495,16 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 8 — CTA FINALE ════════════════════════════════════════════ */}
-        <section className="py-20" style={{ background: "#0a0f1e" }}>
+        <section className="py-20" style={{ background: "#0f0f0f" }}>
           <div className="max-w-[700px] mx-auto px-4 text-center">
             <SectionLabel label="Inizia adesso" />
             <h2 className="text-[28px] sm:text-[38px] font-black mb-4 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#fff" }}>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#fff" }}>
               Inizia con una prova gratuita di{" "}
-              <span style={{ color: "#00e5c8" }}>14 giorni.</span>
+              <span style={{ color: "#1a1a1a" }}>14 giorni.</span>
             </h2>
             <p className="text-[15px] leading-relaxed mb-8"
-              style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+              style={{ color: "rgba(255,255,255,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Nessuna carta di credito. Nessun impegno. Configura il tuo profilo in 2 minuti e domani mattina trovi il tuo primo briefing personalizzato pronto.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -512,13 +512,13 @@ export default function Intelligence() {
                 aria-label="Attiva la prova gratuita di IdeaSmart Intelligence"
                 data-cta-name="cta-finale"
                 className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
-                style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
+                style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Attiva la prova gratuita →
               </a>
               <a href="mailto:intelligence@ideasmart.biz?subject=Richiesta%20prova%20gratuita%20Intelligence"
                 className="text-[12px] hover:opacity-70 transition-opacity"
                 aria-label="Scrivi direttamente a intelligence@ideasmart.biz"
-                style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}>
+                style={{ color: "rgba(255,255,255,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Oppure scrivici a intelligence@ideasmart.biz
               </a>
             </div>
@@ -526,7 +526,7 @@ export default function Intelligence() {
               <a href="/"
                 className="text-[11px] hover:opacity-70 transition-opacity underline"
                 aria-label="Registrati gratis e leggi 5 articoli al giorno"
-                style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>
+                style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Non sei pronto? Registrati gratis e leggi 5 articoli al giorno →
               </a>
             </div>
@@ -535,16 +535,16 @@ export default function Intelligence() {
 
         {/* ══ FOOTER MINIMAL ════════════════════════════════════════════════════ */}
         <div className="py-4 px-4 flex flex-col sm:flex-row items-center justify-between gap-2"
-          style={{ background: "#0a0f1e", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.25)", fontFamily: "'Space Mono', monospace" }}>
+          style={{ background: "#0f0f0f", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             © {new Date().getFullYear()} IdeaSmart Intelligence · AI · Startup · Venture Capital
           </p>
           <div className="flex items-center gap-4">
-            <Link href="/"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Home</span></Link>
-            <Link href="/intelligence"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Intelligence</span></Link>
-            <Link href="/research"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Research</span></Link>
-            <Link href="/chi-siamo"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Chi Siamo</span></Link>
-            <Link href="/privacy"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Privacy</span></Link>
+            <Link href="/"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Home</span></Link>
+            <Link href="/intelligence"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Intelligence</span></Link>
+            <Link href="/research"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Research</span></Link>
+            <Link href="/chi-siamo"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Chi Siamo</span></Link>
+            <Link href="/privacy"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy</span></Link>
           </div>
         </div>
       </div>

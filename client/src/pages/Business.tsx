@@ -1,7 +1,7 @@
 /**
  * IDEASMART BUSINESS — Pagina servizi premium
  * Layout editoriale coerente con il resto del sito (stile Il Sole 24 Ore).
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), teal (#0a6e5c), arancio (#ff5500).
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), teal (#1a1a1a), arancio (#2a2a2a).
  * Due offerte: A) Piattaforma AI Agentica · B) Consulenza & Advisory
  */
 
@@ -12,15 +12,15 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import Navbar from "@/components/Navbar";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
-const INK     = "#1a1a2e";
-const TEAL    = "#0a6e5c";
+const INK     = "#1a1a1a";
+const TEAL    = "#1a1a1a";
 const TEAL_LT = "#e6f4f1";
-const ORANGE  = "#ff5500";
+const ORANGE  = "#2a2a2a";
 const ORANGE_LT = "#fff0e6";
 const GOLD    = "#c9a84c";
 const GOLD_LT = "#fdf8ec";
 const PAPER   = "#faf8f3";
-const MUTED   = "#1a1a2e99";
+const MUTED   = "#1a1a1a99";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function formatDateIT(date: Date) {
@@ -30,11 +30,11 @@ function formatDateIT(date: Date) {
 }
 
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
 }
 
 function ThinDivider() {
-  return <div className="w-full border-t border-[#1a1a2e]/15" />;
+  return <div className="w-full border-t border-[#1a1a1a]/15" />;
 }
 
 function SectionBadge({
@@ -43,7 +43,7 @@ function SectionBadge({
   return (
     <span
       className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
-      style={{ background: bg, color, fontFamily: "'Space Mono', monospace" }}
+      style={{ background: bg, color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
       {label}
     </span>
@@ -75,7 +75,7 @@ const PLATFORM_FEATURES = [
   {
     icon: "🔗",
     title: "Intelligence LinkedIn",
-    desc: "I key insight del giorno sintetizzati in formato LinkedIn da Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart Research.",
+    desc: "I key insight del giorno sintetizzati in formato LinkedIn da Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart.",
   },
   {
     icon: "📧",
@@ -181,7 +181,7 @@ const ADVISORY_SERVICES = [
     id: "vc-research",
     tag: "VC RESEARCH",
     icon: "◇",
-    color: "#15803d",
+    color: "#1a1a1a",
     bg: "#f0fdf4",
     title: "Venture Capital Research",
     subtitle: "Ricerche di mercato per decisioni di investimento",
@@ -220,7 +220,7 @@ const ADVISORY_TEAM = [
     tag: "EX VENTURE CAPITAL",
     role: "VC Strategy & Portfolio Management",
     bg: "#f0fdf4",
-    color: "#15803d",
+    color: "#1a1a1a",
     detail: "Ex Partner fondatore di un fondo VC deeptech con €300M AUM. 18+ anni nell'ecosistema VC europeo. Portfolio di 50+ investimenti in AI, robotica e biotech.",
   },
 ];
@@ -267,7 +267,7 @@ function ServiceAccordion({ service }: { service: typeof ADVISORY_SERVICES[0] })
             </div>
             <h3
               className="text-lg font-bold leading-tight"
-              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+              style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {service.title}
             </h3>
@@ -315,7 +315,7 @@ export default function Business() {
         ogSiteName="IDEASMART Research"
       />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        /* SF Pro system font — no external loading needed */
       `}</style>
 
       <div className="min-h-screen" style={{ background: PAPER, color: INK }}>
@@ -331,7 +331,7 @@ export default function Business() {
             <SectionBadge label="IdeaSmart Business" />
             <h1
               className="mt-3 text-4xl md:text-6xl font-black tracking-tight"
-              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+              style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
             >
               Due strumenti.<br />
               <span style={{ color: TEAL }}>Una sola missione.</span>
@@ -367,7 +367,7 @@ export default function Business() {
                   <SectionBadge label="Piattaforma" color={TEAL} bg="#c8ede8" />
                   <h2
                     className="mt-2 text-xl font-bold leading-tight"
-                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     IdeaSmart Intelligence
                   </h2>
@@ -376,7 +376,7 @@ export default function Business() {
                   </p>
                   <span
                     className="inline-block mt-3 text-xs font-bold uppercase tracking-wider"
-                    style={{ color: TEAL, fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: TEAL, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Scopri la piattaforma →
                   </span>
@@ -401,7 +401,7 @@ export default function Business() {
                   <SectionBadge label="Consulenza" color={GOLD} bg="#f5e9c8" />
                   <h2
                     className="mt-2 text-xl font-bold leading-tight"
-                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     IdeaSmart Advisory
                   </h2>
@@ -410,7 +410,7 @@ export default function Business() {
                   </p>
                   <span
                     className="inline-block mt-3 text-xs font-bold uppercase tracking-wider"
-                    style={{ color: GOLD, fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: GOLD, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Scopri l'advisory →
                   </span>
@@ -443,7 +443,7 @@ export default function Business() {
             <div>
               <h2
                 className="text-3xl md:text-4xl font-bold leading-tight mb-4"
-                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Il tuo briefing AI personalizzato.<br />
                 <span style={{ color: TEAL }}>Ogni mattina alle 00:00 CET.</span>
@@ -469,15 +469,15 @@ export default function Business() {
               <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: TEAL }}>
                 <p
                   className="text-lg font-bold italic leading-snug"
-                  style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                  style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   "In 3 anni di sviluppo agentico, abbiamo costruito il sistema di ricerca automatizzata più avanzato d'Italia. Oggi lo mettiamo a disposizione di chi decide."
                 </p>
                 <footer
                   className="mt-3 text-xs uppercase tracking-widest"
-                  style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+                  style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
-                  — Adrian Lenice, Founder & CEO IdeaSmart Research
+                  — Adrian Lenice, Founder & CEO IdeaSmart
                 </footer>
               </blockquote>
 
@@ -492,13 +492,13 @@ export default function Business() {
                   <div key={l} className="text-center p-3 rounded-sm" style={{ background: TEAL_LT }}>
                     <div
                       className="text-2xl font-black"
-                      style={{ color: TEAL, fontFamily: "'Space Grotesk', sans-serif" }}
+                      style={{ color: TEAL, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {v}
                     </div>
                     <div
                       className="text-[10px] uppercase tracking-wider mt-0.5"
-                      style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+                      style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {l}
                     </div>
@@ -513,7 +513,7 @@ export default function Business() {
             <ThinDivider />
             <h3
               className="mt-6 mb-5 text-xs font-bold uppercase tracking-[0.2em]"
-              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Cosa include la piattaforma
             </h3>
@@ -527,7 +527,7 @@ export default function Business() {
                   <div className="text-2xl mb-2">{f.icon}</div>
                   <h4
                     className="font-bold text-sm mb-1"
-                    style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {f.title}
                   </h4>
@@ -544,7 +544,7 @@ export default function Business() {
             <ThinDivider />
             <h3
               className="mt-6 mb-5 text-xs font-bold uppercase tracking-[0.2em]"
-              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Piani di abbonamento
             </h3>
@@ -565,14 +565,14 @@ export default function Business() {
                   )}
                   <div
                     className="text-lg font-black mb-1"
-                    style={{ color: plan.color, fontFamily: "'Space Grotesk', sans-serif" }}
+                    style={{ color: plan.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {plan.name}
                   </div>
                   <div className="flex items-baseline gap-1 mb-4">
                     <span
                       className="text-3xl font-black"
-                      style={{ color: INK, fontFamily: "'Playfair Display', serif" }}
+                      style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}
                     >
                       {plan.price}
                     </span>
@@ -595,8 +595,8 @@ export default function Business() {
                     className="block text-center py-2.5 px-4 text-sm font-bold rounded-sm transition-all duration-200 hover:opacity-90"
                     style={
                       plan.outline
-                        ? { border: `2px solid ${plan.color}`, color: plan.color, background: "transparent", fontFamily: "'Space Grotesk', sans-serif" }
-                        : { background: plan.color, color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }
+                        ? { border: `2px solid ${plan.color}`, color: plan.color, background: "transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }
+                        : { background: plan.color, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }
                     }
                   >
                     {plan.cta}
@@ -632,7 +632,7 @@ export default function Business() {
             <div>
               <h2
                 className="text-3xl md:text-4xl font-bold leading-tight mb-4"
-                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Consulenza senior su AI, M&A<br />
                 <span style={{ color: GOLD }}>e partnership tecnologiche.</span>
@@ -648,7 +648,7 @@ export default function Business() {
                   Il team è composto da senior advisor con background in Big 5, investment banking, venture capital e imprenditoria seriale. Profili che hanno guidato trasformazioni, completato exit e gestito fondi — non teorici, ma operatori con cicatrici sul campo.
                 </p>
                 <p>
-                  La differenza rispetto a una consulenza tradizionale: ogni engagement è supportato dalla <strong style={{ color: INK }}>base dati IdeaSmart Research</strong> — 20+ analisi quotidiane, 450+ fonti monitorate, intelligence in tempo reale sull'ecosistema AI e VC europeo.
+                  La differenza rispetto a una consulenza tradizionale: ogni engagement è supportato dalla <strong style={{ color: INK }}>base dati IdeaSmart</strong> — 20+ analisi quotidiane, 450+ fonti monitorate, intelligence in tempo reale sull'ecosistema AI e VC europeo.
                 </p>
               </div>
             </div>
@@ -657,7 +657,7 @@ export default function Business() {
             <div>
               <h3
                 className="text-xs font-bold uppercase tracking-[0.2em] mb-4"
-                style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+                style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Il team advisory
               </h3>
@@ -680,7 +680,7 @@ export default function Business() {
                       </div>
                       <div
                         className="text-xs font-bold"
-                        style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                        style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {m.role}
                       </div>
@@ -699,7 +699,7 @@ export default function Business() {
             <ThinDivider />
             <h3
               className="mt-6 mb-2 text-xs font-bold uppercase tracking-[0.2em]"
-              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               I servizi advisory
             </h3>
@@ -715,7 +715,7 @@ export default function Business() {
             <ThinDivider />
             <h3
               className="mt-6 mb-5 text-xs font-bold uppercase tracking-[0.2em]"
-              style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Formati di engagement
             </h3>
@@ -729,7 +729,7 @@ export default function Business() {
                   <div className="text-2xl mb-2">{f.icon}</div>
                   <h4
                     className="font-bold text-sm mb-2"
-                    style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {f.title}
                   </h4>
@@ -749,7 +749,7 @@ export default function Business() {
             <SectionBadge label="Inizia una conversazione" color={GOLD} bg={`${GOLD}25`} />
             <h3
               className="mt-3 text-2xl md:text-3xl font-bold"
-              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+              style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Parliamo del tuo progetto.
             </h3>
@@ -763,7 +763,7 @@ export default function Business() {
               <a
                 href="mailto:business@ideasmart.ai?subject=IdeaSmart Advisory — Richiesta di contatto"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-sm transition-all hover:opacity-90 text-white"
-                style={{ background: GOLD, fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: GOLD, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Scrivici a business@ideasmart.ai →
               </a>
@@ -772,7 +772,7 @@ export default function Business() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-sm border-2 transition-all hover:opacity-80"
-                style={{ borderColor: GOLD, color: GOLD, background: "transparent", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ borderColor: GOLD, color: GOLD, background: "transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Contatta su LinkedIn
               </a>
@@ -791,7 +791,7 @@ export default function Business() {
               <SectionBadge label="Collabora con noi" color={TEAL} bg={`${TEAL}20`} />
               <h3
                 className="mt-2 text-lg font-bold"
-                style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+                style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Cerchiamo firme d'eccellenza.
               </h3>
@@ -802,7 +802,7 @@ export default function Business() {
             <a
               href="mailto:business@ideasmart.ai?subject=Collaborazione IdeaSmart Advisory"
               className="flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-sm border-2 transition-all hover:opacity-80 whitespace-nowrap"
-              style={{ borderColor: TEAL, color: TEAL, background: "transparent", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ borderColor: TEAL, color: TEAL, background: "transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Candidati →
             </a>
@@ -818,16 +818,16 @@ export default function Business() {
             <div>
               <span
                 className="text-lg font-black"
-                style={{ color: INK, fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 IDEA<span style={{ color: TEAL }}>SMART</span>{" "}
                 <span style={{ color: TEAL, fontSize: "0.75em" }}>RESEARCH</span>
               </span>
-              <p className="text-xs mt-0.5" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
+              <p className="text-xs mt-0.5" style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 AI · Startup · Venture Capital
               </p>
             </div>
-            <div className="flex gap-4 text-xs" style={{ color: MUTED, fontFamily: "'Space Mono', monospace" }}>
+            <div className="flex gap-4 text-xs" style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               <Link href="/" className="hover:underline">Home</Link>
               <Link href="/chi-siamo" className="hover:underline">Chi Siamo</Link>
               <Link href="/research" className="hover:underline">Research</Link>

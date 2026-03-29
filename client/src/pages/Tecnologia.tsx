@@ -1,33 +1,33 @@
 /**
  * IDEASMART — Tecnologia
  * Layout editoriale coerente con le pagine sezione del sito.
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accento teal (#0a6e5c).
- * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento teal (#1a1a1a).
+ * Tipografia: SF Pro Display (titoli), SF Pro Text (corpo) — sistema Apple.
  */
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
-const ACCENT = "#0a6e5c";
+const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#e6f4f1";
-const INK = "#1a1a2e";
-const ORANGE = "#ff5500";
+const INK = "#1a1a1a";
+const ORANGE = "#2a2a2a";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 }
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
 }
 function ThinDivider() {
-  return <div className="w-full border-t border-[#1a1a2e]/15" />;
+  return <div className="w-full border-t border-[#1a1a1a]/15" />;
 }
 function SectionBadge({ label, color = ACCENT, bg = ACCENT_LIGHT }: { label: string; color?: string; bg?: string }) {
   return (
     <span
       className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
-      style={{ background: bg, color, fontFamily: "'Space Mono', monospace" }}
+      style={{ background: bg, color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
       {label}
     </span>
@@ -123,8 +123,8 @@ function ProcessDiagram() {
     <section className="py-10">
       <SectionBadge label="Il processo" />
       <h2
-        className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
-        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-8"
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
       >
         Come funziona IdeaSmart
       </h2>
@@ -139,7 +139,7 @@ function ProcessDiagram() {
               onClick={() => setActive(i)}
               className="flex-1 text-left transition-all cursor-pointer group"
               style={{
-                borderTop: `3px solid ${active === i ? "#0a6e5c" : "rgba(26,26,46,0.15)"}`,
+                borderTop: `3px solid ${active === i ? "#1a1a1a" : "rgba(26,26,46,0.15)"}`,
                 paddingTop: "1rem",
                 paddingRight: i < PROCESS_DETAILS.length - 1 ? "1.5rem" : "0",
                 background: "transparent",
@@ -150,8 +150,8 @@ function ProcessDiagram() {
               <div
                 className="text-[10px] font-bold uppercase tracking-widest mb-1"
                 style={{
-                  fontFamily: "'Space Mono', monospace",
-                  color: active === i ? "#0a6e5c" : "rgba(26,26,46,0.35)",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  color: active === i ? "#1a1a1a" : "rgba(26,26,46,0.35)",
                 }}
               >
                 {s.n}
@@ -159,8 +159,8 @@ function ProcessDiagram() {
               <div
                 className="text-sm font-bold leading-tight"
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  color: active === i ? "#1a1a2e" : "rgba(26,26,46,0.5)",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                  color: active === i ? "#1a1a1a" : "rgba(26,26,46,0.5)",
                 }}
               >
                 {s.title}
@@ -168,8 +168,8 @@ function ProcessDiagram() {
               <div
                 className="mt-1 text-[10px] uppercase tracking-widest"
                 style={{
-                  fontFamily: "'Space Mono', monospace",
-                  color: active === i ? "#0a6e5c" : "rgba(26,26,46,0.25)",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  color: active === i ? "#1a1a1a" : "rgba(26,26,46,0.25)",
                 }}
               >
                 {s.stat}
@@ -181,24 +181,24 @@ function ProcessDiagram() {
         {/* Dettaglio step attivo */}
         <div
           className="mt-6 grid grid-cols-[auto_1fr] gap-8 p-6"
-          style={{ background: "#f0faf7", borderLeft: "4px solid #0a6e5c" }}
+          style={{ background: "#f0faf7", borderLeft: "4px solid #1a1a1a" }}
         >
           <div
-            className="text-4xl font-black text-[#0a6e5c] w-12 text-center leading-none"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            className="text-4xl font-black text-[#1a1a1a] w-12 text-center leading-none"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {step.icon}
           </div>
           <div>
             <p
-              className="text-lg font-bold text-[#1a1a2e] mb-2"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="text-lg font-bold text-[#1a1a1a] mb-2"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {step.title}
             </p>
             <p
-              className="text-base leading-relaxed text-[#1a1a2e]/75"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="text-base leading-relaxed text-[#1a1a1a]/75"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
               {step.detail}
             </p>
@@ -211,7 +211,7 @@ function ProcessDiagram() {
             onClick={() => setActive((a) => Math.max(0, a - 1))}
             disabled={active === 0}
             className="text-xs font-bold uppercase tracking-widest disabled:opacity-20 transition-opacity hover:opacity-60"
-            style={{ fontFamily: "'Space Mono', monospace", color: "#0a6e5c", background: "none", border: "none", cursor: active === 0 ? "default" : "pointer" }}
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a", background: "none", border: "none", cursor: active === 0 ? "default" : "pointer" }}
           >
             ← Precedente
           </button>
@@ -222,7 +222,7 @@ function ProcessDiagram() {
                 onClick={() => setActive(i)}
                 className="w-2 h-2 rounded-full transition-all"
                 style={{
-                  background: active === i ? "#0a6e5c" : "rgba(26,26,46,0.20)",
+                  background: active === i ? "#1a1a1a" : "rgba(26,26,46,0.20)",
                   border: "none",
                   cursor: "pointer",
                 }}
@@ -233,7 +233,7 @@ function ProcessDiagram() {
             onClick={() => setActive((a) => Math.min(PROCESS_DETAILS.length - 1, a + 1))}
             disabled={active === PROCESS_DETAILS.length - 1}
             className="text-xs font-bold uppercase tracking-widest disabled:opacity-20 transition-opacity hover:opacity-60"
-            style={{ fontFamily: "'Space Mono', monospace", color: "#0a6e5c", background: "none", border: "none", cursor: active === PROCESS_DETAILS.length - 1 ? "default" : "pointer" }}
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a", background: "none", border: "none", cursor: active === PROCESS_DETAILS.length - 1 ? "default" : "pointer" }}
           >
             Successivo →
           </button>
@@ -252,20 +252,20 @@ function ProcessDiagram() {
               <div className="flex items-center gap-4">
                 <span
                   className="text-[10px] font-bold uppercase tracking-widest w-8"
-                  style={{ fontFamily: "'Space Mono', monospace", color: active === i ? "#0a6e5c" : "rgba(26,26,46,0.35)" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: active === i ? "#1a1a1a" : "rgba(26,26,46,0.35)" }}
                 >
                   {s.n}
                 </span>
                 <span
                   className="text-sm font-bold"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif", color: active === i ? "#1a1a2e" : "rgba(26,26,46,0.65)" }}
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: active === i ? "#1a1a1a" : "rgba(26,26,46,0.65)" }}
                 >
                   {s.title}
                 </span>
               </div>
               <span
                 className="text-xs"
-                style={{ color: "#0a6e5c", fontFamily: "'Space Mono', monospace" }}
+                style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 {active === i ? "−" : "+"}
               </span>
@@ -276,8 +276,8 @@ function ProcessDiagram() {
                 style={{ borderTop: "1px solid rgba(10,110,92,0.2)" }}
               >
                 <p
-                  className="pt-3 text-sm leading-relaxed text-[#1a1a2e]/70"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  className="pt-3 text-sm leading-relaxed text-[#1a1a1a]/70"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   {s.detail}
                 </p>
@@ -302,7 +302,7 @@ export default function Tecnologia() {
         ogSiteName="IDEASMART"
       />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        /* SF Pro system font — no external loading needed */
       `}</style>
       <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
 
@@ -311,15 +311,15 @@ export default function Tecnologia() {
           <div className="flex items-center justify-between mb-2">
             <Link href="/">
               <span
-                className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 ← IdeaSmart
               </span>
             </Link>
             <span
-              className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {formatDateIT(today)}
             </span>
@@ -328,14 +328,14 @@ export default function Tecnologia() {
           <div className="text-center py-6">
             <SectionBadge label="Tecnologia" />
             <h1
-              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e]"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a]"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
             >
               L'informazione non è più un'opinione.
             </h1>
             <p
-              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               È un calcolo.
             </p>
@@ -353,14 +353,14 @@ export default function Tecnologia() {
             <div>
               <SectionBadge label="La piattaforma" />
               <h2
-                className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e]"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a1a]"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 La prima testata editoriale completamente agentica.
               </h2>
               <div
-                className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
-                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a1a]/75"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
               >
                 <p>
                   IdeaSmart non è una redazione tradizionale. È un sistema autonomo composto da agenti AI specializzati che replicano — e migliorano — il lavoro di una newsroom. Ogni notizia viene raccolta, verificata, bilanciata, sintetizzata e pubblicata senza intervento umano diretto.
@@ -378,14 +378,14 @@ export default function Tecnologia() {
             <div className="flex flex-col justify-center">
               <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: ACCENT }}>
                 <p
-                  className="text-xl font-bold italic leading-snug text-[#1a1a2e]"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="text-xl font-bold italic leading-snug text-[#1a1a1a]"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   "Non promettiamo neutralità. La costruiamo a livello architetturale."
                 </p>
                 <footer
-                  className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="mt-3 text-xs uppercase tracking-widest text-[#1a1a1a]/50"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   — IdeaSmart, Manifesto Editoriale
                 </footer>
@@ -406,13 +406,13 @@ export default function Tecnologia() {
                 >
                   <div
                     className="text-3xl font-black"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: i === 5 ? ORANGE : INK }}
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: i === 5 ? ORANGE : INK }}
                   >
                     {s.value}
                   </div>
                   <div
-                    className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a2e]/45"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a1a]/45"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {s.label}
                   </div>
@@ -428,14 +428,14 @@ export default function Tecnologia() {
             <div>
               <SectionBadge label="Il problema" />
               <h2
-                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-5"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Oggi l'informazione è rotta.
               </h2>
               <div
-                className="space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
-                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                className="space-y-4 text-base leading-relaxed text-[#1a1a1a]/75"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
               >
                 <p>
                   Polarizzata, manipolata, rumorosa, inefficiente. La sovrabbondanza di contenuti non ha prodotto più chiarezza: ha prodotto più confusione. Non sai più cosa è vero, cosa è rilevante, a chi credere.
@@ -448,8 +448,8 @@ export default function Tecnologia() {
             <div>
               <SectionBadge label="Il nostro approccio" />
               <h2
-                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-5"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Zero bias. Davvero.
               </h2>
@@ -466,13 +466,13 @@ export default function Tecnologia() {
                   >
                     <span
                       className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm flex-shrink-0 h-fit mt-0.5"
-                      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {item.tag}
                     </span>
                     <p
-                      className="text-sm leading-relaxed text-[#1a1a2e]/70"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                      className="text-sm leading-relaxed text-[#1a1a1a]/70"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                     >
                       {item.desc}
                     </p>
@@ -488,14 +488,14 @@ export default function Tecnologia() {
           <section className="py-10">
             <SectionBadge label="Architettura" />
             <h2
-              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-6"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Una redazione completamente agentica
             </h2>
             <p
-              className="text-base leading-relaxed text-[#1a1a2e]/65 mb-8 max-w-2xl"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="text-base leading-relaxed text-[#1a1a1a]/65 mb-8 max-w-2xl"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
               Cinque agenti specializzati replicano — e migliorano — ogni fase del lavoro di una newsroom tradizionale, operando in sequenza senza interruzioni.
             </p>
@@ -517,14 +517,14 @@ export default function Tecnologia() {
                     {a.icon}
                   </div>
                   <div
-                    className="text-sm font-bold text-[#1a1a2e] mb-1"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    className="text-sm font-bold text-[#1a1a1a] mb-1"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {a.name}
                   </div>
                   <div
-                    className="text-xs leading-relaxed text-[#1a1a2e]/55"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    className="text-xs leading-relaxed text-[#1a1a1a]/55"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                   >
                     {a.role}
                   </div>
@@ -539,14 +539,14 @@ export default function Tecnologia() {
           <section className="py-10">
             <SectionBadge label="Verify — Algoritmo proprietario" color={ACCENT} bg={ACCENT_LIGHT} />
             <h2
-              className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e] mb-4"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a1a] mb-4"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Non verifichiamo le notizie. Le pesiamo.
             </h2>
             <p
-              className="text-base leading-relaxed text-[#1a1a2e]/70 mb-8 max-w-2xl"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="text-base leading-relaxed text-[#1a1a1a]/70 mb-8 max-w-2xl"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
               Verify è l'algoritmo proprietario che rappresenta il vero vantaggio competitivo di IdeaSmart. Ogni notizia riceve un <strong style={{ color: INK }}>punteggio dinamico di qualità informativa</strong> basato su sei dimensioni distinte. Solo i contenuti che superano la soglia entrano nel flusso editoriale.
             </p>
@@ -564,15 +564,15 @@ export default function Tecnologia() {
                 >
                   <span
                     className="text-[10px] font-bold flex-shrink-0 w-8 text-right mt-0.5"
-                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {dim.n}
                   </span>
                   <div>
-                    <p className="text-sm font-bold text-[#1a1a2e] mb-1">{dim.label}</p>
+                    <p className="text-sm font-bold text-[#1a1a1a] mb-1">{dim.label}</p>
                     <p
-                      className="text-xs leading-relaxed text-[#1a1a2e]/55"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                      className="text-xs leading-relaxed text-[#1a1a1a]/55"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                     >
                       {dim.desc}
                     </p>
@@ -588,8 +588,8 @@ export default function Tecnologia() {
           <section className="py-10">
             <SectionBadge label="Verify in numeri" />
             <h2
-              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-8"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               L'algoritmo al lavoro, ogni giorno
             </h2>
@@ -618,14 +618,14 @@ export default function Tecnologia() {
                   }}
                 >
                   <div
-                    className="text-sm font-bold text-[#1a1a2e] mb-2"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    className="text-sm font-bold text-[#1a1a1a] mb-2"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {item.title}
                   </div>
                   <p
-                    className="text-sm leading-relaxed text-[#1a1a2e]/60"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    className="text-sm leading-relaxed text-[#1a1a1a]/60"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                   >
                     {item.desc}
                   </p>
@@ -646,14 +646,14 @@ export default function Tecnologia() {
             <div>
               <SectionBadge label="Vision" />
               <h2
-                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-5"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Costruire il primo layer di verità algoritmica globale
               </h2>
               <div
-                className="space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
-                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                className="space-y-4 text-base leading-relaxed text-[#1a1a1a]/75"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
               >
                 <p>
                   Vogliamo diventare l'infrastruttura di riferimento per l'informazione verificata: per utenti, per aziende, per piattaforme, per sistemi AI.
@@ -677,13 +677,13 @@ export default function Tecnologia() {
                 >
                   <p
                     className="text-[10px] font-bold uppercase tracking-widest mb-1"
-                    style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {item.label}
                   </p>
                   <p
-                    className="text-sm text-[#1a1a2e]/65"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    className="text-sm text-[#1a1a1a]/65"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                   >
                     {item.desc}
                   </p>
@@ -698,14 +698,14 @@ export default function Tecnologia() {
           <section className="py-10 text-center">
             <SectionBadge label="Scopri IdeaSmart" color={ORANGE} bg="#fff3ee" />
             <h2
-              className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a2e]"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a1a]"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Vuoi capire come funziona davvero l'informazione senza filtri?
             </h2>
             <p
-              className="mt-3 text-base text-[#1a1a2e]/65 max-w-xl mx-auto"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="mt-3 text-base text-[#1a1a1a]/65 max-w-xl mx-auto"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
               Esplora i 14 canali editoriali di IdeaSmart, iscriviti alla newsletter settimanale o scopri come collaborare con noi.
             </p>
@@ -716,7 +716,7 @@ export default function Tecnologia() {
                   style={{
                     background: INK,
                     color: "#fff",
-                    fontFamily: "'Space Mono', monospace",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   }}
                 >
                   Esplora IdeaSmart →
@@ -724,11 +724,11 @@ export default function Tecnologia() {
               </Link>
               <Link href="/chi-siamo">
                 <span
-                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all hover:opacity-80 border border-[#1a1a2e]/20"
+                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest cursor-pointer transition-all hover:opacity-80 border border-[#1a1a1a]/20"
                   style={{
                     background: "transparent",
                     color: INK,
-                    fontFamily: "'Space Mono', monospace",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   }}
                 >
                   Chi siamo →
@@ -740,7 +740,7 @@ export default function Tecnologia() {
                   style={{
                     background: "#fff3ee",
                     color: ORANGE,
-                    fontFamily: "'Space Mono', monospace",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   }}
                 >
                   Collabora con noi →
@@ -759,13 +759,13 @@ export default function Tecnologia() {
           <div className="max-w-6xl mx-auto px-4 text-center">
             <p
               className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
-              style={{ color: "rgba(26,26,46,0.35)", fontFamily: "'Space Mono', monospace" }}
+              style={{ color: "rgba(26,26,46,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               IDEASMART — Tecnologia
             </p>
             <p
               className="text-xs"
-              style={{ color: "rgba(26,26,46,0.25)", fontFamily: "'Space Mono', monospace" }}
+              style={{ color: "rgba(26,26,46,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>

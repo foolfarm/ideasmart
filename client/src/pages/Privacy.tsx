@@ -15,8 +15,8 @@ function Section({ id, title, children }: { id: string; title: string; children:
       <h2
         className="text-xl font-black mb-4 pb-2 border-b"
         style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          color: "#1a1f2e",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+          color: "#1a1a1a",
           borderColor: "#e2e5ed",
         }}
       >
@@ -24,7 +24,7 @@ function Section({ id, title, children }: { id: string; title: string; children:
       </h2>
       <div
         className="text-sm leading-relaxed space-y-3"
-        style={{ color: "#4a5568", fontFamily: "'DM Sans', sans-serif" }}
+        style={{ color: "#4a5568", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
       >
         {children}
       </div>
@@ -39,7 +39,7 @@ function P({ children }: { children: React.ReactNode }) {
 function Li({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex gap-2">
-      <span style={{ color: "#00b4a0", flexShrink: 0 }}>◆</span>
+      <span style={{ color: "#1a1a1a", flexShrink: 0 }}>◆</span>
       <span>{children}</span>
     </li>
   );
@@ -57,7 +57,7 @@ export default function Privacy() {
           <button
             onClick={() => navigate("/")}
             className="text-sm font-bold transition-colors hover:opacity-70"
-            style={{ color: "#00b4a0", fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             ← IDEASMART
           </button>
@@ -68,22 +68,22 @@ export default function Privacy() {
       </div>
 
       {/* Hero */}
-      <div style={{ background: "#1a1f2e" }} className="py-12">
+      <div style={{ background: "#1a1a1a" }} className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4"
-            style={{ background: "rgba(0,180,160,0.15)", color: "#00b4a0" }}
+            style={{ background: "rgba(0,180,160,0.15)", color: "#1a1a1a" }}
           >
             Documento legale
           </div>
           <h1
             className="text-4xl font-black mb-3"
-            style={{ color: "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Privacy Policy
-            <span style={{ color: "#00b4a0" }}> & Disclaimer</span>
+            <span style={{ color: "#1a1a1a" }}> & Disclaimer</span>
           </h1>
-          <p className="text-sm" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="text-sm" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Informativa ai sensi del Regolamento UE 2016/679 (GDPR) e del D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function Privacy() {
       {/* Indice rapido */}
       <div className="border-b" style={{ background: "#ffffff", borderColor: "#e2e5ed" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-wrap gap-3 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <div className="flex flex-wrap gap-3 text-xs" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             {[
               ["#titolare", "Titolare"],
               ["#dati", "Dati raccolti"],
@@ -106,7 +106,7 @@ export default function Privacy() {
               <a
                 key={href}
                 href={href}
-                className="px-3 py-1 rounded-full border transition-colors hover:border-[#00b4a0] hover:text-[#00b4a0]"
+                className="px-3 py-1 rounded-full border transition-colors hover:border-[#1a1a1a] hover:text-[#1a1a1a]"
                 style={{ borderColor: "#e2e5ed", color: "#6b7280" }}
               >
                 {label}
@@ -130,9 +130,9 @@ export default function Privacy() {
               className="rounded-xl p-4 border"
               style={{ background: "#f8fafc", borderColor: "#e2e5ed" }}
             >
-              <p className="font-bold mb-1" style={{ color: "#1a1f2e" }}>{OWNER}</p>
-              <p>Email: <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#00b4a0" }}>{OWNER_EMAIL}</a></p>
-              <p>Sito web: <a href={SITE_URL} style={{ color: "#00b4a0" }}>{SITE_URL}</a></p>
+              <p className="font-bold mb-1" style={{ color: "#1a1a1a" }}>{OWNER}</p>
+              <p>Email: <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a></p>
+              <p>Sito web: <a href={SITE_URL} style={{ color: "#1a1a1a" }}>{SITE_URL}</a></p>
             </div>
           </Section>
 
@@ -158,9 +158,9 @@ export default function Privacy() {
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr style={{ background: "#f0f4f8" }}>
-                    <th className="text-left p-3 font-bold" style={{ color: "#1a1f2e" }}>Finalità</th>
-                    <th className="text-left p-3 font-bold" style={{ color: "#1a1f2e" }}>Base giuridica</th>
-                    <th className="text-left p-3 font-bold" style={{ color: "#1a1f2e" }}>Conservazione</th>
+                    <th className="text-left p-3 font-bold" style={{ color: "#1a1a1a" }}>Finalità</th>
+                    <th className="text-left p-3 font-bold" style={{ color: "#1a1a1a" }}>Base giuridica</th>
+                    <th className="text-left p-3 font-bold" style={{ color: "#1a1a1a" }}>Conservazione</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -187,7 +187,7 @@ export default function Privacy() {
               L'iscrizione alla newsletter <strong>AI4Business News by IDEASMART</strong> è volontaria e richiede la fornitura dell'indirizzo email. Iscrivendosi, l'utente acconsente esplicitamente a ricevere comunicazioni periodiche contenenti notizie, analisi e reportage sull'intelligenza artificiale applicata al business.
             </P>
             <P>
-              Ogni email contiene un link di disiscrizione immediata. La disiscrizione è gratuita, senza necessità di fornire motivazioni, e produce effetto entro 24 ore. In alternativa, è possibile richiedere la disiscrizione scrivendo a <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#00b4a0" }}>{OWNER_EMAIL}</a>.
+              Ogni email contiene un link di disiscrizione immediata. La disiscrizione è gratuita, senza necessità di fornire motivazioni, e produce effetto entro 24 ore. In alternativa, è possibile richiedere la disiscrizione scrivendo a <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a>.
             </P>
             <P>
               Le email newsletter possono contenere un <strong>pixel di tracciamento</strong> (immagine 1×1 pixel) che ci permette di rilevare se e quando l'email è stata aperta. Questo dato è utilizzato esclusivamente per migliorare la qualità e la frequenza delle comunicazioni. È possibile disabilitare il caricamento automatico delle immagini nel proprio client email per evitare questo tracciamento.
@@ -237,7 +237,7 @@ export default function Privacy() {
               <Li><strong>Revoca del consenso</strong> — revocare in qualsiasi momento il consenso prestato, senza pregiudicare la liceità del trattamento precedente.</Li>
             </ul>
             <P>
-              Per esercitare i propri diritti, è possibile inviare una richiesta scritta a <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#00b4a0" }}>{OWNER_EMAIL}</a>. Il Titolare risponderà entro 30 giorni. In caso di mancata risposta o risposta insoddisfacente, l'utente ha il diritto di proporre reclamo al <strong>Garante per la Protezione dei Dati Personali</strong> (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer" style={{ color: "#00b4a0" }}>garanteprivacy.it</a>).
+              Per esercitare i propri diritti, è possibile inviare una richiesta scritta a <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a>. Il Titolare risponderà entro 30 giorni. In caso di mancata risposta o risposta insoddisfacente, l'utente ha il diritto di proporre reclamo al <strong>Garante per la Protezione dei Dati Personali</strong> (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer" style={{ color: "#1a1a1a" }}>garanteprivacy.it</a>).
             </P>
           </Section>
 
@@ -265,7 +265,7 @@ export default function Privacy() {
           <Section id="contatti" title="9. Contatti e Aggiornamenti">
             <P>
               Per qualsiasi domanda relativa alla presente informativa o al trattamento dei dati personali, è possibile contattare il Titolare del trattamento all'indirizzo:{" "}
-              <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#00b4a0" }}>{OWNER_EMAIL}</a>.
+              <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a>.
             </P>
             <P>
               La presente Privacy Policy e Disclaimer è stata aggiornata il <strong>{LAST_UPDATE}</strong>. IDEASMART si riserva il diritto di modificare questa informativa in qualsiasi momento. Le modifiche sostanziali saranno comunicate agli iscritti alla newsletter e/o tramite avviso in evidenza sul sito. L'uso continuato del sito dopo la pubblicazione delle modifiche costituisce accettazione delle stesse.
@@ -276,13 +276,13 @@ export default function Privacy() {
 
         {/* Footer della pagina */}
         <div className="text-center py-6">
-          <p className="text-xs mb-3" style={{ color: "#9ca3af", fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="text-xs mb-3" style={{ color: "#9ca3af", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             © {new Date().getFullYear()} IDEASMART — AI for Business · Tutti i diritti riservati
           </p>
           <button
             onClick={() => navigate("/")}
             className="text-xs font-bold transition-colors hover:opacity-70"
-            style={{ color: "#00b4a0", fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             ← Torna alla Home
           </button>

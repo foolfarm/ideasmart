@@ -20,7 +20,7 @@ import SEOHead from "@/components/SEOHead";
 const STATUS_CONFIG = {
   ok: { label: "Coerente", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", icon: "✓" },
   warning: { label: "Parziale", color: "#d97706", bg: "#fffbeb", border: "#fde68a", icon: "⚠" },
-  error: { label: "Non coerente", color: "#dc2626", bg: "#fef2f2", border: "#fecaca", icon: "✗" },
+  error: { label: "Non coerente", color: "#2a2a2a", bg: "#fef2f2", border: "#fecaca", icon: "✗" },
   unreachable: { label: "Non raggiungibile", color: "#6b7280", bg: "#f9fafb", border: "#e5e7eb", icon: "○" },
   pending: { label: "In attesa", color: "#6366f1", bg: "#eef2ff", border: "#c7d2fe", icon: "…" },
 };
@@ -42,7 +42,7 @@ function StatusBadge({ status }: { status: AuditStatus }) {
 
 function ScoreBar({ score }: { score: number | null }) {
   if (score === null) return <span className="text-gray-400 text-sm">—</span>;
-  const color = score >= 70 ? "#16a34a" : score >= 40 ? "#d97706" : "#dc2626";
+  const color = score >= 70 ? "#16a34a" : score >= 40 ? "#d97706" : "#2a2a2a";
   return (
     <div className="flex items-center gap-2">
       <div className="w-20 h-2 rounded-full bg-gray-200 overflow-hidden">
@@ -247,7 +247,7 @@ export default function AuditDashboard() {
               { key: "total", label: "Totale audit", value: stats.total, color: "#374151" },
               { key: "ok", label: "Coerenti", value: stats.ok, color: "#16a34a" },
               { key: "warning", label: "Parziali", value: stats.warning, color: "#d97706" },
-              { key: "error", label: "Non coerenti", value: stats.error, color: "#dc2626" },
+              { key: "error", label: "Non coerenti", value: stats.error, color: "#2a2a2a" },
               { key: "unreachable", label: "Non raggiungibili", value: stats.unreachable, color: "#6b7280" },
               { key: "pending", label: "In attesa", value: stats.pending, color: "#6366f1" },
             ].map((s) => (
@@ -308,7 +308,7 @@ export default function AuditDashboard() {
               onClick={handleRunAudit}
               disabled={isAuditRunning}
               className="px-5 py-2 rounded-lg font-bold text-sm text-white transition-all disabled:opacity-50"
-              style={{ background: isAuditRunning ? "#9ca3af" : "#00b4a0" }}
+              style={{ background: isAuditRunning ? "#9ca3af" : "#1a1a1a" }}
             >
               {isAuditRunning ? "Audit in corso..." : "Avvia Audit"}
             </button>
@@ -350,7 +350,7 @@ export default function AuditDashboard() {
                   onClick={() => replaceAllLowScore.mutate({ section: replaceSection })}
                   disabled={replaceAllLowScore.isPending}
                   className="px-5 py-2 rounded-lg font-bold text-sm text-white transition-all disabled:opacity-50"
-                  style={{ background: replaceAllLowScore.isPending ? "#9ca3af" : "#dc2626" }}
+                  style={{ background: replaceAllLowScore.isPending ? "#9ca3af" : "#2a2a2a" }}
                 >
                   {replaceAllLowScore.isPending ? "Sostituzione in corso..." : "Sostituisci notizie non coerenti"}
                 </button>

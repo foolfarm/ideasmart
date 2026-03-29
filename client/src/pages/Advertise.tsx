@@ -1,8 +1,8 @@
 /**
  * IDEASMART — Advertising / Media Kit
  * Layout editoriale coerente con le pagine sezione del sito.
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a2e), accento teal (#0a6e5c).
- * Tipografia: Playfair Display (titoli), Source Serif 4 (corpo), Space Mono (label/meta).
+ * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento teal (#1a1a1a).
+ * Tipografia: SF Pro Display (titoli), SF Pro Text (corpo) — sistema Apple.
  */
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "wouter";
@@ -11,25 +11,25 @@ import { toast } from "sonner";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
-const ACCENT = "#0a6e5c";
+const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#e6f4f1";
-const INK = "#1a1a2e";
-const ORANGE = "#ff5500";
+const INK = "#1a1a1a";
+const ORANGE = "#2a2a2a";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 }
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
 }
 function ThinDivider() {
-  return <div className="w-full border-t border-[#1a1a2e]/15" />;
+  return <div className="w-full border-t border-[#1a1a1a]/15" />;
 }
 function SectionBadge({ label, color = ACCENT, bg = ACCENT_LIGHT }: { label: string; color?: string; bg?: string }) {
   return (
     <span
       className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
-      style={{ background: bg, color, fontFamily: "'Space Mono', monospace" }}
+      style={{ background: bg, color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
       {label}
     </span>
@@ -140,31 +140,31 @@ function LiveReadersBlock({ count }: { count: number }) {
       className="flex items-center gap-6 py-5 px-6 my-6"
       style={{
         background: "#f0faf7",
-        borderLeft: `4px solid #0a6e5c`,
+        borderLeft: `4px solid #1a1a1a`,
       }}
     >
       {/* Pallino pulsante */}
       <div className="relative flex-shrink-0">
         <span
           className="absolute inline-flex h-4 w-4 rounded-full opacity-75 animate-ping"
-          style={{ background: "#0a6e5c" }}
+          style={{ background: "#1a1a1a" }}
         />
         <span
           className="relative inline-flex rounded-full h-4 w-4"
-          style={{ background: "#0a6e5c" }}
+          style={{ background: "#1a1a1a" }}
         />
       </div>
       {/* Numero */}
       <div>
         <div
           className="text-4xl font-black leading-none"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#1a1a2e" }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}
         >
           {animated.toLocaleString("it-IT")}
         </div>
         <div
           className="mt-1 text-[10px] uppercase tracking-[0.2em]"
-          style={{ fontFamily: "'Space Mono', monospace", color: "rgba(26,26,46,0.5)" }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "rgba(26,26,46,0.5)" }}
         >
           Lettori attivi iscritti alla newsletter
         </div>
@@ -172,10 +172,10 @@ function LiveReadersBlock({ count }: { count: number }) {
       {/* Testo descrittivo */}
       <div
         className="hidden md:block ml-auto text-sm leading-relaxed max-w-xs"
-        style={{ fontFamily: "'Source Serif 4', Georgia, serif", color: "rgba(26,26,46,0.65)" }}
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", color: "rgba(26,26,46,0.65)" }}
       >
         Professionisti B2B italiani che ricevono ogni settimana le analisi di IdeaSmart.
-        <strong style={{ color: "#0a6e5c" }}> Dato aggiornato in tempo reale.</strong>
+        <strong style={{ color: "#1a1a1a" }}> Dato aggiornato in tempo reale.</strong>
       </div>
     </div>
   );
@@ -229,7 +229,7 @@ export default function Advertise() {
         ogSiteName="IDEASMART"
       />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        /* SF Pro system font — no external loading needed */
       `}</style>
       <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
 
@@ -238,15 +238,15 @@ export default function Advertise() {
           <div className="flex items-center justify-between mb-2">
             <Link href="/">
               <span
-                className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 ← IdeaSmart
               </span>
             </Link>
             <span
-              className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {formatDateIT(today)}
             </span>
@@ -255,14 +255,14 @@ export default function Advertise() {
           <div className="text-center py-6">
             <SectionBadge label="Media Kit" />
             <h1
-              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e]"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a]"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
             >
               Advertising
             </h1>
             <p
-              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50"
-              style={{ fontFamily: "'Space Mono', monospace" }}
+              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Raggiungi {subscriberCount ? `${subscriberCount.toLocaleString("it-IT")}+` : "5.400+"} professionisti B2B italiani
             </p>
@@ -283,14 +283,14 @@ export default function Advertise() {
             <div>
               <SectionBadge label="Perché IdeaSmart" />
               <h2
-                className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a2e]"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a1a]"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 La prima testata AI italiana letta dai decision maker.
               </h2>
               <div
-                className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a2e]/75"
-                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                className="mt-5 space-y-4 text-base leading-relaxed text-[#1a1a1a]/75"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
               >
                 <p>
                   IdeaSmart è la testata giornalistica 100% AI più letta dai professionisti italiani dell'intelligenza artificiale, del business e dell'innovazione. Ogni giorno, oltre 8.000 visitatori unici leggono le nostre analisi, notizie e reportage.
@@ -303,14 +303,14 @@ export default function Advertise() {
             <div className="flex flex-col justify-center">
               <blockquote className="border-l-4 pl-5 py-2" style={{ borderColor: ACCENT }}>
                 <p
-                  className="text-xl font-bold italic leading-snug text-[#1a1a2e]"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="text-xl font-bold italic leading-snug text-[#1a1a1a]"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   "Non vendiamo spazi pubblicitari. Offriamo accesso a una community di professionisti che ci legge ogni mattina."
                 </p>
                 <footer
-                  className="mt-3 text-xs uppercase tracking-widest text-[#1a1a2e]/50"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="mt-3 text-xs uppercase tracking-widest text-[#1a1a1a]/50"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   — IdeaSmart, Media Kit 2026
                 </footer>
@@ -331,15 +331,15 @@ export default function Advertise() {
                 >
                   <div
                     className="text-3xl font-black"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: i === 0 ? ACCENT : INK }}
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", color: i === 0 ? ACCENT : INK }}
                   >
                     {i === 0 && subscriberCount
                       ? `${subscriberCount.toLocaleString("it-IT")}+`
                       : s.value}
                   </div>
                   <div
-                    className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a2e]/45"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    className="mt-1 text-[9px] uppercase tracking-widest text-[#1a1a1a]/45"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {s.label}
                   </div>
@@ -355,8 +355,8 @@ export default function Advertise() {
             <div>
               <SectionBadge label="Chi ci legge" />
               <h2
-                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-6"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-6"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Un pubblico di professionisti B2B
               </h2>
@@ -368,8 +368,8 @@ export default function Advertise() {
                     style={{ borderBottom: "1px solid rgba(26,26,46,0.10)" }}
                   >
                     <span
-                      className="text-sm font-bold text-[#1a1a2e]"
-                      style={{ fontFamily: "'Space Mono', monospace" }}
+                      className="text-sm font-bold text-[#1a1a1a]"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {p.role}
                     </span>
@@ -382,8 +382,8 @@ export default function Advertise() {
                         }}
                       />
                       <span
-                        className="text-sm font-bold text-[#1a1a2e] w-10 text-right"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
+                        className="text-sm font-bold text-[#1a1a1a] w-10 text-right"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}
                       >
                         {p.pct}
                       </span>
@@ -395,8 +395,8 @@ export default function Advertise() {
             <div>
               <SectionBadge label="Perché funziona" />
               <h2
-                className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-5"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-5"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Contesto editoriale di qualità
               </h2>
@@ -413,13 +413,13 @@ export default function Advertise() {
                   >
                     <span
                       className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm flex-shrink-0 h-fit mt-0.5"
-                      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {item.tag}
                     </span>
                     <p
-                      className="text-sm leading-relaxed text-[#1a1a2e]/70"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                      className="text-sm leading-relaxed text-[#1a1a1a]/70"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                     >
                       {item.desc}
                     </p>
@@ -435,8 +435,8 @@ export default function Advertise() {
           <section className="py-10">
             <SectionBadge label="Formati disponibili" />
             <h2
-              className="mt-3 text-2xl font-bold text-[#1a1a2e] mb-8"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-8"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Cinque formati per ogni obiettivo
             </h2>
@@ -457,21 +457,21 @@ export default function Advertise() {
                         {fmt.highlight && (
                           <span
                             className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm"
-                            style={{ background: ORANGE, color: "#fff", fontFamily: "'Space Mono', monospace" }}
+                            style={{ background: ORANGE, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                           >
                             Top
                           </span>
                         )}
                       </div>
                       <h3
-                        className="text-xl font-bold text-[#1a1a2e] mb-1"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        className="text-xl font-bold text-[#1a1a1a] mb-1"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {fmt.name}
                       </h3>
                       <p
-                        className="text-xs text-[#1a1a2e]/45 mb-3"
-                        style={{ fontFamily: "'Space Mono', monospace" }}
+                        className="text-xs text-[#1a1a1a]/45 mb-3"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {fmt.placement} · {fmt.size}
                       </p>
@@ -479,8 +479,8 @@ export default function Advertise() {
                         {fmt.features.map((f) => (
                           <span
                             key={f}
-                            className="text-xs text-[#1a1a2e]/60"
-                            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                            className="text-xs text-[#1a1a1a]/60"
+                            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                           >
                             ✓ {f}
                           </span>
@@ -489,20 +489,20 @@ export default function Advertise() {
                     </div>
                     <div className="text-right flex-shrink-0">
                       <div
-                        className="text-2xl font-black text-[#1a1a2e]"
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        className="text-2xl font-black text-[#1a1a1a]"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {fmt.price}
                       </div>
                       <div
-                        className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/40 mt-1"
-                        style={{ fontFamily: "'Space Mono', monospace" }}
+                        className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40 mt-1"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {fmt.impressions}
                       </div>
                       <div
-                        className="text-[10px] uppercase tracking-widest text-[#1a1a2e]/40"
-                        style={{ fontFamily: "'Space Mono', monospace" }}
+                        className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {fmt.ctr}
                       </div>
@@ -520,14 +520,14 @@ export default function Advertise() {
           <section className="py-10">
             <SectionBadge label="Richiedi informazioni" color={ORANGE} bg="#fff3ee" />
             <h2
-              className="mt-3 text-2xl md:text-3xl font-bold text-[#1a1a2e] mb-3"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mt-3 text-2xl md:text-3xl font-bold text-[#1a1a1a] mb-3"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Inizia una campagna su IdeaSmart
             </h2>
             <p
-              className="text-base text-[#1a1a2e]/65 mb-8 max-w-xl"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              className="text-base text-[#1a1a1a]/65 mb-8 max-w-xl"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
               Compila il form e ti risponderemo entro 24 ore con una proposta personalizzata.
             </p>
@@ -538,14 +538,14 @@ export default function Advertise() {
                 style={{ borderColor: ACCENT, background: ACCENT_LIGHT }}
               >
                 <p
-                  className="text-2xl font-bold text-[#1a1a2e] mb-2"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="text-2xl font-bold text-[#1a1a1a] mb-2"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Richiesta ricevuta.
                 </p>
                 <p
-                  className="text-sm text-[#1a1a2e]/65"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                  className="text-sm text-[#1a1a1a]/65"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   Ti contatteremo entro 24 ore all'indirizzo email fornito.
                 </p>
@@ -570,8 +570,8 @@ export default function Advertise() {
                     }}
                   >
                     <label
-                      className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-[#1a1a2e]/50"
-                      style={{ fontFamily: "'Space Mono', monospace" }}
+                      className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-[#1a1a1a]/50"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {field.label}
                     </label>
@@ -580,10 +580,10 @@ export default function Advertise() {
                       placeholder={field.placeholder}
                       value={formData[field.key as keyof typeof formData]}
                       onChange={(e) => setFormData((p) => ({ ...p, [field.key]: e.target.value }))}
-                      className="w-full bg-transparent border-0 border-b text-sm outline-none pb-1 text-[#1a1a2e] placeholder-[#1a1a2e]/30"
+                      className="w-full bg-transparent border-0 border-b text-sm outline-none pb-1 text-[#1a1a1a] placeholder-[#1a1a1a]/30"
                       style={{
                         borderColor: "rgba(26,26,46,0.20)",
-                        fontFamily: "'Source Serif 4', Georgia, serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
                       }}
                     />
                   </div>
@@ -593,8 +593,8 @@ export default function Advertise() {
                   style={{ borderBottom: "1px solid rgba(26,26,46,0.10)" }}
                 >
                   <label
-                    className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-[#1a1a2e]/50"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-[#1a1a1a]/50"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Messaggio
                   </label>
@@ -603,8 +603,8 @@ export default function Advertise() {
                     placeholder="Descrivi brevemente il tuo obiettivo di comunicazione..."
                     value={formData.message}
                     onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
-                    className="w-full bg-transparent border-0 text-sm outline-none resize-none text-[#1a1a2e] placeholder-[#1a1a2e]/30"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    className="w-full bg-transparent border-0 text-sm outline-none resize-none text-[#1a1a1a] placeholder-[#1a1a1a]/30"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                   />
                 </div>
                 <div className="pt-6 md:col-span-2">
@@ -615,14 +615,14 @@ export default function Advertise() {
                     style={{
                       background: INK,
                       color: "#fff",
-                      fontFamily: "'Space Mono', monospace",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
                     {sending ? "Invio in corso..." : "Invia richiesta →"}
                   </button>
                   <p
-                    className="mt-3 text-xs text-[#1a1a2e]/40"
-                    style={{ fontFamily: "'Space Mono', monospace" }}
+                    className="mt-3 text-xs text-[#1a1a1a]/40"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Oppure scrivi direttamente a{" "}
                     <a href="mailto:info@ideasmart.ai" style={{ color: ACCENT }}>
@@ -644,13 +644,13 @@ export default function Advertise() {
           <div className="max-w-6xl mx-auto px-4 text-center">
             <p
               className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
-              style={{ color: "rgba(26,26,46,0.35)", fontFamily: "'Space Mono', monospace" }}
+              style={{ color: "rgba(26,26,46,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               IDEASMART — Advertising
             </p>
             <p
               className="text-xs"
-              style={{ color: "rgba(26,26,46,0.25)", fontFamily: "'Space Mono', monospace" }}
+              style={{ color: "rgba(26,26,46,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>

@@ -12,9 +12,9 @@ import { useLocation } from "wouter";
 type Section = "ai" | "music" | "startup" | "all";
 
 const SECTION_COLORS: Record<string, string> = {
-  ai: "#00e5c8",
-  music: "#8b5cf6",
-  startup: "#ff5500",
+  ai: "#1a1a1a",
+  music: "#2a2a2a",
+  startup: "#2a2a2a",
 };
 
 const SECTION_LABELS: Record<string, string> = {
@@ -121,21 +121,21 @@ export default function AdminRssMonitor() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
-        <div className="w-8 h-8 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+        <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
         <div className="text-center">
           <p className="text-white/60 mb-4">Accesso riservato agli amministratori.</p>
           <button
             onClick={() => navigate("/")}
             className="px-4 py-2 rounded-lg text-sm font-bold"
-            style={{ background: "#00e5c8", color: "#0a0f1e" }}
+            style={{ background: "#1a1a1a", color: "#0f0f0f" }}
           >
             Torna alla Home
           </button>
@@ -149,7 +149,7 @@ export default function AdminRssMonitor() {
   const sectionColor = SECTION_COLORS[activeSection];
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0f1e", fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Header */}
       <div className="border-b border-white/8" style={{ background: "#060a14" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -158,7 +158,7 @@ export default function AdminRssMonitor() {
               ← Admin
             </button>
             <span className="text-white/20">/</span>
-            <span className="text-sm font-bold" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span className="text-sm font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               📡 Monitor RSS
             </span>
           </div>
@@ -173,7 +173,7 @@ export default function AdminRssMonitor() {
 
         {/* Titolo */}
         <div className="mb-8">
-          <h1 className="text-2xl font-black text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <h1 className="text-2xl font-black text-white mb-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Monitor Qualità Fonti RSS
           </h1>
           <p className="text-white/50 text-sm">
@@ -183,8 +183,8 @@ export default function AdminRssMonitor() {
 
         {/* Action result banner */}
         {lastAction && (
-          <div className="mb-6 p-4 rounded-xl border border-[#00e5c8]/30" style={{ background: "rgba(0,229,200,0.06)" }}>
-            <p className="text-sm font-medium" style={{ color: "#00e5c8" }}>{lastAction}</p>
+          <div className="mb-6 p-4 rounded-xl border border-[#1a1a1a]/30" style={{ background: "rgba(0,229,200,0.06)" }}>
+            <p className="text-sm font-medium" style={{ color: "#1a1a1a" }}>{lastAction}</p>
           </div>
         )}
 
@@ -336,7 +336,7 @@ export default function AdminRssMonitor() {
                   className="text-xs font-bold px-2 py-0.5 rounded-full"
                   style={{
                     background: source.lang === "IT" ? "rgba(0,229,200,0.15)" : "rgba(255,255,255,0.08)",
-                    color: source.lang === "IT" ? "#00e5c8" : "rgba(255,255,255,0.5)",
+                    color: source.lang === "IT" ? "#1a1a1a" : "rgba(255,255,255,0.5)",
                   }}
                 >
                   {source.lang}

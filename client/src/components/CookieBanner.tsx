@@ -26,7 +26,7 @@ function Toggle({
       style={{
         width: 44,
         height: 24,
-        background: checked ? "#00b4a0" : "#d1d5db",
+        background: checked ? "#1a1a1a" : "#d1d5db",
         opacity: disabled ? 0.5 : 1,
         cursor: disabled ? "not-allowed" : "pointer",
         flexShrink: 0,
@@ -69,14 +69,14 @@ function CategoryRow({
         <div className="flex items-center gap-2 mb-1">
           <span
             className="text-sm font-bold"
-            style={{ color: "#1a1f2e", fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {title}
           </span>
           {disabled && (
             <span
               className="text-xs px-2 py-0.5 rounded-full font-bold"
-              style={{ background: "rgba(0,180,160,0.12)", color: "#00b4a0" }}
+              style={{ background: "rgba(0,180,160,0.12)", color: "#1a1a1a" }}
             >
               Sempre attivi
             </span>
@@ -84,13 +84,13 @@ function CategoryRow({
         </div>
         <p
           className="text-xs leading-relaxed mb-1"
-          style={{ color: "#6b7280", fontFamily: "'DM Sans', sans-serif" }}
+          style={{ color: "#6b7280", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           {description}
         </p>
         <p
           className="text-xs"
-          style={{ color: "#9ca3af", fontFamily: "'DM Sans', sans-serif" }}
+          style={{ color: "#9ca3af", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           <strong>Esempi:</strong> {examples}
         </p>
@@ -130,14 +130,14 @@ export default function CookieBanner() {
           {/* Header pannello */}
           <div
             className="px-6 py-4 border-b flex items-center justify-between"
-            style={{ background: "#1a1f2e", borderColor: "#2d3748" }}
+            style={{ background: "#1a1a1a", borderColor: "#2d3748" }}
           >
             <div>
               <h2
                 className="text-base font-black text-white"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                IDEA<span style={{ color: "#00b4a0" }}>SMART</span> — Preferenze Cookie
+                IDEA<span style={{ color: "#1a1a1a" }}>SMART</span> — Preferenze Cookie
               </h2>
               <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.5)" }}>
                 Scegli quali cookie accettare
@@ -186,10 +186,10 @@ export default function CookieBanner() {
               onClick={() => saveCustom({ analytics, advertising })}
               className="flex-1 py-2.5 rounded-xl text-sm font-bold border transition-colors"
               style={{
-                borderColor: "#00b4a0",
-                color: "#00b4a0",
+                borderColor: "#1a1a1a",
+                color: "#1a1a1a",
                 background: "transparent",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
               }}
             >
               Salva preferenze
@@ -198,9 +198,9 @@ export default function CookieBanner() {
               onClick={acceptAll}
               className="flex-1 py-2.5 rounded-xl text-sm font-bold transition-colors"
               style={{
-                background: "#00b4a0",
+                background: "#1a1a1a",
                 color: "#ffffff",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
               }}
             >
               Accetta tutti
@@ -212,7 +212,7 @@ export default function CookieBanner() {
             <a
               href="/privacy"
               className="text-xs underline"
-              style={{ color: "#9ca3af", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#9ca3af", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Leggi la Privacy Policy & Disclaimer completa
             </a>
@@ -227,7 +227,7 @@ export default function CookieBanner() {
           style={{ background: "#ffffff", borderColor: "#e2e5ed" }}
         >
           {/* Striscia teal in cima */}
-          <div style={{ height: 3, background: "#00b4a0", borderRadius: "12px 12px 0 0" }} />
+          <div style={{ height: 3, background: "#1a1a1a", borderRadius: "12px 12px 0 0" }} />
 
           <div className="px-5 py-5">
             {/* Titolo */}
@@ -236,16 +236,16 @@ export default function CookieBanner() {
               <div>
                 <h3
                   className="text-sm font-black mb-1"
-                  style={{ color: "#1a1f2e", fontFamily: "'Space Grotesk', sans-serif" }}
+                  style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Utilizziamo i cookie
                 </h3>
                 <p
                   className="text-xs leading-relaxed"
-                  style={{ color: "#6b7280", fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ color: "#6b7280", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Usiamo cookie tecnici (necessari), analitici e di profilazione per migliorare la tua esperienza e personalizzare i contenuti. Puoi scegliere quali accettare.{" "}
-                  <a href="/privacy" style={{ color: "#00b4a0", textDecoration: "underline" }}>
+                  <a href="/privacy" style={{ color: "#1a1a1a", textDecoration: "underline" }}>
                     Privacy Policy
                   </a>
                 </p>
@@ -261,7 +261,7 @@ export default function CookieBanner() {
                   borderColor: "#d1d5db",
                   color: "#6b7280",
                   background: "transparent",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 }}
               >
                 Rifiuta tutti
@@ -270,10 +270,10 @@ export default function CookieBanner() {
                 onClick={() => setShowPanel(true)}
                 className="flex-1 py-2 rounded-xl text-xs font-bold border transition-colors"
                 style={{
-                  borderColor: "#00b4a0",
-                  color: "#00b4a0",
+                  borderColor: "#1a1a1a",
+                  color: "#1a1a1a",
                   background: "transparent",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 }}
               >
                 Personalizza
@@ -282,9 +282,9 @@ export default function CookieBanner() {
                 onClick={acceptAll}
                 className="flex-1 py-2 rounded-xl text-xs font-bold transition-colors"
                 style={{
-                  background: "#00b4a0",
+                  background: "#1a1a1a",
                   color: "#ffffff",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 }}
               >
                 Accetta tutti

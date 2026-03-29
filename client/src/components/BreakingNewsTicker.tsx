@@ -1,6 +1,6 @@
 /**
  * BreakingNewsTicker — Barra di scorrimento automatico con le ultime notizie
- * Pivot IdeaSmart Research: mostra solo AI4Business e Startup News
+ * Pivot IdeaSmart: mostra solo AI4Business e Startup News
  */
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
@@ -15,8 +15,8 @@ interface TickerItem {
 }
 
 const SECTION_META: Record<SectionKey, { label: string; color: string; path: string }> = {
-  ai:      { label: "AI4BUSINESS", color: "#00b4a0", path: "ai" },
-  startup: { label: "STARTUP",     color: "#e84f00", path: "startup" },
+  ai:      { label: "AI4BUSINESS", color: "#1a1a1a", path: "ai" },
+  startup: { label: "STARTUP",     color: "#2a2a2a", path: "startup" },
 };
 
 export default function BreakingNewsTicker() {
@@ -74,8 +74,8 @@ export default function BreakingNewsTicker() {
 
   return (
     <div
-      className="w-full overflow-hidden border-b border-[#1a1a2e]/20"
-      style={{ background: "#1a1a2e", height: "36px" }}
+      className="w-full overflow-hidden border-b border-[#1a1a1a]/20"
+      style={{ background: "#1a1a1a", height: "36px" }}
       onMouseEnter={() => { pausedRef.current = true; }}
       onMouseLeave={() => { pausedRef.current = false; }}
     >
@@ -86,7 +86,7 @@ export default function BreakingNewsTicker() {
           style={{
             background: "#e63946",
             color: "#fff",
-            fontFamily: "'Space Mono', monospace",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
             minWidth: "90px",
             letterSpacing: "0.15em",
           }}
@@ -108,14 +108,14 @@ export default function BreakingNewsTicker() {
                 <span key={`${item.id}-${idx}`} className="inline-flex items-center gap-2 px-5">
                   <span
                     className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-sm flex-shrink-0"
-                    style={{ background: meta.color + "30", color: meta.color, fontFamily: "'Space Mono', monospace" }}
+                    style={{ background: meta.color + "30", color: meta.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {meta.label}
                   </span>
                   <Link href={path}>
                     <span
                       className="text-xs text-white/80 hover:text-white transition-colors cursor-pointer"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                     >
                       {item.title}
                     </span>

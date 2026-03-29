@@ -22,7 +22,7 @@ const RSS_FEEDS = [
     url: "https://techcrunch.com/category/artificial-intelligence/feed/",
     source: "TechCrunch AI",
     category: "AI",
-    color: "#00e5c8",
+    color: "#1a1a1a",
   },
   {
     url: "https://venturebeat.com/category/ai/feed/",
@@ -34,7 +34,7 @@ const RSS_FEEDS = [
     url: "https://www.wired.com/feed/tag/artificial-intelligence/latest/rss",
     source: "Wired",
     category: "Tecnologia",
-    color: "#ff5500",
+    color: "#2a2a2a",
   },
 ];
 
@@ -90,11 +90,11 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
               {item.category}
             </span>
             <span className="text-white/20 text-xs">·</span>
-            <span className="text-xs text-white/30" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <span className="text-xs text-white/30" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {item.source}
             </span>
             <span className="text-white/20 text-xs">·</span>
-            <span className="text-xs text-white/25" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <span className="text-xs text-white/25" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {formatDate(item.pubDate)}
             </span>
           </div>
@@ -102,14 +102,14 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
           {/* Title */}
           <h3
             className="text-sm font-semibold text-white/85 group-hover:text-white transition-colors leading-snug mb-1"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {item.title}
           </h3>
 
           {/* Description */}
           {item.description && (
-            <p className="text-xs text-white/35 leading-relaxed line-clamp-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-xs text-white/35 leading-relaxed line-clamp-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {item.description}
             </p>
           )}
@@ -213,7 +213,7 @@ export default function NewsSection() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="editorial-tag text-white/30">05 —</span>
-            <span className="editorial-tag" style={{ color: "#00e5c8" }}>Ultime News · AI &amp; Startup</span>
+            <span className="editorial-tag" style={{ color: "#1a1a1a" }}>Ultime News · AI &amp; Startup</span>
           </div>
           {lastUpdate && (
             <span className="text-xs text-white/25 hidden sm:block" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
@@ -223,17 +223,17 @@ export default function NewsSection() {
         </div>
       </div>
 
-      <div className="border-b-2" style={{ borderColor: "#00e5c8", background: "rgba(0,229,200,0.04)" }}>
+      <div className="border-b-2" style={{ borderColor: "#1a1a1a", background: "rgba(0,229,200,0.04)" }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
           <h2
             className="text-2xl sm:text-3xl font-black text-white"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Le notizie del giorno su AI e startup.
           </h2>
           <div className="hidden sm:flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#00e5c8" }} />
-            <span className="editorial-tag" style={{ color: "#00e5c8" }}>Live</span>
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1a1a1a" }} />
+            <span className="editorial-tag" style={{ color: "#1a1a1a" }}>Live</span>
           </div>
         </div>
       </div>
@@ -244,7 +244,7 @@ export default function NewsSection() {
           {RSS_FEEDS.map((f) => (
             <div key={f.source} className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full" style={{ background: f.color }} />
-              <span className="text-xs text-white/40" style={{ fontFamily: "'DM Sans', sans-serif" }}>{f.source}</span>
+              <span className="text-xs text-white/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{f.source}</span>
             </div>
           ))}
         </div>
@@ -263,7 +263,7 @@ export default function NewsSection() {
 
         {error && !loading && (
           <div className="text-center py-12 border border-white/8 rounded-2xl" style={{ background: "rgba(255,255,255,0.02)" }}>
-            <p className="text-white/40 text-sm mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="text-white/40 text-sm mb-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Impossibile caricare le notizie in questo momento.
             </p>
             <p className="text-white/25 text-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
@@ -282,7 +282,7 @@ export default function NewsSection() {
 
         {/* Footer note */}
         {!loading && news.length > 0 && (
-          <p className="text-xs text-white/20 mt-6 text-center" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="text-xs text-white/20 mt-6 text-center" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Notizie aggiornate automaticamente ogni ora da TechCrunch, VentureBeat e Wired.
           </p>
         )}

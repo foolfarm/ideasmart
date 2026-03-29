@@ -6,13 +6,13 @@ import { toast } from "sonner";
 type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music';
 
 const CHANNELS: { key: ChannelKey; label: string; subtitle: string; day: string; color: string; icon: string }[] = [
-  { key: 'ai',      label: 'AI4Business News',   subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#00b4a0', icon: '🤖' },
-  { key: 'startup', label: 'Startup News',        subtitle: 'Le startup italiane più promettenti',                day: 'Martedì',   color: '#e84f00', icon: '🚀' },
+  { key: 'ai',      label: 'AI4Business News',   subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#1a1a1a', icon: '🤖' },
+  { key: 'startup', label: 'Startup News',        subtitle: 'Le startup italiane più promettenti',                day: 'Martedì',   color: '#2a2a2a', icon: '🚀' },
   { key: 'finance', label: 'Finance & Markets',   subtitle: 'Mercati, finanza e investimenti',                   day: 'Mercoledì', color: '#1a56db', icon: '📈' },
   { key: 'sport',   label: 'Sport & Business',    subtitle: 'Sport, management e business dello sport',          day: 'Giovedì',   color: '#059669', icon: '⚽' },
-  { key: 'music',   label: 'ITsMusic',            subtitle: 'Musica, tecnologia e industria musicale',           day: 'Venerdì',   color: '#7c3aed', icon: '🎵' },
-  { key: 'luxury',  label: 'Lifestyle & Luxury',  subtitle: 'Lusso, lifestyle e luxury economy',                 day: 'Sabato',    color: '#b45309', icon: '💎' },
-  { key: 'health',  label: 'Health & Biotech',    subtitle: 'Salute, biotech e innovazione medica',              day: 'Domenica',  color: '#dc2626', icon: '🏥' },
+  { key: 'music',   label: 'ITsMusic',            subtitle: 'Musica, tecnologia e industria musicale',           day: 'Venerdì',   color: '#2a2a2a', icon: '🎵' },
+  { key: 'luxury',  label: 'Lifestyle & Luxury',  subtitle: 'Lusso, lifestyle e luxury economy',                 day: 'Sabato',    color: '#2a2a2a', icon: '💎' },
+  { key: 'health',  label: 'Health & Biotech',    subtitle: 'Salute, biotech e innovazione medica',              day: 'Domenica',  color: '#2a2a2a', icon: '🏥' },
 ];
 
 export default function ChannelPreferences() {
@@ -84,7 +84,7 @@ export default function ChannelPreferences() {
           <p style={{ fontSize: 15, color: "#4b5563", lineHeight: 1.7, marginBottom: 24 }}>
             Usa il link "Gestisci preferenze" presente nel footer delle email IDEASMART per accedere a questa pagina.
           </p>
-          <a href="/" style={{ display: "inline-block", background: "#00b4a0", color: "#fff", padding: "12px 28px", borderRadius: 8, textDecoration: "none", fontFamily: "sans-serif", fontWeight: 700, fontSize: 14 }}>
+          <a href="/" style={{ display: "inline-block", background: "#1a1a1a", color: "#fff", padding: "12px 28px", borderRadius: 8, textDecoration: "none", fontFamily: "sans-serif", fontWeight: 700, fontSize: 14 }}>
             Torna alla Home →
           </a>
         </div>
@@ -97,7 +97,7 @@ export default function ChannelPreferences() {
     return (
       <div style={{ minHeight: "100vh", background: "#f5f0e8", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", fontFamily: "Georgia, serif" }}>
-          <div style={{ width: 40, height: 40, border: "3px solid #00b4a0", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+          <div style={{ width: 40, height: 40, border: "3px solid #1a1a1a", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
           <p style={{ color: "#4b5563", fontSize: 15 }}>Caricamento preferenze...</p>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function ChannelPreferences() {
           <p style={{ fontSize: 15, color: "#4b5563", lineHeight: 1.7, marginBottom: 24 }}>
             Il link potrebbe essere scaduto o non valido. Iscriviti nuovamente per ricevere un nuovo link.
           </p>
-          <a href="/" style={{ display: "inline-block", background: "#00b4a0", color: "#fff", padding: "12px 28px", borderRadius: 8, textDecoration: "none", fontFamily: "sans-serif", fontWeight: 700, fontSize: 14 }}>
+          <a href="/" style={{ display: "inline-block", background: "#1a1a1a", color: "#fff", padding: "12px 28px", borderRadius: 8, textDecoration: "none", fontFamily: "sans-serif", fontWeight: 700, fontSize: 14 }}>
             Torna alla Home →
           </a>
         </div>
@@ -136,7 +136,7 @@ export default function ChannelPreferences() {
       <div style={{ background: "#0a1628", padding: "0" }}>
         {/* Top bar */}
         <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "10px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: 11, color: "#00b4a0", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "sans-serif" }}>IDEASMART</span>
+          <span style={{ fontSize: 11, color: "#1a1a1a", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "sans-serif" }}>IDEASMART</span>
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontFamily: "sans-serif" }}>
             {new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).toUpperCase()}
           </span>
@@ -145,7 +145,7 @@ export default function ChannelPreferences() {
         <div style={{ padding: "32px 24px 28px", textAlign: "center" }}>
           <a href="/" style={{ textDecoration: "none" }}>
             <h1 style={{ fontSize: 48, fontWeight: 900, color: "#fff", margin: "0 0 6px", letterSpacing: "-0.02em" }}>
-              IDEA<span style={{ color: "#00b4a0" }}>SMART</span>
+              IDEA<span style={{ color: "#1a1a1a" }}>SMART</span>
             </h1>
           </a>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", letterSpacing: "0.2em", textTransform: "uppercase", margin: 0, fontFamily: "sans-serif" }}>
@@ -153,7 +153,7 @@ export default function ChannelPreferences() {
           </p>
         </div>
         {/* Double rule */}
-        <div style={{ borderTop: "2px solid #00b4a0", borderBottom: "1px solid rgba(0,180,160,0.3)", margin: "0 24px 0" }} />
+        <div style={{ borderTop: "2px solid #1a1a1a", borderBottom: "1px solid rgba(0,180,160,0.3)", margin: "0 24px 0" }} />
       </div>
 
       {/* Content */}
@@ -161,7 +161,7 @@ export default function ChannelPreferences() {
 
         {/* Intro */}
         <div style={{ marginBottom: 32, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: "#00b4a0", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "sans-serif", marginBottom: 12 }}>
+          <p style={{ fontSize: 11, color: "#1a1a1a", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "sans-serif", marginBottom: 12 }}>
             ◆ PREFERENZE NEWSLETTER
           </p>
           <h2 style={{ fontSize: 32, fontWeight: 700, color: "#0a1628", margin: "0 0 12px", lineHeight: 1.2 }}>
@@ -183,7 +183,7 @@ export default function ChannelPreferences() {
           </span>
           <button
             onClick={handleSelectAll}
-            style={{ fontSize: 12, color: "#00b4a0", background: "none", border: "1px solid #00b4a0", borderRadius: 6, padding: "6px 14px", cursor: "pointer", fontFamily: "sans-serif", fontWeight: 600 }}
+            style={{ fontSize: 12, color: "#1a1a1a", background: "none", border: "1px solid #1a1a1a", borderRadius: 6, padding: "6px 14px", cursor: "pointer", fontFamily: "sans-serif", fontWeight: 600 }}
           >
             Seleziona tutti
           </button>
@@ -298,12 +298,12 @@ export default function ChannelPreferences() {
 
         {/* Footer links */}
         <div style={{ textAlign: "center" }}>
-          <a href="/" style={{ fontSize: 13, color: "#00b4a0", textDecoration: "none", fontFamily: "sans-serif", marginRight: 24 }}>
+          <a href="/" style={{ fontSize: 13, color: "#1a1a1a", textDecoration: "none", fontFamily: "sans-serif", marginRight: 24 }}>
             ← Torna alla Home
           </a>
           <a
             href={`/unsubscribe?token=${token}`}
-            style={{ fontSize: 13, color: "#e84f00", textDecoration: "underline", fontFamily: "sans-serif" }}
+            style={{ fontSize: 13, color: "#2a2a2a", textDecoration: "underline", fontFamily: "sans-serif" }}
           >
             Annulla iscrizione
           </a>

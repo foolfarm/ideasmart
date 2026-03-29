@@ -1,6 +1,6 @@
 /**
  * Pagina autore — Andrea Cinelli
- * Opinion Leader & Editorialista IdeaSmart Research
+ * Opinion Leader & Editorialista IdeaSmart
  * Layout: editoriale bianco-carta con foto profilo, bio, archivio post LinkedIn e CTA contatto
  */
 import { useState } from "react";
@@ -9,17 +9,17 @@ import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
 
-const INK = "#0a0f1e";
-const ACCENT = "#00e5c8";
+const INK = "#0f0f0f";
+const ACCENT = "#1a1a1a";
 const PAPER = "#faf8f3";
 const LINKEDIN_BLUE = "#0077b5";
 
 const PROFILE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg";
 
 const SECTION_COLORS: Record<string, { accent: string; label: string }> = {
-  ai:      { accent: "#0a6e5c", label: "AI4Business" },
-  startup: { accent: "#c2410c", label: "Startup News" },
-  finance: { accent: "#15803d", label: "Finance & Markets" },
+  ai:      { accent: "#1a1a1a", label: "AI4Business" },
+  startup: { accent: "#2a2a2a", label: "Startup News" },
+  finance: { accent: "#1a1a1a", label: "Finance & Markets" },
 };
 
 function formatDateIT(dateLabel: string): string {
@@ -52,7 +52,7 @@ function PostCard({ post }: {
 
   const preview = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
-  const sec = SECTION_COLORS[post.section] ?? { accent: "#1a1a2e", label: post.section };
+  const sec = SECTION_COLORS[post.section] ?? { accent: "#1a1a1a", label: post.section };
 
   return (
     <article
@@ -77,13 +77,13 @@ function PostCard({ post }: {
         <div className="flex items-center gap-3 mb-2">
           <span
             className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm"
-            style={{ color: sec.accent, background: sec.accent + "15", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: sec.accent, background: sec.accent + "15", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {sec.label}
           </span>
           <span
             className="text-[10px]"
-            style={{ color: INK + "50", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: INK + "50", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {formatDateIT(post.dateLabel)}
           </span>
@@ -93,7 +93,7 @@ function PostCard({ post }: {
         {post.title && (
           <h3
             className="text-lg font-bold leading-snug mb-3"
-            style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+            style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {post.title}
           </h3>
@@ -102,12 +102,12 @@ function PostCard({ post }: {
         {/* Corpo */}
         <div className="space-y-2">
           {preview.map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed" style={{ color: INK + "cc", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p key={i} className="text-sm leading-relaxed" style={{ color: INK + "cc", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
               {p}
             </p>
           ))}
           {expanded && rest.map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed" style={{ color: INK + "cc", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p key={i} className="text-sm leading-relaxed" style={{ color: INK + "cc", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
               {p}
             </p>
           ))}
@@ -119,7 +119,7 @@ function PostCard({ post }: {
             <button
               onClick={() => setExpanded(!expanded)}
               className="text-[10px] font-bold uppercase tracking-widest hover:underline"
-              style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               {expanded ? "Mostra meno ↑" : "Leggi tutto ↓"}
             </button>
@@ -130,7 +130,7 @@ function PostCard({ post }: {
               target="_blank"
               rel="noopener noreferrer"
               className="text-[10px] font-bold uppercase tracking-widest hover:underline"
-              style={{ color: LINKEDIN_BLUE, fontFamily: "'Space Mono', monospace" }}
+              style={{ color: LINKEDIN_BLUE, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Vedi su LinkedIn →
             </a>
@@ -154,8 +154,8 @@ export default function AndreaCinelli() {
   return (
     <div style={{ background: PAPER, minHeight: "100vh" }}>
       <SEOHead
-        title="Andrea Cinelli — Opinion Leader & Editorialista IdeaSmart Research"
-        description="Editoriali quotidiani su AI, Startup e Venture Capital. Opinion Leader e fondatore di IdeaSmart Research."
+        title="Andrea Cinelli — Opinion Leader & Editorialista IdeaSmart"
+        description="Editoriali quotidiani su AI, Startup e Venture Capital. Opinion Leader e fondatore di IdeaSmart."
       />
       <Navbar />
 
@@ -182,16 +182,16 @@ export default function AndreaCinelli() {
             {/* Stats */}
             <div className="flex gap-4 text-center">
               <div>
-                <p className="text-xl font-bold" style={{ color: INK, fontFamily: "'Playfair Display', serif" }}>{totalPosts}</p>
-                <p className="text-[9px] uppercase tracking-widest" style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}>Editoriali</p>
+                <p className="text-xl font-bold" style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>{totalPosts}</p>
+                <p className="text-[9px] uppercase tracking-widest" style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Editoriali</p>
               </div>
               <div>
-                <p className="text-xl font-bold" style={{ color: "#0a6e5c", fontFamily: "'Playfair Display', serif" }}>{aiPosts}</p>
-                <p className="text-[9px] uppercase tracking-widest" style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}>AI</p>
+                <p className="text-xl font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>{aiPosts}</p>
+                <p className="text-[9px] uppercase tracking-widest" style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI</p>
               </div>
               <div>
-                <p className="text-xl font-bold" style={{ color: "#c2410c", fontFamily: "'Playfair Display', serif" }}>{startupPosts}</p>
-                <p className="text-[9px] uppercase tracking-widest" style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}>Startup</p>
+                <p className="text-xl font-bold" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>{startupPosts}</p>
+                <p className="text-[9px] uppercase tracking-widest" style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Startup</p>
               </div>
             </div>
 
@@ -202,7 +202,7 @@ export default function AndreaCinelli() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 rounded text-sm font-bold text-white transition-opacity hover:opacity-90"
-                style={{ background: LINKEDIN_BLUE, fontFamily: "'Space Mono', monospace" }}
+                style={{ background: LINKEDIN_BLUE, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -212,7 +212,7 @@ export default function AndreaCinelli() {
               <a
                 href="mailto:info@andreacinelli.com"
                 className="flex items-center gap-2 px-4 py-2 rounded text-sm font-bold border transition-colors hover:bg-gray-50"
-                style={{ color: INK, borderColor: INK + "30", fontFamily: "'Space Mono', monospace" }}
+                style={{ color: INK, borderColor: INK + "30", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -227,40 +227,40 @@ export default function AndreaCinelli() {
             <div className="mb-2">
               <span
                 className="text-[10px] font-bold uppercase tracking-[0.3em]"
-                style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+                style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                IdeaSmart Research
+                IdeaSmart
               </span>
             </div>
             <h1
               className="text-3xl md:text-4xl font-bold leading-tight mb-1"
-              style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif" }}
+              style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Andrea Cinelli
             </h1>
             <p
               className="text-base mb-5"
-              style={{ color: INK + "70", fontFamily: "'Space Mono', monospace", letterSpacing: "0.05em" }}
+              style={{ color: INK + "70", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.05em" }}
             >
-              Opinion Leader & Editorialista IdeaSmart Research
+              Opinion Leader & Editorialista IdeaSmart
             </p>
 
-            <div className="space-y-3" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <div className="space-y-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Imprenditore seriale con oltre 20 anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo. Fondatore di <strong>IdeaSmart Research</strong>, la prima piattaforma italiana di analisi quotidiane su AI, Startup e Venture Capital, aggiornata ogni giorno alle 24:00 con ricerche originali e notizie selezionate dalle principali fonti globali.
+                Imprenditore seriale con oltre 20 anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo. Fondatore di <strong>IdeaSmart</strong>, la prima piattaforma italiana di analisi quotidiane su AI, Startup e Venture Capital, aggiornata ogni giorno alle 24:00 con ricerche originali e notizie selezionate dalle principali fonti globali.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
                 Ogni mattina alle 10:30 pubblica su LinkedIn un editoriale originale su intelligenza artificiale, innovazione e mercati — scritto con lo stile di un opinion leader di alto profilo, non come un aggregatore di notizie. Il suo punto di vista è quello di chi ha costruito e investito in startup per due decenni, non di chi le osserva dall'esterno.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Con IdeaSmart Research, Andrea ha creato uno strumento che lui stesso avrebbe voluto avere: un'unica fonte che aggrega ogni giorno le 20 ricerche più rilevanti su AI, Startup e Venture Capital, le 40 notizie più importanti e le analisi editoriali che aiutano imprenditori, investitori e manager a prendere decisioni più informate.
+                Con IdeaSmart, Andrea ha creato uno strumento che lui stesso avrebbe voluto avere: un'unica fonte che aggrega ogni giorno le 20 ricerche più rilevanti su AI, Startup e Venture Capital, le 40 notizie più importanti e le analisi editoriali che aiutano imprenditori, investitori e manager a prendere decisioni più informate.
               </p>
             </div>
 
             {/* Quote */}
             <blockquote
               className="mt-5 pl-4 border-l-4 italic text-sm leading-relaxed"
-              style={{ borderColor: ACCENT, color: INK + "80", fontFamily: "'Playfair Display', Georgia, serif" }}
+              style={{ borderColor: ACCENT, color: INK + "80", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
               "L'intelligenza artificiale non è una tecnologia. È una nuova grammatica del business. Chi la impara oggi, scrive le regole di domani."
             </blockquote>
@@ -274,14 +274,14 @@ export default function AndreaCinelli() {
         <div className="py-3 flex items-center gap-4">
           <span
             className="text-[11px] font-bold uppercase tracking-[0.25em]"
-            style={{ color: INK, fontFamily: "'Space Mono', monospace" }}
+            style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Archivio Editoriali
           </span>
           <div className="flex-1 border-t" style={{ borderColor: INK + "20" }} />
           <span
             className="text-[10px] uppercase tracking-widest"
-            style={{ color: INK + "50", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: INK + "50", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Post mattino · 10:30 CET
           </span>
@@ -325,7 +325,7 @@ export default function AndreaCinelli() {
           >
             <p
               className="text-sm font-bold mb-1"
-              style={{ color: INK, fontFamily: "'Playfair Display', serif" }}
+              style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}
             >
               Vuoi ricevere ogni mattina l'editoriale di Andrea Cinelli?
             </p>
@@ -338,14 +338,14 @@ export default function AndreaCinelli() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-2 rounded text-sm font-bold text-white"
-                style={{ background: LINKEDIN_BLUE, fontFamily: "'Space Mono', monospace" }}
+                style={{ background: LINKEDIN_BLUE, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Seguimi su LinkedIn
               </a>
               <Link
                 href="/"
                 className="px-6 py-2 rounded text-sm font-bold border"
-                style={{ color: INK, borderColor: INK + "30", fontFamily: "'Space Mono', monospace" }}
+                style={{ color: INK, borderColor: INK + "30", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 ← Torna alla Home
               </Link>

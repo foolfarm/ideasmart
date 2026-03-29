@@ -68,7 +68,7 @@ export default function ReadersCounter({ className = "", fallback = 1200 }: Read
     return (
       <span
         className={`inline-flex items-center gap-1.5 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.12em] ${className}`}
-        style={{ fontFamily: "'Space Mono', monospace", color: "#1a1a2e", opacity: 0.35 }}
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a", opacity: 0.35 }}
       >
         <span
           style={{
@@ -87,7 +87,7 @@ export default function ReadersCounter({ className = "", fallback = 1200 }: Read
   return (
     <span
       className={`inline-flex items-center gap-1.5 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.12em] select-none ${className}`}
-      style={{ fontFamily: "'Space Mono', monospace", color: "#1a1a2e", opacity: 0.65 }}
+      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a", opacity: 0.65 }}
       title="Lettori attivi iscritti alla newsletter IdeaSmart"
     >
       {/* Pallino verde pulsante */}

@@ -73,16 +73,16 @@ export default function Unsubscribe() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-4"
-      style={{ background: "#f8f9fa", fontFamily: "'DM Sans', sans-serif" }}
+      style={{ background: "#f8f9fa", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
       {/* Logo */}
       <div className="mb-10 text-center">
         <button
           onClick={() => navigate("/")}
           className="text-2xl font-black tracking-tight"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0a0f1e", background: "none", border: "none", cursor: "pointer" }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#0f0f0f", background: "none", border: "none", cursor: "pointer" }}
         >
-          IDEA<span style={{ color: "#00b4a0" }}>SMART</span>
+          IDEA<span style={{ color: "#1a1a1a" }}>SMART</span>
         </button>
         <p className="text-xs uppercase tracking-widest mt-1" style={{ color: "#6b7280" }}>
           AI for Business
@@ -99,7 +99,7 @@ export default function Unsubscribe() {
           <div className="text-center py-8">
             <div
               className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin mx-auto mb-4"
-              style={{ borderColor: "#00b4a0", borderTopColor: "transparent" }}
+              style={{ borderColor: "#1a1a1a", borderTopColor: "transparent" }}
             />
             <p className="text-sm" style={{ color: "#6b7280" }}>Verifica in corso...</p>
           </div>
@@ -112,19 +112,19 @@ export default function Unsubscribe() {
               className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6"
               style={{ background: "#fff3f0" }}
             >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff5500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
             </div>
-            <h1 className="text-xl font-bold mb-2" style={{ color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h1 className="text-xl font-bold mb-2" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Annulla iscrizione
             </h1>
             <p className="text-sm mb-1" style={{ color: "#6b7280" }}>
               Stai per annullare l'iscrizione alla newsletter IDEASMART per:
             </p>
-            <p className="text-base font-semibold mb-6" style={{ color: "#0a0f1e" }}>
+            <p className="text-base font-semibold mb-6" style={{ color: "#0f0f0f" }}>
               {email}
             </p>
             <p className="text-xs mb-8" style={{ color: "#9ca3af", lineHeight: "1.6" }}>
@@ -134,7 +134,7 @@ export default function Unsubscribe() {
               <button
                 onClick={handleUnsubscribe}
                 className="w-full py-3 rounded-xl text-sm font-bold transition-all"
-                style={{ background: "#ff5500", color: "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#2a2a2a", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Sì, annulla la mia iscrizione
               </button>
@@ -160,11 +160,11 @@ export default function Unsubscribe() {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h1 className="text-xl font-bold mb-2" style={{ color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h1 className="text-xl font-bold mb-2" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Iscrizione annullata
             </h1>
             <p className="text-sm mb-2" style={{ color: "#6b7280" }}>
-              L'indirizzo <strong style={{ color: "#0a0f1e" }}>{email}</strong> è stato rimosso dalla nostra lista.
+              L'indirizzo <strong style={{ color: "#0f0f0f" }}>{email}</strong> è stato rimosso dalla nostra lista.
             </p>
             <p className="text-xs mb-8" style={{ color: "#9ca3af", lineHeight: "1.6" }}>
               Ai sensi del GDPR (Reg. UE 2016/679), la tua richiesta è stata processata immediatamente. Non riceverai più comunicazioni da IDEASMART.
@@ -181,7 +181,7 @@ export default function Unsubscribe() {
             <button
               onClick={() => navigate("/")}
               className="w-full py-3 rounded-xl text-sm font-bold transition-all"
-              style={{ background: "#0a0f1e", color: "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ background: "#0f0f0f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Torna alla home →
             </button>
@@ -200,16 +200,16 @@ export default function Unsubscribe() {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h1 className="text-xl font-bold mb-2" style={{ color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h1 className="text-xl font-bold mb-2" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Già disiscritta
             </h1>
             <p className="text-sm mb-6" style={{ color: "#6b7280" }}>
-              L'indirizzo <strong style={{ color: "#0a0f1e" }}>{email}</strong> è già stato rimosso dalla nostra lista in precedenza.
+              L'indirizzo <strong style={{ color: "#0f0f0f" }}>{email}</strong> è già stato rimosso dalla nostra lista in precedenza.
             </p>
             <button
               onClick={() => navigate("/")}
               className="w-full py-3 rounded-xl text-sm font-bold"
-              style={{ background: "#0a0f1e", color: "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ background: "#0f0f0f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Torna alla home →
             </button>
@@ -223,12 +223,12 @@ export default function Unsubscribe() {
               className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6"
               style={{ background: "#fff3f0" }}
             >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff5500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </div>
-            <h1 className="text-xl font-bold mb-2" style={{ color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h1 className="text-xl font-bold mb-2" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Link non valido
             </h1>
             <p className="text-sm mb-6" style={{ color: "#6b7280", lineHeight: "1.6" }}>
@@ -236,14 +236,14 @@ export default function Unsubscribe() {
             </p>
             <p className="text-xs mb-6" style={{ color: "#9ca3af" }}>
               Se desideri annullare la tua iscrizione, scrivi a{" "}
-              <a href="mailto:newsletter@ideasmart.ai" style={{ color: "#00b4a0" }}>
+              <a href="mailto:newsletter@ideasmart.ai" style={{ color: "#1a1a1a" }}>
                 newsletter@ideasmart.ai
               </a>
             </p>
             <button
               onClick={() => navigate("/")}
               className="w-full py-3 rounded-xl text-sm font-bold"
-              style={{ background: "#0a0f1e", color: "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ background: "#0f0f0f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Torna alla home →
             </button>

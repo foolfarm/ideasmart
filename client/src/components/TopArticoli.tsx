@@ -3,8 +3,8 @@ import { useCallback } from "react";
 
 // Mappa sezione → etichetta colore editoriale
 const SECTION_COLORS: Record<string, string> = {
-  ai: "#00e5c8",
-  startup: "#ff5500",
+  ai: "#1a1a1a",
+  startup: "#2a2a2a",
   finance: "#f0b429",
   health: "#4ade80",
   sport: "#60a5fa",
@@ -65,16 +65,16 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
           <span
             className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5"
             style={{
-              color: "#ff5500",
-              background: "#ff550015",
-              fontFamily: "'Space Mono', monospace",
+              color: "#2a2a2a",
+              background: "#2a2a2a15",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
             }}
           >
             ● Più letti
           </span>
           <span
             className="text-[9px] uppercase tracking-widest"
-            style={{ color: "#ffffff40", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: "#ffffff40", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             questa settimana
           </span>
@@ -116,23 +116,23 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
           <span
             className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5"
             style={{
-              color: "#ff5500",
-              background: "#ff550015",
-              fontFamily: "'Space Mono', monospace",
+              color: "#2a2a2a",
+              background: "#2a2a2a15",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
             }}
           >
             ● Più letti
           </span>
           <span
             className="text-[9px] uppercase tracking-widest"
-            style={{ color: "#ffffff40", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: "#ffffff40", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             questa settimana
           </span>
         </div>
         <span
           className="text-[9px] uppercase tracking-widest"
-          style={{ color: "#ffffff25", fontFamily: "'Space Mono', monospace" }}
+          style={{ color: "#ffffff25", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           Top {articles.length}
         </span>
@@ -159,7 +159,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                     className="text-sm font-bold leading-none"
                     style={{
                       color: isTop3 ? sectionColor : "#ffffff25",
-                      fontFamily: "'Space Mono', monospace",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
                     {String(idx + 1).padStart(2, "0")}
@@ -174,7 +174,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                       className="text-[8px] font-bold uppercase tracking-widest"
                       style={{
                         color: sectionColor,
-                        fontFamily: "'Space Mono', monospace",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       }}
                     >
                       {sectionLabel}
@@ -184,7 +184,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                         className="text-[8px] uppercase tracking-widest"
                         style={{
                           color: "#ffffff25",
-                          fontFamily: "'Space Mono', monospace",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                         }}
                       >
                         · {article.viewCount.toLocaleString("it-IT")} letture
@@ -197,7 +197,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                     className="text-xs font-semibold leading-snug group-hover:text-white transition-colors line-clamp-2"
                     style={{
                       color: isTop3 ? "#e8eaf0" : "#b0b8cc",
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
                     {article.title}

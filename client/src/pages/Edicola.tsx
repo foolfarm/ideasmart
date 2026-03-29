@@ -9,14 +9,14 @@ import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
-const INK = "#1a1a2e";
+const INK = "#1a1a1a";
 const PAPER = "#faf8f3";
 
 const SECTION_CONFIG = {
   all:     { label: "Tutte le Sezioni", accent: INK,       light: "#f0ede6" },
-  ai:      { label: "AI4Business",      accent: "#0a6e5c", light: "#e6f4f1" },
-  music:   { label: "ITsMusic",         accent: "#5b21b6", light: "#ede9fe" },
-  startup: { label: "Startup News",     accent: "#c2410c", light: "#fef3ee" },
+  ai:      { label: "AI4Business",      accent: "#1a1a1a", light: "#e6f4f1" },
+  music:   { label: "ITsMusic",         accent: "#2a2a2a", light: "#ede9fe" },
+  startup: { label: "Startup News",     accent: "#2a2a2a", light: "#fef3ee" },
 } as const;
 
 type SectionKey = keyof typeof SECTION_CONFIG;
@@ -34,16 +34,16 @@ function formatTime(str: string): string {
 }
 
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
 }
-function ThinDivider() { return <div className="w-full border-t border-[#1a1a2e]/15" />; }
+function ThinDivider() { return <div className="w-full border-t border-[#1a1a1a]/15" />; }
 
 function SectionBadge({ section }: { section: string }) {
   const cfg = SECTION_CONFIG[section as SectionKey] ?? SECTION_CONFIG.all;
   return (
     <span
       className="inline-block text-[9px] font-bold uppercase tracking-[0.15em] px-1.5 py-0.5 rounded-sm"
-      style={{ background: cfg.light, color: cfg.accent, fontFamily: "'Space Mono', monospace" }}
+      style={{ background: cfg.light, color: cfg.accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
       {section === "ai" ? "AI" : section === "music" ? "MUSIC" : section === "startup" ? "STARTUP" : "ALL"}
     </span>
@@ -54,7 +54,7 @@ function CategoryBadge({ label, accent, light }: { label: string; accent: string
   return (
     <span
       className="inline-block text-[9px] font-bold uppercase tracking-[0.12em] px-1.5 py-0.5 rounded-sm"
-      style={{ background: light, color: accent, fontFamily: "'Space Mono', monospace" }}
+      style={{ background: light, color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
     >
       {label}
     </span>
@@ -89,26 +89,26 @@ function NewsListItem({ item }: { item: NewsItem }) {
         </div>
         <Link href={href}>
           <h3
-            className="text-base font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            className="text-base font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {item.title}
           </h3>
         </Link>
         <p
-          className="mt-1 text-sm leading-relaxed text-[#1a1a2e]/60 line-clamp-2"
-          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+          className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/60 line-clamp-2"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
         >
           {item.summary}
         </p>
         <div className="mt-1.5 flex items-center gap-3">
           {item.sourceName && (
-            <span className="text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <span className="text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {item.sourceName}
             </span>
           )}
           {item.publishedAt && (
-            <span className="text-[10px] text-[#1a1a2e]/30" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <span className="text-[10px] text-[#1a1a1a]/30" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {formatShortDate(item.publishedAt)} · {formatTime(item.publishedAt)}
             </span>
           )}
@@ -133,7 +133,7 @@ function NewsGridCard({ item }: { item: NewsItem }) {
   const cfg = SECTION_CONFIG[item.section as SectionKey] ?? SECTION_CONFIG.all;
 
   return (
-    <div className="py-3 border-b border-[#1a1a2e]/10 last:border-b-0">
+    <div className="py-3 border-b border-[#1a1a1a]/10 last:border-b-0">
       {item.imageUrl && (
         <Link href={href}>
           <img
@@ -150,14 +150,14 @@ function NewsGridCard({ item }: { item: NewsItem }) {
       </div>
       <Link href={href}>
         <h3
-          className="text-sm font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          className="text-sm font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
         >
           {item.title}
         </h3>
       </Link>
       {item.sourceName && (
-        <p className="mt-1 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+        <p className="mt-1 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
       )}
@@ -215,7 +215,7 @@ export default function Edicola() {
       />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        /* SF Pro system font — no external loading needed */
       `}</style>
 
       <div className="min-h-screen" style={{ background: PAPER, color: INK }}>
@@ -225,13 +225,13 @@ export default function Edicola() {
           <div className="flex items-center justify-between mb-2">
             <Link href="/">
               <span
-                className="text-xs text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "'Space Mono', monospace" }}
+                className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 ← IdeaSmart
               </span>
             </Link>
-            <span className="text-xs text-[#1a1a2e]/40 uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <span className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {formatDateIT(today)}
             </span>
           </div>
@@ -239,19 +239,19 @@ export default function Edicola() {
           <div className="text-center py-5">
             <div
               className="inline-block px-3 py-1 mb-3 rounded-sm text-xs font-bold uppercase tracking-widest"
-              style={{ background: "#f0ede6", color: INK, fontFamily: "'Space Mono', monospace" }}
+              style={{ background: "#f0ede6", color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               Archivio Digitale
             </div>
             <Link href="/">
               <h1
-                className="text-4xl md:text-6xl font-black tracking-tight text-[#1a1a2e] cursor-pointer hover:opacity-80 transition-opacity"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+                className="text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
               >
                 Edicola
               </h1>
             </Link>
-            <p className="mt-1 text-xs uppercase tracking-[0.25em] text-[#1a1a2e]/50" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <p className="mt-1 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Tutte le notizie · AI · Musica · Startup · Aggiornato ogni giorno
             </p>
           </div>
@@ -268,7 +268,7 @@ export default function Edicola() {
                   onClick={() => handleSectionChange(sec)}
                   className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-all"
                   style={{
-                    fontFamily: "'Space Mono', monospace",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     color: isActive ? "#fff" : cfg.accent,
                     background: isActive ? cfg.accent : "transparent",
                     borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.2)" : "none",
@@ -286,20 +286,20 @@ export default function Edicola() {
         <BreakingNewsTicker />
 
         {/* BARRA FILTRI + CONTATORE */}
-        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3 border-b border-[#1a1a2e]/15">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3 border-b border-[#1a1a1a]/15">
           <div className="flex items-center gap-3 flex-wrap">
             <select
               value={category}
               onChange={e => handleCategoryChange(e.target.value)}
-              className="text-xs border border-[#1a1a2e]/20 rounded-sm px-2 py-1 bg-transparent"
-              style={{ fontFamily: "'Space Mono', monospace", color: INK }}
+              className="text-xs border border-[#1a1a1a]/20 rounded-sm px-2 py-1 bg-transparent"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: INK }}
             >
               <option value="">Tutte le categorie</option>
               {categories.map(cat => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
-            <span className="text-[10px] text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <span className="text-[10px] text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {isLoading ? "Caricamento..." : `${total} notizie trovate`}
             </span>
           </div>
@@ -309,7 +309,7 @@ export default function Edicola() {
               onClick={() => setViewMode("list")}
               className="px-2 py-1 text-xs rounded-sm transition-all"
               style={{
-                fontFamily: "'Space Mono', monospace",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 background: viewMode === "list" ? INK : "transparent",
                 color: viewMode === "list" ? "#fff" : INK + "60",
                 border: `1px solid ${INK}30`,
@@ -321,7 +321,7 @@ export default function Edicola() {
               onClick={() => setViewMode("grid")}
               className="px-2 py-1 text-xs rounded-sm transition-all"
               style={{
-                fontFamily: "'Space Mono', monospace",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 background: viewMode === "grid" ? INK : "transparent",
                 color: viewMode === "grid" ? "#fff" : INK + "60",
                 border: `1px solid ${INK}30`,
@@ -336,17 +336,17 @@ export default function Edicola() {
         <main className="max-w-6xl mx-auto px-4 pb-12">
           {isLoading ? (
             <div className="py-20 text-center">
-              <div className="inline-block w-6 h-6 border-2 border-[#1a1a2e]/20 border-t-[#1a1a2e] rounded-full animate-spin mb-4" />
-              <p className="text-sm text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
+              <div className="inline-block w-6 h-6 border-2 border-[#1a1a1a]/20 border-t-[#1a1a1a] rounded-full animate-spin mb-4" />
+              <p className="text-sm text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Caricamento notizie...
               </p>
             </div>
           ) : items.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="text-2xl mb-2" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              <p className="text-2xl mb-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
                 Nessuna notizia trovata
               </p>
-              <p className="text-sm text-[#1a1a2e]/50" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              <p className="text-sm text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                 Prova a cambiare i filtri o torna più tardi.
               </p>
             </div>
@@ -354,7 +354,7 @@ export default function Edicola() {
             <div className="mt-4">
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-0">
                 {/* Colonna principale */}
-                <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a2e]/15">
+                <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a1a]/15">
                   {mainItems.map((item, idx) => (
                     <div key={item.id}>
                       <NewsListItem item={item} />
@@ -366,8 +366,8 @@ export default function Edicola() {
                 <div className="pl-0 lg:pl-6 mt-6 lg:mt-0">
                   <div className="py-2">
                     <span
-                      className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                      style={{ fontFamily: "'Space Mono', monospace" }}
+                      className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       Altre notizie
                     </span>
@@ -381,14 +381,14 @@ export default function Edicola() {
                         </div>
                         <Link href={`/${sectionPath(item.section)}/news/${item.id}`}>
                           <span
-                            className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
-                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                            className="text-sm font-semibold text-[#1a1a1a] hover:underline cursor-pointer leading-snug"
+                            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                           >
                             {item.title}
                           </span>
                         </Link>
                         {item.sourceName && (
-                          <p className="mt-0.5 text-[10px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+                          <p className="mt-0.5 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                             {item.sourceName}
                           </p>
                         )}
@@ -415,19 +415,19 @@ export default function Edicola() {
                 <button
                   onClick={() => setOffset(Math.max(0, offset - LIMIT))}
                   disabled={offset === 0}
-                  className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest border border-[#1a1a2e]/30 disabled:opacity-30 hover:bg-[#1a1a2e] hover:text-white transition-all"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest border border-[#1a1a1a]/30 disabled:opacity-30 hover:bg-[#1a1a1a] hover:text-white transition-all"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   ← Precedente
                 </button>
-                <span className="text-xs text-[#1a1a2e]/50" style={{ fontFamily: "'Space Mono', monospace" }}>
+                <span className="text-xs text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Pag. {currentPage} / {totalPages}
                 </span>
                 <button
                   onClick={() => setOffset(offset + LIMIT)}
                   disabled={offset + LIMIT >= total}
-                  className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest border border-[#1a1a2e]/30 disabled:opacity-30 hover:bg-[#1a1a2e] hover:text-white transition-all"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest border border-[#1a1a1a]/30 disabled:opacity-30 hover:bg-[#1a1a1a] hover:text-white transition-all"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Successiva →
                 </button>
@@ -437,15 +437,15 @@ export default function Edicola() {
         </main>
 
         {/* FOOTER */}
-        <footer className="border-t-4 border-[#1a1a2e] bg-[#1a1a2e] text-white/60 py-6">
+        <footer className="border-t-4 border-[#1a1a1a] bg-[#1a1a1a] text-white/60 py-6">
           <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-xs uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>
+            <p className="text-xs uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               IDEASMART · Edicola Digitale · Aggiornata ogni giorno alle 00:00 CET
             </p>
             <div className="flex items-center gap-4">
-              <Link href="/ai"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "'Space Mono', monospace" }}>AI4Business</span></Link>
-              <Link href="/music"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "'Space Mono', monospace" }}>ITsMusic</span></Link>
-              <Link href="/startup"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "'Space Mono', monospace" }}>Startup News</span></Link>
+              <Link href="/ai"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI4Business</span></Link>
+              <Link href="/music"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>ITsMusic</span></Link>
+              <Link href="/startup"><span className="text-xs hover:text-white transition-colors cursor-pointer" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Startup News</span></Link>
             </div>
           </div>
         </footer>

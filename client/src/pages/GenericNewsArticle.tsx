@@ -55,8 +55,8 @@ export default function GenericNewsArticle() {
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-[#0a7ea4] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p
-            className="text-sm text-[#1a1a2e]/50"
-            style={{ fontFamily: "'Space Mono', monospace" }}
+            className="text-sm text-[#1a1a1a]/50"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Apertura articolo…
           </p>
@@ -70,21 +70,21 @@ export default function GenericNewsArticle() {
       <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
         <div className="text-center max-w-sm px-4">
           <h1
-            className="text-2xl font-bold text-[#1a1a2e] mb-3"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            className="text-2xl font-bold text-[#1a1a1a] mb-3"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Notizia non trovata
           </h1>
           <p
-            className="text-sm text-[#1a1a2e]/60 mb-6"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            className="text-sm text-[#1a1a1a]/60 mb-6"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
           >
             La notizia che stai cercando non esiste o è stata rimossa.
           </p>
           <Link
             href={sectionInfo.path}
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
-            style={{ color: "#0a7ea4", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: "#0a7ea4", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             <ArrowLeft className="w-4 h-4" />
             Torna a {sectionInfo.label}
@@ -99,27 +99,27 @@ export default function GenericNewsArticle() {
       <div className="text-center max-w-md px-4">
         <div className="w-8 h-8 border-2 border-[#0a7ea4] border-t-transparent rounded-full animate-spin mx-auto mb-6" />
         <p
-          className="text-xs uppercase tracking-widest text-[#1a1a2e]/40 mb-3"
-          style={{ fontFamily: "'Space Mono', monospace" }}
+          className="text-xs uppercase tracking-widest text-[#1a1a1a]/40 mb-3"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           {news.category}
         </p>
         <h1
-          className="text-xl font-bold text-[#1a1a2e] mb-3 leading-tight"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          className="text-xl font-bold text-[#1a1a1a] mb-3 leading-tight"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
         >
           {news.title}
         </h1>
         <p
-          className="text-sm text-[#1a1a2e]/60 mb-6"
-          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+          className="text-sm text-[#1a1a1a]/60 mb-6"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
         >
           Apertura articolo su {news.sourceName ?? "fonte originale"}…
         </p>
         <Link
           href={sectionInfo.path}
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
-          style={{ color: "#0a7ea4", fontFamily: "'Space Mono', monospace" }}
+          style={{ color: "#0a7ea4", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
         >
           <ArrowLeft className="w-4 h-4" />
           Torna a {sectionInfo.label}

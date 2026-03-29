@@ -39,7 +39,7 @@ export default function PWAInstallBanner() {
             width: "48px",
             height: "48px",
             borderRadius: "12px",
-            background: "#0a0f1e",
+            background: "#0f0f0f",
             border: "1px solid rgba(0,229,200,0.20)",
             display: "flex",
             alignItems: "center",
@@ -93,8 +93,8 @@ export default function PWAInstallBanner() {
             <button
               onClick={() => promptInstall()}
               style={{
-                background: "#00e5c8",
-                color: "#0a0f1e",
+                background: "#1a1a1a",
+                color: "#0f0f0f",
                 border: "none",
                 borderRadius: "8px",
                 padding: "8px 14px",
@@ -124,7 +124,7 @@ export default function PWAInstallBanner() {
                 gap: "4px",
               }}
             >
-              <Share size={14} color="#00e5c8" />
+              <Share size={14} color="#1a1a1a" />
             </div>
           )}
           <button

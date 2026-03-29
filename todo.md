@@ -1768,3 +1768,26 @@
 
 - [x] Tagline logo: cambiata in "INTELLIGENCE QUOTIDIANA SU AI, STARTUP E VENTURE CAPITAL / Ricerche verificate, alert e briefing per chi prende decisioni."
 - [x] Banner Intelligence: redesign completo — hero 200px+, gradiente dark (#0a0f1e→#0a1f1a), 2 colonne desktop (titolo grande + CTA destra), posizionato PRIMA del Breaking News
+
+## Bug (29 Mar 2026)
+
+- [ ] Fix link "Vedi su LinkedIn" negli articoli: genera URL malformati (linkedin.com/404/) invece del profilo corretto
+
+## Rebrand (29 Mar 2026 — IDEASMART senza RESEARCH)
+
+- [ ] Logo header Home: rimuovere "RESEARCH" in verde, lasciare solo "IDEASMART" impattante
+- [ ] Tagline header: "INTELLIGENCE QUOTIDIANA SU AI, STARTUP E VENTURE CAPITAL / Il sistema che lavora per chi decide."
+- [ ] Footer: "© 2026 IdeaSmart · AI · Startup · Venture Capital" (rimuovere "Research")
+- [ ] Title tag homepage: "IdeaSmart — Intelligence su AI, Startup e Venture Capital"
+- [ ] Pagina /chi-siamo: "IdeaSmart è la prima piattaforma italiana di intelligence..." (non "testata di ricerca")
+- [ ] Fix link LinkedIn articoli: URL malformati (linkedin.com/404/)
+
+## Redesign visivo (29 Mar 2026 — Font SF Pro + Palette monocromatica)
+
+- [ ] Font: sostituire Space Mono, Playfair Display, DM Sans con SF Pro (system-ui Apple stack) su tutto il sito
+- [ ] Palette: convertire tutti i colori teal (#00e5c8), arancio (#ff5500), rosso (#c2410c), verde (#0a6e5c) in scala di grigi
+- [ ] Banner Intelligence: sfondo nero, testo bianco, CTA bianco su nero (no teal)
+- [ ] Badge nav (AI4Business, Startup News): da colorati a grigi/neri
+- [ ] Ticker LIVE e Breaking News: da rosso/teal a nero/grigio
+- [ ] Logo: IDEASMART tutto nero, senza RESEARCH in verde
+- [ ] Rebrand completo: footer, title tag, /chi-siamo (già in lista)

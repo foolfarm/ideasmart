@@ -82,7 +82,7 @@ export default function AdminSystemHealth() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
         <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -90,7 +90,7 @@ export default function AdminSystemHealth() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
         <p className="text-white/60">Accesso non autorizzato.</p>
       </div>
     );
@@ -102,7 +102,7 @@ export default function AdminSystemHealth() {
   const redCount = sections.filter(s => getStatusColor(s.todayCount, s.latestCreatedAt) === "red").length;
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0f1e", fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Header */}
       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", background: "rgba(0,0,0,0.4)" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -115,7 +115,7 @@ export default function AdminSystemHealth() {
               Admin
             </button>
             <span className="text-white/20">/</span>
-            <span className="text-white font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span className="text-white font-bold" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Salute del Sistema
             </span>
           </div>
@@ -145,7 +145,7 @@ export default function AdminSystemHealth() {
               <Activity className="w-4 h-4 text-cyan-400" />
               <span className="text-xs text-white/40 uppercase tracking-wider">Uptime</span>
             </div>
-            <p className="text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <p className="text-2xl font-bold text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {data ? formatUptime(data.uptime) : "—"}
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function AdminSystemHealth() {
               <div className="w-2 h-2 rounded-full bg-green-400" />
               <span className="text-xs text-white/40 uppercase tracking-wider">Aggiornate oggi</span>
             </div>
-            <p className="text-2xl font-bold text-green-400" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <p className="text-2xl font-bold text-green-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {greenCount}
             </p>
           </div>
@@ -163,7 +163,7 @@ export default function AdminSystemHealth() {
               <div className="w-2 h-2 rounded-full bg-yellow-400" />
               <span className="text-xs text-white/40 uppercase tracking-wider">Parziali</span>
             </div>
-            <p className="text-2xl font-bold text-yellow-400" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <p className="text-2xl font-bold text-yellow-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {yellowCount}
             </p>
           </div>
@@ -172,7 +172,7 @@ export default function AdminSystemHealth() {
               <div className="w-2 h-2 rounded-full bg-red-400" />
               <span className="text-xs text-white/40 uppercase tracking-wider">Da aggiornare</span>
             </div>
-            <p className="text-2xl font-bold text-red-400" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <p className="text-2xl font-bold text-red-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {redCount}
             </p>
           </div>
@@ -184,7 +184,7 @@ export default function AdminSystemHealth() {
             onClick={() => handleTrigger("all")}
             disabled={triggeringSection === "all"}
             className="font-bold"
-            style={{ background: "#ff5500", color: "#fff", border: "none" }}
+            style={{ background: "#2a2a2a", color: "#fff", border: "none" }}
           >
             <Zap className={`w-4 h-4 mr-2 ${triggeringSection === "all" ? "animate-spin" : ""}`} />
             {triggeringSection === "all" ? "Avvio in corso..." : "Aggiorna Tutti i Canali"}
@@ -228,7 +228,7 @@ export default function AdminSystemHealth() {
 
                   {/* Icon + label */}
                   <div className="w-36 flex-shrink-0">
-                    <p className="text-sm font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    <p className="text-sm font-bold text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                       {s.icon} {s.label}
                     </p>
                   </div>
@@ -286,7 +286,7 @@ export default function AdminSystemHealth() {
                     className="flex-shrink-0 text-xs font-bold"
                     style={{
                       background: wasTriggered ? "rgba(0,229,200,0.15)" : "rgba(255,255,255,0.08)",
-                      color: wasTriggered ? "#00e5c8" : "rgba(255,255,255,0.6)",
+                      color: wasTriggered ? "#1a1a1a" : "rgba(255,255,255,0.6)",
                       border: wasTriggered ? "1px solid rgba(0,229,200,0.3)" : "1px solid rgba(255,255,255,0.1)",
                     }}
                   >

@@ -5,8 +5,8 @@
  */
 import { trpc } from "@/lib/trpc";
 
-const INK = "#1a1a2e";
-const ACCENT = "#0a6e5c";
+const INK = "#1a1a1a";
+const ACCENT = "#1a1a1a";
 const PAPER = "#faf8f3";
 
 function formatDateIT(dateLabel: string): string {
@@ -60,9 +60,9 @@ export default function PuntoDelGiorno() {
     : post?.section === "finance" ? "Finance"
     : post?.section ?? "";
 
-  const sectionColor = post?.section === "ai" ? "#0a6e5c"
-    : post?.section === "startup" ? "#c2410c"
-    : post?.section === "finance" ? "#0369a1"
+  const sectionColor = post?.section === "ai" ? "#1a1a1a"
+    : post?.section === "startup" ? "#2a2a2a"
+    : post?.section === "finance" ? "#1a1a1a"
     : ACCENT;
 
   return (
@@ -74,7 +74,7 @@ export default function PuntoDelGiorno() {
           <div className="h-[3px] w-6" style={{ background: ACCENT }} />
           <span
             className="text-[11px] font-bold uppercase tracking-[0.25em]"
-            style={{ color: ACCENT, fontFamily: "'Space Mono', monospace" }}
+            style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Punto del Giorno
           </span>
@@ -82,7 +82,7 @@ export default function PuntoDelGiorno() {
         {dateLabel && (
           <span
             className="text-[10px] uppercase tracking-widest"
-            style={{ color: INK + "55", fontFamily: "'Space Mono', monospace" }}
+            style={{ color: INK + "55", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {formatDateIT(dateLabel)}
           </span>
@@ -128,22 +128,22 @@ export default function PuntoDelGiorno() {
                 <div>
                   <p
                     className="font-bold leading-tight"
-                    style={{ color: INK, fontFamily: "'Playfair Display', Georgia, serif", fontSize: "15px" }}
+                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "15px" }}
                   >
                     Andrea Cinelli
                   </p>
                   <p
                     className="text-[11px] mt-0.5 leading-snug"
-                    style={{ color: INK + "60", fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
-                    Opinion Leader & Editorialista IdeaSmart Research
+                    Opinion Leader & Editorialista IdeaSmart
                   </p>
                   <a
                     href="https://www.linkedin.com/in/andreacinelli"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[10px] font-bold uppercase tracking-widest hover:underline mt-1 inline-block"
-                    style={{ color: "#0077b5", fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: "#0077b5", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Seguimi su LinkedIn →
                   </a>
@@ -153,14 +153,14 @@ export default function PuntoDelGiorno() {
               <div className="flex items-center gap-2 flex-wrap">
                 <span
                   className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border"
-                  style={{ color: "#00b89a", borderColor: "#00b89a40", background: "#00b89a08", fontFamily: "'Space Mono', monospace" }}
+                  style={{ color: "#00b89a", borderColor: "#00b89a40", background: "#00b89a08", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   10:30
                 </span>
                 {sectionLabel && (
                   <span
                     className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
-                    style={{ color: sectionColor, fontFamily: "'Space Mono', monospace" }}
+                    style={{ color: sectionColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     {sectionLabel}
                   </span>
@@ -177,7 +177,7 @@ export default function PuntoDelGiorno() {
                 className="font-bold leading-tight mb-5"
                 style={{
                   color: INK,
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(22px, 2.5vw, 28px)",
                   lineHeight: 1.2,
                 }}
@@ -193,7 +193,7 @@ export default function PuntoDelGiorno() {
                   key={i}
                   style={{
                     color: INK + "cc",
-                    fontFamily: "'Source Serif 4', Georgia, serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
                     fontSize: "16px",
                     lineHeight: 1.75,
                   }}
@@ -208,7 +208,7 @@ export default function PuntoDelGiorno() {
               <div className="mt-6 pt-4 border-t flex items-center justify-between" style={{ borderColor: INK + "12" }}>
                 <p
                   className="text-[11px]"
-                  style={{ color: INK + "40", fontFamily: "'Space Mono', monospace" }}
+                  style={{ color: INK + "40", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Pubblicato su LinkedIn · {new Date(post.createdAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}
                 </p>
@@ -217,7 +217,7 @@ export default function PuntoDelGiorno() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[11px] font-bold uppercase tracking-widest hover:underline"
-                  style={{ color: "#0077b5", fontFamily: "'Space Mono', monospace" }}
+                  style={{ color: "#0077b5", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Leggi su LinkedIn →
                 </a>

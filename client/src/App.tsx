@@ -15,12 +15,12 @@ import Home from "./pages/Home";
 function PageSkeleton() {
   return (
     <div className="min-h-screen bg-[#faf8f3] animate-pulse">
-      <div className="h-12 bg-[#1a1a2e]/10 w-full" />
+      <div className="h-12 bg-[#1a1a1a]/10 w-full" />
       <div className="max-w-[1200px] mx-auto px-4 py-8 space-y-6">
-        <div className="h-8 bg-[#1a1a2e]/10 rounded w-1/3" />
+        <div className="h-8 bg-[#1a1a1a]/10 rounded w-1/3" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-48 bg-[#1a1a2e]/10 rounded" />
+            <div key={i} className="h-48 bg-[#1a1a1a]/10 rounded" />
           ))}
         </div>
       </div>

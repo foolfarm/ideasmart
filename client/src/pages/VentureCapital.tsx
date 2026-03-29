@@ -1,7 +1,7 @@
 /**
  * IDEASMART — Venture Capital
  * Pagina dedicata al Venture Capital: notizie Finance filtrate + ricerche VC
- * Palette: carta (#faf8f3), inchiostro (#1a1a2e), accento VC (#15803d), oro (#b8860b)
+ * Palette: carta (#faf8f3), inchiostro (#1a1a1a), accento VC (#1a1a1a), oro (#b8860b)
  */
 import { useMemo } from "react";
 import { Link } from "wouter";
@@ -12,21 +12,21 @@ import SectionChannelBar from "@/components/SectionChannelBar";
 import ReadersCounter from "@/components/ReadersCounter";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 
-const VC_GREEN = "#15803d";
+const VC_GREEN = "#1a1a1a";
 const VC_LIGHT = "#f0fdf4";
 const VC_GOLD = "#b8860b";
-const INK = "#1a1a2e";
+const INK = "#1a1a1a";
 const PAPER = "#faf8f3";
 
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a2e]`} />;
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
 }
-function ThinDivider() { return <div className="w-full border-t border-[#1a1a2e]/20" />; }
+function ThinDivider() { return <div className="w-full border-t border-[#1a1a1a]/20" />; }
 
 function VCBadge({ label, accent = VC_GREEN, bg = VC_LIGHT }: { label: string; accent?: string; bg?: string }) {
   return (
     <span className="inline-block text-[9px] font-bold uppercase tracking-[0.15em] px-1.5 py-0.5"
-      style={{ background: bg, color: accent, fontFamily: "'Space Mono', monospace" }}>
+      style={{ background: bg, color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {label}
     </span>
   );
@@ -54,17 +54,17 @@ function NewsHero({ item }: {
       )}
       <VCBadge label={item.category || "Venture Capital"} />
       <a href={href} target="_blank" rel="noopener noreferrer">
-        <h2 className="mt-2 text-2xl font-bold leading-tight text-[#1a1a2e] hover:underline cursor-pointer"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+        <h2 className="mt-2 text-2xl font-bold leading-tight text-[#1a1a1a] hover:underline cursor-pointer"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.title}
         </h2>
       </a>
-      <p className="mt-2 text-sm leading-relaxed text-[#1a1a2e]/65 line-clamp-4"
-        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+      <p className="mt-2 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-4"
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
         {item.summary}
       </p>
       {item.sourceName && (
-        <p className="mt-1.5 text-[10px] text-[#1a1a2e]/40" style={{ fontFamily: "'Space Mono', monospace" }}>
+        <p className="mt-1.5 text-[10px] text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
       )}
@@ -88,17 +88,17 @@ function NewsMedium({ item, showImage = false }: {
       )}
       <VCBadge label={item.category || "Finance"} />
       <a href={href} target="_blank" rel="noopener noreferrer">
-        <h3 className="mt-1 text-base font-bold leading-snug text-[#1a1a2e] hover:underline cursor-pointer"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+        <h3 className="mt-1 text-base font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.title}
         </h3>
       </a>
-      <p className="mt-0.5 text-sm leading-relaxed text-[#1a1a2e]/60 line-clamp-2"
-        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+      <p className="mt-0.5 text-sm leading-relaxed text-[#1a1a1a]/60 line-clamp-2"
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
         {item.summary}
       </p>
       {item.sourceName && (
-        <p className="mt-0.5 text-[9px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+        <p className="mt-0.5 text-[9px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
       )}
@@ -115,13 +115,13 @@ function NewsCompact({ item }: {
       <VCBadge label={item.category || "VC"} />
       <div>
         <a href={href} target="_blank" rel="noopener noreferrer">
-          <span className="text-sm font-semibold text-[#1a1a2e] hover:underline cursor-pointer leading-snug"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+          <span className="text-sm font-semibold text-[#1a1a1a] hover:underline cursor-pointer leading-snug"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.title}
           </span>
         </a>
         {item.sourceName && (
-          <p className="text-[9px] text-[#1a1a2e]/35 mt-0.5" style={{ fontFamily: "'Space Mono', monospace" }}>
+          <p className="text-[9px] text-[#1a1a1a]/35 mt-0.5" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
           </p>
         )}
@@ -131,9 +131,9 @@ function NewsCompact({ item }: {
 }
 
 const RESEARCH_CATEGORY_LABELS: Record<string, { label: string; accent: string; bg: string }> = {
-  venture_capital: { label: "Venture Capital", accent: "#15803d", bg: "#f0fdf4" },
-  startup: { label: "Startup", accent: "#0369a1", bg: "#e0f2fe" },
-  ai_trends: { label: "AI Trends", accent: "#7c3aed", bg: "#f3e8ff" },
+  venture_capital: { label: "Venture Capital", accent: "#1a1a1a", bg: "#f0fdf4" },
+  startup: { label: "Startup", accent: "#1a1a1a", bg: "#e0f2fe" },
+  ai_trends: { label: "AI Trends", accent: "#2a2a2a", bg: "#f3e8ff" },
   technology: { label: "Technology", accent: "#0891b2", bg: "#e0f7fa" },
   market: { label: "Market", accent: "#b8860b", bg: "#fef9c3" },
 };
@@ -144,7 +144,7 @@ function ResearchCard({ report }: {
     keyFindings: string[]; imageUrl?: string | null; dateLabel?: string; region?: string;
   };
 }) {
-  const cat = RESEARCH_CATEGORY_LABELS[report.category] ?? { label: report.category, accent: VC_GREEN, bg: VC_LIGHT };
+  const cat = RESEARCH_CATEGORY_LABELS[report.category] ?? { label: report.category, accent: "#1a1a1a", bg: VC_LIGHT };
   const kf = Array.isArray(report.keyFindings) ? report.keyFindings : [];
   return (
     <Link href="/research">
@@ -156,17 +156,17 @@ function ResearchCard({ report }: {
           </div>
         )}
         <VCBadge label={cat.label} accent={cat.accent} bg={cat.bg} />
-        <h4 className="mt-1 text-sm font-bold leading-snug text-[#1a1a2e] group-hover:underline line-clamp-2"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+        <h4 className="mt-1 text-sm font-bold leading-snug text-[#1a1a1a] group-hover:underline line-clamp-2"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
           {report.title}
         </h4>
         {kf[0] && (
-          <p className="mt-1 text-[10px] text-[#1a1a2e]/50 italic line-clamp-2"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+          <p className="mt-1 text-[10px] text-[#1a1a1a]/50 italic line-clamp-2"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
             <span className="font-bold not-italic" style={{ color: cat.accent }}>→</span> {kf[0]}
           </p>
         )}
-        <p className="mt-1 text-[9px] text-[#1a1a2e]/35" style={{ fontFamily: "'Space Mono', monospace" }}>
+        <p className="mt-1 text-[9px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {report.source}{report.dateLabel ? ` · ${report.dateLabel}` : ""}
         </p>
       </article>
@@ -196,10 +196,10 @@ export default function VentureCapital() {
   return (
     <>
       <SEOHead
-        title="Venture Capital — IdeaSmart Research"
+        title="Venture Capital — IdeaSmart"
         description="Analisi quotidiane su Venture Capital, round di investimento, startup finanziate e mercati. Dati dalle principali fonti di ricerca globali."
         canonical="https://ideasmart.ai/venture-capital"
-        ogSiteName="IDEASMART RESEARCH"
+        ogSiteName="IdeaSmart"
       />
 
       <div style={{ background: PAPER, minHeight: "100vh", color: INK }}>
@@ -210,29 +210,29 @@ export default function VentureCapital() {
             <div className="flex items-center justify-between mb-2">
               <Link href="/">
                 <span className="text-xs font-bold uppercase tracking-[0.15em] cursor-pointer hover:underline"
-                  style={{ fontFamily: "'Space Mono', monospace", color: INK }}>
-                  ← IdeaSmart Research
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: INK }}>
+                  ← IdeaSmart
                 </span>
               </Link>
               <ReadersCounter />
             </div>
 
             {/* Titolo sezione */}
-            <div className="text-center py-4 border-y border-[#1a1a2e]/20">
-              <p className="text-[9px] uppercase tracking-[0.3em] text-[#1a1a2e]/40 mb-1"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                IdeaSmart Research
+            <div className="text-center py-4 border-y border-[#1a1a1a]/20">
+              <p className="text-[9px] uppercase tracking-[0.3em] text-[#1a1a1a]/40 mb-1"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                IdeaSmart
               </p>
               <h1 className="text-5xl font-black uppercase tracking-tight"
-                style={{ fontFamily: "'Space Grotesk', 'DM Sans', sans-serif", color: VC_GREEN, letterSpacing: "-0.02em" }}>
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a", letterSpacing: "-0.02em" }}>
                 Venture Capital
               </h1>
-              <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#1a1a2e]/50"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
+              <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#1a1a1a]/50"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Round · Investimenti · Startup Finanziate · Mercati
               </p>
-              <p className="mt-1 text-[9px] italic text-[#1a1a2e]/30"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
+              <p className="mt-1 text-[9px] italic text-[#1a1a1a]/30"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 {updateTicker}
               </p>
             </div>
@@ -255,18 +255,18 @@ export default function VentureCapital() {
               <Divider thick />
               <div className="py-2 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     Notizie del Giorno
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-widest"
-                    style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     — Finance & Venture Capital
                   </span>
                 </div>
                 <Link href="/finance">
                   <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     Finance →
                   </span>
                 </Link>
@@ -277,25 +277,25 @@ export default function VentureCapital() {
               <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-0 mt-4">
 
                 {/* Hero Finance */}
-                <div className="pr-0 md:pr-6 pb-4 md:pb-0 border-b md:border-b-0 md:border-r border-[#1a1a2e]/15">
+                <div className="pr-0 md:pr-6 pb-4 md:pb-0 border-b md:border-b-0 md:border-r border-[#1a1a1a]/15">
                   {financeNews[0] && <NewsHero item={financeNews[0]} />}
 
                   {/* Seconda notizia media */}
                   {financeNews[1] && (
-                    <div className="mt-4 pt-4 border-t border-[#1a1a2e]/15">
+                    <div className="mt-4 pt-4 border-t border-[#1a1a1a]/15">
                       <NewsMedium item={financeNews[1]} showImage={!!financeNews[1].imageUrl} />
                     </div>
                   )}
                 </div>
 
                 {/* Lista notizie Finance */}
-                <div className="px-0 md:px-5 py-4 md:py-0 border-b md:border-b-0 md:border-r border-[#1a1a2e]/15">
+                <div className="px-0 md:px-5 py-4 md:py-0 border-b md:border-b-0 md:border-r border-[#1a1a1a]/15">
                   <div className="mb-2">
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                      style={{ fontFamily: "'Space Mono', monospace" }}>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                       Ultime notizie
                     </span>
-                    <div className="border-t-2 border-[#1a1a2e] mt-1" />
+                    <div className="border-t-2 border-[#1a1a1a] mt-1" />
                   </div>
                   {financeNews.slice(2, 10).map((item: typeof financeNews[0], i: number) => (
                     <div key={item.id}>
@@ -309,17 +309,17 @@ export default function VentureCapital() {
                 <div className="pl-0 md:pl-5 py-4 md:py-0">
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-[9px] font-bold uppercase tracking-[0.2em]"
-                      style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
+                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                       Research VC
                     </span>
                     <Link href="/research">
                       <span className="text-[9px] uppercase tracking-widest hover:underline"
-                        style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
+                        style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Tutte →
                       </span>
                     </Link>
                   </div>
-                  <div className="border-t-2 mb-2" style={{ borderColor: VC_GREEN }} />
+                  <div className="border-t-2 mb-2" style={{ borderColor: "#1a1a1a" }} />
 
                   {vcResearch && vcResearch.length > 0 ? (
                     vcResearch.slice(0, 5).map((r, i) => (
@@ -329,8 +329,8 @@ export default function VentureCapital() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-[#1a1a2e]/40 italic py-4"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                    <p className="text-xs text-[#1a1a1a]/40 italic py-4"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       Le ricerche VC di oggi saranno disponibili a breve.
                     </p>
                   )}
@@ -347,28 +347,28 @@ export default function VentureCapital() {
               <Divider thick />
               <div className="py-2 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                    style={{ fontFamily: "'Space Mono', monospace" }}>
-                    IdeaSmart Research
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                    IdeaSmart
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-widest"
-                    style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     — Venture Capital & Startup Funding
                   </span>
                 </div>
                 <Link href="/research">
                   <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     Tutte le ricerche →
                   </span>
                 </Link>
               </div>
-              <div className="border-t-2" style={{ borderColor: VC_GREEN }} />
+              <div className="border-t-2" style={{ borderColor: "#1a1a1a" }} />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 mt-3">
                 {vcResearch.slice(5).map((r, i: number) => (
                   <div key={r.id}
-                    className={`py-3 ${i % 3 !== 0 ? "pl-4 border-l border-[#1a1a2e]/12" : "pr-4"}`}>
+                    className={`py-3 ${i % 3 !== 0 ? "pl-4 border-l border-[#1a1a1a]/12" : "pr-4"}`}>
                     <ResearchCard report={r} />
                   </div>
                 ))}
@@ -384,28 +384,28 @@ export default function VentureCapital() {
               <Divider thick />
               <div className="py-2 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                    style={{ fontFamily: "'Space Mono', monospace" }}>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     Startup & Ecosistema
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-widest"
-                    style={{ color: "#0369a1", fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     — Ricerche correlate al VC
                   </span>
                 </div>
                 <Link href="/startup">
                   <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                    style={{ color: "#0369a1", fontFamily: "'Space Mono', monospace" }}>
+                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                     Startup News →
                   </span>
                 </Link>
               </div>
-              <div className="border-t-2" style={{ borderColor: "#0369a1" }} />
+              <div className="border-t-2" style={{ borderColor: "#1a1a1a" }} />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 mt-3">
                 {startupResearch.map((r, i: number) => (
                   <div key={r.id}
-                    className={`py-3 ${i % 3 !== 0 ? "pl-4 border-l border-[#1a1a2e]/12" : "pr-4"}`}>
+                    className={`py-3 ${i % 3 !== 0 ? "pl-4 border-l border-[#1a1a1a]/12" : "pr-4"}`}>
                     <ResearchCard report={r} />
                   </div>
                 ))}
@@ -420,12 +420,12 @@ export default function VentureCapital() {
             <section className="mt-10">
               <Divider thick />
               <div className="py-2 flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a2e]/40"
-                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Altre notizie Finance & Markets
                 </span>
-                <span className="text-[9px] italic text-[#1a1a2e]/30"
-                  style={{ fontFamily: "'Space Mono', monospace" }}>
+                <span className="text-[9px] italic text-[#1a1a1a]/30"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   {updateTicker}
                 </span>
               </div>
@@ -434,7 +434,7 @@ export default function VentureCapital() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 mt-3">
                 {financeNews.slice(10, 20).map((item: typeof financeNews[0], i: number) => (
                   <div key={item.id}
-                    className={`py-3 ${i % 3 !== 0 ? "pl-4 border-l border-[#1a1a2e]/12" : "pr-4"}`}>
+                    className={`py-3 ${i % 3 !== 0 ? "pl-4 border-l border-[#1a1a1a]/12" : "pr-4"}`}>
                     <NewsMedium item={item} showImage={i < 3 && !!item.imageUrl} />
                   </div>
                 ))}
@@ -449,21 +449,21 @@ export default function VentureCapital() {
             <Divider thick />
             <div className="py-10 text-center" style={{ background: INK }}>
               <p className="text-[9px] uppercase tracking-[0.3em] mb-2"
-                style={{ color: VC_GREEN, fontFamily: "'Space Mono', monospace" }}>
-                IdeaSmart Research
+                style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                IdeaSmart
               </p>
               <h2 className="text-3xl font-black uppercase mb-3"
-                style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#faf8f3" }}>
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#faf8f3" }}>
                 Ricerche Dedicate su Venture Capital
               </h2>
               <p className="text-sm max-w-xl mx-auto mb-6"
-                style={{ color: "rgba(250,248,243,0.65)", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                style={{ color: "rgba(250,248,243,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                 Analisi personalizzate su deal flow, mercati verticali, comparazioni di round e benchmark di settore.
-                Il team IdeaSmart Research è disponibile per ricerche su misura per investitori, fondi e corporate.
+                Il team IdeaSmart è disponibile per ricerche su misura per investitori, fondi e corporate.
               </p>
               <a href="mailto:info@ideasmart.ai?subject=Ricerca%20Dedicata%20Venture%20Capital"
                 className="inline-block px-8 py-3 font-bold uppercase tracking-widest text-sm transition-all hover:opacity-90"
-                style={{ background: VC_GREEN, color: "#fff", fontFamily: "'Space Mono', monospace" }}>
+                style={{ background: "#1a1a1a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Contatta il Team Research →
               </a>
             </div>
@@ -481,22 +481,22 @@ export default function VentureCapital() {
           <div className="mt-8">
             <Divider thick />
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-              <p className="text-xs text-[#1a1a2e]/40"
-                style={{ fontFamily: "'Space Mono', monospace" }}>
-                {`© ${today.getFullYear()} IdeaSmart Research · Venture Capital · AI · Startup`}
+              <p className="text-xs text-[#1a1a1a]/40"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                {`© ${today.getFullYear()} IdeaSmart · Venture Capital · AI · Startup`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 {[
                   { href: "/", label: "Home", color: INK },
-                  { href: "/research", label: "Research", color: VC_GREEN },
-                  { href: "/finance", label: "Finance", color: VC_GREEN },
-                  { href: "/startup", label: "Startup", color: "#0369a1" },
-                  { href: "/ai", label: "AI4Business", color: "#7c3aed" },
+                  { href: "/research", label: "Research", color: "#1a1a1a" },
+                  { href: "/finance", label: "Finance", color: "#1a1a1a" },
+                  { href: "/startup", label: "Startup", color: "#1a1a1a" },
+                  { href: "/ai", label: "AI4Business", color: "#2a2a2a" },
                   { href: "/chi-siamo", label: "Chi Siamo", color: INK },
                 ].map(item => (
                   <Link key={item.href} href={item.href}>
                     <span className="text-[10px] hover:underline cursor-pointer font-bold"
-                      style={{ color: item.color, fontFamily: "'Space Mono', monospace" }}>
+                      style={{ color: item.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                       {item.label}
                     </span>
                   </Link>

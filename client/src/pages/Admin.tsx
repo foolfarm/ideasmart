@@ -181,23 +181,23 @@ export default function Admin() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
-        <div className="w-8 h-8 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+        <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0a0f1e" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
         <div className="text-center">
-          <p className="text-white/60 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="text-white/60 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Accesso riservato agli amministratori.
           </p>
           <button
             onClick={() => navigate("/")}
             className="px-4 py-2 rounded-lg text-sm font-bold"
-            style={{ background: "#00e5c8", color: "#0a0f1e" }}
+            style={{ background: "#1a1a1a", color: "#0f0f0f" }}
           >
             Torna alla Home
           </button>
@@ -213,7 +213,7 @@ export default function Admin() {
   const musicSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "itsmusic" || s.newsletter === "both")).length;
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0f1e" }}>
+    <div className="min-h-screen" style={{ background: "#0f0f0f" }}>
       {/* Header */}
       <div className="border-b border-white/8" style={{ background: "#060a14" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -222,15 +222,15 @@ export default function Admin() {
               ← IDEASMART
             </button>
             <span className="text-white/20">/</span>
-            <span className="text-sm font-bold" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span className="text-sm font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Admin Dashboard
             </span>
             <span className="text-white/20">·</span>
             <button
               onClick={() => navigate("/admin/newsletter-performance")}
               className="text-xs font-bold transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#00e5c8")}
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#1a1a1a")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
             >
               📊 Performance
@@ -239,7 +239,7 @@ export default function Admin() {
             <button
               onClick={() => navigate("/admin/audit")}
               className="text-xs font-bold transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onMouseEnter={e => (e.currentTarget.style.color = "#f59e0b")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
             >
@@ -249,8 +249,8 @@ export default function Admin() {
             <button
               onClick={() => navigate("/admin/rss-monitor")}
               className="text-xs font-bold transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#00e5c8")}
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#1a1a1a")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
             >
               📡 Monitor RSS
@@ -259,7 +259,7 @@ export default function Admin() {
             <button
               onClick={() => navigate("/admin/sendgrid-stats")}
               className="text-xs font-bold transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onMouseEnter={e => (e.currentTarget.style.color = "#22c55e")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
             >
@@ -269,7 +269,7 @@ export default function Admin() {
             <button
               onClick={() => navigate("/admin/system-health")}
               className="text-xs font-bold transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onMouseEnter={e => (e.currentTarget.style.color = "#f97316")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
             >
@@ -288,13 +288,13 @@ export default function Admin() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
-            { label: "Iscritti totali", value: subscribers.length, color: "#00e5c8" },
-            { label: "AI4Business News", value: aiSubscribers, color: "#00e5c8" },
-            { label: "ITsMusic", value: musicSubscribers, color: "#8b5cf6" },
+            { label: "Iscritti totali", value: subscribers.length, color: "#1a1a1a" },
+            { label: "AI4Business News", value: aiSubscribers, color: "#1a1a1a" },
+            { label: "ITsMusic", value: musicSubscribers, color: "#2a2a2a" },
             { label: "Newsletter inviate", value: history.length, color: "#0066ff" },
           ].map((stat) => (
             <div key={stat.label} className="rounded-xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
-              <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "'Space Grotesk', sans-serif" }}>
+              <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 {stat.value}
               </div>
               <div className="text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
@@ -304,8 +304,8 @@ export default function Admin() {
 
         {/* Result banner */}
         {lastResult && (
-          <div className="mb-6 p-4 rounded-xl border border-[#00e5c8]/30" style={{ background: "rgba(0,229,200,0.06)" }}>
-            <p className="text-sm font-medium" style={{ color: "#00e5c8", fontFamily: "'DM Sans', sans-serif" }}>{lastResult}</p>
+          <div className="mb-6 p-4 rounded-xl border border-[#1a1a1a]/30" style={{ background: "rgba(0,229,200,0.06)" }}>
+            <p className="text-sm font-medium" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{lastResult}</p>
           </div>
         )}
 
@@ -316,10 +316,10 @@ export default function Admin() {
 
             {/* Test send */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(255,255,255,0.02)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ Invio di Test
               </p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Genera le top 20 notizie AI della settimana con l'AI e invia una email di test per verificare il template.
               </p>
               <input
@@ -327,8 +327,8 @@ export default function Admin() {
                 value={testEmail}
                 onChange={(e) => setTestEmail(e.target.value)}
                 placeholder="Email destinatario test"
-                className="w-full px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-[#00e5c8] transition-colors mb-3"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                className="w-full px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-[#1a1a1a] transition-colors mb-3"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               />
               <button
                 onClick={() => {
@@ -338,11 +338,11 @@ export default function Admin() {
                 }}
                 disabled={sendingTest || !testEmail}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 {sendingTest ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-[#0a0f1e] border-t-transparent rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-[#0f0f0f] border-t-transparent rounded-full animate-spin" />
                     Generazione notizie AI...
                   </span>
                 ) : (
@@ -353,15 +353,15 @@ export default function Admin() {
 
             {/* Refresh News */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(0,102,255,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0066ff", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0066ff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ Aggiornamento News AI
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Aggiornamento giornaliero automatico</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Aggiornamento giornaliero automatico</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Genera 20 nuove notizie AI con LLM e aggiorna il sito. L'aggiornamento automatico avviene ogni 24 ore. Usa questo pulsante per un aggiornamento manuale immediato.
               </p>
               {newsRefreshHistoryQuery.data && newsRefreshHistoryQuery.data.length > 0 && (
-                <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Ultimo aggiornamento: {new Date(newsRefreshHistoryQuery.data[0].createdAt).toLocaleString("it-IT")}
                   {" — "}{newsRefreshHistoryQuery.data[0].itemCount} notizie
                 </p>
@@ -373,7 +373,7 @@ export default function Admin() {
                 }}
                 disabled={refreshingNews}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "#0066ff", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#0066ff", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 {refreshingNews ? (
                   <span className="flex items-center justify-center gap-2">
@@ -388,11 +388,11 @@ export default function Admin() {
 
             {/* ITsMusic Newsletter */}
             <div className="rounded-2xl border border-purple-500/20 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 🎸 ITsMusic Newsletter
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rock · Indie · AI Music</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Rock · Indie · AI Music</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Invia la newsletter <strong className="text-purple-400">ITsMusic</strong> a tutti i <strong className="text-white">{musicSubscribers} iscritti ITsMusic</strong>. Genera 20 notizie Rock/Indie/AI Music con LLM.
               </p>
               <button
@@ -403,7 +403,7 @@ export default function Admin() {
                 }}
                 disabled={sendingItsMusic || musicSubscribers === 0}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "#8b5cf6", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#2a2a2a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 {sendingItsMusic ? (
                   <span className="flex items-center justify-center gap-2">
@@ -418,11 +418,11 @@ export default function Admin() {
 
             {/* Aggiornamento News Musicali */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.03)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 🎸 Aggiornamento News Musicali
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Aggiornamento giornaliero automatico</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Aggiornamento giornaliero automatico</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Genera 20 nuove notizie Rock/Indie/AI Music e aggiorna la sezione /music. Usa questo pulsante per un aggiornamento manuale immediato.
               </p>
               <button
@@ -432,7 +432,7 @@ export default function Admin() {
                 }}
                 disabled={refreshingMusicNews}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "rgba(139,92,246,0.3)", color: "#c4b5fd", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(139,92,246,0.4)" }}
+                style={{ background: "rgba(139,92,246,0.3)", color: "#c4b5fd", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(139,92,246,0.4)" }}
               >
                 {refreshingMusicNews ? (
                   <span className="flex items-center justify-center gap-2">
@@ -447,11 +447,11 @@ export default function Admin() {
 
             {/* Genera Immagini AI */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#8b5cf6", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ Immagini AI Articoli
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Genera immagini per tutti i tipi di articolo</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Genera immagini per tutti i tipi di articolo</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Genera immagini AI per news, reportage, analisi, editoriali e startup senza immagine (max 5 per tipo). Le immagini vengono salvate automaticamente nel database.
               </p>
               <button
@@ -461,7 +461,7 @@ export default function Admin() {
                 }}
                 disabled={generatingImages}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "#8b5cf6", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#2a2a2a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 {generatingImages ? (
                   <span className="flex items-center justify-center gap-2">
@@ -476,60 +476,60 @@ export default function Admin() {
 
             {/* Finance & Markets */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(16,185,129,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#10b981", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Finance & Markets</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 03:00 CET.</p>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#10b981", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Finance & Markets</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 03:00 CET.</p>
               <button onClick={() => { setRefreshingFinance(true); refreshFinanceMutation.mutate(); }} disabled={refreshingFinance}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(16,185,129,0.3)", color: "#6ee7b7", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(16,185,129,0.4)" }}>
+                style={{ background: "rgba(16,185,129,0.3)", color: "#6ee7b7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(16,185,129,0.4)" }}>
                 {refreshingFinance ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-green-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Finance...</span> : "📈 Aggiorna Finance & Markets →"}
               </button>
             </div>
             {/* Health & Biotech */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(59,130,246,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#3b82f6", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Health & Biotech</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 04:00 CET.</p>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#3b82f6", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Health & Biotech</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 04:00 CET.</p>
               <button onClick={() => { setRefreshingHealth(true); refreshHealthMutation.mutate(); }} disabled={refreshingHealth}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(59,130,246,0.3)", color: "#93c5fd", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(59,130,246,0.4)" }}>
+                style={{ background: "rgba(59,130,246,0.3)", color: "#93c5fd", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(59,130,246,0.4)" }}>
                 {refreshingHealth ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-blue-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Health...</span> : "🧬 Aggiorna Health & Biotech →"}
               </button>
             </div>
             {/* Sport & Business */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(245,158,11,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#f59e0b", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Sport & Business</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 05:00 CET.</p>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#f59e0b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Sport & Business</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 05:00 CET.</p>
               <button onClick={() => { setRefreshingSport(true); refreshSportMutation.mutate(); }} disabled={refreshingSport}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(245,158,11,0.3)", color: "#fcd34d", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(245,158,11,0.4)" }}>
+                style={{ background: "rgba(245,158,11,0.3)", color: "#fcd34d", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(245,158,11,0.4)" }}>
                 {refreshingSport ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Sport...</span> : "⚽ Aggiorna Sport & Business →"}
               </button>
             </div>
             {/* Lifestyle & Luxury */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(236,72,153,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#ec4899", fontFamily: "'Space Grotesk', sans-serif" }}>◆ Lifestyle & Luxury</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 06:00 CET.</p>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#ec4899", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Lifestyle & Luxury</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 06:00 CET.</p>
               <button onClick={() => { setRefreshingLuxury(true); refreshLuxuryMutation.mutate(); }} disabled={refreshingLuxury}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(236,72,153,0.3)", color: "#f9a8d4", fontFamily: "'Space Grotesk', sans-serif", border: "1px solid rgba(236,72,153,0.4)" }}>
+                style={{ background: "rgba(236,72,153,0.3)", color: "#f9a8d4", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(236,72,153,0.4)" }}>
                 {refreshingLuxury ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-pink-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Luxury...</span> : "💎 Aggiorna Lifestyle & Luxury →"}
               </button>
             </div>
 
             {/* Newsletter Giornaliera per Canale */}
-            <div className="rounded-2xl border border-[#00e5c8]/20 p-6" style={{ background: "rgba(0,229,200,0.03)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <div className="rounded-2xl border border-[#1a1a1a]/20 p-6" style={{ background: "rgba(0,229,200,0.03)" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 📧 Newsletter Giornaliera per Canale
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cadenza Lun/Mer/Ven — Preview 07:00 · Invio 07:30 CET</p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Cadenza Lun/Mer/Ven — Preview 07:00 · Invio 07:30 CET</p>
               {/* Prossimi Invii Newsletter */}
               {(() => {
                 const now = new Date();
                 const todayDow = now.getDay();
                 const startupSubs = subscribers.filter(s => s.status === "active" && (s.newsletter === "startup" || s.newsletter === "both")).length;
                 const schedule = [
-                  { dow: 1, dayName: "Lunedì",    channel: "AI4Business News",  color: "#00e5c8", subs: aiSubscribers },
-                  { dow: 3, dayName: "Mercoledì", channel: "Startup News",       color: "#ff5500", subs: startupSubs },
-                  { dow: 5, dayName: "Venerdì",   channel: "AI4Business News",  color: "#00e5c8", subs: aiSubscribers },
+                  { dow: 1, dayName: "Lunedì",    channel: "AI4Business News",  color: "#1a1a1a", subs: aiSubscribers },
+                  { dow: 3, dayName: "Mercoledì", channel: "Startup News",       color: "#2a2a2a", subs: startupSubs },
+                  { dow: 5, dayName: "Venerdì",   channel: "AI4Business News",  color: "#1a1a1a", subs: aiSubscribers },
                 ];
                 const upcoming = [...schedule, ...schedule, ...schedule]
                   .map((s, i) => {
@@ -589,11 +589,11 @@ export default function Admin() {
                   }}
                   disabled={sendingChannelPreview}
                   className="w-full px-4 py-2.5 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                  style={{ background: "rgba(0,229,200,0.15)", color: "#00e5c8", border: "1px solid rgba(0,229,200,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}
+                  style={{ background: "rgba(0,229,200,0.15)", color: "#1a1a1a", border: "1px solid rgba(0,229,200,0.3)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   {sendingChannelPreview ? (
                     <span className="flex items-center justify-center gap-2">
-                      <span className="w-4 h-4 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin" />
+                      <span className="w-4 h-4 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
                       Invio preview...
                     </span>
                   ) : (
@@ -602,13 +602,13 @@ export default function Admin() {
                 </button>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { key: "ai", label: "AI", color: "#00e5c8" },
-                    { key: "startup", label: "Startup", color: "#ff5500" },
+                    { key: "ai", label: "AI", color: "#1a1a1a" },
+                    { key: "startup", label: "Startup", color: "#2a2a2a" },
                     { key: "finance", label: "Finance", color: "#1a56db" },
                     { key: "sport", label: "Sport", color: "#059669" },
                     { key: "music", label: "Music", color: "#9333ea" },
                     { key: "luxury", label: "Luxury", color: "#d97706" },
-                    { key: "health", label: "Health", color: "#dc2626" },
+                    { key: "health", label: "Health", color: "#2a2a2a" },
                   ].map((ch) => (
                     <button
                       key={ch.key}
@@ -619,7 +619,7 @@ export default function Admin() {
                       }}
                       disabled={sendingChannelNewsletter !== null}
                       className="px-3 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
-                      style={{ background: `${ch.color}22`, color: ch.color, border: `1px solid ${ch.color}44`, fontFamily: "'Space Grotesk', sans-serif" }}
+                      style={{ background: `${ch.color}22`, color: ch.color, border: `1px solid ${ch.color}44`, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                     >
                       {sendingChannelNewsletter === ch.key ? (
                         <span className="flex items-center justify-center gap-1">
@@ -637,11 +637,11 @@ export default function Admin() {
 
             {/* LinkedIn Autopost */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(0,102,255,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0a66c2", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#0a66c2", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ LinkedIn Autopost
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Pubblica 1 editoriale giornaliero su LinkedIn — tono HumanLess, analisi da senior analyst</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Pubblica 1 editoriale giornaliero su LinkedIn — tono HumanLess, analisi da senior analyst</p>
+              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Genera un post thought leader dall'editoriale AI o Startup del giorno (alternanza automatica).
                 Testo con dati da fonti autorevoli (McKinsey, Gartner, CBInsights), immagine pertinente, link verso IDEASMART.
                 Lo scheduler parte ogni giorno alle <strong className="text-white">10:00 CET</strong>. Token scade ogni 2 mesi.
@@ -654,7 +654,7 @@ export default function Admin() {
                 }}
                 disabled={publishingLinkedIn}
                 className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-4"
-                style={{ background: "#0a66c2", color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ background: "#0a66c2", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 {publishingLinkedIn ? (
                   <span className="flex items-center justify-center gap-2">
@@ -667,12 +667,12 @@ export default function Admin() {
               </button>
               {linkedInResult && (
                 <div className="space-y-2">
-                  <p className="text-xs font-bold" style={{ color: linkedInResult.published > 0 ? "#00e5c8" : "#ff5500" }}>
+                  <p className="text-xs font-bold" style={{ color: linkedInResult.published > 0 ? "#1a1a1a" : "#2a2a2a" }}>
                     {linkedInResult.published}/{linkedInResult.total} post pubblicati
                   </p>
                   {linkedInResult.posts.map((p, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs">
-                      <span style={{ color: p.success ? "#00e5c8" : "#ff5500" }}>{p.success ? "✓" : "✗"}</span>
+                      <span style={{ color: p.success ? "#1a1a1a" : "#2a2a2a" }}>{p.success ? "✓" : "✗"}</span>
                       <span className="text-white/60">[{p.section.toUpperCase()}]</span>
                       <span className="text-white/80 truncate">{p.title}</span>
                       {p.error && <span className="text-red-400 text-xs">{p.error.slice(0, 50)}</span>}
@@ -684,7 +684,7 @@ export default function Admin() {
 
             {/* Send history */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(255,255,255,0.02)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#0066ff", fontFamily: "'Space Grotesk', sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#0066ff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ Storico Invii
               </p>
               {history.length === 0 ? (
@@ -693,7 +693,7 @@ export default function Admin() {
                 <div className="space-y-3">
                   {history.slice(-5).reverse().map((h) => (
                     <div key={h.id} className="border-b border-white/6 pb-3 last:border-0 last:pb-0">
-                      <p className="text-xs font-medium text-white/80 leading-snug mb-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                      <p className="text-xs font-medium text-white/80 leading-snug mb-1" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         {h.subject}
                       </p>
                       <div className="flex justify-between">
@@ -713,7 +713,7 @@ export default function Admin() {
           <div className="lg:col-span-2">
             <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
               <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#00e5c8", fontFamily: "'Space Grotesk', sans-serif" }}>
+                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   ◆ Iscritti Newsletter ({subscribers.length})
                 </p>
                 <button
@@ -726,7 +726,7 @@ export default function Admin() {
 
               {subscribersQuery.isLoading ? (
                 <div className="p-8 text-center">
-                  <div className="w-6 h-6 border-2 border-[#00e5c8] border-t-transparent rounded-full animate-spin mx-auto" />
+                  <div className="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin mx-auto" />
                 </div>
               ) : subscribers.length === 0 ? (
                 <div className="p-8 text-center">
@@ -748,7 +748,7 @@ export default function Admin() {
                     <tbody>
                       {subscribers.map((sub) => (
                         <tr key={sub.id} className="border-b border-white/4 hover:bg-white/2 transition-colors">
-                          <td className="px-4 py-3 text-sm text-white/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                          <td className="px-4 py-3 text-sm text-white/80" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                             {sub.email}
                           </td>
                           <td className="px-4 py-3 text-sm text-white/50">{sub.name ?? "—"}</td>
@@ -757,7 +757,7 @@ export default function Admin() {
                               className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
                               style={{
                                 background: sub.newsletter === "itsmusic" ? "rgba(139,92,246,0.15)" : sub.newsletter === "both" ? "rgba(0,229,200,0.1)" : "rgba(0,102,255,0.15)",
-                                color: sub.newsletter === "itsmusic" ? "#8b5cf6" : sub.newsletter === "both" ? "#00e5c8" : "#60a5fa",
+                                color: sub.newsletter === "itsmusic" ? "#2a2a2a" : sub.newsletter === "both" ? "#1a1a1a" : "#60a5fa",
                               }}
                             >
                               {sub.newsletter === "ai4business" ? "AI4Biz" : sub.newsletter === "itsmusic" ? "ITsMusic" : "Entrambe"}
@@ -768,7 +768,7 @@ export default function Admin() {
                               className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
                               style={{
                                 background: sub.status === "active" ? "rgba(0,229,200,0.15)" : "rgba(255,85,0,0.15)",
-                                color: sub.status === "active" ? "#00e5c8" : "#ff5500",
+                                color: sub.status === "active" ? "#1a1a1a" : "#2a2a2a",
                               }}
                             >
                               {sub.status === "active" ? "Attivo" : "Disattivato"}
