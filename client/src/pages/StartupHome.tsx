@@ -5,7 +5,8 @@
  */
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import ReadersCounter from "@/components/ReadersCounter";
+import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
 import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
@@ -128,92 +129,7 @@ export default function StartupHome() {
 
       <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
 
-        {/* TESTATA SEZIONE */}
-        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
-          <div className="flex items-center justify-between mb-2">
-            <Link href="/">
-              <span className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                ← IdeaSmart
-              </span>
-            </Link>
-            <span className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              {formatDateIT(today)}
-            </span>
-          </div>
-
-          <Divider thick />
-
-          <div className="text-center py-5">
-            <div className="inline-block px-3 py-1 mb-3 rounded-sm text-xs font-bold uppercase tracking-widest"
-              style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Canale Startup
-            </div>
-            <Link href="/">
-              <h1 className="text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}>
-                Startup News
-              </h1>
-            </Link>
-            <p className="mt-1 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Ecosistema Startup Italiano ed Europeo · Funding · Innovazione
-            </p>
-          </div>
-
-          <Divider thick />
-
-          <nav className="flex items-center justify-center gap-0 py-2">
-            {["Notizie", "Editoriale", "Startup del Giorno", "Reportage", "Analisi"].map((label, i) => (
-              <span key={label}
-                className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
-                style={{
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                  color: ACCENT,
-                  borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.2)" : "none",
-                }}>
-                {label}
-              </span>
-            ))}
-
-            <Link href="/chi-siamo">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
-                style={{
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                  color: "#1a1a1a",
-                  borderLeft: "1px solid rgba(26,26,46,0.2)",
-                }}>
-                Chi Siamo
-              </span>
-            </Link>
-            <Link href="/tecnologia">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors hover:opacity-70 hover:underline underline-offset-2 cursor-pointer"
-                style={{
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                  color: "#00b89a",
-                  borderLeft: "1px solid rgba(26,26,46,0.2)",
-                }}>
-                Tecnologia
-              </span>
-            </Link>
-            <span className="text-[#1a1a1a]/20 mx-1">|</span>
-            <Link href="/advertise">
-              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-all hover:opacity-100 hover:underline underline-offset-2 cursor-pointer"
-                style={{
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                  color: "#2a2a2a",
-                  opacity: 0.7,
-                }}>
-                Advertise
-              </span>
-            </Link>
-            <span className="text-[#1a1a1a]/15 text-xs mx-1">·</span>
-            <ReadersCounter />
-          </nav>
-
-          <Divider />
-        </header>
+        <SharedPageHeader />
         <BreakingNewsTicker />
         <SectionChannelBar />
         <main className="max-w-6xl mx-auto px-4 pb-12">
@@ -598,21 +514,8 @@ export default function StartupHome() {
             skipCount={10}
           />
 
-                    {/* Footer sezione */}
-          <div className="mt-4">
-            <Divider thick />
-            <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-              <p className="text-xs text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                {`© ${today.getFullYear()} IdeaSmart · Startup News`}
-              </p>
-              <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
-                <Link href="/"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>← Home</span></Link>
-                <Link href="/ai"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AI4Business</span></Link>
-                <Link href="/music"><span className="text-xs hover:underline cursor-pointer" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>ITsMusic</span></Link>
-                <Link href="/privacy"><span className="text-xs hover:underline cursor-pointer text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy Policy</span></Link>
-
-              </div>
-            </div>
+          <div className="max-w-[1280px] mx-auto">
+            <SharedPageFooter />
           </div>
         </main>
       </div>

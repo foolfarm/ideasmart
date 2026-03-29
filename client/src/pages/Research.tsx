@@ -2,10 +2,11 @@
  * IDEASMART Research — Pagina ricerche giornaliere
  * Testata identica alla Home: logo centrato, manchette, barra canali SectionNav
  */
-import { useState, useEffect, useRef, useMemo } from "react";
-import { Link, useLocation } from "wouter";
+import { useState, useMemo } from "react";
+import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import ReadersCounter from "@/components/ReadersCounter";
+import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
 import {
   ExternalLink, TrendingUp, Globe, MapPin, BookOpen,
   ChevronDown, ChevronUp, Mail, ArrowRight,
@@ -61,142 +62,7 @@ function getImageUrl(report: { imageUrl?: string | null; category: string }): st
   return report.imageUrl || CATEGORY_FALLBACK_IMAGES[report.category] || CATEGORY_FALLBACK_IMAGES["ai_trends"];
 }
 
-// ── Utility ───────────────────────────────────────────────────────────────────
-function formatDateIT(date: Date): string {
-  return date.toLocaleDateString("it-IT", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric",
-  });
-}
 
-function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
-}
-
-// ── SectionNav (identica alla Home) ──────────────────────────────────────────
-function SectionNav() {
-  const [location] = useLocation();
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-  const { data: sectionCounts } = trpc.news.getSectionCounts.useQuery(undefined, {
-    staleTime: 10 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  });
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const check = () => setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-    check();
-    el.addEventListener("scroll", check);
-    window.addEventListener("resize", check);
-    return () => { el.removeEventListener("scroll", check); window.removeEventListener("resize", check); };
-  }, []);
-
-  const SECTIONS = ["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi"] as const;
-
-  return (
-    <nav className="border-t border-[#1a1a1a] overflow-hidden">
-      {/* Riga 1: canali editoriali */}
-      <div className="relative">
-        <div ref={scrollRef} className="overflow-x-auto scrollbar-hide">
-          <div className="flex items-stretch min-w-max">
-            {SECTIONS.map((sec, i) => {
-              const s = SECTION_COLORS[sec];
-              const isActive = location === s.path || location.startsWith(s.path + "/");
-              return (
-                <Link key={sec} href={s.path}>
-                  <span
-                    className="relative flex items-center px-4 py-2.5 text-[9.5px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200"
-                    style={{
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                      borderLeft: i > 0 ? "1px solid rgba(26,26,46,0.12)" : "none",
-                      background: isActive ? s.accent : "",
-                      color: isActive ? "#fff" : "#1a1a1a",
-                    }}
-                    onMouseEnter={e => {
-                      if (!isActive) {
-                        (e.currentTarget as HTMLElement).style.background = s.accent;
-                        (e.currentTarget as HTMLElement).style.color = "#fff";
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (!isActive) {
-                        (e.currentTarget as HTMLElement).style.background = "";
-                        (e.currentTarget as HTMLElement).style.color = "#1a1a1a";
-                      }
-                    }}
-                  >
-                    {s.label}
-                    {sectionCounts && sectionCounts[sec] > 0 && (
-                      <span
-                        className="ml-1.5 text-[8px] font-bold px-1 py-0.5 rounded-sm"
-                        style={{
-                          background: isActive ? "rgba(255,255,255,0.25)" : s.light,
-                          color: isActive ? "#fff" : s.accent,
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                          lineHeight: 1,
-                        }}
-                      >
-                        {sectionCounts[sec]}
-                      </span>
-                    )}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: "#fff", opacity: 0.6 }} />
-                    )}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-        {canScrollRight && (
-          <button
-            className="absolute right-0 top-0 bottom-0 flex items-center justify-center w-8 pointer-events-auto"
-            style={{ background: "linear-gradient(to right, transparent, #faf8f3 70%)", border: "none", cursor: "pointer" }}
-            onClick={() => scrollRef.current?.scrollBy({ left: 120, behavior: "smooth" })}
-            aria-label="Scorri menu"
-          >
-            <span style={{ fontSize: "14px", color: "#1a1a1a", fontWeight: "bold" }}>›</span>
-          </button>
-        )}
-      </div>
-
-      {/* Riga 2: pagine istituzionali */}
-      <div className="flex flex-wrap items-center border-t" style={{ borderColor: "rgba(26,26,46,0.10)", background: "#f5f2ec" }}>
-        <Link href="/research">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a1a]/80 hover:text-[#1a1a1a] hover:underline decoration-[#1a1a1a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Research</span>
-        </Link>
-        <span className="text-[#1a1a1a]/15 text-xs">|</span>
-        <Link href="/chi-siamo">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a1a]/60 hover:text-[#1a1a1a] hover:underline decoration-[#1a1a1a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Chi Siamo</span>
-        </Link>
-        <span className="text-[#1a1a1a]/15 text-xs">|</span>
-        <Link href="/tecnologia">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#1a1a1a]/60 hover:text-[#00b89a] hover:underline decoration-[#00b89a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Tecnologia</span>
-        </Link>
-        <span className="text-[#1a1a1a]/15 text-xs">|</span>
-        <Link href="/advertise">
-          <span className="flex items-center px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] cursor-pointer transition-all text-[#2a2a2a]/70 hover:text-[#2a2a2a] hover:underline decoration-[#2a2a2a] underline-offset-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Advertise</span>
-        </Link>
-        <span className="text-[#1a1a1a]/15 text-xs mx-1">·</span>
-        <ReadersCounter />
-        <div className="ml-auto flex items-center">
-          <Link href="/business">
-            <span
-              className="flex items-center gap-2 px-5 py-2 text-[9px] font-black uppercase tracking-[0.14em] cursor-pointer transition-all duration-200"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", background: "#1a1a1a", color: "#2a2a2a", letterSpacing: "0.14em" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#2a2a2a"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLElement).style.color = "#2a2a2a"; }}
-            >
-              <span style={{ fontSize: "10px" }}>▶</span>
-              IdeaSmart Business
-            </span>
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
-}
 
 // ── Card Ricerca del Giorno (hero) ────────────────────────────────────────────
 function ResearchHeroCard({ report }: {
@@ -433,119 +299,9 @@ export default function Research() {
 
   return (
     <>
-      {/* Font Google identici alla Home */}
-      <style>{`
-        /* SF Pro system font — no external loading needed */
-      `}</style>
-
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
 
-        {/* ── TESTATA EDITORIALE (identica alla Home) ───────────────────────── */}
-        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
-          {/* Riga data / tagline */}
-          <div className="flex items-center justify-between mb-2">
-            <span
-              className="text-xs text-[#1a1a1a]/50 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              {formatDateIT(today)}
-            </span>
-            <span
-              className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              Research · AI · Startup · Venture Capital
-            </span>
-          </div>
-
-          <Divider thick />
-
-          {/* Manchette + Brand centrale */}
-          <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_140px] items-center gap-4 py-4 md:py-5">
-
-            {/* MANCHETTE SINISTRA */}
-            <div className="hidden md:flex justify-end">
-              <Link href="/business">
-                <div
-                  className="w-[130px] h-[130px] border-2 flex flex-col items-center justify-center text-center p-3 cursor-pointer hover:shadow-md transition-all"
-                  style={{ borderColor: "#2a2a2a", background: "#fff4f0" }}
-                >
-                  <span
-                    className="text-[8px] font-bold uppercase tracking-[0.15em] block mb-1.5"
-                    style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-                  >
-                    IdeaSmart Business
-                  </span>
-                  <span
-                    className="text-[13px] font-black leading-tight block mb-2.5"
-                    style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
-                  >
-                    Crea il tuo giornale AI powered
-                  </span>
-                  <span
-                    className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5"
-                    style={{ background: "#2a2a2a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-                  >
-                    Scopri →
-                  </span>
-                </div>
-              </Link>
-            </div>
-
-            {/* BRAND CENTRALE */}
-            <div className="text-center">
-              <Link href="/">
-                <h1
-                  className="text-5xl md:text-7xl font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
-                >
-                  IdeaSmart
-                </h1>
-              </Link>
-              <p
-                className="mt-1 text-xs uppercase tracking-[0.3em] text-[#1a1a1a]/50"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                Analisi quotidiane su Startup, Venture Capital e AI Trends
-              </p>
-              <p
-                className="mt-1 text-[11px] text-[#1a1a1a]/40 italic"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.02em" }}
-              >
-                Dati dalle principali fonti di ricerca globali ed europee
-              </p>
-            </div>
-
-            {/* MANCHETTE DESTRA — spazio banner */}
-            <div className="hidden md:flex justify-start">
-              <div
-                className="w-[130px] h-[130px] border overflow-hidden flex items-center justify-center"
-                style={{ borderColor: "rgba(26,26,46,0.20)", background: "#f5f2ec" }}
-              >
-                <a
-                  href="https://clk.tradedoubler.com/click?p=354184&a=3477790&g=25914926"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={`https://imp.tradedoubler.com/imp?type(img)g(25914926)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                    width="130"
-                    height="130"
-                    alt="Pubblicità"
-                    style={{ display: "block", width: "130px", height: "130px", objectFit: "cover" }}
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <Divider thick />
-
-          {/* Barra canali + pagine istituzionali */}
-          <SectionNav />
-
-          <Divider />
-        </header>
+        <SharedPageHeader />
 
         {/* ── Titolo sezione Research ───────────────────────────────────────── */}
         <div className="max-w-6xl mx-auto px-4 pt-6 pb-2">
@@ -785,12 +541,8 @@ export default function Research() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div
-          className="text-center text-xs py-6 border-t border-[#1a1a1a]/10"
-          style={{ color: "#1a1a1a", opacity: 0.3, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-        >
-          © {new Date().getFullYear()} IdeaSmart · AI · Startup · Venture Capital
+        <div className="max-w-[1280px] mx-auto px-4">
+          <SharedPageFooter />
         </div>
       </div>
     </>

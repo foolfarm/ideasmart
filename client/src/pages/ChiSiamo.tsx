@@ -8,6 +8,8 @@ import { useMemo } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
 
 const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#e6f4f1";
@@ -110,34 +112,7 @@ export default function ChiSiamo() {
       `}</style>
       <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
 
-        {/* ── TESTATA ── */}
-        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
-          <div className="flex items-center justify-between mb-2">
-            <Link href="/">
-              <span className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                ← IdeaSmart
-              </span>
-            </Link>
-            <span className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              {formatDateIT(today)}
-            </span>
-          </div>
-          <Divider thick />
-          <div className="text-center py-6">
-            <SectionBadge label="La nostra storia" />
-            <h1 className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a]"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}>
-              Chi Siamo
-            </h1>
-            <p className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              La prima società italiana di Ricerca di Mercato ed Executive Reports in ambito tecnologico basata su tecnologia agentica
-            </p>
-          </div>
-          <Divider />
-        </header>
+        <SharedPageHeader />
 
         <BreakingNewsTicker />
 
@@ -503,28 +478,7 @@ export default function ChiSiamo() {
             </div>
           </section>
 
-          {/* ── FOOTER ── */}
-          <ThinDivider />
-          <footer className="py-6 flex flex-wrap items-center justify-between gap-4">
-            <div className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/30"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              © {new Date().getFullYear()} IdeaSmart — Testata 100% HumanLess
-            </div>
-            <div className="flex items-center gap-4">
-              <Link href="/manifesto">
-                <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Manifesto</span>
-              </Link>
-              <Link href="/business">
-                <span className="text-[10px] uppercase tracking-widest cursor-pointer"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: ORANGE }}>Business</span>
-              </Link>
-              <Link href="/privacy">
-                <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Privacy</span>
-              </Link>
-            </div>
-          </footer>
+          <SharedPageFooter />
 
         </main>
       </div>
