@@ -184,6 +184,14 @@ export default function Intelligence() {
                 style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
                 Scegli il tuo piano →
               </a>
+              <a
+                href="#come-funziona"
+                onClick={(e) => { e.preventDefault(); document.getElementById('come-funziona')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="block mt-4 text-[12px] hover:opacity-70 transition-opacity cursor-pointer"
+                style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}
+              >
+                Oppure scopri come funziona ↓
+              </a>
             </div>
           </div>
         </section>
@@ -282,11 +290,40 @@ export default function Intelligence() {
             <p className="text-[13px] mb-10" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "'Space Mono', monospace" }}>
               14 giorni gratis su tutti i piani. Nessuna carta richiesta.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 md:[&>*:nth-child(1)]:order-1 md:[&>*:nth-child(2)]:order-2 md:[&>*:nth-child(3)]:order-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+              {/* Piano FREE */}
+              <div className="flex flex-col p-6 rounded-lg" style={{ background: "#fff", border: "1px solid rgba(26,26,46,0.08)" }}>
+                <div className="mb-4">
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.25em] mb-1" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "'Space Mono', monospace" }}>FREE</h3>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <span className="text-[32px] font-black" style={{ color: "#0a0f1e", fontFamily: "'Playfair Display', Georgia, serif" }}>€0</span>
+                  </div>
+                  <p className="text-[12px] italic" style={{ color: "rgba(26,26,46,0.5)", fontFamily: "'DM Sans', Arial, sans-serif" }}>Inizia a esplorare. Zero impegno.</p>
+                </div>
+                <Divider color="#1a1a2e" opacity={0.08} />
+                <ul className="mt-4 mb-6 flex flex-col gap-2 flex-1" role="list" aria-label="Funzionalità piano FREE">
+                  {["5 articoli al giorno", "Tutti i titoli delle ricerche", "Newsletter settimanale gratuita", "Punto del Giorno editoriale"].map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-[12px]" style={{ color: "rgba(26,26,46,0.75)", fontFamily: "'DM Sans', Arial, sans-serif" }}>
+                      <span style={{ color: "#00e5c8", flexShrink: 0, marginTop: "2px" }} aria-hidden="true">✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="/"
+                  aria-label="Registrati gratis su IdeaSmart"
+                  data-cta-name="free"
+                  data-plan="free"
+                  className="block text-center py-3 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-70"
+                  style={{ background: "transparent", color: "rgba(26,26,46,0.5)", border: "1.5px solid rgba(26,26,46,0.2)", fontFamily: "'Space Mono', monospace" }}
+                >
+                  Registrati gratis →
+                </a>
+              </div>
               <PricingCard
                 name="RADAR"
                 price={radarPrice}
-                subtitle="Per chi vuole restare informato senza perdere tempo."
+                subtitle="Per chi vuole un sistema, non un giornale."
                 features={[
                   "Dashboard segnali di mercato personalizzata",
                   "Accesso completo a 20+ report quotidiani",
@@ -415,7 +452,9 @@ export default function Intelligence() {
             <p className="text-[11px] mb-4" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "'Space Mono', monospace" }}>
               Project-based · Retainer mensile · Board Advisory
             </p>
-            <a href="mailto:advisory@ideasmart.biz"
+            <a href="mailto:advisory@ideasmart.biz?subject=Richiesta%20consulenza%20Advisory"
+              aria-label="Richiedi una consulenza Advisory"
+              data-cta-name="advisory"
               className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90"
               style={{ background: "#0a0f1e", color: "#fff", fontFamily: "'Space Mono', monospace" }}>
               Parliamo del tuo progetto — 30 minuti, zero impegno →
@@ -476,11 +515,19 @@ export default function Intelligence() {
                 style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "'Space Mono', monospace" }}>
                 Attiva la prova gratuita →
               </a>
-              <a href="mailto:intelligence@ideasmart.biz"
+              <a href="mailto:intelligence@ideasmart.biz?subject=Richiesta%20prova%20gratuita%20Intelligence"
                 className="text-[12px] hover:opacity-70 transition-opacity"
                 aria-label="Scrivi direttamente a intelligence@ideasmart.biz"
                 style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Space Mono', monospace" }}>
                 Oppure scrivici a intelligence@ideasmart.biz
+              </a>
+            </div>
+            <div className="mt-6">
+              <a href="/"
+                className="text-[11px] hover:opacity-70 transition-opacity underline"
+                aria-label="Registrati gratis e leggi 5 articoli al giorno"
+                style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>
+                Non sei pronto? Registrati gratis e leggi 5 articoli al giorno →
               </a>
             </div>
           </div>
@@ -494,6 +541,7 @@ export default function Intelligence() {
           </p>
           <div className="flex items-center gap-4">
             <Link href="/"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Home</span></Link>
+            <Link href="/intelligence"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Intelligence</span></Link>
             <Link href="/research"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Research</span></Link>
             <Link href="/chi-siamo"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Chi Siamo</span></Link>
             <Link href="/privacy"><span className="text-[10px] hover:opacity-70 cursor-pointer" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "'Space Mono', monospace" }}>Privacy</span></Link>

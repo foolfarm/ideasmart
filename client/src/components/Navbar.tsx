@@ -142,16 +142,16 @@ export default function Navbar() {
               🔬 Research
             </Link>
             <Link
-              href="/business"
+              href="/intelligence"
               className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
               style={{
-                color: "#ff5500",
-                borderColor: "#ff550030",
-                background: "#fff4f0",
+                color: "#00e5c8",
+                borderColor: "#00e5c830",
+                background: "#f0fffe",
                 fontFamily: "'Space Grotesk', sans-serif",
               }}
             >
-              🚀 Business
+              ▶ Intelligence
             </Link>
             <Link
               href="/advertise"
@@ -251,12 +251,12 @@ export default function Navbar() {
               Chi Siamo →
             </Link>
             <Link
-              href="/business"
+              href="/intelligence"
               className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors mb-1"
-              style={{ color: "#ff5500", background: "#fff4f0", fontFamily: "'DM Sans', sans-serif" }}
+              style={{ color: "#00e5c8", background: "#f0fffe", fontFamily: "'DM Sans', sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
-              🚀 IdeaSmart Business →
+              ▶ Intelligence →
             </Link>
             <Link
               href="/advertise"

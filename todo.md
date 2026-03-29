@@ -1749,3 +1749,17 @@
 - [x] Homepage: manchette sinistra rimossa, header simmetrico
 - [x] Homepage: barra canali secondaria (News Italia, Finance, Health, Cybersecurity, Sport, Lifestyle)
 - [x] Homepage: box Intelligence dark nella sidebar al posto del banner 300x250
+
+## Fix critiche (29 Mar 2026 — Live review)
+
+- [x] 1) NAV: rinominare "Business" → "Intelligence" in desktop e mobile nav (colore cyan #00e5c8)
+- [x] 2) PRICING: aggiungere piano FREE (€0) a sinistra con 4 features e CTA ghost
+- [x] 3) TAGLINE RADAR: "Per chi vuole un sistema, non un giornale."
+- [x] 4) LINK AGENTI: /tecnologia (già presente)
+- [x] 5) MAILTO SUBJECT: pre-compilati per RADAR, INTEL, ENTERPRISE, Advisory, CTA finale
+- [x] 6) FOOTER /intelligence: aggiunto "Intelligence" — ordine: Home | Intelligence | Research | Chi Siamo | Privacy
+- [x] 7) HERO: "Oppure scopri come funziona ↓" con smooth scroll a #come-funziona
+- [x] 8) CTA FINALE: "Non sei pronto? Registrati gratis e leggi 5 articoli al giorno →"
+- [x] 9) TOGGLE MENSILE/ANNUALE: RADAR €33/€39, INTEL €169/€199 (già presente)
+- [x] 10) BADGE INTEL: "PIÙ SCELTO" (già presente)
+- [x] 11) SEO TITLE: "IdeaSmart Intelligence — Competitive Monitoring & AI Briefing per Decision-Maker" (già presente)
