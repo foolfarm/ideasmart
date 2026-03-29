@@ -929,6 +929,8 @@ export const DEALROOM_SOURCES: RssSource[] = [
   { name: "Silicon Republic", homepage: "https://www.siliconrepublic.com", feedUrl: "https://www.siliconrepublic.com/feed", section: "dealroom", language: "en", priority: 1, tags: ["europe", "funding"] },
   { name: "UKTN", homepage: "https://www.uktech.news", feedUrl: "https://www.uktech.news/feed", section: "dealroom", language: "en", priority: 1, tags: ["uk", "funding"] },
   { name: "Startups.co.uk", homepage: "https://startups.co.uk", feedUrl: "https://startups.co.uk/feed/", section: "dealroom", language: "en", priority: 2, tags: ["uk", "startup"] },
+  { name: "Balderton Capital", homepage: "https://www.balderton.com", feedUrl: "https://www.balderton.com/feed", section: "dealroom", language: "en", priority: 1, tags: ["vc", "europe"] },
+  { name: "Seedcamp", homepage: "https://seedcamp.com", feedUrl: "https://seedcamp.com/feed", section: "dealroom", language: "en", priority: 1, tags: ["seed", "europe"] },
   // ── 🌍 GLOBAL — Deal signal diretto (verificato 200) ───────────────────────────────
   { name: "TechCrunch Funding", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/tag/funding/feed", section: "dealroom", language: "en", priority: 1 },
   { name: "TechCrunch Venture", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/category/venture/feed", section: "dealroom", language: "en", priority: 1 },
@@ -942,6 +944,13 @@ export const DEALROOM_SOURCES: RssSource[] = [
   { name: "Business Insider", homepage: "https://www.businessinsider.com", feedUrl: "https://feeds.businessinsider.com/custom/all", section: "dealroom", language: "en", priority: 2, tags: ["business", "deals"] },
   { name: "Sequoia Capital", homepage: "https://www.sequoiacap.com", feedUrl: "https://www.sequoiacap.com/feed", section: "dealroom", language: "en", priority: 1 },
   { name: "Y Combinator Blog", homepage: "https://www.ycombinator.com", feedUrl: "https://www.ycombinator.com/blog/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "PE Hub", homepage: "https://www.pehub.com", feedUrl: "https://www.pehub.com/feed", section: "dealroom", language: "en", priority: 1, tags: ["private equity", "m&a", "buyout"] },
+  { name: "TechCrunch Main", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/feed", section: "dealroom", language: "en", priority: 2 },
+  // ── 📰 AGGREGATORI — Segnali deal da fonti multiple ───────────────────────────────
+  { name: "Google News Funding", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+funding+OR+acquisition+OR+series+A+OR+venture+capital&hl=en", section: "dealroom", language: "en", priority: 1, tags: ["aggregator", "funding"] },
+  { name: "Google News M&A", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=merger+acquisition+startup+OR+tech+company&hl=en", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "m&a"] },
+  { name: "Google News VC Italia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+italiana+finanziamento+OR+round+OR+investimento&hl=it&gl=IT", section: "dealroom", language: "it", priority: 1, tags: ["aggregator", "italia"] },
+  { name: "HackerNews", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/frontpage", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "tech"] },
 ];
 
 export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES, ...GOSSIP_SOURCES, ...CYBERSECURITY_SOURCES, ...SONDAGGI_SOURCES, ...DEALROOM_SOURCES];

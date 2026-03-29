@@ -1865,3 +1865,9 @@
 - [x] Fix: prompt classificazione DEALROOM — pre-filtro keyword + prompt ultra-selettivo LLM
 - [x] Deduplicazione backend per titolo normalizzato in refreshDealroomNewsFromRSS
 - [x] Deduplicazione frontend per titolo in DealroomHome.tsx
+
+## Task (29 Mar 2026 — Fonti RSS DEALROOM Europa + UK + US)
+
+- [x] Testare raggiungibilità 35 feed RSS: 19/35 funzionanti (Sifted, Tech.eu, TechCrunch, Google News, Crunchbase, CB Insights, PE Hub, ecc.)
+- [x] Aggiungere fonti verificate: +8 nuove (Balderton, Seedcamp, PE Hub, TechCrunch Main, Google News Funding/M&A/VC Italia, HackerNews) → 35 fonti totali
+- [x] Scraping massivo: 88 raw → 24 pre-filtro → 12 articoli finali, tutti pertinenti (Physical Intelligence $1B, YC Demo Day, SoftBank $40B, ecc.)

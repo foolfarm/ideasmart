@@ -1,0 +1,70 @@
+{
+  "query": "SELECT title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT title, category, sourceName FROM news_items WHERE section = 'dealroom' ORDER BY id DESC",
+  "rows": [
+    {
+      "title": "Physical Intelligence in trattative per raccogliere 1 miliardo di dollari",
+      "category": "Series C+",
+      "sourceName": "TechCrunch Main"
+    },
+    {
+      "title": "8 startup di YC Demo Day: dagli hotel lunari all'allevamento, gli investitori le inseguono",
+      "category": "Angel & Pre-seed",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "title": "SoftBank si assicura un prestito da 40 miliardi, IPO OpenAI nel 2026?",
+      "category": "VC Fund",
+      "sourceName": "TechCrunch Venture"
+    },
+    {
+      "title": "Finanziamenti e acquisizioni nelle startup indiane (23-28 marzo)",
+      "category": "Deal Globale",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "Realer Estate chiude un seed round da 100K dollari per il mercato immobiliare",
+      "category": "Seed Round",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "TICE Funding Index: 328 milioni di dollari raccolti, VC sopra i 300 milioni",
+      "category": "Venture Capital Global",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "Deep-tech del Sud dell'India: sfide di finanziamento in vista?",
+      "category": "Venture Capital Global",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "La Corea punta sulle startup per il prossimo farmaco blockbuster",
+      "category": "Deal Globale",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "Startup wrap: momentum per finanziamenti early stage in MENA",
+      "category": "Deal Globale",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "Febbraio 2026: 189 miliardi di dollari, record di venture capital",
+      "category": "Venture Capital Global",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "Startup con direttrici donne ottiene 26,2 miliardi di Won in investimenti",
+      "category": "Deal Globale",
+      "sourceName": "Google News Funding"
+    },
+    {
+      "title": "M-Cube spinge i conti a 70 milioni nel 2025 con integrazione e piattaforma",
+      "category": "Deal Italiano",
+      "sourceName": "Il Sole 24 Ore Economia"
+    }
+  ],
+  "messages": [],
+  "stdout": "title\tcategory\tsourceName\nPhysical Intelligence in trattative per raccogliere 1 miliardo di dollari\tSeries C+\tTechCrunch Main\n8 startup di YC Demo Day: dagli hotel lunari all'allevamento, gli investitori le inseguono\tAngel & Pre-seed\tTechCrunch Venture\nSoftBank si assicura un prestito da 40 miliardi, IPO OpenAI nel 2026?\tVC Fund\tTechCrunch Venture\nFinanziamenti e acquisizioni nelle startup indiane (23-28 marzo)\tDeal Globale\tGoogle News Funding\nRealer Estate chiude un seed round da 100K dollari per il mercato immobiliare\tSeed Round\tGoogle News Funding\nTICE Funding Index: 328 milioni di dollari raccolti, VC sopra i 300 milioni\tVenture Capital Global\tGoogle News Funding\nDeep-tech del Sud dell'India: sfide di finanziamento in vista?\tVenture Capital Global\tGoogle News Funding\nLa Corea punta sulle startup per il prossimo farmaco blockbuster\tDeal Globale\tGoogle News Funding\nStartup wrap: momentum per finanziamenti early stage in MENA\tDeal Globale\tGoogle News Funding\nFebbraio 2026: 189 miliardi di dollari, record di venture capital\tVenture Capital Global\tGoogle News Funding\nStartup con direttrici donne ottiene 26,2 miliardi di Won in investimenti\tDeal Globale\tGoogle News Funding\nM-Cube spinge i conti a 70 milioni nel 2025 con integrazione e piattaforma\tDeal Italiano\tIl Sole 24 Ore Economia\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}
