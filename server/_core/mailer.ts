@@ -162,3 +162,112 @@ export async function sendVerificationEmail({
     text: `Ciao ${username},\n\nSei a un passo da IDEASMART!\n\nClicca e conferma: potrai goderti ogni giorno notizie fresche da oltre 4.000 fonti su AI, Startup e Venture Capital — completamente gratis.\n\nConferma qui:\n${verifyUrl}\n\nIl link è valido per 24 ore. Se non hai richiesto la registrazione, ignora questa email.\n\n— IDEASMART`,
   });
 }
+
+/** Invia email di benvenuto dopo la verifica dell'account */
+export async function sendWelcomeEmail({
+  to,
+  username,
+}: {
+  to: string;
+  username: string;
+}): Promise<void> {
+  const year = new Date().getFullYear();
+  const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benvenuto su IDEASMART</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f2ec;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f2ec;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid rgba(26,26,26,0.1);">
+          <!-- Header -->
+          <tr>
+            <td style="padding:32px 40px 24px;border-bottom:2px solid #1a1a1a;">
+              <p style="margin:0;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(26,26,26,0.4);">Intelligence quotidiana su AI, Startup e Venture Capital</p>
+              <h1 style="margin:8px 0 0;font-size:32px;font-weight:900;letter-spacing:-0.02em;color:#1a1a1a;">IDEASMART</h1>
+            </td>
+          </tr>
+          <!-- Hero scuro -->
+          <tr>
+            <td style="background:#1a1a1a;padding:32px 40px;">
+              <p style="margin:0 0 6px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Benvenuto</p>
+              <h2 style="margin:0 0 12px;font-size:26px;font-weight:800;letter-spacing:-0.02em;color:#ffffff;line-height:1.2;">Ciao ${username}, sei dentro.</h2>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.65);">Il tuo account IDEASMART e attivo. Da oggi hai accesso completo a tutte le notizie, ricerche e analisi su AI, Startup e Venture Capital.</p>
+            </td>
+          </tr>
+          <!-- Sezioni disponibili -->
+          <tr>
+            <td style="padding:36px 40px 28px;">
+              <p style="margin:0 0 20px;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(26,26,26,0.4);">Cosa trovi su IDEASMART</p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid rgba(26,26,26,0.08);">
+                    <p style="margin:0;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,26,26,0.4);">AI NEWS</p>
+                    <p style="margin:4px 0 0;font-size:13px;color:#1a1a1a;">Le ultime notizie su intelligenza artificiale, LLM e agenti AI — aggiornate ogni ora.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid rgba(26,26,26,0.08);">
+                    <p style="margin:0;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,26,26,0.4);">STARTUP NEWS</p>
+                    <p style="margin:4px 0 0;font-size:13px;color:#1a1a1a;">Funding, founder stories ed ecosistema startup italiano ed europeo.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid rgba(26,26,26,0.08);">
+                    <p style="margin:0;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,26,26,0.4);">DEALROOM</p>
+                    <p style="margin:4px 0 0;font-size:13px;color:#1a1a1a;">Round, seed, Series A/B e investimenti VC — focus su Italia, Europa e mercati globali.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;">
+                    <p style="margin:0;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,26,26,0.4);">RICERCHE</p>
+                    <p style="margin:4px 0 0;font-size:13px;color:#1a1a1a;">Analisi approfondite su trend, mercati e tecnologie — nuove ricerche ogni giorno.</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- CTA -->
+          <tr>
+            <td style="padding:0 40px 36px;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background:#1a1a1a;padding:14px 28px;">
+                    <a href="https://ideasmart.ai" style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff;text-decoration:none;">
+                      Leggi le ultime notizie &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:20px 0 0;font-size:12px;line-height:1.6;color:rgba(26,26,26,0.5);">
+                Riceverai la nostra newsletter ogni lunedi, mercoledi e venerdi con le notizie piu importanti.<br>
+                Puoi gestire le tue preferenze in qualsiasi momento dalla <a href="https://ideasmart.ai/account" style="color:#1a1a1a;">pagina account</a>.
+              </p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px 40px;border-top:1px solid rgba(26,26,26,0.08);background:#faf8f3;">
+              <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(26,26,26,0.35);">
+                &copy; ${year} IDEASMART &middot; AI &middot; Startup &middot; Venture Capital &middot; <a href="https://ideasmart.ai/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  await sendEmail({
+    to,
+    subject: `Benvenuto su IDEASMART, ${username} — sei dentro`,
+    html,
+    text: `Ciao ${username},\n\nIl tuo account IDEASMART e attivo!\n\nDa oggi hai accesso a:\n- AI NEWS: ultime notizie su intelligenza artificiale, LLM e agenti AI\n- STARTUP NEWS: funding, founder stories ed ecosistema startup\n- DEALROOM: round, seed, Series A/B e investimenti VC\n- RICERCHE: analisi approfondite su trend e mercati\n\nLeggi le ultime notizie: https://ideasmart.ai\n\nRiceverai la newsletter ogni lunedi, mercoledi e venerdi.\nGestisci le preferenze: https://ideasmart.ai/account\n\n— IDEASMART`,
+  });
+}

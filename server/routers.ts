@@ -142,7 +142,7 @@ export const appRouter = router({
   // ── Market Analysis (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   marketAnalysis: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.MARKET_LATEST(input.section),
@@ -165,7 +165,7 @@ export const appRouter = router({
   // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   reportage: router({
     getLatestWeek: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.REPORTAGE_LATEST(input.section),
@@ -188,7 +188,7 @@ export const appRouter = router({
   // ── Editorial (public) ──────────────────────────────────────────────────────────────────────────────────
   editorial: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.EDITORIAL_LATEST(input.section),
@@ -211,7 +211,7 @@ export const appRouter = router({
   // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────
   startupOfDay: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.STARTUP_LATEST(input.section),
@@ -234,7 +234,7 @@ export const appRouter = router({
   // ── News (public) ──────────────────────────────────────────────────────────────────────────────────
   news: router({
     getLatest: publicProcedure
-      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         // Usa il filtro audit: esclude notizie con score < 40 o URL non raggiungibili
         const items = await cached(
@@ -270,14 +270,14 @@ export const appRouter = router({
 
     // Statistiche filtro audit per la dashboard admin
     getFilterStats: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         return countFilteredNews(input.section);
       }),
 
     // Recupera notizie con score < 40 per revisione/sostituzione
     getLowScore: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .query(async ({ input }) => {
         return getLowScoreNews(input.section);
       }),
@@ -317,7 +317,7 @@ export const appRouter = router({
     getRelated: publicProcedure
       .input(z.object({
         id: z.number(),
-        section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai'),
+        section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai'),
         limit: z.number().min(1).max(6).default(4),
       }))
       .query(async ({ input }) => {
@@ -352,7 +352,7 @@ export const appRouter = router({
     // Recupera tutte le notizie con filtri per l'Edicola
     getAll: publicProcedure
       .input(z.object({
-        section: z.enum(['all', 'ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('all'),
+        section: z.enum(['all', 'ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('all'),
         category: z.string().optional(),
         dateFrom: z.string().optional(),
         dateTo: z.string().optional(),
@@ -888,7 +888,7 @@ export const appRouter = router({
       }),
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
       .mutation(async ({ input }) => {
         const lowScoreNews = await getLowScoreNews(input.section);
         if (lowScoreNews.length === 0) return { replaced: 0, message: 'Nessuna notizia da sostituire' };
@@ -951,7 +951,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         async () => {
           const db = await getDbInstance();
           if (!db) return {} as Record<string, number>;
-          const sections = ['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'] as const;
+          const sections = ['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom'] as const;
           const results = await Promise.all(
             sections.map(async (section) => {
               const rows = await db.select({ cnt: count() }).from(newsItemsTable)
@@ -1796,6 +1796,7 @@ Rispondi con questo JSON:
           refreshCybersecurityNewsFromRSS,
           refreshSondaggiNewsFromRSS,
           refreshLuxuryNewsFromRSS,
+          refreshDealroomNewsFromRSS,
           refreshAllNewsFromRSS,
         } = await import("./rssNewsScheduler");
 
@@ -1814,6 +1815,7 @@ Rispondi con questo JSON:
           cybersecurity: refreshCybersecurityNewsFromRSS,
           sondaggi: refreshSondaggiNewsFromRSS,
           luxury: refreshLuxuryNewsFromRSS,
+          dealroom: refreshDealroomNewsFromRSS,
         };
 
         if (section === "all") {

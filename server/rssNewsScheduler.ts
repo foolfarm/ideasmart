@@ -18,7 +18,7 @@ import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
-import { scrapeAINews, scrapeMusicNews, scrapeStartupNews, scrapeFinanceNews, scrapeHealthNews, scrapeSportNews, scrapeLuxuryNews, scrapeNewsGenerali, scrapeMotoriNews, scrapeTennisNews, scrapeBasketNews, scrapeGossipNews, scrapeCybersecurityNews, scrapeSondaggiNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
+import { scrapeAINews, scrapeMusicNews, scrapeStartupNews, scrapeFinanceNews, scrapeHealthNews, scrapeSportNews, scrapeLuxuryNews, scrapeNewsGenerali, scrapeMotoriNews, scrapeTennisNews, scrapeBasketNews, scrapeGossipNews, scrapeCybersecurityNews, scrapeSondaggiNews, scrapeDealroomNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
 
@@ -33,7 +33,7 @@ function getWeekLabel(): string {
  * Verifica ogni sourceUrl prima di salvare.
  */
 async function saveScrapedNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi",
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom",
   articles: Awaited<ReturnType<typeof scrapeAINews>>
 ): Promise<void> {
   const db = await getDb();
@@ -380,7 +380,25 @@ export async function refreshAllNewsFromRSS(): Promise<void> {
   await refreshCybersecurityNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Cybersecurity fallita:", err));
   await new Promise(r => setTimeout(r, 20_000));
   await refreshSondaggiNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Sondaggi fallita:", err));
+  await new Promise(r => setTimeout(r, 20_000));
+  await refreshDealroomNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Dealroom fallita:", err));
 
   const elapsed = Math.round((Date.now() - start) / 1000);
   console.log(`[RssNewsScheduler] ✅ Refresh completo terminato in ${elapsed}s`);
+}
+
+export async function refreshDealroomNewsFromRSS(): Promise<void> {
+  console.log("[RssNewsScheduler] 💰 Avvio scraping Dealroom news (round, funding, VC, M&A)...");
+  try {
+    const articles = await scrapeDealroomNews();
+    if (articles.length === 0) {
+      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Dealroom recuperato dai feed RSS");
+      return;
+    }
+    await saveScrapedNews("dealroom", articles);
+    console.log(`[RssNewsScheduler] ✅ Dealroom news aggiornate: ${articles.length} articoli da fonti reali`);
+  } catch (err) {
+    console.error("[RssNewsScheduler] ❌ Errore scraping Dealroom news:", err);
+    throw err;
+  }
 }

@@ -63,7 +63,7 @@ function isValidUrl(url: string): boolean {
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function auditRecentNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi",
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom",
   limit = 25
 ): Promise<{ fixed: number; ok: number; failed: number }> {
   const db = await getDb();
@@ -122,7 +122,7 @@ export async function auditRecentNews(
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function fixAllSourceUrls(options: {
-  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
+  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom";
   batchSize?: number;
   delayMs?: number;
 } = {}): Promise<AuditResult> {
@@ -159,7 +159,7 @@ export async function fixAllSourceUrls(options: {
 
     await Promise.all(batch.map(async (row) => {
       const url = row.sourceUrl || "";
-      const sec = row.section as "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
+      const sec = row.section as "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom";
       result.checked++;
 
       // URL non valido o troppo corto → usa fallback

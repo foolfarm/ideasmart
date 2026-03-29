@@ -19,6 +19,7 @@ const ALL_TOPICS = [
   { key: "ai",              label: "AI & Tech",         desc: "Intelligenza artificiale, LLM, agenti AI" },
   { key: "startup",         label: "Startup",            desc: "Funding, founder stories, ecosistema startup" },
   { key: "research",        label: "RICERCHE",           desc: "Ricerche e analisi di mercato" },
+  { key: "dealroom",       label: "DEALROOM",           desc: "Round, funding, seed, Series A/B e investimenti VC" },
   { key: "venture_capital", label: "Venture Capital",    desc: "Deal, round, fondi VC europei e globali" },
   { key: "finance",         label: "Finance & Markets",  desc: "Mercati finanziari, macro, M&A" },
   { key: "health",          label: "Health & Biotech",   desc: "Biotech, pharma, digital health" },

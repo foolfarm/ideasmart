@@ -20,7 +20,7 @@
 import Parser from "rss-parser";
 import axios from "axios";
 import { invokeLLM } from "./_core/llm";
-import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, NEWS_SOURCES, MOTORI_SOURCES, TENNIS_SOURCES, BASKET_SOURCES, GOSSIP_SOURCES, CYBERSECURITY_SOURCES, SONDAGGI_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
+import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, NEWS_SOURCES, MOTORI_SOURCES, TENNIS_SOURCES, BASKET_SOURCES, GOSSIP_SOURCES, CYBERSECURITY_SOURCES, SONDAGGI_SOURCES, DEALROOM_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
 const rssParser = new Parser({
@@ -150,7 +150,7 @@ async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fe
  */
 async function selectAndTranslate(
   articles: Awaited<ReturnType<typeof fetchAllFeeds>>,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom" | "dealroom"
 ): Promise<ScrapedArticle[]> {
   if (articles.length === 0) {
     console.warn(`[RssScraper] Nessun articolo disponibile per ${section}`);
@@ -227,6 +227,11 @@ async function selectAndTranslate(
       label: "Sondaggi & Dati Italia",
       categories: ["Sondaggi Politici Italiani", "Intenzioni di Voto", "Gradimento Governo", "Sondaggi Economici", "Opinione Pubblica", "Trend Sociali", "Ricerche ISTAT/Censis", "Dati & Statistiche", "Report Istituzionali", "Consenso & Fiducia", "Analisi Partiti", "Scenari Elettorali"],
       instructions: "Seleziona le 20 notizie più interessanti tra sondaggi, ricerche e dati italiani. PRIORITÀ ASSOLUTA: sondaggi politici italiani (intenzioni di voto, gradimento governo/partiti, scenari elettorali), dati ISTAT/Censis/Eurispes, ricerche di istituti italiani (SWG, YouTrend, Tecnè, Demopolis, Noto, EMG). Privilegia contenuti con dati numerici, percentuali, confronti temporali. Tono analitico e basato sui dati. ESCLUDI notizie generiche senza dati.",
+    },
+    dealroom: {
+      label: "DEALROOM — Funding & VC",
+      categories: ["Seed Round", "Series A", "Series B", "Series C+", "Venture Capital Italia", "Venture Capital Europa", "Venture Capital Global", "M&A & Acquisizioni", "Exit & IPO", "VC Fund", "Deal Italiano", "Deal Europeo", "Deal Globale", "Corporate VC", "Angel & Pre-seed"],
+      instructions: "Seleziona le 20 notizie più rilevanti su round di finanziamento, deal VC, M&A, seed, exit e investimenti. PRIORITÀ ASSOLUTA: deal italiani (startup italiane che raccolgono fondi, acquisizioni di aziende italiane, VC italiani che investono), poi europei, poi globali. Privilegia notizie con cifre concrete (importo del round, valutazione, investitori), nomi di startup e founder. ESCLUDI notizie generiche senza dati di deal specifici. Tono professionale e data-driven.",
     },
   } as const;
 
@@ -410,7 +415,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
  */
 export async function sanitizeSourceUrl(
   url: string,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi"
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom"
 ): Promise<string> {
   try {
     const parsed = new URL(url);
@@ -513,4 +518,10 @@ export async function scrapeSondaggiNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Sondaggi news...");
   const articles = await fetchAllFeeds(SONDAGGI_SOURCES);
   return selectAndTranslate(articles, "sondaggi");
+}
+
+export async function scrapeDealroomNews(): Promise<ScrapedArticle[]> {
+  console.log("[RssScraper] Avvio scraping Dealroom news (round, funding, VC, M&A, exit)...");
+  const articles = await fetchAllFeeds(DEALROOM_SOURCES);
+  return selectAndTranslate(articles, "dealroom");
 }

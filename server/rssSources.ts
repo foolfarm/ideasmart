@@ -15,7 +15,7 @@ export interface RssSource {
   name: string;
   homepage: string;
   feedUrl: string;
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi";
+  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom" | "dealroom";
   language: "it" | "en";
   priority: number;
   tags?: string[];
@@ -460,7 +460,7 @@ export const SECTION_FALLBACKS: Record<string, string> = {
  * Estrae il dominio da un URL e restituisce la homepage sicura dalla whitelist.
  * Se il dominio non è in whitelist, restituisce la homepage del dominio stesso.
  */
-export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi"): string {
+export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom"): string {
   try {
     const parsed = new URL(url);
     const domain = parsed.hostname.replace(/^www\./, "");
@@ -909,4 +909,37 @@ export const SONDAGGI_SOURCES: RssSource[] = [
   { name: "TGCom24 Politica", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/politica.xml", section: "sondaggi", language: "it", priority: 2 },
 ];
 
-export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES, ...GOSSIP_SOURCES, ...CYBERSECURITY_SOURCES, ...SONDAGGI_SOURCES];
+// ─── DEALROOM — Round, Funding, VC, M&A, Seed, Series, Exit ─────────────────
+export const DEALROOM_SOURCES: RssSource[] = [
+  // ── 🇮🇹 ITALIA — Core dealflow (priorità massima) ──────────────────────────────
+  { name: "BeBeez", homepage: "https://bebeez.it", feedUrl: "https://bebeez.it/feed", section: "dealroom", language: "it", priority: 1 },
+  { name: "DealFlower", homepage: "https://dealflower.it", feedUrl: "https://dealflower.it/feed", section: "dealroom", language: "it", priority: 1 },
+  { name: "StartupBusiness", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/feed", section: "dealroom", language: "it", priority: 1 },
+  { name: "StartupItalia", homepage: "https://startupitalia.eu", feedUrl: "https://startupitalia.eu/feed", section: "dealroom", language: "it", priority: 1 },
+  { name: "EconomyUp", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "dealroom", language: "it", priority: 1 },
+  { name: "CDP Venture Capital", homepage: "https://www.cdpventurecapital.it", feedUrl: "https://www.cdpventurecapital.it/feed", section: "dealroom", language: "it", priority: 2 },
+  { name: "Digital360", homepage: "https://www.digital360.it", feedUrl: "https://www.digital360.it/feed", section: "dealroom", language: "it", priority: 2 },
+  { name: "Agenda Digitale Funding", homepage: "https://www.agendadigitale.eu", feedUrl: "https://www.agendadigitale.eu/feed", section: "dealroom", language: "it", priority: 2 },
+  // ── 🇪🇺 EUROPA — Dealflow puro ──────────────────────────────────────────────
+  { name: "EU-Startups Funding", homepage: "https://www.eu-startups.com", feedUrl: "https://www.eu-startups.com/tag/funding/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Sifted", homepage: "https://sifted.eu", feedUrl: "https://sifted.eu/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Tech.eu", homepage: "https://tech.eu", feedUrl: "https://tech.eu/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Vestbee", homepage: "https://www.vestbee.com", feedUrl: "https://www.vestbee.com/blog/rss", section: "dealroom", language: "en", priority: 2 },
+  // ── 🇪🇺 VC europei (deal signal diretto) ───────────────────────────────────────────
+  { name: "Partech", homepage: "https://partechpartners.com", feedUrl: "https://partechpartners.com/feed", section: "dealroom", language: "en", priority: 2 },
+  { name: "Speedinvest", homepage: "https://speedinvest.com", feedUrl: "https://speedinvest.com/feed", section: "dealroom", language: "en", priority: 2 },
+  { name: "Cherry Ventures", homepage: "https://cherry.vc", feedUrl: "https://cherry.vc/feed", section: "dealroom", language: "en", priority: 2 },
+  { name: "Project A", homepage: "https://www.project-a.com", feedUrl: "https://www.project-a.com/feed", section: "dealroom", language: "en", priority: 2 },
+  { name: "Lakestar", homepage: "https://lakestar.com", feedUrl: "https://lakestar.com/feed", section: "dealroom", language: "en", priority: 2 },
+  // ── 🌍 GLOBAL — Must ────────────────────────────────────────────────────────
+  { name: "TechCrunch Funding", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/tag/funding/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Crunchbase News", homepage: "https://news.crunchbase.com", feedUrl: "https://news.crunchbase.com/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Tech Funding News", homepage: "https://techfundingnews.com", feedUrl: "https://techfundingnews.com/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "CB Insights Research", homepage: "https://www.cbinsights.com", feedUrl: "https://www.cbinsights.com/research/feed", section: "dealroom", language: "en", priority: 1 },
+  // ── 🌍 VC global (deal signal diretto) ───────────────────────────────────────────────
+  { name: "a16z Blog", homepage: "https://a16z.com", feedUrl: "https://a16z.com/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Sequoia Capital", homepage: "https://www.sequoiacap.com", feedUrl: "https://www.sequoiacap.com/feed", section: "dealroom", language: "en", priority: 1 },
+  { name: "Y Combinator Blog", homepage: "https://www.ycombinator.com", feedUrl: "https://www.ycombinator.com/blog/feed", section: "dealroom", language: "en", priority: 1 },
+];
+
+export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES, ...GOSSIP_SOURCES, ...CYBERSECURITY_SOURCES, ...SONDAGGI_SOURCES, ...DEALROOM_SOURCES];

@@ -1814,3 +1814,17 @@
 - [ ] Canale DEALROOM: pagina con notizie su round, funding, seed, Series A/B, exit
 - [ ] Integrare notizie DEALROOM nella Home page
 - [ ] Scheduler RSS per fonti DEALROOM (italiane, europee, globali)
+
+## Nuovi task (29 Mar 2026 — DEALROOM, Profilo, Welcome Email)
+
+- [ ] DEALROOM: aggiornare schema DB (enum section con dealroom)
+- [ ] DEALROOM: aggiungere fonti RSS italiane/europee/globali in rssSources.ts
+- [ ] DEALROOM: aggiungere scraper dedicato in rssScraperNew.ts
+- [ ] DEALROOM: aggiungere scheduler in rssNewsScheduler.ts
+- [ ] DEALROOM: creare pagina DealroomHome.tsx con stessa grafica delle altre pagine
+- [ ] DEALROOM: aggiungere route /dealroom in App.tsx e link nella navbar
+- [ ] DEALROOM: integrare sezione notizie DEALROOM nella Home
+- [ ] Profilo utente: pagina /profilo con dati utente, cambio password, preferenze newsletter
+- [ ] Profilo utente: procedure backend (getProfile, updatePassword, updateNewsletterPrefs)
+- [ ] Email benvenuto: template HTML per email di benvenuto post-verifica
+- [ ] Email benvenuto: invio automatico in siteAuth.ts dopo verifyEmail

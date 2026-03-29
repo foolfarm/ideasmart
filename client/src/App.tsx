@@ -44,6 +44,7 @@ const BasketHome = lazy(() => import("./pages/BasketHome"));
 const GossipHome = lazy(() => import("./pages/GossipHome"));
 const CybersecurityHome = lazy(() => import("./pages/CybersecurityHome"));
 const SondaggiHome = lazy(() => import("./pages/SondaggiHome"));
+const DealroomHome = lazy(() => import("./pages/DealroomHome"));
 const Research = lazy(() => import("./pages/Research"));
 const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
 
@@ -103,6 +104,7 @@ function Router() {
         <Route path="/gossip" component={GossipHome} />
         <Route path="/cybersecurity" component={CybersecurityHome} />
         <Route path="/sondaggi" component={SondaggiHome} />
+        <Route path="/dealroom" component={DealroomHome} />
         <Route path="/admin" component={Admin} />
         <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
         <Route path="/admin/rss-monitor" component={AdminRssMonitor} />

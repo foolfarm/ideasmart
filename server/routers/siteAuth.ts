@@ -9,7 +9,7 @@ import { siteUsers } from "../../drizzle/schema";
 import { eq, and, gt } from "drizzle-orm";
 import { createHash, randomBytes } from "crypto";
 import { TRPCError } from "@trpc/server";
-import { sendVerificationEmail } from "../_core/mailer";
+import { sendVerificationEmail, sendWelcomeEmail } from "../_core/mailer";
 import { addSubscriber } from "../db";
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -123,6 +123,14 @@ export const siteAuthRouter = router({
       } catch (_err) {
         // Non bloccare la verifica se l'iscrizione newsletter fallisce
         console.warn("[siteAuth] Auto-iscrizione newsletter fallita per", rows[0].email);
+      }
+
+      // Email di benvenuto
+      try {
+        await sendWelcomeEmail({ to: rows[0].email, username: rows[0].username });
+      } catch (_err) {
+        // Non bloccare la verifica se l'email di benvenuto fallisce
+        console.warn("[siteAuth] Email di benvenuto fallita per", rows[0].email);
       }
 
       return { ok: true, username: rows[0].username };
