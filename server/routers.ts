@@ -58,7 +58,7 @@ import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, run
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
-import { researchReports, techEvents } from "../drizzle/schema";
+import { researchReports, techEvents, siteUsers } from "../drizzle/schema";
 import { aggregateEvents } from "./eventsAggregator";
 
 // Admin guard
@@ -1162,6 +1162,30 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
   admin: router({
     getSubscribers: adminProcedure.query(async () => {
       return getAllSubscribers();
+    }),
+
+    // Nuovi iscritti siteUsers nelle ultime 24 ore
+    getNewSiteUsers: adminProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) return { newUsers: [], newCount: 0, totalCount: 0 };
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      const newUsers = await db
+        .select({
+          id: siteUsers.id,
+          username: siteUsers.username,
+          email: siteUsers.email,
+          emailVerified: siteUsers.emailVerified,
+          createdAt: siteUsers.createdAt,
+        })
+        .from(siteUsers)
+        .where(gte(siteUsers.createdAt, since))
+        .orderBy(desc(siteUsers.createdAt));
+      const totalUsers = await db.select({ count: count() }).from(siteUsers);
+      return {
+        newUsers,
+        newCount: newUsers.length,
+        totalCount: totalUsers[0]?.count ?? 0,
+      };
     }),
 
     deleteSubscriber: adminProcedure

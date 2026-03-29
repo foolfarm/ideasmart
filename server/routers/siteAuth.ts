@@ -10,6 +10,7 @@ import { eq, and, gt } from "drizzle-orm";
 import { createHash, randomBytes } from "crypto";
 import { TRPCError } from "@trpc/server";
 import { sendVerificationEmail } from "../_core/mailer";
+import { addSubscriber } from "../db";
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 function hashPassword(plain: string): string {
@@ -110,6 +111,19 @@ export const siteAuthRouter = router({
       await db.update(siteUsers)
         .set({ emailVerified: true, verificationToken: null, verificationTokenExpiresAt: null })
         .where(eq(siteUsers.id, rows[0].id));
+
+      // Auto-iscrizione newsletter: ogni nuovo utente verificato viene aggiunto
+      // alla lista newsletter (lunedì, mercoledì, venerdì)
+      try {
+        await addSubscriber({
+          email: rows[0].email,
+          name: rows[0].username,
+          source: "site_registration",
+        });
+      } catch (_err) {
+        // Non bloccare la verifica se l'iscrizione newsletter fallisce
+        console.warn("[siteAuth] Auto-iscrizione newsletter fallita per", rows[0].email);
+      }
 
       return { ok: true, username: rows[0].username };
     }),

@@ -23,6 +23,10 @@ export default function Admin() {
   const historyQuery = trpc.admin.getNewsletterHistory.useQuery(undefined, {
     enabled: user?.role === "admin",
   });
+  const newSiteUsersQuery = trpc.admin.getNewSiteUsers.useQuery(undefined, {
+    enabled: user?.role === "admin",
+    refetchInterval: 60_000, // aggiorna ogni minuto
+  });
 
   // Mutations
   const deleteSubscriber = trpc.admin.deleteSubscriber.useMutation({
@@ -208,6 +212,7 @@ export default function Admin() {
 
   const subscribers = subscribersQuery.data ?? [];
   const history = historyQuery.data ?? [];
+  const newSiteUsersData = newSiteUsersQuery.data;
   const activeCount = subscribers.filter((s) => s.status === "active").length;
   const aiSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "ai4business" || s.newsletter === "both")).length;
   const musicSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "itsmusic" || s.newsletter === "both")).length;
@@ -286,12 +291,13 @@ export default function Admin() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
           {[
-            { label: "Iscritti totali", value: subscribers.length, color: "#1a1a1a" },
-            { label: "AI NEWS News", value: aiSubscribers, color: "#1a1a1a" },
-            { label: "ITsMusic", value: musicSubscribers, color: "#2a2a2a" },
-            { label: "Newsletter inviate", value: history.length, color: "#0066ff" },
+            { label: "Iscritti newsletter", value: subscribers.length, color: "#ffffff" },
+            { label: "AI NEWS attivi", value: aiSubscribers, color: "#ffffff" },
+            { label: "ITsMusic", value: musicSubscribers, color: "#ffffff" },
+            { label: "Newsletter inviate", value: history.length, color: "#60a5fa" },
+            { label: "Utenti registrati", value: newSiteUsersData?.totalCount ?? "—", color: "#34d399" },
           ].map((stat) => (
             <div key={stat.label} className="rounded-xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
               <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -300,6 +306,55 @@ export default function Admin() {
               <div className="text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
             </div>
           ))}
+        </div>
+
+        {/* Widget Nuovi Iscritti 24h */}
+        <div className="rounded-2xl border border-emerald-500/30 p-6 mb-8" style={{ background: "rgba(52,211,153,0.05)" }}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <p className="text-sm font-bold uppercase tracking-wider" style={{ color: "#34d399", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                Nuovi Iscritti — Ultime 24 ore
+              </p>
+            </div>
+            <span className="text-2xl font-black" style={{ color: "#34d399", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+              {newSiteUsersData?.newCount ?? 0}
+            </span>
+          </div>
+          {newSiteUsersQuery.isLoading ? (
+            <div className="flex items-center gap-2 text-white/40 text-xs">
+              <div className="w-4 h-4 border border-white/20 border-t-white/60 rounded-full animate-spin" />
+              Caricamento...
+            </div>
+          ) : newSiteUsersData && newSiteUsersData.newUsers.length > 0 ? (
+            <div className="space-y-2">
+              {newSiteUsersData.newUsers.map((u) => (
+                <div key={u.id} className="flex items-center justify-between py-2 border-b border-white/5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: "rgba(52,211,153,0.15)", color: "#34d399" }}>
+                      {u.username.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white">{u.username}</p>
+                      <p className="text-xs text-white/40">{u.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {u.emailVerified ? (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background: "rgba(52,211,153,0.15)", color: "#34d399" }}>✓ Verificato</span>
+                    ) : (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background: "rgba(251,191,36,0.15)", color: "#fbbf24" }}>In attesa</span>
+                    )}
+                    <span className="text-[10px] text-white/30">
+                      {new Date(u.createdAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-white/30 italic">Nessun nuovo iscritto nelle ultime 24 ore.</p>
+          )}
         </div>
 
         {/* Result banner */}

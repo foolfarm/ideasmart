@@ -1798,3 +1798,19 @@
 - [ ] Paywall: redirect al login per utenti non loggati che aprono ricerche
 - [ ] Navbar Ricerche: aggiungere badge contatore come AI NEWS 20 / STARTUP NEWS 20
 - [ ] Ricerche: correggere i link nelle card — ogni card deve linkare all'articolo corrispondente
+
+## Task completati (29 Mar 2026 — Auth, Admin, Newsletter)
+
+- [x] Widget "Nuovi iscritti ultime 24h" nella dashboard Admin con lista username/email/stato
+- [x] Contatore totale utenti registrati nella dashboard Admin
+- [x] Auto-iscrizione newsletter alla verifica email (source: site_registration)
+- [x] Redirect post-login alla pagina returnTo (già implementato e funzionante)
+- [x] Badge contatore Ricerche nella navbar
+- [x] Link card Ricerche → /research/:id con pagina dettaglio
+- [x] Paywall full-block su articoli e pagina Research (no overlay)
+
+## Da fare (29 Mar 2026)
+
+- [ ] Canale DEALROOM: pagina con notizie su round, funding, seed, Series A/B, exit
+- [ ] Integrare notizie DEALROOM nella Home page
+- [ ] Scheduler RSS per fonti DEALROOM (italiane, europee, globali)
