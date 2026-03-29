@@ -3,8 +3,9 @@
  * Layout editoriale da giornale: testata sezione, deal del giorno, notizie in colonne, archivio.
  * Focus: mercato italiano → europeo → globale.
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento verde scuro (#1a4a2e).
+ * FILTRI INTERATTIVI: settore, funding stage, paese/mercato.
  */
-import { useMemo } from "react";
+import { useMemo, useState, useCallback } from "react";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import ArchiveSection from "@/components/ArchiveSection";
@@ -18,6 +19,28 @@ import RequireAuth from "@/components/RequireAuth";
 const ACCENT = "#1a4a2e";
 const ACCENT_LIGHT = "#f0f7f3";
 const INK = "#1a1a1a";
+
+// ─── Filtri ─────────────────────────────────────────────────────────────────
+
+type FilterGroup = { label: string; values: string[] };
+
+const FUNDING_FILTERS: FilterGroup[] = [
+  { label: "Tutti", values: [] },
+  { label: "Pre-seed / Angel", values: ["Angel & Pre-seed", "Seed Round"] },
+  { label: "Series A", values: ["Series A"] },
+  { label: "Series B+", values: ["Series B", "Series C+"] },
+  { label: "M&A / Exit", values: ["M&A & Acquisizioni", "Exit & IPO"] },
+  { label: "VC Fund", values: ["VC Fund", "Corporate VC"] },
+];
+
+const MARKET_FILTERS: FilterGroup[] = [
+  { label: "Tutti", values: [] },
+  { label: "Italia", values: ["Deal Italiano", "Venture Capital Italia"] },
+  { label: "Europa", values: ["Deal Europeo", "Venture Capital Europa"] },
+  { label: "Globale", values: ["Deal Globale", "Venture Capital Global"] },
+];
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -39,6 +62,27 @@ function DealBadge({ label }: { label: string }) {
     </span>
   );
 }
+
+// ─── Filter Pill ────────────────────────────────────────────────────────────
+
+function FilterPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] rounded-sm border transition-all cursor-pointer"
+      style={{
+        background: active ? ACCENT : "transparent",
+        color: active ? "#ffffff" : `${INK}99`,
+        borderColor: active ? ACCENT : `${INK}20`,
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+// ─── News Components ────────────────────────────────────────────────────────
 
 function NewsCard({ item, showImage = false }: {
   item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string };
@@ -98,34 +142,103 @@ function NewsRow({ item }: {
   );
 }
 
+// ─── Main Component ─────────────────────────────────────────────────────────
+
 export default function DealroomHome() {
   const today = useMemo(() => new Date(), []);
 
+  // Filtri attivi
+  const [activeFunding, setActiveFunding] = useState(0);
+  const [activeMarket, setActiveMarket] = useState(0);
+
   const { data: newsData } = trpc.news.getLatest.useQuery(
-    { limit: 30, section: "dealroom" },
+    { limit: 50, section: "dealroom" },
     { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false }
   );
 
-  const news = newsData || [];
+  const allNews = newsData || [];
 
-  // Separa le notizie per mercato (Italia prima, poi Europa, poi Global)
-  const italianNews = news.filter(n =>
-    n.sourceName?.toLowerCase().includes("italian") ||
-    n.sourceName?.toLowerCase().includes("italia") ||
-    n.sourceName?.toLowerCase().includes("startupitalia") ||
-    n.sourceName?.toLowerCase().includes("ilsole24ore") ||
-    n.sourceName?.toLowerCase().includes("corriere") ||
-    n.sourceName?.toLowerCase().includes("startupbusiness") ||
-    n.sourceName?.toLowerCase().includes("ventureup") ||
-    n.sourceName?.toLowerCase().includes("tech.eu") ||
-    n.category?.toLowerCase().includes("italia") ||
-    n.category?.toLowerCase().includes("italian")
-  );
+  // Filtra le notizie in base ai filtri attivi
+  const filteredNews = useMemo(() => {
+    let result = allNews;
 
-  const heroNews = news.find(n => n.imageUrl) || news[0] || null;
-  const secondaryNews = news.filter(n => n.id !== heroNews?.id).slice(0, 2);
-  const remainingNews = news.filter(n => n.id !== heroNews?.id).slice(2, 8);
-  const listNews = news.filter(n => n.id !== heroNews?.id).slice(8, 25);
+    // Filtro funding stage
+    const fundingValues = FUNDING_FILTERS[activeFunding]?.values || [];
+    if (fundingValues.length > 0) {
+      result = result.filter(n =>
+        fundingValues.some(v => n.category?.toLowerCase().includes(v.toLowerCase()))
+      );
+    }
+
+    // Filtro mercato/paese
+    const marketValues = MARKET_FILTERS[activeMarket]?.values || [];
+    if (marketValues.length > 0) {
+      result = result.filter(n =>
+        marketValues.some(v => n.category?.toLowerCase().includes(v.toLowerCase())) ||
+        // Fallback: controlla anche il sourceName per mercato italiano
+        (activeMarket === 1 && (
+          n.sourceName?.toLowerCase().includes("startupitalia") ||
+          n.sourceName?.toLowerCase().includes("ilsole24ore") ||
+          n.sourceName?.toLowerCase().includes("corriere") ||
+          n.sourceName?.toLowerCase().includes("bebeez") ||
+          n.sourceName?.toLowerCase().includes("startupbusiness") ||
+          n.category?.toLowerCase().includes("italia")
+        )) ||
+        (activeMarket === 2 && (
+          n.sourceName?.toLowerCase().includes("sifted") ||
+          n.sourceName?.toLowerCase().includes("eu-startups") ||
+          n.sourceName?.toLowerCase().includes("tech.eu") ||
+          n.category?.toLowerCase().includes("europ")
+        ))
+      );
+    }
+
+    return result;
+  }, [allNews, activeFunding, activeMarket]);
+
+  const isFiltered = activeFunding > 0 || activeMarket > 0;
+  const activeFilterCount = (activeFunding > 0 ? 1 : 0) + (activeMarket > 0 ? 1 : 0);
+
+  const resetFilters = useCallback(() => {
+    setActiveFunding(0);
+    setActiveMarket(0);
+  }, []);
+
+  // Distribuzione notizie
+  const heroNews = filteredNews.find(n => n.imageUrl) || filteredNews[0] || null;
+  const secondaryNews = filteredNews.filter(n => n.id !== heroNews?.id).slice(0, 2);
+  const remainingNews = filteredNews.filter(n => n.id !== heroNews?.id).slice(2, 8);
+  const listNews = filteredNews.filter(n => n.id !== heroNews?.id).slice(8, 30);
+
+  // Contatori per badge
+  const fundingCounts = useMemo(() => {
+    return FUNDING_FILTERS.map(f => {
+      if (f.values.length === 0) return allNews.length;
+      return allNews.filter(n =>
+        f.values.some(v => n.category?.toLowerCase().includes(v.toLowerCase()))
+      ).length;
+    });
+  }, [allNews]);
+
+  const marketCounts = useMemo(() => {
+    return MARKET_FILTERS.map(f => {
+      if (f.values.length === 0) return allNews.length;
+      return allNews.filter(n =>
+        f.values.some(v => n.category?.toLowerCase().includes(v.toLowerCase())) ||
+        (f.label === "Italia" && (
+          n.sourceName?.toLowerCase().includes("startupitalia") ||
+          n.sourceName?.toLowerCase().includes("ilsole24ore") ||
+          n.sourceName?.toLowerCase().includes("corriere") ||
+          n.category?.toLowerCase().includes("italia")
+        )) ||
+        (f.label === "Europa" && (
+          n.sourceName?.toLowerCase().includes("sifted") ||
+          n.sourceName?.toLowerCase().includes("eu-startups") ||
+          n.category?.toLowerCase().includes("europ")
+        ))
+      ).length;
+    });
+  }, [allNews]);
 
   return (
     <>
@@ -161,6 +274,65 @@ export default function DealroomHome() {
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                 {formatDateIT(today)} — Mercato italiano, europeo e globale
               </p>
+            </div>
+
+            {/* ═══════════════════════════════════════════════════════════════ */}
+            {/* BARRA FILTRI INTERATTIVI                                       */}
+            {/* ═══════════════════════════════════════════════════════════════ */}
+            <div className="py-4 border-b border-[#1a1a1a]/20">
+              {/* Riga 1: Funding Stage */}
+              <div className="mb-3">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40 mr-3"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Funding
+                </span>
+                <div className="inline-flex flex-wrap gap-1.5 mt-1">
+                  {FUNDING_FILTERS.map((f, i) => (
+                    <FilterPill
+                      key={f.label}
+                      label={`${f.label}${fundingCounts[i] > 0 && i > 0 ? ` (${fundingCounts[i]})` : ""}`}
+                      active={activeFunding === i}
+                      onClick={() => setActiveFunding(i)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Riga 2: Mercato */}
+              <div className="mb-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40 mr-3"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Mercato
+                </span>
+                <div className="inline-flex flex-wrap gap-1.5 mt-1">
+                  {MARKET_FILTERS.map((f, i) => (
+                    <FilterPill
+                      key={f.label}
+                      label={`${f.label}${marketCounts[i] > 0 && i > 0 ? ` (${marketCounts[i]})` : ""}`}
+                      active={activeMarket === i}
+                      onClick={() => setActiveMarket(i)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Risultati + Reset */}
+              <div className="flex items-center gap-3 mt-2">
+                <span className="text-[11px] text-[#1a1a1a]/50"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  {filteredNews.length} {filteredNews.length === 1 ? "notizia" : "notizie"}
+                  {isFiltered && ` (${activeFilterCount} ${activeFilterCount === 1 ? "filtro attivo" : "filtri attivi"})`}
+                </span>
+                {isFiltered && (
+                  <button
+                    onClick={resetFilters}
+                    className="text-[11px] font-bold uppercase tracking-[0.08em] underline cursor-pointer"
+                    style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                  >
+                    Rimuovi filtri
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* SEZIONE 1: Hero + Sidebar info */}
@@ -223,12 +395,27 @@ export default function DealroomHome() {
                   </div>
                 ) : (
                   <div className="py-12 text-center text-[#1a1a1a]/30">
-                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                      Caricamento notizie dealroom…
-                    </p>
-                    <p className="mt-2 text-xs text-[#1a1a1a]/20">
-                      Le notizie vengono aggiornate automaticamente ogni ora.
-                    </p>
+                    {isFiltered ? (
+                      <>
+                        <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                          Nessuna notizia corrisponde ai filtri selezionati.
+                        </p>
+                        <button onClick={resetFilters}
+                          className="mt-3 text-sm font-bold underline cursor-pointer"
+                          style={{ color: ACCENT }}>
+                          Rimuovi filtri
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                          Caricamento notizie dealroom…
+                        </p>
+                        <p className="mt-2 text-xs text-[#1a1a1a]/20">
+                          Le notizie vengono aggiornate automaticamente ogni giorno alle 01:30 CET.
+                        </p>
+                      </>
+                    )}
                   </div>
                 )}
 
@@ -283,6 +470,17 @@ export default function DealroomHome() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Newsletter CTA sidebar */}
+                  <div className="mt-5 p-4 rounded-sm" style={{ background: ACCENT_LIGHT, border: `1px solid ${ACCENT}20` }}>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em]" style={{ color: ACCENT }}>
+                      Newsletter DEALROOM
+                    </span>
+                    <p className="mt-1 text-xs text-[#1a1a1a]/65 leading-relaxed"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                      Ogni venerdì, i deal della settimana nella tua inbox.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -320,47 +518,7 @@ export default function DealroomHome() {
               </div>
             )}
 
-            {/* SEZIONE 3: Focus Italia */}
-            {italianNews.length > 0 && (
-              <div className="mt-8">
-                <Divider thick />
-                <div className="py-3 flex items-center gap-3">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
-                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                    Focus Italia
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
-                    style={{ background: "#f0f7f3", color: ACCENT }}>
-                    🇮🇹 Mercato Italiano
-                  </span>
-                </div>
-                <ThinDivider />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
-                  {italianNews.slice(0, 6).map((item, i) => (
-                    <div key={item.id}
-                      className={`py-4 ${i % 2 === 1 ? "border-l border-[#1a1a1a]/20 pl-6" : "pr-6"} ${i >= 2 ? "border-t border-[#1a1a1a]/20" : ""}`}>
-                      <DealBadge label={item.category || "Italia"} />
-                      <a href={item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`}
-                        target="_blank" rel="noopener noreferrer">
-                        <h3 className="mt-2 text-base font-bold text-[#1a1a1a] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
-                          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                          {item.title}
-                        </h3>
-                      </a>
-                      <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-2"
-                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                        {item.summary}
-                      </p>
-                      {item.sourceName && (
-                        <p className="mt-1 text-[10px] text-[#1a1a1a]/35">{item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* SEZIONE 4: Elenco notizie rimanenti */}
+            {/* SEZIONE 3: Elenco notizie rimanenti */}
             {listNews.length > 0 && (
               <div className="mt-8">
                 <Divider thick />
@@ -382,7 +540,7 @@ export default function DealroomHome() {
               </div>
             )}
 
-            {/* SEZIONE 5: Newsletter */}
+            {/* SEZIONE 4: Newsletter */}
             <div className="mt-10">
               <Divider thick />
               <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -393,7 +551,7 @@ export default function DealroomHome() {
                   </span>
                   <h3 className="mt-2 text-2xl font-bold text-[#1a1a1a]"
                     style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                    Ricevi DEALROOM ogni settimana
+                    Ricevi DEALROOM ogni venerdì
                   </h3>
                   <p className="mt-2 text-sm text-[#1a1a1a]/65"
                     style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
@@ -401,7 +559,7 @@ export default function DealroomHome() {
                   </p>
                 </div>
                 <div>
-                  <NewsletterSubscribeForm defaultChannel="startup" accentColor={ACCENT} />
+                  <NewsletterSubscribeForm defaultChannel="dealroom" accentColor={ACCENT} />
                 </div>
               </div>
             </div>

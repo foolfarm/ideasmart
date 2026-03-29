@@ -1088,7 +1088,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
     updateChannelPreferences: publicProcedure
       .input(z.object({
         token: z.string().min(10),
-        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket'])).min(1, 'Seleziona almeno un canale'),
+        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'dealroom'])).min(1, 'Seleziona almeno un canale'),
       }))
       .mutation(async ({ input }) => {
         const { updateSubscriberChannelsByToken } = await import('./db');
@@ -1104,7 +1104,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
       .input(z.object({
         email: z.string().email('Email non valida'),
         name: z.string().optional(),
-        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket'])).optional(),
+        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'dealroom'])).optional(),
       }))
       .mutation(async ({ input }) => {
         const { addSubscriberWithChannels } = await import('./db');

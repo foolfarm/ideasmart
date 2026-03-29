@@ -2,7 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi';
+type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom';
 
 const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: string }> = {
   ai:      { label: 'AI',      day: 'Lun', color: '#1a1a1a' },
@@ -19,9 +19,10 @@ const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: stri
   gossip:       { label: 'Gossip',       day: 'Mar', color: '#9b59b6' },
   cybersecurity: { label: 'Cyber',      day: 'Gio', color: '#27ae60' },
   sondaggi:     { label: 'Sondaggi',    day: 'Sab', color: '#2980b9' },
+  dealroom:     { label: 'DEALROOM',    day: 'Ven', color: '#1a4a2e' },
 };
 
-const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
+const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'dealroom', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
 
 interface Props {
   /** Canale pre-selezionato (pagina corrente) */

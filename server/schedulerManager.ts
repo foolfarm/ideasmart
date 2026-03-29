@@ -10,8 +10,8 @@
  *  │  00:00 — News AI (scraping RSS reale)                                   │
  *  │  00:05 — Editoriale AI + Startup del giorno                             │
  *  │  00:15 — Reportage AI (ogni lunedì)                                     │
- *  │  00:20 — Analisi di mercato AI (ogni lunedì)                            │
- *  │  01:00 — News Startup (scraping RSS reale)                              │
+ *  │  00:20 — Analisi di mercato AI (ogni lunedì)                            │ *  │  01:30 — News DEALROOM (scraping RSS reale)                              │
+ *  │  01:35 — Editoriale DEALROOM (deal della settimana)                      │
  *  │  01:05 — Editoriale Startup + Startup della Settimana                   │
  *  │  01:15 — Reportage Startup (ogni lunedì)                                │
  *  │  01:20 — Analisi Mercato Startup (ogni lunedì)                          │
@@ -67,6 +67,7 @@ import {
   generateStartupMarketAnalysis,
 } from "./startupScheduler";
 import { runNightlyAudit } from "./nightlyAuditScheduler";
+import { generateDealroomEditorial } from "./dealroomScheduler";
 import { generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch } from "./researchGenerator";
 import { runMorningHealthReport } from "./morningHealthReport";
@@ -220,6 +221,15 @@ export function startAllSchedulers(): void {
     await withLock("rss-dealroom", async () => {
       try { await refreshDealroomNewsFromRSS(); invalidateSection('dealroom'); console.log("[SchedulerManager] ✅ DEALROOM News aggiornate + cache invalidata"); }
       catch (err) { console.error("[SchedulerManager] ❌ DEALROOM News:", err); }
+    });
+  }, { timezone: TZ });
+
+  // Editoriale DEALROOM — ogni giorno alle 01:35 CET (dopo scraping DEALROOM)
+  cron.schedule("35 1 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 01:35 CET — Generazione editoriale DEALROOM...");
+    await withLock("editorial-dealroom", async () => {
+      try { await generateDealroomEditorial(); invalidateSection('dealroom'); console.log("[SchedulerManager] ✅ Editoriale DEALROOM generato + cache invalidata"); }
+      catch (err) { console.error("[SchedulerManager] ❌ Editoriale DEALROOM:", err); }
     });
   }, { timezone: TZ });
 

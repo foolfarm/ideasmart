@@ -1845,3 +1845,9 @@
 - [x] C+D) Configurare schedulerManager: venerdì invia DEALROOM News (dealroom key, tagline deal VC)
 - [x] C+D) Aggiornare template buildFullNewsletterHtml con banner promo IDEASMART (4000+ fonti, gratis)
 - [x] C+D) Aggiornare ChannelKey in db.ts per includere 'dealroom'
+
+## Task (29 Mar 2026 — Pagina DEALROOM + Preferenze + Editoriale)
+
+- [x] 1) Pagina /dealroom con filtri interattivi: Funding (Pre-seed/Angel, Series A, Series B+, M&A/Exit, VC Fund) + Mercato (Italia, Europa, Globale) con contatori e reset
+- [x] 2) /preferenze-newsletter aggiornata: canale DEALROOM News (Venerdì, verde #1a4a2e) + enum zod aggiornato in routers.ts
+- [x] 3) Job notturno editoriale DEALROOM alle 01:35 CET (dealroomScheduler.ts) + cron job nello schedulerManager

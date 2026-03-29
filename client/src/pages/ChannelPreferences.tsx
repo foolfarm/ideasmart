@@ -3,16 +3,17 @@ import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music';
+type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'dealroom';
 
 const CHANNELS: { key: ChannelKey; label: string; subtitle: string; day: string; color: string; icon: string }[] = [
-  { key: 'ai',      label: 'AI NEWS News',   subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#1a1a1a', icon: '🤖' },
-  { key: 'startup', label: 'STARTUP NEWS',        subtitle: 'Le startup italiane più promettenti',                day: 'Martedì',   color: '#2a2a2a', icon: '🚀' },
-  { key: 'finance', label: 'Finance & Markets',   subtitle: 'Mercati, finanza e investimenti',                   day: 'Mercoledì', color: '#1a56db', icon: '📈' },
-  { key: 'sport',   label: 'Sport & Business',    subtitle: 'Sport, management e business dello sport',          day: 'Giovedì',   color: '#059669', icon: '⚽' },
-  { key: 'music',   label: 'ITsMusic',            subtitle: 'Musica, tecnologia e industria musicale',           day: 'Venerdì',   color: '#2a2a2a', icon: '🎵' },
-  { key: 'luxury',  label: 'Lifestyle & Luxury',  subtitle: 'Lusso, lifestyle e luxury economy',                 day: 'Sabato',    color: '#2a2a2a', icon: '💎' },
-  { key: 'health',  label: 'Health & Biotech',    subtitle: 'Salute, biotech e innovazione medica',              day: 'Domenica',  color: '#2a2a2a', icon: '🏥' },
+  { key: 'ai',       label: 'AI News',             subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#1a1a1a', icon: '🤖' },
+  { key: 'startup',  label: 'Startup News',        subtitle: 'Le startup italiane più promettenti',                day: 'Mercoledì', color: '#2a2a2a', icon: '🚀' },
+  { key: 'dealroom', label: 'DEALROOM News',       subtitle: 'Round, funding, VC e deal dell\'ecosistema startup', day: 'Venerdì',   color: '#1a4a2e', icon: '💰' },
+  { key: 'finance',  label: 'Finance & Markets',   subtitle: 'Mercati, finanza e investimenti',                   day: 'Mercoledì', color: '#1a56db', icon: '📈' },
+  { key: 'sport',    label: 'Sport & Business',    subtitle: 'Sport, management e business dello sport',          day: 'Giovedì',   color: '#059669', icon: '⚽' },
+  { key: 'music',    label: 'ITsMusic',            subtitle: 'Musica, tecnologia e industria musicale',           day: 'Venerdì',   color: '#2a2a2a', icon: '🎵' },
+  { key: 'luxury',   label: 'Lifestyle & Luxury',  subtitle: 'Lusso, lifestyle e luxury economy',                 day: 'Sabato',    color: '#2a2a2a', icon: '💎' },
+  { key: 'health',   label: 'Health & Biotech',    subtitle: 'Salute, biotech e innovazione medica',              day: 'Domenica',  color: '#2a2a2a', icon: '🏥' },
 ];
 
 export default function ChannelPreferences() {
