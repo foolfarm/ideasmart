@@ -15,7 +15,7 @@
  * con la sezione Ricerche del Giorno e banner promo IDEASMART inclusi.
  */
 
-import { sendEmail, buildFullNewsletterHtml } from "./email";
+import { sendEmail, buildFullNewsletterHtml, buildPromoNewsletterHtml } from "./email";
 import {
   getLatestNews,
   getLatestEditorial,
@@ -532,5 +532,87 @@ export async function sendChannelTestToEmail(
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[DailyNewsletter] ❌ Errore critico test ${channel.name}:`, msg);
     return { success: false, channel: channel.name, subject: "", newsCount: 0, error: msg };
+  }
+}
+
+
+/**
+ * Invia la newsletter promozionale IDEASMART a tutti gli iscritti attivi.
+ * Usata per promuovere la piattaforma di giornalismo agentico.
+ */
+export async function sendPromoNewsletterToAll(): Promise<{
+  success: boolean;
+  recipientCount: number;
+  subject: string;
+  error?: string;
+}> {
+  const subject = "IDEASMART — Il primo giornale che funziona anche senza una redazione.";
+
+  console.log("[PromoNewsletter] 🚀 Inizio invio massivo newsletter promozionale...");
+
+  try {
+    // Recupera tutti gli iscritti attivi
+    const allSubscribers = await getActiveSubscribers();
+    console.log(`[PromoNewsletter] 📊 Iscritti attivi: ${allSubscribers.length}`);
+
+    if (allSubscribers.length === 0) {
+      return { success: false, recipientCount: 0, subject, error: "Nessun iscritto attivo" };
+    }
+
+    // Genera l'HTML base
+    const dateLabel = new Date().toLocaleDateString("it-IT", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    const baseHtml = buildPromoNewsletterHtml({ dateLabel, isTest: false });
+
+    // Registra l'invio nel DB
+    await createNewsletterSend({ subject, htmlContent: baseHtml, recipientCount: 0 });
+
+    let totalSent = 0;
+    let sendError: string | undefined;
+    const BATCH_SIZE = 50;
+    const BASE_URL = process.env.VITE_APP_ID
+      ? "https://ideasmart.ai"
+      : "https://ideasmart.manus.space";
+
+    for (let i = 0; i < allSubscribers.length; i += BATCH_SIZE) {
+      const batch = allSubscribers.slice(i, i + BATCH_SIZE);
+      for (const sub of batch) {
+        const unsubUrl = sub.unsubscribeToken
+          ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
+          : `${BASE_URL}/unsubscribe`;
+        const personalizedHtml = baseHtml
+          .replace(`${BASE_URL}/unsubscribe`, unsubUrl);
+        const result = await sendEmail({ to: sub.email, subject, html: personalizedHtml });
+        if (result.success) totalSent++;
+        else sendError = result.error;
+      }
+      // Log progresso ogni batch
+      console.log(`[PromoNewsletter] 📤 Progresso: ${Math.min(i + BATCH_SIZE, allSubscribers.length)}/${allSubscribers.length} (inviati: ${totalSent})`);
+    }
+
+    // Aggiorna recipientCount nel DB
+    await updateNewsletterSendRecipientCount(subject, totalSent);
+
+    await notifyOwner({
+      title: `📧 Newsletter PROMO IDEASMART inviata — ${new Date().toLocaleDateString("it-IT")}`,
+      content: `Invio massivo newsletter promozionale completato: ${totalSent}/${allSubscribers.length} iscritti.`,
+    });
+
+    console.log(`[PromoNewsletter] ✅ Invio completato: ${totalSent}/${allSubscribers.length}`);
+
+    return {
+      success: !sendError,
+      recipientCount: totalSent,
+      subject,
+      error: sendError,
+    };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[PromoNewsletter] ❌ Errore critico:", msg);
+    return { success: false, recipientCount: 0, subject, error: msg };
   }
 }

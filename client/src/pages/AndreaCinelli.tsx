@@ -1,6 +1,6 @@
 /**
  * Pagina autore — Andrea Cinelli
- * Opinion Leader & Editorialista IdeaSmart
+ * Tech Expert
  * Layout: editoriale bianco-carta con foto profilo, bio, archivio post LinkedIn e CTA contatto
  */
 import { useState } from "react";
@@ -153,8 +153,8 @@ export default function AndreaCinelli() {
   return (
     <div style={{ background: PAPER, minHeight: "100vh" }}>
       <SEOHead
-        title="Andrea Cinelli — Opinion Leader & Editorialista IdeaSmart"
-        description="Editoriali quotidiani su AI, Startup e Venture Capital. Opinion Leader e fondatore di IdeaSmart."
+        title="Andrea Cinelli — Tech Expert"
+        description="Editoriali quotidiani su AI, Startup e Venture Capital. Tech Expert e fondatore di IdeaSmart."
       />
       <Navbar />
 
@@ -241,7 +241,7 @@ export default function AndreaCinelli() {
               className="text-base mb-5"
               style={{ color: INK + "70", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.05em" }}
             >
-              Opinion Leader & Editorialista IdeaSmart
+              Tech Expert
             </p>
 
             <div className="space-y-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>

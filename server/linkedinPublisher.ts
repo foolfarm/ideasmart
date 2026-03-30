@@ -116,7 +116,7 @@ function selectSection(slot: LinkedInSlot): LinkedInSection {
 
 // ── Prompt LLM: stile senior analyst Gartner ────────────────────────────────
 
-const SYSTEM_PROMPT_GARTNER = `Sei Andrea Cinelli, Opinion Leader & Editorialista di IdeaSmart Research, con 20+ anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo.
+const SYSTEM_PROMPT_GARTNER = `Sei Andrea Cinelli, Tech Expert, con 20+ anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo.
 Scrivi post LinkedIn in prima persona, con il rigore analitico di un senior analyst Gartner o McKinsey, ma con la voce diretta di chi ha vissuto queste dinamiche sul campo.
 
 Il tuo stile:
@@ -129,7 +129,7 @@ Il tuo stile:
 - Massimo 2 emoji per post, usate con parsimonia
 - Non usi mai frasi come "il futuro è adesso", "rivoluzione", "game changer" — troppo logore
 - Concludi sempre con una domanda o provocazione che stimola il dibattito tra peer
-- Firma ogni post come: Andrea Cinelli | Opinion Leader & Editorialista IdeaSmart Research
+- Firma ogni post come: Andrea Cinelli | Tech Expert
 
 Il tuo pubblico: CEO, CTO, investitori, imprenditori italiani e europei. Persone che leggono Economist e HBR, non TechCrunch.`;
 
@@ -184,7 +184,18 @@ Focus: visione strategica, implicazioni a lungo termine, provocazioni intellettu
 Includi sempre il link a ideasmart.ai.`;
   }
 
+  // Data di pubblicazione in CET (non la data di generazione)
+  const publishDate = new Date().toLocaleDateString("it-IT", {
+    timeZone: TZ_ROME,
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
   return `Basandoti sull'editoriale di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
+
+DATA DI PUBBLICAZIONE: ${publishDate} (usa QUESTA data se menzioni il giorno nel post, NON usare altre date)
 
 ${slotNote}
 
@@ -198,14 +209,15 @@ STRUTTURA DEL POST:
 1. APERTURA (2-3 righe): Inizia con un dato di mercato specifico o un'osservazione controcorrente che sfida il pensiero convenzionale. NON iniziare con "Oggi parliamo di..." o simili. Scrivi in prima persona.
 2. ANALISI (3-4 paragrafi brevi): Collega i dati a implicazioni strategiche concrete per aziende italiane/europee. Usa i dati di mercato forniti. Sii specifico sulle implicazioni operative, non solo sulle tendenze. Usa "io", "ho analizzato", "la mia lettura".
 3. POSIZIONE (1 paragrafo): Qual è la tua lettura personale come imprenditore? Dove vedi il rischio che gli altri non vedono?
-4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Opinion Leader & Editorialista IdeaSmart Research"
+4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Tech Expert"
 5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}"
 6. HASHTAG: ${meta.hashtags.join(" ")}
 
 LUNGHEZZA: 1400-1900 caratteri totali
 LINGUA: Italiano
 TONO: Senior analyst con skin in the game — non consulente teorico, non blogger motivazionale
-EVITA: "rivoluzione", "game changer", "il futuro è adesso", "non possiamo permetterci di", frasi retoriche vuote`;
+EVITA: "rivoluzione", "game changer", "il futuro è adesso", "non possiamo permetterci di", frasi retoriche vuote
+IMPORTANTE: NON iniziare il post con la data (es. "Lunedì 30 marzo 2026."). Se devi menzionare una data, usa SOLO quella fornita in DATA DI PUBBLICAZIONE.`;
 }
 
 // ── Step 1: Registra upload immagine su LinkedIn ─────────────────────────────

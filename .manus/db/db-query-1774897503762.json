@@ -1,0 +1,15 @@
+{
+  "query": "SELECT COUNT(*) as total, SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as active, SUM(CASE WHEN status = 'unsubscribed' THEN 1 ELSE 0 END) as unsubscribed FROM subscribers;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as total, SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as active, SUM(CASE WHEN status = 'unsubscribed' THEN 1 ELSE 0 END) as unsubscribed FROM subscribers;",
+  "rows": [
+    {
+      "total": "7558",
+      "active": "6889",
+      "unsubscribed": "669"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\tactive\tunsubscribed\n7558\t6889\t669\n",
+  "stderr": "",
+  "execution_time_ms": 80
+}

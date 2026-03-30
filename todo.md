@@ -1970,3 +1970,15 @@
 
 ## Fix nome mittente newsletter (30 Mar 2026)
 - [x] Cambiare nome mittente da "AI4Business News by IDEASMART" a "IDEASMART" in tutte le newsletter — env SENDGRID_FROM_NAME + fallback codice aggiornati
+
+## Invio newsletter promozionale programmato (30 Mar 2026)
+- [x] Creare endpoint/funzione per invio massivo newsletter promozionale a tutti gli iscritti — sendPromoNewsletterToAll() creata
+- [ ] Programmare invio per domattina 31 marzo ore 8:00
+
+## Fix data post LinkedIn (30 Mar 2026)
+- [x] Correggere bug: i post LinkedIn automatici usano la data di generazione (es. domenica) invece della data di pubblicazione (lunedì) — aggiunta DATA DI PUBBLICAZIONE esplicita nel prompt LLM + istruzione di non iniziare con la data
+
+## Nuove richieste (30 Mar 2026 sera)
+- [x] Importare soci FoolFarm dal CSV come iscritti newsletter — 19 nuovi importati, 38 già iscritti, 0 errori
+- [x] Cambiare firma LinkedIn da "Opinion Leader & Editorialista IdeaSmart Research" a "Tech Expert" — aggiornato in linkedinPublisher.ts, PuntoDelGiorno.tsx, AndreaCinelli.tsx
+- [x] Programmare invio newsletter promo per 31 marzo ore 10:30 CET — task schedulato
