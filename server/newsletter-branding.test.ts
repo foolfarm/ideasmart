@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { buildFullNewsletterHtml } from "./email";
 
-describe("Newsletter branding per canale", () => {
+describe("Newsletter — nuovo design allineato al sito", () => {
   const baseOpts = {
     dateLabel: "lunedì 30 marzo 2026",
     news: [
@@ -17,57 +17,127 @@ describe("Newsletter branding per canale", () => {
     isTest: true,
   };
 
-  it("AI News: header con sfondo navy e accento teal", () => {
+  it("Usa font system-ui / SF Pro (non Georgia/serif)", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    // Font stack SF Pro / system-ui
+    expect(html).toContain("-apple-system");
+    expect(html).toContain("system-ui");
+    // Non deve usare il vecchio font Georgia come font principale del body
+    expect(html).not.toMatch(/body style="[^"]*font-family:[^"]*Georgia/);
+  });
+
+  it("Header IDEASMART grande in nero su sfondo bianco (come il sito)", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    // IDEASMART in nero (#1a1a1a) su sfondo bianco
+    expect(html).toContain("font-size:48px");
+    expect(html).toContain("color:#1a1a1a");
+    // Sottotitolo del sito
+    expect(html).toContain("Intelligence Quotidiana su AI, Startup e Venture Capital");
+  });
+
+  it("Barra canali con tab (AI NEWS, STARTUP NEWS, RICERCHE, DEALROOM)", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    expect(html).toContain("AI NEWS</a>");
+    expect(html).toContain("STARTUP NEWS</a>");
+    expect(html).toContain("RICERCHE</a>");
+    expect(html).toContain("DEALROOM</a>");
+  });
+
+  it("Badge VERIFY — 400+ fonti certificate", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    expect(html).toContain("VERIFY");
+    expect(html).toContain("400 fonti");
+    expect(html).toContain("Informazioni certificate");
+  });
+
+  it("AI News: badge canale e sottotitolo corretti", () => {
     const html = buildFullNewsletterHtml({
       ...baseOpts,
       channelName: "AI News",
       frequencyLabel: "Ogni lunedì · Intelligenza Artificiale per il Business",
     });
 
-    // Header sfondo navy scuro (#0a1628)
-    expect(html).toContain("background:#0a1628");
-    // Accento teal (#00b4a0)
-    expect(html).toContain("color:#00b4a0");
-    // Badge canale
-    expect(html).toContain("AI News");
-    // Sottotitolo specifico
+    expect(html).toContain("AI NEWS");
     expect(html).toContain("Intelligenza Artificiale per il Business");
-    // Banner test
     expect(html).toContain("EMAIL DI PROVA");
   });
 
-  it("Startup News: header con sfondo scuro e accento arancio", () => {
+  it("Startup News: badge canale e sottotitolo corretti", () => {
     const html = buildFullNewsletterHtml({
       ...baseOpts,
       channelName: "Startup News",
       frequencyLabel: "Ogni mercoledì · Startup, Innovazione e Venture Capital",
     });
 
-    // Header sfondo scuro (#1a0800)
-    expect(html).toContain("background:#1a0800");
-    // Accento arancio (#e84f00)
-    expect(html).toContain("color:#e84f00");
-    // Badge canale
-    expect(html).toContain("Startup News");
-    // Sottotitolo specifico
+    expect(html).toContain("STARTUP NEWS");
     expect(html).toContain("Startup, Innovazione e Venture Capital");
   });
 
-  it("DEALROOM News: header con sfondo nero e accento gold", () => {
+  it("DEALROOM News: badge canale e sottotitolo corretti", () => {
     const html = buildFullNewsletterHtml({
       ...baseOpts,
       channelName: "DEALROOM News",
       frequencyLabel: "Ogni venerdì · Round, Funding, VC, M&A",
     });
 
-    // Header sfondo nero (#0f0f0f)
-    expect(html).toContain("background:#0f0f0f");
-    // Accento gold (#c8a200)
-    expect(html).toContain("color:#c8a200");
-    // Badge canale
-    expect(html).toContain("DEALROOM News");
-    // Sottotitolo specifico
+    expect(html).toContain("DEALROOM");
     expect(html).toContain("Round, Funding, VC, M&amp;A");
+  });
+
+  it("Banner promo con sfondo nero e CTA bianco", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    // Banner promo con sfondo nero
+    expect(html).toContain("background:#1a1a1a");
+    // CTA "Iscriviti ora"
+    expect(html).toContain("Iscriviti ora");
+  });
+
+  it("Footer con GDPR e link gestione canali", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    expect(html).toContain("GDPR");
+    expect(html).toContain("Gestisci canali");
+    expect(html).toContain("Annulla iscrizione");
+    expect(html).toContain("Privacy Policy");
+    expect(html).toContain("ideasmart.ai");
+  });
+
+  it("Sezione ricerche con badge nero e stile chiaro (non dark)", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
+
+    // Ricerche del Giorno presente
+    expect(html).toContain("Ricerche del Giorno");
+    expect(html).toContain("IDEASMART RESEARCH");
+    // Badge categoria in nero su bianco
+    expect(html).toContain("AI TRENDS");
+    // Link alla ricerca
+    expect(html).toContain("LEGGI LA RICERCA COMPLETA");
   });
 
   it("Senza channelName: usa tema AI News come default", () => {
@@ -75,21 +145,18 @@ describe("Newsletter branding per canale", () => {
       ...baseOpts,
     });
 
-    // Deve usare il tema AI News come default
-    expect(html).toContain("background:#0a1628");
-    expect(html).toContain("color:#00b4a0");
+    // Deve comunque avere il design del sito
+    expect(html).toContain("IDEASMART");
+    expect(html).toContain("Intelligence Quotidiana");
   });
 
-  it("Ogni canale ha una barra accento colorata", () => {
-    const aiHtml = buildFullNewsletterHtml({ ...baseOpts, channelName: "AI News" });
-    const startupHtml = buildFullNewsletterHtml({ ...baseOpts, channelName: "Startup News" });
-    const dealroomHtml = buildFullNewsletterHtml({ ...baseOpts, channelName: "DEALROOM News" });
+  it("Barra inferiore nera (non teal)", () => {
+    const html = buildFullNewsletterHtml({
+      ...baseOpts,
+      channelName: "AI News",
+    });
 
-    // Barra accento teal per AI
-    expect(aiHtml).toContain("height:4px;background:#00b4a0");
-    // Barra accento arancio per Startup
-    expect(startupHtml).toContain("height:4px;background:#e84f00");
-    // Barra accento gold per DEALROOM
-    expect(dealroomHtml).toContain("height:4px;background:#c8a200");
+    // Bottom bar nero
+    expect(html).toContain("background:#1a1a1a;padding:0;height:3px");
   });
 });

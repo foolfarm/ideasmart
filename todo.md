@@ -1932,3 +1932,13 @@
 - [x] Funzione buildSourceUrl nel researchGenerator: fallback automatico a homepage fonte quando LLM non fornisce URL
 - [x] Aggiornate 84 ricerche nel DB con source_url mancante (ora tutte le 110 ricerche hanno URL)
 - [x] Template newsletter personalizzato per canale: AI News (teal), Startup News (arancio), DEALROOM (gold)
+
+## Redesign completo template newsletter (30 Mar 2026)
+
+- [x] Ridisegnare template newsletter allineato alla grafica attuale del sito — completato
+- [x] Font: SF Pro / system-ui (non più Georgia/serif) — completato
+- [x] Sfondo crema chiaro come il sito (#f5f0e8) — completato
+- [x] Stile editoriale pulito con tab canali (AI NEWS, STARTUP NEWS, DEALROOM) — completato
+- [x] Messaggio "400+ fonti verificate con tecnologia Verify" — badge VERIFY aggiunto
+- [x] Layout che rispecchia la pagina sezione del canale promosso — completato
+- [x] Inviare 3 email di test con nuovo template a ac@foolfarm.com — 3 email inviate con successo

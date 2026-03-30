@@ -1,0 +1,25 @@
+{
+  "query": "SELECT section, COUNT(*) as cnt, MAX(createdAt) as latest FROM breaking_news GROUP BY section ORDER BY latest DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as cnt, MAX(createdAt) as latest FROM breaking_news GROUP BY section ORDER BY latest DESC;",
+  "rows": [
+    {
+      "section": "ai",
+      "cnt": "506",
+      "latest": "2026-03-30 10:33:33"
+    },
+    {
+      "section": "startup",
+      "cnt": "266",
+      "latest": "2026-03-30 10:33:33"
+    },
+    {
+      "section": "dealroom",
+      "cnt": "18",
+      "latest": "2026-03-30 08:50:41"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\tcnt\tlatest\nai\t506\t2026-03-30 10:33:33\nstartup\t266\t2026-03-30 10:33:33\ndealroom\t18\t2026-03-30 08:50:41\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}
