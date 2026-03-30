@@ -1967,3 +1967,6 @@
 
 ## Aggiornamento sezione Modello /chi-siamo (30 Mar 2026)
 - [x] Sostituire pricing singolo con 3 piani: Mini (€2.500), Medium (€5.000), Maxi (€7.500) + Custom — verificato nel browser
+
+## Fix nome mittente newsletter (30 Mar 2026)
+- [x] Cambiare nome mittente da "AI4Business News by IDEASMART" a "IDEASMART" in tutte le newsletter — env SENDGRID_FROM_NAME + fallback codice aggiornati
