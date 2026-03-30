@@ -3,17 +3,12 @@ import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'dealroom';
+type ChannelKey = 'ai' | 'startup' | 'dealroom';
 
 const CHANNELS: { key: ChannelKey; label: string; subtitle: string; day: string; color: string; icon: string }[] = [
   { key: 'ai',       label: 'AI News',             subtitle: 'Intelligenza artificiale per il business italiano',  day: 'Lunedì',    color: '#1a1a1a', icon: '🤖' },
   { key: 'startup',  label: 'Startup News',        subtitle: 'Le startup italiane più promettenti',                day: 'Mercoledì', color: '#2a2a2a', icon: '🚀' },
-  { key: 'dealroom', label: 'DEALROOM News',       subtitle: 'Round, funding, VC e deal dell\'ecosistema startup', day: 'Venerdì',   color: '#1a4a2e', icon: '💰' },
-  { key: 'finance',  label: 'Finance & Markets',   subtitle: 'Mercati, finanza e investimenti',                   day: 'Mercoledì', color: '#1a56db', icon: '📈' },
-  { key: 'sport',    label: 'Sport & Business',    subtitle: 'Sport, management e business dello sport',          day: 'Giovedì',   color: '#059669', icon: '⚽' },
-  { key: 'music',    label: 'ITsMusic',            subtitle: 'Musica, tecnologia e industria musicale',           day: 'Venerdì',   color: '#2a2a2a', icon: '🎵' },
-  { key: 'luxury',   label: 'Lifestyle & Luxury',  subtitle: 'Lusso, lifestyle e luxury economy',                 day: 'Sabato',    color: '#2a2a2a', icon: '💎' },
-  { key: 'health',   label: 'Health & Biotech',    subtitle: 'Salute, biotech e innovazione medica',              day: 'Domenica',  color: '#2a2a2a', icon: '🏥' },
+  { key: 'dealroom', label: 'DEALROOM News',       subtitle: 'Round, funding, VC e deal dell\'ecosistema startup', day: 'Venerdì',   color: '#1a4a2e', icon: '💰' }
 ];
 
 export default function ChannelPreferences() {
@@ -48,7 +43,7 @@ export default function ChannelPreferences() {
     },
     onError: (err) => {
       toast.error("Errore: " + err.message);
-    },
+    }
   });
 
   const toggleChannel = (key: ChannelKey) => {
@@ -207,7 +202,7 @@ export default function ChannelPreferences() {
                   display: "flex",
                   alignItems: "center",
                   gap: 16,
-                  boxShadow: isActive ? `0 2px 12px ${ch.color}22` : "none",
+                  boxShadow: isActive ? `0 2px 12px ${ch.color}22` : "none"
                 }}
               >
                 {/* Icon */}
@@ -232,7 +227,7 @@ export default function ChannelPreferences() {
                   background: isActive ? ch.color : "#d1d5db",
                   position: "relative",
                   flexShrink: 0,
-                  transition: "background 0.2s",
+                  transition: "background 0.2s"
                 }}>
                   <div style={{
                     position: "absolute",
@@ -243,7 +238,7 @@ export default function ChannelPreferences() {
                     borderRadius: "50%",
                     background: "#fff",
                     transition: "left 0.2s",
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.2)"
                   }} />
                 </div>
               </div>
@@ -275,7 +270,7 @@ export default function ChannelPreferences() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 8,
-                transition: "background 0.2s",
+                transition: "background 0.2s"
               }}
             >
               {updateMutation.isPending ? (

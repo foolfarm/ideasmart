@@ -30,27 +30,13 @@ function PageSkeleton() {
 
 // ─── Pagine sezione (lazy — caricate solo quando l'utente naviga) ─────────────
 const AiHome = lazy(() => import("./pages/AiHome"));
-const MusicHome = lazy(() => import("./pages/MusicHome"));
 const StartupHome = lazy(() => import("./pages/StartupHome"));
-const FinanceHome = lazy(() => import("./pages/FinanceHome"));
-const VentureCapital = lazy(() => import("./pages/VentureCapital"));
-const HealthHome = lazy(() => import("./pages/HealthHome"));
-const SportHome = lazy(() => import("./pages/SportHome"));
-const LuxuryHome = lazy(() => import("./pages/LuxuryHome"));
-const NewsHome = lazy(() => import("./pages/NewsHome"));
-const MotoriHome = lazy(() => import("./pages/MotoriHome"));
-const TennisHome = lazy(() => import("./pages/TennisHome"));
-const BasketHome = lazy(() => import("./pages/BasketHome"));
-const GossipHome = lazy(() => import("./pages/GossipHome"));
-const CybersecurityHome = lazy(() => import("./pages/CybersecurityHome"));
-const SondaggiHome = lazy(() => import("./pages/SondaggiHome"));
 const DealroomHome = lazy(() => import("./pages/DealroomHome"));
 const Research = lazy(() => import("./pages/Research"));
 const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
 
 // ─── Pagine articolo (lazy) ───────────────────────────────────────────────────
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
-const MusicNewsArticle = lazy(() => import("./pages/MusicNewsArticle"));
 const StartupNewsArticle = lazy(() => import("./pages/StartupNewsArticle"));
 const GenericNewsArticle = lazy(() => import("./pages/GenericNewsArticle"));
 const EditorialDetail = lazy(() => import("./pages/EditorialDetail"));
@@ -69,9 +55,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const NotificationPreferences = lazy(() => import("./pages/NotificationPreferences"));
 const Advertise = lazy(() => import("./pages/Advertise"));
-const Edicola = lazy(() => import("./pages/Edicola"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Manifesto = lazy(() => import("./pages/Manifesto"));
 const ChannelPreferences = lazy(() => import("./pages/ChannelPreferences"));
 const Business = lazy(() => import("./pages/Business"));
 const Intelligence = lazy(() => import("./pages/Intelligence"));
@@ -90,20 +74,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/ai" component={AiHome} />
-        <Route path="/music" component={MusicHome} />
         <Route path="/startup" component={StartupHome} />
-        <Route path="/finance" component={FinanceHome} />
-        <Route path="/venture-capital" component={VentureCapital} />
-        <Route path="/health" component={HealthHome} />
-        <Route path="/sport" component={SportHome} />
-        <Route path="/luxury" component={LuxuryHome} />
-        <Route path="/news" component={NewsHome} />
-        <Route path="/motori" component={MotoriHome} />
-        <Route path="/tennis" component={TennisHome} />
-        <Route path="/basket" component={BasketHome} />
-        <Route path="/gossip" component={GossipHome} />
-        <Route path="/cybersecurity" component={CybersecurityHome} />
-        <Route path="/sondaggi" component={SondaggiHome} />
         <Route path="/dealroom" component={DealroomHome} />
         <Route path="/admin" component={Admin} />
         <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
@@ -121,9 +92,7 @@ function Router() {
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
-        <Route path="/edicola" component={Edicola} />
         <Route path="/ai/news/:id" component={NewsArticle} />
-        <Route path="/music/news/:id" component={MusicNewsArticle} />
         <Route path="/startup/news/:id" component={StartupNewsArticle} />
         {/* Route generica per tutti i canali — deve stare DOPO le route specifiche */}
         <Route path="/:section/news/:id" component={GenericNewsArticle} />
@@ -132,7 +101,6 @@ function Router() {
         <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />
         <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
         <Route path="/chi-siamo" component={ChiSiamo} />
-        <Route path="/manifesto" component={Manifesto} />
         <Route path="/tecnologia" component={Tecnologia} />
         <Route path="/account" component={Account} />
         <Route path="/registrati" component={Registrati} />

@@ -63,12 +63,6 @@ export default function Admin() {
   const [sendingChannelNewsletter, setSendingChannelNewsletter] = useState<string | null>(null);
   const [refreshingNews, setRefreshingNews] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
-  const [sendingItsMusic, setSendingItsMusic] = useState(false);
-  const [refreshingMusicNews, setRefreshingMusicNews] = useState(false);
-  const [refreshingFinance, setRefreshingFinance] = useState(false);
-  const [refreshingHealth, setRefreshingHealth] = useState(false);
-  const [refreshingSport, setRefreshingSport] = useState(false);
-  const [refreshingLuxury, setRefreshingLuxury] = useState(false);
   const [publishingLinkedIn, setPublishingLinkedIn] = useState(false);
   const [linkedInResult, setLinkedInResult] = useState<{ published: number; total: number; posts: Array<{ section: string; title: string; success: boolean; error?: string }> } | null>(null);
 
@@ -97,18 +91,6 @@ export default function Admin() {
     },
   });
 
-  const triggerItsMusicMutation = trpc.admin.triggerItsMusicNewsletter.useMutation({
-    onSuccess: (data) => {
-      setSendingItsMusic(false);
-      setLastResult(`✓ ITsMusic inviata a ${data.recipientCount} iscritti — ${data.newsCount} notizie musicali generate`);
-      toast.success(`🎸 ITsMusic inviata a ${data.recipientCount} iscritti!`);
-      historyQuery.refetch();
-    },
-    onError: (err) => {
-      setSendingItsMusic(false);
-      toast.error("Errore invio ITsMusic: " + err.message);
-    },
-  });
 
   const publishLinkedInMutation = trpc.admin.publishLinkedIn.useMutation({
     onSuccess: (data) => {
@@ -123,34 +105,7 @@ export default function Admin() {
     },
   });
 
-  const refreshMusicNewsMutation = trpc.admin.refreshMusicNews.useMutation({
-    onSuccess: (data) => {
-      setRefreshingMusicNews(false);
-      setLastResult(`✓ News musicali aggiornate: ${data.count} notizie generate dall'AI`);
-      toast.success(`🎸 ${data.count} notizie musicali aggiornate!`);
-    },
-    onError: (err) => {
-      setRefreshingMusicNews(false);
-      toast.error("Errore aggiornamento news musicali: " + err.message);
-    },
-  });
 
-  const refreshFinanceMutation = trpc.admin.refreshFinanceAll.useMutation({
-    onSuccess: () => { setRefreshingFinance(false); toast.success("✅ Finance & Markets aggiornato!"); },
-    onError: (err) => { setRefreshingFinance(false); toast.error("Errore Finance: " + err.message); },
-  });
-  const refreshHealthMutation = trpc.admin.refreshHealthAll.useMutation({
-    onSuccess: () => { setRefreshingHealth(false); toast.success("✅ Health & Biotech aggiornato!"); },
-    onError: (err) => { setRefreshingHealth(false); toast.error("Errore Health: " + err.message); },
-  });
-  const refreshSportMutation = trpc.admin.refreshSportAll.useMutation({
-    onSuccess: () => { setRefreshingSport(false); toast.success("✅ Sport & Business aggiornato!"); },
-    onError: (err) => { setRefreshingSport(false); toast.error("Errore Sport: " + err.message); },
-  });
-  const refreshLuxuryMutation = trpc.admin.refreshLuxuryAll.useMutation({
-    onSuccess: () => { setRefreshingLuxury(false); toast.success("✅ Lifestyle & Luxury aggiornato!"); },
-    onError: (err) => { setRefreshingLuxury(false); toast.error("Errore Luxury: " + err.message); },
-  });
   const generateImagesMutation = trpc.admin.generateArticleImages.useMutation({
     onSuccess: (data) => {
       setGeneratingImages(false);
@@ -215,7 +170,6 @@ export default function Admin() {
   const newSiteUsersData = newSiteUsersQuery.data;
   const activeCount = subscribers.filter((s) => s.status === "active").length;
   const aiSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "ai4business" || s.newsletter === "both")).length;
-  const musicSubscribers = subscribers.filter((s) => s.status === "active" && (s.newsletter === "itsmusic" || s.newsletter === "both")).length;
 
   return (
     <div className="min-h-screen" style={{ background: "#0f0f0f" }}>
@@ -295,9 +249,8 @@ export default function Admin() {
           {[
             { label: "Iscritti newsletter", value: subscribers.length, color: "#ffffff" },
             { label: "AI NEWS attivi", value: aiSubscribers, color: "#ffffff" },
-            { label: "ITsMusic", value: musicSubscribers, color: "#ffffff" },
             { label: "Newsletter inviate", value: history.length, color: "#60a5fa" },
-            { label: "Utenti registrati", value: newSiteUsersData?.totalCount ?? "—", color: "#34d399" },
+            { label: "Utenti registrati", value: newSiteUsersData?.totalCount ?? "—", color: "#34d399" }
           ].map((stat) => (
             <div key={stat.label} className="rounded-xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
               <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -516,65 +469,6 @@ export default function Admin() {
               </button>
             </div>
 
-            {/* ITsMusic Newsletter */}
-            <div className="rounded-2xl border border-purple-500/20 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                🎸 ITsMusic Newsletter
-              </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Rock · Indie · AI Music</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Invia la newsletter <strong className="text-purple-400">ITsMusic</strong> a tutti i <strong className="text-white">{musicSubscribers} iscritti ITsMusic</strong>. Genera 20 notizie Rock/Indie/AI Music con LLM.
-              </p>
-              <button
-                onClick={() => {
-                  if (musicSubscribers === 0) { toast.error("Nessun iscritto ITsMusic attivo"); return; }
-                  setSendingItsMusic(true);
-                  triggerItsMusicMutation.mutate();
-                }}
-                disabled={sendingItsMusic || musicSubscribers === 0}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "#2a2a2a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                {sendingItsMusic ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Generazione notizie musicali...
-                  </span>
-                ) : (
-                  `Invia ITsMusic a ${musicSubscribers} Iscritti →`
-                )}
-              </button>
-            </div>
-
-            {/* Aggiornamento News Musicali */}
-            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.03)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                🎸 Aggiornamento News Musicali
-              </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Aggiornamento giornaliero automatico</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Genera 20 nuove notizie Rock/Indie/AI Music e aggiorna la sezione /music. Usa questo pulsante per un aggiornamento manuale immediato.
-              </p>
-              <button
-                onClick={() => {
-                  setRefreshingMusicNews(true);
-                  refreshMusicNewsMutation.mutate();
-                }}
-                disabled={refreshingMusicNews}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "rgba(139,92,246,0.3)", color: "#c4b5fd", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(139,92,246,0.4)" }}
-              >
-                {refreshingMusicNews ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-purple-300 border-t-transparent rounded-full animate-spin" />
-                    Generazione notizie musicali...
-                  </span>
-                ) : (
-                  `Aggiorna News Musicali Ora →`
-                )}
-              </button>
-            </div>
-
             {/* Genera Immagini AI */}
             <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(139,92,246,0.04)" }}>
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#2a2a2a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -604,47 +498,6 @@ export default function Admin() {
               </button>
             </div>
 
-            {/* Finance & Markets */}
-            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(16,185,129,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#10b981", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Finance & Markets</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 03:00 CET.</p>
-              <button onClick={() => { setRefreshingFinance(true); refreshFinanceMutation.mutate(); }} disabled={refreshingFinance}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(16,185,129,0.3)", color: "#6ee7b7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(16,185,129,0.4)" }}>
-                {refreshingFinance ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-green-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Finance...</span> : "📈 Aggiorna Finance & Markets →"}
-              </button>
-            </div>
-            {/* Health & Biotech */}
-            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(59,130,246,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#3b82f6", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Health & Biotech</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 04:00 CET.</p>
-              <button onClick={() => { setRefreshingHealth(true); refreshHealthMutation.mutate(); }} disabled={refreshingHealth}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(59,130,246,0.3)", color: "#93c5fd", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(59,130,246,0.4)" }}>
-                {refreshingHealth ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-blue-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Health...</span> : "🧬 Aggiorna Health & Biotech →"}
-              </button>
-            </div>
-            {/* Sport & Business */}
-            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(245,158,11,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#f59e0b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Sport & Business</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 05:00 CET.</p>
-              <button onClick={() => { setRefreshingSport(true); refreshSportMutation.mutate(); }} disabled={refreshingSport}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(245,158,11,0.3)", color: "#fcd34d", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(245,158,11,0.4)" }}>
-                {refreshingSport ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Sport...</span> : "⚽ Aggiorna Sport & Business →"}
-              </button>
-            </div>
-            {/* Lifestyle & Luxury */}
-            <div className="rounded-2xl border border-white/8 p-6" style={{ background: "rgba(236,72,153,0.04)" }}>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#ec4899", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Lifestyle & Luxury</p>
-              <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Scraping RSS + editoriale + deal + reportage + analisi mercato. Scheduler automatico alle 06:00 CET.</p>
-              <button onClick={() => { setRefreshingLuxury(true); refreshLuxuryMutation.mutate(); }} disabled={refreshingLuxury}
-                className="w-full px-4 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "rgba(236,72,153,0.3)", color: "#f9a8d4", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", border: "1px solid rgba(236,72,153,0.4)" }}>
-                {refreshingLuxury ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-pink-300 border-t-transparent rounded-full animate-spin" />Aggiornamento Luxury...</span> : "💎 Aggiorna Lifestyle & Luxury →"}
-              </button>
-            </div>
-
             {/* Newsletter Giornaliera per Canale */}
             <div className="rounded-2xl border border-[#1a1a1a]/20 p-6" style={{ background: "rgba(0,229,200,0.03)" }}>
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -659,7 +512,7 @@ export default function Admin() {
                 const schedule = [
                   { dow: 1, dayName: "Lunedì",    channel: "AI NEWS News",  color: "#1a1a1a", subs: aiSubscribers },
                   { dow: 3, dayName: "Mercoledì", channel: "STARTUP NEWS",       color: "#2a2a2a", subs: startupSubs },
-                  { dow: 5, dayName: "Venerdì",   channel: "AI NEWS News",  color: "#1a1a1a", subs: aiSubscribers },
+                  { dow: 5, dayName: "Venerdì",   channel: "AI NEWS News",  color: "#1a1a1a", subs: aiSubscribers }
                 ];
                 const upcoming = [...schedule, ...schedule, ...schedule]
                   .map((s, i) => {
@@ -734,11 +587,7 @@ export default function Admin() {
                   {[
                     { key: "ai", label: "AI", color: "#1a1a1a" },
                     { key: "startup", label: "Startup", color: "#2a2a2a" },
-                    { key: "finance", label: "Finance", color: "#1a56db" },
-                    { key: "sport", label: "Sport", color: "#059669" },
-                    { key: "music", label: "Music", color: "#9333ea" },
-                    { key: "luxury", label: "Luxury", color: "#d97706" },
-                    { key: "health", label: "Health", color: "#2a2a2a" },
+                    { key: "dealroom", label: "DEALROOM", color: "#2a2a2a" }
                   ].map((ch) => (
                     <button
                       key={ch.key}
@@ -886,11 +735,11 @@ export default function Admin() {
                             <span
                               className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
                               style={{
-                                background: sub.newsletter === "itsmusic" ? "rgba(139,92,246,0.15)" : sub.newsletter === "both" ? "rgba(0,229,200,0.1)" : "rgba(0,102,255,0.15)",
-                                color: sub.newsletter === "itsmusic" ? "#2a2a2a" : sub.newsletter === "both" ? "#1a1a1a" : "#60a5fa",
+                                background: "rgba(0,102,255,0.15)",
+                                color: "#60a5fa",
                               }}
                             >
-                              {sub.newsletter === "ai4business" ? "AI4Biz" : sub.newsletter === "itsmusic" ? "ITsMusic" : "Entrambe"}
+                              {sub.newsletter ?? "Newsletter"}
                             </span>
                           </td>
                           <td className="px-4 py-3">

@@ -2,27 +2,15 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom';
+type ChannelKey = 'ai' | 'startup' | 'dealroom';
 
 const CHANNEL_META: Record<ChannelKey, { label: string; day: string; color: string }> = {
-  ai:      { label: 'AI',      day: 'Lun', color: '#1a1a1a' },
-  startup: { label: 'Startup', day: 'Mar', color: '#2a2a2a' },
-  finance: { label: 'Finance', day: 'Mer', color: '#1a56db' },
-  sport:   { label: 'Sport',   day: 'Gio', color: '#059669' },
-  music:   { label: 'Music',   day: 'Ven', color: '#2a2a2a' },
-  luxury:  { label: 'Luxury',  day: 'Sab', color: '#2a2a2a' },
-  health:  { label: 'Health',  day: 'Dom', color: '#2a2a2a' },
-  news:    { label: 'News',    day: 'Lun', color: '#c0392b' },
-  motori:  { label: 'Motori',  day: 'Mar', color: '#e67e22' },
-  tennis:  { label: 'Tennis',  day: 'Mer', color: '#27ae60' },
-  basket:       { label: 'Basket',       day: 'Gio', color: '#8e44ad' },
-  gossip:       { label: 'Gossip',       day: 'Mar', color: '#9b59b6' },
-  cybersecurity: { label: 'Cyber',      day: 'Gio', color: '#27ae60' },
-  sondaggi:     { label: 'Sondaggi',    day: 'Sab', color: '#2980b9' },
-  dealroom:     { label: 'DEALROOM',    day: 'Ven', color: '#1a4a2e' },
+  ai:       { label: 'AI News',      day: 'Lun', color: '#1a1a1a' },
+  startup:  { label: 'Startup News', day: 'Mer', color: '#2a2a2a' },
+  dealroom: { label: 'DEALROOM',     day: 'Ven', color: '#0f0f0f' }
 };
 
-const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'dealroom', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi'];
+const ALL_CHANNELS: ChannelKey[] = ["ai", "startup", "dealroom"];
 
 interface Props {
   /** Canale pre-selezionato (pagina corrente) */
@@ -38,7 +26,7 @@ export default function NewsletterSubscribeForm({
   defaultChannel,
   accentColor,
   fontBody = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
-  fontMono = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+  fontMono = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
 }: Props) {
   const [email, setEmail] = useState("");
   const [showChannels, setShowChannels] = useState(false);
@@ -52,7 +40,7 @@ export default function NewsletterSubscribeForm({
     },
     onError: (err) => {
       toast.error("Errore: " + err.message);
-    },
+    }
   });
 
   const toggleChannel = (key: ChannelKey) => {
@@ -131,7 +119,7 @@ export default function NewsletterSubscribeForm({
                   background: active ? meta.color : "transparent",
                   color: active ? "#fff" : meta.color,
                   border: `1.5px solid ${meta.color}`,
-                  opacity: active ? 1 : 0.6,
+                  opacity: active ? 1 : 0.6
                 }}
               >
                 <span>{meta.label}</span>

@@ -42,7 +42,7 @@ export const accountRouter = router({
   changePassword: publicProcedure
     .input(z.object({
       currentPassword: z.string(),
-      newPassword: z.string().min(6).max(128),
+      newPassword: z.string().min(6).max(128)
     }))
     .mutation(async ({ input, ctx }) => {
       const { user, db } = await requireSiteUser(ctx);
@@ -64,7 +64,7 @@ export const accountRouter = router({
       contentType: z.enum(["news", "editorial", "reportage", "analysis", "startup", "research"]),
       contentId: z.number().int().positive(),
       title: z.string().max(512),
-      section: z.string().max(64).optional(),
+      section: z.string().max(64).optional()
     }))
     .mutation(async ({ input, ctx }) => {
       const { user, db } = await requireSiteUser(ctx);
@@ -90,7 +90,7 @@ export const accountRouter = router({
         contentType: input.contentType,
         contentId: input.contentId,
         title: input.title,
-        section: input.section ?? null,
+        section: input.section ?? null
       });
 
       return { saved: true };
@@ -100,7 +100,7 @@ export const accountRouter = router({
   isSaved: publicProcedure
     .input(z.object({
       contentType: z.enum(["news", "editorial", "reportage", "analysis", "startup", "research"]),
-      contentId: z.number().int().positive(),
+      contentId: z.number().int().positive()
     }))
     .query(async ({ input, ctx }) => {
       const req = ctx.req as any;
@@ -173,7 +173,7 @@ export const accountRouter = router({
     .input(z.object({
       topics: z.array(
         z.enum(["ai", "startup", "research", "finance", "health", "sport", "venture_capital", "cybersecurity", "lifestyle"])
-      ).max(9),
+      ).max(9)
     }))
     .mutation(async ({ input, ctx }) => {
       const { user, db } = await requireSiteUser(ctx);
@@ -197,7 +197,7 @@ export const accountRouter = router({
         createdAt: user.createdAt,
         topicPreferences: user.topicPreferences
           ? JSON.parse(user.topicPreferences)
-          : [],
+          : []
       };
-    }),
+    })
 });

@@ -8,8 +8,8 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
 interface ReportSourceButtonProps {
-  section: "ai" | "music" | "startup";
-  articleType: "news" | "editorial" | "startup" | "reportage" | "analysis";
+  section: "ai" | "startup";
+  articleType: "editorial" | "startup" | "reportage" | "analysis";
   articleId: number;
   sourceUrl?: string;
   /** Colore accent della sezione (es. "#1a1a1a") */
@@ -21,7 +21,7 @@ const REASON_LABELS: Record<string, string> = {
   wrong_content: "Contenuto non pertinente",
   broken_link: "Link non funzionante",
   spam: "Spam o contenuto inappropriato",
-  other: "Altro",
+  other: "Altro"
 };
 
 export default function ReportSourceButton({
@@ -29,7 +29,7 @@ export default function ReportSourceButton({
   articleType,
   articleId,
   sourceUrl,
-  accentColor = "#1a1a1a",
+  accentColor = "#1a1a1a"
 }: ReportSourceButtonProps) {
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState<"not_found" | "wrong_content" | "broken_link" | "spam" | "other">("not_found");
@@ -44,7 +44,7 @@ export default function ReportSourceButton({
     },
     onError: (err) => {
       toast.error("Errore nell'invio: " + err.message);
-    },
+    }
   });
 
   if (submitted) {
@@ -83,7 +83,7 @@ export default function ReportSourceButton({
               background: "#0d1528",
               borderColor: "rgba(255,255,255,0.12)",
               minWidth: "280px",
-              maxWidth: "320px",
+              maxWidth: "320px"
             }}
           >
             <p
@@ -130,7 +130,7 @@ export default function ReportSourceButton({
               style={{
                 background: "rgba(255,255,255,0.05)",
                 borderColor: "rgba(255,255,255,0.1)",
-                color: "rgba(255,255,255,0.8)",
+                color: "rgba(255,255,255,0.8)"
               }}
             />
 
@@ -143,7 +143,7 @@ export default function ReportSourceButton({
                     articleId,
                     reportedUrl: sourceUrl,
                     reason,
-                    note: note.trim() || undefined,
+                    note: note.trim() || undefined
                   });
                 }}
                 disabled={reportMutation.isPending}

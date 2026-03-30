@@ -20,39 +20,30 @@ const ALL_TOPICS = [
   { key: "startup",         label: "Startup",            desc: "Funding, founder stories, ecosistema startup" },
   { key: "research",        label: "RICERCHE",           desc: "Ricerche e analisi di mercato" },
   { key: "dealroom",       label: "DEALROOM",           desc: "Round, funding, seed, Series A/B e investimenti VC" },
-  { key: "venture_capital", label: "Venture Capital",    desc: "Deal, round, fondi VC europei e globali" },
-  { key: "finance",         label: "Finance & Markets",  desc: "Mercati finanziari, macro, M&A" },
-  { key: "health",          label: "Health & Biotech",   desc: "Biotech, pharma, digital health" },
-  { key: "cybersecurity",   label: "Cybersecurity",      desc: "Sicurezza informatica, threat intelligence" },
-  { key: "sport",           label: "Sport & Business",   desc: "Business dello sport, sponsorship, media rights" },
-  { key: "lifestyle",       label: "Lifestyle & Luxury", desc: "Economia del lusso, lifestyle brand" },
+  { key: "venture_capital", label: "Venture Capital",    desc: "Deal, round, fondi VC europei e globali" }
 ];
 
 const SECTION_LABELS: Record<string, string> = {
   ai: "AI NEWS",
   startup: "STARTUP NEWS",
   research: "Research",
-  finance: "Finance",
-  health: "Health",
-  sport: "Sport",
+  health: "Health"
 };
 
 const TYPE_LABELS: Record<string, string> = {
-  news: "Notizia",
   editorial: "Editoriale",
   reportage: "Reportage",
   analysis: "Analisi",
   startup: "Startup",
-  research: "Ricerca",
+  research: "Ricerca"
 };
 
 const TYPE_PATHS: Record<string, string> = {
-  news: "news",
   editorial: "editoriale",
   reportage: "reportage",
   analysis: "analisi",
   startup: "spotlight",
-  research: "news",
+  research: "research",
 };
 
 export default function Account() {
@@ -160,7 +151,7 @@ function ChangePasswordCard() {
       setCurrentPwd(""); setNewPwd(""); setConfirmPwd("");
       setOpen(false);
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.message)
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -252,7 +243,7 @@ function ReadingList() {
   const { data: items, isLoading, refetch } = trpc.account.getReadingList.useQuery();
   const removeMutation = trpc.account.removeFromReadingList.useMutation({
     onSuccess: () => { refetch(); toast.success("Articolo rimosso dalla lista."); },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.message)
   });
 
   return (
@@ -354,7 +345,7 @@ function TopicPreferences() {
 
   const saveMutation = trpc.account.savePreferences.useMutation({
     onSuccess: () => { setSaved(true); toast.success("Preferenze salvate."); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message)
   });
 
   const toggle = (key: string) => {
@@ -383,7 +374,7 @@ function TopicPreferences() {
                 fontFamily: SF,
                 background: active ? "#1a1a1a" : "#fff",
                 borderColor: active ? "#1a1a1a" : "rgba(26,26,26,0.12)",
-                color: active ? "#fff" : "#1a1a1a",
+                color: active ? "#fff" : "#1a1a1a"
               }}
             >
               <span className="mt-0.5 text-sm">{active ? "✓" : "○"}</span>

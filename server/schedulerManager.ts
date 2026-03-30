@@ -19,8 +19,7 @@
  *  │  05:30 — Invalidazione cache (contenuti freschi disponibili)             │
  *  │  06:00 — Generazione 10 ricerche AI/Startup/VC (Research)               │
  *  │  06:45 — Audit link newsletter pre-invio                                │
- *  │  [DISABILITATO] 05:45 — Snapshot barometro politico (Sondaggi stand by) │
- *  │  [DISABILITATO] Finance, Health, Sport, Luxury, Music, Motori, ecc.      │
+ *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
  *  │  NEWSLETTER SETTIMANALE (3 canali, 3 giorni)                             │
  *  │  Lunedì    07:00 — Preview AI News → ac@acinelli.com                   │
@@ -46,20 +45,15 @@
  */
 
 import cron from "node-cron";
-import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshFinanceNewsFromRSS, refreshHealthNewsFromRSS, refreshSportNewsFromRSS, refreshLuxuryNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS, refreshNewsGeneraliFromRSS, refreshMotoriNewsFromRSS, refreshTennisNewsFromRSS, refreshBasketNewsFromRSS, refreshDealroomNewsFromRSS } from "./rssNewsScheduler";
-import { generateFinanceEditorial, generateFinanceDealOfWeek, generateFinanceReportage, generateFinanceMarketAnalysis } from "./financeScheduler";
-import { generateHealthEditorial, generateHealthDealOfWeek, generateHealthReportage, generateHealthMarketAnalysis } from "./healthScheduler";
-import { generateSportEditorial, generateSportDealOfWeek, generateSportReportage, generateSportMarketAnalysis } from "./sportScheduler";
-import { generateLuxuryEditorial, generateLuxuryDealOfWeek, generateLuxuryReportage, generateLuxuryMarketAnalysis } from "./luxuryScheduler";
+import { refreshAINewsFromRSS, refreshStartupNewsFromRSS, refreshDealroomNewsFromRSS } from "./rssNewsScheduler";
+
+
+
+
 import { runDailyContentRefresh } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
-import {
-  generateMusicEditorial,
-  generateArtistOfWeek,
-  generateMusicReportage,
-  generateMusicMarketAnalysis,
-} from "./musicScheduler";
+
 import {
   generateStartupEditorial,
   generateStartupOfWeek,
@@ -108,10 +102,8 @@ async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<vo
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
 import { invalidateAll, invalidateBySection, invalidateSection, CACHE_KEYS } from "./cache";
-import { saveBarometroSnapshot, getDb } from "./db";
-import { invokeLLM } from "./_core/llm";
-import { newsItems as newsItemsTable } from "../drizzle/schema";
-import { eq, desc } from "drizzle-orm";
+import { getDb } from "./db";
+import { eq } from "drizzle-orm";
 import { aggregateEvents } from "./eventsAggregator";
 
 const TZ = "Europe/Rome";
@@ -178,12 +170,7 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /music — ITsMusic [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("30 0 * * *", ...) — refreshMusicNewsFromRSS DISABILITATO
-  // cron.schedule("35 0 * * *", ...) — generateMusicEditorial DISABILITATO
-  // cron.schedule("45 0 * * 1", ...) — generateMusicReportage DISABILITATO
-  // cron.schedule("50 0 * * 1", ...) — generateMusicMarketAnalysis DISABILITATO
+
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /startup — Startup News
@@ -233,13 +220,7 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /finance — Finance & Markets [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("30 1 * * *", ...) — refreshFinanceNewsFromRSS DISABILITATO
-  // cron.schedule("35 1 * * *", ...) — generateFinanceEditorial DISABILITATO
-  // cron.schedule("45 1 * * 1", ...) — generateFinanceReportage DISABILITATO
-  // cron.schedule("50 1 * * 1", ...) — generateFinanceMarketAnalysis DISABILITATO
+
 
   // ══════════════════════════════════════════════════════════════════════════
   // AUDIT NOTTURNO — ogni giorno alle 02:00 CET
@@ -251,48 +232,7 @@ export function startAllSchedulers(): void {
     catch (err) { console.error("[SchedulerManager] ❌ Audit notturno:", err); }
   }, { timezone: TZ });
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /health — Health & Biotech [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("15 2 * * *", ...) — refreshHealthNewsFromRSS DISABILITATO
-  // cron.schedule("20 2 * * *", ...) — generateHealthEditorial DISABILITATO
-  // cron.schedule("30 2 * * 1", ...) — generateHealthReportage DISABILITATO
-  // cron.schedule("35 2 * * 1", ...) — generateHealthMarketAnalysis DISABILITATO
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /sport — Sport & Business [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("45 2 * * *", ...) — refreshSportNewsFromRSS DISABILITATO
-  // cron.schedule("50 2 * * *", ...) — generateSportEditorial DISABILITATO
-  // cron.schedule("55 2 * * 1", ...) — generateSportReportage DISABILITATO
-  // cron.schedule("58 2 * * 1", ...) — generateSportMarketAnalysis DISABILITATO
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /luxury — Lifestyle & Luxury [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("5 3 * * *", ...) — refreshLuxuryNewsFromRSS DISABILITATO
-  // cron.schedule("10 3 * * *", ...) — generateLuxuryEditorial DISABILITATO
-  // cron.schedule("20 3 * * 1", ...) — generateLuxuryReportage DISABILITATO
-  // cron.schedule("25 3 * * 1", ...) — generateLuxuryMarketAnalysis DISABILITATO
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /gossip — Business Gossip [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("30 3 * * *", ...) — refreshGossipNewsFromRSS DISABILITATO
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /cybersecurity — Cybersecurity [DISABILITATO — pivot IdeaSmart Research]
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("45 3 * * *", ...) — refreshCybersecurityNewsFromRSS DISABILITATO
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONI DISABILITATE — pivot IdeaSmart Research (27 Mar 2026)
-  // ══════════════════════════════════════════════════════════════════════════
-  // cron.schedule("0 4 * * *", ...) — refreshSondaggiNewsFromRSS DISABILITATO
-  // cron.schedule("0 4 15 * * *", ...) — refreshNewsGeneraliFromRSS DISABILITATO
-  // cron.schedule("0 30 4 * * *", ...) — refreshMotoriNewsFromRSS DISABILITATO
-  // cron.schedule("0 45 4 * * *", ...) — refreshTennisNewsFromRSS DISABILITATO
-  // cron.schedule("0 0 5 * * *", ...) — refreshBasketNewsFromRSS DISABILITATO
 
   // ══════════════════════════════════════════════════════════════════════════
   // INVALIDAZIONE CACHE — 05:30 CET (dopo tutti gli scheduler di scraping)
@@ -311,69 +251,7 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // SNAPSHOT BAROMETRO POLITICO — [DISABILITATO — sezione Sondaggi in stand by, 28 Mar 2026]
-  // ══════════════════════════════════════════════════════════════════════════
-  // Ogni giorno alle 05:45 salviamo uno snapshot del barometro politico
-  // per alimentare il grafico storico a 4 settimane nel widget Sondaggi.
-  // cron.schedule("45 5 * * *", async () => { // DISABILITATO
-  if (false) { // DISABILITATO — sezione Sondaggi in stand by
-  (async () => {
-    console.log("[SchedulerManager] ⏰ 05:45 CET — Salvataggio snapshot barometro politico...");
-    try {
-      const db = await getDb();
-      if (!db) { console.warn("[BarometroSnapshot] DB non disponibile"); return; }
-      const items = await db.select().from(newsItemsTable)
-        .where(eq(newsItemsTable.section, 'sondaggi'))
-        .orderBy(desc(newsItemsTable.createdAt))
-        .limit(30);
-      if (!items.length) { console.warn("[BarometroSnapshot] Nessuna notizia sondaggi disponibile"); return; }
-      const newsText = items.map(n => `TITOLO: ${n.title}\nSOMMARIO: ${n.summary}\nFONTE: ${n.sourceName ?? ''}\nDATA: ${n.publishedAt ?? ''}`).join('\n\n---\n\n');
-      const response = await invokeLLM({
-        messages: [
-          { role: 'system', content: 'Sei un analista politico italiano esperto di sondaggi. Estrai le intenzioni di voto dai sondaggi. Restituisci SEMPRE dati per i principali partiti italiani (FdI, PD, M5S, Lega, FI, AVS, Az/IV). I valori devono sommare a circa 100%.' },
-          { role: 'user', content: `Analizza queste notizie ed estrai le intenzioni di voto:\n\n${newsText}\n\nRestituisci JSON con partiti e percentuali.` }
-        ],
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'barometro_snapshot',
-            strict: true,
-            schema: {
-              type: 'object',
-              properties: {
-                partiti: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      nome: { type: 'string' },
-                      nomeCompleto: { type: 'string' },
-                      percentuale: { type: 'number' },
-                      colore: { type: 'string' },
-                    },
-                    required: ['nome', 'nomeCompleto', 'percentuale', 'colore'],
-                    additionalProperties: false,
-                  }
-                },
-                fonte: { type: 'string' },
-              },
-              required: ['partiti', 'fonte'],
-              additionalProperties: false,
-            },
-          },
-        },
-      });
-      const content = response.choices[0]?.message?.content;
-      if (!content) { console.warn("[BarometroSnapshot] LLM non ha restituito dati"); return; }
-      const parsed = JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
-      const today = new Date().toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD
-      await saveBarometroSnapshot(today, parsed.partiti, parsed.fonte ?? 'Elaborazione AI');
-      console.log(`[BarometroSnapshot] ✅ Snapshot salvato per ${today} — ${parsed.partiti.length} partiti`);
-    } catch (err) {
-      console.error("[BarometroSnapshot] ❌ Errore salvataggio snapshot:", err);
-    }
-  })(); } // fine blocco DISABILITATO barometro
+
 
   // ── Invalidazione cache parziale dopo LinkedIn (10:35 CET) ───────────────
   // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.

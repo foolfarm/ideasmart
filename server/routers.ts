@@ -11,7 +11,7 @@ import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
-import { sendItsMusicNewsletter } from "./musicNewsletterScheduler";
+
 import {
   addSubscriber,
   getAllSubscribers,
@@ -41,8 +41,6 @@ import {
   getAllActiveNotificationPreferences,
   getNewsletterCampaignStats,
   getSubscribersWithTracking,
-  getBarometroHistory,
-  saveBarometroSnapshot,
 } from "./db";
 import { generateLatestAINews, saveNewsToDb } from "./newsScheduler";
 import { generateStartupNews, generateStartupEditorial, generateStartupOfWeek, generateStartupReportage, generateStartupMarketAnalysis } from "./startupScheduler";
@@ -142,7 +140,7 @@ export const appRouter = router({
   // ── Market Analysis (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   marketAnalysis: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.MARKET_LATEST(input.section),
@@ -165,7 +163,7 @@ export const appRouter = router({
   // ── Weekly Reportage (public) ─────────────────────────────────────────────────────────────────────────────────────────────
   reportage: router({
     getLatestWeek: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.REPORTAGE_LATEST(input.section),
@@ -188,7 +186,7 @@ export const appRouter = router({
   // ── Editorial (public) ──────────────────────────────────────────────────────────────────────────────────
   editorial: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.EDITORIAL_LATEST(input.section),
@@ -211,7 +209,7 @@ export const appRouter = router({
   // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────
   startupOfDay: router({
     getLatest: publicProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         return cached(
           CACHE_KEYS.STARTUP_LATEST(input.section),
@@ -234,7 +232,7 @@ export const appRouter = router({
   // ── News (public) ──────────────────────────────────────────────────────────────────────────────────
   news: router({
     getLatest: publicProcedure
-      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ limit: z.number().min(1).max(50).default(20), section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         // Usa il filtro audit: esclude notizie con score < 40 o URL non raggiungibili
         const items = await cached(
@@ -270,14 +268,14 @@ export const appRouter = router({
 
     // Statistiche filtro audit per la dashboard admin
     getFilterStats: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         return countFilteredNews(input.section);
       }),
 
     // Recupera notizie con score < 40 per revisione/sostituzione
     getLowScore: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .query(async ({ input }) => {
         return getLowScoreNews(input.section);
       }),
@@ -317,7 +315,7 @@ export const appRouter = router({
     getRelated: publicProcedure
       .input(z.object({
         id: z.number(),
-        section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai'),
+        section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai'),
         limit: z.number().min(1).max(6).default(4),
       }))
       .query(async ({ input }) => {
@@ -352,7 +350,7 @@ export const appRouter = router({
     // Recupera tutte le notizie con filtri per l'Edicola
     getAll: publicProcedure
       .input(z.object({
-        section: z.enum(['all', 'ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('all'),
+        section: z.enum(['all', 'ai', 'startup', 'dealroom', 'research']).default('all'),
         category: z.string().optional(),
         dateFrom: z.string().optional(),
         dateTo: z.string().optional(),
@@ -725,175 +723,14 @@ export const appRouter = router({
         );
       }),
 
-    // Barometro Politico: estrae intenzioni di voto dai sondaggi recenti tramite LLM
-    getBarometro: publicProcedure
-      .query(async () => {
-        // TTL 30 minuti: la chiamata LLM è costosa, i sondaggi cambiano raramente
-        return cached(
-          CACHE_KEYS.BAROMETRO,
-          async () => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        // Prendi le ultime 30 notizie sondaggi per trovare dati percentuali
-        const items = await db.select().from(newsItemsTable)
-          .where(eq(newsItemsTable.section, 'sondaggi'))
-          .orderBy(desc(newsItemsTable.createdAt))
-          .limit(30);
-        if (!items.length) return null;
-
-        // Costruisci testo con titoli e sommari per l'LLM
-        const newsText = items.map(n => `TITOLO: ${n.title}\nSOMMARIO: ${n.summary}\nFONTE: ${n.sourceName ?? ''}\nDATA: ${n.publishedAt ?? ''}`).join('\n\n---\n\n');
-
-        try {
-          const response = await invokeLLM({
-            messages: [
-              {
-                role: 'system',
-                content: `Sei un analista politico italiano esperto di sondaggi. Analizza le notizie fornite ed estrai i dati sulle intenzioni di voto dei partiti italiani. Se non ci sono dati percentuali espliciti, stima le tendenze basandoti sul contesto. Restituisci SEMPRE dati per i principali partiti italiani (FdI, PD, M5S, Lega, FI, AVS, Az/IV, altri). I valori devono sommare a circa 100%.`
-              },
-              {
-                role: 'user',
-                content: `Analizza queste notizie sui sondaggi italiani ed estrai/stima le intenzioni di voto per i principali partiti:\n\n${newsText}\n\nRestituisci i dati in formato JSON con i partiti e le loro percentuali. Includi anche la fonte e la data del sondaggio più recente trovato.`
-              }
-            ],
-            response_format: {
-              type: 'json_schema',
-              json_schema: {
-                name: 'barometro_politico',
-                strict: true,
-                schema: {
-                  type: 'object',
-                  properties: {
-                    partiti: {
-                      type: 'array',
-                      items: {
-                        type: 'object',
-                        properties: {
-                          nome: { type: 'string', description: 'Nome del partito (abbreviazione)' },
-                          nomeCompleto: { type: 'string', description: 'Nome completo del partito' },
-                          percentuale: { type: 'number', description: 'Percentuale intenzioni di voto (0-100)' },
-                          colore: { type: 'string', description: 'Colore hex del partito (es. #1a3a6e per FdI)' },
-                          variazione: { type: 'number', description: 'Variazione rispetto al sondaggio precedente (positivo = crescita)' },
-                        },
-                        required: ['nome', 'nomeCompleto', 'percentuale', 'colore', 'variazione'],
-                        additionalProperties: false,
-                      }
-                    },
-                    fonte: { type: 'string', description: 'Nome istituto sondaggistico' },
-                    data: { type: 'string', description: 'Data del sondaggio (gg/mm/aaaa)' },
-                    nota: { type: 'string', description: 'Nota metodologica o contesto breve' },
-                  },
-                  required: ['partiti', 'fonte', 'data', 'nota'],
-                  additionalProperties: false,
-                },
-              },
-            },
-          });
-
-          const content = response.choices[0]?.message?.content;
-          if (!content) return null;
-          return JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
-        } catch (err) {
-          console.error('[Barometro] Errore LLM:', err);
-          return null;
-        }
-          },
-           TTL_LLM_WIDGET_MS // 30 min: widget LLM costoso
-        );
-      }),
-    // Storico intenzioni di voto (ultimi 28 giorni)
-    getBarometroHistory: publicProcedure
-      .input(z.object({ days: z.number().min(7).max(90).default(28) }).optional())
-      .query(async ({ input }) => {
-        const days = input?.days ?? 28;
-        return cached(
-          `barometro_history_${days}`,
-          () => getBarometroHistory(days),
-           TTL_SECTION_COUNT_MS // 5 minuti: storico barometro
-        );
-      }),
-    getThreatAlert: publicProcedure
-      .query(async () => {
-        // TTL 30 minuti: la chiamata LLM è costosa, le minacce cambiano raramente
-        return cached(
-          CACHE_KEYS.THREAT_ALERT,
-          async () => {
-        const db = await getDbInstance();
-        if (!db) return null;
-        // Prendi le ultime 40 notizie cybersecurity per trovare minacce
-        const items = await db.select().from(newsItemsTable)
-          .where(eq(newsItemsTable.section, 'cybersecurity'))
-          .orderBy(desc(newsItemsTable.createdAt))
-          .limit(40);
-        if (!items.length) return null;
-
-        const newsText = items.map(n => `TITOLO: ${n.title}\nSOMMARIO: ${n.summary}\nFONTE: ${n.sourceName ?? ''}\nDATA: ${n.publishedAt ?? ''}`).join('\n\n---\n\n');
-
-        try {
-          const response = await invokeLLM({
-            messages: [
-              {
-                role: 'system',
-                content: `Sei un analista di cybersecurity italiano esperto di threat intelligence. Analizza le notizie fornite ed estrai le principali minacce cyber della settimana in Italia e nel mondo. Identifica ransomware, phishing, vulnerabilità critiche, data breach e attacchi APT. Restituisci sempre 5-7 minacce ordinate per gravità.`
-              },
-              {
-                role: 'user',
-                content: `Analizza queste notizie cybersecurity ed estrai le principali minacce della settimana:\n\n${newsText}\n\nRestituisci i dati in formato JSON con le minacce, il livello di rischio e le raccomandazioni.`
-              }
-            ],
-            response_format: {
-              type: 'json_schema',
-              json_schema: {
-                name: 'threat_alert',
-                strict: true,
-                schema: {
-                  type: 'object',
-                  properties: {
-                    minacce: {
-                      type: 'array',
-                      items: {
-                        type: 'object',
-                        properties: {
-                          tipo: { type: 'string', description: 'Tipo di minaccia (Ransomware, Phishing, Vulnerabilità, Data Breach, APT, DDoS, altro)' },
-                          nome: { type: 'string', description: 'Nome o identificativo della minaccia' },
-                          descrizione: { type: 'string', description: 'Descrizione breve della minaccia (max 120 caratteri)' },
-                          livelloRischio: { type: 'string', description: 'Livello di rischio: CRITICO, ALTO, MEDIO, BASSO' },
-                          settoreColpito: { type: 'string', description: 'Settore principalmente colpito (PA, Finance, Healthcare, Industria, Privati, ecc.)' },
-                          fonte: { type: 'string', description: 'Fonte della notizia (CERT-AGID, ACN, Cybersecurity360, ecc.)' },
-                        },
-                        required: ['tipo', 'nome', 'descrizione', 'livelloRischio', 'settoreColpito', 'fonte'],
-                        additionalProperties: false,
-                      }
-                    },
-                    aggiornato: { type: 'string', description: 'Data aggiornamento (gg/mm/aaaa)' },
-                    sommario: { type: 'string', description: 'Sommario del panorama delle minacce della settimana (max 200 caratteri)' },
-                  },
-                  required: ['minacce', 'aggiornato', 'sommario'],
-                  additionalProperties: false,
-                },
-              },
-            },
-          });
-
-          const content = response.choices[0]?.message?.content;
-          if (!content) return null;
-          return JSON.parse(typeof content === 'string' ? content : JSON.stringify(content));
-        } catch (err) {
-          console.error('[ThreatAlert] Errore LLM:', err);
-          return null;
-        }
-          },
-           TTL_LLM_WIDGET_MS // 30 min: widget LLM costoso
-        );
-      }),
     // Sostituisce automaticamente le notizie con score < 40 con contenuto AI
     replaceAllLowScore: adminProcedure
-      .input(z.object({ section: z.enum(['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom']).default('ai') }))
+      .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
       .mutation(async ({ input }) => {
         const lowScoreNews = await getLowScoreNews(input.section);
         if (lowScoreNews.length === 0) return { replaced: 0, message: 'Nessuna notizia da sostituire' };
 
-        const sectionLabel = input.section === 'ai' ? 'intelligenza artificiale e business' : 'musica rock, indie e industria musicale';
+        const sectionLabel = input.section === 'ai' ? 'intelligenza artificiale e business' : 'startup e innovazione';
         let replaced = 0;
 
         for (const news of lowScoreNews) {
@@ -951,7 +788,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         async () => {
           const db = await getDbInstance();
           if (!db) return {} as Record<string, number>;
-          const sections = ['ai', 'music', 'startup', 'finance', 'health', 'sport', 'luxury', 'news', 'motori', 'tennis', 'basket', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom'] as const;
+          const sections = ['ai', 'startup', 'dealroom'] as const;
           const results = await Promise.all(
             sections.map(async (section) => {
               const rows = await db.select({ cnt: count() }).from(newsItemsTable)
@@ -1088,11 +925,11 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
     updateChannelPreferences: publicProcedure
       .input(z.object({
         token: z.string().min(10),
-        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'dealroom'])).min(1, 'Seleziona almeno un canale'),
+        channels: z.array(z.enum(['ai', 'startup', 'dealroom', 'research'])).min(1, 'Seleziona almeno un canale'),
       }))
       .mutation(async ({ input }) => {
         const { updateSubscriberChannelsByToken } = await import('./db');
-        const result = await updateSubscriberChannelsByToken(input.token, input.channels);
+        const result = await updateSubscriberChannelsByToken(input.token, input.channels as any);
         if (!result.success) {
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Token non valido o scaduto' });
         }
@@ -1104,7 +941,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
       .input(z.object({
         email: z.string().email('Email non valida'),
         name: z.string().optional(),
-        channels: z.array(z.enum(['ai', 'startup', 'finance', 'health', 'sport', 'luxury', 'music', 'news', 'motori', 'tennis', 'basket', 'dealroom'])).optional(),
+        channels: z.array(z.enum(['ai', 'startup', 'dealroom', 'research'])).optional(),
       }))
       .mutation(async ({ input }) => {
         const { addSubscriberWithChannels } = await import('./db');
@@ -1112,7 +949,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           email: input.email,
           name: input.name,
           source: 'website',
-          channels: input.channels,
+          channels: input.channels as any,
         });
 
         if ((result as any).success || (result as any).resubscribed) {
@@ -1132,7 +969,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
               name: input.name,
               unsubscribeUrl: unsubUrl,
               preferencesUrl: prefsUrl,
-              channels: input.channels,
+              channels: input.channels as any,
             });
 
             await sendEmail({
@@ -1536,97 +1373,10 @@ Rispondi con questo JSON:
       return { generated: results.length, errorsCount: errors.length, results, errors };
     }),
 
-    // ── ITsMusic Newsletter ──────────────────────────────────────────────────
-    triggerItsMusicNewsletter: adminProcedure.mutation(async () => {
-      const result = await sendItsMusicNewsletter();
-      if (!result.success && result.error) {
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error });
-      }
-      return {
-        success: result.success,
-        recipientCount: result.recipientCount,
-        newsCount: result.newsCount,
-        subject: result.subject,
-      };
-    }),
 
-    // ── Aggiornamento News Musicali ──────────────────────────────────────────
-    refreshMusicNews: adminProcedure.mutation(async () => {
-      const { generateMusicNews } = await import("./musicScheduler");
-      const count = await generateMusicNews();
-      return { count, message: `${count} notizie musicali aggiornate con successo` };
-    }),
-    // ── Finance & Markets ────────────────────────────────────────────────────────
-    refreshFinanceAll: adminProcedure.mutation(async () => {
-      const { refreshFinanceNewsFromRSS } = await import("./rssNewsScheduler");
-      const { generateFinanceEditorial, generateFinanceDealOfWeek, generateFinanceReportage, generateFinanceMarketAnalysis } = await import("./financeScheduler");
-      await refreshFinanceNewsFromRSS();
-      await generateFinanceEditorial();
-      await generateFinanceDealOfWeek();
-      await generateFinanceReportage();
-      await generateFinanceMarketAnalysis();
-      return { success: true, message: "Finance & Markets aggiornato con successo" };
-    }),
-    // ── Health & Biotech ────────────────────────────────────────────────────────
-    refreshHealthAll: adminProcedure.mutation(async () => {
-      const { refreshHealthNewsFromRSS } = await import("./rssNewsScheduler");
-      const { generateHealthEditorial, generateHealthDealOfWeek, generateHealthReportage, generateHealthMarketAnalysis } = await import("./healthScheduler");
-      await refreshHealthNewsFromRSS();
-      await generateHealthEditorial();
-      await generateHealthDealOfWeek();
-      await generateHealthReportage();
-      await generateHealthMarketAnalysis();
-      return { success: true, message: "Health & Biotech aggiornato con successo" };
-    }),
-    // ── Sport & Business ────────────────────────────────────────────────────────
-    refreshSportAll: adminProcedure.mutation(async () => {
-      const { refreshSportNewsFromRSS } = await import("./rssNewsScheduler");
-      const { generateSportEditorial, generateSportDealOfWeek, generateSportReportage, generateSportMarketAnalysis } = await import("./sportScheduler");
-      await refreshSportNewsFromRSS();
-      await generateSportEditorial();
-      await generateSportDealOfWeek();
-      await generateSportReportage();
-      await generateSportMarketAnalysis();
-      return { success: true, message: "Sport & Business aggiornato con successo" };
-    }),
-    // ── Lifestyle & Luxury ───────────────────────────────────────────────────────
-    refreshLuxuryAll: adminProcedure.mutation(async () => {
-      const { refreshLuxuryNewsFromRSS } = await import("./rssNewsScheduler");
-      const { generateLuxuryEditorial, generateLuxuryDealOfWeek, generateLuxuryReportage, generateLuxuryMarketAnalysis } = await import("./luxuryScheduler");
-      await refreshLuxuryNewsFromRSS();
-      await generateLuxuryEditorial();
-      await generateLuxuryDealOfWeek();
-      await generateLuxuryReportage();
-      await generateLuxuryMarketAnalysis();
-      return { success: true, message: "Lifestyle & Luxury aggiornato con successo" };
-    }),
-    // ── Refresh News Generali ────────────────────────────────────────────────────────────
-    refreshNewsAll: adminProcedure.mutation(async () => {
-      const { refreshNewsGeneraliFromRSS } = await import("./rssNewsScheduler");
-      await refreshNewsGeneraliFromRSS();
-      return { success: true, message: "News Italia aggiornate con successo" };
-    }),
 
-    // ── Refresh Motori ───────────────────────────────────────────────────────────────────
-    refreshMotoriAll: adminProcedure.mutation(async () => {
-      const { refreshMotoriNewsFromRSS } = await import("./rssNewsScheduler");
-      await refreshMotoriNewsFromRSS();
-      return { success: true, message: "Motori aggiornato con successo" };
-    }),
 
-    // ── Refresh Tennis ───────────────────────────────────────────────────────────────────
-    refreshTennisAll: adminProcedure.mutation(async () => {
-      const { refreshTennisNewsFromRSS } = await import("./rssNewsScheduler");
-      await refreshTennisNewsFromRSS();
-      return { success: true, message: "Tennis aggiornato con successo" };
-    }),
 
-    // ── Refresh Basket ───────────────────────────────────────────────────────────────────
-    refreshBasketAll: adminProcedure.mutation(async () => {
-      const { refreshBasketNewsFromRSS } = await import("./rssNewsScheduler");
-      await refreshBasketNewsFromRSS();
-      return { success: true, message: "Basket aggiornato con successo" };
-    }),
 
     // ── Refresh TUTTI i canali RSS ────────────────────────────────────────────────────────
     refreshAllRSSChannels: adminProcedure.mutation(async () => {
@@ -1724,20 +1474,9 @@ Rispondi con questo JSON:
       const { eq, desc, sql: sqlExpr, and, gte } = await import("drizzle-orm");
 
       const SECTIONS = [
-        { key: "news", label: "News Italia", icon: "🇮🇹" },
         { key: "ai", label: "AI News", icon: "🤖" },
         { key: "startup", label: "Startup News", icon: "🚀" },
-        { key: "finance", label: "Finance & Markets", icon: "📈" },
-        { key: "sport", label: "Sport & Business", icon: "⚽" },
-        { key: "motori", label: "Motori", icon: "🏎️" },
-        { key: "tennis", label: "Tennis", icon: "🎾" },
-        { key: "basket", label: "Basket", icon: "🏀" },
-        { key: "health", label: "Health & Biotech", icon: "🏥" },
-        { key: "luxury", label: "Lifestyle & Luxury", icon: "💎" },
-        { key: "music", label: "ITsMusic", icon: "🎵" },
-        { key: "gossip", label: "Business Gossip", icon: "💬" },
-        { key: "cybersecurity", label: "Cybersecurity", icon: "🔒" },
-        { key: "sondaggi", label: "Sondaggi", icon: "📊" },
+        { key: "dealroom", label: "DEALROOM", icon: "💰" },
       ] as const;
 
       // Inizio giornata odierna (UTC)
@@ -1789,7 +1528,7 @@ Rispondi con questo JSON:
     // Trigger manuale scraping per una sezione specifica
     triggerSectionScraping: adminProcedure
       .input(z.object({
-        section: z.enum(["news", "ai", "startup", "finance", "sport", "motori", "tennis", "basket", "health", "luxury", "music", "gossip", "cybersecurity", "sondaggi", "dealroom", "all"]),
+        section: z.enum(["ai", "startup", "dealroom", "all"]),
       }))
       .mutation(async ({ input }) => {
         const { section } = input;
@@ -1798,18 +1537,6 @@ Rispondi con questo JSON:
         const {
           refreshAINewsFromRSS,
           refreshStartupNewsFromRSS,
-          refreshFinanceNewsFromRSS,
-          refreshSportNewsFromRSS,
-          refreshHealthNewsFromRSS,
-          refreshMusicNewsFromRSS,
-          refreshNewsGeneraliFromRSS,
-          refreshMotoriNewsFromRSS,
-          refreshTennisNewsFromRSS,
-          refreshBasketNewsFromRSS,
-          refreshGossipNewsFromRSS,
-          refreshCybersecurityNewsFromRSS,
-          refreshSondaggiNewsFromRSS,
-          refreshLuxuryNewsFromRSS,
           refreshDealroomNewsFromRSS,
           refreshAllNewsFromRSS,
         } = await import("./rssNewsScheduler");
@@ -1817,18 +1544,6 @@ Rispondi con questo JSON:
         const scraperMap: Record<string, () => Promise<void>> = {
           ai: refreshAINewsFromRSS,
           startup: refreshStartupNewsFromRSS,
-          finance: refreshFinanceNewsFromRSS,
-          sport: refreshSportNewsFromRSS,
-          health: refreshHealthNewsFromRSS,
-          music: refreshMusicNewsFromRSS,
-          news: refreshNewsGeneraliFromRSS,
-          motori: refreshMotoriNewsFromRSS,
-          tennis: refreshTennisNewsFromRSS,
-          basket: refreshBasketNewsFromRSS,
-          gossip: refreshGossipNewsFromRSS,
-          cybersecurity: refreshCybersecurityNewsFromRSS,
-          sondaggi: refreshSondaggiNewsFromRSS,
-          luxury: refreshLuxuryNewsFromRSS,
           dealroom: refreshDealroomNewsFromRSS,
         };
 
@@ -1852,7 +1567,7 @@ Rispondi con questo JSON:
     // Aggiungi un commento a un articolo
     add: publicProcedure
       .input(z.object({
-        section: z.enum(["ai", "music", "startup"]),
+        section: z.enum(["ai", "startup"]),
         articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
         articleId: z.number().int().positive(),
         authorName: z.string().min(2).max(100),
@@ -1877,7 +1592,7 @@ Rispondi con questo JSON:
     // Recupera i commenti approvati per un articolo
     getByArticle: publicProcedure
       .input(z.object({
-        section: z.enum(["ai", "music", "startup"]),
+        section: z.enum(["ai", "startup"]),
         articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
         articleId: z.number().int().positive(),
       }))
@@ -1906,7 +1621,7 @@ Rispondi con questo JSON:
     // Avvia un audit batch sulle ultime notizie
     runBatch: adminProcedure
       .input(z.object({
-        section: z.enum(["ai", "music", "startup"]).optional(),
+        section: z.enum(["ai", "startup"]).optional(),
         contentType: z.enum(["news", "analysis"]).default("news"),
         limit: z.number().min(1).max(50).default(10),
       }))
@@ -1936,7 +1651,7 @@ Rispondi con questo JSON:
     // Recupera i risultati dell'audit con filtri
     getResults: adminProcedure
       .input(z.object({
-        section: z.enum(["ai", "music", "startup"]).optional(),
+        section: z.enum(["ai", "startup"]).optional(),
         status: z.enum(["ok", "warning", "error", "unreachable", "pending"]).optional(),
         contentType: z.enum(["news", "analysis", "reportage", "startup"]).optional(),
         limit: z.number().min(1).max(100).default(50),
@@ -1977,7 +1692,7 @@ Rispondi con questo JSON:
     // Audit completo: news + analisi + reportage
     runFullAuditNow: adminProcedure
       .input(z.object({
-        section: z.enum(["ai", "music", "startup"]).optional(),
+        section: z.enum(["ai", "startup"]).optional(),
         limit: z.number().min(1).max(50).default(20),
       }))
       .mutation(async ({ input }) => {

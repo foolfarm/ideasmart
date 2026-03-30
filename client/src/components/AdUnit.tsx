@@ -80,7 +80,7 @@ export const AD_SLOTS = {
   SONDAGGI_TOP:    "8723745625",
   SONDAGGI_MID1:   "8948908650",
   SONDAGGI_MID2:   "3313438599",
-  SONDAGGI_BOTTOM: "8723745625",
+  SONDAGGI_BOTTOM: "8723745625"
 } as const;
 
 // ─── Tipi ──────────────────────────────────────────────────────────────────────
@@ -102,7 +102,7 @@ export default function AdUnit({
   className = "",
   layout,
   style,
-  label = "Pubblicità",
+  label = "Pubblicità"
 }: AdUnitProps) {
   const adRef = useRef<HTMLModElement>(null);
   const initialized = useRef(false);

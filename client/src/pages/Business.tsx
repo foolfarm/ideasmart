@@ -81,7 +81,7 @@ const PLATFORM_FEATURES = [
     icon: "📧",
     title: "Newsletter settimanale",
     desc: "Ogni venerdì mattina: i 5 report più rilevanti della settimana, curati dall'Intelligence Curator agentico. Direttamente nella tua inbox.",
-  },
+  }
 ];
 
 const PLATFORM_PLANS = [
@@ -96,7 +96,7 @@ const PLATFORM_PLANS = [
       "Accesso alle notizie AI NEWS e STARTUP NEWS",
       "5 Executive Report al mese",
       "Newsletter settimanale",
-      "Punto del Giorno (post LinkedIn)",
+      "Punto del Giorno (post LinkedIn)"
     ],
     cta: "Inizia gratis",
     href: "/",
@@ -115,7 +115,7 @@ const PLATFORM_PLANS = [
       "Ricerche di mercato illimitate",
       "Feed personalizzato per settore",
       "Alert real-time su M&A e VC deals",
-      "Archivio storico 12 mesi",
+      "Archivio storico 12 mesi"
     ],
     cta: "Prova 14 giorni gratis",
     href: "mailto:business@ideasmart.ai?subject=Research Pro",
@@ -134,12 +134,12 @@ const PLATFORM_PLANS = [
       "API access ai dati IdeaSmart",
       "Briefing personalizzati per il board",
       "Integrazione Slack / Teams",
-      "Account manager dedicato",
+      "Account manager dedicato"
     ],
     cta: "Contattaci",
     href: "mailto:business@ideasmart.ai?subject=Enterprise",
     outline: true,
-  },
+  }
 ];
 
 // ── Dati Advisory (Offerta B) ─────────────────────────────────────────────────
@@ -187,7 +187,7 @@ const ADVISORY_SERVICES = [
     subtitle: "Ricerche di mercato per decisioni di investimento",
     desc: "Ricerche verticali e personalizzate per fondi VC, family office e investitori istituzionali: analisi di settore, landscape competitivo, benchmark di valutazione, trend di mercato e identificazione delle opportunità di investimento più rilevanti nell'ecosistema AI e deeptech europeo.",
     deliverables: ["Sector Deep Dives", "Competitive Landscape", "Valuation Benchmarks", "Deal Flow Intelligence"],
-  },
+  }
 ];
 
 const ADVISORY_TEAM = [
@@ -222,7 +222,7 @@ const ADVISORY_TEAM = [
     bg: "#f0fdf4",
     color: "#1a1a1a",
     detail: "Ex Partner fondatore di un fondo VC deeptech con €300M AUM. 18+ anni nell'ecosistema VC europeo. Portfolio di 50+ investimenti in AI, robotica e biotech.",
-  },
+  }
 ];
 
 const ADVISORY_FORMATS = [
@@ -240,7 +240,7 @@ const ADVISORY_FORMATS = [
     icon: "🏛️",
     title: "Board Advisory",
     desc: "Un senior advisor come membro dell'advisory board con presenza alle riunioni chiave. Il formato più intensivo per chi vuole un partner strategico a lungo termine.",
-  },
+  }
 ];
 
 // ── Componenti ────────────────────────────────────────────────────────────────
@@ -487,7 +487,7 @@ export default function Business() {
                   { v: "20+", l: "Ricerche/giorno" },
                   { v: "450+", l: "Fonti monitorate" },
                   { v: "00:00", l: "Aggiornamento CET" },
-                  { v: "100%", l: "Dati verificati" },
+                  { v: "100%", l: "Dati verificati" }
                 ].map(({ v, l }) => (
                   <div key={l} className="text-center p-3 rounded-sm" style={{ background: TEAL_LT }}>
                     <div

@@ -18,8 +18,7 @@ const PROFILE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4
 
 const SECTION_COLORS: Record<string, { accent: string; label: string }> = {
   ai:      { accent: "#1a1a1a", label: "AI NEWS" },
-  startup: { accent: "#2a2a2a", label: "STARTUP NEWS" },
-  finance: { accent: "#1a1a1a", label: "Finance & Markets" },
+  startup: { accent: "#2a2a2a", label: "STARTUP NEWS" }
 };
 
 function formatDateIT(dateLabel: string): string {
@@ -46,7 +45,7 @@ function PostCard({ post }: {
 }) {
   const [expanded, setExpanded] = useState(false);
   const paragraphs = post.postText
-    .split(/\n{2,}/)
+    .split(/\n{2}/)
     .map(p => p.trim())
     .filter(p => p.length > 0 && !p.startsWith("#"));
 

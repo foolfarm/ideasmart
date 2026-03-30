@@ -27,14 +27,14 @@ export default function AdminNewsletterPerformance() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "unsubscribed">("all");
   const [filterOpened, setFilterOpened] = useState<"all" | "opened" | "never">("all");
-  const [filterChannel, setFilterChannel] = useState<"all" | "ai" | "startup" | "finance" | "sport" | "music" | "luxury" | "health">("all");
+  const [filterChannel, setFilterChannel] = useState<"all" | "ai" | "startup" | "health">("all");
   const [tab, setTab] = useState<"campaigns" | "subscribers">("campaigns");
 
   const campaignsQuery = trpc.admin.getNewsletterCampaignStats.useQuery(undefined, {
-    enabled: user?.role === "admin",
+    enabled: user?.role === "admin"
   });
   const subscribersQuery = trpc.admin.getSubscribersWithTracking.useQuery(undefined, {
-    enabled: user?.role === "admin",
+    enabled: user?.role === "admin"
   });
 
   if (loading) {
@@ -74,12 +74,7 @@ export default function AdminNewsletterPerformance() {
   // Definizione canali con colori
   const CHANNELS = [
     { key: "ai", label: "AI", color: "#1a1a1a" },
-    { key: "startup", label: "Startup", color: "#2a2a2a" },
-    { key: "finance", label: "Finance", color: "#3b82f6" },
-    { key: "sport", label: "Sport", color: "#22c55e" },
-    { key: "music", label: "Music", color: "#a855f7" },
-    { key: "luxury", label: "Luxury", color: "#f59e0b" },
-    { key: "health", label: "Health", color: "#ec4899" },
+    { key: "startup", label: "Startup", color: "#2a2a2a" }
   ] as const;
 
   // Statistiche segmentazione per canale (iscritti attivi per ogni canale)
@@ -87,7 +82,7 @@ export default function AdminNewsletterPerformance() {
     ...ch,
     count: allSubs.filter(s =>
       s.status === "active" && (s.parsedChannels as string[] ?? []).includes(ch.key)
-    ).length,
+    ).length
   }));
 
   // Filtra iscritti
@@ -137,7 +132,7 @@ export default function AdminNewsletterPerformance() {
                 style={{
                   background: filterChannel === ch.key ? `${ch.color}22` : "rgba(255,255,255,0.03)",
                   borderColor: filterChannel === ch.key ? ch.color : "rgba(255,255,255,0.08)",
-                  cursor: "pointer",
+                  cursor: "pointer"
                 }}
               >
                 <div className="text-2xl font-black mb-0.5" style={{ color: ch.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -156,7 +151,7 @@ export default function AdminNewsletterPerformance() {
             { label: "Email totali inviate", value: totalSent.toLocaleString("it-IT"), color: "#1a1a1a", icon: "📤" },
             { label: "Aperture totali", value: totalOpened.toLocaleString("it-IT"), color: "#1a1a1a", icon: "👁" },
             { label: "Tasso apertura medio", value: `${avgOpenRate}%`, color: avgOpenRate >= 20 ? "#1a1a1a" : avgOpenRate >= 10 ? "#ff9900" : "#2a2a2a", icon: "📊" },
-            { label: "Disiscrizioni totali", value: totalUnsubscribed.toLocaleString("it-IT"), color: "#2a2a2a", icon: "🚫" },
+            { label: "Disiscrizioni totali", value: totalUnsubscribed.toLocaleString("it-IT"), color: "#2a2a2a", icon: "🚫" }
           ].map((stat) => (
             <div key={stat.label} className="rounded-2xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
               <div className="text-2xl mb-1">{stat.icon}</div>
@@ -172,7 +167,7 @@ export default function AdminNewsletterPerformance() {
         <div className="flex gap-2 mb-8 border-b border-white/8 pb-0">
           {[
             { id: "campaigns", label: `Campagne (${campaigns.length})` },
-            { id: "subscribers", label: `Iscritti (${allSubs.length})` },
+            { id: "subscribers", label: `Iscritti (${allSubs.length})` }
           ].map(t => (
             <button
               key={t.id}
@@ -182,7 +177,7 @@ export default function AdminNewsletterPerformance() {
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 color: tab === t.id ? "#1a1a1a" : "rgba(255,255,255,0.35)",
                 borderBottomColor: tab === t.id ? "#1a1a1a" : "transparent",
-                background: "transparent",
+                background: "transparent"
               }}
             >
               {t.label}
@@ -303,10 +298,6 @@ export default function AdminNewsletterPerformance() {
                 <option value="all">Tutti i canali</option>
                 <option value="ai">AI</option>
                 <option value="startup">Startup</option>
-                <option value="finance">Finance</option>
-                <option value="sport">Sport</option>
-                <option value="music">Music</option>
-                <option value="luxury">Luxury</option>
                 <option value="health">Health</option>
               </select>
               <span className="ml-auto text-xs text-white/30 self-center">
@@ -362,7 +353,7 @@ export default function AdminNewsletterPerformance() {
                                 className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
                                 style={{
                                   background: isUnsub ? "rgba(255,85,0,0.15)" : "rgba(0,229,200,0.15)",
-                                  color: isUnsub ? "#2a2a2a" : "#1a1a1a",
+                                  color: isUnsub ? "#2a2a2a" : "#1a1a1a"
                                 }}
                               >
                                 {isUnsub ? "Disattivato" : "Attivo"}
@@ -392,12 +383,7 @@ export default function AdminNewsletterPerformance() {
                                 {(sub.parsedChannels as string[] ?? []).map((ch: string) => {
                                   const chInfo = [
                                     { key: "ai", label: "AI", color: "#1a1a1a" },
-                                    { key: "startup", label: "ST", color: "#2a2a2a" },
-                                    { key: "finance", label: "FI", color: "#3b82f6" },
-                                    { key: "sport", label: "SP", color: "#22c55e" },
-                                    { key: "music", label: "MU", color: "#a855f7" },
-                                    { key: "luxury", label: "LX", color: "#f59e0b" },
-                                    { key: "health", label: "HE", color: "#ec4899" },
+                                    { key: "startup", label: "ST", color: "#2a2a2a" }
                                   ].find(c => c.key === ch);
                                   if (!chInfo) return null;
                                   return (

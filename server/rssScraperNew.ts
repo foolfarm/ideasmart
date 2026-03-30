@@ -20,18 +20,18 @@
 import Parser from "rss-parser";
 import axios from "axios";
 import { invokeLLM } from "./_core/llm";
-import { AI_SOURCES, MUSIC_SOURCES, STARTUP_SOURCES, FINANCE_SOURCES, HEALTH_SOURCES, SPORT_SOURCES, LUXURY_SOURCES, NEWS_SOURCES, MOTORI_SOURCES, TENNIS_SOURCES, BASKET_SOURCES, GOSSIP_SOURCES, CYBERSECURITY_SOURCES, SONDAGGI_SOURCES, DEALROOM_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
+import { AI_SOURCES, STARTUP_SOURCES, DEALROOM_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
 const rssParser = new Parser({
   timeout: 10000,
   headers: {
     "User-Agent": "IDEASMART/1.0 (news aggregator; https://ideasmart.ai)",
-    "Accept": "application/rss+xml, application/xml, text/xml, */*",
+    "Accept": "application/rss+xml, application/xml, text/xml, */*"
   },
   customFields: {
-    item: [["media:content", "mediaContent"], ["dc:creator", "creator"]],
-  },
+    item: [["media:content", "mediaContent"], ["dc:creator", "creator"]]
+  }
 });
 
 export interface ScrapedArticle {
@@ -97,7 +97,7 @@ async function fetchFeed(source: RssSource): Promise<Array<{
         pubDate: item.pubDate || new Date().toISOString(),
         sourceName: source.name,
         sourceHomepage: source.homepage,
-        videoUrl: extractVideoUrl(item as unknown as Record<string, unknown>),
+        videoUrl: extractVideoUrl(item as unknown as Record<string, unknown>)
       }));
   } catch (err) {
     console.warn(`[RssScraper] Feed non raggiungibile: ${source.feedUrl} — ${(err as Error).message}`);
@@ -150,7 +150,7 @@ async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fe
  */
 async function selectAndTranslate(
   articles: Awaited<ReturnType<typeof fetchAllFeeds>>,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom" | "dealroom"
+  section: "ai" | "startup" | "dealroom"
 ): Promise<ScrapedArticle[]> {
   if (articles.length === 0) {
     console.warn(`[RssScraper] Nessun articolo disponibile per ${section}`);
@@ -161,78 +161,19 @@ async function selectAndTranslate(
     ai: {
       label: "AI News",
       categories: ["Modelli Generativi", "AI Agentiva", "Big Tech", "Startup & Funding", "AI & Hardware", "Robot & AI Fisica", "AI & Startup Italiane", "Ricerca & Innovazione", "AI & Lavoro", "AI & Sicurezza", "Regolamentazione AI", "AI & Salute", "AI & Finanza"],
-      instructions: "Seleziona le notizie più rilevanti per professionisti e manager italiani interessati all'AI applicata al business. Privilegia impatto concreto, finanziamenti, nuovi modelli, normative EU.",
-    },
-    music: {
-      label: "ITsMusic",
-      categories: ["Rock & Indie", "AI Music", "Industria Musicale", "Tour & Live", "Artisti Emergenti", "Streaming & Digital", "Vinile & Fisico", "Produzione Musicale", "Diritti & Copyright", "Festival & Concerti"],
-      instructions: "Seleziona le notizie più rilevanti per appassionati di musica Rock, Indie e industria musicale. Privilegia artisti noti, tour, nuovi album, streaming, AI nella musica.",
+      instructions: "Seleziona le notizie più rilevanti per professionisti e manager italiani interessati all'AI applicata al business. Privilegia impatto concreto, finanziamenti, nuovi modelli, normative EU."
     },
     startup: {
       label: "Startup News",
       categories: ["Startup Italiana", "Startup Internazionale", "Fintech", "Healthtech", "Greentech", "Edtech", "Deeptech", "SaaS & B2B", "Funding & VC", "Acquisizioni", "IPO & Mercati", "Ecosistema"],
-      instructions: "Seleziona le notizie più rilevanti per founder, investitori e professionisti dell'ecosistema startup. Privilegia round di finanziamento, nuovi prodotti, unicorni, startup italiane.",
+      instructions: "Seleziona le notizie più rilevanti per founder, investitori e professionisti dell'ecosistema startup. Privilegia round di finanziamento, nuovi prodotti, unicorni, startup italiane."
     },
-    finance: {
-      label: "Finance & Markets",
-      categories: ["Mercati Azionari", "Macro & Banche Centrali", "Fintech & Crypto", "M&A & Private Equity", "Venture Capital", "Obbligazioni & Tassi", "Commodities", "Forex", "Economia Globale", "ESG & Sostenibilità", "Banche & Credito", "IPO & Listini"],
-      instructions: "Seleziona le notizie più rilevanti per CFO, investitori e manager italiani. Privilegia dati macro, movimenti di mercato, deal significativi, politiche BCE/Fed, analisi di impatto per le imprese.",
-    },
-    health: {
-      label: "Health & Biotech",
-      categories: ["Biotech & Pharma", "AI in Medicina", "Longevità & Aging", "Oncologia", "MedTech & Dispositivi", "Salute Digitale", "Ricerca Clinica", "Sanità Pubblica", "Genomica", "Neuroscienze", "Drug Discovery", "Regolamentazione FDA/EMA"],
-      instructions: "Seleziona le notizie più rilevanti per professionisti della salute, investitori biotech e manager sanitari. Privilegia approvazioni FDA/EMA, trial clinici, breakthrough scientifici, finanziamenti biotech.",
-    },
-    sport: {
-      label: "Sport & Business",
-      categories: ["Calcio & Business", "Diritti TV & Media", "Sponsorship & Brand", "Stadi & Infrastrutture", "Esports", "Sport Tech", "Valutazioni Club", "Trasferimenti & Mercato", "Formula 1 & Motorsport", "NBA & Basket", "Tennis & Golf", "Olimpiadi & Mega-eventi"],
-      instructions: "Seleziona le notizie più rilevanti per manager dello sport, investitori e appassionati di business sportivo. Privilegia deal economici, diritti TV, valutazioni club, innovazione tecnologica nello sport.",
-    },
-    luxury: {
-      label: "Lifestyle & Luxury",
-      categories: ["Moda & Lusso", "Made in Italy", "Orologeria & Gioielleria", "Automotive Luxury", "Arte & Collezionismo", "Vino & Gastronomia", "Travel & Hospitality", "Real Estate Luxury", "Brand Strategy", "Sostenibilità nel Lusso", "Retail & E-commerce Luxury", "Acquisizioni nel Lusso"],
-      instructions: "Seleziona le notizie più rilevanti per imprenditori del made in Italy, manager del lusso e investitori. Privilegia strategie di brand, acquisizioni LVMH/Kering/Richemont, trend di mercato, innovazione nel retail luxury.",
-    },
-    news: {
-      label: "News Generali",
-      categories: ["Politica Italiana", "Politica Internazionale", "Economia", "Esteri", "Cronaca", "Glamour & Spettacolo", "Ambiente", "Società", "Giustizia", "Europa", "Medio Oriente", "USA & Americhe"],
-      instructions: "Seleziona le 20 notizie più importanti del giorno per un lettore italiano informato. Privilegia notizie di politica, economia, esteri e cronaca. Includi almeno 2 notizie di glamour/spettacolo. Titoli chiari e diretti, senza sensazionalismo.",
-    },
-    motori: {
-      label: "Motori",
-      categories: ["Formula 1", "MotoGP & Motorsport", "Auto Elettriche", "Nuovi Modelli", "Mercato Auto", "Tecnologia Auto", "Supercar & Hypercar", "SUV & Crossover", "Auto d'Epoca", "Moto", "Industria Automotive", "Guida Autonoma"],
-      instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di motori italiani. Privilegia F1, nuovi modelli, elettrico, motorsport e notizie dall'industria automotive. Titoli appassionati e diretti.",
-    },
-    tennis: {
-      label: "Tennis",
-      categories: ["ATP Tour", "WTA Tour", "Grand Slam", "Tennis Italiano", "Sinner & Azzurri", "Ranking ATP/WTA", "Davis Cup & Billie Jean King", "Next Gen", "Analisi Tattica", "Mercato & Coaching", "Tornei Masters", "ITF & Challenger"],
-      instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di tennis italiani. Privilegia Sinner, Berrettini e gli altri azzurri, Grand Slam, ATP/WTA Tour. Titoli precisi con nomi dei giocatori.",
-    },
-    basket: {
-      label: "Basket",
-      categories: ["NBA", "Serie A Basket", "Eurolega", "Nazionale Italiana", "Mercato & Trasferimenti", "Analisi Tattica", "Statistiche", "Giovani Talenti", "Coach & Staff", "Infortuni", "Playoff", "Draft NBA"],
-      instructions: "Seleziona le 20 notizie più rilevanti per gli appassionati di basket italiani. Privilegia NBA, Serie A, Eurolega e Nazionale italiana. Titoli precisi con nomi dei giocatori e squadre.",
-    },
-    gossip: {
-      label: "Business Gossip Italia",
-      categories: ["CEO & Executive Moves", "Deal & M&A Italia", "Round & Funding", "VC & Investitori", "Borsa & Mercati", "Licenziamenti & Ristrutturazioni", "Nuovi Prodotti & Lancio", "Rumor & Indiscrezioni", "Startup Drama", "Controversie Corporate", "IPO & Quotazioni", "Retroscena & Insider"],
-      instructions: "Seleziona le 20 notizie più interessanti e rilevanti del mondo business e startup ITALIANO. PRIORITÀ ASSOLUTA: movimenti di CEO/manager italiani, deal M&A in Italia, round di finanziamento startup italiane, notizie di borsa italiana, retroscena corporate, gossip insider dal mondo finanziario e imprenditoriale italiano. Privilegia notizie con nomi di persone, cifre e dettagli concreti. Tono vivace ma professionale. ESCLUDI notizie generiche senza protagonisti identificabili.",
-    },
-    cybersecurity: {
-      label: "Cybersecurity",
-      categories: ["Data Breach", "Ransomware & Malware", "Vulnerabilità & Patch", "Threat Intelligence", "Zero-Day", "Sicurezza Cloud", "Identità & Accessi", "AI & Sicurezza", "Normative & Compliance", "Attacchi Stato-Nazione", "Sicurezza Mobile", "Italia & Cybersecurity"],
-      instructions: "Seleziona le 20 notizie più rilevanti per CISO, security manager e professionisti IT italiani. Privilegia breach significativi, nuove vulnerabilità, attacchi ransomware, normative NIS2/GDPR e trend di sicurezza.",
-    },
-    sondaggi: {
-      label: "Sondaggi & Dati Italia",
-      categories: ["Sondaggi Politici Italiani", "Intenzioni di Voto", "Gradimento Governo", "Sondaggi Economici", "Opinione Pubblica", "Trend Sociali", "Ricerche ISTAT/Censis", "Dati & Statistiche", "Report Istituzionali", "Consenso & Fiducia", "Analisi Partiti", "Scenari Elettorali"],
-      instructions: "Seleziona le 20 notizie più interessanti tra sondaggi, ricerche e dati italiani. PRIORITÀ ASSOLUTA: sondaggi politici italiani (intenzioni di voto, gradimento governo/partiti, scenari elettorali), dati ISTAT/Censis/Eurispes, ricerche di istituti italiani (SWG, YouTrend, Tecnè, Demopolis, Noto, EMG). Privilegia contenuti con dati numerici, percentuali, confronti temporali. Tono analitico e basato sui dati. ESCLUDI notizie generiche senza dati.",
-    },
+
     dealroom: {
       label: "DEALROOM — Funding & VC",
       categories: ["Seed Round", "Series A", "Series B", "Series C+", "Venture Capital Italia", "Venture Capital Europa", "Venture Capital Global", "M&A & Acquisizioni", "Exit & IPO", "VC Fund", "Deal Italiano", "Deal Europeo", "Deal Globale", "Corporate VC", "Angel & Pre-seed"],
-      instructions: "SEI UN FILTRO DEAL FINANZIARIO ULTRA-SELETTIVO. Seleziona SOLO notizie dove una TRANSAZIONE FINANZIARIA è avvenuta o sta per avvenire. Una transazione è ESCLUSIVAMENTE: 1) Un round di finanziamento (seed, Series A/B/C/D, growth) con importo e/o investitore nominato, 2) Un'acquisizione M&A con acquirente e target nominati, 3) Una IPO o quotazione in borsa, 4) La chiusura di un nuovo fondo VC/PE con importo, 5) Un investimento corporate venture con cifra. PAROLE CHIAVE OBBLIGATORIE nel titolo o descrizione: raccoglie, chiude round, finanziamento, investimento, acquisisce, acquisizione, IPO, quotazione, Series A/B/C, seed round, funding, raises, acquires, merger, fund close. ESCLUDI TUTTO IL RESTO: notizie di crescita aziendale senza deal (es. 'ricavi a 70M'), notizie su cucina/cibo/export, notizie su metalli/olimpiadi/sport, notizie su governance/banche/commissari, notizie su politica industriale, notizie su AI/tech senza round, libri/opinioni, guide prodotto. TEST: c'è un VERBO DI TRANSAZIONE (raccoglie, acquisisce, chiude fondo, va in IPO)? Se NO → SCARTA. PRIORITÀ: 1) Deal italiani, 2) Deal europei, 3) Deal globali >50M$.",
-    },
+      instructions: "SEI UN FILTRO DEAL FINANZIARIO ULTRA-SELETTIVO. Seleziona SOLO notizie dove una TRANSAZIONE FINANZIARIA è avvenuta o sta per avvenire. Una transazione è ESCLUSIVAMENTE: 1) Un round di finanziamento (seed, Series A/B/C/D, growth) con importo e/o investitore nominato, 2) Un'acquisizione M&A con acquirente e target nominati, 3) Una IPO o quotazione in borsa, 4) La chiusura di un nuovo fondo VC/PE con importo, 5) Un investimento corporate venture con cifra. PAROLE CHIAVE OBBLIGATORIE nel titolo o descrizione: raccoglie, chiude round, finanziamento, investimento, acquisisce, acquisizione, IPO, quotazione, Series A/B/C, seed round, funding, raises, acquires, merger, fund close. ESCLUDI TUTTO IL RESTO: notizie di crescita aziendale senza deal (es. 'ricavi a 70M'), notizie su cucina/cibo/export, notizie su metalli/olimpiadi/sport, notizie su governance/banche/commissari, notizie su politica industriale, notizie su AI/tech senza round, libri/opinioni, guide prodotto. TEST: c'è un VERBO DI TRANSAZIONE (raccoglie, acquisisce, chiude fondo, va in IPO)? Se NO → SCARTA. PRIORITÀ: 1) Deal italiani, 2) Deal europei, 3) Deal globali >50M$."
+    }
   } as const;
 
   const cfg = sectionConfig[section];
@@ -243,14 +184,12 @@ async function selectAndTranslate(
   const itDomainPatterns = [
     ".it/", "ansa.it", "corriere.it", "repubblica.it", "ilpost.it",
     "sole24ore", "ilsole24ore", "wired.it", "forbes.it", "gazzetta.it",
-    "corrieredellosport", "tuttosport", "autosprint", "motorionline",
-    "supertennis", "tennis.it", "fitp.it", "legabasket", "italbasket",
     "agendadigitale", "digital4", "innovationpost", "corrierecomunicazioni",
     "punto-informatico", "tomshw.it", "hwupgrade", "ilfattoquotidiano",
     "lastampa", "agi.it", "tgcom24", "sky.it", "rainews", "adnkronos",
     "askanews", "italpress", "ilgiornale", "libero.it", "panorama.it",
     "espresso.it", "linkiesta", "startupitalia", "economyup", "milanofinanza",
-    "borsaitaliana", "smartworld", "hdblog", "everyeye", "gamereactor.it",
+    "borsaitaliana", "smartworld", "hdblog", "everyeye", "gamereactor.it"
   ];
   const isItalian = (a: { sourceName: string; link: string }) =>
     itDomainPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p.replace(".it/", "").replace(".it", "")));
@@ -294,7 +233,7 @@ Rispondi SOLO con JSON valido.`;
     const response = await invokeLLM({
       messages: [
         { role: "system", content: "Sei un redattore editoriale esperto. Rispondi sempre con JSON valido." },
-        { role: "user", content: prompt },
+        { role: "user", content: prompt }
       ],
       response_format: {
         type: "json_schema",
@@ -312,18 +251,18 @@ Rispondi SOLO con JSON valido.`;
                     title: { type: "string" },
                     summary: { type: "string" },
                     category: { type: "string" },
-                    sourceIndex: { type: "integer" },
+                    sourceIndex: { type: "integer" }
                   },
                   required: ["title", "summary", "category", "sourceIndex"],
-                  additionalProperties: false,
-                },
-              },
+                  additionalProperties: false
+                }
+              }
             },
             required: ["items"],
-            additionalProperties: false,
-          },
-        },
-      },
+            additionalProperties: false
+          }
+        }
+      }
     });
 
     const content = response.choices[0]?.message?.content as string;
@@ -359,12 +298,12 @@ Rispondi SOLO con JSON valido.`;
     return articles.slice(0, 20).map(a => ({
       title: a.title,
       summary: a.content.slice(0, 250),
-      category: section === "ai" ? "Ricerca & Innovazione" : section === "music" ? "Industria Musicale" : "Startup Internazionale",
+      category: section === "ai" ? "Ricerca & Innovazione" : "Startup Internazionale",
       sourceName: a.sourceName,
       sourceUrl: a.link,           // URL articolo originale
       sourceHomepage: a.sourceHomepage,
       publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
-      language: "en" as const,
+      language: "en" as const
     }));
   }
 }
@@ -380,8 +319,8 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
       maxRedirects: 3,
       validateStatus: (status) => status < 500,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.ai)",
-      },
+        "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.ai)"
+      }
     });
     return response.status < 400;
   } catch {
@@ -392,9 +331,9 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
         maxRedirects: 3,
         validateStatus: (status) => status < 500,
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.ai)",
+          "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.ai)"
         },
-        responseType: "stream",
+        responseType: "stream"
       });
       response.data.destroy(); // Non scaricare il body
       return response.status < 400;
@@ -415,7 +354,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
  */
 export async function sanitizeSourceUrl(
   url: string,
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom"
+  section: "ai" | "startup" | "health" | "news" | "dealroom"
 ): Promise<string> {
   try {
     const parsed = new URL(url);
@@ -442,11 +381,6 @@ export async function scrapeAINews(): Promise<ScrapedArticle[]> {
   return selectAndTranslate(articles, "ai");
 }
 
-export async function scrapeMusicNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Music news...");
-  const articles = await fetchAllFeeds(MUSIC_SOURCES);
-  return selectAndTranslate(articles, "music");
-}
 
 export async function scrapeStartupNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Startup news...");
@@ -454,71 +388,16 @@ export async function scrapeStartupNews(): Promise<ScrapedArticle[]> {
   return selectAndTranslate(articles, "startup");
 }
 
-export async function scrapeFinanceNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Finance news...");
-  const articles = await fetchAllFeeds(FINANCE_SOURCES);
-  return selectAndTranslate(articles, "finance");
-}
 
-export async function scrapeHealthNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Health news...");
-  const articles = await fetchAllFeeds(HEALTH_SOURCES);
-  return selectAndTranslate(articles, "health");
-}
 
-export async function scrapeSportNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Sport news...");
-  const articles = await fetchAllFeeds(SPORT_SOURCES);
-  return selectAndTranslate(articles, "sport");
-}
 
-export async function scrapeLuxuryNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Luxury news...");
-  const articles = await fetchAllFeeds(LUXURY_SOURCES);
-  return selectAndTranslate(articles, "luxury");
-}
 
-export async function scrapeNewsGenerali(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping News Generali...");
-  const articles = await fetchAllFeeds(NEWS_SOURCES);
-  return selectAndTranslate(articles, "news");
-}
 
-export async function scrapeMotoriNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Motori news...");
-  const articles = await fetchAllFeeds(MOTORI_SOURCES);
-  return selectAndTranslate(articles, "motori");
-}
 
-export async function scrapeTennisNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Tennis news...");
-  const articles = await fetchAllFeeds(TENNIS_SOURCES);
-  return selectAndTranslate(articles, "tennis");
-}
 
-export async function scrapeBasketNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Basket news...");
-  const articles = await fetchAllFeeds(BASKET_SOURCES);
-  return selectAndTranslate(articles, "basket");
-}
 
-export async function scrapeGossipNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Business Gossip news...");
-  const articles = await fetchAllFeeds(GOSSIP_SOURCES);
-  return selectAndTranslate(articles, "gossip");
-}
 
-export async function scrapeCybersecurityNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Cybersecurity news...");
-  const articles = await fetchAllFeeds(CYBERSECURITY_SOURCES);
-  return selectAndTranslate(articles, "cybersecurity");
-}
 
-export async function scrapeSondaggiNews(): Promise<ScrapedArticle[]> {
-  console.log("[RssScraper] Avvio scraping Sondaggi news...");
-  const articles = await fetchAllFeeds(SONDAGGI_SOURCES);
-  return selectAndTranslate(articles, "sondaggi");
-}
 
 export async function scrapeDealroomNews(): Promise<ScrapedArticle[]> {
   console.log("[RssScraper] Avvio scraping Dealroom news (round, funding, VC, M&A, exit)...");
@@ -536,7 +415,7 @@ export async function scrapeDealroomNews(): Promise<ScrapedArticle[]> {
     "raises", "raised", "funding", "funded", "acquires", "acquired",
     "acquisition", "merger", "ipo", "valuation", "investment", "investor",
     "closes", "closed", "round", "series", "seed", "venture", "capital",
-    "billion", "million", "unicorn", "decacorn",
+    "billion", "million", "unicorn", "decacorn"
   ];
 
   const preFiltered = articles.filter((a) => {

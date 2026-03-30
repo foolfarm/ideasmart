@@ -22,7 +22,7 @@ const STATUS_CONFIG = {
   warning: { label: "Parziale", color: "#d97706", bg: "#fffbeb", border: "#fde68a", icon: "⚠" },
   error: { label: "Non coerente", color: "#2a2a2a", bg: "#fef2f2", border: "#fecaca", icon: "✗" },
   unreachable: { label: "Non raggiungibile", color: "#6b7280", bg: "#f9fafb", border: "#e5e7eb", icon: "○" },
-  pending: { label: "In attesa", color: "#6366f1", bg: "#eef2ff", border: "#c7d2fe", icon: "…" },
+  pending: { label: "In attesa", color: "#6366f1", bg: "#eef2ff", border: "#c7d2fe", icon: "…" }
 };
 
 type AuditStatus = keyof typeof STATUS_CONFIG;
@@ -64,13 +64,13 @@ export default function AuditDashboard() {
   const { user, loading } = useAuth();
 
   // Filtri risultati
-  const [filterSection, setFilterSection] = useState<"ai" | "music" | undefined>(undefined);
+  const [filterSection, setFilterSection] = useState<"ai" | undefined>(undefined);
   const [filterStatus, setFilterStatus] = useState<AuditStatus | undefined>(undefined);
-  const [filterType, setFilterType] = useState<"news" | "analysis" | "reportage" | undefined>(undefined);
+  const [filterType, setFilterType] = useState<"analysis" | "reportage" | undefined>(undefined);
 
   // Audit batch state
-  const [batchSection, setBatchSection] = useState<"ai" | "music" | undefined>(undefined);
-  const [batchType, setBatchType] = useState<"news" | "analysis" | "full">("full");
+  const [batchSection, setBatchSection] = useState<"ai" | undefined>(undefined);
+  const [batchType, setBatchType] = useState<"analysis" | "full">("full");
   const [batchLimit, setBatchLimit] = useState(20);
 
   // Queries
@@ -80,7 +80,7 @@ export default function AuditDashboard() {
     section: filterSection,
     status: filterStatus,
     contentType: filterType,
-    limit: 50,
+    limit: 50
   });
 
   // Mutations
@@ -91,7 +91,7 @@ export default function AuditDashboard() {
       refetchResults();
       refetchScheduler();
     },
-    onError: (err) => toast.error("Errore audit: " + err.message),
+    onError: (err) => toast.error("Errore audit: " + err.message)
   });
 
   const runFullAudit = trpc.audit.runFullAuditNow.useMutation({
@@ -105,7 +105,7 @@ export default function AuditDashboard() {
       refetchResults();
       refetchScheduler();
     },
-    onError: (err) => toast.error("Errore audit completo: " + err.message),
+    onError: (err) => toast.error("Errore audit completo: " + err.message)
   });
 
   const triggerScheduled = trpc.audit.triggerScheduledAudit.useMutation({
@@ -113,7 +113,7 @@ export default function AuditDashboard() {
       toast.success("Audit schedulato avviato in background — riceverai email se ci sono anomalie");
       setTimeout(() => { refetchScheduler(); refetchStats(); refetchResults(); }, 3000);
     },
-    onError: (err) => toast.error("Errore: " + err.message),
+    onError: (err) => toast.error("Errore: " + err.message)
   });
 
   const deleteResult = trpc.audit.deleteResult.useMutation({
@@ -122,17 +122,17 @@ export default function AuditDashboard() {
       refetchResults();
       refetchStats();
     },
-    onError: (err) => toast.error("Errore: " + err.message),
+    onError: (err) => toast.error("Errore: " + err.message)
   });
 
-  const [replaceSection, setReplaceSection] = useState<"ai" | "music">("ai");
+  const [replaceSection, setReplaceSection] = useState<"ai">("ai");
   const replaceAllLowScore = trpc.news.replaceAllLowScore.useMutation({
     onSuccess: (data) => {
       toast.success(`${data.message} — Le notizie sostituite non appariranno più in homepage.`);
       refetchStats();
       refetchResults();
     },
-    onError: (err) => toast.error("Errore sostituzione: " + err.message),
+    onError: (err) => toast.error("Errore sostituzione: " + err.message)
   });
 
   const handleRunAudit = () => {
@@ -249,7 +249,7 @@ export default function AuditDashboard() {
               { key: "warning", label: "Parziali", value: stats.warning, color: "#d97706" },
               { key: "error", label: "Non coerenti", value: stats.error, color: "#2a2a2a" },
               { key: "unreachable", label: "Non raggiungibili", value: stats.unreachable, color: "#6b7280" },
-              { key: "pending", label: "In attesa", value: stats.pending, color: "#6366f1" },
+              { key: "pending", label: "In attesa", value: stats.pending, color: "#6366f1" }
             ].map((s) => (
               <div key={s.key} className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
                 <div className="text-3xl font-black" style={{ color: s.color }}>{s.value}</div>
@@ -271,7 +271,7 @@ export default function AuditDashboard() {
               <label className="block text-xs font-semibold text-gray-600 mb-1">Tipo audit</label>
               <select
                 value={batchType}
-                onChange={(e) => setBatchType(e.target.value as "news" | "analysis" | "full")}
+                onChange={(e) => setBatchType(e.target.value as "analysis" | "full")}
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="full">Audit completo (news + analisi + reportage)</option>
@@ -283,12 +283,11 @@ export default function AuditDashboard() {
               <label className="block text-xs font-semibold text-gray-600 mb-1">Sezione</label>
               <select
                 value={batchSection ?? ""}
-                onChange={(e) => setBatchSection(e.target.value ? e.target.value as "ai" | "music" : undefined)}
+                onChange={(e) => setBatchSection(e.target.value ? e.target.value as "ai" : undefined)}
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">Tutte le sezioni</option>
                 <option value="ai">AI NEWS</option>
-                <option value="music">ITsMusic</option>
               </select>
             </div>
             <div>
@@ -339,11 +338,10 @@ export default function AuditDashboard() {
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Sezione</label>
                   <select
                     value={replaceSection}
-                    onChange={(e) => setReplaceSection(e.target.value as "ai" | "music")}
+                    onChange={(e) => setReplaceSection(e.target.value as "ai")}
                     className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                   >
                     <option value="ai">AI NEWS</option>
-                    <option value="music">ITsMusic</option>
                   </select>
                 </div>
                 <button
@@ -376,12 +374,11 @@ export default function AuditDashboard() {
             <div className="flex flex-wrap gap-2">
               <select
                 value={filterSection ?? ""}
-                onChange={(e) => setFilterSection(e.target.value ? e.target.value as "ai" | "music" : undefined)}
+                onChange={(e) => setFilterSection(e.target.value ? e.target.value as "ai" : undefined)}
                 className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">Tutte le sezioni</option>
                 <option value="ai">AI NEWS</option>
-                <option value="music">ITsMusic</option>
               </select>
               <select
                 value={filterStatus ?? ""}
@@ -396,7 +393,7 @@ export default function AuditDashboard() {
               </select>
               <select
                 value={filterType ?? ""}
-                onChange={(e) => setFilterType(e.target.value ? e.target.value as "news" | "analysis" | "reportage" : undefined)}
+                onChange={(e) => setFilterType(e.target.value ? e.target.value as "analysis" | "reportage" : undefined)}
                 className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="">Tutti i tipi</option>
@@ -423,7 +420,7 @@ export default function AuditDashboard() {
                   className="border rounded-xl p-4 hover:shadow-sm transition-shadow"
                   style={{
                     borderColor: STATUS_CONFIG[row.status as AuditStatus]?.border ?? "#e5e7eb",
-                    background: STATUS_CONFIG[row.status as AuditStatus]?.bg ?? "#fff",
+                    background: STATUS_CONFIG[row.status as AuditStatus]?.bg ?? "#fff"
                   }}
                 >
                   <div className="flex flex-wrap items-start gap-3">
@@ -431,7 +428,6 @@ export default function AuditDashboard() {
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         <StatusBadge status={row.status as AuditStatus} />
                         <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium capitalize">
-                          {row.contentType} · {row.section === "ai" ? "AI NEWS" : "ITsMusic"}
                         </span>
                         <span className="text-xs text-gray-400">ID #{row.contentId}</span>
                       </div>

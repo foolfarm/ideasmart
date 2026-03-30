@@ -17,7 +17,7 @@ function formatDateIT(dateLabel: string): string {
       weekday: "long",
       day: "numeric",
       month: "long",
-      year: "numeric",
+      year: "numeric"
     });
   } catch {
     return dateLabel;
@@ -40,7 +40,7 @@ type PostItem = {
 export default function PuntoDelGiorno() {
   const { data: posts, isLoading } = trpc.news.getPuntoDelGiornoAll.useQuery(undefined, {
     staleTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: false
   });
 
   if (!isLoading && (!posts || posts.length === 0)) return null;
@@ -50,19 +50,17 @@ export default function PuntoDelGiorno() {
 
   // Parsing paragrafi
   const paragraphs = post?.postText
-    ? post.postText.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 0)
+    ? post.postText.split(/\n{2}/).map(p => p.trim()).filter(p => p.length > 0)
     : [];
   const hashtagLine = paragraphs.findIndex(p => p.startsWith("#") || p.match(/^[📊🔗]/));
   const bodyParagraphs = hashtagLine > 0 ? paragraphs.slice(0, hashtagLine) : paragraphs;
 
   const sectionLabel = post?.section === "ai" ? "AI NEWS"
     : post?.section === "startup" ? "STARTUP NEWS"
-    : post?.section === "finance" ? "Finance"
     : post?.section ?? "";
 
   const sectionColor = post?.section === "ai" ? "#1a1a1a"
     : post?.section === "startup" ? "#2a2a2a"
-    : post?.section === "finance" ? "#1a1a1a"
     : ACCENT;
 
   return (
@@ -179,7 +177,7 @@ export default function PuntoDelGiorno() {
                   color: INK,
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(22px, 2.5vw, 28px)",
-                  lineHeight: 1.2,
+                  lineHeight: 1.2
                 }}
               >
                 {post.title}
@@ -195,7 +193,7 @@ export default function PuntoDelGiorno() {
                     color: INK + "cc",
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
                     fontSize: "16px",
-                    lineHeight: 1.75,
+                    lineHeight: 1.75
                   }}
                 >
                   {para}

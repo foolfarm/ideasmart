@@ -8,7 +8,7 @@ import { Link, useLocation } from "wouter";
 const CHANNELS = [
   { label: "AI NEWS", href: "/ai", color: "#1a1a1a" },
   { label: "STARTUP NEWS", href: "/startup", color: "#2a2a2a" },
-  { label: "DEALROOM", href: "/dealroom", color: "#0f0f0f" },
+  { label: "DEALROOM", href: "/dealroom", color: "#0f0f0f" }
 ];
 
 export default function Navbar() {

@@ -16,10 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { RefreshCw, ArrowLeft, Activity, Clock, Database, Zap } from "lucide-react";
 
-type SectionKey =
-  | "news" | "ai" | "startup" | "finance" | "sport"
-  | "motori" | "tennis" | "basket" | "health" | "luxury"
-  | "music" | "gossip" | "cybersecurity" | "sondaggi" | "all";
+type SectionKey = "ai" | "startup" | "dealroom" | "all";
 
 function formatUptime(seconds: number): string {
   const h = Math.floor(seconds / 3600);
@@ -72,7 +69,7 @@ export default function AdminSystemHealth() {
     onError: (err) => {
       toast.error("Errore", { description: err.message });
       setTriggeringSection(null);
-    },
+    }
   });
 
   const handleTrigger = (section: SectionKey) => {
@@ -213,7 +210,7 @@ export default function AdminSystemHealth() {
               const statusColors = {
                 green: { dot: "bg-green-400", border: "rgba(34,197,94,0.15)", bg: "rgba(34,197,94,0.04)" },
                 yellow: { dot: "bg-yellow-400", border: "rgba(234,179,8,0.2)", bg: "rgba(234,179,8,0.04)" },
-                red: { dot: "bg-red-400", border: "rgba(239,68,68,0.2)", bg: "rgba(239,68,68,0.04)" },
+                red: { dot: "bg-red-400", border: "rgba(239,68,68,0.2)", bg: "rgba(239,68,68,0.04)" }
               };
               const sc = statusColors[status];
 
@@ -263,7 +260,7 @@ export default function AdminSystemHealth() {
                         style={{
                           background: s.todayCount > 0 ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
                           color: s.todayCount > 0 ? "#4ade80" : "#f87171",
-                          border: "none",
+                          border: "none"
                         }}
                       >
                         {s.todayCount}
@@ -287,7 +284,7 @@ export default function AdminSystemHealth() {
                     style={{
                       background: wasTriggered ? "rgba(0,229,200,0.15)" : "rgba(255,255,255,0.08)",
                       color: wasTriggered ? "#1a1a1a" : "rgba(255,255,255,0.6)",
-                      border: wasTriggered ? "1px solid rgba(0,229,200,0.3)" : "1px solid rgba(255,255,255,0.1)",
+                      border: wasTriggered ? "1px solid rgba(0,229,200,0.3)" : "1px solid rgba(255,255,255,0.1)"
                     }}
                   >
                     <RefreshCw className={`w-3 h-3 mr-1 ${isTriggering ? "animate-spin" : ""}`} />

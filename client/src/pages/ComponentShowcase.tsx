@@ -189,7 +189,7 @@ export default function ComponentsShowcase() {
 
   // AI ChatBox demo state
   const [chatMessages, setChatMessages] = useState<Message[]>([
-    { role: "system", content: "You are a helpful assistant." },
+    { role: "system", content: "You are a helpful assistant." }
   ]);
   const [isChatLoading, setIsChatLoading] = useState(false);
 
@@ -551,7 +551,7 @@ export default function ComponentsShowcase() {
                               { value: "svelte", label: "Svelte" },
                               { value: "nextjs", label: "Next.js" },
                               { value: "nuxt", label: "Nuxt" },
-                              { value: "remix", label: "Remix" },
+                              { value: "remix", label: "Remix" }
                             ].find(fw => fw.value === selectedFramework)?.label
                           : "Select framework..."}
                         <CalendarIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -570,7 +570,7 @@ export default function ComponentsShowcase() {
                               { value: "svelte", label: "Svelte" },
                               { value: "nextjs", label: "Next.js" },
                               { value: "nuxt", label: "Nuxt" },
-                              { value: "remix", label: "Remix" },
+                              { value: "remix", label: "Remix" }
                             ].map(framework => (
                               <CommandItem
                                 key={framework.value}
@@ -610,7 +610,7 @@ export default function ComponentsShowcase() {
                           { value: "svelte", label: "Svelte" },
                           { value: "nextjs", label: "Next.js" },
                           { value: "nuxt", label: "Nuxt" },
-                          { value: "remix", label: "Remix" },
+                          { value: "remix", label: "Remix" }
                         ].find(fw => fw.value === selectedFramework)?.label
                       }
                     </p>
@@ -1417,7 +1417,7 @@ export default function ComponentsShowcase() {
                       "What is React?",
                       "Explain TypeScript",
                       "How to use tRPC?",
-                      "Best practices for web development",
+                      "Best practices for web development"
                     ]}
                   />
                 </div>

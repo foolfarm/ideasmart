@@ -15,7 +15,7 @@ export interface RssSource {
   name: string;
   homepage: string;
   feedUrl: string;
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom" | "dealroom";
+  section: "ai" | "startup" | "health" | "news" | "dealroom" | "dealroom";
   language: "it" | "en";
   priority: number;
   tags?: string[];
@@ -137,7 +137,7 @@ export const AI_SOURCES: RssSource[] = [
   { name: "How-To Geek", homepage: "https://www.howtogeek.com", feedUrl: "https://www.howtogeek.com/feed", section: "ai", language: "en", priority: 3, tags: ["tech"] },
   { name: "9to5Mac", homepage: "https://9to5mac.com", feedUrl: "https://9to5mac.com/feed", section: "ai", language: "en", priority: 2, tags: ["tech"] },
   { name: "9to5Google", homepage: "https://9to5google.com", feedUrl: "https://9to5google.com/feed", section: "ai", language: "en", priority: 2, tags: ["tech"] },
-  { name: "AppleInsider", homepage: "https://appleinsider.com", feedUrl: "https://appleinsider.com/rss", section: "ai", language: "en", priority: 2, tags: ["tech"] },
+  { name: "AppleInsider", homepage: "https://appleinsider.com", feedUrl: "https://appleinsider.com/rss", section: "ai", language: "en", priority: 2, tags: ["tech"] }
 ];
 
 // ─── 2. Startup / VC Sources ──────────────────────────────────────────────────
@@ -212,52 +212,10 @@ export const STARTUP_SOURCES: RssSource[] = [
   { name: "Venture Burn", homepage: "https://ventureburn.com", feedUrl: "https://ventureburn.com/feed", section: "startup", language: "en", priority: 2 },
   { name: "FT Technology", homepage: "https://www.ft.com", feedUrl: "https://www.ft.com/technology?format=rss", section: "startup", language: "en", priority: 1 },
   { name: "Mark SV", homepage: "https://marksv.com", feedUrl: "https://marksv.com/feed", section: "startup", language: "en", priority: 3, tags: ["vc"] },
-  { name: "Lenny's Newsletter", homepage: "https://newsletter.lennysnewsletter.com", feedUrl: "https://newsletter.lennysnewsletter.com/feed", section: "startup", language: "en", priority: 2, tags: ["vc"] },
+  { name: "Lenny's Newsletter", homepage: "https://newsletter.lennysnewsletter.com", feedUrl: "https://newsletter.lennysnewsletter.com/feed", section: "startup", language: "en", priority: 2, tags: ["vc"] }
 ];
 
 // ─── 3. Music Rock / Indie / Alternative Sources ──────────────────────────────
-export const MUSIC_SOURCES: RssSource[] = [
-  // Lista 1 — Rock/Indie (#81-100)
-  { name: "Pitchfork News", homepage: "https://pitchfork.com", feedUrl: "https://pitchfork.com/rss/news", section: "music", language: "en", priority: 1 },
-  { name: "Pitchfork Reviews", homepage: "https://pitchfork.com", feedUrl: "https://pitchfork.com/rss/reviews/albums", section: "music", language: "en", priority: 1 },
-  { name: "NME", homepage: "https://www.nme.com", feedUrl: "https://www.nme.com/feed", section: "music", language: "en", priority: 1 },
-  { name: "Rolling Stone Music", homepage: "https://www.rollingstone.com", feedUrl: "https://www.rollingstone.com/music/music-news/feed", section: "music", language: "en", priority: 1 },
-  { name: "Spin", homepage: "https://www.spin.com", feedUrl: "https://www.spin.com/feed", section: "music", language: "en", priority: 1 },
-  { name: "Consequence of Sound", homepage: "https://consequence.net", feedUrl: "https://consequence.net/feed", section: "music", language: "en", priority: 1 },
-  { name: "Stereogum", homepage: "https://stereogum.com", feedUrl: "https://stereogum.com/feed", section: "music", language: "en", priority: 1 },
-  { name: "Brooklyn Vegan", homepage: "https://www.brooklynvegan.com", feedUrl: "https://www.brooklynvegan.com/feed", section: "music", language: "en", priority: 2 },
-  { name: "Alt Press", homepage: "https://www.altpress.com", feedUrl: "https://www.altpress.com/feed", section: "music", language: "en", priority: 2 },
-  { name: "Louder Sound", homepage: "https://www.loudersound.com", feedUrl: "https://www.loudersound.com/feeds.xml", section: "music", language: "en", priority: 2 },
-  { name: "Metal Sucks", homepage: "https://www.metalsucks.net", feedUrl: "https://www.metalsucks.net/feed", section: "music", language: "en", priority: 2 },
-  { name: "Metal Injection", homepage: "https://www.metalinjection.net", feedUrl: "https://www.metalinjection.net/feed", section: "music", language: "en", priority: 2 },
-  { name: "Gigwise", homepage: "https://www.gigwise.com", feedUrl: "https://www.gigwise.com/rss", section: "music", language: "en", priority: 3 },
-  { name: "Music Feeds", homepage: "https://musicfeeds.com.au", feedUrl: "https://musicfeeds.com.au/feed", section: "music", language: "en", priority: 3 },
-  { name: "Clash Music", homepage: "https://www.clashmusic.com", feedUrl: "https://www.clashmusic.com/feed", section: "music", language: "en", priority: 2 },
-  { name: "Drowned in Sound", homepage: "https://drownedinsound.com", feedUrl: "https://drownedinsound.com/feed", section: "music", language: "en", priority: 3 },
-  { name: "The Line of Best Fit", homepage: "https://www.thelineofbestfit.com", feedUrl: "https://www.thelineofbestfit.com/rss", section: "music", language: "en", priority: 2 },
-  { name: "Under the Radar", homepage: "https://www.undertheradarmag.com", feedUrl: "https://www.undertheradarmag.com/rss", section: "music", language: "en", priority: 2 },
-  { name: "Indie 88", homepage: "https://www.indie88.com", feedUrl: "https://www.indie88.com/feed", section: "music", language: "en", priority: 3 },
-  { name: "Music Business Worldwide", homepage: "https://www.musicbusinessworldwide.com", feedUrl: "https://www.musicbusinessworldwide.com/feed", section: "music", language: "en", priority: 1 },
-  // Lista 2 — Rock/Indie (#221-250)
-  { name: "Billboard", homepage: "https://www.billboard.com", feedUrl: "https://www.billboard.com/feed", section: "music", language: "en", priority: 1 },
-  { name: "Songkick News", homepage: "https://www.songkick.com", feedUrl: "https://www.songkick.com/news/feed", section: "music", language: "en", priority: 2 },
-  { name: "NPR Music", homepage: "https://www.npr.org", feedUrl: "https://www.npr.org/rss/rss.php?id=1039", section: "music", language: "en", priority: 2 },
-  { name: "Kerrang!", homepage: "https://www.kerrang.com", feedUrl: "https://www.kerrang.com/rss", section: "music", language: "en", priority: 2 },
-  { name: "Loudwire", homepage: "https://www.loudwire.com", feedUrl: "https://www.loudwire.com/feed", section: "music", language: "en", priority: 2 },
-  { name: "Ultimate Classic Rock", homepage: "https://ultimateclassicrock.com", feedUrl: "https://ultimateclassicrock.com/feed", section: "music", language: "en", priority: 2 },
-  { name: "Sputnik Music", homepage: "https://www.sputnikmusic.com", feedUrl: "https://www.sputnikmusic.com/rss.php", section: "music", language: "en", priority: 3 },
-  { name: "Paste Magazine Music", homepage: "https://www.pastemagazine.com", feedUrl: "https://www.pastemagazine.com/music/rss", section: "music", language: "en", priority: 2 },
-  { name: "Guitar World", homepage: "https://www.guitarworld.com", feedUrl: "https://www.guitarworld.com/rss", section: "music", language: "en", priority: 2 },
-  { name: "Music Radar", homepage: "https://www.musicradar.com", feedUrl: "https://www.musicradar.com/rss", section: "music", language: "en", priority: 2 },
-  // Italiani musica
-  { name: "Rockol", homepage: "https://www.rockol.it", feedUrl: "https://www.rockol.it/feed/rss/news", section: "music", language: "it", priority: 1 },
-  { name: "Rolling Stone Italia", homepage: "https://www.rollingstone.it", feedUrl: "https://www.rollingstone.it/feed", section: "music", language: "it", priority: 1 },
-  { name: "Rumore", homepage: "https://www.rumoremag.com", feedUrl: "https://www.rumoremag.com/feed", section: "music", language: "it", priority: 2 },
-  { name: "Sentire Ascoltare", homepage: "https://www.sentireascoltare.com", feedUrl: "https://www.sentireascoltare.com/feed", section: "music", language: "it", priority: 2 },
-  { name: "All Music Italia", homepage: "https://www.allmusicitalia.it", feedUrl: "https://www.allmusicitalia.it/feed", section: "music", language: "it", priority: 2 },
-  { name: "Soundsblog", homepage: "https://www.soundsblog.it", feedUrl: "https://www.soundsblog.it/feed", section: "music", language: "it", priority: 2 },
-];
-
 // ─── Whitelist domini → homepage ─────────────────────────────────────────────
 export const DOMAIN_FALLBACKS: Record<string, string> = {
   // AI internazionale
@@ -435,32 +393,20 @@ export const DOMAIN_FALLBACKS: Record<string, string> = {
   // Istituzionali
   "europarl.europa.eu": "https://www.europarl.europa.eu",
   "commission.europa.eu": "https://commission.europa.eu",
-  "nato.int": "https://www.nato.int", "www.nato.int": "https://www.nato.int",
+  "nato.int": "https://www.nato.int", "www.nato.int": "https://www.nato.int"
 };
 
 /// ─── Fallback di sezione ────────────────────────────────────────────
 export const SECTION_FALLBACKS: Record<string, string> = {
   ai: "https://techcrunch.com",
-  music: "https://www.billboard.com",
   startup: "https://techcrunch.com",
-  finance: "https://www.ft.com",
-  health: "https://www.statnews.com",
-  sport: "https://www.sportbusiness.com",
-  luxury: "https://www.businessoffashion.com",
-  news: "https://www.ansa.it",
-  motori: "https://www.autosprint.it",
-  tennis: "https://www.ubitennis.com",
-  basket: "https://www.sportando.basketball",
-  gossip: "https://www.businessinsider.com",
-  cybersecurity: "https://thehackernews.com",
-  sondaggi: "https://www.youtrend.it",
 };
 
 /**
  * Estrae il dominio da un URL e restituisce la homepage sicura dalla whitelist.
  * Se il dominio non è in whitelist, restituisce la homepage del dominio stesso.
  */
-export function getHomepageForUrl(url: string, section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom"): string {
+export function getHomepageForUrl(url: string, section: "ai" | "startup" | "health" | "news" | "dealroom"): string {
   try {
     const parsed = new URL(url);
     const domain = parsed.hostname.replace(/^www\./, "");
@@ -476,439 +422,13 @@ export function getHomepageForUrl(url: string, section: "ai" | "music" | "startu
 }
 
 // ─── 4. Finance & Markets ─────────────────────────────────────────────────────
-export const FINANCE_SOURCES: RssSource[] = [
-  { name: "Financial Times", homepage: "https://www.ft.com", feedUrl: "https://www.ft.com/?format=rss", section: "finance", language: "en", priority: 1 },
-  { name: "FT Markets", homepage: "https://www.ft.com", feedUrl: "https://www.ft.com/markets?format=rss", section: "finance", language: "en", priority: 1 },
-  { name: "The Economist Finance", homepage: "https://www.economist.com", feedUrl: "https://www.economist.com/finance-and-economics/rss.xml", section: "finance", language: "en", priority: 1 },
-  { name: "Fortune Finance", homepage: "https://fortune.com", feedUrl: "https://fortune.com/finance/feed", section: "finance", language: "en", priority: 1 },
-  { name: "MarketWatch Top Stories", homepage: "https://www.marketwatch.com", feedUrl: "https://www.marketwatch.com/rss/topstories", section: "finance", language: "en", priority: 1 },
-  { name: "MarketWatch Market Pulse", homepage: "https://www.marketwatch.com", feedUrl: "https://www.marketwatch.com/rss/marketpulse", section: "finance", language: "en", priority: 2 },
-  { name: "Seeking Alpha", homepage: "https://seekingalpha.com", feedUrl: "https://seekingalpha.com/feed.xml", section: "finance", language: "en", priority: 2 },
-  { name: "Investopedia", homepage: "https://www.investopedia.com", feedUrl: "https://www.investopedia.com/feedbuilder/feed/getfeed/?feedName=rss_articles", section: "finance", language: "en", priority: 2 },
-  { name: "Investing.com", homepage: "https://www.investing.com", feedUrl: "https://www.investing.com/rss/news.rss", section: "finance", language: "en", priority: 1 },
-  { name: "ZeroHedge", homepage: "https://www.zerohedge.com", feedUrl: "https://www.zerohedge.com/rss.xml", section: "finance", language: "en", priority: 2 },
-  { name: "Crunchbase News", homepage: "https://news.crunchbase.com", feedUrl: "https://news.crunchbase.com/feed", section: "finance", language: "en", priority: 1 },
-  { name: "a16z", homepage: "https://a16z.com", feedUrl: "https://a16z.com/feed", section: "finance", language: "en", priority: 1 },
-  { name: "Not Boring", homepage: "https://notboring.co", feedUrl: "https://notboring.co/feed", section: "finance", language: "en", priority: 2 },
-  { name: "IMF News", homepage: "https://www.imf.org", feedUrl: "https://www.imf.org/en/News/RSS", section: "finance", language: "en", priority: 1 },
-  { name: "OECD", homepage: "https://www.oecd.org", feedUrl: "https://www.oecd.org/newsroom/rss.xml", section: "finance", language: "en", priority: 1 },
-  { name: "World Bank", homepage: "https://www.worldbank.org", feedUrl: "https://www.worldbank.org/en/news/rss", section: "finance", language: "en", priority: 1 },
-  { name: "Visual Capitalist", homepage: "https://www.visualcapitalist.com", feedUrl: "https://www.visualcapitalist.com/feed", section: "finance", language: "en", priority: 1 },
-  { name: "CoinTelegraph", homepage: "https://cointelegraph.com", feedUrl: "https://cointelegraph.com/rss", section: "finance", language: "en", priority: 2 },
-  { name: "Decrypt", homepage: "https://decrypt.co", feedUrl: "https://decrypt.co/feed", section: "finance", language: "en", priority: 2 },
-  { name: "Finextra", homepage: "https://finextra.com", feedUrl: "https://finextra.com/rss", section: "finance", language: "en", priority: 2 },
-  { name: "Fintech Futures", homepage: "https://fintechfutures.com", feedUrl: "https://fintechfutures.com/feed", section: "finance", language: "en", priority: 2 },
-  { name: "Il Sole 24 Ore Finanza", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/finanza-e-mercati.xml", section: "finance", language: "it", priority: 1 },
-  { name: "Corriere Economia", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/economia.xml", section: "finance", language: "it", priority: 1 },
-  { name: "Milano Finanza", homepage: "https://www.milanofinanza.it", feedUrl: "https://www.milanofinanza.it/rss", section: "finance", language: "it", priority: 1 },
-  { name: "Forbes Italia Finanza", homepage: "https://forbes.it", feedUrl: "https://forbes.it/feed", section: "finance", language: "it", priority: 1 },
-];
-
 // ─── 5. Health & Biotech ──────────────────────────────────────────────────────
-export const HEALTH_SOURCES: RssSource[] = [
-  { name: "Fierce Biotech", homepage: "https://www.fiercebiotech.com", feedUrl: "https://www.fiercebiotech.com/rss/xml", section: "health", language: "en", priority: 1 },
-  { name: "BioPharma Dive", homepage: "https://www.biopharmadive.com", feedUrl: "https://www.biopharmadive.com/feeds/news", section: "health", language: "en", priority: 1 },
-  { name: "Endpoints News", homepage: "https://endpts.com", feedUrl: "https://endpts.com/feed", section: "health", language: "en", priority: 1 },
-  { name: "GEN News", homepage: "https://www.genengnews.com", feedUrl: "https://www.genengnews.com/feed", section: "health", language: "en", priority: 2 },
-  { name: "LabioTech", homepage: "https://www.labiotech.eu", feedUrl: "https://www.labiotech.eu/feed", section: "health", language: "en", priority: 2 },
-  { name: "Nature Biotechnology", homepage: "https://www.nature.com", feedUrl: "https://www.nature.com/subjects/biotechnology.rss", section: "health", language: "en", priority: 1 },
-  { name: "Science Daily Health", homepage: "https://www.sciencedaily.com", feedUrl: "https://www.sciencedaily.com/rss/health_medicine.xml", section: "health", language: "en", priority: 1 },
-  { name: "Medical News Today", homepage: "https://www.medicalnewstoday.com", feedUrl: "https://www.medicalnewstoday.com/rss", section: "health", language: "en", priority: 2 },
-  { name: "BMJ", homepage: "https://www.bmj.com", feedUrl: "https://www.bmj.com/rss", section: "health", language: "en", priority: 1 },
-  { name: "NIH News", homepage: "https://www.nih.gov", feedUrl: "https://www.nih.gov/news-events/news-releases/feed.xml", section: "health", language: "en", priority: 1 },
-  { name: "STAT News", homepage: "https://www.statnews.com", feedUrl: "https://www.statnews.com/feed", section: "health", language: "en", priority: 1 },
-  { name: "MobiHealthNews", homepage: "https://www.mobihealthnews.com", feedUrl: "https://www.mobihealthnews.com/rss.xml", section: "health", language: "en", priority: 2 },
-  { name: "MedTech Dive", homepage: "https://www.medtechdive.com", feedUrl: "https://www.medtechdive.com/feeds/news", section: "health", language: "en", priority: 1 },
-  { name: "Healthcare IT News", homepage: "https://www.healthcareitnews.com", feedUrl: "https://www.healthcareitnews.com/rss.xml", section: "health", language: "en", priority: 2 },
-  { name: "Longevity Technology", homepage: "https://www.longevity.technology", feedUrl: "https://www.longevity.technology/feed", section: "health", language: "en", priority: 2 },
-  { name: "Lifespan.io", homepage: "https://www.lifespan.io", feedUrl: "https://www.lifespan.io/feed", section: "health", language: "en", priority: 2 },
-  { name: "Fight Aging", homepage: "https://www.fightaging.org", feedUrl: "https://www.fightaging.org/rss.xml", section: "health", language: "en", priority: 2 },
-  { name: "PharmaTech", homepage: "https://www.pharmtech.com", feedUrl: "https://www.pharmtech.com/rss.xml", section: "health", language: "en", priority: 2 },
-  { name: "Pharmaphorum", homepage: "https://pharmaphorum.com", feedUrl: "https://pharmaphorum.com/feed", section: "health", language: "en", priority: 2 },
-  { name: "PharmaVoice", homepage: "https://www.pharmavoice.com", feedUrl: "https://www.pharmavoice.com/feed", section: "health", language: "en", priority: 2 },
-  { name: "Futurity Health", homepage: "https://www.futurity.org", feedUrl: "https://www.futurity.org/health/feed", section: "health", language: "en", priority: 2 },
-  { name: "Il Sole 24 Ore Sanità", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/salute.xml", section: "health", language: "it", priority: 1 },
-  { name: "Corriere Salute", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/salute.xml", section: "health", language: "it", priority: 1 },
-  { name: "Wired Italia Salute", homepage: "https://www.wired.it", feedUrl: "https://www.wired.it/feed", section: "health", language: "it", priority: 2 },
-  { name: "Quotidiano Sanità", homepage: "https://www.quotidianosanita.it", feedUrl: "https://www.quotidianosanita.it/rss", section: "health", language: "it", priority: 1 },
-];
-
 // ─── 6. Sport & Business ──────────────────────────────────────────────────────
-export const SPORT_SOURCES: RssSource[] = [
-  { name: "Sport Business", homepage: "https://www.sportbusiness.com", feedUrl: "https://www.sportbusiness.com/feed", section: "sport", language: "en", priority: 1 },
-  { name: "SportsPro Media", homepage: "https://www.sportspromedia.com", feedUrl: "https://www.sportspromedia.com/feed", section: "sport", language: "en", priority: 1 },
-  { name: "Front Office Sports", homepage: "https://frontofficesports.com", feedUrl: "https://frontofficesports.com/feed", section: "sport", language: "en", priority: 1 },
-  { name: "Sportico", homepage: "https://www.sportico.com", feedUrl: "https://www.sportico.com/feed", section: "sport", language: "en", priority: 1 },
-  { name: "SportTechie", homepage: "https://www.sporttechie.com", feedUrl: "https://www.sporttechie.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "Sports Business Journal", homepage: "https://www.sportsbusinessjournal.com", feedUrl: "https://www.sportsbusinessjournal.com/rss", section: "sport", language: "en", priority: 1 },
-  { name: "StatsBomb", homepage: "https://statsbomb.com", feedUrl: "https://statsbomb.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "The Analyst", homepage: "https://theanalyst.com", feedUrl: "https://theanalyst.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "FiveThirtyEight Sports", homepage: "https://fivethirtyeight.com", feedUrl: "https://fivethirtyeight.com/sports/feed", section: "sport", language: "en", priority: 2 },
-  { name: "ESPN News", homepage: "https://www.espn.com", feedUrl: "https://www.espn.com/espn/rss/news", section: "sport", language: "en", priority: 1 },
-  { name: "Sky Sports", homepage: "https://www.skysports.com", feedUrl: "https://www.skysports.com/rss", section: "sport", language: "en", priority: 1 },
-  { name: "Esports Insider", homepage: "https://esportsinsider.com", feedUrl: "https://esportsinsider.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "Dot Esports", homepage: "https://dotesports.com", feedUrl: "https://dotesports.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "Forbes Sports Money", homepage: "https://www.forbes.com", feedUrl: "https://www.forbes.com/sportsmoney/feed", section: "sport", language: "en", priority: 1 },
-  { name: "Sportico Business", homepage: "https://www.sportico.com", feedUrl: "https://www.sportico.com/business/feed", section: "sport", language: "en", priority: 1 },
-  { name: "Sport Industry Biz", homepage: "https://www.sportindustry.biz", feedUrl: "https://www.sportindustry.biz/feed", section: "sport", language: "en", priority: 2 },
-  { name: "Leaders in Sport", homepage: "https://www.leadersinsport.com", feedUrl: "https://www.leadersinsport.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "Swiss Ramble", homepage: "https://swissramble.substack.com", feedUrl: "https://swissramble.substack.com/feed", section: "sport", language: "en", priority: 1 },
-  { name: "Inside World Football", homepage: "https://www.insideworldfootball.com", feedUrl: "https://www.insideworldfootball.com/feed", section: "sport", language: "en", priority: 2 },
-  { name: "ESPN Soccer", homepage: "https://www.espn.com", feedUrl: "https://www.espn.com/soccer/rss", section: "sport", language: "en", priority: 2 },
-  { name: "Gazzetta dello Sport", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/home.xml", section: "sport", language: "it", priority: 1 },
-  { name: "Corriere dello Sport", homepage: "https://www.corrieredellosport.it", feedUrl: "https://www.corrieredellosport.it/rss", section: "sport", language: "it", priority: 1 },
-  { name: "TuttoSport", homepage: "https://www.tuttosport.com", feedUrl: "https://www.tuttosport.com/rss/home.xml", section: "sport", language: "it", priority: 1 },
-  { name: "Football Finance IT", homepage: "https://www.calcioefinanza.it", feedUrl: "https://www.calcioefinanza.it/feed", section: "sport", language: "it", priority: 1 },
-  { name: "SportMediaset", homepage: "https://www.sportmediaset.mediaset.it", feedUrl: "https://www.sportmediaset.mediaset.it/rss/home.xml", section: "sport", language: "it", priority: 2 },
-];
-
 // ─── 7. Lifestyle & Luxury Economy ───────────────────────────────────────────
-export const LUXURY_SOURCES: RssSource[] = [
-  { name: "Jing Daily", homepage: "https://jingdaily.com", feedUrl: "https://jingdaily.com/feed", section: "luxury", language: "en", priority: 1 },
-  { name: "Luxury Daily", homepage: "https://www.luxurydaily.com", feedUrl: "https://www.luxurydaily.com/feed", section: "luxury", language: "en", priority: 1 },
-  { name: "Business of Fashion", homepage: "https://www.businessoffashion.com", feedUrl: "https://www.businessoffashion.com/feed", section: "luxury", language: "en", priority: 1 },
-  { name: "Robb Report", homepage: "https://robbreport.com", feedUrl: "https://robbreport.com/feed", section: "luxury", language: "en", priority: 1 },
-  { name: "Highsnobiety", homepage: "https://www.highsnobiety.com", feedUrl: "https://www.highsnobiety.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Hypebeast", homepage: "https://hypebeast.com", feedUrl: "https://hypebeast.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "WWD", homepage: "https://wwd.com", feedUrl: "https://wwd.com/feed", section: "luxury", language: "en", priority: 1 },
-  { name: "Vogue Business", homepage: "https://www.voguebusiness.com", feedUrl: "https://www.voguebusiness.com/feed", section: "luxury", language: "en", priority: 1 },
-  { name: "Glossy", homepage: "https://www.glossy.co", feedUrl: "https://www.glossy.co/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Luxury Tribune", homepage: "https://www.luxurytribune.com", feedUrl: "https://www.luxurytribune.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Luxury Society", homepage: "https://www.luxurysociety.com", feedUrl: "https://www.luxurysociety.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "The Impression", homepage: "https://theimpression.com", feedUrl: "https://theimpression.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Condé Nast Traveler", homepage: "https://www.cntraveler.com", feedUrl: "https://www.cntraveler.com/feed/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "Travel + Leisure", homepage: "https://www.travelandleisure.com", feedUrl: "https://www.travelandleisure.com/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "Elite Traveler", homepage: "https://www.elitetraveler.com", feedUrl: "https://www.elitetraveler.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Esquire", homepage: "https://www.esquire.com", feedUrl: "https://www.esquire.com/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "GQ", homepage: "https://www.gq.com", feedUrl: "https://www.gq.com/feed/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "Wallpaper", homepage: "https://www.wallpaper.com", feedUrl: "https://www.wallpaper.com/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "Designboom", homepage: "https://www.designboom.com", feedUrl: "https://www.designboom.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Cool Hunting", homepage: "https://coolhunting.com", feedUrl: "https://coolhunting.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Trend Hunter Luxury", homepage: "https://www.trendhunter.com", feedUrl: "https://www.trendhunter.com/rss/luxury", section: "luxury", language: "en", priority: 2 },
-  { name: "Wine Spectator", homepage: "https://www.winespectator.com", feedUrl: "https://www.winespectator.com/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "Decanter", homepage: "https://www.decanter.com", feedUrl: "https://www.decanter.com/feed", section: "luxury", language: "en", priority: 2 },
-  { name: "Eater", homepage: "https://www.eater.com", feedUrl: "https://www.eater.com/rss", section: "luxury", language: "en", priority: 2 },
-  { name: "Fine Dining Lovers", homepage: "https://www.finedininglovers.com", feedUrl: "https://www.finedininglovers.com/rss.xml", section: "luxury", language: "en", priority: 1 },
-  { name: "Vogue Italia", homepage: "https://www.vogue.it", feedUrl: "https://www.vogue.it/feed", section: "luxury", language: "it", priority: 1 },
-  { name: "Elle Italia", homepage: "https://www.elle.com/it", feedUrl: "https://www.elle.com/it/feed", section: "luxury", language: "it", priority: 1 },
-  { name: "Corriere Moda", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/moda.xml", section: "luxury", language: "it", priority: 1 },
-  { name: "Il Sole 24 Ore Moda", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/moda-lusso.xml", section: "luxury", language: "it", priority: 1 },
-  { name: "Forbes Italia Lusso", homepage: "https://forbes.it", feedUrl: "https://forbes.it/feed", section: "luxury", language: "it", priority: 1 },
-];
-
 // ─── 8. News Generali ────────────────────────────────────────────────────────
-export const NEWS_SOURCES: RssSource[] = [
-  // Agenzie e quotidiani italiani
-  { name: "ANSA", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml", section: "news", language: "it", priority: 1 },
-  { name: "ANSA Politica", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/politica/politica_rss.xml", section: "news", language: "it", priority: 1 },
-  { name: "ANSA Economia", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/economia/economia_rss.xml", section: "news", language: "it", priority: 1 },
-  { name: "ANSA Esteri", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/mondo/mondo_rss.xml", section: "news", language: "it", priority: 1 },
-  { name: "ANSA Cronaca", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/cronaca/cronaca_rss.xml", section: "news", language: "it", priority: 1 },
-  { name: "Repubblica", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/homepage/rss2.0.xml", section: "news", language: "it", priority: 1 },
-  { name: "Corriere della Sera", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/homepage.xml", section: "news", language: "it", priority: 1 },
-  { name: "Il Sole 24 Ore", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/italia.xml", section: "news", language: "it", priority: 1 },
-  { name: "La Stampa", homepage: "https://www.lastampa.it", feedUrl: "https://www.lastampa.it/rss.xml", section: "news", language: "it", priority: 1 },
-  { name: "Il Fatto Quotidiano", homepage: "https://www.ilfattoquotidiano.it", feedUrl: "https://www.ilfattoquotidiano.it/feed", section: "news", language: "it", priority: 1 },
-  { name: "Tgcom24", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/home.xml", section: "news", language: "it", priority: 2 },
-  { name: "Sky TG24", homepage: "https://tg24.sky.it", feedUrl: "https://tg24.sky.it/rss", section: "news", language: "it", priority: 1 },
-  { name: "Fanpage", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/feed", section: "news", language: "it", priority: 2 },
-  { name: "Open Online", homepage: "https://www.open.online", feedUrl: "https://www.open.online/feed", section: "news", language: "it", priority: 2 },
-  { name: "HuffPost Italia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/feeds/index.xml", section: "news", language: "it", priority: 2 },
-  // Internazionali
-  { name: "BBC News", homepage: "https://www.bbc.com", feedUrl: "https://feeds.bbci.co.uk/news/rss.xml", section: "news", language: "en", priority: 1 },
-  { name: "Reuters", homepage: "https://www.reuters.com", feedUrl: "https://feeds.reuters.com/reuters/topNews", section: "news", language: "en", priority: 1 },
-  { name: "AP News", homepage: "https://apnews.com", feedUrl: "https://apnews.com/rss", section: "news", language: "en", priority: 1 },
-  { name: "The Guardian", homepage: "https://www.theguardian.com", feedUrl: "https://www.theguardian.com/world/rss", section: "news", language: "en", priority: 1 },
-  { name: "Al Jazeera", homepage: "https://www.aljazeera.com", feedUrl: "https://www.aljazeera.com/xml/rss/all.xml", section: "news", language: "en", priority: 1 },
-  // Politica italiana (20 feed)
-  { name: "Repubblica Politica", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/politica/rss2.0.xml", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "Corriere Politica", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/politica.xml", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "Il Sole 24 Ore Politica", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/politica.xml", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "Il Post Politica", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/politica/feed", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "Open Online Politica", homepage: "https://www.open.online", feedUrl: "https://www.open.online/tag/politica/feed", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "La Stampa Politica", homepage: "https://www.lastampa.it", feedUrl: "https://www.lastampa.it/rss/politica", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "Il Fatto Quotidiano Politica", homepage: "https://www.ilfattoquotidiano.it", feedUrl: "https://www.ilfattoquotidiano.it/tag/politica/feed", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "HuffPost Politica", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/section/politica/feed", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "ANSA Politica", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/politica/politica_rss.xml", section: "news", language: "it", priority: 1, tags: ["politica"] },
-  { name: "Tgcom24 Politica", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/politica.xml", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Il Giornale Politica", homepage: "https://www.ilgiornale.it", feedUrl: "https://www.ilgiornale.it/rss/politica.xml", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Libero Politica", homepage: "https://www.liberoquotidiano.it", feedUrl: "https://www.liberoquotidiano.it/rss/politica.xml", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Affari Italiani Politica", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss/politica.xml", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Fanpage Politica", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/politica/feed", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Formiche", homepage: "https://www.formiche.net", feedUrl: "https://www.formiche.net/feed", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Linkiesta", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "news", language: "it", priority: 2, tags: ["politica"] },
-  { name: "Agenda Digitale", homepage: "https://www.agendadigitale.eu", feedUrl: "https://www.agendadigitale.eu/feed", section: "news", language: "it", priority: 2, tags: ["politica", "digitale"] },
-  { name: "Key4biz", homepage: "https://www.key4biz.it", feedUrl: "https://www.key4biz.it/feed", section: "news", language: "it", priority: 2, tags: ["politica", "digitale"] },
-  { name: "Corriere Comunicazioni", homepage: "https://www.corrierecomunicazioni.it", feedUrl: "https://www.corrierecomunicazioni.it/feed", section: "news", language: "it", priority: 2, tags: ["politica", "digitale"] },
-  { name: "Money.it", homepage: "https://www.money.it", feedUrl: "https://www.money.it/spip.php?page=backend", section: "news", language: "it", priority: 2, tags: ["politica", "economia"] },
-  // Cronaca italiana (20 feed)
-  { name: "Repubblica Cronaca", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/cronaca/rss2.0.xml", section: "news", language: "it", priority: 1, tags: ["cronaca"] },
-  { name: "Corriere Cronache", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/cronache.xml", section: "news", language: "it", priority: 1, tags: ["cronaca"] },
-  { name: "Il Post Cronaca", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/cronaca/feed", section: "news", language: "it", priority: 1, tags: ["cronaca"] },
-  { name: "Open Online Cronaca", homepage: "https://www.open.online", feedUrl: "https://www.open.online/tag/cronaca/feed", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "ANSA Italia", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/ansait_rss.xml", section: "news", language: "it", priority: 1, tags: ["cronaca"] },
-  { name: "Tgcom24 Cronaca", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/cronaca.xml", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "La Stampa Cronaca", homepage: "https://www.lastampa.it", feedUrl: "https://www.lastampa.it/rss/cronaca", section: "news", language: "it", priority: 1, tags: ["cronaca"] },
-  { name: "Il Giornale Cronache", homepage: "https://www.ilgiornale.it", feedUrl: "https://www.ilgiornale.it/rss/cronache.xml", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "Libero Cronaca", homepage: "https://www.liberoquotidiano.it", feedUrl: "https://www.liberoquotidiano.it/rss/cronaca.xml", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "Fanpage.it", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/feed", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "Today.it", homepage: "https://www.today.it", feedUrl: "https://www.today.it/rss/home.xml", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "Leggo", homepage: "https://www.leggo.it", feedUrl: "https://www.leggo.it/rss/home.xml", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "Il Fatto Quotidiano", homepage: "https://www.ilfattoquotidiano.it", feedUrl: "https://www.ilfattoquotidiano.it/feed", section: "news", language: "it", priority: 1, tags: ["cronaca"] },
-  { name: "Affari Italiani Cronaca", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss/cronaca.xml", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "HuffPost Cronaca", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/section/cronaca/feed", section: "news", language: "it", priority: 2, tags: ["cronaca"] },
-  { name: "Milano Today", homepage: "https://www.milanotoday.it", feedUrl: "https://www.milanotoday.it/rss", section: "news", language: "it", priority: 2, tags: ["cronaca", "locale"] },
-  { name: "Roma Today", homepage: "https://www.romatoday.it", feedUrl: "https://www.romatoday.it/rss", section: "news", language: "it", priority: 2, tags: ["cronaca", "locale"] },
-  { name: "Napoli Today", homepage: "https://www.napolitoday.it", feedUrl: "https://www.napolitoday.it/rss", section: "news", language: "it", priority: 2, tags: ["cronaca", "locale"] },
-  { name: "Bologna Today", homepage: "https://www.bolognatoday.it", feedUrl: "https://www.bolognatoday.it/rss", section: "news", language: "it", priority: 2, tags: ["cronaca", "locale"] },
-  { name: "Torino Today", homepage: "https://www.torinotoday.it", feedUrl: "https://www.torinotoday.it/rss", section: "news", language: "it", priority: 2, tags: ["cronaca", "locale"] },
-  // Finanza / Economia italiana (20 feed)
-  { name: "Il Sole 24 Ore Finanza", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/finanza.xml", section: "news", language: "it", priority: 1, tags: ["finanza", "economia"] },
-  { name: "Il Sole 24 Ore Economia", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/economia.xml", section: "news", language: "it", priority: 1, tags: ["finanza", "economia"] },
-  { name: "Repubblica Economia", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/economia/rss2.0.xml", section: "news", language: "it", priority: 1, tags: ["finanza", "economia"] },
-  { name: "Corriere Economia", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/economia.xml", section: "news", language: "it", priority: 1, tags: ["finanza", "economia"] },
-  { name: "Wall Street Italia", homepage: "https://www.wallstreetitalia.com", feedUrl: "https://www.wallstreetitalia.com/feed", section: "news", language: "it", priority: 1, tags: ["finanza"] },
-  { name: "Trend Online", homepage: "https://www.trend-online.com", feedUrl: "https://www.trend-online.com/feed", section: "news", language: "it", priority: 2, tags: ["finanza"] },
-  { name: "Finanza Online", homepage: "https://www.finanzaonline.com", feedUrl: "https://www.finanzaonline.com/feed", section: "news", language: "it", priority: 2, tags: ["finanza"] },
-  { name: "Money.it Finanza", homepage: "https://www.money.it", feedUrl: "https://www.money.it/feed", section: "news", language: "it", priority: 2, tags: ["finanza", "economia"] },
-  { name: "Milano Finanza", homepage: "https://www.milanofinanza.it", feedUrl: "https://www.milanofinanza.it/rss", section: "news", language: "it", priority: 1, tags: ["finanza"] },
-  { name: "Investire Oggi", homepage: "https://www.investireoggi.it", feedUrl: "https://www.investireoggi.it/feed", section: "news", language: "it", priority: 2, tags: ["finanza"] },
-  { name: "Borsa Italiana", homepage: "https://www.borsaitaliana.it", feedUrl: "https://www.borsaitaliana.it/rss", section: "news", language: "it", priority: 1, tags: ["finanza", "borsa"] },
-  { name: "Startup Italia", homepage: "https://www.startupitalia.eu", feedUrl: "https://www.startupitalia.eu/feed", section: "news", language: "it", priority: 2, tags: ["economia", "startup"] },
-  { name: "Economy Up", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "news", language: "it", priority: 2, tags: ["economia"] },
-  { name: "Forbes Italia", homepage: "https://www.forbes.it", feedUrl: "https://www.forbes.it/feed", section: "news", language: "it", priority: 1, tags: ["economia", "business"] },
-  { name: "Affari Italiani Economia", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss/economia.xml", section: "news", language: "it", priority: 2, tags: ["economia"] },
-  { name: "HuffPost Economia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/section/economia/feed", section: "news", language: "it", priority: 2, tags: ["economia"] },
-  { name: "Il Post Economia", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/economia/feed", section: "news", language: "it", priority: 1, tags: ["economia"] },
-  // Glamour & Spettacolo
-  { name: "Vanity Fair Italia", homepage: "https://www.vanityfair.it", feedUrl: "https://www.vanityfair.it/feed", section: "news", language: "it", priority: 2, tags: ["glamour"] },
-  { name: "Vogue Italia", homepage: "https://www.vogue.it", feedUrl: "https://www.vogue.it/feed", section: "news", language: "it", priority: 2, tags: ["glamour"] },
-  { name: "People", homepage: "https://people.com", feedUrl: "https://people.com/feed", section: "news", language: "en", priority: 2, tags: ["glamour"] },
-];
-
 // ─── 9. Motori ───────────────────────────────────────────────────────────────
-export const MOTORI_SOURCES: RssSource[] = [
-  { name: "Autosprint", homepage: "https://www.autosprint.it", feedUrl: "https://www.autosprint.it/feed", section: "motori", language: "it", priority: 1 },
-  { name: "Quattroruote", homepage: "https://www.quattroruote.it", feedUrl: "https://www.quattroruote.it/rss/news.xml", section: "motori", language: "it", priority: 1 },
-  { name: "Motorionline", homepage: "https://www.motorionline.com", feedUrl: "https://www.motorionline.com/feed", section: "motori", language: "it", priority: 1 },
-  { name: "Automoto.it", homepage: "https://www.automoto.it", feedUrl: "https://www.automoto.it/rss/news.xml", section: "motori", language: "it", priority: 1 },
-  { name: "Corriere Motori", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/motori.xml", section: "motori", language: "it", priority: 1 },
-  { name: "La Gazzetta Motori", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/motori.xml", section: "motori", language: "it", priority: 1 },
-  { name: "Autocar", homepage: "https://www.autocar.co.uk", feedUrl: "https://www.autocar.co.uk/rss", section: "motori", language: "en", priority: 1 },
-  { name: "Car and Driver", homepage: "https://www.caranddriver.com", feedUrl: "https://www.caranddriver.com/rss/all.xml", section: "motori", language: "en", priority: 1 },
-  { name: "Motor Trend", homepage: "https://www.motortrend.com", feedUrl: "https://www.motortrend.com/rss/all.xml", section: "motori", language: "en", priority: 1 },
-  { name: "Road and Track", homepage: "https://www.roadandtrack.com", feedUrl: "https://www.roadandtrack.com/rss/all.xml", section: "motori", language: "en", priority: 1 },
-  { name: "Autoblog", homepage: "https://www.autoblog.com", feedUrl: "https://www.autoblog.com/rss.xml", section: "motori", language: "en", priority: 2 },
-  { name: "Jalopnik", homepage: "https://jalopnik.com", feedUrl: "https://jalopnik.com/rss", section: "motori", language: "en", priority: 2 },
-  { name: "Electrek", homepage: "https://electrek.co", feedUrl: "https://electrek.co/feed", section: "motori", language: "en", priority: 1, tags: ["elettrico"] },
-  { name: "InsideEVs", homepage: "https://insideevs.com", feedUrl: "https://insideevs.com/rss/articles/all", section: "motori", language: "en", priority: 1, tags: ["elettrico"] },
-  { name: "Formula 1", homepage: "https://www.formula1.com", feedUrl: "https://www.formula1.com/content/fom-website/en/latest/all.xml", section: "motori", language: "en", priority: 1, tags: ["f1"] },
-  { name: "Motorsport.com", homepage: "https://it.motorsport.com", feedUrl: "https://it.motorsport.com/rss/news/all", section: "motori", language: "it", priority: 1, tags: ["f1", "motorsport"] },
-  { name: "Autosport", homepage: "https://www.autosport.com", feedUrl: "https://www.autosport.com/rss/feed/all", section: "motori", language: "en", priority: 1, tags: ["motorsport"] },
-];
-
 // ─── 10. Tennis ──────────────────────────────────────────────────────────────
-export const TENNIS_SOURCES: RssSource[] = [
-  { name: "Tennis World Italia", homepage: "https://www.tennisworlditalia.com", feedUrl: "https://www.tennisworlditalia.com/feed", section: "tennis", language: "it", priority: 1 },
-  { name: "Ubitennis", homepage: "https://www.ubitennis.com", feedUrl: "https://www.ubitennis.com/feed", section: "tennis", language: "it", priority: 1 },
-  { name: "SuperTennis", homepage: "https://www.supertennis.tv", feedUrl: "https://www.supertennis.tv/feed", section: "tennis", language: "it", priority: 1 },
-  { name: "Corriere Sport Tennis", homepage: "https://www.corrieredellosport.it", feedUrl: "https://www.corrieredellosport.it/rss", section: "tennis", language: "it", priority: 2 },
-  { name: "Gazzetta Tennis", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/tennis.xml", section: "tennis", language: "it", priority: 1 },
-  { name: "Tennis.com", homepage: "https://www.tennis.com", feedUrl: "https://www.tennis.com/rss", section: "tennis", language: "en", priority: 1 },
-  { name: "Tennis World USA", homepage: "https://www.tennisworldusa.org", feedUrl: "https://www.tennisworldusa.org/feed", section: "tennis", language: "en", priority: 1 },
-  { name: "WTA Official", homepage: "https://www.wtatennis.com", feedUrl: "https://www.wtatennis.com/rss", section: "tennis", language: "en", priority: 1 },
-  { name: "ATP Official", homepage: "https://www.atptour.com", feedUrl: "https://www.atptour.com/en/media/rss-feed/xml-feed", section: "tennis", language: "en", priority: 1 },
-  { name: "Tennis Abstract", homepage: "https://www.tennisabstract.com", feedUrl: "https://www.tennisabstract.com/blog/feed", section: "tennis", language: "en", priority: 2 },
-  { name: "Essentially Sports Tennis", homepage: "https://www.essentiallysports.com", feedUrl: "https://www.essentiallysports.com/tennis/feed", section: "tennis", language: "en", priority: 2 },
-  { name: "The Tennis Podcast", homepage: "https://thetennispodcast.net", feedUrl: "https://thetennispodcast.net/feed", section: "tennis", language: "en", priority: 2 },
-];
-
 // ─── 11. Basket ──────────────────────────────────────────────────────────────
-export const BASKET_SOURCES: RssSource[] = [
-  { name: "Sportando", homepage: "https://www.sportando.basketball", feedUrl: "https://www.sportando.basketball/feed", section: "basket", language: "en", priority: 1 },
-  { name: "Basket Universo", homepage: "https://www.basketuniverso.it", feedUrl: "https://www.basketuniverso.it/feed", section: "basket", language: "it", priority: 1 },
-  { name: "Pianeta Basket", homepage: "https://www.pianetabasket.com", feedUrl: "https://www.pianetabasket.com/feed", section: "basket", language: "it", priority: 1 },
-  { name: "Gazzetta Basket", homepage: "https://www.gazzetta.it", feedUrl: "https://www.gazzetta.it/rss/basket.xml", section: "basket", language: "it", priority: 1 },
-  { name: "Corriere Sport Basket", homepage: "https://www.corrieredellosport.it", feedUrl: "https://www.corrieredellosport.it/rss", section: "basket", language: "it", priority: 2 },
-  { name: "NBA.com", homepage: "https://www.nba.com", feedUrl: "https://www.nba.com/news/rss.xml", section: "basket", language: "en", priority: 1 },
-  { name: "ESPN NBA", homepage: "https://www.espn.com", feedUrl: "https://www.espn.com/espn/rss/nba/news", section: "basket", language: "en", priority: 1 },
-  { name: "The Athletic NBA", homepage: "https://theathletic.com", feedUrl: "https://theathletic.com/nba/feed", section: "basket", language: "en", priority: 1 },
-  { name: "Bleacher Report NBA", homepage: "https://bleacherreport.com", feedUrl: "https://bleacherreport.com/nba.rss", section: "basket", language: "en", priority: 2 },
-  { name: "HoopsHype", homepage: "https://hoopshype.com", feedUrl: "https://hoopshype.com/feed", section: "basket", language: "en", priority: 2 },
-  { name: "EuroLeague", homepage: "https://www.euroleaguebasketball.net", feedUrl: "https://www.euroleaguebasketball.net/euroleague/news/rss", section: "basket", language: "en", priority: 1 },
-  { name: "Lega Basket", homepage: "https://www.legabasket.it", feedUrl: "https://www.legabasket.it/rss", section: "basket", language: "it", priority: 1 },
-];
-
-export const GOSSIP_SOURCES: RssSource[] = [
-  // ── Finanza & operazioni (core) ─────────────────────────────────────────
-  { name: "Milano Finanza", homepage: "https://www.milanofinanza.it", feedUrl: "https://www.milanofinanza.it/rss", section: "gossip", language: "it", priority: 1 },
-  { name: "Il Sole 24 Ore Finanza", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/finanza.xml", section: "gossip", language: "it", priority: 1 },
-  { name: "Il Sole 24 Ore Economia", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/economia.xml", section: "gossip", language: "it", priority: 1 },
-  { name: "Affari Italiani", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss", section: "gossip", language: "it", priority: 1 },
-  { name: "Wall Street Italia", homepage: "https://www.wallstreetitalia.com", feedUrl: "https://www.wallstreetitalia.com/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Trend Online", homepage: "https://www.trend-online.com", feedUrl: "https://www.trend-online.com/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Finanza Online", homepage: "https://www.finanzaonline.com", feedUrl: "https://www.finanzaonline.com/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Money.it", homepage: "https://www.money.it", feedUrl: "https://www.money.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Investire Oggi", homepage: "https://www.investireoggi.it", feedUrl: "https://www.investireoggi.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Borsa Italiana", homepage: "https://www.borsaitaliana.it", feedUrl: "https://borsaitaliana.it/rss", section: "gossip", language: "it", priority: 1 },
-  // ── Corporate / industria / telecom / tech ────────────────────────────
-  { name: "Corriere Comunicazioni", homepage: "https://www.corrierecomunicazioni.it", feedUrl: "https://www.corrierecomunicazioni.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Key4biz", homepage: "https://www.key4biz.it", feedUrl: "https://www.key4biz.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Agenda Digitale", homepage: "https://www.agendadigitale.eu", feedUrl: "https://www.agendadigitale.eu/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Digital4.biz", homepage: "https://www.digital4.biz", feedUrl: "https://www.digital4.biz/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Industry4Business", homepage: "https://www.industry4business.it", feedUrl: "https://www.industry4business.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Internet4Things", homepage: "https://www.internet4things.it", feedUrl: "https://www.internet4things.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "TechCompany360", homepage: "https://www.techcompany360.it", feedUrl: "https://www.techcompany360.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Innovation Post", homepage: "https://www.innovationpost.it", feedUrl: "https://www.innovationpost.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "EconomyUp", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "StartupItalia", homepage: "https://www.startupitalia.eu", feedUrl: "https://www.startupitalia.eu/feed", section: "gossip", language: "it", priority: 1 },
-  // ── Startup / VC / deal flow Italia ───────────────────────────────────
-  { name: "Startup Business", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Startup News", homepage: "https://www.startup-news.it", feedUrl: "https://www.startup-news.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "ScaleUp Italy", homepage: "https://www.scaleupitaly.com", feedUrl: "https://www.scaleupitaly.com/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "VC Hub", homepage: "https://www.vc-hub.com", feedUrl: "https://www.vc-hub.com/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Dealflower", homepage: "https://www.dealflower.it", feedUrl: "https://www.dealflower.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Seedble", homepage: "https://www.seedble.it", feedUrl: "https://www.seedble.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "StartupMag", homepage: "https://www.startupmag.it", feedUrl: "https://www.startupmag.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Innovation Nation", homepage: "https://www.innovation-nation.it", feedUrl: "https://www.innovation-nation.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Ninja Marketing", homepage: "https://www.ninjamarketing.it", feedUrl: "https://www.ninjamarketing.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Digitalic", homepage: "https://www.digitalic.it", feedUrl: "https://www.digitalic.it/feed", section: "gossip", language: "it", priority: 2 },
-  // ── Media generalisti (retroscena + gossip business) ───────────────────
-  { name: "Corriere Economia", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/economia.xml", section: "gossip", language: "it", priority: 1 },
-  { name: "Repubblica Economia", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/economia/rss2.0.xml", section: "gossip", language: "it", priority: 1 },
-  { name: "La Stampa Economia", homepage: "https://www.lastampa.it", feedUrl: "https://www.lastampa.it/rss/economia", section: "gossip", language: "it", priority: 2 },
-  { name: "Il Post Economia", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/economia/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Open Online Economia", homepage: "https://www.open.online", feedUrl: "https://www.open.online/tag/economia/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "HuffPost Economia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/section/economia/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Fanpage Economia", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/economia/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Il Fatto Quotidiano", homepage: "https://www.ilfattoquotidiano.it", feedUrl: "https://www.ilfattoquotidiano.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Linkiesta", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Formiche.net", homepage: "https://www.formiche.net", feedUrl: "https://www.formiche.net/feed", section: "gossip", language: "it", priority: 1 },
-  // ── Executive moves / potere economico ──────────────────────────────────
-  { name: "Forbes Italia", homepage: "https://www.forbes.it", feedUrl: "https://www.forbes.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Business People", homepage: "https://www.businesspeople.it", feedUrl: "https://www.businesspeople.it/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "ManagerItalia", homepage: "https://www.manageritalia.it", feedUrl: "https://www.manageritalia.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "We Wealth", homepage: "https://www.we-wealth.com", feedUrl: "https://www.we-wealth.com/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "Private Banking Italia", homepage: "https://www.privatebankingitalia.it", feedUrl: "https://www.privatebankingitalia.it/feed", section: "gossip", language: "it", priority: 2 },
-  { name: "Family Office Hub", homepage: "https://www.familyofficehub.io", feedUrl: "https://www.familyofficehub.io/feed", section: "gossip", language: "en", priority: 2 },
-  { name: "Pambianco News", homepage: "https://www.pambianconews.com", feedUrl: "https://www.pambianconews.com/feed", section: "gossip", language: "it", priority: 1 },
-  { name: "MF Fashion", homepage: "https://www.mffashion.com", feedUrl: "https://www.mffashion.com/rss", section: "gossip", language: "it", priority: 1 },
-  { name: "Luxury Daily", homepage: "https://www.luxurydaily.com", feedUrl: "https://www.luxurydaily.com/feed", section: "gossip", language: "en", priority: 2 },
-  { name: "Glossy", homepage: "https://www.glossy.co", feedUrl: "https://www.glossy.co/feed", section: "gossip", language: "en", priority: 2 },
-];
-
-export const CYBERSECURITY_SOURCES: RssSource[] = [
-  // ── Media specializzati cybersecurity (core) ──────────────────────────────
-  { name: "Cybersecurity360", homepage: "https://www.cybersecurity360.it", feedUrl: "https://www.cybersecurity360.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "SecurityOpenLab", homepage: "https://www.securityopenlab.it", feedUrl: "https://www.securityopenlab.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "SecurityInfo.it", homepage: "https://www.securityinfo.it", feedUrl: "https://www.securityinfo.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "ICT Security Magazine", homepage: "https://www.ictsecuritymagazine.com", feedUrl: "https://www.ictsecuritymagazine.com/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "CybersecItalia", homepage: "https://www.cybersecitalia.it", feedUrl: "https://www.cybersecitalia.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "CybersecurityItalia", homepage: "https://www.cybersecurityitalia.it", feedUrl: "https://www.cybersecurityitalia.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "HackInBo", homepage: "https://www.hackinbo.it", feedUrl: "https://www.hackinbo.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Security Affairs", homepage: "https://www.securityaffairs.com", feedUrl: "https://www.securityaffairs.com/feed", section: "cybersecurity", language: "en", priority: 1 },
-  { name: "Cyber Defense Magazine", homepage: "https://www.cyberdefensemagazine.com", feedUrl: "https://www.cyberdefensemagazine.com/feed", section: "cybersecurity", language: "en", priority: 2 },
-  { name: "Help Net Security", homepage: "https://www.helpnetsecurity.com", feedUrl: "https://www.helpnetsecurity.com/feed", section: "cybersecurity", language: "en", priority: 1 },
-  // ── Digital / enterprise / sicurezza IT ──────────────────────────────────
-  { name: "Digital4.biz", homepage: "https://www.digital4.biz", feedUrl: "https://www.digital4.biz/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Agenda Digitale", homepage: "https://www.agendadigitale.eu", feedUrl: "https://www.agendadigitale.eu/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "Corriere Comunicazioni", homepage: "https://www.corrierecomunicazioni.it", feedUrl: "https://www.corrierecomunicazioni.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "Key4biz", homepage: "https://www.key4biz.it", feedUrl: "https://www.key4biz.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "TechCompany360", homepage: "https://www.techcompany360.it", feedUrl: "https://www.techcompany360.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Industry 4 Business", homepage: "https://www.industry4business.it", feedUrl: "https://www.industry4business.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Internet4Things", homepage: "https://www.internet4things.it", feedUrl: "https://www.internet4things.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Innovation Post", homepage: "https://www.innovationpost.it", feedUrl: "https://www.innovationpost.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "BigData4Innovation", homepage: "https://www.bigdata4innovation.it", feedUrl: "https://www.bigdata4innovation.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  // ── Istituzionali / CERT / sicurezza nazionale ────────────────────────────
-  { name: "ACN", homepage: "https://www.acn.gov.it", feedUrl: "https://www.acn.gov.it/rss", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "CERT-AGID", homepage: "https://www.cert-agid.gov.it", feedUrl: "https://www.cert-agid.gov.it/rss", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "CSIRT Italia", homepage: "https://www.csirt.gov.it", feedUrl: "https://www.csirt.gov.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "Garante Privacy", homepage: "https://www.garanteprivacy.it", feedUrl: "https://www.garanteprivacy.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "Polizia di Stato", homepage: "https://www.poliziadistato.it", feedUrl: "https://www.poliziadistato.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "MISE", homepage: "https://www.mise.gov.it", feedUrl: "https://www.mise.gov.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Ministero Interno", homepage: "https://www.interno.gov.it", feedUrl: "https://www.interno.gov.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Difesa.it", homepage: "https://www.difesa.it", feedUrl: "https://www.difesa.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "ANAC", homepage: "https://www.anticorruzione.it", feedUrl: "https://www.anticorruzione.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "CNIPA", homepage: "https://www.cnipa.gov.it", feedUrl: "https://www.cnipa.gov.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  // ── Ricerca / università / community ─────────────────────────────────────
-  { name: "Clusit", homepage: "https://www.clusit.it", feedUrl: "https://www.clusit.it/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "CybersecurityLab", homepage: "https://www.cybersecuritylab.it", feedUrl: "https://www.cybersecuritylab.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Università Sannio", homepage: "https://www.unisannio.it", feedUrl: "https://www.unisannio.it/rss", section: "cybersecurity", language: "it", priority: 3 },
-  { name: "Politecnico Torino", homepage: "https://www.polito.it", feedUrl: "https://www.polito.it/rss", section: "cybersecurity", language: "it", priority: 3 },
-  { name: "Politecnico Milano", homepage: "https://www.polimi.it", feedUrl: "https://www.polimi.it/rss", section: "cybersecurity", language: "it", priority: 3 },
-  { name: "Sapienza Roma", homepage: "https://www.uniroma1.it", feedUrl: "https://www.uniroma1.it/rss", section: "cybersecurity", language: "it", priority: 3 },
-  { name: "Università Bologna", homepage: "https://www.unibo.it", feedUrl: "https://www.unibo.it/rss", section: "cybersecurity", language: "it", priority: 3 },
-  { name: "SISSA", homepage: "https://www.sissa.it", feedUrl: "https://www.sissa.it/rss", section: "cybersecurity", language: "it", priority: 3 },
-  { name: "IIT", homepage: "https://www.iit.it", feedUrl: "https://www.iit.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "CNR", homepage: "https://www.cnr.it", feedUrl: "https://www.cnr.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  // ── Community hacker / sicurezza / eventi ─────────────────────────────────
-  { name: "OWASP", homepage: "https://www.owasp.org", feedUrl: "https://www.owasp.org/feed", section: "cybersecurity", language: "en", priority: 1 },
-  { name: "OWASP Italy", homepage: "https://owasp.org/www-chapter-italy", feedUrl: "https://owasp.org/www-chapter-italy/feed", section: "cybersecurity", language: "it", priority: 1 },
-  { name: "Hackers Journal", homepage: "https://www.hackersjournal.com", feedUrl: "https://www.hackersjournal.com/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "ZeroUnoWeb", homepage: "https://www.zerounoweb.it", feedUrl: "https://www.zerounoweb.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Punto Informatico", homepage: "https://www.punto-informatico.it", feedUrl: "https://www.punto-informatico.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "HW Upgrade", homepage: "https://www.hwupgrade.it", feedUrl: "https://www.hwupgrade.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Tom's Hardware Italia", homepage: "https://www.tomshw.it", feedUrl: "https://www.tomshw.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "DDay.it", homepage: "https://www.dday.it", feedUrl: "https://www.dday.it/rss", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Ninja Marketing", homepage: "https://www.ninjamarketing.it", feedUrl: "https://www.ninjamarketing.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-  { name: "Digitalic", homepage: "https://www.digitalic.it", feedUrl: "https://www.digitalic.it/feed", section: "cybersecurity", language: "it", priority: 2 },
-];
-
-export const SONDAGGI_SOURCES: RssSource[] = [
-  // ── Istituti di sondaggi italiani (core) ──────────────────────────────────
-  { name: "Ipsos Italia", homepage: "https://www.ipsos.com/it-it", feedUrl: "https://www.ipsos.com/it-it/rss", section: "sondaggi", language: "it", priority: 1 },
-  { name: "SWG", homepage: "https://www.swg.it", feedUrl: "https://www.swg.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Demos & Pi", homepage: "https://www.demos.it", feedUrl: "https://www.demos.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "YouTrend", homepage: "https://www.youtrend.it", feedUrl: "https://www.youtrend.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Termometro Politico", homepage: "https://www.termometropolitico.it", feedUrl: "https://www.termometropolitico.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Demopolis", homepage: "https://www.demopolis.it", feedUrl: "https://www.demopolis.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "EMG Different", homepage: "https://www.emg-different.com", feedUrl: "https://www.emg-different.com/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Eumetra", homepage: "https://www.eumetra.com", feedUrl: "https://www.eumetra.com/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "IXE'", homepage: "https://www.ixe.it", feedUrl: "https://www.ixe.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Tecnè Media", homepage: "https://www.tecnemedia.it", feedUrl: "https://www.tecnemedia.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Lab2101", homepage: "https://www.lab2101.it", feedUrl: "https://www.lab2101.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Winpoll", homepage: "https://www.winpoll.it", feedUrl: "https://www.winpoll.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Noto Sondaggi", homepage: "https://www.noto.it", feedUrl: "https://www.noto.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Quorum", homepage: "https://www.quorum.it", feedUrl: "https://www.quorum.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Euromedia Research", homepage: "https://www.euromediaresearch.it", feedUrl: "https://www.euromediaresearch.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  // ── Aggregatori sondaggi italiani ─────────────────────────────────────────
-  { name: "Sondaggi Bidimedia", homepage: "https://www.sondaggibidimedia.com", feedUrl: "https://www.sondaggibidimedia.com/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Scenari Politici", homepage: "https://www.scenaripolitici.com", feedUrl: "https://www.scenaripolitici.com/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Money.it", homepage: "https://www.money.it", feedUrl: "https://www.money.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Il Riformista", homepage: "https://www.ilriformista.it", feedUrl: "https://www.ilriformista.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Affari Italiani", homepage: "https://www.affaritaliani.it", feedUrl: "https://www.affaritaliani.it/rss", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Open Online", homepage: "https://www.open.online", feedUrl: "https://www.open.online/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Il Post", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "HuffPost Italia", homepage: "https://www.huffingtonpost.it", feedUrl: "https://www.huffingtonpost.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  // ── Data journalism / opinione pubblica ───────────────────────────────────
-  { name: "DataPizza", homepage: "https://www.datapizza.tech", feedUrl: "https://www.datapizza.tech/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Il Sole 24 Ore Info-Data", homepage: "https://www.info-data.ilsole24ore.com", feedUrl: "https://www.info-data.ilsole24ore.com/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "LaVoce.info", homepage: "https://www.lavoce.info", feedUrl: "https://www.lavoce.info/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Neodemos", homepage: "https://www.neodemos.info", feedUrl: "https://www.neodemos.info/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "inGenere", homepage: "https://www.ingenere.it", feedUrl: "https://www.ingenere.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Etica Economia", homepage: "https://www.eticaeconomia.it", feedUrl: "https://www.eticaeconomia.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Linkiesta", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Il Post Dati", homepage: "https://www.ilpost.it", feedUrl: "https://www.ilpost.it/tag/dati/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Openpolis", homepage: "https://www.openpolis.it", feedUrl: "https://www.openpolis.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  // ── Think tank / policy / società ─────────────────────────────────────────
-  { name: "Aspen Institute Italia", homepage: "https://www.aspeninstitute.it", feedUrl: "https://www.aspeninstitute.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "ISPI", homepage: "https://www.ispionline.it", feedUrl: "https://www.ispionline.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "IAI", homepage: "https://www.iai.it", feedUrl: "https://www.iai.it/it/rss.xml", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Treccani", homepage: "https://www.treccani.it", feedUrl: "https://www.treccani.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Censis", homepage: "https://www.censis.it", feedUrl: "https://www.censis.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Eurispes", homepage: "https://www.eurispes.eu", feedUrl: "https://www.eurispes.eu/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "ISTAT", homepage: "https://www.istat.it", feedUrl: "https://www.istat.it/feed", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Banca d'Italia", homepage: "https://www.bancaditalia.it", feedUrl: "https://www.bancaditalia.it/rss", section: "sondaggi", language: "it", priority: 1 },
-  { name: "OCPI", homepage: "https://www.ocpi.it", feedUrl: "https://www.ocpi.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "Fondazione Veronesi", homepage: "https://www.fondazioneveronesi.it", feedUrl: "https://www.fondazioneveronesi.it/feed", section: "sondaggi", language: "it", priority: 2 },
-  // ── Politica / opinione / media ───────────────────────────────────────────
-  { name: "Repubblica Politica", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/politica/rss2.0.xml", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Corriere Politica", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/politica.xml", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Il Sole 24 Ore Politica", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/politica.xml", section: "sondaggi", language: "it", priority: 1 },
-  { name: "Fanpage Politica", homepage: "https://www.fanpage.it", feedUrl: "https://www.fanpage.it/politica/feed", section: "sondaggi", language: "it", priority: 2 },
-  { name: "TGCom24 Politica", homepage: "https://www.tgcom24.mediaset.it", feedUrl: "https://www.tgcom24.mediaset.it/rss/politica.xml", section: "sondaggi", language: "it", priority: 2 },
-];
-
 // ─── DEALROOM — Round, Funding, VC, M&A, Seed, Series, Exit ─────────────────
 // Fonti verificate al 29 Mar 2026 (HTTP 200 confermato dal sandbox)
 export const DEALROOM_SOURCES: RssSource[] = [
@@ -950,7 +470,7 @@ export const DEALROOM_SOURCES: RssSource[] = [
   { name: "Google News Funding", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+funding+OR+acquisition+OR+series+A+OR+venture+capital&hl=en", section: "dealroom", language: "en", priority: 1, tags: ["aggregator", "funding"] },
   { name: "Google News M&A", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=merger+acquisition+startup+OR+tech+company&hl=en", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "m&a"] },
   { name: "Google News VC Italia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+italiana+finanziamento+OR+round+OR+investimento&hl=it&gl=IT", section: "dealroom", language: "it", priority: 1, tags: ["aggregator", "italia"] },
-  { name: "HackerNews", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/frontpage", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "tech"] },
+  { name: "HackerNews", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/frontpage", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "tech"] }
 ];
 
-export const ALL_SOURCES = [...AI_SOURCES, ...MUSIC_SOURCES, ...STARTUP_SOURCES, ...FINANCE_SOURCES, ...HEALTH_SOURCES, ...SPORT_SOURCES, ...LUXURY_SOURCES, ...NEWS_SOURCES, ...MOTORI_SOURCES, ...TENNIS_SOURCES, ...BASKET_SOURCES, ...GOSSIP_SOURCES, ...CYBERSECURITY_SOURCES, ...SONDAGGI_SOURCES, ...DEALROOM_SOURCES];
+export const ALL_SOURCES = [...AI_SOURCES, ...STARTUP_SOURCES, ...DEALROOM_SOURCES];

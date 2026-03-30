@@ -17,13 +17,13 @@ const C = {
 
 const CATEGORIES = [
   "AI & Fintech", "AI & Salute", "AI & Industria", "AI & Compliance",
-  "AI Generativa", "AI & Startup", "AI & Investimenti", "AI & Lavoro",
+  "AI Generativa", "AI & Startup", "AI & Investimenti", "AI & Lavoro"
 ];
 
 const FREQUENCY_OPTIONS = [
   { value: "daily", label: "Giornaliera", desc: "Un digest ogni mattina" },
   { value: "weekly", label: "Settimanale", desc: "Un riepilogo ogni lunedì" },
-  { value: "realtime", label: "In tempo reale", desc: "Appena il contenuto è disponibile" },
+  { value: "realtime", label: "In tempo reale", desc: "Appena il contenuto è disponibile" }
 ] as const;
 
 export default function NotificationPreferences() {
@@ -199,7 +199,7 @@ export default function NotificationPreferences() {
               { icon: Lightbulb, label: "Editoriale", desc: "L'analisi editoriale quotidiana sui trend AI", value: notifyEditorial, setter: setNotifyEditorial },
               { icon: Rocket, label: "Startup del Giorno", desc: "Una startup AI emergente analizzata ogni giorno", value: notifyStartup, setter: setNotifyStartup },
               { icon: FileText, label: "Reportage settimanale", desc: "4 reportage approfonditi su startup AI italiane ogni lunedì", value: notifyReportage, setter: setNotifyReportage },
-              { icon: BarChart2, label: "Analisi di mercato", desc: "Sintesi delle analisi da CB Insights, Sifted e altri", value: notifyMarket, setter: setNotifyMarket },
+              { icon: BarChart2, label: "Analisi di mercato", desc: "Sintesi delle analisi da CB Insights, Sifted e altri", value: notifyMarket, setter: setNotifyMarket }
             ].map(({ icon: Icon, label, desc, value, setter }) => (
               <div key={label} className="flex items-center justify-between gap-4 py-3 border-b border-white/5 last:border-0">
                 <div className="flex items-center gap-3">

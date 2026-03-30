@@ -5,35 +5,13 @@ import { useCallback } from "react";
 const SECTION_COLORS: Record<string, string> = {
   ai: "#1a1a1a",
   startup: "#2a2a2a",
-  finance: "#f0b429",
-  health: "#4ade80",
-  sport: "#60a5fa",
-  luxury: "#c084fc",
-  music: "#f472b6",
-  news: "#94a3b8",
-  motori: "#fb923c",
-  tennis: "#a3e635",
-  basket: "#f97316",
-  gossip: "#e879f9",
-  cybersecurity: "#38bdf8",
-  sondaggi: "#fbbf24",
+  health: "#4ade80"
 };
 
 const SECTION_LABELS: Record<string, string> = {
   ai: "AI NEWS",
   startup: "Startup",
-  finance: "Finance",
-  health: "Health",
-  sport: "Sport",
-  luxury: "Luxury",
-  music: "Music",
-  news: "News Italia",
-  motori: "Motori",
-  tennis: "Tennis",
-  basket: "Basket",
-  gossip: "Gossip",
-  cybersecurity: "Cyber",
-  sondaggi: "Sondaggi",
+  health: "Health"
 };
 
 interface TopArticoliProps {
@@ -67,7 +45,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
             style={{
               color: "#2a2a2a",
               background: "#2a2a2a15",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
             }}
           >
             ● Più letti
@@ -118,7 +96,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
             style={{
               color: "#2a2a2a",
               background: "#2a2a2a15",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
             }}
           >
             ● Più letti
@@ -159,7 +137,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                     className="text-sm font-bold leading-none"
                     style={{
                       color: isTop3 ? sectionColor : "#ffffff25",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
                     }}
                   >
                     {String(idx + 1).padStart(2, "0")}
@@ -174,7 +152,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                       className="text-[8px] font-bold uppercase tracking-widest"
                       style={{
                         color: sectionColor,
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
                       }}
                     >
                       {sectionLabel}
@@ -184,7 +162,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                         className="text-[8px] uppercase tracking-widest"
                         style={{
                           color: "#ffffff25",
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
                         }}
                       >
                         · {article.viewCount.toLocaleString("it-IT")} letture
@@ -197,7 +175,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
                     className="text-xs font-semibold leading-snug group-hover:text-white transition-colors line-clamp-2"
                     style={{
                       color: isTop3 ? "#e8eaf0" : "#b0b8cc",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
                     }}
                   >
                     {article.title}

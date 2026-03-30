@@ -169,7 +169,7 @@ export default function Intelligence() {
                 {[
                   { value: "450+", label: "fonti monitorate" },
                   { value: "20+", label: "analisi/giorno" },
-                  { value: "00:00", label: "aggiornamento CET" },
+                  { value: "00:00", label: "aggiornamento CET" }
                 ].map((m) => (
                   <div key={m.label}>
                     <span className="text-[22px] font-black block" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.value}</span>
@@ -251,7 +251,7 @@ export default function Intelligence() {
                   step: "04",
                   title: "Decidi e agisci",
                   text: "Report board-ready, executive summary, analisi scaricabili. Pronti per il tuo CdA, i tuoi investitori, il tuo team.",
-                },
+                }
               ].map((s) => (
                 <div key={s.step} className="p-5 rounded-lg" style={{ background: "#f5f2ec", border: "1px solid rgba(26,26,46,0.06)" }}>
                   <div className="flex items-center gap-3 mb-3">
@@ -331,7 +331,7 @@ export default function Intelligence() {
                   "Alert scenario-based configurabili (fino a 5)",
                   "Weekly personal briefing generato dall'AI",
                   "Newsletter curata settimanale",
-                  "Archivio storico 12 mesi",
+                  "Archivio storico 12 mesi"
                 ]}
                 cta="Prova 14 giorni gratis"
                 subCta="Nessuna carta richiesta"
@@ -349,7 +349,7 @@ export default function Intelligence() {
                   "Alert illimitati su scenari complessi",
                   "Board-ready report scaricabili e brandizzabili",
                   "Monthly strategy digest con trend analysis",
-                  "Accesso prioritario alle ricerche on-demand",
+                  "Accesso prioritario alle ricerche on-demand"
                 ]}
                 cta="Attiva INTEL — 14 giorni gratis"
                 subCta="Il piano scelto dal 70% dei decision-maker"
@@ -368,7 +368,7 @@ export default function Intelligence() {
                   "Briefing dedicati per il CdA",
                   "Integrazione Slack / Teams / CRM",
                   "Analyst-on-demand con senior advisor",
-                  "Account manager dedicato",
+                  "Account manager dedicato"
                 ]}
                 cta="Parliamone — prenota una call"
                 ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20ENTERPRISE%20Intelligence"
@@ -395,7 +395,7 @@ export default function Intelligence() {
                 { icon: "🔍", name: "Market Scout", desc: "450+ fonti globali monitorate ogni notte" },
                 { icon: "✅", name: "Data Verifier", desc: "Triple-check su fonti indipendenti" },
                 { icon: "📊", name: "Senior Analyst", desc: "Report strutturati con key findings" },
-                { icon: "🎯", name: "Intelligence Curator", desc: "Personalizzazione sul tuo profilo" },
+                { icon: "🎯", name: "Intelligence Curator", desc: "Personalizzazione sul tuo profilo" }
               ].map((a) => (
                 <div key={a.name} className="flex items-start gap-3 p-4 rounded-lg"
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(0,229,200,0.12)" }}>
@@ -438,7 +438,7 @@ export default function Intelligence() {
                 { icon: "◈", name: "AI Innovation Strategy", desc: "Trasformazione AI per board e C-Level" },
                 { icon: "◉", name: "M&A Advisory", desc: "Due diligence e valutazione asset tech" },
                 { icon: "◎", name: "Partnership Scouting", desc: "Identificazione partner strategici" },
-                { icon: "◇", name: "VC Research", desc: "Ricerche di mercato per decisioni di investimento" },
+                { icon: "◇", name: "VC Research", desc: "Ricerche di mercato per decisioni di investimento" }
               ].map((s) => (
                 <div key={s.name} className="flex items-start gap-3 p-4 rounded-lg"
                   style={{ background: "#f5f2ec", border: "1px solid rgba(26,26,46,0.06)" }}>
@@ -478,7 +478,7 @@ export default function Intelligence() {
                 { value: "20+", label: "analisi prodotte ogni giorno" },
                 { value: "450+", label: "fonti monitorate in tempo reale" },
                 { value: "48h", label: "tempo medio risposta advisory" },
-                { value: "3×", label: "fonti di verifica per ogni dato" },
+                { value: "3×", label: "fonti di verifica per ogni dato" }
               ].map((m) => (
                 <div key={m.label} className="text-center">
                   <span className="text-[32px] font-black block mb-1"

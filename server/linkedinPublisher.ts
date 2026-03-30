@@ -17,7 +17,7 @@
  *     implicazioni per il business)
  *  5. Carica l'immagine su LinkedIn e pubblica il post (formato IMAGE)
  *
- * Sezioni supportate: 'ai' e 'startup' (no musica)
+ * Sezioni supportate: 'ai' e 'startup' (solo ai e startup)
  */
 
 import { createHash } from "crypto";
@@ -56,67 +56,45 @@ const SITE_BASE_URL = "https://ideasmart.ai";
 export type LinkedInSlot = "morning" | "afternoon" | "startup-afternoon" | "evening";
 
 // ── // ── Sezioni supportate per LinkedIn ────────────────────────────────────────────────────────────
-type LinkedInSection = "ai" | "startup" | "finance" | "health" | "sport" | "luxury";
-const SUPPORTED_SECTIONS: Array<LinkedInSection> = ["ai", "startup", "finance", "health", "sport", "luxury"];
+type LinkedInSection = "ai" | "startup" | "dealroom";
+const SUPPORTED_SECTIONS: Array<LinkedInSection> = ["ai", "startup", "dealroom"];
 
 const SECTION_META: Record<LinkedInSection, { label: string; hashtags: string[]; path: string }> = {
   ai: {
     label: "AI News",
     hashtags: ["#AI", "#ArtificialIntelligence", "#AIStrategy", "#DigitalTransformation", "#IDEASMART", "#FutureOfWork", "#EnterpriseAI"],
-    path: "/ai",
+    path: "/ai"
   },
   startup: {
     label: "Startup News",
     hashtags: ["#Startup", "#VentureCapital", "#Innovation", "#Entrepreneurship", "#IDEASMART", "#TechEcosystem", "#StartupEurope"],
-    path: "/startup",
+    path: "/startup"
   },
-  finance: {
-    label: "Finance & Economia",
-    hashtags: ["#Finance", "#Economia", "#Fintech", "#Investimenti", "#IDEASMART", "#MercatiFinanziari", "#StrategiaFinanziaria"],
-    path: "/finance",
-  },
-  health: {
-    label: "Health & Biotech",
-    hashtags: ["#HealthTech", "#Biotech", "#Salute", "#MedTech", "#IDEASMART", "#DigitalHealth", "#Innovazione"],
-    path: "/health",
-  },
-  sport: {
-    label: "Sport & Business",
-    hashtags: ["#SportBusiness", "#SportTech", "#Sport", "#Sponsorship", "#IDEASMART", "#SportMarketing", "#Atletica"],
-    path: "/sport",
-  },
-  luxury: {
-    label: "Luxury & Lifestyle",
-    hashtags: ["#Luxury", "#LuxuryBusiness", "#MadeinItaly", "#LuxuryTech", "#IDEASMART", "#LuxuryMarketing", "#Premium"],
-    path: "/luxury",
-  },
+  dealroom: {
+    label: "DEALROOM — Funding & VC",
+    hashtags: ["#dealroom", "#funding", "#venturecapital", "#startup", "#investment"],
+    path: "/dealroom"
+  }
 };
 
 // ── Rotazione sezioni per slot afternoon e evening ─────────────────────────────────
 /**
  * Rotazione settimanale per i 2 slot variabili (afternoon 15:00 e evening 17:30).
- * Ogni slot ruota su 4 sezioni diverse (finance, health, sport, luxury) con un
+ * Ogni slot ruota su 3 sezioni diverse (ai, startup, dealroom)
  * offset di 2 posizioni tra i due slot per garantire che nello stesso giorno
  * i due post siano sempre su sezioni diverse.
  *
- * Lunedi:    afternoon=finance,  evening=sport
- * Martedi:   afternoon=health,   evening=luxury
- * Mercoledi: afternoon=sport,    evening=finance
- * Giovedi:   afternoon=luxury,   evening=health
- * Venerdi:   afternoon=finance,  evening=sport
- * Sabato:    afternoon=health,   evening=luxury
- * Domenica:  afternoon=sport,    evening=finance
  */
-const AFTERNOON_ROTATION: LinkedInSection[] = ["finance", "health", "sport", "luxury"];
-const EVENING_ROTATION: LinkedInSection[] = ["sport", "luxury", "finance", "health"]; // offset +2
+const AFTERNOON_ROTATION: LinkedInSection[] = ["ai", "startup", "dealroom", "ai"];
+const EVENING_ROTATION: LinkedInSection[] = ["startup", "dealroom", "ai", "startup"]; // offset +2
 
 // ── Seleziona la sezione in base al giorno e allo slot ───────────────────────
 /**
  * Schema giornaliero dei 4 slot:
  *  - 10:30 MORNING:           sempre AI News (analisi strategica AI)
  *  - 13:00 STARTUP-AFTERNOON: sempre Startup News (ecosistema startup IT/EU)
- *  - 15:00 AFTERNOON:         rotazione settimanale finance/health/sport/luxury
- *  - 17:30 EVENING:           rotazione settimanale sport/luxury/finance/health (offset +2)
+ *  - 15:00 AFTERNOON:         rotazione settimanale ai/startup/dealroom
+ *  - 17:30 EVENING:           rotazione settimanale startup/dealroom/ai (offset +2)
  *
  * Risultato: ogni giorno i 4 post coprono 4 sezioni tematiche completamente diverse.
  */
@@ -187,64 +165,23 @@ ${marketData.keyFinding}`;
   if (slot === "morning") {
     slotNote = `Questo è il POST DEL MATTINO (10:30) — Sezione AI News.
 Tono: analitico e strategico. Il tuo pubblico apre LinkedIn a colazione e vuole una lettura che dia loro un vantaggio competitivo per la giornata.
-Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business. Angolo preferito: "cosa sta succedendo davvero nel mercato AI che i media generalisti non raccontano".
+Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business.
 Includi sempre il link a ideasmart.ai/ai.`;
   } else if (slot === "startup-afternoon") {
-    slotNote = `Questo è il POST STARTUP POMERIDIANO (13:00) — Sezione Startup News.
-Tono: mentor che ha fatto startup, non giornalista. Il tuo pubblico è fondatori, VC e acceleratori italiani ed europei.
-Focus: (1) evidenzia il round di finanziamento, la tecnologia o il pivot con dati precisi, (2) spiega perché questa startup è rilevante per il mercato italiano, (3) offri un insight su cosa possono imparare gli imprenditori italiani da questo caso.
-Angolo preferito: "cosa vedo in questo deal che gli altri non hanno ancora capito".
+    slotNote = `Questo è il POST DEL PRIMO POMERIGGIO (13:00) — Sezione Startup News.
+Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire cosa si muove nell'ecosistema startup.
+Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
 Includi sempre il link a ideasmart.ai/startup.`;
   } else if (slot === "afternoon") {
-    // Afternoon: sezione varia (finance, health, sport, luxury)
-    const afternoonNotes: Record<string, string> = {
-      finance: `Questo è il POST POMERIDIANO (15:00) — Sezione Finance & Economia.
-Tono: CFO e investitore che ha letto i numeri, non il commentatore TV. Il tuo pubblico è imprenditori, CFO, family office e gestori patrimoniali italiani.
-Focus: analisi di mercato finanziario, fintech, M&A, trend di investimento. Collega i dati macro a implicazioni operative per le PMI italiane.
-Angolo preferito: "cosa dicono i numeri che i media finanziari generalisti non osano dire".
-Includi sempre il link a ideasmart.ai/finance.`,
-      health: `Questo è il POST POMERIDIANO (15:00) — Sezione Health & Biotech.
-Tono: imprenditore che ha investito in biotech e digital health, non medico. Il tuo pubblico è investitori, fondatori e manager del settore healthcare italiano.
-Focus: innovazione biotech, digital health, AI in medicina, politiche sanitarie con impatto sul business. Dati su trial clinici, round di finanziamento, FDA/EMA approval.
-Angolo preferito: "dove sta andando il capitale nel settore salute e perché".
-Includi sempre il link a ideasmart.ai/health.`,
-      sport: `Questo è il POST POMERIDIANO (15:00) — Sezione Sport & Business.
-Tono: imprenditore che capisce il business dello sport, non il tifoso. Il tuo pubblico è manager sportivi, sponsor, investitori e fondatori di startup SportTech.
-Focus: business model dello sport, diritti TV, sponsorship, SportTech, valorizzazione dei club come asset. Dati su ricavi, valutazioni, deal.
-Angolo preferito: "lo sport è uno dei pochi settori dove i numeri crescono ancora a doppia cifra — ecco perché".
-Includi sempre il link a ideasmart.ai/sport.`,
-      luxury: `Questo è il POST POMERIDIANO (15:00) — Sezione Luxury & Lifestyle.
-Tono: conoscitore del Made in Italy e dei mercati premium globali, non fashion blogger. Il tuo pubblico è imprenditori del lusso, brand manager e investitori nel settore premium.
-Focus: trend del mercato luxury globale, digitale nel lusso, sostenibilità come leva competitiva, espansione in Asia. Dati su fatturati, acquisizioni, brand equity.
-Angolo preferito: "il lusso italiano è uno dei pochi settori dove il brand conta più del prodotto — ecco le implicazioni strategiche".
-Includi sempre il link a ideasmart.ai/luxury.`,
-    };
-    slotNote = afternoonNotes[section] ?? afternoonNotes.finance;
+    slotNote = `Questo è il POST POMERIDIANO (15:00) — Sezione variabile.
+Tono: analitico e approfondito. Il tuo pubblico cerca insight di valore nel pomeriggio lavorativo.
+Focus: analisi di mercato, trend emergenti, dati concreti.
+Includi sempre il link a ideasmart.ai.`;
   } else {
-    // Evening: sezione varia (sport, luxury, finance, health) con offset
-    const eveningNotes: Record<string, string> = {
-      sport: `Questo è il POST SERALE (17:30) — Sezione Sport & Business.
+    slotNote = `Questo è il POST SERALE (17:30) — Sezione variabile.
 Tono: riflessivo e provocatorio, fine giornata. Il tuo pubblico legge LinkedIn prima di cena e vuole una lettura che stimoli il pensiero.
-Focus: l'economia dello sport come specchio dell'economia reale. Come i modelli di business sportivi anticipano i trend del business mainstream. Dati su valutazioni, diritti, sponsorship.
-Angolo preferito: "quello che il business dello sport ci insegna sul futuro dell'economia".
-Includi sempre il link a ideasmart.ai/sport.`,
-      luxury: `Questo è il POST SERALE (17:30) — Sezione Luxury & Lifestyle.
-Tono: riflessivo e provocatorio, fine giornata. Il tuo pubblico legge LinkedIn prima di cena e vuole una lettura che stimoli il pensiero.
-Focus: il lusso come indicatore leading dell'economia globale. Cosa ci dicono i dati del settore premium sul sentiment dei consumatori ad alto reddito e sulle prospettive macro.
-Angolo preferito: "il mercato luxury è il canary in the coal mine dell'economia globale — ecco cosa vedo".
-Includi sempre il link a ideasmart.ai/luxury.`,
-      finance: `Questo è il POST SERALE (17:30) — Sezione Finance & Economia.
-Tono: riflessivo e provocatorio, fine giornata. Il tuo pubblico chiude la giornata lavorativa e vuole un'analisi che metta in prospettiva quello che è successo sui mercati.
-Focus: lettura di fine giornata sui mercati finanziari, macro-economia, politica monetaria. Cosa significano i movimenti di oggi per le strategie di domani.
-Angolo preferito: "la mia lettura di fine giornata sui mercati — quello che i numeri non dicono".
-Includi sempre il link a ideasmart.ai/finance.`,
-      health: `Questo è il POST SERALE (17:30) — Sezione Health & Biotech.
-Tono: riflessivo e provocatorio, fine giornata. Il tuo pubblico legge LinkedIn prima di cena e vuole una lettura che stimoli il pensiero.
-Focus: l'innovazione in salute come proxy della qualità della vita futura. Dove sta andando la ricerca, quali tecnologie cambieranno la medicina nei prossimi 5 anni, implicazioni per gli investitori.
-Angolo preferito: "quello che la scienza ci dice sul futuro della salute — e le implicazioni per il business".
-Includi sempre il link a ideasmart.ai/health.`,
-    };
-    slotNote = eveningNotes[section] ?? eveningNotes.finance;
+Focus: visione strategica, implicazioni a lungo termine, provocazioni intellettuali.
+Includi sempre il link a ideasmart.ai.`;
   }
 
   return `Basandoti sull'editoriale di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
@@ -284,10 +221,10 @@ async function registerLinkedInImageUpload(
         serviceRelationships: [
           {
             relationshipType: "OWNER",
-            identifier: "urn:li:userGeneratedContent",
-          },
-        ],
-      },
+            identifier: "urn:li:userGeneratedContent"
+          }
+        ]
+      }
     };
 
     const response = await fetch("https://api.linkedin.com/v2/assets?action=registerUpload", {
@@ -295,9 +232,9 @@ async function registerLinkedInImageUpload(
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "X-Restli-Protocol-Version": "2.0.0",
+        "X-Restli-Protocol-Version": "2.0.0"
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
 
     if (!response.ok) {
@@ -345,8 +282,8 @@ async function uploadImageToLinkedIn(
     const imgResponse = await fetch(imageUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-        "Referer": "https://ideasmart.ai",
-      },
+        "Referer": "https://ideasmart.ai"
+      }
     });
     if (!imgResponse.ok) {
       console.error("[LinkedIn] ❌ Impossibile scaricare immagine:", imageUrl, imgResponse.status);
@@ -360,9 +297,9 @@ async function uploadImageToLinkedIn(
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": contentType,
+        "Content-Type": contentType
       },
-      body: imageBuffer,
+      body: imageBuffer
     });
 
     if (uploadResponse.ok || uploadResponse.status === 201) {
@@ -392,7 +329,7 @@ export async function publishToLinkedIn(
   if (!token || !authorUrn) {
     return {
       success: false,
-      error: "Credenziali LinkedIn non configurate (LINKEDIN_ACCESS_TOKEN o LINKEDIN_AUTHOR_URN mancanti)",
+      error: "Credenziali LinkedIn non configurate (LINKEDIN_ACCESS_TOKEN o LINKEDIN_AUTHOR_URN mancanti)"
     };
   }
 
@@ -428,14 +365,14 @@ export async function publishToLinkedIn(
               status: "READY",
               description: { text: articleSummary.slice(0, 256) },
               media: linkedInAsset,
-              title: { text: articleTitle.slice(0, 200) },
-            },
-          ],
-        },
+              title: { text: articleTitle.slice(0, 200) }
+            }
+          ]
+        }
       },
       visibility: {
-        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-      },
+        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+      }
     };
     console.log("[LinkedIn] 📸 Formato: IMAGE (foto grande nel feed)");
   } else {
@@ -451,14 +388,14 @@ export async function publishToLinkedIn(
               status: "READY",
               description: { text: articleSummary.slice(0, 256) },
               originalUrl: articleUrl,
-              title: { text: articleTitle.slice(0, 200) },
-            },
-          ],
-        },
+              title: { text: articleTitle.slice(0, 200) }
+            }
+          ]
+        }
       },
       visibility: {
-        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-      },
+        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+      }
     };
     console.log("[LinkedIn] 🔗 Formato: ARTICLE (link preview nel feed)");
   }
@@ -469,9 +406,9 @@ export async function publishToLinkedIn(
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "X-Restli-Protocol-Version": "2.0.0",
+        "X-Restli-Protocol-Version": "2.0.0"
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
 
     const responseText = await response.text();
@@ -494,7 +431,7 @@ export async function publishToLinkedIn(
     console.error(`[LinkedIn] ❌ Errore pubblicazione (${response.status}):`, errorData);
     return {
       success: false,
-      error: `HTTP ${response.status}: ${JSON.stringify(errorData)}`,
+      error: `HTTP ${response.status}: ${JSON.stringify(errorData)}`
     };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -517,8 +454,8 @@ async function generateLinkedInPostText(
     const response = await invokeLLM({
       messages: [
         { role: "system", content: SYSTEM_PROMPT_GARTNER },
-        { role: "user", content: prompt },
-      ],
+        { role: "user", content: prompt }
+      ]
     });
 
     const content = response?.choices?.[0]?.message?.content;
@@ -537,7 +474,7 @@ async function generateLinkedInPostText(
       "",
       `📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}`,
       "",
-      meta.hashtags.join(" "),
+      meta.hashtags.join(" ")
     ].join("\n");
   }
 }
@@ -630,7 +567,7 @@ export async function publishLinkedInPost(
     return {
       published: 0,
       errors: [`Nessun editoriale disponibile per sezione '${section}'`],
-      posts: [],
+      posts: []
     };
   }
 
@@ -725,7 +662,7 @@ export async function publishLinkedInPost(
           return {
             published: 0,
             errors: [`Contenuto duplicato: testo identico già pubblicato il ${dup.dateLabel} (slot ${dup.slot})`],
-            posts: [{ section, title: editorial.title, success: false, error: "Contenuto duplicato" }],
+            posts: [{ section, title: editorial.title, success: false, error: "Contenuto duplicato" }]
           };
         } else {
           console.warn(`[LinkedIn] ⚠️ CONTENUTO DUPLICATO ma force=true: procedo comunque (hash ${postHash})`);
@@ -762,8 +699,8 @@ export async function publishLinkedInPost(
       title: editorial.title,
       success: result.success,
       postId: result.postId,
-      error: result.error,
-    },
+      error: result.error
+    }
   ];
 
   if (result.success) {
@@ -797,7 +734,7 @@ export async function publishLinkedInPost(
             section: section as any,
             imageUrl: imageUrl ?? null,
             hashtags,
-            postHash,
+            postHash
           })
           .onDuplicateKeyUpdate({
             set: {
@@ -806,8 +743,8 @@ export async function publishLinkedInPost(
               title: editorial.title,
               imageUrl: imageUrl ?? null,
               hashtags,
-              postHash,
-            },
+              postHash
+            }
           });
         console.log(`[LinkedIn] 💾 Post slot ${slotLabel} salvato nel DB (${dateLabel})`);
       }

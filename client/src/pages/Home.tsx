@@ -17,20 +17,9 @@ import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
 const SECTION_COLORS = {
   ai:            { accent: "#1a1a1a", light: "#f5f5f5", label: "AI NEWS",        path: "/ai" },
-  music:         { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",            path: "/music" },
   startup:       { accent: "#2a2a2a", light: "#f5f5f5", label: "STARTUP NEWS",        path: "/startup" },
-  finance:       { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets",   path: "/finance" },
-  health:        { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",    path: "/health" },
-  sport:         { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",    path: "/sport" },
-  luxury:        { accent: "#2a2a2a", light: "#faf5ff", label: "Lifestyle & Luxury",  path: "/luxury" },
-  news:          { accent: "#1a1a1a", light: "#f1f5f9", label: "News Italia",         path: "/news" },
-  motori:        { accent: "#2a2a2a", light: "#fef2f2", label: "Motori",              path: "/motori" },
-  tennis:        { accent: "#2a2a2a", light: "#f7fee7", label: "Tennis",              path: "/tennis" },
-  basket:        { accent: "#2a2a2a", light: "#fff7ed", label: "Basket",              path: "/basket" },
-  gossip:        { accent: "#2a2a2a", light: "#fdf2f8", label: "Business Gossip",     path: "/gossip" },
-  cybersecurity: { accent: "#1a1a1a", light: "#f0f9ff", label: "Cybersecurity",       path: "/cybersecurity" },
-  sondaggi:      { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",            path: "/sondaggi" },
-  dealroom:      { accent: "#0f0f0f", light: "#f0f9ff", label: "DEALROOM",            path: "/dealroom" },
+  research:      { accent: "#1a1a1a", light: "#eff6ff", label: "RESEARCH",             path: "/research" },
+  dealroom:      { accent: "#0f0f0f", light: "#f0f9ff", label: "DEALROOM",            path: "/dealroom" }
 };
 
 type SectionKey = keyof typeof SECTION_COLORS;
@@ -50,7 +39,7 @@ type NewsItem = {
 // ─── Utility ─────────────────────────────────────────────────────────────────
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric",
+    weekday: "long", day: "numeric", month: "long", year: "numeric"
   });
 }
 function formatShortDate(str: string): string {
@@ -181,7 +170,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
             fontSize: "clamp(18px, 2vw, 22px)",
             fontWeight: 700,
-            lineHeight: 1.3,
+            lineHeight: 1.3
           }}
         >
           {item.title}
@@ -240,12 +229,12 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
 // ─── SECTION NAV ─────────────────────────────────────────────────────────────
 function SectionNav() {
   const { data: sectionCounts } = trpc.news.getSectionCounts.useQuery(undefined, {
-    staleTime: 15 * 60 * 1000, refetchOnWindowFocus: false,
+    staleTime: 15 * 60 * 1000, refetchOnWindowFocus: false
   });
   const navSections: Array<{ key: SectionKey; label: string; path: string }> = [
     { key: "ai",       label: "AI NEWS", path: "/ai" },
     { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
-    { key: "dealroom", label: "DEALROOM", path: "/dealroom" },
+    { key: "dealroom", label: "DEALROOM", path: "/dealroom" }
   ];
   return (
     <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
@@ -378,10 +367,7 @@ export default function Home() {
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
-  const financeNews = homeData?.finance ?? [];
-  const healthNews  = homeData?.health  ?? [];
-  const sportNews   = homeData?.sport   ?? [];
-  const newsItalia  = homeData?.news    ?? [];
+
   const dealroomNews = homeData?.dealroom ?? [];
 
   // Hero: primo articolo AI con immagine
@@ -395,16 +381,13 @@ export default function Home() {
   );
   const startupRest = useMemo(() => startupNews.filter(n => n.id !== startupHero?.id), [startupNews, startupHero]);
 
-  // Sidebar: mix di tutte le sezioni (AI, Startup, Finance, Health, Sport, News)
+  // Sidebar: mix di tutte le sezioni (AI, Startup, Dealroom)
   const sidebarFeed = useMemo(() => {
     const items: Array<NewsItem & { section: SectionKey }> = [];
     const pools: Array<{ news: NewsItem[]; section: SectionKey }> = [
       { news: aiRest.slice(3), section: "ai" },
       { news: startupRest.slice(3), section: "startup" },
-      { news: financeNews.slice(2), section: "finance" },
-      { news: healthNews.slice(0, 4), section: "health" },
-      { news: sportNews.slice(0, 4), section: "sport" },
-      { news: newsItalia.slice(0, 4), section: "news" },
+      { news: dealroomNews.slice(0, 4), section: "dealroom" }
     ];
     const maxLen = Math.max(...pools.map(p => p.news.length));
     for (let i = 0; i < maxLen; i++) {
@@ -413,7 +396,7 @@ export default function Home() {
       }
     }
     return items.slice(0, 30);
-  }, [aiRest, startupRest, financeNews, healthNews, sportNews, newsItalia]);
+  }, [aiRest, startupRest, dealroomNews]);
 
   return (
     <>
@@ -458,7 +441,7 @@ export default function Home() {
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "clamp(42px, 7vw, 88px)",
                     letterSpacing: "-0.02em",
-                    lineHeight: 1,
+                    lineHeight: 1
                   }}>
                   IDEASMART
                 </h1>
@@ -1002,7 +985,7 @@ export default function Home() {
                       vc:         { bg: "#eff6ff", text: "#1a1a1a", label: "Venture Capital" },
                       tech:       { bg: "#f0fdf4", text: "#1a1a1a", label: "Tech" },
                       innovation: { bg: "#faf5ff", text: "#2a2a2a", label: "Innovation" },
-                      other:      { bg: "#f1f5f9", text: "#475569", label: "Evento" },
+                      other:      { bg: "#f1f5f9", text: "#475569", label: "Evento" }
                     };
                     const cat = categoryColors[ev.category] || categoryColors.other;
                     return (
@@ -1067,7 +1050,7 @@ export default function Home() {
               { value: "14", label: "canali\ntematici" },
               { value: "20+", label: "ricerche\nal giorno" },
               { value: "450+", label: "fonti\nmonitorate" },
-              { value: "6.905", label: "lettori\nattivi" },
+              { value: "6.905", label: "lettori\nattivi" }
             ].map((m, i) => (
               <div key={m.label} className={`flex flex-col items-center justify-center py-2 ${i < 3 ? "sm:border-r border-[#1a1a1a]/10" : ""}`}>
                 <span className="text-[28px] sm:text-[32px] font-black leading-none" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>{m.value}</span>
@@ -1112,7 +1095,7 @@ export default function Home() {
                   { href: "/chi-siamo", label: "Chi Siamo", color: "#1a1a1a" },
                   { href: "/intelligence", label: "Intelligence", color: "#1a1a1a" },
                   { href: "/research", label: "RICERCHE", color: "#1a1a1a" },
-                  { href: "/privacy", label: "Privacy Policy", color: "#1a1a1a" },
+                  { href: "/privacy", label: "Privacy Policy", color: "#1a1a1a" }
                 ].map(item => (
                   <Link key={item.href} href={item.href}>
                     <span className="text-[10px] hover:underline cursor-pointer font-bold"

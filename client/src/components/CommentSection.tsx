@@ -3,8 +3,8 @@ import { trpc } from "@/lib/trpc";
 import { MessageCircle, Send, User } from "lucide-react";
 import { toast } from "sonner";
 
-type Section = "ai" | "music" | "startup";
-type ArticleType = "news" | "editorial" | "startup" | "reportage" | "analysis";
+type Section = "ai" | "startup";
+type ArticleType = "editorial" | "startup" | "reportage" | "analysis";
 
 interface CommentSectionProps {
   section: Section;
@@ -17,7 +17,7 @@ export default function CommentSection({
   section,
   articleType,
   articleId,
-  accentColor = "cyan",
+  accentColor = "cyan"
 }: CommentSectionProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,7 +40,7 @@ export default function CommentSection({
     },
     onError: (err) => {
       toast.error("Errore: " + err.message);
-    },
+    }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -52,7 +52,7 @@ export default function CommentSection({
       articleId,
       authorName: name.trim(),
       authorEmail: email.trim() || undefined,
-      content: content.trim(),
+      content: content.trim()
     });
   };
 

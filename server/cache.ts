@@ -73,7 +73,7 @@ const MAX_ENTRIES = 500;
 export const TTL_NEWS_MS = 10 * 60 * 1000;
 /** Editoriali, startup del giorno, reportage, analisi di mercato */
 export const TTL_EDITORIAL_MS = 20 * 60 * 1000;
-/** Widget LLM (barometro, threat alert): costosi da ricalcolare */
+/** Widget LLM: costosi da ricalcolare */
 export const TTL_LLM_WIDGET_MS = 30 * 60 * 1000;
 /** Contatori sezione (badge nav): leggeri, aggiornati ogni 5 min */
 export const TTL_SECTION_COUNT_MS = 5 * 60 * 1000;
@@ -151,7 +151,7 @@ export async function cached<T>(
             store.set(key, {
               value, expiresAt: Date.now() + ttlMs,
               refreshing: false, hits: 0, misses: 0,
-              lastAccess: Date.now(), createdAt: Date.now(),
+              lastAccess: Date.now(), createdAt: Date.now()
             });
           }
         })
@@ -173,7 +173,7 @@ export async function cached<T>(
     hits: 0,
     misses: 1,
     lastAccess: now,
-    createdAt: now,
+    createdAt: now
   };
   store.set(key, newEntry);
   _evictIfNeeded();
@@ -269,7 +269,7 @@ export function getCacheStats(): CacheStats {
         ? Math.round((entry.hits / (entry.hits + entry.misses)) * 100)
         : 0,
       fresh,
-      ttlRemainingMs: Math.max(0, entry.expiresAt - now),
+      ttlRemainingMs: Math.max(0, entry.expiresAt - now)
     };
   });
 
@@ -294,7 +294,7 @@ export function getCacheStats(): CacheStats {
     totalMisses,
     hitRate,
     memoryEstimateKB,
-    topKeys,
+    topKeys
   };
 }
 
@@ -310,7 +310,6 @@ export const CACHE_KEYS = {
   REPORTAGE_LATEST: (section?: string) => `reportage:latest:${section ?? 'all'}`,
   MARKET_LATEST: (section?: string) => `market:latest:${section ?? 'all'}`,
   PUNTO_DEL_GIORNO: 'sistema:puntoDelGiorno',
-  BAROMETRO: 'sistema:barometro',
   THREAT_ALERT: 'sistema:threatAlert',
-  SUBSCRIBER_COUNT: 'sistema:subscriberCount',
+  SUBSCRIBER_COUNT: 'sistema:subscriberCount'
 } as const;

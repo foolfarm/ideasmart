@@ -46,20 +46,9 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   "Modelli Generativi": ["artificial intelligence", "neural network", "machine learning"],
   "Regolamentazione": ["law technology", "digital regulation", "policy technology"],
   "Ricerca & Sviluppo": ["research laboratory", "scientific research", "innovation lab"],
-  "Cybersecurity": ["cybersecurity", "data protection", "digital security"],
   "Cloud & Edge": ["cloud computing", "data center", "server technology"],
   "Robotica": ["robot technology", "automation", "industrial robot"],
   // Music categories
-  "Rock & Indie": ["rock concert", "indie music band", "live music performance"],
-  "AI Music": ["music technology", "digital music production", "audio technology"],
-  "Industria Musicale": ["music industry", "record label", "music business"],
-  "Tour & Live": ["concert stage", "live music concert", "music festival crowd"],
-  "Artisti Emergenti": ["young musician", "emerging artist", "music studio recording"],
-  "Streaming & Digital": ["music streaming", "headphones music", "digital audio"],
-  "Vinile & Fisico": ["vinyl record", "record store", "turntable music"],
-  "Produzione Musicale": ["music studio", "mixing console", "music producer"],
-  "Diritti & Copyright": ["music rights", "copyright law", "intellectual property"],
-  "Festival & Concerti": ["music festival", "outdoor concert", "festival crowd"],
   // Startup categories
   "Startup Italiana": ["italian startup office", "entrepreneur team italy", "startup coworking"],
   "Startup Internazionale": ["global startup", "tech startup office", "entrepreneur team"],
@@ -78,69 +67,10 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   "IPO & Mercati": ["stock market", "ipo business", "financial market trading"],
   "Ecosistema": ["startup ecosystem", "innovation hub", "startup incubator space"],
   // Default
-  "default": ["artificial intelligence", "technology innovation", "digital future"],
+  "default": ["artificial intelligence", "technology innovation", "digital future"]
 };
 
-// ── Categorie musicali (per rilevare la sezione) ────────────────────────────
 
-const MUSIC_CATEGORIES = new Set([
-  "Rock & Indie", "AI Music", "Industria Musicale", "Tour & Live",
-  "Artisti Emergenti", "Streaming & Digital", "Vinile & Fisico",
-  "Produzione Musicale", "Diritti & Copyright", "Festival & Concerti",
-]);
-
-const STARTUP_CATEGORIES = new Set([
-  "Startup Italiana", "Startup Internazionale", "Fintech", "Healthtech",
-  "Greentech", "Edtech", "Foodtech", "Proptech", "Deeptech", "SaaS & B2B",
-  "E-commerce", "Mobility", "Funding & VC", "Acquisizioni", "IPO & Mercati", "Ecosistema",
-]);
-
-// ── Keyword musicali per titolo (traduzione IT→EN contestuale) ───────────────
-
-const MUSIC_TITLE_TRANSLATIONS: Record<string, string> = {
-  "musica": "music",
-  "musicale": "music",
-  "musicali": "music",
-  "concerto": "concert",
-  "concerti": "concert stage",
-  "tour": "music tour",
-  "album": "album vinyl",
-  "singolo": "music single",
-  "band": "rock band",
-  "artista": "musician artist",
-  "artisti": "musicians artists",
-  "festival": "music festival",
-  "streaming": "music streaming",
-  "vinile": "vinyl record",
-  "produzione": "music production",
-  "studio": "recording studio",
-  "chitarra": "guitar",
-  "batteria": "drums",
-  "cantante": "singer",
-  "cantanti": "singers",
-  "indie": "indie music",
-  "rock": "rock music",
-  "punk": "punk rock",
-  "pop": "pop music",
-  "hip-hop": "hip hop",
-  "rapper": "rapper",
-  "dj": "dj music",
-  "etichetta": "record label",
-  "royalties": "music royalties",
-  "diritti": "music rights",
-  "palco": "concert stage",
-  "live": "live concert",
-  "playlist": "music playlist",
-  "spotify": "music streaming",
-  "metaverso": "virtual concert",
-  "emergenti": "emerging musicians",
-  "produttore": "music producer",
-  "produttori": "music producers",
-  "discografica": "record label",
-  "discografiche": "record labels",
-  "majorlabel": "record label",
-  "major": "record label",
-};
 
 // ── Estrai parole chiave dal titolo ─────────────────────────────────────────
 
@@ -158,7 +88,7 @@ function extractKeywordsFromTitle(title: string, isMusic = false): string {
     "will", "would", "could", "should", "may", "might",
     "lancia", "presenta", "annuncia", "svela", "rilascia",
     "investe", "raccoglie", "chiude", "vince", "sperimenta",
-    "nuovo", "nuova", "nuovi", "nuove", "primo", "prima",
+    "nuovo", "nuova", "nuovi", "nuove", "primo", "prima"
   ]);
 
   const words = title
@@ -197,12 +127,11 @@ function extractKeywordsFromTitle(title: string, isMusic = false): string {
     "italia": "italy",
     "mercato": "market",
     "investimento": "investment",
-    "crescita": "growth",
+    "crescita": "growth"
   };
 
-  const translations = isMusic ? MUSIC_TITLE_TRANSLATIONS : aiTranslations;
-  const translated = words.map(w => translations[w] || w).join(" ");
-  return translated || (isMusic ? "music" : "technology innovation");
+  const translated = words.map(w => aiTranslations[w] || w).join(" ");
+  return translated || ("technology innovation");
 }
 
 // ── Ricerca immagine su Pexels ────────────────────────────────────────────────
@@ -223,7 +152,7 @@ async function searchPexels(
     const randomPage = Math.floor(Math.random() * 3) + 1;
     const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=15&page=${randomPage}&orientation=${orientation}&size=medium`;
     const res = await fetch(url, {
-      headers: { Authorization: apiKey },
+      headers: { Authorization: apiKey }
     });
 
     if (!res.ok) {
@@ -272,18 +201,8 @@ const PEXELS_GUARANTEED_KEYWORDS: Record<string, string[]> = {
   "AI & Lavoro": ["work", "office", "people"],
   "AI & Difesa": ["security", "technology", "network"],
   "Modelli Generativi": ["technology", "computer", "abstract"],
-  "Cybersecurity": ["security", "technology", "network"],
   "Robotica": ["robot", "technology", "automation"],
   // Music
-  "Rock & Indie": ["concert", "music", "guitar"],
-  "AI Music": ["music", "headphones", "audio"],
-  "Industria Musicale": ["music", "studio", "microphone"],
-  "Tour & Live": ["concert", "stage", "crowd"],
-  "Artisti Emergenti": ["musician", "music", "guitar"],
-  "Streaming & Digital": ["music", "headphones", "phone"],
-  "Vinile & Fisico": ["vinyl", "record", "music"],
-  "Produzione Musicale": ["studio", "music", "microphone"],
-  "Festival & Concerti": ["concert", "festival", "crowd"],
   // Startup
   "Startup Italiana": ["office", "startup", "team"],
   "Startup Internazionale": ["startup", "office", "team"],
@@ -293,7 +212,7 @@ const PEXELS_GUARANTEED_KEYWORDS: Record<string, string[]> = {
   "SaaS & B2B": ["software", "computer", "office"],
   "Funding & VC": ["business", "investment", "meeting"],
   // Default
-  "default": ["technology", "business", "office"],
+  "default": ["technology", "business", "office"]
 };
 
 async function getPexelsFallback(category: string): Promise<string | null> {
@@ -311,22 +230,21 @@ async function getPexelsFallback(category: string): Promise<string | null> {
  * Cerca un'immagine stock coerente con il titolo e la categoria dell'articolo.
  * Usa Pexels come fonte principale, con fallback su Unsplash.
  *
- * Per le categorie musicali usa keyword musicali specifiche (mai tecnologiche).
+ * Usa keyword specifiche per sezione.
  */
 export async function findStockImage(
   title: string,
   category: string,
   context?: string
 ): Promise<string | null> {
-  const isMusic = MUSIC_CATEGORIES.has(category);
+  const isMusic = false; // Music channel removed
+  const STARTUP_CATEGORIES = new Set(["Startup Italiana", "Startup Internazionale", "Fintech", "Healthtech", "Greentech", "Edtech", "Deeptech", "SaaS & B2B", "Funding & VC", "Acquisizioni", "IPO & Mercati", "Ecosistema"]);
   const isStartup = STARTUP_CATEGORIES.has(category);
 
   // 1. Prima prova con parole chiave estratte dal titolo
-  //    Per Music: keyword musicali | Per Startup: keyword startup | Per AI: keyword tecnologiche
+  //    Per Startup: keyword startup | Per AI: keyword tecnologiche
   const titleKeywords = extractKeywordsFromTitle(title, isMusic);
-  const query1 = isMusic
-    ? `${titleKeywords} music`
-    : isStartup
+  const query1 = isStartup
     ? `${titleKeywords} startup entrepreneur`
     : `${titleKeywords} technology`;
   let url = await searchPexels(query1);
@@ -340,15 +258,13 @@ export async function findStockImage(
 
   // 3. Se ancora non trovato, prova con context
   if (!url && context) {
-    const query3 = isMusic ? `${context} music` : isStartup ? `${context} startup` : `${context} technology`;
+    const query3 = isStartup ? `${context} startup` : `${context} technology`;
     url = await searchPexels(query3);
   }
 
   // 4. Fallback finale per sezione specifica
   if (!url) {
     if (isMusic) {
-      const musicFallbacks = ["music concert", "live music", "musician playing", "music studio", "vinyl record"];
-      url = await searchPexels(musicFallbacks[Math.floor(Math.random() * musicFallbacks.length)]);
     } else if (isStartup) {
       const startupFallbacks = ["startup team", "entrepreneur office", "business innovation", "startup pitch", "coworking space"];
       url = await searchPexels(startupFallbacks[Math.floor(Math.random() * startupFallbacks.length)]);
@@ -394,7 +310,7 @@ const LINKEDIN_AI_KEYWORDS = [
   "tech executive meeting boardroom",
   "cloud computing network",
   "cybersecurity digital protection",
-  "machine learning algorithm",
+  "machine learning algorithm"
 ];
 
 const LINKEDIN_STARTUP_KEYWORDS = [
@@ -417,7 +333,7 @@ const LINKEDIN_STARTUP_KEYWORDS = [
   "startup incubator workspace",
   "young entrepreneur technology",
   "scale up business growth",
-  "innovation lab prototype",
+  "innovation lab prototype"
 ];
 
 // ── Mapping tematico avanzato: keyword del titolo → query Pexels pertinente ──
@@ -455,7 +371,7 @@ const THEME_KEYWORD_MAP: Array<{ patterns: RegExp; query: string }> = [
   // Lavoro & Organizzazione
   { patterns: /lavoro|work|occupazione|jobs|workforce/i, query: "future of work remote office" },
   { patterns: /ceo|cto|leadership|executive|board/i, query: "executive leadership business meeting" },
-  { patterns: /strategia|strategy|decisione|decision/i, query: "business strategy planning meeting" },
+  { patterns: /strategia|strategy|decisione|decision/i, query: "business strategy planning meeting" }
 ];
 
 /**

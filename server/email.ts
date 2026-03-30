@@ -22,14 +22,14 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
 
   const body = {
     personalizations: recipients.map((email) => ({
-      to: [{ email }],
+      to: [{ email }]
     })),
     from: { email: fromEmail, name: fromName },
     subject: opts.subject,
     content: [
       ...(opts.text ? [{ type: "text/plain", value: opts.text }] : []),
-      { type: "text/html", value: opts.html },
-    ],
+      { type: "text/html", value: opts.html }
+    ]
   };
 
   try {
@@ -37,9 +37,9 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
 
     if (response.status === 202) {
@@ -113,7 +113,7 @@ export function buildMonthlyNewsletterHtml(opts: {
     "Mercato del Lusso": "#a855f7",
     // Musica
     "Musica & Business": "#ec4899",
-    "default": "#00e5c8",
+    "default": "#00e5c8"
   };
 
   // Genera le righe news — stile crema/navy
@@ -435,7 +435,7 @@ export function buildMonthlyNewsletterHtml(opts: {
     <td style="padding:20px 28px 28px;background:#f9f7f4;border-bottom:1px solid #e8e0d0;">
       <p style="font-size:11px;font-weight:700;color:#f97316;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;">La piattaforma gratuita che trasforma le previsioni della community in market intelligence.</p>
       <p style="font-size:14px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 14px;">
-        E se le previsioni di mercato non fossero più un'esclusiva per pochi analisti? <strong style="color:#0a1628;">PollCast</strong> ha lanciato una piattaforma gratuita dove chiunque può creare e votare previsioni su qualsiasi tema — business, tech, sport, politica o trend di mercato. I risultati aggregati, su migliaia di voti, tendono a essere sorprendentemente accurati.
+        E se le previsioni di mercato non fossero più un'esclusiva per pochi analisti? <strong style="color:#0a1628;">PollCast</strong> ha lanciato una piattaforma gratuita dove chiunque può creare e votare previsioni su qualsiasi tema — business, tech, politica o trend di mercato. I risultati aggregati, su migliaia di voti, tendono a essere sorprendentemente accurati.
       </p>
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
         <tr><td style="padding:5px 0;border-bottom:1px solid #e8e0d0;font-size:12px;color:#374151;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9632; <strong style="color:#f97316;">Crypto</strong> &nbsp; Bitcoin supererà i $200k entro il 2026? &nbsp;<strong style="color:#f97316;">61% Sì</strong> (511 voti)</td></tr>
@@ -541,8 +541,8 @@ export function buildWeeklyNewsletterHtml(newsData: {
     news: newsData.news.map(n => ({
       category: n.category,
       title: n.title,
-      summary: n.description,
-    })),
+      summary: n.description
+    }))
   });
 }
 
@@ -631,11 +631,7 @@ export function buildWelcomeEmailHtml(opts: {
                     const info: Record<string, {label: string; color: string; bg: string}> = {
                       ai: { label: 'AI', color: '#00b4a0', bg: '#e6f9f6' },
                       startup: { label: 'Startup', color: '#e84f00', bg: '#fef0ea' },
-                      finance: { label: 'Finance', color: '#2563eb', bg: '#eff6ff' },
-                      sport: { label: 'Sport', color: '#16a34a', bg: '#f0fdf4' },
-                      music: { label: 'Music', color: '#9333ea', bg: '#faf5ff' },
-                      luxury: { label: 'Luxury', color: '#d97706', bg: '#fffbeb' },
-                      health: { label: 'Health', color: '#db2777', bg: '#fdf2f8' },
+                      health: { label: 'Health', color: '#db2777', bg: '#fdf2f8' }
                     };
                     const c = info[ch] || { label: ch, color: '#6b7280', bg: '#f9fafb' };
                     return `<span style="display:inline-block;background:${c.bg};color:${c.color};border:1px solid ${c.color}33;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:2px 4px 2px 0;">${c.label}</span>`;
@@ -749,7 +745,7 @@ export function buildFullNewsletterHtml(opts: {
     "Regolamentazione AI": { text: "#b45309", bg: "#fffbeb" },
     "AI & Lavoro":        { text: PURPLE, bg: PURPLE_L },
     "AI & Salute":        { text: GREEN, bg: GREEN_L },
-    "AI & Finanza":       { text: BLUE, bg: BLUE_L },
+    "AI & Finanza":       { text: BLUE, bg: BLUE_L }
   };
   const getColor = (cat: string) => catColors[cat]?.text ?? TEAL;
   const getBg    = (cat: string) => catColors[cat]?.bg   ?? TEAL_L;
@@ -799,7 +795,7 @@ export function buildFullNewsletterHtml(opts: {
     const statsHtml = [
       rep.stat1Value && rep.stat1Label ? `<td width="30%" align="center" style="background:${colorBg};border-radius:8px;padding:14px 8px;border:1px solid ${BORDER};"><div style="font-size:24px;font-weight:900;color:${color};font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:6px;">${rep.stat1Value}</div><div style="font-size:9px;color:${SLATE};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat1Label}</div></td>` : "",
       rep.stat2Value && rep.stat2Label ? `<td width="4%"></td><td width="30%" align="center" style="background:${colorBg};border-radius:8px;padding:14px 8px;border:1px solid ${BORDER};"><div style="font-size:24px;font-weight:900;color:${color};font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:6px;">${rep.stat2Value}</div><div style="font-size:9px;color:${SLATE};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat2Label}</div></td>` : "",
-      rep.stat3Value && rep.stat3Label ? `<td width="4%"></td><td width="30%" align="center" style="background:${colorBg};border-radius:8px;padding:14px 8px;border:1px solid ${BORDER};"><div style="font-size:24px;font-weight:900;color:${color};font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:6px;">${rep.stat3Value}</div><div style="font-size:9px;color:${SLATE};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat3Label}</div></td>` : "",
+      rep.stat3Value && rep.stat3Label ? `<td width="4%"></td><td width="30%" align="center" style="background:${colorBg};border-radius:8px;padding:14px 8px;border:1px solid ${BORDER};"><div style="font-size:24px;font-weight:900;color:${color};font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:6px;">${rep.stat3Value}</div><div style="font-size:9px;color:${SLATE};text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${rep.stat3Label}</div></td>` : ""
     ].filter(Boolean).join("");
 
     return `

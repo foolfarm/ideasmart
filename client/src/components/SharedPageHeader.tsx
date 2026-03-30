@@ -51,7 +51,7 @@ function SectionNav() {
     { key: "dealroom",  label: "DEALROOM",     path: "/dealroom",  accent: "#1a4a2e" },
     { key: "chi-siamo",label: "Chi Siamo",    path: "/chi-siamo",accent: "#1a1a1a" },
     // Intelligence nascosta temporaneamente
-    // { key: "intelligence", label: "▶ Intelligence" /* NASCOSTA */, path: "/intelligence", accent: "#1a1a1a" },
+    // { key: "intelligence", label: "▶ Intelligence" /* NASCOSTA */, path: "/intelligence", accent: "#1a1a1a" }
   ];
 
   return (

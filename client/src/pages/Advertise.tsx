@@ -44,7 +44,7 @@ const AUDIENCE_STATS = [
   { value: "42%", label: "Open rate newsletter" },
   { value: "4,2 min", label: "Tempo medio sul sito" },
   { value: "78%", label: "Professionisti B2B" },
-  { value: "100%", label: "Audience italiana" },
+  { value: "100%", label: "Audience italiana" }
 ];
 
 const AUDIENCE_PROFILES = [
@@ -52,7 +52,7 @@ const AUDIENCE_PROFILES = [
   { role: "Founder / CEO", pct: "24%" },
   { role: "Product Manager", pct: "18%" },
   { role: "Investitori / VC", pct: "14%" },
-  { role: "Consulenti AI", pct: "16%" },
+  { role: "Consulenti AI", pct: "16%" }
 ];
 
 const FORMATS = [
@@ -110,7 +110,7 @@ const FORMATS = [
     ctr: "Download rate: 3,5%",
     features: ["Fonte brandizzata con logo", "Sintesi editoriale inclusa", "Link al documento originale", "Online per 7 giorni"],
     highlight: false,
-  },
+  }
 ];
 
 // ─── Hook count-up ─────────────────────────────────────────────────────────
@@ -404,7 +404,7 @@ export default function Advertise() {
                 {[
                   { tag: "Native-first", desc: "I formati si integrano nel flusso editoriale senza interrompere la lettura" },
                   { tag: "Audience qualificata", desc: "Lettori abituali con alta propensione all'acquisto nel settore AI/Tech" },
-                  { tag: "Trasparenza totale", desc: "Report dettagliati su impressioni, click e engagement per ogni campagna" },
+                  { tag: "Trasparenza totale", desc: "Report dettagliati su impressioni, click e engagement per ogni campagna" }
                 ].map((item) => (
                   <div
                     key={item.tag}
@@ -557,7 +557,7 @@ export default function Advertise() {
                   { key: "name", label: "Nome e cognome *", placeholder: "Il tuo nome" },
                   { key: "email", label: "Email *", placeholder: "email@azienda.com" },
                   { key: "format", label: "Formato di interesse", placeholder: "es. Banner Hero, Newsletter..." },
-                  { key: "budget", label: "Budget indicativo", placeholder: "es. €500–€2.000/mese" },
+                  { key: "budget", label: "Budget indicativo", placeholder: "es. €500–€2.000/mese" }
                 ].map((field, i) => (
                   <div
                     key={field.key}

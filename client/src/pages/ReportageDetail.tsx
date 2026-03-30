@@ -10,13 +10,12 @@ import SaveArticleButton from "@/components/SaveArticleButton";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
-  music: { label: "ITsMusic", color: "#2a2a2a", path: "/music" },
-  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup" },
+  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup" }
 };
 
 export default function ReportageDetail() {
   const params = useParams<{ section: string; id: string }>();
-  const section = (params.section ?? "ai") as "ai" | "music" | "startup";
+  const section = (params.section ?? "ai") as "ai" | "startup";
   const id = parseInt(params.id ?? "0");
 
   const { data: rep, isLoading } = trpc.reportage.getById.useQuery(
@@ -51,7 +50,7 @@ export default function ReportageDetail() {
   const stats = [
     rep.stat1Value && rep.stat1Label ? { value: rep.stat1Value, label: rep.stat1Label } : null,
     rep.stat2Value && rep.stat2Label ? { value: rep.stat2Value, label: rep.stat2Label } : null,
-    rep.stat3Value && rep.stat3Label ? { value: rep.stat3Value, label: rep.stat3Label } : null,
+    rep.stat3Value && rep.stat3Label ? { value: rep.stat3Value, label: rep.stat3Label } : null
   ].filter(Boolean);
 
   const features = [rep.feature1, rep.feature2, rep.feature3, rep.feature4].filter(Boolean);

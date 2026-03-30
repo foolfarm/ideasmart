@@ -42,7 +42,7 @@ const STATS = [
   { value: "63%", label: "Contenuti scartati" },
   { value: "6", label: "Dimensioni di verifica" },
   { value: "5", label: "Agenti nel flusso" },
-  { value: "0", label: "Redattori umani" },
+  { value: "0", label: "Redattori umani" }
 ];
 
 const AGENTS = [
@@ -50,7 +50,7 @@ const AGENTS = [
   { name: "Verify Agent", role: "Analizza e valida ogni contenuto su sei dimensioni di qualità informativa. Il cuore del sistema.", icon: "⬡" },
   { name: "Balancing Agent", role: "Riequilibra bias e distorsioni narrative, garantendo pluralità di prospettive su ogni argomento.", icon: "⊖" },
   { name: "Synthesis Agent", role: "Costruisce articoli chiari, leggibili e informativamente densi a partire dai contenuti validati.", icon: "◈" },
-  { name: "Publishing Agent", role: "Distribuisce i contenuti in tempo reale su tutti i canali editoriali, con metadati e categorizzazione automatica.", icon: "▷" },
+  { name: "Publishing Agent", role: "Distribuisce i contenuti in tempo reale su tutti i canali editoriali, con metadati e categorizzazione automatica.", icon: "▷" }
 ];
 
 const VERIFY_DIMS = [
@@ -59,7 +59,7 @@ const VERIFY_DIMS = [
   { n: "03", label: "Neutralità del linguaggio", desc: "Analisi semantica per rilevare carica emotiva e framing" },
   { n: "04", label: "Bilanciamento delle prospettive", desc: "Presenza di punti di vista contrapposti sullo stesso fatto" },
   { n: "05", label: "Livello di distorsione narrativa", desc: "Rilevamento di omissioni, enfasi selettive e agenda implicita" },
-  { n: "06", label: "Presenza di agenda implicita", desc: "Identificazione di interessi economici o politici sottostanti" },
+  { n: "06", label: "Presenza di agenda implicita", desc: "Identificazione di interessi economici o politici sottostanti" }
 ];
 
 const PROCESS_STEPS = [
@@ -67,7 +67,7 @@ const PROCESS_STEPS = [
   { n: "02", title: "Validazione algoritmica", desc: "Verify confronta, incrocia e pesa ogni contenuto su sei dimensioni." },
   { n: "03", title: "Riduzione del rumore", desc: "Eliminazione automatica di contenuti distorti o sotto soglia qualitativa." },
   { n: "04", title: "Sintesi intelligente", desc: "Generazione di articoli chiari, oggettivi e informativamente densi." },
-  { n: "05", title: "Distribuzione", desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale." },
+  { n: "05", title: "Distribuzione", desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale." }
 ];
 
 // ─── Diagramma processo interattivo ─────────────────────────────────────────
@@ -112,7 +112,7 @@ const PROCESS_DETAILS = [
     detail: "Il Publishing Agent distribuisce i contenuti sui 14 canali tematici di IdeaSmart, assegna metadati, categorie e tag, e ottimizza la presentazione per ogni contesto: homepage, newsletter, feed RSS, API. Tutto in tempo reale, senza intervento umano.",
     icon: "▷",
     stat: "14 canali",
-  },
+  }
 ];
 
 function ProcessDiagram() {
@@ -457,7 +457,7 @@ export default function Tecnologia() {
                 {[
                   { tag: "Humanless", desc: "Nessuna interferenza editoriale umana nel flusso di pubblicazione" },
                   { tag: "Agenda-free", desc: "Nessun interesse politico o economico che orienta la selezione" },
-                  { tag: "Self-auditing", desc: "Ogni contenuto è verificato dal sistema stesso prima e dopo la pubblicazione" },
+                  { tag: "Self-auditing", desc: "Ogni contenuto è verificato dal sistema stesso prima e dopo la pubblicazione" }
                 ].map((item) => (
                   <div
                     key={item.tag}
@@ -606,7 +606,7 @@ export default function Tecnologia() {
                 {
                   title: "Audit continuo post-pubblicazione",
                   desc: "Verify non si ferma alla pubblicazione: monitora le correzioni e gli aggiornamenti delle fonti originali. Se un fatto viene smentito, il sistema aggiorna automaticamente l'articolo.",
-                },
+                }
               ].map((item, i) => (
                 <div
                   key={item.title}
@@ -668,7 +668,7 @@ export default function Tecnologia() {
                 { label: "Per gli utenti", desc: "Informazione affidabile senza dover filtrare il rumore" },
                 { label: "Per le aziende", desc: "Intelligence di mercato verificata e debiasata" },
                 { label: "Per le piattaforme", desc: "Layer di validazione contenuti integrabile via API" },
-                { label: "Per i sistemi AI", desc: "Dataset di training puliti e verificati algoritmicamente" },
+                { label: "Per i sistemi AI", desc: "Dataset di training puliti e verificati algoritmicamente" }
               ].map((item) => (
                 <div
                   key={item.label}

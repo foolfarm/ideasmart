@@ -1890,3 +1890,14 @@
 - [x] Disabilitato catch-up newsletter automatico (richiede approvazione manuale da Admin)
 - [x] Aggiunto DEALROOM alla verifica giornaliera notizie (07:00 CET) e catch-up all'avvio
 - [x] Log riepilogo scheduler aggiornati con sezioni attive (AI, Startup, DEALROOM, Research)
+
+## Task pulizia canali (30 Mar 2026)
+
+- [x] Eliminare tutti i canali non AI/Startup/Research/DEALROOM dallo schedulerManager (Music, Finance, Health, Sport, Luxury, Gossip, Cybersecurity, Sondaggi, News Generali, Motori, Tennis, Basket)
+- [x] Eliminare funzioni refresh e fonti RSS dei canali obsoleti (rssNewsScheduler, rssSources)
+- [x] Eliminare procedure tRPC e logica server dei canali obsoleti (routers.ts, db.ts)
+- [x] Eliminare pagine sezione client dei canali obsoleti (App.tsx, pagine dedicate)
+- [x] Eliminare riferimenti ai canali obsoleti dall'Admin dashboard
+- [x] Eliminare file dedicati ai canali obsoleti (musicNewsletterScheduler, ecc.)
+- [x] Eliminare riferimenti ai canali obsoleti dal linkedinPublisher
+- [x] Verificare compilazione e funzionamento dopo la pulizia (0 errori TS, server OK)

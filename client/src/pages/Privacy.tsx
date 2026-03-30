@@ -101,7 +101,7 @@ export default function Privacy() {
               ["#cookie", "Cookie"],
               ["#diritti", "Diritti"],
               ["#disclaimer", "Disclaimer"],
-              ["#contatti", "Contatti"],
+              ["#contatti", "Contatti"]
             ].map(([href, label]) => (
               <a
                 key={href}
@@ -169,7 +169,7 @@ export default function Privacy() {
                     ["Analisi aperture newsletter", "Legittimo interesse (art. 6.1.f GDPR)", "24 mesi"],
                     ["Sicurezza e prevenzione frodi", "Legittimo interesse (art. 6.1.f GDPR)", "12 mesi"],
                     ["Adempimenti legali e fiscali", "Obbligo legale (art. 6.1.c GDPR)", "10 anni"],
-                    ["Statistiche aggregate anonime", "Legittimo interesse (art. 6.1.f GDPR)", "Indefinita (anonimizzati)"],
+                    ["Statistiche aggregate anonime", "Legittimo interesse (art. 6.1.f GDPR)", "Indefinita (anonimizzati)"]
                   ].map(([fin, base, cons], i) => (
                     <tr key={i} className="border-t" style={{ borderColor: "#e2e5ed" }}>
                       <td className="p-3">{fin}</td>

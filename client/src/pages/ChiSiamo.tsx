@@ -42,7 +42,7 @@ const AGENTS = [
   { name: "Data Modeler", role: "Elabora modelli quantitativi, trend e proiezioni di mercato su base storica e predittiva", icon: "📈" },
   { name: "Publisher", role: "Distribuisce i report in automatico sulla piattaforma ogni giorno alle 00:00 CET", icon: "🚀" },
   { name: "Social Analyst", role: "Sintetizza i key insight del giorno in formato LinkedIn per opinion leader e decision maker", icon: "🔗" },
-  { name: "Intelligence Curator", role: "Seleziona e invia la newsletter settimanale con i report più rilevanti per il target di riferimento", icon: "📧" },
+  { name: "Intelligence Curator", role: "Seleziona e invia la newsletter settimanale con i report più rilevanti per il target di riferimento", icon: "📧" }
 ];
 
 const TIMELINE = [
@@ -50,7 +50,7 @@ const TIMELINE = [
   { year: "2024 Q1", label: "Il primo sistema agentico", text: "Il primo agente di analisi entra in produzione. Raccoglie dati da 40 fonti specializzate, li incrocia e produce report strutturati senza intervento umano. La qualità delle analisi supera le aspettative: insight comparabili a quelli di boutique di ricerca con team dedicati." },
   { year: "2024 Q3", label: "La piattaforma", text: "Da 1 a 8 agenti specializzati. Nasce la piattaforma di analisi completa: Scout, Analyst, Researcher, Writer, Publisher. IdeaSmart diventa un punto di riferimento per investitori e operatori del settore AI e Venture Capital." },
   { year: "2025", label: "La crescita", text: "3 aree di analisi verticale: AI Innovation, Venture Capital & M&A, Startup Ecosystem. Oltre 20 ricerche originali al giorno da 450+ fonti globali. Il team di senior advisor si consolida con profili ex Big 5, ex Investment Banking e founder con exit di successo." },
-  { year: "2026", label: "Oggi", text: "IdeaSmart è la prima piattaforma italiana di ricerca e analisi di mercato completamente automatizzata su AI, Venture Capital, M&A e Startup. Si apre IdeaSmart Business: il servizio di consulenza dedicata per investitori, aziende, scaleup e fondi che vogliono supporto professionale nelle decisioni di investimento." },
+  { year: "2026", label: "Oggi", text: "IdeaSmart è la prima piattaforma italiana di ricerca e analisi di mercato completamente automatizzata su AI, Venture Capital, M&A e Startup. Si apre IdeaSmart Business: il servizio di consulenza dedicata per investitori, aziende, scaleup e fondi che vogliono supporto professionale nelle decisioni di investimento." }
 ];
 
 const STATS = [
@@ -59,7 +59,7 @@ const STATS = [
   { value: "100+", label: "Clienti in Italia e nel mondo" },
   { value: "30+", label: "Anni esperienza del team" },
   { value: "00:00", label: "Aggiornamento CET" },
-  { value: "100%", label: "Dati verificati" },
+  { value: "100%", label: "Dati verificati" }
 ];
 
 const TESTIMONIALS = [
@@ -82,7 +82,7 @@ const TESTIMONIALS = [
     quote: "Il team di IdeaSmart Business ha affiancato il nostro CDA in una fase critica di reshaping strategico. La combinazione di analisi agentica e consulenza senior ha prodotto un output di qualità eccezionale in tempi che non avremmo mai immaginato possibili.",
     role: "CEO, Scaleup tecnologica — Berlino",
     sector: "Board Advisory",
-  },
+  }
 ];
 
 const SIGNATURES = [
@@ -93,7 +93,7 @@ const SIGNATURES = [
     linkedin: "https://www.linkedin.com/in/cinellia/",
     initials: "AC",
     photo: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg",
-  },
+  }
 ];
 
 export default function ChiSiamo() {
@@ -119,7 +119,6 @@ export default function ChiSiamo() {
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-16">
 
-          {/* ── MANIFESTO ── */}
           <section className="py-10 grid md:grid-cols-[2fr_1fr] gap-10">
             <div>
               <SectionBadge label="Manifesto" />

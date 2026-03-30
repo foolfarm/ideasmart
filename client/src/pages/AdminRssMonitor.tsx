@@ -9,18 +9,16 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 
-type Section = "ai" | "music" | "startup" | "all";
+type Section = "ai" | "startup" | "dealroom" | "all";
 
 const SECTION_COLORS: Record<string, string> = {
   ai: "#1a1a1a",
-  music: "#2a2a2a",
-  startup: "#2a2a2a",
+  startup: "#2a2a2a"
 };
 
 const SECTION_LABELS: Record<string, string> = {
   ai: "AI NEWS",
-  music: "ITsMusic",
-  startup: "STARTUP NEWS",
+  startup: "STARTUP NEWS"
 };
 
 // Fonti RSS certificate (per visualizzazione)
@@ -41,23 +39,7 @@ const RSS_SOURCES = {
     { name: "Corriere Innovazione", url: "https://www.corriere.it", lang: "IT", priority: 2 },
     { name: "Tom's Hardware Italia", url: "https://www.tomshw.it", lang: "IT", priority: 2 },
     { name: "Punto Informatico", url: "https://www.punto-informatico.it", lang: "IT", priority: 2 },
-    { name: "Digital4Biz", url: "https://www.digital4.biz", lang: "IT", priority: 2 },
-  ],
-  music: [
-    { name: "Billboard", url: "https://www.billboard.com", lang: "EN", priority: 1 },
-    { name: "Rolling Stone", url: "https://www.rollingstone.com", lang: "EN", priority: 1 },
-    { name: "NME", url: "https://www.nme.com", lang: "EN", priority: 1 },
-    { name: "Pitchfork", url: "https://pitchfork.com", lang: "EN", priority: 1 },
-    { name: "Music Business Worldwide", url: "https://www.musicbusinessworldwide.com", lang: "EN", priority: 1 },
-    { name: "Variety Music", url: "https://variety.com", lang: "EN", priority: 2 },
-    { name: "Consequence of Sound", url: "https://consequence.net", lang: "EN", priority: 2 },
-    { name: "Rockol", url: "https://www.rockol.it", lang: "IT", priority: 1 },
-    { name: "Rolling Stone Italia", url: "https://www.rollingstone.it", lang: "IT", priority: 1 },
-    { name: "Soundsblog", url: "https://www.soundsblog.it", lang: "IT", priority: 2 },
-    { name: "Rumore", url: "https://www.rumoremag.com", lang: "IT", priority: 2 },
-    { name: "Sentireascoltare", url: "https://www.sentireascoltare.com", lang: "IT", priority: 2 },
-    { name: "All Music Italia", url: "https://www.allmusicitalia.it", lang: "IT", priority: 2 },
-    { name: "Loud and Clear", url: "https://loudandclearreviews.com", lang: "EN", priority: 3 },
+    { name: "Digital4Biz", url: "https://www.digital4.biz", lang: "IT", priority: 2 }
   ],
   startup: [
     { name: "TechCrunch Startups", url: "https://techcrunch.com", lang: "EN", priority: 1 },
@@ -73,14 +55,24 @@ const RSS_SOURCES = {
     { name: "Repubblica Economia", url: "https://www.repubblica.it", lang: "IT", priority: 2 },
     { name: "Startup Business", url: "https://www.startupbusiness.it", lang: "IT", priority: 1 },
     { name: "Ninja Marketing", url: "https://www.ninjamarketing.it", lang: "IT", priority: 2 },
-    { name: "Economyup", url: "https://www.economyup.it", lang: "IT", priority: 1 },
+    { name: "Economyup", url: "https://www.economyup.it", lang: "IT", priority: 1 }
   ],
+  dealroom: [
+    { name: "Dealroom.co", url: "https://dealroom.co", lang: "EN", priority: 1 },
+    { name: "Crunchbase News", url: "https://news.crunchbase.com", lang: "EN", priority: 1 },
+    { name: "PitchBook", url: "https://pitchbook.com", lang: "EN", priority: 1 },
+    { name: "Sifted", url: "https://sifted.eu", lang: "EN", priority: 1 },
+    { name: "TechCrunch Funding", url: "https://techcrunch.com", lang: "EN", priority: 1 },
+    { name: "BeBeez", url: "https://bebeez.it", lang: "IT", priority: 1 },
+    { name: "Startup Italia Funding", url: "https://www.startupitalia.eu", lang: "IT", priority: 1 },
+    { name: "Il Sole 24 Ore Finanza", url: "https://www.ilsole24ore.com", lang: "IT", priority: 1 }
+  ]
 };
 
 export default function AdminRssMonitor() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
-  const [activeSection, setActiveSection] = useState<"ai" | "music" | "startup">("ai");
+  const [activeSection, setActiveSection] = useState<Section>("ai");
   const [scrapingSection, setScrapingSection] = useState<Section | null>(null);
   const [fixingUrls, setFixingUrls] = useState<Section | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
@@ -88,7 +80,7 @@ export default function AdminRssMonitor() {
   // Statistiche notizie nel DB
   const statsQuery = trpc.adminTools.newsStats.useQuery(undefined, {
     enabled: user?.role === "admin",
-    refetchInterval: 30_000,
+    refetchInterval: 30_000
   });
 
   // Trigger scraping RSS
@@ -102,7 +94,7 @@ export default function AdminRssMonitor() {
     onError: (err) => {
       setScrapingSection(null);
       toast.error("Errore: " + err.message);
-    },
+    }
   });
 
   // Fix URL nel DB
@@ -116,7 +108,7 @@ export default function AdminRssMonitor() {
     onError: (err) => {
       setFixingUrls(null);
       toast.error("Errore fix URL: " + err.message);
-    },
+    }
   });
 
   if (loading) {
@@ -145,7 +137,7 @@ export default function AdminRssMonitor() {
   }
 
   const stats = statsQuery.data;
-  const sources = RSS_SOURCES[activeSection];
+  const sources = (RSS_SOURCES as Record<string, typeof RSS_SOURCES.ai>)[activeSection] || [];
   const sectionColor = SECTION_COLORS[activeSection];
 
   return (
@@ -190,7 +182,7 @@ export default function AdminRssMonitor() {
 
         {/* Stats per sezione */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          {(["ai", "music", "startup"] as const).map((sec) => {
+          {(["ai", "startup", "dealroom"] as const).map((sec) => {
             const s = stats?.[sec];
             const total = s?.total ?? 0;
             const ok = s?.homepageUrls ?? 0;
@@ -204,8 +196,8 @@ export default function AdminRssMonitor() {
                 key={sec}
                 className="rounded-2xl border p-6 cursor-pointer transition-all"
                 style={{
-                  background: activeSection === sec ? `rgba(${sec === "ai" ? "0,229,200" : sec === "music" ? "139,92,246" : "255,85,0"},0.08)` : "rgba(255,255,255,0.02)",
-                  borderColor: activeSection === sec ? color : "rgba(255,255,255,0.08)",
+                  background: activeSection === sec ? `rgba(${sec === "ai" ? "0,229,200" : sec === "dealroom" ? "255,200,0" : "255,85,0"},0.08)` : "rgba(255,255,255,0.02)",
+                  borderColor: activeSection === sec ? color : "rgba(255,255,255,0.08)"
                 }}
                 onClick={() => setActiveSection(sec)}
               >
@@ -246,7 +238,7 @@ export default function AdminRssMonitor() {
         {/* Azioni rapide */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {/* Scraping per sezione */}
-          {(["ai", "music", "startup"] as const).map((sec) => (
+          {(["ai", "startup", "dealroom"] as const).map((sec) => (
             <button
               key={sec}
               disabled={scrapingSection !== null}
@@ -258,7 +250,6 @@ export default function AdminRssMonitor() {
               style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.08)" }}
             >
               <div className="text-lg mb-1">
-                {scrapingSection === sec ? "⏳" : sec === "ai" ? "🤖" : sec === "music" ? "🎸" : "🚀"}
               </div>
               <div className="text-sm font-bold text-white">{scrapingSection === sec ? "Scraping..." : `Scraping ${SECTION_LABELS[sec]}`}</div>
               <div className="text-xs text-white/40 mt-1">Aggiorna notizie da RSS</div>
@@ -285,7 +276,7 @@ export default function AdminRssMonitor() {
         <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
           {/* Tab sezione */}
           <div className="flex border-b border-white/8">
-            {(["ai", "music", "startup"] as const).map((sec) => (
+            {(["ai", "startup", "dealroom"] as const).map((sec) => (
               <button
                 key={sec}
                 onClick={() => setActiveSection(sec)}
@@ -293,7 +284,7 @@ export default function AdminRssMonitor() {
                 style={{
                   color: activeSection === sec ? SECTION_COLORS[sec] : "rgba(255,255,255,0.3)",
                   borderBottom: activeSection === sec ? `2px solid ${SECTION_COLORS[sec]}` : "2px solid transparent",
-                  background: activeSection === sec ? `rgba(${sec === "ai" ? "0,229,200" : sec === "music" ? "139,92,246" : "255,85,0"},0.05)` : "transparent",
+                  background: activeSection === sec ? `rgba(${sec === "ai" ? "0,229,200" : sec === "dealroom" ? "255,200,0" : "255,85,0"},0.05)` : "transparent"
                 }}
               >
                 {SECTION_LABELS[sec]}
@@ -310,7 +301,7 @@ export default function AdminRssMonitor() {
           </div>
 
           {/* Righe fonti */}
-          {sources.map((source, i) => (
+          {sources.map((source: any, i: number) => (
             <div
               key={i}
               className="grid grid-cols-12 gap-2 px-6 py-4 border-b border-white/5 hover:bg-white/2 transition-colors items-center"
@@ -336,7 +327,7 @@ export default function AdminRssMonitor() {
                   className="text-xs font-bold px-2 py-0.5 rounded-full"
                   style={{
                     background: source.lang === "IT" ? "rgba(0,229,200,0.15)" : "rgba(255,255,255,0.08)",
-                    color: source.lang === "IT" ? "#1a1a1a" : "rgba(255,255,255,0.5)",
+                    color: source.lang === "IT" ? "#1a1a1a" : "rgba(255,255,255,0.5)"
                   }}
                 >
                   {source.lang}
@@ -359,10 +350,10 @@ export default function AdminRssMonitor() {
           {/* Footer con totali */}
           <div className="px-6 py-4 flex items-center justify-between">
             <span className="text-xs text-white/30">
-              {sources.length} fonti certificate · {sources.filter(s => s.lang === "IT").length} italiane · {sources.filter(s => s.lang === "EN").length} internazionali
+              {sources.length} fonti certificate · {sources.filter((s: any) => s.lang === "IT").length} italiane · {sources.filter((s: any) => s.lang === "EN").length} internazionali
             </span>
             <span className="text-xs text-white/30">
-              Aggiornamento automatico ogni giorno alle {activeSection === "ai" ? "00:00" : activeSection === "music" ? "00:30" : "01:00"} CET
+              Aggiornamento automatico ogni giorno alle {activeSection === "ai" ? "00:00" : activeSection === "dealroom" ? "01:30" : "01:00"} CET
             </span>
           </div>
         </div>

@@ -16,7 +16,7 @@
 import { getDb } from "./db";
 import { newsItems } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
-import { scrapeAINews, scrapeMusicNews, scrapeStartupNews } from "./rssScraperNew";
+import { scrapeAINews, scrapeDealroomNews, scrapeStartupNews } from "./rssScraperNew";
 import { SECTION_FALLBACKS } from "./rssSources";
 import { notifyOwner } from "./_core/notification";
 import { findNewsImage } from "./stockImages";
@@ -50,9 +50,9 @@ async function checkUrl(url: string): Promise<{ ok: boolean; status: number; rea
       signal: controller.signal,
       headers: {
         "User-Agent": USER_AGENT,
-        "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,*/*;q=0.8"
       },
-      redirect: "follow",
+      redirect: "follow"
     });
 
     clearTimeout(timeoutId);
@@ -84,7 +84,7 @@ type RssArticle = Awaited<ReturnType<typeof scrapeAINews>>[number];
 // ─── Audit e sostituzione per sezione ────────────────────────────────────────
 
 async function auditAndReplaceSection(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury"
+  section: "ai" | "startup" | "dealroom"
 ): Promise<{
   checked: number;
   invalid: number;
@@ -102,7 +102,7 @@ async function auditAndReplaceSection(
     id: newsItems.id,
     title: newsItems.title,
     sourceUrl: newsItems.sourceUrl,
-    sourceName: newsItems.sourceName,
+    sourceName: newsItems.sourceName
   })
     .from(newsItems)
     .where(eq(newsItems.section, section));
@@ -144,7 +144,7 @@ async function auditAndReplaceSection(
   let freshArticles: RssArticle[] = [];
   try {
     if (section === "ai") freshArticles = await scrapeAINews();
-    else if (section === "music") freshArticles = await scrapeMusicNews();
+    else if (section === "dealroom") freshArticles = await scrapeDealroomNews();
     else freshArticles = await scrapeStartupNews();
   } catch (err) {
     console.error(`[NightlyAudit] ❌ ${sectionLabel}: errore scraping RSS sostitutivo:`, err);
@@ -196,7 +196,7 @@ async function auditAndReplaceSection(
           sourceUrl: fresh.sourceUrl,
           publishedAt: fresh.publishedAt,
           weekLabel,
-          imageUrl,
+          imageUrl
         })
         .where(and(eq(newsItems.id, id), eq(newsItems.section, section)));
       replaced++;
@@ -219,8 +219,8 @@ export async function runNightlyAudit(): Promise<void> {
 
   const results = {
     ai: { checked: 0, invalid: 0, replaced: 0, failed: 0 },
-    music: { checked: 0, invalid: 0, replaced: 0, failed: 0 },
     startup: { checked: 0, invalid: 0, replaced: 0, failed: 0 },
+    dealroom: { checked: 0, invalid: 0, replaced: 0, failed: 0 }
   };
 
   // Audit AI
@@ -235,9 +235,9 @@ export async function runNightlyAudit(): Promise<void> {
 
   // Audit Music
   try {
-    results.music = await auditAndReplaceSection("music");
+    results.dealroom = await auditAndReplaceSection("dealroom");
   } catch (err) {
-    console.error("[NightlyAudit] ❌ Errore audit Music:", err);
+    console.error("[NightlyAudit] ❌ Errore audit Dealroom:", err);
   }
 
   await new Promise(r => setTimeout(r, 30_000));
@@ -250,13 +250,13 @@ export async function runNightlyAudit(): Promise<void> {
   }
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
-  const totalInvalid = results.ai.invalid + results.music.invalid + results.startup.invalid;
-  const totalReplaced = results.ai.replaced + results.music.replaced + results.startup.replaced;
-  const totalChecked = results.ai.checked + results.music.checked + results.startup.checked;
+  const totalInvalid = results.ai.invalid + results.dealroom.invalid + results.startup.invalid;
+  const totalReplaced = results.ai.replaced + results.dealroom.replaced + results.startup.replaced;
+  const totalChecked = results.ai.checked + results.dealroom.checked + results.startup.checked;
 
   console.log(`[NightlyAudit] ✅ Audit notturno completato in ${elapsed}s`);
   console.log(`[NightlyAudit]   AI:      ${results.ai.checked} verificate, ${results.ai.invalid} non valide, ${results.ai.replaced} sostituite`);
-  console.log(`[NightlyAudit]   Music:   ${results.music.checked} verificate, ${results.music.invalid} non valide, ${results.music.replaced} sostituite`);
+  console.log(`[NightlyAudit]   Dealroom:   ${results.dealroom.checked} verificate, ${results.dealroom.invalid} non valide, ${results.dealroom.replaced} sostituite`);
   console.log(`[NightlyAudit]   Startup: ${results.startup.checked} verificate, ${results.startup.invalid} non valide, ${results.startup.replaced} sostituite`);
 
   // Notifica owner
@@ -266,9 +266,9 @@ export async function runNightlyAudit(): Promise<void> {
       content: `Audit notturno IDEASMART completato in ${elapsed}s.\n\n` +
         `📊 Riepilogo:\n` +
         `• AI: ${results.ai.checked} verificate, ${results.ai.invalid} non valide → ${results.ai.replaced} sostituite\n` +
-        `• Music: ${results.music.checked} verificate, ${results.music.invalid} non valide → ${results.music.replaced} sostituite\n` +
+        `• Dealroom: ${results.dealroom.checked} verificate, ${results.dealroom.invalid} non valide → ${results.dealroom.replaced} sostituite\n` +
         `• Startup: ${results.startup.checked} verificate, ${results.startup.invalid} non valide → ${results.startup.replaced} sostituite\n\n` +
-        `Totale: ${totalChecked} notizie verificate, ${totalInvalid} non valide, ${totalReplaced} sostituite con notizie RSS fresche.`,
+        `Totale: ${totalChecked} notizie verificate, ${totalInvalid} non valide, ${totalReplaced} sostituite con notizie RSS fresche.`
     });
   } catch (err) {
     console.warn("[NightlyAudit] Notifica owner fallita (non critico):", err);

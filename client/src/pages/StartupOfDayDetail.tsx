@@ -9,13 +9,12 @@ import SaveArticleButton from "@/components/SaveArticleButton";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai", spotlightLabel: "Startup del Giorno" },
-  music: { label: "ITsMusic", color: "#2a2a2a", path: "/music", spotlightLabel: "Artista del Giorno" },
-  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup", spotlightLabel: "Startup della Settimana" },
+  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup", spotlightLabel: "Startup della Settimana" }
 };
 
 export default function StartupOfDayDetail() {
   const params = useParams<{ section: string; id: string }>();
-  const section = (params.section ?? "ai") as "ai" | "music" | "startup";
+  const section = (params.section ?? "ai") as "ai" | "startup";
   const id = parseInt(params.id ?? "0");
 
   const { data: spotlight, isLoading } = trpc.startupOfDay.getById.useQuery({ id }, { enabled: !!id });

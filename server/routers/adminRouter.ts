@@ -11,7 +11,7 @@ import { protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { fixAllSourceUrls } from "../urlAuditFix";
 import { publishDailyLinkedInPosts } from "../linkedinPublisher";
-import { refreshAINewsFromRSS, refreshMusicNewsFromRSS, refreshStartupNewsFromRSS, refreshAllNewsFromRSS, refreshGossipNewsFromRSS, refreshCybersecurityNewsFromRSS, refreshSondaggiNewsFromRSS, refreshNewsGeneraliFromRSS, refreshMotoriNewsFromRSS, refreshTennisNewsFromRSS, refreshBasketNewsFromRSS } from "../rssNewsScheduler";
+import { refreshAINewsFromRSS, refreshStartupNewsFromRSS, refreshDealroomNewsFromRSS, refreshAllNewsFromRSS } from "../rssNewsScheduler";
 import { getDb } from "../db";
 import { newsItems, sourceReports } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
@@ -32,7 +32,7 @@ export const adminRouter = router({
    */
   fixSourceUrls: adminProcedure
     .input(z.object({
-      section: z.enum(["ai", "music", "startup", "gossip", "cybersecurity", "sondaggi", "news", "motori", "tennis", "basket", "all"]).default("all"),
+      section: z.enum(["ai", "startup", "dealroom", "all"]).default("all")
     }))
     .mutation(async ({ input }) => {
       console.log(`[AdminRouter] Avvio fix sourceUrl per sezione: ${input.section}`);
@@ -40,17 +40,17 @@ export const adminRouter = router({
         const result = await fixAllSourceUrls({
           section: input.section === "all" ? undefined : input.section,
           batchSize: 10,
-          delayMs: 300,
+          delayMs: 300
         });
         return {
           success: true,
           ...result,
-          message: `Fix completato: ${result.fixed} URL corretti su ${result.total} notizie`,
+          message: `Fix completato: ${result.fixed} URL corretti su ${result.total} notizie`
         };
       } catch (err) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Errore durante il fix: ${(err as Error).message}`,
+          message: `Errore durante il fix: ${(err as Error).message}`
         });
       }
     }),
@@ -60,7 +60,7 @@ export const adminRouter = router({
    */
   triggerRssScraping: adminProcedure
     .input(z.object({
-      section: z.enum(["ai", "music", "startup", "gossip", "cybersecurity", "sondaggi", "news", "motori", "tennis", "basket", "all"]).default("all"),
+      section: z.enum(["ai", "startup", "dealroom", "all"]).default("all")
     }))
     .mutation(async ({ input }) => {
       console.log(`[AdminRouter] Trigger manuale scraping RSS: ${input.section}`);
@@ -73,15 +73,8 @@ export const adminRouter = router({
 
         const scrapers: Record<string, () => Promise<void>> = {
           ai: refreshAINewsFromRSS,
-          music: refreshMusicNewsFromRSS,
           startup: refreshStartupNewsFromRSS,
-          gossip: refreshGossipNewsFromRSS,
-          cybersecurity: refreshCybersecurityNewsFromRSS,
-          sondaggi: refreshSondaggiNewsFromRSS,
-          news: refreshNewsGeneraliFromRSS,
-          motori: refreshMotoriNewsFromRSS,
-          tennis: refreshTennisNewsFromRSS,
-          basket: refreshBasketNewsFromRSS,
+          dealroom: refreshDealroomNewsFromRSS
         };
         const scraper = scrapers[input.section];
         if (scraper) setImmediate(() => scraper().catch(console.error));
@@ -89,7 +82,7 @@ export const adminRouter = router({
       } catch (err) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Errore: ${(err as Error).message}`,
+          message: `Errore: ${(err as Error).message}`
         });
       }
     }),
@@ -102,12 +95,12 @@ export const adminRouter = router({
       const db = await getDb();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
 
-      const sections = ["ai", "music", "startup"] as const;
+      const sections = ["ai", "startup", "dealroom"] as const;
       const stats: Record<string, { total: number; homepageUrls: number; specificUrls: number; missingUrls: number }> = {};
 
       for (const section of sections) {
         const rows = await db.select({
-          sourceUrl: newsItems.sourceUrl,
+          sourceUrl: newsItems.sourceUrl
         }).from(newsItems).where(eq(newsItems.section, section));
 
         let homepageUrls = 0, specificUrls = 0, missingUrls = 0;
@@ -133,7 +126,7 @@ export const adminRouter = router({
           total: rows.length,
           homepageUrls,
           specificUrls,
-          missingUrls,
+          missingUrls
         };
       }
 
@@ -145,12 +138,12 @@ export const adminRouter = router({
    */
   reportSource: protectedProcedure
     .input(z.object({
-      section: z.enum(["ai", "music", "startup"]),
+      section: z.enum(["ai", "startup", "dealroom"]),
       articleType: z.enum(["news", "editorial", "startup", "reportage", "analysis"]),
       articleId: z.number().int().positive(),
       reportedUrl: z.string().max(1000).optional(),
       reason: z.enum(["not_found", "wrong_content", "broken_link", "spam", "other"]),
-      note: z.string().max(500).optional(),
+      note: z.string().max(500).optional()
     }))
     .mutation(async ({ input, ctx }) => {
       const db = await getDb();
@@ -164,7 +157,7 @@ export const adminRouter = router({
         reason: input.reason,
         note: input.note,
         ipHash,
-        status: "pending",
+        status: "pending"
       });
       return { success: true, message: "Segnalazione ricevuta. Grazie per il contributo!" };
     }),
@@ -175,7 +168,7 @@ export const adminRouter = router({
   getSourceReports: adminProcedure
     .input(z.object({
       status: z.enum(["pending", "reviewed", "resolved", "all"]).default("pending"),
-      limit: z.number().int().min(1).max(100).default(50),
+      limit: z.number().int().min(1).max(100).default(50)
     }))
     .query(async ({ input }) => {
       const db = await getDb();
@@ -194,7 +187,7 @@ export const adminRouter = router({
     .input(z.object({
       reportId: z.number().int().positive(),
       status: z.enum(["pending", "reviewed", "resolved"]),
-      adminNote: z.string().max(500).optional(),
+      adminNote: z.string().max(500).optional()
     }))
     .mutation(async ({ input }) => {
       const db = await getDb();
@@ -203,7 +196,7 @@ export const adminRouter = router({
         .set({
           status: input.status,
           adminNote: input.adminNote,
-          resolvedAt: input.status === "resolved" ? new Date() : undefined,
+          resolvedAt: input.status === "resolved" ? new Date() : undefined
         })
         .where(eq(sourceReports.id, input.reportId));
       return { success: true };
@@ -215,7 +208,7 @@ export const adminRouter = router({
    */
   getSendgridStats: adminProcedure
     .input(z.object({
-      days: z.number().int().min(1).max(90).default(30),
+      days: z.number().int().min(1).max(90).default(30)
     }))
     .query(async ({ input }) => {
       try {
@@ -224,7 +217,7 @@ export const adminRouter = router({
       } catch (err) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: err instanceof Error ? err.message : "Errore recupero statistiche SendGrid",
+          message: err instanceof Error ? err.message : "Errore recupero statistiche SendGrid"
         });
       }
     }),
@@ -248,15 +241,15 @@ export const adminRouter = router({
             title: p.title.slice(0, 80),
             success: p.success,
             postId: p.postId,
-            error: p.error,
+            error: p.error
           })),
-          message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn`,
+          message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn`
         };
       } catch (err) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: err instanceof Error ? err.message : "Errore pubblicazione LinkedIn",
+          message: err instanceof Error ? err.message : "Errore pubblicazione LinkedIn"
         });
       }
-    }),
+    })
 });

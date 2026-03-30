@@ -44,7 +44,7 @@ function extractTextFromHtml(html: string): string {
     .replace(/&nbsp;/g, " ")
     // Normalizza spazi e newline
     .replace(/[ \t]+/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
+    .replace(/\n{3}/g, "\n\n")
     .trim();
 
   return text.slice(0, MAX_TEXT_LENGTH);
@@ -65,8 +65,8 @@ export async function fetchPageText(url: string): Promise<{
       headers: {
         "User-Agent": USER_AGENT,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7",
-      },
+        "Accept-Language": "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7"
+      }
     });
 
     clearTimeout(timeoutId);
@@ -75,7 +75,7 @@ export async function fetchPageText(url: string): Promise<{
       return {
         text: "",
         httpStatus: response.status,
-        error: `HTTP ${response.status}: ${response.statusText}`,
+        error: `HTTP ${response.status}: ${response.statusText}`
       };
     }
 
@@ -108,7 +108,7 @@ export async function checkCoherence(params: {
     return {
       score: 0,
       status: "error",
-      note: "Testo estratto dalla pagina insufficiente per la verifica.",
+      note: "Testo estratto dalla pagina insufficiente per la verifica."
     };
   }
 
@@ -140,7 +140,7 @@ Rispondi SOLO con JSON valido in questo formato:
     const response = await invokeLLM({
       messages: [
         { role: "system" as const, content: "Sei un editor giornalistico preciso. Rispondi sempre e solo con JSON valido." },
-        { role: "user" as const, content: prompt },
+        { role: "user" as const, content: prompt }
       ],
       response_format: {
         type: "json_schema",
@@ -151,13 +151,13 @@ Rispondi SOLO con JSON valido in questo formato:
             type: "object",
             properties: {
               score: { type: "number", description: "Punteggio di coerenza 0-100" },
-              note: { type: "string", description: "Spiegazione breve del risultato" },
+              note: { type: "string", description: "Spiegazione breve del risultato" }
             },
             required: ["score", "note"],
-            additionalProperties: false,
-          },
-        },
-      },
+            additionalProperties: false
+          }
+        }
+      }
     });
 
     const rawContent = response.choices?.[0]?.message?.content;
@@ -178,7 +178,7 @@ Rispondi SOLO con JSON valido in questo formato:
     return {
       score: 0,
       status: "error",
-      note: `Errore verifica LLM: ${err.message?.slice(0, 100)}`,
+      note: `Errore verifica LLM: ${err.message?.slice(0, 100)}`
     };
   }
 }
@@ -215,7 +215,7 @@ export async function auditNewsItem(newsId: number): Promise<{
       auditNote: error,
       extractedText: null,
       httpStatus,
-      section: item.section,
+      section: item.section
     });
     return { status: "unreachable", score: null, note: error };
   }
@@ -224,7 +224,7 @@ export async function auditNewsItem(newsId: number): Promise<{
     publishedTitle: item.title,
     publishedSummary: item.summary,
     pageText: text,
-    url: item.sourceUrl,
+    url: item.sourceUrl
   });
 
   await db.insert(contentAudit).values({
@@ -238,7 +238,7 @@ export async function auditNewsItem(newsId: number): Promise<{
     auditNote: note,
     extractedText: text.slice(0, 2000),
     httpStatus,
-    section: item.section,
+    section: item.section
   });
 
   return { status, score, note };
@@ -276,7 +276,7 @@ export async function auditMarketAnalysis(analysisId: number): Promise<{
       auditNote: error,
       extractedText: null,
       httpStatus,
-      section: item.section,
+      section: item.section
     });
     return { status: "unreachable", score: null, note: error };
   }
@@ -285,7 +285,7 @@ export async function auditMarketAnalysis(analysisId: number): Promise<{
     publishedTitle: item.title,
     publishedSummary: item.summary,
     pageText: text,
-    url: item.sourceUrl,
+    url: item.sourceUrl
   });
 
   await db.insert(contentAudit).values({
@@ -299,7 +299,7 @@ export async function auditMarketAnalysis(analysisId: number): Promise<{
     auditNote: note,
     extractedText: text.slice(0, 2000),
     httpStatus,
-    section: item.section,
+    section: item.section
   });
 
   return { status, score, note };
@@ -307,7 +307,7 @@ export async function auditMarketAnalysis(analysisId: number): Promise<{
 
 // ── Audit batch: ultime N notizie senza audit recente ─────────────────────
 export async function runBatchAudit(params: {
-  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+  section?: "ai" | "startup" | "health";
   limit?: number;
   contentType?: "news" | "analysis";
 }): Promise<{
@@ -402,7 +402,7 @@ export async function auditReportage(reportageId: number): Promise<{
       auditNote: error,
       extractedText: null,
       httpStatus,
-      section: item.section,
+      section: item.section
     });
     return { status: "unreachable", score: null, note: error };
   }
@@ -411,7 +411,7 @@ export async function auditReportage(reportageId: number): Promise<{
     publishedTitle: item.headline,
     publishedSummary: `${item.startupName} — ${item.subheadline ?? item.bodyText.slice(0, 200)}`,
     pageText: text,
-    url: sourceUrl,
+    url: sourceUrl
   });
 
   await db.insert(contentAudit).values({
@@ -425,7 +425,7 @@ export async function auditReportage(reportageId: number): Promise<{
     auditNote: note,
     extractedText: text.slice(0, 2000),
     httpStatus,
-    section: item.section,
+    section: item.section
   });
 
   return { status, score, note };
@@ -433,7 +433,7 @@ export async function auditReportage(reportageId: number): Promise<{
 
 // ── Audit completo: news + analisi + reportage ────────────────────────────
 export async function runFullAudit(params: {
-  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+  section?: "ai" | "startup" | "health";
   limit?: number;
 }): Promise<{
   processed: number;
@@ -450,7 +450,7 @@ export async function runFullAudit(params: {
   const byType: Record<string, typeof totals> = {
     news: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 },
     analysis: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 },
-    reportage: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 },
+    reportage: { processed: 0, ok: 0, warning: 0, error: 0, unreachable: 0 }
   };
 
   if (!db) return { ...totals, byType };
@@ -508,7 +508,7 @@ export async function runFullAudit(params: {
 
 // ── Query risultati audit ──────────────────────────────────────────────────
 export async function getAuditResults(params: {
-  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury";
+  section?: "ai" | "startup" | "health";
   status?: "ok" | "warning" | "error" | "unreachable" | "pending";
   contentType?: "news" | "analysis" | "reportage" | "startup";
   limit?: number;

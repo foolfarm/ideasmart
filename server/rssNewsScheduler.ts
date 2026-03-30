@@ -7,7 +7,7 @@
  * Il sourceUrl è SEMPRE l'URL dell'articolo originale dal feed RSS.
  * NON viene mai sostituito con la homepage.
  * 
- * Flusso per ogni sezione (AI, Music, Startup):
+ * Flusso per ogni sezione (AI, Startup, DEALROOM):
  * 1. Fetch RSS da tutte le fonti certificate della sezione
  * 2. LLM seleziona i 20 più rilevanti e li traduce in italiano
  * 3. Salva nel DB con l'URL articolo originale dal feed RSS
@@ -18,7 +18,7 @@ import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
-import { scrapeAINews, scrapeMusicNews, scrapeStartupNews, scrapeFinanceNews, scrapeHealthNews, scrapeSportNews, scrapeLuxuryNews, scrapeNewsGenerali, scrapeMotoriNews, scrapeTennisNews, scrapeBasketNews, scrapeGossipNews, scrapeCybersecurityNews, scrapeSondaggiNews, scrapeDealroomNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
+import { scrapeAINews, scrapeStartupNews, scrapeDealroomNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
 
@@ -33,7 +33,7 @@ function getWeekLabel(): string {
  * Verifica ogni sourceUrl prima di salvare.
  */
 async function saveScrapedNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom",
+  section: "ai" | "startup" | "dealroom",
   articles: Awaited<ReturnType<typeof scrapeAINews>>
 ): Promise<void> {
   const db = await getDb();
@@ -137,21 +137,7 @@ export async function refreshAINewsFromRSS(): Promise<void> {
   }
 }
 
-export async function refreshMusicNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🎸 Avvio scraping Music news da RSS...");
-  try {
-    const articles = await scrapeMusicNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Music recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("music", articles);
-    console.log(`[RssNewsScheduler] ✅ Music news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Music news:", err);
-    throw err;
-  }
-}
+
 
 export async function refreshStartupNewsFromRSS(): Promise<void> {
   console.log("[RssNewsScheduler] 🚀 Avvio scraping Startup news da RSS...");
@@ -169,217 +155,19 @@ export async function refreshStartupNewsFromRSS(): Promise<void> {
   }
 }
 
-export async function refreshFinanceNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 💹 Avvio scraping Finance news da RSS...");
-  try {
-    const articles = await scrapeFinanceNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Finance recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("finance", articles);
-    console.log(`[RssNewsScheduler] ✅ Finance news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Finance news:", err);
-    throw err;
-  }
-}
 
-export async function refreshHealthNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🏥 Avvio scraping Health news da RSS...");
-  try {
-    const articles = await scrapeHealthNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Health recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("health", articles);
-    console.log(`[RssNewsScheduler] ✅ Health news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Health news:", err);
-    throw err;
-  }
-}
-
-export async function refreshSportNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] ⚽ Avvio scraping Sport news da RSS...");
-  try {
-    const articles = await scrapeSportNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Sport recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("sport", articles);
-    console.log(`[RssNewsScheduler] ✅ Sport news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Sport news:", err);
-    throw err;
-  }
-}
-
-export async function refreshLuxuryNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 💎 Avvio scraping Luxury news da RSS...");
-  try {
-    const articles = await scrapeLuxuryNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Luxury recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("luxury", articles);
-    console.log(`[RssNewsScheduler] ✅ Luxury news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Luxury news:", err);
-    throw err;
-  }
-}
-
-export async function refreshNewsGeneraliFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 📰 Avvio scraping News Generali da RSS...");
-  try {
-    const articles = await scrapeNewsGenerali();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo News Generali recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("news", articles);
-    console.log(`[RssNewsScheduler] ✅ News Generali aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping News Generali:", err);
-    throw err;
-  }
-}
-
-export async function refreshMotoriNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🚗 Avvio scraping Motori news da RSS...");
-  try {
-    const articles = await scrapeMotoriNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Motori recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("motori", articles);
-    console.log(`[RssNewsScheduler] ✅ Motori news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Motori news:", err);
-    throw err;
-  }
-}
-
-export async function refreshTennisNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🎾 Avvio scraping Tennis news da RSS...");
-  try {
-    const articles = await scrapeTennisNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Tennis recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("tennis", articles);
-    console.log(`[RssNewsScheduler] ✅ Tennis news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Tennis news:", err);
-    throw err;
-  }
-}
-
-export async function refreshBasketNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🏀 Avvio scraping Basket news da RSS...");
-  try {
-    const articles = await scrapeBasketNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Basket recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("basket", articles);
-    console.log(`[RssNewsScheduler] ✅ Basket news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Basket news:", err);
-    throw err;
-  }
-}
-
-export async function refreshGossipNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🗞️ Avvio scraping Business Gossip news da RSS...");
-  try {
-    const articles = await scrapeGossipNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Gossip recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("gossip", articles);
-    console.log(`[RssNewsScheduler] ✅ Gossip news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Gossip news:", err);
-    throw err;
-  }
-}
-
-export async function refreshCybersecurityNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🔐 Avvio scraping Cybersecurity news da RSS...");
-  try {
-    const articles = await scrapeCybersecurityNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Cybersecurity recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("cybersecurity", articles);
-    console.log(`[RssNewsScheduler] ✅ Cybersecurity news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Cybersecurity news:", err);
-    throw err;
-  }
-}
-
-export async function refreshSondaggiNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 📊 Avvio scraping Sondaggi news da RSS...");
-  try {
-    const articles = await scrapeSondaggiNews();
-    if (articles.length === 0) {
-      console.warn("[RssNewsScheduler] ⚠️ Nessun articolo Sondaggi recuperato dai feed RSS");
-      return;
-    }
-    await saveScrapedNews("sondaggi", articles);
-    console.log(`[RssNewsScheduler] ✅ Sondaggi news aggiornate: ${articles.length} articoli da fonti reali`);
-  } catch (err) {
-    console.error("[RssNewsScheduler] ❌ Errore scraping Sondaggi news:", err);
-    throw err;
-  }
-}
 
 /**
- * Aggiorna tutte e sette le sezioni in sequenza.
+ * Aggiorna le 3 sezioni attive in sequenza.
  * Usato dal cron job giornaliero alle 00:00 CET.
  */
 export async function refreshAllNewsFromRSS(): Promise<void> {
-  console.log("[RssNewsScheduler] 🌐 Avvio refresh completo tutte le sezioni...");
+  console.log("[RssNewsScheduler] 🌐 Avvio refresh completo sezioni attive (AI, Startup, DEALROOM)...");
   const start = Date.now();
 
   await refreshAINewsFromRSS().catch(err => console.error("[RssNewsScheduler] AI fallita:", err));
   await new Promise(r => setTimeout(r, 20_000));
-  await refreshMusicNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Music fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
   await refreshStartupNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Startup fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshFinanceNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Finance fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshHealthNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Health fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshSportNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Sport fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshLuxuryNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Luxury fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshNewsGeneraliFromRSS().catch(err => console.error("[RssNewsScheduler] News Generali fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshMotoriNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Motori fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshTennisNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Tennis fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshBasketNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Basket fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshGossipNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Gossip fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshCybersecurityNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Cybersecurity fallita:", err));
-  await new Promise(r => setTimeout(r, 20_000));
-  await refreshSondaggiNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Sondaggi fallita:", err));
   await new Promise(r => setTimeout(r, 20_000));
   await refreshDealroomNewsFromRSS().catch(err => console.error("[RssNewsScheduler] Dealroom fallita:", err));
 

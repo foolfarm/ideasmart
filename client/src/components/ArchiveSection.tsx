@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { trpc } from "@/lib/trpc";
 
-type Section = 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom';
+type Section = 'ai' | 'startup' | 'dealroom' | 'research';
 
 interface ArchiveSectionProps {
   section: Section;
@@ -24,7 +24,7 @@ export default function ArchiveSection({
   accentColor,
   skipCount = 10,
   fontMono = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-  fontSerif = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
+  fontSerif = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif"
 }: ArchiveSectionProps) {
   const [offset, setOffset] = useState(skipCount);
   const [allItems, setAllItems] = useState<any[]>([]);
@@ -80,7 +80,7 @@ export default function ArchiveSection({
             style={{
               borderColor: accentColor,
               color: accentColor,
-              fontFamily: fontMono,
+              fontFamily: fontMono
             }}
           >
             {isFetching ? (
@@ -158,7 +158,7 @@ export default function ArchiveSection({
                     <span className="text-[10px] text-[#1a1a1a]/20">·</span>
                     <span className="text-[10px] text-[#1a1a1a]/40" style={{ fontFamily: fontMono }}>
                       {new Date(item.publishedAt).toLocaleDateString('it-IT', {
-                        day: 'numeric', month: 'short', year: 'numeric',
+                        day: 'numeric', month: 'short', year: 'numeric'
                       })}
                     </span>
                   </>
@@ -182,7 +182,7 @@ export default function ArchiveSection({
             style={{
               borderColor: accentColor,
               color: accentColor,
-              fontFamily: fontMono,
+              fontFamily: fontMono
             }}
           >
             {isFetching ? (

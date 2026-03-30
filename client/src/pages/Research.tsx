@@ -17,19 +17,8 @@ import {
 // ── Palette sezioni (identica alla Home) ─────────────────────────────────────
 const SECTION_COLORS = {
   ai:            { accent: "#1a1a1a", light: "#e6f4f1", label: "AI NEWS",       path: "/ai" },
-  music:         { accent: "#2a2a2a", light: "#ede9fe", label: "ITsMusic",           path: "/music" },
   startup:       { accent: "#2a2a2a", light: "#fff0e6", label: "STARTUP NEWS",       path: "/startup" },
-  finance:       { accent: "#1a1a1a", light: "#f0fdf4", label: "Finance & Markets",  path: "/finance" },
-  health:        { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",   path: "/health" },
-  sport:         { accent: "#2a2a2a", light: "#fffbeb", label: "Sport & Business",   path: "/sport" },
-  luxury:        { accent: "#2a2a2a", light: "#faf5ff", label: "Lifestyle & Luxury", path: "/luxury" },
-  news:          { accent: "#1a1a1a", light: "#f1f5f9", label: "News Italia",        path: "/news" },
-  motori:        { accent: "#2a2a2a", light: "#fef2f2", label: "Motori",             path: "/motori" },
-  tennis:        { accent: "#2a2a2a", light: "#f7fee7", label: "Tennis",             path: "/tennis" },
-  basket:        { accent: "#2a2a2a", light: "#fff7ed", label: "Basket",             path: "/basket" },
-  gossip:        { accent: "#2a2a2a", light: "#fdf2f8", label: "Business Gossip",    path: "/gossip" },
-  cybersecurity: { accent: "#1a1a1a", light: "#f0f9ff", label: "Cybersecurity",      path: "/cybersecurity" },
-  sondaggi:      { accent: "#2a2a2a", light: "#f5f3ff", label: "Sondaggi",           path: "/sondaggi" },
+  health:        { accent: "#1a1a1a", light: "#eff6ff", label: "Health & Biotech",   path: "/health" }
 };
 
 // ── Config categorie ricerche ─────────────────────────────────────────────────
@@ -38,13 +27,13 @@ const CATEGORY_CONFIG: Record<string, { label: string; icon: React.ReactNode; ac
   venture_capital: { label: "Venture Capital", icon: <DollarSign className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f0fdf4" },
   ai_trends:       { label: "AI Trends",       icon: <Cpu className="w-3.5 h-3.5" />,        accentColor: "#1a1a1a", bgColor: "#e6f4f1" },
   technology:      { label: "Tecnologia",      icon: <BarChart3 className="w-3.5 h-3.5" />,  accentColor: "#2a2a2a", bgColor: "#faf5ff" },
-  market:          { label: "Mercati",         icon: <TrendingUp className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#eff6ff" },
+  market:          { label: "Mercati",         icon: <TrendingUp className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#eff6ff" }
 };
 
 const REGION_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
   global: { label: "Globale", icon: <Globe className="w-3 h-3" /> },
   europe: { label: "Europa",  icon: <MapPin className="w-3 h-3" /> },
-  italy:  { label: "Italia",  icon: <MapPin className="w-3 h-3" /> },
+  italy:  { label: "Italia",  icon: <MapPin className="w-3 h-3" /> }
 };
 
 function getCategoryConfig(cat: string) {
@@ -56,7 +45,7 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   venture_capital: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80",
   ai_trends:       "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
   technology:      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
-  market:          "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=600&q=80",
+  market:          "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=600&q=80"
 };
 
 function getImageUrl(report: { imageUrl?: string | null; category: string }): string {
@@ -378,7 +367,7 @@ export default function Research() {
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     background: isActive ? "#1a1a1a" : "#faf8f3",
                     color: isActive ? "#faf8f3" : "#1a1a1a",
-                    borderColor: isActive ? "#1a1a1a" : "#1a1a1a30",
+                    borderColor: isActive ? "#1a1a1a" : "#1a1a1a30"
                   }}
                 >
                   {config.icon} {config.label}
@@ -472,7 +461,7 @@ export default function Research() {
                     { num: "20",    label: "Ricerche al giorno" },
                     { num: "5",     label: "Categorie coperte" },
                     { num: "50+",   label: "Fonti monitorate" },
-                    { num: "100%",  label: "AI-powered" },
+                    { num: "100%",  label: "AI-powered" }
                   ].map((stat, i) => (
                     <div
                       key={i}
@@ -528,7 +517,7 @@ export default function Research() {
                   {[
                     { icon: <TrendingUp className="w-3 h-3" />, label: "Venture Capital & Deal Flow" },
                     { icon: <Cpu className="w-3 h-3" />, label: "AI & Tech Trends" },
-                    { icon: <BarChart3 className="w-3 h-3" />, label: "Market Intelligence" },
+                    { icon: <BarChart3 className="w-3 h-3" />, label: "Market Intelligence" }
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <span style={{ color: "#1a1a1a" }}>{item.icon}</span>

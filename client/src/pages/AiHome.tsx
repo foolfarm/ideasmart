@@ -351,7 +351,7 @@ export default function AiHome() {
                       { label: "Categoria", value: startupData.category },
                       { label: "Paese", value: startupData.country || "Italia" },
                       { label: "Fondata", value: startupData.foundedYear || "N/D" },
-                      { label: "Funding", value: startupData.funding || "N/D" },
+                      { label: "Funding", value: startupData.funding || "N/D" }
                     ].map(({ label, value }) => (
                       <div key={label} className="p-3 rounded-sm" style={{ background: ACCENT_LIGHT }}>
                         <p className="text-[10px] font-bold uppercase tracking-widest mb-1"

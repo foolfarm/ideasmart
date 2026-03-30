@@ -9,13 +9,12 @@ import SaveArticleButton from "@/components/SaveArticleButton";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
-  music: { label: "ITsMusic", color: "#2a2a2a", path: "/music" },
-  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup" },
+  startup: { label: "STARTUP NEWS", color: "#2a2a2a", path: "/startup" }
 };
 
 export default function MarketAnalysisDetail() {
   const params = useParams<{ section: string; id: string }>();
-  const section = (params.section ?? "ai") as "ai" | "music" | "startup";
+  const section = (params.section ?? "ai") as "ai" | "startup";
   const id = parseInt(params.id ?? "0");
 
   const { data: analysis, isLoading } = trpc.marketAnalysis.getById.useQuery({ id }, { enabled: !!id });

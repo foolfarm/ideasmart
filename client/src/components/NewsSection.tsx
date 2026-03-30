@@ -35,7 +35,7 @@ const RSS_FEEDS = [
     source: "Wired",
     category: "Tecnologia",
     color: "#2a2a2a",
-  },
+  }
 ];
 
 const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";

@@ -5,8 +5,7 @@ import {
   InsertUser, InsertSubscriber, InsertNewsItem,
   subscribers, newsletterSends, users, newsItems, newsRefreshLog,
   dailyEditorial, startupOfDay,
-  InsertDailyEditorial, InsertStartupOfDay,
-  barometroSnapshots,
+  InsertDailyEditorial, InsertStartupOfDay
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -38,7 +37,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 
   try {
     const values: InsertUser = {
-      openId: user.openId,
+      openId: user.openId
     };
     const updateSet: Record<string, unknown> = {};
 
@@ -76,7 +75,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     }
 
     await db.insert(users).values(values).onDuplicateKeyUpdate({
-      set: updateSet,
+      set: updateSet
     });
   } catch (error) {
     console.error("[Database] Failed to upsert user:", error);
@@ -125,7 +124,7 @@ export async function addSubscriber(data: { email: string; name?: string; source
     name: data.name ?? null,
     source: data.source ?? "website",
     status: "active",
-    unsubscribeToken: token,
+    unsubscribeToken: token
   };
   await db.insert(subscribers).values(insert);
   return { success: true };
@@ -153,9 +152,9 @@ export async function getActiveSubscriberCount(): Promise<number> {
 /**
  * Restituisce gli iscritti attivi filtrati per newsletter:
  * - 'ai4business': iscritti a AI News o a entrambe
- * - 'itsmusic': iscritti a ITsMusic o a entrambe
+ * - 'newsletter': iscritti alla newsletter
  */
-export async function getActiveSubscribersByNewsletter(newsletter: 'ai4business' | 'itsmusic') {
+export async function getActiveSubscribersByNewsletter(newsletter: 'ai4business') {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(subscribers).where(
@@ -241,7 +240,7 @@ export async function createNewsletterSend(data: { subject: string; htmlContent:
     htmlContent: data.htmlContent,
     recipientCount: data.recipientCount,
     status: "sent",
-    sentAt: new Date(),
+    sentAt: new Date()
   });
 }
 
@@ -263,16 +262,16 @@ export async function getNewsletterHistory() {
     recipientCount: newsletterSends.recipientCount,
     status: newsletterSends.status,
     sentAt: newsletterSends.sentAt,
-    createdAt: newsletterSends.createdAt,
+    createdAt: newsletterSends.createdAt
   }).from(newsletterSends).orderBy(newsletterSends.createdAt);
 }
 
 // ── News Items ───────────────────────────────────────────────────────────────
-export async function getLatestNews(limit = 20, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLatestNews(limit = 20, section: string = 'ai') {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(newsItems)
-    .where(eq(newsItems.section, section))
+    .where(eq(newsItems.section, section as any))
     .orderBy(desc(newsItems.createdAt), newsItems.position)
     .limit(limit);
 }
@@ -302,7 +301,7 @@ export async function replaceAllNews(items: Array<{
     url: item.sourceUrl ?? null,
     publishedAt: dayLabel,
     weekLabel: dayLabel,
-    position: i,
+    position: i
   }));
 
   await db.insert(newsItems).values(inserts);
@@ -316,7 +315,7 @@ export async function logNewsRefresh(data: { weekLabel: string; itemCount: numbe
     weekLabel: data.weekLabel,
     itemCount: data.itemCount,
     status: data.status,
-    error: data.error ?? null,
+    error: data.error ?? null
   });
 }
 
@@ -327,21 +326,21 @@ export async function getNewsRefreshHistory() {
 }
 
 // ── Daily Editorial ──────────────────────────────────────────────────────────────────────────────────
-export async function getLatestEditorial(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLatestEditorial(section: string = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(dailyEditorial)
-    .where(eq(dailyEditorial.section, section))
+    .where(eq(dailyEditorial.section, section as any))
     .orderBy(desc(dailyEditorial.createdAt))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
 
-export async function getTodayEditorial(dateLabel: string, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getTodayEditorial(dateLabel: string, section: string = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(dailyEditorial)
-    .where(and(eq(dailyEditorial.dateLabel, dateLabel), eq(dailyEditorial.section, section)))
+    .where(and(eq(dailyEditorial.dateLabel, dateLabel), eq(dailyEditorial.section, section as any)))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
@@ -353,21 +352,21 @@ export async function saveEditorial(data: InsertDailyEditorial) {
 }
 
 // ── Startup of the Day ──────────────────────────────────────────────────────────────────────────────
-export async function getLatestStartupOfDay(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLatestStartupOfDay(section: string = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(startupOfDay)
-    .where(eq(startupOfDay.section, section))
+    .where(eq(startupOfDay.section, section as any))
     .orderBy(desc(startupOfDay.createdAt))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
 
-export async function getTodayStartup(dateLabel: string, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getTodayStartup(dateLabel: string, section: string = 'ai') {
   const db = await getDb();
   if (!db) return null;
   const result = await db.select().from(startupOfDay)
-    .where(and(eq(startupOfDay.dateLabel, dateLabel), eq(startupOfDay.section, section)))
+    .where(and(eq(startupOfDay.dateLabel, dateLabel), eq(startupOfDay.section, section as any)))
     .limit(1);
   return result.length > 0 ? result[0] : null;
 }
@@ -381,18 +380,18 @@ export async function saveStartupOfDay(data: InsertStartupOfDay) {
 // ── Weekly Reportage ─────────────────────────────────────────────────────────
 import { weeklyReportage, InsertWeeklyReportage, marketAnalysis, InsertMarketAnalysis } from "../drizzle/schema";
 
-export async function getLatestWeeklyReportage(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLatestWeeklyReportage(section: string = 'ai') {
   const db = await getDb();
   if (!db) return [];
   // Prende i 4 reportage della settimana più recente per la sezione specificata
   const latest = await db.select().from(weeklyReportage)
-    .where(eq(weeklyReportage.section, section))
+    .where(eq(weeklyReportage.section, section as any))
     .orderBy(desc(weeklyReportage.createdAt))
     .limit(1);
   if (latest.length === 0) return [];
   const weekLabel = latest[0].weekLabel;
   return db.select().from(weeklyReportage)
-    .where(and(eq(weeklyReportage.weekLabel, weekLabel), eq(weeklyReportage.section, section)))
+    .where(and(eq(weeklyReportage.weekLabel, weekLabel), eq(weeklyReportage.section, section as any)))
     .orderBy(weeklyReportage.position);
 }
 
@@ -409,18 +408,18 @@ export async function deleteReportageByWeek(weekLabel: string) {
 }
 
 // ── Market Analysis ─────────────────────────────────────────────────────────────────────────────────────────────
-export async function getLatestMarketAnalysis(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLatestMarketAnalysis(section: string = 'ai') {
   const db = await getDb();
   if (!db) return [];
   const latest = await db.select({ weekLabel: marketAnalysis.weekLabel })
     .from(marketAnalysis)
-    .where(eq(marketAnalysis.section, section))
+    .where(eq(marketAnalysis.section, section as any))
     .orderBy(desc(marketAnalysis.createdAt))
     .limit(1);
   if (latest.length === 0) return [];
   const weekLabel = latest[0].weekLabel;
   return db.select().from(marketAnalysis)
-    .where(and(eq(marketAnalysis.weekLabel, weekLabel), eq(marketAnalysis.section, section)))
+    .where(and(eq(marketAnalysis.weekLabel, weekLabel), eq(marketAnalysis.section, section as any)))
     .orderBy(marketAnalysis.position);
 }
 
@@ -470,7 +469,7 @@ export async function upsertNotificationPreference(data: {
         notifyReportage: data.notifyReportage ?? existing[0].notifyReportage,
         notifyMarket: data.notifyMarket ?? existing[0].notifyMarket,
         frequency: data.frequency ?? existing[0].frequency,
-        categories: categoriesJson ?? existing[0].categories,
+        categories: categoriesJson ?? existing[0].categories
       })
       .where(eq(notificationPreferences.email, data.email));
     return existing[0];
@@ -486,7 +485,7 @@ export async function upsertNotificationPreference(data: {
       frequency: data.frequency ?? "daily",
       categories: categoriesJson,
       prefsToken,
-      isActive: true,
+      isActive: true
     });
     const created = await db.select().from(notificationPreferences)
       .where(eq(notificationPreferences.email, data.email))
@@ -535,7 +534,7 @@ export async function updateNotificationPreferenceByToken(token: string, data: {
       ...(data.notifyMarket !== undefined && { notifyMarket: data.notifyMarket }),
       ...(data.frequency !== undefined && { frequency: data.frequency }),
       ...(categoriesJson !== undefined && { categories: categoriesJson }),
-      ...(data.isActive !== undefined && { isActive: data.isActive }),
+      ...(data.isActive !== undefined && { isActive: data.isActive })
     })
     .where(eq(notificationPreferences.prefsToken, token));
 }
@@ -572,7 +571,7 @@ export async function getNewsletterCampaignStats() {
     openedCount: s.openedCount ?? 0,
     openRate: s.recipientCount && s.recipientCount > 0
       ? Math.round(((s.openedCount ?? 0) / s.recipientCount) * 100)
-      : 0,
+      : 0
   }));
 }
 
@@ -591,13 +590,13 @@ export async function getSubscribersWithTracking() {
     totalOpened: subscribers.totalOpened,
     lastSentAt: subscribers.lastSentAt,
     lastOpenedAt: subscribers.lastOpenedAt,
-    channels: subscribers.channels,
+    channels: subscribers.channels
   }).from(subscribers).orderBy(subscribers.subscribedAt);
 
   // Parsa i canali da JSON string a array
   return rows.map(row => ({
     ...row,
-    parsedChannels: parseChannels(row.channels ?? null),
+    parsedChannels: parseChannels(row.channels ?? null)
   }));
 }
 
@@ -621,13 +620,13 @@ import { contentAudit } from "../drizzle/schema";
  * Se una notizia ha un audit recente con score < 40, viene esclusa.
  * Le notizie senza audit (non ancora verificate) vengono incluse.
  */
-export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLatestNewsFiltered(limit = 20, section: string = 'ai') {
   const db = await getDb();
   if (!db) return [];
 
   // Recupera tutte le notizie della sezione
   const allNews = await db.select().from(newsItems)
-    .where(eq(newsItems.section, section))
+    .where(eq(newsItems.section, section as any))
     .orderBy(desc(newsItems.createdAt), newsItems.position)
     .limit(limit * 2); // prende più notizie per compensare quelle filtrate
 
@@ -638,11 +637,11 @@ export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' 
   const audits = await db.select({
     contentId: contentAudit.contentId,
     coherenceScore: contentAudit.coherenceScore,
-    status: contentAudit.status,
+    status: contentAudit.status
   }).from(contentAudit)
     .where(and(
       eq(contentAudit.contentType, 'news'),
-      eq(contentAudit.section, section)
+      eq(contentAudit.section, section as any)
     ))
     .orderBy(desc(contentAudit.auditedAt));
 
@@ -678,21 +677,21 @@ export async function getLatestNewsFiltered(limit = 20, section: 'ai' | 'music' 
 /**
  * Conta le notizie filtrate (score < 40 o non raggiungibili) per una sezione.
  */
-export async function countFilteredNews(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function countFilteredNews(section: string = 'ai') {
   const db = await getDb();
   if (!db) return { total: 0, filtered: 0, visible: 0 };
 
   const allNews = await db.select({ id: newsItems.id }).from(newsItems)
-    .where(eq(newsItems.section, section));
+    .where(eq(newsItems.section, section as any));
 
   const audits = await db.select({
     contentId: contentAudit.contentId,
     coherenceScore: contentAudit.coherenceScore,
-    status: contentAudit.status,
+    status: contentAudit.status
   }).from(contentAudit)
     .where(and(
       eq(contentAudit.contentType, 'news'),
-      eq(contentAudit.section, section)
+      eq(contentAudit.section, section as any)
     ))
     .orderBy(desc(contentAudit.auditedAt));
 
@@ -715,7 +714,7 @@ export async function countFilteredNews(section: 'ai' | 'music' | 'startup' | 'f
   return {
     total: allNews.length,
     filtered: filteredCount,
-    visible: allNews.length - filteredCount,
+    visible: allNews.length - filteredCount
   };
 }
 
@@ -739,7 +738,7 @@ export async function replaceNewsItem(id: number, newContent: {
       summary: newContent.summary,
       category: newContent.category,
       sourceUrl: newContent.sourceUrl ?? null,
-      sourceName: newContent.sourceName ?? null,
+      sourceName: newContent.sourceName ?? null
     })
     .where(eq(newsItems.id, id));
 }
@@ -747,23 +746,23 @@ export async function replaceNewsItem(id: number, newContent: {
 /**
  * Recupera le notizie con audit score < 40 o non raggiungibili per una sezione.
  */
-export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom' = 'ai') {
+export async function getLowScoreNews(section: string = 'ai') {
   const db = await getDb();
   if (!db) return [];
 
   const allNews = await db.select().from(newsItems)
-    .where(eq(newsItems.section, section))
+    .where(eq(newsItems.section, section as any))
     .orderBy(desc(newsItems.createdAt));
 
   const audits = await db.select({
     contentId: contentAudit.contentId,
     coherenceScore: contentAudit.coherenceScore,
     status: contentAudit.status,
-    auditNote: contentAudit.auditNote,
+    auditNote: contentAudit.auditNote
   }).from(contentAudit)
     .where(and(
       eq(contentAudit.contentType, 'news'),
-      eq(contentAudit.section, section)
+      eq(contentAudit.section, section as any)
     ))
     .orderBy(desc(contentAudit.auditedAt));
 
@@ -773,7 +772,7 @@ export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'fin
       auditMap.set(audit.contentId, {
         coherenceScore: audit.coherenceScore,
         status: audit.status,
-        auditNote: audit.auditNote,
+        auditNote: audit.auditNote
       });
     }
   }
@@ -788,14 +787,14 @@ export async function getLowScoreNews(section: 'ai' | 'music' | 'startup' | 'fin
       ...news,
       auditScore: auditMap.get(news.id)?.coherenceScore ?? null,
       auditStatus: auditMap.get(news.id)?.status ?? 'pending',
-      auditNote: auditMap.get(news.id)?.auditNote ?? null,
+      auditNote: auditMap.get(news.id)?.auditNote ?? null
     }));
 }
 
 // ── Channel Preferences ──────────────────────────────────────────────────────
 
-export type ChannelKey = 'ai' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'music' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom';
-export const ALL_CHANNELS: ChannelKey[] = ['ai', 'startup', 'dealroom', 'finance', 'health', 'sport', 'luxury', 'music'];
+export type ChannelKey = 'ai' | 'startup' | 'dealroom';
+export const ALL_CHANNELS: ChannelKey[] = ["ai", "startup", "dealroom"];
 
 /**
  * Restituisce i canali scelti da un iscritto.
@@ -866,7 +865,7 @@ export async function getSubscriberWithChannels(token: string) {
   const sub = result[0];
   return {
     ...sub,
-    parsedChannels: parseChannels(sub.channels ?? null),
+    parsedChannels: parseChannels(sub.channels ?? null)
   };
 }
 
@@ -909,7 +908,7 @@ export async function addSubscriberWithChannels(data: {
     source: data.source ?? 'website',
     status: 'active',
     unsubscribeToken: token,
-    channels: channelsJson,
+    channels: channelsJson
   });
   return { success: true };
 }
@@ -917,7 +916,7 @@ export async function addSubscriberWithChannels(data: {
 // ── Home page aggregated data ──────────────────────────────────────────────────────────────────────
 // Recupera tutte le notizie necessarie per la homepage in una singola chiamata,
 // evitando il problema di batch tRPC troppo grandi che causano errore 502.
-export type HomeSection = 'ai' | 'music' | 'startup' | 'finance' | 'health' | 'sport' | 'luxury' | 'news' | 'motori' | 'tennis' | 'basket' | 'gossip' | 'cybersecurity' | 'sondaggi' | 'dealroom';
+export type HomeSection = 'ai' | 'startup' | 'dealroom' | 'research';
 
 export interface HomeSectionItem {
   id: number;
@@ -934,12 +933,10 @@ export interface HomeSectionItem {
 
 export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSectionItem[]>> {
   // Ordine editoriale: News Italia first, poi le altre sezioni bilanciate
-  const sections: HomeSection[] = ['news', 'ai', 'startup', 'finance', 'sport', 'motori', 'tennis', 'basket', 'health', 'luxury', 'music', 'gossip', 'cybersecurity', 'sondaggi', 'dealroom'];
+  const sections: HomeSection[] = ['ai', 'startup', 'dealroom'];
   const limits: Record<HomeSection, number> = {
-    // News Italia e sezioni principali: più articoli per una home più ricca
-    news: 8, ai: 12, startup: 12, finance: 6, sport: 6,
-    motori: 5, tennis: 5, basket: 5, health: 5, luxury: 5,
-    music: 5, gossip: 5, cybersecurity: 5, sondaggi: 5, dealroom: 8,
+    ai: 12, startup: 12,
+    dealroom: 8, research: 6
   };
 
   const results = await Promise.all(
@@ -957,8 +954,8 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           publishedAt: item.publishedAt ?? '',
           imageUrl: item.imageUrl ?? null,
           videoUrl: (item as typeof item & { videoUrl?: string | null }).videoUrl ?? null,
-          section,
-        })),
+          section
+        }))
       };
     })
   );
@@ -966,53 +963,3 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
   return Object.fromEntries(results.map(r => [r.section, r.items])) as Record<HomeSection, HomeSectionItem[]>;
 }
 
-// ── Barometro Snapshots ─────────────────────────────────────────────────────
-
-/** Salva uno snapshot giornaliero del barometro politico */
-export async function saveBarometroSnapshot(
-  dateLabel: string,
-  partiti: Array<{ nome: string; nomeCompleto: string; percentuale: number; colore: string }>,
-  fonte: string
-): Promise<void> {
-  if (!partiti || partiti.length === 0) return;
-  // Elimina eventuali snapshot esistenti per la stessa data (idempotente)
-  const dbConn = await getDb();
-  if (!dbConn) return;
-  await dbConn.delete(barometroSnapshots).where(eq(barometroSnapshots.dateLabel, dateLabel));
-  // Inserisce i nuovi snapshot
-  await dbConn.insert(barometroSnapshots).values(
-    partiti.map(p => ({
-      dateLabel,
-      partito: p.nome,
-      partitoNome: p.nomeCompleto,
-      percentuale: p.percentuale,
-      colore: p.colore,
-      fonte,
-    }))
-  );
-}
-
-/** Recupera gli snapshot degli ultimi N giorni per il grafico storico */
-export async function getBarometroHistory(days: number = 28): Promise<
-  Array<{ dateLabel: string; partito: string; partitoNome: string | null; percentuale: number; colore: string | null }>
-> {
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - days);
-  const cutoffLabel = cutoff.toISOString().slice(0, 10);
-
-  const dbConn = await getDb();
-  if (!dbConn) return [];
-  const rows = await dbConn
-    .select()
-    .from(barometroSnapshots)
-    .where(gte(barometroSnapshots.dateLabel, cutoffLabel))
-    .orderBy(barometroSnapshots.dateLabel);
-
-  return rows.map((r: typeof barometroSnapshots.$inferSelect) => ({
-    dateLabel: r.dateLabel,
-    partito: r.partito,
-    partitoNome: r.partitoNome ?? null,
-    percentuale: r.percentuale,
-    colore: r.colore ?? null,
-  }));
-}

@@ -30,7 +30,7 @@ const SECTIONS: { key: string; label: string; emoji: string; expectedMin: number
   { key: "basket",        label: "Basket",            emoji: "🏀", expectedMin: 3 },
   { key: "gossip",        label: "Business Gossip",   emoji: "💬", expectedMin: 3 },
   { key: "cybersecurity", label: "Cybersecurity",     emoji: "🔐", expectedMin: 3 },
-  { key: "sondaggi",      label: "Sondaggi",          emoji: "📊", expectedMin: 2 },
+  { key: "sondaggi",      label: "Sondaggi",          emoji: "📊", expectedMin: 2 }
 ];
 
 interface SectionStatus {
@@ -107,7 +107,7 @@ export async function runMorningHealthReport(): Promise<void> {
         count: todayCount,
         expectedMin: section.expectedMin,
         ok: todayCount >= section.expectedMin,
-        lastTitle,
+        lastTitle
       });
     } catch (err) {
       console.error(`[MorningReport] Errore sezione ${section.key}:`, err);
@@ -117,7 +117,7 @@ export async function runMorningHealthReport(): Promise<void> {
         emoji: section.emoji,
         count: 0,
         expectedMin: section.expectedMin,
-        ok: false,
+        ok: false
       });
     }
   }
@@ -129,7 +129,7 @@ export async function runMorningHealthReport(): Promise<void> {
   const slots = [
     { slot: "morning",   label: "Mattino (10:30)" },
     { slot: "afternoon", label: "Pomeriggio (15:00)" },
-    { slot: "evening",   label: "Sera (17:30)" },
+    { slot: "evening",   label: "Sera (17:30)" }
   ];
 
   for (const { slot, label } of slots) {
@@ -172,7 +172,7 @@ export async function runMorningHealthReport(): Promise<void> {
     sectionsKo,
     totalNewsToday,
     linkedInPublished,
-    overallOk,
+    overallOk
   });
 
   // ── 6. Invia email ────────────────────────────────────────────────────────
@@ -183,7 +183,7 @@ export async function runMorningHealthReport(): Promise<void> {
     const result = await sendEmail({
       to: REPORT_EMAIL,
       subject,
-      html,
+      html
     });
 
     if (result.success) {
@@ -212,10 +212,10 @@ function buildReportHtml(data: {
 
   const dateStr = date.toLocaleDateString("it-IT", {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
-    timeZone: "Europe/Rome",
+    timeZone: "Europe/Rome"
   });
   const timeStr = date.toLocaleTimeString("it-IT", {
-    hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome",
+    hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome"
   });
 
   const statusColor = overallOk ? "#00c896" : "#ff5500";

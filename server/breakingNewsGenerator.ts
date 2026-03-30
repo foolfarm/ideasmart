@@ -95,7 +95,7 @@ export async function generateBreakingNews(): Promise<{
         sourceUrl: newsItemsTable.sourceUrl,
         sourceName: newsItemsTable.sourceName,
         section: newsItemsTable.section,
-        publishedAt: newsItemsTable.publishedAt,
+        publishedAt: newsItemsTable.publishedAt
       })
       .from(newsItemsTable)
       .where(gte(newsItemsTable.createdAt, twoHoursAgo))
@@ -113,7 +113,7 @@ export async function generateBreakingNews(): Promise<{
           sourceUrl: newsItemsTable.sourceUrl,
           sourceName: newsItemsTable.sourceName,
           section: newsItemsTable.section,
-          publishedAt: newsItemsTable.publishedAt,
+          publishedAt: newsItemsTable.publishedAt
         })
         .from(newsItemsTable)
         .where(gte(newsItemsTable.createdAt, sixHoursAgoFallback))
@@ -131,7 +131,7 @@ export async function generateBreakingNews(): Promise<{
           sourceUrl: newsItemsTable.sourceUrl,
           sourceName: newsItemsTable.sourceName,
           section: newsItemsTable.section,
-          publishedAt: newsItemsTable.publishedAt,
+          publishedAt: newsItemsTable.publishedAt
         })
         .from(newsItemsTable)
         .where(gte(newsItemsTable.createdAt, twentyFourHoursAgo))
@@ -185,7 +185,7 @@ Una BREAKING NEWS deve soddisfare ALMENO UNO di questi criteri:
 - Annuncio straordinario di un'azienda tech/AI di primo piano (acquisizione miliardaria, lancio rivoluzionario, nuovo modello AI importante)
 - Crollo o rally significativo di mercati finanziari (>2%)
 - Scoperta scientifica o medica rilevante
-- Evento sportivo di grande rilievo (vittoria importante, record)
+- Evento economico di grande rilievo (acquisizione, IPO, round di investimento)
 - Notizia di forte impatto sull'ecosistema startup, VC o AI italiano/europeo
 - Trend o sviluppo tecnologico di rilievo che sta cambiando il mercato
 - Lancio di prodotto o servizio significativo nel mondo tech/AI/startup
@@ -195,12 +195,12 @@ NON sono breaking news:
 - Gossip o notizie di entertainment a basso impatto
 
 Seleziona le 3-5 notizie più rilevanti e di impatto. Se le notizie disponibili sono di routine, scegli comunque le più interessanti e significative tra quelle presenti.
-Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`,
+Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`
         },
         {
           role: "user",
-          content: `Analizza queste ${candidates.length} notizie recenti e seleziona le BREAKING NEWS:\n\n${newsText}\n\nRestituisci SOLO le notizie che meritano il badge BREAKING NEWS.`,
-        },
+          content: `Analizza queste ${candidates.length} notizie recenti e seleziona le BREAKING NEWS:\n\n${newsText}\n\nRestituisci SOLO le notizie che meritano il badge BREAKING NEWS.`
+        }
       ],
       response_format: {
         type: "json_schema",
@@ -217,44 +217,44 @@ Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`,
                   properties: {
                     newsItemId: {
                       type: "integer",
-                      description: "ID della notizia (campo ID: nel testo)",
+                      description: "ID della notizia (campo ID: nel testo)"
                     },
                     title: {
                       type: "string",
                       description:
-                        "Titolo riformulato per enfatizzare l'urgenza (max 120 char)",
+                        "Titolo riformulato per enfatizzare l'urgenza (max 120 char)"
                     },
                     summary: {
                       type: "string",
                       description:
-                        "Sommario breaking: 1-2 frasi che spiegano perché è urgente (max 250 char)",
+                        "Sommario breaking: 1-2 frasi che spiegano perché è urgente (max 250 char)"
                     },
                     breakingReason: {
                       type: "string",
                       description:
-                        "Motivo breve per cui è breaking (max 100 char)",
+                        "Motivo breve per cui è breaking (max 100 char)"
                     },
                     urgencyScore: {
                       type: "integer",
-                      description: "Punteggio urgenza 1-10 (10 = massima)",
-                    },
+                      description: "Punteggio urgenza 1-10 (10 = massima)"
+                    }
                   },
                   required: [
                     "newsItemId",
                     "title",
                     "summary",
                     "breakingReason",
-                    "urgencyScore",
+                    "urgencyScore"
                   ],
-                  additionalProperties: false,
-                },
-              },
+                  additionalProperties: false
+                }
+              }
             },
             required: ["breaking"],
-            additionalProperties: false,
-          },
-        },
-      },
+            additionalProperties: false
+          }
+        }
+      }
     });
 
     const rawContent = response?.choices?.[0]?.message?.content;
@@ -289,7 +289,7 @@ Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`,
           breakingReason: item.breakingReason?.slice(0, 499),
           publishedAt: original.publishedAt ?? "",
           isActive: true,
-          newsItemId: item.newsItemId,
+          newsItemId: item.newsItemId
         });
         savedCount++;
       } catch (e) {

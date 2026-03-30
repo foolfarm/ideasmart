@@ -33,7 +33,7 @@ export default function BreakingNewsTicker() {
   const allItems: TickerItem[] = [];
   const sources: [SectionKey, typeof aiNews][] = [
     ["ai", aiNews],
-    ["startup", startupNews],
+    ["startup", startupNews]
   ];
   const maxLen = Math.max(...sources.map(([, d]) => (d || []).length));
   for (let i = 0; i < maxLen; i++) {

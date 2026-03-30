@@ -34,18 +34,7 @@ export default function GenericNewsArticle() {
   const sectionLabels: Record<string, { label: string; path: string }> = {
     ai: { label: "AI NEWS", path: "/ai" },
     startup: { label: "STARTUP NEWS", path: "/startup" },
-    finance: { label: "Finance & Markets", path: "/finance" },
-    health: { label: "Health & Biotech", path: "/health" },
-    sport: { label: "Sport & Business", path: "/sport" },
-    luxury: { label: "Lifestyle & Luxury", path: "/luxury" },
-    music: { label: "ITsMusic", path: "/music" },
-    news: { label: "News Italia", path: "/news" },
-    motori: { label: "Motori", path: "/motori" },
-    tennis: { label: "Tennis", path: "/tennis" },
-    basket: { label: "Basket", path: "/basket" },
-    gossip: { label: "Business Gossip", path: "/gossip" },
-    cybersecurity: { label: "Cybersecurity", path: "/cybersecurity" },
-    sondaggi: { label: "Sondaggi", path: "/sondaggi" },
+    health: { label: "Health & Biotech", path: "/health" }
   };
 
   const sectionInfo = sectionLabels[section] ?? { label: "Ideasmart", path: "/" };

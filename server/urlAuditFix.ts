@@ -63,7 +63,7 @@ function isValidUrl(url: string): boolean {
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function auditRecentNews(
-  section: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom",
+  section: "ai" | "startup" | "health" | "news" | "dealroom",
   limit = 25
 ): Promise<{ fixed: number; ok: number; failed: number }> {
   const db = await getDb();
@@ -72,7 +72,7 @@ export async function auditRecentNews(
   const rows = await db.select({
     id: newsItems.id,
     sourceUrl: newsItems.sourceUrl,
-    sourceName: newsItems.sourceName,
+    sourceName: newsItems.sourceName
   })
     .from(newsItems)
     .where(eq(newsItems.section, section))
@@ -122,7 +122,7 @@ export async function auditRecentNews(
  * Corregge SOLO URL mancanti o homepage.
  */
 export async function fixAllSourceUrls(options: {
-  section?: "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom";
+  section?: "ai" | "startup" | "health" | "news" | "dealroom";
   batchSize?: number;
   delayMs?: number;
 } = {}): Promise<AuditResult> {
@@ -136,7 +136,7 @@ export async function fixAllSourceUrls(options: {
     fixed: 0,
     alreadyOk: 0,
     failed: 0,
-    errors: [],
+    errors: []
   };
 
   const query = db.select({
@@ -144,7 +144,7 @@ export async function fixAllSourceUrls(options: {
     section: newsItems.section,
     sourceUrl: newsItems.sourceUrl,
     sourceName: newsItems.sourceName,
-    title: newsItems.title,
+    title: newsItems.title
   }).from(newsItems);
 
   const rows = section
@@ -159,7 +159,7 @@ export async function fixAllSourceUrls(options: {
 
     await Promise.all(batch.map(async (row) => {
       const url = row.sourceUrl || "";
-      const sec = row.section as "ai" | "music" | "startup" | "finance" | "health" | "sport" | "luxury" | "news" | "motori" | "tennis" | "basket" | "gossip" | "cybersecurity" | "sondaggi" | "dealroom";
+      const sec = row.section as "ai" | "startup" | "health" | "news" | "dealroom";
       result.checked++;
 
       // URL non valido o troppo corto → usa fallback
