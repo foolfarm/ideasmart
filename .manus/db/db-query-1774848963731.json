@@ -1,0 +1,40 @@
+{
+  "query": "SELECT section, title, createdAt FROM news_items WHERE section IN ('ai','startup','dealroom') ORDER BY createdAt DESC LIMIT 6;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, title, createdAt FROM news_items WHERE section IN ('ai','startup','dealroom') ORDER BY createdAt DESC LIMIT 6;",
+  "rows": [
+    {
+      "section": "startup",
+      "title": "Lombardia e Catalogna: sinergia industriale per l'Europa",
+      "createdAt": "2026-03-29 21:11:49"
+    },
+    {
+      "section": "startup",
+      "title": "Elon Musk vuole comprare OnlyFans? La notizia è una bufala",
+      "createdAt": "2026-03-29 21:11:49"
+    },
+    {
+      "section": "startup",
+      "title": "La Cucina Italiana nel mondo vale 251 miliardi e punta a 300",
+      "createdAt": "2026-03-29 21:11:49"
+    },
+    {
+      "section": "startup",
+      "title": "M-Cube: integrazione e piattaforma spingono i conti a 70 milioni nel 2025",
+      "createdAt": "2026-03-29 21:11:49"
+    },
+    {
+      "section": "startup",
+      "title": "Donne del vino: l'eccellenza italiana sfida i divari",
+      "createdAt": "2026-03-29 21:11:49"
+    },
+    {
+      "section": "startup",
+      "title": "Karel Komarek punta su Ferretti Group: “Credo nell’ingegno italiano”",
+      "createdAt": "2026-03-29 21:11:48"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttitle\tcreatedAt\nstartup\tLombardia e Catalogna: sinergia industriale per l'Europa\t2026-03-29 21:11:49\nstartup\tElon Musk vuole comprare OnlyFans? La notizia è una bufala\t2026-03-29 21:11:49\nstartup\tLa Cucina Italiana nel mondo vale 251 miliardi e punta a 300\t2026-03-29 21:11:49\nstartup\tM-Cube: integrazione e piattaforma spingono i conti a 70 milioni nel 2025\t2026-03-29 21:11:49\nstartup\tDonne del vino: l'eccellenza italiana sfida i divari\t2026-03-29 21:11:49\nstartup\tKarel Komarek punta su Ferretti Group: “Credo nell’ingegno italiano”\t2026-03-29 21:11:48\n",
+  "stderr": "",
+  "execution_time_ms": 65
+}

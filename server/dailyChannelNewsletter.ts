@@ -1,18 +1,18 @@
 /**
- * dailyChannelNewsletter.ts — Newsletter Giornaliera IDEASMART Research
+ * dailyChannelNewsletter.ts — Newsletter IDEASMART
  * ─────────────────────────────────────────────────────────────────────────────
- * Pivot: la newsletter si concentra su Ricerche del Giorno + AI4Business + Startup News.
+ * Calendario newsletter:
  *
- *   Lunedì    → AI4Business News + Ricerche del Giorno
- *   Martedì   → Startup News + Ricerche del Giorno
- *   (altri giorni: nessun invio canale specifico)
+ *   Lunedì    → AI News + Ricerche del Giorno
+ *   Mercoledì → Startup News + Ricerche del Giorno
+ *   Venerdì   → DEALROOM News + Ricerche del Giorno
  *
  * Flusso:
  *   07:00 CET — Preview di test inviata a ac@acinelli.com per revisione
- *   07:30 CET — Invio massivo a tutti gli iscritti attivi
+ *   Invio massivo — DISABILITATO (richiede approvazione manuale da Admin)
  *
  * Il template grafico è identico per tutti i canali (buildFullNewsletterHtml),
- * con la sezione Ricerche del Giorno inclusa in ogni invio.
+ * con la sezione Ricerche del Giorno e banner promo IDEASMART inclusi.
  */
 
 import { sendEmail, buildFullNewsletterHtml } from "./email";
@@ -98,7 +98,7 @@ export function getTodayChannels(): ChannelConfig[] {
   const italianNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Rome" }));
   const dayOfWeek = italianNow.getDay();
   const channels: ChannelConfig[] = [];
-  // Solo AI4Business (lunedì) e Startup News (martedì)
+  // Canali: AI News (lunedì), Startup News (mercoledì), DEALROOM News (venerdì)
   const dayChannel = CHANNEL_SCHEDULE.find((c) => c.dayOfWeek === dayOfWeek);
   if (dayChannel) channels.push(dayChannel);
   return channels;

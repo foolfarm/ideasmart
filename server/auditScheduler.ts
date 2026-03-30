@@ -43,7 +43,7 @@ function buildAuditReportEmail(result: typeof lastRunResult, anomalies: Awaited<
   const anomalyRows = anomalies.slice(0, 15).map(a => `
     <tr style="border-bottom: 1px solid #f3f4f6;">
       <td style="padding: 8px 12px; font-size: 13px; color: #374151; max-width: 300px;">${a.publishedTitle}</td>
-      <td style="padding: 8px 12px; font-size: 12px; color: #6b7280;">${a.contentType} · ${a.section === "ai" ? "AI4Business" : "ITsMusic"}</td>
+      <td style="padding: 8px 12px; font-size: 12px; color: #6b7280;">${a.contentType} · ${a.section === "ai" ? "AI News" : a.section === "startup" ? "Startup News" : a.section === "dealroom" ? "DEALROOM" : a.section}</td>
       <td style="padding: 8px 12px; font-size: 12px; font-weight: bold; color: ${a.status === "error" ? "#dc2626" : a.status === "unreachable" ? "#6b7280" : "#d97706"};">
         ${a.status === "error" ? "Non coerente" : a.status === "unreachable" ? "Non raggiungibile" : "Parziale"}
         ${a.coherenceScore !== null ? ` (${a.coherenceScore}/100)` : ""}

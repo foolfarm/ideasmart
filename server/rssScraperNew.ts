@@ -159,7 +159,7 @@ async function selectAndTranslate(
 
   const sectionConfig = {
     ai: {
-      label: "AI4Business",
+      label: "AI News",
       categories: ["Modelli Generativi", "AI Agentiva", "Big Tech", "Startup & Funding", "AI & Hardware", "Robot & AI Fisica", "AI & Startup Italiane", "Ricerca & Innovazione", "AI & Lavoro", "AI & Sicurezza", "Regolamentazione AI", "AI & Salute", "AI & Finanza"],
       instructions: "Seleziona le notizie più rilevanti per professionisti e manager italiani interessati all'AI applicata al business. Privilegia impatto concreto, finanziamenti, nuovi modelli, normative EU.",
     },

@@ -8,7 +8,7 @@
  *   - Invia a tutti gli iscritti attivi nel database
  *   - Registra l'invio nella tabella newsletter_sends
  *
- * Canali coperti: AI4Business, Startup, Musica, Finance & Markets,
+ * Canali coperti: AI News, Startup, Musica, Finance & Markets,
  *                 Health & Biotech, Sport & Business, Lifestyle & Luxury
  */
 

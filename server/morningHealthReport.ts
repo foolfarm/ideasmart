@@ -18,7 +18,7 @@ const REPORT_EMAIL = "info@andreacinelli.com";
 // Mappa sezione → nome leggibile + emoji
 const SECTIONS: { key: string; label: string; emoji: string; expectedMin: number }[] = [
   { key: "news",          label: "News Italia",       emoji: "🇮🇹", expectedMin: 5 },
-  { key: "ai",            label: "AI4Business",       emoji: "🤖", expectedMin: 5 },
+  { key: "ai",            label: "AI News",           emoji: "🤖", expectedMin: 5 },
   { key: "startup",       label: "Startup News",      emoji: "🚀", expectedMin: 5 },
   { key: "finance",       label: "Finance & Markets", emoji: "📈", expectedMin: 5 },
   { key: "sport",         label: "Sport & Business",  emoji: "⚽", expectedMin: 5 },

@@ -35,9 +35,9 @@
  *  │  Domenica  — Nessun invio                                              │
  *  │                                                                          │
  *  │  LINKEDIN AUTOPOST — 3 slot giornalieri                                  │
- *  │  10:30 — Post mattino: AI4Business (fisso)                              │
+ *  │  10:30 — Post mattino: AI News (fisso)                                 │
  *  │  13:00 — Post pomeriggio: Startup News (fisso)                          │
- *  │  17:30 — Post sera: AI4Business o Startup (rotazione settimanale)       │
+ *  │  17:30 — Post sera: AI News o Startup (rotazione settimanale)          │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
  * node-cron usa il fuso orario del server. Il server gira in UTC.
@@ -146,7 +146,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager] Fuso orario: Europe/Rome (CET/CEST)");
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SEZIONE /ai — AI4Business News
+  // SEZIONE /ai — AI News
   // ══════════════════════════════════════════════════════════════════════════
 
   cron.schedule("0 0 * * *", async () => {
@@ -392,22 +392,18 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
   // Ogni giorno alle 07:00 viene inviata una preview a info@ideasmart.ai
   // Ogni giorno alle 07:30 viene inviata la newsletter massiva al canale del giorno:
-  //   Lunedì    → AI4Business News
-  //   Martedì   → Startup News
-  //   Mercoledì → Finance & Markets
-  //   Giovedì   → Sport & Business
-  //   Venerdì   → ITsMusic
-  //   Sabato    → Lifestyle & Luxury
-  //   Domenica  → Health & Biotech
+  //   Lunedì    → AI News
+  //   Mercoledì → Startup News
+  //   Venerdì   → DEALROOM News
 
   // ══════════════════════════════════════════════════════════════════════════
   // VERIFICA GIORNALIERA NOTIZIE — 07:00 CET
-  // Controlla che AI4Business e Startup abbiano notizie di oggi.
+  // Controlla che AI News, Startup e DEALROOM abbiano notizie di oggi.
   // Se mancano (es. il cron notturno era offline), le genera subito.
   // Questo è un secondo livello di sicurezza rispetto al catch-up all'avvio.
   // ══════════════════════════════════════════════════════════════════════════
   cron.schedule("0 7 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 07:00 CET — Verifica giornaliera notizie AI4Business e Startup...");
+    console.log("[SchedulerManager] ⏰ 07:00 CET — Verifica giornaliera notizie AI, Startup e DEALROOM...");
     await withLock("daily-news-check", async () => {
       try {
         const checkDb = await getDb();
@@ -419,9 +415,10 @@ export function startAllSchedulers(): void {
         const todayStart = new Date(todayLabel + "T00:00:00+01:00");
         const todayEnd = new Date(todayLabel + "T23:59:59+01:00");
 
-        const sectionsToVerify: Array<{ section: 'ai' | 'startup'; label: string; refreshFn: () => Promise<void> }> = [
-          { section: 'ai', label: 'AI4Business', refreshFn: async () => { await refreshAINewsFromRSS(); } },
+        const sectionsToVerify: Array<{ section: 'ai' | 'startup' | 'dealroom'; label: string; refreshFn: () => Promise<void> }> = [
+          { section: 'ai', label: 'AI News', refreshFn: async () => { await refreshAINewsFromRSS(); } },
           { section: 'startup', label: 'Startup News', refreshFn: async () => { await refreshStartupNewsFromRSS(); } },
+          { section: 'dealroom', label: 'DEALROOM', refreshFn: async () => { await refreshDealroomNewsFromRSS(); } },
         ];
 
         for (const { section, label, refreshFn } of sectionsToVerify) {
@@ -564,12 +561,15 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO (07:30 CET) — tutti i giorni ───────────────────────────
+  // ── INVIO MASSIVO — DISABILITATO (richiede approvazione manuale da Admin) ──
+  // L'invio automatico della newsletter è stato disabilitato.
+  // L'owner riceve la preview alle 07:00 CET e approva l'invio dalla dashboard Admin.
+  // Il pulsante "Invia Newsletter" nella dashboard admin chiama sendDailyChannelNewsletter().
+  /*
   cron.schedule("30 7 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 07:30 CET — Invio newsletter massiva del giorno...");
-    // Controlla se l'audit ha bloccato l'invio per link interni rotti
     if (isNewsletterBlockedByAudit()) {
-      console.warn("[SchedulerManager] 🚨 INVIO BLOCCATO dall'audit link (06:45) — link interni rotti rilevati. Correggi e forza l'invio dalla dashboard.");
+      console.warn("[SchedulerManager] 🚨 INVIO BLOCCATO dall'audit link (06:45)");
       return;
     }
     try {
@@ -585,6 +585,7 @@ export function startAllSchedulers(): void {
       console.error("[SchedulerManager] ❌ Errore invio newsletter massiva:", err);
     }
   }, { timezone: TZ });
+  */
 
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 3 post giornalieri: 10:30 CET (mattino AI) + 13:00 CET (startup) + 17:30 CET (sera)
@@ -781,60 +782,44 @@ export function startAllSchedulers(): void {
   }, 4 * 60 * 60 * 1000); // ogni 4 ore (ridotto da 12h per prevenire ibernazione sandbox)
 
   // ══════════════════════════════════════════════════════════════════════════
-  // CATCH-UP NEWSLETTER — all'avvio, invia la newsletter del giorno se mancata
+  // CATCH-UP NEWSLETTER — DISABILITATO (richiede approvazione manuale da Admin)
+  // L'invio automatico catch-up è stato disabilitato per evitare invii senza approvazione.
+  // L'owner riceve la preview alle 07:00 CET e approva l'invio dalla dashboard Admin.
   // ══════════════════════════════════════════════════════════════════════════
+  /*
   setTimeout(async () => {
     try {
       const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
       const hourCET = nowCET.getHours();
       const minuteCET = nowCET.getMinutes();
       const currentMinutes = hourCET * 60 + minuteCET;
-
-      // Il catch-up newsletter si attiva solo se sono passate le 07:30 CET
       if (currentMinutes < 7 * 60 + 30) {
-        console.log("[SchedulerManager] ℹ️ CATCH-UP newsletter: sono le " + `${hourCET}:${String(minuteCET).padStart(2,'0')} CET, prima delle 07:30 — nessun catch-up necessario`);
+        console.log("[SchedulerManager] ℹ️ CATCH-UP newsletter: prima delle 07:30 — nessun catch-up necessario");
         return;
       }
-
-      // Controlla se la newsletter del giorno è già stata inviata con successo (recipientCount > 0)
       const catchUpDb = await getDb();
       if (!catchUpDb) return;
-
       const { newsletterSends: nlSendsTable } = await import("../drizzle/schema");
       const { gte, and: andOp2, gt } = await import("drizzle-orm");
-
-      // Cerca un invio di oggi con recipientCount > 0 (invio reale, non il record vuoto iniziale)
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-
       const successfulSend = await catchUpDb.select({ id: nlSendsTable.id, recipientCount: nlSendsTable.recipientCount })
         .from(nlSendsTable)
-        .where(andOp2(
-          gte(nlSendsTable.createdAt, todayStart),
-          gt(nlSendsTable.recipientCount, 0)
-        ))
+        .where(andOp2(gte(nlSendsTable.createdAt, todayStart), gt(nlSendsTable.recipientCount, 0)))
         .limit(1);
-
       if (successfulSend.length > 0) {
-        console.log(`[SchedulerManager] ✅ CATCH-UP newsletter: già inviata oggi (${successfulSend[0].recipientCount} destinatari) — nessuna azione`);
+        console.log(`[SchedulerManager] ✅ CATCH-UP newsletter: già inviata oggi`);
         return;
       }
-
-      // Newsletter non inviata: forza l'invio ora
       console.log("[SchedulerManager] 🔄 CATCH-UP newsletter: nessun invio riuscito oggi — forzo l'invio ora...");
       const { sendDailyChannelNewsletter: sendNL } = await import("./dailyChannelNewsletter");
       const result = await sendNL();
-      if (result.success && result.recipientCount > 0) {
-        console.log(`[SchedulerManager] ✅ CATCH-UP newsletter: ${result.channel} inviata a ${result.recipientCount} iscritti`);
-      } else if (result.recipientCount === 0 && result.channel === 'none') {
-        console.log("[SchedulerManager] ℹ️ CATCH-UP newsletter: nessun canale configurato per oggi");
-      } else {
-        console.warn(`[SchedulerManager] ⚠️ CATCH-UP newsletter: ${result.channel} — ${result.error || 'nessun iscritto o già inviata'}`);
-      }
+      console.log(`[SchedulerManager] CATCH-UP newsletter: ${result.channel} — ${result.recipientCount} iscritti`);
     } catch (err) {
-      console.error("[SchedulerManager] ⚠️ CATCH-UP newsletter fallito (non critico):", err);
+      console.error("[SchedulerManager] ⚠️ CATCH-UP newsletter fallito:", err);
     }
-  }, 60_000); // Attende 60s dopo l'avvio per dare tempo al DB e alla cache di inizializzarsi
+  }, 60_000);
+  */
 
   // ═══════════════════════════════════════════════════════════════════════════
   // BREAKING NEWS — ogni ora alle :05 (5 minuti dopo l'ora, dopo l'aggiornamento news)
@@ -918,10 +903,11 @@ export function startAllSchedulers(): void {
       const todayStr = nowCET.toISOString().split("T")[0];
       const todayStart = new Date(todayStr + "T00:00:00.000Z");
       const todayEnd = new Date(todayStr + "T23:59:59.999Z");
-      // Pivot IdeaSmart Research: solo AI4Business e Startup News nel catch-up
-      const sectionsToCheck: Array<{ section: 'ai' | 'startup'; label: string; refreshFn: () => Promise<void> }> = [
-        { section: 'ai', label: 'AI4Business', refreshFn: async () => { await refreshAINewsFromRSS(); } },
+      // Sezioni attive: AI News, Startup News, DEALROOM
+      const sectionsToCheck: Array<{ section: 'ai' | 'startup' | 'dealroom'; label: string; refreshFn: () => Promise<void> }> = [
+        { section: 'ai', label: 'AI News', refreshFn: async () => { await refreshAINewsFromRSS(); } },
         { section: 'startup', label: 'Startup News', refreshFn: async () => { await refreshStartupNewsFromRSS(); } },
+        { section: 'dealroom', label: 'DEALROOM', refreshFn: async () => { await refreshDealroomNewsFromRSS(); } },
       ];
       for (const { section, label, refreshFn } of sectionsToCheck) {
         const existing = await catchUpNewsDb.select({ id: niTable.id })
@@ -966,47 +952,30 @@ export function startAllSchedulers(): void {
   }, 120_000); // 2 minuti dopo l'avvio
 
   // ── Log riepilogo ─────────────────────────────────────────────────────────
-  console.log("[SchedulerManager] ✅ Tutti gli scheduler attivi:");
-  console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET (scraping RSS reale)");
+  console.log("[SchedulerManager] ✅ Scheduler attivi (sezioni: AI, Startup, DEALROOM, Research):");
+  console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET");
   console.log("[SchedulerManager]   ✍️  Editoriale AI    → ogni giorno alle 00:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage AI     → ogni lunedì alle 00:15 CET");
   console.log("[SchedulerManager]   📊 Analisi AI       → ogni lunedì alle 00:20 CET");
-  console.log("[SchedulerManager]   🎸 News Musica      → ogni giorno alle 00:30 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   🎵 Editoriale Music → ogni giorno alle 00:35 CET");
-  console.log("[SchedulerManager]   🎤 Reportage Music  → ogni lunedì alle 00:45 CET");
-  console.log("[SchedulerManager]   🎼 Analisi Music    → ogni lunedì alle 00:50 CET");
-  console.log("[SchedulerManager]   🚀 News Startup     → ogni giorno alle 01:00 CET (scraping RSS reale)");
+  console.log("[SchedulerManager]   🚀 News Startup     → ogni giorno alle 01:00 CET");
   console.log("[SchedulerManager]   ✍️  Editoriale Startup → ogni giorno alle 01:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
   console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");
-  console.log("[SchedulerManager]   💰 News Finance     → ogni giorno alle 01:30 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   ✍️  Editoriale Finance → ogni giorno alle 01:35 CET");
+  console.log("[SchedulerManager]   💰 DEALROOM News    → ogni giorno alle 01:30 CET");
+  console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → ogni giorno alle 01:35 CET");
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
-  console.log("[SchedulerManager]   🏥 News Health      → ogni giorno alle 02:15 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   ✍️  Editoriale Health → ogni giorno alle 02:20 CET");
-  console.log("[SchedulerManager]   ⚽ News Sport       → ogni giorno alle 02:45 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   ✍️  Editoriale Sport → ogni giorno alle 02:50 CET");
-  console.log("[SchedulerManager]   💸 News Luxury      → ogni giorno alle 03:05 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   ✍️  Editoriale Luxury → ogni giorno alle 03:10 CET");
-  console.log("[SchedulerManager]   🗞️  News Gossip       → ogni giorno alle 03:30 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   🔐 News Cybersec    → ogni giorno alle 03:45 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   📊 News Sondaggi    → ogni giorno alle 04:00 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   🇮🇹 News Italia      → ogni giorno alle 04:15 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   🚗 News Motori      → ogni giorno alle 04:30 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   🎾 News Tennis      → ogni giorno alle 04:45 CET (scraping RSS reale)");
-  console.log("[SchedulerManager]   🏀 News Basket      → ogni giorno alle 05:00 CET (scraping RSS reale)");
   console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
-  console.log("[SchedulerManager]   📧 Newsletter canale → ogni giorno alle 07:30 CET (Lun=AI, Mar=Startup, Mer=Finance, Gio=Sport, Ven=Music, Sab=Luxury, Dom=Health)");
+  console.log("[SchedulerManager]   📧 Newsletter       → DISABILITATO (richiede approvazione manuale da Admin)");
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO  → ogni giorno alle 10:30 CET (AI o Startup, alternanza settimanale)");
   console.log("[SchedulerManager]   💼 LinkedIn STARTUP  → ogni giorno alle 13:00 CET (Startup News, sempre)");
-  console.log("[SchedulerManager]   💼 LinkedIn POMERIGGIO → ogni giorno alle 15:00 CET (sezione opposta rispetto al mattino)");
+
   console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");
-  console.log("[SchedulerManager]   📌 Punto del Giorno → aggiornato 3 volte al giorno: 10:30, 15:00 e 17:30 CET");
+
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
-  console.log("[SchedulerManager]   🔄 Catch-up NL     → all'avvio, forza invio newsletter se mancata (dopo le 07:30 CET)");
-  console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI4Business + Startup, rigenera se mancanti)");
+  console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (richiede approvazione manuale)");
+  console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI + Startup + DEALROOM, rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 10:00 CET (pubblica se nessun post oggi)");
   console.log("[SchedulerManager]   🚀 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");

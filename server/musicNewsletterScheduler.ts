@@ -254,7 +254,7 @@ function buildItsMusicNewsletterHtml(params: {
                       </a>
                       &nbsp;·&nbsp;
                       <a href="https://ideasmart.ai/ai" style="color:#00b4a0;font-size:11px;text-decoration:underline;font-family:Arial,sans-serif;">
-                        AI4Business News
+                        AI News News
                       </a>
                     </p>
                   </td>

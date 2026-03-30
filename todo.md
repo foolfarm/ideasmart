@@ -1871,3 +1871,22 @@
 - [x] Testare raggiungibilità 35 feed RSS: 19/35 funzionanti (Sifted, Tech.eu, TechCrunch, Google News, Crunchbase, CB Insights, PE Hub, ecc.)
 - [x] Aggiungere fonti verificate: +8 nuove (Balderton, Seedcamp, PE Hub, TechCrunch Main, Google News Funding/M&A/VC Italia, HackerNews) → 35 fonti totali
 - [x] Scraping massivo: 88 raw → 24 pre-filtro → 12 articoli finali, tutti pertinenti (Physical Intelligence $1B, YC Demo Day, SoftBank $40B, ecc.)
+
+## Task (30 Mar 2026 — Newsletter manuale + Scheduler + Scraping)
+
+- [ ] Disabilitare invio automatico newsletter — richiede approvazione Andrea prima dell'invio
+- [ ] Correggere calendario newsletter: Lun=AI News, Mer=Startup News, Ven=DEALROOM News
+- [ ] Aggiornare template newsletter con banner promo iscrizione IDEASMART
+- [ ] Disabilitare sezioni non attive dallo scheduler (Music, Finance, Health, Sport, Luxury, Motori, Tennis, Basket, Gossip, Cybersecurity, Sondaggi, News)
+- [ ] Correggere orario scheduler notturno (dalle 00:00 CET)
+- [ ] Lanciare scraping manuale per AI, Startup, Ricerche e DEALROOM
+
+## Task completati (30 Mar 2026 — Aggiornamento newsletter e naming)
+
+- [x] Fix tutti i riferimenti "AI4Business" → "AI News" in tutto il progetto (schedulerManager, db.ts, linkedinPublisher, morningHealthReport, newsletterScheduler, routers, rssScraperNew, Admin.tsx, musicNewsletterScheduler)
+- [x] Aggiornamento calendario newsletter: Lunedì=AI News, Mercoledì=Startup News, Venerdì=DEALROOM News
+- [x] Admin.tsx: widget "Prossimi Invii" aggiornato con DEALROOM il venerdì
+- [x] Template email newsletter: banner promo aggiornato con CTA "Iscriviti ora" e frequenza Lun/Mer/Ven
+- [x] Disabilitato catch-up newsletter automatico (richiede approvazione manuale da Admin)
+- [x] Aggiunto DEALROOM alla verifica giornaliera notizie (07:00 CET) e catch-up all'avvio
+- [x] Log riepilogo scheduler aggiornati con sezioni attive (AI, Startup, DEALROOM, Research)

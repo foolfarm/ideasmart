@@ -374,7 +374,7 @@ export default function Admin() {
               const candidate = new Date(checkDate);
               candidate.setHours(SEND_HOUR, SEND_MINUTE, 0, 0);
               if (candidate > now && !upcomingSends.find(s => s.date.toDateString() === candidate.toDateString())) {
-                const channel = dayOfWeek === 3 ? "Startup News" : "AI4Business";
+                const channel = dayOfWeek === 1 ? "AI News" : dayOfWeek === 3 ? "Startup News" : "DEALROOM News";
                 const dayNames = ["", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
                 upcomingSends.push({
                   date: candidate,
@@ -426,7 +426,7 @@ export default function Admin() {
                 ))}
               </div>
               <p className="mt-3 text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.2)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Invii automatici: Lunedì + Venerdì → AI4Business · Mercoledì → Startup News · Orario: 07:30 CET
+                Invii: Lunedì → AI News · Mercoledì → Startup News · Venerdì → DEALROOM News · Orario: 07:30 CET
               </p>
             </div>
           );

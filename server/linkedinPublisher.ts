@@ -61,7 +61,7 @@ const SUPPORTED_SECTIONS: Array<LinkedInSection> = ["ai", "startup", "finance", 
 
 const SECTION_META: Record<LinkedInSection, { label: string; hashtags: string[]; path: string }> = {
   ai: {
-    label: "AI4Business",
+    label: "AI News",
     hashtags: ["#AI", "#ArtificialIntelligence", "#AIStrategy", "#DigitalTransformation", "#IDEASMART", "#FutureOfWork", "#EnterpriseAI"],
     path: "/ai",
   },
@@ -113,7 +113,7 @@ const EVENING_ROTATION: LinkedInSection[] = ["sport", "luxury", "finance", "heal
 // ── Seleziona la sezione in base al giorno e allo slot ───────────────────────
 /**
  * Schema giornaliero dei 4 slot:
- *  - 10:30 MORNING:           sempre AI4Business (analisi strategica AI)
+ *  - 10:30 MORNING:           sempre AI News (analisi strategica AI)
  *  - 13:00 STARTUP-AFTERNOON: sempre Startup News (ecosistema startup IT/EU)
  *  - 15:00 AFTERNOON:         rotazione settimanale finance/health/sport/luxury
  *  - 17:30 EVENING:           rotazione settimanale sport/luxury/finance/health (offset +2)
@@ -121,7 +121,7 @@ const EVENING_ROTATION: LinkedInSection[] = ["sport", "luxury", "finance", "heal
  * Risultato: ogni giorno i 4 post coprono 4 sezioni tematiche completamente diverse.
  */
 function selectSection(slot: LinkedInSlot): LinkedInSection {
-  if (slot === "morning") return "ai";           // 10:30: sempre AI4Business
+  if (slot === "morning") return "ai";           // 10:30: sempre AI News
   if (slot === "startup-afternoon") return "startup"; // 13:00: sempre Startup News
 
   // Afternoon e evening: rotazione settimanale
@@ -185,7 +185,7 @@ ${marketData.keyFinding}`;
   // Ogni combinazione produce un tono e un angolo editoriale diverso
   let slotNote: string;
   if (slot === "morning") {
-    slotNote = `Questo è il POST DEL MATTINO (10:30) — Sezione AI4Business.
+    slotNote = `Questo è il POST DEL MATTINO (10:30) — Sezione AI News.
 Tono: analitico e strategico. Il tuo pubblico apre LinkedIn a colazione e vuole una lettura che dia loro un vantaggio competitivo per la giornata.
 Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business. Angolo preferito: "cosa sta succedendo davvero nel mercato AI che i media generalisti non raccontano".
 Includi sempre il link a ideasmart.ai/ai.`;

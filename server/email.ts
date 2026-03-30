@@ -159,7 +159,7 @@ export function buildMonthlyNewsletterHtml(opts: {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>AI4Business News by IDEASMART · N° ${issueNumber} · ${month}</title>
+<title>IDEASMART · N° ${issueNumber} · ${month}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#ede8de;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
@@ -207,7 +207,7 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td style="padding:20px 28px 18px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
       <p style="font-size:14px;line-height:1.8;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;">
-        <strong style="color:#0a1628;">AI4Business News</strong> è il quotidiano di tecnologia e innovazione che ogni giorno analizza, testa e seleziona le realtà più promettenti dell'ecosistema AI per il business. La nostra redazione porta alla luce le soluzioni che stanno ridefinendo il modo di lavorare, investire e crescere.
+        <strong style="color:#0a1628;">IDEASMART</strong> è la prima testata giornalistica HumanLess che ogni giorno analizza oltre 4.000 fonti su AI, Startup e Venture Capital. Ricerche verificate, alert e briefing per chi prende decisioni.
       </p>
     </td>
   </tr>
@@ -495,10 +495,10 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td style="padding:24px 28px 28px;background:#f5f0e8;border-top:1px solid #d8d0c0;">
       <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-align:center;">
-        &copy; 2026 <strong style="color:#374151;">AI4Business News</strong> &mdash; by IDEASMART &middot; Startup di Tecnologia &amp; Innovazione
+        &copy; 2026 <strong style="color:#374151;">IDEASMART</strong> &mdash; La Prima Testata Giornalistica HumanLess
       </p>
       <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-align:center;line-height:1.6;">
-        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter AI4Business News by IDEASMART.<br>
+        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
         Sede legale: Italia &middot; P.IVA in corso di registrazione &middot; <a href="${baseUrl}/privacy" style="color:#9ca3af;text-decoration:underline;">Privacy Policy</a>
       </p>
       <!-- Separatore -->
@@ -563,7 +563,7 @@ export function buildWelcomeEmailHtml(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benvenuto in AI4Business News</title>
+  <title>Benvenuto in IDEASMART</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f6fa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
@@ -575,7 +575,7 @@ export function buildWelcomeEmailHtml(opts: {
         <!-- TOP BAR -->
         <tr>
           <td style="background:#0a0f1e;padding:10px 32px;">
-            <span style="font-size:10px;color:#00b4a0;letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; AI4Business News &mdash; by IDEASMART</span>
+            <span style="font-size:10px;color:#00b4a0;letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; IDEASMART</span>
           </td>
         </tr>
 
@@ -583,7 +583,7 @@ export function buildWelcomeEmailHtml(opts: {
         <tr>
           <td style="background:linear-gradient(135deg,#0a0f1e 0%,#1a2540 100%);padding:40px 32px 36px;text-align:center;">
             <div style="font-size:36px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.1;margin-bottom:8px;">
-              AI4Business <span style="color:#00b4a0;">News</span>
+              IDEA<span style="color:#00b4a0;">SMART</span>
             </div>
             <div style="font-size:14px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:24px;">by IDEASMART</div>
             <div style="display:inline-block;background:#00b4a0;border-radius:50px;padding:8px 20px;">
@@ -597,7 +597,7 @@ export function buildWelcomeEmailHtml(opts: {
           <td style="padding:36px 32px 28px;">
             <p style="font-size:18px;font-weight:700;color:#1a1f2e;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;">${greeting}</p>
             <p style="font-size:15px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 20px;">
-              Benvenuto in <strong style="color:#1a1f2e;">AI4Business News</strong> — il quotidiano italiano sull'intelligenza artificiale per il business.
+              Benvenuto in <strong style="color:#1a1f2e;">IDEASMART</strong> — la prima testata giornalistica HumanLess su AI, Startup e Venture Capital.
             </p>
             <p style="font-size:15px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 28px;">
               Ogni giorno riceverai le notizie più rilevanti sull'AI, le startup italiane più promettenti, editoriali esclusivi e analisi di mercato da fonti come CB Insights, Sifted e TechCrunch.
@@ -675,7 +675,7 @@ export function buildWelcomeEmailHtml(opts: {
         <tr>
           <td style="padding:20px 32px 28px;background:#f8f9fc;border-top:1px solid #e2e5ed;">
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;text-align:center;">
-              &copy; 2026 <strong>AI4Business News</strong> &mdash; by IDEASMART &middot; Startup di Tecnologia &amp; Innovazione
+              &copy; 2026 <strong>IDEASMART</strong> &mdash; La Prima Testata Giornalistica HumanLess
             </p>
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 6px;text-align:center;">
               Hai ricevuto questa email perch&eacute; ti sei iscritto su <a href="${baseUrl}" style="color:#00b4a0;text-decoration:none;">ideasmart.ai</a>.
@@ -906,7 +906,7 @@ export function buildFullNewsletterHtml(opts: {
           <td style="background:${CREAM};padding:10px 28px;border-bottom:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="font-size:8px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.14em;text-transform:uppercase;">AI &bull; STARTUP &bull; FINANCE &bull; HEALTH &bull; SPORT &bull; LUXURY &bull; MUSIC</td>
+                <td style="font-size:8px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.14em;text-transform:uppercase;">AI NEWS &bull; STARTUP NEWS &bull; DEALROOM &bull; RICERCHE</td>
                 <td align="right" style="font-size:8px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;">${dateLabel}</td>
               </tr>
             </table>
@@ -1119,15 +1119,15 @@ export function buildFullNewsletterHtml(opts: {
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="padding-bottom:12px;">
-                  <div style="font-size:9px;font-weight:700;color:${TEAL};letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">&#9670; SCOPRI IDEASMART</div>
-                  <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;line-height:1.2;margin-bottom:8px;">Investitori, appassionati di tecnologia e startup trovano tutto ci&ograve; che cercano</div>
-                  <div style="font-size:12px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;margin-bottom:16px;">Oltre <strong style="color:${TEAL};">4.000 fonti</strong> monitorate ogni giorno &mdash; AI, Startup, Venture Capital, Deal &amp; Funding, Ricerche di mercato. <strong style="color:#ffffff;">Completamente gratis.</strong></div>
+                  <div style="font-size:9px;font-weight:700;color:${TEAL};letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">&#9670; ISCRIVITI GRATIS</div>
+                  <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;line-height:1.2;margin-bottom:8px;">Non perderti le prossime edizioni &mdash; iscriviti alla newsletter</div>
+                  <div style="font-size:12px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;margin-bottom:16px;">Ricevi ogni <strong style="color:#ffffff;">luned&igrave;, mercoled&igrave; e venerd&igrave;</strong> le notizie pi&ugrave; importanti su AI, Startup, Venture Capital e Deal &amp; Funding. Oltre <strong style="color:${TEAL};">4.000 fonti</strong> monitorate ogni giorno. <strong style="color:#ffffff;">Completamente gratis.</strong></div>
                   <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td style="background:${TEAL};border-radius:6px;padding:12px 28px;">
-                        <a href="${baseUrl}" style="font-size:13px;font-weight:700;color:#0a1628;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.02em;">Visita ideasmart.ai →</a>
+                      <td style="background:${TEAL};border-radius:6px;padding:14px 32px;">
+                        <a href="${baseUrl}/#newsletter" style="font-size:14px;font-weight:700;color:#0a1628;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.02em;">Iscriviti ora &rarr;</a>
                       </td>
-                      <td style="padding-left:12px;">
+                      <td style="padding-left:16px;">
                         <a href="${baseUrl}/dealroom" style="font-size:12px;font-weight:600;color:${TEAL};text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">DEALROOM &rarr;</a>
                       </td>
                       <td style="padding-left:12px;">

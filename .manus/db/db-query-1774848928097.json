@@ -1,0 +1,85 @@
+{
+  "query": "SELECT section, COUNT(*) as total, MAX(createdAt) as ultimo FROM news_items GROUP BY section ORDER BY section;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as total, MAX(createdAt) as ultimo FROM news_items GROUP BY section ORDER BY section;",
+  "rows": [
+    {
+      "section": "ai",
+      "total": "20",
+      "ultimo": "2026-03-29 21:11:24"
+    },
+    {
+      "section": "music",
+      "total": "20",
+      "ultimo": "2026-03-27 07:24:02"
+    },
+    {
+      "section": "startup",
+      "total": "20",
+      "ultimo": "2026-03-29 21:11:49"
+    },
+    {
+      "section": "finance",
+      "total": "20",
+      "ultimo": "2026-03-27 00:32:30"
+    },
+    {
+      "section": "health",
+      "total": "20",
+      "ultimo": "2026-03-27 07:25:04"
+    },
+    {
+      "section": "sport",
+      "total": "20",
+      "ultimo": "2026-03-27 01:46:27"
+    },
+    {
+      "section": "luxury",
+      "total": "20",
+      "ultimo": "2026-03-27 02:08:45"
+    },
+    {
+      "section": "news",
+      "total": "20",
+      "ultimo": "2026-03-27 14:09:02"
+    },
+    {
+      "section": "motori",
+      "total": "20",
+      "ultimo": "2026-03-27 03:31:42"
+    },
+    {
+      "section": "tennis",
+      "total": "15",
+      "ultimo": "2026-03-27 03:46:02"
+    },
+    {
+      "section": "basket",
+      "total": "14",
+      "ultimo": "2026-03-27 04:01:20"
+    },
+    {
+      "section": "gossip",
+      "total": "20",
+      "ultimo": "2026-03-27 02:34:13"
+    },
+    {
+      "section": "cybersecurity",
+      "total": "20",
+      "ultimo": "2026-03-27 07:26:53"
+    },
+    {
+      "section": "sondaggi",
+      "total": "6",
+      "ultimo": "2026-03-27 03:03:56"
+    },
+    {
+      "section": "dealroom",
+      "total": "12",
+      "ultimo": "2026-03-29 21:10:25"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotal\tultimo\nai\t20\t2026-03-29 21:11:24\nmusic\t20\t2026-03-27 07:24:02\nstartup\t20\t2026-03-29 21:11:49\nfinance\t20\t2026-03-27 00:32:30\nhealth\t20\t2026-03-27 07:25:04\nsport\t20\t2026-03-27 01:46:27\nluxury\t20\t2026-03-27 02:08:45\nnews\t20\t2026-03-27 14:09:02\nmotori\t20\t2026-03-27 03:31:42\ntennis\t15\t2026-03-27 03:46:02\nbasket\t14\t2026-03-27 04:01:20\ngossip\t20\t2026-03-27 02:34:13\ncybersecurity\t20\t2026-03-27 07:26:53\nsondaggi\t6\t2026-03-27 03:03:56\ndealroom\t12\t2026-03-29 21:10:25\n",
+  "stderr": "",
+  "execution_time_ms": 67
+}

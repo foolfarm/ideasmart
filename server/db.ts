@@ -152,7 +152,7 @@ export async function getActiveSubscriberCount(): Promise<number> {
 
 /**
  * Restituisce gli iscritti attivi filtrati per newsletter:
- * - 'ai4business': iscritti a AI4Business News o a entrambe
+ * - 'ai4business': iscritti a AI News o a entrambe
  * - 'itsmusic': iscritti a ITsMusic o a entrambe
  */
 export async function getActiveSubscribersByNewsletter(newsletter: 'ai4business' | 'itsmusic') {

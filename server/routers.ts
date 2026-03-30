@@ -1405,7 +1405,7 @@ Rispondi con questo JSON:
           isTest: true,
         });
 
-        const subject = `[PROVA] AI4Business News — ${dateLabel} | ${news.length} news, ${reportages.length} reportage`;
+        const subject = `[PROVA] AI News — ${dateLabel} | ${news.length} news, ${reportages.length} reportage`;
 
         const result = await sendEmail({ to: input.to, subject, html });
         if (!result.success) {
@@ -1656,7 +1656,7 @@ Rispondi con questo JSON:
     // ── Newsletter Giornaliera per Canale — Invio Massivo ────────────────────────────────
     sendChannelNewsletter: adminProcedure
       .input(z.object({
-        channelKey: z.enum(["ai", "startup"]),
+        channelKey: z.enum(["ai", "startup", "dealroom"]),
         testOnly: z.boolean().default(false),
       }))
       .mutation(async ({ input }) => {
@@ -1671,6 +1671,20 @@ Rispondi con questo JSON:
           error: result.error,
         };
       }),
+
+    // ── Approva e Invia Newsletter del Giorno (invio massivo manuale) ────────────────
+    approveAndSendNewsletter: adminProcedure.mutation(async () => {
+      const { sendDailyChannelNewsletter } = await import("./dailyChannelNewsletter");
+      const result = await sendDailyChannelNewsletter();
+      return {
+        success: result.success,
+        channel: result.channel,
+        recipientCount: result.recipientCount,
+        newsCount: result.newsCount,
+        subject: result.subject,
+        error: result.error,
+      };
+    }),
 
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure
@@ -1711,7 +1725,7 @@ Rispondi con questo JSON:
 
       const SECTIONS = [
         { key: "news", label: "News Italia", icon: "🇮🇹" },
-        { key: "ai", label: "AI4Business", icon: "🤖" },
+        { key: "ai", label: "AI News", icon: "🤖" },
         { key: "startup", label: "Startup News", icon: "🚀" },
         { key: "finance", label: "Finance & Markets", icon: "📈" },
         { key: "sport", label: "Sport & Business", icon: "⚽" },
