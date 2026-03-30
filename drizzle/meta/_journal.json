@@ -295,6 +295,13 @@
       "when": 1774805304146,
       "tag": "0041_young_cammi",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "5",
+      "when": 1774902503525,
+      "tag": "0042_acoustic_sugar_man",
+      "breakpoints": true
     }
   ]
 }

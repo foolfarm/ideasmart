@@ -1999,3 +1999,16 @@
 - [x] Aggiunto H2 semantico "DEALROOM — Round, Funding & M&A" alla sezione dealroom
 - [x] Mantenuto H2 "Prossimi Eventi" già esistente e corretto
 - [x] Gerarchia heading corretta: H1 (IDEASMART) → H2 (sezioni) → H3 (titoli articoli)
+
+## Modifica programmazione LinkedIn (30 Mar 2026)
+
+- [x] Cambiare slot LinkedIn MATTINO da 10:30 a 10:00 CET (AI News)
+- [x] Cambiare slot LinkedIn POMERIGGIO da 13:00 a 14:30 CET (Startup News)
+- [x] Nuovo slot LinkedIn 17:00 CET — Ricerche (post su una delle ultime ricerche IdeaSmart)
+- [x] Cambiare slot LinkedIn SERA da 17:30 a 18:00 CET — Dealroom (post su uno degli ultimi deal)
+- [x] Implementare generazione post LinkedIn per slot "research" (ricerche IdeaSmart)
+- [x] Implementare generazione post LinkedIn per slot "dealroom" (ultimi deal)
+- [x] Aggiornare catch-up LinkedIn per i nuovi 4 slot
+- [x] Aggiornare verifica giornaliera LinkedIn per i nuovi 4 slot
+- [x] Aggiornare invalidazione cache dopo LinkedIn
+- [x] Aggiornare test schedulerManager e linkedinPublisher

@@ -33,10 +33,11 @@
  *  │  Sabato    — Nessun invio                                              │
  *  │  Domenica  — Nessun invio                                              │
  *  │                                                                          │
- *  │  LINKEDIN AUTOPOST — 3 slot giornalieri                                  │
- *  │  10:30 — Post mattino: AI News (fisso)                                 │
- *  │  13:00 — Post pomeriggio: Startup News (fisso)                          │
- *  │  17:30 — Post sera: AI News o Startup (rotazione settimanale)          │
+ *  │  LINKEDIN AUTOPOST — 4 slot giornalieri                                  │
+ *  │  10:00 — Post mattino: AI News (fisso)                                 │
+ *  │  14:30 — Post pomeriggio: Startup News (fisso)                          │
+ *  │  17:00 — Post ricerche: IdeaSmart Research (ultima ricerca)            │
+ *  │  18:00 — Post dealroom: Dealroom (ultimo deal/round)                   │
  *  └─────────────────────────────────────────────────────────────────────────┘
  *
  * node-cron usa il fuso orario del server. Il server gira in UTC.
@@ -253,15 +254,42 @@ export function startAllSchedulers(): void {
 
 
 
-  // ── Invalidazione cache parziale dopo LinkedIn (10:35 CET) ───────────────
+  // ── Invalidazione cache parziale dopo LinkedIn (10:05, 14:35, 17:05, 18:05 CET) ───
   // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.
-  // Invalidiamo solo la chiave getPuntoDelGiorno per non toccare le altre.
-  cron.schedule("35 10 * * *", async () => {
+  // Invalidiamo la cache dopo ogni slot LinkedIn.
+  cron.schedule("5 10 * * *", async () => {
     try {
       invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
-      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn post");
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn MATTINO");
     } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore invalidazione cache Punto del Giorno:", err);
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
+    }
+  }, { timezone: TZ });
+
+  cron.schedule("35 14 * * *", async () => {
+    try {
+      invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn STARTUP");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
+    }
+  }, { timezone: TZ });
+
+  cron.schedule("5 17 * * *", async () => {
+    try {
+      invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn RICERCHE");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
+    }
+  }, { timezone: TZ });
+
+  cron.schedule("5 18 * * *", async () => {
+    try {
+      invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn DEALROOM");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
     }
   }, { timezone: TZ });
 
@@ -466,45 +494,44 @@ export function startAllSchedulers(): void {
   */
 
   // ══════════════════════════════════════════════════════════════════════════
-  // LINKEDIN AUTOPOST — 3 post giornalieri: 10:30 CET (mattino AI) + 13:00 CET (startup) + 17:30 CET (sera)
+  // LINKEDIN AUTOPOST — 4 post giornalieri:
+  //   10:00 CET — AI News (morning)
+  //   14:30 CET — Startup News (startup-afternoon)
+  //   17:00 CET — Ricerche IdeaSmart (research)
+  //   18:00 CET — Dealroom (dealroom)
   // ══════════════════════════════════════════════════════════════════════════
 
   // ══════════════════════════════════════════════════════════════════════════
-  // VERIFICA GIORNALIERA LINKEDIN — 10:00 CET
+  // VERIFICA GIORNALIERA LINKEDIN — 09:30 CET
   // Controlla che i post LinkedIn del giorno siano stati pubblicati.
-  // Se il cron delle 10:30 / 13:00 / 17:30 era offline, pubblica subito.
-  // Questo cron gira 30 minuti PRIMA del post mattino per garantire
-  // che almeno un post sia sempre pubblicato ogni giorno.
+  // Questo cron gira 30 minuti PRIMA del post mattino (10:00).
   // ══════════════════════════════════════════════════════════════════════════
-  cron.schedule("0 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:00 CET — Verifica giornaliera post LinkedIn...");
+  cron.schedule("30 9 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 09:30 CET — Verifica giornaliera post LinkedIn...");
     await withLock("daily-linkedin-check", async () => {
       try {
         const liCheckDb = await getDb();
         if (!liCheckDb) { console.warn("[SchedulerManager] ⚠️ Verifica LinkedIn: DB non disponibile"); return; }
         const { linkedinPosts: lpCheckTable } = await import("../drizzle/schema");
-        const { and: andLi } = await import("drizzle-orm");
         const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
-        const today = nowCET.toLocaleDateString("en-CA", { timeZone: TZ }); // YYYY-MM-DD
+        const today = nowCET.toLocaleDateString("en-CA", { timeZone: TZ });
 
-        // Controlla se esiste almeno un post di oggi (qualsiasi slot)
         const existingToday = await liCheckDb.select({ id: lpCheckTable.id, slot: lpCheckTable.slot })
           .from(lpCheckTable)
           .where(eq(lpCheckTable.dateLabel, today))
-          .limit(3);
+          .limit(4);
 
         const publishedSlots = existingToday.map(p => p.slot);
 
         if (publishedSlots.length === 0) {
-          // Nessun post oggi: pubblica subito il post mattino
-          console.log("[SchedulerManager] 🔄 VERIFICA 10:00: nessun post LinkedIn oggi — pubblico post mattino ora...");
+          console.log("[SchedulerManager] 🔄 VERIFICA 09:30: nessun post LinkedIn oggi — pubblico post mattino ora...");
           await withLock("linkedin-morning", async () => {
             const result = await publishLinkedInPost("morning");
-            console.log(`[SchedulerManager] ✅ VERIFICA 10:00: LinkedIn MATTINO: ${result.published}/1 post pubblicati`);
+            console.log(`[SchedulerManager] ✅ VERIFICA 09:30: LinkedIn MATTINO: ${result.published}/1 post pubblicati`);
             invalidateBySection("home");
           });
         } else {
-          console.log(`[SchedulerManager] ✅ VERIFICA 10:00: LinkedIn ha già ${publishedSlots.length} post oggi (${publishedSlots.join(", ")}) — OK`);
+          console.log(`[SchedulerManager] ✅ VERIFICA 09:30: LinkedIn ha già ${publishedSlots.length} post oggi (${publishedSlots.join(", ")}) — OK`);
         }
       } catch (err) {
         console.error("[SchedulerManager] ❌ Verifica giornaliera LinkedIn errore:", err);
@@ -512,9 +539,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post mattino — 10:30 CET
-  cron.schedule("30 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:30 CET — Pubblicazione LinkedIn MATTINO...");
+  // Post mattino — 10:00 CET (AI News)
+  cron.schedule("0 10 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 10:00 CET — Pubblicazione LinkedIn MATTINO (AI News)...");
     await withLock("linkedin-morning", async () => {
       try {
         const result = await publishLinkedInPost("morning");
@@ -522,7 +549,6 @@ export function startAllSchedulers(): void {
         if (result.errors.length > 0) {
           console.error("[SchedulerManager] ⚠️ LinkedIn MATTINO errori:", result.errors);
         }
-        // Invalida cache Punto del Giorno
         invalidateBySection("home");
       } catch (err) {
         console.error("[SchedulerManager] ❌ Errore LinkedIn MATTINO:", err);
@@ -530,9 +556,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Startup pomeridiano — 13:00 CET (dedicato esclusivamente alle Startup News)
-  cron.schedule("0 13 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 13:00 CET — Pubblicazione LinkedIn STARTUP POMERIGGIO...");
+  // Post Startup pomeridiano — 14:30 CET (Startup News)
+  cron.schedule("30 14 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn STARTUP POMERIGGIO...");
     await withLock("linkedin-startup-afternoon", async () => {
       try {
         const result = await publishLinkedInPost("startup-afternoon");
@@ -540,7 +566,6 @@ export function startAllSchedulers(): void {
         if (result.errors.length > 0) {
           console.error("[SchedulerManager] ⚠️ LinkedIn STARTUP POMERIGGIO errori:", result.errors);
         }
-        // Invalida cache Punto del Giorno
         invalidateBySection("home");
       } catch (err) {
         console.error("[SchedulerManager] ❌ Errore LinkedIn STARTUP POMERIGGIO:", err);
@@ -548,29 +573,43 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // [DISABILITATO] Slot 15:00 CET (afternoon) — rimosso, ora solo 3 slot: 10:30 / 13:00 / 17:30
-  // cron.schedule("0 15 * * *", ...) — linkedin-afternoon DISABILITATO
-
-  // Post sera — 17:30 CET (tema: vibe coding, AI e startup, come cambia il mercato)
-  cron.schedule("30 17 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 17:30 CET — Pubblicazione LinkedIn SERA (Vibe Coding / AI / Mercato)...");
-    await withLock("linkedin-evening", async () => {
+  // Post Ricerche — 17:00 CET (IdeaSmart Research)
+  cron.schedule("0 17 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 17:00 CET — Pubblicazione LinkedIn RICERCHE (IdeaSmart Research)...");
+    await withLock("linkedin-research", async () => {
       try {
-        const result = await publishLinkedInPost("evening");
-        console.log(`[SchedulerManager] ✅ LinkedIn SERA: ${result.published}/1 post pubblicati`);
+        const result = await publishLinkedInPost("research");
+        console.log(`[SchedulerManager] ✅ LinkedIn RICERCHE: ${result.published}/1 post pubblicati`);
         if (result.errors.length > 0) {
-          console.error("[SchedulerManager] ⚠️ LinkedIn SERA errori:", result.errors);
+          console.error("[SchedulerManager] ⚠️ LinkedIn RICERCHE errori:", result.errors);
         }
-        // Invalida cache Punto del Giorno
         invalidateBySection("home");
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore LinkedIn SERA:", err);
+        console.error("[SchedulerManager] ❌ Errore LinkedIn RICERCHE:", err);
+      }
+    });
+  }, { timezone: TZ });
+
+  // Post Dealroom — 18:00 CET (ultimi deal/round)
+  cron.schedule("0 18 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 18:00 CET — Pubblicazione LinkedIn DEALROOM...");
+    await withLock("linkedin-dealroom", async () => {
+      try {
+        const result = await publishLinkedInPost("dealroom");
+        console.log(`[SchedulerManager] ✅ LinkedIn DEALROOM: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn DEALROOM errori:", result.errors);
+        }
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn DEALROOM:", err);
       }
     });
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // CATCH-UP LINKEDIN — all'avvio, recupera i post mancati se il cron era offline
+  // Slot: morning (10:00), startup-afternoon (14:30), research (17:00), dealroom (18:00)
   // ══════════════════════════════════════════════════════════════════════════
   setTimeout(async () => {
     try {
@@ -578,66 +617,37 @@ export function startAllSchedulers(): void {
       const hourCET = nowCET.getHours();
       const minuteCET = nowCET.getMinutes();
       const currentMinutes = hourCET * 60 + minuteCET;
-      const today = new Date().toISOString().split("T")[0];
+      const today = nowCET.toLocaleDateString("en-CA", { timeZone: TZ });
 
       const catchUpDb = await getDb();
       if (!catchUpDb) return;
       const { linkedinPosts: lpTable } = await import("../drizzle/schema");
       const { and: andOp } = await import("drizzle-orm");
 
-      // Controlla se il post mattino (10:30) è mancato
-      if (currentMinutes >= 10 * 60 + 30) {
-        const existingMorning = await catchUpDb.select({ id: lpTable.id })
-          .from(lpTable)
-          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "morning")))
-          .limit(1);
-        if (existingMorning.length === 0) {
-          console.log("[SchedulerManager] 🔄 CATCH-UP: post MATTINO mancato, pubblico ora...");
-          await withLock("linkedin-morning", async () => {
-            const result = await publishLinkedInPost("morning");
-            console.log(`[SchedulerManager] ✅ CATCH-UP MATTINO: ${result.published}/1 post pubblicati`);
-            invalidateBySection("home");
-          });
-        } else {
-          console.log("[SchedulerManager] ✅ CATCH-UP: post MATTINO già presente nel DB, nessuna azione.");
-        }
-      }
+      // Catch-up slot definitions: [slot, scheduledMinutes]
+      const catchUpSlots: Array<[string, number, string]> = [
+        ["morning", 10 * 60, "MATTINO (10:00)"],
+        ["startup-afternoon", 14 * 60 + 30, "STARTUP POMERIGGIO (14:30)"],
+        ["research", 17 * 60, "RICERCHE (17:00)"],
+        ["dealroom", 18 * 60, "DEALROOM (18:00)"],
+      ];
 
-      // Controlla se il post Startup pomeridiano (13:00) è mancato
-      if (currentMinutes >= 13 * 60) {
-        const existingStartupAfternoon = await catchUpDb.select({ id: lpTable.id })
-          .from(lpTable)
-          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "startup-afternoon")))
-          .limit(1);
-        if (existingStartupAfternoon.length === 0) {
-          console.log("[SchedulerManager] 🔄 CATCH-UP: post STARTUP POMERIGGIO mancato, pubblico ora...");
-          await withLock("linkedin-startup-afternoon", async () => {
-            const result = await publishLinkedInPost("startup-afternoon");
-            console.log(`[SchedulerManager] ✅ CATCH-UP STARTUP POMERIGGIO: ${result.published}/1 post pubblicati`);
-            invalidateBySection("home");
-          });
-        } else {
-          console.log("[SchedulerManager] ✅ CATCH-UP: post STARTUP POMERIGGIO già presente nel DB, nessuna azione.");
-        }
-      }
-
-      // [DISABILITATO] Catch-up slot afternoon 15:00 — rimosso (ora solo 3 slot: 10:30 / 13:00 / 17:30)
-
-      // Controlla se il post sera (17:30) è mancato
-      if (currentMinutes >= 17 * 60 + 30) {
-        const existingEvening = await catchUpDb.select({ id: lpTable.id })
-          .from(lpTable)
-          .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, "evening")))
-          .limit(1);
-        if (existingEvening.length === 0) {
-          console.log("[SchedulerManager] 🔄 CATCH-UP: post SERA mancato, pubblico ora...");
-          await withLock("linkedin-evening", async () => {
-            const result = await publishLinkedInPost("evening");
-            console.log(`[SchedulerManager] ✅ CATCH-UP SERA: ${result.published}/1 post pubblicati`);
-            invalidateBySection("home");
-          });
-        } else {
-          console.log("[SchedulerManager] ✅ CATCH-UP: post SERA già presente nel DB, nessuna azione.");
+      for (const [slotName, scheduledMin, label] of catchUpSlots) {
+        if (currentMinutes >= scheduledMin) {
+          const existing = await catchUpDb.select({ id: lpTable.id })
+            .from(lpTable)
+            .where(andOp(eq(lpTable.dateLabel, today), eq(lpTable.slot, slotName as any)))
+            .limit(1);
+          if (existing.length === 0) {
+            console.log(`[SchedulerManager] 🔄 CATCH-UP: post ${label} mancato, pubblico ora...`);
+            await withLock(`linkedin-${slotName}`, async () => {
+              const result = await publishLinkedInPost(slotName as any);
+              console.log(`[SchedulerManager] ✅ CATCH-UP ${label}: ${result.published}/1 post pubblicati`);
+              invalidateBySection("home");
+            });
+          } else {
+            console.log(`[SchedulerManager] ✅ CATCH-UP: post ${label} già presente nel DB, nessuna azione.`);
+          }
         }
       }
     } catch (err) {
@@ -846,16 +856,16 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
   console.log("[SchedulerManager]   📧 Newsletter       → DISABILITATO (richiede approvazione manuale da Admin)");
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
-  console.log("[SchedulerManager]   💼 LinkedIn MATTINO  → ogni giorno alle 10:30 CET (AI o Startup, alternanza settimanale)");
-  console.log("[SchedulerManager]   💼 LinkedIn STARTUP  → ogni giorno alle 13:00 CET (Startup News, sempre)");
-
-  console.log("[SchedulerManager]   💼 LinkedIn SERA → ogni giorno alle 17:30 CET (Vibe Coding / AI / Startup / Mercato)");
+  console.log("[SchedulerManager]   💼 LinkedIn MATTINO   → ogni giorno alle 10:00 CET (AI News)");
+  console.log("[SchedulerManager]   💼 LinkedIn STARTUP   → ogni giorno alle 14:30 CET (Startup News)");
+  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE  → ogni giorno alle 17:00 CET (IdeaSmart Research)");
+  console.log("[SchedulerManager]   💼 LinkedIn DEALROOM  → ogni giorno alle 18:00 CET (Dealroom)");
 
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (richiede approvazione manuale)");
   console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI + Startup + DEALROOM, rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
-  console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 10:00 CET (pubblica se nessun post oggi)");
+  console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 09:30 CET (pubblica se nessun post oggi)");
   console.log("[SchedulerManager]   🚀 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
   console.log("[SchedulerManager]   📅 Events Aggregator → ogni 12 ore alle 06:30 e 18:30 CET (Luma ICS + RSS italiani)");
 

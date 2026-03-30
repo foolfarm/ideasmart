@@ -129,13 +129,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 25 cron job quando avviato", async () => {
+  it("dovrebbe registrare 29 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 25 scheduler attivi dopo pulizia canali obsoleti (AI, Startup, DEALROOM, Research + infra)
+    // 29 scheduler attivi: AI, Startup, DEALROOM, Research + 4 slot LinkedIn + 4 invalidazioni cache + infra
     // La newsletter massiva (07:30) è disabilitata (richiede approvazione manuale da Admin)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(25);
+    expect(cron.default.schedule).toHaveBeenCalledTimes(29);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -158,32 +158,52 @@ describe("schedulerManager", () => {
     expect(previewCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn MATTINO alle 10:30 ogni giorno", async () => {
+  it("dovrebbe programmare LinkedIn MATTINO alle 10:00 ogni giorno (AI News)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const linkedInMorningCall = calls.find(c => c[0] === "30 10 * * *");
+    const linkedInMorningCall = calls.find(c => c[0] === "0 10 * * *");
     expect(linkedInMorningCall).toBeDefined();
   });
 
-  it("LinkedIn POMERIGGIO alle 15:00 dovrebbe essere DISABILITATO", async () => {
+  it("dovrebbe programmare LinkedIn STARTUP alle 14:30 ogni giorno (Startup News)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // Il cron "0 15 * * *" è commentato/disabilitato
-    const linkedInAfternoonCall = calls.find(c => c[0] === "0 15 * * *");
-    expect(linkedInAfternoonCall).toBeUndefined();
+    const linkedInStartupCall = calls.find(c => c[0] === "30 14 * * *");
+    expect(linkedInStartupCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn SERA alle 17:30 ogni giorno (Vibe Coding / AI / Mercato)", async () => {
+  it("dovrebbe programmare LinkedIn RICERCHE alle 17:00 ogni giorno (IdeaSmart Research)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    const linkedInResearchCall = calls.find(c => c[0] === "0 17 * * *");
+    expect(linkedInResearchCall).toBeDefined();
+  });
+
+  it("dovrebbe programmare LinkedIn DEALROOM alle 18:00 ogni giorno", async () => {
+    const cron = await import("node-cron");
+    const { startAllSchedulers } = await import("./schedulerManager");
+    startAllSchedulers();
+    const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    const linkedInDealroomCall = calls.find(c => c[0] === "0 18 * * *");
+    expect(linkedInDealroomCall).toBeDefined();
+  });
+
+  it("LinkedIn legacy slots (afternoon 15:00, evening 17:30) dovrebbero essere DISABILITATI", async () => {
+    const cron = await import("node-cron");
+    const { startAllSchedulers } = await import("./schedulerManager");
+    startAllSchedulers();
+    const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    // I vecchi cron sono commentati/disabilitati
+    const linkedInAfternoonCall = calls.find(c => c[0] === "0 15 * * *");
     const linkedInEveningCall = calls.find(c => c[0] === "30 17 * * *");
-    expect(linkedInEveningCall).toBeDefined();
+    expect(linkedInAfternoonCall).toBeUndefined();
+    expect(linkedInEveningCall).toBeUndefined();
   });
 
   it("dovrebbe programmare il Morning Health Report alle 08:00 ogni giorno", async () => {
