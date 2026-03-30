@@ -8,6 +8,7 @@ import { trpc } from "@/lib/trpc";
 import RequireAuth from "@/components/RequireAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
+import { useEffect, useRef } from "react";
 import {
   ArrowLeft, ExternalLink, Globe, MapPin, BookOpen,
   TrendingUp, BarChart3, Cpu, Building2, DollarSign, Eye,
@@ -52,11 +53,15 @@ export default function ResearchDetail() {
     { enabled: !!researchId && !isNaN(researchId!) }
   );
   const trackView = trpc.news.trackResearchView.useMutation();
+  const trackedRef = useRef(false);
 
-  // Traccia la visualizzazione quando il report viene caricato
-  if (report && researchId) {
-    trackView.mutate({ id: researchId });
-  }
+  // Traccia la visualizzazione quando il report viene caricato (una sola volta)
+  useEffect(() => {
+    if (report && researchId && !trackedRef.current) {
+      trackedRef.current = true;
+      trackView.mutate({ id: researchId });
+    }
+  }, [report, researchId]);
 
   const catConfig = report ? getCategoryConfig(report.category) : null;
   const regionConfig = report ? (REGION_CONFIG[report.region] ?? { label: report.region, icon: <Globe className="w-3.5 h-3.5" /> }) : null;
