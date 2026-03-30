@@ -1901,3 +1901,18 @@
 - [x] Eliminare file dedicati ai canali obsoleti (musicNewsletterScheduler, ecc.)
 - [x] Eliminare riferimenti ai canali obsoleti dal linkedinPublisher
 - [x] Verificare compilazione e funzionamento dopo la pulizia (0 errori TS, server OK)
+
+## Bug fix e audit (30 Mar 2026)
+
+- [x] Fix pagina /research: mostra "Registrati" anche se l'utente è loggato — useSiteAuth ora accetta anche OAuth Manus
+- [x] Fix logica accesso contenuti: non registrato=anteprime mascherate, registrato=tutto gratis
+- [x] Verificare che tutte le pagine (AI News, Startup, DEALROOM, Research, dettaglio articoli) funzionino correttamente per utenti loggati
+- [x] Audit scheduling giornaliero: documentare canali, orari, post LinkedIn
+
+## Audit completo (30 Mar 2026)
+
+- [x] A) Fix auth pagina /research: useSiteAuth ora accetta OAuth Manus + registrazione nativa
+- [x] B) Audit logica accesso contenuti: 9 pagine protette con RequireAuth, 4 pagine pubbliche
+- [x] C) Verifica tutte le pagine: AI News, Startup, DEALROOM, Research, dettaglio articoli
+- [x] D) Documentare scheduling aggiornamento giornaliero canali (report completo)
+- [x] E) Documentare scheduling post LinkedIn settimanale (report completo)

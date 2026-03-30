@@ -1,0 +1,37 @@
+{
+  "query": "SELECT id, username, email, emailVerified, sessionToken IS NOT NULL as hasSession, sessionExpiresAt, lastLoginAt FROM site_users LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, username, email, emailVerified, sessionToken IS NOT NULL as hasSession, sessionExpiresAt, lastLoginAt FROM site_users LIMIT 20;",
+  "rows": [
+    {
+      "id": "2",
+      "username": "andyiltoscano",
+      "email": "ac@foolfarm.com",
+      "emailVerified": "1",
+      "hasSession": "1",
+      "sessionExpiresAt": "2026-04-28 18:20:34",
+      "lastLoginAt": "2026-03-29 18:20:34"
+    },
+    {
+      "id": "3",
+      "username": "andyci",
+      "email": "ac@acinelli.com",
+      "emailVerified": "1",
+      "hasSession": "1",
+      "sessionExpiresAt": "2026-04-29 08:56:31",
+      "lastLoginAt": "2026-03-30 08:56:31"
+    },
+    {
+      "id": "30001",
+      "username": "dueprincipati",
+      "email": "massimotesta@salerno.com",
+      "emailVerified": "1",
+      "hasSession": "1",
+      "sessionExpiresAt": "2026-04-29 06:18:50",
+      "lastLoginAt": "2026-03-30 06:18:50"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\temail\temailVerified\thasSession\tsessionExpiresAt\tlastLoginAt\n2\tandyiltoscano\tac@foolfarm.com\t1\t1\t2026-04-28 18:20:34\t2026-03-29 18:20:34\n3\tandyci\tac@acinelli.com\t1\t1\t2026-04-29 08:56:31\t2026-03-30 08:56:31\n30001\tdueprincipati\tmassimotesta@salerno.com\t1\t1\t2026-04-29 06:18:50\t2026-03-30 06:18:50\n",
+  "stderr": "",
+  "execution_time_ms": 127
+}
