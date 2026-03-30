@@ -1942,3 +1942,17 @@
 - [x] Messaggio "400+ fonti verificate con tecnologia Verify" — badge VERIFY aggiunto
 - [x] Layout che rispecchia la pagina sezione del canale promosso — completato
 - [x] Inviare 3 email di test con nuovo template a ac@foolfarm.com — 3 email inviate con successo
+
+## Redesign pagina /chi-siamo come landing di vendita (30 Mar 2026)
+
+- [x] Riscrivere completamente ChiSiamo.tsx come landing page di vendita piattaforma giornalismo agentico
+- [x] Hero: "Il primo giornale che funziona anche senza una redazione" + CTA demo
+- [x] Sezione IL PROBLEMA: costi alti, produzione lenta, dipendenza team, bias
+- [x] Sezione LA SOLUZIONE: piattaforma giornalismo agentico, 8 agenti AI, 4000+ fonti
+- [x] Sezione TECNOLOGIA VERIFY: AI + verifica, personalizzazione tono/stile
+- [x] Sezione COSA PUOI FARE: lanciare testata, automatizzare giornale, vertical media
+- [x] Sezione PER CHI È: editori, giornalisti, media company, creator
+- [x] Sezione MODELLO: setup €5.000 + revenue share 30%
+- [x] Sezione PROVA SOCIALE: IDEASMART come case study (6.900+ lettori, 3 canali, 1 persona)
+- [x] CTA FINALE: prenota demo + parla con noi — sfondo nero con 2 CTA
+- [x] Stile Stripe/Notion: pulito, diretto, moderno — font SF Pro, nero/bianco/crema
