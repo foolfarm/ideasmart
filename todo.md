@@ -1956,3 +1956,14 @@
 - [x] Sezione PROVA SOCIALE: IDEASMART come case study (6.900+ lettori, 3 canali, 1 persona)
 - [x] CTA FINALE: prenota demo + parla con noi — sfondo nero con 2 CTA
 - [x] Stile Stripe/Notion: pulito, diretto, moderno — font SF Pro, nero/bianco/crema
+
+## Rimozione Intelligence + Post LinkedIn + Newsletter promo (30 Mar 2026)
+
+- [x] Eliminare tutti i riferimenti a "Intelligence" / "Attiva Intelligence" da tutte le pagine
+- [x] Rimuovere link Intelligence dal footer
+- [x] Rimuovere banner "Attiva Intelligence" dal footer
+- [x] Creare bozza post LinkedIn promozionale per Ideasmart (modello giornalismo agentico) — pubblicato: https://www.linkedin.com/feed/update/urn:li:share:7444357069979406338/
+- [ ] Creare bozza newsletter promozionale da inviare domattina
+
+## Aggiornamento sezione Modello /chi-siamo (30 Mar 2026)
+- [x] Sostituire pricing singolo con 3 piani: Mini (€2.500), Medium (€5.000), Maxi (€7.500) + Custom — verificato nel browser

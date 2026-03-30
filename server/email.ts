@@ -1202,7 +1202,7 @@ export function buildFullNewsletterHtml(opts: {
         <tr>
           <td style="background:${CREAM};padding:24px 28px 28px;border-top:1px solid ${BORDER};">
             <p style="font-size:12px;color:${BLACK};font-family:${FONT};margin:0 0 8px;text-align:center;font-weight:700;">
-              IDEASMART &mdash; Intelligence Quotidiana &bull; &copy; 2026
+              IDEASMART &mdash; Notizie Quotidiane &bull; &copy; 2026
             </p>
             <p style="font-size:10px;color:${MUTED};font-family:${FONT};margin:0 0 16px;text-align:center;line-height:1.7;">
               Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
@@ -1232,6 +1232,417 @@ export function buildFullNewsletterHtml(opts: {
 </table>
 
 ${trackingPixelUrl ? `<!-- Tracking pixel --><img src="${trackingPixelUrl}" width="1" height="1" border="0" style="display:block;width:1px;height:1px;" alt="" />` : ''}
+
+</body>
+</html>`;
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// NEWSLETTER PROMOZIONALE — Promuove Ideasmart come piattaforma
+// Stile identico al sito: SF Pro, crema, nero, editoriale
+// ══════════════════════════════════════════════════════════════════════════════
+export function buildPromoNewsletterHtml(opts: {
+  dateLabel: string;
+  unsubscribeUrl?: string;
+  trackingPixelUrl?: string;
+  isTest?: boolean;
+}): string {
+  const { dateLabel, unsubscribeUrl, trackingPixelUrl, isTest } = opts;
+  const baseUrl = "https://ideasmart.ai";
+  const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
+
+  const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  const BLACK   = "#1a1a1a";
+  const DARK    = "#2d2d2d";
+  const SLATE   = "#4b5563";
+  const MUTED   = "#9ca3af";
+  const BORDER  = "#d8d0c0";
+  const CREAM   = "#f5f0e8";
+  const CREAM2  = "#ede8de";
+  const WHITE   = "#ffffff";
+  const RED     = "#dc2626";
+
+  return `<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IDEASMART &mdash; Il primo giornale che funziona anche senza una redazione</title>
+  <style>
+    body{margin:0;padding:0;background:${CREAM};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    table{border-spacing:0;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;}
+    img{border:0;display:block;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;}
+    a{color:${BLACK};text-decoration:none;}
+    @media only screen and (max-width:620px){
+      .wrapper{width:100%!important;}
+      .pad{padding-left:16px!important;padding-right:16px!important;}
+      .hero-title{font-size:28px!important;line-height:1.15!important;}
+      .hero-sub{font-size:15px!important;}
+      .section-title{font-size:22px!important;}
+      .grid-cell{display:block!important;width:100%!important;padding-bottom:16px!important;}
+      .stat-num{font-size:28px!important;}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:${CREAM};">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};">
+  <tr>
+    <td align="center" style="padding:0;">
+      <table role="presentation" class="wrapper" width="620" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};max-width:620px;width:100%;">
+
+        ${isTest ? `<tr><td style="background:#f59e0b;padding:8px 20px;text-align:center;">
+          <span style="font-size:11px;font-weight:700;color:${BLACK};font-family:${FONT};letter-spacing:0.1em;">&#9888; EMAIL DI PROVA &mdash; NON DISTRIBUIRE</span>
+        </td></tr>` : ''}
+
+        <!-- TOP BAR -->
+        <tr>
+          <td style="background:${WHITE};padding:12px 28px;border-bottom:1px solid ${BORDER};">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-size:10px;color:${MUTED};font-family:${FONT};letter-spacing:0.12em;text-transform:uppercase;">${dateLabel}</td>
+                <td align="right" style="font-size:10px;color:${MUTED};font-family:${FONT};letter-spacing:0.08em;">EDIZIONE SPECIALE</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- HEADER IDEASMART -->
+        <tr>
+          <td style="background:${WHITE};padding:28px 28px 12px;text-align:center;">
+            <div style="font-size:42px;font-weight:900;color:${BLACK};font-family:${FONT};letter-spacing:-0.02em;line-height:1;">IDEASMART</div>
+            <div style="font-size:10px;font-weight:600;color:${SLATE};font-family:${FONT};letter-spacing:0.22em;text-transform:uppercase;margin-top:8px;">Notizie quotidiane su AI, Startup e Venture Capital</div>
+          </td>
+        </tr>
+
+        <!-- HERO -->
+        <tr>
+          <td class="pad" style="background:${WHITE};padding:20px 28px 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="border-top:3px solid ${BLACK};padding-top:24px;">
+                <div class="hero-title" style="font-size:34px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.12;margin-bottom:16px;">Il primo giornale che funziona anche senza una redazione.</div>
+                <div class="hero-sub" style="font-size:17px;color:${SLATE};font-family:${FONT};line-height:1.6;margin-bottom:20px;">Costruisci e scala una testata con l&rsquo;AI agentica. Oltre 4.000 fonti certificate. Una redazione di 8 agenti AI. Un solo obiettivo: informazione pi&ugrave; veloce, oggettiva e scalabile.</div>
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="background:${BLACK};border-radius:4px;padding:14px 32px;">
+                      <a href="${baseUrl}/chi-siamo" style="font-size:14px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${FONT};letter-spacing:0.02em;">Scopri come funziona &rarr;</a>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- STATS BAR -->
+        <tr>
+          <td style="background:${BLACK};padding:20px 28px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" width="25%" style="padding:8px 4px;">
+                  <div class="stat-num" style="font-size:32px;font-weight:900;color:${WHITE};font-family:${FONT};">4.000+</div>
+                  <div style="font-size:9px;font-weight:600;color:${MUTED};font-family:${FONT};letter-spacing:0.16em;text-transform:uppercase;margin-top:4px;">Fonti</div>
+                </td>
+                <td align="center" width="25%" style="padding:8px 4px;">
+                  <div class="stat-num" style="font-size:32px;font-weight:900;color:${WHITE};font-family:${FONT};">8</div>
+                  <div style="font-size:9px;font-weight:600;color:${MUTED};font-family:${FONT};letter-spacing:0.16em;text-transform:uppercase;margin-top:4px;">Agenti AI</div>
+                </td>
+                <td align="center" width="25%" style="padding:8px 4px;">
+                  <div class="stat-num" style="font-size:32px;font-weight:900;color:${WHITE};font-family:${FONT};">6.900+</div>
+                  <div style="font-size:9px;font-weight:600;color:${MUTED};font-family:${FONT};letter-spacing:0.16em;text-transform:uppercase;margin-top:4px;">Lettori</div>
+                </td>
+                <td align="center" width="25%" style="padding:8px 4px;">
+                  <div class="stat-num" style="font-size:32px;font-weight:900;color:${WHITE};font-family:${FONT};">20+</div>
+                  <div style="font-size:9px;font-weight:600;color:${MUTED};font-family:${FONT};letter-spacing:0.16em;text-transform:uppercase;margin-top:4px;">Ricerche/giorno</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- IL PROBLEMA -->
+        <tr>
+          <td class="pad" style="background:${CREAM};padding:32px 28px 24px;">
+            <div style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};margin-bottom:8px;">IL PROBLEMA</div>
+            <div class="section-title" style="font-size:26px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.15;margin-bottom:16px;">Oggi fare giornalismo &egrave; inefficiente.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pad" style="background:${CREAM};padding:0 28px 28px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 8px 12px 0;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:20px;margin-bottom:8px;">&#128176;</div>
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Costi editoriali alti</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};line-height:1.5;">Redazioni costose che comprimono i margini.</div>
+                    </td></tr>
+                  </table>
+                </td>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 0 12px 8px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:20px;margin-bottom:8px;">&#9201;</div>
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Produzione lenta</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};line-height:1.5;">Notizie in ritardo rispetto al mercato.</div>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 8px 0 0;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:20px;margin-bottom:8px;">&#128101;</div>
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Dipendenza da grandi team</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};line-height:1.5;">Difficile scalare senza assumere.</div>
+                    </td></tr>
+                  </table>
+                </td>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 0 0 8px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:20px;margin-bottom:8px;">&#9878;</div>
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Bias e qualit&agrave; incostante</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};line-height:1.5;">Credibilit&agrave; a rischio.</div>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <div style="font-size:14px;color:${SLATE};font-family:${FONT};line-height:1.6;margin-top:16px;text-align:center;font-style:italic;">La maggior parte delle testate non scala. E chi scala, perde qualit&agrave;.</div>
+          </td>
+        </tr>
+
+        <!-- LA SOLUZIONE -->
+        <tr>
+          <td class="pad" style="background:${WHITE};padding:32px 28px;border-top:2px solid ${BLACK};">
+            <div style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};margin-bottom:8px;">LA SOLUZIONE</div>
+            <div class="section-title" style="font-size:26px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.15;margin-bottom:16px;">Ideasmart &egrave; la prima piattaforma di giornalismo agentico.</div>
+            <div style="font-size:14px;color:${SLATE};font-family:${FONT};line-height:1.7;margin-bottom:20px;">Una redazione completa, composta da <strong style="color:${BLACK};">8 agenti AI specializzati</strong>, che lavorano insieme come un vero team editoriale:</div>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td valign="top" style="padding-right:12px;"><span style="font-size:16px;font-weight:900;color:${BLACK};font-family:${FONT};">01</span></td>
+                      <td><span style="font-size:13px;color:${DARK};font-family:${FONT};">Analizzano oltre <strong>4.000 fonti certificate</strong> ogni giorno</span></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td valign="top" style="padding-right:12px;"><span style="font-size:16px;font-weight:900;color:${BLACK};font-family:${FONT};">02</span></td>
+                      <td><span style="font-size:13px;color:${DARK};font-family:${FONT};">Verificano le notizie con tecnologia <strong>Verify</strong></span></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td valign="top" style="padding-right:12px;"><span style="font-size:16px;font-weight:900;color:${BLACK};font-family:${FONT};">03</span></td>
+                      <td><span style="font-size:13px;color:${DARK};font-family:${FONT};">Scrivono e <strong>ottimizzano gli articoli</strong> per tono e stile</span></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td valign="top" style="padding-right:12px;"><span style="font-size:16px;font-weight:900;color:${BLACK};font-family:${FONT};">04</span></td>
+                      <td><span style="font-size:13px;color:${DARK};font-family:${FONT};"><strong>Pubblicano e distribuiscono</strong> i contenuti automaticamente</span></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};border-radius:6px;border:1px solid ${BORDER};">
+              <tr><td style="padding:20px 24px;">
+                <div style="font-size:15px;font-weight:700;color:${BLACK};font-family:${FONT};line-height:1.5;">Tu porti la linea editoriale.<br><span style="color:${SLATE};font-weight:400;">La piattaforma fa il resto.</span></div>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- TECNOLOGIA VERIFY -->
+        <tr>
+          <td class="pad" style="background:${BLACK};padding:32px 28px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td>
+                <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+                  <tr><td style="background:${WHITE};border-radius:3px;padding:4px 12px;">
+                    <span style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.16em;text-transform:uppercase;font-family:${FONT};">POWERED BY VERIFY</span>
+                  </td></tr>
+                </table>
+                <div style="font-size:24px;font-weight:900;color:${WHITE};font-family:${FONT};line-height:1.2;margin-bottom:16px;">Non &egrave; solo AI.<br>È AI + verifica.</div>
+                <div style="font-size:13px;color:${MUTED};font-family:${FONT};line-height:1.7;margin-bottom:20px;">Con Verify, ogni contenuto viene <strong style="color:${WHITE};">validato sulle fonti</strong>, <strong style="color:${WHITE};">bilanciato per oggettivit&agrave;</strong> e <strong style="color:${WHITE};">ottimizzato per tono e stile</strong>.</div>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DARK};border-radius:6px;border:1px solid #374151;">
+                  <tr><td style="padding:18px 22px;">
+                    <div style="font-size:12px;font-weight:700;color:${WHITE};font-family:${FONT};margin-bottom:10px;">Puoi decidere:</div>
+                    <div style="font-size:12px;color:${MUTED};font-family:${FONT};line-height:1.8;">
+                      &bull; Quanto essere neutrale o opinionated<br>
+                      &bull; Il linguaggio editoriale<br>
+                      &bull; Il posizionamento della testata<br>
+                      &bull; Insegnare alla piattaforma a scrivere come te
+                    </div>
+                  </td></tr>
+                </table>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- COSA PUOI FARE -->
+        <tr>
+          <td class="pad" style="background:${WHITE};padding:32px 28px;border-top:2px solid ${BLACK};">
+            <div style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};margin-bottom:8px;">COSA PUOI FARE</div>
+            <div class="section-title" style="font-size:22px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.2;margin-bottom:20px;">Dalla prima testata al media empire.</div>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid ${BORDER};">
+                  <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Lanciare una nuova testata digitale</div>
+                  <div style="font-size:11px;color:${SLATE};font-family:${FONT};">Parti da zero con una redazione AI completa.</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid ${BORDER};">
+                  <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Automatizzare un giornale esistente</div>
+                  <div style="font-size:11px;color:${SLATE};font-family:${FONT};">Riduci i costi e aumenta la produzione.</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid ${BORDER};">
+                  <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Creare vertical media</div>
+                  <div style="font-size:11px;color:${SLATE};font-family:${FONT};">AI, startup, finanza, salute, tech &mdash; qualsiasi verticale.</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;">
+                  <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:4px;">Aprire una rubrica personale scalabile</div>
+                  <div style="font-size:11px;color:${SLATE};font-family:${FONT};">Anche con 1 solo giornalista.</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- PER CHI È -->
+        <tr>
+          <td class="pad" style="background:${CREAM};padding:28px 28px;border-top:1px solid ${BORDER};">
+            <div style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};margin-bottom:8px;">PER CHI &Egrave;</div>
+            <div style="font-size:14px;color:${SLATE};font-family:${FONT};line-height:1.7;margin-bottom:16px;">Chiunque voglia produrre contenuti editoriali in modo scalabile e profittevole.</div>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 8px 12px 0;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};">Editori digitali</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};margin-top:4px;">Scale-up della produzione editoriale</div>
+                    </td></tr>
+                  </table>
+                </td>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 0 12px 8px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};">Giornalisti indipendenti</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};margin-top:4px;">La tua voce, amplificata dall&rsquo;AI</div>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0 8px 0 0;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};">Media company</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};margin-top:4px;">Nuovi verticali a costo marginale zero</div>
+                    </td></tr>
+                  </table>
+                </td>
+                <td class="grid-cell" width="50%" valign="top" style="padding:0;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border:1px solid ${BORDER};border-radius:6px;">
+                    <tr><td style="padding:16px 18px;">
+                      <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${FONT};">Creator e analisti</div>
+                      <div style="font-size:11px;color:${SLATE};font-family:${FONT};margin-top:4px;">Contenuti professionali, ogni giorno</div>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- CTA FINALE -->
+        <tr>
+          <td style="background:${BLACK};padding:36px 28px;border-top:2px solid ${BLACK};">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="text-align:center;">
+                <div style="font-size:22px;font-weight:900;color:${WHITE};font-family:${FONT};line-height:1.2;margin-bottom:12px;">Il giornalismo sta cambiando.<br>Puoi guidarlo o subirlo.</div>
+                <div style="font-size:12px;color:${MUTED};font-family:${FONT};line-height:1.6;margin-bottom:24px;">Prenota una demo e scopri come lanciare la tua testata agentica in pochi giorni.</div>
+                <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom:12px;">
+                  <tr>
+                    <td style="background:${WHITE};border-radius:4px;padding:14px 32px;">
+                      <a href="${baseUrl}/chi-siamo" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};letter-spacing:0.02em;">Scopri di pi&ugrave; &rarr;</a>
+                    </td>
+                  </tr>
+                </table>
+                <div style="margin-top:12px;">
+                  <a href="mailto:ac@foolfarm.com" style="font-size:12px;font-weight:600;color:${MUTED};text-decoration:underline;font-family:${FONT};">Oppure scrivici direttamente</a>
+                </div>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background:${CREAM};padding:24px 28px 28px;border-top:1px solid ${BORDER};">
+            <p style="font-size:12px;color:${BLACK};font-family:${FONT};margin:0 0 8px;text-align:center;font-weight:700;">
+              IDEASMART &mdash; Notizie Quotidiane &bull; &copy; 2026
+            </p>
+            <p style="font-size:10px;color:${MUTED};font-family:${FONT};margin:0 0 16px;text-align:center;line-height:1.7;">
+              Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
+              Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
+            </p>
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 14px;">
+              <tr><td style="border-top:1px solid ${BORDER};font-size:0;line-height:0;">&nbsp;</td></tr>
+            </table>
+            <p style="font-size:11px;color:${MUTED};font-family:${FONT};margin:0;text-align:center;">
+              <a href="${baseUrl}/ai" style="color:${BLACK};text-decoration:none;font-weight:600;">AI News</a>
+              &nbsp;&middot;&nbsp;
+              <a href="${baseUrl}/startup" style="color:${BLACK};text-decoration:none;font-weight:600;">Startup News</a>
+              &nbsp;&middot;&nbsp;
+              <a href="${baseUrl}/dealroom" style="color:${BLACK};text-decoration:none;font-weight:600;">DEALROOM</a>
+              &nbsp;&middot;&nbsp;
+              <a href="${baseUrl}/research" style="color:${BLACK};text-decoration:none;font-weight:600;">Ricerche</a>
+              &nbsp;&middot;&nbsp;
+              <a href="${baseUrl}/chi-siamo" style="color:${BLACK};text-decoration:none;font-weight:600;">Chi Siamo</a>
+            </p>
+            <p style="font-size:11px;color:${MUTED};font-family:${FONT};margin:12px 0 0;text-align:center;">
+              <a href="${unsubLink}" style="color:${RED};text-decoration:underline;font-weight:700;">Annulla iscrizione</a>
+              &nbsp;&middot;&nbsp;
+              <a href="${baseUrl}/privacy" style="color:${MUTED};text-decoration:underline;">Privacy Policy</a>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Bottom bar nero -->
+        <tr><td style="background:${BLACK};padding:0;height:3px;"></td></tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+${trackingPixelUrl ? `<img src="${trackingPixelUrl}" width="1" height="1" border="0" style="display:block;width:1px;height:1px;" alt="" />` : ''}
 
 </body>
 </html>`;

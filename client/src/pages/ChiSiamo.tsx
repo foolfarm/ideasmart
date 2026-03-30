@@ -321,38 +321,130 @@ export default function ChiSiamo() {
         <Divider />
 
         {/* ═══════════════════════════════════════════════════════════════════
-            MODELLO
+            MODELLO — 3 PIANI + CUSTOM
         ═══════════════════════════════════════════════════════════════════ */}
         <Section id="pricing">
           <Label>Modello</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Setup semplice.<br />
-            <span className="text-[#0a0a0a]/25">Crescita condivisa.</span>
+            Scegli la tua redazione.<br />
+            <span className="text-[#0a0a0a]/25">Scala quando vuoi.</span>
           </h2>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-0 border border-[#0a0a0a]">
-            <div className="p-10 border-b md:border-b-0 md:border-r border-[#0a0a0a]">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Setup iniziale</span>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-5xl md:text-6xl font-black text-[#0a0a0a]">€5.000</span>
-                <span className="text-base text-[#0a0a0a]/40">una tantum</span>
+          <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
+            Tre configurazioni pronte, più un piano su misura per esigenze specifiche. Tutte includono setup, training AI e personalizzazione editoriale.
+          </p>
+
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-[#0a0a0a]">
+            {/* MINI */}
+            <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Mini</span>
+              <div className="mt-4">
+                <span className="text-4xl md:text-5xl font-black text-[#0a0a0a]">€2.500</span>
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-[#0a0a0a]/50">
-                Configurazione della piattaforma, personalizzazione editoriale, setup fonti e training degli agenti AI sulla tua linea editoriale.
-              </p>
+              <div className="mt-6 space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">4 agenti AI</strong></span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">1 canale</strong> tematico</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
+                </div>
+              </div>
+              <p className="mt-6 text-xs text-[#0a0a0a]/35">Ideale per lanciare un vertical media o una rubrica personale.</p>
             </div>
-            <div className="p-10">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Revenue share</span>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-5xl md:text-6xl font-black text-[#0a0a0a]">30%</span>
-                <span className="text-base text-[#0a0a0a]/40">sui ricavi generati</span>
+
+            {/* MEDIUM — evidenziato */}
+            <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a] relative" style={{ background: '#f5f0e8' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: '#dc2626' }} />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Medium</span>
+              <span className="ml-3 text-[9px] font-black uppercase tracking-[0.15em] text-white px-2 py-0.5" style={{ background: '#dc2626' }}>Più scelto</span>
+              <div className="mt-4">
+                <span className="text-4xl md:text-5xl font-black text-[#0a0a0a]">€5.000</span>
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-[#0a0a0a]/50">
-                Nessun costo nascosto. Nessun canone mensile. Guadagniamo quando cresci. Il nostro successo dipende dal tuo.
-              </p>
+              <div className="mt-6 space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">8 agenti AI</strong></span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">3 canali</strong> tematici</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Gestione newsletter</strong> automatica</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
+                </div>
+              </div>
+              <p className="mt-6 text-xs text-[#0a0a0a]/35">La configurazione completa per una testata multi-canale con distribuzione automatica.</p>
+            </div>
+
+            {/* MAXI */}
+            <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Maxi</span>
+              <div className="mt-4">
+                <span className="text-4xl md:text-5xl font-black text-[#0a0a0a]">€7.500</span>
+              </div>
+              <div className="mt-6 space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">12 agenti AI</strong></span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">6 canali</strong> tematici</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Newsletter</strong> automatica</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
+                </div>
+              </div>
+              <p className="mt-6 text-xs text-[#0a0a0a]/35">Per media company e redazioni che vogliono massima copertura e automazione.</p>
+            </div>
+
+            {/* CUSTOM */}
+            <div className="p-8" style={{ background: '#0a0a0a' }}>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Custom</span>
+              <div className="mt-4">
+                <span className="text-3xl md:text-4xl font-black text-white">Parliamone</span>
+              </div>
+              <div className="mt-6 space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-white font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-white/60">Agenti e canali <strong className="text-white">su misura</strong></span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-white font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-white/60">Integrazioni <strong className="text-white">personalizzate</strong></span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-white font-bold text-sm mt-0.5">→</span>
+                  <span className="text-sm text-white/60">SLA e supporto <strong className="text-white">dedicato</strong></span>
+                </div>
+              </div>
+              <a
+                href="mailto:info@ideasmart.ai?subject=Piano Custom Piattaforma Ideasmart"
+                className="mt-6 inline-block px-6 py-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
+                style={{ background: '#ffffff' }}
+              >
+                Contattaci →
+              </a>
             </div>
           </div>
-          <p className="mt-6 text-center text-sm font-bold text-[#0a0a0a]/40">
-            Nessun costo nascosto. Guadagniamo quando cresci.
+
+          <p className="mt-8 text-center text-sm text-[#0a0a0a]/40">
+            Tutti i piani includono: configurazione piattaforma, personalizzazione editoriale, setup fonti e training AI.
           </p>
         </Section>
 

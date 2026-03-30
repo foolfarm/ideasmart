@@ -50,8 +50,6 @@ function SectionNav() {
     { key: "research", label: "RICERCHE",      path: "/research", accent: "#1a1a1a" },
     { key: "dealroom",  label: "DEALROOM",     path: "/dealroom",  accent: "#1a4a2e" },
     { key: "chi-siamo",label: "Chi Siamo",    path: "/chi-siamo",accent: "#1a1a1a" },
-    // Intelligence nascosta temporaneamente
-    // { key: "intelligence", label: "▶ Intelligence" /* NASCOSTA */, path: "/intelligence", accent: "#1a1a1a" }
   ];
 
   return (
@@ -180,7 +178,7 @@ export default function SharedPageHeader() {
           </h1>
         </Link>
         <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50">
-          Intelligence quotidiana su AI, Startup e Venture Capital
+          Notizie quotidiane su AI, Startup e Venture Capital
         </p>
         <p
           className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"

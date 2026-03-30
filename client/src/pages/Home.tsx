@@ -269,7 +269,7 @@ function SectionNav() {
           Chi Siamo
         </span>
       </Link>
-      {/* ▶ Intelligence — nascosta temporaneamente */}
+
     </nav>
   );
 }
@@ -401,7 +401,7 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="IdeaSmart — Intelligence su AI, Startup e Venture Capital"
+        title="IdeaSmart — AI, Startup e Venture Capital"
         description="Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee."
         canonical="https://ideasmart.ai"
         ogSiteName="IdeaSmart"
@@ -448,7 +448,7 @@ export default function Home() {
               </Link>
               <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Intelligence quotidiana su AI, Startup e Venture Capital
+                Notizie quotidiane su AI, Startup e Venture Capital
               </p>
               <p className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
@@ -934,27 +934,7 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ── Intelligence promo compatta — sidebar bassa ── */}
-                  <div className="mt-6 p-4 border border-[#1a1a1a]/15">
-                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-2"
-                      style={{ color: "rgba(26,26,26,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                      ▶ Intelligence
-                    </p>
-                    <p className="text-[13px] font-bold leading-snug mb-2"
-                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                      Non leggere le notizie. Usale per decidere.
-                    </p>
-                    <p className="text-[11px] mb-3"
-                      style={{ color: "rgba(26,26,26,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                      Briefing settimanale · 450+ fonti · 8 agenti AI
-                    </p>
-                    <Link href="/intelligence">
-                      <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 border border-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
-                        style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        Scopri i piani →
-                      </span>
-                    </Link>
-                  </div>
+
 
                 </div>
               </div>
@@ -1059,19 +1039,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* ── STRIP PRE-FOOTER INTELLIGENCE ── */}
-          <div className="mt-10 py-5 px-6 flex flex-col sm:flex-row items-center justify-between gap-3"
-            style={{ background: "#0f0f0f", borderTop: "1px solid rgba(255,255,255,0.1)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-            <p className="text-[13px] text-center sm:text-left" style={{ color: "rgba(255,255,255,0.75)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              CEO, founder, investitori: il tuo briefing settimanale personalizzato è a un click.
-            </p>
-            <Link href="/intelligence">
-              <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90 border"
-                style={{ borderColor: "rgba(255,255,255,0.4)", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", whiteSpace: "nowrap" }}>
-                Attiva Intelligence →
-              </span>
-            </Link>
-          </div>
 
           {/* ── FOOTER ── */}
           <div className="mt-12">
@@ -1093,7 +1060,6 @@ export default function Home() {
                 {[
                   { href: "/dealroom", label: "DEALROOM", color: "#1a1a1a" },
                   { href: "/chi-siamo", label: "Chi Siamo", color: "#1a1a1a" },
-                  { href: "/intelligence", label: "Intelligence", color: "#1a1a1a" },
                   { href: "/research", label: "RICERCHE", color: "#1a1a1a" },
                   { href: "/privacy", label: "Privacy Policy", color: "#1a1a1a" }
                 ].map(item => (
