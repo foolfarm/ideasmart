@@ -4,7 +4,7 @@
  * Stile: Stripe / Notion — pulito, diretto, moderno.
  * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f0e8), accento rosso (#dc2626).
  */
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
@@ -48,6 +48,95 @@ const AGENTS = [
   { name: "Social Editor", desc: "Sintetizza i key insight per i social media", num: "07" },
   { name: "Newsletter Curator", desc: "Seleziona e invia le newsletter ai lettori", num: "08" },
 ];
+
+/* ── FAQ Data ── */
+const FAQ_ITEMS = [
+  {
+    q: "Come funziona la piattaforma Ideasmart?",
+    a: "Ideasmart è una redazione digitale composta da agenti AI specializzati che lavorano come un team editoriale. Analizzano oltre 4.000 fonti certificate ogni giorno, verificano le notizie con la tecnologia proprietaria Verify, scrivono articoli editoriali e li distribuiscono automaticamente sui canali tematici configurati."
+  },
+  {
+    q: "Cos'è la tecnologia Verify?",
+    a: "Verify è il nostro sistema proprietario di validazione dei contenuti. Ogni articolo viene verificato sulle fonti originali, bilanciato per oggettività e ottimizzato per tono e stile. Puoi personalizzare il livello di neutralità, il linguaggio editoriale e il posizionamento della testata. La piattaforma impara a scrivere con il tuo stile."
+  },
+  {
+    q: "Quali sono i modelli di redazione disponibili?",
+    a: "Offriamo 4 piani: Mini (4 agenti, 1 canale, €2.500), Medium (8 agenti, 3 canali + newsletter, €5.000), Maxi (12 agenti, 6 canali + newsletter + distribuzione avanzata, €7.500) e Custom (su misura). Tutti i piani prevedono un revenue share del 30% sui ricavi generati. Nessun costo nascosto."
+  },
+  {
+    q: "Quanto tempo serve per lanciare una testata?",
+    a: "Il setup completo richiede pochi giorni. Include la configurazione della piattaforma, la personalizzazione editoriale, il setup delle fonti e il training degli agenti AI sulla tua linea editoriale. Dopo il lancio, la redazione è operativa 24/7."
+  },
+  {
+    q: "Posso personalizzare lo stile editoriale?",
+    a: "Assolutamente. Puoi definire il tono (neutrale, opinionated, tecnico, divulgativo), il linguaggio, il posizionamento della testata e persino insegnare alla piattaforma a scrivere come te. Gli agenti AI si adattano alla tua linea editoriale."
+  },
+  {
+    q: "Quante fonti vengono monitorate?",
+    a: "Oltre 4.000 fonti certificate a livello globale, monitorate continuamente. Le fonti vengono selezionate e validate dal nostro team, e puoi aggiungere fonti specifiche per il tuo settore."
+  },
+  {
+    q: "Serve un team editoriale per gestire la piattaforma?",
+    a: "No. Il modello Mini funziona anche con una sola persona. La piattaforma gestisce autonomamente l'intero flusso editoriale: raccolta notizie, verifica, scrittura, pubblicazione e distribuzione. Tu mantieni il controllo sulla linea editoriale e sulla strategia."
+  },
+  {
+    q: "Per chi è pensata la piattaforma?",
+    a: "Per editori digitali, giornalisti indipendenti, media company e creator che vogliono lanciare una nuova testata o automatizzare una esistente. Ideale per chi vuole produrre contenuti editoriali in modo scalabile e profittevole, anche su verticali specifici (AI, startup, finanza, sport, ecc.)."
+  },
+  {
+    q: "Come funziona il revenue share?",
+    a: "Guadagniamo solo quando cresci. Il 30% viene calcolato sui ricavi effettivamente generati dalla testata (abbonamenti, pubblicità, sponsorizzazioni). Nessun costo fisso mensile oltre al setup iniziale."
+  },
+  {
+    q: "Come posso iniziare?",
+    a: "Prenota una demo per vedere la piattaforma in azione e discutere il modello più adatto alle tue esigenze. Puoi scriverci a info@ideasmart.ai o prenotare direttamente dal sito."
+  },
+];
+
+/* ── FAQ Accordion Item ── */
+function FaqItem({ question, answer, isOpen, onClick }: { question: string; answer: string; isOpen: boolean; onClick: () => void }) {
+  return (
+    <div className="border-b border-[#0a0a0a]/8">
+      <button
+        onClick={onClick}
+        className="w-full flex items-center justify-between py-6 text-left transition-colors hover:opacity-70"
+        style={{ fontFamily: FONT }}
+      >
+        <span className="text-base md:text-lg font-bold text-[#0a0a0a] pr-8">{question}</span>
+        <span
+          className="flex-shrink-0 w-8 h-8 flex items-center justify-center text-xl font-light text-[#0a0a0a]/40 transition-transform duration-300"
+          style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
+        >
+          +
+        </span>
+      </button>
+      <div
+        className="overflow-hidden transition-all duration-300"
+        style={{ maxHeight: isOpen ? '300px' : '0', opacity: isOpen ? 1 : 0 }}
+      >
+        <p className="pb-6 text-sm md:text-base leading-relaxed text-[#0a0a0a]/55 max-w-3xl">{answer}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ── FAQ Accordion wrapper ── */
+function FaqAccordion() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  return (
+    <div className="border-t border-[#0a0a0a]/8">
+      {FAQ_ITEMS.map((item, i) => (
+        <FaqItem
+          key={i}
+          question={item.q}
+          answer={item.a}
+          isOpen={openIndex === i}
+          onClick={() => setOpenIndex(openIndex === i ? null : i)}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function ChiSiamo() {
   const demoRef = useRef<HTMLDivElement>(null);
@@ -476,6 +565,22 @@ export default function ChiSiamo() {
               ))}
             </div>
           </div>
+        </Section>
+
+        <Divider />
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            FAQ
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section id="faq">
+          <Label>Domande frequenti</Label>
+          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a] mb-4">
+            Tutto quello che devi sapere.
+          </h2>
+          <p className="text-base text-[#0a0a0a]/45 max-w-2xl mb-10">
+            Le risposte alle domande più comuni sulla piattaforma, i modelli di redazione e la tecnologia Verify.
+          </p>
+          <FaqAccordion />
         </Section>
 
         <Divider />

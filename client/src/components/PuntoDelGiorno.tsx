@@ -171,7 +171,7 @@ export default function PuntoDelGiorno() {
           <div className="p-6 md:p-8 border-l" style={{ borderColor: INK + "10" }}>
             {/* Titolo */}
             {post.title && (
-              <h2
+              <h3
                 className="font-bold leading-tight mb-5"
                 style={{
                   color: INK,
@@ -181,7 +181,7 @@ export default function PuntoDelGiorno() {
                 }}
               >
                 {post.title}
-              </h2>
+              </h3>
             )}
 
             {/* Corpo — tutti i paragrafi */}

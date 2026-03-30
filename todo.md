@@ -1982,3 +1982,20 @@
 - [x] Importare soci FoolFarm dal CSV come iscritti newsletter — 19 nuovi importati, 38 già iscritti, 0 errori
 - [x] Cambiare firma LinkedIn da "Opinion Leader & Editorialista IdeaSmart Research" a "Tech Expert" — aggiornato in linkedinPublisher.ts, PuntoDelGiorno.tsx, AndreaCinelli.tsx
 - [x] Programmare invio newsletter promo per 31 marzo ore 10:30 CET — task schedulato
+
+## Sezione FAQ pagina /chi-siamo (30 Mar 2026)
+- [ ] Creare bozza FAQ con domande sui modelli di redazione, tecnologia Verify, setup e target
+- [ ] Implementare sezione FAQ in ChiSiamo.tsx con design coerente
+
+## Fix SEO H2 Homepage (30 Mar 2026)
+
+- [x] Fix: SectionLabel cambiato da H2 (10px) a span — anti-pattern SEO (heading nascosti)
+- [x] Fix: HeroArticle titolo cambiato da H2 a H3 (è titolo articolo, non sezione)
+- [x] Fix: Ricerca del Giorno card titolo cambiato da H2 a H3 (è titolo articolo, non sezione)
+- [x] Fix: PuntoDelGiorno titolo post cambiato da H2 a H3 (è titolo articolo, non sezione)
+- [x] Aggiunto H2 semantico "Ricerca del Giorno" alla sezione ricerca in evidenza
+- [x] Aggiunto H2 semantico "Prima Pagina" alla sezione principale notizie
+- [x] Aggiunto H2 semantico "IdeaSmart — 20 ricerche al giorno" alla sezione ricerche
+- [x] Aggiunto H2 semantico "DEALROOM — Round, Funding & M&A" alla sezione dealroom
+- [x] Mantenuto H2 "Prossimi Eventi" già esistente e corretto
+- [x] Gerarchia heading corretta: H1 (IDEASMART) → H2 (sezioni) → H3 (titoli articoli)

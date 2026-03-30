@@ -91,12 +91,12 @@ function HeroArticle({ item, section, editorial }: {
   const img = item.imageUrl;
 
   const TitleEl = (
-    <h2
+    <h3
       className="mt-2 leading-tight text-[#1a1a1a] hover:underline"
       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(30px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
     >
       {title}
-    </h2>
+    </h3>
   );
 
   return (
@@ -345,10 +345,10 @@ function SectionLabel({ label, accent }: { label: string; accent: string }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <div className="h-[3px] w-6" style={{ background: accent }} />
-      <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0 p-0"
+      <span className="text-[10px] font-bold uppercase tracking-[0.2em] m-0 p-0"
         style={{ color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>
         {label}
-      </h2>
+      </span>
     </div>
   );
 }
@@ -495,7 +495,7 @@ export default function Home() {
                 <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#1a1a1a" }}>
                   <div className="flex items-center gap-2">
                     <div className="h-[3px] w-6" style={{ background: "#1a1a1a" }} />
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Ricerca del Giorno</span>
+                    <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>Ricerca del Giorno</h2>
                   </div>
                   <Link href="/research">
                     <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Vedi tutte le ricerche →</span>
@@ -508,9 +508,9 @@ export default function Home() {
                         <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                           {r.category.replace("_", " ")}
                         </span>
-                        <h2 className="text-[22px] sm:text-[26px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                        <h3 className="text-[22px] sm:text-[26px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
                           {r.title}
-                        </h2>
+                        </h3>
                         <p className="mt-2 text-[14px] leading-relaxed" style={{ color: "rgba(26,26,46,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                           {r.summary}
                         </p>
@@ -539,10 +539,10 @@ export default function Home() {
             <section className="mt-4">
               <Divider thick />
               <div className="py-2 flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/50"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/50 m-0"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", lineHeight: 1 }}>
                   Prima Pagina — {formatDateIT(today)}
-                </span>
+                </h2>
                 <span className="text-[10px] text-[#1a1a1a] font-bold uppercase tracking-widest"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   AI · Startup · Venture Capital
@@ -626,10 +626,10 @@ export default function Home() {
                       <div className="py-2 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="h-[3px] w-8" style={{ background: "#1a1a1a" }} />
-                          <span className="text-[11px] font-bold uppercase tracking-[0.2em]"
-                            style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] m-0"
+                            style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", lineHeight: 1 }}>
                             IdeaSmart — 20 ricerche al giorno
-                          </span>
+                          </h2>
                         </div>
                         <Link href="/research">
                           <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
@@ -688,10 +688,10 @@ export default function Home() {
                       <div className="py-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="h-[3px] w-6" style={{ background: "#0f0f0f" }} />
-                          <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
-                            style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0"
+                            style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>
                             DEALROOM — Round, Funding &amp; M&amp;A
-                          </span>
+                          </h2>
                         </div>
                         <Link href="/dealroom">
                           <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
