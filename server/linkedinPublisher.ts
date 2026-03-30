@@ -716,8 +716,13 @@ export async function publishLinkedInPost(
         // Costruisci URL LinkedIn dal postId
         let linkedinUrl: string | undefined;
         if (result.postId && result.postId !== 'unknown') {
-          const numericId = result.postId.replace(/^urn:li:ugcPost:/, '').replace(/^urn:li:share:/, '');
-          linkedinUrl = `https://www.linkedin.com/posts/andreacinelli_${numericId}`;
+          // Il formato corretto per i link LinkedIn è /feed/update/ con l'URN completo
+          if (result.postId.startsWith('urn:li:')) {
+            linkedinUrl = `https://www.linkedin.com/feed/update/${result.postId}/`;
+          } else {
+            // Se è solo un ID numerico, usa il formato ugcPost
+            linkedinUrl = `https://www.linkedin.com/feed/update/urn:li:ugcPost:${result.postId}/`;
+          }
         }
 
         // Estrai hashtags dal testo del post

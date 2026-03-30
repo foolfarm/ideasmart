@@ -14,26 +14,50 @@ function hashPassword(plain: string): string {
   return createHash("sha256").update(plain + (process.env.JWT_SECRET || "ideasmart_secret")).digest("hex");
 }
 
-/** Helper: legge l'utente dalla sessione cookie, lancia UNAUTHORIZED se non loggato */
+/** Helper: legge l'utente dalla sessione cookie, lancia UNAUTHORIZED se non loggato.
+ *  Accetta ENTRAMBI i sistemi:
+ *  1. Cookie ideasmart_session (registrazione nativa)
+ *  2. ctx.user (OAuth Manus) — crea un utente virtuale per compatibilità
+ */
 async function requireSiteUser(ctx: any) {
-  const req = ctx.req;
-  const sessionToken = req?.cookies?.ideasmart_session;
-  if (!sessionToken) throw new TRPCError({ code: "UNAUTHORIZED", message: "Devi essere loggato." });
-
   const db = await getDb();
   if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database non disponibile" });
 
-  const now = new Date();
-  const rows = await db.select()
-    .from(siteUsers)
-    .where(and(
-      eq(siteUsers.sessionToken, sessionToken),
-      gt(siteUsers.sessionExpiresAt, now)
-    ))
-    .limit(1);
+  // 1) Prova sessione nativa IdeaSmart
+  const req = ctx.req;
+  const sessionToken = req?.cookies?.ideasmart_session;
+  if (sessionToken) {
+    const now = new Date();
+    const rows = await db.select()
+      .from(siteUsers)
+      .where(and(
+        eq(siteUsers.sessionToken, sessionToken),
+        gt(siteUsers.sessionExpiresAt, now)
+      ))
+      .limit(1);
 
-  if (rows.length === 0) throw new TRPCError({ code: "UNAUTHORIZED", message: "Sessione scaduta. Accedi di nuovo." });
-  return { user: rows[0], db };
+    if (rows.length > 0) return { user: rows[0], db };
+  }
+
+  // 2) Fallback: utente OAuth Manus (admin/owner)
+  if (ctx.user) {
+    // Restituisce un utente virtuale compatibile con la struttura siteUser
+    const virtualUser = {
+      id: -1, // ID virtuale per utenti OAuth
+      username: ctx.user.name || ctx.user.email || "Admin",
+      email: ctx.user.email || "",
+      passwordHash: "",
+      emailVerified: true,
+      verificationToken: null,
+      sessionToken: null,
+      sessionExpiresAt: null,
+      createdAt: new Date(),
+      topicPreferences: null,
+    };
+    return { user: virtualUser, db };
+  }
+
+  throw new TRPCError({ code: "UNAUTHORIZED", message: "Devi essere loggato." });
 }
 
 export const accountRouter = router({

@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, section, linkedinUrl FROM linkedin_posts ORDER BY id DESC LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, section, linkedinUrl FROM linkedin_posts ORDER BY id DESC LIMIT 5",
+  "rows": [
+    {
+      "id": "720001",
+      "section": "ai",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7444292546383683584"
+    },
+    {
+      "id": "690001",
+      "section": "finance",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7444043262048284672"
+    },
+    {
+      "id": "660001",
+      "section": "startup",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443975460704657408"
+    },
+    {
+      "id": "630001",
+      "section": "ai",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443930185902489600"
+    },
+    {
+      "id": "600001",
+      "section": "ai",
+      "linkedinUrl": "https://www.linkedin.com/posts/andreacinelli_7443696005910515712"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsection\tlinkedinUrl\n720001\tai\thttps://www.linkedin.com/posts/andreacinelli_7444292546383683584\n690001\tfinance\thttps://www.linkedin.com/posts/andreacinelli_7444043262048284672\n660001\tstartup\thttps://www.linkedin.com/posts/andreacinelli_7443975460704657408\n630001\tai\thttps://www.linkedin.com/posts/andreacinelli_7443930185902489600\n600001\tai\thttps://www.linkedin.com/posts/andreacinelli_7443696005910515712\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

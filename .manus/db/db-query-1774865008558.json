@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, source, source_url, LENGTH(source_url) as url_len FROM research_reports WHERE date_label = '2026-03-30' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, source, source_url, LENGTH(source_url) as url_len FROM research_reports WHERE date_label = '2026-03-30' LIMIT 5;",
+  "rows": [
+    {
+      "id": "120001",
+      "source": "McKinsey Global Institute",
+      "source_url": "https://www.mckinsey.com/mgi/overview",
+      "url_len": "37"
+    },
+    {
+      "id": "120002",
+      "source": "Dealroom",
+      "source_url": "https://dealroom.co/blog",
+      "url_len": "24"
+    },
+    {
+      "id": "120003",
+      "source": "Gartner",
+      "source_url": "https://www.gartner.com/en/newsroom",
+      "url_len": "35"
+    },
+    {
+      "id": "120004",
+      "source": "KPMG Venture Pulse",
+      "source_url": "https://kpmg.com/xx/en/home/campaigns/venture-pulse.html",
+      "url_len": "56"
+    },
+    {
+      "id": "120005",
+      "source": "IDC",
+      "source_url": "https://www.idc.com/research",
+      "url_len": "28"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsource\tsource_url\turl_len\n120001\tMcKinsey Global Institute\thttps://www.mckinsey.com/mgi/overview\t37\n120002\tDealroom\thttps://dealroom.co/blog\t24\n120003\tGartner\thttps://www.gartner.com/en/newsroom\t35\n120004\tKPMG Venture Pulse\thttps://kpmg.com/xx/en/home/campaigns/venture-pulse.html\t56\n120005\tIDC\thttps://www.idc.com/research\t28\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

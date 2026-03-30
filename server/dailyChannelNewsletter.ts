@@ -495,3 +495,42 @@ export async function sendChannelNewsletterManual(
     error: sendError,
   };
 }
+
+/**
+ * Invia una newsletter di test per un canale specifico a un indirizzo email personalizzato.
+ * Usato per preview e test dei template brandizzati.
+ */
+export async function sendChannelTestToEmail(
+  channelKey: ChannelKey,
+  toEmail: string
+): Promise<{
+  success: boolean;
+  channel: string;
+  subject: string;
+  newsCount: number;
+  error?: string;
+}> {
+  const channel = CHANNEL_SCHEDULE.find((c) => c.key === channelKey);
+  if (!channel) {
+    return { success: false, channel: channelKey, subject: "", newsCount: 0, error: "Canale non trovato" };
+  }
+
+  console.log(`[DailyNewsletter] 📧 Test ${channel.name} → ${toEmail}`);
+
+  try {
+    const { html, subject, newsCount } = await buildChannelNewsletter(channel, true);
+    const result = await sendEmail({ to: toEmail, subject, html });
+
+    if (result.success) {
+      console.log(`[DailyNewsletter] ✅ Test ${channel.name} inviato a ${toEmail}`);
+      return { success: true, channel: channel.name, subject, newsCount };
+    } else {
+      console.error(`[DailyNewsletter] ❌ Errore test ${channel.name}: ${result.error}`);
+      return { success: false, channel: channel.name, subject, newsCount, error: result.error };
+    }
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[DailyNewsletter] ❌ Errore critico test ${channel.name}:`, msg);
+    return { success: false, channel: channel.name, subject: "", newsCount: 0, error: msg };
+  }
+}

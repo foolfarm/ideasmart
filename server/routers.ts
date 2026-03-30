@@ -1422,6 +1422,18 @@ Rispondi con questo JSON:
         };
       }),
 
+    // ── Newsletter Test a Email Specifico ───────────────────────────────────────────
+    sendChannelTestToEmail: adminProcedure
+      .input(z.object({
+        channelKey: z.enum(["ai", "startup", "dealroom"]),
+        toEmail: z.string().email(),
+      }))
+      .mutation(async ({ input }) => {
+        const { sendChannelTestToEmail } = await import("./dailyChannelNewsletter");
+        const result = await sendChannelTestToEmail(input.channelKey, input.toEmail);
+        return result;
+      }),
+
     // ── Approva e Invia Newsletter del Giorno (invio massivo manuale) ────────────────
     approveAndSendNewsletter: adminProcedure.mutation(async () => {
       const { sendDailyChannelNewsletter } = await import("./dailyChannelNewsletter");

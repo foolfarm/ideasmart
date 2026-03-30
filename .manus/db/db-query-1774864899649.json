@@ -1,0 +1,14 @@
+{
+  "query": "SELECT COUNT(*) as total, SUM(CASE WHEN source_url IS NULL OR source_url = '' THEN 1 ELSE 0 END) as missing_url FROM research_reports;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as total, SUM(CASE WHEN source_url IS NULL OR source_url = '' THEN 1 ELSE 0 END) as missing_url FROM research_reports;",
+  "rows": [
+    {
+      "total": "110",
+      "missing_url": "84"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\tmissing_url\n110\t84\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

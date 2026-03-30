@@ -1916,3 +1916,19 @@
 - [x] C) Verifica tutte le pagine: AI News, Startup, DEALROOM, Research, dettaglio articoli
 - [x] D) Documentare scheduling aggiornamento giornaliero canali (report completo)
 - [x] E) Documentare scheduling post LinkedIn settimanale (report completo)
+
+## Fix e template newsletter (30 Mar 2026)
+
+- [ ] Fix logout: pulsante "ESCI" non funziona per utenti OAuth Manus
+- [ ] Fix errore /account: "Devi essere loggato" per utenti OAuth
+- [x] Pulizia DB: eliminare notizie canali obsoleti (Music, Finance, Sport, ecc.) — eliminati da breaking_news, market_analysis, weekly_reportage, startup_of_day, content_audit
+- [x] Creare nuovo template newsletter AI NEWS coerente con grafica sito — header brandizzato teal/navy
+- [x] Creare nuovo template newsletter STARTUP NEWS coerente con grafica sito — header brandizzato arancio
+- [x] Creare nuovo template newsletter DEALROOM coerente con grafica sito — header brandizzato nero/gold
+- [x] Inviare email esempio template ad Andrea per approvazione — 3 email inviate a ac@foolfarm.com
+- [x] Aggiungere link alla ricerca originale in fondo alla pagina ResearchDetail — fix source_url con fallback homepage fonte
+- [x] Fix link "LEGGI SU LINKEDIN" — URL LinkedIn nel DB verificati, formato corretto (urn:li:ugcPost)
+- [x] Endpoint tRPC admin.sendChannelTestToEmail per inviare newsletter test a qualsiasi email
+- [x] Funzione buildSourceUrl nel researchGenerator: fallback automatico a homepage fonte quando LLM non fornisce URL
+- [x] Aggiornate 84 ricerche nel DB con source_url mancante (ora tutte le 110 ricerche hanno URL)
+- [x] Template newsletter personalizzato per canale: AI News (teal), Startup News (arancio), DEALROOM (gold)

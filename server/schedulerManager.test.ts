@@ -129,13 +129,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 46 cron job quando avviato", async () => {
+  it("dovrebbe registrare 25 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 46 scheduler: 39 originali + 2 per invalidazione cache + 1 snapshot barometro + 1 audit link newsletter + 1 LinkedIn pomeriggio (15:00) + 1 LinkedIn sera (17:30) + 1 Morning Health Report (08:00)
-    //   (05:30 CET invalidazione globale, 10:05 CET invalidazione Punto del Giorno, 05:45 snapshot barometro, 06:45 audit link)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(46);
+    // 25 scheduler attivi dopo pulizia canali obsoleti (AI, Startup, DEALROOM, Research + infra)
+    // La newsletter massiva (07:30) è disabilitata (richiede approvazione manuale da Admin)
+    expect(cron.default.schedule).toHaveBeenCalledTimes(25);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -167,13 +167,14 @@ describe("schedulerManager", () => {
     expect(linkedInMorningCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn POMERIGGIO alle 15:00 ogni giorno", async () => {
+  it("LinkedIn POMERIGGIO alle 15:00 dovrebbe essere DISABILITATO", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    // Il cron "0 15 * * *" è commentato/disabilitato
     const linkedInAfternoonCall = calls.find(c => c[0] === "0 15 * * *");
-    expect(linkedInAfternoonCall).toBeDefined();
+    expect(linkedInAfternoonCall).toBeUndefined();
   });
 
   it("dovrebbe programmare LinkedIn SERA alle 17:30 ogni giorno (Vibe Coding / AI / Mercato)", async () => {
@@ -194,14 +195,14 @@ describe("schedulerManager", () => {
     expect(morningReportCall).toBeDefined();
   });
 
-  it("dovrebbe programmare la newsletter massiva alle 07:30 ogni giorno", async () => {
+  it("la newsletter massiva alle 07:30 dovrebbe essere DISABILITATA (approvazione manuale)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // La newsletter massiva per canale è programmata ogni giorno alle 07:30 CET
+    // La newsletter massiva (07:30) è commentata/disabilitata — richiede approvazione manuale
     const massiveCall = calls.find(c => c[0] === "30 7 * * *");
-    expect(massiveCall).toBeDefined();
+    expect(massiveCall).toBeUndefined();
   });
 
   it("dovrebbe programmare l'audit notturno alle 02:00 ogni giorno", async () => {

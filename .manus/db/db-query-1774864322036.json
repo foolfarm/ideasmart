@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, title, source, source_url FROM research_reports ORDER BY id DESC LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, source, source_url FROM research_reports ORDER BY id DESC LIMIT 5",
+  "rows": [
+    {
+      "id": "120020",
+      "title": "AI e Sviluppo di Software: L'Avvento della Programmazione Assistita e Generativa",
+      "source": "Gartner",
+      "source_url": "NULL"
+    },
+    {
+      "id": "120019",
+      "title": "Il Mercato Globale dell'HealthTech: Digitalizzazione e AI per una Sanità più Efficiente",
+      "source": "Grand View Research",
+      "source_url": "NULL"
+    },
+    {
+      "id": "120018",
+      "title": "La Crescita delle Startup Femminili in Europa: Superare il Gender Gap nel Funding",
+      "source": "Atomico State of European Tech",
+      "source_url": "NULL"
+    },
+    {
+      "id": "120017",
+      "title": "Il Mercato degli NFT e del Web3: Oltre la Speculazione, Verso l'Utilità e l'Integrazione Aziendale",
+      "source": "Statista",
+      "source_url": "NULL"
+    },
+    {
+      "id": "120016",
+      "title": "AI e Personalizzazione del Customer Journey: Nuove Frontiere per il Marketing e le Vendite",
+      "source": "Gartner",
+      "source_url": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsource\tsource_url\n120020\tAI e Sviluppo di Software: L'Avvento della Programmazione Assistita e Generativa\tGartner\tNULL\n120019\tIl Mercato Globale dell'HealthTech: Digitalizzazione e AI per una Sanità più Efficiente\tGrand View Research\tNULL\n120018\tLa Crescita delle Startup Femminili in Europa: Superare il Gender Gap nel Funding\tAtomico State of European Tech\tNULL\n120017\tIl Mercato degli NFT e del Web3: Oltre la Speculazione, Verso l'Utilità e l'Integrazione Aziendale\tStatista\tNULL\n120016\tAI e Personalizzazione del Customer Journey: Nuove Frontiere per il Marketing e le Vendite\tGartner\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

@@ -1,0 +1,13 @@
+{
+  "query": "SELECT COUNT(*) as still_null FROM research_reports WHERE source_url IS NULL OR source_url = '';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT COUNT(*) as still_null FROM research_reports WHERE source_url IS NULL OR source_url = '';",
+  "rows": [
+    {
+      "still_null": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "still_null\n0\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

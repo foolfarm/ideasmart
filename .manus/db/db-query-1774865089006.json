@@ -1,0 +1,60 @@
+{
+  "query": "SELECT 'weekly_reportage' as tbl, section, COUNT(*) as cnt FROM weekly_reportage WHERE section NOT IN ('ai', 'startup', 'dealroom') GROUP BY section\nUNION ALL\nSELECT 'startup_of_day', section, COUNT(*) FROM startup_of_day WHERE section NOT IN ('ai', 'startup', 'dealroom') GROUP BY section\nUNION ALL\nSELECT 'content_audit', section, COUNT(*) FROM content_audit WHERE section NOT IN ('ai', 'startup', 'dealroom') GROUP BY section;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT 'weekly_reportage' as tbl, section, COUNT(*) as cnt FROM weekly_reportage WHERE section NOT IN ('ai', 'startup', 'dealroom') GROUP BY section\nUNION ALL\nSELECT 'startup_of_day', section, COUNT(*) FROM startup_of_day WHERE section NOT IN ('ai', 'startup', 'dealroom') GROUP BY section\nUNION ALL\nSELECT 'content_audit', section, COUNT(*) FROM content_audit WHERE section NOT IN ('ai', 'startup', 'dealroom') GROUP BY section;",
+  "rows": [
+    {
+      "tbl": "weekly_reportage",
+      "section": "finance",
+      "cnt": "4"
+    },
+    {
+      "tbl": "weekly_reportage",
+      "section": "health",
+      "cnt": "4"
+    },
+    {
+      "tbl": "weekly_reportage",
+      "section": "sport",
+      "cnt": "4"
+    },
+    {
+      "tbl": "weekly_reportage",
+      "section": "luxury",
+      "cnt": "4"
+    },
+    {
+      "tbl": "startup_of_day",
+      "section": "finance",
+      "cnt": "13"
+    },
+    {
+      "tbl": "startup_of_day",
+      "section": "health",
+      "cnt": "9"
+    },
+    {
+      "tbl": "startup_of_day",
+      "section": "sport",
+      "cnt": "11"
+    },
+    {
+      "tbl": "startup_of_day",
+      "section": "luxury",
+      "cnt": "13"
+    },
+    {
+      "tbl": "startup_of_day",
+      "section": "music",
+      "cnt": "16"
+    },
+    {
+      "tbl": "content_audit",
+      "section": "music",
+      "cnt": "480"
+    }
+  ],
+  "messages": [],
+  "stdout": "tbl\tsection\tcnt\nweekly_reportage\tfinance\t4\nweekly_reportage\thealth\t4\nweekly_reportage\tsport\t4\nweekly_reportage\tluxury\t4\nstartup_of_day\tfinance\t13\nstartup_of_day\thealth\t9\nstartup_of_day\tsport\t11\nstartup_of_day\tluxury\t13\nstartup_of_day\tmusic\t16\ncontent_audit\tmusic\t480\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

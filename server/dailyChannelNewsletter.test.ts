@@ -1,9 +1,10 @@
 /**
  * dailyChannelNewsletter.test.ts
  * Test per il sistema di newsletter giornaliera per canale IDEASMART
+ * Aggiornato per la nuova struttura a 3 canali: AI News (Lun), Startup News (Mer), DEALROOM (Ven)
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   CHANNEL_SCHEDULE,
   getTodayChannel,
@@ -13,16 +14,15 @@ import {
 // ─── Test configurazione canali ───────────────────────────────────────────────
 
 describe("CHANNEL_SCHEDULE", () => {
-  it("deve contenere almeno 7 canali", () => {
-    expect(CHANNEL_SCHEDULE.length).toBeGreaterThanOrEqual(7);
+  it("deve contenere esattamente 3 canali (AI, Startup, DEALROOM)", () => {
+    expect(CHANNEL_SCHEDULE.length).toBe(3);
   });
 
-  it("deve coprire tutti i 7 giorni della settimana (0-6)", () => {
+  it("deve coprire lunedì (1), mercoledì (3) e venerdì (5)", () => {
     const days = new Set(CHANNEL_SCHEDULE.map((c) => c.dayOfWeek));
-    // Tutti i giorni da 0 a 6 devono essere coperti
-    for (let d = 0; d <= 6; d++) {
-      expect(days.has(d)).toBe(true);
-    }
+    expect(days.has(1)).toBe(true); // Lunedì
+    expect(days.has(3)).toBe(true); // Mercoledì
+    expect(days.has(5)).toBe(true); // Venerdì
   });
 
   it("deve avere chiavi canale univoche", () => {
@@ -39,74 +39,58 @@ describe("CHANNEL_SCHEDULE", () => {
       expect(channel.siteSection).toBeTruthy();
       expect(channel.accentColor).toMatch(/^#[0-9a-fA-F]{6}$/);
       expect(channel.tagline).toBeTruthy();
-      // dayOfWeek === -1 è il flag speciale per i canali inviati ogni giorno (es. News Italia)
-      expect(channel.dayOfWeek).toBeGreaterThanOrEqual(-1);
+      expect(channel.dayOfWeek).toBeGreaterThanOrEqual(0);
       expect(channel.dayOfWeek).toBeLessThanOrEqual(6);
     }
   });
 
-  it("deve avere il canale AI il lunedì (dayOfWeek=1)", () => {
+  it("deve avere il canale AI News il lunedì (dayOfWeek=1)", () => {
     const aiChannel = CHANNEL_SCHEDULE.find((c) => c.key === "ai");
     expect(aiChannel).toBeDefined();
     expect(aiChannel!.dayOfWeek).toBe(1);
+    expect(aiChannel!.name).toBe("AI News");
   });
 
-  it("deve avere il canale Startup il martedì (dayOfWeek=2)", () => {
+  it("deve avere il canale Startup News il mercoledì (dayOfWeek=3)", () => {
     const ch = CHANNEL_SCHEDULE.find((c) => c.key === "startup");
-    expect(ch!.dayOfWeek).toBe(2);
-  });
-
-  it("deve avere il canale Finance il mercoledì (dayOfWeek=3)", () => {
-    const ch = CHANNEL_SCHEDULE.find((c) => c.key === "finance");
+    expect(ch).toBeDefined();
     expect(ch!.dayOfWeek).toBe(3);
+    expect(ch!.name).toBe("Startup News");
   });
 
-  it("deve avere il canale Sport il giovedì (dayOfWeek=4)", () => {
-    const ch = CHANNEL_SCHEDULE.find((c) => c.key === "sport");
-    expect(ch!.dayOfWeek).toBe(4);
-  });
-
-  it("deve avere il canale Music il venerdì (dayOfWeek=5)", () => {
-    const ch = CHANNEL_SCHEDULE.find((c) => c.key === "music");
+  it("deve avere il canale DEALROOM il venerdì (dayOfWeek=5)", () => {
+    const ch = CHANNEL_SCHEDULE.find((c) => c.key === "dealroom");
+    expect(ch).toBeDefined();
     expect(ch!.dayOfWeek).toBe(5);
+    expect(ch!.name).toBe("DEALROOM News");
   });
 
-  it("deve avere il canale Luxury il sabato (dayOfWeek=6)", () => {
-    const ch = CHANNEL_SCHEDULE.find((c) => c.key === "luxury");
-    expect(ch!.dayOfWeek).toBe(6);
-  });
-
-  it("deve avere il canale Health la domenica (dayOfWeek=0)", () => {
-    const ch = CHANNEL_SCHEDULE.find((c) => c.key === "health");
-    expect(ch!.dayOfWeek).toBe(0);
-  });
-
-  it("deve includere i nuovi canali gossip, cybersecurity e sondaggi", () => {
+  it("deve includere solo i canali ai, startup e dealroom", () => {
     const keys = CHANNEL_SCHEDULE.map((c) => c.key);
-    expect(keys).toContain("gossip");
-    expect(keys).toContain("cybersecurity");
-    expect(keys).toContain("sondaggi");
+    expect(keys).toContain("ai");
+    expect(keys).toContain("startup");
+    expect(keys).toContain("dealroom");
+    expect(keys.length).toBe(3);
   });
 });
 
 // ─── Test getTodayChannel ─────────────────────────────────────────────────────
 
 describe("getTodayChannel", () => {
-  it("deve restituire un canale valido per il giorno corrente", () => {
+  it("deve restituire un canale valido o null per il giorno corrente", () => {
     const channel = getTodayChannel();
-    // Il test verifica solo che il risultato sia un canale valido
+    // Il test verifica solo che il risultato sia un canale valido o null
     if (channel !== null) {
       expect(CHANNEL_SCHEDULE).toContainEqual(channel);
     }
   });
 
-  it("deve restituire il canale corretto per i giorni principali della settimana", () => {
-    // Mappa giorno → canale atteso (solo i canali primari)
+  it("i canali devono corrispondere ai giorni attesi", () => {
+    // Mappa giorno → canale atteso
     const dayToChannel: Record<number, ChannelKey> = {
-      0: "health",
-      1: "ai",
-      3: "finance",
-      5: "music",
+      1: "ai",       // Lunedì
+      3: "startup",  // Mercoledì
+      5: "dealroom", // Venerdì
     };
 
     for (const [dayStr, expectedKey] of Object.entries(dayToChannel)) {
@@ -134,7 +118,7 @@ describe("Struttura newsletter giornaliera", () => {
   });
 
   it("le chiavi canale devono corrispondere ai valori attesi", () => {
-    const validKeys: ChannelKey[] = ["ai", "startup", "finance", "sport", "music", "luxury", "health", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi"];
+    const validKeys: ChannelKey[] = ["ai", "startup", "dealroom"];
     for (const channel of CHANNEL_SCHEDULE) {
       expect(validKeys).toContain(channel.key);
     }

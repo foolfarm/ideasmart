@@ -1,0 +1,80 @@
+{
+  "query": "SELECT id, dateLabel, slot, linkedinUrl, title FROM linkedin_posts ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, dateLabel, slot, linkedinUrl, title FROM linkedin_posts ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "720001",
+      "dateLabel": "2026-03-30",
+      "slot": "morning",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7444292546383683584/",
+      "title": "Agenti Autonomi: La Rivoluzione Silenziosa che Ridefinisce il Lavoro"
+    },
+    {
+      "id": "660001",
+      "dateLabel": "2026-03-29",
+      "slot": "startup-afternoon",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443975460704657408/",
+      "title": "Deeptech: Il Futuro dell'Italia tra Innovazione e Capitali"
+    },
+    {
+      "id": "630001",
+      "dateLabel": "2026-03-29",
+      "slot": "morning",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443930185902489600/",
+      "title": "AI: La Rivoluzione Silenziosa che Ridefinisce il Business Italiano"
+    },
+    {
+      "id": "600001",
+      "dateLabel": "2026-03-28",
+      "slot": "evening",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443696005910515712/",
+      "title": "AI: Dalla Generazione all'Autonomia, il Futuro è Già Qui"
+    },
+    {
+      "id": "570001",
+      "dateLabel": "2026-03-28",
+      "slot": "afternoon",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443671982354780160/",
+      "title": "AI: Dalla Generazione all'Autonomia, il Futuro è Già Qui"
+    },
+    {
+      "id": "540003",
+      "dateLabel": "2026-03-28",
+      "slot": "startup-afternoon",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443628016133369857/",
+      "title": "Deeptech: Il Futuro dell'Italia tra Innovazione e Capitali"
+    },
+    {
+      "id": "540001",
+      "dateLabel": "2026-03-28",
+      "slot": "morning",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443582869928804352/",
+      "title": "Deeptech: Il Futuro dell'Italia tra Innovazione e Capitali"
+    },
+    {
+      "id": "510003",
+      "dateLabel": "2026-03-27",
+      "slot": "evening",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443333701867831296/",
+      "title": "AI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro"
+    },
+    {
+      "id": "510001",
+      "dateLabel": "2026-03-27",
+      "slot": "afternoon",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443296101279006720/",
+      "title": "Deeptech Italiano: Dalla Promessa alla Leadership Globale"
+    },
+    {
+      "id": "480001",
+      "dateLabel": "2026-03-27",
+      "slot": "morning",
+      "linkedinUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7443227994690711552/",
+      "title": "AI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tdateLabel\tslot\tlinkedinUrl\ttitle\n720001\t2026-03-30\tmorning\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7444292546383683584/\tAgenti Autonomi: La Rivoluzione Silenziosa che Ridefinisce il Lavoro\n660001\t2026-03-29\tstartup-afternoon\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443975460704657408/\tDeeptech: Il Futuro dell'Italia tra Innovazione e Capitali\n630001\t2026-03-29\tmorning\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443930185902489600/\tAI: La Rivoluzione Silenziosa che Ridefinisce il Business Italiano\n600001\t2026-03-28\tevening\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443696005910515712/\tAI: Dalla Generazione all'Autonomia, il Futuro è Già Qui\n570001\t2026-03-28\tafternoon\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443671982354780160/\tAI: Dalla Generazione all'Autonomia, il Futuro è Già Qui\n540003\t2026-03-28\tstartup-afternoon\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443628016133369857/\tDeeptech: Il Futuro dell'Italia tra Innovazione e Capitali\n540001\t2026-03-28\tmorning\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443582869928804352/\tDeeptech: Il Futuro dell'Italia tra Innovazione e Capitali\n510003\t2026-03-27\tevening\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443333701867831296/\tAI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro\n510001\t2026-03-27\tafternoon\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443296101279006720/\tDeeptech Italiano: Dalla Promessa alla Leadership Globale\n480001\t2026-03-27\tmorning\thttps://www.linkedin.com/feed/update/urn:li:ugcPost:7443227994690711552/\tAI Autonoma: La Rivoluzione Silenziosa Che Ridisegna il Lavoro\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

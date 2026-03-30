@@ -710,13 +710,65 @@ export function buildFullNewsletterHtml(opts: {
   const baseUrl = `https://ideasmart.ai`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
+  // ── Identità visiva per canale ──────────────────────────────────────────────
+  // Ogni canale ha colori accento, icona e tagline distinti
+  type ChannelTheme = {
+    primary: string;       // colore accento primario
+    primaryLight: string;  // sfondo chiaro accento
+    secondary: string;     // colore accento secondario
+    secondaryLight: string;
+    icon: string;          // emoji/simbolo testata
+    headerBg: string;      // sfondo header
+    headerText: string;    // colore testo header
+    accentBar: string;     // colore barra accento
+    subtitle: string;      // sottotitolo specifico
+  };
+
+  const CHANNEL_THEMES: Record<string, ChannelTheme> = {
+    "AI News": {
+      primary: "#00b4a0",
+      primaryLight: "#e6f7f5",
+      secondary: "#0066ff",
+      secondaryLight: "#eff4ff",
+      icon: "&#9670;",
+      headerBg: "#0a1628",
+      headerText: "#ffffff",
+      accentBar: "#00b4a0",
+      subtitle: "Intelligenza Artificiale per il Business",
+    },
+    "Startup News": {
+      primary: "#e84f00",
+      primaryLight: "#fff2ec",
+      secondary: "#1a56db",
+      secondaryLight: "#eff4ff",
+      icon: "&#9650;",
+      headerBg: "#1a0800",
+      headerText: "#ffffff",
+      accentBar: "#e84f00",
+      subtitle: "Startup, Innovazione e Venture Capital",
+    },
+    "DEALROOM News": {
+      primary: "#c8a200",
+      primaryLight: "#fef9e7",
+      secondary: "#059669",
+      secondaryLight: "#ecfdf5",
+      icon: "&#9733;",
+      headerBg: "#0f0f0f",
+      headerText: "#ffffff",
+      accentBar: "#c8a200",
+      subtitle: "Round, Funding, VC, M&amp;A",
+    },
+  };
+
+  const theme = CHANNEL_THEMES[channelName ?? ""] ?? CHANNEL_THEMES["AI News"];
+
   // ── Palette brand EDITORIALE — identica alla Home page (stile giornale) ──
-  const TEAL    = "#00b4a0";   // teal primario
-  const TEAL_L  = "#e6f7f5";   // teal light bg
+  const TEAL    = theme.primary;   // colore primario del canale
+  const TEAL_L  = theme.primaryLight;   // light bg primario
   const NAVY    = "#0a1628";   // testo primario scuro (navy profondo)
   const NAVY2   = "#1a2744";   // navy secondario
-  const ORANGE  = "#e84f00";   // accento arancio
-  const ORANGE_L= "#fff2ec";   // arancio light bg
+  const ORANGE  = theme.secondary;   // accento secondario
+  const ORANGE_L= theme.secondaryLight;   // secondario light bg
   const BLUE    = "#1a56db";   // accento blu
   const BLUE_L  = "#eff4ff";   // blu light bg
   const SLATE   = "#4b5563";   // testo secondario
@@ -897,28 +949,40 @@ export function buildFullNewsletterHtml(opts: {
         ${isTest ? `<!-- TEST BANNER -->
         <tr><td style="background:${ORANGE};padding:10px 28px;text-align:center;"><span style="font-size:11px;font-weight:700;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.12em;">&#9888; EMAIL DI PROVA — Non distribuire</span></td></tr>` : ""}
 
-        <!-- MASTHEAD GIORNALE — sfondo crema stile giornale -->
+        <!-- HEADER BRANDIZZATO PER CANALE — sfondo scuro con accento -->
         <tr>
-          <td style="background:${CREAM};padding:10px 28px;border-bottom:1px solid ${BORDER};">
+          <td style="background:${theme.headerBg};padding:24px 28px 18px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="font-size:8px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.14em;text-transform:uppercase;">AI NEWS &bull; STARTUP NEWS &bull; DEALROOM &bull; RICERCHE</td>
-                <td align="right" style="font-size:8px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;">${dateLabel}</td>
+                <td>
+                  <div style="font-size:42px;font-weight:900;color:${theme.headerText};letter-spacing:-2px;line-height:1;font-family:Georgia,'Times New Roman',serif;">IDEA<span style="color:${theme.accentBar};">SMART</span></div>
+                  <div style="margin-top:6px;font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:0.28em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">La Prima Testata Giornalistica HumanLess</div>
+                </td>
+                <td align="right" valign="top">
+                  <div style="font-size:8px;color:rgba(255,255,255,0.5);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-align:right;">${dateLabel}</div>
+                </td>
               </tr>
             </table>
           </td>
         </tr>
-        <!-- TESTATA PRINCIPALE —  Georgia serif, navy su crema -->
+        <!-- BARRA ACCENTO CANALE -->
+        <tr><td style="height:4px;background:${theme.accentBar};"></td></tr>
+        <!-- BADGE CANALE + SOTTOTITOLO -->
         <tr>
-          <td align="center" style="background:${CREAM};padding:32px 28px 10px;">
-            <div style="font-size:58px;font-weight:900;color:${NAVY};letter-spacing:-3px;line-height:1;font-family:Georgia,'Times New Roman',serif;">IDEA<span style="color:${TEAL};">SMART</span></div>
-            <div style="font-size:9px;color:${SLATE};letter-spacing:0.28em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:8px;">La Prima Testata Giornalistica HumanLess</div>
-            ${channelName ? `<div style="margin-top:10px;display:inline-block;font-size:10px;font-weight:700;color:${TEAL};background:${TEAL_L};border:1px solid ${TEAL};border-radius:20px;padding:3px 14px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${channelName}</div>` : ""}
-            ${frequencyLabel ? `<div style="font-size:10px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:7px;letter-spacing:0.05em;">${frequencyLabel}</div>` : ""}
+          <td style="background:${CREAM};padding:18px 28px 12px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  ${channelName ? `<div style="display:inline-block;font-size:11px;font-weight:800;color:${theme.headerBg};background:${TEAL_L};border:2px solid ${theme.accentBar};border-radius:3px;padding:4px 16px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${theme.icon} ${channelName}</div>` : ""}
+                  <div style="margin-top:6px;font-size:12px;color:${SLATE};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.03em;">${theme.subtitle}</div>
+                  ${frequencyLabel ? `<div style="font-size:9px;color:${MUTED};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:4px;letter-spacing:0.05em;">${frequencyLabel}</div>` : ""}
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
-        <!-- DOPPIA LINEA STILE GIORNALE —  teal + grigio caldo -->
-        <tr><td style="padding:14px 28px 0;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:3px;background:${TEAL};"></td></tr><tr><td style="height:1px;background:${BORDER};margin-top:3px;"></td></tr></table></td></tr>
+        <!-- DOPPIA LINEA STILE GIORNALE — accento canale + grigio caldo -->
+        <tr><td style="padding:0 28px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:2px;background:${TEAL};"></td></tr><tr><td style="height:1px;background:${BORDER};margin-top:2px;"></td></tr></table></td></tr>
         <!-- SOMMARIO NUMERI -->
         <tr>
           <td style="background:${CREAM};padding:18px 28px 22px;">

@@ -100,6 +100,60 @@ interface LLMResearchResponse {
 }
 
 /**
+ * Costruisce un URL alla fonte originale della ricerca.
+ * Se il LLM fornisce un URL valido, lo usa. Altrimenti genera un URL di ricerca
+ * Google Scholar o del sito della fonte come fallback.
+ */
+function buildSourceUrl(rawUrl: string | undefined | null, source: string, title: string): string {
+  // Se il LLM ha fornito un URL valido, usalo
+  if (rawUrl && rawUrl.trim() !== "" && rawUrl.startsWith("http")) {
+    return rawUrl.slice(0, 999);
+  }
+
+  // Mappa delle homepage delle fonti principali
+  const sourceHomepages: Record<string, string> = {
+    "Gartner": "https://www.gartner.com/en/newsroom",
+    "CB Insights": "https://www.cbinsights.com/research",
+    "Statista": "https://www.statista.com",
+    "McKinsey Global Institute": "https://www.mckinsey.com/mgi/overview",
+    "McKinsey": "https://www.mckinsey.com/featured-insights",
+    "Dealroom": "https://dealroom.co/blog",
+    "PitchBook": "https://pitchbook.com/news/reports",
+    "Crunchbase": "https://news.crunchbase.com",
+    "KPMG Venture Pulse": "https://kpmg.com/xx/en/home/campaigns/venture-pulse.html",
+    "EY Startup Barometer": "https://www.ey.com/en_gl/entrepreneurship",
+    "Atomico State of European Tech": "https://stateofeuropeantech.com",
+    "Atomico": "https://stateofeuropeantech.com",
+    "Boston Consulting Group": "https://www.bcg.com/publications",
+    "BCG": "https://www.bcg.com/publications",
+    "Sequoia Capital": "https://www.sequoiacap.com/article",
+    "a16z (Andreessen Horowitz)": "https://a16z.com/content",
+    "a16z": "https://a16z.com/content",
+    "World Economic Forum": "https://www.weforum.org/publications",
+    "WEF": "https://www.weforum.org/publications",
+    "OECD": "https://www.oecd.org/en/publications.html",
+    "European Investment Fund": "https://www.eif.org/news_centre/publications",
+    "Bain & Company": "https://www.bain.com/insights",
+    "Forrester Research": "https://www.forrester.com/research",
+    "Forrester": "https://www.forrester.com/research",
+    "IDC": "https://www.idc.com/research",
+    "Bloomberg Intelligence": "https://www.bloomberg.com/professional/solution/bloomberg-intelligence",
+    "Grand View Research": "https://www.grandviewresearch.com",
+    "MarketsandMarkets": "https://www.marketsandmarkets.com",
+  };
+
+  // Cerca la homepage della fonte
+  const homepage = sourceHomepages[source];
+  if (homepage) {
+    return homepage;
+  }
+
+  // Fallback: URL di ricerca Google con fonte + titolo
+  const query = encodeURIComponent(`${source} ${title.slice(0, 80)}`);
+  return `https://www.google.com/search?q=${query}`;
+}
+
+/**
  * Genera 20 ricerche giornaliere su Startup, VC e AI Trends usando l'AI.
  */
 export async function generateDailyResearch(): Promise<{
@@ -161,7 +215,8 @@ Genera ricerche diverse ogni giorno — oggi è ${dateFormatted}.`,
 Includi una mix di: 6-7 ricerche AI Trends, 5 Venture Capital/Startup, 4 Mercati, 3-4 Tecnologia.
 Almeno 6 devono riguardare il mercato europeo o italiano.
 La prima deve essere la "Ricerca del Giorno" più importante.
-Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight actionable per investitori e founder.`,
+Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight actionable per investitori e founder.
+IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e plausibile alla pagina della fonte originale (es. https://www.gartner.com/en/newsroom/press-releases/..., https://www.cbinsights.com/research/report/..., https://www.statista.com/statistics/...). Non lasciare mai sourceUrl vuoto.`,
         },
       ],
       response_format: {
@@ -196,7 +251,7 @@ Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight act
                     },
                     sourceUrl: {
                       type: "string",
-                      description: "URL della fonte (se disponibile, altrimenti stringa vuota)",
+                      description: "URL REALE e verificabile della fonte originale (es. https://www.gartner.com/en/newsroom/..., https://www.cbinsights.com/research/..., https://www.statista.com/statistics/...). DEVE essere un URL completo e plausibile che punti alla ricerca o al report originale. NON lasciare vuoto.",
                     },
                     category: {
                       type: "string",
@@ -256,7 +311,7 @@ Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight act
           summary: item.summary.slice(0, 2000),
           keyFindings: JSON.stringify(item.keyFindings ?? []),
           source: item.source.slice(0, 199),
-          sourceUrl: item.sourceUrl?.slice(0, 999) || null,
+          sourceUrl: buildSourceUrl(item.sourceUrl, item.source, item.title),
           imageUrl: getImageForCategory(item.category, savedCount),
           category: item.category,
           region: item.region,
