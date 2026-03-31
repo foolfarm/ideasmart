@@ -2126,3 +2126,7 @@
 
 ## Task (31 Mar 2026 — Fix navbar sovrapposizione Registrati)
 - [x] Fix: pulsante Registrati/Accedi si sovrappone alla barra canali nella navbar
+
+## Task (31 Mar 2026 — Redirect 301 + Navbar responsive)
+- [x] Aggiungere redirect 301 da /per-giornalisti a /offertacommerciale
+- [x] Verificare e correggere navbar responsive su dispositivi mobili

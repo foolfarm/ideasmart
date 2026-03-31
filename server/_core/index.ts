@@ -339,6 +339,11 @@ async function startServer() {
     next();
   });
 
+  // ── Redirect 301: vecchia route /per-giornalisti → /offertacommerciale ──────
+  app.get("/per-giornalisti", (_req, res) => {
+    res.redirect(301, "/offertacommerciale");
+  });
+
   // tRPC API
   app.use(
     "/api/trpc",
