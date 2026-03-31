@@ -38,8 +38,11 @@
  *  │  14:30 — Post pomeriggio: Startup News (fisso)                          │
  *  │  17:00 — Post ricerche: IdeaSmart Research (ultima ricerca)            │
  *  │  18:00 — Post dealroom: Dealroom (ultimo deal/round)                   │
- *  └─────────────────────────────────────────────────────────────────────────┘
- *
+ *  │                                                                          │
+ *  │  SITE HEALTH CHECK — ogni ora                                            │
+ *  │  :00 — Verifica homepage, API, contenuti, pagine principali            │
+ *  │  Alert email a info@andreacinelli.com se problemi rilevati              │
+ *  └───────────────────────────────────────────────────────────────────────────┘*
  * node-cron usa il fuso orario del server. Il server gira in UTC.
  * CET = UTC+1 (inverno), CEST = UTC+2 (estate).
  * Usiamo timezone: "Europe/Rome" per gestire automaticamente l'ora legale.
@@ -68,6 +71,7 @@ import { generateDailyResearch } from "./researchGenerator";
 import { runMorningHealthReport } from "./morningHealthReport";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendEmail } from "./email";
+import { runSiteHealthCheck } from "./siteHealthCheck";
 
 // ── Helper: invia alert email al team operativo ───────────────────────────────
 async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<void> {
@@ -656,6 +660,19 @@ export function startAllSchedulers(): void {
   }, 30_000); // Attende 30s dopo l'avvio per dare tempo al DB di connettersi
 
   // ══════════════════════════════════════════════════════════════════════════
+  // SITE HEALTH CHECK — ogni ora, verifica che il sito sia online e con contenuti
+  // Se rileva problemi (pagina vuota, API down, sezioni mancanti), invia alert email
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 * * * *", async () => {
+    console.log("[SchedulerManager] 🏥 Health Check produzione — verifica contenuti sito...");
+    try {
+      await runSiteHealthCheck();
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore Health Check produzione:", err);
+    }
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
   // KEEP-ALIVE — ping HTTP al server ogni 12 ore per prevenire l'ibernazione del sandbox
   // ══════════════════════════════════════════════════════════════════════════
   setInterval(async () => {
@@ -861,6 +878,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💼 LinkedIn RICERCHE  → ogni giorno alle 17:00 CET (IdeaSmart Research)");
   console.log("[SchedulerManager]   💼 LinkedIn DEALROOM  → ogni giorno alle 18:00 CET (Dealroom)");
 
+  console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (richiede approvazione manuale)");
   console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI + Startup + DEALROOM, rigenera se mancanti)");

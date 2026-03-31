@@ -57,7 +57,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Cos'è la tecnologia Verify?",
-    a: "Verify è il nostro sistema proprietario di validazione dei contenuti. Ogni articolo viene verificato sulle fonti originali, bilanciato per oggettività e ottimizzato per tono e stile. Puoi personalizzare il livello di neutralità, il linguaggio editoriale e il posizionamento della testata. La piattaforma impara a scrivere con il tuo stile."
+    a: "Verify è un protocollo di validazione e certificazione agentica delle notizie. Attraverso un sistema AI di confronto multi-fonte, analizza ogni contenuto, ne misura affidabilità, coerenza fattuale e obiettività, e genera un Verification Report strutturato. Il report viene poi sigillato con un hash crittografico immutabile, che ne garantisce tracciabilità, trasparenza e verificabilità nel tempo, secondo una logica di notarizzazione ispirata al Web3. Ogni notizia è così certificata e non alterabile."
   },
   {
     q: "Quali sono i modelli di redazione disponibili?",
@@ -304,21 +304,25 @@ export default function ChiSiamo() {
           <Label><span className="text-white/30">Tecnologia proprietaria</span></Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-white">
             Non è solo AI.<br />
-            <span className="text-white/30">È AI + verifica.</span>
+            <span className="text-white/30">È AI + certificazione.</span>
           </h2>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 border border-white/20">
             <span className="text-[10px] font-black tracking-[0.3em] text-white/60">POWERED BY</span>
             <span className="text-lg font-black text-white tracking-wider">VERIFY</span>
           </div>
           <p className="mt-8 text-lg leading-relaxed text-white/50 max-w-2xl">
-            Con Verify, ogni contenuto viene validato sulle fonti, bilanciato per oggettività e ottimizzato per tono e stile. Non pubblichiamo nulla che non sia verificato.
+            Verify è un protocollo di validazione e certificazione agentica delle notizie. Attraverso un sistema AI di confronto multi-fonte, analizza ogni contenuto, ne misura affidabilità, coerenza fattuale e obiettività, e genera un Verification Report con gli esiti dell'analisi.
+          </p>
+          <p className="mt-4 text-lg leading-relaxed text-white/50 max-w-2xl">
+            Il report viene quindi sigillato attraverso un <strong className="text-white/80">hash crittografico immutabile</strong>, che ne garantisce tracciabilità, trasparenza e verificabilità nel tempo, secondo una logica di notarizzazione ispirata al Web3.
           </p>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { title: "Validato sulle fonti", desc: "Ogni dato viene incrociato con le fonti originali. Se non è verificabile, non viene pubblicato." },
-              { title: "Bilanciato per oggettività", desc: "L'algoritmo analizza il bias del contenuto e lo bilancia automaticamente per garantire neutralità." },
-              { title: "Ottimizzato per tono e stile", desc: "Puoi insegnare alla piattaforma a scrivere come te. Il tuo stile editoriale, replicato su scala." },
+              { title: "Analisi multi-fonte", desc: "Ogni notizia viene confrontata con fonti multiple per misurare affidabilità e coerenza fattuale." },
+              { title: "Verification Report", desc: "Per ogni contenuto viene generato un report strutturato con esiti, criteri di analisi e punteggio di oggettività." },
+              { title: "Hash crittografico", desc: "Il report viene sigillato con un hash immutabile: non alterabile e verificabile in qualsiasi momento." },
+              { title: "Notarizzazione Web3", desc: "Tracciabilità, trasparenza e verificabilità nel tempo secondo una logica ispirata alla blockchain." },
             ].map((v, i) => (
               <div key={i} className="border-t border-white/15 pt-6">
                 <h3 className="text-base font-bold text-white">{v.title}</h3>
@@ -328,15 +332,15 @@ export default function ChiSiamo() {
           </div>
 
           <div className="mt-14 border border-white/10 p-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">Puoi decidere</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">Come funziona</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                "Quanto essere neutrale o opinionated",
-                "Il linguaggio editoriale della testata",
-                "Il posizionamento e il tono di voce",
+                "L'AI analizza il contenuto confrontandolo con fonti certificate",
+                "Genera un Verification Report con affidabilità, bias e coerenza",
+                "Sigilla il report con hash crittografico immutabile",
               ].map((t, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-white/30 font-bold text-lg">→</span>
+                  <span className="text-white/30 font-bold text-lg">{`0${i + 1}`}</span>
                   <p className="text-base text-white/70">{t}</p>
                 </div>
               ))}

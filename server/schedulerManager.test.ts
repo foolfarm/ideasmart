@@ -93,6 +93,10 @@ vi.mock("./nightlyAuditScheduler", () => ({
   runNightlyAudit: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock("./siteHealthCheck", () => ({
+  runSiteHealthCheck: vi.fn().mockResolvedValue({ allOk: true, checks: [], totalTimeMs: 100, timestamp: "test" }),
+}));
+
 vi.mock("./newsletterLinkAudit", () => ({
   runNewsletterLinkAudit: vi.fn().mockResolvedValue({ okCount: 10, brokenCount: 0, internalBroken: [], shouldBlockSend: false }),
   isNewsletterBlockedByAudit: vi.fn().mockReturnValue(false),
@@ -129,13 +133,13 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 29 cron job quando avviato", async () => {
+  it("dovrebbe registrare 30 cron job quando avviato", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 29 scheduler attivi: AI, Startup, DEALROOM, Research + 4 slot LinkedIn + 4 invalidazioni cache + infra
+    // 30 scheduler attivi: AI, Startup, DEALROOM, Research + 4 slot LinkedIn + 4 invalidazioni cache + health check + infra
     // La newsletter massiva (07:30) è disabilitata (richiede approvazione manuale da Admin)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(29);
+    expect(cron.default.schedule).toHaveBeenCalledTimes(30);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {

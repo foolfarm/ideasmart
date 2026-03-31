@@ -2023,3 +2023,21 @@
 - [x] Aggiungere alternativa revenue share 20% al posto del canone mensile
 - [x] Aggiungere confronto costi vs redazione tradizionale (fino a 10x meno)
 - [x] Aggiornare FAQ relative ai prezzi e revenue share
+
+## Aggiornamento descrizione tecnologia Verify (31 Mar 2026)
+
+- [x] Aggiornare descrizione Verify nella sezione principale della pagina Chi Siamo
+- [x] Aggiornare FAQ su Verify con protocollo di validazione agentica, Verification Report e hash crittografico
+
+## BUG: Homepage vuota in produzione (31 Mar 2026)
+
+- [x] Diagnosticare e risolvere homepage vuota in produzione (era un problema temporaneo, sito ora funzionante)
+
+## Demone Health Check produzione (31 Mar 2026)
+
+- [x] Creare modulo siteHealthCheck.ts con verifiche contenuti homepage
+- [x] Verificare: risposta HTTP 200, presenza sezioni (breaking, ricerca del giorno, prima pagina, ricerche, dealroom, eventi)
+- [x] Verificare: API tRPC rispondono correttamente (news AI, Startup, DEALROOM, ricerche)
+- [x] Inviare notifica email al proprietario se il sito risulta vuoto o con errori
+- [x] Integrare nello schedulerManager come cron ogni ora
+- [x] Aggiungere test
