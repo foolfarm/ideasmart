@@ -66,6 +66,7 @@ const Registrati = lazy(() => import("./pages/Registrati"));
 const Accedi = lazy(() => import("./pages/Accedi"));
 const VerificaEmail = lazy(() => import("./pages/VerificaEmail"));
 const Account = lazy(() => import("./pages/Account"));
+const DemoSandwichClub = lazy(() => import("./pages/DemoSandwichClub"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -104,6 +105,7 @@ function Router() {
         <Route path="/account" component={Account} />
         <Route path="/registrati" component={Registrati} />
         <Route path="/accedi" component={Accedi} />
+        <Route path="/demo/sandwichclub" component={DemoSandwichClub} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />

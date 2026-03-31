@@ -2145,3 +2145,11 @@
 - [x] Correggere: Andrea Cinelli = Tech Expert (non Direttore Editoriale)
 - [x] Correggere: Adrian Lenice = Direttore Editoriale (dove serve il ruolo di direttore)
 - [x] Verificare tutti i file che contengono "Direttore Editoriale" associato a Cinelli
+
+## Bug (31 Mar 2026 — Home vuota in produzione)
+- [ ] Fix: Home page in produzione mostra solo header + metriche + footer, nessun contenuto (Breaking News, articoli, ecc.)
+
+## Task (31 Mar 2026 — Demo pagina SandwichClub)
+- [x] Analizzare sito sandwichclub.it e raccogliere tutte le notizie
+- [x] Creare pagina demo /demo/sandwichclub con notizie estratte nello stile IdeaSmart
+- [x] Aggiungere route /demo/sandwichclub fuori menu in App.tsx
