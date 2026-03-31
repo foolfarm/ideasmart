@@ -45,11 +45,11 @@ function SectionNav() {
   });
 
   const navItems = [
+    { key: "chi-siamo",label: "CHI SIAMO",    path: "/chi-siamo",accent: "#1a1a1a" },
     { key: "ai",       label: "AI NEWS",      path: "/ai",       accent: "#1a1a1a" },
     { key: "startup",  label: "STARTUP NEWS", path: "/startup",  accent: "#2a2a2a" },
     { key: "research", label: "RICERCHE",      path: "/research", accent: "#1a1a1a" },
     { key: "dealroom",  label: "DEALROOM",     path: "/dealroom",  accent: "#1a4a2e" },
-    { key: "chi-siamo",label: "Chi Siamo",    path: "/chi-siamo",accent: "#1a1a1a" },
   ];
 
   return (

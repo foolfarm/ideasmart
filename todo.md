@@ -2050,3 +2050,11 @@
 - [x] Salvare risultati health check nel DB ad ogni esecuzione
 - [x] Newsletter promozionale aggiornata — senza prezzi, focus "crea la tua redazione agentica e il tuo giornale"
 - [x] Invio test newsletter promo a ac@acinelli.com
+
+## Batch 3 — Newsletter, Pagina Giornalisti, Navbar (31 Mar 2026)
+
+- [x] A) Newsletter promo: riscritta con stile homepage IdeaSmart (font SF/system-ui, colori bianco/nero/crema), più commerciale con spunti Chi Siamo, senza prezzi
+- [x] A) Reinvio test newsletter a ac@acinelli.com
+- [x] B) Creare pagina "Per Giornalisti, Freelancer e Giornali Online" con presentazione offerta
+- [x] B) Aggiungere route e link nella navbar
+- [x] C) Spostare Chi Siamo come primo elemento nel menu navbar (label: CHI SIAMO)

@@ -238,6 +238,12 @@ function SectionNav() {
   ];
   return (
     <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
+      <Link href="/chi-siamo">
+        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
+          CHI SIAMO
+        </span>
+      </Link>
       {navSections.map((s, i) => {
         const count = sectionCounts?.[s.key] ?? 0;
         return (
@@ -263,13 +269,6 @@ function SectionNav() {
           RICERCHE
         </span>
       </Link>
-      <Link href="/chi-siamo">
-        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-l border-[#1a1a1a]/15"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-          Chi Siamo
-        </span>
-      </Link>
-
     </nav>
   );
 }

@@ -59,6 +59,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const ChannelPreferences = lazy(() => import("./pages/ChannelPreferences"));
 const Business = lazy(() => import("./pages/Business"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
+const PerGiornalisti = lazy(() => import("./pages/PerGiornalisti"));
 const Tecnologia = lazy(() => import("./pages/Tecnologia"));
 const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
 const Registrati = lazy(() => import("./pages/Registrati"));
@@ -98,6 +99,7 @@ function Router() {
         <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />
         <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
         <Route path="/chi-siamo" component={ChiSiamo} />
+        <Route path="/per-giornalisti" component={PerGiornalisti} />
         <Route path="/tecnologia" component={Tecnologia} />
         <Route path="/account" component={Account} />
         <Route path="/registrati" component={Registrati} />
