@@ -13,9 +13,10 @@ import { fixAllSourceUrls } from "../urlAuditFix";
 import { publishDailyLinkedInPosts } from "../linkedinPublisher";
 import { refreshAINewsFromRSS, refreshStartupNewsFromRSS, refreshDealroomNewsFromRSS, refreshAllNewsFromRSS } from "../rssNewsScheduler";
 import { getDb } from "../db";
-import { newsItems, sourceReports } from "../../drizzle/schema";
+import { newsItems, sourceReports, healthCheckLogs } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
 import { fetchAllSendgridStats } from "../sendgridStats";
+import { runSiteHealthCheck } from "../siteHealthCheck";
 
 // Middleware admin
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -251,5 +252,70 @@ export const adminRouter = router({
           message: err instanceof Error ? err.message : "Errore pubblicazione LinkedIn"
         });
       }
-    })
+    }),
+
+  /**
+   * Health Check manuale: esegue immediatamente il health check del sito in produzione.
+   * Utile per verifiche immediate dopo un deploy.
+   */
+  runHealthCheck: adminProcedure
+    .mutation(async () => {
+      console.log("[AdminRouter] Avvio health check manuale...");
+      try {
+        const report = await runSiteHealthCheck();
+        return {
+          success: report.allOk,
+          timestamp: report.timestamp,
+          totalChecks: report.checks.length,
+          passedChecks: report.checks.filter(c => c.ok).length,
+          failedChecks: report.checks.filter(c => !c.ok).length,
+          totalTimeMs: report.totalTimeMs,
+          checks: report.checks,
+          message: report.allOk
+            ? `\u2705 Tutti i ${report.checks.length} check OK (${report.totalTimeMs}ms)`
+            : `\u26a0\ufe0f ${report.checks.filter(c => !c.ok).length}/${report.checks.length} check FALLITI`,
+        };
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "Errore health check"
+        });
+      }
+    }),
+
+  /**
+   * Storico Health Check: restituisce gli ultimi N log dal DB.
+   */
+  getHealthCheckHistory: adminProcedure
+    .input(z.object({ limit: z.number().min(1).max(100).default(24) }))
+    .query(async ({ input }) => {
+      try {
+        const db = await getDb();
+        if (!db) return { logs: [], message: "Database non disponibile" };
+        const logs = await db
+          .select()
+          .from(healthCheckLogs)
+          .orderBy(desc(healthCheckLogs.createdAt))
+          .limit(input.limit);
+        return {
+          logs: logs.map(l => ({
+            id: l.id,
+            allOk: l.allOk,
+            totalChecks: l.totalChecks,
+            passedChecks: l.passedChecks,
+            failedChecks: l.failedChecks,
+            totalTimeMs: l.totalTimeMs,
+            alertSent: l.alertSent,
+            failedDetails: l.failedDetails ? JSON.parse(l.failedDetails) : [],
+            createdAt: l.createdAt,
+          })),
+          message: `Ultimi ${logs.length} health check`,
+        };
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "Errore recupero storico health check"
+        });
+      }
+    }),
 });

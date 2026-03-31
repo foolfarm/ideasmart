@@ -15,6 +15,8 @@
  */
 
 import { sendEmail } from "./email";
+import { getDb } from "./db";
+import { healthCheckLogs } from "../drizzle/schema";
 
 const PROD_URL = "https://ideasmart.ai";
 const ALERT_EMAIL = "info@andreacinelli.com";
@@ -336,6 +338,27 @@ export async function runSiteHealthCheck(): Promise<HealthReport> {
     } catch (err) {
       console.error("[HealthCheck] ❌ Errore invio email alert:", err);
     }
+  }
+
+  // Salva il log nel DB per monitoraggio storico
+  try {
+    const db = await getDb();
+    if (db) {
+      const failedDetails = checks.filter(c => !c.ok);
+      await db.insert(healthCheckLogs).values({
+        allOk,
+        totalChecks: checks.length,
+        passedChecks: checks.filter(c => c.ok).length,
+        failedChecks: failedCount,
+        totalTimeMs,
+        failedDetails: failedDetails.length > 0 ? JSON.stringify(failedDetails) : null,
+        fullReport: JSON.stringify(checks),
+        alertSent: !allOk,
+      });
+      console.log("[HealthCheck] 💾 Log salvato nel DB");
+    }
+  } catch (dbErr) {
+    console.error("[HealthCheck] ⚠️ Errore salvataggio log nel DB:", dbErr);
   }
 
   return report;

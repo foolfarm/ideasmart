@@ -506,3 +506,21 @@ export const savedArticles = mysqlTable("saved_articles", {
 
 export type SavedArticle = typeof savedArticles.$inferSelect;
 export type InsertSavedArticle = typeof savedArticles.$inferInsert;
+
+// ── Health Check Logs (monitoraggio uptime produzione) ────────────────────────
+export const healthCheckLogs = mysqlTable("health_check_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  allOk: boolean("allOk").notNull(),
+  totalChecks: int("totalChecks").notNull(),
+  passedChecks: int("passedChecks").notNull(),
+  failedChecks: int("failedChecks").notNull(),
+  totalTimeMs: int("totalTimeMs").notNull(),
+  // JSON stringified array dei check falliti (nome, status, dettaglio, responseTimeMs)
+  failedDetails: text("failedDetails"),
+  // JSON stringified array di tutti i check (per analisi storica)
+  fullReport: text("fullReport"),
+  alertSent: boolean("alertSent").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type HealthCheckLog = typeof healthCheckLogs.$inferSelect;
+export type InsertHealthCheckLog = typeof healthCheckLogs.$inferInsert;

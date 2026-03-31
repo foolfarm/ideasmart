@@ -2041,3 +2041,12 @@
 - [x] Inviare notifica email al proprietario se il sito risulta vuoto o con errori
 - [x] Integrare nello schedulerManager come cron ogni ora
 - [x] Aggiungere test
+
+## Nuove funzionalità (31 Mar 2026 - batch 2)
+
+- [x] Cookie sessione 30 giorni — già implementato: cookie durata 1 anno (ONE_YEAR_MS) in oauth.ts e index.ts
+- [x] Endpoint admin per forzare manualmente il health check dalla dashboard
+- [x] Tabella DB per log storico health check (monitoraggio trend uptime)
+- [x] Salvare risultati health check nel DB ad ogni esecuzione
+- [x] Newsletter promozionale aggiornata — senza prezzi, focus "crea la tua redazione agentica e il tuo giornale"
+- [x] Invio test newsletter promo a ac@acinelli.com

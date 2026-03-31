@@ -13,13 +13,12 @@ import mysql from "mysql2/promise";
 
 const conn = await mysql.createConnection(DATABASE_URL);
 
-// Recupera tutti gli iscritti attivi alla newsletter
 const [rows] = await conn.execute(
-  "SELECT email FROM subscribers WHERE status = 'active'"
+  "SELECT email, unsubscribeToken FROM subscribers WHERE status = 'active'"
 );
 await conn.end();
 
-const subscribers = rows.map(r => r.email);
+const subscribers = rows.map(r => ({ email: r.email, token: r.unsubscribeToken }));
 console.log(`📧 Trovati ${subscribers.length} iscritti attivi alla newsletter`);
 
 if (subscribers.length === 0) {
@@ -29,13 +28,12 @@ if (subscribers.length === 0) {
 
 // ── Destinatario test (se passato come argomento) ──
 const testEmail = process.argv[2];
-const recipients = testEmail ? [testEmail] : subscribers;
 const isTest = !!testEmail;
 
 if (isTest) {
   console.log(`🧪 MODALITÀ TEST — invio solo a: ${testEmail}`);
 } else {
-  console.log(`📤 INVIO MASSIVO a ${recipients.length} iscritti`);
+  console.log(`📤 INVIO MASSIVO a ${subscribers.length} iscritti`);
 }
 
 // ── Template HTML Newsletter Promozionale ──
@@ -49,7 +47,7 @@ function buildPromoHtml(unsubscribeUrl) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Lancia il tuo giornale con l'AI — Ideasmart</title>
+<title>La tua redazione agentica — Ideasmart</title>
 </head>
 <body style="margin:0;padding:0;background-color:#ede8de;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
@@ -94,299 +92,252 @@ function buildPromoHtml(unsubscribeUrl) {
 
   <!-- HERO SCURO -->
   <tr>
-    <td style="background:#0a0a0a;padding:40px 32px;">
-      <p style="margin:0 0 8px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Offerta speciale</p>
-      <h1 style="margin:0 0 16px;font-size:32px;font-weight:900;letter-spacing:-0.02em;color:#ffffff;line-height:1.15;font-family:Georgia,'Times New Roman',serif;">
-        Il primo giornale che funziona anche senza una redazione.
+    <td style="background:#0a0a0a;padding:44px 32px;">
+      <p style="margin:0 0 8px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Il futuro dell'editoria</p>
+      <h1 style="margin:0 0 20px;font-size:30px;font-weight:900;letter-spacing:-0.02em;color:#ffffff;line-height:1.2;font-family:Georgia,'Times New Roman',serif;">
+        E se potessi lanciare il tuo giornale domani mattina?
       </h1>
-      <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(255,255,255,0.6);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        Costruisci e scala una testata con l'AI agentica. Oltre <strong style="color:#ffffff;">4.000 fonti certificate</strong>, una redazione di <strong style="color:#ffffff;">8 agenti AI specializzati</strong> e la tecnologia proprietaria <strong style="color:#00b4a0;">VERIFY</strong> per contenuti sempre verificati.
+      <p style="margin:0;font-size:15px;line-height:1.75;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+        Con IdeaSmart puoi creare una <strong style="color:#ffffff;">redazione agentica completa</strong>: 8 agenti AI che lavorano 24/7, raccolgono notizie da oltre <strong style="color:#ffffff;">4.000 fonti certificate</strong>, scrivono articoli, verificano ogni dato e pubblicano automaticamente &mdash; newsletter, sito, social. <strong style="color:#00b4a0;">Tu decidi la linea editoriale. L'AI fa tutto il resto.</strong>
       </p>
     </td>
   </tr>
 
-  <!-- COME FUNZIONA -->
+  <!-- CHI LO STA GIÀ FACENDO -->
   <tr>
     <td style="padding:28px 32px 24px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
-      <p style="margin:0 0 16px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Come funziona</p>
-      <p style="margin:0;font-size:14px;line-height:1.8;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        <strong style="color:#0a1628;">Tu porti la linea editoriale.</strong> Decidi il tono, il posizionamento, i temi. La direzione resta tua.<br><br>
-        <strong style="color:#0a1628;">La piattaforma fa il resto.</strong> Raccolta notizie, verifica sulle fonti, scrittura editoriale, pubblicazione e distribuzione. Tutto automatico, 24/7.
-      </p>
+      <p style="margin:0 0 16px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; IdeaSmart in numeri</p>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="25%" align="center" style="padding:12px 4px;">
+            <div style="font-size:28px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">6.900+</div>
+            <div style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:4px;">Lettori attivi</div>
+          </td>
+          <td width="25%" align="center" style="padding:12px 4px;">
+            <div style="font-size:28px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">14</div>
+            <div style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:4px;">Canali tematici</div>
+          </td>
+          <td width="25%" align="center" style="padding:12px 4px;">
+            <div style="font-size:28px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">20+</div>
+            <div style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:4px;">Ricerche al giorno</div>
+          </td>
+          <td width="25%" align="center" style="padding:12px 4px;">
+            <div style="font-size:28px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">450+</div>
+            <div style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-top:4px;">Fonti monitorate</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- COSA PUOI FARE -->
+  <tr>
+    <td style="padding:28px 32px;background:#f5f0e8;border-bottom:1px solid #d8d0c0;">
+      <p style="margin:0 0 20px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Cosa puoi costruire con IdeaSmart</p>
+      
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+        <tr>
+          <td style="padding:16px;background:#ffffff;border:1px solid #e8e0d0;border-radius:4px;">
+            <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#128240; Il tuo giornale verticale</p>
+            <p style="margin:0;font-size:13px;line-height:1.7;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+              Scegli il settore &mdash; AI, fintech, biotech, real estate, sport &mdash; e lancia una testata specializzata. La piattaforma genera notizie, editoriali, ricerche e newsletter ogni giorno, automaticamente.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+        <tr>
+          <td style="padding:16px;background:#ffffff;border:1px solid #e8e0d0;border-radius:4px;">
+            <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#128200; Intelligence per il tuo business</p>
+            <p style="margin:0;font-size:13px;line-height:1.7;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+              Monitora competitor, trend di mercato, round di investimento e M&A. Ricevi briefing quotidiani personalizzati con dati verificati e analisi pronte per il board.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="padding:16px;background:#ffffff;border:1px solid #e8e0d0;border-radius:4px;">
+            <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#128231; Newsletter che si scrivono da sole</p>
+            <p style="margin:0;font-size:13px;line-height:1.7;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+              Costruisci un'audience con newsletter professionali generate, verificate e inviate automaticamente. Con distribuzione multi-canale: email, sito web, LinkedIn.
+            </p>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
   <!-- 8 AGENTI AI -->
   <tr>
-    <td style="padding:24px 32px;background:#f5f0e8;border-bottom:1px solid #d8d0c0;">
-      <p style="margin:0 0 16px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; 8 agenti AI specializzati</p>
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>01</strong> Market Scout &mdash; <span style="color:#6b7280;">4.000+ fonti/giorno</span></p>
-          </td>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>02</strong> Data Verifier &mdash; <span style="color:#6b7280;">Incrocio fonti</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>03</strong> Research Writer &mdash; <span style="color:#6b7280;">Articoli strutturati</span></p>
-          </td>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>04</strong> Senior Analyst &mdash; <span style="color:#6b7280;">Analisi mercato</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>05</strong> Fact Checker &mdash; <span style="color:#6b7280;">Verifica fonti</span></p>
-          </td>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>06</strong> Publisher &mdash; <span style="color:#6b7280;">Distribuzione auto</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>07</strong> Social Editor &mdash; <span style="color:#6b7280;">Key insight social</span></p>
-          </td>
-          <td width="50%" style="padding:6px 0;vertical-align:top;">
-            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong>08</strong> Newsletter Curator &mdash; <span style="color:#6b7280;">Invio newsletter</span></p>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- PIANI -->
-  <tr>
     <td style="padding:28px 32px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
-      <p style="margin:0 0 20px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Scegli la tua redazione</p>
-
-      <!-- MINI -->
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-        <tr>
-          <td style="padding:16px;border:1px solid #e8e0d0;background:#f9f7f4;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td>
-                  <span style="font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">MINI</span>
-                </td>
-                <td align="right">
-                  <span style="font-size:24px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">&euro;2.500</span>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:8px 0 0;font-size:12px;color:#6b7280;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">4 agenti AI &middot; 1 canale tematico &middot; Setup fonti e training editoriale</p>
-          </td>
-        </tr>
-      </table>
-
-      <!-- MEDIUM — evidenziato -->
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-        <tr>
-          <td style="padding:16px;border:2px solid #0a1628;background:#f5f0e8;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td>
-                  <span style="font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">MEDIUM</span>
-                  <span style="font-size:8px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#ffffff;background:#dc2626;padding:2px 6px;margin-left:8px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">PI&Ugrave; SCELTO</span>
-                </td>
-                <td align="right">
-                  <span style="font-size:24px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">&euro;5.000</span>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:8px 0 0;font-size:12px;color:#6b7280;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">8 agenti AI &middot; 3 canali tematici &middot; Newsletter automatica &middot; Setup e training</p>
-          </td>
-        </tr>
-      </table>
-
-      <!-- MAXI -->
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-        <tr>
-          <td style="padding:16px;border:1px solid #e8e0d0;background:#f9f7f4;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td>
-                  <span style="font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">MAXI</span>
-                </td>
-                <td align="right">
-                  <span style="font-size:24px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">&euro;7.500</span>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:8px 0 0;font-size:12px;color:#6b7280;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">12 agenti AI &middot; 6 canali tematici &middot; Newsletter automatica &middot; Setup e training</p>
-          </td>
-        </tr>
-      </table>
-
-      <!-- CUSTOM -->
+      <p style="margin:0 0 16px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; La tua redazione: 8 agenti AI specializzati</p>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="padding:16px;background:#0a0a0a;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td>
-                  <span style="font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">CUSTOM</span>
-                </td>
-                <td align="right">
-                  <span style="font-size:20px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;">Parliamone</span>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:8px 0 0;font-size:12px;color:rgba(255,255,255,0.5);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Agenti e canali su misura &middot; Integrazioni personalizzate &middot; SLA dedicato</p>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">01</strong> &nbsp;Market Scout &mdash; <span style="color:#6b7280;">4.000+ fonti/giorno</span></p>
+          </td>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">02</strong> &nbsp;Data Verifier &mdash; <span style="color:#6b7280;">Incrocio multi-fonte</span></p>
           </td>
         </tr>
-      </table>
-
-      <p style="margin:16px 0 0;font-size:11px;color:#9ca3af;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        Tutti i piani: setup piattaforma + personalizzazione editoriale + training AI &middot; Revenue share 30%
-      </p>
-    </td>
-  </tr>
-
-  <!-- PROVA SOCIALE -->
-  <tr>
-    <td style="padding:24px 32px;background:#f5f0e8;border-bottom:1px solid #d8d0c0;">
-      <p style="margin:0 0 12px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Gi&agrave; in produzione</p>
-      <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        <strong style="color:#0a1628;">IDEASMART</strong> stessa &egrave; la prova: una testata con 3 canali tematici, oltre <strong style="color:#0a1628;">6.900 lettori</strong>, 20+ ricerche originali al giorno, newsletter trisettimanale e post LinkedIn automatici. <strong style="color:#0a1628;">Tutto gestito dalla piattaforma, con un team di 1 persona.</strong>
-      </p>
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td width="25%" align="center" style="padding:8px 0;">
-            <span style="font-size:22px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">6.900+</span><br>
-            <span style="font-size:8px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Lettori</span>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">03</strong> &nbsp;Research Writer &mdash; <span style="color:#6b7280;">Articoli strutturati</span></p>
           </td>
-          <td width="25%" align="center" style="padding:8px 0;">
-            <span style="font-size:22px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">3</span><br>
-            <span style="font-size:8px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Canali</span>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">04</strong> &nbsp;Senior Analyst &mdash; <span style="color:#6b7280;">Analisi di mercato</span></p>
           </td>
-          <td width="25%" align="center" style="padding:8px 0;">
-            <span style="font-size:22px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">20+</span><br>
-            <span style="font-size:8px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Ricerche/giorno</span>
+        </tr>
+        <tr>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">05</strong> &nbsp;Fact Checker &mdash; <span style="color:#6b7280;">Verifica e VERIFY&trade;</span></p>
           </td>
-          <td width="25%" align="center" style="padding:8px 0;">
-            <span style="font-size:22px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;">1</span><br>
-            <span style="font-size:8px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Persona</span>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">06</strong> &nbsp;Publisher &mdash; <span style="color:#6b7280;">Distribuzione automatica</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">07</strong> &nbsp;Social Editor &mdash; <span style="color:#6b7280;">Post LinkedIn e social</span></p>
+          </td>
+          <td width="50%" style="padding:8px 0;vertical-align:top;">
+            <p style="margin:0;font-size:12px;color:#0a1628;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;"><strong style="color:#00b4a0;">08</strong> &nbsp;Newsletter Curator &mdash; <span style="color:#6b7280;">Invio automatico</span></p>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- CTA -->
+  <!-- VERIFY -->
   <tr>
-    <td style="background:#0a0a0a;padding:36px 32px;text-align:center;">
-      <h2 style="margin:0 0 12px;font-size:24px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;line-height:1.2;">
-        Il giornalismo sta cambiando.<br>
-        <span style="color:rgba(255,255,255,0.3);">Puoi guidarlo o subirlo.</span>
-      </h2>
-      <p style="margin:0 0 24px;font-size:14px;color:rgba(255,255,255,0.5);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        Prenota una demo e scopri come lanciare la tua testata agentica in pochi giorni.
-      </p>
-      <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+    <td style="padding:24px 32px;background:#0a1628;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="background:#ffffff;padding:14px 32px;">
-            <a href="mailto:info@ideasmart.ai?subject=Demo%20Piattaforma%20Giornalismo%20Agentico" style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a0a;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+          <td>
+            <p style="margin:0 0 8px;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Tecnologia proprietaria</p>
+            <p style="margin:0 0 12px;font-size:22px;font-weight:900;color:#00b4a0;font-family:Georgia,'Times New Roman',serif;">VERIFY&trade;</p>
+            <p style="margin:0;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.65);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+              Ogni notizia viene analizzata da un protocollo di validazione agentica multi-fonte. Il sistema misura affidabilit&agrave;, coerenza fattuale e obiettivit&agrave;, genera un <strong style="color:#ffffff;">Verification Report</strong> e lo sigilla con un <strong style="color:#ffffff;">hash crittografico immutabile</strong> &mdash; tracciabile e verificabile nel tempo.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- CTA PRINCIPALE -->
+  <tr>
+    <td align="center" style="padding:36px 32px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
+      <p style="margin:0 0 8px;font-size:22px;font-weight:900;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.3;">
+        Pronto a lanciare la tua testata?
+      </p>
+      <p style="margin:0 0 24px;font-size:14px;color:#6b7280;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+        Prenota una demo gratuita e scopri come costruire il tuo giornale con l'AI.
+      </p>
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background:#0a1628;border-radius:4px;">
+            <a href="mailto:info@ideasmart.ai?subject=Demo%20IdeaSmart%20%E2%80%94%20Redazione%20Agentica&body=Ciao%2C%20vorrei%20prenotare%20una%20demo%20per%20scoprire%20come%20creare%20la%20mia%20redazione%20agentica%20con%20IdeaSmart." style="display:inline-block;padding:14px 36px;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
               Prenota una demo &rarr;
             </a>
           </td>
         </tr>
       </table>
-      <table cellpadding="0" cellspacing="0" border="0" style="margin:12px auto 0;">
-        <tr>
-          <td style="border:1px solid rgba(255,255,255,0.3);padding:12px 28px;">
-            <a href="${baseUrl}/chi-siamo" style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-              Scopri tutti i dettagli
-            </a>
-          </td>
-        </tr>
-      </table>
-      <p style="margin:20px 0 0;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-        Setup in pochi giorni &middot; Nessun vincolo &middot; Revenue share
+      <p style="margin:16px 0 0;font-size:12px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+        oppure <a href="${baseUrl}/chi-siamo" style="color:#00b4a0;text-decoration:underline;">scopri tutti i dettagli</a>
+      </p>
+    </td>
+  </tr>
+
+  <!-- SOCIAL PROOF -->
+  <tr>
+    <td style="padding:24px 32px;background:#f5f0e8;border-bottom:1px solid #d8d0c0;">
+      <p style="margin:0;font-size:13px;line-height:1.7;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-align:center;font-style:italic;">
+        &ldquo;IdeaSmart dimostra che una sola persona, con la giusta tecnologia, pu&ograve; gestire una testata che normalmente richiederebbe una redazione di 10 giornalisti.&rdquo;
+      </p>
+      <p style="margin:8px 0 0;font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-align:center;">
+        &mdash; 6.900+ lettori attivi &middot; 3 newsletter settimanali &middot; 1 persona nel team
       </p>
     </td>
   </tr>
 
   <!-- FOOTER -->
   <tr>
-    <td style="padding:20px 32px;background:#f5f0e8;border-top:1px solid #d8d0c0;">
+    <td style="padding:20px 32px;background:#0a1628;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td style="font-size:10px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-            &copy; ${year} IDEASMART &middot; AI &middot; Startup &middot; Venture Capital
+          <td style="font-size:11px;color:rgba(255,255,255,0.4);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+            &copy; ${year} IdeaSmart &middot; AI &middot; Startup &middot; Venture Capital
           </td>
-          <td align="right" style="font-size:10px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-            <a href="${unsubscribeUrl}" style="color:#9ca3af;text-decoration:underline;">Disiscriviti</a>
+          <td align="right" style="font-size:11px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+            <a href="${baseUrl}" style="color:rgba(255,255,255,0.4);text-decoration:none;">ideasmart.ai</a>
           </td>
         </tr>
       </table>
+      ${unsubscribeUrl ? `
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
+        <tr>
+          <td align="center" style="font-size:10px;color:rgba(255,255,255,0.25);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+            <a href="${unsubscribeUrl}" style="color:rgba(255,255,255,0.35);text-decoration:underline;">Disiscriviti dalla newsletter</a>
+          </td>
+        </tr>
+      </table>` : ''}
     </td>
   </tr>
 
 </table>
+<!-- /CONTAINER -->
+
 </td></tr>
 </table>
+<!-- /WRAPPER -->
+
 </body>
 </html>`;
 }
 
-// ── Invio ──
-const BATCH_SIZE = 50; // SendGrid max 1000 personalizations, usiamo 50 per batch
-const subject = "Lancia il tuo giornale con l'AI agentica — Ideasmart";
+// ── Invio con SendGrid ──
+const BATCH_SIZE = 100;
+const DELAY_MS = 1500;
 
-let sent = 0;
-let errors = 0;
-
-for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
-  const batch = recipients.slice(i, i + BATCH_SIZE);
-
-  const personalizations = batch.map(email => ({
-    to: [{ email }],
-    // Ogni destinatario ha il proprio link di disiscrizione
-  }));
-
-  const unsubscribeUrl = `${baseUrl}/unsubscribe`;
-  const html = buildPromoHtml(unsubscribeUrl);
-
-  const body = {
-    personalizations,
-    from: { email: fromEmail, name: fromName },
-    subject,
-    content: [
-      { type: "text/plain", value: `Il primo giornale che funziona anche senza una redazione. Costruisci e scala una testata con l'AI agentica. 4.000+ fonti certificate, 8 agenti AI specializzati, tecnologia VERIFY. Piani da €2.500. Prenota una demo: info@ideasmart.ai. Scopri di più: ${baseUrl}/chi-siamo` },
-      { type: "text/html", value: html }
-    ]
-  };
-
-  try {
-    const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    });
-
-    if (res.status === 202) {
-      sent += batch.length;
-      console.log(`✅ Batch ${Math.floor(i/BATCH_SIZE)+1}: ${batch.length} email inviate (totale: ${sent})`);
-    } else {
-      const err = await res.text();
-      errors += batch.length;
-      console.error(`❌ Batch ${Math.floor(i/BATCH_SIZE)+1} errore ${res.status}:`, err);
-    }
-  } catch (err) {
-    errors += batch.length;
-    console.error(`❌ Batch ${Math.floor(i/BATCH_SIZE)+1} errore rete:`, err.message);
-  }
-
-  // Pausa tra i batch per rispettare i rate limit SendGrid
-  if (i + BATCH_SIZE < recipients.length) {
-    await new Promise(r => setTimeout(r, 1000));
-  }
+async function sendViaApi(to, html) {
+  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: to }] }],
+      from: { email: fromEmail, name: fromName },
+      subject: "Lancia il tuo giornale con l'AI — IdeaSmart",
+      content: [{ type: "text/html", value: html }],
+    }),
+  });
+  return res.status >= 200 && res.status < 300;
 }
 
-console.log(`\n📊 Riepilogo: ${sent} inviate, ${errors} errori su ${recipients.length} totali`);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+if (isTest) {
+  const html = buildPromoHtml("");
+  const ok = await sendViaApi(testEmail, html);
+  console.log(ok ? `✅ Test inviato a ${testEmail}` : `❌ Errore invio a ${testEmail}`);
+} else {
+  let sent = 0, errors = 0;
+  for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
+    const batch = subscribers.slice(i, i + BATCH_SIZE);
+    for (const sub of batch) {
+      const unsubUrl = sub.token ? `${baseUrl}/api/unsubscribe?token=${sub.token}` : "";
+      const html = buildPromoHtml(unsubUrl);
+      const ok = await sendViaApi(sub.email, html);
+      if (ok) sent++; else errors++;
+    }
+    console.log(`📤 Batch ${Math.floor(i / BATCH_SIZE) + 1}: ${sent} inviati, ${errors} errori`);
+    if (i + BATCH_SIZE < subscribers.length) await sleep(DELAY_MS);
+  }
+  console.log(`\n✅ Invio completato: ${sent} inviati, ${errors} errori su ${subscribers.length} totali`);
+}
