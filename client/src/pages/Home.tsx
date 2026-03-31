@@ -668,6 +668,46 @@ export default function Home() {
             );
           })()}
 
+          {/* ── EDITORIALE IN EVIDENZA — Venture Studio Index ── */}
+          <div className="mt-6 mb-4">
+            <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#d62828" }}>
+              <div className="flex items-center gap-2">
+                <div className="h-[3px] w-6" style={{ background: "#d62828" }} />
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>Analisi IdeaSmart</h2>
+              </div>
+              <Link href="/editoriale/venture-studio-index">
+                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'analisi completa →</span>
+              </Link>
+            </div>
+            <Link href="/editoriale/venture-studio-index">
+              <article className="group mt-3 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-5 p-5 border-l-4 hover:bg-[#fdf6f6] transition-colors cursor-pointer" style={{ borderColor: "#d62828", background: "rgba(214,40,40,0.02)" }}>
+                <div className="flex-1">
+                  <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#d62828", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Venture Studio & Company Building</span>
+                  <h3 className="text-[22px] sm:text-[28px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                    Venture Studio Index: il Framework che Cambia le Regole della Due Diligence
+                  </h3>
+                  <p className="mt-2 text-[14px] leading-relaxed line-clamp-3" style={{ color: "rgba(26,26,46,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                    Con un IRR medio del 60% contro il 33% del top-quartile VC, i Venture Studio sono l'asset class più performante dell'early-stage. Il Venture Studio Index del Venture Studio Forum introduce il primo framework standardizzato per la due diligence.
+                  </p>
+                  <div className="mt-3 flex items-center gap-4">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+                        <span className="text-white text-[8px] font-bold">AL</span>
+                      </div>
+                      <span className="text-[11px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Adrian Lenice</span>
+                      <span className="text-[10px] text-[#1a1a1a]/40">·</span>
+                      <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Direttore Editoriale</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'analisi →</span>
+                  </div>
+                </div>
+                <div className="hidden md:block w-[300px] h-[180px] overflow-hidden flex-shrink-0">
+                  <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/vsi_hero_4987fe70.jpg" alt="Venture Studio Index" className="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </article>
+            </Link>
+          </div>
+
           {/* ══════════════════════════════════════════════════════════════════
               PRIMA PAGINA — Layout giornale
               [Colonna principale 70%] | [Sidebar notizie 30%]

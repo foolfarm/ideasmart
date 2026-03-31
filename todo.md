@@ -2170,3 +2170,6 @@
 - [x] Aggiungere route dedicata in App.tsx (/editoriale/venture-studio-index)
 - [x] Stile coerente con gli editoriali esistenti di IdeaSmart
 - [x] Autore: Adrian Lenice, Direttore Editoriale
+
+## Task (31 Mar 2026 — Editoriale VSI in Home)
+- [x] Aggiungere editoriale Venture Studio Index nella Home page come nuovo editoriale in evidenza
