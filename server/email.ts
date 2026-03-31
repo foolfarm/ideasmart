@@ -11,7 +11,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
   const apiKey = process.env.SENDGRID_API_KEY;
   // Mittente ufficiale IDEASMART — verificare info@ideasmart.ai su SendGrid Sender Authentication
   const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@ideasmart.ai";
-  const fromName = process.env.SENDGRID_FROM_NAME || "IDEASMART";
+  const fromName = process.env.SENDGRID_FROM_NAME || "Ideasmart Daily";
 
   if (!apiKey) {
     console.error("[Email] SENDGRID_API_KEY not set");

@@ -14,7 +14,7 @@ interface SendGridPayload {
 async function sendEmail({ to, subject, html, text }: SendGridPayload): Promise<void> {
   const apiKey = process.env.SENDGRID_API_KEY || ENV.sendgridApiKey;
   const fromEmail = process.env.SENDGRID_FROM_EMAIL || ENV.sendgridFromEmail || "noreply@ideasmart.ai";
-  const fromName = "IDEASMART";
+  const fromName = "Ideasmart Daily";
 
   if (!apiKey) {
     console.warn("[Mailer] SENDGRID_API_KEY non configurata — email non inviata a", to);

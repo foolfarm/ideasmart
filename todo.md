@@ -2012,3 +2012,7 @@
 - [x] Aggiornare verifica giornaliera LinkedIn per i nuovi 4 slot
 - [x] Aggiornare invalidazione cache dopo LinkedIn
 - [x] Aggiornare test schedulerManager e linkedinPublisher
+
+## Cambio nome mittente newsletter (31 Mar 2026)
+
+- [x] Cambiare il nome mittente di tutte le newsletter in "Ideasmart Daily"
