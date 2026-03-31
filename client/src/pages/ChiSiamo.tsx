@@ -49,6 +49,34 @@ const AGENTS = [
   { name: "Newsletter Curator", desc: "Seleziona e invia le newsletter ai lettori", num: "08" },
 ];
 
+/* ── Esempi Agent Giornalisti ── */
+const AGENT_EXAMPLES = [
+  {
+    icon: "🏦",
+    name: 'Agent "Finanza"',
+    segue: "mercati, banche, fintech, regolamentazione",
+    fonti: "Il Sole 24 Ore, FT, Reuters, BCE, Consob",
+    output: "3-5 articoli/giorno sul canale Finanza",
+    tone: "formale, dati-driven, analisi tecnica",
+  },
+  {
+    icon: "🤖",
+    name: 'Agent "Tech & AI"',
+    segue: "intelligenza artificiale, startup tech, innovazione",
+    fonti: "TechCrunch, Wired, Agenda Digitale, The Verge",
+    output: "4-6 articoli/giorno sul canale Tech",
+    tone: "informale, accessibile, orientato al business",
+  },
+  {
+    icon: "⚽",
+    name: 'Agent "Sport Business"',
+    segue: "economia dello sport, deal, sponsorship, diritti TV",
+    fonti: "SportEconomy, Calcio e Finanza, ESPN Business",
+    output: "3-4 articoli/giorno sul canale Sport",
+    tone: "colloquiale, dati e numeri, analisi dei deal",
+  },
+];
+
 /* ── FAQ Data ── */
 const FAQ_ITEMS = [
   {
@@ -61,7 +89,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Quali sono i modelli di redazione disponibili?",
-    a: "Offriamo 4 piani: Single Vertical (4 agenti, fino a 3 canali, €3.000 setup + €500/mese), Multi-Channel (8 agenti, fino a 6 canali + newsletter + paywall, €5.000 setup + €750/mese), Full Newsroom (12 agenti, canali illimitati + analytics avanzato + account manager, €7.500 setup + €1.000/mese) e Custom/Enterprise (su misura). Per Multi-Channel e Full Newsroom è disponibile l'alternativa revenue share al 20%. Nessun costo nascosto."
+    a: "Offriamo 4 piani: Single Vertical (4 Agent Giornalisti + 4 agenti di supporto, 1 canale, €2.500 setup + €500/mese), Multi-Channel (8 Agent Giornalisti + 4 agenti di supporto, fino a 6 canali + newsletter + paywall, €5.000 setup + €750/mese), Full Newsroom (12 Agent Giornalisti + 4 agenti di supporto, canali illimitati + analytics avanzato + account manager, €7.500 setup + €1.000/mese) e Custom/Enterprise (su misura). Per Multi-Channel e Full Newsroom è disponibile l'alternativa revenue share al 20%. Nessun costo nascosto."
   },
   {
     q: "Quanto tempo serve per lanciare una testata?",
@@ -259,7 +287,7 @@ export default function ChiSiamo() {
             <span className="text-[#0a0a0a]/25">di giornalismo agentico.</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
-            Una redazione completa, composta da 8 agenti AI specializzati, che lavorano insieme come un vero team editoriale.
+            Una redazione completa di Agent Giornalisti e agenti di supporto che fanno quello che fa un team editoriale: monitorano le fonti, verificano i dati, scrivono gli articoli, li pubblicano e li distribuiscono. Tu scegli la linea editoriale. Loro eseguono.
           </p>
 
           {/* Grid agenti */}
@@ -414,6 +442,121 @@ export default function ChiSiamo() {
         <Divider />
 
         {/* ═══════════════════════════════════════════════════════════════════
+            AGENT GIORNALISTI
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section id="agent-giornalisti">
+          <Label>La tua redazione</Label>
+          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
+            Ogni Agent è un giornalista.<br />
+            <span className="text-[#0a0a0a]/25">Tu decidi di cosa si occupa.</span>
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
+            Un Agent Giornalista è un membro della tua redazione AI: lo configuri su un settore, gli assegni le fonti, e lui ogni giorno monitora, scrive e pubblica. Come un giornalista vero — solo che lavora 24/7 e non va mai in ferie.
+          </p>
+
+          {/* 3 esempi Agent */}
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-0 border border-[#0a0a0a]/10">
+            {AGENT_EXAMPLES.map((a, i) => (
+              <div key={i} className="p-8" style={{ borderRight: i < 2 ? "1px solid rgba(10,10,10,0.1)" : "none" }}>
+                <span className="text-3xl">{a.icon}</span>
+                <h3 className="mt-3 text-lg font-bold text-[#0a0a0a]">{a.name}</h3>
+                <div className="mt-4 space-y-2">
+                  <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Segue:</strong> {a.segue}</p>
+                  <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Fonti:</strong> {a.fonti}</p>
+                  <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Output:</strong> {a.output}</p>
+                  <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Tone:</strong> {a.tone}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-10 text-center text-base leading-relaxed text-[#0a0a0a]/55">
+            Ogni Agent Giornalista lavora in autonomia sul suo settore.<br />
+            Più Agent hai, più settori copri, più articoli produci.
+          </p>
+
+          {/* Contatori Agent */}
+          <div className="mt-8 grid grid-cols-3 gap-0 border border-[#0a0a0a]/10 max-w-xl mx-auto">
+            {[
+              { num: "4 Agent", sub: "10-15 articoli/giorno" },
+              { num: "8 Agent", sub: "20-30 articoli/giorno" },
+              { num: "12 Agent", sub: "Senza limiti" },
+            ].map((c, i) => (
+              <div key={i} className="py-6 text-center" style={{ borderRight: i < 2 ? "1px solid rgba(10,10,10,0.1)" : "none", background: i === 1 ? "rgba(10,10,10,0.03)" : "transparent" }}>
+                <div className="text-2xl font-black text-[#0a0a0a]">{c.num}</div>
+                <div className="text-xs text-[#0a0a0a]/40 mt-1">{c.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tabella agenti per piano */}
+          <div className="mt-12 overflow-x-auto">
+            <table className="w-full text-left" style={{ borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #0a0a0a' }}>
+                  <th className="py-4 pr-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}></th>
+                  <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-center" style={{ fontFamily: FONT }}>Single Vertical</th>
+                  <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-center" style={{ fontFamily: FONT, color: '#dc2626' }}>Multi-Channel</th>
+                  <th className="py-4 pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-center" style={{ fontFamily: FONT }}>Full Newsroom</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
+                  <td className="py-3 pr-4 text-sm font-bold text-[#0a0a0a]">Agent Giornalisti</td>
+                  <td className="py-3 px-4 text-sm text-[#0a0a0a]/70 text-center">4</td>
+                  <td className="py-3 px-4 text-sm font-bold text-center" style={{ color: '#dc2626' }}>8</td>
+                  <td className="py-3 pl-4 text-sm text-[#0a0a0a]/70 text-center">12</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
+                  <td className="py-3 pr-4 text-xs text-[#0a0a0a]/40">(configurabili per settore)</td>
+                  <td className="py-3 px-4 text-xs text-[#0a0a0a]/50 text-center">1 verticale</td>
+                  <td className="py-3 px-4 text-xs text-[#0a0a0a]/50 text-center">fino a 6 canali</td>
+                  <td className="py-3 pl-4 text-xs text-[#0a0a0a]/50 text-center">canali illimitati</td>
+                </tr>
+                <tr style={{ borderTop: '2px solid #0a0a0a' }}>
+                  <td className="py-4 pr-4 text-sm font-black text-[#0a0a0a]">Totale agenti</td>
+                  <td className="py-4 px-4 text-sm font-black text-[#0a0a0a] text-center">4+4 = 8</td>
+                  <td className="py-4 px-4 text-sm font-black text-center" style={{ color: '#dc2626' }}>8+4 = 12</td>
+                  <td className="py-4 pl-4 text-sm font-black text-[#0a0a0a] text-center">12+4 = 16</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Agenti di supporto */}
+          <div className="mt-10 border border-[#0a0a0a]/10 p-8" style={{ background: 'rgba(10,10,10,0.02)' }}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30 mb-4">Agenti di supporto inclusi in tutti i piani</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: "✅", name: "Fact Checker", desc: "Verifica ogni notizia su fonti multiple (Verify™)" },
+                { icon: "📢", name: "Publisher", desc: "Pubblica e impagina in automatico" },
+                { icon: "📧", name: "Newsletter Curator", desc: "Seleziona e invia le newsletter" },
+                { icon: "📱", name: "Social Editor", desc: "Genera post per LinkedIn, Twitter, Telegram" },
+              ].map((s, i) => (
+                <div key={i} className="text-center">
+                  <span className="text-xl">{s.icon}</span>
+                  <p className="mt-2 text-sm font-bold text-[#0a0a0a]">{s.name}</p>
+                  <p className="mt-1 text-xs text-[#0a0a0a]/50">{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-6 text-center text-sm text-[#0a0a0a]/45">
+            Gli Agent Giornalisti sono quelli che <strong className="text-[#0a0a0a]">TU</strong> configuri: scegli il settore, le fonti, il tono, la frequenza.<br />
+            Gli agenti di supporto lavorano in automatico su tutti i contenuti prodotti.
+          </p>
+
+          <div className="mt-8 text-center">
+            <Link href="/offertacommerciale" className="inline-block px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: '#dc2626', borderRadius: '0' }}>
+              Scopri i piani e i prezzi →
+            </Link>
+          </div>
+        </Section>
+
+        <Divider />
+
+        {/* ═══════════════════════════════════════════════════════════════════
             MODELLO — 3 PIANI + CUSTOM
         ═══════════════════════════════════════════════════════════════════ */}
         <Section id="pricing">
@@ -431,8 +574,8 @@ export default function ChiSiamo() {
             <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Single Vertical</span>
               <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€3.000</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">setup</span>
+                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€2.500</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
               </div>
               <div className="mt-1">
                 <span className="text-xl font-black text-[#0a0a0a]">+ €500</span>
@@ -440,14 +583,15 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-5 space-y-2.5">
                 {[
-                  "1 testata su dominio dedicato",
-                  "Fino a 3 canali tematici",
-                  "4 agenti AI configurati sulle tue fonti",
-                  "Setup completo: fonti, tone of voice, regole editoriali",
-                  "Training editoriale (chat redazionale)",
+                  "4 Agent Giornalisti configurabili per settore",
+                  "+ 4 agenti di supporto (Fact Checker, Publisher, Newsletter Curator, Social Editor)",
+                  "1 canale tematico",
                   "10-15 articoli AI/giorno",
                   "1M token/mese inclusi",
+                  "Setup completo: fonti, tone of voice, regole editoriali",
+                  "Training editoriale (come usare la chat redazionale)",
                   "Newsletter automatica settimanale",
+                  "Dominio dedicato",
                   "Manutenzione e aggiornamento agenti mensile",
                   "Supporto email",
                 ].map((item, i) => (
@@ -463,7 +607,7 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
                 <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€9.000</strong>/anno</p>
+                <p className="text-sm text-[#0a0a0a]/70">Anno 1: <strong className="text-[#0a0a0a]">€8.500</strong> · Anno 2+: <strong className="text-[#0a0a0a]">€6.000</strong>/anno</p>
                 <p className="text-xs text-[#0a0a0a]/40 mt-1">Un giornalista part-time costa €25-30k/anno</p>
               </div>
             </div>
@@ -475,7 +619,7 @@ export default function ChiSiamo() {
               <span className="ml-3 text-[9px] font-black uppercase tracking-[0.15em] text-white px-2 py-0.5" style={{ background: '#dc2626' }}>Più scelto</span>
               <div className="mt-4">
                 <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€5.000</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">setup</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
               </div>
               <div className="mt-1">
                 <span className="text-xl font-black text-[#0a0a0a]">+ €750</span>
@@ -483,9 +627,9 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-5 space-y-2.5">
                 {[
-                  "1 testata su dominio dedicato",
+                  "8 Agent Giornalisti configurabili per settore",
+                  "+ 4 agenti di supporto",
                   "Fino a 6 canali tematici",
-                  "8 agenti AI configurati",
                   "Setup completo con sessione strategica (2h)",
                   "Training editoriale + 1 revisione mensile",
                   "20-30 articoli AI/giorno",
@@ -507,7 +651,7 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
                 <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€14.000</strong>/anno</p>
+                <p className="text-sm text-[#0a0a0a]/70">Anno 1: <strong className="text-[#0a0a0a]">€14.000</strong> · Anno 2+: <strong className="text-[#0a0a0a]">€9.000</strong>/anno</p>
                 <p className="text-xs text-[#0a0a0a]/40 mt-1">2 giornalisti costano €70-90k/anno</p>
               </div>
             </div>
@@ -517,7 +661,7 @@ export default function ChiSiamo() {
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Full Newsroom</span>
               <div className="mt-4">
                 <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€7.500</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">setup</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
               </div>
               <div className="mt-1">
                 <span className="text-xl font-black text-[#0a0a0a]">+ €1.000</span>
@@ -525,9 +669,9 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-5 space-y-2.5">
                 {[
-                  "1 testata su dominio dedicato (o più testate)",
+                  "12 Agent Giornalisti configurabili per settore",
+                  "+ 4 agenti di supporto",
                   "Canali illimitati",
-                  "12 agenti AI configurati",
                   "Setup completo con sessione strategica (4h) + audit fonti + piano editoriale primo mese",
                   "Training editoriale + 2 revisioni mensili",
                   "Articoli illimitati",
@@ -551,7 +695,7 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
                 <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€19.500</strong>/anno</p>
+                <p className="text-sm text-[#0a0a0a]/70">Anno 1: <strong className="text-[#0a0a0a]">€19.500</strong> · Anno 2+: <strong className="text-[#0a0a0a]">€12.000</strong>/anno</p>
                 <p className="text-xs text-[#0a0a0a]/40 mt-1">Una redazione di 3-4 persone costa €150-200k/anno</p>
               </div>
             </div>
@@ -564,12 +708,14 @@ export default function ChiSiamo() {
               </div>
               <div className="mt-6 space-y-2.5">
                 {[
-                  "Multi-testata",
-                  "Integrazioni proprietarie",
-                  "SLA dedicato",
-                  "White-label",
-                  "Agenti e canali su misura",
-                  "Supporto enterprise",
+                  "Agent Giornalisti su misura (anche 20+)",
+                  "Canali e fonti illimitate",
+                  "Token budget personalizzato",
+                  "Multi-testata (più giornali dalla stessa piattaforma)",
+                  "Integrazioni personalizzate (CMS, CRM, ERP)",
+                  "SLA e supporto dedicato",
+                  "Team multi-editor",
+                  "White-label completo",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2">
                     <span className="text-white font-bold text-xs mt-0.5 shrink-0">→</span>
@@ -628,11 +774,11 @@ export default function ChiSiamo() {
           <div className="mt-16">
             <Label>Confronto</Label>
             <h3 className="text-2xl md:text-4xl font-black leading-tight text-[#0a0a0a] mb-4">
-              Fino a 10 volte meno<br />
+              Fino a 17 volte meno<br />
               <span className="text-[#0a0a0a]/25">di una redazione tradizionale.</span>
             </h3>
             <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mb-10">
-              Una redazione tradizionale con giornalisti, editor, fact-checker e social media manager costa tra €80.000 e €200.000 all'anno. Con Ideasmart ottieni lo stesso output a una frazione del costo.
+              Una redazione tradizionale costa tra €80.000 e €580.000 all'anno in stipendi, strumenti e overhead. Con IdeaSmart ottieni lo stesso output — o di più — a una frazione del costo.
             </p>
 
             {/* Tabella confronto */}
@@ -652,8 +798,9 @@ export default function ChiSiamo() {
                     { voce: "Editor / Caporedattore", trad: "€35.000 — €50.000", idea: "Incluso", saving: "100%" },
                     { voce: "Fact-checker", trad: "€25.000 — €35.000", idea: "Incluso (Verify)", saving: "100%" },
                     { voce: "Social media manager", trad: "€20.000 — €30.000", idea: "Incluso", saving: "100%" },
+                    { voce: "Newsletter manager", trad: "€15.000 — €20.000", idea: "Incluso", saving: "100%" },
                     { voce: "Strumenti e software", trad: "€5.000 — €10.000", idea: "Incluso", saving: "100%" },
-                    { voce: "Newsletter e distribuzione", trad: "€3.000 — €8.000", idea: "Incluso", saving: "100%" },
+                    { voce: "Hosting e infrastruttura", trad: "€3.000 — €8.000", idea: "Incluso", saving: "100%" },
                   ].map((row, i) => (
                     <tr key={i} style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
                       <td className="py-3 pr-4 text-sm font-bold text-[#0a0a0a]">{row.voce}</td>
@@ -664,9 +811,9 @@ export default function ChiSiamo() {
                   ))}
                   <tr style={{ borderTop: '2px solid #0a0a0a' }}>
                     <td className="py-4 pr-4 text-base font-black text-[#0a0a0a]">Totale annuo</td>
-                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a]/50 text-right">€148.000 — €223.000</td>
-                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a] text-right">€14.000</td>
-                    <td className="py-4 pl-4 text-base font-black text-right" style={{ color: '#dc2626' }}>fino a 16x meno</td>
+                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a]/50 text-right">€163.000 — €243.000</td>
+                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a] text-right">da €8.500</td>
+                    <td className="py-4 pl-4 text-base font-black text-right" style={{ color: '#dc2626' }}>fino a 17x meno</td>
                   </tr>
                 </tbody>
               </table>
@@ -675,7 +822,7 @@ export default function ChiSiamo() {
             <div className="mt-10 p-8 border-l-4 border-[#0a0a0a]" style={{ background: 'rgba(10,10,10,0.04)' }}>
               <p className="text-xl md:text-2xl font-bold leading-snug text-[#0a0a0a]">
                 Una redazione di 3-4 persone costa oltre €150.000/anno.<br />
-                <span className="text-[#0a0a0a]/40">Con Ideasmart, da €9.000/anno. Stesso output, fino a 10x meno.</span>
+                <span className="text-[#0a0a0a]/40">Con IdeaSmart, da €8.500/anno. Stesso output, fino a 17x meno.</span>
               </p>
             </div>
           </div>

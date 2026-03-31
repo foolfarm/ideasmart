@@ -99,7 +99,7 @@ function Router() {
         <Route path="/:section/analisi/:id" component={MarketAnalysisDetail} />
         <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
         <Route path="/chi-siamo" component={ChiSiamo} />
-        <Route path="/per-giornalisti" component={PerGiornalisti} />
+        <Route path="/offertacommerciale" component={PerGiornalisti} />
         <Route path="/tecnologia" component={Tecnologia} />
         <Route path="/account" component={Account} />
         <Route path="/registrati" component={Registrati} />

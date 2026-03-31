@@ -2081,3 +2081,37 @@
 - [x] Riscrivere completamente la pagina /per-giornalisti con 13 sezioni: Hero, Il Numero, Il Problema, La Soluzione, Come Funziona, Cosa Ottieni, Prove, Fai Due Conti, Pricing, Revenue Share, Casi d'Uso, FAQ, CTA Finale
 - [x] Aggiornare SEO meta tag (title + description)
 - [x] Collegare CTA "Prenota una demo" al form di contatto tRPC esistente
+
+## Batch 7 — Aggiornamento pagina /per-giornalisti v2 (31 Mar 2026)
+
+- [ ] Aggiungere sezione "Cos'è un Agent Giornalista" con 3 esempi concreti (Finanza, Tech & AI, Sport Business) PRIMA del pricing
+- [ ] Aggiungere tabella schema agenti per piano (Agent Giornalisti + agenti di supporto)
+- [ ] Aggiornare pricing: setup Single Vertical da €3.000 a €2.500, costi annui (Anno 1 + Anno 2+), esempi d'uso per ogni piano
+- [ ] Aggiornare tabella confronto con €2.500 setup (risparmio €124.500/anno)
+- [ ] Aggiungere 2 nuove FAQ: "Cosa sono gli Agent Giornalisti?" e "Differenza tra Agent Giornalisti e agenti di supporto"
+- [ ] Aggiornare note sotto i piani con token extra e riconfigurabilità agenti
+
+## Task (31 Mar 2026 — Aggiornamento pagina Per Giornalisti v2)
+
+- [ ] Nuova sezione "Agent Giornalisti" prima del pricing con 3 esempi concreti e tabella agenti per piano
+- [ ] Setup Single Vertical aggiornato da €3.000 a €2.500
+- [ ] Costo anno 1 Single Vertical aggiornato da €9.000 a €8.500
+- [ ] Nomenclatura agenti: "4 Agent Giornalisti + 4 agenti di supporto" in tutti i piani
+- [ ] Esempi d'uso aggiunti in ogni piano (es. Agent AI Policy, Agent AI Business...)
+- [ ] Tabella confronto Card 1 aggiornata con risparmio €124.500 e setup €2.500
+- [ ] 2 nuove FAQ: "Cosa sono gli Agent Giornalisti?" e "Differenza tra Agent Giornalisti e agenti di supporto"
+- [ ] Aggiornare pagina Chi Siamo con setup €2.500 e sezione Agent Giornalisti
+
+## Task (31 Mar 2026 — Allineamento prezzi e aggiornamento PerManager)
+- [ ] Allineare prezzi pagina /chi-siamo con /per-giornalisti (setup €2.500, ecc.)
+- [ ] Aggiornare pagina /per-manager con nuovi prezzi
+- [ ] Aggiungere tema Agent Giornalisti nella pagina /per-manager
+
+## Task (31 Mar 2026 — Aggiornamento ChiSiamo + Rinomina route)
+- [x] ChiSiamo: aggiornare setup Single Vertical da €3.000 a €2.500
+- [x] ChiSiamo: aggiornare costo annuo Single Vertical da €9.000 a €8.500
+- [x] ChiSiamo: aggiornare nomenclatura agenti con "Agent Giornalisti + agenti di supporto"
+- [x] ChiSiamo: aggiungere sezione Agent Giornalisti (3 esempi + tabella)
+- [x] ChiSiamo: aggiornare FAQ con nuova nomenclatura e prezzi
+- [x] Rinominare route /per-giornalisti in /offertacommerciale
+- [x] Aggiornare label navbar da "Per Giornalisti & Testate Online" a "Offerta"

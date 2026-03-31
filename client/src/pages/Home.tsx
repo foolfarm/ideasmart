@@ -278,10 +278,10 @@ function SectionNav() {
             CHI SIAMO
           </span>
         </Link>
-        <Link href="/per-giornalisti">
+        <Link href="/offertacommerciale">
           <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#dc2626] hover:text-white transition-colors cursor-pointer"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#dc2626" }}>
-            PER GIORNALISTI & TESTATE ONLINE
+            OFFERTA
           </span>
         </Link>
       </div>

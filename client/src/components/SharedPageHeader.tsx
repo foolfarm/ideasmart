@@ -53,7 +53,7 @@ function SectionNav() {
 
   const rightItems = [
     { key: "chi-siamo",       label: "CHI SIAMO",                       path: "/chi-siamo",       accent: "#1a1a1a" },
-    { key: "per-giornalisti", label: "PER GIORNALISTI & TESTATE ONLINE", path: "/per-giornalisti", accent: "#dc2626" },
+    { key: "offertacommerciale", label: "OFFERTA", path: "/offertacommerciale", accent: "#dc2626" },
   ];
 
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
