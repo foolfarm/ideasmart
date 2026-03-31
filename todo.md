@@ -2164,3 +2164,9 @@
 - [x] Aggiungere sezione commenti per ogni articolo nella pagina demo
 - [x] Form commento con nome e testo
 - [x] Commenti di esempio pre-popolati per demo
+
+## Task (31 Mar 2026 — Editoriale Venture Studio Index)
+- [x] Creare pagina editoriale su IdeaSmart basata sulla ricerca Venture Studio Index
+- [x] Aggiungere route dedicata in App.tsx (/editoriale/venture-studio-index)
+- [x] Stile coerente con gli editoriali esistenti di IdeaSmart
+- [x] Autore: Adrian Lenice, Direttore Editoriale
