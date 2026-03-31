@@ -5,7 +5,7 @@
  * Accessibile solo via /demo/sandwichclub (fuori menu).
  */
 import { useState } from "react";
-import { ExternalLink, MapPin, Calendar, ArrowRight, ChevronDown, ChevronUp, Building2, Landmark, Cpu, Coins, Heart, TrendingUp, Globe, Briefcase } from "lucide-react";
+import { ExternalLink, MapPin, Calendar, ArrowRight, ChevronDown, ChevronUp, Building2, Landmark, Cpu, Coins, Heart, TrendingUp, Globe, Briefcase, MessageCircle, Send, User } from "lucide-react";
 
 /* ─── Dati articoli ──────────────────────────────────────────────────────────── */
 interface Article {
@@ -20,6 +20,15 @@ interface Article {
   imageUrl: string;
   sourceUrl: string;
   tags: string[];
+}
+
+interface Comment {
+  id: number;
+  articleId: number;
+  name: string;
+  text: string;
+  date: string;
+  avatar: string;
 }
 
 const ARTICLES: Article[] = [
@@ -142,6 +151,20 @@ const ARTICLES: Article[] = [
   },
 ];
 
+/* ─── Commenti demo pre-popolati ─────────────────────────────────────────────── */
+const DEMO_COMMENTS: Comment[] = [
+  { id: 1, articleId: 1, name: "Marco Bianchi", text: "Ottimo confronto. Il tech transfer in Italia ha un potenziale enorme, ma serve più connessione tra università e impresa.", date: "30 Mar 2026", avatar: "MB" },
+  { id: 2, articleId: 1, name: "Laura Rossi", text: "Finalmente si parla di proprietà intellettuale come asset strategico. Tema cruciale per le startup deep-tech.", date: "30 Mar 2026", avatar: "LR" },
+  { id: 3, articleId: 2, name: "Giuseppe Verdi", text: "Il golden power è uno strumento fondamentale, ma va usato con equilibrio per non scoraggiare gli investimenti esteri.", date: "25 Feb 2026", avatar: "GV" },
+  { id: 4, articleId: 2, name: "Francesca Neri", text: "Interessante l'analisi sulla trasformazione da difesa a politica industriale attiva. L'Italia deve essere più proattiva.", date: "25 Feb 2026", avatar: "FN" },
+  { id: 5, articleId: 3, name: "Alessandro Conti", text: "L'AI è la sfida del decennio. L'Europa deve investire di più in infrastrutture e competenze.", date: "17 Feb 2026", avatar: "AC" },
+  { id: 6, articleId: 3, name: "Chiara Moretti", text: "Il gap con USA e Cina si sta allargando. Servono politiche industriali coordinate a livello UE.", date: "17 Feb 2026", avatar: "CM" },
+  { id: 7, articleId: 4, name: "Roberto Ferrara", text: "La tokenizzazione cambierà radicalmente il modo in cui pensiamo agli asset finanziari. MiCA è un buon inizio.", date: "20 Gen 2026", avatar: "RF" },
+  { id: 8, articleId: 6, name: "Silvia Marchetti", text: "La fiducia è il vero capitale della finanza. Senza comunicazione trasparente, non c'è crescita sostenibile.", date: "21 Nov 2025", avatar: "SM" },
+  { id: 9, articleId: 7, name: "Paolo Romano", text: "Il nuovo TUF può essere una svolta per il mercato italiano. Speriamo che i tempi siano rispettati.", date: "5 Nov 2025", avatar: "PR" },
+  { id: 10, articleId: 9, name: "Elena Colombo", text: "Il ruolo del governo nelle M&A è sempre più strategico. Bene il confronto internazionale a Londra.", date: "24 Set 2025", avatar: "EC" },
+];
+
 const CITIES = ["Tutte", "Milano", "Roma", "Genova", "Londra", "Pubblicazione"];
 
 function getCategoryIcon(category: string) {
@@ -174,6 +197,120 @@ function getCategoryColor(category: string) {
   }
 }
 
+/* ─── Componente Commenti ────────────────────────────────────────────────────── */
+function ArticleComments({ articleId }: { articleId: number }) {
+  const [comments, setComments] = useState<Comment[]>(
+    DEMO_COMMENTS.filter(c => c.articleId === articleId)
+  );
+  const [name, setName] = useState("");
+  const [text, setText] = useState("");
+  const [showForm, setShowForm] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !text.trim()) return;
+    const newComment: Comment = {
+      id: Date.now(),
+      articleId,
+      name: name.trim(),
+      text: text.trim(),
+      date: "Adesso",
+      avatar: name.trim().split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2),
+    };
+    setComments(prev => [...prev, newComment]);
+    setName("");
+    setText("");
+    setShowForm(false);
+  };
+
+  return (
+    <div className="mt-6 pt-6 border-t border-[#1a1a1a]/10">
+      {/* Intestazione commenti */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <MessageCircle className="w-4 h-4 text-[#1a1a1a]/40" />
+          <span className="text-[10px] tracking-[0.2em] uppercase font-semibold text-[#1a1a1a]/60">
+            Commenti ({comments.length})
+          </span>
+        </div>
+        {!showForm && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="text-[10px] tracking-[0.15em] uppercase font-semibold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1"
+          >
+            <Send className="w-3 h-3" /> Commenta
+          </button>
+        )}
+      </div>
+
+      {/* Lista commenti */}
+      {comments.length > 0 && (
+        <div className="space-y-4 mb-4">
+          {comments.map(comment => (
+            <div key={comment.id} className="flex gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1a1a1a]/10 flex items-center justify-center">
+                <span className="text-[9px] font-bold text-[#1a1a1a]/50">{comment.avatar}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold text-[#1a1a1a]">{comment.name}</span>
+                  <span className="text-[10px] text-[#1a1a1a]/30">{comment.date}</span>
+                </div>
+                <p className="text-sm text-[#1a1a1a]/70 leading-relaxed">{comment.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {comments.length === 0 && !showForm && (
+        <p className="text-xs text-[#1a1a1a]/30 italic mb-4">Nessun commento. Sii il primo a commentare.</p>
+      )}
+
+      {/* Form nuovo commento */}
+      {showForm && (
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-[#1a1a1a]/10 p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1a1a1a]/5 flex items-center justify-center">
+              <User className="w-4 h-4 text-[#1a1a1a]/30" />
+            </div>
+            <input
+              type="text"
+              placeholder="Il tuo nome"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="flex-1 text-sm border-b border-[#1a1a1a]/10 pb-1 bg-transparent outline-none focus:border-red-600 transition-colors placeholder:text-[#1a1a1a]/25"
+            />
+          </div>
+          <textarea
+            placeholder="Scrivi un commento..."
+            value={text}
+            onChange={e => setText(e.target.value)}
+            rows={3}
+            className="w-full text-sm border border-[#1a1a1a]/10 rounded-md p-3 bg-transparent outline-none focus:border-red-600 transition-colors placeholder:text-[#1a1a1a]/25 resize-none mb-3"
+          />
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className="text-[10px] tracking-[0.15em] uppercase text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors"
+            >
+              Annulla
+            </button>
+            <button
+              type="submit"
+              disabled={!name.trim() || !text.trim()}
+              className="bg-[#1a1a1a] text-white text-[10px] tracking-[0.15em] uppercase px-4 py-2 rounded hover:bg-red-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5"
+            >
+              <Send className="w-3 h-3" /> Pubblica
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
 /* ─── Componente principale ──────────────────────────────────────────────────── */
 export default function DemoSandwichClub() {
   const [selectedCity, setSelectedCity] = useState("Tutte");
@@ -187,13 +324,18 @@ export default function DemoSandwichClub() {
 
   return (
     <div className="min-h-screen bg-[#faf8f3]">
-      {/* ─── Header ─────────────────────────────────────────────────────── */}
+      {/* ─── Header con Powered by ──────────────────────────────────────── */}
       <header className="bg-[#1a1a1a] text-white">
         <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-[10px] tracking-[0.2em] uppercase text-white/50">Demo</span>
             <span className="text-[10px] text-white/30">|</span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-white/50">Powered by IdeaSmart</span>
+            <a
+              href="/"
+              className="text-[10px] tracking-[0.2em] uppercase text-white/50 hover:text-white transition-colors"
+            >
+              Powered by <span className="text-red-500 font-semibold">IdeaSmart</span> HumanLess Journalism
+            </a>
           </div>
           <a href="/" className="text-[10px] tracking-[0.2em] uppercase text-white/50 hover:text-white transition-colors">
             Torna a IdeaSmart
@@ -336,6 +478,13 @@ export default function DemoSandwichClub() {
                           <MapPin className="w-3 h-3" />{article.city}
                         </span>
                         <span className="text-[10px] text-[#1a1a1a]/40">{article.date}</span>
+                        {/* Contatore commenti */}
+                        {DEMO_COMMENTS.filter(c => c.articleId === article.id).length > 0 && (
+                          <span className="text-[10px] text-[#1a1a1a]/40 flex items-center gap-1">
+                            <MessageCircle className="w-3 h-3" />
+                            {DEMO_COMMENTS.filter(c => c.articleId === article.id).length}
+                          </span>
+                        )}
                       </div>
                       <h3 className="font-['Space_Grotesk',sans-serif] text-lg font-bold text-[#1a1a1a] group-hover:text-red-600 transition-colors leading-snug">
                         {article.title}
@@ -363,38 +512,43 @@ export default function DemoSandwichClub() {
                   </div>
                 </div>
 
-                {/* Contenuto espanso */}
+                {/* Contenuto espanso + Commenti */}
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    isExpanded ? "max-h-[600px] opacity-100 pb-6" : "max-h-0 opacity-0"
+                    isExpanded ? "max-h-[1200px] opacity-100 pb-6" : "max-h-0 opacity-0"
                   }`}
                 >
-                  <div className="grid md:grid-cols-3 gap-6 pl-0 md:pl-16">
-                    <div className="md:col-span-1">
-                      <img
-                        src={article.imageUrl}
-                        alt={article.title}
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <p className="text-[#1a1a1a]/70 leading-relaxed mb-4">{article.content}</p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {article.tags.map(tag => (
-                          <span key={tag} className="text-[9px] tracking-[0.1em] uppercase px-2 py-0.5 border border-[#1a1a1a]/15 rounded-full text-[#1a1a1a]/50">
-                            {tag}
-                          </span>
-                        ))}
+                  <div className="pl-0 md:pl-16">
+                    <div className="grid md:grid-cols-3 gap-6">
+                      <div className="md:col-span-1">
+                        <img
+                          src={article.imageUrl}
+                          alt={article.title}
+                          className="w-full h-48 object-cover rounded-lg"
+                        />
                       </div>
-                      <a
-                        href={article.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase font-semibold text-red-600 hover:text-red-700 transition-colors"
-                      >
-                        Leggi l'articolo completo <ArrowRight className="w-3.5 h-3.5" />
-                      </a>
+                      <div className="md:col-span-2">
+                        <p className="text-[#1a1a1a]/70 leading-relaxed mb-4">{article.content}</p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {article.tags.map(tag => (
+                            <span key={tag} className="text-[9px] tracking-[0.1em] uppercase px-2 py-0.5 border border-[#1a1a1a]/15 rounded-full text-[#1a1a1a]/50">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <a
+                          href={article.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase font-semibold text-red-600 hover:text-red-700 transition-colors"
+                        >
+                          Leggi l'articolo completo <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
                     </div>
+
+                    {/* Sezione commenti */}
+                    <ArticleComments articleId={article.id} />
                   </div>
                 </div>
               </article>
@@ -450,16 +604,28 @@ export default function DemoSandwichClub() {
         </a>
       </section>
 
-      {/* ─── Footer ──────────────────────────────────────────────────────── */}
+      {/* ─── Footer con Powered by ───────────────────────────────────────── */}
       <footer className="border-t border-[#1a1a1a]/10 py-6">
-        <div className="max-w-[1200px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-[#1a1a1a]/40">
-          <p>Demo generata da IdeaSmart — Contenuti estratti da sandwichclub.it</p>
-          <div className="flex items-center gap-4">
-            <a href="https://www.sandwichclub.it/" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a1a1a] transition-colors">
-              sandwichclub.it
-            </a>
-            <a href="/" className="hover:text-[#1a1a1a] transition-colors">
-              ideasmart.ai
+        <div className="max-w-[1200px] mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-[#1a1a1a]/40">
+            <p>Demo generata da IdeaSmart — Contenuti estratti da sandwichclub.it</p>
+            <div className="flex items-center gap-4">
+              <a href="https://www.sandwichclub.it/" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a1a1a] transition-colors">
+                sandwichclub.it
+              </a>
+              <a href="/" className="hover:text-[#1a1a1a] transition-colors">
+                ideasmart.ai
+              </a>
+            </div>
+          </div>
+          {/* Badge Powered by */}
+          <div className="mt-4 pt-4 border-t border-[#1a1a1a]/5 text-center">
+            <a
+              href="/"
+              className="inline-flex items-center gap-2 text-[11px] tracking-[0.15em] uppercase text-[#1a1a1a]/30 hover:text-[#1a1a1a]/60 transition-colors"
+            >
+              Powered by <span className="font-bold text-[#1a1a1a]/50">IdeaSmart</span>
+              <span className="text-red-500">HumanLess Journalism</span>
             </a>
           </div>
         </div>

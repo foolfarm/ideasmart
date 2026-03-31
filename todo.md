@@ -2153,3 +2153,14 @@
 - [x] Analizzare sito sandwichclub.it e raccogliere tutte le notizie
 - [x] Creare pagina demo /demo/sandwichclub con notizie estratte nello stile IdeaSmart
 - [x] Aggiungere route /demo/sandwichclub fuori menu in App.tsx
+
+## Task (31 Mar 2026 — Sezione commenti demo Sandwich Club)
+- [x] Aggiungere sezione commenti per ogni articolo nella pagina demo /demo/sandwichclub
+- [x] Form commento con nome e testo
+- [x] Commenti di esempio pre-popolati per demo
+
+## Task (31 Mar 2026 — Demo Sandwich Club: commenti + Powered by)
+- [x] Aggiungere badge "Powered by IdeaSmart HumanLess Journalism" con link alla home
+- [x] Aggiungere sezione commenti per ogni articolo nella pagina demo
+- [x] Form commento con nome e testo
+- [x] Commenti di esempio pre-popolati per demo
