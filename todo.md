@@ -2135,3 +2135,13 @@
 - [x] Aggiungere menu hamburger su mobile per link secondari (Chi Siamo, Offerta)
 - [x] Implementare effetto hover migliorato sui pulsanti della navbar
 - [x] Aggiungere icone accanto ai canali nella barra di navigazione
+
+## Task (31 Mar 2026 — Animazione + Profilo + Sticky navbar)
+- [x] Animazione slide-down al menu a tendina mobile
+- [x] Icona profilo utente con menu a tendina personalizzato nella navbar
+- [x] Navbar sticky (barra canali fissa in alto durante lo scroll)
+
+## Task (31 Mar 2026 — Correzione ruoli autori)
+- [x] Correggere: Andrea Cinelli = Tech Expert (non Direttore Editoriale)
+- [x] Correggere: Adrian Lenice = Direttore Editoriale (dove serve il ruolo di direttore)
+- [x] Verificare tutti i file che contengono "Direttore Editoriale" associato a Cinelli

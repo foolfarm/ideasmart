@@ -1,13 +1,13 @@
 /**
  * SharedPageHeader — Testata condivisa identica alla Home
  * Usato da: /research, /ai, /startup, /chi-siamo e tutte le pagine interne
- * Struttura: data + tagline | IDEASMART (grande) | nav sezioni + lettori
+ * Struttura: data + tagline | IDEASMART (grande) | nav sezioni + lettori (sticky)
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
-import { Cpu, Rocket, Handshake, BookOpen, Info, Tag, Menu, X } from "lucide-react";
+import { Cpu, Rocket, Handshake, BookOpen, Info, Tag, Menu, X, User, LogOut, Settings } from "lucide-react";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -45,6 +45,73 @@ const CHANNEL_ICONS: Record<string, React.ReactNode> = {
   dealroom: <Handshake size={13} strokeWidth={2.2} />,
   research: <BookOpen size={13} strokeWidth={2.2} />,
 };
+
+// ─── USER PROFILE DROPDOWN ──────────────────────────────────────────────────
+function UserProfileDropdown({ user, logout }: { user: { username?: string | null } | null; logout: () => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1.5 px-2 py-1 rounded-full hover:bg-[#1a1a1a]/8 transition-colors"
+        style={{ fontFamily: SF }}
+      >
+        <div className="w-7 h-7 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+          <User size={14} color="#fff" strokeWidth={2.2} />
+        </div>
+        <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-[#1a1a1a] max-w-[100px] truncate">
+          {user?.username}
+        </span>
+      </button>
+
+      {/* Dropdown */}
+      <div
+        className="absolute right-0 top-full mt-1 bg-white border border-[#1a1a1a]/12 shadow-lg rounded-md overflow-hidden z-[60] transition-all duration-200 origin-top-right"
+        style={{
+          opacity: open ? 1 : 0,
+          transform: open ? "scale(1) translateY(0)" : "scale(0.95) translateY(-4px)",
+          pointerEvents: open ? "auto" : "none",
+          minWidth: "180px",
+        }}
+      >
+        <div className="px-3 py-2.5 border-b border-[#1a1a1a]/8">
+          <p className="text-[11px] font-bold text-[#1a1a1a] truncate" style={{ fontFamily: SF }}>
+            {user?.username}
+          </p>
+        </div>
+        <Link href="/account">
+          <span
+            className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#1a1a1a] hover:bg-[#f5f5f5] transition-colors cursor-pointer"
+            style={{ fontFamily: SF }}
+            onClick={() => setOpen(false)}
+          >
+            <Settings size={14} strokeWidth={2} />
+            Account
+          </span>
+        </Link>
+        <button
+          onClick={() => { setOpen(false); logout(); }}
+          className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#dc2626] hover:bg-[#fef2f2] transition-colors w-full text-left"
+          style={{ fontFamily: SF }}
+        >
+          <LogOut size={14} strokeWidth={2} />
+          Esci
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function SectionNav() {
   const [location] = useLocation();
@@ -145,9 +212,15 @@ function SectionNav() {
         </button>
       </nav>
 
-      {/* Mobile dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-[#1a1a1a]/15 bg-white">
+      {/* Mobile dropdown — animated */}
+      <div
+        className="md:hidden overflow-hidden transition-all duration-300 ease-in-out"
+        style={{
+          maxHeight: mobileMenuOpen ? "200px" : "0px",
+          opacity: mobileMenuOpen ? 1 : 0,
+        }}
+      >
+        <div className="border-b border-[#1a1a1a]/15 bg-white">
           {rightItems.map((item, i) => (
             <Link key={item.key} href={item.path}>
               <span
@@ -162,110 +235,99 @@ function SectionNav() {
             </Link>
           ))}
         </div>
-      )}
+      </div>
     </>
   );
 }
 
 export default function SharedPageHeader() {
   const today = new Date();
-
   const { user, isLoading, isAuthenticated, logout } = useSiteAuth();
 
   return (
-    <header
-      className="max-w-[1280px] mx-auto px-4 pt-5 pb-0"
-      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-    >
-      {/* Riga data + tagline + auth */}
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest">
-          {formatDateIT(today)}
-        </span>
-        <div className="flex items-center gap-3">
-          <span className="hidden sm:inline text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest">
-            Research · AI · Startup · Venture Capital
+    <>
+      <header
+        className="max-w-[1280px] mx-auto px-4 pt-5 pb-0"
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+      >
+        {/* Riga data + tagline + auth */}
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest">
+            {formatDateIT(today)}
           </span>
-          {!isLoading && (
-            isAuthenticated ? (
-              <div className="flex items-center gap-2">
-                <Link href="/account">
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
-                    style={{ color: "#1a1a1a" }}
-                  >
-                    {user?.username}
-                  </span>
-                </Link>
-                <button
-                  onClick={logout}
-                  className="text-[10px] font-bold uppercase tracking-widest border border-[#1a1a1a]/30 px-2 py-1 hover:bg-[#1a1a1a] hover:text-white transition-colors"
-                  style={{ color: "#1a1a1a", background: "transparent" }}
-                >
-                  Esci
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link href="/accedi">
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
-                    style={{ color: "#1a1a1a" }}
-                  >
-                    Accedi
-                  </span>
-                </Link>
-                <Link href="/registrati">
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ background: "#1a1a1a", color: "#ffffff" }}
-                  >
-                    Registrati
-                  </span>
-                </Link>
-              </div>
-            )
-          )}
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:inline text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest">
+              Research · AI · Startup · Venture Capital
+            </span>
+            {!isLoading && (
+              isAuthenticated ? (
+                <UserProfileDropdown user={user} logout={logout} />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link href="/accedi">
+                    <span
+                      className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
+                      style={{ color: "#1a1a1a" }}
+                    >
+                      Accedi
+                    </span>
+                  </Link>
+                  <Link href="/registrati">
+                    <span
+                      className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 cursor-pointer hover:opacity-80 transition-opacity"
+                      style={{ background: "#1a1a1a", color: "#ffffff" }}
+                    >
+                      Registrati
+                    </span>
+                  </Link>
+                </div>
+              )
+            )}
+          </div>
         </div>
-      </div>
 
-      <Divider thick />
+        <Divider thick />
 
-      {/* Logo centrale */}
-      <div className="py-6 text-center">
-        <Link href="/">
-          <h1
-            className="font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
-            style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-              fontSize: "clamp(42px, 7vw, 88px)",
-              letterSpacing: "-0.02em",
-              lineHeight: 1,
-            }}
+        {/* Logo centrale */}
+        <div className="py-6 text-center">
+          <Link href="/">
+            <h1
+              className="font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
+              style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "clamp(42px, 7vw, 88px)",
+                letterSpacing: "-0.02em",
+                lineHeight: 1,
+              }}
+            >
+              IDEASMART
+            </h1>
+          </Link>
+          <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50">
+            Notizie quotidiane su AI, Startup e Venture Capital
+          </p>
+          <p
+            className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
           >
-            IDEASMART
-          </h1>
-        </Link>
-        <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50">
-          Notizie quotidiane su AI, Startup e Venture Capital
-        </p>
-        <p
-          className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
-        >
-          Ricerche verificate, alert e briefing per chi prende decisioni.
-        </p>
-      </div>
+            Ricerche verificate, alert e briefing per chi prende decisioni.
+          </p>
+        </div>
 
-      <Divider thick />
+        <Divider thick />
+      </header>
 
-      {/* Nav sezioni + lettori */}
-      <div className="flex items-center justify-between border-b border-[#1a1a1a]/15">
-        <SectionNav />
-        <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/15">
-          <ReadersCounter />
+      {/* Nav sezioni + lettori — STICKY (fuori dall'header per sticky corretto) */}
+      <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <SectionNav />
+            <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/15">
+              <ReadersCounter />
+            </div>
+          </div>
         </div>
       </div>
-    </header>
+    </>
   );
 }

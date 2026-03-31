@@ -111,7 +111,7 @@ export default function EditorialDetail() {
               <span className="text-white text-xs font-bold" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>AL</span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>Andrea Cinelli</p>
+              <p className="text-sm font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>Adrian Lenice</p>
               <p className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">Direttore Editoriale</p>
             </div>
           </div>
