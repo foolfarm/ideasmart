@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, section, isActive FROM breaking_news WHERE isActive = 1 ORDER BY urgencyScore DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, section, isActive FROM breaking_news WHERE isActive = 1 ORDER BY urgencyScore DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "1770108",
+      "title": "Mistral AI si assicura 830M$ per il primo data center, alimentato da chip Nvidia",
+      "section": "startup",
+      "isActive": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsection\tisActive\n1770108\tMistral AI si assicura 830M$ per il primo data center, alimentato da chip Nvidia\tstartup\t1\n",
+  "stderr": "",
+  "execution_time_ms": 172
+}

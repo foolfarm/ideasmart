@@ -59,12 +59,21 @@ export default function BreakingNewsSection() {
     return () => clearInterval(t);
   }, []);
 
+  // Reset activeIndex se fuori range (es. dopo un refetch con meno risultati)
+  useEffect(() => {
+    if (breakingNews && activeIndex >= breakingNews.length) {
+      setActiveIndex(0);
+    }
+  }, [breakingNews, activeIndex]);
+
   // Non mostrare nulla se non ci sono breaking news
   if (isLoading || !breakingNews || breakingNews.length === 0) return null;
 
-  const active = breakingNews[activeIndex];
-  const sectionColor = SECTION_COLORS[active.section] ?? SECTION_COLORS.news;
-  const sectionLabel = SECTION_LABELS[active.section] ?? active.section.toUpperCase();
+  const safeIndex = activeIndex < breakingNews.length ? activeIndex : 0;
+  const active = breakingNews[safeIndex];
+  if (!active) return null;
+  const sectionColor = SECTION_COLORS[active.section] ?? SECTION_COLORS.ai;
+  const sectionLabel = SECTION_LABELS[active.section] ?? (active.section?.toUpperCase() ?? "NEWS");
 
   return (
     <div className="w-full bg-red-950/40 border-y border-red-500/40 backdrop-blur-sm">

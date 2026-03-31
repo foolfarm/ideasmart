@@ -2173,3 +2173,6 @@
 
 ## Task (31 Mar 2026 — Editoriale VSI in Home)
 - [x] Aggiungere editoriale Venture Studio Index nella Home page come nuovo editoriale in evidenza
+
+## Bug Fix (31 Mar 2026)
+- [x] Fix TypeError: Cannot read properties of undefined (reading 'section') in BreakingNewsSection
