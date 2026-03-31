@@ -2075,3 +2075,9 @@
 - [x] Riscrivere pricing Chi Siamo: Single Vertical (€3.000+€500/m), Multi-Channel (€5.000+€750/m), Full Newsroom (€7.500+€1.000/m), Custom/Enterprise
 - [x] Aggiornare Revenue Share: solo Multi-Channel e Full Newsroom, 20% ricavi, minimi garantiti (€300/m e €500/m)
 - [x] Aggiornare FAQ con nuovi nomi piani e prezzi
+
+## Batch 6 — Riscrittura completa pagina /per-giornalisti (31 Mar 2026)
+
+- [x] Riscrivere completamente la pagina /per-giornalisti con 13 sezioni: Hero, Il Numero, Il Problema, La Soluzione, Come Funziona, Cosa Ottieni, Prove, Fai Due Conti, Pricing, Revenue Share, Casi d'Uso, FAQ, CTA Finale
+- [x] Aggiornare SEO meta tag (title + description)
+- [x] Collegare CTA "Prenota una demo" al form di contatto tRPC esistente
