@@ -2115,3 +2115,14 @@
 - [x] ChiSiamo: aggiornare FAQ con nuova nomenclatura e prezzi
 - [x] Rinominare route /per-giornalisti in /offertacommerciale
 - [x] Aggiornare label navbar da "Per Giornalisti & Testate Online" a "Offerta"
+
+## Task (31 Mar 2026 — Aggiornamento PerManager)
+- [ ] PerManager: aggiornare setup Single Vertical da €3.000 a €2.500
+- [ ] PerManager: aggiornare costo annuo Single Vertical da €9.000 a €8.500
+- [ ] PerManager: aggiornare nomenclatura con "Agent Giornalisti + agenti di supporto"
+- [ ] PerManager: aggiungere sezione Agent Giornalisti (3 esempi + tabella)
+- [ ] PerManager: aggiornare confronto con "fino a 17x meno"
+- [ ] PerManager: aggiornare tabella risparmio con €124.500
+
+## Task (31 Mar 2026 — Fix navbar sovrapposizione Registrati)
+- [x] Fix: pulsante Registrati/Accedi si sovrappone alla barra canali nella navbar

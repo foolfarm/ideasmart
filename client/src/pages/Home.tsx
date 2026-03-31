@@ -433,16 +433,19 @@ export default function Home() {
 
         {/* ══ TESTATA ══════════════════════════════════════════════════════════ */}
         <header className="max-w-[1280px] mx-auto px-4 pt-5 pb-0">
-          {/* Riga data + categorie */}
+          {/* Riga data + categorie + auth */}
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {formatDateIT(today)}
             </span>
-            <span className="text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Research · AI · Startup · Venture Capital
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                Research · AI · Startup · Venture Capital
+              </span>
+              <HomeAuthButtons />
+            </div>
           </div>
           <Divider thick />
 
@@ -475,14 +478,11 @@ export default function Home() {
 
           <Divider thick />
 
-          {/* Nav sezioni + auth */}
+          {/* Nav sezioni + lettori */}
           <div className="flex items-center justify-between border-b border-[#1a1a1a]/15">
             <SectionNav />
-            <div className="flex items-center gap-0 border-l border-[#1a1a1a]/15">
-              <HomeAuthButtons />
-              <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/15">
-                <ReadersCounter />
-              </div>
+            <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/15">
+              <ReadersCounter />
             </div>
           </div>
 
