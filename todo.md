@@ -2130,3 +2130,8 @@
 ## Task (31 Mar 2026 — Redirect 301 + Navbar responsive)
 - [x] Aggiungere redirect 301 da /per-giornalisti a /offertacommerciale
 - [x] Verificare e correggere navbar responsive su dispositivi mobili
+
+## Task (31 Mar 2026 — Migliorie navbar)
+- [x] Aggiungere menu hamburger su mobile per link secondari (Chi Siamo, Offerta)
+- [x] Implementare effetto hover migliorato sui pulsanti della navbar
+- [x] Aggiungere icone accanto ai canali nella barra di navigazione

@@ -6,13 +6,14 @@
  * Font size: body 15-16px, titoli secondari 20-22px, hero 32-38px
  */
 import { useMemo, useRef, useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
+import { Cpu, Rocket, Handshake, BookOpen, Info, Tag, Menu, X } from "lucide-react";
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
 const SECTION_COLORS = {
@@ -226,8 +227,18 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
   );
 }
 
+// ─── CHANNEL ICONS ──────────────────────────────────────────────────────────
+const CHANNEL_ICONS: Record<string, React.ReactNode> = {
+  ai:       <Cpu size={13} strokeWidth={2.2} />,
+  startup:  <Rocket size={13} strokeWidth={2.2} />,
+  dealroom: <Handshake size={13} strokeWidth={2.2} />,
+  research: <BookOpen size={13} strokeWidth={2.2} />,
+};
+
 // ─── SECTION NAV ─────────────────────────────────────────────────────────────
 function SectionNav() {
+  const [location] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: sectionCounts } = trpc.news.getSectionCounts.useQuery(undefined, {
     staleTime: 15 * 60 * 1000, refetchOnWindowFocus: false
   });
@@ -236,56 +247,110 @@ function SectionNav() {
     { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
     { key: "dealroom", label: "DEALROOM", path: "/dealroom" }
   ];
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+
+  // Close mobile menu on route change
+  useEffect(() => { setMobileMenuOpen(false); }, [location]);
+
   return (
-    <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
-      {/* Canali a sinistra */}
-      <div className="flex items-center gap-0">
-        {navSections.map((s) => {
-          const count = sectionCounts?.[s.key] ?? 0;
-          return (
-            <Link key={s.key} href={s.path}>
-              <span
-                className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: SECTION_COLORS[s.key].accent }}
-              >
-                {s.label}
-                {count > 0 && (
-                  <span className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
-                    style={{ background: SECTION_COLORS[s.key].accent, color: "#fff" }}>
-                    {count}
-                  </span>
-                )}
-              </span>
-            </Link>
-          );
-        })}
-        <Link href="/research">
-          <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
-            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-            RICERCHE
-          </span>
-        </Link>
-      </div>
+    <>
+      <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
+        {/* Canali a sinistra */}
+        <div className="flex items-center gap-0">
+          {navSections.map((s) => {
+            const count = sectionCounts?.[s.key] ?? 0;
+            const isActive = location === s.path || location.startsWith(s.path + "/");
+            return (
+              <Link key={s.key} href={s.path}>
+                <span
+                  className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
+                    isActive ? "bg-[#1a1a1a] text-white shadow-[inset_0_-2px_0_0_#dc2626]" : ""
+                  }`}
+                  style={{ fontFamily: SF, color: isActive ? "#fff" : SECTION_COLORS[s.key].accent }}
+                >
+                  {CHANNEL_ICONS[s.key]}
+                  {s.label}
+                  {count > 0 && (
+                    <span className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
+                      style={{ background: isActive ? "rgba(255,255,255,0.25)" : SECTION_COLORS[s.key].accent, color: "#fff" }}>
+                      {count}
+                    </span>
+                  )}
+                </span>
+              </Link>
+            );
+          })}
+          <Link href="/research">
+            <span
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
+                location === "/research" || location.startsWith("/research/") ? "bg-[#1a1a1a] text-white shadow-[inset_0_-2px_0_0_#dc2626]" : ""
+              }`}
+              style={{ fontFamily: SF, color: location === "/research" || location.startsWith("/research/") ? "#fff" : "#1a1a1a" }}>
+              {CHANNEL_ICONS.research}
+              RICERCHE
+            </span>
+          </Link>
+        </div>
 
-      {/* Spacer */}
-      <div className="flex-1" />
+        {/* Spacer */}
+        <div className="flex-1" />
 
-      {/* CHI SIAMO e PER GIORNALISTI a destra */}
-      <div className="flex items-center gap-0 border-l border-[#1a1a1a]/15">
-        <Link href="/chi-siamo">
-          <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
-            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-            CHI SIAMO
-          </span>
-        </Link>
-        <Link href="/offertacommerciale">
-          <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#dc2626] hover:text-white transition-colors cursor-pointer"
-            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#dc2626" }}>
-            OFFERTA
-          </span>
-        </Link>
-      </div>
-    </nav>
+        {/* CHI SIAMO e OFFERTA — desktop only */}
+        <div className="hidden md:flex items-center gap-0 border-l border-[#1a1a1a]/15">
+          <Link href="/chi-siamo">
+            <span
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
+                location === "/chi-siamo" ? "bg-[#1a1a1a] text-white" : ""
+              }`}
+              style={{ fontFamily: SF, color: location === "/chi-siamo" ? "#fff" : "#1a1a1a" }}>
+              <Info size={13} strokeWidth={2.2} />
+              CHI SIAMO
+            </span>
+          </Link>
+          <Link href="/offertacommerciale">
+            <span
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#dc2626] hover:text-white ${
+                location === "/offertacommerciale" ? "bg-[#dc2626] text-white" : ""
+              }`}
+              style={{ fontFamily: SF, color: location === "/offertacommerciale" ? "#fff" : "#dc2626" }}>
+              <Tag size={13} strokeWidth={2.2} />
+              OFFERTA
+            </span>
+          </Link>
+        </div>
+
+        {/* Hamburger — mobile only */}
+        <button
+          className="flex md:hidden items-center justify-center w-10 h-10 border-l border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/5 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Menu"
+        >
+          {mobileMenuOpen ? <X size={18} color="#1a1a1a" /> : <Menu size={18} color="#1a1a1a" />}
+        </button>
+      </nav>
+
+      {/* Mobile dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-[#1a1a1a]/15 bg-white">
+          <Link href="/chi-siamo">
+            <span
+              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer border-b border-[#1a1a1a]/8"
+              style={{ fontFamily: SF, color: "#1a1a1a" }}>
+              <Info size={14} strokeWidth={2} />
+              CHI SIAMO
+            </span>
+          </Link>
+          <Link href="/offertacommerciale">
+            <span
+              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#fef2f2] transition-colors cursor-pointer"
+              style={{ fontFamily: SF, color: "#dc2626" }}>
+              <Tag size={14} strokeWidth={2} />
+              OFFERTA
+            </span>
+          </Link>
+        </div>
+      )}
+    </>
   );
 }
 

@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
+import { Cpu, Rocket, Handshake, BookOpen, Info, Tag, Menu, X } from "lucide-react";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -37,8 +38,17 @@ function ReadersCounter() {
   );
 }
 
+// ─── CHANNEL ICONS ──────────────────────────────────────────────────────────
+const CHANNEL_ICONS: Record<string, React.ReactNode> = {
+  ai:       <Cpu size={13} strokeWidth={2.2} />,
+  startup:  <Rocket size={13} strokeWidth={2.2} />,
+  dealroom: <Handshake size={13} strokeWidth={2.2} />,
+  research: <BookOpen size={13} strokeWidth={2.2} />,
+};
+
 function SectionNav() {
   const [location] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: sectionCounts } = trpc.news.getSectionCounts.useQuery(undefined, {
     staleTime: 15 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -52,66 +62,108 @@ function SectionNav() {
   ];
 
   const rightItems = [
-    { key: "chi-siamo",       label: "CHI SIAMO",                       path: "/chi-siamo",       accent: "#1a1a1a" },
-    { key: "offertacommerciale", label: "OFFERTA", path: "/offertacommerciale", accent: "#dc2626" },
+    { key: "chi-siamo",          label: "CHI SIAMO", path: "/chi-siamo",          accent: "#1a1a1a", icon: <Info size={13} strokeWidth={2.2} /> },
+    { key: "offertacommerciale", label: "OFFERTA",   path: "/offertacommerciale", accent: "#dc2626", icon: <Tag size={13} strokeWidth={2.2} /> },
   ];
 
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
-  const renderItem = (item: { key: string; label: string; path: string; accent: string }, i: number, showCount: boolean, borderClass: string) => {
-    const isActive = location === item.path || location.startsWith(item.path + "/");
-    const count = (sectionCounts as Record<string, number> | undefined)?.[item.key] ?? 0;
-    return (
-      <Link key={item.key} href={item.path}>
-        <span
-          className={`flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors cursor-pointer ${borderClass}`}
-          style={{
-            fontFamily: SF,
-            color: isActive ? "#ffffff" : item.accent,
-            background: isActive ? "#1a1a1a" : "transparent",
-          }}
-          onMouseEnter={e => {
-            if (!isActive) {
-              (e.currentTarget as HTMLElement).style.background = "#1a1a1a";
-              (e.currentTarget as HTMLElement).style.color = "#ffffff";
-            }
-          }}
-          onMouseLeave={e => {
-            if (!isActive) {
-              (e.currentTarget as HTMLElement).style.background = "transparent";
-              (e.currentTarget as HTMLElement).style.color = item.accent;
-            }
-          }}
-        >
-          {item.label}
-          {showCount && count > 0 && (
-            <span
-              className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
-              style={{ background: isActive ? "rgba(255,255,255,0.25)" : item.accent, color: "#fff" }}
-            >
-              {count}
-            </span>
-          )}
-        </span>
-      </Link>
-    );
-  };
+  // Close mobile menu on route change
+  useEffect(() => { setMobileMenuOpen(false); }, [location]);
 
   return (
-    <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
-      {/* Canali a sinistra */}
-      <div className="flex items-center gap-0">
-        {channelItems.map((item, i) => renderItem(item, i, true, i > 0 ? "border-l border-[#1a1a1a]/15" : ""))}
-      </div>
+    <>
+      <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
+        {/* Canali a sinistra */}
+        <div className="flex items-center gap-0">
+          {channelItems.map((item, i) => {
+            const isActive = location === item.path || location.startsWith(item.path + "/");
+            const count = (sectionCounts as Record<string, number> | undefined)?.[item.key] ?? 0;
+            return (
+              <Link key={item.key} href={item.path}>
+                <span
+                  className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer ${i > 0 ? "border-l border-[#1a1a1a]/15" : ""} hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
+                    isActive ? "bg-[#1a1a1a] text-white shadow-[inset_0_-2px_0_0_#dc2626]" : ""
+                  }`}
+                  style={{
+                    fontFamily: SF,
+                    color: isActive ? "#ffffff" : item.accent,
+                  }}
+                >
+                  {CHANNEL_ICONS[item.key]}
+                  {item.label}
+                  {count > 0 && (
+                    <span
+                      className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
+                      style={{ background: isActive ? "rgba(255,255,255,0.25)" : item.accent, color: "#fff" }}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
 
-      {/* Spacer */}
-      <div className="flex-1" />
+        {/* Spacer */}
+        <div className="flex-1" />
 
-      {/* CHI SIAMO e PER GIORNALISTI a destra */}
-      <div className="flex items-center gap-0 border-l border-[#1a1a1a]/15">
-        {rightItems.map((item, i) => renderItem(item, i, false, i > 0 ? "border-l border-[#1a1a1a]/15" : ""))}
-      </div>
-    </nav>
+        {/* CHI SIAMO e OFFERTA — desktop only */}
+        <div className="hidden md:flex items-center gap-0 border-l border-[#1a1a1a]/15">
+          {rightItems.map((item, i) => {
+            const isActive = location === item.path || location.startsWith(item.path + "/");
+            const isOfferta = item.key === "offertacommerciale";
+            return (
+              <Link key={item.key} href={item.path}>
+                <span
+                  className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer ${i > 0 ? "border-l border-[#1a1a1a]/15" : ""} ${
+                    isOfferta
+                      ? `hover:bg-[#dc2626] hover:text-white ${isActive ? "bg-[#dc2626] text-white" : ""}`
+                      : `hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${isActive ? "bg-[#1a1a1a] text-white" : ""}`
+                  }`}
+                  style={{
+                    fontFamily: SF,
+                    color: isActive ? "#ffffff" : item.accent,
+                  }}
+                >
+                  {item.icon}
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Hamburger — mobile only */}
+        <button
+          className="flex md:hidden items-center justify-center w-10 h-10 border-l border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/5 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Menu"
+        >
+          {mobileMenuOpen ? <X size={18} color="#1a1a1a" /> : <Menu size={18} color="#1a1a1a" />}
+        </button>
+      </nav>
+
+      {/* Mobile dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-[#1a1a1a]/15 bg-white">
+          {rightItems.map((item, i) => (
+            <Link key={item.key} href={item.path}>
+              <span
+                className={`flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer ${
+                  i < rightItems.length - 1 ? "border-b border-[#1a1a1a]/8" : ""
+                }`}
+                style={{ fontFamily: SF, color: item.accent }}
+              >
+                {item.icon}
+                {item.label}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   );
 }
 
