@@ -61,7 +61,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Quali sono i modelli di redazione disponibili?",
-    a: "Offriamo 4 piani: Mini (4 agenti, 1 canale, €2.500), Medium (8 agenti, 3 canali + newsletter, €5.000), Maxi (12 agenti, 6 canali + newsletter + distribuzione avanzata, €7.500) e Custom (su misura). Tutti i piani prevedono un revenue share del 30% sui ricavi generati. Nessun costo nascosto."
+    a: "Offriamo 4 piani: Mini (4 agenti, 1 canale, €2.500 setup + €500/mese), Medium (8 agenti, 3 canali + newsletter, €5.000 setup + €750/mese), Maxi (12 agenti, 6 canali + newsletter + distribuzione avanzata, €7.500 setup + €900/mese) e Custom (su misura). In alternativa al canone mensile, puoi scegliere il revenue share al 20% sui ricavi generati. Nessun costo nascosto."
   },
   {
     q: "Quanto tempo serve per lanciare una testata?",
@@ -85,7 +85,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Come funziona il revenue share?",
-    a: "Guadagniamo solo quando cresci. Il 30% viene calcolato sui ricavi effettivamente generati dalla testata (abbonamenti, pubblicità, sponsorizzazioni). Nessun costo fisso mensile oltre al setup iniziale."
+    a: "Guadagniamo solo quando cresci. Il 20% viene calcolato sui ricavi effettivamente generati dalla testata (abbonamenti, pubblicità, sponsorizzazioni). Scegli il revenue share al posto del canone mensile: paghi solo il setup una tantum e poi cresciamo insieme. Nessun costo fisso mensile, nessun rischio."
   },
   {
     q: "Come posso iniziare?",
@@ -419,7 +419,7 @@ export default function ChiSiamo() {
             <span className="text-[#0a0a0a]/25">Scala quando vuoi.</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
-            Tre configurazioni pronte, più un piano su misura per esigenze specifiche. Tutte includono setup, training AI e personalizzazione editoriale.
+            Tre configurazioni pronte, più un piano su misura. Setup una tantum + canone mensile contenuto. Oppure scegli il revenue share: paghi solo quando cresci.
           </p>
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-[#0a0a0a]">
@@ -427,9 +427,14 @@ export default function ChiSiamo() {
             <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Mini</span>
               <div className="mt-4">
-                <span className="text-4xl md:text-5xl font-black text-[#0a0a0a]">€2.500</span>
+                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€2.500</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
               </div>
-              <div className="mt-6 space-y-3">
+              <div className="mt-1">
+                <span className="text-xl font-black text-[#0a0a0a]">+ €500</span>
+                <span className="text-sm text-[#0a0a0a]/50">/mese</span>
+              </div>
+              <div className="mt-5 space-y-3">
                 <div className="flex items-start gap-3">
                   <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
                   <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">4 agenti AI</strong></span>
@@ -443,7 +448,11 @@ export default function ChiSiamo() {
                   <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
                 </div>
               </div>
-              <p className="mt-6 text-xs text-[#0a0a0a]/35">Ideale per lanciare un vertical media o una rubrica personale.</p>
+              <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
+                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€8.500</strong>/anno</p>
+              </div>
+              <p className="mt-4 text-xs text-[#0a0a0a]/35">Ideale per lanciare un vertical media o una rubrica personale.</p>
             </div>
 
             {/* MEDIUM — evidenziato */}
@@ -452,9 +461,14 @@ export default function ChiSiamo() {
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Medium</span>
               <span className="ml-3 text-[9px] font-black uppercase tracking-[0.15em] text-white px-2 py-0.5" style={{ background: '#dc2626' }}>Più scelto</span>
               <div className="mt-4">
-                <span className="text-4xl md:text-5xl font-black text-[#0a0a0a]">€5.000</span>
+                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€5.000</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
               </div>
-              <div className="mt-6 space-y-3">
+              <div className="mt-1">
+                <span className="text-xl font-black text-[#0a0a0a]">+ €750</span>
+                <span className="text-sm text-[#0a0a0a]/50">/mese</span>
+              </div>
+              <div className="mt-5 space-y-3">
                 <div className="flex items-start gap-3">
                   <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
                   <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">8 agenti AI</strong></span>
@@ -472,16 +486,25 @@ export default function ChiSiamo() {
                   <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
                 </div>
               </div>
-              <p className="mt-6 text-xs text-[#0a0a0a]/35">La configurazione completa per una testata multi-canale con distribuzione automatica.</p>
+              <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
+                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€14.000</strong>/anno</p>
+              </div>
+              <p className="mt-4 text-xs text-[#0a0a0a]/35">La configurazione completa per una testata multi-canale con distribuzione automatica.</p>
             </div>
 
             {/* MAXI */}
             <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Maxi</span>
               <div className="mt-4">
-                <span className="text-4xl md:text-5xl font-black text-[#0a0a0a]">€7.500</span>
+                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€7.500</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
               </div>
-              <div className="mt-6 space-y-3">
+              <div className="mt-1">
+                <span className="text-xl font-black text-[#0a0a0a]">+ €900</span>
+                <span className="text-sm text-[#0a0a0a]/50">/mese</span>
+              </div>
+              <div className="mt-5 space-y-3">
                 <div className="flex items-start gap-3">
                   <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
                   <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">12 agenti AI</strong></span>
@@ -499,7 +522,11 @@ export default function ChiSiamo() {
                   <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
                 </div>
               </div>
-              <p className="mt-6 text-xs text-[#0a0a0a]/35">Per media company e redazioni che vogliono massima copertura e automazione.</p>
+              <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
+                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€18.300</strong>/anno</p>
+              </div>
+              <p className="mt-4 text-xs text-[#0a0a0a]/35">Per media company e redazioni che vogliono massima copertura e automazione.</p>
             </div>
 
             {/* CUSTOM */}
@@ -532,9 +559,85 @@ export default function ChiSiamo() {
             </div>
           </div>
 
+          {/* ALTERNATIVA REVENUE SHARE */}
+          <div className="mt-10 border-2 border-dashed border-[#0a0a0a]/20 p-8 md:p-10">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div className="max-w-xl">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Alternativa</span>
+                <h3 className="mt-2 text-2xl md:text-3xl font-black text-[#0a0a0a] leading-tight">
+                  Preferisci il revenue share?
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#0a0a0a]/55">
+                  Al posto del canone mensile, puoi scegliere il modello <strong className="text-[#0a0a0a]">revenue share al 20%</strong> sui ricavi generati dalla testata. Paghi solo il setup una tantum e poi cresciamo insieme: noi guadagniamo solo quando guadagni tu. Nessun costo fisso mensile, nessun rischio.
+                </p>
+              </div>
+              <div className="flex-shrink-0 text-center md:text-right">
+                <div className="text-5xl md:text-6xl font-black text-[#0a0a0a]">20%</div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/35 mt-1">Revenue share</div>
+                <div className="text-xs text-[#0a0a0a]/40 mt-2">Solo setup una tantum<br />+ 20% sui ricavi effettivi</div>
+              </div>
+            </div>
+          </div>
+
           <p className="mt-8 text-center text-sm text-[#0a0a0a]/40">
             Tutti i piani includono: configurazione piattaforma, personalizzazione editoriale, setup fonti e training AI.
           </p>
+
+          {/* CONFRONTO CON REDAZIONE TRADIZIONALE */}
+          <div className="mt-16">
+            <Label>Confronto</Label>
+            <h3 className="text-2xl md:text-4xl font-black leading-tight text-[#0a0a0a] mb-4">
+              Fino a 10 volte meno<br />
+              <span className="text-[#0a0a0a]/25">di una redazione tradizionale.</span>
+            </h3>
+            <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mb-10">
+              Una redazione tradizionale con giornalisti, editor, fact-checker e social media manager costa tra €80.000 e €180.000 all'anno. Con Ideasmart ottieni lo stesso output a una frazione del costo.
+            </p>
+
+            {/* Tabella confronto */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left" style={{ borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #0a0a0a' }}>
+                    <th className="py-4 pr-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>Voce di costo</th>
+                    <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Redazione tradizionale</th>
+                    <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Ideasmart Medium</th>
+                    <th className="py-4 pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#dc2626]/70 text-right" style={{ fontFamily: FONT }}>Risparmio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { voce: "Giornalisti (2-3 FTE)", trad: "€60.000 — €90.000", idea: "Incluso", saving: "100%" },
+                    { voce: "Editor / Caporedattore", trad: "€35.000 — €50.000", idea: "Incluso", saving: "100%" },
+                    { voce: "Fact-checker", trad: "€25.000 — €35.000", idea: "Incluso (Verify)", saving: "100%" },
+                    { voce: "Social media manager", trad: "€20.000 — €30.000", idea: "Incluso", saving: "100%" },
+                    { voce: "Strumenti e software", trad: "€5.000 — €10.000", idea: "Incluso", saving: "100%" },
+                    { voce: "Newsletter e distribuzione", trad: "€3.000 — €8.000", idea: "Incluso", saving: "100%" },
+                  ].map((row, i) => (
+                    <tr key={i} style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
+                      <td className="py-3 pr-4 text-sm font-bold text-[#0a0a0a]">{row.voce}</td>
+                      <td className="py-3 px-4 text-sm text-[#0a0a0a]/50 text-right">{row.trad}</td>
+                      <td className="py-3 px-4 text-sm text-[#0a0a0a]/70 text-right font-bold">{row.idea}</td>
+                      <td className="py-3 pl-4 text-sm font-black text-right" style={{ color: '#dc2626' }}>{row.saving}</td>
+                    </tr>
+                  ))}
+                  <tr style={{ borderTop: '2px solid #0a0a0a' }}>
+                    <td className="py-4 pr-4 text-base font-black text-[#0a0a0a]">Totale annuo</td>
+                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a]/50 text-right">€148.000 — €223.000</td>
+                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a] text-right">€14.000</td>
+                    <td className="py-4 pl-4 text-base font-black text-right" style={{ color: '#dc2626' }}>fino a 16x meno</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-10 p-8 border-l-4 border-[#0a0a0a]" style={{ background: 'rgba(10,10,10,0.04)' }}>
+              <p className="text-xl md:text-2xl font-bold leading-snug text-[#0a0a0a]">
+                Una redazione di 3 canali costa oltre €150.000/anno.<br />
+                <span className="text-[#0a0a0a]/40">Con Ideasmart, da €8.500/anno. Stesso output, 10x meno.</span>
+              </p>
+            </div>
+          </div>
         </Section>
 
         <Divider />

@@ -2016,3 +2016,10 @@
 ## Cambio nome mittente newsletter (31 Mar 2026)
 
 - [x] Cambiare il nome mittente di tutte le newsletter in "Ideasmart Daily"
+
+## Aggiornamento prezzi pagina Chi Siamo (31 Mar 2026)
+
+- [x] Aggiornare prezzi: setup una tantum + canone mensile (Mini €2.500+€500/m, Medium €5.000+€750/m, Maxi €7.500+€900/m)
+- [x] Aggiungere alternativa revenue share 20% al posto del canone mensile
+- [x] Aggiungere confronto costi vs redazione tradizionale (fino a 10x meno)
+- [x] Aggiornare FAQ relative ai prezzi e revenue share
