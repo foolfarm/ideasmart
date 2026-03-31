@@ -524,3 +524,26 @@ export const healthCheckLogs = mysqlTable("health_check_logs", {
 });
 export type HealthCheckLog = typeof healthCheckLogs.$inferSelect;
 export type InsertHealthCheckLog = typeof healthCheckLogs.$inferInsert;
+
+// ── Demo Requests (richieste demo dalla pagina Per Giornalisti) ─────────────
+export const demoRequests = mysqlTable("demo_requests", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  profileType: mysqlEnum("profileType", [
+    "giornalista_freelance",
+    "editore_digitale",
+    "creator_analista",
+    "media_company",
+    "altro",
+  ]).notNull(),
+  message: text("message"),
+  status: mysqlEnum("status", ["new", "contacted", "demo_done", "converted", "archived"])
+    .default("new")
+    .notNull(),
+  notified: boolean("notified").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type DemoRequest = typeof demoRequests.$inferSelect;
+export type InsertDemoRequest = typeof demoRequests.$inferInsert;

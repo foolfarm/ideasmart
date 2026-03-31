@@ -2058,3 +2058,20 @@
 - [x] B) Creare pagina "Per Giornalisti, Freelancer e Giornali Online" con presentazione offerta
 - [x] B) Aggiungere route e link nella navbar
 - [x] C) Spostare Chi Siamo come primo elemento nel menu navbar (label: CHI SIAMO)
+
+## Batch 4 — Navbar, Form Contatto, Newsletter Invio (31 Mar 2026)
+
+- [x] Aggiungere link /per-giornalisti nella navbar tra CHI SIAMO e AI NEWS (homepage + SharedPageHeader)
+- [x] Creare tabella DB demoRequests per salvare le richieste demo
+- [x] Creare form di contatto nella pagina /per-giornalisti (nome, email, tipo, messaggio)
+- [x] Creare endpoint tRPC per salvataggio richiesta demo nel DB
+- [x] Inviare notifica automatica email a info@ideasmart.ai per ogni nuova richiesta
+- [ ] Verificare newsletter test e procedere con invio massivo ai 6.906 iscritti
+
+## Batch 5 — Navbar layout + Pricing aggiornato (31 Mar 2026)
+
+- [x] Spostare CHI SIAMO e PER GIORNALISTI a destra nella navbar, separati dai canali (homepage + SharedPageHeader)
+- [x] Rinominare "PER GIORNALISTI" in "PER GIORNALISTI & TESTATE ONLINE"
+- [x] Riscrivere pricing Chi Siamo: Single Vertical (€3.000+€500/m), Multi-Channel (€5.000+€750/m), Full Newsroom (€7.500+€1.000/m), Custom/Enterprise
+- [x] Aggiornare Revenue Share: solo Multi-Channel e Full Newsroom, 20% ricavi, minimi garantiti (€300/m e €500/m)
+- [x] Aggiornare FAQ con nuovi nomi piani e prezzi

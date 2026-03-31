@@ -237,38 +237,54 @@ function SectionNav() {
     { key: "dealroom", label: "DEALROOM", path: "/dealroom" }
   ];
   return (
-    <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
-      <Link href="/chi-siamo">
-        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-          CHI SIAMO
-        </span>
-      </Link>
-      {navSections.map((s, i) => {
-        const count = sectionCounts?.[s.key] ?? 0;
-        return (
-          <Link key={s.key} href={s.path}>
-            <span
-              className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: SECTION_COLORS[s.key].accent }}
-            >
-              {s.label}
-              {count > 0 && (
-                <span className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
-                  style={{ background: SECTION_COLORS[s.key].accent, color: "#fff" }}>
-                  {count}
-                </span>
-              )}
-            </span>
-          </Link>
-        );
-      })}
-      <Link href="/research">
-        <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
-          RICERCHE
-        </span>
-      </Link>
+    <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
+      {/* Canali a sinistra */}
+      <div className="flex items-center gap-0">
+        {navSections.map((s) => {
+          const count = sectionCounts?.[s.key] ?? 0;
+          return (
+            <Link key={s.key} href={s.path}>
+              <span
+                className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: SECTION_COLORS[s.key].accent }}
+              >
+                {s.label}
+                {count > 0 && (
+                  <span className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
+                    style={{ background: SECTION_COLORS[s.key].accent, color: "#fff" }}>
+                    {count}
+                  </span>
+                )}
+              </span>
+            </Link>
+          );
+        })}
+        <Link href="/research">
+          <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
+            RICERCHE
+          </span>
+        </Link>
+      </div>
+
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* CHI SIAMO e PER GIORNALISTI a destra */}
+      <div className="flex items-center gap-0 border-l border-[#1a1a1a]/15">
+        <Link href="/chi-siamo">
+          <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-r border-[#1a1a1a]/15"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#1a1a1a" }}>
+            CHI SIAMO
+          </span>
+        </Link>
+        <Link href="/per-giornalisti">
+          <span className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap hover:bg-[#dc2626] hover:text-white transition-colors cursor-pointer"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "#dc2626" }}>
+            PER GIORNALISTI & TESTATE ONLINE
+          </span>
+        </Link>
+      </div>
     </nav>
   );
 }

@@ -44,56 +44,73 @@ function SectionNav() {
     refetchOnWindowFocus: false,
   });
 
-  const navItems = [
-    { key: "chi-siamo",label: "CHI SIAMO",    path: "/chi-siamo",accent: "#1a1a1a" },
+  const channelItems = [
     { key: "ai",       label: "AI NEWS",      path: "/ai",       accent: "#1a1a1a" },
     { key: "startup",  label: "STARTUP NEWS", path: "/startup",  accent: "#2a2a2a" },
-    { key: "research", label: "RICERCHE",      path: "/research", accent: "#1a1a1a" },
-    { key: "dealroom",  label: "DEALROOM",     path: "/dealroom",  accent: "#1a4a2e" },
+    { key: "dealroom", label: "DEALROOM",     path: "/dealroom", accent: "#1a4a2e" },
+    { key: "research", label: "RICERCHE",     path: "/research", accent: "#1a1a1a" },
   ];
 
-  return (
-    <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
-      {navItems.map((item, i) => {
-        const isActive = location === item.path || location.startsWith(item.path + "/");
-        const count = (sectionCounts as Record<string, number> | undefined)?.[item.key] ?? 0;
-        const isFirst = i === 0;
-        const borderClass = i > 0 ? "border-l border-[#1a1a1a]/15" : "";
-        return (
-          <Link key={item.key} href={item.path}>
+  const rightItems = [
+    { key: "chi-siamo",       label: "CHI SIAMO",                       path: "/chi-siamo",       accent: "#1a1a1a" },
+    { key: "per-giornalisti", label: "PER GIORNALISTI & TESTATE ONLINE", path: "/per-giornalisti", accent: "#dc2626" },
+  ];
+
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+
+  const renderItem = (item: { key: string; label: string; path: string; accent: string }, i: number, showCount: boolean, borderClass: string) => {
+    const isActive = location === item.path || location.startsWith(item.path + "/");
+    const count = (sectionCounts as Record<string, number> | undefined)?.[item.key] ?? 0;
+    return (
+      <Link key={item.key} href={item.path}>
+        <span
+          className={`flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors cursor-pointer ${borderClass}`}
+          style={{
+            fontFamily: SF,
+            color: isActive ? "#ffffff" : item.accent,
+            background: isActive ? "#1a1a1a" : "transparent",
+          }}
+          onMouseEnter={e => {
+            if (!isActive) {
+              (e.currentTarget as HTMLElement).style.background = "#1a1a1a";
+              (e.currentTarget as HTMLElement).style.color = "#ffffff";
+            }
+          }}
+          onMouseLeave={e => {
+            if (!isActive) {
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+              (e.currentTarget as HTMLElement).style.color = item.accent;
+            }
+          }}
+        >
+          {item.label}
+          {showCount && count > 0 && (
             <span
-              className={`flex items-center gap-1.5 px-3 py-2 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors cursor-pointer ${borderClass}`}
-              style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                color: isActive ? "#ffffff" : item.accent,
-                background: isActive ? "#1a1a1a" : "transparent",
-              }}
-              onMouseEnter={e => {
-                if (!isActive) {
-                  (e.currentTarget as HTMLElement).style.background = "#1a1a1a";
-                  (e.currentTarget as HTMLElement).style.color = "#ffffff";
-                }
-              }}
-              onMouseLeave={e => {
-                if (!isActive) {
-                  (e.currentTarget as HTMLElement).style.background = "transparent";
-                  (e.currentTarget as HTMLElement).style.color = item.accent;
-                }
-              }}
+              className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
+              style={{ background: isActive ? "rgba(255,255,255,0.25)" : item.accent, color: "#fff" }}
             >
-              {item.label}
-              {count > 0 && (item.key === "ai" || item.key === "startup" || item.key === "research" || item.key === "dealroom") && (
-                <span
-                  className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
-                  style={{ background: isActive ? "rgba(255,255,255,0.25)" : item.accent, color: "#fff" }}
-                >
-                  {count}
-                </span>
-              )}
+              {count}
             </span>
-          </Link>
-        );
-      })}
+          )}
+        </span>
+      </Link>
+    );
+  };
+
+  return (
+    <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
+      {/* Canali a sinistra */}
+      <div className="flex items-center gap-0">
+        {channelItems.map((item, i) => renderItem(item, i, true, i > 0 ? "border-l border-[#1a1a1a]/15" : ""))}
+      </div>
+
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* CHI SIAMO e PER GIORNALISTI a destra */}
+      <div className="flex items-center gap-0 border-l border-[#1a1a1a]/15">
+        {rightItems.map((item, i) => renderItem(item, i, false, i > 0 ? "border-l border-[#1a1a1a]/15" : ""))}
+      </div>
     </nav>
   );
 }

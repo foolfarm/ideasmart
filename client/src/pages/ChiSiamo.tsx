@@ -61,7 +61,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Quali sono i modelli di redazione disponibili?",
-    a: "Offriamo 4 piani: Mini (4 agenti, 1 canale, €2.500 setup + €500/mese), Medium (8 agenti, 3 canali + newsletter, €5.000 setup + €750/mese), Maxi (12 agenti, 6 canali + newsletter + distribuzione avanzata, €7.500 setup + €900/mese) e Custom (su misura). In alternativa al canone mensile, puoi scegliere il revenue share al 20% sui ricavi generati. Nessun costo nascosto."
+    a: "Offriamo 4 piani: Single Vertical (4 agenti, fino a 3 canali, €3.000 setup + €500/mese), Multi-Channel (8 agenti, fino a 6 canali + newsletter + paywall, €5.000 setup + €750/mese), Full Newsroom (12 agenti, canali illimitati + analytics avanzato + account manager, €7.500 setup + €1.000/mese) e Custom/Enterprise (su misura). Per Multi-Channel e Full Newsroom è disponibile l'alternativa revenue share al 20%. Nessun costo nascosto."
   },
   {
     q: "Quanto tempo serve per lanciare una testata?",
@@ -77,7 +77,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Serve un team editoriale per gestire la piattaforma?",
-    a: "No. Il modello Mini funziona anche con una sola persona. La piattaforma gestisce autonomamente l'intero flusso editoriale: raccolta notizie, verifica, scrittura, pubblicazione e distribuzione. Tu mantieni il controllo sulla linea editoriale e sulla strategia."
+    a: "No. Il piano Single Vertical funziona anche con una sola persona. La piattaforma gestisce autonomamente l'intero flusso editoriale: raccolta notizie, verifica, scrittura, pubblicazione e distribuzione. Tu mantieni il controllo sulla linea editoriale e sulla strategia."
   },
   {
     q: "Per chi è pensata la piattaforma?",
@@ -85,7 +85,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Come funziona il revenue share?",
-    a: "Guadagniamo solo quando cresci. Il 20% viene calcolato sui ricavi effettivamente generati dalla testata (abbonamenti, pubblicità, sponsorizzazioni). Scegli il revenue share al posto del canone mensile: paghi solo il setup una tantum e poi cresciamo insieme. Nessun costo fisso mensile, nessun rischio."
+    a: "Disponibile solo per Multi-Channel e Full Newsroom. Guadagniamo solo quando cresci. Il 20% viene calcolato sui ricavi effettivamente generati dalla testata (abbonamenti, pubblicità, sponsorizzazioni). Setup ridotto (€2.000 per Multi-Channel, €3.000 per Full Newsroom) + 20% dei ricavi con minimi garantiti (€300/mese Multi-Channel, €500/mese Full Newsroom). Nessun canone fisso mensile."
   },
   {
     q: "Come posso iniziare?",
@@ -427,131 +427,158 @@ export default function ChiSiamo() {
           </p>
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-[#0a0a0a]">
-            {/* MINI */}
+            {/* SINGLE VERTICAL */}
             <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Mini</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Single Vertical</span>
               <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€2.500</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
+                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€3.000</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">setup</span>
               </div>
               <div className="mt-1">
                 <span className="text-xl font-black text-[#0a0a0a]">+ €500</span>
                 <span className="text-sm text-[#0a0a0a]/50">/mese</span>
               </div>
-              <div className="mt-5 space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">4 agenti AI</strong></span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">1 canale</strong> tematico</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
-                </div>
+              <div className="mt-5 space-y-2.5">
+                {[
+                  "1 testata su dominio dedicato",
+                  "Fino a 3 canali tematici",
+                  "4 agenti AI configurati sulle tue fonti",
+                  "Setup completo: fonti, tone of voice, regole editoriali",
+                  "Training editoriale (chat redazionale)",
+                  "10-15 articoli AI/giorno",
+                  "1M token/mese inclusi",
+                  "Newsletter automatica settimanale",
+                  "Manutenzione e aggiornamento agenti mensile",
+                  "Supporto email",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="text-[#0a0a0a] font-bold text-xs mt-0.5 shrink-0">→</span>
+                    <span className="text-xs text-[#0a0a0a]/70 leading-snug">{item}</span>
+                  </div>
+                ))}
               </div>
               <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€8.500</strong>/anno</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Per chi è</p>
+                <p className="text-xs text-[#0a0a0a]/60 leading-snug">Giornalisti, creator, professionisti che vogliono lanciare la propria testata verticale.</p>
               </div>
-              <p className="mt-4 text-xs text-[#0a0a0a]/35">Ideale per lanciare un vertical media o una rubrica personale.</p>
+              <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
+                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€9.000</strong>/anno</p>
+                <p className="text-xs text-[#0a0a0a]/40 mt-1">Un giornalista part-time costa €25-30k/anno</p>
+              </div>
             </div>
 
-            {/* MEDIUM — evidenziato */}
+            {/* MULTI-CHANNEL — evidenziato */}
             <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a] relative" style={{ background: '#f5f0e8' }}>
               <div className="absolute top-0 left-0 right-0 h-1" style={{ background: '#dc2626' }} />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Medium</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Multi-Channel</span>
               <span className="ml-3 text-[9px] font-black uppercase tracking-[0.15em] text-white px-2 py-0.5" style={{ background: '#dc2626' }}>Più scelto</span>
               <div className="mt-4">
                 <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€5.000</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">setup</span>
               </div>
               <div className="mt-1">
                 <span className="text-xl font-black text-[#0a0a0a]">+ €750</span>
                 <span className="text-sm text-[#0a0a0a]/50">/mese</span>
               </div>
-              <div className="mt-5 space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">8 agenti AI</strong></span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">3 canali</strong> tematici</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Gestione newsletter</strong> automatica</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
-                </div>
+              <div className="mt-5 space-y-2.5">
+                {[
+                  "1 testata su dominio dedicato",
+                  "Fino a 6 canali tematici",
+                  "8 agenti AI configurati",
+                  "Setup completo con sessione strategica (2h)",
+                  "Training editoriale + 1 revisione mensile",
+                  "20-30 articoli AI/giorno",
+                  "3M token/mese inclusi",
+                  "Newsletter automatica",
+                  "Paywall integrato (se richiesto)",
+                  "Analytics base",
+                  "Supporto prioritario",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="text-[#0a0a0a] font-bold text-xs mt-0.5 shrink-0">→</span>
+                    <span className="text-xs text-[#0a0a0a]/70 leading-snug">{item}</span>
+                  </div>
+                ))}
               </div>
               <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Per chi è</p>
+                <p className="text-xs text-[#0a0a0a]/60 leading-snug">Testate online che vogliono verticalizzare, aziende media, associazioni di categoria.</p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
                 <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
                 <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€14.000</strong>/anno</p>
+                <p className="text-xs text-[#0a0a0a]/40 mt-1">2 giornalisti costano €70-90k/anno</p>
               </div>
-              <p className="mt-4 text-xs text-[#0a0a0a]/35">La configurazione completa per una testata multi-canale con distribuzione automatica.</p>
             </div>
 
-            {/* MAXI */}
+            {/* FULL NEWSROOM */}
             <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Maxi</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Full Newsroom</span>
               <div className="mt-4">
                 <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€7.500</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
+                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">setup</span>
               </div>
               <div className="mt-1">
-                <span className="text-xl font-black text-[#0a0a0a]">+ €900</span>
+                <span className="text-xl font-black text-[#0a0a0a]">+ €1.000</span>
                 <span className="text-sm text-[#0a0a0a]/50">/mese</span>
               </div>
-              <div className="mt-5 space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">12 agenti AI</strong></span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">6 canali</strong> tematici</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">Newsletter</strong> automatica</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#0a0a0a] font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-[#0a0a0a]/70">Setup fonti e training editoriale</span>
-                </div>
+              <div className="mt-5 space-y-2.5">
+                {[
+                  "1 testata su dominio dedicato (o più testate)",
+                  "Canali illimitati",
+                  "12 agenti AI configurati",
+                  "Setup completo con sessione strategica (4h) + audit fonti + piano editoriale primo mese",
+                  "Training editoriale + 2 revisioni mensili",
+                  "Articoli illimitati",
+                  "10M token/mese inclusi",
+                  "Newsletter automatica multi-lista",
+                  "Paywall + gestione abbonamenti",
+                  "Analytics avanzato",
+                  "Distribuzione multi-canale (sito + social + newsletter)",
+                  "Supporto dedicato con account manager",
+                  "Sessione mensile di ottimizzazione editoriale",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="text-[#0a0a0a] font-bold text-xs mt-0.5 shrink-0">→</span>
+                    <span className="text-xs text-[#0a0a0a]/70 leading-snug">{item}</span>
+                  </div>
+                ))}
               </div>
               <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€18.300</strong>/anno</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Per chi è</p>
+                <p className="text-xs text-[#0a0a0a]/60 leading-snug">Media company, gruppi editoriali, grandi testate che vogliono spin-off AI-powered.</p>
               </div>
-              <p className="mt-4 text-xs text-[#0a0a0a]/35">Per media company e redazioni che vogliono massima copertura e automazione.</p>
+              <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
+                <p className="text-sm text-[#0a0a0a]/70"><strong className="text-[#0a0a0a]">€19.500</strong>/anno</p>
+                <p className="text-xs text-[#0a0a0a]/40 mt-1">Una redazione di 3-4 persone costa €150-200k/anno</p>
+              </div>
             </div>
 
-            {/* CUSTOM */}
+            {/* CUSTOM / ENTERPRISE */}
             <div className="p-8" style={{ background: '#0a0a0a' }}>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Custom</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Custom / Enterprise</span>
               <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-white">Parliamone</span>
+                <span className="text-3xl md:text-4xl font-black text-white">Su misura</span>
               </div>
-              <div className="mt-6 space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-white font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-white/60">Agenti e canali <strong className="text-white">su misura</strong></span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-white font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-white/60">Integrazioni <strong className="text-white">personalizzate</strong></span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-white font-bold text-sm mt-0.5">→</span>
-                  <span className="text-sm text-white/60">SLA e supporto <strong className="text-white">dedicato</strong></span>
-                </div>
+              <div className="mt-6 space-y-2.5">
+                {[
+                  "Multi-testata",
+                  "Integrazioni proprietarie",
+                  "SLA dedicato",
+                  "White-label",
+                  "Agenti e canali su misura",
+                  "Supporto enterprise",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="text-white font-bold text-xs mt-0.5 shrink-0">→</span>
+                    <span className="text-xs text-white/60 leading-snug">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 pt-4 border-t border-white/10">
+                <p className="text-xs text-white/40 leading-snug">Per progetti speciali: multi-testata, integrazioni proprietarie, SLA dedicato, white-label.</p>
               </div>
               <a
                 href="mailto:info@ideasmart.ai?subject=Piano Custom Piattaforma Ideasmart"
@@ -565,26 +592,36 @@ export default function ChiSiamo() {
 
           {/* ALTERNATIVA REVENUE SHARE */}
           <div className="mt-10 border-2 border-dashed border-[#0a0a0a]/20 p-8 md:p-10">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
               <div className="max-w-xl">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Alternativa</span>
                 <h3 className="mt-2 text-2xl md:text-3xl font-black text-[#0a0a0a] leading-tight">
                   Preferisci il revenue share?
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#0a0a0a]/55">
-                  Al posto del canone mensile, puoi scegliere il modello <strong className="text-[#0a0a0a]">revenue share al 20%</strong> sui ricavi generati dalla testata. Paghi solo il setup una tantum e poi cresciamo insieme: noi guadagniamo solo quando guadagni tu. Nessun costo fisso mensile, nessun rischio.
+                  Solo per <strong className="text-[#0a0a0a]">Multi-Channel</strong> e <strong className="text-[#0a0a0a]">Full Newsroom</strong>. Al posto del canone mensile, scegli il modello <strong className="text-[#0a0a0a]">revenue share al 20%</strong> sui ricavi generati dalla testata. Paghi solo il setup una tantum e poi cresciamo insieme.
                 </p>
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-[#0a0a0a]">Multi-Channel:</span>
+                    <span className="text-xs text-[#0a0a0a]/60">€2.000 setup + 20% ricavi · minimo garantito €300/mese</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-[#0a0a0a]">Full Newsroom:</span>
+                    <span className="text-xs text-[#0a0a0a]/60">€3.000 setup + 20% ricavi · minimo garantito €500/mese</span>
+                  </div>
+                </div>
               </div>
               <div className="flex-shrink-0 text-center md:text-right">
                 <div className="text-5xl md:text-6xl font-black text-[#0a0a0a]">20%</div>
                 <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/35 mt-1">Revenue share</div>
-                <div className="text-xs text-[#0a0a0a]/40 mt-2">Solo setup una tantum<br />+ 20% sui ricavi effettivi</div>
+                <div className="text-xs text-[#0a0a0a]/40 mt-2">Solo setup ridotto<br />+ 20% sui ricavi effettivi</div>
               </div>
             </div>
           </div>
 
           <p className="mt-8 text-center text-sm text-[#0a0a0a]/40">
-            Tutti i piani includono: configurazione piattaforma, personalizzazione editoriale, setup fonti e training AI.
+            Tutti i piani includono: configurazione piattaforma, personalizzazione editoriale, setup fonti e training AI. Overage token: €10/100k token.
           </p>
 
           {/* CONFRONTO CON REDAZIONE TRADIZIONALE */}
@@ -595,7 +632,7 @@ export default function ChiSiamo() {
               <span className="text-[#0a0a0a]/25">di una redazione tradizionale.</span>
             </h3>
             <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mb-10">
-              Una redazione tradizionale con giornalisti, editor, fact-checker e social media manager costa tra €80.000 e €180.000 all'anno. Con Ideasmart ottieni lo stesso output a una frazione del costo.
+              Una redazione tradizionale con giornalisti, editor, fact-checker e social media manager costa tra €80.000 e €200.000 all'anno. Con Ideasmart ottieni lo stesso output a una frazione del costo.
             </p>
 
             {/* Tabella confronto */}
@@ -605,7 +642,7 @@ export default function ChiSiamo() {
                   <tr style={{ borderBottom: '2px solid #0a0a0a' }}>
                     <th className="py-4 pr-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>Voce di costo</th>
                     <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Redazione tradizionale</th>
-                    <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Ideasmart Medium</th>
+                    <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Ideasmart Multi-Channel</th>
                     <th className="py-4 pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#dc2626]/70 text-right" style={{ fontFamily: FONT }}>Risparmio</th>
                   </tr>
                 </thead>
@@ -637,8 +674,8 @@ export default function ChiSiamo() {
 
             <div className="mt-10 p-8 border-l-4 border-[#0a0a0a]" style={{ background: 'rgba(10,10,10,0.04)' }}>
               <p className="text-xl md:text-2xl font-bold leading-snug text-[#0a0a0a]">
-                Una redazione di 3 canali costa oltre €150.000/anno.<br />
-                <span className="text-[#0a0a0a]/40">Con Ideasmart, da €8.500/anno. Stesso output, 10x meno.</span>
+                Una redazione di 3-4 persone costa oltre €150.000/anno.<br />
+                <span className="text-[#0a0a0a]/40">Con Ideasmart, da €9.000/anno. Stesso output, fino a 10x meno.</span>
               </p>
             </div>
           </div>

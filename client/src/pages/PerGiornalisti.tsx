@@ -4,7 +4,8 @@
  * Stile: coerente con Chi Siamo (Stripe/Notion — pulito, diretto, moderno)
  * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f0e8), accento rosso (#dc2626)
  */
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
@@ -406,40 +407,165 @@ export default function PerGiornalisti() {
         <Divider />
 
         {/* ═══════════════════════════════════════════════════════════════════
-            CTA FINALE — PRENOTA DEMO
+            CTA FINALE — PRENOTA DEMO (Form di contatto)
         ═══════════════════════════════════════════════════════════════════ */}
-        <section ref={demoRef} id="demo" className="py-24 md:py-32" style={{ background: "#0a0a0a" }}>
-          <div className="max-w-3xl mx-auto px-5 md:px-8 text-center">
-            <h2 className="text-3xl md:text-5xl font-black leading-tight text-white">
-              Pronto a lanciare<br />il tuo giornale?
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-white/50 max-w-xl mx-auto">
-              Prenota una demo gratuita. Ti mostriamo come funziona la piattaforma, configuriamo insieme la tua linea editoriale e ti accompagniamo fino al lancio.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="mailto:info@ideasmart.ai?subject=Richiesta%20demo%20IdeaSmart"
-                className="px-10 py-5 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90 inline-block"
-                style={{ background: "#ffffff", borderRadius: "0" }}
-              >
-                Prenota una demo gratuita →
-              </a>
-              <a
-                href="mailto:info@ideasmart.ai?subject=Informazioni%20IdeaSmart"
-                className="px-10 py-5 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:bg-white hover:text-[#0a0a0a] inline-block"
-                style={{ borderRadius: "0" }}
-              >
-                Scrivici
-              </a>
-            </div>
-            <p className="mt-8 text-sm text-white/30">
-              info@ideasmart.ai — Setup in pochi giorni — Nessun impegno
-            </p>
-          </div>
-        </section>
+        <DemoForm demoRef={demoRef} />
 
         <SharedPageFooter />
       </div>
     </>
+  );
+}
+
+/* ── Form di contatto Demo ── */
+const PROFILE_OPTIONS = [
+  { value: "giornalista_freelance" as const, label: "Giornalista / Freelance" },
+  { value: "editore_digitale" as const, label: "Editore digitale" },
+  { value: "creator_analista" as const, label: "Creator / Analista" },
+  { value: "media_company" as const, label: "Media company" },
+  { value: "altro" as const, label: "Altro" },
+];
+
+function DemoForm({ demoRef }: { demoRef: React.RefObject<HTMLDivElement | null> }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profileType, setProfileType] = useState<typeof PROFILE_OPTIONS[number]["value"] | "">("" );
+  const [message, setMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const submitMutation = trpc.demoRequest.submit.useMutation({
+    onSuccess: () => setSubmitted(true),
+    onError: (err) => setError(err.message || "Si \u00E8 verificato un errore. Riprova."),
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!name || !email || !profileType) {
+      setError("Compila tutti i campi obbligatori.");
+      return;
+    }
+    submitMutation.mutate({ name, email, profileType, message: message || undefined });
+  };
+
+  const inputStyle: React.CSSProperties = {
+    fontFamily: FONT,
+    background: "rgba(255,255,255,0.08)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    color: "#ffffff",
+    padding: "14px 18px",
+    fontSize: "15px",
+    width: "100%",
+    outline: "none",
+    transition: "border-color 0.2s",
+  };
+
+  if (submitted) {
+    return (
+      <section ref={demoRef} id="demo" className="py-24 md:py-32" style={{ background: "#0a0a0a" }}>
+        <div className="max-w-3xl mx-auto px-5 md:px-8 text-center">
+          <div style={{ fontSize: "64px", marginBottom: "24px" }}>\u2713</div>
+          <h2 className="text-3xl md:text-5xl font-black leading-tight text-white" style={{ fontFamily: FONT }}>
+            Richiesta inviata!
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-white/50 max-w-xl mx-auto" style={{ fontFamily: FONT }}>
+            Grazie <strong className="text-white">{name}</strong>. Ti contatteremo entro 24 ore per mostrarti come lanciare il tuo giornale con IdeaSmart.
+          </p>
+          <p className="mt-4 text-sm text-white/30">Controlla anche la cartella spam.</p>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section ref={demoRef} id="demo" className="py-24 md:py-32" style={{ background: "#0a0a0a" }}>
+      <div className="max-w-2xl mx-auto px-5 md:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-black leading-tight text-white" style={{ fontFamily: FONT }}>
+            Pronto a lanciare<br />il tuo giornale?
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-white/50 max-w-xl mx-auto" style={{ fontFamily: FONT }}>
+            Compila il form e ti contatteremo entro 24 ore per una demo gratuita della piattaforma.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-[0.15em] text-white/40 mb-2" style={{ fontFamily: FONT }}>Nome *</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Il tuo nome"
+                style={inputStyle}
+                onFocus={(e) => e.currentTarget.style.borderColor = "#dc2626"}
+                onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-[0.15em] text-white/40 mb-2" style={{ fontFamily: FONT }}>Email *</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="la-tua@email.com"
+                style={inputStyle}
+                onFocus={(e) => e.currentTarget.style.borderColor = "#dc2626"}
+                onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"}
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-[0.15em] text-white/40 mb-2" style={{ fontFamily: FONT }}>Profilo *</label>
+            <select
+              value={profileType}
+              onChange={(e) => setProfileType(e.target.value as typeof PROFILE_OPTIONS[number]["value"])}
+              style={{ ...inputStyle, appearance: "none" as const, cursor: "pointer" }}
+              required
+            >
+              <option value="" disabled style={{ background: "#1a1a1a", color: "#999" }}>Seleziona il tuo profilo</option>
+              {PROFILE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value} style={{ background: "#1a1a1a", color: "#fff" }}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-[0.15em] text-white/40 mb-2" style={{ fontFamily: FONT }}>Messaggio (opzionale)</label>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Raccontaci il tuo progetto editoriale..."
+              rows={4}
+              style={{ ...inputStyle, resize: "vertical" as const }}
+              onFocus={(e) => e.currentTarget.style.borderColor = "#dc2626"}
+              onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"}
+            />
+          </div>
+
+          {error && (
+            <div className="text-sm text-red-400 text-center" style={{ fontFamily: FONT }}>{error}</div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitMutation.isPending}
+            className="w-full py-5 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90 disabled:opacity-50"
+            style={{ background: "#ffffff", fontFamily: FONT, cursor: submitMutation.isPending ? "wait" : "pointer" }}
+          >
+            {submitMutation.isPending ? "Invio in corso..." : "Prenota una demo gratuita \u2192"}
+          </button>
+
+          <p className="text-center text-sm text-white/30" style={{ fontFamily: FONT }}>
+            Nessun impegno \u00B7 Demo gratuita di 30 minuti \u00B7 Setup in pochi giorni
+          </p>
+        </form>
+      </div>
+    </section>
   );
 }

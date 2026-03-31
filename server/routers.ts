@@ -1875,6 +1875,83 @@ Rispondi con questo JSON:
       }),
   }),
 
+  // ── Demo Request (Per Giornalisti) ──────────────────────────────────────
+  demoRequest: router({
+    submit: publicProcedure
+      .input(z.object({
+        name: z.string().min(2, "Nome obbligatorio"),
+        email: z.string().email("Email non valida"),
+        profileType: z.enum(["giornalista_freelance", "editore_digitale", "creator_analista", "media_company", "altro"]),
+        message: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        // Salva nel DB
+        const { demoRequests } = await import("../drizzle/schema");
+        const { getDb } = await import("./db");
+        const db = await getDb();
+        if (!db) throw new Error("Database non disponibile");
+        await db.insert(demoRequests).values({
+          name: input.name,
+          email: input.email,
+          profileType: input.profileType,
+          message: input.message || null,
+          notified: true,
+        });
+
+        const profileLabels: Record<string, string> = {
+          giornalista_freelance: "Giornalista / Freelance",
+          editore_digitale: "Editore digitale",
+          creator_analista: "Creator / Analista",
+          media_company: "Media company",
+          altro: "Altro",
+        };
+        const profileLabel = profileLabels[input.profileType] || input.profileType;
+
+        // Email notifica admin
+        const subject = `\uD83D\uDCF0 Nuova richiesta demo Per Giornalisti — ${input.name}`;
+        const htmlAdmin = `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f0e8; padding: 32px;">
+            <div style="background: #1a1a1a; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+              <h1 style="color: #ffffff; font-size: 22px; margin: 0; font-weight: 900; letter-spacing: 2px;">IDEASMART</h1>
+              <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin: 4px 0 0; letter-spacing: 2px;">NUOVA RICHIESTA DEMO — PER GIORNALISTI</p>
+            </div>
+            <div style="background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e5e7eb;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px; width: 140px;">Nome</td><td style="padding: 10px 0; color: #111827; font-size: 15px; font-weight: 600;">${input.name}</td></tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Email</td><td style="padding: 10px 0;"><a href="mailto:${input.email}" style="color: #dc2626; font-size: 15px;">${input.email}</a></td></tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;"><td style="padding: 10px 0; color: #9ca3af; font-size: 13px;">Profilo</td><td style="padding: 10px 0; color: #111827; font-size: 15px;">${profileLabel}</td></tr>
+                ${input.message ? `<tr><td style="padding: 10px 0; color: #9ca3af; font-size: 13px; vertical-align: top;">Messaggio</td><td style="padding: 10px 0; color: #374151; font-size: 14px; line-height: 1.6;">${input.message}</td></tr>` : ""}
+              </table>
+            </div>
+            <div style="margin-top: 20px; padding: 16px; background: #fef2f2; border-radius: 8px; border-left: 3px solid #dc2626;">
+              <p style="color: #dc2626; font-size: 13px; font-weight: 700; margin: 0 0 4px;">Azione richiesta</p>
+              <p style="color: #4b5563; font-size: 13px; margin: 0;">Rispondere entro 24 ore a <strong>${input.email}</strong> per schedulare la demo.</p>
+            </div>
+          </div>
+        `;
+        await sendEmail({ to: "info@ideasmart.ai", subject, html: htmlAdmin });
+
+        // Email conferma al richiedente
+        const htmlConfirm = `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f0e8; padding: 32px;">
+            <div style="background: #1a1a1a; padding: 24px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
+              <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 2px;">IDEASMART</h1>
+            </div>
+            <div style="background: #ffffff; border-radius: 12px; padding: 32px; border: 1px solid #e5e7eb; text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 16px;">\u2713</div>
+              <h2 style="color: #1a1a1a; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo. Ti contatteremo entro <strong>24 ore</strong> per mostrarti come lanciare il tuo giornale con IdeaSmart.</p>
+              <a href="https://ideasmart.ai/per-giornalisti" style="display: inline-block; background: #dc2626; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri di pi\u00f9 \u2192</a>
+            </div>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">IDEASMART \u00B7 info@ideasmart.ai \u00B7 <a href=\"https://ideasmart.ai\" style=\"color: #dc2626;\">ideasmart.ai</a></p>
+          </div>
+        `;
+        await sendEmail({ to: input.email, subject: `La tua demo IdeaSmart \u00E8 confermata \u2014 ti ricontatteremo presto`, html: htmlConfirm });
+
+        return { success: true };
+      }),
+  }),
+
   // ── Events ────────────────────────────────────────────────────────────────
   events: router({
     // Recupera i prossimi N eventi tech/AI/startup (default 6, max 20)
