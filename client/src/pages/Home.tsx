@@ -668,6 +668,46 @@ export default function Home() {
             );
           })()}
 
+          {/* ── ARTICOLO IN EVIDENZA — Giulio Centemero Deep Tech VC ── */}
+          <div className="mt-6 mb-4">
+            <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#0a6e5c" }}>
+              <div className="flex items-center gap-2">
+                <div className="h-[3px] w-6" style={{ background: "#0a6e5c" }} />
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>In Evidenza</h2>
+              </div>
+              <Link href="/dealroom">
+                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Vai al Dealroom →</span>
+              </Link>
+            </div>
+            <a href="https://ideasmart.ai/dealroom" target="_blank" rel="noopener noreferrer">
+              <article className="group mt-3 grid grid-cols-1 md:grid-cols-[1fr_340px] gap-5 p-5 border-l-4 hover:bg-[#f4faf8] transition-colors cursor-pointer" style={{ borderColor: "#0a6e5c", background: "rgba(10,110,92,0.03)" }}>
+                <div className="flex-1">
+                  <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#0a6e5c", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Deep Tech & VC</span>
+                  <h3 className="text-[24px] sm:text-[30px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                    Deep Tech: il Venture Capital scommette sul futuro con 150 miliardi nel 2025
+                  </h3>
+                  <p className="mt-2 text-[15px] leading-relaxed" style={{ color: "rgba(26,26,46,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.7 }}>
+                    Il mercato del Venture Capital sta vivendo un riposizionamento strategico senza precedenti. Mentre molti settori hanno sperimentato un rallentamento, gli investimenti in Deep Tech hanno raggiunto i 150 miliardi di dollari nel 2025, con un incremento del 18% rispetto all'anno precedente. Il Quantum Computing ha visto un aumento del 30% nei finanziamenti seed e Series A, superando i 3 miliardi di dollari.
+                  </p>
+                  <div className="mt-4 flex items-center gap-4">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-6 h-6 rounded-full bg-[#0a6e5c] flex items-center justify-center">
+                        <span className="text-white text-[9px] font-bold">GC</span>
+                      </div>
+                      <span className="text-[12px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Giulio Centemero</span>
+                      <span className="text-[10px] text-[#1a1a1a]/40">·</span>
+                      <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Analista IDEASMART</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'articolo →</span>
+                  </div>
+                </div>
+                <div className="hidden md:block w-[340px] h-[220px] overflow-hidden flex-shrink-0">
+                  <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/deeptech_article_72ccf6ad.png" alt="Deep Tech VC" className="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </article>
+            </a>
+          </div>
+
           {/* ── EDITORIALE IN EVIDENZA — Venture Studio Index ── */}
           <div className="mt-6 mb-4">
             <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#d62828" }}>

@@ -2247,6 +2247,7 @@
 - [x] B) Inserire primi sponsor e Amazon Deals nel database
 - [x] C) Sostituire generazione AI con Pexels per tutte le immagini notizie
 
+<<<<<<< Updated upstream
 ## Task (1 Apr 2026 — LinkedIn AI Tool Radar)
 - [x] Verificare perché post LinkedIn 14:30 e 17:00 non pubblicati oggi (sandbox ibernata tra 12-17 CET)
 - [x] Creare generatore AI Tool Radar: scraping RSS (Product Hunt, HN, GitHub) + LLM per 10 tool/giorno
@@ -2271,3 +2272,8 @@
 - [x] Creare sezione AI Dealflow sul sito con selezioni startup giornaliere
 - [ ] Programmare verifica automatica domani per post LinkedIn
 - [x] Creare articolo nella home a nome Giulio Centemero basato sul post LinkedIn Dealroom/VC
+=======
+## Task (1 Apr 2026 — Articolo Centemero in Home)
+- [x] Inserire articolo Giulio Centemero "Deep Tech VC 150 miliardi" in evidenza nella Home sotto la hero
+- [x] Riorganizzare sezione sotto la hero: Centemero (In Evidenza) + Venture Studio Index (Analisi IdeaSmart)
+>>>>>>> Stashed changes
