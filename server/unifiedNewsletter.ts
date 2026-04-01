@@ -33,6 +33,7 @@ import { getDb } from "./db";
 import {
   breakingNews as breakingNewsTable,
   newsletterSponsors,
+  amazonDailyDeals,
 } from "../drizzle/schema";
 import { eq, desc, and, sql } from "drizzle-orm";
 
@@ -83,6 +84,18 @@ interface SponsorData {
   features: string | null; // JSON array
   ctaText: string;
   placement: "primary" | "spotlight";
+}
+
+interface AmazonDealData {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  affiliateUrl: string;
+  imageUrl: string | null;
+  rating: string | null;
+  reviewCount: string | null;
+  category: string | null;
 }
 
 // ─── Sponsor Selection (weighted rotation) ─────────────────────────────────
@@ -137,6 +150,67 @@ async function markSponsorSent(sponsorId: number): Promise<void> {
       lastSentAt: new Date(),
     })
     .where(eq(newsletterSponsors.id, sponsorId));
+}
+
+// ─── Amazon Deal Selection ────────────────────────────────────────────────
+
+async function getTodayAmazonDeal(): Promise<AmazonDealData | null> {
+  const db = await getDb();
+  if (!db) return null;
+
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+  // Prima prova a trovare un deal programmato per oggi
+  const todayDeals = await db
+    .select()
+    .from(amazonDailyDeals)
+    .where(
+      and(
+        eq(amazonDailyDeals.scheduledDate, today),
+        eq(amazonDailyDeals.active, true)
+      )
+    )
+    .limit(1);
+
+  if (todayDeals.length > 0) {
+    const d = todayDeals[0];
+    return {
+      id: d.id,
+      title: d.title,
+      description: d.description,
+      price: d.price,
+      affiliateUrl: d.affiliateUrl,
+      imageUrl: d.imageUrl,
+      rating: d.rating,
+      reviewCount: d.reviewCount,
+      category: d.category,
+    };
+  }
+
+  // Fallback: ultimo deal attivo
+  const latestDeals = await db
+    .select()
+    .from(amazonDailyDeals)
+    .where(eq(amazonDailyDeals.active, true))
+    .orderBy(desc(amazonDailyDeals.scheduledDate))
+    .limit(1);
+
+  if (latestDeals.length > 0) {
+    const d = latestDeals[0];
+    return {
+      id: d.id,
+      title: d.title,
+      description: d.description,
+      price: d.price,
+      affiliateUrl: d.affiliateUrl,
+      imageUrl: d.imageUrl,
+      rating: d.rating,
+      reviewCount: d.reviewCount,
+      category: d.category,
+    };
+  }
+
+  return null;
 }
 
 // ─── Data Collection ────────────────────────────────────────────────────────
@@ -227,6 +301,7 @@ function buildUnifiedNewsletterHtml(opts: {
   researches: ResearchItem[];
   primarySponsor: SponsorData | null;
   spotlightSponsor: SponsorData | null;
+  amazonDeal: AmazonDealData | null;
   unsubscribeUrl: string;
   isTest: boolean;
 }): string {
@@ -239,6 +314,7 @@ function buildUnifiedNewsletterHtml(opts: {
     researches,
     primarySponsor,
     spotlightSponsor,
+    amazonDeal,
     unsubscribeUrl,
     isTest,
   } = opts;
@@ -514,9 +590,79 @@ function buildUnifiedNewsletterHtml(opts: {
           </table>
         </td>
       </tr>`;
+  }  // ── Amazon Deal Block ─────────────────────────────────────────────────
+  function buildAmazonDealBlock(): string {
+    if (!amazonDeal) return "";
+
+    const AMAZON_ORANGE = "#FF9900";
+    const utmUrl = `${amazonDeal.affiliateUrl}${amazonDeal.affiliateUrl.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_deal`;
+
+    const ratingHtml = amazonDeal.rating
+      ? `<span style="font-size:13px;color:${AMAZON_ORANGE};font-family:${F};font-weight:700;">${amazonDeal.rating}</span>${amazonDeal.reviewCount ? ` <span style="font-size:12px;color:${MUTED};font-family:${F};">(${amazonDeal.reviewCount} recensioni)</span>` : ""}`
+      : "";
+
+    const categoryHtml = amazonDeal.category
+      ? `<span style="font-size:11px;font-weight:600;color:${MUTED};font-family:${F};text-transform:uppercase;letter-spacing:0.05em;">${amazonDeal.category}</span>`
+      : "";
+
+    return `
+      <!-- Amazon Deal del Giorno -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+            <!-- Label -->
+            <tr>
+              <td style="padding:20px 24px 0;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                      <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">&#128722; Consiglio del Giorno &mdash; in collaborazione con Amazon</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- Product -->
+            <tr>
+              <td style="padding:12px 24px 0;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    ${amazonDeal.imageUrl ? `<td width="140" style="vertical-align:top;padding-right:16px;">
+                      <a href="${utmUrl}" target="_blank" style="text-decoration:none;">
+                        <img src="${amazonDeal.imageUrl}" alt="${amazonDeal.title}" width="130" style="width:130px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
+                      </a>
+                    </td>` : ""}
+                    <td style="vertical-align:top;">
+                      ${categoryHtml ? `<div style="margin-bottom:6px;">${categoryHtml}</div>` : ""}
+                      <a href="${utmUrl}" target="_blank" style="font-size:17px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${amazonDeal.title}</a>
+                      <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.6;margin-bottom:10px;">${amazonDeal.description}</div>
+                      <div style="margin-bottom:8px;">
+                        <span style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};">${amazonDeal.price}</span>
+                      </div>
+                      ${ratingHtml ? `<div style="margin-bottom:12px;">${ratingHtml}</div>` : ""}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- CTA -->
+            <tr>
+              <td style="padding:14px 24px 20px;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="background:${AMAZON_ORANGE};border-radius:8px;padding:12px 28px;">
+                      <a href="${utmUrl}" target="_blank" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};letter-spacing:0.02em;">Scopri su Amazon &rarr;</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
   }
 
-  // ── Assemble full HTML ────────────────────────────────────────────
+  // ── Assemble full HTML ────────────────────────────────────────────────
   return `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -635,6 +781,8 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildResearchSection()}
 
+        ${buildAmazonDealBlock()}
+
         <!-- CTA SUBSCRIBE -->
         <tr>
           <td style="padding:0 20px 16px;">
@@ -725,10 +873,11 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   const dateLabel = getDateLabel(now);
   const content = await collectAllContent();
 
-  // Fetch dynamic sponsors from DB
-  const [primarySponsor, spotlightSponsor] = await Promise.all([
+  // Fetch dynamic sponsors and Amazon deal from DB
+  const [primarySponsor, spotlightSponsor, amazonDeal] = await Promise.all([
     getActiveSponsor("primary"),
     getActiveSponsor("spotlight"),
+    getTodayAmazonDeal(),
   ]);
 
   console.log(`[UnifiedNewsletter] Contenuti raccolti:`);
@@ -743,6 +892,9 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   console.log(
     `  Sponsor spotlight: ${spotlightSponsor?.name ?? "nessuno"}`
   );
+  console.log(
+    `  Amazon Deal: ${amazonDeal?.title ?? "nessuno"}`
+  );
 
   const subject = `IDEASMART — ${dateLabel}`;
 
@@ -755,6 +907,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     researches: content.researches,
     primarySponsor,
     spotlightSponsor,
+    amazonDeal,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     isTest,
   });

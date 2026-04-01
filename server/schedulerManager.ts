@@ -21,17 +21,11 @@
  *  │  06:45 — Audit link newsletter pre-invio                                │
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
- *  │  NEWSLETTER SETTIMANALE (3 canali, 3 giorni)                             │
- *  │  Lunedì    07:00 — Preview AI News → ac@acinelli.com                   │
- *  │  Lunedì    07:30 — Newsletter AI News + Ricerche → tutti iscritti       │
- *  │  Martedì   — Nessun invio                                              │
- *  │  Mercoledì 07:00 — Preview Startup News → ac@acinelli.com              │
- *  │  Mercoledì 07:30 — Newsletter Startup News + Ricerche → tutti iscritti │
- *  │  Giovedì   — Nessun invio                                              │
- *  │  Venerdì   07:00 — Preview DEALROOM News → ac@acinelli.com             │
- *  │  Venerdì   07:30 — Newsletter DEALROOM News (deal sett.) → tutti iscr. │
- *  │  Sabato    — Nessun invio                                              │
- *  │  Domenica  — Nessun invio                                              │
+ *  │  NEWSLETTER UNIFICATA GIORNALIERA                                        │
+ *  │  Ogni giorno 09:00 — Preview unificata → ac@acinelli.com               │
+ *  │  Ogni giorno 11:00 — Newsletter unificata → tutti gli iscritti          │
+ *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
+ *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
  *  │  LINKEDIN AUTOPOST — 4 slot giornalieri                                  │
  *  │  10:00 — Post mattino: AI News (fisso)                                 │
@@ -456,9 +450,9 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-   // ── PREVIEW NEWSLETTER UNIFICATA (07:00 CET) — Lun/Mer/Ven ────────────────
-  cron.schedule("0 7 * * 1,3,5", async () => {
-    console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter UNIFICATA...");
+  // ── PREVIEW NEWSLETTER UNIFICATA (09:00 CET) — GIORNALIERA (tutti i giorni) ──────
+  cron.schedule("0 9 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 09:00 CET — Invio preview newsletter UNIFICATA giornaliera...");
     try {
       const { sendUnifiedPreview } = await import("./unifiedNewsletter");
       const result = await sendUnifiedPreview();
@@ -470,33 +464,45 @@ export function startAllSchedulers(): void {
     } catch (err) {
       console.error("[SchedulerManager] ❌ Errore preview newsletter unificata:", err);
     }
-  }, { timezone: TZ });;
+  }, { timezone: TZ });
 
-  // ── INVIO MASSIVO — DISABILITATO (richiede approvazione manuale da Admin) ──
-  // L'invio automatico della newsletter è stato disabilitato.
-  // L'owner riceve la preview alle 07:00 CET e approva l'invio dalla dashboard Admin.
-  // Il pulsante "Invia Newsletter" nella dashboard admin chiama sendDailyChannelNewsletter().
-  /*
-  cron.schedule("30 7 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 07:30 CET — Invio newsletter massiva del giorno...");
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA (11:00 CET) — GIORNALIERO ────────────
+  // La newsletter unificata viene inviata automaticamente ogni giorno alle 11:00 CET.
+  // L'audit link delle 06:45 può bloccare l'invio se rileva link rotti.
+  cron.schedule("0 11 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 11:00 CET — Invio newsletter UNIFICATA giornaliera a tutti gli iscritti...");
     if (isNewsletterBlockedByAudit()) {
       console.warn("[SchedulerManager] 🚨 INVIO BLOCCATO dall'audit link (06:45)");
+      await sendSchedulerAlert(
+        "Newsletter BLOCCATA dall'audit link",
+        `<p>L'invio della newsletter delle <strong>11:00 CET</strong> è stato <strong>bloccato</strong> perché l'audit link delle 06:45 ha rilevato link interni rotti.</p>
+         <p>Verificare e correggere i link dalla dashboard admin, poi inviare manualmente.</p>`
+      ).catch(() => {});
       return;
     }
     try {
-      const result = await sendDailyChannelNewsletter();
-      if (result.success && result.recipientCount > 0) {
-        console.log(`[SchedulerManager] ✅ Newsletter ${result.channel}: ${result.recipientCount} iscritti, ${result.newsCount} notizie`);
-      } else if (result.recipientCount === 0 && result.success) {
-        console.log(`[SchedulerManager] ℹ️ Newsletter ${result.channel}: già inviata oggi o nessun iscritto`);
+      const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedNewsletterToAll();
+      if (result.success) {
+        console.log(`[SchedulerManager] ✅ Newsletter UNIFICATA giornaliera: ${result.recipientCount} iscritti, inviata con successo`);
       } else {
-        console.error(`[SchedulerManager] ❌ Newsletter ${result.channel}: ${result.error}`);
+        console.error(`[SchedulerManager] ❌ Newsletter UNIFICATA: ${result.error}`);
+        await sendSchedulerAlert(
+          "Newsletter UNIFICATA fallita",
+          `<p>L'invio della newsletter unificata delle <strong>11:00 CET</strong> è <strong>fallito</strong>.</p>
+           <p>Errore: <code>${result.error}</code></p>`
+        ).catch(() => {});
       }
     } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore invio newsletter massiva:", err);
+      const errMsg = err instanceof Error ? err.message : String(err);
+      console.error("[SchedulerManager] ❌ Errore invio newsletter UNIFICATA giornaliera:", err);
+      await sendSchedulerAlert(
+        "ERRORE invio newsletter UNIFICATA",
+        `<p style="color:#f87171;">Errore critico nell'invio della newsletter unificata giornaliera.</p>
+         <p>Errore: <code>${errMsg}</code></p>`
+      ).catch(() => {});
     }
   }, { timezone: TZ });
-  */
 
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 4 post giornalieri:
@@ -871,8 +877,8 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → ogni giorno alle 01:35 CET");
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
-  console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 07:00 CET → info@ideasmart.ai");
-  console.log("[SchedulerManager]   📧 Newsletter       → DISABILITATO (richiede approvazione manuale da Admin)");
+  console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 09:00 CET → ac@acinelli.com");
+  console.log("[SchedulerManager]   📧 Newsletter UNIFICATA → ogni giorno alle 11:00 CET → tutti gli iscritti (AUTOMATICA)");
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO   → ogni giorno alle 10:00 CET (AI News)");
   console.log("[SchedulerManager]   💼 LinkedIn STARTUP   → ogni giorno alle 14:30 CET (Startup News)");
@@ -881,7 +887,7 @@ export function startAllSchedulers(): void {
 
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
-  console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (richiede approvazione manuale)");
+  console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (newsletter unificata giornaliera attiva)");
   console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI + Startup + DEALROOM, rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 09:30 CET (pubblica se nessun post oggi)");

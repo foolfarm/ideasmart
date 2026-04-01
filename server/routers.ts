@@ -1387,20 +1387,11 @@ Rispondi con questo JSON:
     }),
 
     // ── Newsletter Giornaliera per Canale — Preview (07:00 CET) ─────────────────────────
+    // [DEPRECATO] Reindirizza alla newsletter unificata
     sendDailyChannelPreview: adminProcedure.mutation(async () => {
-      const { sendDailyChannelPreview } = await import("./dailyChannelNewsletter");
-      const result = await sendDailyChannelPreview();
-      const { getLatestNews } = await import("./db");
-      const { getTodayChannel } = await import("./dailyChannelNewsletter");
-      const channel = getTodayChannel();
-      const newsCount = channel ? (await getLatestNews(12, channel.key)).length : 0;
-      return {
-        success: result.success,
-        channel: result.channel,
-        subject: result.subject,
-        newsCount,
-        error: result.error,
-      };
+      const { sendUnifiedPreview } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedPreview();
+      return { success: result.success, channel: "unificata", subject: "IDEASMART Newsletter Unificata", newsCount: (result.stats?.ai ?? 0) + (result.stats?.startup ?? 0) + (result.stats?.dealroom ?? 0), error: result.error };
     }),
 
     // ── Newsletter Giornaliera per Canale — Invio Massivo ────────────────────────────────
@@ -1435,17 +1426,11 @@ Rispondi con questo JSON:
       }),
 
     // ── Approva e Invia Newsletter del Giorno (invio massivo manuale) ────────────────
+    // [DEPRECATO] Reindirizza alla newsletter unificata
     approveAndSendNewsletter: adminProcedure.mutation(async () => {
-      const { sendDailyChannelNewsletter } = await import("./dailyChannelNewsletter");
-      const result = await sendDailyChannelNewsletter();
-      return {
-        success: result.success,
-        channel: result.channel,
-        recipientCount: result.recipientCount,
-        newsCount: result.newsCount,
-        subject: result.subject,
-        error: result.error,
-      };
+      const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedNewsletterToAll();
+      return { success: result.success, channel: "unificata", recipientCount: result.recipientCount, newsCount: 0, subject: "IDEASMART Newsletter Unificata", error: result.error };
     }),
 
     // ── Newsletter Unificata — Preview ────────────────────────────────────────────────
@@ -1470,6 +1455,84 @@ Rispondi con questo JSON:
       const result = await sendUnifiedNewsletterToAll();
       return result;
     }),
+
+    // ── Amazon Daily Deal — CRUD ─────────────────────────────────────────────────────
+    getAmazonDeals: adminProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const { amazonDailyDeals } = await import("../drizzle/schema");
+      const { desc } = await import("drizzle-orm");
+      return db.select().from(amazonDailyDeals).orderBy(desc(amazonDailyDeals.scheduledDate)).limit(30);
+    }),
+
+    createAmazonDeal: adminProcedure
+      .input(z.object({
+        title: z.string().min(1),
+        description: z.string().min(1),
+        price: z.string().min(1),
+        affiliateUrl: z.string().url(),
+        imageUrl: z.string().optional(),
+        rating: z.string().optional(),
+        reviewCount: z.string().optional(),
+        category: z.string().optional(),
+        scheduledDate: z.string().min(8),
+        active: z.boolean().default(true),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { amazonDailyDeals } = await import("../drizzle/schema");
+        const [result] = await db.insert(amazonDailyDeals).values({
+          title: input.title,
+          description: input.description,
+          price: input.price,
+          affiliateUrl: input.affiliateUrl,
+          imageUrl: input.imageUrl ?? null,
+          rating: input.rating ?? null,
+          reviewCount: input.reviewCount ?? null,
+          category: input.category ?? null,
+          scheduledDate: input.scheduledDate,
+          active: input.active,
+        });
+        return { success: true, id: result.insertId };
+      }),
+
+    updateAmazonDeal: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        price: z.string().optional(),
+        affiliateUrl: z.string().url().optional(),
+        imageUrl: z.string().optional(),
+        rating: z.string().optional(),
+        reviewCount: z.string().optional(),
+        category: z.string().optional(),
+        scheduledDate: z.string().optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { amazonDailyDeals } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const { id, ...updates } = input;
+        const cleanUpdates = Object.fromEntries(Object.entries(updates).filter(([_, v]) => v !== undefined));
+        if (Object.keys(cleanUpdates).length === 0) return { success: true };
+        await db.update(amazonDailyDeals).set(cleanUpdates).where(eq(amazonDailyDeals.id, id));
+        return { success: true };
+      }),
+
+    deleteAmazonDeal: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { amazonDailyDeals } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        await db.delete(amazonDailyDeals).where(eq(amazonDailyDeals.id, input.id));
+        return { success: true };
+      }),
 
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure

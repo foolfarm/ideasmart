@@ -581,3 +581,35 @@ export const newsletterSponsors = mysqlTable("newsletter_sponsors", {
 
 export type NewsletterSponsor = typeof newsletterSponsors.$inferSelect;
 export type InsertNewsletterSponsor = typeof newsletterSponsors.$inferInsert;
+
+// ── Amazon Daily Deal (promo giornaliera Amazon con link affiliato) ──────────
+export const amazonDailyDeals = mysqlTable("amazon_daily_deals", {
+  id: int("id").autoincrement().primaryKey(),
+  // Titolo del prodotto (breve, max 200 char)
+  title: varchar("title", { length: 500 }).notNull(),
+  // Descrizione breve del prodotto
+  description: text("description").notNull(),
+  // Prezzo (stringa formattata, es. "€399.00")
+  price: varchar("price", { length: 50 }).notNull(),
+  // URL affiliato Amazon (amzn.to short link)
+  affiliateUrl: varchar("affiliateUrl", { length: 1000 }).notNull(),
+  // URL immagine prodotto (CDN)
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  // Valutazione (es. "4.7/5")
+  rating: varchar("rating", { length: 20 }),
+  // Numero recensioni
+  reviewCount: varchar("reviewCount", { length: 50 }),
+  // Categoria prodotto
+  category: varchar("category", { length: 255 }),
+  // Data per cui è programmata la promo (YYYY-MM-DD)
+  scheduledDate: varchar("scheduledDate", { length: 10 }).notNull(),
+  // Attivo o meno
+  active: boolean("active").default(true).notNull(),
+  // Contatore click (quante volte è stato cliccato dalla newsletter)
+  clickCount: int("clickCount").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AmazonDailyDeal = typeof amazonDailyDeals.$inferSelect;
+export type InsertAmazonDailyDeal = typeof amazonDailyDeals.$inferInsert;

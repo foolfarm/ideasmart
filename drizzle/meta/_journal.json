@@ -323,6 +323,13 @@
       "when": 1775028106700,
       "tag": "0045_crazy_the_fury",
       "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "5",
+      "when": 1775032801144,
+      "tag": "0046_handy_zaladane",
+      "breakpoints": true
     }
   ]
 }

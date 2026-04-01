@@ -2219,3 +2219,20 @@
 - [x] Riscrivere box promo con testo di Andrea ("Sei un giornalista, una testata online...")
 - [x] Migliorare intro newsletter (aggiunto sottotitolo "briefing quotidiano su AI, Startup e Venture Capital")
 - [x] Verificare breaking news: 5 attive nel DB, tutte presenti nella newsletter
+
+## Task (1 Apr 2026 — Area Promo Amazon nella Newsletter)
+- [ ] Visitare link Amazon per raccogliere info prodotto
+- [ ] Creare tabella DB per promo Amazon giornaliere
+- [ ] Aggiungere blocco promo Amazon nel template newsletter
+- [ ] Testare con invio preview
+
+## Task (1 Apr 2026 — Newsletter giornaliera unica + Analisi crediti)
+- [ ] Aggiornare scheduler newsletter da Lun/Mer/Ven a giornaliero (ogni giorno alle 07:00 CET)
+- [ ] Eliminare le vecchie newsletter separate (mantenere solo la unificata)
+- [ ] Programmare invio massivo newsletter alle 11:00 CET di oggi
+- [ ] Analizzare consumo crediti giornaliero del sito (LLM, email, API, ecc.)
+
+## Task (1 Apr 2026 — Newsletter giornaliera definitiva)
+- [x] Preview newsletter alle 09:00 CET ogni giorno (ac@acinelli.com)
+- [x] Invio massivo newsletter alle 11:00 CET ogni giorno (tutta la mailing list)
+- [x] Eliminare vecchie newsletter per canale (Lun/Mer/Ven) dallo scheduler
