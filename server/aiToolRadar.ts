@@ -263,11 +263,14 @@ REGOLE FERREE:
 - Max 2 emoji in tutto il post
 - NO bold (**), NO formattazione markdown
 
+Per ogni tool DEVI includere il LINK DIRETTO al tool o all'articolo.
+
 FORMATO ESATTO:
 10 nuovi tool AI scoperti oggi
 
 1. Nome \u2014 cosa fa in max 10 parole
 Verdetto: frase secca (max 12 parole)
+Link: URL diretto
 
 [ripeti per tutte 10]
 

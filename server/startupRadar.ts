@@ -262,10 +262,11 @@ REGOLE FERREE:
 Per ogni startup DEVI includere:
 1. Nome e cosa fa (2 righe max, racconta la USP)
 2. Dati finanziari: quanto ha raccolto, round, valutazione se disponibile
-3. Rating di investimento con icona:
+3. Rating di investimento:
    INVEST = investi con moderazione, da monitorare
    INVEST+ = investi subito, opportunit\u00e0 concreta
    INVEST++ = investi immediatamente, opportunit\u00e0 rara
+4. LINK DIRETTO alla startup o all'articolo (OBBLIGATORIO per ogni startup)
 
 FORMATO ESATTO:
 AI Dealflow Europe \u2014 10 startup su cui puntare oggi
@@ -273,6 +274,7 @@ AI Dealflow Europe \u2014 10 startup su cui puntare oggi
 1. Nome \u2014 descrizione USP (2 righe max)
 Funding: importo round | Valutazione: se disponibile
 Rating: INVEST / INVEST+ / INVEST++
+Link: URL diretto
 
 [ripeti per tutte 10]
 

@@ -2263,3 +2263,4 @@
 - [x] Forzare post LinkedIn Startup Radar EU/IT (10 startup investibili)
 - [x] Aggiornare TUTTI i prompt LLM LinkedIn con limite rigido 3000 caratteri (morning, startup, research, dealroom, ai-tool-radar)
 - [x] Riscrivere prompt Startup Radar: descrizione USP, dati finanziari, rating INVEST/INVEST+/INVEST++
+- [x] Aggiungere link diretti a startup e tool AI nei post LinkedIn (Startup Radar + AI Tool Radar)
