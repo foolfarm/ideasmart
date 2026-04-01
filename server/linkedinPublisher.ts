@@ -107,7 +107,9 @@ Il tuo stile:
 - Concludi sempre con una domanda o provocazione che stimola il dibattito tra peer
 - Firma ogni post come: Andrea Cinelli | Tech Expert
 
-Il tuo pubblico: CEO, CTO, investitori, imprenditori italiani e europei. Persone che leggono Economist e HBR, non TechCrunch.`;
+Il tuo pubblico: CEO, CTO, investitori, imprenditori italiani e europei. Persone che leggono Economist e HBR, non TechCrunch.
+
+LIMITE ASSOLUTO: I post LinkedIn hanno un limite di 3000 caratteri. I tuoi post devono essere SEMPRE sotto i 2800 caratteri. Conta i caratteri. Se stai superando, taglia e sii pi\u00f9 conciso.`;
 
 function buildGartnerPrompt(
   title: string,
@@ -194,11 +196,12 @@ STRUTTURA DEL POST:
 5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}"
 6. HASHTAG: ${meta.hashtags.join(" ")}
 
-LUNGHEZZA: 1400-1900 caratteri totali
+LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
 LINGUA: Italiano
-TONO: Senior analyst con skin in the game — non consulente teorico, non blogger motivazionale
-EVITA: "rivoluzione", "game changer", "il futuro è adesso", "non possiamo permetterci di", frasi retoriche vuote
-IMPORTANTE: Ogni post deve essere UNICO. Non ripetere strutture, aperture o frasi usate in post precedenti.`;
+TONO: Senior analyst con skin in the game \u2014 non consulente teorico, non blogger motivazionale
+EVITA: "rivoluzione", "game changer", "il futuro \u00e8 adesso", "non possiamo permetterci di", frasi retoriche vuote
+IMPORTANTE: Ogni post deve essere UNICO. Non ripetere strutture, aperture o frasi usate in post precedenti.
+LIMITE CARATTERI: MASSIMO ASSOLUTO 2800 caratteri. Conta i caratteri prima di rispondere.`;
 }
 
 // ── Step 1: Registra upload immagine su LinkedIn ─────────────────────────────
@@ -452,8 +455,18 @@ async function generateLinkedInPostText(
 
     const content = response?.choices?.[0]?.message?.content;
     if (typeof content === "string" && content.trim().length > 200) {
-      console.log("[LinkedIn] ✅ Testo post generato con LLM (stile Gartner)");
-      return content.trim();
+      let text = content.trim();
+      // Troncamento di sicurezza: LinkedIn ha un limite di 3000 caratteri
+      if (text.length > 2950) {
+        console.warn(`[LinkedIn] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
+        const cutPoint = text.lastIndexOf('\n', 2950);
+        text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
+        if (!text.includes('ideasmart.ai')) {
+          text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.ai';
+        }
+      }
+      console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars)`);
+      return text;
     }
     throw new Error("Risposta LLM vuota o troppo corta");
   } catch (err) {

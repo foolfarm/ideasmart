@@ -47,8 +47,12 @@ interface RSSItem {
 interface StartupPick {
   name: string;
   description: string;
+  usp: string; // unique selling proposition
   whyInteresting: string;
-  status: string; // "early", "seed", "scaling", "tool emergente"
+  status: string; // "pre-seed", "seed", "series-a", "series-b+", "scaling"
+  funding: string; // es. "$2.1M pre-seed", "$170M Series C", "sconosciuto"
+  valuation: string; // es. "$1B unicorno", "non disponibile"
+  investRating: string; // "INVEST" | "INVEST+" | "INVEST++"
   source: string;
   link: string;
 }
@@ -172,9 +176,16 @@ Criteri di esclusione:
 
 Per ogni startup fornisci:
 - name: nome della startup
-- description: cosa fa in 1 riga chiara (max 15 parole)
-- whyInteresting: insight da investitore (perché è interessante, 1-2 frasi)
-- status: uno tra "early", "seed", "scaling", "tool emergente"
+- description: cosa fa in 2-3 frasi (USP, cosa la rende unica, mercato target)
+- usp: la unique selling proposition in 1 frase (cosa la differenzia dalla concorrenza)
+- whyInteresting: insight da investitore (perch\u00e9 \u00e8 interessante per un VC, 2-3 frasi)
+- status: uno tra "pre-seed", "seed", "series-a", "series-b+", "scaling"
+- funding: quanto hanno raccolto o stanno raccogliendo (es. "$2.1M pre-seed", "$170M Series C"). Se non disponibile scrivi "non disponibile"
+- valuation: valutazione stimata se disponibile (es. "$1B unicorno"). Se non disponibile scrivi "non disponibile"
+- investRating: il tuo giudizio di investimento, UNO tra:
+  * "INVEST" = opportunit\u00e0 interessante, investi con moderazione, da monitorare
+  * "INVEST+" = opportunit\u00e0 concreta, investi subito con convinzione
+  * "INVEST++" = opportunit\u00e0 rara, investi immediatamente, potenziale enorme
 - source: da quale feed proviene
 - link: URL dell'articolo
 
@@ -200,12 +211,16 @@ Rispondi SOLO con un JSON valido. Nessun altro testo.`;
                 properties: {
                   name: { type: "string" },
                   description: { type: "string" },
+                  usp: { type: "string" },
                   whyInteresting: { type: "string" },
                   status: { type: "string" },
+                  funding: { type: "string" },
+                  valuation: { type: "string" },
+                  investRating: { type: "string" },
                   source: { type: "string" },
                   link: { type: "string" },
                 },
-                required: ["name", "description", "whyInteresting", "status", "source", "link"],
+                required: ["name", "description", "usp", "whyInteresting", "status", "funding", "valuation", "investRating", "source", "link"],
                 additionalProperties: false,
               },
             },
@@ -232,39 +247,43 @@ Rispondi SOLO con un JSON valido. Nessun altro testo.`;
 // ── Genera il testo del post LinkedIn ────────────────────────────────────────
 async function generateStartupRadarPost(startups: StartupPick[]): Promise<string> {
   const startupsList = startups
-    .map((s, i) => `${i + 1}. ${s.name} — ${s.description}\n   Perché: ${s.whyInteresting}\n   Stato: ${s.status}\n   Link: ${s.link}`)
+    .map((s, i) => `${i + 1}. ${s.name} \u2014 ${s.description}\n   USP: ${s.usp}\n   Perch\u00e9 investire: ${s.whyInteresting}\n   Stato: ${s.status} | Funding: ${s.funding} | Valutazione: ${s.valuation}\n   Rating: ${s.investRating}\n   Link: ${s.link}`)
     .join("\n\n");
 
-  const systemPrompt = `Sei Andrea Cinelli, Tech Expert con 20+ anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo.
-Scrivi un post LinkedIn nel format "AI Dealflow Europe by IDEASMART" — la tua rubrica quotidiana dove segnali le 10 startup AI europee più investibili.
+  const systemPrompt = `Sei Andrea Cinelli, Tech Expert e VC advisor. Scrivi un post LinkedIn "AI Dealflow Europe by IDEASMART".
 
-STILE:
-- Scrivi in prima persona, tono da insider VC, diretto e competente
-- Per ogni startup: nome, cosa fa, e il tuo verdetto da investitore
-- NON fare una lista piatta: fai curation + opinione
-- Esempio di verdetto: "clone GPT wrapper → skip" oppure "vertical AI con wedge di mercato → interessante"
-- Aggiungi un "Trend del giorno" alla fine: 1 insight macro su cosa emerge dalla selezione
-- Chiudi con CTA per seguirti e visitare ideasmart.ai/startup
-- Max 2-3 emoji per tutto il post
-- Scrivi in italiano con termini tecnici in inglese quando necessario
-- Firma: Andrea Cinelli | Tech Expert | ideasmart.ai
+REGOLE FERREE:
+- MASSIMO 2800 caratteri TOTALI (LinkedIn taglia a 3000). Conta i caratteri!
+- Tono: insider VC, competente, da chi ha skin in the game
+- Italiano con termini tech/finance in inglese
+- Max 2 emoji in tutto il post
+- NO bold (**), NO formattazione markdown
 
-FORMATO:
-🚀 10 startup AI europee da tenere d'occhio oggi
+Per ogni startup DEVI includere:
+1. Nome e cosa fa (2 righe max, racconta la USP)
+2. Dati finanziari: quanto ha raccolto, round, valutazione se disponibile
+3. Rating di investimento con icona:
+   INVEST = investi con moderazione, da monitorare
+   INVEST+ = investi subito, opportunit\u00e0 concreta
+   INVEST++ = investi immediatamente, opportunit\u00e0 rara
 
-1. [Nome] — [cosa fa]
-👉 [insight da investitore + verdetto]
+FORMATO ESATTO:
+AI Dealflow Europe \u2014 10 startup su cui puntare oggi
 
-...
+1. Nome \u2014 descrizione USP (2 righe max)
+Funding: importo round | Valutazione: se disponibile
+Rating: INVEST / INVEST+ / INVEST++
 
-🔥 Trend:
-[la tua lettura → qui costruisci authority]
+[ripeti per tutte 10]
 
-Se ti interessa questo format, seguimi → ideasmart.ai/startup
+Trend: 1 insight su cosa emerge (max 2 righe)
 
-#Startup #AI #VentureCapital #IDEASMART #StartupEurope #AIInvesting
+Segui \u2192 ideasmart.ai/startup
+#Startup #AI #VentureCapital #IDEASMART
 
-IMPORTANTE: Il post deve essere tra 1500 e 2500 caratteri. Non superare i 3000 caratteri.`;
+Andrea Cinelli | Tech Expert | ideasmart.ai
+
+RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
 
   const response = await invokeLLM({
     messages: [
@@ -275,10 +294,22 @@ IMPORTANTE: Il post deve essere tra 1500 e 2500 caratteri. Non superare i 3000 c
 
   const rawContent = response.choices?.[0]?.message?.content;
   if (!rawContent) return "";
-  return typeof rawContent === 'string' ? rawContent.trim() : "";
+  let text = typeof rawContent === 'string' ? rawContent.trim() : "";
+  // Troncamento di sicurezza: LinkedIn ha un limite di 3000 caratteri
+  if (text.length > 2950) {
+    console.warn(`[StartupRadar] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
+    // Tronca all'ultimo newline prima del limite per non tagliare a met\u00e0 frase
+    const cutPoint = text.lastIndexOf('\n', 2950);
+    text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
+    // Aggiungi firma se mancante
+    if (!text.includes('ideasmart.ai')) {
+      text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.ai';
+    }
+  }
+  return text;
 }
 
-// ── Funzione principale ──────────────────────────────────────────────────────
+// \u2500\u2500 Funzione principale─────────────────────────────────────────────────────
 export async function generateStartupRadarPost_main(): Promise<{
   success: boolean;
   postText: string;

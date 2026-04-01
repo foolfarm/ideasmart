@@ -136,6 +136,9 @@ function extractKeywordsFromTitle(title: string, isMusic = false): string {
 
 // ── Ricerca immagine su Pexels ────────────────────────────────────────────────
 
+// Contatore globale per garantire pagine diverse tra chiamate successive nella stessa sessione
+let pexelsCallCounter = 0;
+
 async function searchPexels(
   query: string,
   orientation: "landscape" | "square" = "landscape",
@@ -148,9 +151,12 @@ async function searchPexels(
   }
 
   try {
-    // Usa una pagina casuale tra 1 e 3 per aumentare la varietà dei risultati
-    const randomPage = Math.floor(Math.random() * 3) + 1;
-    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=15&page=${randomPage}&orientation=${orientation}&size=medium`;
+    // Usa pagina diversa per ogni chiamata: combina contatore + random per massima diversità
+    pexelsCallCounter++;
+    const basePage = (pexelsCallCounter % 5) + 1; // Pagine 1-5 a rotazione
+    const randomOffset = Math.floor(Math.random() * 3); // +0, +1, o +2
+    const page = basePage + randomOffset; // Pagine da 1 a 7
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=15&page=${page}&orientation=${orientation}&size=medium`;
     const res = await fetch(url, {
       headers: { Authorization: apiKey }
     });
@@ -164,20 +170,29 @@ async function searchPexels(
     let photos = data.photos || [];
 
     if (photos.length === 0) {
-      console.warn(`[StockImages] No Pexels results for "${query}"`);
+      console.warn(`[StockImages] No Pexels results for "${query}" (page ${page})`);
       return null;
     }
 
-    // Escludi le immagini già usate di recente
+    // Escludi le immagini già usate di recente — confronto sia per ID che per URL completo
     if (excludeUrls.length > 0) {
-      const filtered = photos.filter(p => !excludeUrls.some(u => u.includes(String(p.id))));
-      if (filtered.length > 0) photos = filtered;
+      const filtered = photos.filter(p => {
+        const photoId = String(p.id);
+        const photoLargeUrl = p.src.large;
+        return !excludeUrls.some(u => u.includes(photoId) || u === photoLargeUrl);
+      });
+      if (filtered.length > 0) {
+        photos = filtered;
+      } else {
+        console.log(`[StockImages] Tutte le foto della pagina ${page} sono già usate, uso comunque una casuale`);
+      }
     }
 
     // Scegli una foto casuale tra le disponibili per varietà
     const idx = Math.floor(Math.random() * Math.min(photos.length, 10));
     const photo = photos[idx];
 
+    console.log(`[StockImages] Selezionata foto ID ${photo.id} da pagina ${page} per query "${query}"`);
     // Usa large per qualità migliore (max 1280px)
     return photo.src.large;
   } catch (err) {

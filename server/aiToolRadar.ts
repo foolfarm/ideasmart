@@ -252,35 +252,33 @@ async function generateToolRadarPost(tools: AITool[]): Promise<string> {
     .map((t, i) => `${i + 1}. ${t.name} — ${t.description}\n   Perché: ${t.whyInteresting}\n   Verdetto: ${t.verdict}\n   Link: ${t.link}`)
     .join("\n\n");
 
-  const systemPrompt = `Sei Andrea Cinelli, Tech Expert con 20+ anni di esperienza.
-Scrivi un post LinkedIn nel format "AI Radar by IDEASMART" — la tua rubrica quotidiana dove segnali i 10 tool AI più interessanti scoperti oggi.
+  const systemPrompt = `Sei Andrea Cinelli, Tech Expert. Scrivi un post LinkedIn "AI Radar by IDEASMART".
 
-STILE:
-- Scrivi in prima persona, tono diretto e competente
-- Per ogni tool: nome, cosa fa in 1 riga, e il tuo verdetto personale (da testare subito / interessante / da monitorare / clone → skip)
-- Aggiungi un "Trend del giorno" alla fine: 1 insight tuo su cosa emerge dalla selezione di oggi
-- Chiudi con una CTA per seguirti e visitare ideasmart.ai
-- Max 2-3 emoji per tutto il post
-- Scrivi in italiano con termini tecnici in inglese quando necessario
-- NON fare una lista piatta: fai curation + opinione
-- Firma: Andrea Cinelli | Tech Expert | ideasmart.ai
+REGOLE FERREE:
+- MASSIMO 2800 caratteri TOTALI. LinkedIn taglia a 3000, quindi stai sotto 2800!
+- Per ogni tool: 1 riga nome+descrizione (max 10 parole), 1 riga verdetto BREVE (max 12 parole)
+- NESSUN paragrafo introduttivo lungo. Vai dritto alla lista.
+- Tono: insider tech, diretto, tagliente
+- Italiano con termini tech in inglese
+- Max 2 emoji in tutto il post
+- NO bold (**), NO formattazione markdown
 
-FORMATO:
-🚀 10 nuovi tool AI scoperti oggi (che vale la pena testare)
+FORMATO ESATTO:
+10 nuovi tool AI scoperti oggi
 
-1. [Nome] — [cosa fa]
-👉 [perché è interessante + tuo verdetto]
+1. Nome \u2014 cosa fa in max 10 parole
+Verdetto: frase secca (max 12 parole)
 
-...
+[ripeti per tutte 10]
 
-🔥 Trend del giorno:
-[1 insight tuo — qui fai personal branding]
+Trend: 1 frase su cosa emerge (max 2 righe)
 
-Se ti interessa questo format, seguimi → ideasmart.ai
+Segui \u2192 ideasmart.ai
+#AI #AITools #IDEASMART
 
-#AI #AITools #Innovation #IDEASMART #TechRadar
+Andrea Cinelli | Tech Expert | ideasmart.ai
 
-IMPORTANTE: Il post deve essere tra 1500 e 2500 caratteri. Non superare i 3000 caratteri.`;
+RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
 
   const response = await invokeLLM({
     messages: [
@@ -291,10 +289,20 @@ IMPORTANTE: Il post deve essere tra 1500 e 2500 caratteri. Non superare i 3000 c
 
   const rawContent = response.choices?.[0]?.message?.content;
   if (!rawContent) return "";
-  return typeof rawContent === 'string' ? rawContent.trim() : "";
+  let text = typeof rawContent === 'string' ? rawContent.trim() : "";
+  // Troncamento di sicurezza: LinkedIn ha un limite di 3000 caratteri
+  if (text.length > 2950) {
+    console.warn(`[AIToolRadar] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
+    const cutPoint = text.lastIndexOf('\n', 2950);
+    text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
+    if (!text.includes('ideasmart.ai')) {
+      text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.ai';
+    }
+  }
+  return text;
 }
 
-// ── Funzione principale: genera il post AI Tool Radar ────────────────────────
+// \u2500\u2500 Funzione principale: genera il post AI Tool Radar───────────────────────
 export async function generateAIToolRadarPost(): Promise<{
   success: boolean;
   postText: string;

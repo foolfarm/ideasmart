@@ -2257,3 +2257,9 @@
 - [x] Aggiungere slot AI Tool Radar alle 18:00 CET nello scheduler
 - [x] Spostare slot DEALROOM da 18:00 a 19:00 CET
 - [x] Aggiornare catch-up LinkedIn con i nuovi slot
+
+## Task (1 Apr 2026 — Fix immagini LinkedIn + Startup Radar)
+- [x] Correggere logica immagini Pexels: keyword diverse per ogni slot, no duplicati tra post
+- [x] Forzare post LinkedIn Startup Radar EU/IT (10 startup investibili)
+- [x] Aggiornare TUTTI i prompt LLM LinkedIn con limite rigido 3000 caratteri (morning, startup, research, dealroom, ai-tool-radar)
+- [x] Riscrivere prompt Startup Radar: descrizione USP, dati finanziari, rating INVEST/INVEST+/INVEST++

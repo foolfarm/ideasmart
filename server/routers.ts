@@ -1615,14 +1615,14 @@ Rispondi con questo JSON:
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure
       .input(z.object({
-        slot: z.enum(["morning", "afternoon"]).default("morning"),
+        slot: z.enum(["morning", "afternoon", "startup-afternoon", "research", "dealroom", "ai-tool-radar"]).default("morning"),
         force: z.boolean().default(true),
       }).optional())
       .mutation(async ({ input }) => {
         const slot = input?.slot ?? "morning";
         const force = input?.force ?? true;
-        console.log(`[AdminRouter] Avvio pubblicazione manuale LinkedIn — slot: ${slot}, force: ${force}`);
-        const result = await publishLinkedInPost(slot, force);
+        console.log(`[AdminRouter] Avvio pubblicazione manuale LinkedIn \u2014 slot: ${slot}, force: ${force}`);
+        const result = await publishLinkedInPost(slot as any, force);
         return {
           success: result.published > 0,
           published: result.published,
