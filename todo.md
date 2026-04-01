@@ -2191,3 +2191,6 @@
 - [x] Aggiornare scheduler: una sola newsletter quotidiana (Lun/Mer/Ven alle 07:00 CET)
 - [x] Aggiornare router admin per invio newsletter unica (sendUnifiedPreview, sendUnifiedTestToEmail, sendUnifiedNewsletterToAll)
 - [x] Testare con invio di prova (inviata a ac@acinelli.com)
+
+## Task (1 Apr 2026 — Sponsor Foolshare nella Newsletter)
+- [x] Inserire Foolshare (foolshare.xyz) come sponsor nella newsletter unificata
