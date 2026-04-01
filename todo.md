@@ -2288,3 +2288,8 @@
 - [x] Aggiornare il record nel database con titolo e testo corretti
 - [x] Riprogettare layout sotto la hero: impaginazione a colonne stile giornale (articolo grande + laterali)
 - [x] Verificare che le notizie nella Home e nei canali siano aggiornate (AI: 15, Startup: 12, Dealroom: 15, Ricerche: 20)
+
+## Task (1 Apr 2026 — Editoriale Centemero corretto)
+- [x] Trascrivere testo integrale articolo MF Centemero (non mostrare foto articolo)
+- [x] Trovare e caricare foto ritratto di Giulio Centemero
+- [x] Inserire articolo come editoriale nella Home (non link al Dealroom)

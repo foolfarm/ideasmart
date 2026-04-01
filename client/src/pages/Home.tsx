@@ -632,35 +632,58 @@ export default function Home() {
             {/* GRID: Centemero grande (sinistra 65%) | Ricerca + Venture Studio (destra 35%) */}
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-0 mt-3">
 
-              {/* ── COLONNA SINISTRA: Articolo Centemero grande ── */}
+              {/* ── COLONNA SINISTRA: Editoriale Centemero ── */}
               <div className="lg:pr-6 lg:border-r border-[#1a1a1a]/15">
-                <a href="https://ideasmart.ai/dealroom" target="_blank" rel="noopener noreferrer">
-                  <article className="group cursor-pointer">
-                    <div className="mb-3 overflow-hidden" style={{ maxHeight: "320px" }}>
-                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/centemero_mf_article_f98100fd.png" alt="Giulio Centemero - MF Milano Finanza" className="w-full h-auto object-contain" loading="lazy" />
+                <article>
+                  {/* Autore + foto ritratto */}
+                  <div className="flex items-start gap-4 mb-4">
+                    <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/centemero_portrait_7f95f65d.webp" alt="Giulio Centemero" className="w-[100px] h-[100px] rounded-lg object-cover flex-shrink-0" loading="lazy" />
+                    <div>
+                      <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#0a6e5c", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Editoriale · Finanza & Governance</span>
+                      <h3 className="text-[26px] sm:text-[32px] font-bold leading-tight" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.01em" }}>
+                        Centemero: col nuovo Tuf meno delisting di comodo e fughe all'estero
+                      </h3>
+                      <p className="mt-1 text-[12px] italic text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>di Elena Dal Maso · MF-Milano Finanza</p>
                     </div>
-                    <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#0a6e5c", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Finanza & Governance</span>
-                    <h3 className="text-[28px] sm:text-[34px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.01em" }}>
-                      Centemero: col nuovo Tuf meno delisting di comodo e fughe all'estero
-                    </h3>
-                    <p className="mt-1 text-[12px] italic text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>di Elena Dal Maso</p>
-                    <p className="mt-3 text-[15px] leading-relaxed" style={{ color: "rgba(26,26,46,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.75 }}>
-                      La riforma del Tuf si muove lungo una direttrice chiara: rafforzare la competitivit\u00e0 del mercato dei capitali italiano mantenendo un presidio credibile sulla tutela degli investitori, spiega a MF-Milano Finanza Giulio Centemero, membro della Commissione Finanze. A fine marzo il Consiglio dei ministri ha approvato in via definitiva la riforma che vuole rendere Piazza Affari pi\u00f9 competitiva e allineata agli standard internazionali. Sul fronte della governance, la sterilizzazione dei voti maggiorati nelle operazioni straordinarie introduce un elemento di equilibrio importante.
+                  </div>
+
+                  {/* Testo integrale dell'articolo */}
+                  <div className="text-[14px] leading-relaxed space-y-3" style={{ color: "rgba(26,26,46,0.75)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.75 }}>
+                    <p>
+                      «La riforma del Tuf si muove lungo una direttrice chiara: rafforzare la competitività del mercato dei capitali italiano mantenendo un presidio credibile sulla tutela degli investitori», spiega a MF-Milano Finanza <strong>Giulio Centemero</strong>, membro della Commissione Finanze. Infatti dopo due anni di lavoro nasce il nuovo Testo Unico della Finanza: a fine marzo il Consiglio dei ministri ha approvato in via definitiva la riforma che vuole rendere Piazza Affari più competitiva e allineata agli standard internazionali.
                     </p>
-                    <div className="mt-4 flex items-center gap-4 flex-wrap">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-6 h-6 rounded-full bg-[#0a6e5c] flex items-center justify-center">
-                          <span className="text-white text-[9px] font-bold">GC</span>
-                        </div>
-                        <span className="text-[12px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Giulio Centemero</span>
-                        <span className="text-[10px] text-[#1a1a1a]/40">·</span>
-                        <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Commissione Finanze</span>
+                    <p>
+                      Sul fronte della governance, riprende Centemero, «la sterilizzazione dei voti maggiorati nelle operazioni straordinarie introduce un elemento di equilibrio importante: strumenti pensati per favorire stabilità e visione di lungo periodo non possono tradursi in un vantaggio determinante in scelte che incidono in modo strutturale sui diritti degli azionisti, come delisting o trasferimenti all'estero».
+                    </p>
+                    <p>
+                      Positiva anche la scelta di fissare all'1% la soglia per la presentazione delle liste, «impedendo agli statuti di innalzarla: è un intervento che rafforza la contendibilità e rende effettiva, e non solo teorica, la partecipazione delle minoranze», nota il politico che segue da vicino Borsa Italiana. Più articolato il tema delle neo-quotate, «dove la riserva agli investitori istituzionali per la presentazione delle liste di minoranza risponde all'esigenza di garantire qualità e stabilità nella fase iniziale, ma richiederà attenzione in sede applicativa per evitare effetti di eccessiva chiusura».
+                    </p>
+                    <p>
+                      Di particolare rilievo, secondo Centemero, il regime semplificato per le società sotto il miliardo di capitalizzazione, che introduce un principio di proporzionalità regolatoria: «ridurre la complessità per le mid e small cap è essenziale per rendere la quotazione un'opzione realmente praticabile».
+                    </p>
+                    <p>
+                      Il capitolo forse più strategico, riprende il politico, riguarda l'apertura agli investimenti professionali: «l'introduzione di veicoli ispirati alle <em>limited partnership</em> e la semplificazione per i gestori sotto soglia rappresentano un passo significativo per attrarre e trattenere in Italia capitali di private equity e venture capital».
+                    </p>
+                    <p>
+                      Sul <em>whitewash</em>, «l'introduzione della soglia del 10% mira a evitare che quote marginali possano esercitare un potere di veto sproporzionato». Infine, gli interventi sulle opa e sulle operazioni straordinarie (dalla riduzione del periodo di riferimento per il prezzo, fino alla disciplina del downlisting) «vanno letti come un tentativo di rendere il quadro più efficiente, mantenendo però solo qualificate e controllo regolamentare nei passaggi più sensibili».
+                    </p>
+                    <p>
+                      Nel complesso, si tratta di una «riforma che prova a correggere due criticità storiche del sistema italiano: un eccesso di rigidità nei percorsi di crescita e una insufficiente chiarezza nei momenti decisionali più delicati. La sfida sarà ora l'attuazione, che determinerà l'effettiva capacità di queste norme di tradursi in maggiore attrattività del mercato», conclude Centemero.
+                    </p>
+                  </div>
+
+                  {/* Firma e fonte */}
+                  <div className="mt-5 pt-4 border-t border-[#1a1a1a]/10 flex items-center gap-4 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/centemero_portrait_7f95f65d.webp" alt="Giulio Centemero" className="w-8 h-8 rounded-full object-cover" />
+                      <div>
+                        <span className="text-[12px] font-semibold text-[#1a1a1a] block" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Giulio Centemero</span>
+                        <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Membro Commissione Finanze</span>
                       </div>
-                      <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'articolo →</span>
                     </div>
-                    <p className="mt-2 text-[10px] text-[#1a1a1a]/35 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>MF-Milano Finanza · 1 apr 2026</p>
-                  </article>
-                </a>
+                    <span className="text-[10px] text-[#1a1a1a]/35 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>MF-Milano Finanza · 1 apr 2026 · (riproduzione riservata)</span>
+                  </div>
+                </article>
               </div>
 
               {/* ── COLONNA DESTRA: Ricerca del Giorno + Analisi IdeaSmart ── */}
