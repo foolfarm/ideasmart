@@ -309,7 +309,7 @@ function SectionNav() {
           </Link>
           <Link href="/offertacommerciale">
             <span
-              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#dc2626] hover:text-white ${
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#dc2626] hover:text-white ${
                 location === "/offertacommerciale" ? "bg-[#dc2626] text-white" : ""
               }`}
               style={{ fontFamily: SF, color: location === "/offertacommerciale" ? "#fff" : "#dc2626" }}>
@@ -317,6 +317,14 @@ function SectionNav() {
               OFFERTA
             </span>
           </Link>
+          <a href="https://ideasmart.technology" target="_blank" rel="noopener noreferrer">
+            <span
+              className="flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#4f46e5] hover:text-white"
+              style={{ fontFamily: SF, color: "#4f46e5" }}>
+              <Rocket size={13} strokeWidth={2.2} />
+              DEMO
+            </span>
+          </a>
         </div>
 
         {/* Hamburger — mobile only */}
@@ -348,12 +356,20 @@ function SectionNav() {
           </Link>
           <Link href="/offertacommerciale">
             <span
-              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#fef2f2] transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#fef2f2] transition-colors cursor-pointer border-b border-[#1a1a1a]/8"
               style={{ fontFamily: SF, color: "#dc2626" }}>
               <Tag size={14} strokeWidth={2} />
               OFFERTA
             </span>
           </Link>
+          <a href="https://ideasmart.technology" target="_blank" rel="noopener noreferrer">
+            <span
+              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#eef2ff] transition-colors cursor-pointer"
+              style={{ fontFamily: SF, color: "#4f46e5" }}>
+              <Rocket size={14} strokeWidth={2} />
+              DEMO
+            </span>
+          </a>
         </div>
       </div>
     </>

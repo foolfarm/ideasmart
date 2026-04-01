@@ -2293,3 +2293,6 @@
 - [x] Trascrivere testo integrale articolo MF Centemero (non mostrare foto articolo)
 - [x] Trovare e caricare foto ritratto di Giulio Centemero
 - [x] Inserire articolo come editoriale nella Home (non link al Dealroom)
+
+## Task (1 Apr 2026 — Voce Demo nella navbar)
+- [x] Aggiungere voce "Demo" nella navbar dopo "Offerta" con link a ideasmart.technology

@@ -171,6 +171,21 @@ export default function Navbar() {
             >
               Advertising
             </Link>
+
+            <a
+              href="https://ideasmart.technology"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105 border"
+              style={{
+                color: "#1a1a1a",
+                borderColor: "#1a1a1a30",
+                background: "#f0f0ff",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+              }}
+            >
+              Demo
+            </a>
             {isHome ? (
               <button
                 onClick={() => scrollTo("newsletter")}
@@ -259,12 +274,23 @@ export default function Navbar() {
 
             <Link
               href="/advertise"
-              className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors"
+              className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors mb-1"
               style={{ color: "#2a2a2a", background: "#fff2ec", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               onClick={() => setMenuOpen(false)}
             >
               Advertising →
             </Link>
+
+            <a
+              href="https://ideasmart.technology"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-left px-4 py-3 text-base font-bold rounded-lg transition-colors"
+              style={{ color: "#1a1a1a", background: "#f0f0ff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Demo →
+            </a>
           </div>
         </div>
       </div>
