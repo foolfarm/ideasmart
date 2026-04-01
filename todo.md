@@ -2194,3 +2194,7 @@
 
 ## Task (1 Apr 2026 — Sponsor Foolshare nella Newsletter)
 - [x] Inserire Foolshare (foolshare.xyz) come sponsor nella newsletter unificata
+
+## Task (1 Apr 2026 — Miglioramento Sponsor Newsletter)
+- [x] Aggiungere immagine Foolshare dal sito nel blocco sponsor (hero isometrica CDN)
+- [x] Migliorare design del blocco sponsor (immagine cliccabile, feature grid 2x2, CTA più grande, border-radius 12px)

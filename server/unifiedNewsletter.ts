@@ -307,27 +307,70 @@ function buildUnifiedNewsletterHtml(opts: {
   }
 
   // ── Sponsor — Foolshare ────────────────────────────────────────────
+  const FOOLSHARE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/foolshare_hero_0e4f3a8f.webp";
+
   function buildSponsorSection(): string {
     return `
       <!-- Sponsor — Foolshare -->
       <tr>
         <td style="padding:0 20px 16px;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border-left:4px solid ${ACCENT};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${ACCENT};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+            <!-- Label -->
             <tr>
-              <td style="padding:20px 24px;">
-                <div style="font-size:11px;font-weight:700;color:${MUTED};text-transform:uppercase;letter-spacing:0.1em;font-family:${F};margin-bottom:8px;">Sponsor del Giorno</div>
-                <div style="font-size:22px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.3;margin-bottom:12px;">Foolshare &mdash; Condividi documenti con controllo totale</div>
-                <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.65;margin-bottom:16px;">Data room sicure, NDA con firma digitale, analytics in tempo reale e fundraising OS. La piattaforma professionale per startup, investitori e professionisti che gestiscono documenti riservati.</div>
-                <ul style="margin:0 0 16px 0;padding-left:18px;">
-                  <li style="font-size:13px;color:${DARK};font-family:${F};line-height:1.7;margin-bottom:4px;"><strong>Data Room</strong> con NDA e firma digitale integrati</li>
-                  <li style="font-size:13px;color:${DARK};font-family:${F};line-height:1.7;margin-bottom:4px;"><strong>Analytics</strong> in tempo reale: chi visualizza, per quanto e da dove</li>
-                  <li style="font-size:13px;color:${DARK};font-family:${F};line-height:1.7;margin-bottom:4px;"><strong>Fundraising OS</strong> con soft commitment tracking e project room</li>
-                  <li style="font-size:13px;color:${DARK};font-family:${F};line-height:1.7;"><strong>7 giorni gratis</strong> &middot; Nessuna carta di credito richiesta</li>
-                </ul>
+              <td style="padding:20px 24px 0;">
+                <div style="font-size:11px;font-weight:700;color:${ACCENT};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">Sponsor del Giorno</div>
+              </td>
+            </tr>
+            <!-- Title -->
+            <tr>
+              <td style="padding:8px 24px 0;">
+                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;">Foolshare &mdash; Condividi documenti con controllo totale</div>
+              </td>
+            </tr>
+            <!-- Image -->
+            <tr>
+              <td style="padding:16px 24px 0;">
+                <a href="https://foolshare.xyz?utm_source=ideasmart&utm_medium=newsletter&utm_campaign=sponsor" target="_blank" style="text-decoration:none;">
+                  <img src="${FOOLSHARE_IMG}" alt="Foolshare - Data Room e Analytics" width="592" style="width:100%;max-width:592px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
+                </a>
+              </td>
+            </tr>
+            <!-- Description -->
+            <tr>
+              <td style="padding:16px 24px 0;">
+                <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;">Data room sicure, NDA con firma digitale, analytics in tempo reale e fundraising OS. La piattaforma professionale per startup, investitori e professionisti che gestiscono documenti riservati.</div>
+              </td>
+            </tr>
+            <!-- Features -->
+            <tr>
+              <td style="padding:14px 24px 0;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="50%" style="padding:6px 8px 6px 0;vertical-align:top;">
+                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#128274; <strong>Data Room</strong> con NDA e firma digitale</div>
+                    </td>
+                    <td width="50%" style="padding:6px 0 6px 8px;vertical-align:top;">
+                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#128200; <strong>Analytics</strong> in tempo reale</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%" style="padding:6px 8px 6px 0;vertical-align:top;">
+                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#128176; <strong>Fundraising OS</strong> e project room</div>
+                    </td>
+                    <td width="50%" style="padding:6px 0 6px 8px;vertical-align:top;">
+                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#9989; <strong>7 giorni gratis</strong> &middot; No carta</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- CTA -->
+            <tr>
+              <td style="padding:18px 24px 22px;">
                 <table cellpadding="0" cellspacing="0" border="0">
                   <tr>
-                    <td style="background:${BLACK};border-radius:6px;padding:12px 28px;">
-                      <a href="https://foolshare.xyz?utm_source=ideasmart&utm_medium=newsletter&utm_campaign=sponsor" style="font-size:14px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F};">Provalo Gratis 7 giorni &rarr;</a>
+                    <td style="background:${BLACK};border-radius:8px;padding:14px 32px;">
+                      <a href="https://foolshare.xyz?utm_source=ideasmart&utm_medium=newsletter&utm_campaign=sponsor" style="font-size:15px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F};letter-spacing:0.02em;">Provalo Gratis 7 giorni &rarr;</a>
                     </td>
                   </tr>
                 </table>
