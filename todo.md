@@ -2236,3 +2236,8 @@
 - [x] Preview newsletter alle 09:00 CET ogni giorno (ac@acinelli.com)
 - [x] Invio massivo newsletter alle 11:00 CET ogni giorno (tutta la mailing list)
 - [x] Eliminare vecchie newsletter per canale (Lun/Mer/Ven) dallo scheduler
+
+## Task (1 Apr 2026 — Admin Amazon Deals + Sponsor + Crediti)
+- [x] Area admin Amazon Deals: CRUD per inserire più link, rotazione giornaliera automatica
+- [x] Area admin Sponsor Newsletter: CRUD per sponsor personalizzati (sostituisce Foolshare/FoolTalent)
+- [x] Analisi consumo crediti giornaliero del sito (LLM, email, immagini, API)

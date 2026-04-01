@@ -1534,6 +1534,84 @@ Rispondi con questo JSON:
         return { success: true };
       }),
 
+    // ── Sponsor Newsletter CRUD ────────────────────────────────────────────────────────
+    listSponsors: adminProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const { newsletterSponsors } = await import("../drizzle/schema");
+      const { desc } = await import("drizzle-orm");
+      return db.select().from(newsletterSponsors).orderBy(desc(newsletterSponsors.createdAt));
+    }),
+
+    createSponsor: adminProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        headline: z.string().min(1),
+        description: z.string().min(1),
+        url: z.string().url(),
+        imageUrl: z.string().optional(),
+        features: z.string().optional(), // JSON array string
+        ctaText: z.string().default("Scopri di più →"),
+        placement: z.enum(["primary", "spotlight"]).default("primary"),
+        weight: z.number().int().min(1).default(1),
+        active: z.boolean().default(true),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { newsletterSponsors } = await import("../drizzle/schema");
+        const [result] = await db.insert(newsletterSponsors).values({
+          name: input.name,
+          headline: input.headline,
+          description: input.description,
+          url: input.url,
+          imageUrl: input.imageUrl ?? null,
+          features: input.features ?? null,
+          ctaText: input.ctaText,
+          placement: input.placement,
+          weight: input.weight,
+          active: input.active,
+        });
+        return { success: true, id: result.insertId };
+      }),
+
+    updateSponsor: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        headline: z.string().optional(),
+        description: z.string().optional(),
+        url: z.string().optional(),
+        imageUrl: z.string().optional(),
+        features: z.string().optional(),
+        ctaText: z.string().optional(),
+        placement: z.enum(["primary", "spotlight"]).optional(),
+        weight: z.number().int().min(1).optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { newsletterSponsors } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const { id, ...updates } = input;
+        const cleanUpdates = Object.fromEntries(Object.entries(updates).filter(([_, v]) => v !== undefined));
+        if (Object.keys(cleanUpdates).length === 0) return { success: true };
+        await db.update(newsletterSponsors).set(cleanUpdates).where(eq(newsletterSponsors.id, id));
+        return { success: true };
+      }),
+
+    deleteSponsor: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { newsletterSponsors } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        await db.delete(newsletterSponsors).where(eq(newsletterSponsors.id, input.id));
+        return { success: true };
+      }),
+
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure
       .input(z.object({
