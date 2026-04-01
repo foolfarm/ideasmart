@@ -2208,3 +2208,8 @@
 - [x] Aggiungere blocco "Today's Spotlight" a metà newsletter (tra Startup e Dealroom)
 - [x] Fix bug breaking news: rimosso update generico che disattivava tutte le BN senza check data
 - [x] Testare newsletter completa: 5 AI + 5 Startup + 5 Dealroom + 5 Breaking + 5 Ricerche + 2 Sponsor
+
+## Task (1 Apr 2026 — Box Promo Offerta nella Newsletter)
+- [x] Aggiungere box promo "By IDEASMART" nella newsletter (stile TAAFT Prompt Pack)
+- [x] Testo persuasivo che promuove l'offerta commerciale (redazione AI, Agent Giornalisti, Verify, pricing)
+- [x] Link alla pagina /offertacommerciale con UTM tracking

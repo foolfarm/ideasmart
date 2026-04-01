@@ -586,6 +586,35 @@ function buildUnifiedNewsletterHtml(opts: {
           </td>
         </tr>
 
+        <!-- BOX PROMO — By IDEASMART (stile TAAFT Prompt Pack) -->
+        <tr>
+          <td style="padding:0 20px 16px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+              <tr>
+                <td style="padding:28px 24px;">
+                  <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:12px;">By IDEASMART</div>
+                  <div style="font-size:26px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;margin-bottom:16px;">La tua redazione AI, pronta in 7 giorni</div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:14px;">
+                    Ogni giorno leggi queste news scritte, verificate e pubblicate da Agent Giornalisti. La stessa tecnologia pu&ograve; lavorare per la tua testata.
+                  </div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:14px;">
+                    &ldquo;Come faccio a pubblicare contenuti AI di qualit&agrave; senza una redazione?&rdquo;
+                  </div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:14px;">
+                    Con <strong style="color:${BLACK};">IdeaSmart</strong> configuri i tuoi Agent Giornalisti, scegli settore, fonti e tono &mdash; e la redazione AI pubblica 24/7. Fact-checking automatico con tecnologia <strong style="color:${BLACK};">Verify&trade;</strong>.
+                  </div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:20px;">
+                    Da <strong style="color:${BLACK};">490&euro;/mese</strong> o in revenue share. Setup in 5-7 giorni.
+                  </div>
+                  <div>
+                    <a href="${BASE_URL}/offertacommerciale?utm_source=newsletter&utm_medium=email&utm_campaign=promo_box" style="display:inline-block;padding:12px 28px;background:${BLACK};color:${WHITE};font-size:13px;font-weight:700;text-decoration:none;border-radius:6px;font-family:${F};letter-spacing:0.05em;">Scopri l&rsquo;offerta &rarr;</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
         ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
 
         ${buildBreakingSection()}
