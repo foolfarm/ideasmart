@@ -547,3 +547,37 @@ export const demoRequests = mysqlTable("demo_requests", {
 });
 export type DemoRequest = typeof demoRequests.$inferSelect;
 export type InsertDemoRequest = typeof demoRequests.$inferInsert;
+
+// ── Newsletter Sponsors (sponsor dinamici per newsletter unificata) ──────────
+export const newsletterSponsors = mysqlTable("newsletter_sponsors", {
+  id: int("id").autoincrement().primaryKey(),
+  // Nome dello sponsor
+  name: varchar("name", { length: 255 }).notNull(),
+  // Titolo visualizzato nella newsletter
+  headline: varchar("headline", { length: 500 }).notNull(),
+  // Descrizione breve
+  description: text("description").notNull(),
+  // URL del sito dello sponsor (con UTM)
+  url: varchar("url", { length: 1000 }).notNull(),
+  // URL dell'immagine (CDN)
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  // Feature list (JSON array di stringhe, es. ["Data Room con NDA", "Analytics in tempo reale"])
+  features: text("features"),
+  // Testo del CTA button
+  ctaText: varchar("ctaText", { length: 100 }).default("Scopri di più →").notNull(),
+  // Posizione nella newsletter: 'primary' = sponsor del giorno (in alto), 'spotlight' = Today's Spotlight (a metà)
+  placement: mysqlEnum("placement", ["primary", "spotlight"]).default("primary").notNull(),
+  // Attivo o meno
+  active: boolean("active").default(true).notNull(),
+  // Peso per la rotazione (più alto = più frequente)
+  weight: int("weight").default(1).notNull(),
+  // Contatore invii (quante volte è stato incluso nella newsletter)
+  sendCount: int("sendCount").default(0).notNull(),
+  // Ultimo invio
+  lastSentAt: timestamp("lastSentAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsletterSponsor = typeof newsletterSponsors.$inferSelect;
+export type InsertNewsletterSponsor = typeof newsletterSponsors.$inferInsert;

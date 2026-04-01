@@ -9,6 +9,10 @@
  *   - Editoriale IdeaSmart
  *   - Ricerca del Giorno
  *
+ * Sponsor dinamici da database con rotazione automatica:
+ *   - "primary" = Sponsor del Giorno (in alto, dopo intro)
+ *   - "spotlight" = Today's Spotlight (a metà, tra Startup e Dealroom)
+ *
  * Ispirata allo stile "There's an AI for That":
  *   - Cover pulita con data + titolo + "Leggi online"
  *   - Sezioni con label colorata + titolo grande + contenuti
@@ -26,8 +30,11 @@ import {
 import { notifyOwner } from "./_core/notification";
 import { getTodayResearch } from "./researchGenerator";
 import { getDb } from "./db";
-import { breakingNews as breakingNewsTable } from "../drizzle/schema";
-import { eq, desc } from "drizzle-orm";
+import {
+  breakingNews as breakingNewsTable,
+  newsletterSponsors,
+} from "../drizzle/schema";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 
@@ -66,22 +73,94 @@ interface ResearchItem {
   isResearchOfDay?: boolean | null;
 }
 
+interface SponsorData {
+  id: number;
+  name: string;
+  headline: string;
+  description: string;
+  url: string;
+  imageUrl: string | null;
+  features: string | null; // JSON array
+  ctaText: string;
+  placement: "primary" | "spotlight";
+}
+
+// ─── Sponsor Selection (weighted rotation) ─────────────────────────────────
+
+async function getActiveSponsor(
+  placement: "primary" | "spotlight"
+): Promise<SponsorData | null> {
+  const db = await getDb();
+  if (!db) return null;
+
+  const sponsors = await db
+    .select()
+    .from(newsletterSponsors)
+    .where(
+      and(
+        eq(newsletterSponsors.placement, placement),
+        eq(newsletterSponsors.active, true)
+      )
+    )
+    .orderBy(
+      // Weighted rotation: least recently sent + highest weight first
+      desc(newsletterSponsors.weight),
+      sql`${newsletterSponsors.lastSentAt} IS NULL DESC`,
+      newsletterSponsors.sendCount
+    )
+    .limit(1);
+
+  if (sponsors.length === 0) return null;
+
+  const s = sponsors[0];
+  return {
+    id: s.id,
+    name: s.name,
+    headline: s.headline,
+    description: s.description,
+    url: s.url,
+    imageUrl: s.imageUrl,
+    features: s.features,
+    ctaText: s.ctaText,
+    placement: s.placement as "primary" | "spotlight",
+  };
+}
+
+async function markSponsorSent(sponsorId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+
+  await db
+    .update(newsletterSponsors)
+    .set({
+      sendCount: sql`${newsletterSponsors.sendCount} + 1`,
+      lastSentAt: new Date(),
+    })
+    .where(eq(newsletterSponsors.id, sponsorId));
+}
+
 // ─── Data Collection ────────────────────────────────────────────────────────
 
 async function collectAllContent() {
   const db = await getDb();
   if (!db) throw new Error("Database non disponibile");
 
-  const [aiNews, startupNews, dealroomNews, breakingItems, todayResearches] = await Promise.all([
-    getLatestNews(5, "ai"),
-    getLatestNews(5, "startup"),
-    getLatestNews(5, "dealroom"),
-    db.select().from(breakingNewsTable)
-      .where(eq(breakingNewsTable.isActive, true))
-      .orderBy(desc(breakingNewsTable.urgencyScore), desc(breakingNewsTable.createdAt))
-      .limit(5),
-    getTodayResearch(),
-  ]);
+  const [aiNews, startupNews, dealroomNews, breakingItems, todayResearches] =
+    await Promise.all([
+      getLatestNews(5, "ai"),
+      getLatestNews(5, "startup"),
+      getLatestNews(5, "dealroom"),
+      db
+        .select()
+        .from(breakingNewsTable)
+        .where(eq(breakingNewsTable.isActive, true))
+        .orderBy(
+          desc(breakingNewsTable.urgencyScore),
+          desc(breakingNewsTable.createdAt)
+        )
+        .limit(5),
+      getTodayResearch(),
+    ]);
 
   return {
     aiNews: aiNews.map((n: any) => ({
@@ -123,15 +202,17 @@ async function collectAllContent() {
     researches: [
       ...todayResearches.filter((r: any) => r.isResearchOfDay),
       ...todayResearches.filter((r: any) => !r.isResearchOfDay),
-    ].slice(0, 5).map((r: any) => ({
-      id: r.id,
-      title: r.title,
-      summary: r.summary,
-      category: r.category,
-      source: r.source,
-      sourceUrl: r.sourceUrl ?? null,
-      isResearchOfDay: r.isResearchOfDay,
-    })) as ResearchItem[],
+    ]
+      .slice(0, 5)
+      .map((r: any) => ({
+        id: r.id,
+        title: r.title,
+        summary: r.summary,
+        category: r.category,
+        source: r.source,
+        sourceUrl: r.sourceUrl ?? null,
+        isResearchOfDay: r.isResearchOfDay,
+      })) as ResearchItem[],
   };
 }
 
@@ -144,16 +225,27 @@ function buildUnifiedNewsletterHtml(opts: {
   dealroomNews: NewsItem[];
   breakingItems: BreakingItem[];
   researches: ResearchItem[];
+  primarySponsor: SponsorData | null;
+  spotlightSponsor: SponsorData | null;
   unsubscribeUrl: string;
   isTest: boolean;
 }): string {
   const {
-    dateLabel, aiNews, startupNews, dealroomNews,
-    breakingItems, researches, unsubscribeUrl, isTest,
+    dateLabel,
+    aiNews,
+    startupNews,
+    dealroomNews,
+    breakingItems,
+    researches,
+    primarySponsor,
+    spotlightSponsor,
+    unsubscribeUrl,
+    isTest,
   } = opts;
 
   // ── Font & Colors ─────────────────────────────────────────────────
-  const F = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  const F =
+    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
   const BG = "#f5f5f5";
   const WHITE = "#ffffff";
   const BLACK = "#1a1a1a";
@@ -166,45 +258,64 @@ function buildUnifiedNewsletterHtml(opts: {
 
   // ── Bullet summary ────────────────────────────────────────────────
   const bulletItems: string[] = [];
-  if (breakingItems.length > 0) bulletItems.push(...breakingItems.slice(0, 3).map(b => b.title));
+  if (breakingItems.length > 0)
+    bulletItems.push(...breakingItems.slice(0, 3).map((b) => b.title));
   if (aiNews.length > 0) bulletItems.push(aiNews[0].title);
   if (startupNews.length > 0) bulletItems.push(startupNews[0].title);
   if (dealroomNews.length > 0) bulletItems.push(dealroomNews[0].title);
 
-  const bulletHtml = bulletItems.slice(0, 6).map(t =>
-    `<li style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;margin-bottom:6px;">${t}</li>`
-  ).join("");
+  const bulletHtml = bulletItems
+    .slice(0, 6)
+    .map(
+      (t) =>
+        `<li style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;margin-bottom:6px;">${t}</li>`
+    )
+    .join("");
 
   // ── Section builder helper ────────────────────────────────────────
   function buildSection(
     label: string,
     title: string,
     items: NewsItem[],
-    sectionKey: string,
+    _sectionKey: string
   ): string {
     if (items.length === 0) return "";
 
-    const itemsHtml = items.map((item, idx) => {
-      const articleUrl = (item.id && item.section)
-        ? `${BASE_URL}/${item.section}/news/${item.id}`
-        : item.sourceUrl ?? null;
+    const itemsHtml = items
+      .map((item, idx) => {
+        const articleUrl =
+          item.id && item.section
+            ? `${BASE_URL}/${item.section}/news/${item.id}`
+            : item.sourceUrl ?? null;
 
-      // Emoji per varietà visiva
-      const emojis = ["📰", "🔍", "💡", "🚀", "📊", "🔬", "🤖", "💰", "🌐", "📈"];
-      const emoji = emojis[idx % emojis.length];
+        const emojis = [
+          "📰",
+          "🔍",
+          "💡",
+          "🚀",
+          "📊",
+          "🔬",
+          "🤖",
+          "💰",
+          "🌐",
+          "📈",
+        ];
+        const emoji = emojis[idx % emojis.length];
 
-      return `
+        return `
         <tr>
           <td style="padding:16px 24px;${idx < items.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
-            ${articleUrl
-              ? `<a href="${articleUrl}" style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${emoji} ${item.title}</a>`
-              : `<div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};line-height:1.35;margin-bottom:8px;">${emoji} ${item.title}</div>`
+            ${
+              articleUrl
+                ? `<a href="${articleUrl}" style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${emoji} ${item.title}</a>`
+                : `<div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};line-height:1.35;margin-bottom:8px;">${emoji} ${item.title}</div>`
             }
             <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.65;">${item.summary}</div>
             ${item.sourceName ? `<div style="margin-top:8px;font-size:12px;color:${MUTED};font-family:${F};">Fonte: <strong style="color:${SLATE};">${item.sourceName}</strong></div>` : ""}
           </td>
         </tr>`;
-    }).join("");
+      })
+      .join("");
 
     return `
       <!-- ${title} -->
@@ -227,12 +338,13 @@ function buildUnifiedNewsletterHtml(opts: {
   function buildBreakingSection(): string {
     if (breakingItems.length === 0) return "";
 
-    const itemsHtml = breakingItems.map((item, idx) => {
-      const emojis = ["🎬", "📱", "🎨", "🔥", "⚡"];
-      const emoji = emojis[idx % emojis.length];
-      const url = item.sourceUrl ?? `${BASE_URL}`;
+    const itemsHtml = breakingItems
+      .map((item, idx) => {
+        const emojis = ["🎬", "📱", "🎨", "🔥", "⚡"];
+        const emoji = emojis[idx % emojis.length];
+        const url = item.sourceUrl ?? `${BASE_URL}`;
 
-      return `
+        return `
         <tr>
           <td style="padding:16px 24px;${idx < breakingItems.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
             <a href="${url}" style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${emoji} ${item.title}</a>
@@ -240,7 +352,8 @@ function buildUnifiedNewsletterHtml(opts: {
             ${item.sourceName ? `<div style="margin-top:6px;font-size:12px;color:${MUTED};font-family:${F};">Fonte: <strong style="color:${SLATE};">${item.sourceName}</strong></div>` : ""}
           </td>
         </tr>`;
-    }).join("");
+      })
+      .join("");
 
     return `
       <!-- Breaking News -->
@@ -263,16 +376,22 @@ function buildUnifiedNewsletterHtml(opts: {
   function buildResearchSection(): string {
     if (researches.length === 0) return "";
 
-    const itemsHtml = researches.map((r, idx) => {
-      const catLabels: Record<string, string> = {
-        ai_trends: "AI TRENDS", venture_capital: "VENTURE CAPITAL",
-        startup: "STARTUP", technology: "TECNOLOGIA", market: "MERCATI",
-      };
-      const catLabel = catLabels[r.category] ?? r.category.toUpperCase();
-      const researchUrl = r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`;
-      const isRoD = r.isResearchOfDay;
+    const itemsHtml = researches
+      .map((r, idx) => {
+        const catLabels: Record<string, string> = {
+          ai_trends: "AI TRENDS",
+          venture_capital: "VENTURE CAPITAL",
+          startup: "STARTUP",
+          technology: "TECNOLOGIA",
+          market: "MERCATI",
+        };
+        const catLabel = catLabels[r.category] ?? r.category.toUpperCase();
+        const researchUrl = r.id
+          ? `${BASE_URL}/research/${r.id}`
+          : `${BASE_URL}/research`;
+        const isRoD = r.isResearchOfDay;
 
-      return `
+        return `
         <tr>
           <td style="padding:16px 24px;${idx < researches.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
             <div style="margin-bottom:6px;">
@@ -287,7 +406,8 @@ function buildUnifiedNewsletterHtml(opts: {
             </div>
           </td>
         </tr>`;
-    }).join("");
+      })
+      .join("");
 
     return `
       <!-- Ricerche -->
@@ -306,71 +426,86 @@ function buildUnifiedNewsletterHtml(opts: {
       </tr>`;
   }
 
-  // ── Sponsor — Foolshare ────────────────────────────────────────────
-  const FOOLSHARE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/foolshare_hero_0e4f3a8f.webp";
+  // ── Dynamic Sponsor Block ─────────────────────────────────────────
+  function buildSponsorBlock(
+    sponsor: SponsorData | null,
+    label: string
+  ): string {
+    if (!sponsor) return "";
 
-  function buildSponsorSection(): string {
+    let featuresArr: string[] = [];
+    try {
+      featuresArr = sponsor.features ? JSON.parse(sponsor.features) : [];
+    } catch {
+      featuresArr = [];
+    }
+
+    // Build features grid (2x2)
+    let featuresHtml = "";
+    if (featuresArr.length > 0) {
+      const rows: string[] = [];
+      for (let i = 0; i < featuresArr.length; i += 2) {
+        const left = featuresArr[i] || "";
+        const right = featuresArr[i + 1] || "";
+        rows.push(`
+          <tr>
+            <td width="50%" style="padding:6px 8px 6px 0;vertical-align:top;">
+              <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">${left}</div>
+            </td>
+            ${right ? `<td width="50%" style="padding:6px 0 6px 8px;vertical-align:top;">
+              <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">${right}</div>
+            </td>` : `<td width="50%"></td>`}
+          </tr>`);
+      }
+      featuresHtml = `
+        <tr>
+          <td style="padding:14px 24px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              ${rows.join("")}
+            </table>
+          </td>
+        </tr>`;
+    }
+
     return `
-      <!-- Sponsor — Foolshare -->
+      <!-- ${label} — ${sponsor.name} -->
       <tr>
         <td style="padding:0 20px 16px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${ACCENT};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
             <!-- Label -->
             <tr>
               <td style="padding:20px 24px 0;">
-                <div style="font-size:11px;font-weight:700;color:${ACCENT};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">Sponsor del Giorno</div>
+                <div style="font-size:11px;font-weight:700;color:${ACCENT};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">${label}</div>
               </td>
             </tr>
             <!-- Title -->
             <tr>
               <td style="padding:8px 24px 0;">
-                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;">Foolshare &mdash; Condividi documenti con controllo totale</div>
+                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;">${sponsor.headline}</div>
               </td>
             </tr>
-            <!-- Image -->
+            ${sponsor.imageUrl ? `<!-- Image -->
             <tr>
               <td style="padding:16px 24px 0;">
-                <a href="https://foolshare.xyz?utm_source=ideasmart&utm_medium=newsletter&utm_campaign=sponsor" target="_blank" style="text-decoration:none;">
-                  <img src="${FOOLSHARE_IMG}" alt="Foolshare - Data Room e Analytics" width="592" style="width:100%;max-width:592px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
+                <a href="${sponsor.url}" target="_blank" style="text-decoration:none;">
+                  <img src="${sponsor.imageUrl}" alt="${sponsor.name}" width="592" style="width:100%;max-width:592px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
                 </a>
               </td>
-            </tr>
+            </tr>` : ""}
             <!-- Description -->
             <tr>
               <td style="padding:16px 24px 0;">
-                <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;">Data room sicure, NDA con firma digitale, analytics in tempo reale e fundraising OS. La piattaforma professionale per startup, investitori e professionisti che gestiscono documenti riservati.</div>
+                <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;">${sponsor.description}</div>
               </td>
             </tr>
-            <!-- Features -->
-            <tr>
-              <td style="padding:14px 24px 0;">
-                <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td width="50%" style="padding:6px 8px 6px 0;vertical-align:top;">
-                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#128274; <strong>Data Room</strong> con NDA e firma digitale</div>
-                    </td>
-                    <td width="50%" style="padding:6px 0 6px 8px;vertical-align:top;">
-                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#128200; <strong>Analytics</strong> in tempo reale</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td width="50%" style="padding:6px 8px 6px 0;vertical-align:top;">
-                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#128176; <strong>Fundraising OS</strong> e project room</div>
-                    </td>
-                    <td width="50%" style="padding:6px 0 6px 8px;vertical-align:top;">
-                      <div style="font-size:13px;color:${DARK};font-family:${F};line-height:1.5;">&#9989; <strong>7 giorni gratis</strong> &middot; No carta</div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+            ${featuresHtml}
             <!-- CTA -->
             <tr>
               <td style="padding:18px 24px 22px;">
                 <table cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td style="background:${BLACK};border-radius:8px;padding:14px 32px;">
-                      <a href="https://foolshare.xyz?utm_source=ideasmart&utm_medium=newsletter&utm_campaign=sponsor" style="font-size:15px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F};letter-spacing:0.02em;">Provalo Gratis 7 giorni &rarr;</a>
+                      <a href="${sponsor.url}" style="font-size:15px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F};letter-spacing:0.02em;">${sponsor.ctaText}</a>
                     </td>
                   </tr>
                 </table>
@@ -396,10 +531,14 @@ function buildUnifiedNewsletterHtml(opts: {
     <td align="center">
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
 
-        ${isTest ? `<!-- TEST BANNER -->
+        ${
+          isTest
+            ? `<!-- TEST BANNER -->
         <tr><td style="background:${RED};padding:10px 20px;text-align:center;border-radius:8px 8px 0 0;">
           <span style="font-size:11px;font-weight:700;color:#ffffff;font-family:${F};text-transform:uppercase;letter-spacing:0.12em;">&#9888; EMAIL DI PROVA — Non distribuire</span>
-        </td></tr>` : ""}
+        </td></tr>`
+            : ""
+        }
 
         <!-- COVER — Clean header -->
         <tr>
@@ -447,13 +586,15 @@ function buildUnifiedNewsletterHtml(opts: {
           </td>
         </tr>
 
-        ${buildSponsorSection()}
+        ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
 
         ${buildBreakingSection()}
 
         ${buildSection("AI News", "Intelligenza Artificiale", aiNews, "ai")}
 
         ${buildSection("Startup News", "Startup & Innovazione", startupNews, "startup")}
+
+        ${buildSponsorBlock(spotlightSponsor, "Today's Spotlight")}
 
         ${buildSection("Dealroom", "Deal & Funding", dealroomNews, "dealroom")}
 
@@ -536,11 +677,24 @@ function getDayKey(date: Date): string {
 export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   html: string;
   subject: string;
-  stats: { ai: number; startup: number; dealroom: number; breaking: number; research: number };
+  stats: {
+    ai: number;
+    startup: number;
+    dealroom: number;
+    breaking: number;
+    research: number;
+  };
+  sponsorIds: number[];
 }> {
   const now = new Date();
   const dateLabel = getDateLabel(now);
   const content = await collectAllContent();
+
+  // Fetch dynamic sponsors from DB
+  const [primarySponsor, spotlightSponsor] = await Promise.all([
+    getActiveSponsor("primary"),
+    getActiveSponsor("spotlight"),
+  ]);
 
   console.log(`[UnifiedNewsletter] Contenuti raccolti:`);
   console.log(`  AI News: ${content.aiNews.length}`);
@@ -548,6 +702,12 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   console.log(`  Dealroom: ${content.dealroomNews.length}`);
   console.log(`  Breaking: ${content.breakingItems.length}`);
   console.log(`  Ricerche: ${content.researches.length}`);
+  console.log(
+    `  Sponsor primario: ${primarySponsor?.name ?? "nessuno"}`
+  );
+  console.log(
+    `  Sponsor spotlight: ${spotlightSponsor?.name ?? "nessuno"}`
+  );
 
   const subject = `IDEASMART — ${dateLabel}`;
 
@@ -558,9 +718,15 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     dealroomNews: content.dealroomNews,
     breakingItems: content.breakingItems,
     researches: content.researches,
+    primarySponsor,
+    spotlightSponsor,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     isTest,
   });
+
+  const sponsorIds: number[] = [];
+  if (primarySponsor) sponsorIds.push(primarySponsor.id);
+  if (spotlightSponsor) sponsorIds.push(spotlightSponsor.id);
 
   return {
     html,
@@ -572,6 +738,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
       breaking: content.breakingItems.length,
       research: content.researches.length,
     },
+    sponsorIds,
   };
 }
 
@@ -586,15 +753,27 @@ const testSentDays = new Map<string, boolean>();
 export async function sendUnifiedPreview(): Promise<{
   success: boolean;
   subject: string;
-  stats: { ai: number; startup: number; dealroom: number; breaking: number; research: number };
+  stats: {
+    ai: number;
+    startup: number;
+    dealroom: number;
+    breaking: number;
+    research: number;
+  };
   error?: string;
 }> {
   const dayKey = getDayKey(new Date());
   const testKey = `unified-test-${dayKey}`;
 
   if (testSentDays.get(testKey)) {
-    console.log(`[UnifiedNewsletter] Preview già inviata oggi (${dayKey}), skip`);
-    return { success: true, subject: "", stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 } };
+    console.log(
+      `[UnifiedNewsletter] Preview già inviata oggi (${dayKey}), skip`
+    );
+    return {
+      success: true,
+      subject: "",
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+    };
   }
 
   console.log(`[UnifiedNewsletter] 📧 Preview → ${TEST_EMAIL}`);
@@ -614,13 +793,20 @@ export async function sendUnifiedPreview(): Promise<{
 
       return { success: true, subject, stats };
     } else {
-      console.error(`[UnifiedNewsletter] ❌ Errore preview: ${result.error}`);
+      console.error(
+        `[UnifiedNewsletter] ❌ Errore preview: ${result.error}`
+      );
       return { success: false, subject, stats, error: result.error };
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[UnifiedNewsletter] ❌ Errore critico preview:`, msg);
-    return { success: false, subject: "", stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 }, error: msg };
+    return {
+      success: false,
+      subject: "",
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+      error: msg,
+    };
   }
 }
 
@@ -630,7 +816,13 @@ export async function sendUnifiedPreview(): Promise<{
 export async function sendUnifiedTestToEmail(toEmail: string): Promise<{
   success: boolean;
   subject: string;
-  stats: { ai: number; startup: number; dealroom: number; breaking: number; research: number };
+  stats: {
+    ai: number;
+    startup: number;
+    dealroom: number;
+    breaking: number;
+    research: number;
+  };
   error?: string;
 }> {
   console.log(`[UnifiedNewsletter] 📧 Test → ${toEmail}`);
@@ -647,26 +839,45 @@ export async function sendUnifiedTestToEmail(toEmail: string): Promise<{
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    return { success: false, subject: "", stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 }, error: msg };
+    return {
+      success: false,
+      subject: "",
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+      error: msg,
+    };
   }
 }
 
 /**
  * Invia la newsletter unificata a tutti gli iscritti attivi.
  * Invio massivo con link unsubscribe personalizzato (GDPR).
+ * Aggiorna i contatori sponsor dopo l'invio.
  */
 export async function sendUnifiedNewsletterToAll(): Promise<{
   success: boolean;
   recipientCount: number;
   subject: string;
-  stats: { ai: number; startup: number; dealroom: number; breaking: number; research: number };
+  stats: {
+    ai: number;
+    startup: number;
+    dealroom: number;
+    breaking: number;
+    research: number;
+  };
   error?: string;
 }> {
   const dayKey = getDayKey(new Date());
 
   if (sentDays.get(dayKey)) {
-    console.log(`[UnifiedNewsletter] Newsletter già inviata oggi (${dayKey}), skip`);
-    return { success: true, recipientCount: 0, subject: "", stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 } };
+    console.log(
+      `[UnifiedNewsletter] Newsletter già inviata oggi (${dayKey}), skip`
+    );
+    return {
+      success: true,
+      recipientCount: 0,
+      subject: "",
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+    };
   }
 
   console.log(`[UnifiedNewsletter] 📧 Invio massivo newsletter unificata...`);
@@ -674,14 +885,25 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
   try {
     const subscribers = await getActiveSubscribers();
     if (subscribers.length === 0) {
-      return { success: false, recipientCount: 0, subject: "", stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 }, error: "Nessun iscritto attivo" };
+      return {
+        success: false,
+        recipientCount: 0,
+        subject: "",
+        stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+        error: "Nessun iscritto attivo",
+      };
     }
 
     console.log(`[UnifiedNewsletter] ${subscribers.length} iscritti attivi`);
 
-    const { html: baseHtml, subject, stats } = await buildUnifiedNewsletter(false);
+    const { html: baseHtml, subject, stats, sponsorIds } =
+      await buildUnifiedNewsletter(false);
 
-    await createNewsletterSend({ subject, htmlContent: baseHtml, recipientCount: 0 });
+    await createNewsletterSend({
+      subject,
+      htmlContent: baseHtml,
+      recipientCount: 0,
+    });
 
     const BATCH_SIZE = 50;
     let totalSent = 0;
@@ -702,30 +924,52 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
           .replace(`${BASE_URL}/unsubscribe`, unsubUrl)
           .replace(`${BASE_URL}/preferenze-newsletter`, prefsUrl);
 
-        const result = await sendEmail({ to: sub.email, subject, html: personalizedHtml });
+        const result = await sendEmail({
+          to: sub.email,
+          subject,
+          html: personalizedHtml,
+        });
         if (result.success) totalSent++;
         else {
           sendError = result.error;
-          console.error(`[UnifiedNewsletter] Errore invio a ${sub.email}:`, result.error);
+          console.error(
+            `[UnifiedNewsletter] Errore invio a ${sub.email}:`,
+            result.error
+          );
         }
       }
 
       if (i % 200 === 0 && i > 0) {
-        console.log(`[UnifiedNewsletter] Progresso: ${totalSent}/${subscribers.length}`);
+        console.log(
+          `[UnifiedNewsletter] Progresso: ${totalSent}/${subscribers.length}`
+        );
       }
     }
 
     await updateNewsletterSendRecipientCount(subject, totalSent);
     sentDays.set(dayKey, true);
 
+    // Update sponsor send counters
+    for (const sid of sponsorIds) {
+      await markSponsorSent(sid);
+    }
+
     await notifyOwner({
       title: `📧 Newsletter IDEASMART inviata — ${new Date().toLocaleDateString("it-IT")}`,
       content: `Newsletter unificata inviata a ${totalSent}/${subscribers.length} iscritti.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.`,
     });
 
-    console.log(`[UnifiedNewsletter] ✅ ${totalSent}/${subscribers.length} inviati`);
+    console.log(
+      `[UnifiedNewsletter] ✅ ${totalSent}/${subscribers.length} inviati`
+    );
 
-    return { success: !sendError, recipientCount: totalSent, subject, stats, error: sendError };
+    return {
+      success: !sendError,
+      recipientCount: totalSent,
+      subject,
+      stats,
+      error: sendError,
+    };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[UnifiedNewsletter] ❌ Errore critico:`, msg);
@@ -737,6 +981,12 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
       });
     } catch {}
 
-    return { success: false, recipientCount: 0, subject: "", stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 }, error: msg };
+    return {
+      success: false,
+      recipientCount: 0,
+      subject: "",
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+      error: msg,
+    };
   }
 }

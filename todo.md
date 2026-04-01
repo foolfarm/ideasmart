@@ -2198,3 +2198,13 @@
 ## Task (1 Apr 2026 — Miglioramento Sponsor Newsletter)
 - [x] Aggiungere immagine Foolshare dal sito nel blocco sponsor (hero isometrica CDN)
 - [x] Migliorare design del blocco sponsor (immagine cliccabile, feature grid 2x2, CTA più grande, border-radius 12px)
+
+## Task (1 Apr 2026 — Newsletter Sponsor Dinamici + Breaking News Fix)
+- [x] Creare tabella DB newsletter_sponsors per sponsor dinamici
+- [x] Inserire Foolshare come sponsor principale nel DB
+- [x] Raccogliere info FoolTalent e catturare immagine dal sito (fooltalent.replit.app)
+- [x] Inserire FoolTalent come sponsor secondario (Today's Spotlight) nel DB
+- [x] Aggiornare template newsletter per leggere sponsor dal DB (rotazione automatica)
+- [x] Aggiungere blocco "Today's Spotlight" a metà newsletter (tra Startup e Dealroom)
+- [x] Fix bug breaking news: rimosso update generico che disattivava tutte le BN senza check data
+- [x] Testare newsletter completa: 5 AI + 5 Startup + 5 Dealroom + 5 Breaking + 5 Ricerche + 2 Sponsor

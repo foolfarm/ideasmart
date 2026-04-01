@@ -50,30 +50,15 @@ export async function generateBreakingNews(): Promise<{
   try {
     // 1. Archivia le breaking news più vecchie di 6 ore
     const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
-    const archiveResult = await db
-      .update(breakingNewsTable)
-      .set({ isActive: false })
-      .where(
-        and(
-          eq(breakingNewsTable.isActive, true),
-          // Usa createdAt per l'archiviazione
-        )
-      );
-    // Conta le archiviate (approssimazione)
     let archived = 0;
     try {
       const oldBreaking = await db
-        .select({ id: breakingNewsTable.id })
+        .select({ id: breakingNewsTable.id, createdAt: breakingNewsTable.createdAt })
         .from(breakingNewsTable)
         .where(eq(breakingNewsTable.isActive, true));
-      // Archivia quelle create più di 6 ore fa
+      // Archivia SOLO quelle create più di 6 ore fa
       for (const item of oldBreaking) {
-        const full = await db
-          .select()
-          .from(breakingNewsTable)
-          .where(eq(breakingNewsTable.id, item.id))
-          .limit(1);
-        if (full[0] && full[0].createdAt < sixHoursAgo) {
+        if (item.createdAt < sixHoursAgo) {
           await db
             .update(breakingNewsTable)
             .set({ isActive: false })
