@@ -2264,3 +2264,10 @@
 - [x] Aggiornare TUTTI i prompt LLM LinkedIn con limite rigido 3000 caratteri (morning, startup, research, dealroom, ai-tool-radar)
 - [x] Riscrivere prompt Startup Radar: descrizione USP, dati finanziari, rating INVEST/INVEST+/INVEST++
 - [x] Aggiungere link diretti a startup e tool AI nei post LinkedIn (Startup Radar + AI Tool Radar)
+
+## Task (1 Apr 2026 — Verifiche + RSS italiane + AI Dealflow)
+- [x] Verificare programmazione stasera e domani (LinkedIn + newsletter)
+- [x] Aggiungere fonti RSS italiane (EconomyUp, CorCom, Digital4, Key4biz, ZeroUno) al Startup Radar
+- [x] Creare sezione AI Dealflow sul sito con selezioni startup giornaliere
+- [ ] Programmare verifica automatica domani per post LinkedIn
+- [x] Creare articolo nella home a nome Giulio Centemero basato sul post LinkedIn Dealroom/VC

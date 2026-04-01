@@ -613,3 +613,23 @@ export const amazonDailyDeals = mysqlTable("amazon_daily_deals", {
 
 export type AmazonDailyDeal = typeof amazonDailyDeals.$inferSelect;
 export type InsertAmazonDailyDeal = typeof amazonDailyDeals.$inferInsert;
+
+// ── AI Dealflow — selezioni startup giornaliere ─────────────────────────────
+export const dealflowPicks = mysqlTable("dealflow_picks", {
+  id: int("id").autoincrement().primaryKey(),
+  publishDate: varchar("publishDate", { length: 10 }).notNull(), // YYYY-MM-DD
+  rank: int("rank").notNull(), // 1-10
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"), // USP / cosa fa
+  funding: varchar("funding", { length: 255 }), // es. "Series A $25M"
+  valuation: varchar("valuation", { length: 255 }), // es. "$170M"
+  rating: mysqlEnum("rating", ["INVEST", "INVEST+", "INVEST++"]).notNull(),
+  link: text("link"), // URL startup o articolo
+  source: varchar("source", { length: 128 }), // fonte RSS
+  sector: varchar("sector", { length: 128 }), // es. "Cybersecurity", "HealthTech"
+  country: varchar("country", { length: 64 }), // es. "Italia", "Danimarca"
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DealflowPick = typeof dealflowPicks.$inferSelect;
+export type InsertDealflowPick = typeof dealflowPicks.$inferInsert;

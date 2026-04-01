@@ -69,6 +69,7 @@ const VerificaEmail = lazy(() => import("./pages/VerificaEmail"));
 const Account = lazy(() => import("./pages/Account"));
 const DemoSandwichClub = lazy(() => import("./pages/DemoSandwichClub"));
 const EditorialVSI = lazy(() => import("./pages/EditorialVSI"));
+const Dealflow = lazy(() => import("./pages/Dealflow"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -109,6 +110,7 @@ function Router() {
         <Route path="/registrati" component={Registrati} />
         <Route path="/accedi" component={Accedi} />
         <Route path="/demo/sandwichclub" component={DemoSandwichClub} />
+        <Route path="/dealflow" component={Dealflow} />
         <Route path="/editoriale/venture-studio-index" component={EditorialVSI} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />

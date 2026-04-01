@@ -56,7 +56,7 @@ import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, run
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
-import { researchReports, techEvents, siteUsers } from "../drizzle/schema";
+import { researchReports, techEvents, siteUsers, dealflowPicks } from "../drizzle/schema";
 import { aggregateEvents } from "./eventsAggregator";
 
 // Admin guard
@@ -2051,8 +2051,7 @@ Rispondi con questo JSON:
       .mutation(async ({ input }) => {
         // Salva nel DB
         const { demoRequests } = await import("../drizzle/schema");
-        const { getDb } = await import("./db");
-        const db = await getDb();
+        const db = await getDbInstance();
         if (!db) throw new Error("Database non disponibile");
         await db.insert(demoRequests).values({
           name: input.name,
@@ -2149,6 +2148,36 @@ Rispondi con questo JSON:
       .mutation(async () => {
         const result = await aggregateEvents();
         return result;
+      }),
+  }),
+
+  // ── AI Dealflow ──────────────────────────────────────────────────────────
+  dealflow: router({
+    // Lista date disponibili
+    dates: publicProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) return [];
+      const rows = await db
+        .selectDistinct({ publishDate: dealflowPicks.publishDate })
+        .from(dealflowPicks)
+        .orderBy(desc(dealflowPicks.publishDate))
+        .limit(30);
+      return rows.map((r: { publishDate: string }) => r.publishDate);
+    }),
+
+    // Pick per data
+    byDate: publicProcedure
+      .input(z.object({ date: z.string().optional() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return [];
+        const targetDate = input.date || new Date().toISOString().slice(0, 10);
+        const rows = await db
+          .select()
+          .from(dealflowPicks)
+          .where(eq(dealflowPicks.publishDate, targetDate))
+          .orderBy(dealflowPicks.rank);
+        return rows;
       }),
   }),
 });

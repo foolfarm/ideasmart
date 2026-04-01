@@ -8,7 +8,8 @@ import { Link, useLocation } from "wouter";
 const CHANNELS = [
   { label: "AI NEWS", href: "/ai", color: "#1a1a1a" },
   { label: "STARTUP NEWS", href: "/startup", color: "#2a2a2a" },
-  { label: "DEALROOM", href: "/dealroom", color: "#0f0f0f" }
+  { label: "DEALROOM", href: "/dealroom", color: "#0f0f0f" },
+  { label: "AI DEALFLOW", href: "/dealflow", color: "#0d6e3f" }
 ];
 
 export default function Navbar() {
@@ -125,7 +126,14 @@ export default function Navbar() {
               style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               DEALROOM
-              <span className="inline-flex items-center justify-center px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded" style={{ background: "#0f0f0f", color: "#ffffff" }}>NEW</span>
+            </Link>
+            <Link
+              href="/dealflow"
+              className="px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 hover:bg-emerald-50 flex items-center gap-1.5"
+              style={{ color: "#0d6e3f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+            >
+              AI DEALFLOW
+              <span className="inline-flex items-center justify-center px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded" style={{ background: "#0d6e3f", color: "#ffffff" }}>NEW</span>
             </Link>
           </div>
 

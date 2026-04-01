@@ -5,7 +5,7 @@
  * le 10 startup AI più investibili del giorno.
  *
  * Fonti:
- *  - StartupItalia, Italian Tech, Wired Italia (IT)
+ *  - StartupItalia, Italian Tech, Wired Italia, EconomyUp, CorCom, Digital4, Key4biz, ZeroUno (IT)
  *  - EU-Startups, Sifted, Tech.eu (EU)
  *  - Crunchbase News, VentureBeat AI, TechCrunch AI (Funding)
  *  - Product Hunt, Hugging Face (Discovery)
@@ -15,13 +15,20 @@
  */
 
 import { invokeLLM } from "./_core/llm";
+import { getDb } from "./db";
+import { dealflowPicks } from "../drizzle/schema";
 
 // ── RSS Feed URLs ────────────────────────────────────────────────────────────
 const STARTUP_FEEDS = [
-  // Italia
+  // Italia — fonti primarie
   { name: "StartupItalia", url: "https://startupitalia.eu/feed/", priority: 1 },
-  { name: "Italian Tech", url: "https://www.repubblica.it/rss/tecnologia/rss2.0.xml", priority: 2 },
-  { name: "Wired Italia", url: "https://www.wired.it/feed/rss", priority: 2 },
+  { name: "Italian Tech", url: "https://www.repubblica.it/rss/tecnologia/rss2.0.xml", priority: 1 },
+  { name: "Wired Italia", url: "https://www.wired.it/feed/rss", priority: 1 },
+  { name: "EconomyUp", url: "https://www.economyup.it/feed/", priority: 1 },
+  { name: "CorCom", url: "https://www.corrierecomunicazioni.it/feed/", priority: 1 },
+  { name: "Digital4", url: "https://www.digital4.biz/feed/", priority: 1 },
+  { name: "Key4biz", url: "https://www.key4biz.it/feed/", priority: 2 },
+  { name: "ZeroUno", url: "https://www.zerounoweb.it/feed/", priority: 2 },
   // Europa
   { name: "EU-Startups", url: "https://www.eu-startups.com/feed/", priority: 1 },
   { name: "Sifted", url: "https://sifted.eu/feed", priority: 1 },
@@ -353,6 +360,35 @@ export async function generateStartupRadarPost_main(): Promise<{
   }
 
   console.log(`[StartupRadar] ✅ Post generato (${postText.length} caratteri, ${topStartups.length} startup)`);
+
+  // 5. Salva i pick nel database per la sezione AI Dealflow
+  try {
+    const database = await getDb();
+    if (!database) throw new Error("DB non disponibile");
+    const today = new Date().toISOString().slice(0, 10);
+    for (let i = 0; i < topStartups.length; i++) {
+      const s = topStartups[i];
+      const ratingVal = (["INVEST", "INVEST+", "INVEST++"] as const).includes(s.investRating as any)
+        ? (s.investRating as "INVEST" | "INVEST+" | "INVEST++")
+        : "INVEST";
+      await database.insert(dealflowPicks).values({
+        publishDate: today,
+        rank: i + 1,
+        name: s.name,
+        country: "EU",
+        sector: "AI",
+        description: s.usp || s.description,
+        funding: s.funding || null,
+        valuation: s.valuation || null,
+        rating: ratingVal,
+        link: s.link || null,
+        source: s.source || null,
+      });
+    }
+    console.log(`[StartupRadar] 💾 ${topStartups.length} pick salvati in dealflow_picks per ${today}`);
+  } catch (err) {
+    console.error("[StartupRadar] ⚠️ Errore salvataggio dealflow_picks:", err);
+  }
 
   return {
     success: true,
