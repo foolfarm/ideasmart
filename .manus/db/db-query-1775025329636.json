@@ -1,0 +1,30 @@
+{
+  "query": "SELECT 'breaking_news' as tipo, COUNT(*) as totale, MAX(createdAt) as ultima FROM breaking_news WHERE isActive=1 UNION ALL SELECT 'daily_editorial', COUNT(*), MAX(createdAt) FROM daily_editorial UNION ALL SELECT 'startup_of_day', COUNT(*), MAX(createdAt) FROM startup_of_day UNION ALL SELECT 'weekly_reportage', COUNT(*), MAX(createdAt) FROM weekly_reportage;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT 'breaking_news' as tipo, COUNT(*) as totale, MAX(createdAt) as ultima FROM breaking_news WHERE isActive=1 UNION ALL SELECT 'daily_editorial', COUNT(*), MAX(createdAt) FROM daily_editorial UNION ALL SELECT 'startup_of_day', COUNT(*), MAX(createdAt) FROM startup_of_day UNION ALL SELECT 'weekly_reportage', COUNT(*), MAX(createdAt) FROM weekly_reportage;",
+  "rows": [
+    {
+      "tipo": "startup_of_day",
+      "totale": "17",
+      "ultima": "2026-03-31 07:10:11"
+    },
+    {
+      "tipo": "weekly_reportage",
+      "totale": "12",
+      "ultima": "2026-03-29 23:15:36"
+    },
+    {
+      "tipo": "daily_editorial",
+      "totale": "18",
+      "ultima": "2026-03-31 23:35:18"
+    },
+    {
+      "tipo": "breaking_news",
+      "totale": "5",
+      "ultima": "2026-04-01 06:05:15"
+    }
+  ],
+  "messages": [],
+  "stdout": "tipo\ttotale\tultima\nstartup_of_day\t17\t2026-03-31 07:10:11\nweekly_reportage\t12\t2026-03-29 23:15:36\ndaily_editorial\t18\t2026-03-31 23:35:18\nbreaking_news\t5\t2026-04-01 06:05:15\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

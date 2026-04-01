@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, section, createdAt FROM breaking_news WHERE isActive=1 ORDER BY createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, section, createdAt FROM breaking_news WHERE isActive=1 ORDER BY createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "1980006",
+      "title": "Codice sorgente di Claude Code trapelato: Implicazioni gravi per Anthropic",
+      "section": "startup",
+      "createdAt": "2026-04-01 06:45:21"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsection\tcreatedAt\n1980006\tCodice sorgente di Claude Code trapelato: Implicazioni gravi per Anthropic\tstartup\t2026-04-01 06:45:21\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

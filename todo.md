@@ -2176,3 +2176,18 @@
 
 ## Bug Fix (31 Mar 2026)
 - [x] Fix TypeError: Cannot read properties of undefined (reading 'section') in BreakingNewsSection
+
+## Task (1 Apr 2026 — Newsletter Unica IDEASMART)
+- [x] Creare nuovo template HTML newsletter unica (stile "There's an AI for That")
+- [x] Cover pulita con data, titolo IDEASMART, link "Leggi online"
+- [x] Blocco sponsor del giorno con bordo rosso laterale
+- [x] Sezione Breaking News (top 3-5 notizie urgenti)
+- [x] Sezione AI News (top 3-5 notizie AI)
+- [x] Sezione Startup News (top 3-5 notizie startup)
+- [x] Sezione Dealroom (top 3-5 deal/funding)
+- [x] Sezione Editoriale IdeaSmart (placeholder per futuro)
+- [x] Sezione Ricerca del Giorno (top 5 ricerche)
+- [x] Aggiornare generatore per raccogliere contenuti da tutti i canali
+- [x] Aggiornare scheduler: una sola newsletter quotidiana (Lun/Mer/Ven alle 07:00 CET)
+- [x] Aggiornare router admin per invio newsletter unica (sendUnifiedPreview, sendUnifiedTestToEmail, sendUnifiedNewsletterToAll)
+- [x] Testare con invio di prova (inviata a ac@acinelli.com)

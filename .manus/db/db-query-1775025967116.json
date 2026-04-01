@@ -1,0 +1,25 @@
+{
+  "query": "SELECT section, COUNT(*) as total, MAX(createdAt) as ultima_data FROM news_items GROUP BY section ORDER BY ultima_data DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as total, MAX(createdAt) as ultima_data FROM news_items GROUP BY section ORDER BY ultima_data DESC;",
+  "rows": [
+    {
+      "section": "dealroom",
+      "total": "20",
+      "ultima_data": "2026-04-01 06:44:28"
+    },
+    {
+      "section": "startup",
+      "total": "20",
+      "ultima_data": "2026-04-01 06:43:25"
+    },
+    {
+      "section": "ai",
+      "total": "20",
+      "ultima_data": "2026-04-01 05:07:22"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotal\tultima_data\ndealroom\t20\t2026-04-01 06:44:28\nstartup\t20\t2026-04-01 06:43:25\nai\t20\t2026-04-01 05:07:22\n",
+  "stderr": "",
+  "execution_time_ms": 67
+}

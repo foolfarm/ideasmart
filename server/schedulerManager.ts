@@ -456,20 +456,21 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW (07:00 CET) — tutti i giorni ─────────────────────────────────
-  cron.schedule("0 7 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter del giorno...");
+   // ── PREVIEW NEWSLETTER UNIFICATA (07:00 CET) — Lun/Mer/Ven ────────────────
+  cron.schedule("0 7 * * 1,3,5", async () => {
+    console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter UNIFICATA...");
     try {
-      const result = await sendDailyChannelPreview();
+      const { sendUnifiedPreview } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedPreview();
       if (result.success) {
-        console.log(`[SchedulerManager] ✅ Preview ${result.channel} inviata a info@ideasmart.ai`);
+        console.log(`[SchedulerManager] ✅ Preview newsletter unificata inviata (AI:${result.stats.ai} Startup:${result.stats.startup} Deal:${result.stats.dealroom} Breaking:${result.stats.breaking} Research:${result.stats.research})`);
       } else {
-        console.log(`[SchedulerManager] ℹ️ Preview: ${result.channel} — ${result.error || "skip"}`);
+        console.log(`[SchedulerManager] ℹ️ Preview unificata: ${result.error || "skip"}`);
       }
     } catch (err) {
-      console.error("[SchedulerManager] ❌ Errore preview newsletter:", err);
+      console.error("[SchedulerManager] ❌ Errore preview newsletter unificata:", err);
     }
-  }, { timezone: TZ });
+  }, { timezone: TZ });;
 
   // ── INVIO MASSIVO — DISABILITATO (richiede approvazione manuale da Admin) ──
   // L'invio automatico della newsletter è stato disabilitato.

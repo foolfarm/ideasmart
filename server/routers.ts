@@ -1448,6 +1448,29 @@ Rispondi con questo JSON:
       };
     }),
 
+    // ── Newsletter Unificata — Preview ────────────────────────────────────────────────
+    sendUnifiedPreview: adminProcedure.mutation(async () => {
+      const { sendUnifiedPreview } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedPreview();
+      return result;
+    }),
+
+    // ── Newsletter Unificata — Test a Email Specifico ────────────────────────────────
+    sendUnifiedTestToEmail: adminProcedure
+      .input(z.object({ toEmail: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const { sendUnifiedTestToEmail } = await import("./unifiedNewsletter");
+        const result = await sendUnifiedTestToEmail(input.toEmail);
+        return result;
+      }),
+
+    // ── Newsletter Unificata — Invio Massivo ────────────────────────────────────────
+    sendUnifiedNewsletterToAll: adminProcedure.mutation(async () => {
+      const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedNewsletterToAll();
+      return result;
+    }),
+
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure
       .input(z.object({
