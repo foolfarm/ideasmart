@@ -601,9 +601,26 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Dealroom — 18:00 CET (ultimi deal/round)
+  // Post AI Tool Radar — 18:00 CET (10 nuovi tool AI scoperti oggi)
   cron.schedule("0 18 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 18:00 CET — Pubblicazione LinkedIn DEALROOM...");
+    console.log("[SchedulerManager] ⏰ 18:00 CET — Pubblicazione LinkedIn AI TOOL RADAR...");
+    await withLock("linkedin-ai-tool-radar", async () => {
+      try {
+        const result = await publishLinkedInPost("ai-tool-radar");
+        console.log(`[SchedulerManager] ✅ LinkedIn AI TOOL RADAR: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn AI TOOL RADAR errori:", result.errors);
+        }
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn AI TOOL RADAR:", err);
+      }
+    });
+  }, { timezone: TZ });
+
+  // Post Dealroom — 19:00 CET (ultimi deal/round)
+  cron.schedule("0 19 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 19:00 CET — Pubblicazione LinkedIn DEALROOM...");
     await withLock("linkedin-dealroom", async () => {
       try {
         const result = await publishLinkedInPost("dealroom");
@@ -638,9 +655,10 @@ export function startAllSchedulers(): void {
       // Catch-up slot definitions: [slot, scheduledMinutes]
       const catchUpSlots: Array<[string, number, string]> = [
         ["morning", 10 * 60, "MATTINO (10:00)"],
-        ["startup-afternoon", 14 * 60 + 30, "STARTUP POMERIGGIO (14:30)"],
+        ["startup-afternoon", 14 * 60 + 30, "STARTUP RADAR EU/IT (14:30)"],
         ["research", 17 * 60, "RICERCHE (17:00)"],
-        ["dealroom", 18 * 60, "DEALROOM (18:00)"],
+        ["ai-tool-radar", 18 * 60, "AI TOOL RADAR (18:00)"],
+        ["dealroom", 19 * 60, "DEALROOM (19:00)"],
       ];
 
       for (const [slotName, scheduledMin, label] of catchUpSlots) {
@@ -880,11 +898,11 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 09:00 CET → ac@acinelli.com");
   console.log("[SchedulerManager]   📧 Newsletter UNIFICATA → ogni giorno alle 11:00 CET → tutti gli iscritti (AUTOMATICA)");
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
-  console.log("[SchedulerManager]   💼 LinkedIn MATTINO   → ogni giorno alle 10:00 CET (AI News)");
-  console.log("[SchedulerManager]   💼 LinkedIn STARTUP   → ogni giorno alle 14:30 CET (Startup News)");
-  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE  → ogni giorno alle 17:00 CET (IdeaSmart Research)");
-  console.log("[SchedulerManager]   💼 LinkedIn DEALROOM  → ogni giorno alle 18:00 CET (Dealroom)");
-
+  console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
+  console.log("[SchedulerManager]   💼 LinkedIn STARTUP RADAR → ogni giorno alle 14:30 CET (10 startup AI EU/IT investibili)");
+  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 17:00 CET (IdeaSmart Research)");
+  console.log("[SchedulerManager]   💼 LinkedIn AI TOOL RADAR → ogni giorno alle 18:00 CET (10 tool AI scoperti oggi)");
+  console.log("[SchedulerManager]   💼 LinkedIn DEALROOM      → ogni giorno alle 19:00 CET (Dealroom)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (newsletter unificata giornaliera attiva)");

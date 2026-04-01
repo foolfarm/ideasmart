@@ -345,7 +345,7 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   dateLabel: varchar("dateLabel", { length: 20 }).notNull(),
   // Slot del post: morning (10:00 CET), startup-afternoon (14:30 CET), research (17:00 CET), dealroom (18:00 CET)
   // Legacy slots mantenuti per compatibilità: afternoon, evening
-  slot: mysqlEnum("slot", ["morning", "startup-afternoon", "afternoon", "evening", "research", "dealroom"]).default("morning").notNull(),
+  slot: mysqlEnum("slot", ["morning", "startup-afternoon", "afternoon", "evening", "research", "dealroom", "ai-tool-radar"]).default("morning").notNull(),
   // Testo completo del post LinkedIn
   postText: text("postText").notNull(),
   // URL del post LinkedIn (es. https://www.linkedin.com/posts/...)
@@ -353,7 +353,7 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   // Titolo editoriale estratto (prima riga o generato)
   title: varchar("title", { length: 500 }),
   // Sezione tematica del post (ai, startup, ecc.)
-  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi", "dealroom"]).default("ai").notNull(),
+  section: mysqlEnum("section", ["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi", "dealroom", "research"]).default("ai").notNull(),
   // Immagine allegata al post
   imageUrl: varchar("imageUrl", { length: 1000 }),
   // Hashtag estratti dal post

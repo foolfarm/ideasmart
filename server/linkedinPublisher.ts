@@ -24,6 +24,8 @@ import { findEditorialImage } from "./stockImages";
 import { linkedinPosts, researchReports, newsItems } from "../drizzle/schema";
 import { eq, and, desc, gte } from "drizzle-orm";
 import { getTodayResearch } from "./researchGenerator";
+import { generateAIToolRadarPost } from "./aiToolRadar";
+import { generateStartupRadarPost_main } from "./startupRadar";
 
 // ── Timezone CET/CEST ────────────────────────────────────────────────────────
 const TZ_ROME = "Europe/Rome";
@@ -47,7 +49,7 @@ function computePostHash(text: string): string {
 const SITE_BASE_URL = "https://ideasmart.ai";
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "startup-afternoon" | "research" | "dealroom" | "afternoon" | "evening";
+export type LinkedInSlot = "morning" | "startup-afternoon" | "research" | "dealroom" | "ai-tool-radar" | "afternoon" | "evening";
 
 // ── Sezioni supportate per LinkedIn ──────────────────────────────────────────
 type LinkedInSection = "ai" | "startup" | "dealroom" | "research";
@@ -81,6 +83,7 @@ function selectSection(slot: LinkedInSlot): LinkedInSection {
   if (slot === "morning") return "ai";
   if (slot === "startup-afternoon") return "startup";
   if (slot === "research") return "research";
+  if (slot === "ai-tool-radar") return "ai";
   if (slot === "dealroom") return "dealroom";
   // Legacy slots
   if (slot === "afternoon") return "ai";
@@ -574,7 +577,8 @@ export async function publishLinkedInPost(
     morning: "MATTINO (10:00)",
     "startup-afternoon": "STARTUP POMERIGGIO (14:30)",
     research: "RICERCHE (17:00)",
-    dealroom: "DEALROOM (18:00)",
+    "ai-tool-radar": "AI TOOL RADAR (18:00)",
+    dealroom: "DEALROOM (19:00)",
     afternoon: "POMERIGGIO (legacy)",
     evening: "SERA (legacy)"
   };
@@ -636,7 +640,90 @@ export async function publishLinkedInPost(
   let contentKeyTrend: string;
   let contentImageUrl: string | null = null;
 
-  if (slot === "research") {
+  if (slot === "ai-tool-radar") {
+    // Slot AI Tool Radar: genera il post con i 10 tool AI del giorno
+    console.log("[LinkedIn] 🔧 Generazione AI Tool Radar...");
+    const radarResult = await generateAIToolRadarPost();
+    if (!radarResult.success || !radarResult.postText) {
+      console.warn(`[LinkedIn] ⚠️ AI Tool Radar fallito: ${radarResult.error}`);
+      return {
+        published: 0,
+        errors: [radarResult.error || "AI Tool Radar fallito"],
+        posts: []
+      };
+    }
+
+    // Pubblica direttamente il post generato dal radar (ha già il suo format)
+    const articleUrl = `${SITE_BASE_URL}/ai`;
+    console.log(`[LinkedIn] 🚀 Pubblicazione AI Tool Radar — ${radarResult.toolCount} tool, ${radarResult.postText.length} caratteri`);
+
+    // Cerca un'immagine tematica per il post
+    const pexelsImage = await findEditorialImage(
+      "AI tools innovation technology",
+      "artificial intelligence new tools",
+      "ai",
+      recentImageUrls
+    );
+
+    const result = await publishToLinkedIn(
+      radarResult.postText,
+      articleUrl,
+      pexelsImage || null,
+      "AI Tool Radar — 10 nuovi tool AI",
+      "I 10 tool AI più innovativi scoperti oggi"
+    );
+
+    if (result.success) {
+      console.log(`[LinkedIn] ✅ AI Tool Radar pubblicato con successo`);
+      try {
+        const db = await getDb();
+        if (db) {
+          const dateLabel = getTodayCET();
+          let linkedinUrl: string | undefined;
+          if (result.postId && result.postId !== 'unknown') {
+            linkedinUrl = result.postId.startsWith('urn:li:')
+              ? `https://www.linkedin.com/feed/update/${result.postId}/`
+              : `https://www.linkedin.com/feed/update/urn:li:ugcPost:${result.postId}/`;
+          }
+          await db.insert(linkedinPosts)
+            .values({
+              dateLabel,
+              slot: "ai-tool-radar" as any,
+              postText: radarResult.postText,
+              linkedinUrl: linkedinUrl ?? null,
+              title: "AI Tool Radar — 10 nuovi tool AI",
+              section: "ai" as any,
+              imageUrl: pexelsImage ?? null,
+              hashtags: "#AI #AITools #Innovation #IDEASMART #TechRadar",
+              postHash: computePostHash(radarResult.postText)
+            })
+            .onDuplicateKeyUpdate({
+              set: {
+                postText: radarResult.postText,
+                linkedinUrl: linkedinUrl ?? null,
+                imageUrl: pexelsImage ?? null,
+                postHash: computePostHash(radarResult.postText)
+              }
+            });
+          console.log(`[LinkedIn] 💾 AI Tool Radar salvato nel DB (${dateLabel})`);
+        }
+      } catch (dbErr) {
+        console.error('[LinkedIn] ⚠️ Errore salvataggio AI Tool Radar nel DB:', dbErr);
+      }
+      return {
+        published: 1,
+        errors: [],
+        posts: [{ section: "ai", title: "AI Tool Radar", success: true, postId: result.postId }]
+      };
+    } else {
+      console.error(`[LinkedIn] ❌ AI Tool Radar pubblicazione fallita:`, result.error);
+      return {
+        published: 0,
+        errors: [result.error ?? "Errore pubblicazione AI Tool Radar"],
+        posts: [{ section: "ai", title: "AI Tool Radar", success: false, error: result.error }]
+      };
+    }
+  } else if (slot === "research") {
     // Slot Research: recupera una delle ultime ricerche IdeaSmart
     const research = await getResearchForLinkedIn(recentPostTitles);
     if (!research) {
@@ -668,8 +755,90 @@ export async function publishLinkedInPost(
     contentKeyTrend = deal.keyTrend;
     contentImageUrl = deal.imageUrl;
     console.log(`[LinkedIn] 💰 Deal selezionato: "${contentTitle.slice(0, 60)}..."`);
+  } else if (slot === "startup-afternoon") {
+    // Slot Startup Radar EU/IT: genera il post con le 10 startup AI europee più investibili
+    console.log("[LinkedIn] 🚀 Generazione Startup Radar EU/IT...");
+    const radarResult = await generateStartupRadarPost_main();
+    if (!radarResult.success || !radarResult.postText) {
+      console.warn(`[LinkedIn] ⚠️ Startup Radar fallito: ${radarResult.error}`);
+      return {
+        published: 0,
+        errors: [radarResult.error || "Startup Radar fallito"],
+        posts: []
+      };
+    }
+
+    // Pubblica direttamente il post generato dal radar
+    const articleUrl = `${SITE_BASE_URL}/startup`;
+    console.log(`[LinkedIn] 🚀 Pubblicazione Startup Radar — ${radarResult.startupCount} startup, ${radarResult.postText.length} caratteri`);
+
+    const pexelsImage = await findEditorialImage(
+      "startup europe investment venture capital",
+      "european startup AI funding",
+      "startup",
+      recentImageUrls
+    );
+
+    const result = await publishToLinkedIn(
+      radarResult.postText,
+      articleUrl,
+      pexelsImage || null,
+      "AI Dealflow Europe — 10 startup investibili",
+      "Le 10 startup AI europee più investibili di oggi"
+    );
+
+    if (result.success) {
+      console.log(`[LinkedIn] ✅ Startup Radar pubblicato con successo`);
+      try {
+        const db = await getDb();
+        if (db) {
+          const dateLabel = getTodayCET();
+          let linkedinUrl: string | undefined;
+          if (result.postId && result.postId !== 'unknown') {
+            linkedinUrl = result.postId.startsWith('urn:li:')
+              ? `https://www.linkedin.com/feed/update/${result.postId}/`
+              : `https://www.linkedin.com/feed/update/urn:li:ugcPost:${result.postId}/`;
+          }
+          await db.insert(linkedinPosts)
+            .values({
+              dateLabel,
+              slot: "startup-afternoon" as any,
+              postText: radarResult.postText,
+              linkedinUrl: linkedinUrl ?? null,
+              title: "AI Dealflow Europe — 10 startup investibili",
+              section: "startup" as any,
+              imageUrl: pexelsImage ?? null,
+              hashtags: "#Startup #AI #VentureCapital #IDEASMART #StartupEurope",
+              postHash: computePostHash(radarResult.postText)
+            })
+            .onDuplicateKeyUpdate({
+              set: {
+                postText: radarResult.postText,
+                linkedinUrl: linkedinUrl ?? null,
+                imageUrl: pexelsImage ?? null,
+                postHash: computePostHash(radarResult.postText)
+              }
+            });
+          console.log(`[LinkedIn] 💾 Startup Radar salvato nel DB (${dateLabel})`);
+        }
+      } catch (dbErr) {
+        console.error('[LinkedIn] ⚠️ Errore salvataggio Startup Radar nel DB:', dbErr);
+      }
+      return {
+        published: 1,
+        errors: [],
+        posts: [{ section: "startup", title: "AI Dealflow Europe", success: true, postId: result.postId }]
+      };
+    } else {
+      console.error(`[LinkedIn] ❌ Startup Radar pubblicazione fallita:`, result.error);
+      return {
+        published: 0,
+        errors: [result.error ?? "Errore pubblicazione Startup Radar"],
+        posts: [{ section: "startup", title: "AI Dealflow Europe", success: false, error: result.error }]
+      };
+    }
   } else {
-    // Slot Morning e Startup-Afternoon: recupera l'editoriale
+    // Slot Morning: recupera l'editoriale
     const editorial = await getLatestEditorial(section === "research" ? "ai" : section);
     if (!editorial) {
       console.warn(`[LinkedIn] ⚠️ Nessun editoriale trovato per sezione '${section}'. Pubblicazione saltata.`);

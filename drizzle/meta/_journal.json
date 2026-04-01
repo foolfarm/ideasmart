@@ -330,6 +330,20 @@
       "when": 1775032801144,
       "tag": "0046_handy_zaladane",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "5",
+      "when": 1775057929892,
+      "tag": "0047_cute_dark_phoenix",
+      "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "5",
+      "when": 1775058035680,
+      "tag": "0048_eager_the_phantom",
+      "breakpoints": true
     }
   ]
 }

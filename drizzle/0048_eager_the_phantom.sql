@@ -1,0 +1,1 @@
+ALTER TABLE `linkedin_posts` MODIFY COLUMN `section` enum('ai','music','startup','finance','health','sport','luxury','news','motori','tennis','basket','gossip','cybersecurity','sondaggi','dealroom','research') NOT NULL DEFAULT 'ai';

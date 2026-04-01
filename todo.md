@@ -2246,3 +2246,14 @@
 - [x] A) Ridurre breaking news da ogni ora a ogni 3 ore
 - [x] B) Inserire primi sponsor e Amazon Deals nel database
 - [x] C) Sostituire generazione AI con Pexels per tutte le immagini notizie
+
+## Task (1 Apr 2026 — LinkedIn AI Tool Radar)
+- [x] Verificare perché post LinkedIn 14:30 e 17:00 non pubblicati oggi (sandbox ibernata tra 12-17 CET)
+- [x] Creare generatore AI Tool Radar: scraping RSS (Product Hunt, HN, GitHub) + LLM per 10 tool/giorno
+- [x] Aggiungere slot LinkedIn alle 18:00 CET con format "10 nuovi tool AI scoperti oggi"
+- [x] Spostare slot DEALROOM per non sovrapporre con AI Tool Radar
+- [x] Cambiare prompt STARTUP 14:30: 10 startup AI EU/IT investibili (stile VC) invece di news editoriale
+- [x] Creare startupRadar.ts: scraping RSS EU/IT + LLM per selezionare 10 startup/giorno
+- [x] Aggiungere slot AI Tool Radar alle 18:00 CET nello scheduler
+- [x] Spostare slot DEALROOM da 18:00 a 19:00 CET
+- [x] Aggiornare catch-up LinkedIn con i nuovi slot
