@@ -2277,3 +2277,14 @@
 - [x] Inserire articolo Giulio Centemero "Deep Tech VC 150 miliardi" in evidenza nella Home sotto la hero
 - [x] Riorganizzare sezione sotto la hero: Centemero (In Evidenza) + Venture Studio Index (Analisi IdeaSmart)
 >>>>>>> Stashed changes
+
+## Task (1 Apr 2026 — Articolo Centemero corretto + Aggiornamento notizie)
+- [ ] Sostituire articolo Centemero in Home con testo corretto da MF-Milano Finanza (nuovo TUF, delisting, governance)
+- [ ] Aggiornare il record nel database con titolo e testo corretti
+- [x] Verificare che le notizie nella Home e nei canali siano aggiornate (AI: 15, Startup: 12, Dealroom: 15, Ricerche: 20)
+
+## Task (1 Apr 2026 — Articolo Centemero corretto + Layout giornale + Aggiornamento notizie)
+- [x] Sostituire articolo Centemero con testo corretto da MF-Milano Finanza (nuovo TUF, delisting, governance)
+- [x] Aggiornare il record nel database con titolo e testo corretti
+- [x] Riprogettare layout sotto la hero: impaginazione a colonne stile giornale (articolo grande + laterali)
+- [x] Verificare che le notizie nella Home e nei canali siano aggiornate (AI: 15, Startup: 12, Dealroom: 15, Ricerche: 20)

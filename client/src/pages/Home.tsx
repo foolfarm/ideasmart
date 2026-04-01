@@ -617,135 +617,136 @@ export default function Home() {
         {/* ══ CORPO ═══════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-          {/* Strip metriche spostata dopo i contenuti — vedi posizione corretta sotto */}
-
-          {/* ── RICERCA DEL GIORNO — card grande in evidenza (come da prompt) ── */}
-          {researchReports && researchReports.length > 0 && (() => {
-            const r = researchReports[0];
-            const accent = r.category === "startup" ? "#2a2a2a"
-              : r.category === "venture_capital" ? "#1a1a1a"
-              : r.category === "ai_trends" ? "#1a1a1a"
-              : r.category === "technology" ? "#2a2a2a"
-              : "#1a1a1a";
-            return (
-              <div className="mt-4 mb-2">
-                <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#1a1a1a" }}>
-                  <div className="flex items-center gap-2">
-                    <div className="h-[3px] w-6" style={{ background: "#1a1a1a" }} />
-                    <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>Ricerca del Giorno</h2>
-                  </div>
-                  <Link href="/research">
-                    <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Vedi tutte le ricerche →</span>
-                  </Link>
-                </div>
-                <Link href={`/research/${r.id}`}>
-                  <article className="group mt-3 p-5 border-l-4 hover:bg-[#f8faf9] transition-colors cursor-pointer" style={{ borderColor: accent, background: "rgba(10,110,92,0.03)" }}>
-                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                      <div className="flex-1">
-                        <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          {r.category.replace("_", " ")}
-                        </span>
-                        <h3 className="text-[22px] sm:text-[26px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                          {r.title}
-                        </h3>
-                        <p className="mt-2 text-[14px] leading-relaxed" style={{ color: "rgba(26,26,46,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                          {r.summary}
-                        </p>
-                        <div className="mt-3 flex items-center gap-3">
-                          <span className="text-[10px] uppercase tracking-widest" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{r.source}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi la ricerca →</span>
-                        </div>
-                      </div>
-                      {r.imageUrl && (
-                        <div className="flex-shrink-0 w-full sm:w-[200px] h-[120px] overflow-hidden">
-                          <img src={r.imageUrl} alt={r.title} className="w-full h-full object-cover" />
-                        </div>
-                      )}
-                    </div>
-                  </article>
-                </Link>
-              </div>
-            );
-          })()}
-
-          {/* ── ARTICOLO IN EVIDENZA — Giulio Centemero Deep Tech VC ── */}
-          <div className="mt-6 mb-4">
-            <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#0a6e5c" }}>
+          {/* ══ PRIMA PAGINA EDITORIALE — Layout a colonne stile giornale ══ */}
+          <div className="mt-4 mb-2">
+            <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#1a1a1a" }}>
               <div className="flex items-center gap-2">
-                <div className="h-[3px] w-6" style={{ background: "#0a6e5c" }} />
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>In Evidenza</h2>
+                <div className="h-[3px] w-6" style={{ background: "#1a1a1a" }} />
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>In Evidenza — {formatDateIT(today)}</h2>
               </div>
               <Link href="/dealroom">
-                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Vai al Dealroom →</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Vai al Dealroom →</span>
               </Link>
             </div>
-            <a href="https://ideasmart.ai/dealroom" target="_blank" rel="noopener noreferrer">
-              <article className="group mt-3 grid grid-cols-1 md:grid-cols-[1fr_340px] gap-5 p-5 border-l-4 hover:bg-[#f4faf8] transition-colors cursor-pointer" style={{ borderColor: "#0a6e5c", background: "rgba(10,110,92,0.03)" }}>
-                <div className="flex-1">
-                  <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#0a6e5c", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Deep Tech & VC</span>
-                  <h3 className="text-[24px] sm:text-[30px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                    Deep Tech: il Venture Capital scommette sul futuro con 150 miliardi nel 2025
-                  </h3>
-                  <p className="mt-2 text-[15px] leading-relaxed" style={{ color: "rgba(26,26,46,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.7 }}>
-                    Il mercato del Venture Capital sta vivendo un riposizionamento strategico senza precedenti. Mentre molti settori hanno sperimentato un rallentamento, gli investimenti in Deep Tech hanno raggiunto i 150 miliardi di dollari nel 2025, con un incremento del 18% rispetto all'anno precedente. Il Quantum Computing ha visto un aumento del 30% nei finanziamenti seed e Series A, superando i 3 miliardi di dollari.
-                  </p>
-                  <div className="mt-4 flex items-center gap-4">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-6 h-6 rounded-full bg-[#0a6e5c] flex items-center justify-center">
-                        <span className="text-white text-[9px] font-bold">GC</span>
-                      </div>
-                      <span className="text-[12px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Giulio Centemero</span>
-                      <span className="text-[10px] text-[#1a1a1a]/40">·</span>
-                      <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Analista IDEASMART</span>
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'articolo →</span>
-                  </div>
-                </div>
-                <div className="hidden md:block w-[340px] h-[220px] overflow-hidden flex-shrink-0">
-                  <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/deeptech_article_72ccf6ad.png" alt="Deep Tech VC" className="w-full h-full object-cover" loading="lazy" />
-                </div>
-              </article>
-            </a>
-          </div>
 
-          {/* ── EDITORIALE IN EVIDENZA — Venture Studio Index ── */}
-          <div className="mt-6 mb-4">
-            <div className="py-1.5 flex items-center justify-between border-b-2" style={{ borderColor: "#d62828" }}>
-              <div className="flex items-center gap-2">
-                <div className="h-[3px] w-6" style={{ background: "#d62828" }} />
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>Analisi IdeaSmart</h2>
-              </div>
-              <Link href="/editoriale/venture-studio-index">
-                <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'analisi completa →</span>
-              </Link>
-            </div>
-            <Link href="/editoriale/venture-studio-index">
-              <article className="group mt-3 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-5 p-5 border-l-4 hover:bg-[#fdf6f6] transition-colors cursor-pointer" style={{ borderColor: "#d62828", background: "rgba(214,40,40,0.02)" }}>
-                <div className="flex-1">
-                  <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#d62828", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Venture Studio & Company Building</span>
-                  <h3 className="text-[22px] sm:text-[28px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                    Venture Studio Index: il Framework che Cambia le Regole della Due Diligence
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed line-clamp-3" style={{ color: "rgba(26,26,46,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                    Con un IRR medio del 60% contro il 33% del top-quartile VC, i Venture Studio sono l'asset class più performante dell'early-stage. Il Venture Studio Index del Venture Studio Forum introduce il primo framework standardizzato per la due diligence.
-                  </p>
-                  <div className="mt-3 flex items-center gap-4">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-5 h-5 rounded-full bg-[#1a1a1a] flex items-center justify-center">
-                        <span className="text-white text-[8px] font-bold">AL</span>
-                      </div>
-                      <span className="text-[11px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Adrian Lenice</span>
-                      <span className="text-[10px] text-[#1a1a1a]/40">·</span>
-                      <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Direttore Editoriale</span>
+            {/* GRID: Centemero grande (sinistra 65%) | Ricerca + Venture Studio (destra 35%) */}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-0 mt-3">
+
+              {/* ── COLONNA SINISTRA: Articolo Centemero grande ── */}
+              <div className="lg:pr-6 lg:border-r border-[#1a1a1a]/15">
+                <a href="https://ideasmart.ai/dealroom" target="_blank" rel="noopener noreferrer">
+                  <article className="group cursor-pointer">
+                    <div className="mb-3 overflow-hidden" style={{ maxHeight: "320px" }}>
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/centemero_mf_article_f98100fd.png" alt="Giulio Centemero - MF Milano Finanza" className="w-full h-auto object-contain" loading="lazy" />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'analisi →</span>
+                    <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 mb-2" style={{ background: "#0a6e5c", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Finanza & Governance</span>
+                    <h3 className="text-[28px] sm:text-[34px] font-bold leading-tight group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.01em" }}>
+                      Centemero: col nuovo Tuf meno delisting di comodo e fughe all'estero
+                    </h3>
+                    <p className="mt-1 text-[12px] italic text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>di Elena Dal Maso</p>
+                    <p className="mt-3 text-[15px] leading-relaxed" style={{ color: "rgba(26,26,46,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.75 }}>
+                      La riforma del Tuf si muove lungo una direttrice chiara: rafforzare la competitivit\u00e0 del mercato dei capitali italiano mantenendo un presidio credibile sulla tutela degli investitori, spiega a MF-Milano Finanza Giulio Centemero, membro della Commissione Finanze. A fine marzo il Consiglio dei ministri ha approvato in via definitiva la riforma che vuole rendere Piazza Affari pi\u00f9 competitiva e allineata agli standard internazionali. Sul fronte della governance, la sterilizzazione dei voti maggiorati nelle operazioni straordinarie introduce un elemento di equilibrio importante.
+                    </p>
+                    <div className="mt-4 flex items-center gap-4 flex-wrap">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-6 h-6 rounded-full bg-[#0a6e5c] flex items-center justify-center">
+                          <span className="text-white text-[9px] font-bold">GC</span>
+                        </div>
+                        <span className="text-[12px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Giulio Centemero</span>
+                        <span className="text-[10px] text-[#1a1a1a]/40">·</span>
+                        <span className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Commissione Finanze</span>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'articolo →</span>
+                    </div>
+                    <p className="mt-2 text-[10px] text-[#1a1a1a]/35 uppercase tracking-widest" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>MF-Milano Finanza · 1 apr 2026</p>
+                  </article>
+                </a>
+              </div>
+
+              {/* ── COLONNA DESTRA: Ricerca del Giorno + Analisi IdeaSmart ── */}
+              <div className="lg:pl-6 mt-6 lg:mt-0">
+
+                {/* Ricerca del Giorno — compatta */}
+                {researchReports && researchReports.length > 0 && (() => {
+                  const r = researchReports[0];
+                  return (
+                    <div className="mb-5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="h-[3px] w-5" style={{ background: "#1a1a1a" }} />
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em]" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Ricerca del Giorno</span>
+                      </div>
+                      <div className="border-t-2" style={{ borderColor: "#1a1a1a" }} />
+                      <Link href={`/research/${r.id}`}>
+                        <article className="group cursor-pointer pt-3">
+                          <span className="inline-block text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2" style={{ background: "#1a1a1a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                            {r.category.replace("_", " ")}
+                          </span>
+                          {r.imageUrl && (
+                            <div className="mb-2 overflow-hidden" style={{ maxHeight: "140px" }}>
+                              <img src={r.imageUrl} alt={r.title} className="w-full h-[140px] object-cover" loading="lazy" />
+                            </div>
+                          )}
+                          <h4 className="text-[18px] font-bold leading-snug group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                            {r.title}
+                          </h4>
+                          <p className="mt-1.5 text-[13px] leading-relaxed line-clamp-3" style={{ color: "rgba(26,26,46,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                            {r.summary}
+                          </p>
+                          <div className="mt-2 flex items-center gap-2">
+                            <span className="text-[9px] uppercase tracking-widest" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{r.source}</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi →</span>
+                          </div>
+                        </article>
+                      </Link>
+                    </div>
+                  );
+                })()}
+
+                {/* Separatore sottile */}
+                <div className="border-t border-[#1a1a1a]/15 my-4" />
+
+                {/* Analisi IdeaSmart — Venture Studio Index compatto */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="h-[3px] w-5" style={{ background: "#d62828" }} />
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em]" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Analisi IdeaSmart</span>
                   </div>
+                  <div className="border-t-2" style={{ borderColor: "#d62828" }} />
+                  <Link href="/editoriale/venture-studio-index">
+                    <article className="group cursor-pointer pt-3">
+                      <span className="inline-block text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2" style={{ background: "#d62828", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Venture Studio</span>
+                      <div className="mb-2 overflow-hidden" style={{ maxHeight: "120px" }}>
+                        <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/vsi_hero_4987fe70.jpg" alt="Venture Studio Index" className="w-full h-[120px] object-cover" loading="lazy" />
+                      </div>
+                      <h4 className="text-[18px] font-bold leading-snug group-hover:underline" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Venture Studio Index: il Framework che Cambia le Regole della Due Diligence
+                      </h4>
+                      <p className="mt-1.5 text-[13px] leading-relaxed line-clamp-2" style={{ color: "rgba(26,26,46,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                        Con un IRR medio del 60% contro il 33% del top-quartile VC, i Venture Studio sono l'asset class più performante dell'early-stage.
+                      </p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+                          <span className="text-white text-[7px] font-bold">AL</span>
+                        </div>
+                        <span className="text-[10px] font-semibold text-[#1a1a1a]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Adrian Lenice</span>
+                        <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "#d62828", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi →</span>
+                      </div>
+                    </article>
+                  </Link>
                 </div>
-                <div className="hidden md:block w-[300px] h-[180px] overflow-hidden flex-shrink-0">
-                  <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/vsi_hero_4987fe70.jpg" alt="Venture Studio Index" className="w-full h-full object-cover" loading="lazy" />
+
+                {/* Link rapidi */}
+                <div className="mt-4 pt-3 border-t border-[#1a1a1a]/15 flex items-center justify-between">
+                  <Link href="/research">
+                    <span className="text-[9px] font-bold uppercase tracking-widest hover:underline" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Tutte le ricerche →</span>
+                  </Link>
+                  <Link href="/dealroom">
+                    <span className="text-[9px] font-bold uppercase tracking-widest hover:underline" style={{ color: "#0a6e5c", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Dealroom →</span>
+                  </Link>
                 </div>
-              </article>
-            </Link>
+
+              </div>
+            </div>
           </div>
 
           {/* ══════════════════════════════════════════════════════════════════
