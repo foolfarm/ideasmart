@@ -1,104 +1,98 @@
 /**
  * IDEASMART — Image Auto-Generation Helper
  *
- * Genera automaticamente immagini editoriali AI per ogni tipo di contenuto
+ * Genera automaticamente immagini editoriali per ogni tipo di contenuto
  * (news, editoriale, startup, reportage, analisi di mercato) al momento
  * della creazione, senza intervento umano.
  *
- * Stile coerente: illustrazione editoriale tech magazine italiana,
- * palette teal/navy/orange, no testo, formato 16:9.
+ * AGGIORNAMENTO 1 Apr 2026: usa Pexels (gratuito) invece di AI generation
+ * per ridurre il consumo di crediti (~58 immagini AI/giorno eliminate).
  */
 
-import { generateImage } from "./_core/imageGeneration";
-
-// Stile visivo comune a tutti i contenuti IDEASMART
-const STYLE_SUFFIX =
-  "Style: premium Italian tech magazine editorial illustration, " +
-  "clean modern design, teal and navy color palette with orange accents, " +
-  "abstract geometric shapes, no text, no letters, no words, 16:9 ratio, " +
-  "high quality digital art.";
+import {
+  findNewsImage,
+  findStockImage,
+  findStartupImage,
+  findReportageImage,
+  findMarketAnalysisImage,
+} from "./stockImages";
 
 /**
- * Genera un'immagine per una notizia AI
+ * Genera un'immagine per una notizia AI (via Pexels)
  */
 export async function genImageForNews(title: string, category: string): Promise<string | null> {
   try {
-    const prompt = `Editorial illustration for an AI business news article. ` +
-      `Topic: "${title}". Category: ${category}. ` +
-      `Visual concept: abstract representation of ${category.toLowerCase()} technology, data flows, neural networks. ` +
-      STYLE_SUFFIX;
-    const { url } = await generateImage({ prompt });
-    return url ?? null;
+    const url = await findNewsImage(title, category);
+    if (url) {
+      console.log(`[ImageAutoGen] ✅ Pexels news image found for: "${title.slice(0, 60)}..."`);
+    }
+    return url;
   } catch (err) {
-    console.error("[ImageAutoGen] Failed to generate news image:", err);
+    console.error("[ImageAutoGen] Failed to find news image:", err);
     return null;
   }
 }
 
 /**
- * Genera un'immagine per l'editoriale giornaliero
+ * Genera un'immagine per l'editoriale giornaliero (via Pexels)
  */
 export async function genImageForEditorial(title: string, keyTrend: string): Promise<string | null> {
   try {
-    const prompt = `Editorial illustration for a daily AI business editorial. ` +
-      `Title: "${title}". Key trend: ${keyTrend}. ` +
-      `Visual concept: futuristic Italian business landscape, AI transformation, executive perspective. ` +
-      STYLE_SUFFIX;
-    const { url } = await generateImage({ prompt });
-    return url ?? null;
+    const url = await findStockImage(title, "Modelli Generativi", keyTrend);
+    if (url) {
+      console.log(`[ImageAutoGen] ✅ Pexels editorial image found for: "${title.slice(0, 60)}..."`);
+    }
+    return url;
   } catch (err) {
-    console.error("[ImageAutoGen] Failed to generate editorial image:", err);
+    console.error("[ImageAutoGen] Failed to find editorial image:", err);
     return null;
   }
 }
 
 /**
- * Genera un'immagine per la startup del giorno
+ * Genera un'immagine per la startup del giorno (via Pexels)
  */
 export async function genImageForStartup(name: string, category: string, tagline: string): Promise<string | null> {
   try {
-    const prompt = `Editorial illustration for an AI startup spotlight. ` +
-      `Startup: "${name}". Category: ${category}. Tagline: "${tagline}". ` +
-      `Visual concept: innovative startup, ${category.toLowerCase()} technology, growth and innovation. ` +
-      STYLE_SUFFIX;
-    const { url } = await generateImage({ prompt });
-    return url ?? null;
+    const url = await findStartupImage(name, category, tagline);
+    if (url) {
+      console.log(`[ImageAutoGen] ✅ Pexels startup image found for: "${name}"`);
+    }
+    return url;
   } catch (err) {
-    console.error("[ImageAutoGen] Failed to generate startup image:", err);
+    console.error("[ImageAutoGen] Failed to find startup image:", err);
     return null;
   }
 }
 
 /**
- * Genera un'immagine per un reportage settimanale
+ * Genera un'immagine per un reportage settimanale (via Pexels)
  */
 export async function genImageForReportage(startupName: string, headline: string, category: string): Promise<string | null> {
   try {
-    const prompt = `Editorial illustration for an Italian AI startup reportage. ` +
-      `Startup: "${startupName}". Headline: "${headline}". Category: ${category}. ` +
-      `Visual concept: Italian tech ecosystem, ${category.toLowerCase().replace("reportage · ", "").replace("analisi · ", "").replace("inchiesta · ", "").replace("focus · ", "")} innovation. ` +
-      STYLE_SUFFIX;
-    const { url } = await generateImage({ prompt });
-    return url ?? null;
+    const url = await findReportageImage(startupName, headline, category);
+    if (url) {
+      console.log(`[ImageAutoGen] ✅ Pexels reportage image found for: "${startupName}"`);
+    }
+    return url;
   } catch (err) {
-    console.error("[ImageAutoGen] Failed to generate reportage image:", err);
+    console.error("[ImageAutoGen] Failed to find reportage image:", err);
     return null;
   }
 }
 
 /**
- * Genera un'immagine per un'analisi di mercato
+ * Genera un'immagine per un'analisi di mercato (via Pexels)
  */
 export async function genImageForMarketAnalysis(title: string, category: string, source: string): Promise<string | null> {
   try {
-    const prompt = `Editorial illustration for a market analysis report. ` +
-      `Title: "${title}". Category: ${category}. Source: ${source}. ` +
-      `Visual concept: market data visualization, ${category.toLowerCase()} trends, business intelligence. ` +
-      STYLE_SUFFIX;
-    const { url } = await generateImage({ prompt });
-    return url ?? null;
+    const url = await findMarketAnalysisImage(title, category, source);
+    if (url) {
+      console.log(`[ImageAutoGen] ✅ Pexels market analysis image found for: "${title.slice(0, 60)}..."`);
+    }
+    return url;
   } catch (err) {
-    console.error("[ImageAutoGen] Failed to generate market analysis image:", err);
+    console.error("[ImageAutoGen] Failed to find market analysis image:", err);
     return null;
   }
 }

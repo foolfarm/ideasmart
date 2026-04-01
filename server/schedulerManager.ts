@@ -734,10 +734,10 @@ export function startAllSchedulers(): void {
   */
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // BREAKING NEWS — ogni ora alle :05 (5 minuti dopo l'ora, dopo l'aggiornamento news)
+  // BREAKING NEWS — ogni 3 ore alle :05 (risparmio crediti: da 24 a 8 chiamate/giorno)
   // ═══════════════════════════════════════════════════════════════════════════
   cron.schedule(
-    "0 5 * * * *", // ogni ora alle :05 (secondi=0, minuti=5)
+    "0 5 */3 * * *", // ogni 3 ore alle :05 (secondi=0, minuti=5, ore=0,3,6,9,12,15,18,21)
     () => withLock("breakingNews", async () => {
       console.log("[SchedulerManager] 🚨 Breaking News: analisi notizie recenti...");
       try {
@@ -891,7 +891,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI + Startup + DEALROOM, rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 09:30 CET (pubblica se nessun post oggi)");
-  console.log("[SchedulerManager]   🚀 Breaking News   → ogni ora alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
+  console.log("[SchedulerManager]   🚀 Breaking News   → ogni 3 ore alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
   console.log("[SchedulerManager]   📅 Events Aggregator → ogni 12 ore alle 06:30 e 18:30 CET (Luma ICS + RSS italiani)");
 
   // ═══════════════════════════════════════════════════════════════════════════

@@ -2241,3 +2241,8 @@
 - [x] Area admin Amazon Deals: CRUD per inserire più link, rotazione giornaliera automatica
 - [x] Area admin Sponsor Newsletter: CRUD per sponsor personalizzati (sostituisce Foolshare/FoolTalent)
 - [x] Analisi consumo crediti giornaliero del sito (LLM, email, immagini, API)
+
+## Task (1 Apr 2026 — Ottimizzazioni crediti)
+- [x] A) Ridurre breaking news da ogni ora a ogni 3 ore
+- [x] B) Inserire primi sponsor e Amazon Deals nel database
+- [x] C) Sostituire generazione AI con Pexels per tutte le immagini notizie
