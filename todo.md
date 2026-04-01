@@ -2213,3 +2213,9 @@
 - [x] Aggiungere box promo "By IDEASMART" nella newsletter (stile TAAFT Prompt Pack)
 - [x] Testo persuasivo che promuove l'offerta commerciale (redazione AI, Agent Giornalisti, Verify, pricing)
 - [x] Link alla pagina /offertacommerciale con UTM tracking
+
+## Task (1 Apr 2026 — Correzione Box Promo + Intro Newsletter)
+- [x] Leggere pagina /offertacommerciale per prezzi corretti (Single Vertical €500, Multi-Channel €750, Full Newsroom €1.000)
+- [x] Riscrivere box promo con testo di Andrea ("Sei un giornalista, una testata online...")
+- [x] Migliorare intro newsletter (aggiunto sottotitolo "briefing quotidiano su AI, Startup e Venture Capital")
+- [x] Verificare breaking news: 5 attive nel DB, tutte presenti nella newsletter
