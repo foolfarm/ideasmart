@@ -2319,3 +2319,6 @@
 - [x] Integrare Stripe per acquisto ebook Prompt 2026 (prod_UGDeLme5Ehqahx, price_1THhCzQQVoHT3i87f1Ljpyvd)
 - [x] Aggiornare landing page ebook con link Stripe reale (buy.stripe.com/4gM5kFdoT5yS0FZ6SocbC07)
 - [x] Inviare newsletter di test per verificare rendering (preview inviata a ac@acinelli.com)
+
+## Task (2 Apr 2026 — Rimuovere sezione In Evidenza)
+- [x] Eliminare la sezione "In Evidenza" (editoriale Centemero) dalla Home page
