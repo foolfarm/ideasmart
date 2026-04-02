@@ -2489,3 +2489,9 @@
 - [x] Evidenziare canale attivo nel menu (con sfondo scuro e icona rossa)
 - [x] Chiusura menu al click su un canale, fuori dal menu, o tasto Escape
 - [x] Indicatore canale attivo nella barra sticky (es. "PROMPT AI" in rosso)
+
+## Task (2 Apr 2026 — Miglioramento design menu canali)
+- [x] Aggiungere titolo "Naviga i canali di IdeaSmart" nello spazio vuoto del panel
+- [x] Effetti interattivi sui canali (hover, animazioni, transizioni)
+- [x] Migliorare layout panel slide-in con design più ricco
+- [x] Verificare su desktop e mobile
