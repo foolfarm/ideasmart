@@ -2495,3 +2495,8 @@
 - [x] Effetti interattivi sui canali (hover, animazioni, transizioni)
 - [x] Migliorare layout panel slide-in con design più ricco
 - [x] Verificare su desktop e mobile
+
+## Task (2 Apr 2026 — Banner Amazon manchette ai lati del titolo)
+- [x] Inserire banner Amazon quadrato a sinistra del titolo IDEASMART (Cambridge Audio P100 SE)
+- [x] Inserire banner Amazon quadrato a destra del titolo IDEASMART (Plaud NotePin S)
+- [x] Verificare layout responsive (banner visibili solo su desktop, nascosti su mobile)
