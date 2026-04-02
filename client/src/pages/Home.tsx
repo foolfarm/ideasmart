@@ -13,7 +13,7 @@ import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
-import { Cpu, Rocket, Handshake, BookOpen, Info, Tag, Menu, X, User, LogOut, Settings } from "lucide-react";
+import { Cpu, Rocket, Handshake, BookOpen, Info, Menu, X, User, LogOut, Settings, Play, ClipboardCopy, Zap, DollarSign, Wrench, ShieldCheck, TrendingUp, ChevronDown, MoreHorizontal } from "lucide-react";
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
 const SECTION_COLORS = {
@@ -229,77 +229,145 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
 
 // ─── CHANNEL ICONS ──────────────────────────────────────────────────────────
 const CHANNEL_ICONS: Record<string, React.ReactNode> = {
-  ai:       <Cpu size={13} strokeWidth={2.2} />,
-  startup:  <Rocket size={13} strokeWidth={2.2} />,
-  dealroom: <Handshake size={13} strokeWidth={2.2} />,
-  research: <BookOpen size={13} strokeWidth={2.2} />,
+  ai:            <Cpu size={13} strokeWidth={2.2} />,
+  startup:       <Rocket size={13} strokeWidth={2.2} />,
+  dealroom:      <Handshake size={13} strokeWidth={2.2} />,
+  research:      <BookOpen size={13} strokeWidth={2.2} />,
+  "start-here":  <Play size={13} strokeWidth={2.2} />,
+  "copy-paste":  <ClipboardCopy size={13} strokeWidth={2.2} />,
+  automate:      <Zap size={13} strokeWidth={2.2} />,
+  "make-money":  <DollarSign size={13} strokeWidth={2.2} />,
+  tools:         <Wrench size={13} strokeWidth={2.2} />,
+  "verified-news": <ShieldCheck size={13} strokeWidth={2.2} />,
+  opportunities: <TrendingUp size={13} strokeWidth={2.2} />,
 };
+
+// ─── NAV ITEM helper ────────────────────────────────────────────────────────
+function NavItem({ href, label, icon, isActive, sf }: { href: string; label: string; icon: React.ReactNode; isActive: boolean; sf: string }) {
+  return (
+    <Link href={href}>
+      <span
+        className={`flex items-center gap-1.5 px-2.5 py-2.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
+          isActive ? "bg-[#1a1a1a] text-white shadow-[inset_0_-2px_0_0_#dc2626]" : ""
+        }`}
+        style={{ fontFamily: sf, color: isActive ? "#fff" : "#1a1a1a" }}
+      >
+        {icon}
+        {label}
+      </span>
+    </Link>
+  );
+}
 
 // ─── SECTION NAV ─────────────────────────────────────────────────────────────
 function SectionNav() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { data: sectionCounts } = trpc.news.getSectionCounts.useQuery(undefined, {
-    staleTime: 15 * 60 * 1000, refetchOnWindowFocus: false
-  });
-  const navSections: Array<{ key: SectionKey; label: string; path: string }> = [
-    { key: "ai",       label: "AI NEWS", path: "/ai" },
-    { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
-    { key: "dealroom", label: "DEALROOM", path: "/dealroom" }
-  ];
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
   // Close mobile menu on route change
-  useEffect(() => { setMobileMenuOpen(false); }, [location]);
+  useEffect(() => { setMobileMenuOpen(false); setMoreOpen(false); }, [location]);
+
+  // Close More dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const mainChannels = [
+    { key: "start-here",  label: "START HERE",       path: "/start-here" },
+    { key: "copy-paste",  label: "COPY & PASTE AI",  path: "/copy-paste-ai" },
+    { key: "automate",    label: "AUTOMATE",         path: "/automate-with-ai" },
+    { key: "make-money",  label: "MAKE MONEY",       path: "/make-money-with-ai" },
+    { key: "tools",       label: "DAILY AI TOOLS",   path: "/daily-ai-tools" },
+    { key: "verified-news", label: "VERIFIED NEWS",  path: "/verified-ai-news" },
+    { key: "opportunities", label: "AI OPPORTUNITIES", path: "/ai-opportunities" },
+  ];
+
+  const moreChannels = [
+    { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
+    { key: "dealroom", label: "DEALROOM",     path: "/dealroom" },
+    { key: "research", label: "RICERCHE",     path: "/research" },
+  ];
+
+  const isMoreActive = moreChannels.some(c => location === c.path || location.startsWith(c.path + "/"));
 
   return (
     <>
       <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
-        {/* Canali a sinistra */}
-        <div className="flex items-center gap-0">
-          {navSections.map((s) => {
-            const count = sectionCounts?.[s.key] ?? 0;
-            const isActive = location === s.path || location.startsWith(s.path + "/");
-            return (
-              <Link key={s.key} href={s.path}>
-                <span
-                  className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
-                    isActive ? "bg-[#1a1a1a] text-white shadow-[inset_0_-2px_0_0_#dc2626]" : ""
-                  }`}
-                  style={{ fontFamily: SF, color: isActive ? "#fff" : SECTION_COLORS[s.key].accent }}
-                >
-                  {CHANNEL_ICONS[s.key]}
-                  {s.label}
-                  {count > 0 && (
-                    <span className="text-[9px] font-bold px-1 py-0.5 rounded-sm"
-                      style={{ background: isActive ? "rgba(255,255,255,0.25)" : SECTION_COLORS[s.key].accent, color: "#fff" }}>
-                      {count}
-                    </span>
-                  )}
-                </span>
-              </Link>
-            );
-          })}
-          <Link href="/research">
-            <span
-              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
-                location === "/research" || location.startsWith("/research/") ? "bg-[#1a1a1a] text-white shadow-[inset_0_-2px_0_0_#dc2626]" : ""
+        {/* Canali principali */}
+        <div className="hidden lg:flex items-center gap-0">
+          {mainChannels.map((c) => (
+            <NavItem
+              key={c.key}
+              href={c.path}
+              label={c.label}
+              icon={CHANNEL_ICONS[c.key]}
+              isActive={location === c.path || location.startsWith(c.path + "/")}
+              sf={SF}
+            />
+          ))}
+
+          {/* More dropdown */}
+          <div ref={moreRef} className="relative">
+            <button
+              onClick={() => setMoreOpen(!moreOpen)}
+              className={`flex items-center gap-1.5 px-2.5 py-2.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white ${
+                isMoreActive ? "bg-[#1a1a1a] text-white" : ""
               }`}
-              style={{ fontFamily: SF, color: location === "/research" || location.startsWith("/research/") ? "#fff" : "#1a1a1a" }}>
-              {CHANNEL_ICONS.research}
-              RICERCHE
-            </span>
-          </Link>
+              style={{ fontFamily: SF, color: isMoreActive ? "#fff" : "#1a1a1a" }}
+            >
+              <MoreHorizontal size={13} strokeWidth={2.2} />
+              MORE
+              <ChevronDown size={10} strokeWidth={2.5} className={`transition-transform ${moreOpen ? "rotate-180" : ""}`} />
+            </button>
+            {moreOpen && (
+              <div className="absolute top-full left-0 z-50 bg-white border border-[#1a1a1a]/15 shadow-lg min-w-[180px]">
+                {moreChannels.map((c) => (
+                  <Link key={c.key} href={c.path}>
+                    <span
+                      className={`flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-b border-[#1a1a1a]/8 last:border-b-0 ${
+                        location === c.path || location.startsWith(c.path + "/") ? "bg-[#1a1a1a] text-white" : ""
+                      }`}
+                      style={{ fontFamily: SF, color: location === c.path || location.startsWith(c.path + "/") ? "#fff" : "#1a1a1a" }}
+                    >
+                      {CHANNEL_ICONS[c.key]}
+                      {c.label}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile: mostra solo i primi 3 canali + hamburger */}
+        <div className="flex lg:hidden items-center gap-0">
+          {mainChannels.slice(0, 3).map((c) => (
+            <NavItem
+              key={c.key}
+              href={c.path}
+              label={c.label}
+              icon={CHANNEL_ICONS[c.key]}
+              isActive={location === c.path || location.startsWith(c.path + "/")}
+              sf={SF}
+            />
+          ))}
         </div>
 
         {/* Spacer */}
         <div className="flex-1" />
 
-        {/* CHI SIAMO e OFFERTA — desktop only */}
-        <div className="hidden md:flex items-center gap-0 border-l border-[#1a1a1a]/15">
+        {/* CHI SIAMO — desktop only */}
+        <div className="hidden lg:flex items-center gap-0 border-l border-[#1a1a1a]/15">
           <Link href="/chi-siamo">
             <span
-              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#1a1a1a] hover:text-white hover:shadow-[inset_0_-2px_0_0_#dc2626] ${
                 location === "/chi-siamo" ? "bg-[#1a1a1a] text-white" : ""
               }`}
               style={{ fontFamily: SF, color: location === "/chi-siamo" ? "#fff" : "#1a1a1a" }}>
@@ -307,29 +375,11 @@ function SectionNav() {
               CHI SIAMO
             </span>
           </Link>
-          <Link href="/offertacommerciale">
-            <span
-              className={`flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#dc2626] hover:text-white ${
-                location === "/offertacommerciale" ? "bg-[#dc2626] text-white" : ""
-              }`}
-              style={{ fontFamily: SF, color: location === "/offertacommerciale" ? "#fff" : "#dc2626" }}>
-              <Tag size={13} strokeWidth={2.2} />
-              OFFERTA
-            </span>
-          </Link>
-          <a href="https://ideasmart.technology" target="_blank" rel="noopener noreferrer">
-            <span
-              className="flex items-center gap-1.5 px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer hover:bg-[#4f46e5] hover:text-white"
-              style={{ fontFamily: SF, color: "#4f46e5" }}>
-              <Rocket size={13} strokeWidth={2.2} />
-              DEMO
-            </span>
-          </a>
         </div>
 
-        {/* Hamburger — mobile only */}
+        {/* Hamburger — mobile/tablet only */}
         <button
-          className="flex md:hidden items-center justify-center w-10 h-10 border-l border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/5 transition-colors"
+          className="flex lg:hidden items-center justify-center w-10 h-10 border-l border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/5 transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Menu"
         >
@@ -337,39 +387,48 @@ function SectionNav() {
         </button>
       </nav>
 
-      {/* Mobile dropdown — animated */}
+      {/* Mobile dropdown — all channels */}
       <div
-        className="md:hidden overflow-hidden transition-all duration-300 ease-in-out"
+        className="lg:hidden overflow-hidden transition-all duration-300 ease-in-out"
         style={{
-          maxHeight: mobileMenuOpen ? "200px" : "0px",
+          maxHeight: mobileMenuOpen ? "600px" : "0px",
           opacity: mobileMenuOpen ? 1 : 0,
         }}
       >
         <div className="border-b border-[#1a1a1a]/15 bg-white">
+          {mainChannels.map((c) => (
+            <Link key={c.key} href={c.path}>
+              <span
+                className={`flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer border-b border-[#1a1a1a]/8 ${
+                  location === c.path ? "bg-[#1a1a1a] text-white" : ""
+                }`}
+                style={{ fontFamily: SF, color: location === c.path ? "#fff" : "#1a1a1a" }}>
+                {CHANNEL_ICONS[c.key]}
+                {c.label}
+              </span>
+            </Link>
+          ))}
+          <div className="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]/30" style={{ fontFamily: SF }}>More</div>
+          {moreChannels.map((c) => (
+            <Link key={c.key} href={c.path}>
+              <span
+                className={`flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer border-b border-[#1a1a1a]/8 ${
+                  location === c.path ? "bg-[#1a1a1a] text-white" : ""
+                }`}
+                style={{ fontFamily: SF, color: location === c.path ? "#fff" : "#1a1a1a" }}>
+                {CHANNEL_ICONS[c.key]}
+                {c.label}
+              </span>
+            </Link>
+          ))}
           <Link href="/chi-siamo">
             <span
-              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer border-b border-[#1a1a1a]/8"
+              className="flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer"
               style={{ fontFamily: SF, color: "#1a1a1a" }}>
               <Info size={14} strokeWidth={2} />
               CHI SIAMO
             </span>
           </Link>
-          <Link href="/offertacommerciale">
-            <span
-              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#fef2f2] transition-colors cursor-pointer border-b border-[#1a1a1a]/8"
-              style={{ fontFamily: SF, color: "#dc2626" }}>
-              <Tag size={14} strokeWidth={2} />
-              OFFERTA
-            </span>
-          </Link>
-          <a href="https://ideasmart.technology" target="_blank" rel="noopener noreferrer">
-            <span
-              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold uppercase tracking-widest hover:bg-[#eef2ff] transition-colors cursor-pointer"
-              style={{ fontFamily: SF, color: "#4f46e5" }}>
-              <Rocket size={14} strokeWidth={2} />
-              DEMO
-            </span>
-          </a>
         </div>
       </div>
     </>
@@ -576,7 +635,7 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <span className="hidden sm:inline text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Research · AI · Startup · Venture Capital
+                Prompt · Tools · Workflow · News
               </span>
               <HomeAuthButtons />
             </div>
@@ -598,13 +657,13 @@ export default function Home() {
                   IDEASMART
                 </h1>
               </Link>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50"
+              <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Notizie quotidiane su AI, Startup e Venture Capital
+                Il tuo Sistema Operativo sull'AI
               </p>
-              <p className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"
+              <p className="mt-1.5 text-[14px] text-[#1a1a1a]/45 italic"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                Ricerche verificate, alert e briefing per chi prende decisioni.
+                Non leggere l'AI. Usala. Prompt, strumenti e workflow per trasformare l'AI in risultati concreti.
               </p>
             </div>
 

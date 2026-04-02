@@ -683,3 +683,107 @@ export const openSourceTools = mysqlTable("open_source_tools", {
 
 export type OpenSourceTool = typeof openSourceTools.$inferSelect;
 export type InsertOpenSourceTool = typeof openSourceTools.$inferInsert;
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// NUOVI CANALI — RIPOSIZIONAMENTO IDEASMART (Apr 2026)
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── RSS Feed Sources (fonti configurate per ogni canale) ──────────────────────
+export const rssFeedSources = mysqlTable("rss_feed_sources", {
+  id: int("id").autoincrement().primaryKey(),
+  // Canale di appartenenza
+  channel: mysqlEnum("channel", [
+    "copy-paste-ai",
+    "automate-with-ai",
+    "make-money-with-ai",
+    "daily-ai-tools",
+    "verified-ai-news",
+    "ai-opportunities",
+  ]).notNull(),
+  // Nome della fonte (es. "Reddit ChatGPT", "Zapier Blog")
+  name: varchar("name", { length: 255 }).notNull(),
+  // URL del feed RSS
+  feedUrl: varchar("feedUrl", { length: 1000 }).notNull(),
+  // Attivo o meno
+  active: boolean("active").default(true).notNull(),
+  // Ultimo fetch riuscito
+  lastFetchedAt: timestamp("lastFetchedAt"),
+  // Contatore errori consecutivi
+  errorCount: int("errorCount").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type RssFeedSource = typeof rssFeedSources.$inferSelect;
+export type InsertRssFeedSource = typeof rssFeedSources.$inferInsert;
+
+// ── Channel Content (contenuti generati dall'AI agent per ogni canale) ────────
+export const channelContent = mysqlTable("channel_content", {
+  id: int("id").autoincrement().primaryKey(),
+  // Canale
+  channel: mysqlEnum("channel", [
+    "start-here",
+    "copy-paste-ai",
+    "automate-with-ai",
+    "make-money-with-ai",
+    "daily-ai-tools",
+    "verified-ai-news",
+    "ai-opportunities",
+  ]).notNull(),
+  // Titolo (outcome-driven, max 3000 char per post)
+  title: varchar("title", { length: 500 }).notNull(),
+  // Sottotitolo / tagline
+  subtitle: varchar("subtitle", { length: 500 }),
+  // Corpo del contenuto (markdown, max 3000 char)
+  body: text("body").notNull(),
+  // Categoria interna (es. "business", "studio", "marketing" per Copy&Paste)
+  category: varchar("category", { length: 128 }),
+  // "Cosa fare ORA" — azione concreta che chiude ogni contenuto
+  actionItem: text("actionItem"),
+  // Prompt pronto (per Copy & Paste AI)
+  promptText: text("promptText"),
+  // Fonte RSS originale che ha ispirato il contenuto
+  sourceUrl: varchar("sourceUrl", { length: 1000 }),
+  sourceName: varchar("sourceName", { length: 255 }),
+  // Immagine (CDN URL)
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  // Link esterno (tool URL, startup URL, ecc.)
+  externalUrl: varchar("externalUrl", { length: 1000 }),
+  // Data di pubblicazione (YYYY-MM-DD)
+  publishDate: varchar("publishDate", { length: 10 }).notNull(),
+  // Posizione nell'ordine del giorno
+  position: int("position").default(0).notNull(),
+  // Stato
+  status: mysqlEnum("status", ["draft", "published", "archived"]).default("published").notNull(),
+  // Contatore visualizzazioni
+  viewCount: int("viewCount").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  channelIdx: index("idx_channel_content_channel").on(t.channel),
+  channelDateIdx: index("idx_channel_content_channel_date").on(t.channel, t.publishDate),
+}));
+
+export type ChannelContent = typeof channelContent.$inferSelect;
+export type InsertChannelContent = typeof channelContent.$inferInsert;
+
+// ── RSS Ingest Log (log di ingestione per evitare duplicati) ──────────────────
+export const rssIngestLog = mysqlTable("rss_ingest_log", {
+  id: int("id").autoincrement().primaryKey(),
+  // URL originale dell'articolo RSS (unique per evitare duplicati)
+  articleUrl: varchar("articleUrl", { length: 1000 }).notNull(),
+  // Titolo originale
+  originalTitle: varchar("originalTitle", { length: 500 }),
+  // Canale a cui è stato assegnato
+  channel: varchar("channel", { length: 64 }).notNull(),
+  // ID del contenuto generato (null se scartato)
+  channelContentId: int("channelContentId"),
+  // Stato: processed = contenuto generato, skipped = scartato dal filtro AI
+  status: mysqlEnum("status", ["processed", "skipped", "error"]).default("processed").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (t) => ({
+  articleUrlIdx: uniqueIndex("idx_rss_ingest_article_url").on(t.articleUrl),
+}));
+
+export type RssIngestLog = typeof rssIngestLog.$inferSelect;
+export type InsertRssIngestLog = typeof rssIngestLog.$inferInsert;

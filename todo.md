@@ -2383,3 +2383,45 @@
 - [x] Creare banner compatto Collezione Prompt subito sotto la hero
 - [x] Programmare newsletter: invio alle 14:30 CET ogni giorno
 - [x] Programmare newsletter test: invio alle 10:30 CET ogni giorno per approvazione
+
+## Task (2 Apr 2026 — RIPOSIZIONAMENTO COMPLETO IDEASMART)
+
+### Hero & Navigazione
+- [x] Aggiornare hero: "IDEASMART — Il tuo Sistema Operativo sull'AI" + subtitle "Non leggere l'AI. Usala."
+- [x] Nuovo menu: Start Here, Copy & Paste AI, Automate with AI, Make Money with AI, Daily AI Tools, Verified AI News, AI Opportunities, More
+- [x] Rimuovere "Offerta" e "Demo" dal menu secondario
+- [x] Mantenere "Chi Siamo" nel menu secondario
+
+### Schema DB & RSS
+- [x] Creare tabella channel_content per contenuti generati dai nuovi canali
+- [x] Creare tabella rss_feed_sources + rss_ingest_log per gestire le fonti RSS per canale
+- [x] Configurare le fonti RSS per ogni canale (seed automatico all'avvio)
+
+### Sistema di ingestione RSS + AI
+- [x] Creare sistema di fetch RSS per ogni canale (channelIngestor.ts)
+- [x] Creare AI agent che trasforma RSS in contenuti strutturati (insight + azione + prompt)
+- [x] Programmare ingestione automatica giornaliera (03:00 CET + catch-up all'avvio)
+
+### Nuove pagine
+- [x] Pagina Start Here (contenuto editoriale: come usare IdeaSmart, prompt base, automazioni, guida 30 min)
+- [x] Pagina Copy & Paste AI (10 prompt/giorno, divisi per business/studio/marketing)
+- [x] Pagina Automate with AI (use case reali, automazioni step-by-step, prima/dopo)
+- [x] Pagina Make Money with AI (side hustle, casi reali, strategie monetizzazione)
+- [x] Pagina Daily AI Tools (1-3 tool/giorno spiegati + quando usarli)
+- [x] Pagina Verified AI News (unifica AI News + Startup + Dealroom + Ricerche, poche news filtrate e spiegate)
+- [x] Pagina AI Opportunities (startup, trend, opportunità per investitori/founder)
+- [x] Menu More dropdown (legacy: link a sezioni esistenti)
+
+### Procedure tRPC
+- [x] Procedure per fetch contenuti per canale
+- [x] Procedure admin per gestione canali
+
+### Popolamento iniziale
+- [x] Popolare tutti i canali con contenuti iniziali generati da RSS + AI
+
+## Task (2 Apr 2026 — Navigazione unificata nuovi canali)
+- [x] Creare componente SectionNav condiviso con i 7 canali + MORE + CHI SIAMO
+- [x] Aggiornare ChannelPage per usare SectionNav al posto di SectionChannelBar
+- [x] Aggiornare SharedPageHeader: rimuovere vecchia navbar (AI NEWS, STARTUP NEWS, DEALROOM, RICERCHE)
+- [x] Aggiornare sottotitolo e tagline in SharedPageHeader ("Il tuo sistema operativo sull'AI")
+- [x] Verificare navigazione coerente su tutte le pagine canale

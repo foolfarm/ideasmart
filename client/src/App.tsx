@@ -75,6 +75,15 @@ const AdminToolsFeedback = lazy(() => import("./pages/AdminToolsFeedback"));
 const EbookPrompt = lazy(() => import("./pages/EbookPrompt"));
 const NewsletterFeedback = lazy(() => import("./pages/NewsletterFeedback"));
 
+// ─── Nuovi canali "AI Operating System" ──────────────────────────────────────
+const StartHere = lazy(() => import("./pages/StartHere"));
+const CopyPasteAI = lazy(() => import("./pages/CopyPasteAI"));
+const AutomateWithAI = lazy(() => import("./pages/AutomateWithAI"));
+const MakeMoneyWithAI = lazy(() => import("./pages/MakeMoneyWithAI"));
+const DailyAITools = lazy(() => import("./pages/DailyAITools"));
+const VerifiedAINews = lazy(() => import("./pages/VerifiedAINews"));
+const AIOpportunities = lazy(() => import("./pages/AIOpportunities"));
+
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -117,6 +126,13 @@ function Router() {
         <Route path="/demo/sandwichclub" component={DemoSandwichClub} />
         <Route path="/dealflow" component={Dealflow} />
         <Route path="/editoriale/venture-studio-index" component={EditorialVSI} />
+        <Route path="/start-here" component={StartHere} />
+        <Route path="/copy-paste-ai" component={CopyPasteAI} />
+        <Route path="/automate-with-ai" component={AutomateWithAI} />
+        <Route path="/make-money-with-ai" component={MakeMoneyWithAI} />
+        <Route path="/daily-ai-tools" component={DailyAITools} />
+        <Route path="/verified-ai-news" component={VerifiedAINews} />
+        <Route path="/ai-opportunities" component={AIOpportunities} />
         <Route path="/submit-tool" component={SubmitTool} />
         <Route path="/ebook/prompt-2026" component={EbookPrompt} />
         <Route path="/newsletter-feedback" component={NewsletterFeedback} />

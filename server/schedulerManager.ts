@@ -104,6 +104,7 @@ import { invalidateAll, invalidateBySection, invalidateSection, CACHE_KEYS } fro
 import { getDb } from "./db";
 import { eq } from "drizzle-orm";
 import { aggregateEvents } from "./eventsAggregator";
+import { ingestAllChannels, seedRssSources } from "./channelIngestor";
 
 const TZ = "Europe/Rome";
 
@@ -940,4 +941,56 @@ export function startAllSchedulers(): void {
       console.error("[SchedulerManager] ❌ Events avvio errore:", err);
     }
   }, 3 * 60 * 1000); // 3 minuti dopo l'avvio
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CHANNEL CONTENT INGESTOR — ogni giorno alle 03:00 CET
+  // Raccoglie RSS, genera contenuti AI per tutti i canali
+  // (Copy & Paste AI, Automate, Make Money, Daily AI Tools, Verified News, AI Opportunities)
+  // ═══════════════════════════════════════════════════════════════════════════
+  cron.schedule(
+    "0 0 3 * * *", // ogni giorno alle 03:00 CET
+    () => withLock("channelIngest", async () => {
+      console.log("[SchedulerManager] 🧠 Channel Ingestor: avvio ingestione contenuti canali...");
+      try {
+        const results = await ingestAllChannels();
+        const summary = Object.entries(results).map(([ch, r]) => `${ch}: ${r.generated} gen, ${r.errors} err`).join(" | ");
+        console.log(`[SchedulerManager] ✅ Channel Ingestor: ${summary}`);
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Channel Ingestor errore:", err);
+      }
+    }),
+    { timezone: TZ }
+  );
+
+  // Seed RSS sources + prima ingestione all'avvio (dopo 4 minuti)
+  setTimeout(async () => {
+    try {
+      console.log("[SchedulerManager] 🌱 Channel Ingestor: seed fonti RSS...");
+      const seeded = await seedRssSources();
+      console.log(`[SchedulerManager] ✅ RSS seed: ${seeded} nuove fonti aggiunte`);
+
+      // Verifica se ci sono contenuti di oggi, altrimenti genera
+      const checkDb = await getDb();
+      if (checkDb) {
+        const { channelContent: ccTable } = await import("../drizzle/schema");
+        const today = new Date().toISOString().slice(0, 10);
+        const existing = await checkDb.select({ id: ccTable.id })
+          .from(ccTable)
+          .where(eq(ccTable.publishDate, today))
+          .limit(1);
+        if (existing.length === 0) {
+          console.log("[SchedulerManager] 🔄 Channel Ingestor: nessun contenuto oggi — avvio ingestione...");
+          const results = await ingestAllChannels();
+          const summary = Object.entries(results).map(([ch, r]) => `${ch}: ${r.generated} gen`).join(" | ");
+          console.log(`[SchedulerManager] ✅ Channel Ingestor avvio: ${summary}`);
+        } else {
+          console.log("[SchedulerManager] ℹ️ Channel Ingestor: contenuti già presenti oggi — skip");
+        }
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Channel Ingestor avvio errore:", err);
+    }
+  }, 4 * 60 * 1000); // 4 minuti dopo l'avvio
+
+  console.log("[SchedulerManager]   🧠 Channel Ingestor → ogni giorno alle 03:00 CET (RSS + AI per 6 canali)");
 }
