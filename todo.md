@@ -2500,3 +2500,13 @@
 - [x] Inserire banner Amazon quadrato a sinistra del titolo IDEASMART (Cambridge Audio P100 SE)
 - [x] Inserire banner Amazon quadrato a destra del titolo IDEASMART (Plaud NotePin S)
 - [x] Verificare layout responsive (banner visibili solo su desktop, nascosti su mobile)
+
+## Task (2 Apr 2026 — Google AdSense)
+- [x] Aggiungere script AdSense nel tag head (ca-pub-7185482526978993) — GIÀ PRESENTE
+- [x] Aggiungere meta tag google-adsense-account nel head — GIÀ PRESENTE
+- [x] File ads.txt nella directory radice con riga DIRECT — GIÀ PRESENTE
+- [x] Verificato: tutto AdSense è già configurato correttamente
+
+## Task (2 Apr 2026 — Mouseover menu CANALI)
+- [x] Aggiungere effetto mouseover al pulsante CANALI per aprire automaticamente il panel laterale
+- [x] Chiusura automatica quando il mouse esce dal panel e dal pulsante

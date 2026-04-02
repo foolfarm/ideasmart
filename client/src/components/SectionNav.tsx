@@ -35,6 +35,9 @@ export default function SectionNav() {
   const [open, setOpen] = useState(false);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close on route change
   useEffect(() => { setOpen(false); }, [location]);
@@ -71,6 +74,48 @@ export default function SectionNav() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  // Mouseover open / mouseleave close with delay
+  const handleTriggerMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      setOpen(true);
+    }, 200);
+  };
+
+  const handleTriggerMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 400);
+  };
+
+  const handlePanelMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const handlePanelMouseLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 400);
+  };
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    };
+  }, []);
+
   // Find active channel
   const activeChannel = ALL_CHANNELS.find(
     (c) => location === c.path || location.startsWith(c.path + "/")
@@ -85,7 +130,10 @@ export default function SectionNav() {
       >
         {/* Hamburger button */}
         <button
+          ref={triggerRef}
           onClick={() => setOpen(!open)}
+          onMouseEnter={handleTriggerMouseEnter}
+          onMouseLeave={handleTriggerMouseLeave}
           className="flex items-center gap-2.5 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/10 group"
           aria-label={open ? "Chiudi menu canali" : "Apri menu canali"}
         >
@@ -131,6 +179,8 @@ export default function SectionNav() {
       {/* Slide-in panel from left */}
       <div
         ref={panelRef}
+        onMouseEnter={handlePanelMouseEnter}
+        onMouseLeave={handlePanelMouseLeave}
         className={`fixed top-0 left-0 h-full w-[320px] bg-[#faf8f3] z-[999] shadow-[8px_0_30px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-y-auto ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
