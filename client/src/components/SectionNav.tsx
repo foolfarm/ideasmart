@@ -1,29 +1,28 @@
 /**
  * SectionNav — Barra canali "AI Operating System" condivisa tra tutte le pagine
- * 7 canali principali + MORE dropdown (legacy) + CHI SIAMO
+ * Tutti i canali direttamente nella barra, senza dropdown MORE
  */
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import {
-  Play, ClipboardCopy, Zap, DollarSign, Wrench, ShieldCheck,
-  TrendingUp, Cpu, Rocket, Handshake, BookOpen,
-  MoreHorizontal, ChevronDown, Info, Menu, X,
+  Play, Cpu, ClipboardCopy, Zap, DollarSign, Wrench, ShieldCheck,
+  TrendingUp, Rocket, Handshake, BookOpen, Info, Menu, X,
 } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
 const CHANNEL_ICONS: Record<string, React.ReactNode> = {
+  "start-here":    <Play size={13} strokeWidth={2.2} />,
   ai:              <Cpu size={13} strokeWidth={2.2} />,
+  "prompt-ai":     <ClipboardCopy size={13} strokeWidth={2.2} />,
+  "use-case":      <Zap size={13} strokeWidth={2.2} />,
+  "fare-soldi":    <DollarSign size={13} strokeWidth={2.2} />,
+  tools:           <Wrench size={13} strokeWidth={2.2} />,
+  "ai-radar":      <ShieldCheck size={13} strokeWidth={2.2} />,
+  "ai-invest":     <TrendingUp size={13} strokeWidth={2.2} />,
   startup:         <Rocket size={13} strokeWidth={2.2} />,
   dealroom:        <Handshake size={13} strokeWidth={2.2} />,
   research:        <BookOpen size={13} strokeWidth={2.2} />,
-  "start-here":    <Play size={13} strokeWidth={2.2} />,
-  "copy-paste":    <ClipboardCopy size={13} strokeWidth={2.2} />,
-  automate:        <Zap size={13} strokeWidth={2.2} />,
-  "make-money":    <DollarSign size={13} strokeWidth={2.2} />,
-  tools:           <Wrench size={13} strokeWidth={2.2} />,
-  "verified-news": <ShieldCheck size={13} strokeWidth={2.2} />,
-  opportunities:   <TrendingUp size={13} strokeWidth={2.2} />,
 };
 
 function NavItem({ href, label, icon, isActive }: {
@@ -47,44 +46,29 @@ function NavItem({ href, label, icon, isActive }: {
 export default function SectionNav() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { setMobileMenuOpen(false); setMoreOpen(false); }, [location]);
+  useEffect(() => { setMobileMenuOpen(false); }, [location]);
 
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  const mainChannels = [
-    { key: "start-here",    label: "START HERE",        path: "/start-here" },
-    { key: "ai",            label: "AI NEWS",           path: "/ai" },
-    { key: "copy-paste",    label: "COPY & PASTE AI",   path: "/copy-paste-ai" },
-    { key: "automate",      label: "AUTOMATE",          path: "/automate-with-ai" },
-    { key: "make-money",    label: "MAKE MONEY",        path: "/make-money-with-ai" },
-    { key: "tools",         label: "DAILY AI TOOLS",    path: "/daily-ai-tools" },
-    { key: "verified-news", label: "VERIFIED NEWS",     path: "/verified-ai-news" },
-    { key: "opportunities", label: "AI OPPORTUNITIES",  path: "/ai-opportunities" },
+  const allChannels = [
+    { key: "start-here",  label: "START HERE",        path: "/start-here" },
+    { key: "ai",          label: "AI NEWS",            path: "/ai" },
+    { key: "prompt-ai",   label: "PROMPT AI",          path: "/copy-paste-ai" },
+    { key: "use-case",    label: "USE CASE AI",        path: "/automate-with-ai" },
+    { key: "fare-soldi",  label: "FARE SOLDI",         path: "/make-money-with-ai" },
+    { key: "tools",       label: "AI TOOLS",           path: "/daily-ai-tools" },
+    { key: "ai-radar",    label: "AI RADAR",           path: "/verified-ai-news" },
+    { key: "ai-invest",   label: "AI INVEST",          path: "/ai-opportunities" },
+    { key: "startup",     label: "AI STARTUP NEWS",    path: "/startup" },
+    { key: "dealroom",    label: "AI DEALROOM",        path: "/dealroom" },
+    { key: "research",    label: "AI RESEARCH",        path: "/research" },
   ];
-
-  const moreChannels = [
-    { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
-    { key: "research", label: "RICERCHE",     path: "/research" },
-    { key: "dealroom", label: "DEALROOM",     path: "/dealroom" },
-  ];
-
-  const isMoreActive = moreChannels.some(c => location === c.path || location.startsWith(c.path + "/"));
 
   return (
     <>
       <nav className="flex items-center gap-0 overflow-x-auto scrollbar-hide w-full">
         {/* Desktop: tutti i canali */}
         <div className="hidden lg:flex items-center gap-0">
-          {mainChannels.map((c) => (
+          {allChannels.map((c) => (
             <NavItem
               key={c.key}
               href={c.path}
@@ -93,43 +77,11 @@ export default function SectionNav() {
               isActive={location === c.path || location.startsWith(c.path + "/")}
             />
           ))}
-
-          {/* More dropdown */}
-          <div ref={moreRef} className="relative">
-            <button
-              onClick={() => setMoreOpen(!moreOpen)}
-              className={`flex items-center gap-1.5 px-2.5 py-2.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/15 hover:bg-[#1a1a1a] hover:text-white ${
-                isMoreActive ? "bg-[#1a1a1a] text-white" : ""
-              }`}
-              style={{ fontFamily: SF, color: isMoreActive ? "#fff" : "#1a1a1a" }}
-            >
-              <MoreHorizontal size={13} strokeWidth={2.2} />
-              MORE
-              <ChevronDown size={10} strokeWidth={2.5} className={`transition-transform ${moreOpen ? "rotate-180" : ""}`} />
-            </button>
-            {moreOpen && (
-              <div className="absolute top-full left-0 z-50 bg-white border border-[#1a1a1a]/15 shadow-lg min-w-[180px]">
-                {moreChannels.map((c) => (
-                  <Link key={c.key} href={c.path}>
-                    <span
-                      className={`flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer border-b border-[#1a1a1a]/8 last:border-b-0 ${
-                        location === c.path || location.startsWith(c.path + "/") ? "bg-[#1a1a1a] text-white" : ""
-                      }`}
-                      style={{ fontFamily: SF, color: location === c.path || location.startsWith(c.path + "/") ? "#fff" : "#1a1a1a" }}
-                    >
-                      {CHANNEL_ICONS[c.key]}
-                      {c.label}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
 
-        {/* Mobile: primi 3 canali + hamburger */}
+        {/* Mobile: primi 4 canali + hamburger */}
         <div className="flex lg:hidden items-center gap-0">
-          {mainChannels.slice(0, 3).map((c) => (
+          {allChannels.slice(0, 4).map((c) => (
             <NavItem
               key={c.key}
               href={c.path}
@@ -171,25 +123,12 @@ export default function SectionNav() {
       <div
         className="lg:hidden overflow-hidden transition-all duration-300 ease-in-out"
         style={{
-          maxHeight: mobileMenuOpen ? "600px" : "0px",
+          maxHeight: mobileMenuOpen ? "700px" : "0px",
           opacity: mobileMenuOpen ? 1 : 0,
         }}
       >
         <div className="border-b border-[#1a1a1a]/15 bg-white">
-          {mainChannels.map((c) => (
-            <Link key={c.key} href={c.path}>
-              <span
-                className={`flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer border-b border-[#1a1a1a]/8 ${
-                  location === c.path ? "bg-[#1a1a1a] text-white" : ""
-                }`}
-                style={{ fontFamily: SF, color: location === c.path ? "#fff" : "#1a1a1a" }}>
-                {CHANNEL_ICONS[c.key]}
-                {c.label}
-              </span>
-            </Link>
-          ))}
-          <div className="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]/30" style={{ fontFamily: SF }}>More</div>
-          {moreChannels.map((c) => (
+          {allChannels.map((c) => (
             <Link key={c.key} href={c.path}>
               <span
                 className={`flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-[#f5f5f5] transition-colors cursor-pointer border-b border-[#1a1a1a]/8 ${

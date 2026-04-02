@@ -2464,3 +2464,19 @@
 - [x] Aggiungere effetto hover al banner promozionale
 - [x] Verificare che il link SCOPRI LA COLLEZIONE porti alla pagina /prompt-collection
 - [x] Inserire banner promozionale simile in cima alle pagine dei singoli canali
+
+## Task (2 Apr 2026 — Rinomina canali menu navigazione)
+- [x] Rinominare COPY & PASTE AI → PROMPT AI
+- [x] Rinominare AUTOMATE → USE CASE AI
+- [x] Rinominare MAKE MONEY → FARE SOLDI
+- [x] Rinominare DAILY AI TOOLS → AI TOOLS
+- [x] Rinominare VERIFIED NEWS → AI RADAR
+- [x] Rinominare AI OPPORTUNITIES → AI INVEST
+- [x] Rimuovere dropdown MORE
+- [x] Reinserire AI STARTUP NEWS come canale diretto nella barra
+- [x] Reinserire AI DEALROOM come canale diretto nella barra
+- [x] Reinserire AI RESEARCH come canale diretto nella barra
+- [x] Aggiornare SectionNav condiviso
+- [x] Aggiornare SectionNav nella homepage
+- [x] Aggiornare titoli nelle pagine canale
+- [x] Verificare coerenza su tutte le pagine
