@@ -996,39 +996,21 @@ export default function Home() {
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
                   <a
-                    href="https://ideasmart.forum"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block mb-5 transition-all hover:shadow-lg group"
+                    href="/prompt-collection"
+                    className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
                     style={{ textDecoration: "none" }}
                   >
-                    <div className="p-4" style={{ background: "#0a0f1e" }}>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5"
-                          style={{ color: "#e74c3c", background: "rgba(231,76,60,0.15)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          Premium 2026
-                        </span>
-                      </div>
-                      <img
-                        src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/prompt_collection_banner-3XakDih23787zRbfTewDdi.webp"
-                        alt="Prompt Collection"
-                        className="w-full h-32 object-cover rounded mb-3"
-                        style={{ border: "1px solid rgba(255,255,255,0.1)" }}
-                      />
-                      <p className="text-[14px] font-black leading-snug mb-1"
-                        style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                        Collezione dei Migliori Prompt
+                    <div className="p-5 rounded-lg" style={{ background: "#f5f3ee", border: "1px solid rgba(26,26,26,0.08)" }}>
+                      <p className="text-[18px] font-black leading-tight mb-3"
+                        style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
+                        La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano.
                       </p>
-                      <p className="text-[12px] leading-snug mb-2"
-                        style={{ color: "rgba(255,255,255,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        99 framework operativi per ChatGPT, Claude e Gemini
+                      <p className="text-[12px] leading-relaxed mb-4"
+                        style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Un funnel semplice e concreto: arrivi dalla newsletter, acquisti a <strong style={{ color: "#1a1a1a" }}>39 €</strong> e ottieni accesso alla libreria ricercabile con il PDF completo incluso.
                       </p>
-                      <p className="text-[10px] mb-3"
-                        style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        5 macro-sezioni · PDF scaricabile · €39
-                      </p>
-                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-90 transition-opacity"
-                        style={{ background: "#e74c3c", color: "#ffffff", borderRadius: "4px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-90 transition-opacity rounded"
+                        style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Scopri la collezione →
                       </span>
                     </div>

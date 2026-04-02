@@ -2458,3 +2458,9 @@
 
 ## Task (2 Apr 2026 — Fix immagine banner promo)
 - [x] Correggere URL immagine rotta nel banner promo Collezione Prompt nella sidebar
+
+## Task (2 Apr 2026 — Aggiornamento banner promo + canali)
+- [x] Cambiare testo banner: "La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano." + sottotitolo funnel
+- [x] Aggiungere effetto hover al banner promozionale
+- [x] Verificare che il link SCOPRI LA COLLEZIONE porti alla pagina /prompt-collection
+- [x] Inserire banner promozionale simile in cima alle pagine dei singoli canali

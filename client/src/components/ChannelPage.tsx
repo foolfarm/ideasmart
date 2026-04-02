@@ -452,6 +452,32 @@ export default function ChannelPage({
         {/* ── Static Content (Start Here) ─────────────────────────────── */}
         {staticContent && <div className="py-6">{staticContent}</div>}
 
+        {/* ── Banner Promo Collezione Prompt ──────────────────────────── */}
+        {!staticContent && (
+          <a
+            href="/prompt-collection"
+            className="block my-4 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] hover:-translate-y-0.5 group"
+            style={{ textDecoration: "none" }}
+          >
+            <div className="flex flex-col md:flex-row items-stretch rounded-lg overflow-hidden" style={{ background: "#f0ede6", border: "1px solid rgba(26,26,26,0.08)" }}>
+              <div className="flex-1 p-5 md:p-6 flex flex-col justify-center">
+                <p className="text-[16px] md:text-[20px] font-black leading-tight mb-2"
+                  style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
+                  La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano.
+                </p>
+                <p className="text-[11px] md:text-[12px] leading-relaxed mb-3"
+                  style={{ color: "rgba(26,26,26,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Un funnel semplice e concreto: arrivi dalla newsletter, acquisti a <strong style={{ color: "#1a1a1a" }}>39 €</strong> e ottieni accesso alla libreria ricercabile con il PDF completo incluso.
+                </p>
+                <span className="inline-block text-center text-[10px] font-bold uppercase tracking-wider py-2 px-6 rounded group-hover:opacity-90 transition-opacity self-start"
+                  style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Scopri la collezione →
+                </span>
+              </div>
+            </div>
+          </a>
+        )}
+
         {/* ── Category Filter ─────────────────────────────────────────── */}
         {categories && categories.length > 0 && (
           <div className="flex flex-wrap gap-2 py-4">
