@@ -2480,3 +2480,12 @@
 - [x] Aggiornare SectionNav nella homepage
 - [x] Aggiornare titoli nelle pagine canale
 - [x] Verificare coerenza su tutte le pagine
+
+## Task (2 Apr 2026 — Menu a tendina laterale)
+- [x] Rimuovere barra orizzontale dei canali
+- [x] Creare menu hamburger a sinistra con tutti i canali
+- [x] Menu presente su tutte le pagine (homepage + pagine canale)
+- [x] Animazione slide-in da sinistra
+- [x] Evidenziare canale attivo nel menu (con sfondo scuro e icona rossa)
+- [x] Chiusura menu al click su un canale, fuori dal menu, o tasto Escape
+- [x] Indicatore canale attivo nella barra sticky (es. "PROMPT AI" in rosso)
