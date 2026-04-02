@@ -2377,3 +2377,9 @@
 ## Task (2 Apr 2026 — Promo Collezione Prompt in Homepage)
 - [x] Inviare newsletter di test con nuovo ordine
 - [x] Creare area promo "Collezione dei Migliori Prompt 2026" nella homepage con link a ideasmart.forum
+
+## Task (2 Apr 2026 — Banner compatto + Scheduling newsletter)
+- [x] Rimuovere banner grande Collezione Prompt dal fondo homepage
+- [x] Creare banner compatto Collezione Prompt subito sotto la hero
+- [x] Programmare newsletter: invio alle 14:30 CET ogni giorno
+- [x] Programmare newsletter test: invio alle 10:30 CET ogni giorno per approvazione
