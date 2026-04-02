@@ -1043,6 +1043,74 @@ export default function Home() {
             </section>
           )}
 
+          {/* ── PROMO COLLEZIONE PROMPT 2026 ── */}
+          <section className="mt-10">
+            <div className="relative overflow-hidden" style={{ background: "#0a0f1e", borderRadius: "0" }}>
+              {/* Decorative gradient overlay */}
+              <div className="absolute inset-0 opacity-20" style={{ background: "linear-gradient(135deg, #1a237e 0%, #0a0f1e 40%, #1b1b2f 70%, #0d1b2a 100%)" }} />
+              <div className="relative px-6 sm:px-10 py-10 sm:py-14">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center">
+                  {/* Testo */}
+                  <div>
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.25em] mb-4 px-2 py-1"
+                      style={{ color: "#e74c3c", background: "rgba(231,76,60,0.12)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Edizione Premium 2026
+                    </span>
+                    <h2 className="text-[28px] sm:text-[34px] font-black leading-[1.15] mb-5"
+                      style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}>
+                      Collezione dei Migliori Prompt 2026
+                    </h2>
+                    <p className="text-[15px] leading-relaxed mb-5" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano. Non una raccolta generica, ma un <strong style={{ color: "#ffffff" }}>asset operativo</strong>: 99 framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output.
+                    </p>
+                    <p className="text-[14px] font-bold mb-4" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                      5 macro-sezioni, 99 prompt:
+                    </p>
+                    <ul className="space-y-1.5 mb-6">
+                      {[
+                        "Carriera e sviluppo professionale (10 prompt)",
+                        "Produttività, esecuzione e decisioni (20 prompt)",
+                        "Business, crescita e marketing (12 prompt)",
+                        "Ricerca, scrittura e creatività (27 prompt)",
+                        "Benessere, finanza e vita pratica (30 prompt)"
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-[13px]" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          <span style={{ color: "#e74c3c" }}>•</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-[13px] mb-5" style={{ color: "rgba(255,255,255,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Funziona con ChatGPT, Claude, Gemini e altri. Cornice metodologica da OpenAI, Anthropic, Claude Code e Perplexity.
+                    </p>
+                    <p className="text-[15px] mb-6" style={{ color: "rgba(255,255,255,0.8)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <strong style={{ color: "#ffffff" }}>Libreria ricercabile online + PDF scaricabile.</strong>{" "}
+                      Acquisto singolo: <span className="text-[22px] font-black" style={{ color: "#ffffff" }}>€39</span>
+                    </p>
+                    <a
+                      href="https://ideasmart.forum"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block text-[13px] font-bold uppercase tracking-widest px-8 py-3.5 transition-opacity hover:opacity-90"
+                      style={{ background: "#e74c3c", color: "#ffffff", borderRadius: "6px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", textDecoration: "none" }}
+                    >
+                      Sblocca l'accesso per €39 →
+                    </a>
+                  </div>
+                  {/* Immagine */}
+                  <div className="hidden lg:block flex-shrink-0" style={{ width: "280px" }}>
+                    <img
+                      src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/prompt_collection_hero-Jfb6fJMZi7bnVQjVGKFmEi.webp"
+                      alt="Collezione dei Migliori Prompt 2026"
+                      className="w-full rounded-lg shadow-2xl"
+                      style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* ── PROSSIMI EVENTI ── */}
           {upcomingEvents && upcomingEvents.length > 0 && (
             <section className="mt-10">

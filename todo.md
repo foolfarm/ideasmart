@@ -2373,3 +2373,7 @@
 ## Task (2 Apr 2026 — Spostare Amazon Deals nella newsletter)
 - [x] Spostare Amazon Deals prima di IDEASMART Research nella newsletter
 - [x] Spostare "Diventa Sponsor" subito dopo lo Sponsor del Giorno
+
+## Task (2 Apr 2026 — Promo Collezione Prompt in Homepage)
+- [x] Inviare newsletter di test con nuovo ordine
+- [x] Creare area promo "Collezione dei Migliori Prompt 2026" nella homepage con link a ideasmart.forum
