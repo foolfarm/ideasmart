@@ -693,47 +693,7 @@ export default function Home() {
         {/* ══ CORPO ═══════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-          {/* ── BANNER COMPATTO COLLEZIONE PROMPT 2026 ── */}
-          <a
-            href="https://ideasmart.forum"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block mt-4 mb-2 transition-all hover:shadow-lg group"
-            style={{ textDecoration: "none" }}
-          >
-            <div className="flex items-center gap-4 sm:gap-6 px-5 py-4" style={{ background: "#0a0f1e" }}>
-              <div className="flex-shrink-0 hidden sm:block" style={{ width: "60px", height: "60px" }}>
-                <img
-                  src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/prompt_collection_hero-Jfb6fJMZi7bnVQjVGKFmEi.webp"
-                  alt="Prompt Collection"
-                  className="w-full h-full object-cover rounded"
-                  style={{ border: "1px solid rgba(255,255,255,0.1)" }}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5"
-                    style={{ color: "#e74c3c", background: "rgba(231,76,60,0.15)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                    Premium 2026
-                  </span>
-                </div>
-                <p className="text-[14px] sm:text-[15px] font-black leading-snug"
-                  style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Collezione dei Migliori Prompt — 99 framework operativi per ChatGPT, Claude e Gemini
-                </p>
-                <p className="text-[11px] mt-1 hidden sm:block"
-                  style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  5 macro-sezioni · Libreria ricercabile + PDF scaricabile · €39
-                </p>
-              </div>
-              <div className="flex-shrink-0">
-                <span className="inline-block text-[11px] font-bold uppercase tracking-wider px-4 py-2 group-hover:opacity-90 transition-opacity"
-                  style={{ background: "#e74c3c", color: "#ffffff", borderRadius: "4px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", whiteSpace: "nowrap" }}>
-                  Scopri →
-                </span>
-              </div>
-            </div>
-          </a>
+
 
           {/* ══════════════════════════════════════════════════════════════════
               PRIMA PAGINA — Layout giornale
@@ -1033,6 +993,46 @@ export default function Home() {
 
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
+
+                  {/* ── Banner Collezione Prompt — sidebar ── */}
+                  <a
+                    href="https://ideasmart.forum"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block mb-5 transition-all hover:shadow-lg group"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div className="p-4" style={{ background: "#0a0f1e" }}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5"
+                          style={{ color: "#e74c3c", background: "rgba(231,76,60,0.15)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          Premium 2026
+                        </span>
+                      </div>
+                      <img
+                        src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/prompt_collection_hero-Jfb6fJMZi7bnVQjVGKFmEi.webp"
+                        alt="Prompt Collection"
+                        className="w-full h-32 object-cover rounded mb-3"
+                        style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                      />
+                      <p className="text-[14px] font-black leading-snug mb-1"
+                        style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Collezione dei Migliori Prompt
+                      </p>
+                      <p className="text-[12px] leading-snug mb-2"
+                        style={{ color: "rgba(255,255,255,0.7)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        99 framework operativi per ChatGPT, Claude e Gemini
+                      </p>
+                      <p className="text-[10px] mb-3"
+                        style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        5 macro-sezioni · PDF scaricabile · €39
+                      </p>
+                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-90 transition-opacity"
+                        style={{ background: "#e74c3c", color: "#ffffff", borderRadius: "4px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Scopri la collezione →
+                      </span>
+                    </div>
+                  </a>
 
                   {/* ── Banner iscrizione gratuita — sidebar ── */}
                   <div className="mb-5 p-4 border-l-4" style={{ background: "#f5f3ee", borderColor: "#1a1a1a" }}>

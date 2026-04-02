@@ -943,12 +943,13 @@ export function startAllSchedulers(): void {
   }, 3 * 60 * 1000); // 3 minuti dopo l'avvio
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // CHANNEL CONTENT INGESTOR — ogni giorno alle 03:00 CET
+  // CHANNEL CONTENT INGESTOR — ogni giorno alle 00:00 CET
   // Raccoglie RSS, genera contenuti AI per tutti i canali
   // (Copy & Paste AI, Automate, Make Money, Daily AI Tools, Verified News, AI Opportunities)
+  // Eseguito in parallelo con gli altri scheduler delle 00:00 (AI News, ecc.)
   // ═══════════════════════════════════════════════════════════════════════════
   cron.schedule(
-    "0 0 3 * * *", // ogni giorno alle 03:00 CET
+    "0 0 0 * * *", // ogni giorno alle 00:00 CET
     () => withLock("channelIngest", async () => {
       console.log("[SchedulerManager] 🧠 Channel Ingestor: avvio ingestione contenuti canali...");
       try {
@@ -992,5 +993,5 @@ export function startAllSchedulers(): void {
     }
   }, 4 * 60 * 1000); // 4 minuti dopo l'avvio
 
-  console.log("[SchedulerManager]   🧠 Channel Ingestor → ogni giorno alle 03:00 CET (RSS + AI per 6 canali)");
+  console.log("[SchedulerManager]   🧠 Channel Ingestor → ogni giorno alle 00:00 CET (RSS + AI per 6 canali)");
 }

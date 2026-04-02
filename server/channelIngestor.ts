@@ -391,30 +391,54 @@ export async function seedRssSources(): Promise<number> {
   if (!db) throw new Error("DB non disponibile");
 
   const SEED_SOURCES: Array<{ channel: string; name: string; feedUrl: string }> = [
-    // Copy & Paste AI
+    // ═══ COPY & PASTE AI ═══
     { channel: "copy-paste-ai", name: "Reddit ChatGPT", feedUrl: "https://www.reddit.com/r/ChatGPT/.rss" },
     { channel: "copy-paste-ai", name: "Reddit PromptEngineering", feedUrl: "https://www.reddit.com/r/PromptEngineering/.rss" },
     { channel: "copy-paste-ai", name: "Reddit OpenAI", feedUrl: "https://www.reddit.com/r/OpenAI/.rss" },
     { channel: "copy-paste-ai", name: "Hacker News", feedUrl: "https://hnrss.org/newest?q=AI+prompt" },
     { channel: "copy-paste-ai", name: "Product Hunt AI", feedUrl: "https://www.producthunt.com/feed" },
+    // Nuove fonti Copy & Paste AI
+    { channel: "copy-paste-ai", name: "Prompting Guide", feedUrl: "https://www.promptingguide.ai/rss.xml" },
+    { channel: "copy-paste-ai", name: "Learn Prompting", feedUrl: "https://learnprompting.org/rss.xml" },
+    { channel: "copy-paste-ai", name: "MarkTechPost", feedUrl: "https://www.marktechpost.com/feed/" },
 
-    // Automate with AI
+    // ═══ AUTOMATE WITH AI ═══
     { channel: "automate-with-ai", name: "Zapier Blog", feedUrl: "https://zapier.com/blog/feed/" },
     { channel: "automate-with-ai", name: "Towards Data Science", feedUrl: "https://towardsdatascience.com/feed" },
     { channel: "automate-with-ai", name: "Analytics Vidhya", feedUrl: "https://www.analyticsvidhya.com/feed/" },
     { channel: "automate-with-ai", name: "KDnuggets", feedUrl: "https://www.kdnuggets.com/feed" },
+    // Nuove fonti Automate with AI
+    { channel: "automate-with-ai", name: "n8n Workflows", feedUrl: "https://n8n.io/workflows/rss.xml" },
+    { channel: "automate-with-ai", name: "Make.com", feedUrl: "https://www.make.com/en/rss.xml" },
+    { channel: "automate-with-ai", name: "Activepieces", feedUrl: "https://www.activepieces.com/blog/rss.xml" },
+    { channel: "automate-with-ai", name: "Relay.app", feedUrl: "https://blog.relay.app/rss" },
+    { channel: "automate-with-ai", name: "HuggingFace Blog", feedUrl: "https://huggingface.co/blog/feed.xml" },
+    { channel: "automate-with-ai", name: "OpenAI Blog", feedUrl: "https://openai.com/blog/rss.xml" },
+    { channel: "automate-with-ai", name: "Anthropic News", feedUrl: "https://www.anthropic.com/news/rss.xml" },
+    // Fonti ibride RSS+AI
+    { channel: "automate-with-ai", name: "RSS.app Blog", feedUrl: "https://rss.app/blog/rss.xml" },
 
-    // Make Money with AI
+    // ═══ MAKE MONEY WITH AI ═══
     { channel: "make-money-with-ai", name: "TechCrunch Startups", feedUrl: "https://techcrunch.com/category/startups/feed/" },
     { channel: "make-money-with-ai", name: "Product Hunt", feedUrl: "https://www.producthunt.com/feed" },
     { channel: "make-money-with-ai", name: "Indie Hackers", feedUrl: "https://feeds.transistor.fm/the-indie-hackers-podcast" },
+    // Nuove fonti Make Money with AI
+    { channel: "make-money-with-ai", name: "Indie Hackers Feed", feedUrl: "https://www.indiehackers.com/feed" },
+    { channel: "make-money-with-ai", name: "Ben's Bites", feedUrl: "https://www.bensbites.co/rss.xml" },
+    { channel: "make-money-with-ai", name: "The Rundown AI", feedUrl: "https://www.therundown.ai/rss.xml" },
+    { channel: "make-money-with-ai", name: "FutureTools", feedUrl: "https://futuretools.io/rss" },
 
-    // Daily AI Tools
+    // ═══ DAILY AI TOOLS ═══
     { channel: "daily-ai-tools", name: "Product Hunt", feedUrl: "https://www.producthunt.com/feed" },
     { channel: "daily-ai-tools", name: "Ben's Bites", feedUrl: "https://bensbites.beehiiv.com/feed" },
     { channel: "daily-ai-tools", name: "AI Weekly", feedUrl: "https://aiweekly.co/issues.rss" },
+    // Nuove fonti Daily AI Tools
+    { channel: "daily-ai-tools", name: "Futurepedia", feedUrl: "https://www.futurepedia.io/rss" },
+    { channel: "daily-ai-tools", name: "Toolify.ai", feedUrl: "https://www.toolify.ai/rss" },
+    { channel: "daily-ai-tools", name: "There's An AI For That", feedUrl: "https://theresanaiforthat.com/rss" },
+    { channel: "daily-ai-tools", name: "AITools.fyi", feedUrl: "https://aitools.fyi/rss.xml" },
 
-    // Verified AI News
+    // ═══ VERIFIED AI NEWS ═══
     { channel: "verified-ai-news", name: "OpenAI News", feedUrl: "https://openai.com/news/rss.xml" },
     { channel: "verified-ai-news", name: "Google AI Blog", feedUrl: "https://ai.googleblog.com/feeds/posts/default" },
     { channel: "verified-ai-news", name: "Hugging Face Blog", feedUrl: "https://huggingface.co/blog/feed.xml" },
@@ -422,13 +446,20 @@ export async function seedRssSources(): Promise<number> {
     { channel: "verified-ai-news", name: "VentureBeat AI", feedUrl: "https://venturebeat.com/category/ai/feed/" },
     { channel: "verified-ai-news", name: "The Verge AI", feedUrl: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml" },
     { channel: "verified-ai-news", name: "arXiv AI", feedUrl: "https://rss.arxiv.org/rss/cs.AI" },
+    // Nuove fonti Verified AI News
+    { channel: "verified-ai-news", name: "Wired AI", feedUrl: "https://www.wired.com/feed/category/artificial-intelligence/latest/rss" },
+    { channel: "verified-ai-news", name: "MIT Technology Review", feedUrl: "https://www.technologyreview.com/feed/" },
+    { channel: "verified-ai-news", name: "NVIDIA Blog", feedUrl: "https://blogs.nvidia.com/feed/" },
 
-    // AI Opportunities
+    // ═══ AI OPPORTUNITIES ═══
     { channel: "ai-opportunities", name: "TechCrunch", feedUrl: "https://techcrunch.com/feed/" },
     { channel: "ai-opportunities", name: "VentureBeat", feedUrl: "https://venturebeat.com/feed/" },
     { channel: "ai-opportunities", name: "EU-Startups", feedUrl: "https://www.eu-startups.com/feed/" },
     { channel: "ai-opportunities", name: "Sifted", feedUrl: "https://sifted.eu/feed" },
     { channel: "ai-opportunities", name: "Y Combinator Blog", feedUrl: "https://www.ycombinator.com/blog/rss/" },
+    // Nuove fonti AI Opportunities
+    { channel: "ai-opportunities", name: "TechCrunch AI", feedUrl: "https://techcrunch.com/tag/artificial-intelligence/feed/" },
+    { channel: "ai-opportunities", name: "Crunchbase Blog", feedUrl: "https://www.crunchbase.com/blog/feed/" },
   ];
 
   let seeded = 0;

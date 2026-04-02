@@ -2441,3 +2441,17 @@
 - [x] Card con thumbnail laterale per articoli successivi
 - [x] Immagini fallback per canale quando Pexels non ha ancora fornito un'immagine
 - [x] Verificare risultato visivo su tutte le pagine canale (Copy&Paste, Daily Tools, Verified News, Opportunities, Make Money, Automate)
+
+## Task (2 Apr 2026 — Nuove fonti RSS + Programmazione aggiornamento canali)
+- [x] Aggiungere nuove fonti RSS per AUTOMATE WITH AI (n8n, Zapier, Make, Activepieces, Relay, HuggingFace, OpenAI, Anthropic)
+- [x] Aggiungere nuove fonti RSS per MAKE MONEY WITH AI (IndieHackers, ProductHunt, BensBites, TheRundown, FutureTools)
+- [x] Aggiungere nuove fonti RSS per DAILY AI TOOLS (Futurepedia, Toolify, ThereIsAnAIForThat, AITools.fyi)
+- [x] Aggiungere nuove fonti RSS per COPY & PASTE AI (PromptingGuide, LearnPrompting, MarkTechPost)
+- [x] Aggiungere nuove fonti RSS per VERIFIED AI NEWS (Wired AI, MIT Tech Review, Google AI Blog, NVIDIA Blog)
+- [x] Aggiungere nuove fonti RSS per AI OPPORTUNITIES (TechCrunch AI, EU-Startups, Sifted, Crunchbase)
+- [x] Aggiungere fonti ibride RSS+AI (rss.app, Zapier RSS integrations, n8n RSS)
+- [x] Creare programmazione aggiornamento automatico tutti i canali dalle 00:00 CET ogni giorno
+- [x] Verificare compilazione e funzionamento scheduler
+
+## Task (2 Apr 2026 — Spostamento banner promo Collezione Prompt)
+- [x] Spostare banner promo Collezione Prompt da sotto header a destra della hero image nella homepage
