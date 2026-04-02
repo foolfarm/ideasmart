@@ -2341,3 +2341,9 @@
 - [x] Cambiare link ebook da promptcollection.manus.space a ideasmart.forum
 - [x] Aggiungere immagine dal sito promptcollection.manus.space al blocco ebook
 - [x] Inviare newsletter di test aggiornata
+
+## Task (2 Apr 2026 — Modifica ragione sociale newsletter)
+- [x] Cambiare "IdeaSmart S.r.l." in "IdeaSmart LLC" nella sezione Privacy della newsletter
+
+## Task (2 Apr 2026 — Spostare Sponsor del Giorno sotto Breaking News)
+- [x] Spostare la sezione "Sponsor del Giorno" sotto Breaking News nella newsletter

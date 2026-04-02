@@ -936,7 +936,7 @@ function buildUnifiedNewsletterHtml(opts: {
                 <div style="font-size:14px;font-weight:700;color:${BLACK};font-family:${F};margin-bottom:8px;">Attenzione utenti Gmail:</div>
                 <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.7;margin-bottom:16px;">Per continuare a ricevere le nostre newsletter nella tab Principale, sposta questa email dalla tab Promozioni alla tab Principale. Su mobile, tocca i tre puntini in alto a destra, seleziona &ldquo;Sposta&rdquo; e scegli &ldquo;Principale&rdquo;.</div>
                 <div style="font-size:18px;font-weight:800;color:${BLACK};font-family:${F};margin-bottom:12px;">Rispettiamo la tua Privacy</div>
-                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.7;">La nostra missione &egrave; costruire una community forte attorno ai migliori strumenti AI e alle notizie pi&ugrave; rilevanti su startup e venture capital. IdeaSmart &egrave; gestita da IdeaSmart S.r.l. Ci impegniamo a rispettare il tuo diritto alla privacy e a fornire un&rsquo;esperienza sicura. La nostra Privacy Policy spiega come raccogliamo, conserviamo e utilizziamo le informazioni personali fornite sul nostro sito. Accedendo e utilizzando il nostro sito, accetti esplicitamente la raccolta e l&rsquo;utilizzo delle informazioni personali e non personali come descritto nella nostra Privacy Policy. Per maggiori dettagli, visita la nostra <a href="${BASE_URL}/privacy" style="color:${ACCENT};text-decoration:underline;font-family:${F};">pagina Privacy</a>.</div>
+                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.7;">La nostra missione &egrave; costruire una community forte attorno ai migliori strumenti AI e alle notizie pi&ugrave; rilevanti su startup e venture capital. IdeaSmart &egrave; gestita da IdeaSmart LLC. Ci impegniamo a rispettare il tuo diritto alla privacy e a fornire un&rsquo;esperienza sicura. La nostra Privacy Policy spiega come raccogliamo, conserviamo e utilizziamo le informazioni personali fornite sul nostro sito. Accedendo e utilizzando il nostro sito, accetti esplicitamente la raccolta e l&rsquo;utilizzo delle informazioni personali e non personali come descritto nella nostra Privacy Policy. Per maggiori dettagli, visita la nostra <a href="${BASE_URL}/privacy" style="color:${ACCENT};text-decoration:underline;font-family:${F};">pagina Privacy</a>.</div>
               </td>
             </tr>
           </table>
@@ -1019,9 +1019,9 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildEbookPromoBlock()}
 
-        ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
-
         ${buildBreakingSection()}
+
+        ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
 
         ${buildSection("AI News", "Intelligenza Artificiale", aiNews, "ai")}
 
