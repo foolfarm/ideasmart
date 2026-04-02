@@ -34,6 +34,8 @@ import {
   breakingNews as breakingNewsTable,
   newsletterSponsors,
   amazonDailyDeals,
+  toolSubmissions,
+  openSourceTools,
 } from "../drizzle/schema";
 import { eq, desc, and, sql } from "drizzle-orm";
 
@@ -154,13 +156,13 @@ async function markSponsorSent(sponsorId: number): Promise<void> {
 
 // ─── Amazon Deal Selection ────────────────────────────────────────────────
 
-async function getTodayAmazonDeal(): Promise<AmazonDealData | null> {
+async function getTodayAmazonDeals(): Promise<AmazonDealData[]> {
   const db = await getDb();
-  if (!db) return null;
+  if (!db) return [];
 
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = new Date().toISOString().slice(0, 10);
 
-  // Prima prova a trovare un deal programmato per oggi
+  // Prova a trovare deal programmati per oggi (fino a 2)
   const todayDeals = await db
     .select()
     .from(amazonDailyDeals)
@@ -170,11 +172,10 @@ async function getTodayAmazonDeal(): Promise<AmazonDealData | null> {
         eq(amazonDailyDeals.active, true)
       )
     )
-    .limit(1);
+    .limit(2);
 
   if (todayDeals.length > 0) {
-    const d = todayDeals[0];
-    return {
+    return todayDeals.map((d) => ({
       id: d.id,
       title: d.title,
       description: d.description,
@@ -184,33 +185,93 @@ async function getTodayAmazonDeal(): Promise<AmazonDealData | null> {
       rating: d.rating,
       reviewCount: d.reviewCount,
       category: d.category,
-    };
+    }));
   }
 
-  // Fallback: ultimo deal attivo
+  // Fallback: ultimi 2 deal attivi
   const latestDeals = await db
     .select()
     .from(amazonDailyDeals)
     .where(eq(amazonDailyDeals.active, true))
     .orderBy(desc(amazonDailyDeals.scheduledDate))
-    .limit(1);
+    .limit(2);
 
-  if (latestDeals.length > 0) {
-    const d = latestDeals[0];
-    return {
-      id: d.id,
-      title: d.title,
-      description: d.description,
-      price: d.price,
-      affiliateUrl: d.affiliateUrl,
-      imageUrl: d.imageUrl,
-      rating: d.rating,
-      reviewCount: d.reviewCount,
-      category: d.category,
-    };
+  return latestDeals.map((d) => ({
+    id: d.id,
+    title: d.title,
+    description: d.description,
+    price: d.price,
+    affiliateUrl: d.affiliateUrl,
+    imageUrl: d.imageUrl,
+    rating: d.rating,
+    reviewCount: d.reviewCount,
+    category: d.category,
+  }));
+}
+
+// ─── Approved Tool Submissions for Newsletter ──────────────────────────────
+
+async function getApprovedToolsForNewsletter(): Promise<{ name: string; url: string; description: string; emoji?: string }[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  const tools = await db
+    .select()
+    .from(toolSubmissions)
+    .where(
+      and(
+        eq(toolSubmissions.status, "approved"),
+        eq(toolSubmissions.featuredDate, today)
+      )
+    )
+    .limit(8);
+
+  return tools.map((t) => ({
+    name: t.toolName,
+    url: t.toolUrl,
+    description: t.shortDescription || t.description || "",
+    emoji: t.emoji ?? undefined,
+  }));
+}
+
+// ─── Open Source Tools for Newsletter ───────────────────────────────────────
+
+async function getOpenSourceToolsForNewsletter(): Promise<{ name: string; url: string; description: string; stars: number | null; language: string | null }[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Get tools featured for today, or latest active ones
+  let tools = await db
+    .select()
+    .from(openSourceTools)
+    .where(
+      and(
+        eq(openSourceTools.active, true),
+        eq(openSourceTools.featuredDate, today)
+      )
+    )
+    .limit(5);
+
+  if (tools.length === 0) {
+    tools = await db
+      .select()
+      .from(openSourceTools)
+      .where(eq(openSourceTools.active, true))
+      .orderBy(desc(openSourceTools.createdAt))
+      .limit(5);
   }
 
-  return null;
+  return tools.map((t) => ({
+    name: t.name,
+    url: t.repoUrl,
+    description: t.description,
+    stars: t.stars,
+    language: t.category,
+  }));
 }
 
 // ─── Data Collection ────────────────────────────────────────────────────────
@@ -292,6 +353,21 @@ async function collectAllContent() {
 
 // ─── HTML Template Builder ──────────────────────────────────────────────────
 
+interface ToolItem {
+  name: string;
+  url: string;
+  description: string;
+  emoji?: string;
+}
+
+interface OSToolItem {
+  name: string;
+  url: string;
+  description: string;
+  stars: number | null;
+  language: string | null;
+}
+
 function buildUnifiedNewsletterHtml(opts: {
   dateLabel: string;
   aiNews: NewsItem[];
@@ -301,7 +377,9 @@ function buildUnifiedNewsletterHtml(opts: {
   researches: ResearchItem[];
   primarySponsor: SponsorData | null;
   spotlightSponsor: SponsorData | null;
-  amazonDeal: AmazonDealData | null;
+  amazonDeals: AmazonDealData[];
+  approvedTools: ToolItem[];
+  osTools: OSToolItem[];
   unsubscribeUrl: string;
   isTest: boolean;
 }): string {
@@ -314,7 +392,9 @@ function buildUnifiedNewsletterHtml(opts: {
     researches,
     primarySponsor,
     spotlightSponsor,
-    amazonDeal,
+    amazonDeals,
+    approvedTools,
+    osTools,
     unsubscribeUrl,
     isTest,
   } = opts;
@@ -590,71 +670,264 @@ function buildUnifiedNewsletterHtml(opts: {
           </table>
         </td>
       </tr>`;
-  }  // ── Amazon Deal Block ─────────────────────────────────────────────────
-  function buildAmazonDealBlock(): string {
-    if (!amazonDeal) return "";
+  }
+
+  // ── Amazon Deals Block (supports multiple) ─────────────────────────
+  function buildAmazonDealsBlock(): string {
+    if (amazonDeals.length === 0) return "";
 
     const AMAZON_ORANGE = "#FF9900";
-    const utmUrl = `${amazonDeal.affiliateUrl}${amazonDeal.affiliateUrl.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_deal`;
+    const dealsHtml = amazonDeals.map((deal, idx) => {
+      const utmUrl = `${deal.affiliateUrl}${deal.affiliateUrl.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_deal`;
+      const ratingHtml = deal.rating
+        ? `<span style="font-size:13px;color:${AMAZON_ORANGE};font-family:${F};font-weight:700;">${deal.rating}</span>${deal.reviewCount ? ` <span style="font-size:12px;color:${MUTED};font-family:${F};">(${deal.reviewCount} recensioni)</span>` : ""}`
+        : "";
+      const categoryHtml = deal.category
+        ? `<span style="font-size:11px;font-weight:600;color:${MUTED};font-family:${F};text-transform:uppercase;letter-spacing:0.05em;">${deal.category}</span>`
+        : "";
 
-    const ratingHtml = amazonDeal.rating
-      ? `<span style="font-size:13px;color:${AMAZON_ORANGE};font-family:${F};font-weight:700;">${amazonDeal.rating}</span>${amazonDeal.reviewCount ? ` <span style="font-size:12px;color:${MUTED};font-family:${F};">(${amazonDeal.reviewCount} recensioni)</span>` : ""}`
-      : "";
-
-    const categoryHtml = amazonDeal.category
-      ? `<span style="font-size:11px;font-weight:600;color:${MUTED};font-family:${F};text-transform:uppercase;letter-spacing:0.05em;">${amazonDeal.category}</span>`
-      : "";
-
-    return `
-      <!-- Amazon Deal del Giorno -->
-      <tr>
-        <td style="padding:0 20px 16px;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
-            <!-- Label -->
+      return `
+            <!-- Product ${idx + 1} -->
             <tr>
-              <td style="padding:20px 24px 0;">
+              <td style="padding:12px 24px 0;${idx > 0 ? `border-top:1px solid ${BORDER};` : ""}">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
-                    <td>
-                      <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">&#128722; Consiglio del Giorno &mdash; in collaborazione con Amazon</div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <!-- Product -->
-            <tr>
-              <td style="padding:12px 24px 0;">
-                <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    ${amazonDeal.imageUrl ? `<td width="140" style="vertical-align:top;padding-right:16px;">
+                    ${deal.imageUrl ? `<td width="140" style="vertical-align:top;padding-right:16px;">
                       <a href="${utmUrl}" target="_blank" style="text-decoration:none;">
-                        <img src="${amazonDeal.imageUrl}" alt="${amazonDeal.title}" width="130" style="width:130px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
+                        <img src="${deal.imageUrl}" alt="${deal.title}" width="130" style="width:130px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
                       </a>
                     </td>` : ""}
                     <td style="vertical-align:top;">
                       ${categoryHtml ? `<div style="margin-bottom:6px;">${categoryHtml}</div>` : ""}
-                      <a href="${utmUrl}" target="_blank" style="font-size:17px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${amazonDeal.title}</a>
-                      <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.6;margin-bottom:10px;">${amazonDeal.description}</div>
+                      <a href="${utmUrl}" target="_blank" style="font-size:17px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${deal.title}</a>
+                      <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.6;margin-bottom:10px;">${deal.description}</div>
                       <div style="margin-bottom:8px;">
-                        <span style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};">${amazonDeal.price}</span>
+                        <span style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};">${deal.price}</span>
                       </div>
                       ${ratingHtml ? `<div style="margin-bottom:12px;">${ratingHtml}</div>` : ""}
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="background:${AMAZON_ORANGE};border-radius:6px;padding:10px 22px;">
+                            <a href="${utmUrl}" target="_blank" style="font-size:13px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};">Scopri su Amazon &rarr;</a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>`;
+    }).join("");
+
+    return `
+      <!-- Amazon Deals -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+            <tr>
+              <td style="padding:20px 24px 0;">
+                <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">&#128722; Consigli del Giorno &mdash; in collaborazione con Amazon</div>
+              </td>
+            </tr>
+            ${dealsHtml}
+            <tr><td style="height:16px;"></td></tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ── AI Tools of the Day ─────────────────────────────────────────────
+  function buildAIToolsSection(): string {
+    const toolEmojis = ["\uD83D\uDCDD", "\uD83D\uDD0C", "\uD83D\uDCD6", "\uD83D\uDCF8", "\u26BD", "\uD83D\uDE80", "\uD83E\uDD16", "\uD83D\uDD17"];
+    // Always include FoolTalent as featured tool
+    const foolTalentHtml = `
+            <tr>
+              <td style="padding:16px 24px;border-bottom:1px solid ${BORDER};">
+                <a href="https://fooltalent.com?utm_source=ideasmart_newsletter" style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">\uD83C\uDFAF FoolTalent &mdash; La piattaforma AI per il recruiting intelligente</a>
+                <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.65;">FoolTalent utilizza l'intelligenza artificiale per abbinare talenti e aziende con precisione, automatizzando screening, matching e analisi dei candidati.</div>
+                <div style="margin-top:8px;"><a href="https://fooltalent.com?utm_source=ideasmart_newsletter" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F};">Scopri FoolTalent &rarr;</a></div>
+              </td>
+            </tr>`;
+
+    const toolsHtml = approvedTools.map((tool, idx) => {
+      const emoji = tool.emoji || toolEmojis[idx % toolEmojis.length];
+      return `
+            <tr>
+              <td style="padding:16px 24px;${idx < approvedTools.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+                <a href="${tool.url}?utm_source=ideasmart_newsletter" style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${emoji} ${tool.name}</a>
+                <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.65;">${tool.description}</div>
+              </td>
+            </tr>`;
+    }).join("");
+
+    return `
+      <!-- AI Tools of the Day -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+            <tr>
+              <td style="padding:20px 24px 12px;">
+                <div style="font-size:12px;font-weight:800;color:${ACCENT};text-transform:uppercase;letter-spacing:0.08em;font-family:${F};margin-bottom:4px;">Coming in Hot</div>
+                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.2;">AI Tools of the Day</div>
+              </td>
+            </tr>
+            ${foolTalentHtml}
+            ${toolsHtml}
+            <!-- Submit your tool CTA -->
+            <tr>
+              <td style="padding:16px 24px 20px;">
+                <div style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;">
+                  \uD83E\uDDBE <a href="${BASE_URL}/submit-tool" style="font-weight:700;color:${ACCENT};text-decoration:underline;font-family:${F};">Proponi il tuo AI tool</a> per la prossima edizione della newsletter.
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Pubblicizza su IdeaSmart -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};text-align:center;">
+            <tr>
+              <td style="padding:20px 24px;">
+                <div style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;">Vuoi pubblicizzare il tuo prodotto sulla newsletter IdeaSmart? <a href="mailto:info@ideasmart.ai?subject=Pubblicità Newsletter IdeaSmart" style="font-weight:700;color:${ACCENT};text-decoration:underline;font-family:${F};">Contattaci</a></div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ── Ebook Promo Block ───────────────────────────────────────────────
+  function buildEbookPromoBlock(): string {
+    return `
+      <!-- Ebook Promo -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+            <tr>
+              <td style="padding:28px 24px;">
+                <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">By IDEASMART</div>
+                <div style="font-size:26px;font-weight:800;color:#ffffff;font-family:${F};line-height:1.25;margin-bottom:12px;">Collezione dei Migliori Prompt 2026</div>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:16px;">Per anni la domanda pi&ugrave; frequente &egrave; stata: &ldquo;Dove trovo i prompt giusti?&rdquo;</div>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:16px;">Oggi rispondiamo con <strong style="color:#ffffff;">i migliori prompt selezionati dalla redazione IdeaSmart</strong>. Non sono prompt generici: ogni prompt &egrave; un framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output. Copia, incolla, personalizza e ottieni risultati strutturati in pochi secondi.</div>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:8px;"><strong style="color:#ffffff;">Cosa trovi dentro:</strong></div>
+                <ul style="margin:0 0 20px;padding-left:20px;">
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Funziona con ChatGPT, Claude, Gemini e altri</li>
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">99 prompt testati e perfezionati dal team IdeaSmart</li>
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">11 categorie: Carriera, Produttivit&agrave;, Business, Scrittura, Creativit&agrave;, Finanza e altro</li>
+                </ul>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:22px;">La tua AI &egrave; buona quanto i tuoi prompt.</div>
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="background:${ACCENT};border-radius:8px;padding:14px 32px;">
+                      <a href="${BASE_URL}/ebook/prompt-2026" style="font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F};letter-spacing:0.02em;">Scarica il Prompt Pack &rarr;</a>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
-            <!-- CTA -->
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ── Open Source AI Tools ────────────────────────────────────────────
+  function buildOpenSourceSection(): string {
+    if (osTools.length === 0) return "";
+
+    const toolsHtml = osTools.map((tool, idx) => {
+      const starsStr = tool.stars ? `\u2B50 ${tool.stars.toLocaleString()}` : "";
+      const langStr = tool.language ? ` &middot; ${tool.language}` : "";
+      return `
             <tr>
-              <td style="padding:14px 24px 20px;">
-                <table cellpadding="0" cellspacing="0" border="0">
+              <td style="padding:14px 24px;${idx < osTools.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+                <a href="${tool.url}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:4px;">\uD83D\uDCE6 ${tool.name}</a>
+                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;margin-bottom:4px;">${tool.description}</div>
+                <div style="font-size:11px;color:${MUTED};font-family:${F};">${starsStr}${langStr}</div>
+              </td>
+            </tr>`;
+    }).join("");
+
+    return `
+      <!-- Open Source AI Tools -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+            <tr>
+              <td style="padding:20px 24px 12px;">
+                <div style="font-size:12px;font-weight:800;color:${ACCENT};text-transform:uppercase;letter-spacing:0.08em;font-family:${F};margin-bottom:4px;">Open Source</div>
+                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.2;">AI Tools Open Source della Settimana</div>
+              </td>
+            </tr>
+            ${toolsHtml}
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ── Become a Sponsor ────────────────────────────────────────────────
+  function buildBecomeSponsorBlock(): string {
+    return `
+      <!-- Become a Sponsor -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border:1px solid ${BORDER};text-align:center;">
+            <tr>
+              <td style="padding:28px 24px;">
+                <div style="font-size:18px;font-weight:700;color:${BLACK};font-family:${F};line-height:1.4;margin-bottom:12px;">Raggiungi la community IdeaSmart. <a href="mailto:info@ideasmart.ai?subject=Diventa Sponsor IdeaSmart" style="font-weight:800;color:${BLACK};text-decoration:underline;font-family:${F};">Diventa sponsor</a></div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ── Feedback Section ────────────────────────────────────────────────
+  function buildFeedbackSection(): string {
+    return `
+      <!-- Feedback -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};text-align:center;">
+            <tr>
+              <td style="padding:24px;">
+                <div style="font-size:18px;font-weight:700;color:${BLACK};font-family:${F};margin-bottom:12px;">Come valuteresti questa edizione?</div>
+                <table cellpadding="0" cellspacing="0" border="0" align="center">
                   <tr>
-                    <td style="background:${AMAZON_ORANGE};border-radius:8px;padding:12px 28px;">
-                      <a href="${utmUrl}" target="_blank" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};letter-spacing:0.02em;">Scopri su Amazon &rarr;</a>
-                    </td>
+                    <td style="padding:0 8px;"><a href="${BASE_URL}/newsletter-feedback?rating=great&date=${new Date().toISOString().slice(0, 10)}" style="font-size:32px;text-decoration:none;">\uD83D\uDE0D</a></td>
+                    <td style="padding:0 8px;"><a href="${BASE_URL}/newsletter-feedback?rating=good&date=${new Date().toISOString().slice(0, 10)}" style="font-size:32px;text-decoration:none;">\uD83D\uDE0A</a></td>
+                    <td style="padding:0 8px;"><a href="${BASE_URL}/newsletter-feedback?rating=ok&date=${new Date().toISOString().slice(0, 10)}" style="font-size:32px;text-decoration:none;">\uD83D\uDE10</a></td>
+                    <td style="padding:0 8px;"><a href="${BASE_URL}/newsletter-feedback?rating=bad&date=${new Date().toISOString().slice(0, 10)}" style="font-size:32px;text-decoration:none;">\uD83D\uDE1E</a></td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px 0;font-size:11px;color:${MUTED};font-family:${F};text-align:center;">Fantastica</td>
+                    <td style="padding:4px 8px 0;font-size:11px;color:${MUTED};font-family:${F};text-align:center;">Buona</td>
+                    <td style="padding:4px 8px 0;font-size:11px;color:${MUTED};font-family:${F};text-align:center;">Così così</td>
+                    <td style="padding:4px 8px 0;font-size:11px;color:${MUTED};font-family:${F};text-align:center;">Da migliorare</td>
                   </tr>
                 </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ── Privacy Section ─────────────────────────────────────────────────
+  function buildPrivacySection(): string {
+    return `
+      <!-- Privacy -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border:2px dashed ${BORDER};">
+            <tr>
+              <td style="padding:24px;">
+                <div style="font-size:14px;font-weight:700;color:${BLACK};font-family:${F};margin-bottom:8px;">Attenzione utenti Gmail:</div>
+                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.7;margin-bottom:16px;">Per continuare a ricevere le nostre newsletter nella tab Principale, sposta questa email dalla tab Promozioni alla tab Principale. Su mobile, tocca i tre puntini in alto a destra, seleziona &ldquo;Sposta&rdquo; e scegli &ldquo;Principale&rdquo;.</div>
+                <div style="font-size:18px;font-weight:800;color:${BLACK};font-family:${F};margin-bottom:12px;">Rispettiamo la tua Privacy</div>
+                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.7;">La nostra missione &egrave; costruire una community forte attorno ai migliori strumenti AI e alle notizie pi&ugrave; rilevanti su startup e venture capital. IdeaSmart &egrave; gestita da IdeaSmart S.r.l. Ci impegniamo a rispettare il tuo diritto alla privacy e a fornire un&rsquo;esperienza sicura. La nostra Privacy Policy spiega come raccogliamo, conserviamo e utilizziamo le informazioni personali fornite sul nostro sito. Accedendo e utilizzando il nostro sito, accetti esplicitamente la raccolta e l&rsquo;utilizzo delle informazioni personali e non personali come descritto nella nostra Privacy Policy. Per maggiori dettagli, visita la nostra <a href="${BASE_URL}/privacy" style="color:${ACCENT};text-decoration:underline;font-family:${F};">pagina Privacy</a>.</div>
               </td>
             </tr>
           </table>
@@ -781,7 +1054,17 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildResearchSection()}
 
-        ${buildAmazonDealBlock()}
+        ${buildAmazonDealsBlock()}
+
+        ${buildEbookPromoBlock()}
+
+        ${buildAIToolsSection()}
+
+        ${buildOpenSourceSection()}
+
+        ${buildBecomeSponsorBlock()}
+
+        ${buildFeedbackSection()}
 
         <!-- CTA SUBSCRIBE -->
         <tr>
@@ -804,6 +1087,8 @@ function buildUnifiedNewsletterHtml(opts: {
             </table>
           </td>
         </tr>
+
+        ${buildPrivacySection()}
 
         <!-- FOOTER -->
         <tr>
@@ -873,11 +1158,13 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   const dateLabel = getDateLabel(now);
   const content = await collectAllContent();
 
-  // Fetch dynamic sponsors and Amazon deal from DB
-  const [primarySponsor, spotlightSponsor, amazonDeal] = await Promise.all([
+  // Fetch dynamic sponsors, Amazon deals, approved tools, and open source tools from DB
+  const [primarySponsor, spotlightSponsor, amazonDeals, approvedTools, osTools] = await Promise.all([
     getActiveSponsor("primary"),
     getActiveSponsor("spotlight"),
-    getTodayAmazonDeal(),
+    getTodayAmazonDeals(),
+    getApprovedToolsForNewsletter(),
+    getOpenSourceToolsForNewsletter(),
   ]);
 
   console.log(`[UnifiedNewsletter] Contenuti raccolti:`);
@@ -893,7 +1180,13 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     `  Sponsor spotlight: ${spotlightSponsor?.name ?? "nessuno"}`
   );
   console.log(
-    `  Amazon Deal: ${amazonDeal?.title ?? "nessuno"}`
+    `  Amazon Deals: ${amazonDeals.length}`
+  );
+  console.log(
+    `  Approved Tools: ${approvedTools.length}`
+  );
+  console.log(
+    `  Open Source Tools: ${osTools.length}`
   );
 
   const subject = `IDEASMART — ${dateLabel}`;
@@ -907,7 +1200,9 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     researches: content.researches,
     primarySponsor,
     spotlightSponsor,
-    amazonDeal,
+    amazonDeals,
+    approvedTools,
+    osTools,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     isTest,
   });

@@ -963,3 +963,115 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
   return Object.fromEntries(results.map(r => [r.section, r.items])) as Record<HomeSection, HomeSectionItem[]>;
 }
 
+
+
+// ── Tool Submissions ─────────────────────────────────────────────────────────
+
+import { toolSubmissions, newsletterFeedback, openSourceTools } from "../drizzle/schema";
+
+export async function saveToolSubmission(data: {
+  toolName: string;
+  toolUrl: string;
+  description?: string;
+  submitterEmail?: string;
+  submitterName?: string;
+}): Promise<number | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const [result] = await db.insert(toolSubmissions).values({
+    toolName: data.toolName,
+    toolUrl: data.toolUrl,
+    description: data.description ?? null,
+    submitterEmail: data.submitterEmail ?? null,
+    submitterName: data.submitterName ?? null,
+  });
+  return (result as any).insertId ?? null;
+}
+
+export async function getToolSubmissions(status?: string) {
+  const db = await getDb();
+  if (!db) return [];
+  if (status) {
+    return db.select().from(toolSubmissions).where(eq(toolSubmissions.status, status as any)).orderBy(desc(toolSubmissions.createdAt));
+  }
+  return db.select().from(toolSubmissions).orderBy(desc(toolSubmissions.createdAt));
+}
+
+export async function getApprovedToolsForDate(date: string) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(toolSubmissions).where(
+    and(eq(toolSubmissions.status, "featured"), eq(toolSubmissions.featuredDate, date))
+  ).orderBy(toolSubmissions.id);
+}
+
+export async function updateToolSubmissionStatus(id: number, status: string, featuredDate?: string, emoji?: string, shortDescription?: string) {
+  const db = await getDb();
+  if (!db) return;
+  const updateData: any = { status, reviewedAt: new Date() };
+  if (featuredDate) updateData.featuredDate = featuredDate;
+  if (emoji) updateData.emoji = emoji;
+  if (shortDescription) updateData.shortDescription = shortDescription;
+  await db.update(toolSubmissions).set(updateData).where(eq(toolSubmissions.id, id));
+}
+
+// ── Newsletter Feedback ──────────────────────────────────────────────────────
+
+export async function saveNewsletterFeedback(data: {
+  rating: "great" | "good" | "meh" | "bad";
+  comment?: string;
+  email?: string;
+  newsletterDate?: string;
+}): Promise<number | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const [result] = await db.insert(newsletterFeedback).values({
+    rating: data.rating,
+    comment: data.comment ?? null,
+    email: data.email ?? null,
+    newsletterDate: data.newsletterDate ?? new Date().toISOString().slice(0, 10),
+  });
+  return (result as any).insertId ?? null;
+}
+
+export async function getNewsletterFeedbacks(limit = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(newsletterFeedback).orderBy(desc(newsletterFeedback.createdAt)).limit(limit);
+}
+
+// ── Open Source AI Tools ─────────────────────────────────────────────────────
+
+export async function getActiveOpenSourceTools(date?: string) {
+  const db = await getDb();
+  if (!db) return [];
+  if (date) {
+    return db.select().from(openSourceTools).where(
+      and(eq(openSourceTools.active, true), eq(openSourceTools.featuredDate, date))
+    ).orderBy(openSourceTools.id);
+  }
+  return db.select().from(openSourceTools).where(eq(openSourceTools.active, true)).orderBy(desc(openSourceTools.createdAt)).limit(10);
+}
+
+export async function saveOpenSourceTool(data: {
+  name: string;
+  description: string;
+  repoUrl: string;
+  stars?: number;
+  category?: string;
+  emoji?: string;
+  featuredDate?: string;
+}): Promise<number | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const [result] = await db.insert(openSourceTools).values({
+    name: data.name,
+    description: data.description,
+    repoUrl: data.repoUrl,
+    stars: data.stars ?? 0,
+    category: data.category ?? null,
+    emoji: data.emoji ?? null,
+    featuredDate: data.featuredDate ?? null,
+  });
+  return (result as any).insertId ?? null;
+}

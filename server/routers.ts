@@ -14,6 +14,14 @@ import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublis
 
 import {
   addSubscriber,
+  saveToolSubmission,
+  getToolSubmissions,
+  getApprovedToolsForDate,
+  updateToolSubmissionStatus,
+  saveNewsletterFeedback,
+  getNewsletterFeedbacks,
+  getActiveOpenSourceTools,
+  saveOpenSourceTool,
   getAllSubscribers,
   getActiveSubscribers,
   getActiveSubscriberCount,
@@ -56,7 +64,7 @@ import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, run
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
-import { researchReports, techEvents, siteUsers, dealflowPicks } from "../drizzle/schema";
+import { researchReports, techEvents, siteUsers, dealflowPicks, toolSubmissions as toolSubmissionsTable, newsletterFeedback as newsletterFeedbackTable, openSourceTools as openSourceToolsTable } from "../drizzle/schema";
 import { aggregateEvents } from "./eventsAggregator";
 
 // Admin guard
@@ -2178,6 +2186,98 @@ Rispondi con questo JSON:
           .where(eq(dealflowPicks.publishDate, targetDate))
           .orderBy(dealflowPicks.rank);
         return rows;
+      }),
+  }),
+
+  // ── Tool Submissions (public) ──────────────────────────────────────────────
+  toolSubmissions: router({
+    submit: publicProcedure
+      .input(z.object({
+        toolName: z.string().min(1).max(255),
+        toolUrl: z.string().url(),
+        description: z.string().max(1000).optional(),
+        submitterEmail: z.string().email().optional(),
+        submitterName: z.string().max(255).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const id = await saveToolSubmission(input);
+        return { success: true, id };
+      }),
+
+    // Admin: lista tutte le submissions
+    list: adminProcedure
+      .input(z.object({ status: z.string().optional() }).optional())
+      .query(async ({ input }) => {
+        return getToolSubmissions(input?.status);
+      }),
+
+    // Admin: approva/rifiuta/feature un tool
+    updateStatus: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["pending", "approved", "rejected", "featured"]),
+        featuredDate: z.string().optional(),
+        emoji: z.string().optional(),
+        shortDescription: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        await updateToolSubmissionStatus(input.id, input.status, input.featuredDate, input.emoji, input.shortDescription);
+        return { success: true };
+      }),
+
+    // Public: tools featured per oggi (per la newsletter)
+    getFeatured: publicProcedure
+      .input(z.object({ date: z.string().optional() }).optional())
+      .query(async ({ input }) => {
+        const date = input?.date || new Date().toISOString().slice(0, 10);
+        return getApprovedToolsForDate(date);
+      }),
+  }),
+
+  // ── Newsletter Feedback (public) ──────────────────────────────────────────
+  newsletterFeedback: router({
+    submit: publicProcedure
+      .input(z.object({
+        rating: z.enum(["great", "good", "meh", "bad"]),
+        comment: z.string().max(2000).optional(),
+        email: z.string().email().optional(),
+        newsletterDate: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const id = await saveNewsletterFeedback(input);
+        return { success: true, id };
+      }),
+
+    // Admin: lista tutti i feedback
+    list: adminProcedure
+      .input(z.object({ limit: z.number().optional() }).optional())
+      .query(async ({ input }) => {
+        return getNewsletterFeedbacks(input?.limit ?? 50);
+      }),
+  }),
+
+  // ── Open Source AI Tools (admin managed) ──────────────────────────────────
+  openSourceTools: router({
+    getActive: publicProcedure
+      .input(z.object({ date: z.string().optional() }).optional())
+      .query(async ({ input }) => {
+        return getActiveOpenSourceTools(input?.date);
+      }),
+
+    // Admin: aggiungi un tool open source
+    add: adminProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        description: z.string().min(1),
+        repoUrl: z.string().url(),
+        stars: z.number().optional(),
+        category: z.string().optional(),
+        emoji: z.string().optional(),
+        featuredDate: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const id = await saveOpenSourceTool(input);
+        return { success: true, id };
       }),
   }),
 });

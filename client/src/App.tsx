@@ -70,6 +70,10 @@ const Account = lazy(() => import("./pages/Account"));
 const DemoSandwichClub = lazy(() => import("./pages/DemoSandwichClub"));
 const EditorialVSI = lazy(() => import("./pages/EditorialVSI"));
 const Dealflow = lazy(() => import("./pages/Dealflow"));
+const SubmitTool = lazy(() => import("./pages/SubmitTool"));
+const AdminToolsFeedback = lazy(() => import("./pages/AdminToolsFeedback"));
+const EbookPrompt = lazy(() => import("./pages/EbookPrompt"));
+const NewsletterFeedback = lazy(() => import("./pages/NewsletterFeedback"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -87,6 +91,7 @@ function Router() {
         <Route path="/admin/sendgrid-stats" component={AdminSendgridStats} />
         <Route path="/admin/system-health" component={AdminSystemHealth} />
         <Route path="/admin/newsletter-content" component={AdminNewsletterContent} />
+        <Route path="/admin/tools-feedback" component={AdminToolsFeedback} />
         <Route path="/privacy" component={Privacy} />
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />
@@ -112,6 +117,9 @@ function Router() {
         <Route path="/demo/sandwichclub" component={DemoSandwichClub} />
         <Route path="/dealflow" component={Dealflow} />
         <Route path="/editoriale/venture-studio-index" component={EditorialVSI} />
+        <Route path="/submit-tool" component={SubmitTool} />
+        <Route path="/ebook/prompt-2026" component={EbookPrompt} />
+        <Route path="/newsletter-feedback" component={NewsletterFeedback} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />

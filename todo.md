@@ -2296,3 +2296,19 @@
 
 ## Task (1 Apr 2026 — Voce Demo nella navbar)
 - [x] Aggiungere voce "Demo" nella navbar dopo "Offerta" con link a ideasmart.technology
+
+## Task (2 Apr 2026 — Ristrutturazione Newsletter)
+- [x] A) Aumentare spazi Amazon Deals a 2 in sezioni diverse (link: amzn.to/4s8n0wI e amzn.to/3PYgBXA)
+- [x] B) Creare sezione promozione ebook "Collezione dei migliori Prompt 2026" stile TAAFT + landing page + acquisto Stripe
+- [x] C) Creare sezione "AI Tools of the Day" nella newsletter con form per proporre il proprio tool (logica: submit oggi → presente domani)
+- [x] D) Togliere Fragmentalis, promuovere FoolTalent (fooltalent.com) tra i tool of the day + link "Pubblicizza su IdeaSmart Newsletter" → email info@ideasmart.ai
+- [x] E) Area "Diventa Sponsor" con invio email a info@ideasmart.ai
+- [x] F) Sezione "Open Source AI Tools" nella newsletter
+- [x] F2) Area feedback nella newsletter (feedback visibili in Admin)
+- [x] G) Sezione privacy/rispetto dati in fondo alla newsletter (stile TAAFT)
+- [x] Creare tabella DB per tool submissions e newsletter feedback
+- [x] Creare pagina /submit-tool per proporre il proprio AI tool
+- [x] Creare landing page ebook Prompt 2026 con Stripe
+- [x] Aggiornare template HTML newsletter con tutte le nuove sezioni
+- [x] Aggiornare generatore newsletter per popolare sezioni dinamicamente
+- [x] Aggiornare Admin per visualizzare tool submissions e feedback

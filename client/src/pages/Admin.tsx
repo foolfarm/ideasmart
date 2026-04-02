@@ -236,6 +236,16 @@ export default function Admin() {
             </button>
             <span className="text-white/20">·</span>
             <button
+              onClick={() => navigate("/admin/tools-feedback")}
+              className="text-xs font-bold transition-colors"
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#06b6d4")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+            >
+              🛠️ Tools & Feedback
+            </button>
+            <span className="text-white/20">·</span>
+            <button
               onClick={() => navigate("/admin/system-health")}
               className="text-xs font-bold transition-colors"
               style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}

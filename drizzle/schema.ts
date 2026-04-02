@@ -633,3 +633,53 @@ export const dealflowPicks = mysqlTable("dealflow_picks", {
 
 export type DealflowPick = typeof dealflowPicks.$inferSelect;
 export type InsertDealflowPick = typeof dealflowPicks.$inferInsert;
+
+
+// ── AI Tool Submissions (utenti propongono il proprio tool AI) ─────────────
+export const toolSubmissions = mysqlTable("tool_submissions", {
+  id: int("id").autoincrement().primaryKey(),
+  toolName: varchar("toolName", { length: 255 }).notNull(),
+  toolUrl: text("toolUrl").notNull(),
+  description: text("description"),
+  submitterEmail: varchar("submitterEmail", { length: 320 }),
+  submitterName: varchar("submitterName", { length: 255 }),
+  status: mysqlEnum("status", ["pending", "approved", "rejected", "featured"]).default("pending").notNull(),
+  featuredDate: varchar("featuredDate", { length: 10 }), // YYYY-MM-DD quando è stato inserito nella newsletter
+  emoji: varchar("emoji", { length: 10 }),
+  shortDescription: varchar("shortDescription", { length: 500 }), // breve descrizione per la newsletter
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  reviewedAt: timestamp("reviewedAt"),
+});
+
+export type ToolSubmission = typeof toolSubmissions.$inferSelect;
+export type InsertToolSubmission = typeof toolSubmissions.$inferInsert;
+
+// ── Newsletter Feedback ────────────────────────────────────────────────────
+export const newsletterFeedback = mysqlTable("newsletter_feedback", {
+  id: int("id").autoincrement().primaryKey(),
+  rating: mysqlEnum("rating", ["great", "good", "meh", "bad"]).notNull(),
+  comment: text("comment"),
+  email: varchar("email", { length: 320 }),
+  newsletterDate: varchar("newsletterDate", { length: 10 }), // YYYY-MM-DD
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type NewsletterFeedback = typeof newsletterFeedback.$inferSelect;
+export type InsertNewsletterFeedback = typeof newsletterFeedback.$inferInsert;
+
+// ── Open Source AI Tools (curati dalla redazione) ──────────────────────────
+export const openSourceTools = mysqlTable("open_source_tools", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  repoUrl: text("repoUrl").notNull(), // GitHub/GitLab URL
+  stars: int("stars").default(0),
+  category: varchar("category", { length: 128 }), // es. "LLM", "Computer Vision", "NLP"
+  emoji: varchar("emoji", { length: 10 }),
+  active: boolean("active").default(true).notNull(),
+  featuredDate: varchar("featuredDate", { length: 10 }), // YYYY-MM-DD
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type OpenSourceTool = typeof openSourceTools.$inferSelect;
+export type InsertOpenSourceTool = typeof openSourceTools.$inferInsert;
