@@ -3,7 +3,8 @@ import { router, publicProcedure, protectedProcedure } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { getDb } from "../db";
 import { channelContent, rssFeedSources, rssIngestLog } from "../../drizzle/schema";
-import { eq, and, desc, sql, count } from "drizzle-orm";
+import { eq, and, desc, sql, count, isNull, or } from "drizzle-orm";
+import { findStockImage } from "../stockImages";
 
 const CONTENT_CHANNEL_SLUGS = [
   "start-here",
@@ -275,5 +276,69 @@ export const channelsRouter = router({
         .set({ active: input.active })
         .where(eq(rssFeedSources.id, input.id));
       return { success: true };
+    }),
+
+  // ── Admin: backfill immagini Pexels per contenuti senza immagine ─────────
+  backfillImages: adminProcedure
+    .input(z.object({
+      channel: contentChannelEnum.optional(),
+      limit: z.number().min(1).max(100).default(50),
+    }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+
+      const CHANNEL_IMAGE_CONTEXT: Record<string, string> = {
+        "copy-paste-ai": "AI prompt writing technology",
+        "automate-with-ai": "business automation workflow",
+        "make-money-with-ai": "entrepreneur business money",
+        "daily-ai-tools": "software tools technology",
+        "verified-ai-news": "AI technology news",
+        "ai-opportunities": "startup investment opportunity",
+        "start-here": "learning technology education",
+      };
+
+      // Trova contenuti senza immagine
+      const conditions = [
+        eq(channelContent.status, "published"),
+        or(isNull(channelContent.imageUrl), eq(channelContent.imageUrl, "")),
+      ];
+      if (input.channel) {
+        conditions.push(eq(channelContent.channel, input.channel));
+      }
+
+      const items = await db
+        .select({ id: channelContent.id, title: channelContent.title, category: channelContent.category, channel: channelContent.channel })
+        .from(channelContent)
+        .where(and(...conditions))
+        .orderBy(desc(channelContent.publishDate))
+        .limit(input.limit);
+
+      let updated = 0;
+      let errors = 0;
+
+      for (const item of items) {
+        try {
+          const context = CHANNEL_IMAGE_CONTEXT[item.channel] || "technology";
+          const imageUrl = await findStockImage(
+            item.title,
+            item.category || context,
+            context
+          );
+          if (imageUrl) {
+            await db.update(channelContent)
+              .set({ imageUrl })
+              .where(eq(channelContent.id, item.id));
+            updated++;
+          }
+        } catch (err: any) {
+          console.warn(`[BackfillImages] Error for item ${item.id}: ${err.message}`);
+          errors++;
+        }
+        // Rate limit: piccola pausa tra le chiamate Pexels
+        await new Promise(r => setTimeout(r, 200));
+      }
+
+      return { total: items.length, updated, errors };
     }),
 });

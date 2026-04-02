@@ -2432,3 +2432,12 @@
 - [x] Aggiornare SectionNav condiviso (usato da tutte le pagine)
 - [x] Aggiornare SectionNav nella homepage (Home.tsx)
 - [x] Verificare coerenza navigazione su tutte le pagine
+
+## Task (2 Apr 2026 — Immagini Pexels nei canali)
+- [x] Aggiungere ricerca immagini Pexels nel channelIngestor durante il salvataggio
+- [x] Creare endpoint admin backfillImages per assegnare immagini ai contenuti esistenti
+- [x] Migliorare layout ChannelPage: hero card con immagine grande per primo articolo
+- [x] Aggiungere griglia 2 colonne per articoli 2-3 con immagini
+- [x] Card con thumbnail laterale per articoli successivi
+- [x] Immagini fallback per canale quando Pexels non ha ancora fornito un'immagine
+- [x] Verificare risultato visivo su tutte le pagine canale (Copy&Paste, Daily Tools, Verified News, Opportunities, Make Money, Automate)

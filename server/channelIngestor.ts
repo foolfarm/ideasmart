@@ -12,6 +12,7 @@ import { getDb } from "./db";
 import { channelContent, rssFeedSources, rssIngestLog } from "../drizzle/schema";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { invokeLLM } from "./_core/llm";
+import { findStockImage } from "./stockImages";
 
 // ── RSS Parser (lightweight, no external dep) ──────────────────────────────
 async function fetchRssFeed(url: string): Promise<Array<{ title: string; link: string; description: string; pubDate?: string }>> {
@@ -275,10 +276,34 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
     const parsed = JSON.parse(content as string);
     const items = parsed.items || [];
 
-    // 5. Save to DB
+    // 5. Save to DB (con ricerca immagini Pexels)
+    // Mapping canale → categoria Pexels per immagini pertinenti
+    const CHANNEL_IMAGE_CONTEXT: Record<string, string> = {
+      "copy-paste-ai": "AI prompt writing technology",
+      "automate-with-ai": "business automation workflow",
+      "make-money-with-ai": "entrepreneur business money",
+      "daily-ai-tools": "software tools technology",
+      "verified-ai-news": "AI technology news",
+      "ai-opportunities": "startup investment opportunity",
+      "start-here": "learning technology education",
+    };
+
     for (let i = 0; i < items.length && i < maxItems; i++) {
       const item = items[i];
       try {
+        // Cerca immagine Pexels per questo contenuto
+        let imageUrl: string | null = null;
+        try {
+          const imgCategory = item.category || CHANNEL_IMAGE_CONTEXT[channel] || "technology";
+          imageUrl = await findStockImage(
+            item.title || "technology",
+            imgCategory,
+            CHANNEL_IMAGE_CONTEXT[channel]
+          );
+        } catch (imgErr: any) {
+          console.warn(`[ChannelIngestor] Image search failed for item ${i}: ${imgErr.message}`);
+        }
+
         await db.insert(channelContent).values({
           channel: channel as any,
           title: item.title || "Senza titolo",
@@ -289,6 +314,7 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
           promptText: item.promptText || null,
           sourceUrl: item.sourceUrl || null,
           sourceName: item.sourceName || null,
+          imageUrl: imageUrl,
           externalUrl: item.externalUrl || null,
           publishDate: today,
           position: i,
