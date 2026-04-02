@@ -2347,3 +2347,9 @@
 
 ## Task (2 Apr 2026 — Spostare Sponsor del Giorno sotto Breaking News)
 - [x] Spostare la sezione "Sponsor del Giorno" sotto Breaking News nella newsletter
+
+## Task (2 Apr 2026 — Newsletter test + ragione sociale sito)
+- [x] Inviare newsletter di test con nuovo ordine (Sponsor sotto Breaking)
+- [x] Verificare e aggiornare "S.r.l." in "LLC" nella pagina Privacy del sito (non presente, già pulito)
+- [x] Verificare e aggiornare "S.r.l." in "LLC" nel footer del sito (non presente, già pulito)
+- [x] Verificare e aggiornare "S.r.l." in "LLC" in qualsiasi altro file del progetto (nessuna occorrenza trovata)
