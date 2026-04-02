@@ -584,19 +584,62 @@ export default function ChannelPage({
                   </>
                 )}
 
-                {/* Lista con thumbnail per il resto */}
+                {/* Lista con thumbnail per il resto + banner Amazon inline */}
                 {filteredItems.length > 3 && (
                   <div className="divide-y divide-[#1a1a1a]/10">
                     {filteredItems.slice(3).map((item, idx) => (
-                      <ContentCard
-                        key={item.id}
-                        item={item}
-                        imageUrl={getImageForItem(item, idx + 3)}
-                        showPrompt={showPrompt}
-                        showExternalLink={showExternalLink}
-                        isExpanded={expandedId === item.id}
-                        onToggle={() => setExpandedId(expandedId === item.id ? null : item.id)}
-                      />
+                      <div key={item.id}>
+                        <ContentCard
+                          item={item}
+                          imageUrl={getImageForItem(item, idx + 3)}
+                          showPrompt={showPrompt}
+                          showExternalLink={showExternalLink}
+                          isExpanded={expandedId === item.id}
+                          onToggle={() => setExpandedId(expandedId === item.id ? null : item.id)}
+                        />
+                        {/* Banner Amazon inline dopo il 3° articolo della lista (posizione 6 totale) */}
+                        {idx === 2 && (
+                          <div className="py-5 border-t border-[#1a1a1a]/10">
+                            <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-lg bg-white border border-[#1a1a1a]/8 hover:shadow-lg transition-shadow duration-300">
+                              <a
+                                href="https://amzn.to/4s8n0wI"
+                                target="_blank"
+                                rel="noopener noreferrer sponsored"
+                                className="flex items-center gap-3 group flex-1 min-w-0"
+                              >
+                                <img
+                                  src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/amazon_cambridge_audio_p100_fe7baf21.webp"
+                                  alt="Cambridge Audio P100 SE"
+                                  className="w-[70px] h-[70px] object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="min-w-0">
+                                  <span className="text-[9px] uppercase tracking-[0.15em] text-[#e63946] font-bold">Consigliato</span>
+                                  <p className="text-sm font-bold text-[#1a1a1a] leading-tight">Cambridge Audio P100 SE</p>
+                                  <p className="text-[10px] text-[#1a1a1a]/50 mt-0.5">Cuffie wireless premium — Amazon.it</p>
+                                </div>
+                              </a>
+                              <div className="hidden sm:block w-px h-12 bg-[#1a1a1a]/10" />
+                              <a
+                                href="https://amzn.to/3PYgBXA"
+                                target="_blank"
+                                rel="noopener noreferrer sponsored"
+                                className="flex items-center gap-3 group flex-1 min-w-0"
+                              >
+                                <img
+                                  src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/amazon_plaud_notepin_03f935aa.webp"
+                                  alt="Plaud NotePin S"
+                                  className="w-[70px] h-[70px] object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="min-w-0">
+                                  <span className="text-[9px] uppercase tracking-[0.15em] text-[#e63946] font-bold">Consigliato</span>
+                                  <p className="text-sm font-bold text-[#1a1a1a] leading-tight">Plaud NotePin S</p>
+                                  <p className="text-[10px] text-[#1a1a1a]/50 mt-0.5">AI Voice Recorder — Amazon.it</p>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 )}

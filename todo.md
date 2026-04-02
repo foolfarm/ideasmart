@@ -2510,3 +2510,9 @@
 ## Task (2 Apr 2026 — Mouseover menu CANALI)
 - [x] Aggiungere effetto mouseover al pulsante CANALI per aprire automaticamente il panel laterale
 - [x] Chiusura automatica quando il mouse esce dal panel e dal pulsante
+
+## Task (2 Apr 2026 — Banner Amazon nelle pagine canale)
+- [x] Inserire banner Amazon (Cambridge Audio P100 SE + Plaud NotePin S) ai lati del titolo nelle pagine canale
+- [x] Aggiungere banner Amazon inline tra gli articoli nelle pagine canale
+- [x] Verificare layout responsive (banner nascosti su mobile)
+- [x] Verificare coerenza visiva con la homepage
