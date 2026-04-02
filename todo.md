@@ -2455,3 +2455,6 @@
 
 ## Task (2 Apr 2026 — Spostamento banner promo Collezione Prompt)
 - [x] Spostare banner promo Collezione Prompt da sotto header a destra della hero image nella homepage
+
+## Task (2 Apr 2026 — Fix immagine banner promo)
+- [x] Correggere URL immagine rotta nel banner promo Collezione Prompt nella sidebar

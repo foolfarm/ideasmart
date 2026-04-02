@@ -1010,7 +1010,7 @@ export default function Home() {
                         </span>
                       </div>
                       <img
-                        src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/prompt_collection_hero-Jfb6fJMZi7bnVQjVGKFmEi.webp"
+                        src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/prompt_collection_banner-3XakDih23787zRbfTewDdi.webp"
                         alt="Prompt Collection"
                         className="w-full h-32 object-cover rounded mb-3"
                         style={{ border: "1px solid rgba(255,255,255,0.1)" }}
