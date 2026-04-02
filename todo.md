@@ -2425,3 +2425,10 @@
 - [x] Aggiornare SharedPageHeader: rimuovere vecchia navbar (AI NEWS, STARTUP NEWS, DEALROOM, RICERCHE)
 - [x] Aggiornare sottotitolo e tagline in SharedPageHeader ("Il tuo sistema operativo sull'AI")
 - [x] Verificare navigazione coerente su tutte le pagine canale
+
+## Task (2 Apr 2026 — Riordino navigazione canali)
+- [x] Spostare AI NEWS come secondo canale dopo START HERE nella barra principale
+- [x] Aggiungere STARTUP NEWS, RESEARCH e DEALROOM nel dropdown MORE
+- [x] Aggiornare SectionNav condiviso (usato da tutte le pagine)
+- [x] Aggiornare SectionNav nella homepage (Home.tsx)
+- [x] Verificare coerenza navigazione su tutte le pagine

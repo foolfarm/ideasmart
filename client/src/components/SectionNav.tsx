@@ -62,6 +62,7 @@ export default function SectionNav() {
 
   const mainChannels = [
     { key: "start-here",    label: "START HERE",        path: "/start-here" },
+    { key: "ai",            label: "AI NEWS",           path: "/ai" },
     { key: "copy-paste",    label: "COPY & PASTE AI",   path: "/copy-paste-ai" },
     { key: "automate",      label: "AUTOMATE",          path: "/automate-with-ai" },
     { key: "make-money",    label: "MAKE MONEY",        path: "/make-money-with-ai" },
@@ -72,8 +73,8 @@ export default function SectionNav() {
 
   const moreChannels = [
     { key: "startup",  label: "STARTUP NEWS", path: "/startup" },
-    { key: "dealroom", label: "DEALROOM",     path: "/dealroom" },
     { key: "research", label: "RICERCHE",     path: "/research" },
+    { key: "dealroom", label: "DEALROOM",     path: "/dealroom" },
   ];
 
   const isMoreActive = moreChannels.some(c => location === c.path || location.startsWith(c.path + "/"));
