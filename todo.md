@@ -2353,3 +2353,23 @@
 - [x] Verificare e aggiornare "S.r.l." in "LLC" nella pagina Privacy del sito (non presente, già pulito)
 - [x] Verificare e aggiornare "S.r.l." in "LLC" nel footer del sito (non presente, già pulito)
 - [x] Verificare e aggiornare "S.r.l." in "LLC" in qualsiasi altro file del progetto (nessuna occorrenza trovata)
+
+## Task (2 Apr 2026 — 3 Nuovi Canali: AI Tools, Top Prompt AI, AI in Action)
+- [ ] Analizzare PDF libro prompt per estrarre contenuti Top Prompt AI
+- [ ] Progettare schema DB per canali Top Prompt AI e AI in Action
+- [ ] Creare tabelle Drizzle e push migrazioni
+- [ ] Creare procedure tRPC per AI Tools (riuso da ai_tools esistente + proponi tool)
+- [ ] Creare procedure tRPC per Top Prompt AI (lista, dettaglio, admin CRUD)
+- [ ] Creare procedure tRPC per AI in Action (lista, dettaglio, admin CRUD)
+- [ ] Creare sistema raccolta RSS + AI agent per AI in Action
+- [ ] Popolare Top Prompt AI con contenuti estratti dal libro
+- [ ] Creare pagina frontend AI Tools con link a proponi tool
+- [ ] Creare pagina frontend Top Prompt AI
+- [ ] Creare pagina frontend AI in Action
+- [ ] Aggiungere i 3 canali alla navigazione (navbar)
+- [ ] Integrare i 3 canali nella newsletter
+- [ ] Test e verifica
+
+## Task (2 Apr 2026 — Spostare Amazon Deals nella newsletter)
+- [x] Spostare Amazon Deals prima di IDEASMART Research nella newsletter
+- [x] Spostare "Diventa Sponsor" subito dopo lo Sponsor del Giorno

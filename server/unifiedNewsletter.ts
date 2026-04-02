@@ -1023,6 +1023,8 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
 
+        ${buildBecomeSponsorBlock()}
+
         ${buildSection("AI News", "Intelligenza Artificiale", aiNews, "ai")}
 
         ${buildAIToolsSection()}
@@ -1033,13 +1035,11 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildSection("Dealroom", "Deal & Funding", dealroomNews, "dealroom")}
 
+        ${buildAmazonDealsBlock()}
+
         ${buildResearchSection()}
 
         ${buildOpenSourceSection()}
-
-        ${buildAmazonDealsBlock()}
-
-        ${buildBecomeSponsorBlock()}
 
         ${buildFeedbackSection()}
 
