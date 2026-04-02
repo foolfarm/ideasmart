@@ -801,6 +801,7 @@ function buildUnifiedNewsletterHtml(opts: {
 
   // ── Ebook Promo Block ───────────────────────────────────────────────
   function buildEbookPromoBlock(): string {
+    const EBOOK_URL = "https://promptcollection.manus.space?utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=prompt_collection";
     return `
       <!-- Ebook Promo -->
       <tr>
@@ -808,21 +809,23 @@ function buildUnifiedNewsletterHtml(opts: {
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
             <tr>
               <td style="padding:28px 24px;">
-                <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">By IDEASMART</div>
+                <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">EDIZIONE PREMIUM 2026</div>
                 <div style="font-size:26px;font-weight:800;color:#ffffff;font-family:${F};line-height:1.25;margin-bottom:12px;">Collezione dei Migliori Prompt 2026</div>
-                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:16px;">Per anni la domanda pi&ugrave; frequente &egrave; stata: &ldquo;Dove trovo i prompt giusti?&rdquo;</div>
-                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:16px;">Oggi rispondiamo con <strong style="color:#ffffff;">i migliori prompt selezionati dalla redazione IdeaSmart</strong>. Non sono prompt generici: ogni prompt &egrave; un framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output. Copia, incolla, personalizza e ottieni risultati strutturati in pochi secondi.</div>
-                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:8px;"><strong style="color:#ffffff;">Cosa trovi dentro:</strong></div>
-                <ul style="margin:0 0 20px;padding-left:20px;">
-                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Funziona con ChatGPT, Claude, Gemini e altri</li>
-                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">99 prompt testati e perfezionati dal team IdeaSmart</li>
-                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">11 categorie: Carriera, Produttivit&agrave;, Business, Scrittura, Creativit&agrave;, Finanza e altro</li>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:16px;">La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano. Non una raccolta generica, ma un <strong style="color:#ffffff;">asset operativo</strong>: 99 framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output.</div>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:8px;"><strong style="color:#ffffff;">5 macro-sezioni, 99 prompt:</strong></div>
+                <ul style="margin:0 0 16px;padding-left:20px;">
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Carriera e sviluppo professionale (10 prompt)</li>
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Produttivit&agrave;, esecuzione e decisioni (20 prompt)</li>
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Business, crescita e marketing (12 prompt)</li>
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Ricerca, scrittura e creativit&agrave; (27 prompt)</li>
+                  <li style="font-size:14px;color:#d1d5db;font-family:${F};line-height:1.8;">Benessere, finanza e vita pratica (30 prompt)</li>
                 </ul>
-                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:22px;">La tua AI &egrave; buona quanto i tuoi prompt.</div>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:6px;">Funziona con ChatGPT, Claude, Gemini e altri. Cornice metodologica da OpenAI, Anthropic, Claude Code e Perplexity.</div>
+                <div style="font-size:15px;color:#d1d5db;font-family:${F};line-height:1.65;margin-bottom:22px;"><strong style="color:#ffffff;">Libreria ricercabile online + PDF scaricabile.</strong> Acquisto singolo: <strong style="color:#ffffff;font-size:20px;">&euro;39</strong></div>
                 <table cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td style="background:${ACCENT};border-radius:8px;padding:14px 32px;">
-                      <a href="${BASE_URL}/ebook/prompt-2026" style="font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F};letter-spacing:0.02em;">Scarica il Prompt Pack &rarr;</a>
+                      <a href="${EBOOK_URL}" style="font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F};letter-spacing:0.02em;">Sblocca l&rsquo;accesso per &euro;39 &rarr;</a>
                     </td>
                   </tr>
                 </table>
@@ -1008,6 +1011,8 @@ function buildUnifiedNewsletterHtml(opts: {
           </td>
         </tr>
 
+        ${buildEbookPromoBlock()}
+
         <!-- BOX PROMO — By IDEASMART (stile TAAFT Prompt Pack) -->
         <tr>
           <td style="padding:0 20px 16px;">
@@ -1016,21 +1021,9 @@ function buildUnifiedNewsletterHtml(opts: {
                 <td style="padding:28px 24px;">
                   <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">By IDEASMART</div>
                   <div style="font-size:26px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;margin-bottom:20px;">La tua redazione AI, pronta in 7 giorni</div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">
-                    Sei un giornalista, una testata online o desideri da sempre lanciare un tuo giornale?
-                  </div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">
-                    Ogni giorno leggi queste news scritte, verificate e pubblicate da Agent Giornalisti. La stessa tecnologia pu&ograve; lavorare per la tua testata.
-                  </div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;font-style:italic;">
-                    &ldquo;Come faccio a pubblicare contenuti AI di qualit&agrave; senza una redazione?&rdquo;
-                  </div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">
-                    Con <strong style="color:${BLACK};">IdeaSmart</strong> configuri i tuoi Agent Giornalisti, scegli settore, fonti e tono &mdash; e la redazione AI pubblica 24/7. Fact-checking automatico con tecnologia <strong style="color:${BLACK};">Verify&trade;</strong>.
-                  </div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:22px;">
-                    3 piani: <strong style="color:${BLACK};">Single Vertical</strong> da &euro;500/mese &middot; <strong style="color:${BLACK};">Multi-Channel</strong> da &euro;750/mese &middot; <strong style="color:${BLACK};">Full Newsroom</strong> da &euro;1.000/mese. In alternativa, revenue share al 20%. Setup in 5-7 giorni.
-                  </div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">Ogni giorno leggi queste news scritte, verificate e pubblicate da Agent Giornalisti. La stessa tecnologia pu&ograve; lavorare per la tua testata.</div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">Con <strong style="color:${BLACK};">IdeaSmart</strong> configuri i tuoi Agent Giornalisti, scegli settore, fonti e tono &mdash; e la redazione AI pubblica 24/7. Fact-checking automatico con tecnologia <strong style="color:${BLACK};">Verify&trade;</strong>.</div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:22px;">3 piani da &euro;500/mese. Revenue share al 20%. Setup in 5-7 giorni.</div>
                   <div>
                     <a href="${BASE_URL}/offertacommerciale?utm_source=newsletter&utm_medium=email&utm_campaign=promo_box" style="display:inline-block;padding:12px 28px;background:${BLACK};color:${WHITE};font-size:13px;font-weight:700;text-decoration:none;border-radius:6px;font-family:${F};letter-spacing:0.05em;">Scopri l&rsquo;offerta &rarr;</a>
                   </div>
@@ -1046,6 +1039,8 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildSection("AI News", "Intelligenza Artificiale", aiNews, "ai")}
 
+        ${buildAIToolsSection()}
+
         ${buildSection("Startup News", "Startup & Innovazione", startupNews, "startup")}
 
         ${buildSponsorBlock(spotlightSponsor, "Today's Spotlight")}
@@ -1054,13 +1049,9 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildResearchSection()}
 
-        ${buildAmazonDealsBlock()}
-
-        ${buildEbookPromoBlock()}
-
-        ${buildAIToolsSection()}
-
         ${buildOpenSourceSection()}
+
+        ${buildAmazonDealsBlock()}
 
         ${buildBecomeSponsorBlock()}
 

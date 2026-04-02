@@ -2322,3 +2322,16 @@
 
 ## Task (2 Apr 2026 — Rimuovere sezione In Evidenza)
 - [x] Eliminare la sezione "In Evidenza" (editoriale Centemero) dalla Home page
+
+## Task (2 Apr 2026 — Fix Newsletter: sezioni mancanti)
+- [x] Rimuovere Fragmentalis dal template newsletter (deve esserci solo FoolTalent)
+- [x] Aggiungere promozione ebook "Collezione dei migliori Prompt 2026" con link alla landing page
+- [x] Verificare presenza di tutte le nuove sezioni: AI Tools of the Day, Open Source AI Tools, Amazon Deals x2, Diventa Sponsor, Feedback, Privacy
+- [x] Inviare newsletter di test a ac@acinelli.com per verifica
+- [x] Disattivare/rimuovere Fragmentalis dalla tabella newsletter_sponsors nel database
+
+- [x] Estrarre info prodotto da promptcollection.manus.space per promozione ebook
+- [x] Aggiornare blocco ebook nella newsletter con info e link a promptcollection.manus.space
+- [x] Spostare blocco ebook in posizione più prominente (subito dopo intro)
+- [x] Ottimizzare HTML newsletter per ridurre dimensione e evitare taglio Gmail
+- [x] Inviare newsletter di test aggiornata
