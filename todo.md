@@ -2335,3 +2335,9 @@
 - [x] Spostare blocco ebook in posizione più prominente (subito dopo intro)
 - [x] Ottimizzare HTML newsletter per ridurre dimensione e evitare taglio Gmail
 - [x] Inviare newsletter di test aggiornata
+
+## Task (2 Apr 2026 — Riordino newsletter: box redazione in fondo, ebook con immagine)
+- [x] Spostare box "La tua redazione AI, pronta in 7 giorni" in fondo alla newsletter
+- [x] Cambiare link ebook da promptcollection.manus.space a ideasmart.forum
+- [x] Aggiungere immagine dal sito promptcollection.manus.space al blocco ebook
+- [x] Inviare newsletter di test aggiornata

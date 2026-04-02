@@ -801,12 +801,18 @@ function buildUnifiedNewsletterHtml(opts: {
 
   // ── Ebook Promo Block ───────────────────────────────────────────────
   function buildEbookPromoBlock(): string {
-    const EBOOK_URL = "https://promptcollection.manus.space?utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=prompt_collection";
+    const EBOOK_URL = "https://ideasmart.forum?utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=prompt_collection";
+    const EBOOK_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/4idF8uJSyVCDapKVHjfSyb/ideasmart-hero-reference-ZQQs9aW8R2uCR5yZhxemMQ.webp";
     return `
       <!-- Ebook Promo -->
       <tr>
         <td style="padding:0 20px 16px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+            <tr>
+              <td style="padding:0;">
+                <a href="${EBOOK_URL}" style="text-decoration:none;"><img src="${EBOOK_IMG}" alt="Collezione dei Migliori Prompt 2026" width="640" style="width:100%;height:auto;display:block;border-radius:12px 12px 0 0;"></a>
+              </td>
+            </tr>
             <tr>
               <td style="padding:28px 24px;">
                 <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">EDIZIONE PREMIUM 2026</div>
@@ -1013,26 +1019,6 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildEbookPromoBlock()}
 
-        <!-- BOX PROMO — By IDEASMART (stile TAAFT Prompt Pack) -->
-        <tr>
-          <td style="padding:0 20px 16px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-              <tr>
-                <td style="padding:28px 24px;">
-                  <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">By IDEASMART</div>
-                  <div style="font-size:26px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;margin-bottom:20px;">La tua redazione AI, pronta in 7 giorni</div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">Ogni giorno leggi queste news scritte, verificate e pubblicate da Agent Giornalisti. La stessa tecnologia pu&ograve; lavorare per la tua testata.</div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">Con <strong style="color:${BLACK};">IdeaSmart</strong> configuri i tuoi Agent Giornalisti, scegli settore, fonti e tono &mdash; e la redazione AI pubblica 24/7. Fact-checking automatico con tecnologia <strong style="color:${BLACK};">Verify&trade;</strong>.</div>
-                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:22px;">3 piani da &euro;500/mese. Revenue share al 20%. Setup in 5-7 giorni.</div>
-                  <div>
-                    <a href="${BASE_URL}/offertacommerciale?utm_source=newsletter&utm_medium=email&utm_campaign=promo_box" style="display:inline-block;padding:12px 28px;background:${BLACK};color:${WHITE};font-size:13px;font-weight:700;text-decoration:none;border-radius:6px;font-family:${F};letter-spacing:0.05em;">Scopri l&rsquo;offerta &rarr;</a>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
         ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
 
         ${buildBreakingSection()}
@@ -1056,6 +1042,26 @@ function buildUnifiedNewsletterHtml(opts: {
         ${buildBecomeSponsorBlock()}
 
         ${buildFeedbackSection()}
+
+        <!-- BOX PROMO — By IDEASMART (La tua redazione AI) -->
+        <tr>
+          <td style="padding:0 20px 16px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+              <tr>
+                <td style="padding:28px 24px;">
+                  <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:16px;">By IDEASMART</div>
+                  <div style="font-size:26px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;margin-bottom:20px;">La tua redazione AI, pronta in 7 giorni</div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">Ogni giorno leggi queste news scritte, verificate e pubblicate da Agent Giornalisti. La stessa tecnologia pu&ograve; lavorare per la tua testata.</div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:16px;">Con <strong style="color:${BLACK};">IdeaSmart</strong> configuri i tuoi Agent Giornalisti, scegli settore, fonti e tono &mdash; e la redazione AI pubblica 24/7. Fact-checking automatico con tecnologia <strong style="color:${BLACK};">Verify&trade;</strong>.</div>
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.65;margin-bottom:22px;">3 piani da &euro;500/mese. Revenue share al 20%. Setup in 5-7 giorni.</div>
+                  <div>
+                    <a href="${BASE_URL}/offertacommerciale?utm_source=newsletter&utm_medium=email&utm_campaign=promo_box" style="display:inline-block;padding:12px 28px;background:${BLACK};color:${WHITE};font-size:13px;font-weight:700;text-decoration:none;border-radius:6px;font-family:${F};letter-spacing:0.05em;">Scopri l&rsquo;offerta &rarr;</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
         <!-- CTA SUBSCRIBE -->
         <tr>
