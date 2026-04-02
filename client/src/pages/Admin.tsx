@@ -375,7 +375,7 @@ export default function Admin() {
                           {send.dayName} — Newsletter Unificata
                         </p>
                         <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          {send.date.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })} alle 11:00
+                          {send.date.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })} alle 11:30
                         </p>
                       </div>
                     </div>
@@ -389,7 +389,7 @@ export default function Admin() {
                 ))}
               </div>
               <p className="mt-3 text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.2)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Newsletter giornaliera unificata · Preview: 09:00 CET · Invio: 11:00 CET · Tutti i giorni
+                Newsletter giornaliera unificata · Preview: 09:00 CET · Invio: 11:30 CET · Tutti i giorni
               </p>
             </div>
           );
@@ -513,7 +513,7 @@ export default function Admin() {
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 📧 Newsletter Giornaliera Unificata
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Cadenza giornaliera — Preview 09:00 · Invio 11:00 CET</p>
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Cadenza giornaliera — Preview 09:00 · Invio 11:30 CET</p>
               {/* Prossimi Invii Newsletter */}
               {(() => {
                 const now = new Date();
@@ -535,7 +535,7 @@ export default function Admin() {
                   <div className="mb-4 rounded-lg border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
                     <div className="px-3 py-2 border-b border-white/8">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Prossimi Invii</span>
-                      <span className="text-[10px] text-white/20 ml-2">· Preview 09:00 · Invio 11:00 CET</span>
+                      <span className="text-[10px] text-white/20 ml-2">· Preview 09:00 · Invio 11:30 CET</span>
                     </div>
                     <table className="w-full text-xs">
                       <thead>

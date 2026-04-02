@@ -36,7 +36,7 @@ const CATEGORIES = [
   { icon: Zap, label: "Automazione & Workflow", count: 8 },
 ];
 
-const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/ideasmart_prompt_ebook"; // Placeholder — da aggiornare con link Stripe reale
+const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/4gM5kFdoT5yS0FZ6SocbC07";
 
 export default function EbookPrompt() {
   return (

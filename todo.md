@@ -2312,3 +2312,10 @@
 - [x] Aggiornare template HTML newsletter con tutte le nuove sezioni
 - [x] Aggiornare generatore newsletter per popolare sezioni dinamicamente
 - [x] Aggiornare Admin per visualizzare tool submissions e feedback
+
+## Task (2 Apr 2026 — Stripe, Open Source Tools, Newsletter 11:30)
+- [x] Posticipare invio newsletter dalle 11:00 alle 11:30 CET
+- [x] Inserire 5-10 Open Source AI Tools nel database (8 inseriti: Ollama, LangChain, HF Transformers, SD WebUI, Open WebUI, Whisper.cpp, CrewAI, Dify)
+- [x] Integrare Stripe per acquisto ebook Prompt 2026 (prod_UGDeLme5Ehqahx, price_1THhCzQQVoHT3i87f1Ljpyvd)
+- [x] Aggiornare landing page ebook con link Stripe reale (buy.stripe.com/4gM5kFdoT5yS0FZ6SocbC07)
+- [x] Inviare newsletter di test per verificare rendering (preview inviata a ac@acinelli.com)
