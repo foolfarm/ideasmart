@@ -2527,3 +2527,9 @@
 - [x] Aggiornare il template newsletter per includere sezioni dei nuovi canali (Prompt AI, Fare Soldi, Use Case AI, AI Tools, AI Radar, AI Invest)
 - [x] Aggiornare la logica di generazione contenuti newsletter per pescare dai nuovi canali
 - [x] Testare la generazione e l'invio della newsletter aggiornata — tutte 6 sezioni presenti con 3 contenuti ciascuna, bordi colorati, box COSA FARE ORA, link Vai al canale
+
+## Task (3 Apr 2026 — Rimozione sottosezioni + Newsletter miglioramenti)
+- [x] Eliminare le sottosezioni/tab da tutti i canali — mostrare tutti i contenuti in una sola lista senza filtri
+- [x] Aggiornare il link "Scopri la collezione" per puntare a https://ideasmart.forum/ (ChannelPage + Home)
+- [x] Aggiungere sommario dei nuovi canali nel bullet summary dell'intro newsletter (limite aumentato da 6 a 10)
+- [x] Inviare la newsletter di prova dalla dashboard admin — inviata a ac@acinelli.com

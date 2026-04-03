@@ -494,7 +494,7 @@ function buildUnifiedNewsletterHtml(opts: {
   }
 
   const bulletHtml = bulletItems
-    .slice(0, 6)
+    .slice(0, 10)
     .map(
       (t) =>
         `<li style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;margin-bottom:6px;">${t}</li>`

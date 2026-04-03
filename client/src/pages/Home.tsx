@@ -831,7 +831,7 @@ export default function Home() {
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
                   <a
-                    href="/prompt-collection"
+                    href="https://ideasmart.forum/"
                     className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
                     style={{ textDecoration: "none" }}
                   >

@@ -398,7 +398,6 @@ export default function ChannelPage({
   ctaLink,
   ctaLabel,
 }: ChannelPageProps) {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const today = new Date();
 
@@ -409,8 +408,8 @@ export default function ChannelPage({
 
   const filteredItems = useMemo(() => {
     if (!items) return [];
-    return activeCategory ? items.filter((i) => i.category === activeCategory) : items;
-  }, [items, activeCategory]);
+    return items;
+  }, [items]);
 
   // Assegna immagini: usa imageUrl dal DB oppure fallback
   const getImageForItem = (item: ContentItem, index: number): string => {
@@ -455,7 +454,7 @@ export default function ChannelPage({
         {/* ── Banner Promo Collezione Prompt ──────────────────────────── */}
         {!staticContent && (
           <a
-            href="/prompt-collection"
+            href="https://ideasmart.forum/"
             className="block my-4 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] hover:-translate-y-0.5 group"
             style={{ textDecoration: "none" }}
           >
@@ -478,30 +477,7 @@ export default function ChannelPage({
           </a>
         )}
 
-        {/* ── Category Filter ─────────────────────────────────────────── */}
-        {categories && categories.length > 0 && (
-          <div className="flex flex-wrap gap-2 py-4">
-            <button
-              onClick={() => setActiveCategory(null)}
-              className={`text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm transition-colors ${
-                !activeCategory ? "bg-[#1a1a1a] text-white" : "bg-[#1a1a1a]/8 text-[#1a1a1a] hover:bg-[#1a1a1a]/15"
-              }`}
-            >
-              Tutti
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm transition-colors ${
-                  activeCategory === cat ? "bg-[#1a1a1a] text-white" : "bg-[#1a1a1a]/8 text-[#1a1a1a] hover:bg-[#1a1a1a]/15"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Sottosezioni rimosse — tutti i contenuti in una sola lista */}
 
         {/* ── Content List — Magazine Layout ──────────────────────────── */}
         {!staticContent && (
