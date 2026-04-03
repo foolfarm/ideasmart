@@ -76,7 +76,7 @@ export const CHANNEL_SCHEDULE: ChannelConfig[] = [
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const BASE_URL = "https://ideasmart.ai";
+const BASE_URL = "https://ideasmart.biz";
 const TEST_EMAIL = "ac@acinelli.com";
 
 function getDateLabel(date: Date): string {
@@ -575,8 +575,8 @@ export async function sendPromoNewsletterToAll(): Promise<{
     let sendError: string | undefined;
     const BATCH_SIZE = 50;
     const BASE_URL = process.env.VITE_APP_ID
-      ? "https://ideasmart.ai"
-      : "https://ideasmart.manus.space";
+      ? "https://ideasmart.biz"
+      : "https://ideasmart.biz";
 
     for (let i = 0; i < allSubscribers.length; i += BATCH_SIZE) {
       const batch = allSubscribers.slice(i, i + BATCH_SIZE);

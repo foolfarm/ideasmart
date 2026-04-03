@@ -120,7 +120,7 @@ export default function PerGiornalisti() {
       <SEOHead
         title="IdeaSmart — La Redazione AI per Giornalisti e Testate Online | Da €500/mese"
         description="Lancia la tua testata online con una redazione AI. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. 10-15 articoli/giorno da €500/mese. Risparmi fino a €560k/anno rispetto a una redazione tradizionale."
-        canonical="https://ideasmart.ai/offertacommerciale"
+        canonical="https://ideasmart.biz/offertacommerciale"
         ogSiteName="IDEASMART"
       />
 
@@ -322,8 +322,8 @@ export default function PerGiornalisti() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <a href="https://ideasmart.ai" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline" style={{ fontFamily: FONT }}>
-              Guarda il risultato dal vivo → ideasmart.ai
+            <a href="https://ideasmart.biz" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline" style={{ fontFamily: FONT }}>
+              Guarda il risultato dal vivo → ideasmart.biz
             </a>
           </div>
         </Section>
@@ -786,8 +786,8 @@ export default function PerGiornalisti() {
               <button onClick={scrollToDemo} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: "#dc2626", borderRadius: 0 }}>
                 Prenota una demo →
               </button>
-              <a href="mailto:redazione@ideasmart.ai?subject=Richiesta%20demo%20%E2%80%94%20dalla%20pagina%20offerta-commerciale" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:bg-white hover:text-[#0a0a0a] text-center" style={{ borderRadius: 0 }}>
-                Scrivici: redazione@ideasmart.ai
+              <a href="mailto:redazione@ideasmart.biz?subject=Richiesta%20demo%20%E2%80%94%20dalla%20pagina%20offerta-commerciale" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:bg-white hover:text-[#0a0a0a] text-center" style={{ borderRadius: 0 }}>
+                Scrivici: redazione@ideasmart.biz
               </a>
             </div>
             <p className="mt-6 text-[13px] text-white/30" style={{ fontFamily: FONT }}>

@@ -120,7 +120,7 @@ export default function AiHome() {
       <SEOHead
         title="AI NEWS News — IDEASMART"
         description="Notizie aggiornate ogni giorno sull'Intelligenza Artificiale per il business italiano. Editoriale, analisi e startup del giorno."
-        canonical="https://ideasmart.ai/ai"
+        canonical="https://ideasmart.biz/ai"
         ogSiteName="IdeaSmart"
       />
 

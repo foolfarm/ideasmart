@@ -9,8 +9,8 @@ interface SendEmailOptions {
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
   const apiKey = process.env.SENDGRID_API_KEY;
-  // Mittente ufficiale IDEASMART — verificare info@ideasmart.ai su SendGrid Sender Authentication
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@ideasmart.ai";
+  // Mittente ufficiale IDEASMART — verificare info@ideasmart.biz su SendGrid Sender Authentication
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@ideasmart.biz";
   const fromName = process.env.SENDGRID_FROM_NAME || "Ideasmart Daily";
 
   if (!apiKey) {
@@ -76,7 +76,7 @@ export function buildMonthlyNewsletterHtml(opts: {
   unsubscribeUrl?: string; // URL personalizzato per disiscrizione (con token)
 }): string {
   const { month, issueNumber, news, unsubscribeUrl } = opts;
-  const baseUrl = process.env.VITE_APP_ID ? `https://ideasmart.ai` : `https://ideasmart.manus.space`;
+  const baseUrl = process.env.VITE_APP_ID ? `https://ideasmart.biz` : `https://ideasmart.biz`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
   // Colori per le categorie news
@@ -484,7 +484,7 @@ export function buildMonthlyNewsletterHtml(opts: {
       <table cellpadding="0" cellspacing="0" border="0" align="center">
         <tr>
           <td style="background:#00b4a0;border-radius:3px;padding:12px 28px;">
-            <a href="https://ideasmart.ai" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Abbonati gratis &rarr;</a>
+            <a href="https://ideasmart.biz" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Abbonati gratis &rarr;</a>
           </td>
         </tr>
       </table>
@@ -554,7 +554,7 @@ export function buildWelcomeEmailHtml(opts: {
   channels?: string[];
 }): string {
   const { name, unsubscribeUrl, preferencesUrl, channels } = opts;
-  const baseUrl = `https://ideasmart.ai`;
+  const baseUrl = `https://ideasmart.biz`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
   const greeting = name ? `Ciao ${name},` : "Ciao,";
 
@@ -662,7 +662,7 @@ export function buildWelcomeEmailHtml(opts: {
             </table>
 
             <p style="font-size:13px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
-              Hai domande? Scrivi a <a href="mailto:info@ideasmart.ai" style="color:#00b4a0;text-decoration:none;">info@ideasmart.ai</a>
+              Hai domande? Scrivi a <a href="mailto:info@ideasmart.biz" style="color:#00b4a0;text-decoration:none;">info@ideasmart.biz</a>
             </p>
           </td>
         </tr>
@@ -674,7 +674,7 @@ export function buildWelcomeEmailHtml(opts: {
               &copy; 2026 <strong>IDEASMART</strong> &mdash; La Prima Testata Giornalistica HumanLess
             </p>
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 6px;text-align:center;">
-              Hai ricevuto questa email perch&eacute; ti sei iscritto su <a href="${baseUrl}" style="color:#00b4a0;text-decoration:none;">ideasmart.ai</a>.
+              Hai ricevuto questa email perch&eacute; ti sei iscritto su <a href="${baseUrl}" style="color:#00b4a0;text-decoration:none;">ideasmart.biz</a>.
             </p>
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
               ${preferencesUrl ? `<a href="${preferencesUrl}" style="color:#00b4a0;text-decoration:underline;">Gestisci preferenze canali</a>&nbsp;&middot;&nbsp;` : ''}<a href="${unsubLink}" style="color:#e84f00;text-decoration:underline;">Annulla iscrizione</a>
@@ -711,7 +711,7 @@ export function buildFullNewsletterHtml(opts: {
   isTest?: boolean;
 }): string {
   const { dateLabel, editorial, startup, news, reportages, analyses, researches, unsubscribeUrl, trackingPixelUrl, channelName, frequencyLabel, isTest } = opts;
-  const baseUrl = `https://ideasmart.ai`;
+  const baseUrl = `https://ideasmart.biz`;
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
   // ── Font stack — SF Pro / system-ui (identico al sito) ────────────────────────
@@ -1127,7 +1127,7 @@ export function buildFullNewsletterHtml(opts: {
                       <span style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};">IDEASMART RESEARCH</span>
                     </td>
                     <td align="right">
-                      <a href="https://ideasmart.ai/research" style="font-size:9px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};letter-spacing:0.1em;">TUTTE LE RICERCHE &rarr;</a>
+                      <a href="https://ideasmart.biz/research" style="font-size:9px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};letter-spacing:0.1em;">TUTTE LE RICERCHE &rarr;</a>
                     </td>
                   </tr>
                 </table>
@@ -1143,7 +1143,7 @@ export function buildFullNewsletterHtml(opts: {
           };
           const catLabel = catLabels[r.category] ?? r.category.toUpperCase();
           const isRoD = r.isResearchOfDay;
-          const researchUrl = r.id ? `https://ideasmart.ai/research/${r.id}` : 'https://ideasmart.ai/research';
+          const researchUrl = r.id ? `https://ideasmart.biz/research/${r.id}` : 'https://ideasmart.biz/research';
           return `
         <tr>
           <td style="background:${idx % 2 === 0 ? WHITE : CREAM};padding:16px 28px;border-top:1px solid ${BORDER};">
@@ -1171,7 +1171,7 @@ export function buildFullNewsletterHtml(opts: {
         <tr><td style="background:${CREAM2};padding:12px 28px 20px;">
           <table cellpadding="0" cellspacing="0" border="0" align="center">
             <tr><td style="background:${BLACK};border-radius:4px;padding:12px 28px;">
-              <a href="https://ideasmart.ai/research" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${FONT};">Vai a IdeaSmart Research &rarr;</a>
+              <a href="https://ideasmart.biz/research" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${FONT};">Vai a IdeaSmart Research &rarr;</a>
             </td></tr>
           </table>
         </td></tr>` : ''}
@@ -1218,7 +1218,7 @@ export function buildFullNewsletterHtml(opts: {
               &nbsp;&middot;&nbsp;
               <a href="${baseUrl}/privacy" style="color:${MUTED};text-decoration:underline;">Privacy Policy</a>
               &nbsp;&middot;&nbsp;
-              <a href="${baseUrl}" style="color:${BLACK};text-decoration:none;font-weight:600;">ideasmart.ai</a>
+              <a href="${baseUrl}" style="color:${BLACK};text-decoration:none;font-weight:600;">ideasmart.biz</a>
             </p>
           </td>
         </tr>
@@ -1249,7 +1249,7 @@ export function buildPromoNewsletterHtml(opts: {
   isTest?: boolean;
 }): string {
   const { dateLabel, unsubscribeUrl, trackingPixelUrl, isTest } = opts;
-  const baseUrl = "https://ideasmart.ai";
+  const baseUrl = "https://ideasmart.biz";
   const unsubLink = unsubscribeUrl ?? `${baseUrl}/unsubscribe`;
 
   const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";

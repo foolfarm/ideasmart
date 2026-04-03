@@ -164,7 +164,7 @@ export default function DealroomHome() {
       <SEOHead
         title="DEALROOM \u2014 IDEASMART"
         description="Notizie su round, funding, seed, Series A/B e investimenti venture capital. Focus sul mercato italiano, europeo e globale."
-        canonical="https://ideasmart.ai/dealroom"
+        canonical="https://ideasmart.biz/dealroom"
         ogSiteName="IdeaSmart"
       />
 

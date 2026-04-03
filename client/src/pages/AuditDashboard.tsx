@@ -501,7 +501,7 @@ export default function AuditDashboard() {
           </div>
           <div className="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-200 text-sm text-blue-700">
             <span className="font-semibold">Notifiche automatiche:</span> Se l'audit rileva ≥2 contenuti non coerenti o ≥4 parziali,
-            viene inviata automaticamente un'email di alert a <strong>{schedulerStatus?.adminEmail ?? "info@ideasmart.ai"}</strong>.
+            viene inviata automaticamente un'email di alert a <strong>{schedulerStatus?.adminEmail ?? "info@ideasmart.biz"}</strong>.
           </div>
         </div>
 

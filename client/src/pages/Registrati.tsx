@@ -47,7 +47,7 @@ export default function Registrati() {
       <SEOHead
         title="Registrati — IDEASMART"
         description="Crea il tuo account gratuito IdeaSmart e accedi a tutte le analisi su AI, Startup e Venture Capital."
-        canonical="https://ideasmart.ai/registrati"
+        canonical="https://ideasmart.biz/registrati"
         ogSiteName="IdeaSmart"
       />
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>

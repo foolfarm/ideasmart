@@ -69,7 +69,7 @@ import { runSiteHealthCheck } from "./siteHealthCheck";
 
 // ── Helper: invia alert email al team operativo ───────────────────────────────
 async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<void> {
-  const ALERT_EMAIL = "info@ideasmart.ai";
+  const ALERT_EMAIL = "info@ideasmart.biz";
   try {
     const result = await sendEmail({
       to: ALERT_EMAIL,
@@ -295,7 +295,7 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
   // NEWSLETTER GIORNALIERA PER CANALE
   // ══════════════════════════════════════════════════════════════════════════
-  // Ogni giorno alle 07:00 viene inviata una preview a info@ideasmart.ai
+  // Ogni giorno alle 07:00 viene inviata una preview a info@ideasmart.biz
   // Ogni giorno alle 07:30 viene inviata la newsletter massiva al canale del giorno:
   //   Lunedì    → AI News
   //   Mercoledì → Startup News

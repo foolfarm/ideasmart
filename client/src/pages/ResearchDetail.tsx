@@ -255,7 +255,7 @@ export default function ResearchDetail() {
               Analisi su misura su venture capital, AI trend e investimenti tecnologici per il tuo business.
             </p>
             <a
-              href="mailto:research@ideasmart.ai"
+              href="mailto:research@ideasmart.biz"
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-6 py-3 hover:opacity-80 transition-opacity"
               style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: SF }}
             >

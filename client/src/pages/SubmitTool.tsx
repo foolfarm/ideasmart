@@ -159,7 +159,7 @@ export default function SubmitTool() {
             Vuoi una posizione in evidenza nella newsletter?
           </p>
           <a
-            href="mailto:info@ideasmart.ai?subject=Pubblicità%20Newsletter%20IdeaSmart"
+            href="mailto:info@ideasmart.biz?subject=Pubblicità%20Newsletter%20IdeaSmart"
             className="text-[#00a896] font-semibold text-sm hover:underline"
           >
             Pubblicizza su IdeaSmart Newsletter →

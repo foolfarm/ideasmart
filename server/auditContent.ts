@@ -19,7 +19,7 @@ import { eq, and, isNotNull, desc } from "drizzle-orm";
 // ── Configurazione ─────────────────────────────────────────────────────────
 const FETCH_TIMEOUT_MS = 10_000;
 const MAX_TEXT_LENGTH = 3000; // caratteri estratti dalla pagina per il LLM
-const USER_AGENT = "Mozilla/5.0 (compatible; IDEASMART-AuditBot/1.0; +https://www.ideasmart.ai)";
+const USER_AGENT = "Mozilla/5.0 (compatible; IDEASMART-AuditBot/1.0; +https://www.ideasmart.biz)";
 
 // ── Estrazione testo da HTML ───────────────────────────────────────────────
 function extractTextFromHtml(html: string): string {

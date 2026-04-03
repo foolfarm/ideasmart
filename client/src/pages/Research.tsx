@@ -533,12 +533,12 @@ export default function Research() {
 
                 <div className="mt-6 space-y-2">
                   <a
-                    href="mailto:research@ideasmart.ai"
+                    href="mailto:research@ideasmart.biz"
                     className="flex items-center justify-center gap-2 w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
                     style={{ background: "#1a1a1a", color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     <Mail className="w-3.5 h-3.5" />
-                    research@ideasmart.ai
+                    research@ideasmart.biz
                   </a>
                   <a
                     href="/business"

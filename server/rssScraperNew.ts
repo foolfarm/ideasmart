@@ -26,7 +26,7 @@ import type { RssSource } from "./rssSources";
 const rssParser = new Parser({
   timeout: 10000,
   headers: {
-    "User-Agent": "IDEASMART/1.0 (news aggregator; https://ideasmart.ai)",
+    "User-Agent": "IDEASMART/1.0 (news aggregator; https://ideasmart.biz)",
     "Accept": "application/rss+xml, application/xml, text/xml, */*"
   },
   customFields: {
@@ -319,7 +319,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
       maxRedirects: 3,
       validateStatus: (status) => status < 500,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.ai)"
+        "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.biz)"
       }
     });
     return response.status < 400;
@@ -331,7 +331,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
         maxRedirects: 3,
         validateStatus: (status) => status < 500,
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.ai)"
+          "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.biz)"
         },
         responseType: "stream"
       });

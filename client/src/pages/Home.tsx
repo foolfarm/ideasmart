@@ -406,7 +406,7 @@ export default function Home() {
       <SEOHead
         title="IdeaSmart — AI, Startup e Venture Capital"
         description="Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee."
-        canonical="https://ideasmart.ai"
+        canonical="https://ideasmart.biz"
         ogSiteName="IdeaSmart"
       />
 

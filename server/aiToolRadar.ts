@@ -276,10 +276,10 @@ Link: URL diretto
 
 Trend: 1 frase su cosa emerge (max 2 righe)
 
-Segui \u2192 ideasmart.ai
+Segui \u2192 ideasmart.biz
 #AI #AITools #IDEASMART
 
-Andrea Cinelli | Tech Expert | ideasmart.ai
+Andrea Cinelli | Tech Expert | ideasmart.biz
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
 
@@ -298,8 +298,8 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
     console.warn(`[AIToolRadar] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
     const cutPoint = text.lastIndexOf('\n', 2950);
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
-    if (!text.includes('ideasmart.ai')) {
-      text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.ai';
+    if (!text.includes('ideasmart.biz')) {
+      text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.biz';
     }
   }
   return text;

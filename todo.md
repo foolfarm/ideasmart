@@ -2552,3 +2552,12 @@
 - [x] Audit esteso a tutti i percorsi: morning, startup-afternoon, ai-tool-radar, dealroom, research
 - [x] markImageUsedToday dopo ogni pubblicazione riuscita
 - [x] Tutti i 94 test passati (11 file)
+
+## Task (3 Apr 2026 — Dominio principale ideasmart.biz)
+- [x] Cercare tutte le occorrenze di ideasmart.ai nel codice e sostituirle con ideasmart.biz (41 file aggiornati)
+- [x] Cercare tutte le occorrenze di ideasmart.manus.space e sostituirle con ideasmart.biz (2 file aggiornati)
+- [x] Aggiornare i link nella newsletter (unsubscribe, canali, BASE_URL, email contatto)
+- [x] Aggiornare i link nei post LinkedIn (SITE_BASE_URL, prompt LLM, firma)
+- [x] Aggiornare i meta tag SEO e canonical URL (og:url, canonical href)
+- [x] Aggiornare tutti gli indirizzi email: info@, business@, redazione@ → @ideasmart.biz
+- [x] Verificare che non ci siano errori dopo le sostituzioni — 94 test passati, 0 errori TypeScript

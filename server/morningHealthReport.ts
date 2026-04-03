@@ -340,7 +340,7 @@ function buildReportHtml(data: {
           <tr>
             <td style="background:#0d1528;border-left:1px solid rgba(0,200,150,0.2);border-right:1px solid rgba(0,200,150,0.2);padding:0 32px 28px;">
               <div style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;">
-                <a href="https://www.ideasmart.ai/admin/system-health" style="display:inline-block;background:#00c896;color:#0a0f1e;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1px;padding:12px 28px;border-radius:6px;text-transform:uppercase;">
+                <a href="https://www.ideasmart.biz/admin/system-health" style="display:inline-block;background:#00c896;color:#0a0f1e;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1px;padding:12px 28px;border-radius:6px;text-transform:uppercase;">
                   Apri Pannello Salute Sistema →
                 </a>
               </div>
@@ -352,7 +352,7 @@ function buildReportHtml(data: {
             <td style="background:#060b18;border:1px solid rgba(0,200,150,0.1);border-top:none;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
               <p style="margin:0;font-size:11px;color:#4a5568;">
                 Report automatico generato da <strong style="color:#00c896;">IdeaSmart</strong> · La Prima Testata Giornalistica Humanless Italiana<br>
-                Inviato ogni mattina alle 08:00 CET · <a href="https://www.ideasmart.ai" style="color:#00c896;text-decoration:none;">www.ideasmart.ai</a>
+                Inviato ogni mattina alle 08:00 CET · <a href="https://www.ideasmart.biz" style="color:#00c896;text-decoration:none;">www.ideasmart.biz</a>
               </p>
             </td>
           </tr>

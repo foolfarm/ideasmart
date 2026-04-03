@@ -55,7 +55,7 @@ export default function Accedi() {
       <SEOHead
         title="Accedi — IDEASMART"
         description="Accedi al tuo account IdeaSmart per leggere tutte le analisi su AI, Startup e Venture Capital."
-        canonical="https://ideasmart.ai/accedi"
+        canonical="https://ideasmart.biz/accedi"
         ogSiteName="IdeaSmart"
       />
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>

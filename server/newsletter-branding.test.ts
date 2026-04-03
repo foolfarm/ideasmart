@@ -13,7 +13,7 @@ describe("Newsletter — nuovo design allineato al sito", () => {
     researches: [
       { id: 1, title: "Research 1", summary: "Summary", category: "ai_trends", source: "Gartner", isResearchOfDay: true },
     ],
-    unsubscribeUrl: "https://ideasmart.ai/unsubscribe",
+    unsubscribeUrl: "https://ideasmart.biz/unsubscribe",
     isTest: true,
   };
 
@@ -122,7 +122,7 @@ describe("Newsletter — nuovo design allineato al sito", () => {
     expect(html).toContain("Gestisci canali");
     expect(html).toContain("Annulla iscrizione");
     expect(html).toContain("Privacy Policy");
-    expect(html).toContain("ideasmart.ai");
+    expect(html).toContain("ideasmart.biz");
   });
 
   it("Sezione ricerche con badge nero e stile chiaro (non dark)", () => {

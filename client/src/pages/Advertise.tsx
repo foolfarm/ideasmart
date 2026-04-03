@@ -204,7 +204,7 @@ export default function Advertise() {
       toast.success("Richiesta inviata! Ti contatteremo entro 24 ore.");
     },
     onError: () => {
-      toast.error("Errore nell'invio. Scrivi direttamente a info@ideasmart.ai");
+      toast.error("Errore nell'invio. Scrivi direttamente a info@ideasmart.biz");
     },
   });
 
@@ -225,7 +225,7 @@ export default function Advertise() {
       <SEOHead
         title="Advertising — IDEASMART"
         description="Raggiungi 8.000+ professionisti B2B italiani dell'AI e del business con i formati pubblicitari di IdeaSmart: banner, newsletter, reportage branded e analisi sponsorizzate."
-        canonical="https://ideasmart.ai/advertise"
+        canonical="https://ideasmart.biz/advertise"
         ogSiteName="IDEASMART"
       />
       <style>{`
@@ -625,8 +625,8 @@ export default function Advertise() {
                     style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Oppure scrivi direttamente a{" "}
-                    <a href="mailto:info@ideasmart.ai" style={{ color: ACCENT }}>
-                      info@ideasmart.ai
+                    <a href="mailto:info@ideasmart.biz" style={{ color: ACCENT }}>
+                      info@ideasmart.biz
                     </a>
                   </p>
                 </div>
@@ -654,7 +654,7 @@ export default function Advertise() {
             >
               © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
-                ideasmart.ai
+                ideasmart.biz
               </a>
             </p>
           </div>

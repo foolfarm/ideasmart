@@ -119,7 +119,7 @@ export default function StartupHome() {
       <SEOHead
         title="STARTUP NEWS — IDEASMART"
         description="Notizie aggiornate ogni giorno sull'ecosistema startup italiano ed europeo. Editoriale, analisi e startup del giorno."
-        canonical="https://ideasmart.ai/startup"
+        canonical="https://ideasmart.biz/startup"
         ogSiteName="IdeaSmart"
       />
 

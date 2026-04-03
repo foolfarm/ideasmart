@@ -24,7 +24,7 @@ import { notifyOwner } from "./_core/notification";
 // ─── Configurazione ───────────────────────────────────────────────────────────
 
 const TEST_EMAIL = "ac@acinelli.com";
-const BASE_URL = "https://ideasmart.ai";
+const BASE_URL = "https://ideasmart.biz";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

@@ -14,7 +14,7 @@ import { getDb } from "../server/db";
 import { linkedinPosts } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 
-const SITE_BASE_URL = "https://ideasmart.ai";
+const SITE_BASE_URL = "https://ideasmart.biz";
 
 // ── Configurazione post personalizzati ──────────────────────────────────────
 const CUSTOM_POSTS: Array<{

@@ -298,7 +298,7 @@ export default function Tecnologia() {
       <SEOHead
         title="Tecnologia — IDEASMART"
         description="Come funziona IdeaSmart: la piattaforma editoriale agentica con Verify, l'algoritmo proprietario che valida ogni notizia su sei dimensioni di qualità informativa."
-        canonical="https://ideasmart.ai/tecnologia"
+        canonical="https://ideasmart.biz/tecnologia"
         ogSiteName="IDEASMART"
       />
       <style>{`
@@ -769,7 +769,7 @@ export default function Tecnologia() {
             >
               © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
-                ideasmart.ai
+                ideasmart.biz
               </a>
             </p>
           </div>

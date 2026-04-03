@@ -8,10 +8,10 @@
  *   2. Estrae tutti i link href presenti nell'HTML
  *   3. Verifica ogni link con una richiesta HEAD (timeout 8s)
  *   4. Classifica i link: OK (2xx/3xx), BROKEN (4xx/5xx), TIMEOUT, SKIP (mailto/tel)
- *   5. Invia un report via email a info@ideasmart.ai con il riepilogo
- *   6. Se ci sono link broken su ideasmart.ai, blocca l'invio e notifica l'owner
+ *   5. Invia un report via email a info@ideasmart.biz con il riepilogo
+ *   6. Se ci sono link broken su ideasmart.biz, blocca l'invio e notifica l'owner
  *
- * Soglia di blocco: qualsiasi link ideasmart.ai che risponde 4xx/5xx
+ * Soglia di blocco: qualsiasi link ideasmart.biz che risponde 4xx/5xx
  * (i link esterni possono fallire senza bloccare l'invio)
  */
 
@@ -19,8 +19,8 @@ import { sendEmail } from "./email";
 import { buildChannelNewsletter, getTodayChannel } from "./dailyChannelNewsletter";
 import { notifyOwner } from "./_core/notification";
 
-const AUDIT_EMAIL = "info@ideasmart.ai";
-const BASE_DOMAIN = "ideasmart.ai";
+const AUDIT_EMAIL = "info@ideasmart.biz";
+const BASE_DOMAIN = "ideasmart.biz";
 const TIMEOUT_MS = 8000;
 
 // ─── Tipi ────────────────────────────────────────────────────────────────────
@@ -207,7 +207,7 @@ export async function runNewsletterLinkAudit(): Promise<AuditReport | null> {
   if (shouldBlockSend) {
     await notifyOwner({
       title: `🚨 LINK ROTTI nella newsletter ${channel.name} — INVIO BLOCCATO`,
-      content: `Audit pre-invio ha rilevato ${internalBroken.length} link interni rotti su ideasmart.ai.\n\nL'invio massivo delle 07:30 è stato BLOCCATO.\n\nLink rotti:\n${internalBroken.map(r => `• ${r.url} → HTTP ${r.httpCode ?? r.errorMessage}`).join("\n")}\n\nVerifica le pagine e forza l'invio manualmente dalla dashboard admin.`,
+      content: `Audit pre-invio ha rilevato ${internalBroken.length} link interni rotti su ideasmart.biz.\n\nL'invio massivo delle 07:30 è stato BLOCCATO.\n\nLink rotti:\n${internalBroken.map(r => `• ${r.url} → HTTP ${r.httpCode ?? r.errorMessage}`).join("\n")}\n\nVerifica le pagine e forza l'invio manualmente dalla dashboard admin.`,
     });
   }
 
@@ -286,7 +286,7 @@ async function sendAuditReportEmail(report: AuditReport): Promise<void> {
 
     ${report.internalBroken.length > 0 ? `
     <!-- Link interni rotti -->
-    <h3 style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 8px;">🚨 Link interni rotti (ideasmart.ai) — INVIO BLOCCATO</h3>
+    <h3 style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 8px;">🚨 Link interni rotti (ideasmart.biz) — INVIO BLOCCATO</h3>
     <table width="100%" style="border-collapse:collapse;margin-bottom:20px;border:1px solid #fecaca;border-radius:4px;overflow:hidden;">
       <tr style="background:#fef2f2;">
         <th style="padding:8px 10px;font-size:11px;text-align:left;color:#dc2626;">URL</th>

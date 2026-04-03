@@ -18,7 +18,7 @@ import { sendEmail } from "./email";
 import { getDb } from "./db";
 import { healthCheckLogs } from "../drizzle/schema";
 
-const PROD_URL = "https://ideasmart.ai";
+const PROD_URL = "https://ideasmart.biz";
 const ALERT_EMAIL = "info@andreacinelli.com";
 const FETCH_TIMEOUT = 15_000;
 
@@ -214,7 +214,7 @@ function buildAlertEmailHtml(report: HealthReport): string {
     <!-- Header -->
     <div style="background:#dc2626;padding:20px 28px;border-radius:8px 8px 0 0;">
       <h1 style="margin:0;font-size:18px;font-weight:900;color:#ffffff;letter-spacing:0.05em;">
-        🚨 ALERT: Problemi rilevati su ideasmart.ai
+        🚨 ALERT: Problemi rilevati su ideasmart.biz
       </h1>
       <p style="margin:6px 0 0;font-size:12px;color:rgba(255,255,255,0.8);">
         Health Check automatico · ${report.timestamp}
@@ -265,7 +265,7 @@ function buildAlertEmailHtml(report: HealthReport): string {
     <div style="background:#f3f4f6;padding:16px 28px;border-radius:0 0 8px 8px;border:1px solid #e5e7eb;border-top:none;">
       <p style="margin:0;font-size:11px;color:#6b7280;text-align:center;">
         Health Check automatico · Eseguito ogni ora · 
-        <a href="https://www.ideasmart.ai" style="color:#059669;text-decoration:none;">ideasmart.ai</a>
+        <a href="https://www.ideasmart.biz" style="color:#059669;text-decoration:none;">ideasmart.biz</a>
       </p>
     </div>
   </div>

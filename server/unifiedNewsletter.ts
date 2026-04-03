@@ -42,7 +42,7 @@ import { eq, desc, and, sql } from "drizzle-orm";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 
-const BASE_URL = "https://ideasmart.ai";
+const BASE_URL = "https://ideasmart.biz";
 const TEST_EMAIL = "ac@acinelli.com";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -959,7 +959,7 @@ function buildUnifiedNewsletterHtml(opts: {
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};text-align:center;">
             <tr>
               <td style="padding:20px 24px;">
-                <div style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;">Vuoi pubblicizzare il tuo prodotto sulla newsletter IdeaSmart? <a href="mailto:info@ideasmart.ai?subject=Pubblicità Newsletter IdeaSmart" style="font-weight:700;color:${ACCENT};text-decoration:underline;font-family:${F};">Contattaci</a></div>
+                <div style="font-size:14px;color:${DARK};font-family:${F};line-height:1.6;">Vuoi pubblicizzare il tuo prodotto sulla newsletter IdeaSmart? <a href="mailto:info@ideasmart.biz?subject=Pubblicità Newsletter IdeaSmart" style="font-weight:700;color:${ACCENT};text-decoration:underline;font-family:${F};">Contattaci</a></div>
               </td>
             </tr>
           </table>
@@ -1128,7 +1128,7 @@ function buildUnifiedNewsletterHtml(opts: {
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border:1px solid ${BORDER};text-align:center;">
             <tr>
               <td style="padding:28px 24px;">
-                <div style="font-size:18px;font-weight:700;color:${BLACK};font-family:${F};line-height:1.4;margin-bottom:12px;">Raggiungi la community IdeaSmart. <a href="mailto:info@ideasmart.ai?subject=Diventa Sponsor IdeaSmart" style="font-weight:800;color:${BLACK};text-decoration:underline;font-family:${F};">Diventa sponsor</a></div>
+                <div style="font-size:18px;font-weight:700;color:${BLACK};font-family:${F};line-height:1.4;margin-bottom:12px;">Raggiungi la community IdeaSmart. <a href="mailto:info@ideasmart.biz?subject=Diventa Sponsor IdeaSmart" style="font-weight:800;color:${BLACK};text-decoration:underline;font-family:${F};">Diventa sponsor</a></div>
               </td>
             </tr>
           </table>
@@ -1352,7 +1352,7 @@ function buildUnifiedNewsletterHtml(opts: {
                     <span style="color:${MUTED};margin:0 8px;">&middot;</span>
                     <a href="${BASE_URL}/privacy" style="font-size:12px;color:${MUTED};text-decoration:underline;font-family:${F};">Privacy</a>
                     <span style="color:${MUTED};margin:0 8px;">&middot;</span>
-                    <a href="${BASE_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F};">ideasmart.ai</a>
+                    <a href="${BASE_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F};">ideasmart.biz</a>
                   </div>
                 </td>
               </tr>

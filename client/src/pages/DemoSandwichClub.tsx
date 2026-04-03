@@ -614,7 +614,7 @@ export default function DemoSandwichClub() {
                 sandwichclub.it
               </a>
               <a href="/" className="hover:text-[#1a1a1a] transition-colors">
-                ideasmart.ai
+                ideasmart.biz
               </a>
             </div>
           </div>

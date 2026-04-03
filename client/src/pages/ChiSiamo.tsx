@@ -117,7 +117,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Come posso iniziare?",
-    a: "Prenota una demo per vedere la piattaforma in azione e discutere il modello più adatto alle tue esigenze. Puoi scriverci a info@ideasmart.ai o prenotare direttamente dal sito."
+    a: "Prenota una demo per vedere la piattaforma in azione e discutere il modello più adatto alle tue esigenze. Puoi scriverci a info@ideasmart.biz o prenotare direttamente dal sito."
   },
 ];
 
@@ -178,7 +178,7 @@ export default function ChiSiamo() {
       <SEOHead
         title="Ideasmart — Piattaforma di Giornalismo Agentico"
         description="Il primo giornale che funziona anche senza una redazione. Costruisci e scala una testata con l'AI agentica. Oltre 4.000 fonti certificate, 8 agenti AI specializzati."
-        canonical="https://ideasmart.ai/chi-siamo"
+        canonical="https://ideasmart.biz/chi-siamo"
         ogSiteName="IDEASMART"
       />
 
@@ -727,7 +727,7 @@ export default function ChiSiamo() {
                 <p className="text-xs text-white/40 leading-snug">Per progetti speciali: multi-testata, integrazioni proprietarie, SLA dedicato, white-label.</p>
               </div>
               <a
-                href="mailto:info@ideasmart.ai?subject=Piano Custom Piattaforma Ideasmart"
+                href="mailto:info@ideasmart.biz?subject=Piano Custom Piattaforma Ideasmart"
                 className="mt-6 inline-block px-6 py-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
                 style={{ background: '#ffffff' }}
               >
@@ -890,14 +890,14 @@ export default function ChiSiamo() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@ideasmart.ai?subject=Demo Piattaforma Giornalismo Agentico"
+                href="mailto:info@ideasmart.biz?subject=Demo Piattaforma Giornalismo Agentico"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
                 style={{ background: "#ffffff", borderRadius: "0" }}
               >
                 Prenota una demo →
               </a>
               <a
-                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Ideasmart"
+                href="mailto:info@ideasmart.biz?subject=Informazioni Piattaforma Ideasmart"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:border-white hover:bg-white hover:text-[#0a0a0a]"
                 style={{ borderRadius: "0" }}
               >

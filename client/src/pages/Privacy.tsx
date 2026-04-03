@@ -6,8 +6,8 @@ import { useLocation } from "wouter";
 
 const LAST_UPDATE = "15 marzo 2026";
 const OWNER = "IDEASMART — AI for Business";
-const OWNER_EMAIL = "info@ideasmart.ai";
-const SITE_URL = "https://ideasmart.ai";
+const OWNER_EMAIL = "info@ideasmart.biz";
+const SITE_URL = "https://ideasmart.biz";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
