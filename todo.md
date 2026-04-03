@@ -2569,3 +2569,10 @@
 - [x] Redirect da ideasmart.manus.space e ideasmartai-uypaon6i.manus.space → ideasmart.biz
 - [x] Redirect da www.ideasmart.biz → ideasmart.biz (naked domain)
 - [x] Test unitari per il redirect — 11 test passati, 105 test totali
+
+## Task (3 Apr 2026 — Miglioramento menu e barra sotto header)
+- [x] Migliorare fluidità e design del menu slide-over CANALI (animazioni CSS fluide, cubic-bezier, hover intent, staggered entries)
+- [x] Rimuovere "Chi Siamo" dal menu slide-over
+- [x] Aggiungere barra sotto header con link "Chi Siamo" e pulsante "Demo" rosso (link a ideasmart.technology)
+- [x] Barra visibile su tutte le pagine (SectionNav condiviso tra homepage, canali e pagine interne)
+- [x] Newsletter unificata di test inviata a ac@acinelli.com (5 AI, 5 Startup, 2 Dealroom, 5 Breaking, 5 Research + 6 nuovi canali)

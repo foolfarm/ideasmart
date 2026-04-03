@@ -1,13 +1,13 @@
 /**
- * SectionNav — Menu a tendina laterale sinistro con tutti i canali
- * Design migliorato: titolo "Naviga i canali", effetti interattivi, animazioni
+ * SectionNav — Menu slide-over canali + barra sotto header con Chi Siamo e Demo
+ * v2: animazioni fluide CSS, rimozione Chi Siamo dal panel, barra sotto header
  */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Play, Cpu, ClipboardCopy, Zap, DollarSign, Wrench, ShieldCheck,
-  TrendingUp, Rocket, Handshake, BookOpen, Info, Menu, X, ChevronRight,
-  Sparkles,
+  TrendingUp, Rocket, Handshake, BookOpen, Menu, X, ChevronRight,
+  Sparkles, ExternalLink, Info, MonitorPlay,
 } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -26,40 +26,22 @@ const ALL_CHANNELS = [
   { key: "research",    label: "AI RESEARCH",        path: "/research",          icon: BookOpen,      desc: "Ricerche e analisi" },
 ];
 
-const EXTRA_LINKS = [
-  { key: "chi-siamo", label: "CHI SIAMO", path: "/chi-siamo", icon: Info, desc: "La nostra missione" },
-];
-
 export default function SectionNav() {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverIntentRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leaveIntentRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close on route change
   useEffect(() => { setOpen(false); }, [location]);
 
-  // Close on outside click
-  useEffect(() => {
-    if (!open) return;
-    function handleClick(e: MouseEvent) {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [open]);
-
   // Close on Escape key
   useEffect(() => {
     if (!open) return;
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
@@ -74,47 +56,39 @@ export default function SectionNav() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  // Mouseover open / mouseleave close with delay
-  const handleTriggerMouseEnter = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-    hoverTimeoutRef.current = setTimeout(() => {
-      setOpen(true);
-    }, 200);
-  };
-
-  const handleTriggerMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    closeTimeoutRef.current = setTimeout(() => {
-      setOpen(false);
-    }, 400);
-  };
-
-  const handlePanelMouseEnter = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-  };
-
-  const handlePanelMouseLeave = () => {
-    closeTimeoutRef.current = setTimeout(() => {
-      setOpen(false);
-    }, 400);
-  };
-
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
-      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+      if (hoverIntentRef.current) clearTimeout(hoverIntentRef.current);
+      if (leaveIntentRef.current) clearTimeout(leaveIntentRef.current);
     };
   }, []);
+
+  // ─── Hover intent: open on hover with small delay, close with grace period ──
+  const cancelLeave = useCallback(() => {
+    if (leaveIntentRef.current) {
+      clearTimeout(leaveIntentRef.current);
+      leaveIntentRef.current = null;
+    }
+  }, []);
+
+  const cancelHover = useCallback(() => {
+    if (hoverIntentRef.current) {
+      clearTimeout(hoverIntentRef.current);
+      hoverIntentRef.current = null;
+    }
+  }, []);
+
+  const scheduleOpen = useCallback(() => {
+    cancelLeave();
+    cancelHover();
+    hoverIntentRef.current = setTimeout(() => setOpen(true), 150);
+  }, [cancelLeave, cancelHover]);
+
+  const scheduleClose = useCallback(() => {
+    cancelHover();
+    leaveIntentRef.current = setTimeout(() => setOpen(false), 350);
+  }, [cancelHover]);
 
   // Find active channel
   const activeChannel = ALL_CHANNELS.find(
@@ -123,30 +97,30 @@ export default function SectionNav() {
 
   return (
     <>
-      {/* Trigger bar — sticky */}
+      {/* ═══ TOP BAR: CANALI button + Chi Siamo + Demo ═══ */}
       <div
-        className="flex items-center bg-white"
+        className="flex items-center bg-white border-b border-[#1a1a1a]/8"
         style={{ fontFamily: SF }}
       >
-        {/* Hamburger button */}
+        {/* Hamburger CANALI button */}
         <button
           ref={triggerRef}
           onClick={() => setOpen(!open)}
-          onMouseEnter={handleTriggerMouseEnter}
-          onMouseLeave={handleTriggerMouseLeave}
-          className="flex items-center gap-2.5 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/10 group"
+          onMouseEnter={scheduleOpen}
+          onMouseLeave={scheduleClose}
+          className="flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/10 group"
           aria-label={open ? "Chiudi menu canali" : "Apri menu canali"}
         >
           <span className="relative w-4 h-4 flex items-center justify-center">
             <Menu
-              size={16}
+              size={15}
               strokeWidth={2.2}
-              className={`absolute transition-all duration-300 ${open ? "opacity-0 rotate-90 scale-75" : "opacity-100 rotate-0 scale-100"}`}
+              className={`absolute transition-all duration-300 ease-out ${open ? "opacity-0 rotate-90 scale-75" : "opacity-100 rotate-0 scale-100"}`}
             />
             <X
-              size={16}
+              size={15}
               strokeWidth={2.2}
-              className={`absolute transition-all duration-300 ${open ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-75"}`}
+              className={`absolute transition-all duration-300 ease-out ${open ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-75"}`}
             />
           </span>
           CANALI
@@ -156,8 +130,7 @@ export default function SectionNav() {
         {activeChannel && (
           <Link href={activeChannel.path}>
             <span
-              className="flex items-center gap-1.5 px-3 py-3 text-[10px] font-bold uppercase tracking-widest text-[#dc2626] hover:text-[#b91c1c] transition-colors cursor-pointer"
-              style={{ fontFamily: SF }}
+              className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#dc2626] hover:text-[#b91c1c] transition-colors cursor-pointer"
             >
               <activeChannel.icon size={13} strokeWidth={2.2} />
               {activeChannel.label}
@@ -165,58 +138,84 @@ export default function SectionNav() {
           </Link>
         )}
 
+        {/* Spacer */}
         <div className="flex-1" />
+
+        {/* Chi Siamo link */}
+        <Link href="/chi-siamo">
+          <span className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#1a1a1a]/60 hover:text-[#1a1a1a] transition-colors cursor-pointer">
+            <Info size={13} strokeWidth={2} />
+            Chi Siamo
+          </span>
+        </Link>
+
+        {/* Demo button */}
+        <a
+          href="https://ideasmart.technology"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 mr-3 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white bg-[#dc2626] hover:bg-[#b91c1c] rounded-sm transition-all duration-200 cursor-pointer"
+        >
+          <MonitorPlay size={13} strokeWidth={2.2} />
+          Demo
+          <ExternalLink size={10} strokeWidth={2.5} className="opacity-60" />
+        </a>
       </div>
 
-      {/* Backdrop overlay */}
+      {/* ═══ BACKDROP ═══ */}
       <div
-        className={`fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[998] transition-all duration-300 ${
+        className={`fixed inset-0 z-[998] transition-opacity duration-300 ease-out ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
+        style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(3px)" }}
         onClick={() => setOpen(false)}
       />
 
-      {/* Slide-in panel from left */}
+      {/* ═══ SLIDE-OVER PANEL ═══ */}
       <div
         ref={panelRef}
-        onMouseEnter={handlePanelMouseEnter}
-        onMouseLeave={handlePanelMouseLeave}
-        className={`fixed top-0 left-0 h-full w-[320px] bg-[#faf8f3] z-[999] shadow-[8px_0_30px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-y-auto ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ fontFamily: SF }}
+        onMouseEnter={cancelLeave}
+        onMouseLeave={scheduleClose}
+        className={`fixed top-0 left-0 h-full z-[999] overflow-y-auto overscroll-contain`}
+        style={{
+          width: "320px",
+          background: "#faf8f3",
+          fontFamily: SF,
+          boxShadow: open ? "8px 0 40px rgba(0,0,0,0.18)" : "none",
+          transform: open ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)",
+          willChange: "transform",
+        }}
       >
         {/* Panel header */}
-        <div className="flex items-center justify-between px-5 py-4 bg-[#1a1a1a]">
-          <div className="flex items-center gap-2">
-            <span className="text-[14px] font-black uppercase tracking-[0.15em] text-white">
-              IDEASMART
-            </span>
-          </div>
+        <div className="flex items-center justify-between px-5 py-3.5 bg-[#1a1a1a]">
+          <span className="text-[13px] font-black uppercase tracking-[0.15em] text-white">
+            IDEASMART
+          </span>
           <button
             onClick={() => setOpen(false)}
-            className="p-1.5 hover:bg-white/10 rounded-md transition-colors"
+            className="p-1.5 hover:bg-white/15 rounded-md transition-colors duration-150"
             aria-label="Chiudi menu"
           >
-            <X size={18} strokeWidth={2} color="#fff" />
+            <X size={17} strokeWidth={2} color="#fff" />
           </button>
         </div>
 
         {/* Title section */}
-        <div className="px-5 pt-5 pb-3">
-          <div className="flex items-center gap-2 mb-1">
-            <Sparkles size={14} strokeWidth={2} className="text-[#dc2626]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#1a1a1a]/50">
+        <div className="px-5 pt-4 pb-2">
+          <div className="flex items-center gap-2 mb-0.5">
+            <Sparkles size={13} strokeWidth={2} className="text-[#dc2626]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/45">
               Naviga i canali
             </span>
           </div>
-          <p className="text-[12px] text-[#1a1a1a]/60 leading-relaxed">
+          <p className="text-[11px] text-[#1a1a1a]/50 leading-relaxed">
             Esplora tutti i contenuti di IdeaSmart
           </p>
         </div>
 
         {/* Channel list */}
-        <div className="px-3 pb-3">
+        <nav className="px-3 pb-3">
           {ALL_CHANNELS.map((c, i) => {
             const isActive = location === c.path || location.startsWith(c.path + "/");
             const isHovered = hoveredKey === c.key;
@@ -224,36 +223,43 @@ export default function SectionNav() {
             return (
               <Link key={c.key} href={c.path}>
                 <div
-                  className={`relative flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-200 mb-0.5 group ${
+                  className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer mb-px group ${
                     isActive
-                      ? "bg-[#1a1a1a] text-white shadow-md"
-                      : "text-[#1a1a1a] hover:bg-white hover:shadow-sm"
+                      ? "bg-[#1a1a1a] text-white"
+                      : "text-[#1a1a1a] hover:bg-white"
                   }`}
                   onMouseEnter={() => setHoveredKey(c.key)}
                   onMouseLeave={() => setHoveredKey(null)}
                   style={{
-                    animationDelay: open ? `${i * 30}ms` : "0ms",
-                    transform: open ? "translateX(0)" : "translateX(-8px)",
+                    transition: "all 0.2s ease",
+                    boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.12)" : isHovered ? "0 1px 4px rgba(0,0,0,0.06)" : "none",
                     opacity: open ? 1 : 0,
-                    transition: `all 0.3s cubic-bezier(0.16, 1, 0.3, 1) ${i * 30}ms`,
+                    transform: open ? "translateX(0)" : "translateX(-12px)",
+                    transitionDelay: open ? `${i * 25}ms` : "0ms",
+                    transitionProperty: "all",
+                    transitionDuration: "0.3s",
+                    transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)",
                   }}
                 >
                   {/* Active indicator bar */}
                   {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-[#dc2626] rounded-r-full" />
+                    <div
+                      className="absolute left-0 top-1/2 w-[3px] h-5 bg-[#dc2626] rounded-r-full"
+                      style={{ transform: "translateY(-50%)" }}
+                    />
                   )}
 
-                  {/* Icon container */}
+                  {/* Icon */}
                   <span
-                    className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 ${
+                    className={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-md transition-all duration-200 ${
                       isActive
                         ? "bg-[#dc2626]/20 text-[#dc2626]"
                         : isHovered
-                          ? "bg-[#1a1a1a]/10 text-[#1a1a1a] scale-110"
-                          : "bg-[#1a1a1a]/5 text-[#1a1a1a]/50"
+                          ? "bg-[#1a1a1a]/10 text-[#1a1a1a] scale-105"
+                          : "bg-[#1a1a1a]/5 text-[#1a1a1a]/45"
                     }`}
                   >
-                    <Icon size={15} strokeWidth={2} />
+                    <Icon size={14} strokeWidth={2} />
                   </span>
 
                   {/* Label + description */}
@@ -264,7 +270,7 @@ export default function SectionNav() {
                       {c.label}
                     </span>
                     <span className={`block text-[9px] leading-tight mt-0.5 ${
-                      isActive ? "text-white/50" : "text-[#1a1a1a]/35"
+                      isActive ? "text-white/45" : "text-[#1a1a1a]/30"
                     }`}>
                       {c.desc}
                     </span>
@@ -272,13 +278,13 @@ export default function SectionNav() {
 
                   {/* Arrow */}
                   <ChevronRight
-                    size={14}
+                    size={13}
                     strokeWidth={2}
                     className={`flex-shrink-0 transition-all duration-200 ${
                       isActive
-                        ? "text-white/50"
+                        ? "text-white/40"
                         : isHovered
-                          ? "text-[#1a1a1a]/40 translate-x-0.5"
+                          ? "text-[#1a1a1a]/35 translate-x-0.5"
                           : "text-transparent"
                     }`}
                   />
@@ -286,51 +292,17 @@ export default function SectionNav() {
               </Link>
             );
           })}
-        </div>
-
-        {/* Divider */}
-        <div className="mx-5 border-t border-[#1a1a1a]/8" />
-
-        {/* Extra links */}
-        <div className="px-3 py-2">
-          {EXTRA_LINKS.map((c) => {
-            const isActive = location === c.path;
-            const Icon = c.icon;
-            return (
-              <Link key={c.key} href={c.path}>
-                <div
-                  className={`flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-200 group ${
-                    isActive
-                      ? "bg-[#1a1a1a] text-white shadow-md"
-                      : "text-[#1a1a1a]/60 hover:bg-white hover:text-[#1a1a1a] hover:shadow-sm"
-                  }`}
-                  onMouseEnter={() => setHoveredKey(c.key)}
-                  onMouseLeave={() => setHoveredKey(null)}
-                >
-                  <span className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 ${
-                    isActive ? "bg-white/10 text-white/60" : "bg-[#1a1a1a]/5 text-[#1a1a1a]/40 group-hover:bg-[#1a1a1a]/10"
-                  }`}>
-                    <Icon size={15} strokeWidth={2} />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <span className="block text-[11px] font-bold uppercase tracking-wider">{c.label}</span>
-                    <span className={`block text-[9px] mt-0.5 ${isActive ? "text-white/40" : "text-[#1a1a1a]/30"}`}>{c.desc}</span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+        </nav>
 
         {/* Footer branding */}
-        <div className="px-5 py-5 mt-4 border-t border-[#1a1a1a]/8 bg-[#1a1a1a]/[0.03]">
+        <div className="px-5 py-4 mt-2 border-t border-[#1a1a1a]/8 bg-[#1a1a1a]/[0.03]">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-1.5 h-1.5 rounded-full bg-[#dc2626] animate-pulse" />
-            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
+            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/35">
               Il tuo sistema operativo sull'AI
             </span>
           </div>
-          <p className="text-[10px] text-[#1a1a1a]/30 mt-1">
+          <p className="text-[10px] text-[#1a1a1a]/25 mt-0.5">
             Prompt, strumenti e workflow per trasformare l'AI in risultati concreti.
           </p>
         </div>
