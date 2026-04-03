@@ -2516,3 +2516,9 @@
 - [x] Aggiungere banner Amazon inline tra gli articoli nelle pagine canale
 - [x] Verificare layout responsive (banner nascosti su mobile)
 - [x] Verificare coerenza visiva con la homepage
+
+## Bug Fix (3 Apr 2026 — Menu AI News + Canali vuoti)
+- [x] A) Uniformare il layout della pagina AI News (/ai) al template condiviso (SharedPageHeader + SectionNav) come gli altri canali
+- [x] A) Uniformare anche Startup News e Dealroom al SectionNav condiviso
+- [x] B) Popolare i nuovi canali (Fare Soldi, Use Case AI, AI Tools, Copy Paste AI, ecc.) con contenuti tramite ingestione RSS
+- [x] B) Risultati ingestione: copy-paste-ai=10, automate-with-ai=5, make-money-with-ai=5, daily-ai-tools=3, verified-ai-news=10, ai-opportunities=5

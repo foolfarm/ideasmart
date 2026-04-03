@@ -11,7 +11,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
-import SectionChannelBar from "@/components/SectionChannelBar";
+import SectionNav from "@/components/SectionNav";
 
 const ACCENT = "#1a4a2e";
 const ACCENT_LIGHT = "#f0f7f3";
@@ -171,7 +171,9 @@ export default function DealroomHome() {
       <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
         <SharedPageHeader />
         <BreakingNewsTicker />
-        <SectionChannelBar />
+        <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
+          <SectionNav />
+        </div>
 
         <main className="max-w-6xl mx-auto px-4 pb-12">
           {/* SEZIONE 1: Deal del Giorno */}
