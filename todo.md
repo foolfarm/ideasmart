@@ -2533,3 +2533,22 @@
 - [x] Aggiornare il link "Scopri la collezione" per puntare a https://ideasmart.forum/ (ChannelPage + Home)
 - [x] Aggiungere sommario dei nuovi canali nel bullet summary dell'intro newsletter (limite aumentato da 6 a 10)
 - [x] Inviare la newsletter di prova dalla dashboard admin — inviata a ac@acinelli.com
+
+## Task (3 Apr 2026 — Sponsor Amazon fissi a rotazione nella newsletter)
+- [x] Aggiungere 5 sponsor Amazon affiliate a rotazione (1 al giorno) nella newsletter
+  - A) Amazon Prime: http://www.amazon.it/provaprime?tag=andyiltosca00-21
+  - B) Prime Video: https://www.primevideo.com/?&tag=andyiltosca00-21
+  - C) Amazon Music Unlimited: https://www.amazon.it/music/unlimited?tag=andyiltosca00-21
+  - D) Amazon Wedding: http://www.amazon.it/wedding?tag=andyiltosca00-21
+  - E) Kindle Unlimited: https://www.amazon.it/kindle-dbs/hz/signup?tag=andyiltosca00-21
+- [x] Implementare logica di rotazione basata sul giorno dell'anno (day % 5)
+- [x] Verificare che lo sponsor appaia correttamente nella newsletter (7/7 test passati)
+
+## Bug Fix (3 Apr 2026 — LinkedIn post duplicati)
+- [x] Implementare audit rigoroso anti-duplicati per LinkedIn autopost
+- [x] Verificare che il testo di ogni post sia unico (hash SHA-256 + controllo DB)
+- [x] Verificare che l'immagine di ogni post sia unica (cache in-memory + DB ultimi 3 giorni)
+- [x] Retry automatico con immagine alternativa se duplicata rilevata
+- [x] Audit esteso a tutti i percorsi: morning, startup-afternoon, ai-tool-radar, dealroom, research
+- [x] markImageUsedToday dopo ogni pubblicazione riuscita
+- [x] Tutti i 94 test passati (11 file)

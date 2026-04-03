@@ -745,6 +745,101 @@ function buildUnifiedNewsletterHtml(opts: {
       </tr>`;
   }
 
+  // ── Amazon Partner Block (rotazione giornaliera) ──────────────────────
+  function buildAmazonPartnerBlock(): string {
+    const AMAZON_ORANGE = "#FF9900";
+    const partners = [
+      {
+        name: "Amazon Prime",
+        headline: "Prova gratis Amazon Prime",
+        description: "Spedizioni illimitate gratuite, accesso a Prime Video, Amazon Music, Prime Reading e molto altro. Prova gratuita per 30 giorni.",
+        url: "http://www.amazon.it/provaprime?tag=andyiltosca00-21",
+        ctaText: "PROVA GRATIS 30 GIORNI \u2192",
+        emoji: "\ud83d\udce6",
+      },
+      {
+        name: "Prime Video",
+        headline: "Scopri Prime Video",
+        description: "Film, serie TV, documentari e contenuti originali Amazon. Guarda ovunque, su qualsiasi dispositivo. Incluso con Amazon Prime.",
+        url: "https://www.primevideo.com/?&tag=andyiltosca00-21",
+        ctaText: "GUARDA ORA \u2192",
+        emoji: "\ud83c\udfac",
+      },
+      {
+        name: "Amazon Music Unlimited",
+        headline: "Ascolta senza limiti con Amazon Music",
+        description: "Oltre 100 milioni di brani in HD, podcast e playlist personalizzate. Audio spaziale e qualit\u00e0 Ultra HD inclusi.",
+        url: "https://www.amazon.it/music/unlimited?tag=andyiltosca00-21",
+        ctaText: "PROVA AMAZON MUSIC \u2192",
+        emoji: "\ud83c\udfa7",
+      },
+      {
+        name: "Amazon Wedding",
+        headline: "Lista Nozze su Amazon",
+        description: "Crea la tua lista nozze su Amazon: migliaia di prodotti, spedizione gratuita per gli invitati e un bonus del 20% sui regali non acquistati.",
+        url: "http://www.amazon.it/wedding?tag=andyiltosca00-21",
+        ctaText: "CREA LA TUA LISTA \u2192",
+        emoji: "\ud83d\udc8d",
+      },
+      {
+        name: "Kindle Unlimited",
+        headline: "Leggi senza limiti con Kindle Unlimited",
+        description: "Accesso illimitato a oltre 2 milioni di eBook, migliaia di audiolibri e riviste. Leggi su qualsiasi dispositivo, ovunque.",
+        url: "https://www.amazon.it/kindle-dbs/hz/signup?tag=andyiltosca00-21",
+        ctaText: "PROVA GRATIS \u2192",
+        emoji: "\ud83d\udcda",
+      },
+    ];
+
+    // Rotazione basata sul giorno dell'anno
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 0);
+    const diff = now.getTime() - startOfYear.getTime();
+    const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const todayPartner = partners[dayOfYear % partners.length];
+
+    const utmUrl = `${todayPartner.url}${todayPartner.url.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_partner`;
+
+    return `
+      <!-- Amazon Partner del Giorno: ${todayPartner.name} -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+            <!-- Label -->
+            <tr>
+              <td style="padding:20px 24px 0;">
+                <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">CONSIGLIATO DA IDEASMART</div>
+              </td>
+            </tr>
+            <!-- Title -->
+            <tr>
+              <td style="padding:8px 24px 0;">
+                <div style="font-size:22px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;">${todayPartner.emoji} ${todayPartner.headline}</div>
+              </td>
+            </tr>
+            <!-- Description -->
+            <tr>
+              <td style="padding:14px 24px 0;">
+                <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;">${todayPartner.description}</div>
+              </td>
+            </tr>
+            <!-- CTA -->
+            <tr>
+              <td style="padding:18px 24px 22px;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="background:${AMAZON_ORANGE};border-radius:8px;padding:14px 32px;">
+                      <a href="${utmUrl}" target="_blank" style="font-size:15px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F};letter-spacing:0.02em;">${todayPartner.ctaText}</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
   // ── Amazon Deals Block (supports multiple) ─────────────────────────
   function buildAmazonDealsBlock(): string {
     if (amazonDeals.length === 0) return "";
@@ -1184,6 +1279,8 @@ function buildUnifiedNewsletterHtml(opts: {
         ${buildSection("Dealroom", "Deal & Funding", dealroomNews, "dealroom")}
 
         ${buildChannelSections()}
+
+        ${buildAmazonPartnerBlock()}
 
         ${buildAmazonDealsBlock()}
 

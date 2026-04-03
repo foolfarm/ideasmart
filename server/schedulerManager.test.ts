@@ -137,9 +137,9 @@ describe("schedulerManager", () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 30 scheduler attivi: AI, Startup, DEALROOM, Research + 4 slot LinkedIn + 4 invalidazioni cache + health check + infra
+    // 33 scheduler attivi: AI, Startup, DEALROOM, Research + 4 slot LinkedIn + 4 invalidazioni cache + health check + infra + channel ingestors
     // La newsletter massiva (07:30) è disabilitata (richiede approvazione manuale da Admin)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(30);
+    expect(cron.default.schedule).toHaveBeenCalledTimes(33);
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {

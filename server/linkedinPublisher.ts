@@ -48,6 +48,115 @@ function computePostHash(text: string): string {
 
 const SITE_BASE_URL = "https://ideasmart.ai";
 
+// ── In-memory cache immagini usate oggi (per evitare duplicati tra slot) ────
+const todayImageCache: Set<string> = new Set();
+let todayImageCacheDate = "";
+
+/**
+ * Recupera TUTTE le immagini usate OGGI (da tutti gli slot) dal DB + cache in-memory.
+ * Questo previene duplicati anche quando i post vengono pubblicati in rapida successione
+ * e il DB non ha ancora committato.
+ */
+async function getTodayUsedImages(): Promise<string[]> {
+  const today = getTodayCET();
+  // Reset cache se è un nuovo giorno
+  if (todayImageCacheDate !== today) {
+    todayImageCache.clear();
+    todayImageCacheDate = today;
+  }
+  const urls: string[] = Array.from(todayImageCache);
+  try {
+    const db = await getDb();
+    if (db) {
+      const todayPosts = await db.select({ imageUrl: linkedinPosts.imageUrl })
+        .from(linkedinPosts)
+        .where(eq(linkedinPosts.dateLabel, today));
+      for (const p of todayPosts) {
+        if (p.imageUrl) urls.push(p.imageUrl);
+      }
+    }
+  } catch (err) {
+    console.warn('[LinkedIn] ⚠️ Errore recupero immagini di oggi:', err);
+  }
+  return Array.from(new Set(urls));
+}
+
+/**
+ * Registra un'immagine come usata oggi nella cache in-memory.
+ */
+function markImageUsedToday(url: string): void {
+  const today = getTodayCET();
+  if (todayImageCacheDate !== today) {
+    todayImageCache.clear();
+    todayImageCacheDate = today;
+  }
+  todayImageCache.add(url);
+}
+
+/**
+ * AUDIT PRE-PUBBLICAZIONE: verifica che testo e immagine siano unici.
+ * Blocca la pubblicazione se trova duplicati.
+ */
+async function auditPrePublish(postText: string, imageUrl: string | null, slot: LinkedInSlot): Promise<{
+  pass: boolean;
+  reason?: string;
+}> {
+  const today = getTodayCET();
+  console.log(`[LinkedIn AUDIT] 🔍 Avvio audit pre-pubblicazione per slot ${slot}...`);
+  
+  try {
+    const db = await getDb();
+    if (!db) return { pass: true }; // Se DB non disponibile, procedi con cautela
+    
+    // 1. Controlla che l'immagine non sia già stata usata OGGI in qualsiasi slot
+    if (imageUrl) {
+      const todayImages = await getTodayUsedImages();
+      if (todayImages.includes(imageUrl)) {
+        console.warn(`[LinkedIn AUDIT] 🚫 IMMAGINE DUPLICATA: ${imageUrl} già usata oggi`);
+        return { pass: false, reason: `Immagine già usata oggi in un altro slot` };
+      }
+    }
+    
+    // 2. Controlla che il testo non sia troppo simile a un post di oggi
+    const postHash = computePostHash(postText);
+    const todayDuplicates = await db.select({ id: linkedinPosts.id, slot: linkedinPosts.slot })
+      .from(linkedinPosts)
+      .where(and(
+        eq(linkedinPosts.dateLabel, today),
+        eq(linkedinPosts.postHash, postHash)
+      ))
+      .limit(1);
+    if (todayDuplicates.length > 0) {
+      console.warn(`[LinkedIn AUDIT] 🚫 TESTO DUPLICATO: hash ${postHash} già usato oggi nello slot ${todayDuplicates[0].slot}`);
+      return { pass: false, reason: `Testo identico già pubblicato oggi (slot ${todayDuplicates[0].slot})` };
+    }
+    
+    // 3. Controlla che l'immagine non sia stata usata negli ultimi 3 giorni
+    if (imageUrl) {
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      const threeDaysAgoLabel = threeDaysAgo.toLocaleDateString("sv-SE", { timeZone: TZ_ROME });
+      const recentImageDuplicates = await db.select({ id: linkedinPosts.id, dateLabel: linkedinPosts.dateLabel })
+        .from(linkedinPosts)
+        .where(and(
+          eq(linkedinPosts.imageUrl, imageUrl),
+          gte(linkedinPosts.dateLabel, threeDaysAgoLabel)
+        ))
+        .limit(1);
+      if (recentImageDuplicates.length > 0) {
+        console.warn(`[LinkedIn AUDIT] 🚫 IMMAGINE RECENTE: ${imageUrl} usata il ${recentImageDuplicates[0].dateLabel}`);
+        return { pass: false, reason: `Immagine già usata il ${recentImageDuplicates[0].dateLabel}` };
+      }
+    }
+    
+    console.log(`[LinkedIn AUDIT] ✅ Audit superato — testo e immagine unici`);
+    return { pass: true };
+  } catch (err) {
+    console.warn('[LinkedIn AUDIT] ⚠️ Errore durante audit, procedo con cautela:', err);
+    return { pass: true }; // In caso di errore, non bloccare
+  }
+}
+
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
 export type LinkedInSlot = "morning" | "startup-afternoon" | "research" | "dealroom" | "ai-tool-radar" | "afternoon" | "evening";
 
@@ -636,6 +745,11 @@ export async function publishLinkedInPost(
       recentPostTitles = recentPosts
         .map(p => p.title)
         .filter((t): t is string => !!t);
+      
+      // Aggiungi anche le immagini dalla cache in-memory (per slot pubblicati di recente)
+      const todayMemoryImages = await getTodayUsedImages();
+      recentImageUrls = Array.from(new Set([...recentImageUrls, ...todayMemoryImages]));
+      console.log(`[LinkedIn] 📋 Immagini escluse: ${recentImageUrls.length} (DB + cache)`);
     }
   } catch (checkErr) {
     console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo con cautela:', checkErr);
@@ -670,21 +784,42 @@ export async function publishLinkedInPost(
     const articleUrl = `${SITE_BASE_URL}/ai`;
     console.log(`[LinkedIn] 🚀 Pubblicazione AI Tool Radar — ${radarResult.toolCount} tool, ${radarResult.postText.length} caratteri`);
 
-    // Cerca un'immagine tematica per il post
-    const pexelsImage = await findEditorialImage(
+    // Cerca un'immagine tematica per il post (con controllo anti-duplicati globale)
+    let pexelsImage = await findEditorialImage(
       "AI tools innovation technology",
       "artificial intelligence new tools",
       "ai",
       recentImageUrls
     );
 
+    // AUDIT PRE-PUBBLICAZIONE: verifica unicità immagine
+    if (pexelsImage) {
+      const audit = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+      if (!audit.pass) {
+        console.warn(`[LinkedIn AUDIT] \u26a0\ufe0f AI Tool Radar: ${audit.reason} — cerco immagine alternativa`);
+        // Retry con immagine diversa
+        const altExclude = [...recentImageUrls, pexelsImage];
+        pexelsImage = await findEditorialImage("technology innovation digital", "new AI tools 2026", "ai", altExclude);
+        if (pexelsImage) {
+          const audit2 = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+          if (!audit2.pass) {
+            console.warn(`[LinkedIn AUDIT] \ud83d\udeab AI Tool Radar: anche immagine alternativa duplicata — procedo senza immagine`);
+            pexelsImage = null;
+          }
+        }
+      }
+    }
+
     const result = await publishToLinkedIn(
       radarResult.postText,
       articleUrl,
       pexelsImage || null,
-      "AI Tool Radar — 10 nuovi tool AI",
-      "I 10 tool AI più innovativi scoperti oggi"
+      "AI Tool Radar \u2014 10 nuovi tool AI",
+      "I 10 tool AI pi\u00f9 innovativi scoperti oggi"
     );
+
+    // Registra immagine nella cache in-memory
+    if (result.success && pexelsImage) markImageUsedToday(pexelsImage);
 
     if (result.success) {
       console.log(`[LinkedIn] ✅ AI Tool Radar pubblicato con successo`);
@@ -785,20 +920,40 @@ export async function publishLinkedInPost(
     const articleUrl = `${SITE_BASE_URL}/startup`;
     console.log(`[LinkedIn] 🚀 Pubblicazione Startup Radar — ${radarResult.startupCount} startup, ${radarResult.postText.length} caratteri`);
 
-    const pexelsImage = await findEditorialImage(
+    let pexelsImage = await findEditorialImage(
       "startup europe investment venture capital",
       "european startup AI funding",
       "startup",
       recentImageUrls
     );
 
+    // AUDIT PRE-PUBBLICAZIONE: verifica unicità immagine
+    if (pexelsImage) {
+      const audit = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+      if (!audit.pass) {
+        console.warn(`[LinkedIn AUDIT] \u26a0\ufe0f Startup Radar: ${audit.reason} — cerco immagine alternativa`);
+        const altExclude = [...recentImageUrls, pexelsImage];
+        pexelsImage = await findEditorialImage("european innovation startup team", "venture capital Europe 2026", "startup", altExclude);
+        if (pexelsImage) {
+          const audit2 = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+          if (!audit2.pass) {
+            console.warn(`[LinkedIn AUDIT] \ud83d\udeab Startup Radar: anche immagine alternativa duplicata — procedo senza immagine`);
+            pexelsImage = null;
+          }
+        }
+      }
+    }
+
     const result = await publishToLinkedIn(
       radarResult.postText,
       articleUrl,
       pexelsImage || null,
-      "AI Dealflow Europe — 10 startup investibili",
-      "Le 10 startup AI europee più investibili di oggi"
+      "AI Dealflow Europe \u2014 10 startup investibili",
+      "Le 10 startup AI europee pi\u00f9 investibili di oggi"
     );
+
+    // Registra immagine nella cache in-memory
+    if (result.success && pexelsImage) markImageUsedToday(pexelsImage);
 
     if (result.success) {
       console.log(`[LinkedIn] ✅ Startup Radar pubblicato con successo`);
@@ -954,10 +1109,41 @@ export async function publishLinkedInPost(
   // ── URL di destinazione ────────────────────────────────────────────────
   const articleUrl = `${SITE_BASE_URL}${meta.path}`;
 
-  // ── Pubblica su LinkedIn ───────────────────────────────────────────────
-  console.log(`[LinkedIn] 🚀 Pubblicazione post — Slot: ${slotLabel} — Sezione: ${meta.label}`);
+  // ── AUDIT PRE-PUBBLICAZIONE: verifica unicità immagine e testo ─────────
+  const audit = await auditPrePublish(postText, imageUrl, slot);
+  if (!audit.pass && !force) {
+    console.warn(`[LinkedIn AUDIT] Slot ${slotLabel}: ${audit.reason} — cerco immagine alternativa`);
+    // Retry con immagine diversa
+    const pexelsSectionRetry: "ai" | "startup" = (section === "startup") ? "startup" : "ai";
+    const altExclude = [...recentImageUrls, ...(imageUrl ? [imageUrl] : [])];
+    const altImage = await findEditorialImage(
+      `${contentTitle} alternative`,
+      contentKeyTrend || "technology innovation",
+      pexelsSectionRetry,
+      altExclude
+    );
+    if (altImage) {
+      const audit2 = await auditPrePublish(postText, altImage, slot);
+      if (audit2.pass) {
+        imageUrl = altImage;
+        imageSource = "Pexels (alternativa post-audit)";
+        console.log(`[LinkedIn AUDIT] Immagine alternativa trovata e approvata`);
+      } else {
+        console.warn(`[LinkedIn AUDIT] Anche immagine alternativa duplicata — procedo senza immagine`);
+        imageUrl = null;
+        imageSource = "nessuna (audit fallito)";
+      }
+    } else {
+      console.warn(`[LinkedIn AUDIT] Nessuna immagine alternativa trovata — procedo senza immagine`);
+      imageUrl = null;
+      imageSource = "nessuna (audit fallito)";
+    }
+  }
+
+  // ── Pubblica su LinkedIn ───────────────────────────────────────
+  console.log(`[LinkedIn] \ud83d\ude80 Pubblicazione post \u2014 Slot: ${slotLabel} \u2014 Sezione: ${meta.label}`);
   console.log(`[LinkedIn]    Titolo: ${contentTitle.slice(0, 60)}...`);
-  console.log(`[LinkedIn]    Immagine: ${imageUrl ? `✅ (${imageSource})` : "❌ assente"}`);
+  console.log(`[LinkedIn]    Immagine: ${imageUrl ? `\u2705 (${imageSource})` : "\u274c assente"}`);
 
   const result = await publishToLinkedIn(
     postText,
@@ -978,7 +1164,9 @@ export async function publishLinkedInPost(
   ];
 
   if (result.success) {
-    console.log(`[LinkedIn] ✅ Post slot ${slotLabel} pubblicato con successo`);
+    console.log(`[LinkedIn] \u2705 Post slot ${slotLabel} pubblicato con successo`);
+    // Registra immagine nella cache in-memory per evitare duplicati tra slot
+    if (imageUrl) markImageUsedToday(imageUrl);
 
     // Salva il post nel DB
     try {
