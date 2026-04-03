@@ -2561,3 +2561,11 @@
 - [x] Aggiornare i meta tag SEO e canonical URL (og:url, canonical href)
 - [x] Aggiornare tutti gli indirizzi email: info@, business@, redazione@ → @ideasmart.biz
 - [x] Verificare che non ci siano errori dopo le sostituzioni — 94 test passati, 0 errori TypeScript
+
+## Task (3 Apr 2026 — Redirect 301 ideasmart.ai → ideasmart.biz)
+- [x] Configurare middleware redirect 301 nel server Express (inserito prima di Helmet per intercettare tutto)
+- [x] Redirect da ideasmart.ai → ideasmart.biz (preservando path e query string)
+- [x] Redirect da www.ideasmart.ai → ideasmart.biz
+- [x] Redirect da ideasmart.manus.space e ideasmartai-uypaon6i.manus.space → ideasmart.biz
+- [x] Redirect da www.ideasmart.biz → ideasmart.biz (naked domain)
+- [x] Test unitari per il redirect — 11 test passati, 105 test totali
