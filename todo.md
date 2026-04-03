@@ -2522,3 +2522,8 @@
 - [x] A) Uniformare anche Startup News e Dealroom al SectionNav condiviso
 - [x] B) Popolare i nuovi canali (Fare Soldi, Use Case AI, AI Tools, Copy Paste AI, ecc.) con contenuti tramite ingestione RSS
 - [x] B) Risultati ingestione: copy-paste-ai=10, automate-with-ai=5, make-money-with-ai=5, daily-ai-tools=3, verified-ai-news=10, ai-opportunities=5
+
+## Task (3 Apr 2026 — Newsletter con nuovi canali)
+- [x] Aggiornare il template newsletter per includere sezioni dei nuovi canali (Prompt AI, Fare Soldi, Use Case AI, AI Tools, AI Radar, AI Invest)
+- [x] Aggiornare la logica di generazione contenuti newsletter per pescare dai nuovi canali
+- [x] Testare la generazione e l'invio della newsletter aggiornata — tutte 6 sezioni presenti con 3 contenuti ciascuna, bordi colorati, box COSA FARE ORA, link Vai al canale

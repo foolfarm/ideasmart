@@ -36,6 +36,7 @@ import {
   amazonDailyDeals,
   toolSubmissions,
   openSourceTools,
+  channelContent,
 } from "../drizzle/schema";
 import { eq, desc, and, sql } from "drizzle-orm";
 
@@ -98,6 +99,60 @@ interface AmazonDealData {
   rating: string | null;
   reviewCount: string | null;
   category: string | null;
+}
+
+// ─── Channel Content Item ────────────────────────────────────────────────
+
+interface ChannelItem {
+  id: number;
+  channel: string;
+  title: string;
+  subtitle: string | null;
+  body: string;
+  category: string | null;
+  actionItem: string | null;
+  promptText: string | null;
+  sourceName: string | null;
+  sourceUrl: string | null;
+}
+
+const NEWSLETTER_CHANNELS = [
+  { key: "copy-paste-ai", label: "PROMPT AI", title: "Prompt del Giorno", emoji: "\uD83D\uDCCB" },
+  { key: "make-money-with-ai", label: "FARE SOLDI", title: "Opportunit\u00E0 di Guadagno", emoji: "\uD83D\uDCB0" },
+  { key: "automate-with-ai", label: "USE CASE AI", title: "Workflow & Automazioni", emoji: "\u26A1" },
+  { key: "daily-ai-tools", label: "AI TOOLS", title: "Strumenti AI del Giorno", emoji: "\uD83D\uDEE0\uFE0F" },
+  { key: "verified-ai-news", label: "AI RADAR", title: "News Verificate", emoji: "\uD83D\uDCE1" },
+  { key: "ai-opportunities", label: "AI INVEST", title: "Opportunit\u00E0 di Investimento", emoji: "\uD83D\uDCC8" },
+] as const;
+
+async function getLatestChannelContent(channelKey: string, limit: number = 3): Promise<ChannelItem[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  const items = await db
+    .select()
+    .from(channelContent)
+    .where(
+      and(
+        eq(channelContent.channel, channelKey as any),
+        eq(channelContent.status, "published")
+      )
+    )
+    .orderBy(desc(channelContent.publishDate), channelContent.position)
+    .limit(limit);
+
+  return items.map((i) => ({
+    id: i.id,
+    channel: i.channel,
+    title: i.title,
+    subtitle: i.subtitle,
+    body: i.body,
+    category: i.category,
+    actionItem: i.actionItem,
+    promptText: i.promptText,
+    sourceName: i.sourceName,
+    sourceUrl: i.sourceUrl,
+  }));
 }
 
 // ─── Sponsor Selection (weighted rotation) ─────────────────────────────────
@@ -297,6 +352,14 @@ async function collectAllContent() {
       getTodayResearch(),
     ]);
 
+  // Fetch contenuti dei nuovi canali (3 per canale)
+  const channelContents: Record<string, ChannelItem[]> = {};
+  await Promise.all(
+    NEWSLETTER_CHANNELS.map(async (ch) => {
+      channelContents[ch.key] = await getLatestChannelContent(ch.key, 3);
+    })
+  );
+
   return {
     aiNews: aiNews.map((n: any) => ({
       id: n.id ?? null,
@@ -348,6 +411,7 @@ async function collectAllContent() {
         sourceUrl: r.sourceUrl ?? null,
         isResearchOfDay: r.isResearchOfDay,
       })) as ResearchItem[],
+    channelContents,
   };
 }
 
@@ -380,6 +444,7 @@ function buildUnifiedNewsletterHtml(opts: {
   amazonDeals: AmazonDealData[];
   approvedTools: ToolItem[];
   osTools: OSToolItem[];
+  channelContents: Record<string, ChannelItem[]>;
   unsubscribeUrl: string;
   isTest: boolean;
 }): string {
@@ -395,6 +460,7 @@ function buildUnifiedNewsletterHtml(opts: {
     amazonDeals,
     approvedTools,
     osTools,
+    channelContents,
     unsubscribeUrl,
     isTest,
   } = opts;
@@ -412,13 +478,20 @@ function buildUnifiedNewsletterHtml(opts: {
   const RED = "#dc2626";
   const ACCENT = "#e84c30"; // Arancione-rosso stile TAAFT
 
-  // ── Bullet summary ────────────────────────────────────────────────
+   // ── Bullet summary ────────────────────────────────────────────
   const bulletItems: string[] = [];
   if (breakingItems.length > 0)
     bulletItems.push(...breakingItems.slice(0, 3).map((b) => b.title));
   if (aiNews.length > 0) bulletItems.push(aiNews[0].title);
   if (startupNews.length > 0) bulletItems.push(startupNews[0].title);
   if (dealroomNews.length > 0) bulletItems.push(dealroomNews[0].title);
+  // Aggiungi un highlight dai nuovi canali
+  for (const ch of NEWSLETTER_CHANNELS) {
+    const chItems = channelContents[ch.key] || [];
+    if (chItems.length > 0 && bulletItems.length < 10) {
+      bulletItems.push(`${ch.emoji} ${chItems[0].title}`);
+    }
+  }
 
   const bulletHtml = bulletItems
     .slice(0, 6)
@@ -842,7 +915,82 @@ function buildUnifiedNewsletterHtml(opts: {
       </tr>`;
   }
 
-  // ── Open Source AI Tools ────────────────────────────────────────────
+    // ── New Channel Sections (Prompt AI, Fare Soldi, Use Case AI, etc.) ───
+  function buildChannelSections(): string {
+    // Route mapping per i link "Vai al canale"
+    const channelRoutes: Record<string, string> = {
+      "copy-paste-ai": "copy-paste-ai",
+      "make-money-with-ai": "make-money-with-ai",
+      "automate-with-ai": "automate-with-ai",
+      "daily-ai-tools": "daily-ai-tools",
+      "verified-ai-news": "verified-ai-news",
+      "ai-opportunities": "ai-opportunities",
+    };
+
+    // Colori per i diversi canali
+    const channelColors: Record<string, string> = {
+      "copy-paste-ai": "#7c3aed",       // viola
+      "make-money-with-ai": "#059669",  // verde
+      "automate-with-ai": "#d97706",    // ambra
+      "daily-ai-tools": "#2563eb",      // blu
+      "verified-ai-news": "#dc2626",    // rosso
+      "ai-opportunities": "#0891b2",    // ciano
+    };
+
+    let html = "";
+
+    for (const ch of NEWSLETTER_CHANNELS) {
+      const items = channelContents[ch.key] || [];
+      if (items.length === 0) continue;
+
+      const color = channelColors[ch.key] || ACCENT;
+      const route = channelRoutes[ch.key] || ch.key;
+
+      const itemsHtml = items.map((item, idx) => {
+        const channelUrl = `${BASE_URL}/${route}`;
+        // Tronca il body a 200 caratteri per la newsletter
+        const summary = item.body
+          ? item.body.replace(/[#*_`\[\]]/g, "").slice(0, 200) + (item.body.length > 200 ? "&hellip;" : "")
+          : item.subtitle || "";
+
+        return `
+        <tr>
+          <td style="padding:16px 24px;${idx < items.length - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+            ${item.category ? `<div style="margin-bottom:6px;"><span style="font-size:10px;font-weight:700;color:${WHITE};background:${color};border-radius:3px;padding:2px 8px;letter-spacing:0.08em;text-transform:uppercase;font-family:${F};">${item.category}</span></div>` : ""}
+            <a href="${channelUrl}" style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:8px;">${ch.emoji} ${item.title}</a>
+            <div style="font-size:14px;color:${SLATE};font-family:${F};line-height:1.65;">${summary}</div>
+            ${item.actionItem ? `<div style="margin-top:8px;padding:10px 14px;background:#f0fdf4;border-radius:6px;border-left:3px solid #22c55e;"><div style="font-size:11px;font-weight:700;color:#166534;font-family:${F};margin-bottom:4px;">COSA FARE ORA</div><div style="font-size:13px;color:#15803d;font-family:${F};line-height:1.5;">${item.actionItem.slice(0, 150)}${item.actionItem.length > 150 ? "&hellip;" : ""}</div></div>` : ""}
+            ${item.sourceName ? `<div style="margin-top:8px;font-size:12px;color:${MUTED};font-family:${F};">Fonte: <strong style="color:${SLATE};">${item.sourceName}</strong></div>` : ""}
+          </td>
+        </tr>`;
+      }).join("");
+
+      html += `
+      <!-- ${ch.title} -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${color};">
+            <tr>
+              <td style="padding:20px 24px 12px;">
+                <div style="font-size:12px;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:0.08em;font-family:${F};margin-bottom:4px;">${ch.label}</div>
+                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.2;">${ch.emoji} ${ch.title}</div>
+              </td>
+            </tr>
+            ${itemsHtml}
+            <tr>
+              <td style="padding:12px 24px 20px;">
+                <a href="${BASE_URL}/${route}" style="font-size:13px;font-weight:700;color:${color};text-decoration:none;font-family:${F};">Vai al canale ${ch.label} &rarr;</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+    }
+
+    return html;
+  }
+
+  // ── Open Source AI Tools ────────────────────────────────────────
   function buildOpenSourceSection(): string {
     if (osTools.length === 0) return "";
 
@@ -1035,6 +1183,8 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildSection("Dealroom", "Deal & Funding", dealroomNews, "dealroom")}
 
+        ${buildChannelSections()}
+
         ${buildAmazonDealsBlock()}
 
         ${buildResearchSection()}
@@ -1148,6 +1298,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     dealroom: number;
     breaking: number;
     research: number;
+    channels: Record<string, number>;
   };
   sponsorIds: number[];
 }> {
@@ -1185,6 +1336,10 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   console.log(
     `  Open Source Tools: ${osTools.length}`
   );
+  // Log nuovi canali
+  for (const ch of NEWSLETTER_CHANNELS) {
+    console.log(`  ${ch.label}: ${content.channelContents[ch.key]?.length ?? 0}`);
+  }
 
   const subject = `IDEASMART — ${dateLabel}`;
 
@@ -1200,6 +1355,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     amazonDeals,
     approvedTools,
     osTools,
+    channelContents: content.channelContents,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     isTest,
   });
@@ -1217,6 +1373,9 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
       dealroom: content.dealroomNews.length,
       breaking: content.breakingItems.length,
       research: content.researches.length,
+      channels: Object.fromEntries(
+        NEWSLETTER_CHANNELS.map((ch) => [ch.key, content.channelContents[ch.key]?.length ?? 0])
+      ),
     },
     sponsorIds,
   };
@@ -1266,9 +1425,16 @@ export async function sendUnifiedPreview(): Promise<{
       testSentDays.set(testKey, true);
       console.log(`[UnifiedNewsletter] ✅ Preview inviata a ${TEST_EMAIL}`);
 
+      const channelStats = stats.channels
+        ? Object.entries(stats.channels)
+            .filter(([, count]) => count > 0)
+            .map(([key, count]) => `${key}: ${count}`)
+            .join(", ")
+        : "nessuno";
+
       await notifyOwner({
-        title: `👁️ Preview newsletter IDEASMART — ${new Date().toLocaleDateString("it-IT")}`,
-        content: `Preview newsletter unificata inviata a ${TEST_EMAIL}.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.`,
+        title: `\uD83D\uDC41\uFE0F Preview newsletter IDEASMART \u2014 ${new Date().toLocaleDateString("it-IT")}`,
+        content: `Preview newsletter unificata inviata a ${TEST_EMAIL}.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.\nNuovi canali: ${channelStats}`,
       });
 
       return { success: true, subject, stats };
