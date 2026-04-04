@@ -2598,3 +2598,8 @@
 - [x] Aggiungere pulsante "Parla con noi" → mailto:info@ideasmart.ai
 - [x] Aggiungere pulsante "Demo" → https://ideasmart.technology
 - [x] Aggiornato anche CTA finale in fondo pagina con stessi link
+
+## Task (4 Apr 2026 — Cambio orario newsletter)
+- [x] Cambiare orario invio newsletter unificata: 14:30 → 12:30 CET
+- [x] Aggiornare commenti e log riepilogo scheduler
+- [x] Test unitari: 106 test passati (12 file)
