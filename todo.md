@@ -2580,3 +2580,13 @@
 ## Task (4 Apr 2026 — Rimozione strip metriche + info programmazione)
 - [x] Rimuovere la barra statistiche (14 canali, 20+ ricerche, 450+ fonti, lettori) dalla homepage
 - [x] Verificare e comunicare programmazione newsletter e post LinkedIn
+
+## Task (4 Apr 2026 — Modifica orari post LinkedIn)
+- [x] Cambiare orario LinkedIn AI News: 10:00 → 10:00 (invariato)
+- [x] Cambiare orario LinkedIn Startup News: 14:30 → 12:30
+- [x] Cambiare orario LinkedIn IdeaSmart Research: 17:00 → 14:30
+- [x] Cambiare orario LinkedIn AI Tool Radar: 18:00 → 16:00
+- [x] Cambiare orario LinkedIn Dealroom: 19:00 → 17:30
+- [x] Aggiornare invalidazione cache dopo i nuovi orari LinkedIn (10:05, 12:35, 14:35, 16:05, 17:35)
+- [x] Aggiornare log riepilogo scheduler con i nuovi orari
+- [x] Aggiornare test unitari (106 test passati)

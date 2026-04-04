@@ -27,11 +27,12 @@
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
- *  │  LINKEDIN AUTOPOST — 4 slot giornalieri                                  │
+ *  │  LINKEDIN AUTOPOST — 5 slot giornalieri                                  │
  *  │  10:00 — Post mattino: AI News (fisso)                                 │
- *  │  14:30 — Post pomeriggio: Startup News (fisso)                          │
- *  │  17:00 — Post ricerche: IdeaSmart Research (ultima ricerca)            │
- *  │  18:00 — Post dealroom: Dealroom (ultimo deal/round)                   │
+ *  │  12:30 — Post Startup News                                              │
+ *  │  14:30 — Post IdeaSmart Research (ultima ricerca)                      │
+ *  │  16:00 — Post AI Tool Radar (10 tool AI scoperti oggi)                 │
+ *  │  17:30 — Post Dealroom (ultimo deal/round)                             │
  *  │                                                                          │
  *  │  SITE HEALTH CHECK — ogni ora                                            │
  *  │  :00 — Verifica homepage, API, contenuti, pagine principali            │
@@ -253,7 +254,7 @@ export function startAllSchedulers(): void {
 
 
 
-  // ── Invalidazione cache parziale dopo LinkedIn (10:05, 14:35, 17:05, 18:05 CET) ───
+  // ── Invalidazione cache parziale dopo LinkedIn (10:05, 12:35, 14:35, 16:05, 17:35 CET) ───
   // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.
   // Invalidiamo la cache dopo ogni slot LinkedIn.
   cron.schedule("5 10 * * *", async () => {
@@ -265,7 +266,7 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  cron.schedule("35 14 * * *", async () => {
+  cron.schedule("35 12 * * *", async () => {
     try {
       invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
       console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn STARTUP");
@@ -274,7 +275,7 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  cron.schedule("5 17 * * *", async () => {
+  cron.schedule("35 14 * * *", async () => {
     try {
       invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
       console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn RICERCHE");
@@ -283,7 +284,16 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  cron.schedule("5 18 * * *", async () => {
+  cron.schedule("5 16 * * *", async () => {
+    try {
+      invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn AI TOOL RADAR");
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
+    }
+  }, { timezone: TZ });
+
+  cron.schedule("35 17 * * *", async () => {
     try {
       invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
       console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn DEALROOM");
@@ -508,9 +518,10 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 4 post giornalieri:
   //   10:00 CET — AI News (morning)
-  //   14:30 CET — Startup News (startup-afternoon)
-  //   17:00 CET — Ricerche IdeaSmart (research)
-  //   18:00 CET — Dealroom (dealroom)
+  //   12:30 CET — Startup News (startup-afternoon)
+  //   14:30 CET — Ricerche IdeaSmart (research)
+  //   16:00 CET — AI Tool Radar (ai-tool-radar)
+  //   17:30 CET — Dealroom (dealroom)
   // ══════════════════════════════════════════════════════════════════════════
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -568,9 +579,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Startup pomeridiano — 14:30 CET (Startup News)
-  cron.schedule("30 14 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn STARTUP POMERIGGIO...");
+  // Post Startup — 12:30 CET (Startup News)
+  cron.schedule("30 12 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 12:30 CET — Pubblicazione LinkedIn STARTUP...");
     await withLock("linkedin-startup-afternoon", async () => {
       try {
         const result = await publishLinkedInPost("startup-afternoon");
@@ -585,9 +596,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Ricerche — 17:00 CET (IdeaSmart Research)
-  cron.schedule("0 17 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 17:00 CET — Pubblicazione LinkedIn RICERCHE (IdeaSmart Research)...");
+  // Post Ricerche — 14:30 CET (IdeaSmart Research)
+  cron.schedule("30 14 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn RICERCHE (IdeaSmart Research)...");
     await withLock("linkedin-research", async () => {
       try {
         const result = await publishLinkedInPost("research");
@@ -602,9 +613,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post AI Tool Radar — 18:00 CET (10 nuovi tool AI scoperti oggi)
-  cron.schedule("0 18 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 18:00 CET — Pubblicazione LinkedIn AI TOOL RADAR...");
+  // Post AI Tool Radar — 16:00 CET (10 nuovi tool AI scoperti oggi)
+  cron.schedule("0 16 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 16:00 CET — Pubblicazione LinkedIn AI TOOL RADAR...");
     await withLock("linkedin-ai-tool-radar", async () => {
       try {
         const result = await publishLinkedInPost("ai-tool-radar");
@@ -619,9 +630,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Dealroom — 19:00 CET (ultimi deal/round)
-  cron.schedule("0 19 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 19:00 CET — Pubblicazione LinkedIn DEALROOM...");
+  // Post Dealroom — 17:30 CET (ultimi deal/round)
+  cron.schedule("30 17 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 17:30 CET — Pubblicazione LinkedIn DEALROOM...");
     await withLock("linkedin-dealroom", async () => {
       try {
         const result = await publishLinkedInPost("dealroom");
@@ -900,10 +911,10 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📧 Newsletter UNIFICATA → ogni giorno alle 14:30 CET → tutti gli iscritti (AUTOMATICA)");
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
-  console.log("[SchedulerManager]   💼 LinkedIn STARTUP RADAR → ogni giorno alle 14:30 CET (10 startup AI EU/IT investibili)");
-  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 17:00 CET (IdeaSmart Research)");
-  console.log("[SchedulerManager]   💼 LinkedIn AI TOOL RADAR → ogni giorno alle 18:00 CET (10 tool AI scoperti oggi)");
-  console.log("[SchedulerManager]   💼 LinkedIn DEALROOM      → ogni giorno alle 19:00 CET (Dealroom)");
+  console.log("[SchedulerManager]   💼 LinkedIn STARTUP       → ogni giorno alle 12:30 CET (Startup News)");
+  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (IdeaSmart Research)");
+  console.log("[SchedulerManager]   💼 LinkedIn AI TOOL RADAR → ogni giorno alle 16:00 CET (10 tool AI scoperti oggi)");
+  console.log("[SchedulerManager]   💼 LinkedIn DEALROOM      → ogni giorno alle 17:30 CET (Dealroom)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
   console.log("[SchedulerManager]   🏓 Keep-Alive      → ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   🔄 Catch-up NL     → DISABILITATO (newsletter unificata giornaliera attiva)");
