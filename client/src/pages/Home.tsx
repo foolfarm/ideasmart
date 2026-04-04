@@ -1044,21 +1044,7 @@ export default function Home() {
             </section>
           )}
 
-          {/* ── STRIP METRICHE — dopo i contenuti editoriali (come da prompt) ── */}
-          <div className="mt-10 py-6 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-0"
-            style={{ background: "rgba(0,0,0,0.03)", borderTop: "2px solid rgba(0,0,0,0.1)", borderBottom: "2px solid rgba(0,0,0,0.1)" }}>
-            {[
-              { value: "14", label: "canali\ntematici" },
-              { value: "20+", label: "ricerche\nal giorno" },
-              { value: "450+", label: "fonti\nmonitorate" },
-              { value: "6.905", label: "lettori\nattivi" }
-            ].map((m, i) => (
-              <div key={m.label} className={`flex flex-col items-center justify-center py-2 ${i < 3 ? "sm:border-r border-[#1a1a1a]/10" : ""}`}>
-                <span className="text-[28px] sm:text-[32px] font-black leading-none" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>{m.value}</span>
-                <span className="text-[10px] uppercase tracking-widest mt-1 text-center whitespace-pre-line" style={{ color: "rgba(26,26,46,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{m.label}</span>
-              </div>
-            ))}
-          </div>
+
 
 
           {/* ── FOOTER ── */}

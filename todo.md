@@ -2576,3 +2576,7 @@
 - [x] Aggiungere barra sotto header con link "Chi Siamo" e pulsante "Demo" rosso (link a ideasmart.technology)
 - [x] Barra visibile su tutte le pagine (SectionNav condiviso tra homepage, canali e pagine interne)
 - [x] Newsletter unificata di test inviata a ac@acinelli.com (5 AI, 5 Startup, 2 Dealroom, 5 Breaking, 5 Research + 6 nuovi canali)
+
+## Task (4 Apr 2026 — Rimozione strip metriche + info programmazione)
+- [x] Rimuovere la barra statistiche (14 canali, 20+ ricerche, 450+ fonti, lettori) dalla homepage
+- [x] Verificare e comunicare programmazione newsletter e post LinkedIn
