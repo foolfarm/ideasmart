@@ -2590,3 +2590,11 @@
 - [x] Aggiornare invalidazione cache dopo i nuovi orari LinkedIn (10:05, 12:35, 14:35, 16:05, 17:35)
 - [x] Aggiornare log riepilogo scheduler con i nuovi orari
 - [x] Aggiornare test unitari (106 test passati)
+
+## Task (4 Apr 2026 — Rimozione prezzi da Chi Siamo)
+- [x] Rimuovere tutta la sezione prezzi/piani dalla pagina /chi-siamo (rimossi: 4 piani, revenue share, tabella confronto)
+- [x] Inserire messaggio "Crea un giornale completo agentico a partire da sole €499/mese"
+- [x] Inserire sottotitolo "Chiedi una demo o parla con noi"
+- [x] Aggiungere pulsante "Parla con noi" → mailto:info@ideasmart.ai
+- [x] Aggiungere pulsante "Demo" → https://ideasmart.technology
+- [x] Aggiornato anche CTA finale in fondo pagina con stessi link

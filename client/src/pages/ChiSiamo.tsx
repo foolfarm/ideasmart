@@ -547,283 +547,39 @@ export default function ChiSiamo() {
             Gli agenti di supporto lavorano in automatico su tutti i contenuti prodotti.
           </p>
 
-          <div className="mt-8 text-center">
-            <Link href="/offertacommerciale" className="inline-block px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: '#dc2626', borderRadius: '0' }}>
-              Scopri i piani e i prezzi →
-            </Link>
-          </div>
         </Section>
 
         <Divider />
 
-        {/* ═══════════════════════════════════════════════════════════════════
-            MODELLO — 3 PIANI + CUSTOM
-        ═══════════════════════════════════════════════════════════════════ */}
+        {/* ═════════════════════════════════════════════════════════════════
+            CTA PREZZO UNICO
+        ═════════════════════════════════════════════════════════════════ */}
         <Section id="pricing">
-          <Label>Modello</Label>
-          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Scegli la tua redazione.<br />
-            <span className="text-[#0a0a0a]/25">Scala quando vuoi.</span>
-          </h2>
-          <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
-            Tre configurazioni pronte, più un piano su misura. Setup una tantum + canone mensile contenuto. Oppure scegli il revenue share: paghi solo quando cresci.
-          </p>
-
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-[#0a0a0a]">
-            {/* SINGLE VERTICAL */}
-            <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Single Vertical</span>
-              <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€2.500</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
-              </div>
-              <div className="mt-1">
-                <span className="text-xl font-black text-[#0a0a0a]">+ €500</span>
-                <span className="text-sm text-[#0a0a0a]/50">/mese</span>
-              </div>
-              <div className="mt-5 space-y-2.5">
-                {[
-                  "4 Agent Giornalisti configurabili per settore",
-                  "+ 4 agenti di supporto (Fact Checker, Publisher, Newsletter Curator, Social Editor)",
-                  "1 canale tematico",
-                  "10-15 articoli AI/giorno",
-                  "1M token/mese inclusi",
-                  "Setup completo: fonti, tone of voice, regole editoriali",
-                  "Training editoriale (come usare la chat redazionale)",
-                  "Newsletter automatica settimanale",
-                  "Dominio dedicato",
-                  "Manutenzione e aggiornamento agenti mensile",
-                  "Supporto email",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <span className="text-[#0a0a0a] font-bold text-xs mt-0.5 shrink-0">→</span>
-                    <span className="text-xs text-[#0a0a0a]/70 leading-snug">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Per chi è</p>
-                <p className="text-xs text-[#0a0a0a]/60 leading-snug">Giornalisti, creator, professionisti che vogliono lanciare la propria testata verticale.</p>
-              </div>
-              <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70">Anno 1: <strong className="text-[#0a0a0a]">€8.500</strong> · Anno 2+: <strong className="text-[#0a0a0a]">€6.000</strong>/anno</p>
-                <p className="text-xs text-[#0a0a0a]/40 mt-1">Un giornalista part-time costa €25-30k/anno</p>
-              </div>
-            </div>
-
-            {/* MULTI-CHANNEL — evidenziato */}
-            <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a] relative" style={{ background: '#f5f0e8' }}>
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: '#dc2626' }} />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Multi-Channel</span>
-              <span className="ml-3 text-[9px] font-black uppercase tracking-[0.15em] text-white px-2 py-0.5" style={{ background: '#dc2626' }}>Più scelto</span>
-              <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€5.000</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
-              </div>
-              <div className="mt-1">
-                <span className="text-xl font-black text-[#0a0a0a]">+ €750</span>
-                <span className="text-sm text-[#0a0a0a]/50">/mese</span>
-              </div>
-              <div className="mt-5 space-y-2.5">
-                {[
-                  "8 Agent Giornalisti configurabili per settore",
-                  "+ 4 agenti di supporto",
-                  "Fino a 6 canali tematici",
-                  "Setup completo con sessione strategica (2h)",
-                  "Training editoriale + 1 revisione mensile",
-                  "20-30 articoli AI/giorno",
-                  "3M token/mese inclusi",
-                  "Newsletter automatica",
-                  "Paywall integrato (se richiesto)",
-                  "Analytics base",
-                  "Supporto prioritario",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <span className="text-[#0a0a0a] font-bold text-xs mt-0.5 shrink-0">→</span>
-                    <span className="text-xs text-[#0a0a0a]/70 leading-snug">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Per chi è</p>
-                <p className="text-xs text-[#0a0a0a]/60 leading-snug">Testate online che vogliono verticalizzare, aziende media, associazioni di categoria.</p>
-              </div>
-              <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70">Anno 1: <strong className="text-[#0a0a0a]">€14.000</strong> · Anno 2+: <strong className="text-[#0a0a0a]">€9.000</strong>/anno</p>
-                <p className="text-xs text-[#0a0a0a]/40 mt-1">2 giornalisti costano €70-90k/anno</p>
-              </div>
-            </div>
-
-            {/* FULL NEWSROOM */}
-            <div className="p-8 border-b lg:border-b-0 lg:border-r border-[#0a0a0a]">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Full Newsroom</span>
-              <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-[#0a0a0a]">€7.500</span>
-                <span className="text-sm font-bold text-[#0a0a0a]/40 ml-1">una tantum</span>
-              </div>
-              <div className="mt-1">
-                <span className="text-xl font-black text-[#0a0a0a]">+ €1.000</span>
-                <span className="text-sm text-[#0a0a0a]/50">/mese</span>
-              </div>
-              <div className="mt-5 space-y-2.5">
-                {[
-                  "12 Agent Giornalisti configurabili per settore",
-                  "+ 4 agenti di supporto",
-                  "Canali illimitati",
-                  "Setup completo con sessione strategica (4h) + audit fonti + piano editoriale primo mese",
-                  "Training editoriale + 2 revisioni mensili",
-                  "Articoli illimitati",
-                  "10M token/mese inclusi",
-                  "Newsletter automatica multi-lista",
-                  "Paywall + gestione abbonamenti",
-                  "Analytics avanzato",
-                  "Distribuzione multi-canale (sito + social + newsletter)",
-                  "Supporto dedicato con account manager",
-                  "Sessione mensile di ottimizzazione editoriale",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <span className="text-[#0a0a0a] font-bold text-xs mt-0.5 shrink-0">→</span>
-                    <span className="text-xs text-[#0a0a0a]/70 leading-snug">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Per chi è</p>
-                <p className="text-xs text-[#0a0a0a]/60 leading-snug">Media company, gruppi editoriali, grandi testate che vogliono spin-off AI-powered.</p>
-              </div>
-              <div className="mt-4 pt-4 border-t border-[#0a0a0a]/10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/30 mb-1">Costo annuo</p>
-                <p className="text-sm text-[#0a0a0a]/70">Anno 1: <strong className="text-[#0a0a0a]">€19.500</strong> · Anno 2+: <strong className="text-[#0a0a0a]">€12.000</strong>/anno</p>
-                <p className="text-xs text-[#0a0a0a]/40 mt-1">Una redazione di 3-4 persone costa €150-200k/anno</p>
-              </div>
-            </div>
-
-            {/* CUSTOM / ENTERPRISE */}
-            <div className="p-8" style={{ background: '#0a0a0a' }}>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Custom / Enterprise</span>
-              <div className="mt-4">
-                <span className="text-3xl md:text-4xl font-black text-white">Su misura</span>
-              </div>
-              <div className="mt-6 space-y-2.5">
-                {[
-                  "Agent Giornalisti su misura (anche 20+)",
-                  "Canali e fonti illimitate",
-                  "Token budget personalizzato",
-                  "Multi-testata (più giornali dalla stessa piattaforma)",
-                  "Integrazioni personalizzate (CMS, CRM, ERP)",
-                  "SLA e supporto dedicato",
-                  "Team multi-editor",
-                  "White-label completo",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <span className="text-white font-bold text-xs mt-0.5 shrink-0">→</span>
-                    <span className="text-xs text-white/60 leading-snug">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 pt-4 border-t border-white/10">
-                <p className="text-xs text-white/40 leading-snug">Per progetti speciali: multi-testata, integrazioni proprietarie, SLA dedicato, white-label.</p>
-              </div>
-              <a
-                href="mailto:info@ideasmart.biz?subject=Piano Custom Piattaforma Ideasmart"
-                className="mt-6 inline-block px-6 py-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
-                style={{ background: '#ffffff' }}
-              >
-                Contattaci →
-              </a>
-            </div>
-          </div>
-
-          {/* ALTERNATIVA REVENUE SHARE */}
-          <div className="mt-10 border-2 border-dashed border-[#0a0a0a]/20 p-8 md:p-10">
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-              <div className="max-w-xl">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30">Alternativa</span>
-                <h3 className="mt-2 text-2xl md:text-3xl font-black text-[#0a0a0a] leading-tight">
-                  Preferisci il revenue share?
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#0a0a0a]/55">
-                  Solo per <strong className="text-[#0a0a0a]">Multi-Channel</strong> e <strong className="text-[#0a0a0a]">Full Newsroom</strong>. Al posto del canone mensile, scegli il modello <strong className="text-[#0a0a0a]">revenue share al 20%</strong> sui ricavi generati dalla testata. Paghi solo il setup una tantum e poi cresciamo insieme.
-                </p>
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-[#0a0a0a]">Multi-Channel:</span>
-                    <span className="text-xs text-[#0a0a0a]/60">€2.000 setup + 20% ricavi · minimo garantito €300/mese</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-[#0a0a0a]">Full Newsroom:</span>
-                    <span className="text-xs text-[#0a0a0a]/60">€3.000 setup + 20% ricavi · minimo garantito €500/mese</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex-shrink-0 text-center md:text-right">
-                <div className="text-5xl md:text-6xl font-black text-[#0a0a0a]">20%</div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/35 mt-1">Revenue share</div>
-                <div className="text-xs text-[#0a0a0a]/40 mt-2">Solo setup ridotto<br />+ 20% sui ricavi effettivi</div>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-8 text-center text-sm text-[#0a0a0a]/40">
-            Tutti i piani includono: configurazione piattaforma, personalizzazione editoriale, setup fonti e training AI. Overage token: €10/100k token.
-          </p>
-
-          {/* CONFRONTO CON REDAZIONE TRADIZIONALE */}
-          <div className="mt-16">
-            <Label>Confronto</Label>
-            <h3 className="text-2xl md:text-4xl font-black leading-tight text-[#0a0a0a] mb-4">
-              Fino a 17 volte meno<br />
-              <span className="text-[#0a0a0a]/25">di una redazione tradizionale.</span>
-            </h3>
-            <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mb-10">
-              Una redazione tradizionale costa tra €80.000 e €580.000 all'anno in stipendi, strumenti e overhead. Con IdeaSmart ottieni lo stesso output — o di più — a una frazione del costo.
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
+              Crea un giornale completo agentico<br />
+              a partire da sole <span style={{ color: '#dc2626' }}>€499/mese</span>
+            </h2>
+            <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/55">
+              Chiedi una demo o parla con noi.
             </p>
-
-            {/* Tabella confronto */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left" style={{ borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ borderBottom: '2px solid #0a0a0a' }}>
-                    <th className="py-4 pr-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>Voce di costo</th>
-                    <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Redazione tradizionale</th>
-                    <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-right" style={{ fontFamily: FONT }}>Ideasmart Multi-Channel</th>
-                    <th className="py-4 pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#dc2626]/70 text-right" style={{ fontFamily: FONT }}>Risparmio</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { voce: "Giornalisti (2-3 FTE)", trad: "€60.000 — €90.000", idea: "Incluso", saving: "100%" },
-                    { voce: "Editor / Caporedattore", trad: "€35.000 — €50.000", idea: "Incluso", saving: "100%" },
-                    { voce: "Fact-checker", trad: "€25.000 — €35.000", idea: "Incluso (Verify)", saving: "100%" },
-                    { voce: "Social media manager", trad: "€20.000 — €30.000", idea: "Incluso", saving: "100%" },
-                    { voce: "Newsletter manager", trad: "€15.000 — €20.000", idea: "Incluso", saving: "100%" },
-                    { voce: "Strumenti e software", trad: "€5.000 — €10.000", idea: "Incluso", saving: "100%" },
-                    { voce: "Hosting e infrastruttura", trad: "€3.000 — €8.000", idea: "Incluso", saving: "100%" },
-                  ].map((row, i) => (
-                    <tr key={i} style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
-                      <td className="py-3 pr-4 text-sm font-bold text-[#0a0a0a]">{row.voce}</td>
-                      <td className="py-3 px-4 text-sm text-[#0a0a0a]/50 text-right">{row.trad}</td>
-                      <td className="py-3 px-4 text-sm text-[#0a0a0a]/70 text-right font-bold">{row.idea}</td>
-                      <td className="py-3 pl-4 text-sm font-black text-right" style={{ color: '#dc2626' }}>{row.saving}</td>
-                    </tr>
-                  ))}
-                  <tr style={{ borderTop: '2px solid #0a0a0a' }}>
-                    <td className="py-4 pr-4 text-base font-black text-[#0a0a0a]">Totale annuo</td>
-                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a]/50 text-right">€163.000 — €243.000</td>
-                    <td className="py-4 px-4 text-base font-black text-[#0a0a0a] text-right">da €8.500</td>
-                    <td className="py-4 pl-4 text-base font-black text-right" style={{ color: '#dc2626' }}>fino a 17x meno</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mt-10 p-8 border-l-4 border-[#0a0a0a]" style={{ background: 'rgba(10,10,10,0.04)' }}>
-              <p className="text-xl md:text-2xl font-bold leading-snug text-[#0a0a0a]">
-                Una redazione di 3-4 persone costa oltre €150.000/anno.<br />
-                <span className="text-[#0a0a0a]/40">Con IdeaSmart, da €8.500/anno. Stesso output, fino a 17x meno.</span>
-              </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Ideasmart"
+                className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
+                style={{ background: '#0a0a0a', borderRadius: '0' }}
+              >
+                Parla con noi →
+              </a>
+              <a
+                href="https://ideasmart.technology"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
+                style={{ background: '#dc2626', borderRadius: '0' }}
+              >
+                Richiedi una Demo →
+              </a>
             </div>
           </div>
         </Section>
@@ -890,22 +646,24 @@ export default function ChiSiamo() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@ideasmart.biz?subject=Demo Piattaforma Giornalismo Agentico"
+                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Ideasmart"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
                 style={{ background: "#ffffff", borderRadius: "0" }}
               >
-                Prenota una demo →
+                Parla con noi →
               </a>
               <a
-                href="mailto:info@ideasmart.biz?subject=Informazioni Piattaforma Ideasmart"
+                href="https://ideasmart.technology"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:border-white hover:bg-white hover:text-[#0a0a0a]"
                 style={{ borderRadius: "0" }}
               >
-                Parla con noi
+                Richiedi una Demo →
               </a>
             </div>
             <p className="mt-8 text-[10px] font-bold uppercase tracking-[0.2em] text-white/20">
-              Setup in pochi giorni · Nessun vincolo · Revenue share
+              Setup in pochi giorni · A partire da €499/mese
             </p>
           </div>
         </section>
