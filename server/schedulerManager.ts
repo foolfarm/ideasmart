@@ -142,16 +142,16 @@ export function startAllSchedulers(): void {
   // SEZIONE /ai — AI News
   // ══════════════════════════════════════════════════════════════════════════
 
-  cron.schedule("0 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:00 CET — Avvio scraping RSS News AI...");
+  cron.schedule("0 0 * * 1,3,5", async () => { // lun, mer, ven alle 00:00 CET
+    console.log("[SchedulerManager] ⏰ 00:00 CET (lun/mer/ven) — Avvio scraping RSS News AI...");
     await withLock("rss-ai", async () => {
       try { await refreshAINewsFromRSS(); invalidateSection('ai'); console.log("[SchedulerManager] ✅ News AI aggiornate + cache invalidata"); }
       catch (err) { console.error("[SchedulerManager] ❌ News AI:", err); }
     });
   }, { timezone: TZ });
 
-  cron.schedule("5 0 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 00:05 CET — Editoriale AI + Startup del giorno...");
+  cron.schedule("5 0 * * 1,3,5", async () => { // lun, mer, ven alle 00:05 CET
+    console.log("[SchedulerManager] ⏰ 00:05 CET (lun/mer/ven) — Editoriale AI + Startup del giorno...");
     await withLock("editorial-ai", async () => {
       try { await runDailyContentRefresh(); console.log("[SchedulerManager] ✅ Editoriale e Startup AI aggiornati"); }
       catch (err) { console.error("[SchedulerManager] ❌ Editoriale/Startup AI:", err); }
@@ -177,14 +177,14 @@ export function startAllSchedulers(): void {
   // SEZIONE /startup — Startup News
   // ══════════════════════════════════════════════════════════════════════════
 
-  cron.schedule("0 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:00 CET — Avvio scraping RSS Startup News...");
+  cron.schedule("0 1 * * 1,3,5", async () => { // lun, mer, ven alle 01:00 CET
+    console.log("[SchedulerManager] ⏰ 01:00 CET (lun/mer/ven) — Avvio scraping RSS Startup News...");
     try { await refreshStartupNewsFromRSS(); invalidateSection('startup'); console.log("[SchedulerManager] ✅ Startup News aggiornate + cache invalidata"); }
     catch (err) { console.error("[SchedulerManager] ❌ Startup News:", err); }
   }, { timezone: TZ });
 
-  cron.schedule("5 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:05 CET — Editoriale Startup + Startup della Settimana...");
+  cron.schedule("5 1 * * 1,3,5", async () => { // lun, mer, ven alle 01:05 CET
+    console.log("[SchedulerManager] ⏰ 01:05 CET (lun/mer/ven) — Editoriale Startup + Startup della Settimana...");
     try { await generateStartupEditorial(); await generateStartupOfWeek(); console.log("[SchedulerManager] ✅ Editoriale Startup aggiornato"); }
     catch (err) { console.error("[SchedulerManager] ❌ Editoriale Startup:", err); }
   }, { timezone: TZ });
@@ -201,20 +201,20 @@ export function startAllSchedulers(): void {
 
   // ══════════════════════════════════════════════════════════════════════════
   // SEZIONE /dealroom — DEALROOM: Round, Funding, VC, M&A
-  // Scraping ogni giorno alle 01:30 CET (dopo Startup News)
+  // Scraping lun/mer/ven alle 01:30 CET (dopo Startup News)
   // ══════════════════════════════════════════════════════════════════════════
 
-  cron.schedule("30 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:30 CET — Avvio scraping RSS DEALROOM (round, funding, VC, M&A)...");
+  cron.schedule("30 1 * * 1,3,5", async () => { // lun, mer, ven alle 01:30 CET
+    console.log("[SchedulerManager] ⏰ 01:30 CET (lun/mer/ven) — Avvio scraping RSS DEALROOM (round, funding, VC, M&A)...");
     await withLock("rss-dealroom", async () => {
       try { await refreshDealroomNewsFromRSS(); invalidateSection('dealroom'); console.log("[SchedulerManager] ✅ DEALROOM News aggiornate + cache invalidata"); }
       catch (err) { console.error("[SchedulerManager] ❌ DEALROOM News:", err); }
     });
   }, { timezone: TZ });
 
-  // Editoriale DEALROOM — ogni giorno alle 01:35 CET (dopo scraping DEALROOM)
-  cron.schedule("35 1 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 01:35 CET — Generazione editoriale DEALROOM...");
+  // Editoriale DEALROOM — lun/mer/ven alle 01:35 CET (dopo scraping DEALROOM)
+  cron.schedule("35 1 * * 1,3,5", async () => { // lun, mer, ven alle 01:35 CET
+    console.log("[SchedulerManager] ⏰ 01:35 CET (lun/mer/ven) — Generazione editoriale DEALROOM...");
     await withLock("editorial-dealroom", async () => {
       try { await generateDealroomEditorial(); invalidateSection('dealroom'); console.log("[SchedulerManager] ✅ Editoriale DEALROOM generato + cache invalidata"); }
       catch (err) { console.error("[SchedulerManager] ❌ Editoriale DEALROOM:", err); }
@@ -242,8 +242,8 @@ export function startAllSchedulers(): void {
   // Alle 05:30 invalidiamo l'intera cache in-memory così il prossimo utente
   // riceve i contenuti freschi del giorno. La cache si ripopola automaticamente
   // alla prima richiesta (lazy) o tramite warm-up programmato.
-  cron.schedule("30 5 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 05:30 CET — Invalidazione cache post-scraping...");
+  cron.schedule("30 5 * * 1,3,5", async () => { // lun, mer, ven alle 05:30 CET
+    console.log("[SchedulerManager] ⏰ 05:30 CET (lun/mer/ven) — Invalidazione cache post-scraping...");
     try {
       invalidateAll();
       console.log("[SchedulerManager] ✅ Cache invalidata — contenuti freschi disponibili al prossimo accesso");
@@ -802,11 +802,11 @@ export function startAllSchedulers(): void {
   }, 90_000);
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // IDEASMART RESEARCH — ogni giorno alle 06:00 CET
+  // IDEASMART RESEARCH — lun/mer/ven alle 06:00 CET
   // Genera 10 ricerche su Startup, VC e AI Trends da fonti specializzate
   // ═══════════════════════════════════════════════════════════════════════════
   cron.schedule(
-    "0 0 6 * * *", // ogni giorno alle 06:00 CET
+    "0 0 6 * * 1,3,5", // lun, mer, ven alle 06:00 CET
     () => withLock("researchGeneration", async () => {
       console.log("[SchedulerManager] 🔬 IDEASMART Research: generazione ricerche giornaliere...");
       try {
@@ -895,16 +895,16 @@ export function startAllSchedulers(): void {
 
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Scheduler attivi (sezioni: AI, Startup, DEALROOM, Research):");
-  console.log("[SchedulerManager]   📰 News AI          → ogni giorno alle 00:00 CET");
-  console.log("[SchedulerManager]   ✍️  Editoriale AI    → ogni giorno alle 00:05 CET");
+  console.log("[SchedulerManager]   📰 News AI          → lun/mer/ven alle 00:00 CET");
+  console.log("[SchedulerManager]   ✍️  Editoriale AI    → lun/mer/ven alle 00:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage AI     → ogni lunedì alle 00:15 CET");
   console.log("[SchedulerManager]   📊 Analisi AI       → ogni lunedì alle 00:20 CET");
-  console.log("[SchedulerManager]   🚀 News Startup     → ogni giorno alle 01:00 CET");
-  console.log("[SchedulerManager]   ✍️  Editoriale Startup → ogni giorno alle 01:05 CET");
+  console.log("[SchedulerManager]   🚀 News Startup     → lun/mer/ven alle 01:00 CET");
+  console.log("[SchedulerManager]   ✍️  Editoriale Startup → lun/mer/ven alle 01:05 CET");
   console.log("[SchedulerManager]   🏢 Reportage Startup → ogni lunedì alle 01:15 CET");
   console.log("[SchedulerManager]   📊 Analisi Startup  → ogni lunedì alle 01:20 CET");
-  console.log("[SchedulerManager]   💰 DEALROOM News    → ogni giorno alle 01:30 CET");
-  console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → ogni giorno alle 01:35 CET");
+  console.log("[SchedulerManager]   💰 DEALROOM News    → lun/mer/ven alle 01:30 CET");
+  console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → lun/mer/ven alle 01:35 CET");
   console.log("[SchedulerManager]   🌙 Audit notturno   → ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   🔍 Audit link newsletter → ogni giorno alle 06:45 CET (verifica HTTP 200 tutti i link)");
   console.log("[SchedulerManager]   👁️  Preview newsletter → ogni giorno alle 10:30 CET → ac@acinelli.com");
@@ -922,6 +922,8 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 09:30 CET (pubblica se nessun post oggi)");
   console.log("[SchedulerManager]   🚀 Breaking News   → ogni 3 ore alle :05 (analisi AI notizie urgenti, archivio dopo 6h)");
+  console.log("[SchedulerManager]   🔬 Research        → lun/mer/ven alle 06:00 CET (10 ricerche AI/Startup/VC)");
+  console.log("[SchedulerManager]   🧠 Channel Ingestor → lun/mer/ven alle 00:00 CET (RSS + AI per 6 canali)");
   console.log("[SchedulerManager]   📅 Events Aggregator → ogni 12 ore alle 06:30 e 18:30 CET (Luma ICS + RSS italiani)");
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -954,13 +956,13 @@ export function startAllSchedulers(): void {
   }, 3 * 60 * 1000); // 3 minuti dopo l'avvio
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // CHANNEL CONTENT INGESTOR — ogni giorno alle 00:00 CET
+  // CHANNEL CONTENT INGESTOR — lun/mer/ven alle 00:00 CET
   // Raccoglie RSS, genera contenuti AI per tutti i canali
   // (Copy & Paste AI, Automate, Make Money, Daily AI Tools, Verified News, AI Opportunities)
   // Eseguito in parallelo con gli altri scheduler delle 00:00 (AI News, ecc.)
   // ═══════════════════════════════════════════════════════════════════════════
   cron.schedule(
-    "0 0 0 * * *", // ogni giorno alle 00:00 CET
+    "0 0 0 * * 1,3,5", // lun, mer, ven alle 00:00 CET
     () => withLock("channelIngest", async () => {
       console.log("[SchedulerManager] 🧠 Channel Ingestor: avvio ingestione contenuti canali...");
       try {

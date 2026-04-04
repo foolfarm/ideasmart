@@ -252,7 +252,7 @@ describe("schedulerManager", () => {
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const rssAiCall = calls.find(c => c[0] === "0 0 * * *");
+    const rssAiCall = calls.find(c => c[0] === "0 0 * * 1,3,5");
     expect(rssAiCall).toBeDefined();
   });
 

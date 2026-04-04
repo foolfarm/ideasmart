@@ -2603,3 +2603,18 @@
 - [x] Cambiare orario invio newsletter unificata: 14:30 → 12:30 CET
 - [x] Aggiornare commenti e log riepilogo scheduler
 - [x] Test unitari: 106 test passati (12 file)
+
+## Task (4 Apr 2026 — Fix errore newsletter + reinvio)
+- [x] Diagnosticare errore DB: query news_items section=startup — DB OK, 20 articoli startup presenti, query funzionante. Errore in produzione probabilmente da deploy non aggiornato
+- [x] Preview 10:30 andata a buon fine (5 AI, 5 Startup, 5 Deal, 5 Breaking, 5 Research)
+- [x] Programmare invio newsletter alle 14:30 CET di oggi (task schedulato)
+
+## Task (4 Apr 2026 — Riduzione frequenza aggiornamento sito)
+- [x] Modificare scraper RSS AI News: ogni giorno 00:00 → lun/mer/ven 00:00
+- [x] Modificare scraper Startup News: ogni giorno 01:00 → lun/mer/ven 01:00
+- [x] Modificare scraper Dealroom: ogni giorno 01:30 → lun/mer/ven 01:30
+- [x] Modificare ingestione 6 nuovi canali: ogni giorno 00:00 → lun/mer/ven 00:00
+- [x] Modificare generazione ricerche: ogni giorno 06:00 → lun/mer/ven 06:00
+- [x] Modificare invalidazione cache: ogni giorno 05:30 → lun/mer/ven 05:30
+- [x] Aggiornare commenti e log riepilogo scheduler
+- [x] Test unitari: 106 test passati (12 file)
