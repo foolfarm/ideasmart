@@ -2618,3 +2618,10 @@
 - [x] Modificare invalidazione cache: ogni giorno 05:30 → lun/mer/ven 05:30
 - [x] Aggiornare commenti e log riepilogo scheduler
 - [x] Test unitari: 106 test passati (12 file)
+
+## Task (5 Apr 2026 — Sponsor newsletter → Amazon rotazione)
+- [ ] Sostituire slot "Sponsor del Giorno" (primary) con Amazon Deal 1 a rotazione giornaliera
+- [ ] Sostituire slot "Today's Spotlight" (spotlight) con Amazon Deal 2 a rotazione giornaliera
+- [ ] Aggiornare logica rotazione: 2 deal distinti per giorno (deal 1 = primary, deal 2 = spotlight)
+- [ ] Inserire iPhone 17 Pro (https://amzn.to/4vhSYcY, €1.289) come deal nel DB
+- [ ] Aggiornare test unitari

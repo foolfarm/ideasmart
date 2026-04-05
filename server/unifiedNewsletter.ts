@@ -841,6 +841,69 @@ function buildUnifiedNewsletterHtml(opts: {
   }
 
   // ── Amazon Deals Block (supports multiple) ─────────────────────────
+  // ── Amazon Deal come Sponsor (layout sponsor con dati Amazon) ────────────
+  function buildAmazonDealSponsorBlock(deal: AmazonDealData | undefined, label: string): string {
+    if (!deal) return "";
+    const AMAZON_ORANGE = "#FF9900";
+    const utmUrl = `${deal.affiliateUrl}${deal.affiliateUrl.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_sponsor`;
+    const ratingHtml = deal.rating
+      ? `<div style="margin-bottom:10px;"><span style="font-size:14px;color:${AMAZON_ORANGE};font-family:${F};font-weight:700;">${deal.rating}</span>${deal.reviewCount ? ` <span style="font-size:13px;color:${MUTED};font-family:${F};">(${deal.reviewCount} recensioni)</span>` : ""}</div>`
+      : "";
+    return `
+      <!-- ${label} — Amazon: ${deal.title} -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+            <!-- Label -->
+            <tr>
+              <td style="padding:20px 24px 0;">
+                <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">&#128722; ${label}</div>
+              </td>
+            </tr>
+            <!-- Title -->
+            <tr>
+              <td style="padding:8px 24px 0;">
+                <div style="font-size:22px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;">${deal.title}</div>
+              </td>
+            </tr>
+            ${deal.imageUrl ? `<!-- Image -->
+            <tr>
+              <td style="padding:16px 24px 0;">
+                <a href="${utmUrl}" target="_blank" style="text-decoration:none;">
+                  <img src="${deal.imageUrl}" alt="${deal.title}" width="592" style="width:100%;max-width:592px;height:auto;border-radius:8px;display:block;border:1px solid ${BORDER};" />
+                </a>
+              </td>
+            </tr>` : ""}
+            <!-- Description -->
+            <tr>
+              <td style="padding:16px 24px 0;">
+                <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;">${deal.description}</div>
+              </td>
+            </tr>
+            <!-- Price & Rating -->
+            <tr>
+              <td style="padding:14px 24px 0;">
+                <div style="font-size:28px;font-weight:900;color:${BLACK};font-family:${F};margin-bottom:8px;">${deal.price}</div>
+                ${ratingHtml}
+              </td>
+            </tr>
+            <!-- CTA -->
+            <tr>
+              <td style="padding:8px 24px 22px;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="background:${AMAZON_ORANGE};border-radius:8px;padding:14px 32px;">
+                      <a href="${utmUrl}" target="_blank" style="font-size:15px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};letter-spacing:0.02em;">Scopri su Amazon &#8594;</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
   function buildAmazonDealsBlock(): string {
     if (amazonDeals.length === 0) return "";
 
@@ -1264,7 +1327,7 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildBreakingSection()}
 
-        ${buildSponsorBlock(primarySponsor, "Sponsor del Giorno")}
+        ${buildAmazonDealSponsorBlock(amazonDeals[0], "Sponsor del Giorno")}
 
         ${buildBecomeSponsorBlock()}
 
@@ -1274,7 +1337,7 @@ function buildUnifiedNewsletterHtml(opts: {
 
         ${buildSection("Startup News", "Startup & Innovazione", startupNews, "startup")}
 
-        ${buildSponsorBlock(spotlightSponsor, "Today's Spotlight")}
+        ${buildAmazonDealSponsorBlock(amazonDeals[1] ?? amazonDeals[0], "Today's Spotlight")}
 
         ${buildSection("Dealroom", "Deal & Funding", dealroomNews, "dealroom")}
 
