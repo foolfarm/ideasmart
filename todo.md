@@ -2625,3 +2625,10 @@
 - [ ] Aggiornare logica rotazione: 2 deal distinti per giorno (deal 1 = primary, deal 2 = spotlight)
 - [ ] Inserire iPhone 17 Pro (https://amzn.to/4vhSYcY, €1.289) come deal nel DB
 - [ ] Aggiornare test unitari
+
+## Task (5 Apr 2026 — Admin Amazon Deals)
+- [x] Inserire secondo prodotto Amazon per oggi (Today's Spotlight): AirPods Pro 2 €249
+- [x] Pagina admin /admin/newsletter-content già esistente con CRUD completo per deal Amazon
+- [x] Rotta /admin/newsletter-content già registrata in App.tsx
+- [x] Procedure tRPC già presenti: getAmazonDeals, createAmazonDeal, updateAmazonDeal, deleteAmazonDeal
+- [x] 106 test passati
