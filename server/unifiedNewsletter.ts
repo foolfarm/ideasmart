@@ -331,15 +331,76 @@ async function getOpenSourceToolsForNewsletter(): Promise<{ name: string; url: s
 
 // ─── Data Collection ────────────────────────────────────────────────────────
 
+// ─── Deduplication helpers ──────────────────────────────────────────────────
+
+/**
+ * Genera un fingerprint normalizzato da un titolo:
+ * - lowercase, rimuove punteggiatura, normalizza spazi, prende prime 8 parole.
+ * Due titoli sullo stesso argomento avranno fingerprint simili.
+ */
+function titleFingerprint(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .slice(0, 8)
+    .join(" ");
+}
+
+/**
+ * Genera un hashtag-source dalla sourceName:
+ * - lowercase, rimuove spazi e caratteri speciali.
+ * Es. "TechCrunch" → "techcrunch", "Il Sole 24 Ore" → "ilsole24ore"
+ */
+function sourceHashtag(sourceName: string | null | undefined): string {
+  if (!sourceName) return "";
+  return sourceName
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .slice(0, 20);
+}
+
+/**
+ * Deduplica un array di notizie:
+ * - Rimuove notizie con titolo quasi identico (stesso fingerprint)
+ * - Rimuove notizie con la stessa fonte (sourceHashtag) se già presente
+ * - Mantiene al massimo 1 notizia per fonte
+ */
+function deduplicateNews<T extends { title: string; sourceName?: string | null }>(items: T[], maxPerSource = 1): T[] {
+  const seenTitles = new Set<string>();
+  const sourceCount = new Map<string, number>();
+  const result: T[] = [];
+
+  for (const item of items) {
+    const fp = titleFingerprint(item.title);
+    const src = sourceHashtag(item.sourceName);
+
+    // Salta se titolo già visto
+    if (seenTitles.has(fp)) continue;
+
+    // Salta se fonte già usata maxPerSource volte
+    if (src && (sourceCount.get(src) ?? 0) >= maxPerSource) continue;
+
+    seenTitles.add(fp);
+    if (src) sourceCount.set(src, (sourceCount.get(src) ?? 0) + 1);
+    result.push(item);
+  }
+
+  return result;
+}
+
 async function collectAllContent() {
   const db = await getDb();
   if (!db) throw new Error("Database non disponibile");
 
-  const [aiNews, startupNews, dealroomNews, breakingItems, todayResearches] =
+  // Recupera più notizie del necessario per compensare quelle duplicate
+  const [aiNewsRaw, startupNewsRaw, dealroomNewsRaw, breakingItemsRaw, todayResearches] =
     await Promise.all([
-      getLatestNews(5, "ai"),
-      getLatestNews(5, "startup"),
-      getLatestNews(5, "dealroom"),
+      getLatestNews(12, "ai"),
+      getLatestNews(12, "startup"),
+      getLatestNews(12, "dealroom"),
       db
         .select()
         .from(breakingNewsTable)
@@ -348,9 +409,15 @@ async function collectAllContent() {
           desc(breakingNewsTable.urgencyScore),
           desc(breakingNewsTable.createdAt)
         )
-        .limit(5),
+        .limit(15),
       getTodayResearch(),
     ]);
+
+  // Applica deduplicazione: max 1 notizia per fonte, nessun titolo ripetuto
+  const aiNews = deduplicateNews(aiNewsRaw, 1).slice(0, 5);
+  const startupNews = deduplicateNews(startupNewsRaw, 1).slice(0, 5);
+  const dealroomNews = deduplicateNews(dealroomNewsRaw, 1).slice(0, 5);
+  const breakingItems = deduplicateNews(breakingItemsRaw, 1).slice(0, 5);
 
   // Fetch contenuti dei nuovi canali (3 per canale)
   const channelContents: Record<string, ChannelItem[]> = {};

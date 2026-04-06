@@ -2632,3 +2632,8 @@
 - [x] Rotta /admin/newsletter-content già registrata in App.tsx
 - [x] Procedure tRPC già presenti: getAmazonDeals, createAmazonDeal, updateAmazonDeal, deleteAmazonDeal
 - [x] 106 test passati
+
+## Task (6 Apr 2026 — Fix newsletter: deduplicazione e sponsor Amazon)
+- [x] Implementare deduplicazione notizie nella newsletter tramite fingerprint/hashtag fonte (Breaking News e altri canali) — max 1 notizia per fonte, nessun titolo ripetuto
+- [x] Verificare e correggere sostituzione Sponsor del Giorno con Amazon Deal 1 — deal inseriti per 2026-04-06
+- [x] Verificare e correggere sostituzione Today's Spotlight con Amazon Deal 2 — deal inseriti per 2026-04-06
