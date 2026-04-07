@@ -2658,3 +2658,13 @@
 - [x] B) Nuovo menu SectionChannelBar: AI NEWS | AI RESEARCH | AI VENTURE | AI INVEST + dropdown Altro
 - [x] C) Sistema VERIFY: hash SHA-256 univoco per ogni articolo (DB, scheduler, badge frontend)
 - [x] C) Backfill hash VERIFY per i 58 articoli esistenti nel DB
+
+## Aggiornamenti 7 aprile 2026
+
+- [x] Correggere bug dropdown Altro in SectionChannelBar (overflow-x-auto tagliava il pannello)
+- [x] Aggiungere SectionChannelBar sticky in pagina /research
+- [x] Aggiungere badge VERIFY nelle card di Research.tsx
+- [x] Creare procedura tRPC news.lookupByHash per verifica hash SHA-256
+- [x] Creare pagina pubblica /verify con form di ricerca hash e risultato verifica
+- [x] Registrare route /verify in App.tsx
+- [x] Aggiungere link VERIFY nel dropdown Altro di SectionChannelBar

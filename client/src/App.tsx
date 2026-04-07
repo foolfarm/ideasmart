@@ -34,6 +34,7 @@ const StartupHome = lazy(() => import("./pages/StartupHome"));
 const DealroomHome = lazy(() => import("./pages/DealroomHome"));
 const Research = lazy(() => import("./pages/Research"));
 const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
+const Verify = lazy(() => import("./pages/Verify"));
 
 // ─── Pagine articolo (lazy) ───────────────────────────────────────────────────
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
@@ -108,6 +109,7 @@ function Router() {
         <Route path="/advertise" component={Advertise} />
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
+        <Route path="/verify" component={Verify} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/ai/news/:id" component={NewsArticle} />
         <Route path="/startup/news/:id" component={StartupNewsArticle} />

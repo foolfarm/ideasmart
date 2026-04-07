@@ -792,6 +792,40 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
         return { replaced, total: lowScoreNews.length, message: `Sostituite ${replaced} notizie su ${lowScoreNews.length}` };
       }),
+    // Verifica hash VERIFY — cerca un articolo per hash SHA-256
+    lookupByHash: publicProcedure
+      .input(z.object({ hash: z.string().min(8).max(128) }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const rows = await db
+          .select({
+            id: newsItemsTable.id,
+            title: newsItemsTable.title,
+            summary: newsItemsTable.summary,
+            sourceName: newsItemsTable.sourceName,
+            sourceUrl: newsItemsTable.sourceUrl,
+            section: newsItemsTable.section,
+            publishedAt: newsItemsTable.publishedAt,
+            verifyHash: newsItemsTable.verifyHash,
+          })
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.verifyHash, input.hash))
+          .limit(1);
+        if (!rows.length) return null;
+        const r = rows[0];
+        return {
+          id: r.id,
+          title: r.title,
+          summary: r.summary,
+          sourceName: r.sourceName,
+          sourceUrl: r.sourceUrl ?? null,
+          section: r.section,
+          publishedAt: r.publishedAt,
+          verifyHash: r.verifyHash ?? null,
+        };
+      }),
+
     // Contatore notizie per sezione — usato dal SectionNav per mostrare badge live
     getSectionCounts: publicProcedure.query(async () => {
       return cached(

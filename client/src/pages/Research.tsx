@@ -8,6 +8,8 @@ import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import RequireAuth from "@/components/RequireAuth";
+import SectionChannelBar from "@/components/SectionChannelBar";
+import VerifyBadge from "@/components/VerifyBadge";
 import {
   ExternalLink, TrendingUp, Globe, MapPin, BookOpen,
   ChevronDown, ChevronUp, Mail, ArrowRight,
@@ -259,7 +261,12 @@ function ResearchCard({ report }: {
           </div>
         )}
 
-        <div className="flex items-center gap-3 mt-2">
+        {/* VERIFY badge */}
+        <div className="px-4 pb-1">
+          <VerifyBadge hash={`research-${report.id}-${report.source}-${report.dateLabel}`} size="sm" />
+        </div>
+
+        <div className="flex items-center gap-3 mt-2 px-4 pb-3">
           <Link href={`/research/${report.id}`}>
             <span
               className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
@@ -314,8 +321,11 @@ export default function Research() {
     <RequireAuth>
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
 
-        <SharedPageHeader />
-
+         <SharedPageHeader />
+        {/* ── SectionChannelBar sticky ──────────────────────────────────────── */}
+        <div className="sticky top-0 z-50" style={{ background: "#faf8f3" }}>
+          <SectionChannelBar />
+        </div>
         {/* ── Titolo sezione Research ───────────────────────────────────────── */}
         <div className="max-w-6xl mx-auto px-4 pt-6 pb-2">
           <div className="flex items-end justify-between gap-4 mb-1">
