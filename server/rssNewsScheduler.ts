@@ -21,6 +21,7 @@ import { findNewsImage } from "./stockImages";
 import { scrapeAINews, scrapeStartupNews, scrapeDealroomNews, verifyUrl, sanitizeSourceUrl } from "./rssScraperNew";
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
+import { generateVerifyHash } from "./verify";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -78,6 +79,7 @@ async function saveScrapedNews(
       // immagine opzionale, non blocca il salvataggio
     }
 
+    const verifyHash = generateVerifyHash(article.title, article.summary, finalSourceUrl, new Date());
     await db.insert(newsItems).values({
       section,
       title: article.title,
@@ -90,6 +92,7 @@ async function saveScrapedNews(
       position: i + 1,
       imageUrl,
       videoUrl: article.videoUrl ?? null,
+      verifyHash,
     });
     saved++;
   }

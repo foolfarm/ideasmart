@@ -1,6 +1,6 @@
 /**
- * IDEASMART Navbar — Pivot Research Edition
- * Solo 2 canali attivi: AI NEWS e STARTUP NEWS
+ * IDEASMART RESEARCH Navbar
+ * Titolo aggiornato a IDEASMART RESEARCH
  */
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
@@ -59,15 +59,10 @@ export default function Navbar() {
                 className="text-xl sm:text-2xl font-black tracking-tight"
                 style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                IDEASMART
+                IDEASMART{" "}
+                <span style={{ color: "#dc2626", fontSize: "0.65em", letterSpacing: "0.18em", fontWeight: 900 }}>RESEARCH</span>
               </span>
             </Link>
-            <span
-              className="hidden sm:block text-xs font-mono tracking-widest uppercase"
-              style={{ color: "#6b7280", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              AI · Startup · Venture Capital
-            </span>
           </div>
 
           {/* Desktop nav */}

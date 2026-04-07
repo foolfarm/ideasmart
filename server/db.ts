@@ -928,6 +928,7 @@ export interface HomeSectionItem {
   publishedAt: string;
   imageUrl: string | null;
   videoUrl: string | null;
+  verifyHash: string | null;
   section: HomeSection;
 }
 
@@ -954,13 +955,14 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           publishedAt: item.publishedAt ?? '',
           imageUrl: item.imageUrl ?? null,
           videoUrl: (item as typeof item & { videoUrl?: string | null }).videoUrl ?? null,
+          verifyHash: item.verifyHash ?? null,
           section
         }))
       };
     })
   );
 
-  return Object.fromEntries(results.map(r => [r.section, r.items])) as Record<HomeSection, HomeSectionItem[]>;
+  return Object.fromEntries(results.map(r => [r.section, r.items])) as unknown as Record<HomeSection, HomeSectionItem[]>;
 }
 
 

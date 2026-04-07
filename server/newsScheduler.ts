@@ -10,6 +10,7 @@ import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
 import { runBatchAudit } from "./auditContent";
+import { generateVerifyHash } from "./verify";
 
 // Intervallo: 24 ore in millisecondi
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -175,6 +176,7 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
       if (imageUrl) {
         console.log(`[NewsScheduler] Stock image found for AI news ${i + 1}: ${item.title.slice(0, 40)}...`);
       }
+      const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
       await db.insert(newsItems).values({
         section: 'ai',
         title: item.title,
@@ -185,7 +187,8 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         publishedAt: item.publishedAt,
         weekLabel: dayLabel,
         position: i + 1,
-        imageUrl: imageUrl ?? null
+        imageUrl: imageUrl ?? null,
+        verifyHash,
       });
     }
 

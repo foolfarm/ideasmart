@@ -12,7 +12,8 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
-import SectionNav from "@/components/SectionNav";
+import SectionChannelBar from "@/components/SectionChannelBar";
+import VerifyBadge from "@/components/VerifyBadge";
 
 const ACCENT = "#2a2a2a";
 const ACCENT_LIGHT = "#fff7ed";
@@ -41,7 +42,7 @@ function SectionBadge({ label }: { label: string }) {
 }
 
 function NewsCard({ item, showImage = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string };
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null };
   showImage?: boolean;
 }) {
   const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
@@ -69,6 +70,11 @@ function NewsCard({ item, showImage = false }: {
         <p className="mt-1 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
+      )}
+      {item.verifyHash && (
+        <div className="mt-1">
+          <VerifyBadge hash={item.verifyHash} size="sm" />
+        </div>
       )}
     </div>
   );
@@ -132,7 +138,7 @@ export default function StartupHome() {
         <SharedPageHeader />
         <BreakingNewsTicker />
         <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
-          <SectionNav />
+          <SectionChannelBar />
         </div>
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
@@ -187,6 +193,11 @@ export default function StartupHome() {
                       <p className="mt-2 text-xs text-[#1a1a1a]/40 italic" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Fonte: {heroNews.sourceName}{heroNews.publishedAt ? ` · ${formatShortDate(heroNews.publishedAt)}` : ""}
                       </p>
+                    )}
+                    {heroNews.verifyHash && (
+                      <div className="mt-1.5">
+                        <VerifyBadge hash={heroNews.verifyHash} size="sm" />
+                      </div>
                     )}
                   </div>
                 </div>

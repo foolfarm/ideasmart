@@ -14,7 +14,8 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings } from "lucide-react";
-import SectionNav from "@/components/SectionNav";
+import SectionChannelBar from "@/components/SectionChannelBar";
+import VerifyBadge from "@/components/VerifyBadge";
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
 const SECTION_COLORS = {
@@ -36,6 +37,7 @@ type NewsItem = {
   imageUrl: string | null;
   videoUrl?: string | null;
   section?: string;
+  verifyHash?: string | null;
 };
 
 // ─── Utility ─────────────────────────────────────────────────────────────────
@@ -143,6 +145,11 @@ function HeroArticle({ item, section, editorial }: {
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
+        {item.verifyHash && (
+          <div className="mt-1.5">
+            <VerifyBadge hash={item.verifyHash} size="sm" />
+          </div>
+        )}
       </div>
     </article>
   );
@@ -186,6 +193,11 @@ function SecondaryArticle({ item, section, showImage = false }: {
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
         {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
       </p>
+      {item.verifyHash && (
+        <div className="mt-1">
+          <VerifyBadge hash={item.verifyHash} size="sm" />
+        </div>
+      )}
     </article>
   );
 }
@@ -512,7 +524,7 @@ export default function Home() {
           <div className="max-w-[1280px] mx-auto px-4">
             <div className="flex items-center">
               <div className="flex-1">
-                <SectionNav />
+                <SectionChannelBar />
               </div>
               <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/10">
                 <ReadersCounter />

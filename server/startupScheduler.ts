@@ -8,6 +8,7 @@ import { getDb } from "./db";
 import { newsItems, dailyEditorial, startupOfDay, weeklyReportage, marketAnalysis } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { findNewsImage, findEditorialImage, findStartupImage, findReportageImage, findMarketAnalysisImage } from "./stockImages";
+import { generateVerifyHash } from "./verify";
 
 // ─── Genera 20 news startup ───────────────────────────────────────────────────
 export async function generateStartupNews(): Promise<void> {
@@ -83,6 +84,7 @@ Restituisci un JSON con questa struttura:
     for (let i = 0; i < Math.min(content.news.length, 20); i++) {
       const item = content.news[i];
       const imageUrl = await findNewsImage(item.title, item.category);
+      const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
       await db.insert(newsItems).values({
         title: item.title,
         summary: item.summary,
@@ -94,6 +96,7 @@ Restituisci un JSON con questa struttura:
         weekLabel,
         position: i + 1,
         publishedAt: new Date().toISOString(),
+        verifyHash,
       });
     }
     console.log(`[StartupScheduler] Saved ${Math.min(content.news.length, 20)} startup news`);

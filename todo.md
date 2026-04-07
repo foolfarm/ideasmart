@@ -2637,3 +2637,18 @@
 - [x] Implementare deduplicazione notizie nella newsletter tramite fingerprint/hashtag fonte (Breaking News e altri canali) — max 1 notizia per fonte, nessun titolo ripetuto
 - [x] Verificare e correggere sostituzione Sponsor del Giorno con Amazon Deal 1 — deal inseriti per 2026-04-06
 - [x] Verificare e correggere sostituzione Today's Spotlight con Amazon Deal 2 — deal inseriti per 2026-04-06
+
+## Nuovi task (7 Apr 2026 — Rebrand + Menu + VERIFY)
+
+- [ ] A) Rinominare sito in "IDEASMART RESEARCH" nel titolo (header, meta tag, VITE_APP_TITLE)
+- [ ] B) Menu sotto hero: sostituire con AI NEWS | AI RESEARCH | AI VENTURE (ex AI DEALROOM) | AI INVEST + dropdown "Altro" con tutti gli altri canali
+- [ ] C) Sistema VERIFY: generare hash SHA-256 univoco per ogni news_item e mostrarlo sotto ogni articolo come "VERIFY HASH: #xxxxxxxx"
+
+## Nuove funzionalità - 7 Aprile 2026
+
+- [x] Sistema VERIFY: aggiunta colonna verifyHash (SHA-256) alla tabella news_items nel DB
+- [x] Sistema VERIFY: utility server generateVerifyHash() in server/verify.ts
+- [x] Sistema VERIFY: hash generato automaticamente in rssNewsScheduler, newsScheduler, startupScheduler
+- [x] Sistema VERIFY: componente VerifyBadge.tsx con icona scudo e hash #XXXXXXXXXXXXXXXX
+- [x] Sistema VERIFY: badge mostrato sotto ogni articolo in Home.tsx, AiHome.tsx, StartupHome.tsx
+- [x] Sistema VERIFY: verifyHash esposto nella procedura tRPC news.getLatest

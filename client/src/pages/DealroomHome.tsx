@@ -11,7 +11,8 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
-import SectionNav from "@/components/SectionNav";
+import SectionChannelBar from "@/components/SectionChannelBar";
+import VerifyBadge from "@/components/VerifyBadge";
 
 const ACCENT = "#1a4a2e";
 const ACCENT_LIGHT = "#f0f7f3";
@@ -58,6 +59,7 @@ function NewsCard({
     sourceName?: string;
     publishedAt?: string;
     sourceUrl?: string;
+    verifyHash?: string | null;
   };
   showImage?: boolean;
 }) {
@@ -93,6 +95,11 @@ function NewsCard({
           {item.sourceName}
           {item.publishedAt ? ` \u00b7 ${formatShortDate(item.publishedAt)}` : ""}
         </p>
+      )}
+      {item.verifyHash && (
+        <div className="mt-1">
+          <VerifyBadge hash={item.verifyHash} size="sm" />
+        </div>
       )}
     </div>
   );
@@ -172,7 +179,7 @@ export default function DealroomHome() {
         <SharedPageHeader />
         <BreakingNewsTicker />
         <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
-          <SectionNav />
+          <SectionChannelBar />
         </div>
 
         <main className="max-w-6xl mx-auto px-4 pb-12">

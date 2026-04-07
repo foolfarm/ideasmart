@@ -111,6 +111,8 @@ export const newsItems = mysqlTable("news_items", {
   // Data dell'ultima visualizzazione (per calcolo trend settimanale)
   lastViewedAt: timestamp("lastViewedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
+  // VERIFY: hash SHA-256 univoco (titolo+summary+sourceUrl) — certifica l'articolo
+  verifyHash: varchar("verifyHash", { length: 64 }),
 }, (t) => ({
   // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)
   sectionIdx: index("idx_news_section").on(t.section),

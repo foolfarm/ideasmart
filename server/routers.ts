@@ -259,6 +259,7 @@ export const appRouter = router({
           sourceUrl: item.sourceUrl ?? "#",
           publishedAt: item.publishedAt ?? "",
           imageUrl: item.imageUrl ?? null,
+          verifyHash: item.verifyHash ?? null,
         }));
       }),
 
