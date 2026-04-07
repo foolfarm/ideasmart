@@ -474,15 +474,29 @@ export default function Home() {
               {/* Titolo centrale */}
               <div className="text-center flex-1 min-w-0">
                 <Link href="/">
-                  <h1 className="font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                      fontSize: "clamp(42px, 7vw, 88px)",
-                      letterSpacing: "-0.02em",
-                      lineHeight: 1
-                    }}>
-                    IDEASMART
-                  </h1>
+                  <div className="cursor-pointer hover:opacity-80 transition-opacity inline-block">
+                    {/* IDEASMART — grande */}
+                    <h1 className="font-black tracking-tight text-[#1a1a1a]"
+                      style={{
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                        fontSize: "clamp(42px, 7vw, 88px)",
+                        letterSpacing: "-0.02em",
+                        lineHeight: 1
+                      }}>
+                      IDEASMART
+                    </h1>
+                    {/* RESEARCH — più piccolo, sotto */}
+                    <p className="font-bold uppercase text-[#1a1a1a]/65"
+                      style={{
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                        fontSize: "clamp(13px, 1.8vw, 24px)",
+                        letterSpacing: "0.28em",
+                        lineHeight: 1.1,
+                        marginTop: "3px"
+                      }}>
+                      RESEARCH
+                    </p>
+                  </div>
                 </Link>
                 <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
