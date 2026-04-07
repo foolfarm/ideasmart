@@ -2652,3 +2652,9 @@
 - [x] Sistema VERIFY: componente VerifyBadge.tsx con icona scudo e hash #XXXXXXXXXXXXXXXX
 - [x] Sistema VERIFY: badge mostrato sotto ogni articolo in Home.tsx, AiHome.tsx, StartupHome.tsx
 - [x] Sistema VERIFY: verifyHash esposto nella procedura tRPC news.getLatest
+
+## Nuove funzionalità (07 Apr 2026)
+- [x] A) Rinominare sito in "IDEASMART RESEARCH" (titolo, meta tag, PWA, index.html)
+- [x] B) Nuovo menu SectionChannelBar: AI NEWS | AI RESEARCH | AI VENTURE | AI INVEST + dropdown Altro
+- [x] C) Sistema VERIFY: hash SHA-256 univoco per ogni articolo (DB, scheduler, badge frontend)
+- [x] C) Backfill hash VERIFY per i 58 articoli esistenti nel DB
