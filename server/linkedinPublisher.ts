@@ -18,7 +18,7 @@
 import { createHash } from "crypto";
 import { ENV } from "./_core/env";
 import { invokeLLM } from "./_core/llm";
-import { getLatestEditorial, getDb, getLatestNews } from "./db";
+import { getLatestEditorial, getDb, getLatestNews, saveEditorial } from "./db";
 import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
 import { findEditorialImage } from "./stockImages";
 import { linkedinPosts, researchReports, newsItems } from "../drizzle/schema";
@@ -1212,6 +1212,25 @@ export async function publishLinkedInPost(
       }
     } catch (dbErr) {
       console.error('[LinkedIn] ⚠️ Errore salvataggio post nel DB:', dbErr);
+    }
+
+    // ── Salva automaticamente come editoriale sulla Home ──────────────────
+    // Regola: ogni post LinkedIn pubblicato deve comparire sulla Home come Punto del Giorno
+    try {
+      const editorialSection = (section === 'research' || section === 'dealroom') ? 'ai' : section;
+      await saveEditorial({
+        section: editorialSection as any,
+        dateLabel: getTodayCET().split('-').reverse().join('-'), // DD-MM-YYYY
+        title: contentTitle,
+        subtitle: `Post LinkedIn — ${meta.label}`,
+        body: contentBody,
+        keyTrend: contentKeyTrend || undefined,
+        imageUrl: imageUrl || undefined,
+        authorNote: `Pubblicato su LinkedIn il ${new Date().toLocaleDateString('it-IT', { timeZone: 'Europe/Rome' })} — Slot ${slotLabel}.`,
+      });
+      console.log(`[LinkedIn] 🏠 Editoriale salvato sulla Home (sezione ${editorialSection})`);
+    } catch (editErr) {
+      console.warn('[LinkedIn] ⚠️ Errore salvataggio editoriale sulla Home:', editErr);
     }
 
     return { published: 1, errors: [], posts };

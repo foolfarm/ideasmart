@@ -2659,6 +2659,7 @@
 - [x] C) Sistema VERIFY: hash SHA-256 univoco per ogni articolo (DB, scheduler, badge frontend)
 - [x] C) Backfill hash VERIFY per i 58 articoli esistenti nel DB
 
+<<<<<<< Updated upstream
 ## Aggiornamenti 7 aprile 2026
 
 - [x] Correggere bug dropdown Altro in SectionChannelBar (overflow-x-auto tagliava il pannello)
@@ -2668,3 +2669,9 @@
 - [x] Creare pagina pubblica /verify con form di ricerca hash e risultato verifica
 - [x] Registrare route /verify in App.tsx
 - [x] Aggiungere link VERIFY nel dropdown Altro di SectionChannelBar
+=======
+## Regola LinkedIn → Home (08-04-2026)
+- [x] Ogni post pubblicato su LinkedIn viene automaticamente salvato come editoriale sulla Home (Punto del Giorno)
+- [x] Aggiunto salvataggio automatico in linkedinPublisher.ts dopo ogni pubblicazione riuscita
+- [x] Post manuale Pichai inserito manualmente nella Home tramite script backfill
+>>>>>>> Stashed changes
