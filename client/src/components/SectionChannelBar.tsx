@@ -1,155 +1,152 @@
 /**
- * SectionChannelBar — Barra canali orizzontale sotto la hero
- * Canali principali: AI NEWS | AI RESEARCH | AI VENTURE | AI INVEST
- * + dropdown "Altro" con tutti gli altri canali secondari
- *
- * FIX: il dropdown era tagliato da overflow-x-auto sul wrapper.
- * Soluzione: il wrapper principale non ha overflow, solo la parte
- * dei canali primari scorre orizzontalmente su mobile.
+ * SectionChannelBar — Menu navigazione canali stile "magazine toolbar"
+ * Layout: icona + label per ogni canale, MORE dropdown, contatore lettori a destra
+ * Ispirato al mockup con: START HERE · AI NEWS · COPY & PASTE AI · AUTOMATE ·
+ *   MAKE MONEY · DAILY AI TOOLS · VERIFIED NEWS · AI OPPORTUNITIES · MORE · CHI S
  */
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
+import ReadersCounter from "./ReadersCounter";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
-// ─── Canali principali (barra visibile) ──────────────────────────────────────
+// ─── Canali principali visibili nella barra ───────────────────────────────────
 const PRIMARY_CHANNELS = [
-  { key: "ai",       label: "AI NEWS",     path: "/ai",               color: "#1a1a1a" },
-  { key: "research", label: "AI RESEARCH", path: "/research",         color: "#0066cc" },
-  { key: "venture",  label: "AI VENTURE",  path: "/dealroom",         color: "#7c3aed" },
-  { key: "invest",   label: "AI INVEST",   path: "/ai-opportunities", color: "#0d6e3f" },
+  { key: "start-here",  label: "START HERE",      path: "/start-here",          icon: "▷" },
+  { key: "ai",          label: "AI NEWS",          path: "/ai",                  icon: "📡" },
+  { key: "copy-paste",  label: "COPY & PASTE AI",  path: "/copy-paste-ai",       icon: "📋" },
+  { key: "automate",    label: "AUTOMATE",         path: "/automate-with-ai",    icon: "⚡" },
+  { key: "make-money",  label: "MAKE MONEY",       path: "/make-money-with-ai",  icon: "$" },
+  { key: "tools",       label: "DAILY AI TOOLS",   path: "/daily-ai-tools",      icon: "🛠️" },
+  { key: "verified",    label: "VERIFIED NEWS",    path: "/verified-ai-news",    icon: "🛡" },
+  { key: "opps",        label: "AI OPPORTUNITIES", path: "/ai-opportunities",    icon: "📈" },
 ];
 
-// ─── Canali secondari (dropdown "Altro") ─────────────────────────────────────
-const OTHER_CHANNELS = [
-  { key: "startup",    label: "AI STARTUP NEWS",  path: "/startup",             desc: "Startup da tenere d'occhio" },
-  { key: "prompt-ai",  label: "PROMPT AI",         path: "/copy-paste-ai",       desc: "Prompt pronti da usare" },
-  { key: "use-case",   label: "USE CASE AI",       path: "/automate-with-ai",    desc: "Casi d'uso reali" },
-  { key: "fare-soldi", label: "FARE SOLDI",        path: "/make-money-with-ai",  desc: "Monetizza con l'AI" },
-  { key: "tools",      label: "AI TOOLS",          path: "/daily-ai-tools",      desc: "I migliori strumenti AI" },
-  { key: "ai-radar",   label: "AI RADAR",          path: "/verified-ai-news",    desc: "News verificate e filtrate" },
-  { key: "dealflow",   label: "AI DEALFLOW",       path: "/dealflow",            desc: "Round, funding e M&A" },
-  { key: "start-here", label: "START HERE",        path: "/start-here",          desc: "Come iniziare con l'AI" },
-  { key: "verify",     label: "VERIFY",            path: "/verify",              desc: "Verifica autenticità articoli" },
+// ─── Canali nel dropdown MORE ─────────────────────────────────────────────────
+const MORE_CHANNELS = [
+  { key: "research",  label: "AI RESEARCH",    path: "/research",    desc: "Analisi e ricerche di mercato" },
+  { key: "venture",   label: "AI VENTURE",     path: "/dealroom",    desc: "Deal, round e M&A" },
+  { key: "invest",    label: "AI INVEST",      path: "/dealflow",    desc: "Opportunità di investimento" },
+  { key: "startup",   label: "AI STARTUP NEWS",path: "/startup",     desc: "Startup da tenere d'occhio" },
+  { key: "chi-siamo", label: "CHI SIAMO",      path: "/chi-siamo",   desc: "Il team e la missione" },
+  { key: "verify",    label: "VERIFY",         path: "/verify",      desc: "Verifica autenticità articoli" },
 ];
 
 export default function SectionChannelBar() {
   const [location] = useLocation();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   // Chiudi dropdown al click fuori
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Chiudi dropdown al cambio route
-  useEffect(() => { setDropdownOpen(false); }, [location]);
+  // Chiudi al cambio route
+  useEffect(() => { setMoreOpen(false); }, [location]);
 
-  // Controlla se un path è attivo
   const isActive = (path: string) =>
     location === path || location.startsWith(path + "/");
 
-  // Controlla se il canale attivo è in "Altro"
-  const activeInOther = OTHER_CHANNELS.find((c) => isActive(c.path));
+  const activeInMore = MORE_CHANNELS.find((c) => isActive(c.path));
 
   return (
     /*
-     * IMPORTANTE: il wrapper esterno NON ha overflow:hidden/auto
-     * così il dropdown può uscire verticalmente senza essere tagliato.
-     * Lo scroll orizzontale è solo sul sotto-contenitore dei canali primari.
+     * Il wrapper esterno NON ha overflow:hidden/auto così il dropdown
+     * può uscire verticalmente senza essere tagliato.
      */
     <div
-      className="flex items-stretch border-b border-[#1a1a1a]/10 bg-white"
+      className="border-b border-[#1a1a1a]/10 bg-white"
       style={{ fontFamily: SF, position: "relative" }}
     >
-      {/* ─── Canali primari — scroll orizzontale solo qui ────────────────── */}
-      <div
-        className="flex items-center flex-1 min-w-0"
-        style={{ overflowX: "auto", overflowY: "visible", scrollbarWidth: "none" }}
-      >
-        {PRIMARY_CHANNELS.map((ch) => {
-          const active = isActive(ch.path);
-          return (
-            <Link key={ch.key} href={ch.path}>
-              <span
-                className={`flex items-center gap-1.5 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] whitespace-nowrap cursor-pointer transition-all duration-200 border-b-2 ${
-                  active
-                    ? "border-current"
-                    : "border-transparent hover:border-[#1a1a1a]/20"
-                }`}
-                style={{
-                  color: active ? ch.color : "#1a1a1a80",
-                  borderColor: active ? ch.color : undefined,
-                }}
-              >
-                {/* Dot colorato */}
-                <span
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-colors duration-200"
-                  style={{ background: active ? ch.color : "#1a1a1a30" }}
-                />
-                {ch.label}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 flex items-stretch">
 
-      {/* ─── Separatore ─────────────────────────────────────────────────── */}
-      <div className="w-px self-stretch bg-[#1a1a1a]/10 mx-1 flex-shrink-0" />
-
-      {/* ─── Dropdown "Altro" — fuori dall'overflow container ───────────── */}
-      <div className="relative flex-shrink-0" ref={dropdownRef}>
-        <button
-          onClick={() => setDropdownOpen((v) => !v)}
-          className={`flex items-center gap-1 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] cursor-pointer transition-all duration-200 border-b-2 h-full ${
-            activeInOther || dropdownOpen
-              ? "border-[#dc2626] text-[#dc2626]"
-              : "border-transparent text-[#1a1a1a]/50 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/20"
-          }`}
+        {/* ─── Canali primari — scroll orizzontale su mobile ─────────────── */}
+        <div
+          className="flex items-stretch flex-1 min-w-0"
+          style={{ overflowX: "auto", overflowY: "visible", scrollbarWidth: "none" }}
         >
-          {activeInOther ? activeInOther.label : "ALTRO"}
-          <ChevronDown
-            size={12}
-            strokeWidth={2.5}
-            className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-          />
-        </button>
+          {PRIMARY_CHANNELS.map((ch) => {
+            const active = isActive(ch.path);
+            return (
+              <Link key={ch.key} href={ch.path}>
+                <span
+                  className={`flex items-center gap-1 px-2.5 sm:px-3 py-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] whitespace-nowrap cursor-pointer transition-all duration-200 border-b-2 h-full ${
+                    active
+                      ? "border-[#1a1a1a] text-[#1a1a1a]"
+                      : "border-transparent text-[#1a1a1a]/50 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/20"
+                  }`}
+                >
+                  <span className="text-[12px] leading-none">{ch.icon}</span>
+                  <span className="hidden sm:inline">{ch.label}</span>
+                  <span className="sm:hidden">{ch.label.split(" ")[0]}</span>
+                </span>
+              </Link>
+            );
+          })}
 
-        {/* Dropdown panel — z-index alto per sovrapporsi al contenuto */}
-        {dropdownOpen && (
-          <div
-            className="absolute right-0 top-full mt-0 z-[999] bg-white border border-[#1a1a1a]/12 rounded-b-xl shadow-2xl py-1.5 min-w-[240px]"
-            style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.18)" }}
-          >
-            {OTHER_CHANNELS.map((ch) => {
-              const active = isActive(ch.path);
-              return (
-                <Link key={ch.key} href={ch.path}>
-                  <div
-                    className={`flex flex-col px-4 py-2.5 cursor-pointer transition-colors duration-150 ${
-                      active ? "bg-[#1a1a1a] text-white" : "hover:bg-[#f5f5f5] text-[#1a1a1a]"
-                    }`}
-                  >
-                    <span className={`text-[11px] font-bold uppercase tracking-wider ${active ? "text-white" : "text-[#1a1a1a]"}`}>
-                      {ch.label}
-                    </span>
-                    <span className={`text-[9px] mt-0.5 ${active ? "text-white/60" : "text-[#1a1a1a]/40"}`}>
-                      {ch.desc}
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
+          {/* Separatore */}
+          <div className="w-px self-stretch bg-[#1a1a1a]/10 mx-0.5 flex-shrink-0" />
+
+          {/* ─── MORE dropdown ───────────────────────────────────────────── */}
+          <div className="relative flex-shrink-0" ref={moreRef}>
+            <button
+              onClick={() => setMoreOpen((v) => !v)}
+              className={`flex items-center gap-1 px-3 py-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] cursor-pointer transition-all duration-200 border-b-2 h-full ${
+                activeInMore || moreOpen
+                  ? "border-[#dc2626] text-[#dc2626]"
+                  : "border-transparent text-[#1a1a1a]/50 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/20"
+              }`}
+            >
+              ··· MORE
+              <ChevronDown
+                size={11}
+                strokeWidth={2.5}
+                className={`transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {/* Dropdown panel */}
+            {moreOpen && (
+              <div
+                className="absolute left-0 top-full z-[999] bg-white border border-[#1a1a1a]/12 rounded-b-xl shadow-2xl py-1.5 min-w-[220px]"
+                style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.18)" }}
+              >
+                {MORE_CHANNELS.map((ch) => {
+                  const active = isActive(ch.path);
+                  return (
+                    <Link key={ch.key} href={ch.path}>
+                      <div
+                        className={`flex flex-col px-4 py-2.5 cursor-pointer transition-colors duration-150 ${
+                          active ? "bg-[#1a1a1a] text-white" : "hover:bg-[#f5f5f5] text-[#1a1a1a]"
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold uppercase tracking-wider ${active ? "text-white" : "text-[#1a1a1a]"}`}>
+                          {ch.label}
+                        </span>
+                        <span className={`text-[9px] mt-0.5 ${active ? "text-white/60" : "text-[#1a1a1a]/40"}`}>
+                          {ch.desc}
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        {/* ─── Contatore lettori a destra ────────────────────────────────── */}
+        <div className="flex-shrink-0 flex items-center pl-3 border-l border-[#1a1a1a]/10 ml-1">
+          <ReadersCounter />
+        </div>
       </div>
     </div>
   );
