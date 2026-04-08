@@ -490,17 +490,7 @@ export default function Home() {
                       }}>
                       IDEASMART
                     </h1>
-                    {/* RESEARCH — più piccolo, sotto */}
-                    <p className="font-bold uppercase text-[#1a1a1a]/65"
-                      style={{
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                        fontSize: "clamp(13px, 1.8vw, 24px)",
-                        letterSpacing: "0.28em",
-                        lineHeight: 1.1,
-                        marginTop: "3px"
-                      }}>
-                      RESEARCH
-                    </p>
+
                   </div>
                 </Link>
                 <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"

@@ -9,13 +9,13 @@ interface SidebarChannel {
 }
 
 const PRIMARY_CHANNELS: SidebarChannel[] = [
-  { label: "Start Here", icon: "▷", href: "/start-here" },
+  { label: "Chi Siamo", icon: "👤", href: "/chi-siamo" },
   { label: "AI News", icon: "📡", href: "/ai" },
   { label: "Copy & Paste AI", icon: "📋", href: "/copy-paste-ai" },
   { label: "Automate with AI", icon: "⚡", href: "/automate-with-ai" },
   { label: "Make Money", icon: "$", href: "/make-money-with-ai" },
   { label: "Daily AI Tools", icon: "🛠️", href: "/daily-ai-tools" },
-  { label: "Verified News", icon: "🛡", href: "/verified-ai-news" },
+  { label: "ProofPress Verify", icon: "🛡", href: "/verified-ai-news" },
   { label: "AI Opportunities", icon: "📈", href: "/ai-opportunities" },
 ];
 
@@ -29,8 +29,7 @@ const SECONDARY_CHANNELS: SidebarChannel[] = [
 ];
 
 const UTILITY_LINKS: SidebarChannel[] = [
-  { label: "Chi Siamo", icon: "👤", href: "/chi-siamo" },
-  { label: "Verify", icon: "✅", href: "/verify" },
+  { label: "ProofPress Verify", icon: "✅", href: "/verify" },
   { label: "Newsletter", icon: "✉️", href: "/#newsletter" },
 ];
 
@@ -71,16 +70,6 @@ export default function LeftSidebar() {
               }}
             >
               IDEASMART
-            </div>
-            <div
-              className="font-bold uppercase text-[#1a1a1a]/50"
-              style={{
-                fontSize: "9px",
-                letterSpacing: "0.2em",
-                marginTop: "1px",
-              }}
-            >
-              RESEARCH
             </div>
           </div>
         </Link>

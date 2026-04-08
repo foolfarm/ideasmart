@@ -10,6 +10,7 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import Navbar from "@/components/Navbar";
+import LeftSidebar from "@/components/LeftSidebar";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const INK     = "#1a1a1a";
@@ -307,7 +308,9 @@ function ServiceAccordion({ service }: { service: typeof ADVISORY_SERVICES[0] })
 export default function Business() {
 
   return (
-    <>
+    <div className="flex min-h-screen">
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
       <SEOHead
         title="IdeaSmart Business — Piattaforma AI & Advisory"
         description="Due offerte per chi decide: la piattaforma AI agentica IdeaSmart Intelligence con 20+ ricerche al giorno, e il servizio di consulenza senior su AI Innovation, M&A e partnership tecnologiche."
@@ -837,6 +840,7 @@ export default function Business() {
         </footer>
 
       </div>
-    </>
+      </div>
+    </div>
   );
 }

@@ -10,6 +10,7 @@ import SharedPageFooter from "@/components/SharedPageFooter";
 import SectionNav from "@/components/SectionNav";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
+import LeftSidebar from "@/components/LeftSidebar";
 import { trpc } from "@/lib/trpc";
 import { Copy, Check, ExternalLink, ArrowRight, Loader2, ImageOff } from "lucide-react";
 
@@ -418,8 +419,10 @@ export default function ChannelPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f3] text-[#1a1a1a]">
+    <div className="flex min-h-screen bg-[#faf8f3] text-[#1a1a1a]">
       <SEOHead title={`${title} — IDEASMART`} description={description} />
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
       <div className="max-w-[1200px] mx-auto px-4">
         <SharedPageHeader />
         <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
@@ -664,6 +667,7 @@ export default function ChannelPage({
         </div>
 
         <SharedPageFooter />
+      </div>
       </div>
     </div>
   );

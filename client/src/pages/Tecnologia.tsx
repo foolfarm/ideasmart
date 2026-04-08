@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import LeftSidebar from "@/components/LeftSidebar";
 
 const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#e6f4f1";
@@ -294,7 +295,9 @@ export default function Tecnologia() {
   const today = useMemo(() => new Date(), []);
 
   return (
-    <>
+    <div className="flex min-h-screen">
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
       <SEOHead
         title="Tecnologia — IDEASMART"
         description="Come funziona IdeaSmart: la piattaforma editoriale agentica con Verify, l'algoritmo proprietario che valida ogni notizia su sei dimensioni di qualità informativa."
@@ -776,6 +779,7 @@ export default function Tecnologia() {
         </footer>
 
       </div>
-    </>
+      </div>
+    </div>
   );
 }

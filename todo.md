@@ -2689,3 +2689,16 @@
 - [ ] Creare componente LeftSidebar fisso sulla sinistra con tutti i canali
 - [ ] Integrare LeftSidebar nel layout di tutte le pagine
 - [ ] Aggiungere banner Collezione IDEASMART di prompt sotto il ticker
+
+## Task completati (8 Apr 2026 — Rebranding e navigazione)
+
+- [x] Sidebar sinistra fissa (LeftSidebar) aggiunta a tutte le pagine: Home, AiHome, StartupHome, DealroomHome, Research, Verify, ChiSiamo, Business, Tecnologia, Dealflow, ChannelPage (tutti i canali)
+- [x] Rimosso "Start Here" dalla sidebar, aggiunto "Chi Siamo" nei canali primari
+- [x] Rebranding: "Verify" → "ProofPress Verify" in Verify.tsx, VerifyBadge.tsx, LeftSidebar.tsx, Navbar.tsx
+- [x] SectionNav: sostituito "Chi Siamo" con "Demo Tecnologia IdeaSmart" (link esterno)
+- [x] SectionNav: aggiunto pulsante rosso "ProofPress Verify" (link a /verify)
+- [x] Rimosso "RESEARCH" dal titolo hero nella Home
+- [x] Rimosso "RESEARCH" dal logo nella Navbar
+- [x] Cron newsletter corretto: da ogni giorno a solo lun/mer/ven (preview 08:30, invio 10:30)
+- [x] Rimosso grusconi3@gmail.com dalla lista preview newsletter (solo ac@acinelli.com)
+- [x] Banner Collezione Prompt aggiunto sotto il ticker nella Home

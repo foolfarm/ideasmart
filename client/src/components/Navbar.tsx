@@ -42,10 +42,7 @@ export default function Navbar() {
               className="text-lg sm:text-xl font-black tracking-tight"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
-              IDEASMART{" "}
-              <span style={{ color: "#dc2626", fontSize: "0.62em", letterSpacing: "0.18em", fontWeight: 900 }}>
-                RESEARCH
-              </span>
+              IDEASMART
             </span>
           </Link>
 
@@ -106,19 +103,18 @@ export default function Navbar() {
             <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mb-2">Canali</p>
             <div className="flex flex-col gap-1 px-2">
               {[
-                { label: "▷ Start Here", href: "/start-here" },
+                { label: "Chi Siamo", href: "/chi-siamo" },
                 { label: "AI News", href: "/ai" },
                 { label: "Copy & Paste AI", href: "/copy-paste-ai" },
                 { label: "Automate", href: "/automate-with-ai" },
                 { label: "Make Money", href: "/make-money-with-ai" },
                 { label: "Daily AI Tools", href: "/daily-ai-tools" },
-                { label: "Verified News", href: "/verified-ai-news" },
+                { label: "ProofPress Verify", href: "/verified-ai-news" },
                 { label: "AI Opportunities", href: "/ai-opportunities" },
                 { label: "AI Research", href: "/research" },
                 { label: "AI Venture", href: "/dealroom" },
                 { label: "AI Invest", href: "/dealflow" },
                 { label: "Startup News", href: "/startup" },
-                { label: "Chi Siamo", href: "/chi-siamo" },
               ].map((item) => (
                 <Link
                   key={item.href}

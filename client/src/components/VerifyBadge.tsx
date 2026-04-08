@@ -1,8 +1,8 @@
 /**
- * VerifyBadge — Badge VERIFY con hash SHA-256 univoco per ogni articolo
+ * VerifyBadge — Badge ProofPress Verify con hash SHA-256 univoco per ogni articolo
  *
  * Mostra sotto ogni notizia:
- *   VERIFY HASH  #XXXXXXXXXXXXXXXX
+ *   PROOFPRESS VERIFY  #XXXXXXXXXXXXXXXX
  *
  * L'hash certifica il contenuto dell'articolo al momento della pubblicazione,
  * garantendo tracciabilita e verificabilita nel tempo.
@@ -28,7 +28,7 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
       <Link href={verifyUrl}>
         <span
           className="inline-flex items-center gap-1 cursor-pointer hover:opacity-75 transition-opacity select-none"
-          title={"Verifica autenticità su IDEASMART VERIFY — Hash: " + hash}
+          title={"Verifica autenticità su ProofPress Verify — Hash: " + hash}
         >
           <ShieldCheck
             size={10}
@@ -46,7 +46,7 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
               textDecoration: "none",
             }}
           >
-            VERIFY {displayHash}
+            PROOFPRESS VERIFY {displayHash}
           </span>
         </span>
       </Link>
@@ -58,7 +58,7 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
       <div
         className="inline-flex items-center gap-1.5 px-2 py-1 rounded border cursor-pointer hover:opacity-80 transition-opacity"
         style={{ borderColor: "#0066cc20", background: "#f0f7ff" }}
-        title={"Verifica autenticità su IDEASMART VERIFY — Hash: " + hash}
+        title={"Verifica autenticità su ProofPress Verify — Hash: " + hash}
       >
         <ShieldCheck
           size={12}
@@ -75,7 +75,7 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
             lineHeight: 1,
           }}
         >
-          VERIFY HASH {displayHash}
+          PROOFPRESS VERIFY {displayHash}
         </span>
       </div>
     </Link>

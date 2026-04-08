@@ -6,6 +6,7 @@
 import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
+import LeftSidebar from "@/components/LeftSidebar";
 import { Link } from "wouter";
 import {
   Rocket,
@@ -97,7 +98,9 @@ export default function Dealflow() {
   const isLoading = datesLoading || picksLoading;
 
   return (
-    <>
+    <div className="flex min-h-screen">
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
       <SEOHead
         title="AI Dealflow Europe — IDEASMART"
         description="Le 10 startup AI europee più investibili del giorno, selezionate dal nostro radar con rating INVEST/INVEST+/INVEST++"
@@ -297,6 +300,7 @@ export default function Dealflow() {
           </div>
         </main>
       </div>
-    </>
+      </div>
+    </div>
   );
 }

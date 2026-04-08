@@ -10,6 +10,7 @@ import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import LeftSidebar from "@/components/LeftSidebar";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
@@ -174,7 +175,9 @@ export default function ChiSiamo() {
   };
 
   return (
-    <>
+    <div className="flex min-h-screen">
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
       <SEOHead
         title="Ideasmart — Piattaforma di Giornalismo Agentico"
         description="Il primo giornale che funziona anche senza una redazione. Costruisci e scala una testata con l'AI agentica. Oltre 4.000 fonti certificate, 8 agenti AI specializzati."
@@ -674,6 +677,7 @@ export default function ChiSiamo() {
         </div>
 
       </div>
-    </>
+      </div>
+    </div>
   );
 }

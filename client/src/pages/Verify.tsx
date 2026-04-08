@@ -1,9 +1,9 @@
 /**
- * IDEASMART VERIFY — Pagina pubblica di verifica autenticità articoli
+ * PROOFPRESS VERIFY — Pagina pubblica di verifica autenticità articoli
  * Chiunque può incollare un hash SHA-256 e verificare se un articolo
  * è stato pubblicato e certificato da IDEASMART.
  *
- * Tecnologia VERIFY: protocollo di validazione e certificazione agentica.
+ * Tecnologia ProofPress Verify: protocollo di validazione e certificazione agentica.
  * Ogni notizia genera un hash crittografico immutabile che sigilla
  * contenuto, fonte e timestamp, ispirandosi alla notarizzazione Web3.
  */
@@ -179,10 +179,10 @@ function VerifyResult({ article }: {
           </div>
         </div>
 
-        {/* Hash VERIFY */}
+        {/* Hash ProofPress Verify */}
         <div className="border border-[#1a1a1a]/15 p-4 bg-white">
           <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40 mb-2" style={{ fontFamily: SFText }}>
-            Hash VERIFY (SHA-256)
+            Hash ProofPress Verify (SHA-256)
           </p>
           <div className="flex items-center gap-2">
             <code
@@ -269,7 +269,7 @@ export default function Verify() {
               className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#1a1a1a]/40"
               style={{ fontFamily: SFText }}
             >
-              ● IDEASMART VERIFY
+              ● PROOFPRESS VERIFY
             </span>
           </div>
           <h1
@@ -283,7 +283,7 @@ export default function Verify() {
             style={{ fontFamily: SFText, lineHeight: 1.7 }}
           >
             Ogni articolo pubblicato su IDEASMART riceve un hash crittografico SHA-256 univoco
-            che certifica titolo, fonte e timestamp in modo immutabile.
+            certificato da ProofPress Verify che sigilla titolo, fonte e timestamp in modo immutabile.
             Incolla l'hash qui sotto per verificare l'autenticità di un articolo.
           </p>
         </div>
@@ -298,7 +298,7 @@ export default function Verify() {
               type="text"
               value={inputHash}
               onChange={(e) => setInputHash(e.target.value)}
-              placeholder="Incolla qui l'hash VERIFY dell'articolo (es. a3f9c2d1...)"
+              placeholder="Incolla qui l'hash ProofPress Verify dell'articolo (es. a3f9c2d1...)"
               className="flex-1 px-3 py-3.5 text-[13px] bg-white outline-none text-[#1a1a1a] placeholder-[#1a1a1a]/30"
               style={{ fontFamily: "JetBrains Mono, 'Courier New', monospace" }}
               autoFocus
@@ -313,7 +313,7 @@ export default function Verify() {
             </button>
           </div>
           <p className="mt-2 text-[10px] text-[#1a1a1a]/35 uppercase tracking-widest" style={{ fontFamily: SFText }}>
-            L'hash è visibile sotto ogni articolo come "VERIFY #XXXXXXXX"
+            L'hash è visibile sotto ogni articolo come "ProofPress Verify #XXXXXXXX"
           </p>
         </form>
 
@@ -331,7 +331,7 @@ export default function Verify() {
           <VerifyResult article={article ?? null} hash={searchHash} />
         )}
 
-        {/* ── Info tecnologia VERIFY ────────────────────────────────────── */}
+        {/* ── Info tecnologia ProofPress Verify ────────────────────────────────────── */}
         {!searchHash && (
           <div className="border border-[#1a1a1a]/10 p-6 bg-white mt-2">
             <div className="flex items-start gap-3">
@@ -341,13 +341,13 @@ export default function Verify() {
                   className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0066cc] mb-2"
                   style={{ fontFamily: SFText }}
                 >
-                  Come funziona VERIFY
+                  Come funziona ProofPress Verify
                 </p>
                 <p
                   className="text-[13px] text-[#1a1a1a]/60 leading-relaxed"
                   style={{ fontFamily: SFText, lineHeight: 1.7 }}
                 >
-                  VERIFY è un protocollo di validazione e certificazione agentica delle notizie.
+                  ProofPress Verify è un protocollo di validazione e certificazione agentica delle notizie.
                   Ogni contenuto viene analizzato da un sistema AI multi-fonte che ne misura
                   affidabilità, coerenza fattuale e obiettività. Il risultato viene sigillato
                   in un hash crittografico immutabile — ispirato alla notarizzazione Web3 —
