@@ -5,32 +5,30 @@ interface SidebarChannel {
   label: string;
   icon: string;
   href: string;
-  badge?: string;
 }
 
-const PRIMARY_CHANNELS: SidebarChannel[] = [
-  { label: "Chi Siamo", icon: "👤", href: "/chi-siamo" },
-  { label: "AI News", icon: "📡", href: "/ai" },
-  { label: "Copy & Paste AI", icon: "📋", href: "/copy-paste-ai" },
-  { label: "Automate with AI", icon: "⚡", href: "/automate-with-ai" },
-  { label: "Make Money", icon: "$", href: "/make-money-with-ai" },
-  { label: "Daily AI Tools", icon: "🛠️", href: "/daily-ai-tools" },
-  { label: "ProofPress Verify", icon: "🛡", href: "/proofpress-verify" },
-  { label: "AI Opportunities", icon: "📈", href: "/ai-opportunities" },
+/* ─── CANALI (tutti i canali editoriali) ─────────────────────────────────── */
+const CHANNELS: SidebarChannel[] = [
+  { label: "Breaking News",  icon: "⚡", href: "/ai" },
+  { label: "Research",       icon: "🔬", href: "/research" },
+  { label: "Venture",        icon: "🚀", href: "/startup" },
+  { label: "Investi",        icon: "💼", href: "/dealroom" },
+  { label: "Dealflow",       icon: "💰", href: "/dealflow" },
+  { label: "Radar",          icon: "📡", href: "/verified-ai-news" },
+  { label: "Startup News",   icon: "🏢", href: "/startup" },
+  { label: "Make Money",     icon: "$",  href: "/make-money-with-ai" },
+  { label: "Prompt Library",  icon: "📋", href: "/copy-paste-ai" },
+  { label: "Nuovi Tools",    icon: "🛠️", href: "/daily-ai-tools" },
+  { label: "Casi d'uso",     icon: "⚙️", href: "/automate-with-ai" },
+  { label: "Opportunità",    icon: "📈", href: "/ai-opportunities" },
 ];
 
-const SECONDARY_CHANNELS: SidebarChannel[] = [
-  { label: "AI Research", icon: "🔬", href: "/research" },
-  { label: "AI Venture", icon: "🚀", href: "/startup" },
-  { label: "AI Invest", icon: "💼", href: "/dealroom" },
-  { label: "AI Startup News", icon: "🏢", href: "/startup" },
-  { label: "AI Dealflow", icon: "💰", href: "/dealflow" },
-  { label: "AI Radar", icon: "📻", href: "/ai" },
-];
-
-const UTILITY_LINKS: SidebarChannel[] = [
-  { label: "ProofPress Verify", icon: "✅", href: "/proofpress-verify" },
-  { label: "Newsletter", icon: "✉️", href: "/#newsletter" },
+/* ─── SEZIONE INFO (sotto il divider) ────────────────────────────────────── */
+const INFO_LINKS: SidebarChannel[] = [
+  { label: "Chi Siamo",         icon: "👤", href: "/chi-siamo" },
+  { label: "Tecnologia",        icon: "🔧", href: "/tecnologia" },
+  { label: "Offerta",           icon: "💎", href: "/business" },
+  { label: "Verifica Notizia",  icon: "✅", href: "/proofpress-verify" },
 ];
 
 export default function LeftSidebar() {
@@ -78,7 +76,7 @@ export default function LeftSidebar() {
       {/* Divider */}
       <div className="mx-4 mb-3 border-t-[2px] border-[#1a1a1a]" />
 
-      {/* Canali principali */}
+      {/* Canali */}
       <div className="px-3 mb-1">
         <span
           className="text-[9px] uppercase tracking-[0.15em] text-[#1a1a1a]/35 font-semibold px-1"
@@ -87,7 +85,7 @@ export default function LeftSidebar() {
         </span>
       </div>
       <nav className="flex flex-col gap-0.5 px-2 mb-3">
-        {PRIMARY_CHANNELS.map((ch) => (
+        {CHANNELS.map((ch) => (
           <Link key={ch.href + ch.label} href={ch.href}>
             <div
               className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 group ${
@@ -111,41 +109,10 @@ export default function LeftSidebar() {
       {/* Divider */}
       <div className="mx-4 mb-2 border-t border-[#1a1a1a]/10" />
 
-      {/* Canali secondari */}
-      <div className="px-3 mb-1">
-        <span className="text-[9px] uppercase tracking-[0.15em] text-[#1a1a1a]/35 font-semibold px-1">
-          Approfondimenti
-        </span>
-      </div>
-      <nav className="flex flex-col gap-0.5 px-2 mb-3">
-        {SECONDARY_CHANNELS.map((ch) => (
-          <Link key={ch.href + ch.label} href={ch.href}>
-            <div
-              className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 ${
-                isActive(ch.href)
-                  ? "bg-[#1a1a1a] text-white"
-                  : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/70 hover:text-[#1a1a1a]"
-              }`}
-            >
-              <span className="text-[13px] w-4 text-center flex-shrink-0">{ch.icon}</span>
-              <span
-                className="text-[12px] font-medium leading-tight"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}
-              >
-                {ch.label}
-              </span>
-            </div>
-          </Link>
-        ))}
-      </nav>
-
-      {/* Divider */}
-      <div className="mx-4 mb-2 border-t border-[#1a1a1a]/10" />
-
-      {/* Link utility */}
+      {/* Sezione info */}
       <nav className="flex flex-col gap-0.5 px-2 mb-4">
-        {UTILITY_LINKS.map((ch) => (
-          <Link key={ch.href} href={ch.href}>
+        {INFO_LINKS.map((ch) => (
+          <Link key={ch.href + ch.label} href={ch.href}>
             <div
               className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 ${
                 isActive(ch.href)

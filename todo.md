@@ -2750,3 +2750,10 @@
 - [x] Sezione use case (Media, AI Publishing, Corporate, Education)
 - [x] Aggiornare routing da /verify a /proofpress-verify
 - [x] Aggiornare sidebar e navbar con nuovo link
+
+## Task in corso (8 Apr 2026 — Ristrutturazione menu sidebar)
+
+- [x] Aggiornare LeftSidebar con nuova struttura: Canali rinominati + sezione info
+- [x] Breaking News (ex AI News), Research, Venture, Investi, Dealflow, Radar, Startup News, Make Money, Prompt Library, Nuovi Tools, Casi d'uso, Opportunità
+- [x] Sezione info: Chi Siamo, Tecnologia, Offerta, Verifica Notizia
+- [x] Aggiornare SectionNav con gli stessi nomi

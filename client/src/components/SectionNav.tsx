@@ -13,17 +13,18 @@ import {
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
 const ALL_CHANNELS = [
-  { key: "start-here",  label: "START HERE",        path: "/start-here",        icon: Play,          desc: "Come iniziare con l'AI" },
-  { key: "ai",          label: "AI NEWS",            path: "/ai",                icon: Cpu,           desc: "Le ultime notizie sull'AI" },
-  { key: "prompt-ai",   label: "PROMPT AI",          path: "/copy-paste-ai",     icon: ClipboardCopy, desc: "Prompt pronti da usare" },
-  { key: "use-case",    label: "USE CASE AI",        path: "/automate-with-ai",  icon: Zap,           desc: "Casi d'uso reali" },
-  { key: "fare-soldi",  label: "FARE SOLDI",         path: "/make-money-with-ai",icon: DollarSign,    desc: "Monetizza con l'AI" },
-  { key: "tools",       label: "AI TOOLS",           path: "/daily-ai-tools",    icon: Wrench,        desc: "I migliori strumenti AI" },
-  { key: "ai-radar",    label: "AI RADAR",           path: "/verified-ai-news",  icon: ShieldCheck,   desc: "News verificate e filtrate" },
-  { key: "ai-invest",   label: "AI INVEST",          path: "/ai-opportunities",  icon: TrendingUp,    desc: "Opportunità di investimento" },
-  { key: "startup",     label: "AI STARTUP NEWS",    path: "/startup",           icon: Rocket,        desc: "Startup da tenere d'occhio" },
-  { key: "dealroom",    label: "AI DEALROOM",        path: "/dealroom",          icon: Handshake,     desc: "Round, funding e M&A" },
-  { key: "research",    label: "AI RESEARCH",        path: "/research",          icon: BookOpen,      desc: "Ricerche e analisi" },
+  { key: "breaking",   label: "BREAKING NEWS",     path: "/ai",                icon: Zap,           desc: "Le ultime notizie sull'AI" },
+  { key: "research",    label: "RESEARCH",           path: "/research",          icon: BookOpen,      desc: "Ricerche e analisi" },
+  { key: "venture",     label: "VENTURE",            path: "/startup",           icon: Rocket,        desc: "Startup da tenere d'occhio" },
+  { key: "investi",     label: "INVESTI",            path: "/dealroom",          icon: TrendingUp,    desc: "Opportunità di investimento" },
+  { key: "dealflow",    label: "DEALFLOW",           path: "/dealflow",          icon: Handshake,     desc: "Round, funding e M&A" },
+  { key: "radar",       label: "RADAR",              path: "/verified-ai-news",  icon: ShieldCheck,   desc: "News verificate e filtrate" },
+  { key: "startup",     label: "STARTUP NEWS",       path: "/startup",           icon: Cpu,           desc: "Startup emergenti" },
+  { key: "fare-soldi",  label: "MAKE MONEY",         path: "/make-money-with-ai",icon: DollarSign,    desc: "Monetizza con l'AI" },
+  { key: "prompt",      label: "PROMPT LIBRARY",     path: "/copy-paste-ai",     icon: ClipboardCopy, desc: "Prompt pronti da usare" },
+  { key: "tools",       label: "NUOVI TOOLS",        path: "/daily-ai-tools",    icon: Wrench,        desc: "I migliori strumenti AI" },
+  { key: "use-case",    label: "CASI D'USO",         path: "/automate-with-ai",  icon: Play,          desc: "Casi d'uso reali" },
+  { key: "opportunita", label: "OPPORTUNIT\u00C0",         path: "/ai-opportunities",  icon: Sparkles,      desc: "Opportunità AI" },
 ];
 
 export default function SectionNav() {
