@@ -2792,3 +2792,14 @@
 - [x] Pagina /andrea-cinelli: sostituire bio con il testo completo fornito da Andrea
 - [x] Rigenerare editoriale di oggi per testare sistema anti-ripetitività
 - [x] Aggiungere alert automatico email quando diversity score scende sotto 70%
+
+## Newsletter IdeaSmart Daily v2 (8 Apr 2026)
+- [x] Creare template HTML newsletter email-compatible (tabelle, inline CSS, 640px, responsive)
+- [x] Sezioni: Header IDEASMART + Hero notizia del giorno + 5-6 canali a rotazione + Startup del Giorno
+- [x] 2 blocchi "Consigliato" (Amazon affiliate) + blocco fisso Prompt Collection 39€
+- [x] Sezione Eventi + Quick Links "Anche oggi su Ideasmart" + Footer con ProofPress badge
+- [x] Sistema server generazione newsletter con contenuti reali dal DB (news, startup, research)
+- [x] Tutti i link devono puntare a ideasmart.biz, MAI alle fonti originali
+- [x] Scheduling: bozza alle 8:30 per approvazione + invio finale alle 10:30 (lun-ven) [già presente nello schedulerManager]
+- [x] Endpoint admin per preview newsletter, approvazione e invio manuale [già presente nel router]
+- [ ] README con guida per cambiare contenuti, gestire sezioni opzionali, swappare sponsor
