@@ -154,7 +154,7 @@ export default function SectionNav() {
         </a>
 
         {/* ProofPress Verify button */}
-        <Link href="/verify">
+        <Link href="/proofpress-verify">
           <span
             className="flex items-center gap-1.5 mr-3 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white bg-[#dc2626] hover:bg-[#b91c1c] rounded-sm transition-all duration-200 cursor-pointer"
           >

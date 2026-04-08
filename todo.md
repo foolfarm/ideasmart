@@ -2740,3 +2740,13 @@
 - [x] Inviare newsletter di test a ac@acinelli.com per verificare il nuovo template
 - [x] Aggiornare sezione Prossimi Invii nell'admin con i 13 canali
 - [x] Aggiornare riferimenti Verify→ProofPress Verify in ChiSiamo, Intelligence, PerGiornalisti
+
+## Task in corso (8 Apr 2026 — Pagina ProofPress Verify)
+
+- [x] Creare pagina /proofpress-verify con branding ProofPress completo
+- [x] Includere white paper completo (15 sezioni) con design editoriale
+- [x] Demo interattiva: verifica hash in tempo reale
+- [x] Sezione architettura con diagramma del flusso operativo
+- [x] Sezione use case (Media, AI Publishing, Corporate, Education)
+- [x] Aggiornare routing da /verify a /proofpress-verify
+- [x] Aggiornare sidebar e navbar con nuovo link

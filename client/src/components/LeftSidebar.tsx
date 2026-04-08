@@ -15,7 +15,7 @@ const PRIMARY_CHANNELS: SidebarChannel[] = [
   { label: "Automate with AI", icon: "⚡", href: "/automate-with-ai" },
   { label: "Make Money", icon: "$", href: "/make-money-with-ai" },
   { label: "Daily AI Tools", icon: "🛠️", href: "/daily-ai-tools" },
-  { label: "ProofPress Verify", icon: "🛡", href: "/verified-ai-news" },
+  { label: "ProofPress Verify", icon: "🛡", href: "/proofpress-verify" },
   { label: "AI Opportunities", icon: "📈", href: "/ai-opportunities" },
 ];
 
@@ -29,7 +29,7 @@ const SECONDARY_CHANNELS: SidebarChannel[] = [
 ];
 
 const UTILITY_LINKS: SidebarChannel[] = [
-  { label: "ProofPress Verify", icon: "✅", href: "/verify" },
+  { label: "ProofPress Verify", icon: "✅", href: "/proofpress-verify" },
   { label: "Newsletter", icon: "✉️", href: "/#newsletter" },
 ];
 

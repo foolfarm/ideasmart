@@ -35,6 +35,7 @@ const DealroomHome = lazy(() => import("./pages/DealroomHome"));
 const Research = lazy(() => import("./pages/Research"));
 const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
 const Verify = lazy(() => import("./pages/Verify"));
+const ProofPressVerify = lazy(() => import("./pages/ProofPressVerify"));
 
 // ─── Pagine articolo (lazy) ───────────────────────────────────────────────────
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
@@ -110,6 +111,7 @@ function Router() {
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
         <Route path="/verify" component={Verify} />
+        <Route path="/proofpress-verify" component={ProofPressVerify} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/ai/news/:id" component={NewsArticle} />
         <Route path="/startup/news/:id" component={StartupNewsArticle} />

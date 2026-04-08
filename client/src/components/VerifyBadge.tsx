@@ -7,7 +7,7 @@
  * L'hash certifica il contenuto dell'articolo al momento della pubblicazione,
  * garantendo tracciabilita e verificabilita nel tempo.
  *
- * Il badge è cliccabile e porta direttamente alla pagina /verify?hash=...
+ * Il badge è cliccabile e porta direttamente alla pagina /proofpress-verify?hash=...
  */
 import { ShieldCheck } from "lucide-react";
 import { Link } from "wouter";
@@ -21,7 +21,7 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
   if (!hash) return null;
 
   const displayHash = "#" + hash.substring(0, 16).toUpperCase();
-  const verifyUrl = `/verify?hash=${encodeURIComponent(hash)}`;
+  const verifyUrl = `/proofpress-verify?hash=${encodeURIComponent(hash)}`;
 
   if (size === "sm") {
     return (
