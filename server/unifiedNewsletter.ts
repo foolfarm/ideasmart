@@ -1,23 +1,16 @@
 /**
  * unifiedNewsletter.ts — Newsletter Unica IDEASMART
  * ─────────────────────────────────────────────────────────────────────────────
- * Una sola newsletter quotidiana (Lun/Mer/Ven) con tutte le rubriche:
- *   - Breaking News
- *   - AI News (top 5)
- *   - Startup News (top 5)
- *   - Dealroom (top 5)
- *   - Editoriale IdeaSmart
- *   - Ricerca del Giorno
+ * Una sola newsletter (Lun/Mer/Ven) con struttura a 7 blocchi:
+ *   1. Cover + data + "Leggi online"
+ *   2. Anticipazione 20 notizie con link interni a ideasmart.biz
+ *   3. Sponsor Primario (promozione Prompt Ideasmart)
+ *   4. Breaking News (fino a 5, urgency score, link interni)
+ *   5. Canale a rotazione (13 canali, fino a 10 notizie, link interni)
+ *   6. Amazon Deal del Giorno
+ *   7. Footer + unsubscribe GDPR
  *
- * Sponsor dinamici da database con rotazione automatica:
- *   - "primary" = Sponsor del Giorno (in alto, dopo intro)
- *   - "spotlight" = Today's Spotlight (a metà, tra Startup e Dealroom)
- *
- * Ispirata allo stile "There's an AI for That":
- *   - Cover pulita con data + titolo + "Leggi online"
- *   - Sezioni con label colorata + titolo grande + contenuti
- *   - Bordo laterale rosso per sponsor
- *   - Card bianche su sfondo grigio chiaro
+ * REGOLA FONDAMENTALE: TUTTI i link puntano a ideasmart.biz, MAI alle fonti esterne.
  */
 
 import { sendEmail } from "./email";
@@ -85,7 +78,7 @@ interface SponsorData {
   description: string;
   url: string;
   imageUrl: string | null;
-  features: string | null; // JSON array
+  features: string | null;
   ctaText: string;
   placement: "primary" | "spotlight";
 }
@@ -174,7 +167,6 @@ async function getActiveSponsor(
       )
     )
     .orderBy(
-      // Weighted rotation: least recently sent + highest weight first
       desc(newsletterSponsors.weight),
       sql`${newsletterSponsors.lastSentAt} IS NULL DESC`,
       newsletterSponsors.sendCount
@@ -218,7 +210,6 @@ async function getTodayAmazonDeals(): Promise<AmazonDealData[]> {
 
   const today = new Date().toISOString().slice(0, 10);
 
-  // Prova a trovare deal programmati per oggi (fino a 2)
   const todayDeals = await db
     .select()
     .from(amazonDailyDeals)
@@ -244,7 +235,6 @@ async function getTodayAmazonDeals(): Promise<AmazonDealData[]> {
     }));
   }
 
-  // Fallback: ultimi 2 deal attivi
   const latestDeals = await db
     .select()
     .from(amazonDailyDeals)
@@ -300,7 +290,6 @@ async function getOpenSourceToolsForNewsletter(): Promise<{ name: string; url: s
 
   const today = new Date().toISOString().slice(0, 10);
 
-  // Get tools featured for today, or latest active ones
   let tools = await db
     .select()
     .from(openSourceTools)
@@ -330,15 +319,8 @@ async function getOpenSourceToolsForNewsletter(): Promise<{ name: string; url: s
   }));
 }
 
-// ─── Data Collection ────────────────────────────────────────────────────────
-
 // ─── Deduplication helpers ──────────────────────────────────────────────────
 
-/**
- * Genera un fingerprint normalizzato da un titolo:
- * - lowercase, rimuove punteggiatura, normalizza spazi, prende prime 8 parole.
- * Due titoli sullo stesso argomento avranno fingerprint simili.
- */
 function titleFingerprint(title: string): string {
   return title
     .toLowerCase()
@@ -350,11 +332,6 @@ function titleFingerprint(title: string): string {
     .join(" ");
 }
 
-/**
- * Genera un hashtag-source dalla sourceName:
- * - lowercase, rimuove spazi e caratteri speciali.
- * Es. "TechCrunch" → "techcrunch", "Il Sole 24 Ore" → "ilsole24ore"
- */
 function sourceHashtag(sourceName: string | null | undefined): string {
   if (!sourceName) return "";
   return sourceName
@@ -363,12 +340,6 @@ function sourceHashtag(sourceName: string | null | undefined): string {
     .slice(0, 20);
 }
 
-/**
- * Deduplica un array di notizie:
- * - Rimuove notizie con titolo quasi identico (stesso fingerprint)
- * - Rimuove notizie con la stessa fonte (sourceHashtag) se già presente
- * - Mantiene al massimo 1 notizia per fonte
- */
 function deduplicateNews<T extends { title: string; sourceName?: string | null }>(items: T[], maxPerSource = 1): T[] {
   const seenTitles = new Set<string>();
   const sourceCount = new Map<string, number>();
@@ -378,10 +349,7 @@ function deduplicateNews<T extends { title: string; sourceName?: string | null }
     const fp = titleFingerprint(item.title);
     const src = sourceHashtag(item.sourceName);
 
-    // Salta se titolo già visto
     if (seenTitles.has(fp)) continue;
-
-    // Salta se fonte già usata maxPerSource volte
     if (src && (sourceCount.get(src) ?? 0) >= maxPerSource) continue;
 
     seenTitles.add(fp);
@@ -392,11 +360,12 @@ function deduplicateNews<T extends { title: string; sourceName?: string | null }
   return result;
 }
 
+// ─── Data Collection ────────────────────────────────────────────────────────
+
 async function collectAllContent() {
   const db = await getDb();
   if (!db) throw new Error("Database non disponibile");
 
-  // Recupera più notizie del necessario per compensare quelle duplicate
   const [aiNewsRaw, startupNewsRaw, dealroomNewsRaw, breakingItemsRaw, todayResearches] =
     await Promise.all([
       getLatestNews(12, "ai"),
@@ -414,17 +383,16 @@ async function collectAllContent() {
       getTodayResearch(),
     ]);
 
-  // Applica deduplicazione: max 1 notizia per fonte, nessun titolo ripetuto
-  const aiNews = deduplicateNews(aiNewsRaw, 1).slice(0, 5);
-  const startupNews = deduplicateNews(startupNewsRaw, 1).slice(0, 5);
-  const dealroomNews = deduplicateNews(dealroomNewsRaw, 1).slice(0, 5);
+  const aiNews = deduplicateNews(aiNewsRaw, 1).slice(0, 10);
+  const startupNews = deduplicateNews(startupNewsRaw, 1).slice(0, 10);
+  const dealroomNews = deduplicateNews(dealroomNewsRaw, 1).slice(0, 10);
   const breakingItems = deduplicateNews(breakingItemsRaw, 1).slice(0, 5);
 
-  // Fetch contenuti dei nuovi canali (3 per canale)
+  // Fetch contenuti dei canali (fino a 10 per canale per il canale del giorno)
   const channelContents: Record<string, ChannelItem[]> = {};
   await Promise.all(
     NEWSLETTER_CHANNELS.map(async (ch) => {
-      channelContents[ch.key] = await getLatestChannelContent(ch.key, 3);
+      channelContents[ch.key] = await getLatestChannelContent(ch.key, 10);
     })
   );
 
@@ -469,7 +437,7 @@ async function collectAllContent() {
       ...todayResearches.filter((r: any) => r.isResearchOfDay),
       ...todayResearches.filter((r: any) => !r.isResearchOfDay),
     ]
-      .slice(0, 5)
+      .slice(0, 10)
       .map((r: any) => ({
         id: r.id,
         title: r.title,
@@ -509,6 +477,23 @@ function getDateLabel(date: Date): string {
 function getDayKey(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
+
+// ─── 13 canali per la rotazione ─────────────────────────────────────────────
+const ALL_CHANNELS = [
+  { key: "ai",                label: "AI NEWS",           title: "Le Notizie AI del Giorno",       emoji: "🤖", color: "#1a1a1a", path: "/ai",                isSection: true  },
+  { key: "copy-paste-ai",     label: "PROMPT AI",         title: "Prompt del Giorno",              emoji: "📋", color: "#7c3aed", path: "/copy-paste-ai",     isSection: false },
+  { key: "automate-with-ai",  label: "USE CASE AI",       title: "Workflow & Automazioni",         emoji: "⚡", color: "#d97706", path: "/automate-with-ai",  isSection: false },
+  { key: "make-money-with-ai",label: "FARE SOLDI",        title: "Opportunità di Guadagno",        emoji: "💰", color: "#059669", path: "/make-money-with-ai",isSection: false },
+  { key: "daily-ai-tools",    label: "AI TOOLS",          title: "Strumenti AI del Giorno",        emoji: "🛠️", color: "#2563eb", path: "/daily-ai-tools",    isSection: false },
+  { key: "verified-ai-news",  label: "PROOFPRESS VERIFY", title: "News Verificate",                emoji: "📡", color: "#dc2626", path: "/verified-ai-news",  isSection: false },
+  { key: "ai-opportunities",  label: "AI INVEST",         title: "Opportunità di Investimento",    emoji: "📈", color: "#0d6e3f", path: "/ai-opportunities",  isSection: false },
+  { key: "research",          label: "AI RESEARCH",       title: "Ricerche & Analisi AI",          emoji: "🔬", color: "#0066cc", path: "/research",          isSection: true  },
+  { key: "dealroom",          label: "AI VENTURE",        title: "Deal & Funding",                 emoji: "💼", color: "#7c3aed", path: "/dealroom",          isSection: true  },
+  { key: "ai-invest",         label: "AI INVEST",         title: "Investimenti AI",                emoji: "🏛️", color: "#0d6e3f", path: "/ai-invest",         isSection: false },
+  { key: "startup",           label: "AI STARTUP NEWS",   title: "Startup da Tenere d'Occhio",     emoji: "🚀", color: "#ea580c", path: "/startup",           isSection: true  },
+  { key: "dealflow",          label: "AI DEALFLOW",       title: "Round, Funding & M&A",           emoji: "🏦", color: "#0891b2", path: "/dealflow",          isSection: false },
+  { key: "ai-radar",          label: "AI RADAR",          title: "Radar Notizie Verificate",       emoji: "📡", color: "#dc2626", path: "/ai-radar",          isSection: false },
+];
 
 function buildUnifiedNewsletterHtml(opts: {
   dateLabel: string;
@@ -554,66 +539,50 @@ function buildUnifiedNewsletterHtml(opts: {
   const ACCENT = "#e84c30";
   const AMAZON_ORANGE = "#FF9900";
 
-  // ── Rotazione canale del giorno (11 canali, rotazione per giorno dell'anno) ──
-  const ALL_CHANNELS = [
-    { key: "ai",              label: "AI NEWS",         title: "Le Notizie AI del Giorno",     emoji: "🤖", color: "#1a1a1a", path: "/ai",                  isSection: true  },
-    { key: "research",        label: "AI RESEARCH",     title: "Ricerche & Analisi AI",         emoji: "🔬", color: "#0066cc", path: "/research",            isSection: true  },
-    { key: "dealroom",        label: "AI VENTURE",      title: "Deal & Funding",                emoji: "💼", color: "#7c3aed", path: "/dealroom",            isSection: true  },
-    { key: "ai-opportunities",label: "AI INVEST",       title: "Opportunità di Investimento",   emoji: "📈", color: "#0d6e3f", path: "/ai-opportunities",    isSection: false },
-    { key: "startup",         label: "AI STARTUP NEWS", title: "Startup da Tenere d'Occhio",    emoji: "🚀", color: "#ea580c", path: "/startup",             isSection: true  },
-    { key: "copy-paste-ai",   label: "PROMPT AI",       title: "Prompt del Giorno",             emoji: "📋", color: "#7c3aed", path: "/copy-paste-ai",       isSection: false },
-    { key: "automate-with-ai",label: "USE CASE AI",     title: "Workflow & Automazioni",        emoji: "⚡", color: "#d97706", path: "/automate-with-ai",    isSection: false },
-    { key: "make-money-with-ai",label:"FARE SOLDI",     title: "Opportunità di Guadagno",       emoji: "💰", color: "#059669", path: "/make-money-with-ai",  isSection: false },
-    { key: "daily-ai-tools",  label: "AI TOOLS",        title: "Strumenti AI del Giorno",       emoji: "🛠️", color: "#2563eb", path: "/daily-ai-tools",      isSection: false },
-    { key: "verified-ai-news",label: "AI RADAR",        title: "News Verificate",               emoji: "📡", color: "#dc2626", path: "/verified-ai-news",    isSection: false },
-    { key: "dealflow",        label: "AI DEALFLOW",     title: "Round, Funding & M&A",          emoji: "🏦", color: "#0891b2", path: "/dealflow",             isSection: false },
-  ];
-
+  // ── Rotazione canale del giorno (13 canali) ──
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 0);
   const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
   const todayChannel = ALL_CHANNELS[dayOfYear % ALL_CHANNELS.length];
 
-  // ── Costruisci lista 20 notizie per l'anticipazione ───────────────
+  // ══════════════════════════════════════════════════════════════════
+  // BLOCCO 2: Anticipazione 20 notizie — TUTTI I LINK INTERNI
+  // ══════════════════════════════════════════════════════════════════
   interface BulletItem { title: string; url: string; emoji: string; label: string; }
   const bulletItems: BulletItem[] = [];
 
-  // Breaking news (max 3)
-  const breakingEmojis = ["🔴", "⚡", "🚨"];
-  breakingItems.slice(0, 3).forEach((b, i) => {
-    bulletItems.push({
-      title: b.title,
-      url: b.sourceUrl ?? `${BASE_URL}/ai`,
-      emoji: breakingEmojis[i % breakingEmojis.length],
-      label: "BREAKING",
-    });
+  // Breaking news (max 5) — link interni
+  const breakingEmojis = ["🔴", "⚡", "🚨", "🔥", "⚠️"];
+  breakingItems.slice(0, 5).forEach((b, i) => {
+    const url = b.id ? `${BASE_URL}/ai/news/${b.id}` : `${BASE_URL}/ai`;
+    bulletItems.push({ title: b.title, url, emoji: breakingEmojis[i % breakingEmojis.length], label: "BREAKING" });
   });
 
-  // AI News (max 5)
-  aiNews.slice(0, 5).forEach((n, i) => {
-    const url = n.id ? `${BASE_URL}/ai/news/${n.id}` : (n.sourceUrl ?? `${BASE_URL}/ai`);
-    bulletItems.push({ title: n.title, url, emoji: ["🤖","💡","🔍","🌐","📊"][i % 5], label: "AI NEWS" });
+  // AI News (max 4) — link interni
+  aiNews.slice(0, 4).forEach((n, i) => {
+    const url = n.id ? `${BASE_URL}/ai/news/${n.id}` : `${BASE_URL}/ai`;
+    bulletItems.push({ title: n.title, url, emoji: ["🤖","💡","🔍","🌐"][i % 4], label: "AI NEWS" });
   });
 
-  // Startup News (max 4)
-  startupNews.slice(0, 4).forEach((n, i) => {
-    const url = n.id ? `${BASE_URL}/startup/news/${n.id}` : (n.sourceUrl ?? `${BASE_URL}/startup`);
-    bulletItems.push({ title: n.title, url, emoji: ["🚀","💼","🏢","🌱"][i % 4], label: "STARTUP" });
+  // Startup News (max 3) — link interni
+  startupNews.slice(0, 3).forEach((n, i) => {
+    const url = n.id ? `${BASE_URL}/startup/news/${n.id}` : `${BASE_URL}/startup`;
+    bulletItems.push({ title: n.title, url, emoji: ["🚀","💼","🏢"][i % 3], label: "STARTUP" });
   });
 
-  // Dealroom (max 3)
+  // Dealroom (max 3) — link interni
   dealroomNews.slice(0, 3).forEach((n, i) => {
-    const url = n.id ? `${BASE_URL}/dealroom/news/${n.id}` : (n.sourceUrl ?? `${BASE_URL}/dealroom`);
+    const url = n.id ? `${BASE_URL}/dealroom/news/${n.id}` : `${BASE_URL}/dealroom`;
     bulletItems.push({ title: n.title, url, emoji: ["💰","📈","🤝"][i % 3], label: "DEAL" });
   });
 
-  // Research (max 2)
+  // Research (max 2) — link interni
   researches.slice(0, 2).forEach((r) => {
     const url = r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`;
     bulletItems.push({ title: r.title, url, emoji: "🔬", label: "RESEARCH" });
   });
 
-  // Canali (fino a completare 20)
+  // Canali (fino a completare 20) — link interni
   const channelOrder = ["copy-paste-ai","make-money-with-ai","automate-with-ai","daily-ai-tools","verified-ai-news","ai-opportunities"];
   for (const chKey of channelOrder) {
     if (bulletItems.length >= 20) break;
@@ -639,50 +608,93 @@ function buildUnifiedNewsletterHtml(opts: {
             </td>
             <td style="vertical-align:top;padding-left:10px;">
               <a href="${item.url}" style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.4;">${item.emoji} ${item.title}</a>
+              <div style="margin-top:2px;"><a href="${item.url}" style="font-size:11px;color:${ACCENT};font-family:${F};text-decoration:none;font-weight:600;">Approfondisci su Ideasmart →</a></div>
             </td>
           </tr>
         </table>
       </td>
     </tr>`).join("");
 
-  // ── Canale del Giorno ─────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════════════
+  // BLOCCO 4: Breaking News (fino a 5, link interni)
+  // ══════════════════════════════════════════════════════════════════
+  function buildBreakingNewsBlock(): string {
+    if (breakingItems.length === 0) return "";
+
+    const itemsHtml = breakingItems.slice(0, 5).map((b, idx) => {
+      const url = b.id ? `${BASE_URL}/ai/news/${b.id}` : `${BASE_URL}/ai`;
+      return `
+        <tr>
+          <td style="padding:14px 24px;${idx < Math.min(breakingItems.length, 5) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+            <a href="${url}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${breakingEmojis[idx % breakingEmojis.length]} ${b.title}</a>
+            ${b.summary ? `<div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;">${b.summary.slice(0, 200)}${b.summary.length > 200 ? "…" : ""}</div>` : ""}
+            ${b.sourceName ? `<div style="margin-top:6px;font-size:11px;color:${MUTED};font-family:${F};">Fonte: <strong>${b.sourceName}</strong></div>` : ""}
+            <div style="margin-top:6px;"><a href="${url}" style="font-size:12px;color:${ACCENT};font-family:${F};text-decoration:none;font-weight:600;">Leggi su Ideasmart →</a></div>
+          </td>
+        </tr>`;
+    }).join("");
+
+    return `
+      <!-- BLOCCO 4: BREAKING NEWS -->
+      <tr>
+        <td style="padding:0 20px 16px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${RED};">
+            <tr>
+              <td style="padding:20px 24px 12px;">
+                <div style="font-size:11px;font-weight:800;color:${RED};text-transform:uppercase;letter-spacing:0.1em;font-family:${F};margin-bottom:4px;">⚡ BREAKING NEWS</div>
+                <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.2;">Ultime Notizie</div>
+              </td>
+            </tr>
+            ${itemsHtml}
+            <tr>
+              <td style="padding:12px 24px 20px;">
+                <a href="${BASE_URL}/ai" style="font-size:13px;font-weight:700;color:${RED};text-decoration:none;font-family:${F};">Tutte le Breaking News →</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // BLOCCO 5: Canale del Giorno (rotazione 13 canali, fino a 10 notizie)
+  // ══════════════════════════════════════════════════════════════════
   function buildChannelOfDay(): string {
     const ch = todayChannel;
     const color = ch.color;
     let itemsHtml = "";
 
     if (ch.isSection) {
-      // Usa le notizie della sezione principale
       let sectionItems: NewsItem[] = [];
       if (ch.key === "ai") sectionItems = aiNews;
       else if (ch.key === "startup") sectionItems = startupNews;
-      else if (ch.key === "dealroom" || ch.key === "research") {
+      else if (ch.key === "dealroom") sectionItems = dealroomNews;
+      else if (ch.key === "research") {
         // Per research usa researches
-        if (ch.key === "research") {
-          itemsHtml = researches.slice(0, 5).map((r, idx) => {
-            const url = r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`;
-            return `
-            <tr>
-              <td style="padding:14px 24px;${idx < Math.min(researches.length, 5) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
-                <a href="${url}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${ch.emoji} ${r.title}</a>
-                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;">${r.summary.slice(0, 200)}${r.summary.length > 200 ? "…" : ""}</div>
-                <div style="margin-top:6px;font-size:11px;color:${MUTED};font-family:${F};">Fonte: <strong>${r.source}</strong></div>
-              </td>
-            </tr>`;
-          }).join("");
-        } else {
-          sectionItems = dealroomNews;
-        }
-      }
-      if (!itemsHtml && sectionItems.length > 0) {
-        itemsHtml = sectionItems.slice(0, 5).map((n, idx) => {
-          const url = n.id ? `${BASE_URL}${ch.path}/news/${n.id}` : (n.sourceUrl ?? `${BASE_URL}${ch.path}`);
+        itemsHtml = researches.slice(0, 10).map((r, idx) => {
+          const url = r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`;
           return `
             <tr>
-              <td style="padding:14px 24px;${idx < Math.min(sectionItems.length, 5) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+              <td style="padding:14px 24px;${idx < Math.min(researches.length, 10) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+                <a href="${url}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${ch.emoji} ${r.title}</a>
+                <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;">${r.summary.slice(0, 200)}${r.summary.length > 200 ? "…" : ""}</div>
+                <div style="margin-top:6px;"><a href="${url}" style="font-size:12px;color:${ACCENT};font-family:${F};text-decoration:none;font-weight:600;">Leggi su Ideasmart →</a></div>
+              </td>
+            </tr>`;
+        }).join("");
+      }
+
+      if (!itemsHtml && sectionItems.length > 0) {
+        itemsHtml = sectionItems.slice(0, 10).map((n, idx) => {
+          // LINK INTERNI — mai alle fonti esterne
+          const url = n.id ? `${BASE_URL}${ch.path}/news/${n.id}` : `${BASE_URL}${ch.path}`;
+          return `
+            <tr>
+              <td style="padding:14px 24px;${idx < Math.min(sectionItems.length, 10) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
                 <a href="${url}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${ch.emoji} ${n.title}</a>
                 <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;">${n.summary.slice(0, 200)}${n.summary.length > 200 ? "…" : ""}</div>
                 ${n.sourceName ? `<div style="margin-top:6px;font-size:11px;color:${MUTED};font-family:${F};">Fonte: <strong>${n.sourceName}</strong></div>` : ""}
+                <div style="margin-top:6px;"><a href="${url}" style="font-size:12px;color:${ACCENT};font-family:${F};text-decoration:none;font-weight:600;">Leggi su Ideasmart →</a></div>
               </td>
             </tr>`;
         }).join("");
@@ -691,28 +703,30 @@ function buildUnifiedNewsletterHtml(opts: {
       // Usa il channelContent
       const chItems = channelContents[ch.key] || [];
       if (chItems.length === 0) {
-        // Fallback: usa AI news
-        itemsHtml = aiNews.slice(0, 3).map((n, idx) => {
-          const url = n.id ? `${BASE_URL}/ai/news/${n.id}` : (n.sourceUrl ?? `${BASE_URL}/ai`);
+        // Fallback: usa AI news con link interni
+        itemsHtml = aiNews.slice(0, 5).map((n, idx) => {
+          const url = n.id ? `${BASE_URL}/ai/news/${n.id}` : `${BASE_URL}/ai`;
           return `
             <tr>
-              <td style="padding:14px 24px;${idx < 2 ? `border-bottom:1px solid ${BORDER};` : ""}">
+              <td style="padding:14px 24px;${idx < 4 ? `border-bottom:1px solid ${BORDER};` : ""}">
                 <a href="${url}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${ch.emoji} ${n.title}</a>
                 <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;">${n.summary.slice(0, 200)}…</div>
+                <div style="margin-top:6px;"><a href="${url}" style="font-size:12px;color:${ACCENT};font-family:${F};text-decoration:none;font-weight:600;">Leggi su Ideasmart →</a></div>
               </td>
             </tr>`;
         }).join("");
       } else {
-        itemsHtml = chItems.slice(0, 5).map((item, idx) => {
+        itemsHtml = chItems.slice(0, 10).map((item, idx) => {
           const summary = item.body ? item.body.replace(/[#*_`\[\]]/g, "").slice(0, 200) + (item.body.length > 200 ? "…" : "") : (item.subtitle || "");
           return `
             <tr>
-              <td style="padding:14px 24px;${idx < Math.min(chItems.length, 5) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
+              <td style="padding:14px 24px;${idx < Math.min(chItems.length, 10) - 1 ? `border-bottom:1px solid ${BORDER};` : ""}">
                 ${item.category ? `<div style="margin-bottom:6px;"><span style="font-size:10px;font-weight:700;color:${WHITE};background:${color};border-radius:3px;padding:2px 8px;letter-spacing:0.08em;text-transform:uppercase;font-family:${F};">${item.category}</span></div>` : ""}
                 <a href="${BASE_URL}${ch.path}" style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};text-decoration:none;line-height:1.35;display:block;margin-bottom:6px;">${ch.emoji} ${item.title}</a>
                 <div style="font-size:13px;color:${SLATE};font-family:${F};line-height:1.6;">${summary}</div>
                 ${item.actionItem ? `<div style="margin-top:8px;padding:8px 12px;background:#f0fdf4;border-radius:6px;border-left:3px solid #22c55e;"><div style="font-size:11px;font-weight:700;color:#166534;font-family:${F};margin-bottom:3px;">COSA FARE ORA</div><div style="font-size:12px;color:#15803d;font-family:${F};line-height:1.5;">${item.actionItem.slice(0, 150)}${item.actionItem.length > 150 ? "…" : ""}</div></div>` : ""}
                 ${item.promptText ? `<div style="margin-top:8px;padding:8px 12px;background:#f5f3ff;border-radius:6px;border-left:3px solid #7c3aed;font-size:12px;color:#5b21b6;font-family:monospace;line-height:1.5;">${item.promptText.slice(0, 300)}${item.promptText.length > 300 ? "…" : ""}</div>` : ""}
+                <div style="margin-top:6px;"><a href="${BASE_URL}${ch.path}" style="font-size:12px;color:${ACCENT};font-family:${F};text-decoration:none;font-weight:600;">Leggi su Ideasmart →</a></div>
               </td>
             </tr>`;
         }).join("");
@@ -720,10 +734,9 @@ function buildUnifiedNewsletterHtml(opts: {
     }
 
     return `
-      <!-- CANALE DEL GIORNO: ${ch.label} -->
+      <!-- BLOCCO 5: CANALE DEL GIORNO: ${ch.label} -->
       <tr>
-        <td style="padding:0 20px
- 16px;">
+        <td style="padding:0 20px 16px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${color};">
             <tr>
               <td style="padding:20px 24px 12px;">
@@ -734,7 +747,7 @@ function buildUnifiedNewsletterHtml(opts: {
             ${itemsHtml}
             <tr>
               <td style="padding:12px 24px 20px;">
-                <a href="${BASE_URL}${ch.path}" style="font-size:13px;font-weight:700;color:${color};text-decoration:none;font-family:${F};">Vai al canale ${ch.label} →</a>
+                <a href="${BASE_URL}${ch.path}" style="font-size:13px;font-weight:700;color:${color};text-decoration:none;font-family:${F};">Vai al canale ${ch.label} su Ideasmart →</a>
               </td>
             </tr>
           </table>
@@ -742,8 +755,10 @@ function buildUnifiedNewsletterHtml(opts: {
       </tr>`;
   }
 
-  // ── Amazon Sponsor del Giorno ─────────────────────────────────────
-  function buildAmazonSponsorBlock(): string {
+  // ══════════════════════════════════════════════════════════════════
+  // BLOCCO 6: Amazon Deal del Giorno
+  // ══════════════════════════════════════════════════════════════════
+  function buildAmazonDealBlock(): string {
     const partners = [
       { name: "Amazon Prime", headline: "Prova gratis Amazon Prime", description: "Spedizioni illimitate gratuite, accesso a Prime Video, Amazon Music, Prime Reading e molto altro. Prova gratuita per 30 giorni.", url: "http://www.amazon.it/provaprime?tag=andyiltosca00-21", ctaText: "PROVA GRATIS 30 GIORNI →", emoji: "📦" },
       { name: "Prime Video", headline: "Scopri Prime Video", description: "Film, serie TV, documentari e contenuti originali Amazon. Guarda ovunque, su qualsiasi dispositivo. Incluso con Amazon Prime.", url: "https://www.primevideo.com/?&tag=andyiltosca00-21", ctaText: "GUARDA ORA →", emoji: "🎬" },
@@ -754,15 +769,58 @@ function buildUnifiedNewsletterHtml(opts: {
       { name: "Amazon Wedding", headline: "Lista Nozze su Amazon", description: "Crea la tua lista nozze su Amazon: migliaia di prodotti, spedizione gratuita per gli invitati e un bonus del 20% sui regali non acquistati.", url: "http://www.amazon.it/wedding?tag=andyiltosca00-21", ctaText: "CREA LA TUA LISTA →", emoji: "💍" },
     ];
     const todayPartner = partners[dayOfYear % partners.length];
-    const utmUrl = `${todayPartner.url}${todayPartner.url.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_sponsor`;
+    const utmUrl = `${todayPartner.url}${todayPartner.url.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_deal`;
+
+    // Se ci sono deal dal DB, mostra quelli
+    if (amazonDeals.length > 0) {
+      const deal = amazonDeals[0];
+      const dealUtmUrl = `${deal.affiliateUrl}${deal.affiliateUrl.includes("?") ? "&" : "?"}utm_source=ideasmart_newsletter&utm_medium=email&utm_campaign=amazon_deal`;
+      return `
+        <!-- BLOCCO 6: AMAZON DEAL DEL GIORNO -->
+        <tr>
+          <td style="padding:0 20px 16px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+              <tr>
+                <td style="padding:20px 24px 0;">
+                  <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">🏷️ AMAZON DEAL DEL GIORNO</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:8px 24px 0;">
+                  <div style="font-size:22px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.25;">📦 ${deal.title}</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:14px 24px 0;">
+                  <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;">${deal.description}</div>
+                  <div style="margin-top:8px;font-size:20px;font-weight:800;color:${AMAZON_ORANGE};font-family:${F};">${deal.price}</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:18px 24px 22px;">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:${AMAZON_ORANGE};border-radius:8px;padding:14px 32px;">
+                        <a href="${dealUtmUrl}" target="_blank" style="font-size:15px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F};letter-spacing:0.02em;">SCOPRI L'OFFERTA →</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>`;
+    }
+
+    // Fallback: partner Amazon rotante
     return `
-      <!-- SPONSOR DEL GIORNO: Amazon -->
+      <!-- BLOCCO 6: AMAZON DEAL DEL GIORNO (fallback partner) -->
       <tr>
         <td style="padding:0 20px 16px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:12px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
             <tr>
               <td style="padding:20px 24px 0;">
-                <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">🏷️ SPONSOR DEL GIORNO — in collaborazione con Amazon</div>
+                <div style="font-size:11px;font-weight:700;color:${AMAZON_ORANGE};text-transform:uppercase;letter-spacing:0.12em;font-family:${F};margin-bottom:4px;">🏷️ AMAZON DEAL DEL GIORNO</div>
               </td>
             </tr>
             <tr>
@@ -791,10 +849,12 @@ function buildUnifiedNewsletterHtml(opts: {
       </tr>`;
   }
 
-  // ── Promo Collezione Prompt IDEASMART ─────────────────────────────
+  // ══════════════════════════════════════════════════════════════════
+  // BLOCCO 3: Sponsor Primario — Promozione Prompt Ideasmart
+  // ══════════════════════════════════════════════════════════════════
   function buildPromptPromoBlock(): string {
     return `
-      <!-- PROMO COLLEZIONE PROMPT -->
+      <!-- BLOCCO 3: SPONSOR — COLLEZIONE PROMPT IDEASMART -->
       <tr>
         <td style="padding:0 20px 16px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${BLACK};border-radius:12px;overflow:hidden;">
@@ -807,7 +867,7 @@ function buildUnifiedNewsletterHtml(opts: {
                 <table cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td style="background:${WHITE};border-radius:6px;padding:14px 32px;">
-                      <a href="${BASE_URL}/copy-paste-ai?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_promo" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};">Esplora i Prompt →</a>
+                      <a href="${BASE_URL}/copy-paste-ai?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_promo" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};">Esplora i Prompt su Ideasmart →</a>
                     </td>
                   </tr>
                 </table>
@@ -818,7 +878,9 @@ function buildUnifiedNewsletterHtml(opts: {
       </tr>`;
   }
 
-  // ── Assemble full HTML ────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════════════
+  // ASSEMBLE: 7 blocchi
+  // ══════════════════════════════════════════════════════════════════
   return `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -837,14 +899,13 @@ function buildUnifiedNewsletterHtml(opts: {
         </td></tr>` : ""}
 
         <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- A) HEADER — Titolo + Data                              -->
+        <!-- BLOCCO 1: COVER — Titolo + Data + Leggi online         -->
         <!-- ═══════════════════════════════════════════════════════ -->
         <tr>
           <td style="background:${WHITE};padding:32px 24px 24px;text-align:center;${isTest ? "" : "border-radius:8px 8px 0 0;"}border-bottom:3px solid ${BLACK};">
-            <div style="font-size:11px;color:${MUTED};font-family:${F};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">${dateLabel}</div>
+            <div style="font-size:11px;color:${MUTED};font-family:${F};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px;">${dateLabel} &nbsp;|&nbsp; <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header" style="color:${RED};text-decoration:none;font-weight:600;">Leggi online</a></div>
             <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F};line-height:1;letter-spacing:-0.02em;">IDEASMART</div>
-            <div style="font-size:16px;font-weight:700;color:${SLATE};font-family:${F};letter-spacing:0.25em;text-transform:uppercase;margin-top:4px;margin-bottom:8px;">RESEARCH</div>
-            <div style="width:48px;height:3px;background:${RED};margin:0 auto 12px;"></div>
+            <div style="width:48px;height:3px;background:${RED};margin:8px auto 12px;"></div>
             <div style="font-size:13px;color:${MUTED};font-family:${F};line-height:1.5;">Il tuo sistema operativo sull'AI &nbsp;·&nbsp; Notizie verificate, analisi esclusive e i deal che contano</div>
           </td>
         </tr>
@@ -853,16 +914,16 @@ function buildUnifiedNewsletterHtml(opts: {
         <tr><td style="height:16px;background:${BG};"></td></tr>
 
         <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- B) INTRO — Saluto + Anticipazione 20 notizie con link  -->
+        <!-- BLOCCO 2: ANTICIPAZIONE 20 NOTIZIE (link interni)     -->
         <!-- ═══════════════════════════════════════════════════════ -->
         <tr>
           <td style="padding:0 20px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
               <tr>
                 <td style="padding:28px 24px 8px;">
-                  <div style="font-size:20px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.3;margin-bottom:8px;">Buongiorno! 👋</div>
+                  <div style="font-size:20px;font-weight:800;color:${BLACK};font-family:${F};line-height:1.3;margin-bottom:8px;">Buongiorno!</div>
                   <div style="font-size:15px;color:${DARK};font-family:${F};line-height:1.7;margin-bottom:16px;">
-                    Bentornato alla newsletter di <strong style="color:${BLACK};">IDEASMART RESEARCH</strong> — il tuo briefing quotidiano su AI, Startup e Venture Capital. Notizie verificate, analisi esclusive e i deal che contano, direttamente nella tua inbox.
+                    Bentornato alla newsletter di <strong style="color:${BLACK};">IDEASMART</strong> — il tuo briefing su AI, Startup e Venture Capital. Notizie verificate, analisi esclusive e i deal che contano, direttamente nella tua inbox.
                   </div>
                   <div style="font-size:15px;font-weight:700;color:${BLACK};font-family:${F};margin-bottom:14px;">Ecco cosa trovi nell'edizione di oggi:</div>
                 </td>
@@ -885,7 +946,7 @@ function buildUnifiedNewsletterHtml(opts: {
         <tr><td style="height:16px;background:${BG};"></td></tr>
 
         <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- C) PROMO COLLEZIONE PROMPT IDEASMART                   -->
+        <!-- BLOCCO 3: SPONSOR — PROMOZIONE PROMPT IDEASMART        -->
         <!-- ═══════════════════════════════════════════════════════ -->
         ${buildPromptPromoBlock()}
 
@@ -893,7 +954,15 @@ function buildUnifiedNewsletterHtml(opts: {
         <tr><td style="height:4px;background:${BG};"></td></tr>
 
         <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- D) CANALE DEL GIORNO (rotazione 11 canali)             -->
+        <!-- BLOCCO 4: BREAKING NEWS (fino a 5, link interni)       -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        ${buildBreakingNewsBlock()}
+
+        <!-- Spacer -->
+        <tr><td style="height:4px;background:${BG};"></td></tr>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- BLOCCO 5: CANALE DEL GIORNO (rotazione 13 canali)      -->
         <!-- ═══════════════════════════════════════════════════════ -->
         ${buildChannelOfDay()}
 
@@ -901,42 +970,22 @@ function buildUnifiedNewsletterHtml(opts: {
         <tr><td style="height:4px;background:${BG};"></td></tr>
 
         <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- E) SPONSOR DEL GIORNO — Amazon                         -->
+        <!-- BLOCCO 6: AMAZON DEAL DEL GIORNO                       -->
         <!-- ═══════════════════════════════════════════════════════ -->
-        ${buildAmazonSponsorBlock()}
+        ${buildAmazonDealBlock()}
 
         <!-- Spacer -->
         <tr><td style="height:4px;background:${BG};"></td></tr>
 
-        <!-- CTA ISCRIZIONE -->
-        <tr>
-          <td style="padding:0 20px 16px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${BLACK};border-radius:8px;overflow:hidden;">
-              <tr>
-                <td style="padding:24px;">
-                  <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F};margin-bottom:8px;">ISCRIVITI GRATIS</div>
-                  <div style="font-size:20px;font-weight:800;color:${WHITE};font-family:${F};line-height:1.25;margin-bottom:8px;">Non perderti le prossime edizioni</div>
-                  <div style="font-size:13px;color:#9ca3af;font-family:${F};line-height:1.65;margin-bottom:16px;">Ricevi ogni <strong style="color:${WHITE};">lunedì, mercoledì e venerdì</strong> le notizie più importanti su AI, Startup, Venture Capital e Deal. Oltre <strong style="color:${WHITE};">400 fonti</strong> monitorate con tecnologia <strong style="color:${WHITE};">Verify™</strong>.</div>
-                  <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                      <td style="background:${WHITE};border-radius:6px;padding:12px 28px;">
-                        <a href="${BASE_URL}/#newsletter" style="font-size:13px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F};">Iscriviti ora →</a>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- FOOTER -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- BLOCCO 7: FOOTER + UNSUBSCRIBE GDPR                    -->
+        <!-- ═══════════════════════════════════════════════════════ -->
         <tr>
           <td style="padding:0 20px 0;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
               <tr>
                 <td style="padding:20px;text-align:center;">
-                  <div style="font-size:12px;font-weight:700;color:${BLACK};font-family:${F};margin-bottom:6px;">IDEASMART RESEARCH — Intelligence Quotidiana · © 2026</div>
+                  <div style="font-size:12px;font-weight:700;color:${BLACK};font-family:${F};margin-bottom:6px;">IDEASMART — Intelligence Quotidiana · © 2026</div>
                   <div style="font-size:11px;color:${MUTED};font-family:${F};line-height:1.7;margin-bottom:12px;">
                     Hai ricevuto questa email perché sei iscritto alla newsletter IDEASMART.<br>
                     Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
@@ -963,6 +1012,9 @@ function buildUnifiedNewsletterHtml(opts: {
 </body>
 </html>`;
 }
+
+// ─── Build & Send Functions ─────────────────────────────────────────────────
+
 export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   html: string;
   subject: string;
@@ -980,7 +1032,6 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   const dateLabel = getDateLabel(now);
   const content = await collectAllContent();
 
-  // Fetch dynamic sponsors, Amazon deals, approved tools, and open source tools from DB
   const [primarySponsor, spotlightSponsor, amazonDeals, approvedTools, osTools] = await Promise.all([
     getActiveSponsor("primary"),
     getActiveSponsor("spotlight"),
@@ -995,25 +1046,16 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   console.log(`  Dealroom: ${content.dealroomNews.length}`);
   console.log(`  Breaking: ${content.breakingItems.length}`);
   console.log(`  Ricerche: ${content.researches.length}`);
-  console.log(
-    `  Sponsor primario: ${primarySponsor?.name ?? "nessuno"}`
-  );
-  console.log(
-    `  Sponsor spotlight: ${spotlightSponsor?.name ?? "nessuno"}`
-  );
-  console.log(
-    `  Amazon Deals: ${amazonDeals.length}`
-  );
-  console.log(
-    `  Approved Tools: ${approvedTools.length}`
-  );
-  console.log(
-    `  Open Source Tools: ${osTools.length}`
-  );
-  // Log nuovi canali
+  console.log(`  Amazon Deals: ${amazonDeals.length}`);
   for (const ch of NEWSLETTER_CHANNELS) {
     console.log(`  ${ch.label}: ${content.channelContents[ch.key]?.length ?? 0}`);
   }
+
+  // Calcola canale del giorno per il log
+  const startOfYear = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+  const todayChannel = ALL_CHANNELS[dayOfYear % ALL_CHANNELS.length];
+  console.log(`  Canale del giorno: ${todayChannel.label} (${todayChannel.key})`);
 
   const subject = `IDEASMART — ${dateLabel}`;
 
@@ -1092,7 +1134,6 @@ export async function sendUnifiedPreview(): Promise<{
   console.log(`[UnifiedNewsletter] 📧 Preview → ${TEST_EMAILS.join(", ")}`);
   try {
     const { html, subject, stats } = await buildUnifiedNewsletter(true);
-    // Invia a tutti i destinatari di test
     const sendResults = await Promise.all(
       TEST_EMAILS.map(email => sendEmail({ to: email, subject, html }))
     );
@@ -1174,7 +1215,6 @@ export async function sendUnifiedTestToEmail(toEmail: string): Promise<{
 /**
  * Invia la newsletter unificata a tutti gli iscritti attivi.
  * Invio massivo con link unsubscribe personalizzato (GDPR).
- * Aggiorna i contatori sponsor dopo l'invio.
  */
 export async function sendUnifiedNewsletterToAll(): Promise<{
   success: boolean;

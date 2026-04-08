@@ -2702,3 +2702,35 @@
 - [x] Cron newsletter corretto: da ogni giorno a solo lun/mer/ven (preview 08:30, invio 10:30)
 - [x] Rimosso grusconi3@gmail.com dalla lista preview newsletter (solo ac@acinelli.com)
 - [x] Banner Collezione Prompt aggiunto sotto il ticker nella Home
+
+## Task in corso (8 Apr 2026 — Ristrutturazione newsletter)
+
+- [ ] Ristrutturare template HTML newsletter con nuova struttura a 7 blocchi
+- [ ] Blocco 1: Cover + data + "Leggi online"
+- [ ] Blocco 2: Anticipazione 20 notizie con link interni a ideasmart.biz (non alle fonti)
+- [ ] Blocco 3: Sponsor Primario (promozione Prompt Ideasmart)
+- [ ] Blocco 4: Breaking News (fino a 5, urgency score, link interni a ideasmart.biz)
+- [ ] Blocco 5: Canale a rotazione (13 canali, fino a 10 notizie, link interni)
+- [ ] Blocco 6: Amazon Deal del Giorno
+- [ ] Blocco 7: Footer + unsubscribe GDPR
+- [ ] Aggiornare rotazione a 13 canali completi
+- [ ] Tutti i link devono puntare a ideasmart.biz (mai alle fonti esterne)
+
+## Task completati (8 Apr 2026 — Ristrutturazione Newsletter)
+
+- [x] Ristrutturato template newsletter con nuova struttura a 7 blocchi
+- [x] Blocco 1: Cover + data + "Leggi online"
+- [x] Blocco 2: Anticipazione 20 notizie con link interni a ideasmart.biz (mai alle fonti)
+- [x] Blocco 3: Sponsor Primario = promozione Prompt Ideasmart (collezione prompt)
+- [x] Blocco 4: Breaking News fisso (fino a 5 notizie, urgency score, link interni)
+- [x] Blocco 5: Canale a rotazione (13 canali, fino a 10 notizie, link interni)
+- [x] Blocco 6: Amazon Deal del Giorno (affiliazione)
+- [x] Blocco 7: Footer + unsubscribe GDPR
+- [x] Tutti i link newsletter puntano a ideasmart.biz (mai alle fonti esterne)
+- [x] Rotazione 13 canali: AI News, Prompt AI, Use Case AI, Fare Soldi, AI Tools, ProofPress Verify, AI Invest, AI Research, AI Venture, AI Invest, AI Startup News, AI Dealflow, AI Radar
+- [x] Rimosso grusconi3@gmail.com dalla preview — solo ac@acinelli.com
+- [x] Cron newsletter corretto a solo lun/mer/ven (1,3,5)
+- [x] Rimosso RESEARCH dal titolo hero
+- [x] Rebranding Verify → ProofPress Verify in tutte le pagine
+- [x] Sidebar sinistra fissa in tutte le pagine del sito
+- [x] SectionNav: Chi Siamo → Demo Tecnologia IdeaSmart
