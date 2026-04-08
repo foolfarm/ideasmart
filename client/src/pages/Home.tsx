@@ -14,7 +14,7 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings } from "lucide-react";
-import SectionChannelBar from "@/components/SectionChannelBar";
+import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
@@ -429,7 +429,12 @@ export default function Home() {
         .newspaper-col-rule { border-right: 1px solid rgba(26,26,46,0.15); }
       `}</style>
 
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+        {/* ══ SIDEBAR SINISTRA FISSA ══════════════════════════════════════════ */}
+        <LeftSidebar />
+
+        {/* ══ CONTENUTO PRINCIPALE ═══════════════════════════════════════════ */}
+        <div className="flex-1 min-w-0 overflow-x-hidden">
 
         {/* ══ TESTATA ══════════════════════════════════════════════════════════ */}
         <header className="max-w-[1280px] mx-auto px-4 pt-5 pb-0">
@@ -533,23 +538,27 @@ export default function Home() {
 
         </header>
 
-        {/* Nav sezioni + lettori — STICKY (fuori dall'header per sticky corretto) */}
-        <div className="sticky top-0 z-50" style={{ background: "#faf8f3" }}>
-          <div className="max-w-[1280px] mx-auto px-4">
-            <div className="flex items-center">
-              <div className="flex-1">
-                <SectionChannelBar />
-              </div>
-              <div className="hidden sm:flex items-center px-3 border-l border-[#1a1a1a]/10">
-                <ReadersCounter />
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* ══ BREAKING NEWS ════════════════════════════════════════════════════ */}
         <BreakingNewsSection />
         <BreakingNewsTicker />
+
+        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════ */}
+        <div className="max-w-[1280px] mx-auto px-4 mt-3">
+          <a
+            href="https://ideasmart.forum/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 p-3 rounded-lg transition-all duration-300 hover:shadow-lg group"
+            style={{ background: "#1a1a1a", textDecoration: "none" }}
+          >
+            <div className="flex-shrink-0 text-2xl">📋</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] mb-0.5" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione IDEASMART</p>
+              <p className="text-[14px] font-black leading-tight" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
+            </div>
+            <span className="flex-shrink-0 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded group-hover:opacity-90 transition-opacity" style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Scopri →</span>
+          </a>
+        </div>
 
         {/* ══ CORPO ═══════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
@@ -1108,6 +1117,7 @@ export default function Home() {
           </div>
 
         </main>
+        </div>{/* fine contenuto principale */}
       </div>
     </>
   );

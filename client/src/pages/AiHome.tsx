@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
-import SectionChannelBar from "@/components/SectionChannelBar";
+import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 
 const ACCENT = "#1a1a1a";
@@ -134,13 +134,11 @@ export default function AiHome() {
         /* SF Pro system font — no external loading needed */
       `}</style>
 
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
-
+      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: INK }}>
+        <LeftSidebar />
+        <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
-          <BreakingNewsTicker />
-        <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
-          <SectionChannelBar />
-        </div>
+        <BreakingNewsTicker />
         <main className="max-w-6xl mx-auto px-4 pb-12">
 
           {/* SEZIONE 1: Hero + Sidebar editoriale */}
@@ -539,6 +537,7 @@ export default function AiHome() {
             <SharedPageFooter />
           </div>
         </main>
+        </div>{/* fine contenuto principale */}
       </div>
     </>
   );

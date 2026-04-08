@@ -2683,3 +2683,9 @@
 - [x] Preview test spostata da 10:30 a 08:30 (ac@acinelli.com + grusconi3@gmail.com)
 - [x] Invio massivo spostato da 12:30 a 10:30 (tutti gli iscritti)
 - [x] Rotazione 11 canali: AI NEWS, AI RESEARCH, AI VENTURE, AI INVEST, AI STARTUP NEWS, PROMPT AI, USE CASE AI, FARE SOLDI, AI TOOLS, AI RADAR, AI DEALFLOW
+
+## Layout Home - Menu Laterale (08-04-2026)
+- [ ] Rimuovere SectionChannelBar orizzontale da tutte le pagine
+- [ ] Creare componente LeftSidebar fisso sulla sinistra con tutti i canali
+- [ ] Integrare LeftSidebar nel layout di tutte le pagine
+- [ ] Aggiungere banner Collezione IDEASMART di prompt sotto il ticker

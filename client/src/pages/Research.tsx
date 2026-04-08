@@ -8,7 +8,7 @@ import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import RequireAuth from "@/components/RequireAuth";
-import SectionChannelBar from "@/components/SectionChannelBar";
+import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 import {
   ExternalLink, TrendingUp, Globe, MapPin, BookOpen,
@@ -319,13 +319,10 @@ export default function Research() {
 
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
-
-         <SharedPageHeader />
-        {/* ── SectionChannelBar sticky ──────────────────────────────────────── */}
-        <div className="sticky top-0 z-50" style={{ background: "#faf8f3" }}>
-          <SectionChannelBar />
-        </div>
+      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+        <LeftSidebar />
+        <div className="flex-1 min-w-0 overflow-x-hidden">
+        <SharedPageHeader />
         {/* ── Titolo sezione Research ───────────────────────────────────────── */}
         <div className="max-w-6xl mx-auto px-4 pt-6 pb-2">
           <div className="flex items-end justify-between gap-4 mb-1">
@@ -567,6 +564,7 @@ export default function Research() {
         <div className="max-w-[1280px] mx-auto px-4">
           <SharedPageFooter />
         </div>
+        </div>{/* fine contenuto principale */}
       </div>
     </RequireAuth>
   );

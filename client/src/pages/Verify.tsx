@@ -12,7 +12,7 @@ import { useLocation, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import SectionChannelBar from "@/components/SectionChannelBar";
+import LeftSidebar from "@/components/LeftSidebar";
 import {
   ShieldCheck, ShieldX, Search, ExternalLink,
   Clock, Globe, Copy, CheckCheck, Info
@@ -255,14 +255,10 @@ export default function Verify() {
   const isSearching = isLoading || isFetching;
 
   return (
-    <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+    <div className="flex min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+      <LeftSidebar />
+      <div className="flex-1 min-w-0 overflow-x-hidden">
       <SharedPageHeader />
-
-      {/* SectionChannelBar sticky */}
-      <div className="sticky top-0 z-50" style={{ background: "#faf8f3" }}>
-        <SectionChannelBar />
-      </div>
-
       <main className="max-w-3xl mx-auto px-4 py-10">
 
         {/* ── Intestazione sezione ──────────────────────────────────────── */}
@@ -369,8 +365,8 @@ export default function Verify() {
         )}
 
       </main>
-
       <SharedPageFooter />
+      </div>{/* fine contenuto principale */}
     </div>
   );
 }
