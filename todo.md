@@ -2757,3 +2757,8 @@
 - [x] Breaking News (ex AI News), Research, Venture, Investi, Dealflow, Radar, Startup News, Make Money, Prompt Library, Nuovi Tools, Casi d'uso, Opportunità
 - [x] Sezione info: Chi Siamo, Tecnologia, Offerta, Verifica Notizia
 - [x] Aggiornare SectionNav con gli stessi nomi
+
+- [x] Rimuovere canale Dealflow dal menu sidebar e SectionNav
+
+- [x] Rimuovere canale Dealflow dal menu sidebar e SectionNav
+- [x] Rimuovere canale Startup News dal menu sidebar e SectionNav
