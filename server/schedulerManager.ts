@@ -22,8 +22,8 @@
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
  *  │  NEWSLETTER UNIFICATA GIORNALIERA                                        │
- *  │  Ogni giorno 10:30 — Preview unificata → ac@acinelli.com               │
- *  │  Ogni giorno 12:30 — Newsletter unificata → tutti gli iscritti          │
+  *  │  Ogni giorno 08:30 — Preview unificata → ac@acinelli.com + grusconi3@gmail.com │
+  *  │  Ogni giorno 10:30 — Newsletter unificata → tutti gli iscritti          │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -461,9 +461,10 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA (10:30 CET) — GIORNALIERA (tutti i giorni) ──────
-  cron.schedule("30 10 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 10:30 CET — Invio preview newsletter UNIFICATA giornaliera...");
+  // ── PREVIEW NEWSLETTER UNIFICATA (08:30 CET) — GIORNALIERA (tutti i giorni) ──────
+  // Invia la preview a ac@acinelli.com e grusconi3@gmail.com per revisione prima dell'invio massivo delle 10:30
+  cron.schedule("30 8 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio preview newsletter UNIFICATA giornaliera...");
     try {
       const { sendUnifiedPreview } = await import("./unifiedNewsletter");
       const result = await sendUnifiedPreview();
@@ -477,16 +478,16 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA (12:30 CET) — GIORNALIERO ────────────
-  // La newsletter unificata viene inviata automaticamente ogni giorno alle 12:30 CET.
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA (10:30 CET) — GIORNALIERO ────────────
+  // La newsletter unificata viene inviata automaticamente ogni giorno alle 10:30 CET.
   // L'audit link delle 06:45 può bloccare l'invio se rileva link rotti.
-  cron.schedule("30 12 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 12:30 CET — Invio newsletter UNIFICATA giornaliera a tutti gli iscritti...");
+  cron.schedule("30 10 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 10:30 CET — Invio newsletter UNIFICATA giornaliera a tutti gli iscritti...");
     if (isNewsletterBlockedByAudit()) {
       console.warn("[SchedulerManager] 🚨 INVIO BLOCCATO dall'audit link (06:45)");
       await sendSchedulerAlert(
         "Newsletter BLOCCATA dall'audit link",
-        `<p>L'invio della newsletter delle <strong>12:30 CET</strong> è stato <strong>bloccato</strong> perché l'audit link delle 06:45 ha rilevato link interni rotti.</p>
+        `<p>L'invio della newsletter delle <strong>10:30 CET</strong> è stato <strong>bloccato</strong> perché l'audit link delle 06:45 ha rilevato link interni rotti.</p>
          <p>Verificare e correggere i link dalla dashboard admin, poi inviare manualmente.</p>`
       ).catch(() => {});
       return;
@@ -500,7 +501,7 @@ export function startAllSchedulers(): void {
         console.error(`[SchedulerManager] ❌ Newsletter UNIFICATA: ${result.error}`);
         await sendSchedulerAlert(
           "Newsletter UNIFICATA fallita",
-          `<p>L'invio della newsletter unificata delle <strong>12:30 CET</strong> è <strong>fallito</strong>.</p>
+          `<p>L'invio della newsletter unificata delle <strong>10:30 CET</strong> è <strong>fallito</strong>.</p>
            <p>Errore: <code>${result.error}</code></p>`
         ).catch(() => {});
       }

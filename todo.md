@@ -2675,3 +2675,11 @@
 - [x] Aggiunto salvataggio automatico in linkedinPublisher.ts dopo ogni pubblicazione riuscita
 - [x] Post manuale Pichai inserito manualmente nella Home tramite script backfill
 >>>>>>> Stashed changes
+
+## Newsletter Unificata — Aggiornamento 08 Aprile 2026
+
+- [x] Nuovo formato newsletter: A) Titolo+data, B) 20+ notizie con link, C) Promo prompt IDEASMART, D) Canale a rotazione (11 canali), E) Sponsor Amazon in fondo
+- [x] Aggiunto grusconi3@gmail.com come secondo destinatario preview test
+- [x] Preview test spostata da 10:30 a 08:30 (ac@acinelli.com + grusconi3@gmail.com)
+- [x] Invio massivo spostato da 12:30 a 10:30 (tutti gli iscritti)
+- [x] Rotazione 11 canali: AI NEWS, AI RESEARCH, AI VENTURE, AI INVEST, AI STARTUP NEWS, PROMPT AI, USE CASE AI, FARE SOLDI, AI TOOLS, AI RADAR, AI DEALFLOW
