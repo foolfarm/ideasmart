@@ -2765,3 +2765,8 @@
 
 - [x] Rimuovere Offerta dal menu sidebar, sostituire con Demo (link esterno ideasmart.technology)
 - [x] Sostituire Verifica Notizia con Tecnologia ProofPress nel menu sidebar
+
+## Nuovi task (8 Apr 2026 — Menu sidebar)
+
+- [x] Rimuovere "Demo" dal menu sidebar (LeftSidebar + SectionNav)
+- [x] Rinominare "Tecnologia ProofPress" in "Cos'è ProofPress Verify" (LeftSidebar + SectionNav)

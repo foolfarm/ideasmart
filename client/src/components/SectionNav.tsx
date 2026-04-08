@@ -7,7 +7,7 @@ import { Link, useLocation } from "wouter";
 import {
   Play, Cpu, ClipboardCopy, Zap, DollarSign, Wrench, ShieldCheck,
   TrendingUp, Rocket, Handshake, BookOpen, Menu, X, ChevronRight,
-  Sparkles, ExternalLink, Info, MonitorPlay,
+  Sparkles, Info,
 } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -140,25 +140,13 @@ export default function SectionNav() {
         {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Demo Tecnologia IdeaSmart link */}
-        <a
-          href="https://ideasmart.technology"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#1a1a1a]/60 hover:text-[#1a1a1a] transition-colors cursor-pointer"
-        >
-          <MonitorPlay size={13} strokeWidth={2.2} />
-          Demo Tecnologia IdeaSmart
-          <ExternalLink size={10} strokeWidth={2.5} className="opacity-60" />
-        </a>
-
-        {/* ProofPress Verify button */}
+        {/* Cos'è ProofPress Verify button */}
         <Link href="/proofpress-verify">
           <span
             className="flex items-center gap-1.5 mr-3 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white bg-[#dc2626] hover:bg-[#b91c1c] rounded-sm transition-all duration-200 cursor-pointer"
           >
             <Info size={13} strokeWidth={2} />
-            ProofPress Verify
+            Cos'è ProofPress Verify
           </span>
         </Link>
       </div>

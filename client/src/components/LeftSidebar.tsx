@@ -23,10 +23,9 @@ const CHANNELS: SidebarChannel[] = [
 
 /* ─── SEZIONE INFO (sotto il divider) ────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
-  { label: "Chi Siamo",         icon: "👤", href: "/chi-siamo" },
-  { label: "Cosa Facciamo",     icon: "🔧", href: "/tecnologia" },
-  { label: "Demo",              icon: "🖥️", href: "https://ideasmart.technology" },
-  { label: "Tecnologia ProofPress", icon: "✅", href: "/proofpress-verify" },
+  { label: "Chi Siamo",              icon: "👤", href: "/chi-siamo" },
+  { label: "Cosa Facciamo",          icon: "🔧", href: "/tecnologia" },
+  { label: "Cos'è ProofPress Verify", icon: "✅", href: "/proofpress-verify" },
 ];
 
 export default function LeftSidebar() {
