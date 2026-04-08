@@ -38,10 +38,10 @@ function Divider() {
 
 /* ── FAQ Accordion ── */
 const FAQ_DATA = [
-  { q: "Come funziona la piattaforma IdeaSmart?", a: "IdeaSmart è una redazione digitale composta da Agent Giornalisti e agenti di supporto che lavorano come un team editoriale. Ogni Agent Giornalista monitora le fonti che gli hai assegnato, verifica le notizie con la tecnologia proprietaria Verify™, scrive articoli nel tono che hai scelto e li pubblica sul tuo giornale. Tu interagisci con la redazione via chat, in linguaggio naturale: «scrivi un pezzo su questo tema», «estrai le news del giorno», «pubblica in prima pagina»." },
+  { q: "Come funziona la piattaforma IdeaSmart?", a: "IdeaSmart è una redazione digitale composta da Agent Giornalisti e agenti di supporto che lavorano come un team editoriale. Ogni Agent Giornalista monitora le fonti che gli hai assegnato, verifica le notizie con la tecnologia proprietaria ProofPress Verify™, scrive articoli nel tono che hai scelto e li pubblica sul tuo giornale. Tu interagisci con la redazione via chat, in linguaggio naturale: «scrivi un pezzo su questo tema», «estrai le news del giorno», «pubblica in prima pagina»." },
   { q: "Cosa sono gli Agent Giornalisti?", a: "Ogni Agent Giornalista è un membro della tua redazione AI che configuri su un settore specifico. Gli assegni un beat (es. finanza, tech, sport, politica), le fonti da monitorare e il tono di scrittura. Lui ogni giorno monitora le sue fonti, scrive i suoi articoli e li pubblica sul canale che hai scelto.\n\nCon 4 Agent copri un singolo verticale in profondità. Con 8 Agent copri 3-6 canali tematici. Con 12 Agent hai una redazione completa senza limiti.\n\nPuoi riconfigurare ogni Agent in qualsiasi momento: cambio settore, fonti, tono. La tua redazione si adatta a te." },
   { q: "Qual è la differenza tra Agent Giornalisti e agenti di supporto?", a: "Gli Agent Giornalisti sono quelli che TU configuri: scegli il settore, le fonti, il tono e la frequenza. Sono i «giornalisti» della tua redazione.\n\nGli agenti di supporto lavorano in automatico su tutti i contenuti prodotti dagli Agent Giornalisti:\n• Fact Checker — verifica ogni notizia su fonti multiple\n• Publisher — pubblica e impagina in automatico\n• Newsletter Curator — seleziona e invia le newsletter\n• Social Editor — genera i post per i social media\n\nTutti i piani includono i 4 agenti di supporto. La differenza tra i piani è nel numero di Agent Giornalisti." },
-  { q: "Cos'è la tecnologia Verify™?", a: "Verify è un protocollo di validazione agentica delle notizie. L'AI confronta ogni contenuto su fonti multiple, ne misura affidabilità e coerenza fattuale, e genera un Verification Report. Il report viene sigillato con un hash crittografico immutabile — tracciabile, trasparente e verificabile nel tempo." },
+  { q: "Cos'è la tecnologia ProofPress Verify™?", a: "ProofPress Verify è un protocollo di validazione agentica delle notizie. L'AI confronta ogni contenuto su fonti multiple, ne misura affidabilità e coerenza fattuale, e genera un Verification Report. Il report viene sigillato con un hash crittografico immutabile — tracciabile, trasparente e verificabile nel tempo." },
   { q: "Quanto tempo serve per lanciare una testata?", a: "Il setup completo richiede 5-7 giorni lavorativi. Include la configurazione della piattaforma, la personalizzazione editoriale, il setup delle fonti e il training degli Agent Giornalisti sulla tua linea editoriale. Dopo il lancio, la redazione è operativa 24/7." },
   { q: "Posso personalizzare lo stile editoriale?", a: "Sì, completamente. Definisci il tono (formale, informale, tecnico, divulgativo), il linguaggio, il posizionamento della testata. Puoi anche insegnare alla piattaforma a scrivere come te, fornendo esempi del tuo stile. Gli Agent Giornalisti si adattano alla tua linea editoriale." },
   { q: "Cosa sono i token e come funzionano?", a: "I token sono l'unità di misura dell'AI generativa. Ogni articolo scritto, ogni analisi, ogni interazione con la chat redazionale consuma token. Ogni piano include un budget mensile (da 1M a 10M) più che sufficiente per l'uso previsto. Se hai bisogno di più, puoi acquistarli a €10 ogni 100.000 token. La maggior parte dei clienti non supera mai la soglia inclusa." },
@@ -170,7 +170,7 @@ export default function PerGiornalisti() {
               <span>·</span>
               <span>Fino a 16 agenti AI</span>
               <span>·</span>
-              <span>Tecnologia Verify™</span>
+              <span>Tecnologia ProofPress Verify™</span>
               <span>·</span>
               <span>Operativi 24/7</span>
             </div>
@@ -218,7 +218,7 @@ export default function PerGiornalisti() {
             {[
               { icon: "🎯", title: "Tu decidi cosa coprire", text: "Temi, fonti, tono, frequenza. La direzione è tua." },
               { icon: "🤖", title: "Gli Agent Giornalisti scrivono e pubblicano", text: "Articoli, analisi, newsletter — in automatico o su tuo comando." },
-              { icon: "✅", title: "Ogni notizia è verificata", text: "La tecnologia Verify™ incrocia ogni dato su fonti multiple." },
+              { icon: "✅", title: "Ogni notizia è verificata", text: "La tecnologia ProofPress Verify™ incrocia ogni dato su fonti multiple." },
               { icon: "🚀", title: "Il giornale è online, su dominio tuo", text: "Una testata completa, pronta, con il tuo brand e la tua identità." },
             ].map((c, i) => (
               <div key={i} className="flex gap-5 p-6">
@@ -278,7 +278,7 @@ export default function PerGiornalisti() {
               { icon: "📰", title: "Testata completa su dominio dedicato", text: "Homepage, canali tematici, singoli articoli, pagina chi siamo, ticker live, breaking news. Tutto sul tuo dominio, col tuo brand." },
               { icon: "🤖", title: "Agent Giornalisti + agenti di supporto", text: "Fino a 12 Agent Giornalisti configurabili per settore, più 4 agenti di supporto (Fact Checker, Publisher, Newsletter Curator, Social Editor). Una redazione che non dorme mai." },
               { icon: "💬", title: "Chat redazionale", text: "Parli con la piattaforma come parleresti con il tuo team. «Scrivi un pezzo su X», «Estrai le notizie di oggi», «Pubblica in prima pagina». Linguaggio naturale, zero tecnicismi." },
-              { icon: "✅", title: "Tecnologia Verify™", text: "Ogni notizia viene incrociata su fonti multiple prima della pubblicazione. Report di verifica con hash crittografico. Fact-checking automatico, zero fake news." },
+              { icon: "✅", title: "Tecnologia ProofPress Verify™", text: "Ogni notizia viene incrociata su fonti multiple prima della pubblicazione. Report di verifica con hash crittografico. Fact-checking automatico, zero fake news." },
               { icon: "📧", title: "Newsletter automatica", text: "Settimanale o giornaliera, costruita in automatico dai contenuti migliori. Distribuita ai tuoi lettori senza che tu faccia nulla." },
               { icon: "📱", title: "Distribuzione social", text: "Post LinkedIn, tweet, summary per Telegram — generati automaticamente dai tuoi articoli. Pubblica ovunque, gestisci da un posto." },
             ].map((c, i) => (
@@ -436,7 +436,7 @@ export default function PerGiornalisti() {
             <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40 mb-4">Agenti di supporto inclusi in tutti i piani</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { icon: "✅", name: "Fact Checker", desc: "Verifica ogni notizia su fonti multiple (Verify™)" },
+                { icon: "✅", name: "Fact Checker", desc: "Verifica ogni notizia su fonti multiple (ProofPress Verify™)" },
                 { icon: "📢", name: "Publisher", desc: "Pubblica e impagina in automatico" },
                 { icon: "📧", name: "Newsletter Curator", desc: "Seleziona e invia le newsletter" },
                 { icon: "📱", name: "Social Editor", desc: "Genera post per LinkedIn, Twitter, Telegram" },
@@ -484,7 +484,7 @@ export default function PerGiornalisti() {
                 {[
                   ["Giornalisti (2-3 FTE)", "€60.000 – €90.000", "Incluso", "100%"],
                   ["Editor / Caporedattore", "€35.000 – €50.000", "Incluso", "100%"],
-                  ["Fact-checker", "€25.000 – €35.000", "Incluso (Verify™)", "100%"],
+                  ["Fact-checker", "€25.000 – €35.000", "Incluso (ProofPress Verify™)", "100%"],
                   ["Social media manager", "€20.000 – €30.000", "Incluso", "100%"],
                   ["Newsletter manager", "€15.000 – €20.000", "Incluso", "100%"],
                   ["Strumenti e software", "€5.000 – €10.000", "Incluso", "100%"],
@@ -706,7 +706,7 @@ export default function PerGiornalisti() {
           </div>
 
           <p className="mt-8 text-center text-[13px] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>
-            Tutti i piani includono: istanza dedicata su dominio proprio, configurazione piattaforma, personalizzazione editoriale, setup fonti, training AI e tecnologia Verify™. Token extra oltre la soglia inclusa: €10 ogni 100.000 token aggiuntivi. Ogni Agent Giornalista può essere riconfigurato in qualsiasi momento: cambio settore, cambio fonti, cambio tono.
+            Tutti i piani includono: istanza dedicata su dominio proprio, configurazione piattaforma, personalizzazione editoriale, setup fonti, training AI e tecnologia ProofPress Verify™. Token extra oltre la soglia inclusa: €10 ogni 100.000 token aggiuntivi. Ogni Agent Giornalista può essere riconfigurato in qualsiasi momento: cambio settore, cambio fonti, cambio tono.
           </p>
         </Section>
 

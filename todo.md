@@ -2734,3 +2734,9 @@
 - [x] Rebranding Verify → ProofPress Verify in tutte le pagine
 - [x] Sidebar sinistra fissa in tutte le pagine del sito
 - [x] SectionNav: Chi Siamo → Demo Tecnologia IdeaSmart
+
+## Task in corso (8 Apr 2026 — Prossimi passi)
+
+- [x] Inviare newsletter di test a ac@acinelli.com per verificare il nuovo template
+- [x] Aggiornare sezione Prossimi Invii nell'admin con i 13 canali
+- [x] Aggiornare riferimenti Verify→ProofPress Verify in ChiSiamo, Intelligence, PerGiornalisti

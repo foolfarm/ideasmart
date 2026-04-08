@@ -238,7 +238,7 @@ export default function Intelligence() {
                   icon: "🔍",
                   step: "02",
                   title: "Gli agenti lavorano",
-                  text: "8 agenti AI specializzati monitorano 450+ fonti ogni notte. L'algoritmo Verify™ incrocia ogni dato su almeno 3 fonti indipendenti.",
+                  text: "8 agenti AI specializzati monitorano 450+ fonti ogni notte. L’algoritmo ProofPress Verify™ incrocia ogni dato su almeno 3 fonti indipendenti.",
                 },
                 {
                   icon: "📊",
@@ -388,7 +388,7 @@ export default function Intelligence() {
             </h2>
             <p className="text-[15px] leading-relaxed mb-10 max-w-[700px]"
               style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Il sistema agentico di IdeaSmart replica un team di 20 analisti. Ogni notte, i nostri agenti scandagliano fonti accademiche, report Gartner, CB Insights, McKinsey, feed VC, M&A tracker e media specializzati in 4 continenti. L'algoritmo proprietario Verify™ incrocia ogni segnale su almeno 3 fonti indipendenti prima di pubblicarlo. Il risultato arriva sulla tua dashboard alle 00:00 CET, ogni giorno.
+              Il sistema agentico di IdeaSmart replica un team di 20 analisti. Ogni notte, i nostri agenti scandagliano fonti accademiche, report Gartner, CB Insights, McKinsey, feed VC, M&A tracker e media specializzati in 4 continenti. L’algoritmo proprietario ProofPress Verify™ incrocia ogni segnale su almeno 3 fonti indipendenti prima di pubblicarlo. Il risultato arriva sulla tua dashboard alle 00:00 CET, ogni giorno.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {[

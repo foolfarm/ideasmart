@@ -330,25 +330,40 @@ export default function Admin() {
           )}
         </div>
 
-        {/* Widget Prossimi Invii Newsletter — Giornaliero */}
+        {/* Widget Prossimi Invii Newsletter — Lun/Mer/Ven con Canale Rotante */}
         {(() => {
+          const ALL_CHANNELS = [
+            { slug: "ai", label: "AI NEWS", color: "#1a1a1a" },
+            { slug: "copy-paste-ai", label: "PROMPT AI", color: "#7c3aed" },
+            { slug: "automate-with-ai", label: "USE CASE AI", color: "#d97706" },
+            { slug: "make-money-with-ai", label: "FARE SOLDI", color: "#16a34a" },
+            { slug: "daily-ai-tools", label: "AI TOOLS", color: "#2563eb" },
+            { slug: "verified-ai-news", label: "PROOFPRESS VERIFY", color: "#dc2626" },
+            { slug: "ai-opportunities", label: "AI INVEST", color: "#16a34a" },
+            { slug: "research", label: "AI RESEARCH", color: "#2563eb" },
+            { slug: "dealroom", label: "AI VENTURE", color: "#7c3aed" },
+            { slug: "ai-invest", label: "AI INVEST", color: "#16a34a" },
+            { slug: "startup", label: "AI STARTUP NEWS", color: "#ea580c" },
+            { slug: "dealflow", label: "AI DEALFLOW", color: "#0891b2" },
+            { slug: "ai-radar", label: "AI RADAR", color: "#dc2626" },
+          ];
           const now = new Date();
-          const SEND_HOUR = 11;
-          const SEND_MINUTE = 0;
           const dayNames = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
-          const upcomingSends: Array<{ date: Date; label: string; dayName: string }> = [];
-          for (let i = 0; i < 5; i++) {
+          const upcomingSends: Array<{ date: Date; dayName: string; channel: typeof ALL_CHANNELS[0] }> = [];
+          for (let i = 0; i < 30 && upcomingSends.length < 6; i++) {
             const candidate = new Date(now);
             candidate.setDate(now.getDate() + i);
-            candidate.setHours(SEND_HOUR, SEND_MINUTE, 0, 0);
-            if (candidate > now) {
-              upcomingSends.push({
-                date: candidate,
-                label: candidate.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" }),
-                dayName: dayNames[candidate.getDay()],
-              });
-            }
-            if (upcomingSends.length >= 4) break;
+            candidate.setHours(10, 30, 0, 0);
+            const dow = candidate.getDay();
+            if (dow !== 1 && dow !== 3 && dow !== 5) continue; // solo lun/mer/ven
+            if (candidate <= now) continue;
+            const dayOfYear = Math.floor((candidate.getTime() - new Date(candidate.getFullYear(), 0, 0).getTime()) / 86400000);
+            const chIdx = dayOfYear % ALL_CHANNELS.length;
+            upcomingSends.push({
+              date: candidate,
+              dayName: dayNames[dow],
+              channel: ALL_CHANNELS[chIdx],
+            });
           }
           return (
             <div className="rounded-2xl border border-blue-500/30 p-6 mb-8" style={{ background: "rgba(59,130,246,0.05)" }}>
@@ -372,24 +387,29 @@ export default function Admin() {
                       </div>
                       <div>
                         <p className="text-sm font-bold" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          {send.dayName} — Newsletter Unificata
+                          {send.dayName}
                         </p>
                         <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                          {send.date.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })} alle 11:30
+                          {send.date.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })} alle 10:30
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-lg font-black" style={{ color: "#60a5fa", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        {activeCount}
-                      </p>
-                      <p className="text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.3)" }}>iscritti attivi</p>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded" style={{ background: send.channel.color, color: "#fff" }}>
+                        {send.channel.label}
+                      </span>
+                      <div className="text-right">
+                        <p className="text-lg font-black" style={{ color: "#60a5fa", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          {activeCount}
+                        </p>
+                        <p className="text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.3)" }}>iscritti</p>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
               <p className="mt-3 text-[10px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.2)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Newsletter giornaliera unificata · Preview: 09:00 CET · Invio: 11:30 CET · Tutti i giorni
+                Newsletter Lun/Mer/Ven · Preview: 08:30 CET · Invio: 10:30 CET · 13 canali in rotazione
               </p>
             </div>
           );
@@ -513,35 +533,54 @@ export default function Admin() {
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 📧 Newsletter Giornaliera Unificata
               </p>
-              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Cadenza giornaliera — Preview 09:00 · Invio 11:30 CET</p>
-              {/* Prossimi Invii Newsletter */}
+              <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Lun/Mer/Ven — Preview 08:30 · Invio 10:30 CET · 13 canali in rotazione</p>
+              {/* Prossimi Invii Newsletter con canale rotante */}
               {(() => {
+                const ALL_CH = [
+                  { label: "AI NEWS", color: "#1a1a1a" },
+                  { label: "PROMPT AI", color: "#7c3aed" },
+                  { label: "USE CASE AI", color: "#d97706" },
+                  { label: "FARE SOLDI", color: "#16a34a" },
+                  { label: "AI TOOLS", color: "#2563eb" },
+                  { label: "PROOFPRESS VERIFY", color: "#dc2626" },
+                  { label: "AI INVEST", color: "#16a34a" },
+                  { label: "AI RESEARCH", color: "#2563eb" },
+                  { label: "AI VENTURE", color: "#7c3aed" },
+                  { label: "AI INVEST", color: "#16a34a" },
+                  { label: "AI STARTUP NEWS", color: "#ea580c" },
+                  { label: "AI DEALFLOW", color: "#0891b2" },
+                  { label: "AI RADAR", color: "#dc2626" },
+                ];
                 const now = new Date();
-                const dayNames = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
-                const upcoming: Array<{ label: string; dateStr: string; isToday: boolean }> = [];
-                for (let i = 0; i < 5 && upcoming.length < 4; i++) {
+                const dayNames = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
+                const upcoming: Array<{ label: string; dateStr: string; isToday: boolean; channel: typeof ALL_CH[0] }> = [];
+                for (let i = 0; i < 30 && upcoming.length < 4; i++) {
                   const d = new Date(now);
                   d.setDate(now.getDate() + i);
-                  d.setHours(11, 0, 0, 0);
-                  if (d > now) {
-                    upcoming.push({
-                      label: i === 0 ? "Oggi" : i === 1 ? "Domani" : dayNames[d.getDay()],
-                      dateStr: d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }),
-                      isToday: i === 0,
-                    });
-                  }
+                  d.setHours(10, 30, 0, 0);
+                  const dow = d.getDay();
+                  if (dow !== 1 && dow !== 3 && dow !== 5) continue;
+                  if (d <= now) continue;
+                  const dayOfYear = Math.floor((d.getTime() - new Date(d.getFullYear(), 0, 0).getTime()) / 86400000);
+                  const chIdx = dayOfYear % ALL_CH.length;
+                  upcoming.push({
+                    label: i === 0 ? "Oggi" : i === 1 ? "Domani" : dayNames[dow],
+                    dateStr: d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }),
+                    isToday: i === 0,
+                    channel: ALL_CH[chIdx],
+                  });
                 }
                 return (
                   <div className="mb-4 rounded-lg border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
                     <div className="px-3 py-2 border-b border-white/8">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Prossimi Invii</span>
-                      <span className="text-[10px] text-white/20 ml-2">· Preview 09:00 · Invio 11:30 CET</span>
+                      <span className="text-[10px] text-white/20 ml-2">· Preview 08:30 · Invio 10:30 CET</span>
                     </div>
                     <table className="w-full text-xs">
                       <thead>
                         <tr className="border-b border-white/8">
                           <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Data</th>
-                          <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Newsletter</th>
+                          <th className="px-3 py-2 text-left text-white/30 font-bold uppercase tracking-wider">Canale</th>
                           <th className="px-3 py-2 text-right text-white/30 font-bold uppercase tracking-wider">Iscritti</th>
                         </tr>
                       </thead>
@@ -552,7 +591,11 @@ export default function Admin() {
                               <span className={`font-bold ${row.isToday ? "text-yellow-400" : "text-white/70"}`}>{row.label}</span>
                               <span className="text-white/30 ml-1">{row.dateStr}</span>
                             </td>
-                            <td className="px-3 py-2 font-bold" style={{ color: "#1a1a1a" }}>Unificata</td>
+                            <td className="px-3 py-2">
+                              <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded" style={{ background: row.channel.color, color: "#fff" }}>
+                                {row.channel.label}
+                              </span>
+                            </td>
                             <td className="px-3 py-2 text-right">
                               <span className="font-bold text-white/80">{activeCount}</span>
                               <span className="text-white/30 ml-1">attivi</span>

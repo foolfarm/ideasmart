@@ -82,11 +82,11 @@ const AGENT_EXAMPLES = [
 const FAQ_ITEMS = [
   {
     q: "Come funziona la piattaforma Ideasmart?",
-    a: "Ideasmart è una redazione digitale composta da agenti AI specializzati che lavorano come un team editoriale. Analizzano oltre 4.000 fonti certificate ogni giorno, verificano le notizie con la tecnologia proprietaria Verify, scrivono articoli editoriali e li distribuiscono automaticamente sui canali tematici configurati."
+    a: "Ideasmart è una redazione digitale composta da agenti AI specializzati che lavorano come un team editoriale. Analizzano oltre 4.000 fonti certificate ogni giorno, verificano le notizie con la tecnologia proprietaria ProofPress Verify, scrivono articoli editoriali e li distribuiscono automaticamente sui canali tematici configurati."
   },
   {
-    q: "Cos'è la tecnologia Verify?",
-    a: "Verify è un protocollo di validazione e certificazione agentica delle notizie. Attraverso un sistema AI di confronto multi-fonte, analizza ogni contenuto, ne misura affidabilità, coerenza fattuale e obiettività, e genera un Verification Report strutturato. Il report viene poi sigillato con un hash crittografico immutabile, che ne garantisce tracciabilità, trasparenza e verificabilità nel tempo, secondo una logica di notarizzazione ispirata al Web3. Ogni notizia è così certificata e non alterabile."
+    q: "Cos'è la tecnologia ProofPress Verify?",
+    a: "ProofPress Verify è un protocollo di validazione e certificazione agentica delle notizie. Attraverso un sistema AI di confronto multi-fonte, analizza ogni contenuto, ne misura affidabilità, coerenza fattuale e obiettività, e genera un Verification Report strutturato. Il report viene poi sigillato con un hash crittografico immutabile, che ne garantisce tracciabilità, trasparenza e verificabilità nel tempo, secondo una logica di notarizzazione ispirata al Web3. Ogni notizia è così certificata e non alterabile."
   },
   {
     q: "Quali sono i modelli di redazione disponibili?",
@@ -339,10 +339,10 @@ export default function ChiSiamo() {
           </h2>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 border border-white/20">
             <span className="text-[10px] font-black tracking-[0.3em] text-white/60">POWERED BY</span>
-            <span className="text-lg font-black text-white tracking-wider">VERIFY</span>
+            <span className="text-lg font-black text-white tracking-wider">PROOFPRESS VERIFY</span>
           </div>
           <p className="mt-8 text-lg leading-relaxed text-white/50 max-w-2xl">
-            Verify è un protocollo di validazione e certificazione agentica delle notizie. Attraverso un sistema AI di confronto multi-fonte, analizza ogni contenuto, ne misura affidabilità, coerenza fattuale e obiettività, e genera un Verification Report con gli esiti dell'analisi.
+            ProofPress Verify è un protocollo di validazione e certificazione agentica delle notizie. Attraverso un sistema AI di confronto multi-fonte, analizza ogni contenuto, ne misura affidabilità, coerenza fattuale e obiettività, e genera un Verification Report con gli esiti dell’analisi.
           </p>
           <p className="mt-4 text-lg leading-relaxed text-white/50 max-w-2xl">
             Il report viene quindi sigillato attraverso un <strong className="text-white/80">hash crittografico immutabile</strong>, che ne garantisce tracciabilità, trasparenza e verificabilità nel tempo, secondo una logica di notarizzazione ispirata al Web3.
@@ -531,7 +531,7 @@ export default function ChiSiamo() {
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30 mb-4">Agenti di supporto inclusi in tutti i piani</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { icon: "✅", name: "Fact Checker", desc: "Verifica ogni notizia su fonti multiple (Verify™)" },
+                { icon: "✅", name: "Fact Checker", desc: "Verifica ogni notizia su fonti multiple (ProofPress Verify™)" },
                 { icon: "📢", name: "Publisher", desc: "Pubblica e impagina in automatico" },
                 { icon: "📧", name: "Newsletter Curator", desc: "Seleziona e invia le newsletter" },
                 { icon: "📱", name: "Social Editor", desc: "Genera post per LinkedIn, Twitter, Telegram" },
@@ -628,7 +628,7 @@ export default function ChiSiamo() {
             Tutto quello che devi sapere.
           </h2>
           <p className="text-base text-[#0a0a0a]/45 max-w-2xl mb-10">
-            Le risposte alle domande più comuni sulla piattaforma, i modelli di redazione e la tecnologia Verify.
+            Le risposte alle domande più comuni sulla piattaforma, i modelli di redazione e la tecnologia ProofPress Verify.
           </p>
           <FaqAccordion />
         </Section>

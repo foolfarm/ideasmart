@@ -1,5 +1,5 @@
 /**
- * IDEASMART VERIFY — Sistema di certificazione articoli
+ * PROOFPRESS VERIFY — Sistema di certificazione articoli
  *
  * Ogni articolo pubblicato riceve un hash SHA-256 univoco generato da:
  *   title + summary + sourceUrl + createdAt (ISO string)
