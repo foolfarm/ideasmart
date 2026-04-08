@@ -21,9 +21,9 @@
  *  │  06:45 — Audit link newsletter pre-invio                                │
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
- *  │  NEWSLETTER UNIFICATA GIORNALIERA                                        │
-  *  │  Ogni giorno 08:30 — Preview unificata → ac@acinelli.com + grusconi3@gmail.com │
-  *  │  Ogni giorno 10:30 — Newsletter unificata → tutti gli iscritti          │
+  *  │  NEWSLETTER UNIFICATA — SOLO LUN/MER/VEN                                  │
+  *  │  08:30 (lun/mer/ven) — Preview unificata → ac@acinelli.com               │
+  *  │  10:30 (lun/mer/ven) — Newsletter unificata → tutti gli iscritti         │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -461,9 +461,10 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA (08:30 CET) — GIORNALIERA (tutti i giorni) ──────
-  // Invia la preview a ac@acinelli.com e grusconi3@gmail.com per revisione prima dell'invio massivo delle 10:30
-  cron.schedule("30 8 * * *", async () => {
+  // ── PREVIEW NEWSLETTER UNIFICATA (08:30 CET) — SOLO LUN/MER/VEN ──────────────
+  // Invia la preview a ac@acinelli.com per revisione prima dell'invio massivo delle 10:30
+  // ATTENZIONE: solo lunedì (1), mercoledì (3), venerdì (5)
+  cron.schedule("30 8 * * 1,3,5", async () => {
     console.log("[SchedulerManager] ⏰ 08:30 CET — Invio preview newsletter UNIFICATA giornaliera...");
     try {
       const { sendUnifiedPreview } = await import("./unifiedNewsletter");
@@ -478,10 +479,11 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA (10:30 CET) — GIORNALIERO ────────────
-  // La newsletter unificata viene inviata automaticamente ogni giorno alle 10:30 CET.
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA (10:30 CET) — SOLO LUN/MER/VEN ────────
+  // La newsletter unificata viene inviata SOLO lunedì, mercoledì e venerdì alle 10:30 CET.
   // L'audit link delle 06:45 può bloccare l'invio se rileva link rotti.
-  cron.schedule("30 10 * * *", async () => {
+  // ATTENZIONE: solo lunedì (1), mercoledì (3), venerdì (5)
+  cron.schedule("30 10 * * 1,3,5", async () => {
     console.log("[SchedulerManager] ⏰ 10:30 CET — Invio newsletter UNIFICATA giornaliera a tutti gli iscritti...");
     if (isNewsletterBlockedByAudit()) {
       console.warn("[SchedulerManager] 🚨 INVIO BLOCCATO dall'audit link (06:45)");

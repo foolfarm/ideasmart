@@ -44,7 +44,7 @@ import { eq, desc, and, sql } from "drizzle-orm";
 
 const BASE_URL = "https://ideasmart.biz";
 const TEST_EMAIL = "ac@acinelli.com";
-const TEST_EMAILS = ["ac@acinelli.com", "grusconi3@gmail.com"];
+const TEST_EMAILS = ["ac@acinelli.com"]; // Preview solo ad Andrea Cinelli
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
