@@ -15,6 +15,24 @@ import {
 } from "./db";
 import { findEditorialImage, findStartupImage } from "./stockImages";
 import { generateDailyResearch } from "./researchGenerator";
+import { getDb } from "./db";
+import { dailyEditorial } from "../drizzle/schema";
+import { desc } from "drizzle-orm";
+
+// ── Recupera titoli editoriali recenti per anti-ripetitività ─────────────────
+async function getRecentEditorialTitles(limit = 14): Promise<string[]> {
+  try {
+    const db = await getDb();
+    if (!db) return [];
+    const rows = await db.select({ title: dailyEditorial.title, dateLabel: dailyEditorial.dateLabel })
+      .from(dailyEditorial)
+      .orderBy(desc(dailyEditorial.createdAt))
+      .limit(limit);
+    return rows.map((r: { dateLabel: string; title: string }) => `[${r.dateLabel}] ${r.title}`);
+  } catch {
+    return [];
+  }
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -37,22 +55,57 @@ export async function generateDailyEditorial() {
   const today = getTodayLabel();
   const italianDate = getItalianDate();
 
+  // Recupera titoli recenti per evitare ripetizioni
+  const recentTitles = await getRecentEditorialTitles(14);
+  const recentTitlesBlock = recentTitles.length > 0
+    ? `\n\n⚠️ TITOLI GIÀ PUBBLICATI NEGLI ULTIMI 14 GIORNI (NON ripetere questi temi/titoli):\n${recentTitles.map(t => `- ${t}`).join("\n")}\n\nREGOLE ANTI-RIPETITIVITÀ:\n- Il titolo DEVE essere completamente diverso da quelli sopra elencati\n- NON usare le formule: "Nuova Frontiera", "Rivoluzione Silenziosa", "Ridefinisce il Business", "Ridisegna il Lavoro"\n- NON ripetere lo stesso tema per più di 2 giorni consecutivi\n- Varia lo stile del titolo: alterna domande, dati numerici, nomi di aziende, provocazioni\n- Ogni editoriale deve avere un ANGOLO UNICO: un caso studio specifico, un dato sorprendente, un'azienda concreta`
+    : "";
+
+  // Rotazione tematica: scegli un tema diverso ogni giorno
+  const EDITORIAL_THEMES = [
+    "AI applicata alla supply chain e logistica: casi concreti di aziende italiane",
+    "AI e cybersecurity: le nuove minacce e le difese enterprise",
+    "AI nel settore legale: contratti, compliance, due diligence automatizzata",
+    "AI per il marketing B2B: personalizzazione, lead scoring, content generation",
+    "Regolamentazione AI in Europa: AI Act, impatti su PMI e grandi aziende",
+    "AI nella manifattura italiana: robotica, quality control, manutenzione predittiva",
+    "AI e risorse umane: recruiting, talent retention, workforce planning",
+    "AI nel settore finanziario: trading algoritmico, risk assessment, antifrode",
+    "AI e sostenibilità: ottimizzazione energetica, ESG reporting, carbon tracking",
+    "AI per il customer service: chatbot enterprise, voice AI, sentiment analysis",
+    "AI e healthcare: diagnostica, drug discovery, telemedicina in Italia",
+    "Startup AI italiane: chi sta emergendo e perché gli investitori scommettono",
+    "AI open source vs proprietary: strategie enterprise e costi reali",
+    "AI e formazione: come le aziende italiane stanno upskillando i dipendenti",
+    "AI multimodale: visione, linguaggio e audio combinati per il business",
+    "AI edge computing: inferenza locale, privacy e latenza zero",
+    "AI e retail: personalizzazione, inventory management, pricing dinamico",
+    "AI nel real estate: valutazioni automatiche, smart building, proptech",
+    "AI e media: generazione contenuti, fact-checking automatico, newsroom AI",
+    "AI e agricoltura: precision farming, droni, previsioni meteo avanzate",
+    "AI e automotive: guida autonoma, connected car, produzione intelligente",
+  ];
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+  const themeIndex = dayOfYear % EDITORIAL_THEMES.length;
+  const suggestedTheme = EDITORIAL_THEMES[themeIndex];
+
   const prompt = `Sei il direttore editoriale di IDEASMART, la principale rivista italiana sull'AI per il business.
 Oggi è ${italianDate}.
+
+TEMA SUGGERITO PER OGGI: ${suggestedTheme}
+(Puoi seguire questo tema o sceglierne uno affine, ma DEVE essere diverso dagli editoriali recenti)
 
 Scrivi un editoriale giornaliero di alta qualità sui trend più rilevanti dell'intelligenza artificiale di oggi.
 L'editoriale deve essere scritto in italiano, con tono autorevole e giornalistico, rivolto a CEO, manager e investitori italiani.
 
 Restituisci un JSON con questa struttura esatta:
 {
-  "title": "Titolo dell'editoriale (max 80 caratteri, incisivo e diretto)",
+  "title": "Titolo dell'editoriale (max 80 caratteri, incisivo e diretto — DEVE essere UNICO e diverso dai titoli recenti)",
   "subtitle": "Sottotitolo esplicativo (max 120 caratteri)",
   "keyTrend": "Il trend AI principale del giorno (max 60 caratteri)",
   "body": "Corpo dell'editoriale (3-4 paragrafi, circa 350-450 parole totali). Deve analizzare i trend AI più recenti, il loro impatto sul business italiano, e offrire una prospettiva editoriale originale. Usa dati, esempi concreti e un punto di vista netto.",
   "authorNote": "Nota finale del direttore (1-2 frasi, max 150 caratteri, riflessione personale sul tema)"
-}
-
-Temi da considerare per oggi: modelli generativi, agenti AI autonomi, automazione del lavoro, AI per le PMI italiane, regolamentazione europea, investimenti in AI, startup AI emergenti, impatto sull'occupazione, AI nella produzione industriale.`;
+}${recentTitlesBlock}`;
 
   const response = await invokeLLM({
     messages: [

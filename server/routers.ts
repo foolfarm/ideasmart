@@ -1665,10 +1665,116 @@ Rispondi con questo JSON:
         };
       }),
   }),
+  // ── Report Ripetitività Editoriali ──────────────────────────────────────────────
+  editorialReport: router({
+    getRepetitionReport: adminProcedure
+      .input(z.object({ days: z.number().min(7).max(90).default(14) }).optional())
+      .query(async ({ input }) => {
+        const days = input?.days ?? 14;
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
 
-  // ── System Health & Trigger Manuale Scraping ──────────────────────────────────────
-  health: router({
-    // Restituisce lo stato di salute di tutte le sezioni: ultima notizia, count oggi, timestamp
+        const { dailyEditorial: editorialTable, linkedinPosts: liPostsTable } = await import("../drizzle/schema");
+        const sinceDate = new Date();
+        sinceDate.setDate(sinceDate.getDate() - days);
+        const sinceLabel = sinceDate.toISOString().slice(0, 10);
+
+        // Recupera editoriali recenti
+        const editorials = await db.select({
+          id: editorialTable.id,
+          title: editorialTable.title,
+          dateLabel: editorialTable.dateLabel,
+          keyTrend: editorialTable.keyTrend,
+        }).from(editorialTable)
+          .where(gte(editorialTable.dateLabel, sinceLabel))
+          .orderBy(desc(editorialTable.createdAt));
+
+        // Recupera post LinkedIn morning recenti
+        const liPosts = await db.select({
+          id: liPostsTable.id,
+          title: liPostsTable.title,
+          dateLabel: liPostsTable.dateLabel,
+          slot: liPostsTable.slot,
+        }).from(liPostsTable)
+          .where(and(
+            gte(liPostsTable.dateLabel, sinceLabel),
+            eq(liPostsTable.slot, "morning" as any)
+          ))
+          .orderBy(desc(liPostsTable.createdAt));
+
+        // Analisi similarità titoli (Jaccard semplificato)
+        function tokenize(s: string): Set<string> {
+          return new Set(s.toLowerCase().replace(/[^a-zà-ü0-9\s]/g, "").split(/\s+/).filter(w => w.length > 2));
+        }
+        function jaccard(a: Set<string>, b: Set<string>): number {
+          const inter = Array.from(a).filter(x => b.has(x));
+          const union = new Set(Array.from(a).concat(Array.from(b)));
+          return union.size === 0 ? 0 : inter.length / union.size;
+        }
+
+        // Trova coppie simili (>0.6 Jaccard)
+        const allTitles = editorials.map(e => ({ source: "editorial" as const, ...e }));
+        const similarPairs: Array<{ title1: string; date1: string; title2: string; date2: string; similarity: number }> = [];
+        for (let i = 0; i < allTitles.length; i++) {
+          const tokensI = tokenize(allTitles[i].title);
+          for (let j = i + 1; j < allTitles.length; j++) {
+            const sim = jaccard(tokensI, tokenize(allTitles[j].title));
+            if (sim > 0.6) {
+              similarPairs.push({
+                title1: allTitles[i].title,
+                date1: allTitles[i].dateLabel,
+                title2: allTitles[j].title,
+                date2: allTitles[j].dateLabel,
+                similarity: Math.round(sim * 100),
+              });
+            }
+          }
+        }
+
+        // Conta formule abusate
+        const BANNED_PHRASES = ["nuova frontiera", "rivoluzione silenziosa", "ridefinisce il business", "ridisegna il lavoro", "game changer"];
+        const phraseCount: Record<string, number> = {};
+        for (const phrase of BANNED_PHRASES) phraseCount[phrase] = 0;
+        for (const e of editorials) {
+          const lower = e.title.toLowerCase();
+          for (const phrase of BANNED_PHRASES) {
+            if (lower.includes(phrase)) phraseCount[phrase]++;
+          }
+        }
+
+        // Trend/keyTrend più usati
+        const trendCount: Record<string, number> = {};
+        for (const e of editorials) {
+          const trend = (e.keyTrend ?? "sconosciuto").toLowerCase();
+          trendCount[trend] = (trendCount[trend] ?? 0) + 1;
+        }
+        const topTrends = Object.entries(trendCount)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10)
+          .map(([trend, count]) => ({ trend, count }));
+
+        // Score di diversità (0-100)
+        const uniqueTitles = new Set(editorials.map(e => e.title.toLowerCase())).size;
+        const diversityScore = editorials.length > 0
+          ? Math.round((uniqueTitles / editorials.length) * 100)
+          : 100;
+
+        return {
+          period: `${sinceLabel} → oggi`,
+          totalEditorials: editorials.length,
+          uniqueTitles,
+          diversityScore,
+          similarPairs: similarPairs.sort((a, b) => b.similarity - a.similarity).slice(0, 20),
+          bannedPhrases: Object.entries(phraseCount).filter(([, c]) => c > 0).map(([phrase, count]) => ({ phrase, count })),
+          topTrends,
+          linkedinMorningPosts: liPosts.length,
+          editorials: editorials.map(e => ({ title: e.title, date: e.dateLabel, keyTrend: e.keyTrend })),
+        };
+      }),
+  }),
+
+  // ── System Health & Trigger Manuale Scraping ──────────────────────────────────────────
+  health: router({  // Restituisce lo stato di salute di tutte le sezioni: ultima notizia, count oggi, timestamp
     getSystemHealth: adminProcedure.query(async () => {
       const db = await getDbInstance();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });

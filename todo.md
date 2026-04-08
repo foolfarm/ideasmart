@@ -2784,3 +2784,6 @@
 - [x] Collegare la firma "Andrea Cinelli" nella Home alla pagina autore
 - [x] Bug: "Seguimi su LinkedIn" nel Punto del Giorno non porta a nessuna pagina
 - [x] Aggiungere link "Tutti gli editoriali di Andrea Cinelli →" alla fine dell'articolo nel Punto del Giorno
+- [x] Migliorare prompt generazione editoriali morning per variare temi e titoli (anti-ripetitività)
+- [x] Analizzare articoli per identificare nuovi temi da trattare
+- [x] Creare report settimanale sulla ripetitività dei titoli degli editoriali

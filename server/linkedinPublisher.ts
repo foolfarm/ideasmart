@@ -226,7 +226,8 @@ function buildGartnerPrompt(
   keyTrend: string,
   section: LinkedInSection,
   marketData: MarketIntelligenceResult | null,
-  slot: LinkedInSlot
+  slot: LinkedInSlot,
+  recentTitles: string[] = []
 ): string {
   const meta = SECTION_META[section] ?? SECTION_META.ai;
 
@@ -310,7 +311,15 @@ LINGUA: Italiano
 TONO: Senior analyst con skin in the game \u2014 non consulente teorico, non blogger motivazionale
 EVITA: "rivoluzione", "game changer", "il futuro \u00e8 adesso", "non possiamo permetterci di", frasi retoriche vuote
 IMPORTANTE: Ogni post deve essere UNICO. Non ripetere strutture, aperture o frasi usate in post precedenti.
-LIMITE CARATTERI: MASSIMO ASSOLUTO 2800 caratteri. Conta i caratteri prima di rispondere.`;
+LIMITE CARATTERI: MASSIMO ASSOLUTO 2800 caratteri. Conta i caratteri prima di rispondere.${recentTitles.length > 0 ? `
+
+⚠️ TITOLI DEI POST LINKEDIN DEGLI ULTIMI 7 GIORNI (NON ripetere questi temi/angoli):
+${recentTitles.map(t => `- ${t}`).join("\n")}
+
+REGOLE ANTI-RIPETITIVITÀ:
+- NON usare le formule: "Nuova Frontiera", "Rivoluzione Silenziosa", "Ridefinisce il Business"
+- Scegli un angolo completamente diverso da quelli elencati sopra
+- Varia lo stile di apertura: alterna dati, domande provocatorie, aneddoti, citazioni` : ""}`;
 }
 
 // ── Step 1: Registra upload immagine su LinkedIn ─────────────────────────────
@@ -551,10 +560,11 @@ async function generateLinkedInPostText(
   keyTrend: string,
   section: LinkedInSection,
   marketData: MarketIntelligenceResult | null,
-  slot: LinkedInSlot
+  slot: LinkedInSlot,
+  recentTitles: string[] = []
 ): Promise<string> {
   try {
-    const prompt = buildGartnerPrompt(title, body, keyTrend, section, marketData, slot);
+    const prompt = buildGartnerPrompt(title, body, keyTrend, section, marketData, slot, recentTitles);
     const response = await invokeLLM({
       messages: [
         { role: "system", content: SYSTEM_PROMPT_GARTNER },
@@ -1072,7 +1082,8 @@ export async function publishLinkedInPost(
     contentKeyTrend,
     section,
     marketData,
-    slot
+    slot,
+    recentPostTitles
   );
 
   // ── Controllo hash duplicati ───────────────────────────────────────────
