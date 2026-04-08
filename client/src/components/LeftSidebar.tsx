@@ -25,8 +25,8 @@ const CHANNELS: SidebarChannel[] = [
 const INFO_LINKS: SidebarChannel[] = [
   { label: "Chi Siamo",         icon: "👤", href: "/chi-siamo" },
   { label: "Tecnologia",        icon: "🔧", href: "/tecnologia" },
-  { label: "Offerta",           icon: "💎", href: "/business" },
-  { label: "Verifica Notizia",  icon: "✅", href: "/proofpress-verify" },
+  { label: "Demo",              icon: "🖥️", href: "https://ideasmart.technology" },
+  { label: "Tecnologia ProofPress", icon: "✅", href: "/proofpress-verify" },
 ];
 
 export default function LeftSidebar() {
@@ -109,11 +109,12 @@ export default function LeftSidebar() {
 
       {/* Sezione info */}
       <nav className="flex flex-col gap-0.5 px-2 mb-4">
-        {INFO_LINKS.map((ch) => (
-          <Link key={ch.href + ch.label} href={ch.href}>
+        {INFO_LINKS.map((ch) => {
+          const isExternal = ch.href.startsWith("http");
+          const inner = (
             <div
               className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 ${
-                isActive(ch.href)
+                !isExternal && isActive(ch.href)
                   ? "bg-[#1a1a1a] text-white"
                   : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/70 hover:text-[#1a1a1a]"
               }`}
@@ -126,8 +127,17 @@ export default function LeftSidebar() {
                 {ch.label}
               </span>
             </div>
-          </Link>
-        ))}
+          );
+          return isExternal ? (
+            <a key={ch.href + ch.label} href={ch.href} target="_blank" rel="noopener noreferrer">
+              {inner}
+            </a>
+          ) : (
+            <Link key={ch.href + ch.label} href={ch.href}>
+              {inner}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Spacer */}

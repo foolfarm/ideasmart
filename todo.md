@@ -2762,3 +2762,6 @@
 
 - [x] Rimuovere canale Dealflow dal menu sidebar e SectionNav
 - [x] Rimuovere canale Startup News dal menu sidebar e SectionNav
+
+- [x] Rimuovere Offerta dal menu sidebar, sostituire con Demo (link esterno ideasmart.technology)
+- [x] Sostituire Verifica Notizia con Tecnologia ProofPress nel menu sidebar
