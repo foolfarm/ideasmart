@@ -4,6 +4,7 @@
  * Stile: prima pagina di giornale — sfondo carta, bordo verde, font leggibili
  */
 import { trpc } from "@/lib/trpc";
+import { Link } from "wouter";
 
 const INK = "#1a1a1a";
 const ACCENT = "#1a1a1a";
@@ -124,12 +125,14 @@ export default function PuntoDelGiorno() {
                   style={{ borderColor: ACCENT }}
                 />
                 <div>
-                  <p
-                    className="font-bold leading-tight"
-                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "15px" }}
-                  >
-                    Andrea Cinelli
-                  </p>
+                  <Link href="/andrea-cinelli">
+                    <p
+                      className="font-bold leading-tight cursor-pointer hover:underline"
+                      style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "15px" }}
+                    >
+                      Andrea Cinelli
+                    </p>
+                  </Link>
                   <p
                     className="text-[11px] mt-0.5 leading-snug"
                     style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}

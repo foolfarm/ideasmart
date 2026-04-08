@@ -175,7 +175,17 @@ export default function SharedPageHeader() {
               className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
-              Prompt, strumenti e workflow per trasformare l'AI in risultati concreti.
+              Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.
+            </p>
+            <p className="mt-1.5">
+              <span className="text-[10px] uppercase tracking-[0.15em] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                Informazione 100% verificata by{" "}
+              </span>
+              <Link href="/proofpress-verify">
+                <span className="text-[10px] uppercase tracking-[0.15em] underline underline-offset-2 cursor-pointer hover:text-[#1a1a1a]/80 transition-colors" style={{ color: "#1a1a1a80", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  ProofPress Verify Technology
+                </span>
+              </Link>
             </p>
           </div>
 

@@ -2773,9 +2773,12 @@
 
 ## Nuovi task (8 Apr 2026 — Hero + Newsletter + Layout + Redirect)
 
-- [ ] Hero Home: aggiungere "INFORMAZIONE 100% VERIFICATA" sotto il titolo IDEASMART
-- [ ] Hero Home: modificare sottotitolo con a capo "Informazione 100% verificata by ProofPress Verify Technology"
-- [ ] Rotazione newsletter: rimuovere Dealflow e Startup News (da 13 a 11 canali)
+- [x] Hero Home: aggiungere "INFORMAZIONE 100% VERIFICATA" sotto il titolo IDEASMART
+- [x] Hero Home: modificare sottotitolo con a capo "Informazione 100% verificata by ProofPress Verify Technology"
+- [x] Rotazione newsletter: rimuovere Dealflow e Startup News (da 13 a 11 canali)
 - [x] Aggiungere LeftSidebar alle pagine Intelligence e PerGiornalisti
 - [x] Creare redirect da /verify a /proofpress-verify in App.tsx
 - [x] Hero Home: sottotitolo → "IL TUO SISTEMA OPERATIVO NELL'AI", tagline → "Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.", riga finale → "Informazione 100% verificata by ProofPress Verify Technology"
+- [x] Punto del Giorno: collegare all'ultimo post LinkedIn pubblicato (non più editoriale statico)
+- [x] Creare pagina autore /andrea-cinelli con bio, link LinkedIn e archivio completo editoriali passati
+- [x] Collegare la firma "Andrea Cinelli" nella Home alla pagina autore

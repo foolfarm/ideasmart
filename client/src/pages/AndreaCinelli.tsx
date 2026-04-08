@@ -7,7 +7,9 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
-import Navbar from "@/components/Navbar";
+import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
+import LeftSidebar from "@/components/LeftSidebar";
 
 const INK = "#0f0f0f";
 const ACCENT = "#1a1a1a";
@@ -151,12 +153,15 @@ export default function AndreaCinelli() {
   const startupPosts = posts?.filter(p => p.section === "startup").length ?? 0;
 
   return (
-    <div style={{ background: PAPER, minHeight: "100vh" }}>
+    <>
       <SEOHead
         title="Andrea Cinelli — Tech Expert"
         description="Editoriali quotidiani su AI, Startup e Venture Capital. Tech Expert e fondatore di IdeaSmart."
       />
-      <Navbar />
+    <div className="flex" style={{ background: PAPER, minHeight: "100vh" }}>
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
+      <SharedPageHeader />
 
       {/* ── Hero autore ──────────────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-4 pt-12 pb-8">
@@ -352,6 +357,9 @@ export default function AndreaCinelli() {
           </div>
         )}
       </div>
+      <SharedPageFooter />
+      </div>
     </div>
+    </>
   );
 }

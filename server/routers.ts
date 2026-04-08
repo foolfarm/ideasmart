@@ -443,36 +443,17 @@ export const appRouter = router({
             const db = await getDbInstance();
             if (!db) return [];
             const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
-            const { eq: eqOp } = await import('drizzle-orm');
-            // Prendi i post di oggi (tutti e 3 gli slot: morning, afternoon, evening)
-            // Se oggi non ci sono post, prendi quelli di ieri
-            const todayLabel = new Date().toISOString().split('T')[0];
-            const yesterdayDate = new Date();
-            yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-            const yesterdayLabel = yesterdayDate.toISOString().split('T')[0];
+            const { eq: eqOp, desc: descOp } = await import('drizzle-orm');
 
-            let posts = await db.select().from(linkedinPostsTable)
-              .where(eqOp(linkedinPostsTable.dateLabel, todayLabel))
-              .orderBy(linkedinPostsTable.slot)
-              .limit(3);
+            // Prendi l'ultimo post morning pubblicato (il più recente in assoluto)
+            // Questo garantisce che il Punto del Giorno si aggiorni sempre
+            // all'ultimo articolo pubblicato su LinkedIn
+            const posts = await db.select().from(linkedinPostsTable)
+              .where(eqOp(linkedinPostsTable.slot, 'morning'))
+              .orderBy(descOp(linkedinPostsTable.createdAt))
+              .limit(1);
 
-            // Fallback a ieri se oggi non ci sono ancora post
-            if (posts.length === 0) {
-              posts = await db.select().from(linkedinPostsTable)
-                .where(eqOp(linkedinPostsTable.dateLabel, yesterdayLabel))
-                .orderBy(linkedinPostsTable.slot)
-                .limit(3);
-            }
-
-            // Deduplicazione per slot: tieni solo un post per slot (il più recente)
-            const slotMap = new Map<string, typeof posts[0]>();
-            for (const post of posts) {
-              const slot = (post as any).slot ?? 'morning';
-              if (!slotMap.has(slot)) slotMap.set(slot, post);
-            }
-            const dedupedPosts = Array.from(slotMap.values());
-
-            return dedupedPosts.map(post => ({
+            return posts.map(post => ({
               id: post.id,
               dateLabel: post.dateLabel,
               slot: (post as any).slot ?? 'morning',
