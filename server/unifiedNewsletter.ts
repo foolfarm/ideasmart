@@ -478,7 +478,7 @@ function getDayKey(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-// ─── 13 canali per la rotazione ─────────────────────────────────────────────
+// ─── 11 canali per la rotazione (rimossi Dealflow e Startup News) ───────────
 const ALL_CHANNELS = [
   { key: "ai",                label: "AI NEWS",           title: "Le Notizie AI del Giorno",       emoji: "🤖", color: "#1a1a1a", path: "/ai",                isSection: true  },
   { key: "copy-paste-ai",     label: "PROMPT AI",         title: "Prompt del Giorno",              emoji: "📋", color: "#7c3aed", path: "/copy-paste-ai",     isSection: false },
@@ -490,8 +490,6 @@ const ALL_CHANNELS = [
   { key: "research",          label: "AI RESEARCH",       title: "Ricerche & Analisi AI",          emoji: "🔬", color: "#0066cc", path: "/research",          isSection: true  },
   { key: "dealroom",          label: "AI VENTURE",        title: "Deal & Funding",                 emoji: "💼", color: "#7c3aed", path: "/dealroom",          isSection: true  },
   { key: "ai-invest",         label: "AI INVEST",         title: "Investimenti AI",                emoji: "🏛️", color: "#0d6e3f", path: "/ai-invest",         isSection: false },
-  { key: "startup",           label: "AI STARTUP NEWS",   title: "Startup da Tenere d'Occhio",     emoji: "🚀", color: "#ea580c", path: "/startup",           isSection: true  },
-  { key: "dealflow",          label: "AI DEALFLOW",       title: "Round, Funding & M&A",           emoji: "🏦", color: "#0891b2", path: "/dealflow",          isSection: false },
   { key: "ai-radar",          label: "AI RADAR",          title: "Radar Notizie Verificate",       emoji: "📡", color: "#dc2626", path: "/ai-radar",          isSection: false },
 ];
 

@@ -495,11 +495,18 @@ export default function Home() {
                 </Link>
                 <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Il tuo Sistema Operativo sull'AI
+                  Il tuo Sistema Operativo nell'AI
                 </p>
                 <p className="mt-1.5 text-[14px] text-[#1a1a1a]/45 italic"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                  Non leggere l'AI. Usala. Prompt, strumenti e workflow per trasformare l'AI in risultati concreti.
+                  Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.
+                </p>
+                <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#1a1a1a]/40 font-medium"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Informazione 100% verificata by{" "}
+                  <Link href="/proofpress-verify">
+                    <span className="underline hover:text-[#dc2626] transition-colors cursor-pointer">ProofPress Verify Technology</span>
+                  </Link>
                 </p>
               </div>
 
