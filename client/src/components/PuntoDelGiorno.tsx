@@ -140,7 +140,7 @@ export default function PuntoDelGiorno() {
                     Tech Expert
                   </p>
                   <a
-                    href="https://www.linkedin.com/in/andreacinelli"
+                    href="https://www.linkedin.com/in/cinellia/"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}

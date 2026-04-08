@@ -202,7 +202,7 @@ export default function AndreaCinelli() {
             {/* Social links */}
             <div className="flex flex-col gap-2 w-full">
               <a
-                href="https://www.linkedin.com/in/andreacinelli"
+                href="https://www.linkedin.com/in/cinellia/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 rounded text-sm font-bold text-white transition-opacity hover:opacity-90"
@@ -214,7 +214,7 @@ export default function AndreaCinelli() {
                 Seguimi su LinkedIn
               </a>
               <a
-                href="mailto:info@andreacinelli.com"
+                href="mailto:ac@acinelli.com"
                 className="flex items-center gap-2 px-4 py-2 rounded text-sm font-bold border transition-colors hover:bg-gray-50"
                 style={{ color: INK, borderColor: INK + "30", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
@@ -251,13 +251,25 @@ export default function AndreaCinelli() {
 
             <div className="space-y-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Imprenditore seriale con oltre 20 anni di esperienza nell'ecosistema tech e imprenditoriale italiano ed europeo. Fondatore di <strong>IdeaSmart</strong>, la prima piattaforma italiana di analisi quotidiane su AI, Startup e Venture Capital, aggiornata ogni giorno alle 24:00 con ricerche originali e notizie selezionate dalle principali fonti globali.
+                Imprenditore seriale con oltre 30 anni di esperienza nella costruzione di prodotti digitali, aziende AI-native e piattaforme tecnologiche su larga scala tra Europa e Stati Uniti.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Ogni mattina alle 10:30 pubblica su LinkedIn un editoriale originale su intelligenza artificiale, innovazione e mercati — scritto con lo stile di un opinion leader di alto profilo, non come un aggregatore di notizie. Il suo punto di vista è quello di chi ha costruito e investito in startup per due decenni, non di chi le osserva dall'esterno.
+                Opera all'intersezione tra strategia, tecnologia, execution e capitale, con un focus su disruption, AI transformation e reinvenzione dei modelli di business. È advisor di CEO, board e fondi di investimento in fasi critiche di crescita, turnaround e trasformazione.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Con IdeaSmart, Andrea ha creato uno strumento che lui stesso avrebbe voluto avere: un'unica fonte che aggrega ogni giorno le 20 ricerche più rilevanti su AI, Startup e Venture Capital, le 40 notizie più importanti e le analisi editoriali che aiutano imprenditori, investitori e manager a prendere decisioni più informate.
+                Dopo un'esperienza iniziale nella Silicon Valley negli anni '90, è stato co-fondatore di <strong>Libero.it</strong> (oltre 10 milioni di utenti) all'interno del gruppo Infostrada–Olivetti. Ha ricoperto ruoli chiave nel mondo Telco, tra cui Head of Mobile VAS GPM in <strong>Vodafone Global</strong> a Düsseldorf, ed è stato tra i pionieri europei dei servizi mobili in Omnitel–Vodafone e Wind Orascom, oltre che co-fondatore di <strong>Alice</strong> in Telecom Italia.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
+                È fondatore di oltre 12 iniziative imprenditoriali in ambito AI (voice, biometria, cybersecurity, generative AI), con diversi exit all'attivo, e angel investor in più di 10 startup. È autore di oltre 25 brevetti, tra cui tecnologie alla base del sistema di identità digitale italiano <strong>SPID</strong>.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
+                Ha fondato uno dei principali AI Venture Studio europei e una piattaforma di venture capital e venture building negli Stati Uniti. È membro dell'Advisory Board di <strong>Deloitte Central Mediterranean</strong>, docente di AI presso <strong>Il Sole 24 Ore Business School</strong> e keynote speaker internazionale, autore di oltre 30 pubblicazioni su AI e innovazione.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
+                Co-fondatore di <strong>IdeaSmart</strong>, la prima piattaforma italiana di analisi quotidiane su AI, startup e venture capital, basata su <strong>ProofPress</strong>: una tecnologia proprietaria che integra AI e Web3 per certificare le fonti e garantire contenuti verificati, rilevanti e affidabili.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
+                Con IdeaSmart ha costruito uno strumento pensato per chi prende decisioni: un'unica fonte ad alto valore che aggrega ogni giorno ricerche, notizie e analisi editoriali per supportare imprenditori, investitori e manager con insight concreti e azionabili.
               </p>
             </div>
 
@@ -266,7 +278,7 @@ export default function AndreaCinelli() {
               className="mt-5 pl-4 border-l-4 italic text-sm leading-relaxed"
               style={{ borderColor: ACCENT, color: INK + "80", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              "L'intelligenza artificiale non è una tecnologia. È una nuova grammatica del business. Chi la impara oggi, scrive le regole di domani."
+              "AI is not a tool to adopt — it is a force that reshapes products, power and industries."
             </blockquote>
           </div>
         </div>
@@ -338,7 +350,7 @@ export default function AndreaCinelli() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="https://www.linkedin.com/in/andreacinelli"
+                href="https://www.linkedin.com/in/cinellia/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-2 rounded text-sm font-bold text-white"

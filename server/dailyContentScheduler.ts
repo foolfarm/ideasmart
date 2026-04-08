@@ -18,6 +18,7 @@ import { generateDailyResearch } from "./researchGenerator";
 import { getDb } from "./db";
 import { dailyEditorial } from "../drizzle/schema";
 import { desc } from "drizzle-orm";
+import { notifyOwner } from "./_core/notification";
 
 // ── Recupera titoli editoriali recenti per anti-ripetitività ─────────────────
 async function getRecentEditorialTitles(limit = 14): Promise<string[]> {
@@ -287,8 +288,61 @@ async function runDailyContentRefresh() {
     } catch (researchErr) {
       console.error("[DailyContent] Research generation failed:", researchErr);
     }
+    // 4. Check diversity score e alert se < 70%
+    try {
+      await checkDiversityScoreAlert();
+    } catch (diversityErr) {
+      console.error("[DailyContent] Diversity check failed:", diversityErr);
+    }
   } catch (err) {
     console.error("[DailyContent] Refresh failed:", err);
+  }
+}
+
+/**
+ * Calcola il diversity score degli ultimi 14 editoriali.
+ * Se scende sotto il 70%, invia un alert al proprietario.
+ */
+async function checkDiversityScoreAlert(): Promise<void> {
+  try {
+    const db = await getDb();
+    if (!db) return;
+
+    const editorials = await db
+      .select({ title: dailyEditorial.title, dateLabel: dailyEditorial.dateLabel })
+      .from(dailyEditorial)
+      .orderBy(desc(dailyEditorial.createdAt))
+      .limit(14);
+
+    if (editorials.length < 5) return; // troppo pochi per valutare
+
+    const uniqueTitles = new Set(editorials.map(e => e.title.toLowerCase())).size;
+    const diversityScore = Math.round((uniqueTitles / editorials.length) * 100);
+
+    console.log(`[DailyContent] Diversity score: ${diversityScore}% (${uniqueTitles}/${editorials.length} titoli unici)`);
+
+    if (diversityScore < 70) {
+      // Trova le coppie più simili per il report
+      const titles = editorials.map(e => `- [${e.dateLabel}] ${e.title}`);
+      const alertContent = [
+        `Il diversity score degli ultimi ${editorials.length} editoriali è sceso al ${diversityScore}% (soglia: 70%).`,
+        ``,
+        `Titoli unici: ${uniqueTitles} su ${editorials.length}`,
+        ``,
+        `Ultimi titoli:`,
+        ...titles,
+        ``,
+        `Azione consigliata: verificare il prompt di generazione editoriali e rigenerare l'editoriale di oggi dal pannello admin.`
+      ].join("\n");
+
+      await notifyOwner({
+        title: `⚠️ Alert Ripetitività Editoriali: Diversity Score ${diversityScore}%`,
+        content: alertContent,
+      });
+      console.log(`[DailyContent] ⚠️ Alert inviato: diversity score ${diversityScore}%`);
+    }
+  } catch (err) {
+    console.error("[DailyContent] Diversity score check error:", err);
   }
 }
 

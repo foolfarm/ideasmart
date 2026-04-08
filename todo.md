@@ -2787,3 +2787,8 @@
 - [x] Migliorare prompt generazione editoriali morning per variare temi e titoli (anti-ripetitività)
 - [x] Analizzare articoli per identificare nuovi temi da trattare
 - [x] Creare report settimanale sulla ripetitività dei titoli degli editoriali
+- [x] Pagina /andrea-cinelli: aggiornare link LinkedIn a https://www.linkedin.com/in/cinellia/
+- [x] Pagina /andrea-cinelli: collegare "Contattami" a email ac@acinelli.com
+- [x] Pagina /andrea-cinelli: sostituire bio con il testo completo fornito da Andrea
+- [x] Rigenerare editoriale di oggi per testare sistema anti-ripetitività
+- [x] Aggiungere alert automatico email quando diversity score scende sotto 70%
