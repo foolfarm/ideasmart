@@ -143,6 +143,7 @@ export default function PuntoDelGiorno() {
                     href="https://www.linkedin.com/in/andreacinelli"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="text-[10px] font-bold uppercase tracking-widest hover:underline mt-1 inline-block"
                     style={{ color: "#0077b5", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
@@ -204,26 +205,36 @@ export default function PuntoDelGiorno() {
               ))}
             </div>
 
-            {/* Footer: link LinkedIn */}
-            {post.linkedinUrl && (
-              <div className="mt-6 pt-4 border-t flex items-center justify-between" style={{ borderColor: INK + "12" }}>
-                <p
-                  className="text-[11px]"
-                  style={{ color: INK + "40", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+            {/* Footer: link LinkedIn + link pagina autore */}
+            <div className="mt-6 pt-4 border-t" style={{ borderColor: INK + "12" }}>
+              {post.linkedinUrl && (
+                <div className="flex items-center justify-between mb-3">
+                  <p
+                    className="text-[11px]"
+                    style={{ color: INK + "40", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                  >
+                    Pubblicato su LinkedIn · {new Date(post.createdAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}
+                  </p>
+                  <a
+                    href={post.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-bold uppercase tracking-widest hover:underline"
+                    style={{ color: "#0077b5", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                  >
+                    Leggi su LinkedIn →
+                  </a>
+                </div>
+              )}
+              <Link href="/andrea-cinelli">
+                <span
+                  className="inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                  style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
-                  Pubblicato su LinkedIn · {new Date(post.createdAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}
-                </p>
-                <a
-                  href={post.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-bold uppercase tracking-widest hover:underline"
-                  style={{ color: "#0077b5", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-                >
-                  Leggi su LinkedIn →
-                </a>
-              </div>
-            )}
+                  Tutti gli editoriali di Andrea Cinelli →
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       ) : null}

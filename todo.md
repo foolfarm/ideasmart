@@ -2782,3 +2782,5 @@
 - [x] Punto del Giorno: collegare all'ultimo post LinkedIn pubblicato (non più editoriale statico)
 - [x] Creare pagina autore /andrea-cinelli con bio, link LinkedIn e archivio completo editoriali passati
 - [x] Collegare la firma "Andrea Cinelli" nella Home alla pagina autore
+- [x] Bug: "Seguimi su LinkedIn" nel Punto del Giorno non porta a nessuna pagina
+- [x] Aggiungere link "Tutti gli editoriali di Andrea Cinelli →" alla fine dell'articolo nel Punto del Giorno
