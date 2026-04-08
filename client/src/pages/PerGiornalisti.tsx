@@ -10,6 +10,7 @@ import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
+import LeftSidebar from "@/components/LeftSidebar";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -124,7 +125,9 @@ export default function PerGiornalisti() {
         ogSiteName="IDEASMART"
       />
 
-      <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
+        <LeftSidebar />
+        <div className="flex-1 min-w-0">
         <SharedPageHeader />
         <BreakingNewsTicker />
 
@@ -811,6 +814,7 @@ export default function PerGiornalisti() {
         </Section>
 
         <SharedPageFooter />
+        </div>
       </div>
     </>
   );

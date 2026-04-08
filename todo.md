@@ -2776,6 +2776,6 @@
 - [ ] Hero Home: aggiungere "INFORMAZIONE 100% VERIFICATA" sotto il titolo IDEASMART
 - [ ] Hero Home: modificare sottotitolo con a capo "Informazione 100% verificata by ProofPress Verify Technology"
 - [ ] Rotazione newsletter: rimuovere Dealflow e Startup News (da 13 a 11 canali)
-- [ ] Aggiungere LeftSidebar alle pagine Intelligence e PerGiornalisti
-- [ ] Creare redirect da /verify a /proofpress-verify in App.tsx
+- [x] Aggiungere LeftSidebar alle pagine Intelligence e PerGiornalisti
+- [x] Creare redirect da /verify a /proofpress-verify in App.tsx
 - [x] Hero Home: sottotitolo → "IL TUO SISTEMA OPERATIVO NELL'AI", tagline → "Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.", riga finale → "Informazione 100% verificata by ProofPress Verify Technology"

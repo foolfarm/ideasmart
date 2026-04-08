@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import { lazy, Suspense } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -110,7 +110,7 @@ function Router() {
         <Route path="/advertise" component={Advertise} />
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
-        <Route path="/verify" component={Verify} />
+        <Route path="/verify">{() => <Redirect to="/proofpress-verify" />}</Route>
         <Route path="/proofpress-verify" component={ProofPressVerify} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/ai/news/:id" component={NewsArticle} />

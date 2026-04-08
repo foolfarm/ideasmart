@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
+import LeftSidebar from "@/components/LeftSidebar";
 import SEOHead from "@/components/SEOHead";
 
 // ─── Divider ─────────────────────────────────────────────────────────────────
@@ -136,7 +137,9 @@ export default function Intelligence() {
           ]
         }}
       />
-      <div style={{ background: "#f5f2ec", minHeight: "100vh" }}>
+      <div className="flex" style={{ background: "#f5f2ec", minHeight: "100vh" }}>
+        <LeftSidebar />
+        <div className="flex-1 min-w-0">
         <SharedPageHeader />
 
         {/* ══ SEZIONE 1 — HERO ══════════════════════════════════════════════════ */}
@@ -535,6 +538,7 @@ export default function Intelligence() {
         </section>
 
         <SharedPageFooter />
+        </div>
       </div>
     </>
   );
