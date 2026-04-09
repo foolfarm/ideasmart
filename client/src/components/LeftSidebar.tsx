@@ -51,12 +51,12 @@ export default function LeftSidebar() {
                 lineHeight: 1.1,
               }}
             >
-              <div
-                className="font-black text-[#1a1a1a]"
-                style={{ fontSize: "20px" }}
-              >
-                Chi siamo
-              </div>
+            <div
+              className="font-black text-[#1a1a1a]"
+              style={{ fontSize: "20px" }}
+            >
+              Menu
+            </div>
             </div>
           </div>
         </Link>
