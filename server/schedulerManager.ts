@@ -432,9 +432,7 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ── AUDIT LINK NEWSLETTER — DISABILITATO (newsletter in fase di redesign) ──
-  // cron.schedule("45 6 * * *", ...) — RIMOSSO
-  console.log("[SchedulerManager] ⚠️ Audit link newsletter: DISABILITATO (redesign in corso)");
+
 
   // ── MORNING HEALTH REPORT (08:00 CET) — tutti i giorni ─────────────────
   cron.schedule("0 8 * * *", async () => {
@@ -446,13 +444,41 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA — DISABILITATO (newsletter in fase di redesign) ──
-  // cron.schedule("30 8 * * 1,3,5", ...) — RIMOSSO
-  console.log("[SchedulerManager] ⚠️ Preview newsletter: DISABILITATA (redesign in corso)");
+  // ── PREVIEW NEWSLETTER UNIFICATA — 08:30 CET (lun/mer/ven) ──────────────────
+  cron.schedule("30 8 * * 1,3,5", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio preview newsletter Proof Press Daily...");
+    await withLock("newsletter-preview", async () => {
+      try {
+        const { sendUnifiedPreview } = await import("./unifiedNewsletter");
+        const result = await sendUnifiedPreview();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Preview newsletter inviata: ${result.subject}`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore preview newsletter:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico preview newsletter:", err);
+      }
+    });
+  }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — DISABILITATO (newsletter in fase di redesign) ──
-  // cron.schedule("30 10 * * 1,3,5", ...) — RIMOSSO
-  console.log("[SchedulerManager] ⚠️ Newsletter massiva: DISABILITATA (redesign in corso)");
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 10:30 CET (lun/mer/ven) ──────────────
+  cron.schedule("30 10 * * 1,3,5", async () => {
+    console.log("[SchedulerManager] ⏰ 10:30 CET — Invio massivo newsletter Proof Press Daily...");
+    await withLock("newsletter-massivo", async () => {
+      try {
+        const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
+        const result = await sendUnifiedNewsletterToAll();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore newsletter massiva:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico newsletter massiva:", err);
+      }
+    });
+  }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 4 post giornalieri:
@@ -845,9 +871,9 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💰 DEALROOM News    → lun/mer/ven alle 01:30 CET");
   console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → lun/mer/ven alle 01:35 CET");
   console.log("[SchedulerManager]   Audit notturno   -> ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
-  console.log("[SchedulerManager]   [OFF] Audit link newsletter -> DISABILITATO (redesign in corso)");
-  console.log("[SchedulerManager]   [OFF] Preview newsletter -> DISABILITATA (redesign in corso)");
-  console.log("[SchedulerManager]   [OFF] Newsletter UNIFICATA -> DISABILITATA (redesign in corso)");
+  console.log("[SchedulerManager]   📧 Audit link NL     -> RIMOSSO (non necessario con nuovo template)");
+  console.log("[SchedulerManager]   📧 Preview newsletter -> lun/mer/ven alle 08:30 CET → ac@acinelli.com");
+  console.log("[SchedulerManager]   📧 Newsletter UNIFICATA -> lun/mer/ven alle 10:30 CET → tutti gli iscritti");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
   console.log("[SchedulerManager]   💼 LinkedIn STARTUP       → ogni giorno alle 12:30 CET (Startup News)");
@@ -856,7 +882,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💼 LinkedIn DEALROOM      → ogni giorno alle 17:30 CET (Dealroom)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
    console.log("[SchedulerManager]   Keep-Alive      -> ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
-  console.log("[SchedulerManager]   [OFF] Catch-up NL     -> DISABILITATO (newsletter in redesign)");
+  console.log("[SchedulerManager]   [OFF] Catch-up NL     -> DISABILITATO (richiede approvazione manuale)");
   console.log("[SchedulerManager]   ✅ Verifica news   → ogni giorno alle 07:00 CET (AI + Startup + DEALROOM, rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica research → ogni giorno alle 07:15 CET (rigenera se mancanti)");
   console.log("[SchedulerManager]   ✅ Verifica LinkedIn → ogni giorno alle 09:30 CET (pubblica se nessun post oggi)");

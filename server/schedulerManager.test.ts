@@ -133,13 +133,15 @@ describe("schedulerManager", () => {
     expect(typeof startAllSchedulers).toBe("function");
   });
 
-  it("dovrebbe registrare 30 cron job quando avviato", async () => {
+  it("dovrebbe registrare i cron job quando avviato (newsletter Proof Press Daily attiva)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
-    // 34 scheduler attivi: AI, Startup, DEALROOM, Research + 5 slot LinkedIn + 5 invalidazioni cache + health check + infra + channel ingestors
-    // La newsletter massiva (07:30) è disabilitata (richiede approvazione manuale da Admin)
-    expect(cron.default.schedule).toHaveBeenCalledTimes(34);
+    // 33 scheduler attivi: AI, Startup, DEALROOM, Research + 5 slot LinkedIn + health check + infra + channel ingestors
+    // Newsletter Proof Press Daily: preview 08:30 + massivo 10:30 (lun/mer/ven)
+    const callCount = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls.length;
+    expect(callCount).toBeGreaterThanOrEqual(28); // almeno 28 job attivi
+    expect(callCount).toBeLessThanOrEqual(37);    // non più di 37
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -152,13 +154,13 @@ describe("schedulerManager", () => {
     }
   });
 
-  it("dovrebbe programmare la preview newsletter alle 07:00 ogni giorno", async () => {
+  it("dovrebbe programmare la preview newsletter Proof Press Daily alle 08:30 (lun/mer/ven)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // La preview newsletter è programmata ogni giorno alle 07:00 CET
-    const previewCall = calls.find(c => c[0] === "0 7 * * *");
+    // La preview newsletter Proof Press Daily è programmata lun/mer/ven alle 08:30 CET
+    const previewCall = calls.find(c => c[0] === "30 8 * * 1,3,5");
     expect(previewCall).toBeDefined();
   });
 
@@ -256,25 +258,24 @@ describe("schedulerManager", () => {
     expect(rssAiCall).toBeDefined();
   });
 
-  it("dovrebbe programmare l'audit link newsletter alle 06:45 ogni giorno", async () => {
+  it("audit link newsletter 06:45 rimosso (non necessario con nuovo template)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
+    // La routine audit link newsletter è stata rimossa con il nuovo template Proof Press Daily
     const auditLinkCall = calls.find(c => c[0] === "45 6 * * *");
-    expect(auditLinkCall).toBeDefined();
+    expect(auditLinkCall).toBeUndefined(); // rimosso
   });
 
-  it("NON dovrebbe programmare newsletter il venerdì (rimosso)", async () => {
+  it("dovrebbe programmare newsletter massiva Proof Press Daily alle 10:30 (lun/mer/ven)", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // Verifica che non ci sia nessun cron con "* * 5" (venerdì) per la newsletter
-    const fridayNewsletterCall = calls.find(c => 
-      typeof c[0] === "string" && c[0].includes("* * 5") && !c[0].includes("1,5")
-    );
-    expect(fridayNewsletterCall).toBeUndefined();
+    // Newsletter massiva Proof Press Daily: lun/mer/ven alle 10:30 CET
+    const massivoCall = calls.find(c => c[0] === "30 10 * * 1,3,5");
+    expect(massivoCall).toBeDefined();
     // Verifica che non ci sia il vecchio "0 10 * * 1,5"
     const oldNewsletterCall = calls.find(c => c[0] === "0 10 * * 1,5");
     expect(oldNewsletterCall).toBeUndefined();

@@ -11,6 +11,7 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
+import { trpc } from "@/lib/trpc";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
@@ -671,6 +672,13 @@ export default function ChiSiamo() {
           </div>
         </section>
 
+        {/* ── Sezione Contattaci ── */}
+        <section id="contattaci" style={{ background: "#f5f0e8" }} className="py-20 md:py-28">
+          <div className="max-w-2xl mx-auto px-5 md:px-8">
+            <ContactForm />
+          </div>
+        </section>
+
         {/* ── Footer ── */}
         <div className="max-w-6xl mx-auto px-4">
           <SharedPageFooter />
@@ -678,6 +686,174 @@ export default function ChiSiamo() {
 
       </div>
       </div>
+    </div>
+  );
+}
+
+/* ── Componente Modulo Contattaci ── */
+function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const sendContact = trpc.contactUs.send.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      setError(null);
+    },
+    onError: (err) => {
+      setError(err.message || "Errore nell'invio. Riprova.");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.subject || !form.message) {
+      setError("Compila tutti i campi obbligatori.");
+      return;
+    }
+    setError(null);
+    sendContact.mutate(form);
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "12px 16px",
+    background: "#ffffff",
+    border: "1px solid rgba(26,26,26,0.15)",
+    borderRadius: "4px",
+    fontSize: "15px",
+    color: "#1a1a1a",
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+    outline: "none",
+    boxSizing: "border-box" as const,
+  };
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: "11px",
+    fontWeight: 700,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.12em",
+    color: "rgba(26,26,26,0.5)",
+    marginBottom: "6px",
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+  };
+
+  if (submitted) {
+    return (
+      <div style={{ textAlign: "center", padding: "48px 0" }}>
+        <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
+        <h3 style={{ fontSize: "24px", fontWeight: 900, color: "#1a1a1a", margin: "0 0 12px", letterSpacing: "-0.02em" }}>
+          Messaggio inviato!
+        </h3>
+        <p style={{ fontSize: "16px", color: "rgba(26,26,26,0.6)", lineHeight: 1.7 }}>
+          Ti risponderemo entro 24 ore all'indirizzo <strong>{form.email}</strong>.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Header sezione */}
+      <div style={{ marginBottom: "40px" }}>
+        <span style={{ display: "inline-block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: "rgba(26,26,26,0.4)", marginBottom: "12px" }}>
+          Contattaci
+        </span>
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 900, color: "#1a1a1a", margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
+          Scrivici
+        </h2>
+        <p style={{ fontSize: "17px", color: "rgba(26,26,26,0.6)", lineHeight: 1.7, margin: 0 }}>
+          Hai domande su Proof Press, vuoi collaborare o proporre una partnership? Compila il modulo e ti risponderemo entro 24 ore.
+        </p>
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+          <div>
+            <label style={labelStyle}>Nome *</label>
+            <input
+              type="text"
+              placeholder="Il tuo nome"
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              style={inputStyle}
+              required
+            />
+          </div>
+          <div>
+            <label style={labelStyle}>Email *</label>
+            <input
+              type="email"
+              placeholder="la@tuaemail.com"
+              value={form.email}
+              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+              style={inputStyle}
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Oggetto *</label>
+          <input
+            type="text"
+            placeholder="Di cosa vorresti parlare?"
+            value={form.subject}
+            onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
+            style={inputStyle}
+            required
+          />
+        </div>
+
+        <div>
+          <label style={labelStyle}>Messaggio *</label>
+          <textarea
+            placeholder="Scrivi il tuo messaggio..."
+            value={form.message}
+            onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+            rows={6}
+            style={{ ...inputStyle, resize: "vertical" as const }}
+            required
+          />
+        </div>
+
+        {error && (
+          <p style={{ fontSize: "13px", color: "#d94f3d", margin: 0, padding: "10px 14px", background: "rgba(217,79,61,0.08)", borderRadius: "4px", borderLeft: "3px solid #d94f3d" }}>
+            {error}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={sendContact.isPending}
+          style={{
+            padding: "14px 32px",
+            background: sendContact.isPending ? "rgba(26,26,26,0.4)" : "#1a1a1a",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "4px",
+            fontSize: "13px",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            cursor: sendContact.isPending ? "not-allowed" : "pointer",
+            transition: "background 0.2s",
+            alignSelf: "flex-start",
+          }}
+        >
+          {sendContact.isPending ? "Invio in corso..." : "Invia messaggio →"}
+        </button>
+
+        <p style={{ fontSize: "12px", color: "rgba(26,26,26,0.4)", margin: 0 }}>
+          Oppure scrivici direttamente a{" "}
+          <a href="mailto:info@proofpress.ai" style={{ color: "#d94f3d", textDecoration: "none" }}>
+            info@proofpress.ai
+          </a>
+        </p>
+      </form>
     </div>
   );
 }

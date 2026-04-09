@@ -13,7 +13,7 @@
  *   H. Quick Links — "Anche oggi su Proof Press"
  *   I. Consigliato #2 + Footer + ProofPress badge
  *
- * REGOLA FONDAMENTALE: TUTTI i link puntano a ideasmart.biz, MAI alle fonti esterne.
+ * REGOLA FONDAMENTALE: TUTTI i link puntano a proofpress.ai, MAI alle fonti esterne. (Unica eccezione: ideasmart.forum per Prompt Collection)
  */
 
 import { sendEmail } from "./email";
@@ -40,8 +40,8 @@ import { eq, desc, and, sql, gte } from "drizzle-orm";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 
-const BASE_URL = "https://ideasmart.biz";
-const FORUM_URL = "https://ideasmart.forum";
+const BASE_URL = "https://proofpress.ai";
+const FORUM_URL = "https://ideasmart.forum"; // Unica eccezione: Prompt Collection
 const TEST_EMAILS = ["ac@acinelli.com"];
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -498,7 +498,6 @@ function formatEventDate(date: Date): { day: string; month: string } {
 // ═══════════════════════════════════════════════════════════════════════════
 // HTML TEMPLATE BUILDER — Newsletter "Proof Press Daily" v2
 // ═══════════════════════════════════════════════════════════════════════════
-
 function buildNewsletterHtmlV2(opts: {
   dateLabel: string;
   issueNumber: number;
@@ -514,6 +513,8 @@ function buildNewsletterHtmlV2(opts: {
   events: EventItem[];
   unsubscribeUrl: string;
   isTest: boolean;
+  heroImageUrl?: string | null;
+  channelImages?: Record<string, string | null>;
 }): string {
   const {
     dateLabel,
@@ -528,34 +529,32 @@ function buildNewsletterHtmlV2(opts: {
     channelContents,
     unsubscribeUrl,
     isTest,
+    heroImageUrl,
+    channelImages,
   } = opts;
 
-  // ── Design Tokens ──
-  const F_SERIF = "Georgia, 'DM Serif Display', 'Times New Roman', serif";
-  const F_SANS = "Helvetica, Arial, 'Segoe UI', sans-serif";
-  const BG = "#f2f0eb";
-  const WHITE = "#ffffff";
-  const BLACK = "#1a1a1a";
-  const DARK = "#2d2d2d";
-  const SLATE = "#4b5563";
-  const MUTED = "#9ca3af";
-  const BORDER = "#e5e7eb";
-  const ACCENT = "#0a7c6a";
-  const RED = "#dc2626";
+  // ── Design Tokens v3 (Proof Press Premium) ──
+  const F_SERIF = "Georgia, 'Playfair Display', 'DM Serif Display', 'Times New Roman', serif";
+  const F_SANS  = "Helvetica, Arial, 'Segoe UI', sans-serif";
+  const BG      = "#f5f3ef";   // crema off-white
+  const WHITE   = "#ffffff";
+  const BLACK   = "#1a1a1a";
+  const SLATE   = "#4b5563";
+  const MUTED   = "#9ca3af";
+  const BORDER  = "#e5e3df";
+  const ACCENT  = "#d94f3d";   // rosso Proof Press — solo per CTA
+  const ACCENT_DARK = "#b83c2c";
+  const GRAY_DARK   = "#374151";
   const AMAZON_ORANGE = "#FF9900";
-  const PROMO_BG = "#111827";
 
   // ── Select 5-6 strongest channels for today ──
   const now = new Date();
   const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-
-  // Rotate which channels are "main" vs "quick links"
   const channelPool = ALL_CHANNELS_V2.slice(1); // exclude breaking (used in hero)
   const mainChannelCount = 5;
   const startIdx = dayOfYear % channelPool.length;
   const mainChannels: typeof channelPool = [];
   const quickLinkChannels: typeof channelPool = [];
-
   for (let i = 0; i < channelPool.length; i++) {
     const ch = channelPool[(startIdx + i) % channelPool.length];
     if (mainChannels.length < mainChannelCount) {
@@ -567,86 +566,86 @@ function buildNewsletterHtmlV2(opts: {
 
   // ── Helper: get best item for a channel ──
   function getBestItemForChannel(chKey: string): { title: string; summary: string; url: string; category: string } | null {
-    // Check channel content first
     const chItems = channelContents[chKey];
     if (chItems && chItems.length > 0) {
       const item = chItems[0];
       const chDef = ALL_CHANNELS_V2.find(c => c.key === chKey);
       return {
         title: item.title,
-        summary: item.subtitle || item.body.slice(0, 150) + "...",
+        summary: item.subtitle || item.body.slice(0, 160) + "...",
         url: `${BASE_URL}${chDef?.slug || `/${chKey}`}`,
         category: item.category || chDef?.label || chKey.toUpperCase(),
       };
     }
-    // Check news sections
     if (chKey === "startup" && startupNews.length > 0) {
       const n = startupNews[0];
-      return { title: n.title, summary: n.summary.slice(0, 150), url: n.id ? `${BASE_URL}/startup/news/${n.id}` : `${BASE_URL}/startup`, category: n.category };
+      return { title: n.title, summary: n.summary.slice(0, 160), url: n.id ? `${BASE_URL}/startup/news/${n.id}` : `${BASE_URL}/startup`, category: n.category };
     }
     if (chKey === "dealroom" && dealroomNews.length > 0) {
       const n = dealroomNews[0];
-      return { title: n.title, summary: n.summary.slice(0, 150), url: n.id ? `${BASE_URL}/dealroom/news/${n.id}` : `${BASE_URL}/dealroom`, category: n.category };
+      return { title: n.title, summary: n.summary.slice(0, 160), url: n.id ? `${BASE_URL}/dealroom/news/${n.id}` : `${BASE_URL}/dealroom`, category: n.category };
     }
     if (chKey === "research" && researches.length > 0) {
       const r = researches[0];
-      return { title: r.title, summary: r.summary.slice(0, 150), url: r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`, category: r.category };
+      return { title: r.title, summary: r.summary.slice(0, 160), url: r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`, category: r.category };
     }
     return null;
   }
+
+  // ── Pexels image URL helper ──
+  function pexelsUrl(id: string | number, w: number, h: number): string {
+    return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&fit=crop`;
+  }
+
+  // ── Fallback Pexels IDs per tema ──
+  const FALLBACK_PEXELS: Record<string, string> = {
+    ai:        "8386440",  // neural network visualization
+    startup:   "3184292",  // business team meeting
+    research:  "2280571",  // laboratory science
+    dealroom:  "3184465",  // boardroom deal
+    default:   "3861969",  // technology abstract
+  };
 
   // ═══════════════════════════════════════════════════════════════
   // BLOCK A: HEADER
   // ═══════════════════════════════════════════════════════════════
   const headerHtml = `
-    ${isTest ? `<tr><td style="background:${RED};padding:10px 20px;text-align:center;border-radius:8px 8px 0 0;">
+    ${isTest ? `<tr><td style="background:${ACCENT};padding:10px 20px;text-align:center;border-radius:8px 8px 0 0;">
       <span style="font-size:11px;font-weight:700;color:#ffffff;font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.12em;">⚠️ BOZZA — In attesa di approvazione</span>
     </td></tr>` : ""}
     <tr>
-      <td style="background:${WHITE};padding:28px 24px 20px;text-align:center;${isTest ? "" : "border-radius:8px 8px 0 0;"}border-bottom:3px solid ${BLACK};">
-        <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">
-          <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header" style="color:${ACCENT};text-decoration:none;font-weight:600;">Leggi nel browser</a>
+      <td style="background:${WHITE};padding:32px 32px 24px;text-align:center;${isTest ? "" : "border-radius:8px 8px 0 0;"}border-bottom:2px solid ${BLACK};">
+        <div style="text-align:right;margin-bottom:16px;">
+          <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
         </div>
-        <div style="font-size:48px;font-weight:900;color:${BLACK};font-family:${F_SANS};line-height:1;letter-spacing:-0.02em;">Proof Press</div>
-        <div style="font-size:13px;font-weight:600;color:${ACCENT};font-family:${F_SANS};letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Il tuo Sistema Operativo sull'AI</div>
-        <div style="width:48px;height:2px;background:${BLACK};margin:10px auto;"></div>
+        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1;letter-spacing:-0.02em;margin-bottom:4px;">Proof Press</div>
+        <div style="font-size:14px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">by Ideasmart</div>
+        <div style="width:40px;height:2px;background:${ACCENT};margin:0 auto 14px;"></div>
+        <div style="font-size:11px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">La prima redazione giornalistica agentica con informazione certificata</div>
         <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};line-height:1.5;">
-          ${dateLabel} &nbsp;·&nbsp; Numero ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString("it-IT")} lettori</strong>
+          ${dateLabel} &nbsp;·&nbsp; N° ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString("it-IT")} lettori</strong>
         </div>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>`;
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK B: HERO — Notizia del Giorno
+  // BLOCK B: ANNUNCIO REBRAND (primi numeri)
   // ═══════════════════════════════════════════════════════════════
-  const heroItem = breakingItems[0] || (aiNews[0] ? { ...aiNews[0], id: String(aiNews[0].id) } : null);
-  const heroHtml = heroItem ? `
+  const showRebrand = issueNumber <= 30; // mostra per i primi 30 numeri
+  const rebrandHtml = showRebrand ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${BLACK};">
           <tr>
-            <td style="padding:24px 24px 20px;">
-              <div style="display:inline-block;background:${RED};color:${WHITE};font-size:10px;font-weight:700;padding:4px 10px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">
-                ${heroItem.section ? heroItem.section.toUpperCase().replace(/_/g, " ") : "NOTIZIA DEL GIORNO"}
-              </div>
-              <div style="font-size:26px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">
-                <a href="${BASE_URL}/ai/news/${heroItem.id}" style="color:${BLACK};text-decoration:none;">${heroItem.summary ? heroItem.title : heroItem.title}</a>
-              </div>
-              ${heroItem.summary ? `<div style="font-size:15px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${heroItem.summary.slice(0, 250)}${heroItem.summary.length > 250 ? "..." : ""}</div>` : ""}
+            <td style="padding:20px 24px;">
+              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">NOVITÀ</div>
+              <div style="font-size:20px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:8px;">Ideasmart diventa Proof Press.</div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:16px;">La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.</div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td>
-                    <table cellpadding="0" cellspacing="0" border="0">
-                      <tr>
-                        <td style="background:${BLACK};border-radius:5px;padding:12px 24px;">
-                          <a href="${BASE_URL}/ai/news/${heroItem.id}" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.03em;">LEGGI SU Proof Press →</a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td style="padding-left:14px;">
-                    <span style="font-size:10px;color:${ACCENT};font-weight:600;font-family:${F_SANS};letter-spacing:0.05em;">✓ PROOFPRESS VERIFIED</span>
+                  <td style="background:${ACCENT};border-radius:5px;padding:11px 22px;">
+                    <a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=rebrand" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">SCOPRI LA PROOFPRESS VERIFY TECHNOLOGY →</a>
                   </td>
                 </tr>
               </table>
@@ -655,29 +654,77 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK C: CONSIGLIATO #1 (Amazon, posizione premium)
+  // BLOCK C: HERO — Notizia di Apertura
+  // ═══════════════════════════════════════════════════════════════
+  const heroItem = breakingItems[0] || (aiNews[0] ? { ...aiNews[0], id: String(aiNews[0].id) } : null);
+  const heroImgUrl = heroImageUrl || pexelsUrl(FALLBACK_PEXELS.ai, 640, 300);
+  // Generate a short hash for ProofPress Verify badge
+  const verifyHash = heroItem ? `PP-${Math.abs(heroItem.title.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % 99999).toString().padStart(5, "0")}` : "PP-00000";
+  const heroHtml = heroItem ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:0;">
+              <img src="${heroImgUrl}" width="600" style="width:100%;max-width:600px;height:280px;object-fit:cover;display:block;" alt="${heroItem.title}" />
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 28px 22px;">
+              <div style="display:inline-block;background:${ACCENT};color:${WHITE};font-size:10px;font-weight:700;padding:4px 10px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">
+                ${heroItem.section ? heroItem.section.toUpperCase().replace(/_/g, " ") : "NOTIZIA DEL GIORNO"}
+              </div>
+              <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:12px;">
+                <a href="${BASE_URL}/ai/news/${heroItem.id}?utm_source=newsletter&utm_medium=email&utm_campaign=hero" style="color:${BLACK};text-decoration:none;">${heroItem.title}</a>
+              </div>
+              ${heroItem.summary ? `<div style="font-size:15px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${heroItem.summary.slice(0, 280)}${heroItem.summary.length > 280 ? "..." : ""}</div>` : ""}
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background:${ACCENT};border-radius:5px;padding:12px 24px;">
+                          <a href="${BASE_URL}/ai/news/${heroItem.id}?utm_source=newsletter&utm_medium=email&utm_campaign=hero_cta" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">LEGGI SU PROOF PRESS →</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="text-align:right;vertical-align:middle;">
+                    <span style="font-size:10px;color:${MUTED};font-weight:600;font-family:${F_SANS};letter-spacing:0.04em;">✓ PROOFPRESS VERIFY &nbsp;·&nbsp; ${verifyHash}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK D: CONSIGLIATO #1 (Amazon, posizione premium)
   // ═══════════════════════════════════════════════════════════════
   const deal1 = amazonDeals[0];
   const consigliatoHtml1 = deal1 ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${AMAZON_ORANGE};">
           <tr>
-            <td style="padding:18px 20px;">
-              <div style="font-size:10px;font-weight:700;color:${AMAZON_ORANGE};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">CONSIGLIATO</div>
+            <td style="padding:18px 22px;">
+              <div style="font-size:10px;font-weight:700;color:${AMAZON_ORANGE};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">CONSIGLIATO</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  ${deal1.imageUrl ? `<td width="100" style="vertical-align:top;padding-right:16px;">
-                    <a href="${deal1.affiliateUrl}" style="text-decoration:none;"><img src="${deal1.imageUrl}" width="100" style="border-radius:6px;display:block;" alt="${deal1.title}"></a>
+                  ${deal1.imageUrl ? `<td width="90" style="vertical-align:top;padding-right:16px;">
+                    <a href="${deal1.affiliateUrl}" style="text-decoration:none;"><img src="${deal1.imageUrl}" width="90" height="90" style="border-radius:6px;display:block;object-fit:cover;" alt="${deal1.title}"></a>
                   </td>` : ""}
                   <td style="vertical-align:top;">
-                    <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SANS};line-height:1.3;margin-bottom:4px;">
+                    <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SANS};line-height:1.35;margin-bottom:5px;">
                       <a href="${deal1.affiliateUrl}" style="color:${BLACK};text-decoration:none;">${deal1.title}</a>
                     </div>
-                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.5;margin-bottom:8px;">${deal1.description.slice(0, 120)}</div>
+                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-bottom:8px;">${deal1.description.slice(0, 130)}</div>
                     <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};">Amazon.it${deal1.price ? ` · <strong style="color:${BLACK};">${deal1.price}</strong>` : ""}</div>
                   </td>
                 </tr>
@@ -687,30 +734,35 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK D: SEZIONI TEMATICHE — 5 canali a rotazione
+  // BLOCK E: SEZIONI TEMATICHE — 5 canali a rotazione
   // ═══════════════════════════════════════════════════════════════
   let channelBlocksHtml = "";
   for (const ch of mainChannels) {
     const item = getBestItemForChannel(ch.key);
     if (!item) continue;
-
+    const chImgUrl = (channelImages && channelImages[ch.key]) || pexelsUrl(FALLBACK_PEXELS[ch.key] || FALLBACK_PEXELS.default, 640, 200);
     channelBlocksHtml += `
     <tr>
-      <td style="padding:0 20px 12px;">
+      <td style="padding:0 20px 16px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
-            <td style="padding:20px 24px;">
-              <div style="display:inline-block;background:${ch.color};color:${WHITE};font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:0.08em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">
+            <td style="padding:0;">
+              <img src="${chImgUrl}" width="600" style="width:100%;max-width:600px;height:180px;object-fit:cover;display:block;" alt="${item.title}" />
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 24px 18px;">
+              <div style="display:inline-block;background:${ch.color};color:${WHITE};font-size:10px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:0.08em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">
                 ${ch.emoji} ${ch.label}
               </div>
-              <div style="font-size:20px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:8px;">
+              <div style="font-size:21px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.35;margin-bottom:8px;">
                 <a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}" style="color:${BLACK};text-decoration:none;">${item.title}</a>
               </div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-bottom:12px;">${item.summary}</div>
-              <a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.03em;">LEGGI SUBITO →</a>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${item.summary}</div>
+              <a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}_cta" style="font-size:11px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">LEGGI SUBITO →</a>
             </td>
           </tr>
         </table>
@@ -722,7 +774,7 @@ function buildNewsletterHtmlV2(opts: {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK E: STARTUP DEL GIORNO
+  // BLOCK F: STARTUP DEL GIORNO
   // ═══════════════════════════════════════════════════════════════
   const startup = opts.startupOfDay;
   const startupHtml = startup ? `
@@ -730,41 +782,35 @@ function buildNewsletterHtmlV2(opts: {
       <td style="padding:0 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
-            <td style="padding:22px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">🚀 STARTUP DEL GIORNO</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <td style="padding:22px 26px;">
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">🚀 STARTUP DEL GIORNO</div>
+              <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:4px;">${startup.name}</div>
+              <div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:10px;">${startup.tagline}</div>
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${startup.description.slice(0, 220)}${startup.description.length > 220 ? "..." : ""}</div>
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
                 <tr>
-                  <td style="vertical-align:top;">
-                    <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:4px;">${startup.name}</div>
-                    <div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:8px;">${startup.tagline}</div>
-                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-bottom:12px;">${startup.description.slice(0, 200)}${startup.description.length > 200 ? "..." : ""}</div>
-                    <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
-                      <tr>
-                        <td style="padding-right:16px;">
-                          <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};">Categoria</span><br>
-                          <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.category}</span>
-                        </td>
-                        ${startup.country ? `<td style="padding-right:16px;">
-                          <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};">Paese</span><br>
-                          <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.country}</span>
-                        </td>` : ""}
-                        ${startup.funding ? `<td style="padding-right:16px;">
-                          <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};">Funding</span><br>
-                          <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.funding}</span>
-                        </td>` : ""}
-                        ${startup.aiScore ? `<td>
-                          <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};">AI Score</span><br>
-                          <span style="font-size:14px;font-weight:800;color:${ACCENT};font-family:${F_SANS};">${startup.aiScore}/100</span>
-                        </td>` : ""}
-                      </tr>
-                    </table>
-                    <table cellpadding="0" cellspacing="0" border="0">
-                      <tr>
-                        <td style="background:${ACCENT};border-radius:5px;padding:10px 20px;">
-                          <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};">SCOPRI LA STARTUP →</a>
-                        </td>
-                      </tr>
-                    </table>
+                  <td style="padding-right:20px;">
+                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Categoria</span><br>
+                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.category}</span>
+                  </td>
+                  ${startup.country ? `<td style="padding-right:20px;">
+                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Paese</span><br>
+                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.country}</span>
+                  </td>` : ""}
+                  ${startup.funding ? `<td style="padding-right:20px;">
+                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Funding</span><br>
+                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.funding}</span>
+                  </td>` : ""}
+                  ${startup.aiScore ? `<td>
+                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">AI Score</span><br>
+                    <span style="font-size:16px;font-weight:800;color:${ACCENT};font-family:${F_SANS};">${startup.aiScore}/100</span>
+                  </td>` : ""}
+                </tr>
+              </table>
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:${ACCENT};border-radius:5px;padding:11px 22px;">
+                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">SCOPRI LA STARTUP →</a>
                   </td>
                 </tr>
               </table>
@@ -773,29 +819,28 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK F: PROMPT COLLECTION — Blocco fisso €39
+  // BLOCK G: PROMO PROMPT COLLECTION — Blocco fisso
   // ═══════════════════════════════════════════════════════════════
   const promptPromoHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PROMO_BG};border-radius:8px;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
           <tr>
-            <td style="padding:28px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">📋 COLLEZIONE Proof Press</div>
-              <div style="font-size:24px;font-weight:700;color:${WHITE};font-family:${F_SERIF};line-height:1.25;margin-bottom:12px;">99 Prompt da usare davvero nel lavoro</div>
-              <div style="font-size:14px;color:#d1d5db;font-family:${F_SANS};line-height:1.7;margin-bottom:6px;">Non una raccolta generica, ma un <strong style="color:${WHITE};">asset operativo</strong>. 99 prompt selezionati, organizzati in 5 macro-sezioni, con libreria ricercabile e PDF incluso.</div>
-              <div style="font-size:13px;color:#9ca3af;font-family:${F_SANS};line-height:1.6;margin-bottom:6px;">
-                ✓ Carriera (10) &nbsp;·&nbsp; ✓ Produttività (20) &nbsp;·&nbsp; ✓ Business & Marketing (12)<br>
-                ✓ Ricerca & Scrittura (27) &nbsp;·&nbsp; ✓ Benessere & Vita pratica (30)
+            <td style="padding:24px 26px;">
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">📋 COLLEZIONE PROOF PRESS</div>
+              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">La collezione Proof Press di prompt da usare davvero nel lavoro quotidiano.</div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:6px;">Un funnel semplice e concreto: arrivi dalla newsletter, acquisti a <strong style="color:${BLACK};">39€</strong> e ottieni accesso alla libreria ricercabile con il PDF completo incluso.</div>
+              <div style="font-size:13px;color:${MUTED};font-family:${F_SANS};line-height:1.6;margin-bottom:20px;">
+                ✓ 99 prompt selezionati &nbsp;·&nbsp; ✓ Libreria ricercabile &nbsp;·&nbsp; ✓ PDF incluso<br>
+                Carriera · Produttività · Business · Ricerca · Benessere
               </div>
-              <div style="font-size:13px;color:#9ca3af;font-family:${F_SANS};line-height:1.6;margin-bottom:20px;">Dal bisogno all'esecuzione in pochi secondi.</div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:${WHITE};border-radius:6px;padding:14px 28px;">
-                    <a href="${FORUM_URL}/?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_collection" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F_SANS};">ACQUISTA LA COLLEZIONE — 39€ →</a>
+                  <td style="background:${ACCENT};border-radius:5px;padding:12px 26px;">
+                    <a href="${FORUM_URL}/?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_collection" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">SCOPRI LA COLLEZIONE →</a>
                   </td>
                 </tr>
               </table>
@@ -804,10 +849,36 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>`;
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK G: SEZIONE EVENTI
+  // BLOCK H: ISCRIZIONE GRATUITA — Blocco fisso
+  // ═══════════════════════════════════════════════════════════════
+  const iscrizioneHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${BLACK};">
+          <tr>
+            <td style="padding:22px 26px;">
+              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">PROOF PRESS</div>
+              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:8px;">Ogni giorno 400 news, ricerche e notizie gratis.</div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:18px;">AI, Startup e Venture Capital — aggiornato ogni giorno.</div>
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:${BLACK};border-radius:5px;padding:12px 26px;">
+                    <a href="${BASE_URL}/registrati?utm_source=newsletter&utm_medium=email&utm_campaign=iscrizione" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">ISCRIVITI GRATIS →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK I: SEZIONE EVENTI
   // ═══════════════════════════════════════════════════════════════
   const events = opts.events;
   let eventsHtml = "";
@@ -818,37 +889,36 @@ function buildNewsletterHtmlV2(opts: {
       const evUrl = ev.eventUrl || `${BASE_URL}/eventi`;
       return `
         <tr>
-          <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
+          <td style="padding:12px 0;border-bottom:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td width="56" style="vertical-align:top;">
-                  <div style="background:${ACCENT};border-radius:6px;padding:6px 0;text-align:center;width:50px;">
-                    <div style="font-size:18px;font-weight:800;color:${WHITE};font-family:${F_SANS};line-height:1;">${d.day}</div>
-                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.8);font-family:${F_SANS};letter-spacing:0.1em;">${d.month}</div>
+                <td width="52" style="vertical-align:top;">
+                  <div style="background:${ACCENT};border-radius:6px;padding:6px 0;text-align:center;width:46px;">
+                    <div style="font-size:17px;font-weight:800;color:${WHITE};font-family:${F_SANS};line-height:1;">${d.day}</div>
+                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);font-family:${F_SANS};letter-spacing:0.1em;">${d.month}</div>
                   </div>
                 </td>
-                <td style="vertical-align:top;padding-left:12px;">
-                  <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.3;margin-bottom:2px;">
+                <td style="vertical-align:top;padding-left:14px;">
+                  <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.35;margin-bottom:3px;">
                     <a href="${evUrl}" style="color:${BLACK};text-decoration:none;">${ev.title}</a>
                   </div>
                   <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};">${typeLabel}${ev.isFree ? " · Gratuito" : ""}</div>
                 </td>
                 <td width="80" style="vertical-align:middle;text-align:right;">
-                  <a href="${evUrl}" style="font-size:11px;font-weight:600;color:${ACCENT};text-decoration:none;font-family:${F_SANS};">ISCRIVITI →</a>
+                  <a href="${evUrl}" style="font-size:11px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;text-transform:uppercase;">ISCRIVITI →</a>
                 </td>
               </tr>
             </table>
           </td>
         </tr>`;
     }).join("");
-
     eventsHtml = `
     <tr>
       <td style="padding:0 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
-            <td style="padding:22px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">📅 PROSSIMI EVENTI</div>
+            <td style="padding:22px 26px;">
+              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">📅 PROSSIMI EVENTI</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 ${eventRows}
               </table>
@@ -857,22 +927,20 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>`;
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK H: QUICK LINKS — "Anche oggi su Proof Press"
+  // BLOCK J: QUICK LINKS — "Anche oggi su Proof Press"
   // ═══════════════════════════════════════════════════════════════
   let quickLinksHtml = "";
   const quickItems: { emoji: string; label: string; title: string; url: string }[] = [];
-
   for (const ch of quickLinkChannels) {
     const item = getBestItemForChannel(ch.key);
     if (item) {
       quickItems.push({ emoji: ch.emoji, label: ch.label, title: item.title, url: item.url });
     }
   }
-  // Also add remaining breaking/ai news not used in hero
   for (const n of aiNews.slice(1, 4)) {
     if (quickItems.length >= 6) break;
     quickItems.push({
@@ -882,25 +950,23 @@ function buildNewsletterHtmlV2(opts: {
       url: n.id ? `${BASE_URL}/ai/news/${n.id}` : `${BASE_URL}/ai`,
     });
   }
-
   if (quickItems.length > 0) {
     const rows = quickItems.slice(0, 6).map((q) => `
       <tr>
-        <td style="padding:6px 0;border-bottom:1px solid ${BORDER};">
+        <td style="padding:8px 0;border-bottom:1px solid ${BORDER};">
           <a href="${q.url}?utm_source=newsletter&utm_medium=email&utm_campaign=quicklink" style="text-decoration:none;display:block;">
-            <span style="font-size:12px;color:${MUTED};font-family:${F_SANS};font-weight:600;">${q.emoji} ${q.label}</span>
-            <span style="font-size:13px;color:${BLACK};font-family:${F_SANS};font-weight:500;margin-left:8px;">${q.title}</span>
+            <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">${q.emoji} ${q.label}</span>
+            <span style="font-size:13px;color:${BLACK};font-family:${F_SANS};font-weight:500;margin-left:6px;">${q.title}</span>
           </a>
         </td>
       </tr>`).join("");
-
     quickLinksHtml = `
     <tr>
       <td style="padding:0 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
-            <td style="padding:20px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">ANCHE OGGI SU Proof Press</div>
+            <td style="padding:20px 26px;">
+              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">ANCHE OGGI SU PROOF PRESS</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 ${rows}
               </table>
@@ -909,30 +975,30 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>`;
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK I: CONSIGLIATO #2 + FOOTER
+  // BLOCK K: CONSIGLIATO #2 + FOOTER
   // ═══════════════════════════════════════════════════════════════
   const deal2 = amazonDeals[1];
   const consigliatoHtml2 = deal2 ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border-left:4px solid ${AMAZON_ORANGE};border-top:1px solid ${BORDER};border-right:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${AMAZON_ORANGE};">
           <tr>
-            <td style="padding:18px 20px;">
-              <div style="font-size:10px;font-weight:700;color:${AMAZON_ORANGE};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">CONSIGLIATO</div>
+            <td style="padding:18px 22px;">
+              <div style="font-size:10px;font-weight:700;color:${AMAZON_ORANGE};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">CONSIGLIATO</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  ${deal2.imageUrl ? `<td width="100" style="vertical-align:top;padding-right:16px;">
-                    <a href="${deal2.affiliateUrl}" style="text-decoration:none;"><img src="${deal2.imageUrl}" width="100" style="border-radius:6px;display:block;" alt="${deal2.title}"></a>
+                  ${deal2.imageUrl ? `<td width="90" style="vertical-align:top;padding-right:16px;">
+                    <a href="${deal2.affiliateUrl}" style="text-decoration:none;"><img src="${deal2.imageUrl}" width="90" height="90" style="border-radius:6px;display:block;object-fit:cover;" alt="${deal2.title}"></a>
                   </td>` : ""}
                   <td style="vertical-align:top;">
-                    <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SANS};line-height:1.3;margin-bottom:4px;">
+                    <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SANS};line-height:1.35;margin-bottom:5px;">
                       <a href="${deal2.affiliateUrl}" style="color:${BLACK};text-decoration:none;">${deal2.title}</a>
                     </div>
-                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.5;margin-bottom:8px;">${deal2.description.slice(0, 120)}</div>
+                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-bottom:8px;">${deal2.description.slice(0, 130)}</div>
                     <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};">Amazon.it${deal2.price ? ` · <strong style="color:${BLACK};">${deal2.price}</strong>` : ""}</div>
                   </td>
                 </tr>
@@ -942,45 +1008,46 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:16px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
 
   const footerHtml = `
     <tr>
       <td style="padding:0 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
-            <td style="padding:24px 24px;text-align:center;">
-              <div style="font-size:24px;font-weight:900;color:${BLACK};font-family:${F_SANS};letter-spacing:-0.01em;margin-bottom:4px;">Proof Press</div>
-              <div style="font-size:11px;color:${ACCENT};font-family:${F_SANS};font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Il tuo Sistema Operativo sull'AI</div>
-              <div style="margin-bottom:12px;">
-                <a href="https://x.com/ideasmart_ai" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 8px;">X</a>
+            <td style="padding:28px 26px;text-align:center;">
+              <div style="font-size:28px;font-weight:900;color:${BLACK};font-family:${F_SERIF};letter-spacing:-0.01em;margin-bottom:3px;">Proof Press</div>
+              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">by Ideasmart</div>
+              <div style="font-size:10px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">La prima redazione giornalistica agentica con informazione certificata</div>
+              <div style="margin-bottom:14px;">
+                <a href="https://x.com/proofpress_ai" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">X / Twitter</a>
                 <span style="color:${MUTED};">·</span>
-                <a href="https://www.linkedin.com/company/ideasmart" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 8px;">LinkedIn</a>
+                <a href="https://www.linkedin.com/company/proofpress" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">LinkedIn</a>
               </div>
-              <div style="margin-bottom:12px;">
-                <a href="${BASE_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};">ideasmart.biz</a>
-                <span style="color:${MUTED};margin:0 6px;">·</span>
+              <div style="margin-bottom:16px;">
+                <a href="${BASE_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};">proofpress.ai</a>
+                <span style="color:${MUTED};margin:0 8px;">·</span>
                 <a href="${FORUM_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};">Prompt Collection</a>
               </div>
-              <div style="border-top:1px solid ${BORDER};padding-top:14px;margin-top:4px;">
-                <div style="font-size:11px;color:${MUTED};font-family:${F_SANS};line-height:1.7;margin-bottom:10px;">
+              <div style="border-top:1px solid ${BORDER};padding-top:16px;margin-top:4px;">
+                <div style="font-size:11px;color:${MUTED};font-family:${F_SANS};line-height:1.8;margin-bottom:12px;">
                   Hai ricevuto questa email perché sei iscritto alla newsletter Proof Press.<br>
                   Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
                 </div>
                 <a href="${BASE_URL}/preferenze-newsletter" style="font-size:11px;color:${BLACK};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Gestisci preferenze</a>
-                <span style="color:${MUTED};margin:0 6px;">·</span>
-                <a href="${unsubscribeUrl}" style="font-size:11px;color:${RED};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Cancella iscrizione</a>
+                <span style="color:${MUTED};margin:0 8px;">·</span>
+                <a href="${unsubscribeUrl}" style="font-size:11px;color:${ACCENT};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Cancella iscrizione</a>
               </div>
-              <div style="margin-top:14px;padding-top:10px;border-top:1px solid ${BORDER};">
-                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto FoolFarm S.p.A. · Milano</div>
-                <div style="font-size:10px;color:${ACCENT};font-weight:600;font-family:${F_SANS};letter-spacing:0.05em;">✓ PROOFPRESS VERIFY TECHNOLOGY</div>
+              <div style="margin-top:16px;padding-top:12px;border-top:1px solid ${BORDER};">
+                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto FoolFarm S.p.A. · Milano, Italia</div>
+                <div style="font-size:10px;color:${ACCENT};font-weight:700;font-family:${F_SANS};letter-spacing:0.06em;">✓ PROOFPRESS VERIFY TECHNOLOGY</div>
               </div>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:24px;"></td></tr>`;
+    <tr><td style="height:32px;"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
   // ASSEMBLE
@@ -999,11 +1066,13 @@ function buildNewsletterHtmlV2(opts: {
     <td align="center">
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
+        ${rebrandHtml}
         ${heroHtml}
         ${consigliatoHtml1}
         ${channelBlocksHtml}
         ${startupHtml}
         ${promptPromoHtml}
+        ${iscrizioneHtml}
         ${eventsHtml}
         ${quickLinksHtml}
         ${consigliatoHtml2}
@@ -1069,6 +1138,37 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.log(`  ${ch.label}: ${content.channelContents[ch.key]?.length ?? 0}`);
   }
 
+  // ── Fetch immagini Pexels per hero e canali principali ──
+  const PEXELS_QUERIES: Record<string, string> = {
+    ai: "artificial intelligence circuit board",
+    startup: "startup office business meeting",
+    research: "scientific research laboratory innovation",
+    dealroom: "business boardroom investment",
+    "verified-ai-news": "data verification technology",
+    "make-money-with-ai": "finance technology trading",
+    "copy-paste-ai": "productivity workspace laptop",
+    "daily-ai-tools": "technology tools digital",
+    "automate-with-ai": "automation workflow robot",
+    "ai-opportunities": "career opportunity growth",
+  };
+  let heroImageUrl: string | null = null;
+  const channelImages: Record<string, string | null> = {};
+  try {
+    const { findEditorialImage } = await import("./stockImages");
+    const heroItem = content.breakingItems[0] || content.aiNews[0];
+    if (heroItem) {
+      heroImageUrl = await findEditorialImage(heroItem.title, "breaking news ai", "ai").catch(() => null);
+    }
+    for (const ch of ALL_CHANNELS_V2.slice(1, 6)) {
+      const section = (ch.key === "startup" || ch.key === "dealroom") ? "startup" : "ai";
+      channelImages[ch.key] = await findEditorialImage(
+        PEXELS_QUERIES[ch.key] || ch.label, ch.key, section
+      ).catch(() => null);
+    }
+  } catch (e) {
+    console.warn("[Newsletter] Pexels fetch skipped:", e);
+  }
+
   const subject = `Proof Press Daily — ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1086,6 +1186,8 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     events,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     isTest,
+    heroImageUrl,
+    channelImages,
   });
 
   const sponsorIds: number[] = [];

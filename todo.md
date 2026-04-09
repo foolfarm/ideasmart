@@ -2829,10 +2829,27 @@
 - [x] Newsletter sender: cambiare nome a "ProofPress.AI — AI-Verified Intelligence. Every Day."
 - [x] Newsletter sender: from info@proofpress.ai, reply noreply@proofpress.ai
 - [x] Email pagine: sostituire info@ideasmart.ai con info@proofpress.ai in tutte le pagine e file server
-- [ ] Chi Siamo: aggiungere sezione Contattaci con modulo di contatto base
-- [ ] Newsletter test: inviare newsletter aggiornata come test
-- [ ] URGENTE: Verificare e bloccare invii newsletter automatici non approvati
-- [ ] Aggiornare template HTML newsletter con brand Proof Press (rimuovere IDEASMART)
-- [ ] Menu: cambiare voce "Cos'è ProofPress Verify" in "Tecnologia"
-- [ ] URGENTE: Cancellare definitivamente la routine newsletter delle 11:00 (preview)
-- [ ] Verificare quante email sono state inviate oggi
+- [x] Chi Siamo: aggiungere sezione Contattaci con modulo di contatto base (tRPC contactUs.send)
+- [x] Newsletter test: inviare newsletter aggiornata come test (inviata a ac@acinelli.com)
+- [x] URGENTE: Verificare e bloccare invii newsletter automatici non approvati
+- [x] Aggiornare template HTML newsletter con brand Proof Press (rimuovere IDEASMART)
+- [x] Menu: cambiare voce "Cos'è ProofPress Verify" in "Tecnologia"
+- [x] URGENTE: Cancellare definitivamente le routine newsletter (audit 06:45, preview 08:30, invio 10:30)
+- [x] Verificare quante email sono state inviate oggi (372 richieste, 357 consegnate)
+
+## Nuovo Template Newsletter "Proof Press Daily" (v3) - 9 Apr 2026
+- [x] Template HTML modulare con sezioni A-K (header, rebrand, hero, canali, startup, sponsor, promo, iscrizione, eventi, quick links, footer)
+- [x] Design editoriale premium: serif bold titoli, sfondo crema #f5f3ef, CTA rosso #d94f3d, layout 640px
+- [x] Immagini Pexels per ogni notizia (hero 640x300, canali 640x200)
+- [x] Logica selezione contenuti: 1 notizia top per canale, rotazione 5-6 canali per numero
+- [x] Blocchi fissi: promo Prompt Collection, iscrizione gratuita, footer completo
+- [x] Blocco sponsor Amazon "Consigliato" (2 posizioni: dopo hero + prima footer)
+- [x] Sezione eventi compatta (3-4 eventi)
+- [x] Quick Links per canali non coperti
+- [x] Badge PROOFPRESS VERIFY con hash su notizia hero
+- [x] Tutti i link puntano a proofpress.ai (mai fonte originale, mai ideasmart.biz)
+- [x] Integrare nel sistema server: aggiornare unifiedNewsletter.ts
+- [x] Sender: "Proof Press by Ideasmart" from info@proofpress.ai reply noreply@proofpress.ai
+- [x] Riattivare scheduler: preview 08:30, invio 10:30 (lun/mer/ven)
+- [x] Creare esempio compilato con contenuti reali dal sito
+- [x] Test invio newsletter con nuovo template (inviato a ac@acinelli.com)

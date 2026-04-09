@@ -140,13 +140,13 @@ export default function SectionNav() {
         {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Cos'è ProofPress Verify button */}
+        {/* Tecnologia button */}
         <Link href="/proofpress-verify">
           <span
             className="flex items-center gap-1.5 mr-3 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white bg-[#dc2626] hover:bg-[#b91c1c] rounded-sm transition-all duration-200 cursor-pointer"
           >
             <Info size={13} strokeWidth={2} />
-            Cos'è ProofPress Verify
+            Tecnologia
           </span>
         </Link>
       </div>

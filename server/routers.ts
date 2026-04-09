@@ -2404,7 +2404,79 @@ Rispondi con questo JSON:
         return { success: true, id };
       }),
   }),
+  // ── Chi Siamo — Modulo Contattaci ─────────────────────────────────────────────
+  contactUs: router({
+    send: publicProcedure
+      .input(z.object({
+        name: z.string().min(2, "Nome obbligatorio (min 2 caratteri)"),
+        email: z.string().email("Email non valida"),
+        subject: z.string().min(3, "Oggetto obbligatorio"),
+        message: z.string().min(10, "Messaggio troppo breve (min 10 caratteri)"),
+      }))
+      .mutation(async ({ input }) => {
+        const { sendEmail } = await import("./email");
+      const adminHtml = `
+        <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
+          <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;">
+            <p style="color:#fff;font-size:20px;font-weight:900;margin:0;letter-spacing:-0.02em;">Proof Press</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">Nuovo messaggio da Chi Siamo</p>
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:28px;border:1px solid rgba(26,26,26,0.1);">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr style="border-bottom:1px solid #f0ece4;">
+                <td style="padding:10px 0;color:#888;font-size:13px;width:120px;">Nome</td>
+                <td style="padding:10px 0;color:#1a1a1a;font-size:15px;font-weight:600;">${input.name}</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f0ece4;">
+                <td style="padding:10px 0;color:#888;font-size:13px;">Email</td>
+                <td style="padding:10px 0;"><a href="mailto:${input.email}" style="color:#d94f3d;font-size:15px;">${input.email}</a></td>
+              </tr>
+              <tr style="border-bottom:1px solid #f0ece4;">
+                <td style="padding:10px 0;color:#888;font-size:13px;">Oggetto</td>
+                <td style="padding:10px 0;color:#1a1a1a;font-size:15px;">${input.subject}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;color:#888;font-size:13px;vertical-align:top;">Messaggio</td>
+                <td style="padding:10px 0;color:#374151;font-size:14px;line-height:1.7;">${input.message.replace(/\n/g, '<br>')}</td>
+              </tr>
+            </table>
+          </div>
+          <p style="color:#aaa;font-size:12px;text-align:center;margin-top:20px;">Proof Press &middot; info@proofpress.ai</p>
+        </div>
+      `;
+
+      await sendEmail({
+        to: "info@proofpress.ai",
+        subject: `📬 Contatto da Chi Siamo: ${input.subject} — ${input.name}`,
+        html: adminHtml,
+      });
+
+      // Conferma all'utente
+      const confirmHtml = `
+        <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
+          <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;text-align:center;">
+            <p style="color:#fff;font-size:22px;font-weight:900;margin:0;letter-spacing:-0.02em;">Proof Press</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">by Ideasmart</p>
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:32px;border:1px solid rgba(26,26,26,0.1);text-align:center;">
+            <div style="font-size:40px;margin-bottom:16px;">✓</div>
+            <h2 style="color:#1a1a1a;font-size:22px;margin:0 0 12px;font-weight:900;">Messaggio ricevuto!</h2>
+            <p style="color:#555;font-size:16px;line-height:1.7;margin:0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto il tuo messaggio. Ti risponderemo entro <strong>24 ore</strong> all'indirizzo <strong>${input.email}</strong>.</p>
+            <a href="https://proofpress.ai" style="display:inline-block;background:#1a1a1a;color:#fff;padding:14px 28px;border-radius:4px;font-weight:700;text-decoration:none;font-size:14px;letter-spacing:0.05em;">Torna a Proof Press →</a>
+          </div>
+          <p style="color:#aaa;font-size:12px;text-align:center;margin-top:20px;">Proof Press &middot; <a href="https://proofpress.ai" style="color:#d94f3d;">proofpress.ai</a></p>
+        </div>
+      `;
+
+      await sendEmail({
+        to: input.email,
+        subject: `Abbiamo ricevuto il tuo messaggio — Proof Press`,
+        html: confirmHtml,
+      });
+
+      return { success: true };
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
-
