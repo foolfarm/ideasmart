@@ -360,10 +360,10 @@ function SectionLabel({ label, accent }: { label: string; accent: string }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <div className="h-[3px] w-6" style={{ background: accent }} />
-      <span className="text-[10px] font-bold uppercase tracking-[0.2em] m-0 p-0"
+      <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0 p-0"
         style={{ color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>
         {label}
-      </span>
+      </h2>
     </div>
   );
 }
