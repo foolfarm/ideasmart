@@ -9,15 +9,13 @@ interface SidebarChannel {
 
 /* ─── SEZIONE INFO ────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
-  { label: "Crea Un Giornale - Servizi", icon: "👤", href: "/chi-siamo" },
+  { label: "Chi siamo",                  icon: "🏛️", href: "/chi-siamo-story" },
+  { label: "Offerta",                    icon: "👤", href: "/chi-siamo" },
   { label: "Tecnologia",                 icon: "✅", href: "/proofpress-verify" },
   { label: "Demo",                       icon: "🎯", href: "https://ideasmart.technology" },
-  { label: "Pubblicizza",                icon: "🎯", href: "/pubblicita" },
+  { label: "Pubblicizza",                icon: "📣", href: "/pubblicita" },
   { label: "Contatti",                   icon: "✉️", href: "mailto:info@proofpress.ai" },
 ];
-
-// Immagine editoriale per il banner (redazione agentica)
-const BANNER_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
 export default function LeftSidebar() {
   const [location] = useLocation();
@@ -42,9 +40,9 @@ export default function LeftSidebar() {
         scrollbarWidth: "none",
       }}
     >
-      {/* Logo — due righe: "Proof Press" + "Business" */}
+      {/* Logo — "Chi siamo" come titolo cliccabile */}
       <div className="px-4 mb-4">
-        <Link href="/">
+        <Link href="/chi-siamo-story">
           <div className="cursor-pointer">
             <div
               style={{
@@ -57,13 +55,7 @@ export default function LeftSidebar() {
                 className="font-black text-[#1a1a1a]"
                 style={{ fontSize: "20px" }}
               >
-                Proof Press
-              </div>
-              <div
-                className="font-black text-[#ff5500]"
-                style={{ fontSize: "20px" }}
-              >
-                Business
+                Chi siamo
               </div>
             </div>
           </div>
@@ -111,48 +103,36 @@ export default function LeftSidebar() {
         })}
       </nav>
 
-      {/* Banner ProofPress Business — subito sotto Demo */}
+      {/* Banner ProofPress Business — stile chiaro, più alto */}
       <div className="mx-3 mb-4">
         <a href="/chi-siamo" className="block">
           <div
             style={{
-              background: "linear-gradient(160deg, #1a1a1a 0%, #2d1a0e 100%)",
-              borderRadius: "10px",
+              background: "#ffffff",
+              borderRadius: "12px",
               overflow: "hidden",
-              border: "1px solid rgba(255,85,0,0.3)",
+              border: "1px solid rgba(26,26,26,0.12)",
+              boxShadow: "0 2px 12px rgba(26,26,26,0.06)",
               cursor: "pointer",
             }}
           >
-            {/* Immagine hero */}
-            <div style={{ position: "relative", height: "90px", overflow: "hidden" }}>
-              <img
-                src={BANNER_IMG}
-                alt="ProofPress Business"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center top",
-                  opacity: 0.7,
-                }}
-              />
+            {/* Intestazione arancione */}
+            <div
+              style={{
+                background: "#ff5500",
+                padding: "8px 12px",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
               <div
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to bottom, transparent 30%, #1a1a1a 100%)",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  top: "8px",
-                  left: "10px",
-                  fontSize: "8px",
-                  fontWeight: 700,
+                  fontSize: "9px",
+                  fontWeight: 800,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: "#ff5500",
+                  color: "#ffffff",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
                 }}
               >
@@ -160,41 +140,108 @@ export default function LeftSidebar() {
               </div>
             </div>
 
-            {/* Testo */}
-            <div style={{ padding: "10px 12px 12px" }}>
+            {/* Corpo chiaro */}
+            <div style={{ padding: "14px 12px 16px" }}>
+              {/* Icona decorativa */}
               <div
                 style={{
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  color: "#ffffff",
+                  width: "36px",
+                  height: "36px",
+                  background: "#fff3ee",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "10px",
+                  fontSize: "18px",
+                }}
+              >
+                📰
+              </div>
+
+              <div
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 800,
+                  color: "#1a1a1a",
                   lineHeight: 1.3,
-                  marginBottom: "6px",
+                  marginBottom: "8px",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
                 }}
               >
                 Crea il tuo giornale agentico con informazione certificata
               </div>
+
               <div
                 style={{
-                  fontSize: "10px",
-                  color: "rgba(255,255,255,0.5)",
-                  lineHeight: 1.4,
-                  marginBottom: "10px",
+                  fontSize: "11px",
+                  color: "rgba(26,26,26,0.55)",
+                  lineHeight: 1.5,
+                  marginBottom: "6px",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
                 }}
               >
-                Redazione AI autonoma. Notizie 100% certificate.
+                Redazione AI autonoma. Notizie 100% certificate con ProofPress Verify.
               </div>
+
               <div
                 style={{
-                  display: "inline-block",
+                  fontSize: "11px",
+                  color: "rgba(26,26,26,0.55)",
+                  lineHeight: 1.5,
+                  marginBottom: "14px",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+                }}
+              >
+                Oltre 100.000 lettori al mese. Funziona anche senza una redazione.
+              </div>
+
+              {/* Divider */}
+              <div style={{ borderTop: "1px solid rgba(26,26,26,0.08)", marginBottom: "12px" }} />
+
+              {/* Statistiche */}
+              <div style={{ display: "flex", gap: "8px", marginBottom: "14px" }}>
+                {[
+                  { num: "100k+", label: "lettori/mese" },
+                  { num: "6k+",   label: "newsletter" },
+                ].map((s) => (
+                  <div
+                    key={s.label}
+                    style={{
+                      flex: 1,
+                      background: "#faf8f3",
+                      borderRadius: "6px",
+                      padding: "6px 8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "13px",
+                        fontWeight: 800,
+                        color: "#ff5500",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
+                      }}
+                    >
+                      {s.num}
+                    </div>
+                    <div style={{ fontSize: "9px", color: "rgba(26,26,26,0.5)" }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div
+                style={{
+                  display: "block",
                   background: "#ff5500",
                   color: "#ffffff",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   fontWeight: 700,
-                  letterSpacing: "0.05em",
-                  padding: "5px 10px",
-                  borderRadius: "5px",
+                  letterSpacing: "0.04em",
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  textAlign: "center",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
                 }}
               >
