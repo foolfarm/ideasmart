@@ -2870,3 +2870,25 @@
 - [x] Scheduler mar/gio: preview 08:30 CET, invio massivo 10:30 CET (cron "30 8 * * 2,4" e "30 10 * * 2,4")
 - [x] Inviare preview test a ac@acinelli.com: "[PREVIEW PROMO] 99 prompt che cambiano il modo in cui usi l'AI"
 - [x] 107/107 test passano dopo le modifiche
+
+## Newsletter Promo v2 + Pagina Vendita — 9 Apr 2026
+
+- [ ] Newsletter promo: riscrivere copy con esempi per target (manager, freelance, marketer, imprenditori)
+- [ ] Newsletter promo: aggiungere sezione "A chi serve" con 4 profili + esempio prompt concreto
+- [ ] Newsletter promo: CTA più forte con urgenza e beneficio immediato
+- [ ] Pagina PromptLibrary: riscrivere con copy di vendita persuasivo
+- [ ] Pagina PromptLibrary: aggiungere sezione "A chi serve" con 4 target + esempi
+- [ ] Pagina PromptLibrary: aggiungere CTA acquisto immediata prominente
+- [ ] Inviare preview aggiornata della newsletter promo
+
+## Pagina di Vendita Prompt Library — 9 Apr 2026
+
+- [x] Creare pagina /prompt-library con copy di vendita persuasivo (PromptLibraryLanding.tsx)
+- [x] Sezione Hero: titolo forte, CTA rosso, prezzo €39, garanzia 30 giorni
+- [x] Sezione "A chi serve": 4 profili target (Manager, Founder, Marketer, Consulente) con esempi di prompt concreti
+- [x] Sezione "Prima/Dopo": confronto prompt generico vs professionale
+- [x] Sezione "Cosa include": 6 categorie, caratteristiche, compatibilità LLM
+- [x] CTA finale prominente con prezzo barrato (€79 → €39) e garanzia soddisfatti o rimborsati
+- [x] FAQ con 4 domande frequenti
+- [x] Route /prompt-library aggiunta in App.tsx
+- [x] Link "Prompt Library" nella LeftSidebar aggiornato a /prompt-library

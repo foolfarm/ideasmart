@@ -15,7 +15,7 @@ const CHANNELS: SidebarChannel[] = [
   { label: "Investi",        icon: "💼", href: "/dealroom" },
   { label: "Radar",          icon: "📡", href: "/verified-ai-news" },
   { label: "Make Money",     icon: "$",  href: "/make-money-with-ai" },
-  { label: "Prompt Library",  icon: "📋", href: "/copy-paste-ai" },
+  { label: "Prompt Library",  icon: "📋", href: "/prompt-library" },
   { label: "Nuovi Tools",    icon: "🛠️", href: "/daily-ai-tools" },
   { label: "Casi d'uso",     icon: "⚙️", href: "/automate-with-ai" },
   { label: "Opportunità",    icon: "📈", href: "/ai-opportunities" },

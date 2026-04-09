@@ -14,10 +14,10 @@ export default function CopyPasteAI() {
       icon={<Copy className="w-6 h-6" />}
       categories={["business", "studio", "marketing", "produttività", "creatività"]}
       showPrompt={true}
-      ctaTitle="Vuoi tutti i 99 prompt premium?"
-      ctaDescription="La Collezione dei Migliori Prompt 2026: framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output."
+      ctaTitle="L'AI che usi ogni giorno potrebbe fare 10 volte di più."
+      ctaDescription="99 prompt selezionati da professionisti reali — per manager, founder, marketer e consulenti. Libreria ricercabile + PDF incluso. Pagamento unico €39, accesso permanente."
       ctaLink="https://ideasmart.forum"
-      ctaLabel="Scopri la collezione — €39"
+      ctaLabel="🔓 Accedi subito per €39 →"
     />
   );
 }

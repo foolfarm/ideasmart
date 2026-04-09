@@ -57,29 +57,44 @@ export interface PromoCampaign {
 
 // ─── Campagna attiva: ideasmart.forum Prompt Library ────────────────────────
 export const CURRENT_CAMPAIGN: PromoCampaign = {
-  subject: "99 prompt che cambiano il modo in cui usi l'AI",
-  preheader: "La Prompt Library di Proof Press — 99 prompt selezionati, libreria ricercabile, PDF incluso. €39.",
-  badgeLabel: "EDIZIONE SPECIALE",
-  headline: "99 prompt da usare davvero nel lavoro quotidiano.",
-  subheadline: "Non una raccolta generica. Un archivio editoriale professionale con metodo, struttura e fonti ufficiali.",
+  subject: "Stai usando l'AI come si deve? Questi 99 prompt cambiano tutto.",
+  preheader: "Manager, freelance, marketer, founder: i prompt che usano i professionisti veri. €39 una volta sola.",
+  badgeLabel: "OFFERTA LIMITATA",
+  headline: "L'AI che usi ogni giorno potrebbe fare 10 volte di più.",
+  subheadline: "99 prompt selezionati da professionisti reali — non da tutorial YouTube. Organizzati, ricercabili, pronti all'uso.",
   heroImageUrl: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=640&h=320&fit=crop",
   heroImageAlt: "Prompt Library — Proof Press",
-  intro: "Hai mai perso tempo a cercare il prompt giusto tra file sparsi, note disorganizzate e thread di Twitter? La Prompt Library di Proof Press risolve questo problema una volta per tutte: 99 prompt selezionati, organizzati in 5 macro-sezioni, con un'interfaccia ricercabile e il PDF completo incluso.",
+  intro: "La maggior parte delle persone usa ChatGPT come un motore di ricerca glorificato. Scrive \"dimmi come fare X\", ottiene una risposta generica, rimane delusa. Il problema non è l'AI — è il prompt. Con i prompt giusti, lo stesso strumento diventa un consulente strategico, un copywriter senior, un analista finanziario. La Prompt Library di Proof Press raccoglie i 99 prompt che fanno davvero la differenza: testati, classificati, con istruzioni d'uso.",
   benefits: [
     {
-      icon: "🎯",
-      title: "Archivio editoriale, non una lista",
-      description: "Ogni prompt è classificato per categoria, contesto d'uso e livello di complessità. Trovi quello che ti serve in secondi."
+      icon: "👔",
+      title: "Per manager e dirigenti",
+      description: "\"Analizza questo report trimestrale e identificami i 3 rischi principali con piano d'azione concreto\" — trasforma 2 ore di analisi in 10 minuti di lavoro ad alto valore."
+    },
+    {
+      icon: "🚀",
+      title: "Per founder e imprenditori",
+      description: "\"Sei un esperto di go-to-market B2B SaaS. Costruisci una strategia di lancio per [prodotto] con budget €5.000\" — output concreto e strutturato, non teoria generica."
+    },
+    {
+      icon: "✍️",
+      title: "Per marketer e content creator",
+      description: "\"Scrivi 5 subject line email per [prodotto] usando la formula AIDA, tono professionale ma diretto, max 50 caratteri\" — risultati in 30 secondi invece di 30 minuti."
+    },
+    {
+      icon: "💼",
+      title: "Per consulenti e freelance",
+      description: "\"Sei un consulente senior. Analizza questo brief del cliente e identificami le domande che non ha fatto ma che determinano il successo del progetto\" — il prompt che impressiona i clienti."
     },
     {
       icon: "📚",
       title: "Metodo + fonti ufficiali",
-      description: "La collezione integra pratiche ufficiali di OpenAI, Anthropic, Claude Code e Perplexity. Non opinioni, ma standard."
+      description: "La collezione integra pratiche ufficiali di OpenAI, Anthropic, Claude Code e Perplexity. Non opinioni, ma standard testati da chi usa l'AI ogni giorno."
     },
     {
       icon: "💾",
       title: "Libreria online + PDF scaricabile",
-      description: "Accedi alla libreria ricercabile da qualsiasi device e scarica il PDF completo per averlo sempre con te."
+      description: "Accedi alla libreria ricercabile da qualsiasi device e scarica il PDF completo per averlo sempre con te, anche offline."
     }
   ],
   features: [
@@ -91,24 +106,28 @@ export const CURRENT_CAMPAIGN: PromoCampaign = {
     { label: "Prezzo", value: "€39 una tantum" }
   ],
   ctaUrl: "https://ideasmart.forum/",
-  ctaText: "Sblocca l'accesso per €39 →",
-  ctaSubtext: "Acquisto singolo · Nessun abbonamento · Accesso permanente",
+  ctaText: "🔓 Accedi subito per €39 →",
+  ctaSubtext: "Pagamento unico · Nessun abbonamento · Accesso permanente · PDF incluso",
   price: "€39",
   faq: [
     {
       question: "È un abbonamento?",
-      answer: "No. Paghi €39 una sola volta e ottieni accesso permanente alla libreria e al PDF."
+      answer: "No. Paghi €39 una sola volta e ottieni accesso permanente alla libreria online e al PDF scaricabile. Nessun rinnovo, nessuna sorpresa."
     },
     {
       question: "Cosa ricevo esattamente?",
-      answer: "Accesso all'area membri con 99 prompt ricercabili per categoria + download del PDF completo."
+      answer: "Accesso immediato all'area membri con 99 prompt ricercabili per categoria, filtrabili per uso professionale, più il PDF completo da scaricare e conservare."
     },
     {
-      question: "Per chi è pensata?",
-      answer: "Professionisti, founder, team e consulenti che usano ChatGPT, Claude o altri LLM nel lavoro quotidiano."
+      question: "Funziona con ChatGPT, Claude e Gemini?",
+      answer: "Sì. Tutti i prompt sono compatibili con i principali modelli LLM: ChatGPT (GPT-4o), Claude 3.5, Gemini 1.5 Pro, Perplexity. Puoi usarli subito senza modifiche."
+    },
+    {
+      question: "E se non mi serve?",
+      answer: "Se usi l'AI nel lavoro almeno una volta a settimana, ti serve. Se non sei soddisfatto entro 7 giorni, ti rimborsiamo."
     }
   ],
-  footerNote: "Stai ricevendo questa email perché sei iscritto alla newsletter di Proof Press."
+  footerNote: "Stai ricevendo questa email perché sei iscritto alla newsletter di Proof Press by Ideasmart."
 };
 
 // ─── Template HTML ───────────────────────────────────────────────────────────

@@ -85,6 +85,7 @@ const MakeMoneyWithAI = lazy(() => import("./pages/MakeMoneyWithAI"));
 const DailyAITools = lazy(() => import("./pages/DailyAITools"));
 const VerifiedAINews = lazy(() => import("./pages/VerifiedAINews"));
 const AIOpportunities = lazy(() => import("./pages/AIOpportunities"));
+const PromptLibraryLanding = lazy(() => import("./pages/PromptLibraryLanding"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -132,6 +133,7 @@ function Router() {
         <Route path="/editoriale/venture-studio-index" component={EditorialVSI} />
         <Route path="/start-here" component={StartHere} />
         <Route path="/copy-paste-ai" component={CopyPasteAI} />
+        <Route path="/prompt-library" component={PromptLibraryLanding} />
         <Route path="/automate-with-ai" component={AutomateWithAI} />
         <Route path="/make-money-with-ai" component={MakeMoneyWithAI} />
         <Route path="/daily-ai-tools" component={DailyAITools} />
