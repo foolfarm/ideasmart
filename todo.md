@@ -2935,3 +2935,16 @@
 - [x] Aggiungere 3 testimonial anonimi nella sezione "Già in produzione"
 - [x] Bottone "PARLA CON NOI" già correttamente collegato a mailto:info@proofpress.ai (nessuna modifica necessaria)
 - [x] Rimuovere sezione "Agenti di supporto inclusi in tutti i piani"
+
+## Post LinkedIn + Editoriale "La Cina mette la freccia" (9 Apr 2026)
+
+- [x] Leggere articolo sorgente Perplexity sulla Cina AI
+- [x] Scrivere post LinkedIn di Andrea Cinelli sul tema
+- [x] Pubblicare post su LinkedIn
+- [x] Inserire editoriale nel sito Proof Press
+
+## Aggiornamento menu navigazione (9 Apr 2026)
+
+- [x] Rimuovere voce "Cosa Facciamo" dal menu
+- [x] Rinominare "Chi Siamo" in "Crea Un Giornale"
+- [x] Aggiungere voce "Demo" in fondo al menu con link a ideasmart.technology

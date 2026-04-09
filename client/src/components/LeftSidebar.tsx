@@ -23,9 +23,9 @@ const CHANNELS: SidebarChannel[] = [
 
 /* ─── SEZIONE INFO (sotto il divider) ────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
-  { label: "Chi Siamo",              icon: "👤", href: "/chi-siamo" },
-  { label: "Cosa Facciamo",          icon: "🔧", href: "/tecnologia" },
-  { label: "Tecnologia", icon: "✅", href: "/proofpress-verify" },
+  { label: "Crea Un Giornale",       icon: "👤", href: "/chi-siamo" },
+  { label: "Tecnologia",             icon: "✅", href: "/proofpress-verify" },
+  { label: "Demo",                   icon: "🎯", href: "https://ideasmart.technology" },
 ];
 
 export default function LeftSidebar() {
