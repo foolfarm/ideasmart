@@ -498,7 +498,7 @@ export default function Home() {
                 </Link>
                 <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  La prima redazione giornalistica agentica<br />con informazione Certificata
+                  Il tuo hub per restare sempre aggiornato sull'innovazione<br />4.000+ fonti analizzate 24/7 per offrirti un'informazione completa, verificata e pronta all'uso per capire, decidere e agire.
                 </p>
               </div>
 
