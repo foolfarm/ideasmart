@@ -133,7 +133,9 @@ export default function ChiSiamoStory() {
                   <strong className="text-[#0a0a0a] font-bold">Rumore, non segnale.</strong>
                 </p>
                 <p>
-                  Da quella frustrazione nasce Ideasmart. Non come un altro media digitale, 
+                  Da quella frustrazione nasce{" "}
+                  <strong className="text-[#0a0a0a] font-bold">Ideasmart</strong>: una startup fondata da Adrian Lenice nella{" "}
+                  <strong className="text-[#0a0a0a] font-bold">Silicon Valley, a Cupertino</strong>. Non come un altro media digitale, 
                   ma come un sistema editoriale completamente nuovo: una redazione agentica, 
                   guidata dall'intelligenza artificiale, capace di analizzare migliaia di fonti ogni giorno, 
                   selezionare le notizie rilevanti e —{" "}
