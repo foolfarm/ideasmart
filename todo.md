@@ -2862,3 +2862,11 @@
 - [ ] Scheduler: preview 08:30 mar/gio, invio 10:30 mar/gio
 - [ ] Sistema configurabile: ogni settimana si può cambiare il prodotto promosso dall'admin
 - [ ] Test invio preview newsletter promozionale
+
+## Newsletter Promozionale "Proof Press Promo" — 9 Apr 2026
+
+- [x] Analizzare ideasmart.forum per raccogliere contenuti promozionali (Prompt Library 99 prompt €39)
+- [x] Creare promoNewsletter.ts con template HTML premium (sfondo crema, CTA rosso, design editoriale)
+- [x] Scheduler mar/gio: preview 08:30 CET, invio massivo 10:30 CET (cron "30 8 * * 2,4" e "30 10 * * 2,4")
+- [x] Inviare preview test a ac@acinelli.com: "[PREVIEW PROMO] 99 prompt che cambiano il modo in cui usi l'AI"
+- [x] 107/107 test passano dopo le modifiche

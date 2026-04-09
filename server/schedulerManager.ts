@@ -481,6 +481,47 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
+  // NEWSLETTER PROMOZIONALE — Martedì e Giovedì
+  //   08:30 CET — Preview promo (solo owner, per approvazione)
+  //   10:30 CET — Invio massivo promo a tutti gli iscritti
+  // ══════════════════════════════════════════════════════════════════════════
+  // ⏰ 08:30 CET (mar/gio) — Preview newsletter promozionale
+  cron.schedule("30 8 * * 2,4", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET (mar/gio) — Preview newsletter promozionale...");
+    await withLock("promo-preview", async () => {
+      try {
+        const { sendPromoPreview } = await import("./promoNewsletter");
+        const result = await sendPromoPreview();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Preview promo inviata: ${result.subject}`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore preview promo:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico preview promo:", err);
+      }
+    });
+  }, { timezone: TZ });
+
+  // ⏰ 10:30 CET (mar/gio) — Invio massivo newsletter promozionale
+  cron.schedule("30 10 * * 2,4", async () => {
+    console.log("[SchedulerManager] ⏰ 10:30 CET (mar/gio) — Invio massivo newsletter promozionale...");
+    await withLock("promo-massivo", async () => {
+      try {
+        const { sendPromoNewsletterToAll } = await import("./promoNewsletter");
+        const result = await sendPromoNewsletterToAll();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Newsletter promo inviata: ${result.recipientCount} destinatari`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore newsletter promo massiva:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico newsletter promo massiva:", err);
+      }
+    });
+  }, { timezone: TZ });
+
+  // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 4 post giornalieri:
   //   10:00 CET — AI News (morning)
   //   12:30 CET — Startup News (startup-afternoon)
