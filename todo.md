@@ -2808,3 +2808,6 @@
 - [x] Rebranding hero: mantenere tagline "Non leggere l'AI. Usala..."
 - [x] Rebranding hero: sotto piccolo → "Powered by ProofPress Verify Technology"
 - [x] Ridurre dimensione "Powered by ProofPress Verify Technology" nell'header hero (molto più piccolo)
+- [x] Creare box annuncio ProofPress sopra i blocchi "La Collezione" e "Iscriviti Gratis" nella Home
+- [x] Titolo hero: PROOFPRESS → "Proof Press" (parole separate, iniziali maiuscole)
+- [x] "by Ideasmart" molto più piccolo e sulla stessa riga del titolo (non sotto)

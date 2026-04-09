@@ -479,8 +479,8 @@ export default function Home() {
               {/* Titolo centrale */}
               <div className="text-center flex-1 min-w-0">
                 <Link href="/">
-                  <div className="cursor-pointer hover:opacity-80 transition-opacity inline-block">
-                    {/* PROOFPRESS — grande */}
+                  <div className="cursor-pointer hover:opacity-80 transition-opacity inline-flex items-baseline gap-3">
+                    {/* Proof Press — grande */}
                     <h1 className="font-black tracking-tight text-[#1a1a1a]"
                       style={{
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
@@ -488,12 +488,12 @@ export default function Home() {
                         letterSpacing: "-0.02em",
                         lineHeight: 1
                       }}>
-                      PROOFPRESS
+                      Proof Press
                     </h1>
-                    <p className="text-[12px] uppercase tracking-[0.2em] text-[#1a1a1a]/45 font-medium mt-0.5"
+                    <span className="text-[9px] uppercase tracking-[0.15em] text-[#1a1a1a]/30 font-normal whitespace-nowrap"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                       by Ideasmart
-                    </p>
+                    </span>
                   </div>
                 </Link>
                 <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"
@@ -863,6 +863,29 @@ export default function Home() {
 
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
+
+                  {/* ── Box Annuncio ProofPress ── */}
+                  <Link href="/proofpress-verify">
+                    <div className="mb-5 p-5 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
+                      style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1a1a2e 100%)", border: "1px solid rgba(0,229,200,0.15)" }}>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.25em] mb-2"
+                        style={{ color: "#00e5c8", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>
+                        Novità
+                      </p>
+                      <p className="text-[17px] font-black leading-tight mb-2"
+                        style={{ color: "#ffffff", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
+                        Ideasmart diventa ProofPress.
+                      </p>
+                      <p className="text-[12px] leading-relaxed mb-3"
+                        style={{ color: "rgba(255,255,255,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.
+                      </p>
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-wider py-2 px-4 rounded group-hover:opacity-90 transition-opacity"
+                        style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Scopri La ProofPress Verify Technology →
+                      </span>
+                    </div>
+                  </Link>
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
                   <a
