@@ -458,23 +458,18 @@ export default function Home() {
           <div className="py-6">
             {/* Brand centrale con manchette Amazon ai lati */}
             <div className="flex items-center justify-center gap-4">
-              {/* Manchette sinistra — Amazon */}
-              <a
-                href="https://amzn.to/4s8n0wI"
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="hidden lg:flex flex-shrink-0 w-[160px] flex-col items-center rounded-lg overflow-hidden border border-[#1a1a1a]/8 hover:border-[#e63946]/40 hover:shadow-xl transition-all duration-300 group bg-white p-2"
-                aria-label="Cambridge Audio P100 SE su Amazon"
-              >
-                <span className="text-[9px] uppercase tracking-[0.15em] text-[#e63946] font-bold mb-1">Consigliato</span>
-                <img
-                  src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/amazon_cambridge_audio_p100_fe7baf21.webp"
-                  alt="Cambridge Audio P100 SE"
-                  className="w-[100px] h-[100px] object-contain group-hover:scale-105 transition-transform duration-300"
-                />
-                <span className="text-[10px] text-[#1a1a1a]/70 font-medium text-center leading-tight mt-1">Cambridge Audio<br/>P100 SE</span>
-                <span className="text-[8px] text-[#1a1a1a]/40 mt-0.5">Amazon.it</span>
-              </a>
+              {/* Manchette sinistra — Tradedoubler */}
+              <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
+                <a href="https://clk.tradedoubler.com/click?p=365615&a=3477790&g=26113480" target="_blank" rel="noopener noreferrer sponsored">
+                  <img
+                    src={`https://imp.tradedoubler.com/imp?type(img)g(26113480)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                    width="300"
+                    height="250"
+                    alt="Pubblicità"
+                    style={{ width: '160px', height: 'auto', display: 'block', border: 0 }}
+                  />
+                </a>
+              </div>
 
               {/* Titolo centrale */}
               <div className="text-center flex-1 min-w-0">
@@ -502,23 +497,18 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Manchette destra — Amazon */}
-              <a
-                href="https://amzn.to/3PYgBXA"
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="hidden lg:flex flex-shrink-0 w-[160px] flex-col items-center rounded-lg overflow-hidden border border-[#1a1a1a]/8 hover:border-[#e63946]/40 hover:shadow-xl transition-all duration-300 group bg-white p-2"
-                aria-label="Plaud NotePin S su Amazon"
-              >
-                <span className="text-[9px] uppercase tracking-[0.15em] text-[#e63946] font-bold mb-1">Consigliato</span>
-                <img
-                  src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/amazon_plaud_notepin_03f935aa.webp"
-                  alt="Plaud NotePin S"
-                  className="w-[100px] h-[100px] object-contain group-hover:scale-105 transition-transform duration-300"
-                />
-                <span className="text-[10px] text-[#1a1a1a]/70 font-medium text-center leading-tight mt-1">Plaud NotePin S<br/>AI Voice Recorder</span>
-                <span className="text-[8px] text-[#1a1a1a]/40 mt-0.5">Amazon.it</span>
-              </a>
+              {/* Manchette destra — Tradedoubler */}
+              <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
+                <a href="https://clk.tradedoubler.com/click?p=341133&a=3477790&g=26092910" target="_blank" rel="noopener noreferrer sponsored">
+                  <img
+                    src={`https://imp.tradedoubler.com/imp?type(img)g(26092910)a(3477790)${Math.random().toString().substring(2, 11)}`}
+                    width="300"
+                    height="250"
+                    alt="Pubblicità"
+                    style={{ width: '160px', height: 'auto', display: 'block', border: 0 }}
+                  />
+                </a>
+              </div>
             </div>
 
             {/* Sottotitolo full-width */}
