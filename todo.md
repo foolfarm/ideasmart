@@ -2921,3 +2921,17 @@
 ## Modifica sezione "La tua redazione" /chi-siamo (9 Apr 2026)
 
 - [x] Cambiare titolo "La tua redazione" in "La nostra soluzione" e aggiornare il copy
+
+## Rimozione sezione "Agenti di supporto" /chi-siamo (9 Apr 2026)
+
+- [ ] Rimuovere la sezione "Agenti di supporto inclusi in tutti i piani" dalla pagina /chi-siamo
+
+## Fix bottone PARLA CON NOI /chi-siamo (9 Apr 2026)
+
+- [ ] Bottone "PARLA CON NOI" deve aprire mailto:info@proofpress.ai
+
+## Testimonial e fix bottone /chi-siamo (9 Apr 2026)
+
+- [x] Aggiungere 3 testimonial anonimi nella sezione "Già in produzione"
+- [x] Bottone "PARLA CON NOI" già correttamente collegato a mailto:info@proofpress.ai (nessuna modifica necessaria)
+- [x] Rimuovere sezione "Agenti di supporto inclusi in tutti i piani"

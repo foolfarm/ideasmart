@@ -541,30 +541,6 @@ export default function ChiSiamo() {
             </table>
           </div>
 
-          {/* Agenti di supporto */}
-          <div className="mt-10 border border-[#0a0a0a]/10 p-8" style={{ background: 'rgba(10,10,10,0.02)' }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/30 mb-4">Agenti di supporto inclusi in tutti i piani</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { icon: "✅", name: "Fact Checker", desc: "Verifica ogni notizia su fonti multiple (ProofPress Verify™)" },
-                { icon: "📢", name: "Publisher", desc: "Pubblica e impagina in automatico" },
-                { icon: "📧", name: "Newsletter Curator", desc: "Seleziona e invia le newsletter" },
-                { icon: "📱", name: "Social Editor", desc: "Genera post per LinkedIn, Twitter, Telegram" },
-              ].map((s, i) => (
-                <div key={i} className="text-center">
-                  <span className="text-xl">{s.icon}</span>
-                  <p className="mt-2 text-sm font-bold text-[#0a0a0a]">{s.name}</p>
-                  <p className="mt-1 text-xs text-[#0a0a0a]/50">{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="mt-6 text-center text-sm text-[#0a0a0a]/45">
-            Gli Agent Giornalisti sono quelli che <strong className="text-[#0a0a0a]">TU</strong> configuri: scegli il settore, le fonti, il tono, la frequenza.<br />
-            Gli agenti di supporto lavorano in automatico su tutti i contenuti prodotti.
-          </p>
-
         </Section>
 
         <Divider />
@@ -629,6 +605,29 @@ export default function ChiSiamo() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Testimonial anonimi */}
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "Avevo una newsletter su AI e startup, ma non riuscivo a tenere il ritmo. Con Proof Press pubblico ogni giorno senza stress. La qualità è costante e i lettori se ne accorgono.",
+                role: "Founder, media startup AI — Milano",
+              },
+              {
+                quote: "Ho lanciato una testata verticale sul venture capital europeo in meno di due settimane. Oggi genera traffico organico e mi porta lead qualificati. Non avrei mai pensato fosse possibile con 1 persona.",
+                role: "Investor Relations Manager — Londra",
+              },
+              {
+                quote: "La parte che mi ha convinto di più è la certificazione delle notizie. I miei lettori sono professionisti esigenti: sapere che ogni contenuto è verificato fa tutta la differenza.",
+                role: "Direttore editoriale, testata B2B — Roma",
+              },
+            ].map((t, i) => (
+              <div key={i} className="border border-[#0a0a0a]/10 p-6" style={{ background: "#ffffff" }}>
+                <p className="text-sm leading-relaxed text-[#0a0a0a]/65 italic">&ldquo;{t.quote}&rdquo;</p>
+                <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0a0a0a]/35">{t.role}</p>
+              </div>
+            ))}
           </div>
         </Section>
 
