@@ -9,9 +9,11 @@ interface SidebarChannel {
 
 /* ─── SEZIONE INFO ────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
-  { label: "Crea Un Giornale", icon: "👤", href: "/chi-siamo" },
-  { label: "Tecnologia",       icon: "✅", href: "/proofpress-verify" },
-  { label: "Demo",             icon: "🎯", href: "https://ideasmart.technology" },
+  { label: "Crea Un Giornale - Servizi", icon: "👤", href: "/chi-siamo" },
+  { label: "Tecnologia",                 icon: "✅", href: "/proofpress-verify" },
+  { label: "Demo",                       icon: "🎯", href: "https://ideasmart.technology" },
+  { label: "Pubblicizza",                icon: "🎯", href: "/pubblicita" },
+  { label: "Contatti",                   icon: "✉️", href: "mailto:info@proofpress.ai" },
 ];
 
 // Immagine editoriale per il banner (redazione agentica)
@@ -40,20 +42,29 @@ export default function LeftSidebar() {
         scrollbarWidth: "none",
       }}
     >
-      {/* Logo */}
+      {/* Logo — due righe: "Proof Press" + "Business" */}
       <div className="px-4 mb-4">
         <Link href="/">
           <div className="cursor-pointer">
             <div
-              className="font-black text-[#1a1a1a]"
               style={{
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                fontSize: "20px",
                 letterSpacing: "-0.02em",
-                lineHeight: 1,
+                lineHeight: 1.1,
               }}
             >
-              Proof Press
+              <div
+                className="font-black text-[#1a1a1a]"
+                style={{ fontSize: "20px" }}
+              >
+                Proof Press
+              </div>
+              <div
+                className="font-black text-[#ff5500]"
+                style={{ fontSize: "20px" }}
+              >
+                Business
+              </div>
             </div>
           </div>
         </Link>
@@ -65,7 +76,7 @@ export default function LeftSidebar() {
       {/* Sezione info */}
       <nav className="flex flex-col gap-0.5 px-2 mb-4">
         {INFO_LINKS.map((ch) => {
-          const isExternal = ch.href.startsWith("http");
+          const isExternal = ch.href.startsWith("http") || ch.href.startsWith("mailto:");
           const inner = (
             <div
               className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 ${
@@ -84,7 +95,12 @@ export default function LeftSidebar() {
             </div>
           );
           return isExternal ? (
-            <a key={ch.href + ch.label} href={ch.href} target="_blank" rel="noopener noreferrer">
+            <a
+              key={ch.href + ch.label}
+              href={ch.href}
+              target={ch.href.startsWith("mailto:") ? "_self" : "_blank"}
+              rel="noopener noreferrer"
+            >
               {inner}
             </a>
           ) : (

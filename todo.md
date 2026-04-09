@@ -2979,3 +2979,11 @@
 
 - [x] Sostituire banner CONSIGLIATO nell'header con i due banner Tradedoubler
 - [x] Spostare banner ProofPress Business subito sotto Demo nella sidebar con immagine
+
+## Sidebar e pagina Pubblicità (9 Apr 2026)
+
+- [x] Titolo sidebar: "Proof Press" + "Business" su due righe (Business in arancione)
+- [x] Voce menu "Crea Un Giornale" rinominata in "Crea Un Giornale - Servizi"
+- [x] Aggiunta voce "Pubblicizza 🎯" → /pubblicita
+- [x] Aggiunta voce "Contatti ✉️" → mailto:info@proofpress.ai
+- [x] Creata pagina /pubblicita con hero, numeri, audience, formati e CTA

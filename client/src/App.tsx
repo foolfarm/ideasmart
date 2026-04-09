@@ -86,6 +86,7 @@ const DailyAITools = lazy(() => import("./pages/DailyAITools"));
 const VerifiedAINews = lazy(() => import("./pages/VerifiedAINews"));
 const AIOpportunities = lazy(() => import("./pages/AIOpportunities"));
 const PromptLibraryLanding = lazy(() => import("./pages/PromptLibraryLanding"));
+const PubblicitaPage = lazy(() => import("./pages/PubblicitaPage"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -142,6 +143,7 @@ function Router() {
         <Route path="/submit-tool" component={SubmitTool} />
         <Route path="/ebook/prompt-2026" component={EbookPrompt} />
         <Route path="/newsletter-feedback" component={NewsletterFeedback} />
+        <Route path="/pubblicita" component={PubblicitaPage} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
