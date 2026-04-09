@@ -8,7 +8,7 @@
  *   2. Estrae tutti i link href presenti nell'HTML
  *   3. Verifica ogni link con una richiesta HEAD (timeout 8s)
  *   4. Classifica i link: OK (2xx/3xx), BROKEN (4xx/5xx), TIMEOUT, SKIP (mailto/tel)
- *   5. Invia un report via email a info@ideasmart.biz con il riepilogo
+ *   5. Invia un report via email a info@proofpress.ai con il riepilogo
  *   6. Se ci sono link broken su ideasmart.biz, blocca l'invio e notifica l'owner
  *
  * Soglia di blocco: qualsiasi link ideasmart.biz che risponde 4xx/5xx
@@ -19,7 +19,7 @@ import { sendEmail } from "./email";
 import { buildChannelNewsletter, getTodayChannel } from "./dailyChannelNewsletter";
 import { notifyOwner } from "./_core/notification";
 
-const AUDIT_EMAIL = "info@ideasmart.biz";
+const AUDIT_EMAIL = "info@proofpress.ai";
 const BASE_DOMAIN = "ideasmart.biz";
 const TIMEOUT_MS = 8000;
 

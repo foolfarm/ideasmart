@@ -9,9 +9,10 @@ interface SendEmailOptions {
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
   const apiKey = process.env.SENDGRID_API_KEY;
-  // Mittente ufficiale Proof Press — verificare info@ideasmart.biz su SendGrid Sender Authentication
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@ideasmart.biz";
-  const fromName = process.env.SENDGRID_FROM_NAME || "Proof Press Daily";
+  // Mittente ufficiale ProofPress.AI
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@proofpress.ai";
+  const fromName = process.env.SENDGRID_FROM_NAME || "ProofPress.AI";
+  const replyTo = "noreply@proofpress.ai";
 
   if (!apiKey) {
     console.error("[Email] SENDGRID_API_KEY not set");
@@ -25,6 +26,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
       to: [{ email }]
     })),
     from: { email: fromEmail, name: fromName },
+    reply_to: { email: replyTo, name: fromName },
     subject: opts.subject,
     content: [
       ...(opts.text ? [{ type: "text/plain", value: opts.text }] : []),
@@ -662,7 +664,7 @@ export function buildWelcomeEmailHtml(opts: {
             </table>
 
             <p style="font-size:13px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;text-align:center;">
-              Hai domande? Scrivi a <a href="mailto:info@ideasmart.biz" style="color:#00b4a0;text-decoration:none;">info@ideasmart.biz</a>
+              Hai domande? Scrivi a <a href="mailto:info@proofpress.ai" style="color:#00b4a0;text-decoration:none;">info@proofpress.ai</a>
             </p>
           </td>
         </tr>

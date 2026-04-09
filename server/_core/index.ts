@@ -118,22 +118,21 @@ async function startServer() {
   // Manus usa un reverse proxy che aggiunge X-Forwarded-For
   app.set('trust proxy', 1);
 
-  // ── Redirect 301: vecchi domini → ideasmart.biz ──────────────────────────────────────────
+  // ── Redirect 301: tutti i domini → proofpress.ai ──────────────────────────────────────────
   // Preserva path e query string per SEO. Intercetta prima di qualsiasi altro middleware.
-  const CANONICAL_HOST = "ideasmart.biz";
-  const OLD_HOSTS = ["ideasmart.ai", "www.ideasmart.ai", "ideasmart.manus.space", "ideasmartai-uypaon6i.manus.space"];
+  const CANONICAL_HOST = "proofpress.ai";
+  const OLD_HOSTS = [
+    "ideasmart.ai", "www.ideasmart.ai",
+    "ideasmart.biz", "www.ideasmart.biz",
+    "www.proofpress.ai",
+    "ideasmart.manus.space", "ideasmartai-uypaon6i.manus.space"
+  ];
   app.use((req, res, next) => {
     const host = (req.hostname || req.headers.host || "").replace(/:\d+$/, "").toLowerCase();
     if (OLD_HOSTS.includes(host)) {
       const protocol = req.protocol || "https";
       const target = `${protocol}://${CANONICAL_HOST}${req.originalUrl}`;
       console.log(`[Redirect 301] ${host}${req.originalUrl} → ${target}`);
-      return res.redirect(301, target);
-    }
-    // www.ideasmart.biz → ideasmart.biz (naked domain)
-    if (host === "www.ideasmart.biz") {
-      const protocol = req.protocol || "https";
-      const target = `${protocol}://${CANONICAL_HOST}${req.originalUrl}`;
       return res.redirect(301, target);
     }
     next();

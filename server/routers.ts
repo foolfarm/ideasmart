@@ -860,7 +860,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         if ((result as any).success || (result as any).resubscribed) {
           try {
             // Recupera il token di disiscrizione per il link GDPR nell'email
-            const baseUrl = `https://ideasmart.biz`;
+            const baseUrl = `https://proofpress.ai`;
             const { getSubscriberByEmail } = await import("./db");
             const subscriber = await getSubscriberByEmail(input.email);
             const unsubToken = subscriber?.unsubscribeToken;
@@ -980,7 +980,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
         if ((result as any).success || (result as any).resubscribed) {
           try {
-            const baseUrl = 'https://ideasmart.biz';
+            const baseUrl = 'https://proofpress.ai';
             const { getSubscriberByEmail } = await import('./db');
             const subscriber = await getSubscriberByEmail(input.email);
             const unsubToken = subscriber?.unsubscribeToken;
@@ -2101,9 +2101,9 @@ Rispondi con questo JSON:
               <div style="width: 64px; height: 64px; background: #e6faf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px;">✓</div>
               <h2 style="color: #0a0f1e; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta per <strong>${input.company}</strong>. Ti risponderemo entro <strong>24 ore</strong> con una proposta personalizzata.</p>
-              <a href="https://ideasmart.biz/advertise" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Esplora i formati →</a>
+              <a href="https://proofpress.ai/advertise" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Esplora i formati →</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@ideasmart.biz · <a href="https://ideasmart.biz" style="color: #00e5c8;">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@proofpress.ai · <a href="https://proofpress.ai" style="color: #00e5c8;">ideasmart.biz</a></p>
           </div>
         `;
 
@@ -2161,9 +2161,9 @@ Rispondi con questo JSON:
               <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
               <h2 style="color: #0a0f1e; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo per Proof Press Business. Ti contatteremo entro <strong>24 ore</strong> per schedulare una call gratuita di 30 minuti.</p>
-              <a href="https://ideasmart.biz/business" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri Proof Press Business →</a>
+              <a href="https://proofpress.ai/business" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri Proof Press Business →</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@ideasmart.biz · <a href="https://ideasmart.biz" style="color: #00e5c8;">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@proofpress.ai · <a href="https://proofpress.ai" style="color: #00e5c8;">ideasmart.biz</a></p>
           </div>
         `;
         await sendEmail({ to: input.email, subject: `La tua demo Proof Press Business è confermata — ti ricontatteremo presto`, html: htmlConfirm });
@@ -2224,7 +2224,7 @@ Rispondi con questo JSON:
             </div>
           </div>
         `;
-        await sendEmail({ to: "info@ideasmart.biz", subject, html: htmlAdmin });
+        await sendEmail({ to: "info@proofpress.ai", subject, html: htmlAdmin });
 
         // Email conferma al richiedente
         const htmlConfirm = `
@@ -2236,9 +2236,9 @@ Rispondi con questo JSON:
               <div style="font-size: 48px; margin-bottom: 16px;">\u2713</div>
               <h2 style="color: #1a1a1a; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo. Ti contatteremo entro <strong>24 ore</strong> per mostrarti come lanciare il tuo giornale con Proof Press.</p>
-              <a href="https://ideasmart.biz/offertacommerciale" style="display: inline-block; background: #dc2626; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri di pi\u00f9 \u2192</a>
+              <a href="https://proofpress.ai/offertacommerciale" style="display: inline-block; background: #dc2626; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri di pi\u00f9 \u2192</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press \u00B7 info@ideasmart.biz \u00B7 <a href=\"https://ideasmart.biz\" style=\"color: #dc2626;\">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press \u00B7 info@proofpress.ai \u00B7 <a href=\"https://proofpress.ai\" style=\"color: #dc2626;\">ideasmart.biz</a></p>
           </div>
         `;
         await sendEmail({ to: input.email, subject: `La tua demo Proof Press \u00E8 confermata \u2014 ti ricontatteremo presto`, html: htmlConfirm });

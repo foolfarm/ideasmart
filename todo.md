@@ -2821,3 +2821,18 @@
 - [x] Rebranding completo: aggiornato index.html (title, meta tag OG, Twitter, Apple)
 - [x] Rebranding completo: aggiornato SharedPageFooter, ReadersCounter, RicercaDelGiorno
 - [x] Fix tag JSX rotti da sed (DemoSandwichClub span, Research strong, siteHealthCheck variabile)
+
+## Aggiornamenti Hero, Newsletter, Redirect e Contatti (9 Apr 2026)
+- [x] Hero Home: cambiare testo in "Proof Press by Ideasmart — La prima redazione giornalistica agentica con informazione Certificata"
+- [x] Hero Home: rimuovere tagline "Non leggere l'AI. Usala..." e "Powered by ProofPress Verify Technology"
+- [x] Redirect: configurare redirect da ideasmart.ai e ideasmart.biz verso proofpress.ai
+- [x] Newsletter sender: cambiare nome a "ProofPress.AI — AI-Verified Intelligence. Every Day."
+- [x] Newsletter sender: from info@proofpress.ai, reply noreply@proofpress.ai
+- [x] Email pagine: sostituire info@ideasmart.ai con info@proofpress.ai in tutte le pagine e file server
+- [ ] Chi Siamo: aggiungere sezione Contattaci con modulo di contatto base
+- [ ] Newsletter test: inviare newsletter aggiornata come test
+- [ ] URGENTE: Verificare e bloccare invii newsletter automatici non approvati
+- [ ] Aggiornare template HTML newsletter con brand Proof Press (rimuovere IDEASMART)
+- [ ] Menu: cambiare voce "Cos'è ProofPress Verify" in "Tecnologia"
+- [ ] URGENTE: Cancellare definitivamente la routine newsletter delle 11:00 (preview)
+- [ ] Verificare quante email sono state inviate oggi

@@ -479,37 +479,26 @@ export default function Home() {
               {/* Titolo centrale */}
               <div className="text-center flex-1 min-w-0">
                 <Link href="/">
-                  <div className="cursor-pointer hover:opacity-80 transition-opacity inline-flex items-baseline gap-3">
-                    {/* Proof Press — grande */}
-                    <h1 className="font-black tracking-tight text-[#1a1a1a]"
+                  <div className="cursor-pointer hover:opacity-80 transition-opacity">
+                    {/* Proof Press by Ideasmart — titolo unico */}
+                    <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
                       style={{
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "clamp(42px, 7vw, 88px)",
                         letterSpacing: "-0.02em",
                         lineHeight: 1
                       }}>
-                      Proof Press
+                      Proof Press{" "}
+                      <span className="text-[clamp(14px,2vw,22px)] font-normal tracking-[0.05em] text-[#1a1a1a]/35 align-baseline"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        by Ideasmart
+                      </span>
                     </h1>
-                    <span className="text-[9px] uppercase tracking-[0.15em] text-[#1a1a1a]/30 font-normal whitespace-nowrap"
-                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                      by Ideasmart
-                    </span>
                   </div>
                 </Link>
-                <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"
+                <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Informazioni e Ricerche sul mondo dell'AI certificate
-                </p>
-                <p className="mt-1.5 text-[14px] text-[#1a1a1a]/45 italic"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                  Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.
-                </p>
-                <p className="mt-1 text-[8px] uppercase tracking-[0.1em] text-[#1a1a1a]/30 font-normal"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Powered by{" "}
-                  <Link href="/proofpress-verify">
-                    <span className="underline hover:text-[#1a1a1a]/40 transition-colors cursor-pointer">ProofPress Verify Technology</span>
-                  </Link>
+                  La prima redazione giornalistica agentica<br />con informazione Certificata
                 </p>
               </div>
 

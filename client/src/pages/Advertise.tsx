@@ -204,7 +204,7 @@ export default function Advertise() {
       toast.success("Richiesta inviata! Ti contatteremo entro 24 ore.");
     },
     onError: () => {
-      toast.error("Errore nell'invio. Scrivi direttamente a info@ideasmart.biz");
+      toast.error("Errore nell'invio. Scrivi direttamente a info@proofpress.ai");
     },
   });
 
@@ -625,8 +625,8 @@ export default function Advertise() {
                     style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Oppure scrivi direttamente a{" "}
-                    <a href="mailto:info@ideasmart.biz" style={{ color: ACCENT }}>
-                      info@ideasmart.biz
+                    <a href="mailto:info@proofpress.ai" style={{ color: ACCENT }}>
+                      info@proofpress.ai
                     </a>
                   </p>
                 </div>

@@ -2,17 +2,20 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import { join } from "path";
 
-describe("SENDGRID_FROM_NAME", () => {
-  it("email.ts should use 'Proof Press Daily' as default sender name", () => {
+describe("SENDGRID sender configuration", () => {
+  it("email.ts should use 'ProofPress.AI' as default sender name", () => {
     const emailTs = readFileSync(join(__dirname, "email.ts"), "utf-8");
-    // Verify the fallback default is "Proof Press Daily"
-    expect(emailTs).toContain('"Proof Press Daily"');
-    expect(emailTs).not.toContain('|| "IDEASMART"');
+    expect(emailTs).toContain('"ProofPress.AI"');
+    expect(emailTs).toContain('"info@proofpress.ai"');
+    expect(emailTs).toContain('"noreply@proofpress.ai"');
+    expect(emailTs).toContain("reply_to");
   });
 
-  it("mailer.ts should use 'Proof Press Daily' as sender name", () => {
+  it("mailer.ts should use 'ProofPress.AI' as sender name", () => {
     const mailerTs = readFileSync(join(__dirname, "_core/mailer.ts"), "utf-8");
-    expect(mailerTs).toContain('"Proof Press Daily"');
-    expect(mailerTs).not.toContain('"IDEASMART"');
+    expect(mailerTs).toContain('"ProofPress.AI"');
+    expect(mailerTs).toContain('"info@proofpress.ai"');
+    expect(mailerTs).toContain('"noreply@proofpress.ai"');
+    expect(mailerTs).toContain("reply_to");
   });
 });

@@ -118,7 +118,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Come posso iniziare?",
-    a: "Prenota una demo per vedere la piattaforma in azione e discutere il modello più adatto alle tue esigenze. Puoi scriverci a info@ideasmart.biz o prenotare direttamente dal sito."
+    a: "Prenota una demo per vedere la piattaforma in azione e discutere il modello più adatto alle tue esigenze. Puoi scriverci a info@proofpress.ai o prenotare direttamente dal sito."
   },
 ];
 
@@ -568,7 +568,7 @@ export default function ChiSiamo() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Proof Press"
+                href="mailto:info@proofpress.ai?subject=Informazioni Piattaforma Proof Press"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
                 style={{ background: '#0a0a0a', borderRadius: '0' }}
               >
@@ -649,7 +649,7 @@ export default function ChiSiamo() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Proof Press"
+                href="mailto:info@proofpress.ai?subject=Informazioni Piattaforma Proof Press"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
                 style={{ background: "#ffffff", borderRadius: "0" }}
               >
