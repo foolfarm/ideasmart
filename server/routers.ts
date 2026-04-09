@@ -1642,11 +1642,11 @@ Rispondi con questo JSON:
     publishLinkedIn: adminProcedure
       .input(z.object({
         slot: z.enum(["morning", "afternoon", "startup-afternoon", "research", "dealroom", "ai-tool-radar"]).default("morning"),
-        force: z.boolean().default(true),
+        force: z.boolean().default(false),
       }).optional())
       .mutation(async ({ input }) => {
         const slot = input?.slot ?? "morning";
-        const force = input?.force ?? true;
+        const force = input?.force ?? false;
         console.log(`[AdminRouter] Avvio pubblicazione manuale LinkedIn \u2014 slot: ${slot}, force: ${force}`);
         const result = await publishLinkedInPost(slot as any, force);
         return {

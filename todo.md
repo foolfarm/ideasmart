@@ -2892,3 +2892,10 @@
 - [x] FAQ con 4 domande frequenti
 - [x] Route /prompt-library aggiunta in App.tsx
 - [x] Link "Prompt Library" nella LeftSidebar aggiornato a /prompt-library
+
+## Fix Anti-Duplicati LinkedIn (9 Apr 2026)
+
+- [x] Analizzare causa doppia pubblicazione LinkedIn (post "AI Radar by Proof Press" pubblicato 2 volte)
+- [x] Aggiungere lock globale in-process per slot ai-tool-radar e startup-afternoon prima della chiamata a LinkedIn API
+- [x] Aggiungere controllo DB idempotenza PRIMA della generazione del contenuto (non solo prima della pubblicazione)
+- [x] Impostare force=false come default nel router admin publishLinkedIn per evitare pubblicazioni accidentali

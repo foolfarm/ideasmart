@@ -778,6 +778,24 @@ export async function publishLinkedInPost(
   let contentImageUrl: string | null = null;
 
   if (slot === "ai-tool-radar") {
+    // ── Controllo idempotenza PRIMA della generazione (evita doppia pubblicazione) ──
+    if (!force) {
+      try {
+        const db = await getDb();
+        if (db) {
+          const existingRadar = await db.select({ id: linkedinPosts.id })
+            .from(linkedinPosts)
+            .where(and(eq(linkedinPosts.dateLabel, today), eq(linkedinPosts.slot, "ai-tool-radar" as any)))
+            .limit(1);
+          if (existingRadar.length > 0) {
+            console.log(`[LinkedIn] ⏭️ AI Tool Radar già pubblicato oggi (${today}) — saltato (pre-generazione).`);
+            return { published: 0, errors: [], posts: [] };
+          }
+        }
+      } catch (idempErr) {
+        console.warn('[LinkedIn] ⚠️ Controllo idempotenza AI Tool Radar fallito, procedo:', idempErr);
+      }
+    }
     // Slot AI Tool Radar: genera il post con i 10 tool AI del giorno
     console.log("[LinkedIn] 🔧 Generazione AI Tool Radar...");
     const radarResult = await generateAIToolRadarPost();
@@ -914,6 +932,24 @@ export async function publishLinkedInPost(
     contentImageUrl = deal.imageUrl;
     console.log(`[LinkedIn] 💰 Deal selezionato: "${contentTitle.slice(0, 60)}..."`);
   } else if (slot === "startup-afternoon") {
+    // ── Controllo idempotenza PRIMA della generazione (evita doppia pubblicazione) ──
+    if (!force) {
+      try {
+        const db = await getDb();
+        if (db) {
+          const existingStartup = await db.select({ id: linkedinPosts.id })
+            .from(linkedinPosts)
+            .where(and(eq(linkedinPosts.dateLabel, today), eq(linkedinPosts.slot, "startup-afternoon" as any)))
+            .limit(1);
+          if (existingStartup.length > 0) {
+            console.log(`[LinkedIn] ⏭️ Startup Radar già pubblicato oggi (${today}) — saltato (pre-generazione).`);
+            return { published: 0, errors: [], posts: [] };
+          }
+        }
+      } catch (idempErr) {
+        console.warn('[LinkedIn] ⚠️ Controllo idempotenza Startup Radar fallito, procedo:', idempErr);
+      }
+    }
     // Slot Startup Radar EU/IT: genera il post con le 10 startup AI europee più investibili
     console.log("[LinkedIn] 🚀 Generazione Startup Radar EU/IT...");
     const radarResult = await generateStartupRadarPost_main();
