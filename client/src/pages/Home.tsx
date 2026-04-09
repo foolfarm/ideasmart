@@ -480,7 +480,7 @@ export default function Home() {
               <div className="text-center flex-1 min-w-0">
                 <Link href="/">
                   <div className="cursor-pointer hover:opacity-80 transition-opacity inline-block">
-                    {/* IDEASMART — grande */}
+                    {/* PROOFPRESS — grande */}
                     <h1 className="font-black tracking-tight text-[#1a1a1a]"
                       style={{
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
@@ -488,14 +488,17 @@ export default function Home() {
                         letterSpacing: "-0.02em",
                         lineHeight: 1
                       }}>
-                      IDEASMART
+                      PROOFPRESS
                     </h1>
-
+                    <p className="text-[12px] uppercase tracking-[0.2em] text-[#1a1a1a]/45 font-medium mt-0.5"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      by Ideasmart
+                    </p>
                   </div>
                 </Link>
                 <p className="mt-2 text-[13px] uppercase tracking-[0.25em] text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Il tuo Sistema Operativo nell'AI
+                  Informazioni e Ricerche sul mondo dell'AI certificate
                 </p>
                 <p className="mt-1.5 text-[14px] text-[#1a1a1a]/45 italic"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
@@ -503,7 +506,7 @@ export default function Home() {
                 </p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#1a1a1a]/40 font-medium"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Informazione 100% verificata by{" "}
+                  Powered by{" "}
                   <Link href="/proofpress-verify">
                     <span className="underline hover:text-[#dc2626] transition-colors cursor-pointer">ProofPress Verify Technology</span>
                   </Link>

@@ -2803,3 +2803,7 @@
 - [x] Scheduling: bozza alle 8:30 per approvazione + invio finale alle 10:30 (lun-ven) [già presente nello schedulerManager]
 - [x] Endpoint admin per preview newsletter, approvazione e invio manuale [già presente nel router]
 - [ ] README con guida per cambiare contenuti, gestire sezioni opzionali, swappare sponsor
+- [x] Rebranding hero: titolo IDEASMART → PROOFPRESS (grande) + "by Ideasmart" (piccolo)
+- [x] Rebranding hero: sottotitolo → "Informazioni e Ricerche sul mondo dell'AI certificate"
+- [x] Rebranding hero: mantenere tagline "Non leggere l'AI. Usala..."
+- [x] Rebranding hero: sotto piccolo → "Powered by ProofPress Verify Technology"
