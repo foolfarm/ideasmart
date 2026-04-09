@@ -140,6 +140,13 @@ export default function ChiSiamoStory() {
                   <strong className="text-[#0a0a0a] font-bold">soprattutto — certificarle</strong>{" "}
                   prima di pubblicarle.
                 </p>
+                <p>
+                  <strong className="text-[#0a0a0a] font-bold">Aprile 2026: Ideasmart diventa ProofPress.</strong>{" "}
+                  Un nuovo nome, un modello ancora più ambizioso. ProofPress non è solo una testata: è una piattaforma editoriale agentica che integra{" "}
+                  <strong className="text-[#0a0a0a] font-bold">ProofPress Verify</strong>, la tecnologia proprietaria capace di analizzare e certificare le informazioni in tempo reale, 
+                  affiancata da una piattaforma redazionale che consente a chiunque — aziende, editori, professionisti — di costruirsi un vero e proprio giornale agentico: 
+                  una redazione AI che lavora 24/7 per te.
+                </p>
               </div>
             </div>
           </Section>
