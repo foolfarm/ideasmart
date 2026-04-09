@@ -498,8 +498,7 @@ export default function Home() {
                 </Link>
                 <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  <span className="text-[13px]">Il tuo hub per restare sempre aggiornato sull'innovazione</span><br />
-                  <span className="text-[10px] tracking-[0.15em]">4.000+ fonti analizzate e certificate 24/7 per offrirti le ultime notizie prima degli altri, per capire, decidere e agire.</span>
+                  <span className="text-[13px]">Il tuo hub per restare sempre aggiornato sull'innovazione</span>
                 </p>
               </div>
 
@@ -521,6 +520,12 @@ export default function Home() {
                 <span className="text-[8px] text-[#1a1a1a]/40 mt-0.5">Amazon.it</span>
               </a>
             </div>
+
+            {/* Sottotitolo full-width */}
+            <p className="mt-3 text-center uppercase tracking-[0.18em] text-[#1a1a1a]/45 font-medium"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
+              4.000+ fonti analizzate e certificate 24/7 per offrirti le ultime notizie prima degli altri, per capire, decidere e agire.
+            </p>
 
           </div>
 
