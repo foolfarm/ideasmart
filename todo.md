@@ -2974,3 +2974,8 @@
 ## Banner ProofPress Business in sidebar (9 Apr 2026)
 
 - [x] Aggiungere banner promozionale ProofPress Business in fondo alla sidebar sinistra con link a /chi-siamo
+
+## Banner Tradedoubler e sidebar (9 Apr 2026)
+
+- [x] Sostituire banner CONSIGLIATO nell'header con i due banner Tradedoubler
+- [x] Spostare banner ProofPress Business subito sotto Demo nella sidebar con immagine

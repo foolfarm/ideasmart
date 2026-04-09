@@ -9,10 +9,13 @@ interface SidebarChannel {
 
 /* ─── SEZIONE INFO ────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
-  { label: "Crea Un Giornale",       icon: "👤", href: "/chi-siamo" },
-  { label: "Tecnologia",             icon: "✅", href: "/proofpress-verify" },
-  { label: "Demo",                   icon: "🎯", href: "https://ideasmart.technology" },
+  { label: "Crea Un Giornale", icon: "👤", href: "/chi-siamo" },
+  { label: "Tecnologia",       icon: "✅", href: "/proofpress-verify" },
+  { label: "Demo",             icon: "🎯", href: "https://ideasmart.technology" },
 ];
+
+// Immagine editoriale per il banner (redazione agentica)
+const BANNER_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
 export default function LeftSidebar() {
   const [location] = useLocation();
@@ -92,75 +95,102 @@ export default function LeftSidebar() {
         })}
       </nav>
 
-      {/* Spacer */}
-      <div className="flex-1" />
-
-      {/* Banner ProofPress Business */}
+      {/* Banner ProofPress Business — subito sotto Demo */}
       <div className="mx-3 mb-4">
         <a href="/chi-siamo" className="block">
           <div
             style={{
-              background: "linear-gradient(135deg, #1a1a1a 0%, #2d1a0e 100%)",
+              background: "linear-gradient(160deg, #1a1a1a 0%, #2d1a0e 100%)",
               borderRadius: "10px",
-              padding: "14px 12px",
-              border: "1px solid rgba(255,85,0,0.25)",
+              overflow: "hidden",
+              border: "1px solid rgba(255,85,0,0.3)",
               cursor: "pointer",
             }}
           >
-            <div
-              style={{
-                fontSize: "9px",
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "#ff5500",
-                marginBottom: "6px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
-              }}
-            >
-              ProofPress Business
+            {/* Immagine hero */}
+            <div style={{ position: "relative", height: "90px", overflow: "hidden" }}>
+              <img
+                src={BANNER_IMG}
+                alt="ProofPress Business"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center top",
+                  opacity: 0.7,
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to bottom, transparent 30%, #1a1a1a 100%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: "8px",
+                  left: "10px",
+                  fontSize: "8px",
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "#ff5500",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+                }}
+              >
+                ProofPress Business
+              </div>
             </div>
-            <div
-              style={{
-                fontSize: "12px",
-                fontWeight: 700,
-                color: "#ffffff",
-                lineHeight: 1.3,
-                marginBottom: "8px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
-              }}
-            >
-              Crea il tuo giornale agentico con informazione certificata
-            </div>
-            <div
-              style={{
-                fontSize: "10px",
-                color: "rgba(255,255,255,0.55)",
-                lineHeight: 1.4,
-                marginBottom: "10px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
-              }}
-            >
-              Redazione AI autonoma. Notizie 100% certificate. Da €499/mese.
-            </div>
-            <div
-              style={{
-                display: "inline-block",
-                background: "#ff5500",
-                color: "#ffffff",
-                fontSize: "10px",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-                padding: "5px 10px",
-                borderRadius: "5px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
-              }}
-            >
-              Scopri come →
+
+            {/* Testo */}
+            <div style={{ padding: "10px 12px 12px" }}>
+              <div
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  lineHeight: 1.3,
+                  marginBottom: "6px",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
+                }}
+              >
+                Crea il tuo giornale agentico con informazione certificata
+              </div>
+              <div
+                style={{
+                  fontSize: "10px",
+                  color: "rgba(255,255,255,0.5)",
+                  lineHeight: 1.4,
+                  marginBottom: "10px",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+                }}
+              >
+                Redazione AI autonoma. Notizie 100% certificate.
+              </div>
+              <div
+                style={{
+                  display: "inline-block",
+                  background: "#ff5500",
+                  color: "#ffffff",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  letterSpacing: "0.05em",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+                }}
+              >
+                Scopri come →
+              </div>
             </div>
           </div>
         </a>
       </div>
+
+      {/* Spacer */}
+      <div className="flex-1" />
 
       {/* Divider */}
       <div className="mx-4 mb-3 border-t border-[#1a1a1a]/10" />
