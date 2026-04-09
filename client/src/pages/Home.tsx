@@ -456,7 +456,7 @@ export default function Home() {
 
           {/* Header centrato — manchette rimosse */}
           <div className="py-6">
-            {/* Brand centrale con manchette Amazon ai lati */}
+            {/* Brand centrale con manchette Tradedoubler ai lati */}
             <div className="flex items-center justify-center gap-4">
               {/* Manchette sinistra — Tradedoubler */}
               <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">

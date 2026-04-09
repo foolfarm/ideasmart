@@ -160,7 +160,11 @@ export default function SharedPageHeader() {
                   lineHeight: 1,
                 }}
               >
-                Proof Press
+                Proof Press{" "}
+                <span className="font-normal tracking-[0.05em] text-[#1a1a1a]/35 align-baseline"
+                  style={{ fontSize: "clamp(14px,2vw,22px)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  by Ideasmart
+                </span>
               </h1>
             </Link>
             <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
