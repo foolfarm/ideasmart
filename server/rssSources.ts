@@ -1,5 +1,5 @@
 /**
- * RSS Sources Whitelist — IDEASMART
+ * RSS Sources Whitelist — Proof Press
  * ─────────────────────────────────────────────────────────────────────────────
  * 250 fonti certificate con feed RSS verificati per le cinque sezioni:
  *   1. Startup e innovazione in Italia

@@ -1,5 +1,5 @@
 /**
- * URL Audit & Fix — IDEASMART
+ * URL Audit & Fix — Proof Press
  * 
  * PRINCIPIO FONDAMENTALE (v3 — definitivo):
  * - sourceUrl = URL dell'articolo originale (link diretto all'articolo su fonte reale)

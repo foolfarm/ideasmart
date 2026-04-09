@@ -1,5 +1,5 @@
 /**
- * IDEASMART Events Aggregator
+ * Proof Press Events Aggregator
  * Aggrega eventi Tech/AI/Startup italiani da:
  *   1. Luma ICS — "What's Happening in Milan" (Tech/Startup filter)
  *   2. RSS feeds italiani (EconomyUp, AgendaDigitale, InnovationPost, BeBeez)
@@ -36,7 +36,7 @@ async function fetchUrl(url: string, timeout = 10000): Promise<string | null> {
     const timer = setTimeout(() => controller.abort(), timeout);
     const res = await fetch(url, {
       signal: controller.signal,
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; IdeaSmart/1.0)" },
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; Proof Press/1.0)" },
     });
     clearTimeout(timer);
     if (!res.ok) return null;

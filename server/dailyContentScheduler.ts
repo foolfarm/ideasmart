@@ -1,9 +1,9 @@
 /**
- * IDEASMART — Daily Content Scheduler
+ * Proof Press — Daily Content Scheduler
  * Genera ogni 24 ore:
  *  1. Editoriale AI giornaliero sui trend dell'intelligenza artificiale
  *  2. Startup del Giorno: una startup AI emergente identificata via LLM + ricerca web
- *  3. 20 Ricerche IdeaSmart Research su Startup, Venture Capital e AI Trends
+ *  3. 20 Ricerche Proof Press Research su Startup, Venture Capital e AI Trends
  */
 
 import { invokeLLM } from "./_core/llm";
@@ -90,7 +90,7 @@ export async function generateDailyEditorial() {
   const themeIndex = dayOfYear % EDITORIAL_THEMES.length;
   const suggestedTheme = EDITORIAL_THEMES[themeIndex];
 
-  const prompt = `Sei il direttore editoriale di IDEASMART, la principale rivista italiana sull'AI per il business.
+  const prompt = `Sei il direttore editoriale di Proof Press, la principale rivista italiana sull'AI per il business.
 Oggi è ${italianDate}.
 
 TEMA SUGGERITO PER OGGI: ${suggestedTheme}
@@ -110,7 +110,7 @@ Restituisci un JSON con questa struttura esatta:
 
   const response = await invokeLLM({
     messages: [
-      { role: "system", content: "Sei il direttore editoriale di IDEASMART. Rispondi sempre con JSON valido." },
+      { role: "system", content: "Sei il direttore editoriale di Proof Press. Rispondi sempre con JSON valido." },
       { role: "user", content: prompt },
     ],
     response_format: {
@@ -154,7 +154,7 @@ export async function generateStartupOfDay() {
   const today = getTodayLabel();
   const italianDate = getItalianDate();
 
-  const prompt = `Sei un analista di IDEASMART, specializzato nell'identificare startup AI emergenti.
+  const prompt = `Sei un analista di Proof Press, specializzato nell'identificare startup AI emergenti.
 Oggi è ${italianDate}.
 
 Identifica UNA startup AI che sta emergendo in questo momento — può essere italiana o internazionale ma con rilevanza per il mercato business italiano.
@@ -274,7 +274,7 @@ async function runDailyContentRefresh() {
     } else {
       console.log("[DailyContent] Startup of the day already exists for today, skipping.");
     }
-    // 3. Ricerche IdeaSmart Research (20 ricerche giornaliere)
+    // 3. Ricerche Proof Press Research (20 ricerche giornaliere)
     console.log("[DailyContent] Generating daily research reports...");
     try {
       const researchResult = await generateDailyResearch();

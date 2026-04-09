@@ -76,7 +76,7 @@ const PLATFORM_FEATURES = [
   {
     icon: "🔗",
     title: "Intelligence LinkedIn",
-    desc: "I key insight del giorno sintetizzati in formato LinkedIn da Andrea Cinelli, Opinion Leader & Editorialista IdeaSmart.",
+    desc: "I key insight del giorno sintetizzati in formato LinkedIn da Andrea Cinelli, Opinion Leader & Editorialista Proof Press.",
   },
   {
     icon: "📧",
@@ -132,7 +132,7 @@ const PLATFORM_PLANS = [
     features: [
       "Tutti i contenuti Research Pro",
       "Feed white-label per il tuo team",
-      "API access ai dati IdeaSmart",
+      "API access ai dati Proof Press",
       "Briefing personalizzati per il board",
       "Integrazione Slack / Teams",
       "Account manager dedicato"
@@ -312,10 +312,10 @@ export default function Business() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
       <SEOHead
-        title="IdeaSmart Business — Piattaforma AI & Advisory"
-        description="Due offerte per chi decide: la piattaforma AI agentica IdeaSmart Intelligence con 20+ ricerche al giorno, e il servizio di consulenza senior su AI Innovation, M&A e partnership tecnologiche."
+        title="Proof Press Business — Piattaforma AI & Advisory"
+        description="Due offerte per chi decide: la piattaforma AI agentica Proof Press Intelligence con 20+ ricerche al giorno, e il servizio di consulenza senior su AI Innovation, M&A e partnership tecnologiche."
         canonical="https://ideasmart.biz/business"
-        ogSiteName="IDEASMART Research"
+        ogSiteName="Proof Press Research"
       />
       <style>{`
         /* SF Pro system font — no external loading needed */
@@ -331,7 +331,7 @@ export default function Business() {
         {/* ── HERO ── */}
         <section className="max-w-6xl mx-auto px-4 pt-20 pb-0">
           <div className="text-center py-8">
-            <SectionBadge label="IdeaSmart Business" />
+            <SectionBadge label="Proof Press Business" />
             <h1
               className="mt-3 text-4xl md:text-6xl font-black tracking-tight"
               style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
@@ -372,7 +372,7 @@ export default function Business() {
                     className="mt-2 text-xl font-bold leading-tight"
                     style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                   >
-                    IdeaSmart Intelligence
+                    Proof Press Intelligence
                   </h2>
                   <p className="mt-1 text-sm leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
                     La piattaforma AI agentica con news e ricerche personalizzate ogni giorno, basata sull'algoritmo Verify™.
@@ -406,7 +406,7 @@ export default function Business() {
                     className="mt-2 text-xl font-bold leading-tight"
                     style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                   >
-                    IdeaSmart Advisory
+                    Proof Press Advisory
                   </h2>
                   <p className="mt-1 text-sm leading-relaxed" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
                     Consulenza e ricerca senior su AI Innovation, M&A e ricerca di partnership tecnologiche. Per board, fondi e scaleup.
@@ -438,7 +438,7 @@ export default function Business() {
             >
               A
             </div>
-            <SectionBadge label="IdeaSmart Intelligence Platform" color={TEAL} bg={TEAL_LT} />
+            <SectionBadge label="Proof Press Intelligence Platform" color={TEAL} bg={TEAL_LT} />
           </div>
           <Divider thick />
 
@@ -456,7 +456,7 @@ export default function Business() {
                 style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
               >
                 <p>
-                  IdeaSmart Intelligence è la piattaforma di informazione AI agentica che lavora mentre dormi. Otto agenti specializzati monitorano oltre <strong style={{ color: INK }}>450 fonti globali</strong> ogni notte: fonti accademiche, report di settore, feed VC e M&A, media specializzati internazionali.
+                  Proof Press Intelligence è la piattaforma di informazione AI agentica che lavora mentre dormi. Otto agenti specializzati monitorano oltre <strong style={{ color: INK }}>450 fonti globali</strong> ogni notte: fonti accademiche, report di settore, feed VC e M&A, media specializzati internazionali.
                 </p>
                 <p>
                   L'algoritmo proprietario <strong style={{ color: INK }}>Verify™</strong> incrocia ogni dato su almeno tre fonti indipendenti prima di pubblicarlo. Il risultato: ogni mattina trovi sul tuo feed 20+ ricerche originali e 40+ notizie verificate, pronte per le tue decisioni.
@@ -480,7 +480,7 @@ export default function Business() {
                   className="mt-3 text-xs uppercase tracking-widest"
                   style={{ color: MUTED, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
-                  — Adrian Lenice, Founder & CEO IdeaSmart
+                  — Adrian Lenice, Founder & CEO Proof Press
                 </footer>
               </blockquote>
 
@@ -627,7 +627,7 @@ export default function Business() {
             >
               B
             </div>
-            <SectionBadge label="IdeaSmart Advisory" color={GOLD} bg={GOLD_LT} />
+            <SectionBadge label="Proof Press Advisory" color={GOLD} bg={GOLD_LT} />
           </div>
           <Divider thick />
 
@@ -645,13 +645,13 @@ export default function Business() {
                 style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}
               >
                 <p>
-                  IdeaSmart Advisory è il servizio di consulenza e ricerca dedicato a chi ha bisogno di supporto professionale nelle decisioni strategiche su <strong style={{ color: INK }}>AI Innovation, M&A e ricerca di partnership tecnologiche</strong>.
+                  Proof Press Advisory è il servizio di consulenza e ricerca dedicato a chi ha bisogno di supporto professionale nelle decisioni strategiche su <strong style={{ color: INK }}>AI Innovation, M&A e ricerca di partnership tecnologiche</strong>.
                 </p>
                 <p>
                   Il team è composto da senior advisor con background in Big 5, investment banking, venture capital e imprenditoria seriale. Profili che hanno guidato trasformazioni, completato exit e gestito fondi — non teorici, ma operatori con cicatrici sul campo.
                 </p>
                 <p>
-                  La differenza rispetto a una consulenza tradizionale: ogni engagement è supportato dalla <strong style={{ color: INK }}>base dati IdeaSmart</strong> — 20+ analisi quotidiane, 450+ fonti monitorate, intelligence in tempo reale sull'ecosistema AI e VC europeo.
+                  La differenza rispetto a una consulenza tradizionale: ogni engagement è supportato dalla <strong style={{ color: INK }}>base dati Proof Press</strong> — 20+ analisi quotidiane, 450+ fonti monitorate, intelligence in tempo reale sull'ecosistema AI e VC europeo.
                 </p>
               </div>
             </div>
@@ -764,7 +764,7 @@ export default function Business() {
             </p>
             <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="mailto:business@ideasmart.biz?subject=IdeaSmart Advisory — Richiesta di contatto"
+                href="mailto:business@ideasmart.biz?subject=Proof Press Advisory — Richiesta di contatto"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-sm transition-all hover:opacity-90 text-white"
                 style={{ background: GOLD, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
@@ -799,11 +799,11 @@ export default function Business() {
                 Cerchiamo firme d'eccellenza.
               </h3>
               <p className="text-sm mt-1" style={{ color: MUTED, fontFamily: "'Source Serif 4', serif" }}>
-                Ex Big 5, ex VC, founder con exit, C-Level Fortune 500. Se hai un track record straordinario e vuoi portare il tuo know-how nel network IdeaSmart Advisory, scrivici.
+                Ex Big 5, ex VC, founder con exit, C-Level Fortune 500. Se hai un track record straordinario e vuoi portare il tuo know-how nel network Proof Press Advisory, scrivici.
               </p>
             </div>
             <a
-              href="mailto:business@ideasmart.biz?subject=Collaborazione IdeaSmart Advisory"
+              href="mailto:business@ideasmart.biz?subject=Collaborazione Proof Press Advisory"
               className="flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-sm border-2 transition-all hover:opacity-80 whitespace-nowrap"
               style={{ borderColor: TEAL, color: TEAL, background: "transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >

@@ -1,5 +1,5 @@
 /**
- * dailyChannelNewsletter.ts — Newsletter IDEASMART
+ * dailyChannelNewsletter.ts — Newsletter Proof Press
  * ─────────────────────────────────────────────────────────────────────────────
  * Calendario newsletter:
  *
@@ -12,7 +12,7 @@
  *   Invio massivo — DISABILITATO (richiede approvazione manuale da Admin)
  *
  * Il template grafico è identico per tutti i canali (buildFullNewsletterHtml),
- * con la sezione Ricerche del Giorno e banner promo IDEASMART inclusi.
+ * con la sezione Ricerche del Giorno e banner promo Proof Press inclusi.
  */
 
 import { sendEmail, buildFullNewsletterHtml, buildPromoNewsletterHtml } from "./email";
@@ -144,7 +144,7 @@ export async function buildChannelNewsletter(
   const dayNames = ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"];
   const dayName = dayNames[channel.dayOfWeek];
   const frequencyLabel = `Ogni ${dayName} · ${channel.tagline}`;
-  const subject = `IDEASMART Research — ${channel.name} · ${dateLabel}`;
+  const subject = `Proof Press Research — ${channel.name} · ${dateLabel}`;
 
   const html = buildFullNewsletterHtml({
     dateLabel,
@@ -537,7 +537,7 @@ export async function sendChannelTestToEmail(
 
 
 /**
- * Invia la newsletter promozionale IDEASMART a tutti gli iscritti attivi.
+ * Invia la newsletter promozionale Proof Press a tutti gli iscritti attivi.
  * Usata per promuovere la piattaforma di giornalismo agentico.
  */
 export async function sendPromoNewsletterToAll(): Promise<{
@@ -546,7 +546,7 @@ export async function sendPromoNewsletterToAll(): Promise<{
   subject: string;
   error?: string;
 }> {
-  const subject = "IDEASMART — Il primo giornale che funziona anche senza una redazione.";
+  const subject = "Proof Press — Il primo giornale che funziona anche senza una redazione.";
 
   console.log("[PromoNewsletter] 🚀 Inizio invio massivo newsletter promozionale...");
 
@@ -598,7 +598,7 @@ export async function sendPromoNewsletterToAll(): Promise<{
     await updateNewsletterSendRecipientCount(subject, totalSent);
 
     await notifyOwner({
-      title: `📧 Newsletter PROMO IDEASMART inviata — ${new Date().toLocaleDateString("it-IT")}`,
+      title: `📧 Newsletter PROMO Proof Press inviata — ${new Date().toLocaleDateString("it-IT")}`,
       content: `Invio massivo newsletter promozionale completato: ${totalSent}/${allSubscribers.length} iscritti.`,
     });
 

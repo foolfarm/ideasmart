@@ -42,7 +42,7 @@ export default function Navbar() {
               className="text-lg sm:text-xl font-black tracking-tight"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
-              IDEASMART
+              Proof Press
             </span>
           </Link>
 

@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Stock Images Helper
+ * Proof Press — Stock Images Helper
  *
  * Cerca immagini stock gratuite da Pexels per parole chiave
  * coerenti con il titolo e la categoria dell'articolo.

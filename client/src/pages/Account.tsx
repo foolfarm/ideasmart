@@ -71,7 +71,7 @@ export default function Account() {
 
         {/* Breadcrumb */}
         <p className="text-[10px] uppercase tracking-widest mb-8" style={{ color: "rgba(26,26,26,0.4)", fontFamily: SF }}>
-          <Link href="/" className="hover:opacity-70">IDEASMART</Link>
+          <Link href="/" className="hover:opacity-70">PROOF PRESS</Link>
           {" · "}
           <span>IL MIO ACCOUNT</span>
         </p>

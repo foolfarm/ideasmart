@@ -72,7 +72,7 @@ export default function SEOHead({
   keywords,
   canonical,
   ogImage,
-  ogSiteName = "IDEASMART",
+  ogSiteName = "Proof Press",
   ogType = "website",
   robots = "index, follow",
   structuredData,

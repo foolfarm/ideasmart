@@ -1,5 +1,5 @@
 /**
- * IDEASMART — SendGrid Statistics
+ * Proof Press — SendGrid Statistics
  *
  * Recupera statistiche di performance delle newsletter da SendGrid API v3:
  * - Global stats (delivered, opens, clicks, bounces, spam, unsubscribes)

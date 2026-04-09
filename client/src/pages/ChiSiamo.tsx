@@ -81,8 +81,8 @@ const AGENT_EXAMPLES = [
 /* ── FAQ Data ── */
 const FAQ_ITEMS = [
   {
-    q: "Come funziona la piattaforma Ideasmart?",
-    a: "Ideasmart è una redazione digitale composta da agenti AI specializzati che lavorano come un team editoriale. Analizzano oltre 4.000 fonti certificate ogni giorno, verificano le notizie con la tecnologia proprietaria ProofPress Verify, scrivono articoli editoriali e li distribuiscono automaticamente sui canali tematici configurati."
+    q: "Come funziona la piattaforma Proof Press?",
+    a: "Proof Press è una redazione digitale composta da agenti AI specializzati che lavorano come un team editoriale. Analizzano oltre 4.000 fonti certificate ogni giorno, verificano le notizie con la tecnologia proprietaria ProofPress Verify, scrivono articoli editoriali e li distribuiscono automaticamente sui canali tematici configurati."
   },
   {
     q: "Cos'è la tecnologia ProofPress Verify?",
@@ -179,10 +179,10 @@ export default function ChiSiamo() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
       <SEOHead
-        title="Ideasmart — Piattaforma di Giornalismo Agentico"
+        title="Proof Press — Piattaforma di Giornalismo Agentico"
         description="Il primo giornale che funziona anche senza una redazione. Costruisci e scala una testata con l'AI agentica. Oltre 4.000 fonti certificate, 8 agenti AI specializzati."
         canonical="https://ideasmart.biz/chi-siamo"
-        ogSiteName="IDEASMART"
+        ogSiteName="Proof Press"
       />
 
       <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
@@ -286,7 +286,7 @@ export default function ChiSiamo() {
         <Section id="soluzione">
           <Label>La soluzione</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Ideasmart è la prima piattaforma<br />
+            Proof Press è la prima piattaforma<br />
             <span className="text-[#0a0a0a]/25">di giornalismo agentico.</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
@@ -568,7 +568,7 @@ export default function ChiSiamo() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Ideasmart"
+                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Proof Press"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
                 style={{ background: '#0a0a0a', borderRadius: '0' }}
               >
@@ -599,7 +599,7 @@ export default function ChiSiamo() {
               Già utilizzato da team editoriali che producono contenuti ogni giorno con strutture minime.
             </h2>
             <p className="mt-6 text-base leading-relaxed text-[#0a0a0a]/50">
-              IDEASMART stessa è la prova: una testata con 3 canali tematici (AI News, Startup News, DEALROOM), oltre 6.900 lettori, 20+ ricerche originali al giorno, newsletter trisettimanale e post LinkedIn automatici. Tutto gestito dalla piattaforma, con un team editoriale di 1 persona.
+              Proof Press stessa è la prova: una testata con 3 canali tematici (AI News, Startup News, DEALROOM), oltre 6.900 lettori, 20+ ricerche originali al giorno, newsletter trisettimanale e post LinkedIn automatici. Tutto gestito dalla piattaforma, con un team editoriale di 1 persona.
             </p>
             <div className="mt-8 flex flex-wrap gap-6">
               {[
@@ -649,7 +649,7 @@ export default function ChiSiamo() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Ideasmart"
+                href="mailto:info@ideasmart.ai?subject=Informazioni Piattaforma Proof Press"
                 className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] transition-all duration-200 hover:opacity-90"
                 style={{ background: "#ffffff", borderRadius: "0" }}
               >

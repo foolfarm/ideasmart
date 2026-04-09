@@ -1,5 +1,5 @@
 /**
- * DEALROOM Scheduler — DEALROOM News by IDEASMART
+ * DEALROOM Scheduler — DEALROOM News by Proof Press
  * Genera contenuti editoriali per la sezione /dealroom: editoriale settimanale sui deal più rilevanti.
  * Focus: round di finanziamento, venture capital, M&A, exit, ecosistema startup italiano ed europeo.
  */
@@ -22,7 +22,7 @@ export async function generateDealroomEditorial(): Promise<void> {
       messages: [
         {
           role: "system",
-          content: `Sei il direttore editoriale di DEALROOM by IDEASMART, la sezione dedicata ai round di finanziamento, investimenti venture capital, M&A ed exit dell'ecosistema startup. Scrivi editoriali profondi e autorevoli con dati, cifre e analisi concrete. Tono professionale, analitico, da insider del venture capital. Focus prioritario: mercato italiano, poi europeo, poi globale.`,
+          content: `Sei il direttore editoriale di DEALROOM by Proof Press, la sezione dedicata ai round di finanziamento, investimenti venture capital, M&A ed exit dell'ecosistema startup. Scrivi editoriali profondi e autorevoli con dati, cifre e analisi concrete. Tono professionale, analitico, da insider del venture capital. Focus prioritario: mercato italiano, poi europeo, poi globale.`,
         },
         {
           role: "user",

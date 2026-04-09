@@ -123,10 +123,10 @@ export default function StartupHome() {
   return (
     <>
       <SEOHead
-        title="STARTUP NEWS — IDEASMART"
+        title="STARTUP NEWS — Proof Press"
         description="Notizie aggiornate ogni giorno sull'ecosistema startup italiano ed europeo. Editoriale, analisi e startup del giorno."
         canonical="https://ideasmart.biz/startup"
-        ogSiteName="IdeaSmart"
+        ogSiteName="Proof Press"
       />
 
       <style>{`

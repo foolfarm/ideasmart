@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Intelligent In-Memory Cache Layer v2
+ * Proof Press — Intelligent In-Memory Cache Layer v2
  *
  * Miglioramenti rispetto alla v1:
  *

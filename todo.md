@@ -2811,3 +2811,13 @@
 - [x] Creare box annuncio ProofPress sopra i blocchi "La Collezione" e "Iscriviti Gratis" nella Home
 - [x] Titolo hero: PROOFPRESS → "Proof Press" (parole separate, iniziali maiuscole)
 - [x] "by Ideasmart" molto più piccolo e sulla stessa riga del titolo (non sotto)
+- [x] Box annuncio ProofPress: cambiare stile da scuro a chiaro (#f5f3ee) come i box sotto
+- [x] Sostituire IDEASMART con Proof Press nella LeftSidebar
+- [x] Sostituire IDEASMART con Proof Press nella SharedPageHeader
+- [x] Sostituire IDEASMART con Proof Press in tutti gli altri componenti del sito
+- [x] Aggiornare la newsletter e le email con il nuovo naming Proof Press
+- [x] Rebranding completo: sostituito IDEASMART/IdeaSmart/Ideasmart con Proof Press in tutte le pagine frontend (Home, AI, Startup, Dealroom, Research, Business, Intelligence, Tecnologia, Privacy, Advertise, ChiSiamo, PerGiornalisti, EbookPrompt, DemoSandwichClub, ecc.)
+- [x] Rebranding completo: sostituito in tutti i file server (mailer, newsletter, LinkedIn publisher, scheduler, router, ecc.)
+- [x] Rebranding completo: aggiornato index.html (title, meta tag OG, Twitter, Apple)
+- [x] Rebranding completo: aggiornato SharedPageFooter, ReadersCounter, RicercaDelGiorno
+- [x] Fix tag JSX rotti da sed (DemoSandwichClub span, Research strong, siteHealthCheck variabile)

@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Image Auto-Generation Helper
+ * Proof Press — Image Auto-Generation Helper
  *
  * Genera automaticamente immagini editoriali per ogni tipo di contenuto
  * (news, editoriale, startup, reportage, analisi di mercato) al momento

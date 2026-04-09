@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Scheduler Manager Centralizzato
+ * Proof Press — Scheduler Manager Centralizzato
  * ─────────────────────────────────────────────────────────────────────────────
  * Gestisce tutte le routine automatiche del sito con orari CET precisi.
  *
@@ -30,7 +30,7 @@
  *  │  LINKEDIN AUTOPOST — 5 slot giornalieri                                  │
  *  │  10:00 — Post mattino: AI News (fisso)                                 │
  *  │  12:30 — Post Startup News                                              │
- *  │  14:30 — Post IdeaSmart Research (ultima ricerca)                      │
+ *  │  14:30 — Post Proof Press Research (ultima ricerca)                      │
  *  │  16:00 — Post AI Tool Radar (10 tool AI scoperti oggi)                 │
  *  │  17:30 — Post Dealroom (ultimo deal/round)                             │
  *  │                                                                          │
@@ -74,7 +74,7 @@ async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<vo
   try {
     const result = await sendEmail({
       to: ALERT_EMAIL,
-      subject: `⚠️ [IDEASMART SCHEDULER] ${subject}`,
+      subject: `⚠️ [Proof Press SCHEDULER] ${subject}`,
       html: `
         <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a1628;color:#e2e8f0;padding:28px;border-radius:8px;">
           <div style="border-left:4px solid #f59e0b;padding-left:16px;margin-bottom:20px;">
@@ -85,7 +85,7 @@ async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<vo
             ${bodyHtml}
           </div>
           <p style="font-size:11px;color:#64748b;margin-top:20px;">
-            Questo alert è stato generato automaticamente dallo scheduler di <strong style="color:#00b4a0;">IDEASMART</strong>.<br>
+            Questo alert è stato generato automaticamente dallo scheduler di <strong style="color:#00b4a0;">Proof Press</strong>.<br>
             Timestamp: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} CET
           </p>
         </div>`,
@@ -408,7 +408,7 @@ export function startAllSchedulers(): void {
              <p>Il cron notturno (05:30 CET) potrebbe essere stato offline o aver fallito silenziosamente.</p>
              <p>La rigenerazione automatica ha prodotto <strong>${result.generated} ricerche</strong>.</p>
              <ul style="margin:12px 0;padding-left:20px;">
-               <li>Sezione: <strong>IdeaSmart Research</strong></li>
+               <li>Sezione: <strong>Proof Press Research</strong></li>
                <li>Data: <strong>${todayLabelR}</strong></li>
                <li>Ricerche generate: <strong>${result.generated}</strong></li>
              </ul>`
@@ -522,7 +522,7 @@ export function startAllSchedulers(): void {
   // LINKEDIN AUTOPOST — 4 post giornalieri:
   //   10:00 CET — AI News (morning)
   //   12:30 CET — Startup News (startup-afternoon)
-  //   14:30 CET — Ricerche IdeaSmart (research)
+  //   14:30 CET — Ricerche Proof Press (research)
   //   16:00 CET — AI Tool Radar (ai-tool-radar)
   //   17:30 CET — Dealroom (dealroom)
   // ══════════════════════════════════════════════════════════════════════════
@@ -599,9 +599,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Ricerche — 14:30 CET (IdeaSmart Research)
+  // Post Ricerche — 14:30 CET (Proof Press Research)
   cron.schedule("30 14 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn RICERCHE (IdeaSmart Research)...");
+    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn RICERCHE (Proof Press Research)...");
     await withLock("linkedin-research", async () => {
       try {
         const result = await publishLinkedInPost("research");
@@ -805,13 +805,13 @@ export function startAllSchedulers(): void {
   }, 90_000);
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // IDEASMART RESEARCH — lun/mer/ven alle 06:00 CET
+  // Proof Press RESEARCH — lun/mer/ven alle 06:00 CET
   // Genera 10 ricerche su Startup, VC e AI Trends da fonti specializzate
   // ═══════════════════════════════════════════════════════════════════════════
   cron.schedule(
     "0 0 6 * * 1,3,5", // lun, mer, ven alle 06:00 CET
     () => withLock("researchGeneration", async () => {
-      console.log("[SchedulerManager] 🔬 IDEASMART Research: generazione ricerche giornaliere...");
+      console.log("[SchedulerManager] 🔬 Proof Press Research: generazione ricerche giornaliere...");
       try {
         const result = await generateDailyResearch();
         if (result.generated > 0) {
@@ -915,7 +915,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📊 Morning Health Report → ogni giorno alle 08:00 CET → info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
   console.log("[SchedulerManager]   💼 LinkedIn STARTUP       → ogni giorno alle 12:30 CET (Startup News)");
-  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (IdeaSmart Research)");
+  console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (Proof Press Research)");
   console.log("[SchedulerManager]   💼 LinkedIn AI TOOL RADAR → ogni giorno alle 16:00 CET (10 tool AI scoperti oggi)");
   console.log("[SchedulerManager]   💼 LinkedIn DEALROOM      → ogni giorno alle 17:30 CET (Dealroom)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");

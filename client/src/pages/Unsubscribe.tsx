@@ -122,7 +122,7 @@ export default function Unsubscribe() {
               Annulla iscrizione
             </h1>
             <p className="text-sm mb-1" style={{ color: "#6b7280" }}>
-              Stai per annullare l'iscrizione alla newsletter IDEASMART per:
+              Stai per annullare l'iscrizione alla newsletter Proof Press per:
             </p>
             <p className="text-base font-semibold mb-6" style={{ color: "#0f0f0f" }}>
               {email}
@@ -167,7 +167,7 @@ export default function Unsubscribe() {
               L'indirizzo <strong style={{ color: "#0f0f0f" }}>{email}</strong> è stato rimosso dalla nostra lista.
             </p>
             <p className="text-xs mb-8" style={{ color: "#9ca3af", lineHeight: "1.6" }}>
-              Ai sensi del GDPR (Reg. UE 2016/679), la tua richiesta è stata processata immediatamente. Non riceverai più comunicazioni da IDEASMART.
+              Ai sensi del GDPR (Reg. UE 2016/679), la tua richiesta è stata processata immediatamente. Non riceverai più comunicazioni da Proof Press.
             </p>
             <div
               className="rounded-xl p-4 mb-6 text-left"
@@ -175,7 +175,7 @@ export default function Unsubscribe() {
             >
               <p className="text-xs font-semibold mb-1" style={{ color: "#374151" }}>Hai cambiato idea?</p>
               <p className="text-xs" style={{ color: "#6b7280" }}>
-                Puoi reiscriverti in qualsiasi momento visitando la home page di IDEASMART e inserendo la tua email nel modulo newsletter.
+                Puoi reiscriverti in qualsiasi momento visitando la home page di Proof Press e inserendo la tua email nel modulo newsletter.
               </p>
             </div>
             <button

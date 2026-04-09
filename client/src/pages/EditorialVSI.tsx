@@ -63,7 +63,7 @@ export default function EditorialVSI() {
   return (
     <>
       <SEOHead
-        title="Venture Studio Index: il Framework che Cambia le Regole della Due Diligence | IdeaSmart"
+        title="Venture Studio Index: il Framework che Cambia le Regole della Due Diligence | Proof Press"
         description="IRR medio del 60% vs 33% del VC tradizionale. Il Venture Studio Index introduce uno standard Morningstar-like per valutare i Venture Studio."
         canonical="/editoriale/venture-studio-index"
       />
@@ -73,7 +73,7 @@ export default function EditorialVSI() {
         <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: fontSerif }}>
-              IdeaSmart
+              Proof Press
             </Link>
             <span className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">{today}</span>
           </div>
@@ -99,7 +99,7 @@ export default function EditorialVSI() {
           {/* Label */}
           <div className="mb-4">
             <span className="font-mono text-xs tracking-widest uppercase px-2 py-1 border border-[#d62828] text-[#d62828]">
-              Analisi IdeaSmart
+              Analisi Proof Press
             </span>
           </div>
 
@@ -333,7 +333,7 @@ export default function EditorialVSI() {
               <button
                 onClick={() => {
                   const url = encodeURIComponent(window.location.href);
-                  const text = encodeURIComponent("Venture Studio Index: IRR medio 60% vs 33% del VC tradizionale. Il primo framework standardizzato per valutare i Venture Studio — Analisi IdeaSmart");
+                  const text = encodeURIComponent("Venture Studio Index: IRR medio 60% vs 33% del VC tradizionale. Il primo framework standardizzato per valutare i Venture Studio — Analisi Proof Press");
                   window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, '_blank', 'width=600,height=600');
                 }}
                 className="inline-flex items-center gap-3 px-6 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
@@ -351,7 +351,7 @@ export default function EditorialVSI() {
                 Torna a Startup News
               </Link>
               <Link href="/" className="text-sm text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors font-mono tracking-widest uppercase text-xs">
-                IdeaSmart Home
+                Proof Press Home
               </Link>
             </div>
           </div>

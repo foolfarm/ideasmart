@@ -71,7 +71,7 @@ export default function PWAInstallBanner() {
               marginBottom: "2px",
             }}
           >
-            Aggiungi IDEASMART
+            Aggiungi Proof Press
           </div>
           <div
             style={{

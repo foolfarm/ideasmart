@@ -133,7 +133,7 @@ describe("Newsletter — nuovo design allineato al sito", () => {
 
     // Ricerche del Giorno presente
     expect(html).toContain("Ricerche del Giorno");
-    expect(html).toContain("IDEASMART RESEARCH");
+    expect(html).toContain("Proof Press");
     // Badge categoria in nero su bianco
     expect(html).toContain("AI TRENDS");
     // Link alla ricerca
@@ -146,7 +146,7 @@ describe("Newsletter — nuovo design allineato al sito", () => {
     });
 
     // Deve comunque avere il design del sito
-    expect(html).toContain("IDEASMART");
+    expect(html).toContain("Proof Press");
     expect(html).toContain("Intelligence Quotidiana");
   });
 

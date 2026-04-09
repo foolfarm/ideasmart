@@ -20,7 +20,7 @@ async function notifyServerError(subject: string, body: string): Promise<void> {
       <p style="color: #374151; font-size: 16px;">${body}</p>
       <p style="color: #6b7280; font-size: 13px; margin-top: 24px;">
         Timestamp: ${timestamp}<br>
-        Server: IdeaSmart — AI for Business<br>
+        Server: Proof Press — AI for Business<br>
         <a href="https://www.ideasmart.biz" style="color: #2563eb;">ideasmart.biz</a>
       </p>
     </div>
@@ -32,7 +32,7 @@ async function notifyServerError(subject: string, body: string): Promise<void> {
     import("../email").then(({ sendEmail }) =>
       sendEmail({
         to: "info@andreacinelli.com",
-        subject: `[IdeaSmart] ${subject}`,
+        subject: `[Proof Press] ${subject}`,
         html,
         text: `${subject}\n\n${body}\n\nTimestamp: ${timestamp}`,
       })
@@ -52,7 +52,7 @@ process.on("uncaughtException", async (err: NodeJS.ErrnoException) => {
     console.error("[Server] ⚠️ EMFILE rilevato — il server continua a girare. Verifica i limiti OS.");
     try {
       await notifyServerError(
-        "⚠️ EMFILE su IdeaSmart",
+        "⚠️ EMFILE su Proof Press",
         "Il server ha rilevato EMFILE (too many open files). Il server continua a girare. Controlla i log per dettagli."
       );
     } catch { /* notifica non critica */ }
@@ -61,7 +61,7 @@ process.on("uncaughtException", async (err: NodeJS.ErrnoException) => {
     console.error("[Server] 💥 Errore critico non gestito — il server si riavvierà.");
     try {
       await notifyServerError(
-        "💥 Crash IdeaSmart",
+        "💥 Crash Proof Press",
         `Errore critico: ${code} — ${msg.slice(0, 300)}. Il server si riavvierà automaticamente.`
       );
     } catch { /* notifica non critica */ }
@@ -502,7 +502,7 @@ setInterval(async () => {
     console.error(`[Watchdog] ⚠️ Event loop bloccato da ${Math.round(elapsed / 1000)}s — possibile deadlock`);
     try {
       await notifyOwner({
-        title: "⚠️ IdeaSmart: server lento",
+        title: "⚠️ Proof Press: server lento",
         content: `Il server non risponde da ${Math.round(elapsed / 60000)} minuti (${new Date().toISOString()}). Potrebbe essere necessario un riavvio.`
       });
     } catch { /* notifica non critica */ }

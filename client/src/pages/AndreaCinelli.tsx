@@ -156,7 +156,7 @@ export default function AndreaCinelli() {
     <>
       <SEOHead
         title="Andrea Cinelli — Tech Expert"
-        description="Editoriali quotidiani su AI, Startup e Venture Capital. Tech Expert e fondatore di IdeaSmart."
+        description="Editoriali quotidiani su AI, Startup e Venture Capital. Tech Expert e fondatore di Proof Press."
       />
     <div className="flex" style={{ background: PAPER, minHeight: "100vh" }}>
       <LeftSidebar />
@@ -233,7 +233,7 @@ export default function AndreaCinelli() {
                 className="text-[10px] font-bold uppercase tracking-[0.3em]"
                 style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                IdeaSmart
+                Proof Press
               </span>
             </div>
             <h1
@@ -266,10 +266,10 @@ export default function AndreaCinelli() {
                 Ha fondato uno dei principali AI Venture Studio europei e una piattaforma di venture capital e venture building negli Stati Uniti. È membro dell'Advisory Board di <strong>Deloitte Central Mediterranean</strong>, docente di AI presso <strong>Il Sole 24 Ore Business School</strong> e keynote speaker internazionale, autore di oltre 30 pubblicazioni su AI e innovazione.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Co-fondatore di <strong>IdeaSmart</strong>, la prima piattaforma italiana di analisi quotidiane su AI, startup e venture capital, basata su <strong>ProofPress</strong>: una tecnologia proprietaria che integra AI e Web3 per certificare le fonti e garantire contenuti verificati, rilevanti e affidabili.
+                Co-fondatore di <strong>Proof Press</strong>, la prima piattaforma italiana di analisi quotidiane su AI, startup e venture capital, basata su <strong>ProofPress</strong>: una tecnologia proprietaria che integra AI e Web3 per certificare le fonti e garantire contenuti verificati, rilevanti e affidabili.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Con IdeaSmart ha costruito uno strumento pensato per chi prende decisioni: un'unica fonte ad alto valore che aggrega ogni giorno ricerche, notizie e analisi editoriali per supportare imprenditori, investitori e manager con insight concreti e azionabili.
+                Con Proof Press ha costruito uno strumento pensato per chi prende decisioni: un'unica fonte ad alto valore che aggrega ogni giorno ricerche, notizie e analisi editoriali per supportare imprenditori, investitori e manager con insight concreti e azionabili.
               </p>
             </div>
 

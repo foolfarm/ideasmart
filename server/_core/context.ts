@@ -17,7 +17,7 @@ export async function createContext(
 
   // Salta l'autenticazione OAuth se non c'è il cookie Manus (COOKIE_NAME = app_session_id).
   // Questo evita chiamate HTTP esterne inutili che bloccherebbero le richieste per 30 secondi
-  // quando l'utente usa solo l'autenticazione nativa IdeaSmart (ideasmart_session).
+  // quando l'utente usa solo l'autenticazione nativa Proof Press (ideasmart_session).
   const cookieHeader = opts.req.headers.cookie || "";
   const cookies = parseCookieHeader(cookieHeader);
   const hasManusSession = !!cookies[COOKIE_NAME];

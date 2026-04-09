@@ -175,7 +175,7 @@ function VerifyResult({ article }: {
           Hash non trovato
         </h3>
         <p className="text-[14px] text-[#1a1a1a]/60 max-w-md mx-auto leading-relaxed" style={{ fontFamily: SFText }}>
-          Nessun articolo corrisponde a questo hash nel database IDEASMART.
+          Nessun articolo corrisponde a questo hash nel database Proof Press.
           L'articolo potrebbe non essere stato pubblicato su questa piattaforma,
           oppure l'hash potrebbe essere errato o alterato.
         </p>
@@ -620,7 +620,7 @@ export default function ProofPressVerify() {
           {/* ══ 9. DEMO INTERATTIVA ═══════════════════════════════════════ */}
           <WPSection number="09" title="Demo Interattiva" id="demo">
             <WPText>
-              Prova il protocollo ProofPress Verify in tempo reale. Incolla l'hash SHA-256 di un articolo pubblicato su IDEASMART per verificarne l'autenticità.
+              Prova il protocollo ProofPress Verify in tempo reale. Incolla l'hash SHA-256 di un articolo pubblicato su Proof Press per verificarne l'autenticità.
             </WPText>
 
             <div className="border-2 border-[#0d6e3f] p-6 bg-white my-6">
@@ -786,7 +786,7 @@ export default function ProofPressVerify() {
                     className="inline-flex items-center gap-2 px-6 py-3 border border-white/20 text-white/70 text-[12px] font-bold uppercase tracking-widest hover:border-white/40 hover:text-white transition-colors cursor-pointer"
                     style={{ fontFamily: SFText }}
                   >
-                    Torna a IDEASMART
+                    Torna a Proof Press
                   </span>
                 </Link>
               </div>

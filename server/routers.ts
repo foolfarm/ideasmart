@@ -584,7 +584,7 @@ export const appRouter = router({
         }
       }),
 
-    // ── IDEASMART Research ──────────────────────────────────────────────────
+    // ── Proof Press Research ──────────────────────────────────────────────────
     getResearchReports: publicProcedure
       .input(z.object({ limit: z.number().min(1).max(20).default(10) }))
       .query(async ({ input }) => {
@@ -879,7 +879,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
             await sendEmail({
               to: input.email,
-              subject: "Benvenuto in IDEASMART — Iscrizione confermata ✓",
+              subject: "Benvenuto in Proof Press — Iscrizione confermata ✓",
               html,
             });
           } catch (emailErr) {
@@ -1000,7 +1000,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
             await sendEmail({
               to: input.email,
-              subject: 'Benvenuto in IDEASMART — Iscrizione confermata ✓',
+              subject: 'Benvenuto in Proof Press — Iscrizione confermata ✓',
               html,
             });
           } catch (emailErr) {
@@ -1082,7 +1082,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           messages: [
             {
               role: "system",
-              content: `Sei il redattore di IDEASMART, una startup italiana di tecnologia e innovazione che analizza le migliori realtà AI per il business. Scrivi in italiano con tono editoriale autorevole. Rispondi SOLO con JSON valido.`,
+              content: `Sei il redattore di Proof Press, una startup italiana di tecnologia e innovazione che analizza le migliori realtà AI per il business. Scrivi in italiano con tono editoriale autorevole. Rispondi SOLO con JSON valido.`,
             },
             {
               role: "user",
@@ -1134,7 +1134,7 @@ Rispondi con questo JSON:
         };
 
         const htmlContent = buildWeeklyNewsletterHtml(newsData);
-        const subject = `[TEST] IDEASMART Weekly — Top 20 AI News | ${newsData.week}`;
+        const subject = `[TEST] Proof Press Weekly — Top 20 AI News | ${newsData.week}`;
 
         const result = await sendEmail({
           to: input.to,
@@ -1417,7 +1417,7 @@ Rispondi con questo JSON:
     sendDailyChannelPreview: adminProcedure.mutation(async () => {
       const { sendUnifiedPreview } = await import("./unifiedNewsletter");
       const result = await sendUnifiedPreview();
-      return { success: result.success, channel: "unificata", subject: "IDEASMART Newsletter Unificata", newsCount: (result.stats?.ai ?? 0) + (result.stats?.startup ?? 0) + (result.stats?.dealroom ?? 0), error: result.error };
+      return { success: result.success, channel: "unificata", subject: "Proof Press Newsletter Unificata", newsCount: (result.stats?.ai ?? 0) + (result.stats?.startup ?? 0) + (result.stats?.dealroom ?? 0), error: result.error };
     }),
 
     // ── Newsletter Giornaliera per Canale — Invio Massivo ────────────────────────────────
@@ -1456,7 +1456,7 @@ Rispondi con questo JSON:
     approveAndSendNewsletter: adminProcedure.mutation(async () => {
       const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
       const result = await sendUnifiedNewsletterToAll();
-      return { success: result.success, channel: "unificata", recipientCount: result.recipientCount, newsCount: 0, subject: "IDEASMART Newsletter Unificata", error: result.error };
+      return { success: result.success, channel: "unificata", recipientCount: result.recipientCount, newsCount: 0, subject: "Proof Press Newsletter Unificata", error: result.error };
     }),
 
     // ── Newsletter Unificata — Preview ────────────────────────────────────────────────
@@ -2103,13 +2103,13 @@ Rispondi con questo JSON:
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta per <strong>${input.company}</strong>. Ti risponderemo entro <strong>24 ore</strong> con una proposta personalizzata.</p>
               <a href="https://ideasmart.biz/advertise" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Esplora i formati →</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">IDEASMART · info@ideasmart.biz · <a href="https://ideasmart.biz" style="color: #00e5c8;">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@ideasmart.biz · <a href="https://ideasmart.biz" style="color: #00e5c8;">ideasmart.biz</a></p>
           </div>
         `;
 
         await sendEmail({
           to: input.email,
-          subject: `Abbiamo ricevuto la tua richiesta — IDEASMART`,
+          subject: `Abbiamo ricevuto la tua richiesta — Proof Press`,
           html: confirmHtml,
         });
 
@@ -2117,7 +2117,7 @@ Rispondi con questo JSON:
       }),
   }),
 
-  // ── IdeaSmart Business — Demo Request ────────────────────────────────────
+  // ── Proof Press Business — Demo Request ────────────────────────────────────
   business: router({
     requestDemo: publicProcedure
       .input(z.object({
@@ -2129,7 +2129,7 @@ Rispondi con questo JSON:
       }))
       .mutation(async ({ input }) => {
         const sectorsStr = input.sectors.join(", ");
-        const subject = `🚀 Nuova richiesta demo IdeaSmart Business — ${input.name}`;
+        const subject = `🚀 Nuova richiesta demo Proof Press Business — ${input.name}`;
         const htmlAdmin = `
           <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 32px;">
             <div style="background: #0a0f1e; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
@@ -2160,13 +2160,13 @@ Rispondi con questo JSON:
             <div style="background: #ffffff; border-radius: 12px; padding: 32px; border: 1px solid #e5e7eb; text-align: center;">
               <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
               <h2 style="color: #0a0f1e; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
-              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo per IdeaSmart Business. Ti contatteremo entro <strong>24 ore</strong> per schedulare una call gratuita di 30 minuti.</p>
-              <a href="https://ideasmart.biz/business" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri IdeaSmart Business →</a>
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo per Proof Press Business. Ti contatteremo entro <strong>24 ore</strong> per schedulare una call gratuita di 30 minuti.</p>
+              <a href="https://ideasmart.biz/business" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri Proof Press Business →</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">IDEASMART · info@ideasmart.biz · <a href="https://ideasmart.biz" style="color: #00e5c8;">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@ideasmart.biz · <a href="https://ideasmart.biz" style="color: #00e5c8;">ideasmart.biz</a></p>
           </div>
         `;
-        await sendEmail({ to: input.email, subject: `La tua demo IdeaSmart Business è confermata — ti ricontatteremo presto`, html: htmlConfirm });
+        await sendEmail({ to: input.email, subject: `La tua demo Proof Press Business è confermata — ti ricontatteremo presto`, html: htmlConfirm });
         return { success: true };
       }),
   }),
@@ -2207,7 +2207,7 @@ Rispondi con questo JSON:
         const htmlAdmin = `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f0e8; padding: 32px;">
             <div style="background: #1a1a1a; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
-              <h1 style="color: #ffffff; font-size: 22px; margin: 0; font-weight: 900; letter-spacing: 2px;">IDEASMART</h1>
+              <h1 style="color: #ffffff; font-size: 22px; margin: 0; font-weight: 900; letter-spacing: 2px;">Proof Press</h1>
               <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin: 4px 0 0; letter-spacing: 2px;">NUOVA RICHIESTA DEMO — PER GIORNALISTI</p>
             </div>
             <div style="background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e5e7eb;">
@@ -2230,18 +2230,18 @@ Rispondi con questo JSON:
         const htmlConfirm = `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f0e8; padding: 32px;">
             <div style="background: #1a1a1a; padding: 24px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
-              <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 2px;">IDEASMART</h1>
+              <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 2px;">Proof Press</h1>
             </div>
             <div style="background: #ffffff; border-radius: 12px; padding: 32px; border: 1px solid #e5e7eb; text-align: center;">
               <div style="font-size: 48px; margin-bottom: 16px;">\u2713</div>
               <h2 style="color: #1a1a1a; font-size: 22px; margin: 0 0 12px; font-weight: 900;">Richiesta ricevuta!</h2>
-              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo. Ti contatteremo entro <strong>24 ore</strong> per mostrarti come lanciare il tuo giornale con IdeaSmart.</p>
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo. Ti contatteremo entro <strong>24 ore</strong> per mostrarti come lanciare il tuo giornale con Proof Press.</p>
               <a href="https://ideasmart.biz/offertacommerciale" style="display: inline-block; background: #dc2626; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri di pi\u00f9 \u2192</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">IDEASMART \u00B7 info@ideasmart.biz \u00B7 <a href=\"https://ideasmart.biz\" style=\"color: #dc2626;\">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press \u00B7 info@ideasmart.biz \u00B7 <a href=\"https://ideasmart.biz\" style=\"color: #dc2626;\">ideasmart.biz</a></p>
           </div>
         `;
-        await sendEmail({ to: input.email, subject: `La tua demo IdeaSmart \u00E8 confermata \u2014 ti ricontatteremo presto`, html: htmlConfirm });
+        await sendEmail({ to: input.email, subject: `La tua demo Proof Press \u00E8 confermata \u2014 ti ricontatteremo presto`, html: htmlConfirm });
 
         return { success: true };
       }),

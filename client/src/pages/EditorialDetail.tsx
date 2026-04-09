@@ -54,7 +54,7 @@ export default function EditorialDetail() {
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>
-            IdeaSmart
+            Proof Press
           </Link>
           <div className="flex items-center gap-4">
             <span className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">
@@ -160,7 +160,7 @@ export default function EditorialDetail() {
             <button
               onClick={() => {
                 const url = encodeURIComponent(window.location.href);
-                const text = encodeURIComponent(`${editorial.title} — Analisi IDEASMART`);
+                const text = encodeURIComponent(`${editorial.title} — Analisi Proof Press`);
                 window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, '_blank', 'width=600,height=600');
               }}
               className="inline-flex items-center gap-3 px-6 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
@@ -178,7 +178,7 @@ export default function EditorialDetail() {
               Torna a {cfg.label}
             </Link>
             <Link href="/" className="text-sm text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors font-mono tracking-widest uppercase text-xs">
-              IdeaSmart Home
+              Proof Press Home
             </Link>
           </div>
         </div>

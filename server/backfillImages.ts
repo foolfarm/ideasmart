@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Backfill Images
+ * Proof Press — Backfill Images
  *
  * Script eseguito una volta all'avvio del server per generare
  * immagini AI per tutti gli articoli esistenti che non ne hanno una.

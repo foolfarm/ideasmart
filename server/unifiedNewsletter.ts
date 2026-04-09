@@ -1,7 +1,7 @@
 /**
- * unifiedNewsletter.ts — Newsletter "Ideasmart Daily" v2
+ * unifiedNewsletter.ts — Newsletter "Proof Press Daily" v2
  * ─────────────────────────────────────────────────────────────────────────────
- * Layout editoriale ispirato ad AI4Business, con il DNA Ideasmart.
+ * Layout editoriale ispirato ad AI4Business, con il DNA Proof Press.
  * Struttura a 9 blocchi:
  *   A. Header (logo, payoff, data, contatore lettori)
  *   B. Hero — Notizia del Giorno (da Breaking News)
@@ -10,7 +10,7 @@
  *   E. Startup del Giorno (spotlight con AI Score)
  *   F. Prompt Collection — blocco fisso €39
  *   G. Sezione Eventi (3-4 prossimi eventi)
- *   H. Quick Links — "Anche oggi su Ideasmart"
+ *   H. Quick Links — "Anche oggi su Proof Press"
  *   I. Consigliato #2 + Footer + ProofPress badge
  *
  * REGOLA FONDAMENTALE: TUTTI i link puntano a ideasmart.biz, MAI alle fonti esterne.
@@ -496,7 +496,7 @@ function formatEventDate(date: Date): { day: string; month: string } {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HTML TEMPLATE BUILDER — Newsletter "Ideasmart Daily" v2
+// HTML TEMPLATE BUILDER — Newsletter "Proof Press Daily" v2
 // ═══════════════════════════════════════════════════════════════════════════
 
 function buildNewsletterHtmlV2(opts: {
@@ -607,7 +607,7 @@ function buildNewsletterHtmlV2(opts: {
         <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">
           <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header" style="color:${ACCENT};text-decoration:none;font-weight:600;">Leggi nel browser</a>
         </div>
-        <div style="font-size:48px;font-weight:900;color:${BLACK};font-family:${F_SANS};line-height:1;letter-spacing:-0.02em;">IDEASMART</div>
+        <div style="font-size:48px;font-weight:900;color:${BLACK};font-family:${F_SANS};line-height:1;letter-spacing:-0.02em;">Proof Press</div>
         <div style="font-size:13px;font-weight:600;color:${ACCENT};font-family:${F_SANS};letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Il tuo Sistema Operativo sull'AI</div>
         <div style="width:48px;height:2px;background:${BLACK};margin:10px auto;"></div>
         <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};line-height:1.5;">
@@ -640,7 +640,7 @@ function buildNewsletterHtmlV2(opts: {
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td style="background:${BLACK};border-radius:5px;padding:12px 24px;">
-                          <a href="${BASE_URL}/ai/news/${heroItem.id}" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.03em;">LEGGI SU IDEASMART →</a>
+                          <a href="${BASE_URL}/ai/news/${heroItem.id}" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.03em;">LEGGI SU Proof Press →</a>
                         </td>
                       </tr>
                     </table>
@@ -784,7 +784,7 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PROMO_BG};border-radius:8px;overflow:hidden;">
           <tr>
             <td style="padding:28px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">📋 COLLEZIONE IDEASMART</div>
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.2em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">📋 COLLEZIONE Proof Press</div>
               <div style="font-size:24px;font-weight:700;color:${WHITE};font-family:${F_SERIF};line-height:1.25;margin-bottom:12px;">99 Prompt da usare davvero nel lavoro</div>
               <div style="font-size:14px;color:#d1d5db;font-family:${F_SANS};line-height:1.7;margin-bottom:6px;">Non una raccolta generica, ma un <strong style="color:${WHITE};">asset operativo</strong>. 99 prompt selezionati, organizzati in 5 macro-sezioni, con libreria ricercabile e PDF incluso.</div>
               <div style="font-size:13px;color:#9ca3af;font-family:${F_SANS};line-height:1.6;margin-bottom:6px;">
@@ -861,7 +861,7 @@ function buildNewsletterHtmlV2(opts: {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK H: QUICK LINKS — "Anche oggi su Ideasmart"
+  // BLOCK H: QUICK LINKS — "Anche oggi su Proof Press"
   // ═══════════════════════════════════════════════════════════════
   let quickLinksHtml = "";
   const quickItems: { emoji: string; label: string; title: string; url: string }[] = [];
@@ -900,7 +900,7 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
             <td style="padding:20px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">ANCHE OGGI SU IDEASMART</div>
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">ANCHE OGGI SU Proof Press</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 ${rows}
               </table>
@@ -950,7 +950,7 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
             <td style="padding:24px 24px;text-align:center;">
-              <div style="font-size:24px;font-weight:900;color:${BLACK};font-family:${F_SANS};letter-spacing:-0.01em;margin-bottom:4px;">IDEASMART</div>
+              <div style="font-size:24px;font-weight:900;color:${BLACK};font-family:${F_SANS};letter-spacing:-0.01em;margin-bottom:4px;">Proof Press</div>
               <div style="font-size:11px;color:${ACCENT};font-family:${F_SANS};font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Il tuo Sistema Operativo sull'AI</div>
               <div style="margin-bottom:12px;">
                 <a href="https://x.com/ideasmart_ai" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 8px;">X</a>
@@ -964,7 +964,7 @@ function buildNewsletterHtmlV2(opts: {
               </div>
               <div style="border-top:1px solid ${BORDER};padding-top:14px;margin-top:4px;">
                 <div style="font-size:11px;color:${MUTED};font-family:${F_SANS};line-height:1.7;margin-bottom:10px;">
-                  Hai ricevuto questa email perché sei iscritto alla newsletter IDEASMART.<br>
+                  Hai ricevuto questa email perché sei iscritto alla newsletter Proof Press.<br>
                   Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
                 </div>
                 <a href="${BASE_URL}/preferenze-newsletter" style="font-size:11px;color:${BLACK};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Gestisci preferenze</a>
@@ -972,7 +972,7 @@ function buildNewsletterHtmlV2(opts: {
                 <a href="${unsubscribeUrl}" style="font-size:11px;color:${RED};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Cancella iscrizione</a>
               </div>
               <div style="margin-top:14px;padding-top:10px;border-top:1px solid ${BORDER};">
-                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 IdeaSmart · Un progetto FoolFarm S.p.A. · Milano</div>
+                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto FoolFarm S.p.A. · Milano</div>
                 <div style="font-size:10px;color:${ACCENT};font-weight:600;font-family:${F_SANS};letter-spacing:0.05em;">✓ PROOFPRESS VERIFY TECHNOLOGY</div>
               </div>
             </td>
@@ -990,7 +990,7 @@ function buildNewsletterHtmlV2(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ideasmart Daily — ${dateLabel}</title>
+  <title>Proof Press Daily — ${dateLabel}</title>
   <!--[if mso]><style>table{border-collapse:collapse;}td{font-family:Helvetica,Arial,sans-serif;}</style><![endif]-->
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${F_SANS};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
@@ -1069,7 +1069,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.log(`  ${ch.label}: ${content.channelContents[ch.key]?.length ?? 0}`);
   }
 
-  const subject = `Ideasmart Daily — ${dateLabel}`;
+  const subject = `Proof Press Daily — ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
     dateLabel,
@@ -1163,7 +1163,7 @@ export async function sendUnifiedPreview(): Promise<{
         : "nessuno";
 
       await notifyOwner({
-        title: `👁️ Bozza Ideasmart Daily — ${new Date().toLocaleDateString("it-IT")}`,
+        title: `👁️ Bozza Proof Press Daily — ${new Date().toLocaleDateString("it-IT")}`,
         content: `Bozza newsletter v2 inviata a ${TEST_EMAILS.join(", ")}.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.\nCanali: ${channelStats}`,
       });
 
@@ -1255,7 +1255,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     };
   }
 
-  console.log(`[UnifiedNewsletter] 📧 Invio massivo Ideasmart Daily v2...`);
+  console.log(`[UnifiedNewsletter] 📧 Invio massivo Proof Press Daily v2...`);
 
   try {
     const subscribers = await getActiveSubscribers();
@@ -1329,7 +1329,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     }
 
     await notifyOwner({
-      title: `📧 Ideasmart Daily inviata — ${new Date().toLocaleDateString("it-IT")}`,
+      title: `📧 Proof Press Daily inviata — ${new Date().toLocaleDateString("it-IT")}`,
       content: `Newsletter v2 inviata a ${totalSent}/${subscribers.length} iscritti.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.`,
     });
 
@@ -1350,7 +1350,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
 
     try {
       await notifyOwner({
-        title: `❌ Errore Ideasmart Daily — ${new Date().toLocaleDateString("it-IT")}`,
+        title: `❌ Errore Proof Press Daily — ${new Date().toLocaleDateString("it-IT")}`,
         content: `Errore durante l'invio della newsletter v2: ${msg}`,
       });
     } catch {}

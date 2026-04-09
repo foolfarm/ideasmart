@@ -39,7 +39,7 @@ function Divider() {
 
 /* ── FAQ Accordion ── */
 const FAQ_DATA = [
-  { q: "Come funziona la piattaforma IdeaSmart?", a: "IdeaSmart è una redazione digitale composta da Agent Giornalisti e agenti di supporto che lavorano come un team editoriale. Ogni Agent Giornalista monitora le fonti che gli hai assegnato, verifica le notizie con la tecnologia proprietaria ProofPress Verify™, scrive articoli nel tono che hai scelto e li pubblica sul tuo giornale. Tu interagisci con la redazione via chat, in linguaggio naturale: «scrivi un pezzo su questo tema», «estrai le news del giorno», «pubblica in prima pagina»." },
+  { q: "Come funziona la piattaforma Proof Press?", a: "Proof Press è una redazione digitale composta da Agent Giornalisti e agenti di supporto che lavorano come un team editoriale. Ogni Agent Giornalista monitora le fonti che gli hai assegnato, verifica le notizie con la tecnologia proprietaria ProofPress Verify™, scrive articoli nel tono che hai scelto e li pubblica sul tuo giornale. Tu interagisci con la redazione via chat, in linguaggio naturale: «scrivi un pezzo su questo tema», «estrai le news del giorno», «pubblica in prima pagina»." },
   { q: "Cosa sono gli Agent Giornalisti?", a: "Ogni Agent Giornalista è un membro della tua redazione AI che configuri su un settore specifico. Gli assegni un beat (es. finanza, tech, sport, politica), le fonti da monitorare e il tono di scrittura. Lui ogni giorno monitora le sue fonti, scrive i suoi articoli e li pubblica sul canale che hai scelto.\n\nCon 4 Agent copri un singolo verticale in profondità. Con 8 Agent copri 3-6 canali tematici. Con 12 Agent hai una redazione completa senza limiti.\n\nPuoi riconfigurare ogni Agent in qualsiasi momento: cambio settore, fonti, tono. La tua redazione si adatta a te." },
   { q: "Qual è la differenza tra Agent Giornalisti e agenti di supporto?", a: "Gli Agent Giornalisti sono quelli che TU configuri: scegli il settore, le fonti, il tono e la frequenza. Sono i «giornalisti» della tua redazione.\n\nGli agenti di supporto lavorano in automatico su tutti i contenuti prodotti dagli Agent Giornalisti:\n• Fact Checker — verifica ogni notizia su fonti multiple\n• Publisher — pubblica e impagina in automatico\n• Newsletter Curator — seleziona e invia le newsletter\n• Social Editor — genera i post per i social media\n\nTutti i piani includono i 4 agenti di supporto. La differenza tra i piani è nel numero di Agent Giornalisti." },
   { q: "Cos'è la tecnologia ProofPress Verify™?", a: "ProofPress Verify è un protocollo di validazione agentica delle notizie. L'AI confronta ogni contenuto su fonti multiple, ne misura affidabilità e coerenza fattuale, e genera un Verification Report. Il report viene sigillato con un hash crittografico immutabile — tracciabile, trasparente e verificabile nel tempo." },
@@ -119,10 +119,10 @@ export default function PerGiornalisti() {
   return (
     <>
       <SEOHead
-        title="IdeaSmart — La Redazione AI per Giornalisti e Testate Online | Da €500/mese"
+        title="Proof Press — La Redazione AI per Giornalisti e Testate Online | Da €500/mese"
         description="Lancia la tua testata online con una redazione AI. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. 10-15 articoli/giorno da €500/mese. Risparmi fino a €560k/anno rispetto a una redazione tradizionale."
         canonical="https://ideasmart.biz/offertacommerciale"
-        ogSiteName="IDEASMART"
+        ogSiteName="Proof Press"
       />
 
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
@@ -211,11 +211,11 @@ export default function PerGiornalisti() {
         <Section bg="#ffffff" id="soluzione">
           <Label>La Soluzione</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            IdeaSmart è la tua redazione.<br />
+            Proof Press è la tua redazione.<br />
             <span className="text-[#0a0a0a]/25">Solo che lavora 24 ore su 24 e costa 10 volte meno.</span>
           </h2>
           <p className="mt-6 text-lg md:text-xl leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-            IdeaSmart ti dà una redazione completa di Agent Giornalisti e agenti di supporto che fanno quello che fa un team editoriale: monitorano le fonti, verificano i dati, scrivono gli articoli, li pubblicano e li distribuiscono. Tu scegli la linea editoriale. Loro eseguono.
+            Proof Press ti dà una redazione completa di Agent Giornalisti e agenti di supporto che fanno quello che fa un team editoriale: monitorano le fonti, verificano i dati, scrivono gli articoli, li pubblicano e li distribuiscono. Tu scegli la linea editoriale. Loro eseguono.
           </p>
           <div className="mt-14 grid md:grid-cols-2 gap-8">
             {[
@@ -309,7 +309,7 @@ export default function PerGiornalisti() {
             Non è un prototipo.<br /><span className="text-[#0a0a0a]/25">È quello che usiamo noi ogni giorno.</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-            IdeaSmart stessa è la prova che il sistema funziona. Una testata con 4 canali tematici, oltre 6.900 lettori, 20+ ricerche originali al giorno, 40+ notizie, newsletter trisettimanale e post LinkedIn automatici. Tutto gestito dalla piattaforma, con un team editoriale di 1 persona.
+            Proof Press stessa è la prova che il sistema funziona. Una testata con 4 canali tematici, oltre 6.900 lettori, 20+ ricerche originali al giorno, 40+ notizie, newsletter trisettimanale e post LinkedIn automatici. Tutto gestito dalla piattaforma, con un team editoriale di 1 persona.
           </p>
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-b border-[#0a0a0a]/10">
             {[
@@ -466,10 +466,10 @@ export default function PerGiornalisti() {
           <Label>Fai Due Conti</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
             Quanto costa davvero una redazione?<br />
-            <span className="text-[#dc2626]">E quanto risparmi con IdeaSmart?</span>
+            <span className="text-[#dc2626]">E quanto risparmi con Proof Press?</span>
           </h2>
           <p className="mt-4 text-lg text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-            Una redazione tradizionale costa tra €80.000 e €580.000 all'anno in stipendi, strumenti e overhead. Con IdeaSmart ottieni lo stesso output — o di più — a una frazione del costo.
+            Una redazione tradizionale costa tra €80.000 e €580.000 all'anno in stipendi, strumenti e overhead. Con Proof Press ottieni lo stesso output — o di più — a una frazione del costo.
           </p>
 
           {/* Tabella confronto */}
@@ -479,7 +479,7 @@ export default function PerGiornalisti() {
                 <tr className="border-b-2 border-[#0a0a0a]">
                   <th className="py-3 pr-4 font-bold text-[#0a0a0a]">Voce di costo</th>
                   <th className="py-3 pr-4 font-bold text-[#0a0a0a]">Redazione trad.</th>
-                  <th className="py-3 pr-4 font-bold text-[#0a0a0a]">IdeaSmart</th>
+                  <th className="py-3 pr-4 font-bold text-[#0a0a0a]">Proof Press</th>
                   <th className="py-3 font-bold text-[#dc2626]">Risparmio</th>
                 </tr>
               </thead>
@@ -525,7 +525,7 @@ export default function PerGiornalisti() {
                 <p className="font-bold text-[#0a0a0a] pt-2 border-t border-[#0a0a0a]/10">Totale: €92.000 – €133.000/anno</p>
               </div>
               <div className="bg-white p-4 mb-4">
-                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">IdeaSmart — Single Vertical</p>
+                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">Proof Press — Single Vertical</p>
                 <p className="text-[13px] text-[#0a0a0a]/60 mt-1">Setup: €2.500 + €500/mese × 12 = €6.000</p>
                 <p className="text-[13px] font-bold text-[#0a0a0a] mt-1">Anno 1: €8.500 · Anno 2+: €6.000</p>
               </div>
@@ -549,7 +549,7 @@ export default function PerGiornalisti() {
                 <p className="font-bold text-[#0a0a0a] pt-2 border-t border-[#0a0a0a]/10">Totale: €190.000 – €283.000/anno</p>
               </div>
               <div className="bg-[#f5f0e8] p-4 mb-4">
-                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">IdeaSmart — Multi-Channel</p>
+                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">Proof Press — Multi-Channel</p>
                 <p className="text-[13px] text-[#0a0a0a]/60 mt-1">Setup: €5.000 + €750/mese × 12 = €9.000</p>
                 <p className="text-[13px] font-bold text-[#0a0a0a] mt-1">Anno 1: €14.000 · Anno 2+: €9.000</p>
               </div>
@@ -572,7 +572,7 @@ export default function PerGiornalisti() {
                 <p className="font-bold text-[#0a0a0a] pt-2 border-t border-[#0a0a0a]/10">Totale: €383.000 – €580.000/anno</p>
               </div>
               <div className="bg-white p-4 mb-4">
-                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">IdeaSmart — Full Newsroom</p>
+                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">Proof Press — Full Newsroom</p>
                 <p className="text-[13px] text-[#0a0a0a]/60 mt-1">Setup: €7.500 + €1.000/mese × 12 = €12.000</p>
                 <p className="text-[13px] font-bold text-[#0a0a0a] mt-1">Anno 1: €19.500 · Anno 2+: €12.000</p>
               </div>
@@ -749,7 +749,7 @@ export default function PerGiornalisti() {
               { icon: "🚀", title: "«Voglio lanciare la mia testata»", text: "Sei un giornalista con 20 anni di esperienza in un settore e vuoi la tua voce indipendente. Non hai budget per una redazione, ma hai le idee chiare su cosa coprire e come.", plan: "SINGLE VERTICAL · €500/mese", quote: "«Ho lanciato un vertical sull'AI in Italia. In 3 mesi avevo 40 articoli/settimana e 2.000 lettori.»" },
               { icon: "📊", title: "«Voglio verticalizzare la mia testata esistente»", text: "Hai già un giornale online generalista e vuoi lanciare spin-off su verticali specifici — fintech, healthtech, sport business — senza raddoppiare il team.", plan: "MULTI-CHANNEL · €750/mese", quote: "«Abbiamo aggiunto 3 verticali alla nostra testata. Stessa qualità, zero assunzioni.»" },
               { icon: "🏢", title: "«Voglio una testata per la mia organizzazione»", text: "Sei un'associazione di categoria, un ordine professionale, un fondo di investimento. Vuoi un media proprietario per i tuoi stakeholder ma non hai una redazione interna.", plan: "MULTI-CHANNEL o FULL NEWSROOM", quote: "«L'associazione ora ha un giornale settoriale che i soci leggono ogni mattina.»" },
-              { icon: "📱", title: "«Voglio scalare la produzione senza assumere»", text: "Hai una media company e produci contenuti per più clienti o più testate. Ogni nuovo progetto richiede nuove assunzioni. Con IdeaSmart, ogni progetto è una nuova istanza.", plan: "FULL NEWSROOM o CUSTOM", quote: "«Gestiamo 3 testate con un team di 2 persone. Prima ne servivano 12.»" },
+              { icon: "📱", title: "«Voglio scalare la produzione senza assumere»", text: "Hai una media company e produci contenuti per più clienti o più testate. Ogni nuovo progetto richiede nuove assunzioni. Con Proof Press, ogni progetto è una nuova istanza.", plan: "FULL NEWSROOM o CUSTOM", quote: "«Gestiamo 3 testate con un team di 2 persone. Prima ne servivano 12.»" },
             ].map((c, i) => (
               <div key={i} className="bg-white p-8 border border-[#0a0a0a]/8">
                 <div className="text-3xl mb-4">{c.icon}</div>

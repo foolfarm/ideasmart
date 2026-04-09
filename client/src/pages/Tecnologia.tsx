@@ -110,7 +110,7 @@ const PROCESS_DETAILS = [
     n: "05",
     title: "Distribuzione",
     desc: "Informazione filtrata, categorizzata e pronta per ogni canale editoriale.",
-    detail: "Il Publishing Agent distribuisce i contenuti sui 14 canali tematici di IdeaSmart, assegna metadati, categorie e tag, e ottimizza la presentazione per ogni contesto: homepage, newsletter, feed RSS, API. Tutto in tempo reale, senza intervento umano.",
+    detail: "Il Publishing Agent distribuisce i contenuti sui 14 canali tematici di Proof Press, assegna metadati, categorie e tag, e ottimizza la presentazione per ogni contesto: homepage, newsletter, feed RSS, API. Tutto in tempo reale, senza intervento umano.",
     icon: "▷",
     stat: "14 canali",
   }
@@ -127,7 +127,7 @@ function ProcessDiagram() {
         className="mt-3 text-2xl font-bold text-[#1a1a1a] mb-8"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
       >
-        Come funziona IdeaSmart
+        Come funziona Proof Press
       </h2>
 
       {/* Diagramma desktop: flow orizzontale */}
@@ -299,10 +299,10 @@ export default function Tecnologia() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
       <SEOHead
-        title="Tecnologia — IDEASMART"
-        description="Come funziona IdeaSmart: la piattaforma editoriale agentica con Verify, l'algoritmo proprietario che valida ogni notizia su sei dimensioni di qualità informativa."
+        title="Tecnologia — Proof Press"
+        description="Come funziona Proof Press: la piattaforma editoriale agentica con Verify, l'algoritmo proprietario che valida ogni notizia su sei dimensioni di qualità informativa."
         canonical="https://ideasmart.biz/tecnologia"
-        ogSiteName="IDEASMART"
+        ogSiteName="Proof Press"
       />
       <style>{`
         /* SF Pro system font — no external loading needed */
@@ -317,7 +317,7 @@ export default function Tecnologia() {
                 className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                ← IdeaSmart
+                ← Proof Press
               </span>
             </Link>
             <span
@@ -366,10 +366,10 @@ export default function Tecnologia() {
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
               >
                 <p>
-                  IdeaSmart non è una redazione tradizionale. È un sistema autonomo composto da agenti AI specializzati che replicano — e migliorano — il lavoro di una newsroom. Ogni notizia viene raccolta, verificata, bilanciata, sintetizzata e pubblicata senza intervento umano diretto.
+                  Proof Press non è una redazione tradizionale. È un sistema autonomo composto da agenti AI specializzati che replicano — e migliorano — il lavoro di una newsroom. Ogni notizia viene raccolta, verificata, bilanciata, sintetizzata e pubblicata senza intervento umano diretto.
                 </p>
                 <p>
-                  Non perché l'uomo non serva. Ma perché vogliamo eliminare i suoi bias. La differenza tra IdeaSmart e il giornalismo tradizionale è semplice: <strong style={{ color: INK }}>loro interpretano, noi misuriamo.</strong> L'informazione non è più soggettiva. Diventa un output calcolato.
+                  Non perché l'uomo non serva. Ma perché vogliamo eliminare i suoi bias. La differenza tra Proof Press e il giornalismo tradizionale è semplice: <strong style={{ color: INK }}>loro interpretano, noi misuriamo.</strong> L'informazione non è più soggettiva. Diventa un output calcolato.
                 </p>
                 <p>
                   Al centro di tutto c'è <strong style={{ color: ACCENT }}>Verify</strong>, il nostro algoritmo proprietario: il sistema che analizza, valida e pesa ogni contenuto prima che raggiunga il lettore.
@@ -390,7 +390,7 @@ export default function Tecnologia() {
                   className="mt-3 text-xs uppercase tracking-widest text-[#1a1a1a]/50"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
-                  — IdeaSmart, Manifesto Editoriale
+                  — Proof Press, Manifesto Editoriale
                 </footer>
               </blockquote>
             </div>
@@ -444,7 +444,7 @@ export default function Tecnologia() {
                   Polarizzata, manipolata, rumorosa, inefficiente. La sovrabbondanza di contenuti non ha prodotto più chiarezza: ha prodotto più confusione. Non sai più cosa è vero, cosa è rilevante, a chi credere.
                 </p>
                 <p>
-                  IdeaSmart elimina il problema alla radice: non scegliamo una narrativa. <strong style={{ color: INK }}>Costruiamo un sistema che le neutralizza tutte.</strong>
+                  Proof Press elimina il problema alla radice: non scegliamo una narrativa. <strong style={{ color: INK }}>Costruiamo un sistema che le neutralizza tutte.</strong>
                 </p>
               </div>
             </div>
@@ -551,7 +551,7 @@ export default function Tecnologia() {
               className="text-base leading-relaxed text-[#1a1a1a]/70 mb-8 max-w-2xl"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
-              Verify è l'algoritmo proprietario che rappresenta il vero vantaggio competitivo di IdeaSmart. Ogni notizia riceve un <strong style={{ color: INK }}>punteggio dinamico di qualità informativa</strong> basato su sei dimensioni distinte. Solo i contenuti che superano la soglia entrano nel flusso editoriale.
+              Verify è l'algoritmo proprietario che rappresenta il vero vantaggio competitivo di Proof Press. Ogni notizia riceve un <strong style={{ color: INK }}>punteggio dinamico di qualità informativa</strong> basato su sei dimensioni distinte. Solo i contenuti che superano la soglia entrano nel flusso editoriale.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
               {VERIFY_DIMS.map((dim, i) => (
@@ -662,7 +662,7 @@ export default function Tecnologia() {
                   Vogliamo diventare l'infrastruttura di riferimento per l'informazione verificata: per utenti, per aziende, per piattaforme, per sistemi AI.
                 </p>
                 <p>
-                  IdeaSmart non è un giornale, non è un blog, non è un aggregatore. È un <strong style={{ color: INK }}>sistema di validazione dell'informazione</strong>, un motore di verità computazionale, una newsroom autonoma. Non una testata. Un nuovo standard.
+                  Proof Press non è un giornale, non è un blog, non è un aggregatore. È un <strong style={{ color: INK }}>sistema di validazione dell'informazione</strong>, un motore di verità computazionale, una newsroom autonoma. Non una testata. Un nuovo standard.
                 </p>
               </div>
             </div>
@@ -699,7 +699,7 @@ export default function Tecnologia() {
 
           {/* ── CTA ── */}
           <section className="py-10 text-center">
-            <SectionBadge label="Scopri IdeaSmart" color={ORANGE} bg="#fff3ee" />
+            <SectionBadge label="Scopri Proof Press" color={ORANGE} bg="#fff3ee" />
             <h2
               className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a1a]"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
@@ -710,7 +710,7 @@ export default function Tecnologia() {
               className="mt-3 text-base text-[#1a1a1a]/65 max-w-xl mx-auto"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
             >
-              Esplora i 14 canali editoriali di IdeaSmart, iscriviti alla newsletter settimanale o scopri come collaborare con noi.
+              Esplora i 14 canali editoriali di Proof Press, iscriviti alla newsletter settimanale o scopri come collaborare con noi.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/">
@@ -722,7 +722,7 @@ export default function Tecnologia() {
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   }}
                 >
-                  Esplora IdeaSmart →
+                  Esplora Proof Press →
                 </span>
               </Link>
               <Link href="/chi-siamo">
@@ -764,13 +764,13 @@ export default function Tecnologia() {
               className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
               style={{ color: "rgba(26,26,46,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              IDEASMART — Tecnologia
+              Proof Press — Tecnologia
             </p>
             <p
               className="text-xs"
               style={{ color: "rgba(26,26,46,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
+              © {new Date().getFullYear()} Proof Press · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
                 ideasmart.biz
               </a>

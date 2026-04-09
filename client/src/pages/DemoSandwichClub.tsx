@@ -334,11 +334,11 @@ export default function DemoSandwichClub() {
               href="/"
               className="text-[10px] tracking-[0.2em] uppercase text-white/50 hover:text-white transition-colors"
             >
-              Powered by <span className="text-red-500 font-semibold">IdeaSmart</span> HumanLess Journalism
+              Powered by <span className="text-red-500 font-semibold">Proof Press</span> HumanLess Journalism
             </a>
           </div>
           <a href="/" className="text-[10px] tracking-[0.2em] uppercase text-white/50 hover:text-white transition-colors">
-            Torna a IdeaSmart
+            Torna a Proof Press
           </a>
         </div>
       </header>
@@ -594,7 +594,7 @@ export default function DemoSandwichClub() {
           Vuoi una pagina come questa per la tua testata?
         </h2>
         <p className="text-[#1a1a1a]/60 max-w-lg mx-auto mb-8">
-          IdeaSmart crea redazioni AI personalizzate che monitorano, analizzano e pubblicano notizie automaticamente — come questa pagina, ma aggiornata in tempo reale.
+          Proof Press crea redazioni AI personalizzate che monitorano, analizzano e pubblicano notizie automaticamente — come questa pagina, ma aggiornata in tempo reale.
         </p>
         <a
           href="/offertacommerciale"
@@ -608,7 +608,7 @@ export default function DemoSandwichClub() {
       <footer className="border-t border-[#1a1a1a]/10 py-6">
         <div className="max-w-[1200px] mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-[#1a1a1a]/40">
-            <p>Demo generata da IdeaSmart — Contenuti estratti da sandwichclub.it</p>
+            <p>Demo generata da Proof Press — Contenuti estratti da sandwichclub.it</p>
             <div className="flex items-center gap-4">
               <a href="https://www.sandwichclub.it/" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a1a1a] transition-colors">
                 sandwichclub.it
@@ -624,7 +624,7 @@ export default function DemoSandwichClub() {
               href="/"
               className="inline-flex items-center gap-2 text-[11px] tracking-[0.15em] uppercase text-[#1a1a1a]/30 hover:text-[#1a1a1a]/60 transition-colors"
             >
-              Powered by <span className="font-bold text-[#1a1a1a]/50">IdeaSmart</span>
+              Powered by <span className="font-bold text-[#1a1a1a]/50">Proof Press</span>
               <span className="text-red-500">HumanLess Journalism</span>
             </a>
           </div>

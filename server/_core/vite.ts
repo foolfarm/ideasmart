@@ -57,7 +57,7 @@ export async function setupVite(app: Express, server: Server) {
       req.url?.startsWith('/src/');
 
     if (isViteAsset) {
-      const RELOAD_SCRIPT = 'if(typeof window!=="undefined"){console.warn("[IdeaSmart] Stale bundle, reloading...");setTimeout(()=>window.location.reload(),50);}';
+      const RELOAD_SCRIPT = 'if(typeof window!=="undefined"){console.warn("[Proof Press] Stale bundle, reloading...");setTimeout(()=>window.location.reload(),50);}';
       const RELOAD_LEN = Buffer.byteLength(RELOAD_SCRIPT, 'utf8');
 
       // Intercept res.statusCode setter — Vite sets statusCode=504 directly (not via writeHead)

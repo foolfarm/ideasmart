@@ -165,7 +165,7 @@ export default function AuditDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SEOHead title="Audit Contenuti — IDEASMART Admin" description="Dashboard di audit editoriale" robots="noindex, nofollow" />
+      <SEOHead title="Audit Contenuti — Proof Press Admin" description="Dashboard di audit editoriale" robots="noindex, nofollow" />
 
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 sm:px-8 py-4">

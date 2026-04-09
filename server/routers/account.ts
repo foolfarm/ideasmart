@@ -23,7 +23,7 @@ async function requireSiteUser(ctx: any) {
   const db = await getDb();
   if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database non disponibile" });
 
-  // 1) Prova sessione nativa IdeaSmart
+  // 1) Prova sessione nativa Proof Press
   const req = ctx.req;
   const sessionToken = req?.cookies?.ideasmart_session;
   if (sessionToken) {

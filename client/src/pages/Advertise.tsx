@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Advertising / Media Kit
+ * Proof Press — Advertising / Media Kit
  * Layout editoriale coerente con le pagine sezione del sito.
  * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento teal (#1a1a1a).
  * Tipografia: SF Pro Display (titoli), SF Pro Text (corpo) — sistema Apple.
@@ -174,7 +174,7 @@ function LiveReadersBlock({ count }: { count: number }) {
         className="hidden md:block ml-auto text-sm leading-relaxed max-w-xs"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", color: "rgba(26,26,46,0.65)" }}
       >
-        Professionisti B2B italiani che ricevono ogni settimana le analisi di IdeaSmart.
+        Professionisti B2B italiani che ricevono ogni settimana le analisi di Proof Press.
         <strong style={{ color: "#1a1a1a" }}> Dato aggiornato in tempo reale.</strong>
       </div>
     </div>
@@ -223,10 +223,10 @@ export default function Advertise() {
   return (
     <>
       <SEOHead
-        title="Advertising — IDEASMART"
-        description="Raggiungi 8.000+ professionisti B2B italiani dell'AI e del business con i formati pubblicitari di IdeaSmart: banner, newsletter, reportage branded e analisi sponsorizzate."
+        title="Advertising — Proof Press"
+        description="Raggiungi 8.000+ professionisti B2B italiani dell'AI e del business con i formati pubblicitari di Proof Press: banner, newsletter, reportage branded e analisi sponsorizzate."
         canonical="https://ideasmart.biz/advertise"
-        ogSiteName="IDEASMART"
+        ogSiteName="Proof Press"
       />
       <style>{`
         /* SF Pro system font — no external loading needed */
@@ -241,7 +241,7 @@ export default function Advertise() {
                 className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                ← IdeaSmart
+                ← Proof Press
               </span>
             </Link>
             <span
@@ -281,7 +281,7 @@ export default function Advertise() {
           {/* ── INTRO ── */}
           <section className="py-10 grid md:grid-cols-[2fr_1fr] gap-10">
             <div>
-              <SectionBadge label="Perché IdeaSmart" />
+              <SectionBadge label="Perché Proof Press" />
               <h2
                 className="mt-3 text-3xl md:text-4xl font-bold leading-tight text-[#1a1a1a]"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
@@ -293,10 +293,10 @@ export default function Advertise() {
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
               >
                 <p>
-                  IdeaSmart è la testata giornalistica 100% AI più letta dai professionisti italiani dell'intelligenza artificiale, del business e dell'innovazione. Ogni giorno, oltre 8.000 visitatori unici leggono le nostre analisi, notizie e reportage.
+                  Proof Press è la testata giornalistica 100% AI più letta dai professionisti italiani dell'intelligenza artificiale, del business e dell'innovazione. Ogni giorno, oltre 8.000 visitatori unici leggono le nostre analisi, notizie e reportage.
                 </p>
                 <p>
-                  Il nostro pubblico è composto da CTO, CEO, Product Manager, investitori e consulenti AI: <strong style={{ color: INK }}>i professionisti che prendono decisioni di acquisto e investimento.</strong> Pubblicare su IdeaSmart significa essere presenti dove si forma l'opinione del settore.
+                  Il nostro pubblico è composto da CTO, CEO, Product Manager, investitori e consulenti AI: <strong style={{ color: INK }}>i professionisti che prendono decisioni di acquisto e investimento.</strong> Pubblicare su Proof Press significa essere presenti dove si forma l'opinione del settore.
                 </p>
               </div>
             </div>
@@ -312,7 +312,7 @@ export default function Advertise() {
                   className="mt-3 text-xs uppercase tracking-widest text-[#1a1a1a]/50"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
-                  — IdeaSmart, Media Kit 2026
+                  — Proof Press, Media Kit 2026
                 </footer>
               </blockquote>
             </div>
@@ -523,7 +523,7 @@ export default function Advertise() {
               className="mt-3 text-2xl md:text-3xl font-bold text-[#1a1a1a] mb-3"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              Inizia una campagna su IdeaSmart
+              Inizia una campagna su Proof Press
             </h2>
             <p
               className="text-base text-[#1a1a1a]/65 mb-8 max-w-xl"
@@ -646,13 +646,13 @@ export default function Advertise() {
               className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
               style={{ color: "rgba(26,26,46,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              IDEASMART — Advertising
+              Proof Press — Advertising
             </p>
             <p
               className="text-xs"
               style={{ color: "rgba(26,26,46,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              © {new Date().getFullYear()} IdeaSmart · Tutti i diritti riservati ·{" "}
+              © {new Date().getFullYear()} Proof Press · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
                 ideasmart.biz
               </a>

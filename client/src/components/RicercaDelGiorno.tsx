@@ -72,7 +72,7 @@ export default function RicercaDelGiorno() {
             className="text-[10px] font-black uppercase tracking-[0.28em] text-[#1a1a1a]"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
-            IdeaSmart
+            Proof Press
           </span>
           <span
             className="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40"

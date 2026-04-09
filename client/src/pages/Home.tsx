@@ -416,10 +416,10 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="IdeaSmart — AI, Startup e Venture Capital"
+        title="Proof Press — AI, Startup e Venture Capital"
         description="Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee."
         canonical="https://ideasmart.biz"
-        ogSiteName="IdeaSmart"
+        ogSiteName="Proof Press"
       />
 
       <style>{`
@@ -553,7 +553,7 @@ export default function Home() {
           >
             <div className="flex-shrink-0 text-2xl">📋</div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-bold uppercase tracking-[0.15em] mb-0.5" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione IDEASMART</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] mb-0.5" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione Proof Press</p>
               <p className="text-[14px] font-black leading-tight" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
             </div>
             <span className="flex-shrink-0 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded group-hover:opacity-90 transition-opacity" style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Scopri →</span>
@@ -662,7 +662,7 @@ export default function Home() {
                           <div className="h-[3px] w-8" style={{ background: "#1a1a1a" }} />
                           <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] m-0"
                             style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", lineHeight: 1 }}>
-                            IdeaSmart — 20 ricerche al giorno
+                            Proof Press — 20 ricerche al giorno
                           </h2>
                         </div>
                         <Link href="/research">
@@ -867,21 +867,21 @@ export default function Home() {
                   {/* ── Box Annuncio ProofPress ── */}
                   <Link href="/proofpress-verify">
                     <div className="mb-5 p-5 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
-                      style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1a1a2e 100%)", border: "1px solid rgba(0,229,200,0.15)" }}>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.25em] mb-2"
-                        style={{ color: "#00e5c8", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>
+                      style={{ background: "#f5f3ee", border: "1px solid rgba(26,26,26,0.08)" }}>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
+                        style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>
                         Novità
                       </p>
-                      <p className="text-[17px] font-black leading-tight mb-2"
-                        style={{ color: "#ffffff", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
-                        Ideasmart diventa ProofPress.
+                      <p className="text-[18px] font-black leading-tight mb-2"
+                        style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
+                        Ideasmart diventa Proof Press.
                       </p>
-                      <p className="text-[12px] leading-relaxed mb-3"
-                        style={{ color: "rgba(255,255,255,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <p className="text-[12px] leading-relaxed mb-4"
+                        style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.
                       </p>
-                      <span className="inline-block text-[10px] font-bold uppercase tracking-wider py-2 px-4 rounded group-hover:opacity-90 transition-opacity"
-                        style={{ background: "#00e5c8", color: "#0a0f1e", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-80 transition-opacity rounded"
+                        style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Scopri La ProofPress Verify Technology →
                       </span>
                     </div>
@@ -896,7 +896,7 @@ export default function Home() {
                     <div className="p-5 rounded-lg" style={{ background: "#f5f3ee", border: "1px solid rgba(26,26,26,0.08)" }}>
                       <p className="text-[18px] font-black leading-tight mb-3"
                         style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
-                        La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano.
+                        La collezione Proof Press di prompt da usare davvero nel lavoro quotidiano.
                       </p>
                       <p className="text-[12px] leading-relaxed mb-4"
                         style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -913,7 +913,7 @@ export default function Home() {
                   <div className="mb-5 p-4 border-l-4" style={{ background: "#f5f3ee", borderColor: "#1a1a1a" }}>
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
                       style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                      IDEASMART
+                      Proof Press
                     </p>
                     <p className="text-[15px] font-black leading-snug mb-1"
                       style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.01em" }}>
@@ -1111,7 +1111,7 @@ export default function Home() {
             <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <p className="text-[11px] text-[#1a1a1a]/40"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                {`© ${today.getFullYear()} IdeaSmart · AI · Startup · Venture Capital`}
+                {`© ${today.getFullYear()} Proof Press · AI · Startup · Venture Capital`}
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 {(["ai", "startup"] as const).map(sec => (

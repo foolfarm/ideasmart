@@ -1,5 +1,5 @@
 /**
- * nightlyAuditScheduler.ts — Audit Notturno IDEASMART
+ * nightlyAuditScheduler.ts — Audit Notturno Proof Press
  * ─────────────────────────────────────────────────────────────────────────────
  * Eseguito ogni notte alle 02:00 CET (dopo che tutti i contenuti sono stati
  * generati da 00:00 a 01:30 CET).
@@ -22,7 +22,7 @@ import { notifyOwner } from "./_core/notification";
 import { findNewsImage } from "./stockImages";
 
 const FETCH_TIMEOUT_MS = 8_000;
-const USER_AGENT = "Mozilla/5.0 (compatible; IDEASMART-AuditBot/1.0; +https://www.ideasmart.biz)";
+const USER_AGENT = "Mozilla/5.0 (compatible; Proof Press-AuditBot/1.0; +https://www.ideasmart.biz)";
 
 // ─── Verifica raggiungibilità URL ─────────────────────────────────────────────
 
@@ -263,7 +263,7 @@ export async function runNightlyAudit(): Promise<void> {
   try {
     await notifyOwner({
       title: `🌙 Audit notturno completato — ${new Date().toLocaleDateString("it-IT")}`,
-      content: `Audit notturno IDEASMART completato in ${elapsed}s.\n\n` +
+      content: `Audit notturno Proof Press completato in ${elapsed}s.\n\n` +
         `📊 Riepilogo:\n` +
         `• AI: ${results.ai.checked} verificate, ${results.ai.invalid} non valide → ${results.ai.replaced} sostituite\n` +
         `• Dealroom: ${results.dealroom.checked} verificate, ${results.dealroom.invalid} non valide → ${results.dealroom.replaced} sostituite\n` +

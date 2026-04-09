@@ -45,10 +45,10 @@ export default function Registrati() {
   return (
     <>
       <SEOHead
-        title="Registrati — IDEASMART"
-        description="Crea il tuo account gratuito IdeaSmart e accedi a tutte le analisi su AI, Startup e Venture Capital."
+        title="Registrati — Proof Press"
+        description="Crea il tuo account gratuito Proof Press e accedi a tutte le analisi su AI, Startup e Venture Capital."
         canonical="https://ideasmart.biz/registrati"
-        ogSiteName="IdeaSmart"
+        ogSiteName="Proof Press"
       />
       <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
         <SharedPageHeader />
@@ -173,7 +173,7 @@ export default function Registrati() {
                 <Link href="/privacy">
                   <span className="underline cursor-pointer">Privacy Policy</span>
                 </Link>{" "}
-                di IdeaSmart.
+                di Proof Press.
               </p>
             </>
           )}

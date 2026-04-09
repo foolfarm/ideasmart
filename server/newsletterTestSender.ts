@@ -1,5 +1,5 @@
 /**
- * newsletterTestSender.ts — Newsletter di Test IDEASMART
+ * newsletterTestSender.ts — Newsletter di Test Proof Press
  * ─────────────────────────────────────────────────────────────────────────────
  * Invia ogni lunedì alle 08:30 CET una newsletter di test a ac@acinelli.com
  * con i contenuti reali dal DB (notizie RSS, editoriale, startup, reportage, analisi).
@@ -79,7 +79,7 @@ async function buildNewsletterFromDb(): Promise<{
   console.log(`[NewsletterTest]   Reportage: ${reportages.length}`);
   console.log(`[NewsletterTest]   Analisi: ${analyses.length}`);
 
-  const subject = `[TEST] IDEASMART — AI for Business · N° ${issueNumber} · ${monthLabel}`;
+  const subject = `[TEST] Proof Press — AI for Business · N° ${issueNumber} · ${monthLabel}`;
 
   const html = buildFullNewsletterHtml({
     dateLabel,

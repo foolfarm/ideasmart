@@ -62,7 +62,7 @@ export default function ReportageDetail() {
       <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>
-            IdeaSmart
+            Proof Press
           </Link>
           <span className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">
             {new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
@@ -215,7 +215,7 @@ export default function ReportageDetail() {
               Torna a {cfg.label}
             </Link>
             <Link href="/" className="text-sm text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors font-mono tracking-widest uppercase text-xs">
-              IdeaSmart Home
+              Proof Press Home
             </Link>
           </div>
         </div>

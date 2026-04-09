@@ -78,7 +78,7 @@ export default function ChannelPreferences() {
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔗</div>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#0a1628", marginBottom: 12 }}>Link non valido</h1>
           <p style={{ fontSize: 15, color: "#4b5563", lineHeight: 1.7, marginBottom: 24 }}>
-            Usa il link "Gestisci preferenze" presente nel footer delle email IDEASMART per accedere a questa pagina.
+            Usa il link "Gestisci preferenze" presente nel footer delle email Proof Press per accedere a questa pagina.
           </p>
           <a href="/" style={{ display: "inline-block", background: "#1a1a1a", color: "#fff", padding: "12px 28px", borderRadius: 8, textDecoration: "none", fontFamily: "sans-serif", fontWeight: 700, fontSize: 14 }}>
             Torna alla Home →
@@ -132,7 +132,7 @@ export default function ChannelPreferences() {
       <div style={{ background: "#0a1628", padding: "0" }}>
         {/* Top bar */}
         <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "10px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: 11, color: "#1a1a1a", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "sans-serif" }}>IDEASMART</span>
+          <span style={{ fontSize: 11, color: "#1a1a1a", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "sans-serif" }}>Proof Press</span>
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontFamily: "sans-serif" }}>
             {new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).toUpperCase()}
           </span>

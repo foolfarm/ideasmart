@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Market Intelligence Module
+ * Proof Press — Market Intelligence Module
  *
  * Cerca dati, statistiche e insight da fonti di market intelligence autorevoli
  * (McKinsey, Gartner, CBInsights, WEF, a16z, Deloitte, PwC, ecc.)

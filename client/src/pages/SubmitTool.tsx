@@ -48,7 +48,7 @@ export default function SubmitTool() {
             Proponi il tuo AI Tool
           </h1>
           <p className="text-lg text-[#4b5563] leading-relaxed max-w-lg mx-auto">
-            Invia il tuo strumento AI e potrai essere presente nella prossima edizione della newsletter <strong>IDEASMART</strong>, letta da oltre 1.800 professionisti del settore.
+            Invia il tuo strumento AI e potrai essere presente nella prossima edizione della newsletter <strong>Proof Press</strong>, letta da oltre 1.800 professionisti del settore.
           </p>
         </div>
 
@@ -159,10 +159,10 @@ export default function SubmitTool() {
             Vuoi una posizione in evidenza nella newsletter?
           </p>
           <a
-            href="mailto:info@ideasmart.biz?subject=Pubblicità%20Newsletter%20IdeaSmart"
+            href="mailto:info@ideasmart.biz?subject=Pubblicità%20Newsletter%20Proof%20Press"
             className="text-[#00a896] font-semibold text-sm hover:underline"
           >
-            Pubblicizza su IdeaSmart Newsletter →
+            Pubblicizza su Proof Press Newsletter →
           </a>
         </div>
       </div>

@@ -1,5 +1,5 @@
 /**
- * IDEASMART — Startup Radar EU/IT
+ * Proof Press — Startup Radar EU/IT
  *
  * Scrapa feed RSS da fonti italiane ed europee per trovare
  * le 10 startup AI più investibili del giorno.
@@ -115,7 +115,7 @@ async function fetchAllFeeds(): Promise<RSSItem[]> {
         const timeout = setTimeout(() => controller.abort(), 10000);
         const res = await fetch(feed.url, {
           signal: controller.signal,
-          headers: { "User-Agent": "IdeaSmart-StartupRadar/1.0" },
+          headers: { "User-Agent": "Proof Press-StartupRadar/1.0" },
         });
         clearTimeout(timeout);
 
@@ -257,7 +257,7 @@ async function generateStartupRadarPost(startups: StartupPick[]): Promise<string
     .map((s, i) => `${i + 1}. ${s.name} \u2014 ${s.description}\n   USP: ${s.usp}\n   Perch\u00e9 investire: ${s.whyInteresting}\n   Stato: ${s.status} | Funding: ${s.funding} | Valutazione: ${s.valuation}\n   Rating: ${s.investRating}\n   Link: ${s.link}`)
     .join("\n\n");
 
-  const systemPrompt = `Sei Andrea Cinelli, Tech Expert e VC advisor. Scrivi un post LinkedIn "AI Dealflow Europe by IDEASMART".
+  const systemPrompt = `Sei Andrea Cinelli, Tech Expert e VC advisor. Scrivi un post LinkedIn "AI Dealflow Europe by Proof Press".
 
 REGOLE FERREE:
 - MASSIMO 2800 caratteri TOTALI (LinkedIn taglia a 3000). Conta i caratteri!
@@ -288,7 +288,7 @@ Link: URL diretto
 Trend: 1 insight su cosa emerge (max 2 righe)
 
 Segui \u2192 ideasmart.biz/startup
-#Startup #AI #VentureCapital #IDEASMART
+#Startup #AI #VentureCapital #Proof Press
 
 Andrea Cinelli | Tech Expert | ideasmart.biz
 

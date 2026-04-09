@@ -21,7 +21,7 @@ async function fetchRssFeed(url: string): Promise<Array<{ title: string; link: s
     const timeout = setTimeout(() => controller.abort(), 15000);
     const res = await fetch(url, {
       signal: controller.signal,
-      headers: { "User-Agent": "IdeaSmart/1.0 RSS Reader" },
+      headers: { "User-Agent": "Proof Press/1.0 RSS Reader" },
     });
     clearTimeout(timeout);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -83,7 +83,7 @@ function stripHtml(html: string): string {
 
 // ── Channel-specific AI prompts ────────────────────────────────────────────
 const CHANNEL_PROMPTS: Record<string, string> = {
-  "copy-paste-ai": `Sei un esperto di prompt engineering per IdeaSmart. Trasforma queste notizie/risorse AI in PROMPT pronti all'uso.
+  "copy-paste-ai": `Sei un esperto di prompt engineering per Proof Press. Trasforma queste notizie/risorse AI in PROMPT pronti all'uso.
 
 Per ogni item genera un contenuto con:
 - title: titolo accattivante del prompt (es. "Prompt per scrivere email di vendita B2B")
@@ -99,7 +99,7 @@ REGOLE:
 - Scrivi in italiano
 - Genera esattamente il numero di item richiesto`,
 
-  "automate-with-ai": `Sei un esperto di automazione AI per IdeaSmart. Trasforma queste notizie/risorse in USE CASE di automazione reali.
+  "automate-with-ai": `Sei un esperto di automazione AI per Proof Press. Trasforma queste notizie/risorse in USE CASE di automazione reali.
 
 Per ogni item genera:
 - title: titolo dell'automazione (es. "Automatizza il customer support con AI + Zapier")
@@ -114,7 +114,7 @@ REGOLE:
 - Includi tool specifici (Zapier, n8n, Make, ecc.)
 - Scrivi in italiano`,
 
-  "make-money-with-ai": `Sei un esperto di monetizzazione AI per IdeaSmart. Trasforma queste notizie in STRATEGIE DI GUADAGNO con AI.
+  "make-money-with-ai": `Sei un esperto di monetizzazione AI per Proof Press. Trasforma queste notizie in STRATEGIE DI GUADAGNO con AI.
 
 Per ogni item genera:
 - title: titolo della strategia (es. "Come guadagnare €2.000/mese con AI copywriting")
@@ -129,7 +129,7 @@ REGOLE:
 - Casi reali quando possibile
 - Scrivi in italiano`,
 
-  "daily-ai-tools": `Sei un reviewer di AI tools per IdeaSmart. Trasforma queste notizie in REVIEW DI TOOL AI.
+  "daily-ai-tools": `Sei un reviewer di AI tools per Proof Press. Trasforma queste notizie in REVIEW DI TOOL AI.
 
 Per ogni item genera:
 - title: nome del tool + tagline (es. "Gamma — Presentazioni AI in 30 secondi")
@@ -144,7 +144,7 @@ REGOLE:
 - Includi sempre il prezzo (free/freemium/paid)
 - Scrivi in italiano`,
 
-  "verified-ai-news": `Sei un giornalista AI senior per IdeaSmart. Trasforma queste notizie in NEWS VERIFICATE e SPIEGATE.
+  "verified-ai-news": `Sei un giornalista AI senior per Proof Press. Trasforma queste notizie in NEWS VERIFICATE e SPIEGATE.
 
 Per ogni item genera:
 - title: titolo della news (chiaro, non clickbait)
@@ -160,7 +160,7 @@ REGOLE:
 - Spiega PERCHÉ è importante, non solo COSA è successo
 - Scrivi in italiano`,
 
-  "ai-opportunities": `Sei un analista di venture capital AI per IdeaSmart. Trasforma queste notizie in OPPORTUNITÀ per investitori e founder.
+  "ai-opportunities": `Sei un analista di venture capital AI per Proof Press. Trasforma queste notizie in OPPORTUNITÀ per investitori e founder.
 
 Per ogni item genera:
 - title: titolo dell'opportunità (es. "Anthropic raccoglie $2B — cosa significa per il mercato")

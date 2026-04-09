@@ -1,5 +1,5 @@
 /**
- * siteAuth router — registrazione nativa IdeaSmart
+ * siteAuth router — registrazione nativa Proof Press
  * Flusso: register → email conferma → verifyEmail → login → cookie sessione
  */
 import { z } from "zod";

@@ -249,7 +249,7 @@ export default function ResearchDetail() {
               Hai bisogno di una ricerca dedicata?
             </p>
             <h3 className="text-xl font-black mb-2" style={{ fontFamily: SF_DISPLAY, color: "#1a1a1a" }}>
-              IDEASMART Research
+              Proof Press Research
             </h3>
             <p className="text-sm mb-5 max-w-md mx-auto" style={{ fontFamily: SF_SERIF, color: "rgba(26,26,26,0.6)" }}>
               Analisi su misura su venture capital, AI trend e investimenti tecnologici per il tuo business.

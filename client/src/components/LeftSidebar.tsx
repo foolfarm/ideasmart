@@ -64,7 +64,7 @@ export default function LeftSidebar() {
                 lineHeight: 1,
               }}
             >
-              IDEASMART
+              Proof Press
             </div>
           </div>
         </Link>

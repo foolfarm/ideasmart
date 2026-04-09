@@ -9,9 +9,9 @@ interface SendEmailOptions {
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
   const apiKey = process.env.SENDGRID_API_KEY;
-  // Mittente ufficiale IDEASMART — verificare info@ideasmart.biz su SendGrid Sender Authentication
+  // Mittente ufficiale Proof Press — verificare info@ideasmart.biz su SendGrid Sender Authentication
   const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@ideasmart.biz";
-  const fromName = process.env.SENDGRID_FROM_NAME || "Ideasmart Daily";
+  const fromName = process.env.SENDGRID_FROM_NAME || "Proof Press Daily";
 
   if (!apiKey) {
     console.error("[Email] SENDGRID_API_KEY not set");
@@ -57,7 +57,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
   }
 }
 
-// ─── TEMPLATE DARK UFFICIALE IDEASMART ────────────────────────────────────────
+// ─── TEMPLATE DARK UFFICIALE Proof Press ────────────────────────────────────────
 // Stile: sfondo navy #0a0f1e, accenti ciano #00e5c8, blu #0066ff, arancio #ff5500
 // Struttura: Top bar → Logo → Editoriale → Indice → 4 Startup → News AI → CTA → Footer
 
@@ -120,7 +120,7 @@ export function buildMonthlyNewsletterHtml(opts: {
   const newsItemsHtml = news.slice(0, 20).map((item, idx) => {
     const num = String(idx + 1).padStart(2, "0");
     const color = categoryColors[item.category] ?? categoryColors["default"];
-    // Usa URL interno Ideasmart se disponibile id e section, altrimenti usa url esterno
+    // Usa URL interno Proof Press se disponibile id e section, altrimenti usa url esterno
     const ideasmartUrl = (item.id && item.section)
       ? `${baseUrl}/${item.section}/news/${item.id}`
       : null;
@@ -129,8 +129,8 @@ export function buildMonthlyNewsletterHtml(opts: {
       ? `<a href="${linkUrl}" style="font-size:13px;font-weight:700;color:#0a1628;text-decoration:none;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</a>`
       : `<span style="font-size:13px;font-weight:700;color:#0a1628;font-family:Georgia,'Times New Roman',serif;line-height:1.5;">${item.title}</span>`;
     const sourceEl = item.source
-      ? ` &mdash; <em style="color:#9ca3af;">${item.source}</em>${ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su IDEASMART →</a>` : ""}`
-      : (ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su IDEASMART →</a>` : "");
+      ? ` &mdash; <em style="color:#9ca3af;">${item.source}</em>${ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su Proof Press →</a>` : ""}`
+      : (ideasmartUrl ? ` &mdash; <a href="${ideasmartUrl}" style="font-size:10px;color:${color};text-decoration:underline;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Leggi su Proof Press →</a>` : "");
     const isLast = idx === Math.min(news.length, 20) - 1;
     const rowBg = idx % 2 === 0 ? "#ffffff" : "#f9f7f4";
 
@@ -159,7 +159,7 @@ export function buildMonthlyNewsletterHtml(opts: {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>IDEASMART · N° ${issueNumber} · ${month}</title>
+<title>Proof Press · N° ${issueNumber} · ${month}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#ede8de;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
@@ -207,7 +207,7 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td style="padding:20px 28px 18px;background:#ffffff;border-bottom:1px solid #e8e0d0;">
       <p style="font-size:14px;line-height:1.8;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;">
-        <strong style="color:#0a1628;">IDEASMART</strong> è la prima testata giornalistica HumanLess che ogni giorno analizza oltre 4.000 fonti su AI, Startup e Venture Capital. Ricerche verificate, alert e briefing per chi prende decisioni.
+        <strong style="color:#0a1628;">Proof Press</strong> è la prima testata giornalistica HumanLess che ogni giorno analizza oltre 4.000 fonti su AI, Startup e Venture Capital. Ricerche verificate, alert e briefing per chi prende decisioni.
       </p>
     </td>
   </tr>
@@ -495,10 +495,10 @@ export function buildMonthlyNewsletterHtml(opts: {
   <tr>
     <td style="padding:24px 28px 28px;background:#f5f0e8;border-top:1px solid #d8d0c0;">
       <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 10px;text-align:center;">
-        &copy; 2026 <strong style="color:#374151;">IDEASMART</strong> &mdash; La Prima Testata Giornalistica HumanLess
+        &copy; 2026 <strong style="color:#374151;">Proof Press</strong> &mdash; La Prima Testata Giornalistica HumanLess
       </p>
       <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 12px;text-align:center;line-height:1.6;">
-        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
+        Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter Proof Press.<br>
         Sede legale: Italia &middot; P.IVA in corso di registrazione &middot; <a href="${baseUrl}/privacy" style="color:#9ca3af;text-decoration:underline;">Privacy Policy</a>
       </p>
       <!-- Separatore -->
@@ -563,7 +563,7 @@ export function buildWelcomeEmailHtml(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benvenuto in IDEASMART</title>
+  <title>Benvenuto in Proof Press</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f6fa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 
@@ -575,7 +575,7 @@ export function buildWelcomeEmailHtml(opts: {
         <!-- TOP BAR -->
         <tr>
           <td style="background:#0a0f1e;padding:10px 32px;">
-            <span style="font-size:10px;color:#00b4a0;letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; IDEASMART</span>
+            <span style="font-size:10px;color:#00b4a0;letter-spacing:0.15em;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">&#9670; Proof Press</span>
           </td>
         </tr>
 
@@ -585,7 +585,7 @@ export function buildWelcomeEmailHtml(opts: {
             <div style="font-size:36px;font-weight:900;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.1;margin-bottom:8px;">
               IDEA<span style="color:#00b4a0;">SMART</span>
             </div>
-            <div style="font-size:14px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:24px;">by IDEASMART</div>
+            <div style="font-size:14px;color:rgba(255,255,255,0.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:24px;">by Proof Press</div>
             <div style="display:inline-block;background:#00b4a0;border-radius:50px;padding:8px 20px;">
               <span style="font-size:12px;font-weight:700;color:#0a0f1e;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;">&#10003; Iscrizione Confermata</span>
             </div>
@@ -597,7 +597,7 @@ export function buildWelcomeEmailHtml(opts: {
           <td style="padding:36px 32px 28px;">
             <p style="font-size:18px;font-weight:700;color:#1a1f2e;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 16px;">${greeting}</p>
             <p style="font-size:15px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 20px;">
-              Benvenuto in <strong style="color:#1a1f2e;">IDEASMART</strong> — la prima testata giornalistica HumanLess su AI, Startup e Venture Capital.
+              Benvenuto in <strong style="color:#1a1f2e;">Proof Press</strong> — la prima testata giornalistica HumanLess su AI, Startup e Venture Capital.
             </p>
             <p style="font-size:15px;line-height:1.75;color:#4b5563;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 28px;">
               Ogni giorno riceverai le notizie più rilevanti sull'AI, le startup italiane più promettenti, editoriali esclusivi e analisi di mercato da fonti come CB Insights, Sifted e TechCrunch.
@@ -671,7 +671,7 @@ export function buildWelcomeEmailHtml(opts: {
         <tr>
           <td style="padding:20px 32px 28px;background:#f8f9fc;border-top:1px solid #e2e5ed;">
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 8px;text-align:center;">
-              &copy; 2026 <strong>IDEASMART</strong> &mdash; La Prima Testata Giornalistica HumanLess
+              &copy; 2026 <strong>Proof Press</strong> &mdash; La Prima Testata Giornalistica HumanLess
             </p>
             <p style="font-size:11px;color:#9ca3af;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0 0 6px;text-align:center;">
               Hai ricevuto questa email perch&eacute; ti sei iscritto su <a href="${baseUrl}" style="color:#00b4a0;text-decoration:none;">ideasmart.biz</a>.
@@ -906,7 +906,7 @@ export function buildFullNewsletterHtml(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IDEASMART — ${dateLabel}</title>
+  <title>Proof Press — ${dateLabel}</title>
 </head>
 <body style="margin:0;padding:0;background:${CREAM};font-family:${FONT};">
 
@@ -934,10 +934,10 @@ export function buildFullNewsletterHtml(opts: {
           </td>
         </tr>
 
-        <!-- HEADER — IDEASMART grande in nero (come il sito) -->
+        <!-- HEADER — Proof Press grande in nero (come il sito) -->
         <tr>
           <td style="background:${WHITE};padding:32px 28px 16px;text-align:center;">
-            <a href="${baseUrl}" style="text-decoration:none;"><div style="font-size:48px;font-weight:900;color:${BLACK};letter-spacing:-2px;line-height:1;font-family:${FONT};">IDEASMART</div></a>
+            <a href="${baseUrl}" style="text-decoration:none;"><div style="font-size:48px;font-weight:900;color:${BLACK};letter-spacing:-2px;line-height:1;font-family:${FONT};">Proof Press</div></a>
             <div style="margin-top:10px;font-size:10px;color:${SLATE};letter-spacing:0.28em;text-transform:uppercase;font-family:${FONT};line-height:1.5;">Intelligence Quotidiana su AI, Startup e Venture Capital</div>
             <div style="margin-top:4px;font-size:10px;color:${MUTED};font-family:${FONT};font-style:italic;">Ricerche verificate, alert e briefing per chi prende decisioni.</div>
           </td>
@@ -1124,7 +1124,7 @@ export function buildFullNewsletterHtml(opts: {
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td>
-                      <span style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};">IDEASMART RESEARCH</span>
+                      <span style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};">Proof Press RESEARCH</span>
                     </td>
                     <td align="right">
                       <a href="https://ideasmart.biz/research" style="font-size:9px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};letter-spacing:0.1em;">TUTTE LE RICERCHE &rarr;</a>
@@ -1171,12 +1171,12 @@ export function buildFullNewsletterHtml(opts: {
         <tr><td style="background:${CREAM2};padding:12px 28px 20px;">
           <table cellpadding="0" cellspacing="0" border="0" align="center">
             <tr><td style="background:${BLACK};border-radius:4px;padding:12px 28px;">
-              <a href="https://ideasmart.biz/research" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${FONT};">Vai a IdeaSmart Research &rarr;</a>
+              <a href="https://ideasmart.biz/research" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${FONT};">Vai a Proof Press Research &rarr;</a>
             </td></tr>
           </table>
         </td></tr>` : ''}
 
-        <!-- BANNER PROMO IDEASMART -->
+        <!-- BANNER PROMO Proof Press -->
         <tr>
           <td style="background:${BLACK};border-top:2px solid ${BLACK};padding:28px 28px 24px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -1202,10 +1202,10 @@ export function buildFullNewsletterHtml(opts: {
         <tr>
           <td style="background:${CREAM};padding:24px 28px 28px;border-top:1px solid ${BORDER};">
             <p style="font-size:12px;color:${BLACK};font-family:${FONT};margin:0 0 8px;text-align:center;font-weight:700;">
-              IDEASMART &mdash; Notizie Quotidiane &bull; &copy; 2026
+              Proof Press &mdash; Notizie Quotidiane &bull; &copy; 2026
             </p>
             <p style="font-size:10px;color:${MUTED};font-family:${FONT};margin:0 0 16px;text-align:center;line-height:1.7;">
-              Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
+              Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter Proof Press.<br>
               Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
             </p>
             <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 14px;">
@@ -1239,7 +1239,7 @@ ${trackingPixelUrl ? `<!-- Tracking pixel --><img src="${trackingPixelUrl}" widt
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// NEWSLETTER PROMOZIONALE — Promuove Ideasmart come piattaforma
+// NEWSLETTER PROMOZIONALE — Promuove Proof Press come piattaforma
 // Stile identico al sito: SF Pro, crema, nero, editoriale
 // ══════════════════════════════════════════════════════════════════════════════
 export function buildPromoNewsletterHtml(opts: {
@@ -1268,7 +1268,7 @@ export function buildPromoNewsletterHtml(opts: {
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>IDEASMART &mdash; Il primo giornale che funziona anche senza una redazione</title>
+  <title>Proof Press &mdash; Il primo giornale che funziona anche senza una redazione</title>
   <style>
     body{margin:0;padding:0;background:${CREAM};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
     table{border-spacing:0;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;}
@@ -1308,10 +1308,10 @@ export function buildPromoNewsletterHtml(opts: {
           </td>
         </tr>
 
-        <!-- HEADER IDEASMART -->
+        <!-- HEADER Proof Press -->
         <tr>
           <td style="background:${WHITE};padding:28px 28px 12px;text-align:center;">
-            <div style="font-size:42px;font-weight:900;color:${BLACK};font-family:${FONT};letter-spacing:-0.02em;line-height:1;">IDEASMART</div>
+            <div style="font-size:42px;font-weight:900;color:${BLACK};font-family:${FONT};letter-spacing:-0.02em;line-height:1;">Proof Press</div>
             <div style="font-size:10px;font-weight:600;color:${SLATE};font-family:${FONT};letter-spacing:0.22em;text-transform:uppercase;margin-top:8px;">Notizie quotidiane su AI, Startup e Venture Capital</div>
           </td>
         </tr>
@@ -1420,7 +1420,7 @@ export function buildPromoNewsletterHtml(opts: {
         <tr>
           <td class="pad" style="background:${WHITE};padding:32px 28px;border-top:2px solid ${BLACK};">
             <div style="font-size:9px;font-weight:700;color:${BLACK};letter-spacing:0.22em;text-transform:uppercase;font-family:${FONT};margin-bottom:8px;">LA SOLUZIONE</div>
-            <div class="section-title" style="font-size:26px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.15;margin-bottom:16px;">Ideasmart &egrave; la prima piattaforma di giornalismo agentico.</div>
+            <div class="section-title" style="font-size:26px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.15;margin-bottom:16px;">Proof Press &egrave; la prima piattaforma di giornalismo agentico.</div>
             <div style="font-size:14px;color:${SLATE};font-family:${FONT};line-height:1.7;margin-bottom:20px;">Una redazione completa, composta da <strong style="color:${BLACK};">8 agenti AI specializzati</strong>, che lavorano insieme come un vero team editoriale:</div>
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
               <tr>
@@ -1606,10 +1606,10 @@ export function buildPromoNewsletterHtml(opts: {
         <tr>
           <td style="background:${CREAM};padding:24px 28px 28px;border-top:1px solid ${BORDER};">
             <p style="font-size:12px;color:${BLACK};font-family:${FONT};margin:0 0 8px;text-align:center;font-weight:700;">
-              IDEASMART &mdash; Notizie Quotidiane &bull; &copy; 2026
+              Proof Press &mdash; Notizie Quotidiane &bull; &copy; 2026
             </p>
             <p style="font-size:10px;color:${MUTED};font-family:${FONT};margin:0 0 16px;text-align:center;line-height:1.7;">
-              Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter IDEASMART.<br>
+              Hai ricevuto questa email perch&eacute; sei iscritto alla newsletter Proof Press.<br>
               Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
             </p>
             <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 14px;">

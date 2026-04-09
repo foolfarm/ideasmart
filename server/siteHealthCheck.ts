@@ -46,7 +46,7 @@ async function fetchWithTimeout(url: string, timeoutMs = FETCH_TIMEOUT): Promise
     method: "GET",
     signal: AbortSignal.timeout(timeoutMs),
     headers: {
-      "User-Agent": "IDEASMART-HealthCheck/1.0",
+      "User-Agent": "Proof Press-HealthCheck/1.0",
       "Accept": "text/html,application/json,*/*",
     },
   });
@@ -60,7 +60,7 @@ async function checkHomepage(): Promise<CheckResult> {
     const res = await fetchWithTimeout(PROD_URL);
     const body = await res.text();
     const hasContent = body.length > 5000; // Una homepage vuota è molto corta
-    const hasIdeasmart = body.includes("IDEASMART");
+    const hasProofPress = body.includes("Proof Press");
     
     if (res.status !== 200) {
       return { name: "Homepage HTTP", ok: false, status: res.status, detail: `HTTP ${res.status}`, responseTimeMs: Date.now() - start };
@@ -68,8 +68,8 @@ async function checkHomepage(): Promise<CheckResult> {
     if (!hasContent) {
       return { name: "Homepage contenuto", ok: false, status: 200, detail: `Pagina troppo corta (${body.length} bytes) — possibile pagina vuota`, responseTimeMs: Date.now() - start };
     }
-    if (!hasIdeasmart) {
-      return { name: "Homepage contenuto", ok: false, status: 200, detail: "Testo 'IDEASMART' non trovato nella pagina", responseTimeMs: Date.now() - start };
+    if (!hasProofPress) {
+      return { name: "Homepage contenuto", ok: false, status: 200, detail: "Testo 'Proof Press' non trovato nella pagina", responseTimeMs: Date.now() - start };
     }
     return { name: "Homepage HTTP", ok: true, status: 200, detail: `OK (${body.length} bytes)`, responseTimeMs: Date.now() - start };
   } catch (err) {
@@ -327,7 +327,7 @@ export async function runSiteHealthCheck(): Promise<HealthReport> {
       const html = buildAlertEmailHtml(report);
       const result = await sendEmail({
         to: ALERT_EMAIL,
-        subject: `🚨 IDEASMART Health Check FALLITO — ${failedCount} problemi rilevati`,
+        subject: `🚨 Proof Press Health Check FALLITO — ${failedCount} problemi rilevati`,
         html,
       });
       if (result.success) {

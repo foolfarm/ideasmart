@@ -61,7 +61,7 @@ export default function VerificaEmail() {
             </h1>
             <p className="text-sm mb-8" style={{ color: "rgba(26,26,26,0.6)", fontFamily: SF }}>
               Benvenuto, <strong>{username}</strong>. Il tuo account è attivo.<br />
-              Puoi ora accedere a tutte le analisi, ricerche e news di IdeaSmart.
+              Puoi ora accedere a tutte le analisi, ricerche e news di Proof Press.
             </p>
             <Link href="/accedi">
               <button

@@ -8,7 +8,7 @@ import RequireAuth from "@/components/RequireAuth";
  * GenericNewsArticle — pagina articolo generica per tutti i canali.
  * Riceve l'id dalla URL /:section/news/:id, carica la notizia dal DB
  * e reindirizza automaticamente alla fonte originale.
- * Questo garantisce traffico interno su Ideasmart prima del redirect esterno.
+ * Questo garantisce traffico interno su Proof Press prima del redirect esterno.
  */
 export default function GenericNewsArticle() {
   const [, params] = useRoute("/:section/news/:id");
@@ -37,7 +37,7 @@ export default function GenericNewsArticle() {
     health: { label: "Health & Biotech", path: "/health" }
   };
 
-  const sectionInfo = sectionLabels[section] ?? { label: "Ideasmart", path: "/" };
+  const sectionInfo = sectionLabels[section] ?? { label: "Proof Press", path: "/" };
 
   if (isLoading) {
     return (

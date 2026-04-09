@@ -1,5 +1,5 @@
 /**
- * RSS Scraper — IDEASMART
+ * RSS Scraper — Proof Press
  * Recupera notizie reali dai feed RSS delle fonti certificate.
  * Nessuna notizia viene inventata: tutto deriva da feed RSS reali.
  * 
@@ -26,7 +26,7 @@ import type { RssSource } from "./rssSources";
 const rssParser = new Parser({
   timeout: 10000,
   headers: {
-    "User-Agent": "IDEASMART/1.0 (news aggregator; https://ideasmart.biz)",
+    "User-Agent": "Proof Press/1.0 (news aggregator; https://ideasmart.biz)",
     "Accept": "application/rss+xml, application/xml, text/xml, */*"
   },
   customFields: {
@@ -205,7 +205,7 @@ async function selectAndTranslate(
     `[${i}]${i < italianCount ? " 🇮🇹" : ""} FONTE: ${a.sourceName} | TITOLO: ${a.title} | ESTRATTO: ${a.content.slice(0, 150)}`
   ).join("\n");
 
-  const prompt = `Sei il redattore capo di ${cfg.label} by IDEASMART. Oggi è ${today}.
+  const prompt = `Sei il redattore capo di ${cfg.label} by Proof Press. Oggi è ${today}.
 
 Hai a disposizione questi articoli reali recuperati dai feed RSS delle nostre fonti certificate:
 
@@ -319,7 +319,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
       maxRedirects: 3,
       validateStatus: (status) => status < 500,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.biz)"
+        "User-Agent": "Mozilla/5.0 (compatible; Proof Press/1.0; +https://ideasmart.biz)"
       }
     });
     return response.status < 400;
@@ -331,7 +331,7 @@ export async function verifyUrl(url: string, timeoutMs = 8000): Promise<boolean>
         maxRedirects: 3,
         validateStatus: (status) => status < 500,
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; IDEASMART/1.0; +https://ideasmart.biz)"
+          "User-Agent": "Mozilla/5.0 (compatible; Proof Press/1.0; +https://ideasmart.biz)"
         },
         responseType: "stream"
       });

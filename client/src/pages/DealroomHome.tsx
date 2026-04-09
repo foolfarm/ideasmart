@@ -169,10 +169,10 @@ export default function DealroomHome() {
   return (
     <>
       <SEOHead
-        title="DEALROOM \u2014 IDEASMART"
+        title="DEALROOM \u2014 Proof Press"
         description="Notizie su round, funding, seed, Series A/B e investimenti venture capital. Focus sul mercato italiano, europeo e globale."
         canonical="https://ideasmart.biz/dealroom"
-        ogSiteName="IdeaSmart"
+        ogSiteName="Proof Press"
       />
 
       <div className="flex min-h-screen" style={{ background: "#faf8f3", color: INK }}>

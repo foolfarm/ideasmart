@@ -21,7 +21,7 @@ export default function SharedPageFooter() {
             className="text-[11px] text-[#1a1a1a]/40"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
-            {`© ${year} IdeaSmart · AI · Startup · Venture Capital`}
+            {`© ${year} Proof Press · AI · Startup · Venture Capital`}
           </p>
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
             {[

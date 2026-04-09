@@ -1,5 +1,5 @@
 /**
- * IDEASMART Research Generator
+ * Proof Press Research Generator
  * Ogni giorno genera 20 ricerche su Startup, Venture Capital e AI Trends
  * attingendo da fonti specializzate come Gartner, CB Insights, Statista.
  */
@@ -190,8 +190,8 @@ export async function generateDailyResearch(): Promise<{
       messages: [
         {
           role: "system",
-          content: `Sei un senior research analyst di IDEASMART, specializzato in Startup, Venture Capital e AI Trends.
-Il tuo compito è generare 20 ricerche originali e approfondite per la sezione "IDEASMART Research".
+          content: `Sei un senior research analyst di Proof Press, specializzato in Startup, Venture Capital e AI Trends.
+Il tuo compito è generare 20 ricerche originali e approfondite per la sezione "Proof Press Research".
 
 Ogni ricerca deve:
 1. Essere basata su dati reali e aggiornati di fonti autorevoli (Gartner, CB Insights, Statista, McKinsey, Dealroom, PitchBook, ecc.)
@@ -211,7 +211,7 @@ Genera ricerche diverse ogni giorno — oggi è ${dateFormatted}.`,
         },
         {
           role: "user",
-          content: `Genera 20 ricerche originali per IDEASMART Research di oggi (${today}).
+          content: `Genera 20 ricerche originali per Proof Press Research di oggi (${today}).
 Includi una mix di: 6-7 ricerche AI Trends, 5 Venture Capital/Startup, 4 Mercati, 3-4 Tecnologia.
 Almeno 6 devono riguardare il mercato europeo o italiano.
 La prima deve essere la "Ricerca del Giorno" più importante.

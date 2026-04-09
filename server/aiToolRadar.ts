@@ -1,5 +1,5 @@
 /**
- * IDEASMART — AI Tool Radar
+ * Proof Press — AI Tool Radar
  *
  * Scrapa feed RSS da Product Hunt, Hacker News, GitHub Trending,
  * VentureBeat AI, MarkTechPost, Hugging Face Blog per trovare
@@ -123,7 +123,7 @@ async function fetchAllFeeds(): Promise<RSSItem[]> {
         const timeout = setTimeout(() => controller.abort(), 10000);
         const res = await fetch(feed.url, {
           signal: controller.signal,
-          headers: { "User-Agent": "IdeaSmart-AIToolRadar/1.0" },
+          headers: { "User-Agent": "Proof Press-AIToolRadar/1.0" },
         });
         clearTimeout(timeout);
 
@@ -252,7 +252,7 @@ async function generateToolRadarPost(tools: AITool[]): Promise<string> {
     .map((t, i) => `${i + 1}. ${t.name} — ${t.description}\n   Perché: ${t.whyInteresting}\n   Verdetto: ${t.verdict}\n   Link: ${t.link}`)
     .join("\n\n");
 
-  const systemPrompt = `Sei Andrea Cinelli, Tech Expert. Scrivi un post LinkedIn "AI Radar by IDEASMART".
+  const systemPrompt = `Sei Andrea Cinelli, Tech Expert. Scrivi un post LinkedIn "AI Radar by Proof Press".
 
 REGOLE FERREE:
 - MASSIMO 2800 caratteri TOTALI. LinkedIn taglia a 3000, quindi stai sotto 2800!
@@ -277,7 +277,7 @@ Link: URL diretto
 Trend: 1 frase su cosa emerge (max 2 righe)
 
 Segui \u2192 ideasmart.biz
-#AI #AITools #IDEASMART
+#AI #AITools #Proof Press
 
 Andrea Cinelli | Tech Expert | ideasmart.biz
 

@@ -1,5 +1,5 @@
 /**
- * Startup Scheduler — Startup News by IDEASMART
+ * Startup Scheduler — Startup News by Proof Press
  * Genera contenuti per la sezione /startup: news, editoriale, startup della settimana, reportage, analisi
  * Usa la stessa struttura degli scheduler AI e Music ma con focus sulle startup italiane e internazionali
  */
@@ -22,7 +22,7 @@ export async function generateStartupNews(): Promise<void> {
       messages: [
         {
           role: "system",
-          content: `Sei un giornalista specializzato in startup e innovazione che scrive per Startup News by IDEASMART, una testata italiana di riferimento per l'ecosistema startup.
+          content: `Sei un giornalista specializzato in startup e innovazione che scrive per Startup News by Proof Press, una testata italiana di riferimento per l'ecosistema startup.
 Scrivi in italiano, con tono editoriale professionale e autorevole.
 Genera notizie credibili e realistiche sull'ecosistema startup italiano e internazionale.`,
         },
@@ -117,7 +117,7 @@ export async function generateStartupEditorial(): Promise<void> {
       messages: [
         {
           role: "system",
-          content: `Sei il direttore editoriale di Startup News by IDEASMART. Scrivi editoriali profondi e autorevoli sull'ecosistema startup italiano e internazionale. Tono professionale, visionario, con dati e analisi concrete.`,
+          content: `Sei il direttore editoriale di Startup News by Proof Press. Scrivi editoriali profondi e autorevoli sull'ecosistema startup italiano e internazionale. Tono professionale, visionario, con dati e analisi concrete.`,
         },
         {
           role: "user",
@@ -186,7 +186,7 @@ export async function generateStartupOfWeek(): Promise<void> {
       messages: [
         {
           role: "system",
-          content: `Sei un analista di startup per IDEASMART. Selezioni la startup più interessante della settimana tra quelle italiane e internazionali, con focus su innovazione, impatto e potenziale di crescita.`,
+          content: `Sei un analista di startup per Proof Press. Selezioni la startup più interessante della settimana tra quelle italiane e internazionali, con focus su innovazione, impatto e potenziale di crescita.`,
         },
         {
           role: "user",
@@ -267,7 +267,7 @@ export async function generateStartupReportage(): Promise<void> {
       messages: [
         {
           role: "system",
-          content: `Sei un giornalista investigativo specializzato in startup per IDEASMART. Scrivi reportage approfonditi su startup italiane e internazionali, con analisi del business model, team, mercato e prospettive.`,
+          content: `Sei un giornalista investigativo specializzato in startup per Proof Press. Scrivi reportage approfonditi su startup italiane e internazionali, con analisi del business model, team, mercato e prospettive.`,
         },
         {
           role: "user",
@@ -388,7 +388,7 @@ export async function generateStartupMarketAnalysis(): Promise<void> {
       messages: [
         {
           role: "system",
-          content: `Sei un analista di mercato per IDEASMART. Produci analisi di mercato approfondite sui settori più caldi per le startup, con dati, trend e prospettive di investimento.`,
+          content: `Sei un analista di mercato per Proof Press. Produci analisi di mercato approfondite sui settori più caldi per le startup, con dati, trend e prospettive di investimento.`,
         },
         {
           role: "user",

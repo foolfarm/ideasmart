@@ -420,7 +420,7 @@ export default function ChannelPage({
 
   return (
     <div className="flex min-h-screen bg-[#faf8f3] text-[#1a1a1a]">
-      <SEOHead title={`${title} — IDEASMART`} description={description} />
+      <SEOHead title={`${title} — Proof Press`} description={description} />
       <LeftSidebar />
       <div className="flex-1 min-w-0">
       <div className="max-w-[1200px] mx-auto px-4">
@@ -465,7 +465,7 @@ export default function ChannelPage({
               <div className="flex-1 p-5 md:p-6 flex flex-col justify-center">
                 <p className="text-[16px] md:text-[20px] font-black leading-tight mb-2"
                   style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
-                  La collezione IDEASMART di prompt da usare davvero nel lavoro quotidiano.
+                  La collezione Proof Press di prompt da usare davvero nel lavoro quotidiano.
                 </p>
                 <p className="text-[11px] md:text-[12px] leading-relaxed mb-3"
                   style={{ color: "rgba(26,26,26,0.55)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>

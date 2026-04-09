@@ -177,7 +177,7 @@ export async function runMorningHealthReport(): Promise<void> {
 
   // ── 6. Invia email ────────────────────────────────────────────────────────
   const statusEmoji = overallOk ? "✅" : "⚠️";
-  const subject = `${statusEmoji} IdeaSmart Report ${todayLabel} — ${sectionsOk}/${SECTIONS.length} sezioni OK, ${totalNewsToday} notizie, ${linkedInPublished}/3 LinkedIn`;
+  const subject = `${statusEmoji} Proof Press Report ${todayLabel} — ${sectionsOk}/${SECTIONS.length} sezioni OK, ${totalNewsToday} notizie, ${linkedInPublished}/3 LinkedIn`;
 
   try {
     const result = await sendEmail({
@@ -259,7 +259,7 @@ function buildReportHtml(data: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IdeaSmart Morning Report</title>
+  <title>Proof Press Morning Report</title>
 </head>
 <body style="margin:0;padding:0;background:#0a0f1e;font-family:'Helvetica Neue',Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0f1e;min-height:100vh;">
@@ -270,7 +270,7 @@ function buildReportHtml(data: {
           <!-- Header -->
           <tr>
             <td style="background:linear-gradient(135deg,#0d1528 0%,#0a0f1e 100%);border:1px solid rgba(0,200,150,0.2);border-radius:12px 12px 0 0;padding:28px 32px;text-align:center;">
-              <p style="margin:0 0 4px;font-size:11px;letter-spacing:3px;color:#00c896;text-transform:uppercase;font-weight:600;">IDEASMART — AI FOR BUSINESS</p>
+              <p style="margin:0 0 4px;font-size:11px;letter-spacing:3px;color:#00c896;text-transform:uppercase;font-weight:600;">Proof Press — AI FOR BUSINESS</p>
               <h1 style="margin:8px 0 4px;font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">Morning Report</h1>
               <p style="margin:0;font-size:13px;color:#8892a4;">${dateStr} · ore ${timeStr}</p>
               <div style="margin-top:16px;display:inline-block;background:${statusColor}22;border:1px solid ${statusColor}44;border-radius:20px;padding:6px 18px;">
@@ -351,7 +351,7 @@ function buildReportHtml(data: {
           <tr>
             <td style="background:#060b18;border:1px solid rgba(0,200,150,0.1);border-top:none;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
               <p style="margin:0;font-size:11px;color:#4a5568;">
-                Report automatico generato da <strong style="color:#00c896;">IdeaSmart</strong> · La Prima Testata Giornalistica Humanless Italiana<br>
+                Report automatico generato da <strong style="color:#00c896;">Proof Press</strong> · La Prima Testata Giornalistica Humanless Italiana<br>
                 Inviato ogni mattina alle 08:00 CET · <a href="https://www.ideasmart.biz" style="color:#00c896;text-decoration:none;">www.ideasmart.biz</a>
               </p>
             </td>

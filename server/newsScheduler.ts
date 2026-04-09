@@ -1,5 +1,5 @@
 /**
- * IDEASMART News Scheduler
+ * Proof Press News Scheduler
  * Aggiorna automaticamente le 20 notizie AI ogni giorno
  * usando l'AI per cercare e selezionare i nuovi eventi più significativi
  */
@@ -68,7 +68,7 @@ function getDayLabel(): string {
 export async function generateLatestAINews(): Promise<NewsItemData[]> {
   const dayStr = getDayLabel();
 
-  const prompt = `Sei il redattore capo di IDEASMART, la newsletter italiana di tecnologia e innovazione AI per il business.
+  const prompt = `Sei il redattore capo di Proof Press, la newsletter italiana di tecnologia e innovazione AI per il business.
 
 Genera esattamente 20 notizie AI reali e verificabili di oggi (${dayStr}).
 Le notizie devono riguardare eventi, annunci, ricerche e sviluppi REALI nel mondo dell'intelligenza artificiale.

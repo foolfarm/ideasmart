@@ -160,7 +160,7 @@ export async function generateBreakingNews(): Promise<{
       messages: [
         {
           role: "system",
-          content: `Sei il caporedattore di IDEASMART, la prima testata giornalistica AI italiana. 
+          content: `Sei il caporedattore di Proof Press, la prima testata giornalistica AI italiana. 
 Il tuo compito è identificare le notizie BREAKING NEWS dalle ultime notizie pubblicate.
 
 Una BREAKING NEWS deve soddisfare ALMENO UNO di questi criteri:
@@ -268,7 +268,7 @@ Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`
           title: item.title.slice(0, 499),
           summary: item.summary.slice(0, 999),
           sourceUrl: original.sourceUrl ?? "#",
-          sourceName: original.sourceName ?? "IDEASMART",
+          sourceName: original.sourceName ?? "Proof Press",
           section: original.section as any,
           urgencyScore: Math.min(10, Math.max(1, item.urgencyScore)),
           breakingReason: item.breakingReason?.slice(0, 499),

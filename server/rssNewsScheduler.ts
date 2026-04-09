@@ -1,5 +1,5 @@
 /**
- * RSS News Scheduler — IDEASMART
+ * RSS News Scheduler — Proof Press
  * Sostituisce completamente i generatori AI con scraping da fonti reali certificate.
  * 
  * PRINCIPIO: Nessuna notizia viene inventata.

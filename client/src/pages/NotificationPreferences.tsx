@@ -150,7 +150,7 @@ export default function NotificationPreferences() {
             </button>
           </Link>
           <div className="flex-1" />
-          <span className="text-xs font-mono font-bold tracking-widest" style={{ color: C.cyan }}>IDEASMART</span>
+          <span className="text-xs font-mono font-bold tracking-widest" style={{ color: C.cyan }}>Proof Press</span>
         </div>
       </div>
 

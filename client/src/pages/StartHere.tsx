@@ -15,10 +15,10 @@ function StartHereContent() {
           className="text-2xl md:text-3xl font-black leading-tight mb-4"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}
         >
-          Benvenuto su IdeaSmart
+          Benvenuto su Proof Press
         </h2>
         <p className="text-[15px] leading-relaxed text-[#1a1a1a]/75" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Georgia, serif" }}>
-          IdeaSmart non è un altro sito di notizie sull'AI. È il tuo <strong>sistema operativo</strong> per trasformare l'intelligenza artificiale in risultati concreti. Ogni giorno trovi prompt pronti, automazioni reali, tool testati e opportunità di business — tutto verificato e pronto all'uso.
+          Proof Press non è un altro sito di notizie sull'AI. È il tuo <strong>sistema operativo</strong> per trasformare l'intelligenza artificiale in risultati concreti. Ogni giorno trovi prompt pronti, automazioni reali, tool testati e opportunità di business — tutto verificato e pronto all'uso.
         </p>
       </div>
 
@@ -182,7 +182,7 @@ export default function StartHere() {
       slug="start-here"
       title="Start Here"
       subtitle="Da zero a produttivo con l'AI in 30 minuti"
-      description="Guida completa per iniziare a usare IdeaSmart: prompt base, automazioni, workflow e risorse per trasformare l'AI in risultati concreti."
+      description="Guida completa per iniziare a usare Proof Press: prompt base, automazioni, workflow e risorse per trasformare l'AI in risultati concreti."
       icon={<BookOpen className="w-6 h-6" />}
       staticContent={<StartHereContent />}
     />

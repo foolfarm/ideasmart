@@ -165,7 +165,7 @@ export default function SharedPageHeader() {
                   lineHeight: 1,
                 }}
               >
-                IDEASMART
+                Proof Press
               </h1>
             </Link>
             <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50">

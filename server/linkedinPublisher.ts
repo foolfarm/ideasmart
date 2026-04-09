@@ -1,10 +1,10 @@
 /**
- * IDEASMART — LinkedIn Autopost
+ * Proof Press — LinkedIn Autopost
  *
  * Pubblica 4 post giornalieri su LinkedIn:
  *  - Slot MORNING:           10:00 CET — AI News (analisi strategica AI)
  *  - Slot STARTUP-AFTERNOON: 14:30 CET — Startup News (ecosistema startup IT/EU)
- *  - Slot RESEARCH:          17:00 CET — Ricerche IdeaSmart (ultima ricerca pubblicata)
+ *  - Slot RESEARCH:          17:00 CET — Ricerche Proof Press (ultima ricerca pubblicata)
  *  - Slot DEALROOM:          18:00 CET — Dealroom (ultimo deal/round di investimento)
  *
  * Flusso per ogni slot:
@@ -167,22 +167,22 @@ const SUPPORTED_SECTIONS: Array<LinkedInSection> = ["ai", "startup", "dealroom",
 const SECTION_META: Record<LinkedInSection, { label: string; hashtags: string[]; path: string }> = {
   ai: {
     label: "AI News",
-    hashtags: ["#AI", "#ArtificialIntelligence", "#AIStrategy", "#DigitalTransformation", "#IDEASMART", "#FutureOfWork", "#EnterpriseAI"],
+    hashtags: ["#AI", "#ArtificialIntelligence", "#AIStrategy", "#DigitalTransformation", "#Proof Press", "#FutureOfWork", "#EnterpriseAI"],
     path: "/ai"
   },
   startup: {
     label: "Startup News",
-    hashtags: ["#Startup", "#VentureCapital", "#Innovation", "#Entrepreneurship", "#IDEASMART", "#TechEcosystem", "#StartupEurope"],
+    hashtags: ["#Startup", "#VentureCapital", "#Innovation", "#Entrepreneurship", "#Proof Press", "#TechEcosystem", "#StartupEurope"],
     path: "/startup"
   },
   dealroom: {
     label: "DEALROOM — Funding & VC",
-    hashtags: ["#dealroom", "#funding", "#venturecapital", "#startup", "#investment", "#IDEASMART"],
+    hashtags: ["#dealroom", "#funding", "#venturecapital", "#startup", "#investment", "#Proof Press"],
     path: "/dealroom"
   },
   research: {
-    label: "IdeaSmart Research",
-    hashtags: ["#research", "#AI", "#startup", "#venturecapital", "#marketanalysis", "#IDEASMART", "#TechTrends"],
+    label: "Proof Press Research",
+    hashtags: ["#research", "#AI", "#startup", "#venturecapital", "#marketanalysis", "#Proof Press", "#TechTrends"],
     path: "/ricerche"
   }
 };
@@ -260,7 +260,7 @@ Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire co
 Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
 Includi sempre il link a ideasmart.biz/startup.`;
   } else if (slot === "research") {
-    slotNote = `Questo è il POST SULLE RICERCHE (17:00) — Sezione IdeaSmart Research.
+    slotNote = `Questo è il POST SULLE RICERCHE (17:00) — Sezione Proof Press Research.
 Tono: autorevole e data-driven. Il tuo pubblico vuole insight basati su ricerche e dati concreti.
 Focus: presenta i key findings della ricerca, le implicazioni per il mercato italiano/europeo, e perché questa ricerca è rilevante per decision-maker.
 Invita a leggere la ricerca completa su ideasmart.biz/ricerche.
@@ -286,7 +286,7 @@ Includi sempre il link a ideasmart.biz.`;
     year: "numeric"
   });
 
-  return `Basandoti sull'editoriale/ricerca di IDEASMART e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
+  return `Basandoti sull'editoriale/ricerca di Proof Press e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
 
 DATA DI PUBBLICAZIONE: ${publishDate} (usa QUESTA data se menzioni il giorno nel post, NON usare altre date)
 
@@ -303,7 +303,7 @@ STRUTTURA DEL POST:
 2. ANALISI (3-4 paragrafi brevi): Collega i dati a implicazioni strategiche concrete per aziende italiane/europee. Usa i dati di mercato forniti. Sii specifico sulle implicazioni operative, non solo sulle tendenze. Usa "io", "ho analizzato", "la mia lettura".
 3. POSIZIONE (1 paragrafo): Qual è la tua lettura personale come imprenditore? Dove vedi il rischio che gli altri non vedono?
 4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Tech Expert"
-5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}"
+5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su Proof Press → ${SITE_BASE_URL}${meta.path}"
 6. HASHTAG: ${meta.hashtags.join(" ")}
 
 LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
@@ -596,7 +596,7 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `📊 Analisi completa su IDEASMART → ${SITE_BASE_URL}${meta.path}`,
+      `📊 Analisi completa su Proof Press → ${SITE_BASE_URL}${meta.path}`,
       "",
       meta.hashtags.join(" ")
     ].join("\n");
@@ -605,7 +605,7 @@ async function generateLinkedInPostText(
 
 // ── Recupera contenuto per lo slot Research ──────────────────────────────────
 /**
- * Recupera una delle ultime ricerche pubblicate su IdeaSmart per il post LinkedIn.
+ * Recupera una delle ultime ricerche pubblicate su Proof Press per il post LinkedIn.
  * Seleziona una ricerca non ancora usata nei post LinkedIn recenti.
  */
 async function getResearchForLinkedIn(recentPostTitles: string[]): Promise<{
@@ -852,7 +852,7 @@ export async function publishLinkedInPost(
               title: "AI Tool Radar — 10 nuovi tool AI",
               section: "ai" as any,
               imageUrl: pexelsImage ?? null,
-              hashtags: "#AI #AITools #Innovation #IDEASMART #TechRadar",
+              hashtags: "#AI #AITools #Innovation #Proof Press #TechRadar",
               postHash: computePostHash(radarResult.postText)
             })
             .onDuplicateKeyUpdate({
@@ -882,7 +882,7 @@ export async function publishLinkedInPost(
       };
     }
   } else if (slot === "research") {
-    // Slot Research: recupera una delle ultime ricerche IdeaSmart
+    // Slot Research: recupera una delle ultime ricerche Proof Press
     const research = await getResearchForLinkedIn(recentPostTitles);
     if (!research) {
       console.warn(`[LinkedIn] ⚠️ Nessuna ricerca disponibile per slot ${slotLabel}. Pubblicazione saltata.`);
@@ -986,7 +986,7 @@ export async function publishLinkedInPost(
               title: "AI Dealflow Europe — 10 startup investibili",
               section: "startup" as any,
               imageUrl: pexelsImage ?? null,
-              hashtags: "#Startup #AI #VentureCapital #IDEASMART #StartupEurope",
+              hashtags: "#Startup #AI #VentureCapital #Proof Press #StartupEurope",
               postHash: computePostHash(radarResult.postText)
             })
             .onDuplicateKeyUpdate({

@@ -119,17 +119,17 @@ export default function Intelligence() {
   return (
     <>
       <SEOHead
-        title="IdeaSmart Intelligence — Competitive Monitoring & AI Briefing per Decision-Maker"
+        title="Proof Press Intelligence — Competitive Monitoring & AI Briefing per Decision-Maker"
         description="Monitoriamo i tuoi competitor, tracciamo i deal e ti consegniamo briefing personalizzati ogni giorno. Powered by 8 agenti AI e 450+ fonti globali."
-        ogSiteName="IDEASMART INTELLIGENCE"
+        ogSiteName="Proof Press INTELLIGENCE"
         ogType="website"
         keywords="intelligence AI, competitive monitoring, briefing CEO, startup Italia, venture capital, decision maker, M&A, fondi investimento"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "Product",
-          "name": "IdeaSmart Intelligence",
+          "name": "Proof Press Intelligence",
           "description": "Competitive monitoring e AI briefing personalizzati per CEO, founder e investitori.",
-          "brand": { "@type": "Brand", "name": "IdeaSmart" },
+          "brand": { "@type": "Brand", "name": "Proof Press" },
           "offers": [
             { "@type": "Offer", "name": "RADAR", "price": "39", "priceCurrency": "EUR" },
             { "@type": "Offer", "name": "INTEL", "price": "199", "priceCurrency": "EUR" },
@@ -150,7 +150,7 @@ export default function Intelligence() {
               <Link href="/">
                 <span className="text-[10px] uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
                   style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  ← IdeaSmart · Intelligence
+                  ← Proof Press · Intelligence
                 </span>
               </Link>
             </div>
@@ -215,7 +215,7 @@ export default function Intelligence() {
               </p>
               <p className="text-[15px] leading-relaxed font-semibold"
                 style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                IdeaSmart Intelligence fa questo lavoro al posto tuo — 24 ore su 24, 7 giorni su 7 — e ti consegna solo quello che ti serve per decidere. Non articoli. <span style={{ color: "#1a1a1a" }}>Insight azionabili.</span>
+                Proof Press Intelligence fa questo lavoro al posto tuo — 24 ore su 24, 7 giorni su 7 — e ti consegna solo quello che ti serve per decidere. Non articoli. <span style={{ color: "#1a1a1a" }}>Insight azionabili.</span>
               </p>
             </div>
           </div>
@@ -315,7 +315,7 @@ export default function Intelligence() {
                 </ul>
                 <a
                   href="/"
-                  aria-label="Registrati gratis su IdeaSmart"
+                  aria-label="Registrati gratis su Proof Press"
                   data-cta-name="free"
                   data-plan="free"
                   className="block text-center py-3 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-70"
@@ -367,7 +367,7 @@ export default function Intelligence() {
                 features={[
                   "Tutto quello di INTEL, più:",
                   "Feed white-label per il tuo team o fondo",
-                  "API access ai dati IdeaSmart",
+                  "API access ai dati Proof Press",
                   "Briefing dedicati per il CdA",
                   "Integrazione Slack / Teams / CRM",
                   "Analyst-on-demand con senior advisor",
@@ -391,7 +391,7 @@ export default function Intelligence() {
             </h2>
             <p className="text-[15px] leading-relaxed mb-10 max-w-[700px]"
               style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Il sistema agentico di IdeaSmart replica un team di 20 analisti. Ogni notte, i nostri agenti scandagliano fonti accademiche, report Gartner, CB Insights, McKinsey, feed VC, M&A tracker e media specializzati in 4 continenti. L’algoritmo proprietario ProofPress Verify™ incrocia ogni segnale su almeno 3 fonti indipendenti prima di pubblicarlo. Il risultato arriva sulla tua dashboard alle 00:00 CET, ogni giorno.
+              Il sistema agentico di Proof Press replica un team di 20 analisti. Ogni notte, i nostri agenti scandagliano fonti accademiche, report Gartner, CB Insights, McKinsey, feed VC, M&A tracker e media specializzati in 4 continenti. L’algoritmo proprietario ProofPress Verify™ incrocia ogni segnale su almeno 3 fonti indipendenti prima di pubblicarlo. Il risultato arriva sulla tua dashboard alle 00:00 CET, ogni giorno.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {[
@@ -411,7 +411,7 @@ export default function Intelligence() {
               ))}
             </div>
             <a href="/tecnologia"
-              aria-label="Scopri tutti gli 8 agenti AI di IdeaSmart Intelligence"
+              aria-label="Scopri tutti gli 8 agenti AI di Proof Press Intelligence"
               data-cta-name="tecnologia-agents"
               className="text-[11px] font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
               style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -430,7 +430,7 @@ export default function Intelligence() {
             </h2>
             <p className="text-[15px] leading-relaxed mb-4 max-w-[680px]"
               style={{ color: "rgba(26,26,46,0.65)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              A volte i dati ti dicono <em>cosa</em> sta succedendo. Ma serve qualcuno che ti dica <em>cosa fare</em>. IdeaSmart Advisory è il nostro servizio di consulenza senior per le decisioni che richiedono un professionista al tavolo.
+              A volte i dati ti dicono <em>cosa</em> sta succedendo. Ma serve qualcuno che ti dica <em>cosa fare</em>. Proof Press Advisory è il nostro servizio di consulenza senior per le decisioni che richiedono un professionista al tavolo.
             </p>
             <p className="text-[14px] font-semibold mb-8"
               style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -513,7 +513,7 @@ export default function Intelligence() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a href="mailto:intelligence@ideasmart.biz?subject=Attivazione%20prova%20gratuita%20Intelligence"
-                aria-label="Attiva la prova gratuita di IdeaSmart Intelligence"
+                aria-label="Attiva la prova gratuita di Proof Press Intelligence"
                 data-cta-name="cta-finale"
                 className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
                 style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>

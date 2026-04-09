@@ -155,7 +155,7 @@ function buildAuditReportEmail(result: typeof lastRunResult, anomalies: Awaited<
         Apri Dashboard Audit →
       </a>
       <div style="margin-top: 12px; font-size: 11px; color: #9ca3af;">
-        Audit automatico IDEASMART · Prossima esecuzione tra 24 ore
+        Audit automatico Proof Press · Prossima esecuzione tra 24 ore
       </div>
     </div>
 

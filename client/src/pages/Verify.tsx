@@ -68,7 +68,7 @@ function VerifyResult({ article }: {
           className="text-[14px] text-[#1a1a1a]/60 max-w-md mx-auto leading-relaxed"
           style={{ fontFamily: SFText }}
         >
-          Nessun articolo corrisponde a questo hash nel database IDEASMART.
+          Nessun articolo corrisponde a questo hash nel database Proof Press.
           L'articolo potrebbe non essere stato pubblicato su questa piattaforma,
           oppure l'hash potrebbe essere errato o alterato.
         </p>
@@ -102,7 +102,7 @@ function VerifyResult({ article }: {
             Articolo verificato
           </p>
           <p className="text-[15px] font-black text-white" style={{ fontFamily: SF }}>
-            Contenuto autentico — pubblicato da IDEASMART
+            Contenuto autentico — pubblicato da Proof Press
           </p>
         </div>
         <div className="ml-auto hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full">
@@ -282,7 +282,7 @@ export default function Verify() {
             className="text-[15px] text-[#1a1a1a]/55 leading-relaxed max-w-xl"
             style={{ fontFamily: SFText, lineHeight: 1.7 }}
           >
-            Ogni articolo pubblicato su IDEASMART riceve un hash crittografico SHA-256 univoco
+            Ogni articolo pubblicato su Proof Press riceve un hash crittografico SHA-256 univoco
             certificato da ProofPress Verify che sigilla titolo, fonte e timestamp in modo immutabile.
             Incolla l'hash qui sotto per verificare l'autenticità di un articolo.
           </p>

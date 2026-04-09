@@ -56,7 +56,7 @@ describe("siteHealthCheck", () => {
       // Homepage e pagine — ritorna HTML lungo con IDEASMART
       return {
         status: 200,
-        text: async () => "A".repeat(10000) + "IDEASMART",
+        text: async () => "A".repeat(10000) + "Proof Press",
         json: async () => ({}),
       };
     });
@@ -126,7 +126,7 @@ describe("siteHealthCheck", () => {
       }
       return {
         status: 200,
-        text: async () => "A".repeat(10000) + "IDEASMART",
+        text: async () => "A".repeat(10000) + "Proof Press",
         json: async () => ({}),
       };
     });
@@ -170,7 +170,7 @@ describe("siteHealthCheck", () => {
       }
       return {
         status: 200,
-        text: async () => "A".repeat(10000) + "IDEASMART",
+        text: async () => "A".repeat(10000) + "Proof Press",
         json: async () => ({}),
       };
     });
@@ -219,7 +219,7 @@ describe("siteHealthCheck", () => {
       }
       return {
         status: 200,
-        text: async () => "A".repeat(10000) + "IDEASMART",
+        text: async () => "A".repeat(10000) + "Proof Press",
         json: async () => ({}),
       };
     });

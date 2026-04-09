@@ -178,7 +178,7 @@ export default function Admin() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate("/")} className="text-white/40 hover:text-white transition-colors text-sm">
-              ← IDEASMART
+              ← Proof Press
             </button>
             <span className="text-white/20">/</span>
             <span className="text-sm font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -665,7 +665,7 @@ export default function Admin() {
               <p className="text-xs text-white/30 mb-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Pubblica 1 editoriale giornaliero su LinkedIn — tono HumanLess, analisi da senior analyst</p>
               <p className="text-xs text-white/50 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Genera un post thought leader dall'editoriale AI o Startup del giorno (alternanza automatica).
-                Testo con dati da fonti autorevoli (McKinsey, Gartner, CBInsights), immagine pertinente, link verso IDEASMART.
+                Testo con dati da fonti autorevoli (McKinsey, Gartner, CBInsights), immagine pertinente, link verso Proof Press.
                 Lo scheduler parte ogni giorno alle <strong className="text-white">10:00 CET</strong>. Token scade ogni 2 mesi.
               </p>
               <button

@@ -179,7 +179,7 @@ export default function SectionNav() {
         {/* Panel header */}
         <div className="flex items-center justify-between px-5 py-3.5 bg-[#1a1a1a]">
           <span className="text-[13px] font-black uppercase tracking-[0.15em] text-white">
-            IDEASMART
+            Proof Press
           </span>
           <button
             onClick={() => setOpen(false)}
@@ -199,7 +199,7 @@ export default function SectionNav() {
             </span>
           </div>
           <p className="text-[11px] text-[#1a1a1a]/50 leading-relaxed">
-            Esplora tutti i contenuti di IdeaSmart
+            Esplora tutti i contenuti di Proof Press
           </p>
         </div>
 

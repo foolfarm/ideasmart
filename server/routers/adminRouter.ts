@@ -1,5 +1,5 @@
 /**
- * Admin Router — IDEASMART
+ * Admin Router — Proof Press
  * Procedure protette per operazioni amministrative:
  * - Fix immediato sourceUrl nel DB
  * - Trigger manuale scraping RSS

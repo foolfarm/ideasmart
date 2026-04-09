@@ -94,7 +94,7 @@ async function checkLink(url: string): Promise<LinkCheckResult> {
       signal: controller.signal,
       redirect: "follow",
       headers: {
-        "User-Agent": "IDEASMART-LinkAudit/1.0 (newsletter link checker)",
+        "User-Agent": "Proof Press-LinkAudit/1.0 (newsletter link checker)",
       },
     });
 
@@ -318,7 +318,7 @@ async function sendAuditReportEmail(report: AuditReport): Promise<void> {
     </table>` : ""}
 
     <p style="font-size:11px;color:#9ca3af;margin:16px 0 0;">
-      Audit eseguito automaticamente alle 06:45 CET da IDEASMART Newsletter System.<br>
+      Audit eseguito automaticamente alle 06:45 CET da Proof Press Newsletter System.<br>
       ${report.shouldBlockSend ? "⚠️ L'invio massivo delle 07:30 è stato BLOCCATO. Correggi i link e forza l'invio dalla dashboard admin." : "✅ L'invio massivo delle 07:30 procederà normalmente."}
     </p>
   </td></tr>

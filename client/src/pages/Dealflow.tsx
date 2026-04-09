@@ -102,7 +102,7 @@ export default function Dealflow() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
       <SEOHead
-        title="AI Dealflow Europe — IDEASMART"
+        title="AI Dealflow Europe — Proof Press"
         description="Le 10 startup AI europee più investibili del giorno, selezionate dal nostro radar con rating INVEST/INVEST+/INVEST++"
       />
 
@@ -111,7 +111,7 @@ export default function Dealflow() {
         <header className="border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0a0a0a]">
           <div className="max-w-5xl mx-auto px-4 py-6">
             <Link href="/" className="text-xs text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300 uppercase tracking-widest mb-3 inline-block">
-              ← IDEASMART
+              ← Proof Press
             </Link>
             <div className="flex items-center gap-3 mb-2">
               <Rocket className="w-6 h-6 text-neutral-800 dark:text-neutral-200" />

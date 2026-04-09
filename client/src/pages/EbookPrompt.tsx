@@ -56,7 +56,7 @@ export default function EbookPrompt() {
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00e5c8]/10 text-[#00e5c8] text-xs font-bold tracking-wider uppercase mb-6">
                 <Sparkles className="w-3.5 h-3.5" />
-                BY IDEASMART
+                BY PROOF PRESS
               </div>
 
               <h1
@@ -69,7 +69,7 @@ export default function EbookPrompt() {
               </h1>
 
               <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                I prompt più efficaci dalla newsletter IDEASMART. Testati, perfezionati e pronti all'uso con ChatGPT, Claude, Gemini e tutti i principali modelli AI.
+                I prompt più efficaci dalla newsletter Proof Press. Testati, perfezionati e pronti all'uso con ChatGPT, Claude, Gemini e tutti i principali modelli AI.
               </p>
 
               <div className="flex flex-wrap gap-3 mb-8">
@@ -105,7 +105,7 @@ export default function EbookPrompt() {
                     <BookOpen className="w-5 h-5 text-[#ff5500]" />
                   </div>
                   <div>
-                    <p className="text-white font-bold text-sm">IDEASMART</p>
+                    <p className="text-white font-bold text-sm">Proof Press</p>
                     <p className="text-gray-400 text-xs">Prompt Collection 2026</p>
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export default function EbookPrompt() {
                   <br />migliori Prompt 2026
                 </h3>
                 <p className="text-gray-400 text-sm mb-6">
-                  I prompt più efficaci dalla newsletter IDEASMART
+                  I prompt più efficaci dalla newsletter Proof Press
                 </p>
 
                 <div className="space-y-2">
@@ -142,7 +142,7 @@ export default function EbookPrompt() {
             "Dove trovo i prompt migliori?"
           </p>
           <p className="text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto">
-            Oggi rispondiamo con <strong className="text-white">la collezione definitiva dei prompt dalla newsletter IDEASMART</strong>.
+            Oggi rispondiamo con <strong className="text-white">la collezione definitiva dei prompt dalla newsletter Proof Press</strong>.
             Non sono prompt generici da una riga. Ogni prompt è un framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output integrati.
             Copia, incolla, compila i tuoi dati e ottieni risultati strutturati in pochi secondi.
           </p>
@@ -157,7 +157,7 @@ export default function EbookPrompt() {
               Cosa trovi dentro
             </h2>
             <p className="text-gray-400 max-w-lg mx-auto">
-              99 prompt organizzati in 11 categorie, ciascuno testato e perfezionato dal team IDEASMART.
+              99 prompt organizzati in 11 categorie, ciascuno testato e perfezionato dal team Proof Press.
             </p>
           </div>
 
@@ -206,7 +206,7 @@ export default function EbookPrompt() {
       {/* Footer mini */}
       <footer className="py-8 px-4 border-t border-white/5 text-center">
         <p className="text-gray-500 text-sm">
-          © 2026 IDEASMART — Intelligence Quotidiana
+          © 2026 Proof Press — Intelligence Quotidiana
         </p>
       </footer>
     </div>

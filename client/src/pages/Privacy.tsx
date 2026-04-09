@@ -5,7 +5,7 @@
 import { useLocation } from "wouter";
 
 const LAST_UPDATE = "15 marzo 2026";
-const OWNER = "IDEASMART — AI for Business";
+const OWNER = "Proof Press — AI for Business";
 const OWNER_EMAIL = "info@ideasmart.biz";
 const SITE_URL = "https://ideasmart.biz";
 
@@ -59,7 +59,7 @@ export default function Privacy() {
             className="text-sm font-bold transition-colors hover:opacity-70"
             style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
-            ← IDEASMART
+            ← Proof Press
           </button>
           <span className="text-xs" style={{ color: "#9ca3af" }}>
             Aggiornato il {LAST_UPDATE}
@@ -184,7 +184,7 @@ export default function Privacy() {
 
           <Section id="newsletter" title="4. Newsletter — Iscrizione e Disiscrizione">
             <P>
-              L'iscrizione alla newsletter <strong>AI NEWS News by IDEASMART</strong> è volontaria e richiede la fornitura dell'indirizzo email. Iscrivendosi, l'utente acconsente esplicitamente a ricevere comunicazioni periodiche contenenti notizie, analisi e reportage sull'intelligenza artificiale applicata al business.
+              L'iscrizione alla newsletter <strong>AI NEWS News by Proof Press</strong> è volontaria e richiede la fornitura dell'indirizzo email. Iscrivendosi, l'utente acconsente esplicitamente a ricevere comunicazioni periodiche contenenti notizie, analisi e reportage sull'intelligenza artificiale applicata al business.
             </P>
             <P>
               Ogni email contiene un link di disiscrizione immediata. La disiscrizione è gratuita, senza necessità di fornire motivazioni, e produce effetto entro 24 ore. In alternativa, è possibile richiedere la disiscrizione scrivendo a <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a>.
@@ -243,22 +243,22 @@ export default function Privacy() {
 
           <Section id="disclaimer" title="8. Disclaimer — Limitazione di Responsabilità">
             <P>
-              <strong>Natura editoriale e informativa.</strong> I contenuti pubblicati su IDEASMART — AI for Business (news, editoriali, reportage, analisi di mercato, profili di startup) hanno esclusivamente finalità informativa e giornalistica. Non costituiscono in alcun modo consulenza finanziaria, legale, fiscale, di investimento o professionale di qualsiasi natura.
+              <strong>Natura editoriale e informativa.</strong> I contenuti pubblicati su Proof Press — AI for Business (news, editoriali, reportage, analisi di mercato, profili di startup) hanno esclusivamente finalità informativa e giornalistica. Non costituiscono in alcun modo consulenza finanziaria, legale, fiscale, di investimento o professionale di qualsiasi natura.
             </P>
             <P>
-              <strong>Accuratezza delle informazioni.</strong> Sebbene IDEASMART si impegni a garantire l'accuratezza e l'aggiornamento dei contenuti, non si assume alcuna responsabilità per errori, omissioni, imprecisioni o informazioni non aggiornate. I contenuti generati con il supporto di intelligenza artificiale sono soggetti a revisione editoriale ma potrebbero contenere inesattezze.
+              <strong>Accuratezza delle informazioni.</strong> Sebbene Proof Press si impegni a garantire l'accuratezza e l'aggiornamento dei contenuti, non si assume alcuna responsabilità per errori, omissioni, imprecisioni o informazioni non aggiornate. I contenuti generati con il supporto di intelligenza artificiale sono soggetti a revisione editoriale ma potrebbero contenere inesattezze.
             </P>
             <P>
-              <strong>Link esterni.</strong> Il sito può contenere link a siti web di terze parti. IDEASMART non è responsabile del contenuto, delle politiche sulla privacy o delle pratiche di tali siti. L'inserimento di un link non implica approvazione o endorsement del sito collegato.
+              <strong>Link esterni.</strong> Il sito può contenere link a siti web di terze parti. Proof Press non è responsabile del contenuto, delle politiche sulla privacy o delle pratiche di tali siti. L'inserimento di un link non implica approvazione o endorsement del sito collegato.
             </P>
             <P>
-              <strong>Contenuti generati dall'AI.</strong> Parte dei contenuti pubblicati su questo sito è generata o assistita da sistemi di intelligenza artificiale. Tali contenuti sono revisionati dalla redazione ma potrebbero non riflettere sempre opinioni o posizioni ufficiali. IDEASMART non garantisce la completezza o l'assenza di errori nei contenuti AI-assisted.
+              <strong>Contenuti generati dall'AI.</strong> Parte dei contenuti pubblicati su questo sito è generata o assistita da sistemi di intelligenza artificiale. Tali contenuti sono revisionati dalla redazione ma potrebbero non riflettere sempre opinioni o posizioni ufficiali. Proof Press non garantisce la completezza o l'assenza di errori nei contenuti AI-assisted.
             </P>
             <P>
-              <strong>Contenuti editoriali.</strong> I contenuti pubblicati su IDEASMART sono selezionati e curati dalla redazione. La menzione di prodotti, servizi o aziende nei contenuti editoriali non implica raccomandazione o approvazione commerciale. IDEASMART non è responsabile per le decisioni prese dagli utenti sulla base dei contenuti pubblicati.
+              <strong>Contenuti editoriali.</strong> I contenuti pubblicati su Proof Press sono selezionati e curati dalla redazione. La menzione di prodotti, servizi o aziende nei contenuti editoriali non implica raccomandazione o approvazione commerciale. Proof Press non è responsabile per le decisioni prese dagli utenti sulla base dei contenuti pubblicati.
             </P>
             <P>
-              <strong>Proprietà intellettuale.</strong> Tutti i contenuti originali pubblicati su IDEASMART (testi, grafica, loghi, layout) sono protetti da copyright. È vietata la riproduzione, anche parziale, senza autorizzazione scritta, salvo citazione con attribuzione e link alla fonte originale.
+              <strong>Proprietà intellettuale.</strong> Tutti i contenuti originali pubblicati su Proof Press (testi, grafica, loghi, layout) sono protetti da copyright. È vietata la riproduzione, anche parziale, senza autorizzazione scritta, salvo citazione con attribuzione e link alla fonte originale.
             </P>
           </Section>
 
@@ -268,7 +268,7 @@ export default function Privacy() {
               <a href={`mailto:${OWNER_EMAIL}`} style={{ color: "#1a1a1a" }}>{OWNER_EMAIL}</a>.
             </P>
             <P>
-              La presente Privacy Policy e Disclaimer è stata aggiornata il <strong>{LAST_UPDATE}</strong>. IDEASMART si riserva il diritto di modificare questa informativa in qualsiasi momento. Le modifiche sostanziali saranno comunicate agli iscritti alla newsletter e/o tramite avviso in evidenza sul sito. L'uso continuato del sito dopo la pubblicazione delle modifiche costituisce accettazione delle stesse.
+              La presente Privacy Policy e Disclaimer è stata aggiornata il <strong>{LAST_UPDATE}</strong>. Proof Press si riserva il diritto di modificare questa informativa in qualsiasi momento. Le modifiche sostanziali saranno comunicate agli iscritti alla newsletter e/o tramite avviso in evidenza sul sito. L'uso continuato del sito dopo la pubblicazione delle modifiche costituisce accettazione delle stesse.
             </P>
           </Section>
 
@@ -277,7 +277,7 @@ export default function Privacy() {
         {/* Footer della pagina */}
         <div className="text-center py-6">
           <p className="text-xs mb-3" style={{ color: "#9ca3af", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-            © {new Date().getFullYear()} IDEASMART — AI for Business · Tutti i diritti riservati
+            © {new Date().getFullYear()} Proof Press — AI for Business · Tutti i diritti riservati
           </p>
           <button
             onClick={() => navigate("/")}
