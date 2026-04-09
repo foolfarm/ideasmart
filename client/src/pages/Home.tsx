@@ -498,7 +498,7 @@ export default function Home() {
                 </Link>
                 <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  <span className="text-[13px]">Il tuo hub per restare sempre aggiornato sull'innovazione</span>
+                  <span className="text-[13px]">L'hub informativo per chi deve capire prima degli altri</span>
                 </p>
               </div>
 
