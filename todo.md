@@ -2853,3 +2853,12 @@
 - [x] Riattivare scheduler: preview 08:30, invio 10:30 (lun/mer/ven)
 - [x] Creare esempio compilato con contenuti reali dal sito
 - [x] Test invio newsletter con nuovo template (inviato a ac@acinelli.com)
+
+## Newsletter Promozionale "Proof Press Promo" (martedì e giovedì)
+- [ ] Analizzare ideasmart.forum per raccogliere contenuti e screenshot
+- [ ] Template HTML newsletter promozionale: design editoriale premium, focus su un prodotto/servizio
+- [ ] Prima campagna: promozione ideasmart.forum (questa settimana)
+- [ ] Funzione server: buildPromoNewsletterHtml + sendPromoNewsletter
+- [ ] Scheduler: preview 08:30 mar/gio, invio 10:30 mar/gio
+- [ ] Sistema configurabile: ogni settimana si può cambiare il prodotto promosso dall'admin
+- [ ] Test invio preview newsletter promozionale
