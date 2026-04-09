@@ -163,24 +163,9 @@ export default function SharedPageHeader() {
                 Proof Press
               </h1>
             </Link>
-            <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-[#1a1a1a]/50">
-              Il tuo sistema operativo sull'AI
-            </p>
-            <p
-              className="mt-1 text-[12px] text-[#1a1a1a]/40 italic"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
-            >
-              Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.
-            </p>
-            <p className="mt-1.5">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Informazione 100% verificata by{" "}
-              </span>
-              <Link href="/proofpress-verify">
-                <span className="text-[10px] uppercase tracking-[0.15em] underline underline-offset-2 cursor-pointer hover:text-[#1a1a1a]/80 transition-colors" style={{ color: "#1a1a1a80", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  ProofPress Verify Technology
-                </span>
-              </Link>
+            <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+              <span className="text-[13px]">L'hub informativo per chi deve capire prima degli altri</span>
             </p>
           </div>
 
@@ -197,6 +182,13 @@ export default function SharedPageHeader() {
             </a>
           </div>
         </div>
+
+        {/* Sottotitolo full-width */}
+        <p className="mt-3 text-center uppercase tracking-[0.18em] text-[#1a1a1a]/45 font-medium"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
+          4.000+ fonti analizzate e certificate 24/7 per offrirti le ultime notizie prima degli altri, per capire, decidere e agire.
+        </p>
+
       </div>
 
       <Divider thick />
