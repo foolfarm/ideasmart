@@ -2913,3 +2913,11 @@
 
 - [x] Aggiornare titolo hero con nuovo copy "Il primo giornale che funziona anche senza una redazione"
 - [x] Aggiornare sezione "Il problema" con nuovo copy (fake news, fact-checker)
+
+## Modifica copy /chi-siamo (9 Apr 2026)
+
+- [x] Sostituire "Anche con 1 solo giornalista" con nuovo copy + bottone link a ideasmart.technology
+
+## Modifica sezione "La tua redazione" /chi-siamo (9 Apr 2026)
+
+- [x] Cambiare titolo "La tua redazione" in "La nostra soluzione" e aggiornare il copy

@@ -412,8 +412,19 @@ export default function ChiSiamo() {
             ))}
           </div>
           <p className="mt-8 text-base font-bold text-[#0a0a0a]/60">
-            Anche con 1 solo giornalista.
+            Anche sei solo: con ProofPress chiunque può lanciare un vero giornale e coordinare una redazione.
           </p>
+          <div className="mt-6">
+            <a
+              href="https://ideasmart.technology"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
+              style={{ background: "#dc2626", borderRadius: "0" }}
+            >
+              Vedi come funziona →
+            </a>
+          </div>
         </Section>
 
         <Divider />
@@ -452,9 +463,9 @@ export default function ChiSiamo() {
             AGENT GIORNALISTI
         ═══════════════════════════════════════════════════════════════════ */}
         <Section id="agent-giornalisti">
-          <Label>La tua redazione</Label>
+          <Label>La nostra soluzione</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Ogni Agent è un giornalista.<br />
+            Ti creiamo una redazione Agentica tutta tua!<br />
             <span className="text-[#0a0a0a]/25">Tu decidi di cosa si occupa.</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/55 max-w-2xl">
