@@ -200,13 +200,16 @@ export default function ChiSiamo() {
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
                 Il primo giornale<br />
                 che funziona anche<br />
-                <span className="text-[#0a0a0a]/25">senza una redazione.</span>
+                <span className="text-[#0a0a0a]/25">senza una redazione</span>
               </h1>
               <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
-                Costruisci e scala una testata con l'AI agentica.
+                e con notizie 100% certificate.
               </p>
-              <p className="mt-4 text-base leading-relaxed text-[#0a0a0a]/45 max-w-xl">
-                Oltre 4.000 fonti certificate. Una redazione di 8 agenti AI. Un solo obiettivo: informazione più veloce, oggettiva e scalabile.
+              <p className="mt-4 text-base leading-relaxed text-[#0a0a0a]/55 max-w-xl">
+                Costruisci e scala una testata con l'AI agentica. Offri informazione certificata e sicura basata sulla tecnologia proprietaria ProofPress Verify.
+              </p>
+              <p className="mt-4 text-sm leading-relaxed text-[#0a0a0a]/40 max-w-xl">
+                Oltre 4.000 fonti certificate. Oltre 100.000 controlli e verifiche al mese per offrirti solo informazione certificata. Una redazione di 8 agenti AI. Un solo obiettivo: informazione più veloce, oggettiva e scalabile.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
                 <button
@@ -251,13 +254,13 @@ export default function ChiSiamo() {
         <Section bg="#f5f0e8" id="problema">
           <Label>Il problema</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Oggi fare giornalismo<br />è inefficiente.
+            Oggi fare giornalismo<br />è inefficiente e le informazioni fake<br />ci stanno invadendo.
           </h2>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10">
             {[
               { icon: "€", title: "Costi editoriali alti", desc: "Stipendi, collaboratori, strumenti. Una redazione tradizionale costa centinaia di migliaia di euro all'anno." },
               { icon: "⏱", title: "Produzione lenta", desc: "Dalla notizia alla pubblicazione passano ore. In un mondo real-time, è troppo." },
-              { icon: "👥", title: "Dipendenza da grandi team", desc: "Servono giornalisti, editor, fact-checker, social media manager. Scalare significa assumere." },
+              { icon: "🔍", title: "Informazioni Fake", desc: "Troppe notizie e ricerche sono fake o basate su informazioni non certificate. Un sistema di fact-checker è indispensabile per offrire informazione libera e vera." },
               { icon: "⚖️", title: "Bias e qualità incostante", desc: "L'errore umano, la stanchezza, le opinioni personali. La qualità oscilla, la fiducia cala." },
             ].map((p, i) => (
               <div key={i} className="flex gap-5">
@@ -274,7 +277,7 @@ export default function ChiSiamo() {
           <div className="mt-14 p-8 border-l-4 border-[#0a0a0a]" style={{ background: "rgba(10,10,10,0.04)" }}>
             <p className="text-xl md:text-2xl font-bold leading-snug text-[#0a0a0a]">
               Il risultato? La maggior parte delle testate non scala.<br />
-              <span className="text-[#0a0a0a]/40">E chi scala, perde qualità.</span>
+              <span className="text-[#0a0a0a]/40">E chi scala, perde qualità. E le informazioni spesso non sono vere!</span>
             </p>
           </div>
         </Section>

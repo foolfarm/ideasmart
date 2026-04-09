@@ -2908,3 +2908,8 @@
 - [x] 16:00 — Nuovo slot "research-afternoon": 2° Research Proof Press (non più AI Tool Radar)
 - [x] Tutti i 4 post devono essere inseriti nello spazio Andrea Cinelli sulla Home
 - [x] Aggiornare slotNote e logica di generazione contenuto per i nuovi slot 12:30 e 16:00
+
+## Aggiornamento pagina /chi-siamo (9 Apr 2026)
+
+- [x] Aggiornare titolo hero con nuovo copy "Il primo giornale che funziona anche senza una redazione"
+- [x] Aggiornare sezione "Il problema" con nuovo copy (fake news, fact-checker)
