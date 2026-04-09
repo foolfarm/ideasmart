@@ -1,0 +1,1 @@
+ALTER TABLE `linkedin_posts` MODIFY COLUMN `slot` enum('morning','ai-research-morning','research','research-afternoon','startup-afternoon','afternoon','evening','dealroom','ai-tool-radar') NOT NULL DEFAULT 'morning';

@@ -191,22 +191,22 @@ describe("schedulerManager", () => {
     expect(linkedInResearchCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn AI TOOL RADAR alle 16:00 ogni giorno", async () => {
+  it("dovrebbe programmare LinkedIn 2° EDITORIALE AI alle 12:30 ogni giorno", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const linkedInToolRadarCall = calls.find(c => c[0] === "0 16 * * *");
-    expect(linkedInToolRadarCall).toBeDefined();
+    const linkedInAIResearchCall = calls.find(c => c[0] === "30 12 * * *");
+    expect(linkedInAIResearchCall).toBeDefined();
   });
 
-  it("dovrebbe programmare LinkedIn DEALROOM alle 17:30 ogni giorno", async () => {
+  it("dovrebbe programmare LinkedIn 2° RICERCHE alle 16:00 ogni giorno", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    const linkedInDealroomCall = calls.find(c => c[0] === "30 17 * * *");
-    expect(linkedInDealroomCall).toBeDefined();
+    const linkedInResearchAfternoonCall = calls.find(c => c[0] === "0 16 * * *");
+    expect(linkedInResearchAfternoonCall).toBeDefined();
   });
 
   it("LinkedIn legacy slots (afternoon 15:00, evening 19:00) dovrebbero essere DISABILITATI", async () => {

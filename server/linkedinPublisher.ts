@@ -158,7 +158,7 @@ async function auditPrePublish(postText: string, imageUrl: string | null, slot: 
 }
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "startup-afternoon" | "research" | "dealroom" | "ai-tool-radar" | "afternoon" | "evening";
+export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "ai-tool-radar" | "afternoon" | "evening";
 
 // ── Sezioni supportate per LinkedIn ──────────────────────────────────────────
 type LinkedInSection = "ai" | "startup" | "dealroom" | "research";
@@ -190,8 +190,10 @@ const SECTION_META: Record<LinkedInSection, { label: string; hashtags: string[];
 // ── Mappa slot → sezione ────────────────────────────────────────────────────
 function selectSection(slot: LinkedInSlot): LinkedInSection {
   if (slot === "morning") return "ai";
-  if (slot === "startup-afternoon") return "startup";
+  if (slot === "ai-research-morning") return "ai";
   if (slot === "research") return "research";
+  if (slot === "research-afternoon") return "research";
+  if (slot === "startup-afternoon") return "startup";
   if (slot === "ai-tool-radar") return "ai";
   if (slot === "dealroom") return "dealroom";
   // Legacy slots
@@ -254,17 +256,29 @@ ${marketData.keyFinding}`;
 Tono: analitico e strategico. Il tuo pubblico apre LinkedIn a colazione e vuole una lettura che dia loro un vantaggio competitivo per la giornata.
 Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business.
 Includi sempre il link a ideasmart.biz/ai.`;
+  } else if (slot === "ai-research-morning") {
+    slotNote = `Questo è il 2° EDITORIALE AI (12:30) — basato su ricerche di mercato di alto livello sull'AI.
+Tono: analitico e autorevole. Il tuo pubblico è a pranzo e vuole una lettura strategica profonda sull'AI.
+Focus: ricerche di mercato AI di alto livello, dati di adozione enterprise, impatto economico, trend emergenti. Cita fonti autorevoli (Gartner, McKinsey, IDC, Stanford HAI, MIT).
+Aggiungi sempre la tua lettura strategica personale: cosa significa per il mercato italiano ed europeo.
+Includi sempre il link a proofpress.ai.`;
   } else if (slot === "startup-afternoon") {
     slotNote = `Questo è il POST DEL POMERIGGIO (14:30) — Sezione Startup News.
 Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire cosa si muove nell'ecosistema startup.
 Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
 Includi sempre il link a ideasmart.biz/startup.`;
   } else if (slot === "research") {
-    slotNote = `Questo è il POST SULLE RICERCHE (17:00) — Sezione Proof Press Research.
+    slotNote = `Questo è il POST SULLE RICERCHE (14:30) — Sezione Proof Press Research.
 Tono: autorevole e data-driven. Il tuo pubblico vuole insight basati su ricerche e dati concreti.
 Focus: presenta i key findings della ricerca, le implicazioni per il mercato italiano/europeo, e perché questa ricerca è rilevante per decision-maker.
-Invita a leggere la ricerca completa su ideasmart.biz/ricerche.
+Invita a leggere la ricerca completa su proofpress.ai.
 NON limitarti a riassumere: aggiungi la tua lettura strategica dei dati.`;
+  } else if (slot === "research-afternoon") {
+    slotNote = `Questo è il 2° POST RICERCHE (16:00) — Sezione Proof Press Research.
+Tono: autorevole e data-driven. Il tuo pubblico nel pomeriggio vuole insight concreti e azionabili.
+Focus: presenta i key findings di una nuova ricerca Proof Press, le implicazioni strategiche per il mercato italiano/europeo, e cosa devono fare i decision-maker oggi.
+Invita a leggere la ricerca completa su proofpress.ai.
+NON ripetere la stessa ricerca del post delle 14:30: scegli un angolo o una ricerca diversa.`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
@@ -707,10 +721,12 @@ export async function publishLinkedInPost(
 }> {
   const SLOT_LABELS: Record<LinkedInSlot, string> = {
     morning: "MATTINO (10:00)",
-    "startup-afternoon": "STARTUP POMERIGGIO (14:30)",
-    research: "RICERCHE (17:00)",
-    "ai-tool-radar": "AI TOOL RADAR (18:00)",
-    dealroom: "DEALROOM (19:00)",
+    "ai-research-morning": "2° EDITORIALE AI (12:30)",
+    research: "RICERCHE (14:30)",
+    "research-afternoon": "2° RICERCHE (16:00)",
+    "startup-afternoon": "STARTUP POMERIGGIO (legacy)",
+    "ai-tool-radar": "AI TOOL RADAR (legacy)",
+    dealroom: "DEALROOM (legacy)",
     afternoon: "POMERIGGIO (legacy)",
     evening: "SERA (legacy)"
   };
@@ -1050,6 +1066,52 @@ export async function publishLinkedInPost(
         errors: [result.error ?? "Errore pubblicazione Startup Radar"],
         posts: [{ section: "startup", title: "AI Dealflow Europe", success: false, error: result.error }]
       };
+    }
+  } else if (slot === "ai-research-morning") {
+    // Slot 12:30 — 2° Editoriale AI basato su ricerche di mercato AI di alto livello
+    // Recupera una ricerca Proof Press non ancora usata oggi
+    const researchAI = await getResearchForLinkedIn(recentPostTitles);
+    if (researchAI) {
+      contentTitle = researchAI.title;
+      contentBody = researchAI.body;
+      contentKeyTrend = researchAI.keyTrend;
+      contentImageUrl = researchAI.imageUrl;
+      console.log(`[LinkedIn] 🔬 2° Editoriale AI (ricerca): "${contentTitle.slice(0, 60)}..."`);
+    } else {
+      // Fallback: usa l'editoriale AI del giorno
+      const editorial = await getLatestEditorial("ai");
+      if (!editorial) {
+        console.warn(`[LinkedIn] ⚠️ Nessun contenuto disponibile per slot ai-research-morning. Pubblicazione saltata.`);
+        return { published: 0, errors: ["Nessun contenuto disponibile per 2° Editoriale AI"], posts: [] };
+      }
+      contentTitle = editorial.title;
+      contentBody = editorial.body;
+      contentKeyTrend = editorial.keyTrend ?? "AI Market Research";
+      contentImageUrl = editorial.imageUrl ?? null;
+      console.log(`[LinkedIn] 📝 2° Editoriale AI (fallback editoriale): "${contentTitle.slice(0, 60)}..."`);
+    }
+  } else if (slot === "research-afternoon") {
+    // Slot 16:00 — 2° Research Proof Press (seconda ricerca del giorno)
+    // Recupera una ricerca diversa da quella già usata alle 14:30
+    const researchAfternoon = await getResearchForLinkedIn(recentPostTitles);
+    if (researchAfternoon) {
+      contentTitle = researchAfternoon.title;
+      contentBody = researchAfternoon.body;
+      contentKeyTrend = researchAfternoon.keyTrend;
+      contentImageUrl = researchAfternoon.imageUrl;
+      console.log(`[LinkedIn] 🔬 2° Research (pomeriggio): "${contentTitle.slice(0, 60)}..."`);
+    } else {
+      // Fallback: usa l'editoriale AI del giorno
+      const editorial = await getLatestEditorial("ai");
+      if (!editorial) {
+        console.warn(`[LinkedIn] ⚠️ Nessun contenuto disponibile per slot research-afternoon. Pubblicazione saltata.`);
+        return { published: 0, errors: ["Nessun contenuto disponibile per 2° Research"], posts: [] };
+      }
+      contentTitle = editorial.title;
+      contentBody = editorial.body;
+      contentKeyTrend = editorial.keyTrend ?? "AI Research Trends";
+      contentImageUrl = editorial.imageUrl ?? null;
+      console.log(`[LinkedIn] 📝 2° Research (fallback editoriale): "${contentTitle.slice(0, 60)}..."`);
     }
   } else {
     // Slot Morning: recupera l'editoriale

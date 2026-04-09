@@ -524,10 +524,9 @@ export function startAllSchedulers(): void {
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 4 post giornalieri:
   //   10:00 CET — AI News (morning)
-  //   12:30 CET — Startup News (startup-afternoon)
+  //   12:30 CET — 2° Editoriale AI su ricerche di mercato (ai-research-morning)
   //   14:30 CET — Ricerche Proof Press (research)
-  //   16:00 CET — AI Tool Radar (ai-tool-radar)
-  //   17:30 CET — Dealroom (dealroom)
+  //   16:00 CET — 2° Ricerche Proof Press (research-afternoon)
   // ══════════════════════════════════════════════════════════════════════════
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -585,19 +584,19 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Startup — 12:30 CET (Startup News)
+  // 2° Editoriale AI — 12:30 CET (ricerche di mercato AI di alto livello)
   cron.schedule("30 12 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 12:30 CET — Pubblicazione LinkedIn STARTUP...");
-    await withLock("linkedin-startup-afternoon", async () => {
+    console.log("[SchedulerManager] ⏰ 12:30 CET — Pubblicazione LinkedIn 2° EDITORIALE AI (ricerche di mercato)...");
+    await withLock("linkedin-ai-research-morning", async () => {
       try {
-        const result = await publishLinkedInPost("startup-afternoon");
-        console.log(`[SchedulerManager] ✅ LinkedIn STARTUP POMERIGGIO: ${result.published}/1 post pubblicati`);
+        const result = await publishLinkedInPost("ai-research-morning");
+        console.log(`[SchedulerManager] ✅ LinkedIn 2° EDITORIALE AI: ${result.published}/1 post pubblicati`);
         if (result.errors.length > 0) {
-          console.error("[SchedulerManager] ⚠️ LinkedIn STARTUP POMERIGGIO errori:", result.errors);
+          console.error("[SchedulerManager] ⚠️ LinkedIn 2° EDITORIALE AI errori:", result.errors);
         }
         invalidateBySection("home");
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore LinkedIn STARTUP POMERIGGIO:", err);
+        console.error("[SchedulerManager] ❌ Errore LinkedIn 2° EDITORIALE AI:", err);
       }
     });
   }, { timezone: TZ });
@@ -619,36 +618,19 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post AI Tool Radar — 16:00 CET (10 nuovi tool AI scoperti oggi)
+  // 2° Ricerche Proof Press — 16:00 CET
   cron.schedule("0 16 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 16:00 CET — Pubblicazione LinkedIn AI TOOL RADAR...");
-    await withLock("linkedin-ai-tool-radar", async () => {
+    console.log("[SchedulerManager] ⏰ 16:00 CET — Pubblicazione LinkedIn 2° RICERCHE (Proof Press Research)...");
+    await withLock("linkedin-research-afternoon", async () => {
       try {
-        const result = await publishLinkedInPost("ai-tool-radar");
-        console.log(`[SchedulerManager] ✅ LinkedIn AI TOOL RADAR: ${result.published}/1 post pubblicati`);
+        const result = await publishLinkedInPost("research-afternoon");
+        console.log(`[SchedulerManager] ✅ LinkedIn 2° RICERCHE: ${result.published}/1 post pubblicati`);
         if (result.errors.length > 0) {
-          console.error("[SchedulerManager] ⚠️ LinkedIn AI TOOL RADAR errori:", result.errors);
+          console.error("[SchedulerManager] ⚠️ LinkedIn 2° RICERCHE errori:", result.errors);
         }
         invalidateBySection("home");
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore LinkedIn AI TOOL RADAR:", err);
-      }
-    });
-  }, { timezone: TZ });
-
-  // Post Dealroom — 17:30 CET (ultimi deal/round)
-  cron.schedule("30 17 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 17:30 CET — Pubblicazione LinkedIn DEALROOM...");
-    await withLock("linkedin-dealroom", async () => {
-      try {
-        const result = await publishLinkedInPost("dealroom");
-        console.log(`[SchedulerManager] ✅ LinkedIn DEALROOM: ${result.published}/1 post pubblicati`);
-        if (result.errors.length > 0) {
-          console.error("[SchedulerManager] ⚠️ LinkedIn DEALROOM errori:", result.errors);
-        }
-        invalidateBySection("home");
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore LinkedIn DEALROOM:", err);
+        console.error("[SchedulerManager] ❌ Errore LinkedIn 2° RICERCHE:", err);
       }
     });
   }, { timezone: TZ });
@@ -673,10 +655,9 @@ export function startAllSchedulers(): void {
       // Catch-up slot definitions: [slot, scheduledMinutes]
       const catchUpSlots: Array<[string, number, string]> = [
         ["morning", 10 * 60, "MATTINO (10:00)"],
-        ["startup-afternoon", 14 * 60 + 30, "STARTUP RADAR EU/IT (14:30)"],
-        ["research", 17 * 60, "RICERCHE (17:00)"],
-        ["ai-tool-radar", 18 * 60, "AI TOOL RADAR (18:00)"],
-        ["dealroom", 19 * 60, "DEALROOM (19:00)"],
+        ["ai-research-morning", 12 * 60 + 30, "2° EDITORIALE AI (12:30)"],
+        ["research", 14 * 60 + 30, "RICERCHE (14:30)"],
+        ["research-afternoon", 16 * 60, "2° RICERCHE (16:00)"],
       ];
 
       for (const [slotName, scheduledMin, label] of catchUpSlots) {
@@ -917,10 +898,9 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📧 Newsletter UNIFICATA -> lun/mer/ven alle 10:30 CET → tutti gli iscritti");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
-  console.log("[SchedulerManager]   💼 LinkedIn STARTUP       → ogni giorno alle 12:30 CET (Startup News)");
+  console.log("[SchedulerManager]   💼 LinkedIn 2° EDITORIALE AI → ogni giorno alle 12:30 CET (ricerche di mercato AI)");
   console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (Proof Press Research)");
-  console.log("[SchedulerManager]   💼 LinkedIn AI TOOL RADAR → ogni giorno alle 16:00 CET (10 tool AI scoperti oggi)");
-  console.log("[SchedulerManager]   💼 LinkedIn DEALROOM      → ogni giorno alle 17:30 CET (Dealroom)");
+  console.log("[SchedulerManager]   💼 LinkedIn 2° RICERCHE    → ogni giorno alle 16:00 CET (2° Proof Press Research)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
    console.log("[SchedulerManager]   Keep-Alive      -> ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   [OFF] Catch-up NL     -> DISABILITATO (richiede approvazione manuale)");

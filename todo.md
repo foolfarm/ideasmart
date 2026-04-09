@@ -2899,3 +2899,12 @@
 - [x] Aggiungere lock globale in-process per slot ai-tool-radar e startup-afternoon prima della chiamata a LinkedIn API
 - [x] Aggiungere controllo DB idempotenza PRIMA della generazione del contenuto (non solo prima della pubblicazione)
 - [x] Impostare force=false come default nel router admin publishLinkedIn per evitare pubblicazioni accidentali
+
+## Aggiornamento Schedulazione LinkedIn (9 Apr 2026)
+
+- [x] 10:00 — AI News: rimane invariato (editoriale AI del giorno, implicazioni strategiche CEO/CTO)
+- [x] 12:30 — Nuovo slot "ai-research-morning": 2° Editoriale AI basato su ricerche di mercato di alto livello sull'AI (non più Startup Radar)
+- [x] 14:30 — Research: rimane invariato (key findings ricerca Proof Press)
+- [x] 16:00 — Nuovo slot "research-afternoon": 2° Research Proof Press (non più AI Tool Radar)
+- [x] Tutti i 4 post devono essere inseriti nello spazio Andrea Cinelli sulla Home
+- [x] Aggiornare slotNote e logica di generazione contenuto per i nuovi slot 12:30 e 16:00
