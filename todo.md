@@ -2954,3 +2954,23 @@
 - [x] A) Rimuovere sezione "Cosa Facciamo" con tabella piani agenti
 - [x] B) Spostare le FAQ in fondo alla pagina (dopo il form di contatto)
 - [x] C) Form di contatto già invia a info@proofpress.ai (nessuna modifica necessaria)
+
+## Aggiornamento CTA post LinkedIn (9 Apr 2026)
+
+- [ ] Rimuovere tutti i link esistenti dai post LinkedIn e aggiungere sempre "Leggi l'analisi completa su Proof Press → https://proofpress.ai" come CTA finale
+- [ ] Aggiornare linkedinPublisher.ts: tutti gli slot devono usare proofpress.ai come unico link
+- [ ] Aggiornare aiToolRadar.ts se genera link propri
+
+## Pulizia sidebar sinistra (9 Apr 2026)
+
+- [ ] Rimuovere dalla sidebar: Breaking News, Research, Venture, Investi, Radar, Make Money, Prompt Library, Nuovi Tools, Casi d'uso, Opportunità
+
+## Fix canali news e sidebar (9 Apr 2026)
+
+- [ ] Rimuovere dalla sidebar: Breaking News, Research, Venture, Investi, Radar, Make Money, Prompt Library, Nuovi Tools, Casi d'uso, Opportunità
+- [ ] Fix bug filtro audit: notizie con status 'unreachable' o 'error' vengono escluse erroneamente
+- [ ] Ripopolare canali AI e Startup con notizie fresche
+
+## Banner ProofPress Business in sidebar (9 Apr 2026)
+
+- [x] Aggiungere banner promozionale ProofPress Business in fondo alla sidebar sinistra con link a /chi-siamo

@@ -7,21 +7,7 @@ interface SidebarChannel {
   href: string;
 }
 
-/* ─── CANALI (tutti i canali editoriali) ─────────────────────────────────── */
-const CHANNELS: SidebarChannel[] = [
-  { label: "Breaking News",  icon: "⚡", href: "/ai" },
-  { label: "Research",       icon: "🔬", href: "/research" },
-  { label: "Venture",        icon: "🚀", href: "/startup" },
-  { label: "Investi",        icon: "💼", href: "/dealroom" },
-  { label: "Radar",          icon: "📡", href: "/verified-ai-news" },
-  { label: "Make Money",     icon: "$",  href: "/make-money-with-ai" },
-  { label: "Prompt Library",  icon: "📋", href: "/prompt-library" },
-  { label: "Nuovi Tools",    icon: "🛠️", href: "/daily-ai-tools" },
-  { label: "Casi d'uso",     icon: "⚙️", href: "/automate-with-ai" },
-  { label: "Opportunità",    icon: "📈", href: "/ai-opportunities" },
-];
-
-/* ─── SEZIONE INFO (sotto il divider) ────────────────────────────────────── */
+/* ─── SEZIONE INFO ────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
   { label: "Crea Un Giornale",       icon: "👤", href: "/chi-siamo" },
   { label: "Tecnologia",             icon: "✅", href: "/proofpress-verify" },
@@ -73,39 +59,6 @@ export default function LeftSidebar() {
       {/* Divider */}
       <div className="mx-4 mb-3 border-t-[2px] border-[#1a1a1a]" />
 
-      {/* Canali */}
-      <div className="px-3 mb-1">
-        <span
-          className="text-[9px] uppercase tracking-[0.15em] text-[#1a1a1a]/35 font-semibold px-1"
-        >
-          Canali
-        </span>
-      </div>
-      <nav className="flex flex-col gap-0.5 px-2 mb-3">
-        {CHANNELS.map((ch) => (
-          <Link key={ch.href + ch.label} href={ch.href}>
-            <div
-              className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 group ${
-                isActive(ch.href)
-                  ? "bg-[#1a1a1a] text-white"
-                  : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/70 hover:text-[#1a1a1a]"
-              }`}
-            >
-              <span className="text-[13px] w-4 text-center flex-shrink-0">{ch.icon}</span>
-              <span
-                className="text-[12px] font-medium leading-tight"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}
-              >
-                {ch.label}
-              </span>
-            </div>
-          </Link>
-        ))}
-      </nav>
-
-      {/* Divider */}
-      <div className="mx-4 mb-2 border-t border-[#1a1a1a]/10" />
-
       {/* Sezione info */}
       <nav className="flex flex-col gap-0.5 px-2 mb-4">
         {INFO_LINKS.map((ch) => {
@@ -141,6 +94,73 @@ export default function LeftSidebar() {
 
       {/* Spacer */}
       <div className="flex-1" />
+
+      {/* Banner ProofPress Business */}
+      <div className="mx-3 mb-4">
+        <a href="/chi-siamo" className="block">
+          <div
+            style={{
+              background: "linear-gradient(135deg, #1a1a1a 0%, #2d1a0e 100%)",
+              borderRadius: "10px",
+              padding: "14px 12px",
+              border: "1px solid rgba(255,85,0,0.25)",
+              cursor: "pointer",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "9px",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "#ff5500",
+                marginBottom: "6px",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+              }}
+            >
+              ProofPress Business
+            </div>
+            <div
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#ffffff",
+                lineHeight: 1.3,
+                marginBottom: "8px",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
+              }}
+            >
+              Crea il tuo giornale agentico con informazione certificata
+            </div>
+            <div
+              style={{
+                fontSize: "10px",
+                color: "rgba(255,255,255,0.55)",
+                lineHeight: 1.4,
+                marginBottom: "10px",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+              }}
+            >
+              Redazione AI autonoma. Notizie 100% certificate. Da €499/mese.
+            </div>
+            <div
+              style={{
+                display: "inline-block",
+                background: "#ff5500",
+                color: "#ffffff",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+                padding: "5px 10px",
+                borderRadius: "5px",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+              }}
+            >
+              Scopri come →
+            </div>
+          </div>
+        </a>
+      </div>
 
       {/* Divider */}
       <div className="mx-4 mb-3 border-t border-[#1a1a1a]/10" />
