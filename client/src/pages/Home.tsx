@@ -504,11 +504,11 @@ export default function Home() {
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                   Non leggere l'AI. Usala. Prompt, tool e ricerche per trasformare l'AI in risultati concreti.
                 </p>
-                <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#1a1a1a]/40 font-medium"
+                <p className="mt-1 text-[8px] uppercase tracking-[0.1em] text-[#1a1a1a]/30 font-normal"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Powered by{" "}
                   <Link href="/proofpress-verify">
-                    <span className="underline hover:text-[#dc2626] transition-colors cursor-pointer">ProofPress Verify Technology</span>
+                    <span className="underline hover:text-[#1a1a1a]/40 transition-colors cursor-pointer">ProofPress Verify Technology</span>
                   </Link>
                 </p>
               </div>

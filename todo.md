@@ -2807,3 +2807,4 @@
 - [x] Rebranding hero: sottotitolo → "Informazioni e Ricerche sul mondo dell'AI certificate"
 - [x] Rebranding hero: mantenere tagline "Non leggere l'AI. Usala..."
 - [x] Rebranding hero: sotto piccolo → "Powered by ProofPress Verify Technology"
+- [x] Ridurre dimensione "Powered by ProofPress Verify Technology" nell'header hero (molto più piccolo)
