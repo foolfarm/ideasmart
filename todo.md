@@ -2948,3 +2948,9 @@
 - [x] Rimuovere voce "Cosa Facciamo" dal menu
 - [x] Rinominare "Chi Siamo" in "Crea Un Giornale"
 - [x] Aggiungere voce "Demo" in fondo al menu con link a ideasmart.technology
+
+## Modifiche pagina /chi-siamo (9 Apr 2026 - v2)
+
+- [x] A) Rimuovere sezione "Cosa Facciamo" con tabella piani agenti
+- [x] B) Spostare le FAQ in fondo alla pagina (dopo il form di contatto)
+- [x] C) Form di contatto già invia a info@proofpress.ai (nessuna modifica necessaria)

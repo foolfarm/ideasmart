@@ -488,94 +488,7 @@ export default function ChiSiamo() {
             ))}
           </div>
 
-          <p className="mt-10 text-center text-base leading-relaxed text-[#0a0a0a]/55">
-            Ogni Agent Giornalista lavora in autonomia sul suo settore.<br />
-            Più Agent hai, più settori copri, più articoli produci.
-          </p>
 
-          {/* Contatori Agent */}
-          <div className="mt-8 grid grid-cols-3 gap-0 border border-[#0a0a0a]/10 max-w-xl mx-auto">
-            {[
-              { num: "4 Agent", sub: "10-15 articoli/giorno" },
-              { num: "8 Agent", sub: "20-30 articoli/giorno" },
-              { num: "12 Agent", sub: "Senza limiti" },
-            ].map((c, i) => (
-              <div key={i} className="py-6 text-center" style={{ borderRight: i < 2 ? "1px solid rgba(10,10,10,0.1)" : "none", background: i === 1 ? "rgba(10,10,10,0.03)" : "transparent" }}>
-                <div className="text-2xl font-black text-[#0a0a0a]">{c.num}</div>
-                <div className="text-xs text-[#0a0a0a]/40 mt-1">{c.sub}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Tabella agenti per piano */}
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full text-left" style={{ borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid #0a0a0a' }}>
-                  <th className="py-4 pr-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}></th>
-                  <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-center" style={{ fontFamily: FONT }}>Single Vertical</th>
-                  <th className="py-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-center" style={{ fontFamily: FONT, color: '#dc2626' }}>Multi-Channel</th>
-                  <th className="py-4 pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 text-center" style={{ fontFamily: FONT }}>Full Newsroom</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
-                  <td className="py-3 pr-4 text-sm font-bold text-[#0a0a0a]">Agent Giornalisti</td>
-                  <td className="py-3 px-4 text-sm text-[#0a0a0a]/70 text-center">4</td>
-                  <td className="py-3 px-4 text-sm font-bold text-center" style={{ color: '#dc2626' }}>8</td>
-                  <td className="py-3 pl-4 text-sm text-[#0a0a0a]/70 text-center">12</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid rgba(10,10,10,0.08)' }}>
-                  <td className="py-3 pr-4 text-xs text-[#0a0a0a]/40">(configurabili per settore)</td>
-                  <td className="py-3 px-4 text-xs text-[#0a0a0a]/50 text-center">1 verticale</td>
-                  <td className="py-3 px-4 text-xs text-[#0a0a0a]/50 text-center">fino a 6 canali</td>
-                  <td className="py-3 pl-4 text-xs text-[#0a0a0a]/50 text-center">canali illimitati</td>
-                </tr>
-                <tr style={{ borderTop: '2px solid #0a0a0a' }}>
-                  <td className="py-4 pr-4 text-sm font-black text-[#0a0a0a]">Totale agenti</td>
-                  <td className="py-4 px-4 text-sm font-black text-[#0a0a0a] text-center">4+4 = 8</td>
-                  <td className="py-4 px-4 text-sm font-black text-center" style={{ color: '#dc2626' }}>8+4 = 12</td>
-                  <td className="py-4 pl-4 text-sm font-black text-[#0a0a0a] text-center">12+4 = 16</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </Section>
-
-        <Divider />
-
-        {/* ═════════════════════════════════════════════════════════════════
-            CTA PREZZO UNICO
-        ═════════════════════════════════════════════════════════════════ */}
-        <Section id="pricing">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-              Crea un giornale completo agentico<br />
-              a partire da sole <span style={{ color: '#dc2626' }}>€499/mese</span>
-            </h2>
-            <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/55">
-              Chiedi una demo o parla con noi.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="mailto:info@proofpress.ai?subject=Informazioni Piattaforma Proof Press"
-                className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
-                style={{ background: '#0a0a0a', borderRadius: '0' }}
-              >
-                Parla con noi →
-              </a>
-              <a
-                href="https://ideasmart.technology"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90"
-                style={{ background: '#dc2626', borderRadius: '0' }}
-              >
-                Richiedi una Demo →
-              </a>
-            </div>
-          </div>
         </Section>
 
         <Divider />
@@ -634,22 +547,6 @@ export default function ChiSiamo() {
         <Divider />
 
         {/* ═══════════════════════════════════════════════════════════════════
-            FAQ
-        ═══════════════════════════════════════════════════════════════════ */}
-        <Section id="faq">
-          <Label>Domande frequenti</Label>
-          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a] mb-4">
-            Tutto quello che devi sapere.
-          </h2>
-          <p className="text-base text-[#0a0a0a]/45 max-w-2xl mb-10">
-            Le risposte alle domande più comuni sulla piattaforma, i modelli di redazione e la tecnologia ProofPress Verify.
-          </p>
-          <FaqAccordion />
-        </Section>
-
-        <Divider />
-
-        {/* ═══════════════════════════════════════════════════════════════════
             CTA FINALE
         ═══════════════════════════════════════════════════════════════════ */}
         <section ref={demoRef} id="demo" className="py-24 md:py-32" style={{ background: "#0a0a0a" }}>
@@ -691,6 +588,22 @@ export default function ChiSiamo() {
             <ContactForm />
           </div>
         </section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            FAQ
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section id="faq">
+          <Label>Domande frequenti</Label>
+          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a] mb-4">
+            Tutto quello che devi sapere.
+          </h2>
+          <p className="text-base text-[#0a0a0a]/45 max-w-2xl mb-10">
+            Le risposte alle domande più comuni sulla piattaforma, i modelli di redazione e la tecnologia ProofPress Verify.
+          </p>
+          <FaqAccordion />
+        </Section>
+
+        <Divider />
 
         {/* ── Footer ── */}
         <div className="max-w-6xl mx-auto px-4">
