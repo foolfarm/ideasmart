@@ -496,9 +496,10 @@ export default function Home() {
                     </h1>
                   </div>
                 </Link>
-                <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
+                <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  Il tuo hub per restare sempre aggiornato sull'innovazione<br />4.000+ fonti analizzate 24/7 per offrirti un'informazione completa, verificata e pronta all'uso per capire, decidere e agire.
+                  <span className="text-[13px]">Il tuo hub per restare sempre aggiornato sull'innovazione</span><br />
+                  <span className="text-[10px] tracking-[0.15em]">4.000+ fonti analizzate e certificate 24/7 per offrirti le ultime notizie prima degli altri, per capire, decidere e agire.</span>
                 </p>
               </div>
 
