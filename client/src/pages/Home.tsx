@@ -856,7 +856,7 @@ export default function Home() {
                       </p>
                       <p className="text-[18px] font-black leading-tight mb-2"
                         style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
-                        Ideasmart diventa Proof Press.
+                        ProofPress: la prima piattaforma di AI Journalism certificato.
                       </p>
                       <p className="text-[12px] leading-relaxed mb-4"
                         style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
