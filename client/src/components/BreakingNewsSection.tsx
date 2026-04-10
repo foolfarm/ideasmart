@@ -3,22 +3,24 @@
  * Mostra le notizie urgenti selezionate ogni ora dall'AI.
  * Si aggiorna automaticamente ogni 5 minuti.
  * Se non ci sono breaking news attive, il componente non viene renderizzato.
+ * Stile: chiaro, editoriale — coerente con il resto del giornale.
  */
 import { trpc } from "@/lib/trpc";
 import { useEffect, useState } from "react";
-import { ExternalLink, AlertTriangle, Clock, Zap } from "lucide-react";
+import { Clock, Zap } from "lucide-react";
+import { Link } from "wouter";
 
-// Mappa sezione → colore badge
+// Mappa sezione → colore badge (testo scuro su sfondo chiaro)
 const SECTION_COLORS: Record<string, string> = {
-  ai: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-  startup: "bg-violet-500/20 text-violet-300 border-violet-500/30",
-  health: "bg-rose-500/20 text-rose-300 border-rose-500/30"
+  ai:      "bg-cyan-100 text-cyan-800 border-cyan-200",
+  startup: "bg-violet-100 text-violet-800 border-violet-200",
+  health:  "bg-rose-100 text-rose-800 border-rose-200",
 };
 
 const SECTION_LABELS: Record<string, string> = {
   ai: "AI",
   startup: "Startup",
-  health: "Health"
+  health: "Health",
 };
 
 function formatTimeAgo(date: Date): string {
@@ -36,15 +38,15 @@ export default function BreakingNewsSection() {
   const { data: breakingNews, isLoading } = trpc.news.getBreakingNews.useQuery(
     undefined,
     {
-      refetchInterval: 5 * 60 * 1000, // aggiorna ogni 5 minuti
-      staleTime: 4 * 60 * 1000
+      refetchInterval: 5 * 60 * 1000,
+      staleTime: 4 * 60 * 1000,
     }
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [now, setNow] = useState(new Date());
+  const [, setNow] = useState(new Date());
 
-  // Ticker: scorre automaticamente tra le breaking news ogni 8 secondi
+  // Ticker: scorre automaticamente ogni 8 secondi
   useEffect(() => {
     if (!breakingNews || breakingNews.length <= 1) return;
     const interval = setInterval(() => {
@@ -53,43 +55,68 @@ export default function BreakingNewsSection() {
     return () => clearInterval(interval);
   }, [breakingNews]);
 
-  // Aggiorna il timestamp "X min fa" ogni minuto
+  // Aggiorna il timestamp ogni minuto
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(t);
   }, []);
 
-  // Reset activeIndex se fuori range (es. dopo un refetch con meno risultati)
+  // Reset activeIndex se fuori range
   useEffect(() => {
     if (breakingNews && activeIndex >= breakingNews.length) {
       setActiveIndex(0);
     }
   }, [breakingNews, activeIndex]);
 
-  // Non mostrare nulla se non ci sono breaking news
   if (isLoading || !breakingNews || breakingNews.length === 0) return null;
 
   const safeIndex = activeIndex < breakingNews.length ? activeIndex : 0;
   const active = breakingNews[safeIndex];
   if (!active) return null;
+
   const sectionColor = SECTION_COLORS[active.section] ?? SECTION_COLORS.ai;
   const sectionLabel = SECTION_LABELS[active.section] ?? (active.section?.toUpperCase() ?? "NEWS");
 
+  // Costruisce il link interno alla sezione
+  const articleHref = `/${active.section ?? "ai"}`;
+
   return (
-    <div className="w-full bg-red-950/40 border-y border-red-500/40 backdrop-blur-sm">
+    <div
+      style={{
+        background: "#fff8f0",
+        borderTop: "2px solid #ff5500",
+        borderBottom: "1px solid rgba(26,26,26,0.10)",
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 py-0">
-        {/* Barra principale breaking */}
-        <div className="flex items-stretch min-h-[52px]">
+        {/* Barra principale */}
+        <div className="flex items-stretch min-h-[48px]">
+
           {/* Badge BREAKING */}
-          <div className="flex items-center gap-1.5 px-4 bg-red-600 text-white font-black text-xs tracking-widest uppercase shrink-0 select-none">
-            <Zap className="w-3.5 h-3.5 fill-current" />
-            <span>BREAKING</span>
+          <div
+            style={{
+              background: "#ff5500",
+              color: "#fff",
+              fontWeight: 900,
+              fontSize: "10px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              padding: "0 14px",
+              flexShrink: 0,
+              userSelect: "none",
+            }}
+          >
+            <Zap className="w-3 h-3 fill-current" />
+            <span>Breaking</span>
           </div>
 
           {/* Separatore */}
-          <div className="w-px bg-red-500/40 shrink-0" />
+          <div style={{ width: "1px", background: "rgba(26,26,26,0.12)", flexShrink: 0 }} />
 
-          {/* Contenuto scorrevole */}
+          {/* Contenuto */}
           <div className="flex-1 flex items-center gap-3 px-4 overflow-hidden">
             {/* Badge sezione */}
             <span
@@ -98,26 +125,41 @@ export default function BreakingNewsSection() {
               {sectionLabel}
             </span>
 
-            {/* Titolo */}
-            <a
-              href={active.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold text-white/95 hover:text-red-300 transition-colors truncate leading-tight"
-              title={active.title}
-            >
-              {active.title}
-            </a>
-
-            {/* Link esterno */}
-            <ExternalLink className="w-3.5 h-3.5 text-white/40 shrink-0 hidden sm:block" />
+            {/* Titolo — link interno */}
+            <Link href={articleHref}>
+              <span
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  color: "#1a1a1a",
+                  lineHeight: 1.3,
+                  cursor: "pointer",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
+                }}
+                className="hover:text-[#ff5500] transition-colors truncate block"
+                title={active.title}
+              >
+                {active.title}
+              </span>
+            </Link>
           </div>
 
           {/* Timestamp + fonte */}
-          <div className="hidden md:flex items-center gap-2 px-4 shrink-0 text-white/40 text-xs">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "0 16px",
+              flexShrink: 0,
+              fontSize: "11px",
+              color: "rgba(26,26,26,0.45)",
+            }}
+            className="hidden md:flex"
+          >
             <Clock className="w-3 h-3" />
             <span>{formatTimeAgo(new Date(active.createdAt))}</span>
-            <span className="text-white/20">·</span>
+            <span style={{ color: "rgba(26,26,26,0.2)" }}>·</span>
             <span className="truncate max-w-[120px]">{active.sourceName}</span>
           </div>
 
@@ -128,10 +170,10 @@ export default function BreakingNewsSection() {
                 <button
                   key={i}
                   onClick={() => setActiveIndex(i)}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${
+                  className={`h-1.5 rounded-full transition-all ${
                     i === activeIndex
-                      ? "bg-red-400 w-3"
-                      : "bg-white/20 hover:bg-white/40"
+                      ? "bg-[#ff5500] w-3"
+                      : "bg-[#1a1a1a]/20 hover:bg-[#1a1a1a]/40 w-1.5"
                   }`}
                   aria-label={`Breaking news ${i + 1}`}
                 />
@@ -140,10 +182,28 @@ export default function BreakingNewsSection() {
           )}
         </div>
 
-        {/* Sommario espanso (solo se c'è) */}
+        {/* Sommario */}
         {active.summary && (
-          <div className="px-4 pb-2.5 pt-0 border-t border-red-500/20">
-            <p className="text-xs text-white/55 leading-relaxed line-clamp-2">
+          <div
+            style={{
+              padding: "0 14px 10px",
+              borderTop: "1px solid rgba(26,26,26,0.07)",
+              paddingTop: "6px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "11px",
+                color: "rgba(26,26,26,0.60)",
+                lineHeight: 1.5,
+                margin: 0,
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif",
+              }}
+            >
               {active.summary}
             </p>
           </div>
