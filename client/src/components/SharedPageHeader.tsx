@@ -132,8 +132,15 @@ export default function SharedPageHeader() {
 
       <Divider thick />
 
-      {/* Logo centrale con manchette Amazon ai lati */}
-      <div className="py-6">
+      {/* Logo centrale con manchette ai lati */}
+      <div className="py-4">
+
+        {/* Sopra il titolo: descrizione full-width su una sola riga */}
+        <p className="text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
+          ProofPress Magazine ogni giorno analizza e verifica oltre 4.000 fonti per offrirti solo contenuti rilevanti, affidabili e pronti all'uso.
+        </p>
+
         <div className="flex items-center justify-center gap-4">
           {/* Manchette sinistra — Tradedoubler */}
           <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
@@ -148,7 +155,7 @@ export default function SharedPageHeader() {
             </a>
           </div>
 
-          {/* Titolo centrale */}
+          {/* Titolo centrale + sottotitolo 2 righe */}
           <div className="text-center flex-1 min-w-0">
             <Link href="/">
               <h1
@@ -163,12 +170,12 @@ export default function SharedPageHeader() {
                 ProofPress
               </h1>
             </Link>
-            <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
+            {/* Sottotitolo: riga 1 più grande, riga 2 più piccola */}
+            <div className="mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              <span className="text-[13px]">La prima piattaforma di giornalismo agentico certificato</span>
-              <br />
-              <span className="text-[13px]">per innovatori, creator, aziende ed editori</span>
-            </p>
+              <div style={{ fontSize: "13px", lineHeight: 1.4 }}>La prima piattaforma di giornalismo agentico certificato</div>
+              <div style={{ fontSize: "10px", lineHeight: 1.4, marginTop: "2px" }}>per innovatori, creator, aziende ed editori</div>
+            </div>
           </div>
 
           {/* Manchette destra — Tradedoubler */}
@@ -184,12 +191,6 @@ export default function SharedPageHeader() {
             </a>
           </div>
         </div>
-
-        {/* Sottotitolo full-width */}
-        <p className="mt-3 text-center uppercase tracking-[0.18em] text-[#1a1a1a]/45 font-medium"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
-          ProofPress Magazine ogni giorno analizza e verifica oltre 4.000 fonti per offrirti solo contenuti rilevanti, affidabili e pronti all'uso.
-        </p>
 
       </div>
 
