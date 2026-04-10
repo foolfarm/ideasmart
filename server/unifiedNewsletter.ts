@@ -534,8 +534,8 @@ function buildNewsletterHtmlV2(opts: {
   } = opts;
 
   // ── Design Tokens v3 (Proof Press Premium) ──
-  const F_SERIF = "Georgia, 'Playfair Display', 'DM Serif Display', 'Times New Roman', serif";
-  const F_SANS  = "Helvetica, Arial, 'Segoe UI', sans-serif";
+  const F_SERIF = "-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+  const F_SANS  = "-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif";
   const BG      = "#f5f3ef";   // crema off-white
   const WHITE   = "#ffffff";
   const BLACK   = "#1a1a1a";
@@ -994,11 +994,11 @@ function buildNewsletterHtmlV2(opts: {
         <td style="padding:${i === 0 ? '0' : '12px'} 0 12px;${!isLast ? `border-bottom:1px solid #e5e7eb;` : ''}">
           <a href="${researchUrl}" style="text-decoration:none;display:block;">
             ${r.isResearchOfDay
-              ? `<div style="display:inline-block;font-size:9px;font-weight:700;color:#ffffff;background:#0066cc;border-radius:3px;padding:2px 7px;letter-spacing:0.08em;text-transform:uppercase;font-family:Arial,sans-serif;margin-bottom:6px;">RICERCA DEL GIORNO</div>`
-              : `<div style="font-size:10px;font-weight:600;color:#0066cc;font-family:Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${r.category || 'RESEARCH'}</div>`
+              ? `<div style="display:inline-block;font-size:9px;font-weight:700;color:#ffffff;background:#0066cc;border-radius:3px;padding:2px 7px;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">RICERCA DEL GIORNO</div>`
+              : `<div style="font-size:10px;font-weight:600;color:#0066cc;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${r.category || 'RESEARCH'}</div>`
             }
-            <div style="font-size:14px;font-weight:700;color:#111827;font-family:Arial,sans-serif;line-height:1.4;margin-bottom:4px;">${r.title}</div>
-            <div style="font-size:12px;color:#6b7280;font-family:Arial,sans-serif;line-height:1.6;">${r.summary ? r.summary.slice(0, 120) + '...' : ''}</div>
+            <div style="font-size:14px;font-weight:700;color:#111827;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.4;margin-bottom:4px;">${r.title}</div>
+            <div style="font-size:12px;color:#6b7280;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">${r.summary ? r.summary.slice(0, 120) + '...' : ''}</div>
           </a>
         </td>
       </tr>`;
@@ -1012,9 +1012,9 @@ function buildNewsletterHtmlV2(opts: {
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="padding-bottom:14px;border-bottom:2px solid #111827;">
-                    <span style="font-size:10px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:Arial,sans-serif;">🔬 PROOF PRESS RESEARCH</span>
+                    <span style="font-size:10px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;">🔬 PROOF PRESS RESEARCH</span>
                     <span style="float:right;">
-                      <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_all" style="font-size:10px;color:#9ca3af;text-decoration:none;font-family:Arial,sans-serif;">Tutte le ricerche →</a>
+                      <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_all" style="font-size:10px;color:#9ca3af;text-decoration:none;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;">Tutte le ricerche →</a>
                     </span>
                   </td>
                 </tr>
