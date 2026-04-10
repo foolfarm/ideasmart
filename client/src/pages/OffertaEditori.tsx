@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, ArrowRight, Mic, Newspaper, BarChart2, TrendingUp } from "lucide-react";
+import OffertaLeadForm from "@/components/OffertaLeadForm";
 
 const DEMO_URL = "https://ideasmart.technology";
 const CONTACT_URL = "/contatti";
@@ -337,6 +338,15 @@ export default function OffertaEditori() {
             Sei un'azienda? → Offerta Corporate
           </Link>
         </div>
+      </section>
+
+      {/* LEAD FORM */}
+      <section className="max-w-3xl mx-auto px-6 pb-20">
+        <OffertaLeadForm
+          source="editori"
+          title="Inizia oggi — parla con noi"
+          subtitle="Compila il form e ti contatteremo entro 24 ore con tutti i dettagli sull'offerta per Testate ed Editori. Nessun impegno."
+        />
       </section>
     </div>
   );

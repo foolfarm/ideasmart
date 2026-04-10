@@ -17,6 +17,7 @@ const INFO_LINKS: SidebarChannel[] = [
 ];
 
 const PIATTAFORMA_SUBMENU = [
+  { label: "Piattaforma ProofPress", icon: "🚀", href: "/piattaforma", external: false },
   { label: "Agentic Platform Demo", icon: "🎯", href: "https://ideasmart.technology", external: true },
   { label: "ProofPress Verify",     icon: "✅", href: "/proofpress-verify", external: false },
 ];

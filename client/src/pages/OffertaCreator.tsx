@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, ArrowRight, Mic, Newspaper, Mail, Users, Shield, Zap, Clock } from "lucide-react";
+import OffertaLeadForm from "@/components/OffertaLeadForm";
 
 const DEMO_URL = "https://ideasmart.technology";
 const CONTACT_URL = "/contatti";
@@ -310,6 +311,15 @@ export default function OffertaCreator() {
             Sei un'azienda? → Offerta Corporate
           </Link>
         </div>
+      </section>
+
+      {/* LEAD FORM */}
+      <section className="max-w-3xl mx-auto px-6 pb-20">
+        <OffertaLeadForm
+          source="creator"
+          title="Inizia oggi — parla con noi"
+          subtitle="Compila il form e ti contatteremo entro 24 ore con tutti i dettagli sull'offerta Creator. Nessun impegno."
+        />
       </section>
     </div>
   );

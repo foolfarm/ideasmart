@@ -50,6 +50,7 @@ export default function Navbar() {
   ];
 
   const piattaformaItems = [
+    { label: "Piattaforma ProofPress", href: "/piattaforma", desc: "Scopri la tecnologia agentica", external: false },
     { label: "Agentic Platform Demo", href: "https://ideasmart.technology", desc: "Prova la piattaforma live", external: true },
     { label: "ProofPress Verify", href: "/proofpress-verify", desc: "Verifica l'autenticità degli articoli", external: false },
   ];

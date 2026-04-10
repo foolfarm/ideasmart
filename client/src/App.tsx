@@ -91,6 +91,7 @@ const AIOpportunities = lazy(() => import("./pages/AIOpportunities"));
 const PromptLibraryLanding = lazy(() => import("./pages/PromptLibraryLanding"));
 const PubblicitaPage = lazy(() => import("./pages/PubblicitaPage"));
 const ChiSiamoStory = lazy(() => import("./pages/ChiSiamoStory"));
+const Piattaforma = lazy(() => import("./pages/Piattaforma"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -133,6 +134,7 @@ function Router() {
         <Route path="/offerta/aziende" component={OffertaAziende} />
         <Route path="/offertacommerciale" component={PerGiornalisti} />
         <Route path="/tecnologia" component={Tecnologia} />
+        <Route path="/piattaforma" component={Piattaforma} />
         <Route path="/account" component={Account} />
         <Route path="/registrati" component={Registrati} />
         <Route path="/accedi" component={Accedi} />
