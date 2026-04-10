@@ -578,15 +578,20 @@ function buildNewsletterHtmlV2(opts: {
   }
 
   // ── Helper: get best item for a channel ──
+  // REGOLA: tutti i link devono puntare a proofpress.ai/canale/{id} — MAI alla fonte esterna
   function getBestItemForChannel(chKey: string): { title: string; summary: string; url: string; category: string } | null {
     const chItems = channelContents[chKey];
     if (chItems && chItems.length > 0) {
       const item = chItems[0];
       const chDef = ALL_CHANNELS_V2.find(c => c.key === chKey);
+      // Usa sempre link interno a proofpress.ai — con ID articolo se disponibile
+      const internalUrl = item.id
+        ? `${BASE_URL}${chDef?.slug || `/${chKey}`}/${item.id}`
+        : `${BASE_URL}${chDef?.slug || `/${chKey}`}`;
       return {
         title: item.title,
         summary: item.subtitle || item.body.slice(0, 160) + "...",
-        url: `${BASE_URL}${chDef?.slug || `/${chKey}`}`,
+        url: internalUrl,
         category: item.category || chDef?.label || chKey.toUpperCase(),
       };
     }
