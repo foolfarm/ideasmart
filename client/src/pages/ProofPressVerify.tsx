@@ -87,46 +87,79 @@ function TechSpecs() {
 
 /* ── Form di verifica hash ── */
 function VerifyForm() {
-  const [hash, setHash] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [searchHash, setSearchHash] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
 
-  // La procedura verify.verifyHash è opzionale; se non disponibile mostra "non trovato"
-  const verifyQuery = (trpc as any).verify?.verifyHash?.useQuery?.(
-    { hash: hash.trim() },
-    { enabled: submitted && hash.trim().length > 0 }
+  // Normalizza il codice: accetta sia "PP-XXXXXXXXXXXXXXXX" che l'hash completo SHA-256
+  const normalizeHash = (raw: string): string => {
+    const trimmed = raw.trim();
+    if (trimmed.toUpperCase().startsWith('PP-')) {
+      // Il badge mostra i primi 16 char dell'hash in maiuscolo
+      // Il DB salva l'hash completo SHA-256 in minuscolo
+      return trimmed.slice(3).toLowerCase();
+    }
+    return trimmed.toLowerCase();
+  };
+
+  // Usa news.lookupByHash — cerca per hash (o prefisso) nel DB
+  const verifyQuery = trpc.news.lookupByHash.useQuery(
+    { hash: searchHash },
+    { enabled: submitted && searchHash.length >= 8 }
   );
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!hash.trim()) return;
+    if (!inputValue.trim()) return;
+    setSearchHash(normalizeHash(inputValue));
     setSubmitted(true);
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 300);
   };
 
   const handleReset = () => {
-    setHash("");
+    setInputValue("");
+    setSearchHash("");
     setSubmitted(false);
   };
 
-  const result = verifyQuery?.data;
+  // news.lookupByHash restituisce l'oggetto notizia direttamente (non ha status)
+  const rawResult = verifyQuery?.data;
   const isLoading = verifyQuery?.isLoading;
   const isError = verifyQuery?.isError;
+
+  // Adatta il risultato al formato atteso dalla UI
+  const result = rawResult
+    ? {
+        status: "verified" as const,
+        title: rawResult.title,
+        section: rawResult.section,
+        certifiedAt: rawResult.publishedAt
+          ? new Date(rawResult.publishedAt).toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' })
+          : "data non disponibile",
+        verifyHash: rawResult.verifyHash,
+        id: rawResult.id,
+        sourceName: rawResult.sourceName,
+        summary: rawResult.summary,
+      }
+    : submitted && !isLoading
+    ? { status: "not_found" as const }
+    : null;
 
   return (
     <div>
       <form onSubmit={handleVerify} className="flex flex-col sm:flex-row gap-3 mb-4">
         <input
           type="text"
-          value={hash}
-          onChange={(e) => { setHash(e.target.value); setSubmitted(false); }}
-          placeholder="Inserisci l'hash della notizia (es. 0x7f3a...)"
+          value={inputValue}
+          onChange={(e) => { setInputValue(e.target.value); setSubmitted(false); }}
+          placeholder="Inserisci il codice PP-XXXXXXXXXXXXXXXX o l'hash SHA-256 completo"
           className="flex-1 px-5 py-4 text-sm border border-[#0a0a0a]/20 bg-white text-[#0a0a0a] placeholder-[#0a0a0a]/35 outline-none focus:border-[#0a0a0a]/50 transition-colors"
           style={{ fontFamily: MONO }}
         />
         <button
           type="submit"
-          disabled={!hash.trim()}
+          disabled={!inputValue.trim()}
           className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
           style={{ background: ORANGE, fontFamily: FONT }}
         >
@@ -166,54 +199,46 @@ function VerifyForm() {
           <div className={`border p-6 ${
             result.status === "verified"
               ? "border-green-200 bg-green-50"
-              : result.status === "modified"
-              ? "border-yellow-200 bg-yellow-50"
               : "border-red-200 bg-red-50"
           }`}>
             {result.status === "verified" && (
               <div className="flex items-start gap-3">
                 <ShieldCheck size={20} className="text-green-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <div className="font-bold text-sm text-green-700 mb-2">✅ Verificato</div>
+                  <div className="font-bold text-sm text-green-700 mb-2">✅ Verificato — Notizia certificata da ProofPress</div>
                   <p className="text-sm text-green-700/80 mb-3">
-                    Questa notizia è stata certificata da ProofPress Verify il{" "}
+                    Questa notizia è stata certificata da ProofPress Verify il{" "}
                     <strong>{result.certifiedAt}</strong>. Il contenuto corrisponde esattamente al Verification Report originale.
                   </p>
-                  {result.reliabilityScore !== undefined && (
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-xs text-green-600/70 uppercase tracking-wide">Punteggio di affidabilità</span>
-                      <span className="text-2xl font-black text-green-700">{result.reliabilityScore}/100</span>
-                    </div>
-                  )}
                   {result.title && (
                     <div className="text-xs text-green-600/70 mb-1">
                       <span className="font-bold">Titolo:</span> {result.title}
                     </div>
                   )}
                   {result.section && (
-                    <div className="text-xs text-green-600/70">
-                      <span className="font-bold">Sezione:</span> {result.section}
+                    <div className="text-xs text-green-600/70 mb-1">
+                      <span className="font-bold">Sezione:</span> {result.section.toUpperCase()}
                     </div>
                   )}
-                  {result.reportUrl && (
-                    <a href={result.reportUrl} className="mt-3 inline-block text-xs text-green-600 underline hover:no-underline">
-                      Vedi il report completo →
-                    </a>
+                  {result.sourceName && (
+                    <div className="text-xs text-green-600/70 mb-1">
+                      <span className="font-bold">Fonte:</span> {result.sourceName}
+                    </div>
                   )}
-                </div>
-              </div>
-            )}
-
-            {result.status === "modified" && (
-              <div className="flex items-start gap-3">
-                <AlertTriangle size={20} className="text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-bold text-sm text-yellow-700 mb-2">⚠️ Contenuto modificato</div>
-                  <p className="text-sm text-yellow-700/80">
-                    L'articolo attuale non corrisponde al contenuto certificato. Il testo è stato alterato dopo la certificazione del{" "}
-                    <strong>{result.certifiedAt}</strong>. L'hash originale rimane valido per la versione certificata.
-                  </p>
-                  <button onClick={handleReset} className="mt-3 text-xs text-yellow-600 underline hover:no-underline">Nuova verifica</button>
+                  {result.verifyHash && (
+                    <div className="text-xs text-green-600/70 mt-2 font-mono">
+                      <span className="font-bold">Hash SHA-256:</span> {result.verifyHash}
+                    </div>
+                  )}
+                  {result.id && (
+                    <Link
+                      href={`/${result.section}/news/${result.id}`}
+                      className="mt-3 inline-block text-xs text-green-600 underline hover:no-underline"
+                    >
+                      Leggi l'articolo su ProofPress →
+                    </Link>
+                  )}
+                  <button onClick={handleReset} className="mt-3 ml-4 text-xs text-green-600/60 underline hover:no-underline">Nuova verifica</button>
                 </div>
               </div>
             )}
@@ -224,7 +249,7 @@ function VerifyForm() {
                 <div>
                   <div className="font-bold text-sm text-red-700 mb-2">❌ Hash non trovato</div>
                   <p className="text-sm text-red-600/80">
-                    Questo hash non corrisponde a nessuna certificazione nel nostro sistema. Verifica di aver copiato correttamente il codice, oppure contattaci per assistenza.
+                    Questo codice non corrisponde a nessuna certificazione nel nostro sistema. Verifica di aver copiato correttamente il codice PP-XXXXXXXXXXXXXXXX, oppure contattaci per assistenza.
                   </p>
                   <button onClick={handleReset} className="mt-3 text-xs text-red-500 underline hover:no-underline">Riprova</button>
                 </div>
