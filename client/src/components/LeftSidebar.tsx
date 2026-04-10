@@ -223,33 +223,52 @@ export default function LeftSidebar() {
         })}
       </nav>
 
-      {/* Banner ProofPress — leggibilità migliorata */}
-      <div className="mx-3 mb-5">
-        <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(26,26,26,0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+      {/* Banner ProofPress — espanso fino al ReadersCounter */}
+      <div className="mx-3 flex-1 flex flex-col min-h-0 mb-3">
+        <div className="flex flex-col flex-1 min-h-0" style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(26,26,26,0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
 
           {/* Header arancione */}
-          <div style={{ background: "#ff5500", padding: "9px 13px" }}>
+          <div style={{ background: "#ff5500", padding: "10px 13px", flexShrink: 0 }}>
             <div style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.1em", textTransform: "uppercase", color: "#fff", fontFamily: SF }}>
               ProofPress — Per il tuo business
             </div>
           </div>
 
-          {/* 3 target */}
+          {/* 3 target — crescono per riempire lo spazio */}
           {[
-            { icon: "✍️", label: "Creator & Giornalisti", desc: "Pubblica certificato, raggiungi 100k+ lettori.", href: "/offerta/creator" },
-            { icon: "📰", label: "Testate & Editori", desc: "Redazione AI autonoma 24/7, revenue share.", href: "/offerta/editori" },
-            { icon: "🏢", label: "Aziende & Corporate", desc: "Intelligence certificata, newsroom branded.", href: "/offerta/aziende" },
+            {
+              icon: "✍️",
+              label: "Creator & Giornalisti",
+              desc: "Pubblica con il tuo nome, certificato e verificato. Raggiungi 100k+ lettori senza gestire una redazione.",
+              cta: "Scopri il piano Creator →",
+              href: "/offerta/creator"
+            },
+            {
+              icon: "📰",
+              label: "Testate & Editori",
+              desc: "Una redazione AI che lavora 24/7 al posto tuo. Più contenuti, più lettori, revenue share dal primo giorno.",
+              cta: "Scopri il piano Editori →",
+              href: "/offerta/editori"
+            },
+            {
+              icon: "🏢",
+              label: "Aziende & Corporate",
+              desc: "Intelligence certificata e newsroom branded per il tuo settore. Decisioni più veloci, autorevolezza immediata.",
+              cta: "Scopri il piano Aziende →",
+              href: "/offerta/aziende"
+            },
           ].map((t, i) => (
-            <Link key={t.href} href={t.href}>
+            <Link key={t.href} href={t.href} style={{ flex: 1, display: "flex", minHeight: 0 }}>
               <div
-                style={{ padding: "10px 13px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s" }}
+                style={{ flex: 1, padding: "10px 13px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s", display: "flex", flexDirection: "column", justifyContent: "center" }}
                 className="hover:bg-[#fff3ee]"
               >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-                  <span style={{ fontSize: "14px", lineHeight: 1, marginTop: "2px", flexShrink: 0 }}>{t.icon}</span>
-                  <div>
-                    <div style={{ fontSize: "12px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.35, fontFamily: SF }}>{t.label}</div>
-                    <div style={{ fontSize: "11px", color: "rgba(26,26,26,0.55)", lineHeight: 1.45, fontFamily: SF, marginTop: "2px" }}>{t.desc}</div>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", width: "100%" }}>
+                  <span style={{ fontSize: "18px", lineHeight: 1, flexShrink: 0, marginTop: "1px" }}>{t.icon}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: "13px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3, fontFamily: SF }}>{t.label}</div>
+                    <div style={{ fontSize: "11px", color: "rgba(26,26,26,0.58)", lineHeight: 1.55, fontFamily: SF, marginTop: "4px" }}>{t.desc}</div>
+                    <div style={{ fontSize: "11px", fontWeight: 700, color: "#ff5500", fontFamily: SF, marginTop: "6px" }}>{t.cta}</div>
                   </div>
                 </div>
               </div>
@@ -258,8 +277,8 @@ export default function LeftSidebar() {
 
           {/* Footer */}
           <Link href="/offerta">
-            <div style={{ padding: "8px 13px", background: "#fff8f5", borderTop: "1px solid rgba(255,85,0,0.12)", cursor: "pointer" }}>
-              <div style={{ fontSize: "11px", fontWeight: 700, color: "#ff5500", fontFamily: SF, textAlign: "center" }}>
+            <div style={{ padding: "10px 13px", background: "#fff8f5", borderTop: "1px solid rgba(255,85,0,0.12)", cursor: "pointer", flexShrink: 0 }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, color: "#ff5500", fontFamily: SF, textAlign: "center" }}>
                 Scopri tutti i piani →
               </div>
             </div>
@@ -267,9 +286,6 @@ export default function LeftSidebar() {
 
         </div>
       </div>
-
-      {/* Spacer */}
-      <div className="flex-1" />
 
       {/* Divider */}
       <div className="mx-5 mb-3 border-t border-[#1a1a1a]/10" />
