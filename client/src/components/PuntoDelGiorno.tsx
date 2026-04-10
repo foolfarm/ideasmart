@@ -5,6 +5,7 @@
  */
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+import CommentSection from "@/components/CommentSection";
 
 const INK = "#1a1a1a";
 const ACCENT = "#1a1a1a";
@@ -235,6 +236,17 @@ export default function PuntoDelGiorno() {
                 </span>
               </Link>
             </div>
+
+            {/* Commenti al Punto del Giorno */}
+            {post.id && (
+              <div className="mt-2">
+                <CommentSection
+                  section={(post.section === "startup" ? "startup" : "ai") as "ai" | "startup"}
+                  articleType="editorial"
+                  articleId={post.id}
+                />
+              </div>
+            )}
           </div>
         </div>
       ) : null}

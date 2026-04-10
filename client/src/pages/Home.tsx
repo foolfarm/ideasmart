@@ -16,6 +16,7 @@ import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings } from "lucide-react";
 import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
+import CommentSection from "@/components/CommentSection";
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────
 const SECTION_COLORS = {
@@ -150,6 +151,13 @@ function HeroArticle({ item, section, editorial }: {
             <VerifyBadge hash={item.verifyHash} size="sm" />
           </div>
         )}
+        {(section === "ai" || section === "startup") && (
+          <CommentSection
+            section={section as "ai" | "startup"}
+            articleType="news"
+            articleId={item.id}
+          />
+        )}
       </div>
     </article>
   );
@@ -197,6 +205,13 @@ function SecondaryArticle({ item, section, showImage = false }: {
         <div className="mt-1">
           <VerifyBadge hash={item.verifyHash} size="sm" />
         </div>
+      )}
+      {(section === "ai" || section === "startup") && (
+        <CommentSection
+          section={section as "ai" | "startup"}
+          articleType="news"
+          articleId={item.id}
+        />
       )}
     </article>
   );

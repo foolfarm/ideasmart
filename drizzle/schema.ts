@@ -789,3 +789,22 @@ export const rssIngestLog = mysqlTable("rss_ingest_log", {
 
 export type RssIngestLog = typeof rssIngestLog.$inferSelect;
 export type InsertRssIngestLog = typeof rssIngestLog.$inferInsert;
+
+// ── Offerta Leads (richieste dai form /offerta/creator, /offerta/editori, /offerta/aziende) ──
+export const offertaLeads = mysqlTable("offerta_leads", {
+  id: int("id").autoincrement().primaryKey(),
+  // Fonte del form: 'creator', 'editori', 'aziende'
+  source: mysqlEnum("source", ["creator", "editori", "aziende"]).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  role: varchar("role", { length: 255 }).notNull(),
+  // Azienda o testata (obbligatorio per editori/aziende)
+  org: varchar("org", { length: 255 }),
+  message: text("message"),
+  // Stato lead: 'new' = non letto, 'contacted' = contattato, 'closed' = chiuso
+  status: mysqlEnum("status", ["new", "contacted", "closed"]).default("new").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type OffertaLead = typeof offertaLeads.$inferSelect;
+export type InsertOffertaLead = typeof offertaLeads.$inferInsert;

@@ -2426,6 +2426,25 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         source: z.enum(["creator", "editori", "aziende"]),
       }))
       .mutation(async ({ input }) => {
+        // Salva il lead nel DB
+        try {
+          const db = await getDbInstance();
+          if (db) {
+            const { offertaLeads: offertaLeadsTable } = await import('../drizzle/schema');
+            await db.insert(offertaLeadsTable).values({
+              source: input.source,
+              name: input.name,
+              email: input.email,
+              role: input.role,
+              org: input.org ?? null,
+              message: input.message ?? null,
+              status: 'new',
+            });
+          }
+        } catch (dbErr) {
+          console.error('[offerta.submitLead] Errore salvataggio DB:', dbErr);
+          // Non blocca l'invio email
+        }
         const sourceLabel = { creator: "Creator & Giornalisti", editori: "Testate & Editori", aziende: "Aziende & Corporate" }[input.source];
         const adminHtml = `
           <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
@@ -2471,6 +2490,59 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           subject: `Abbiamo ricevuto la tua richiesta \u2014 ProofPress`,
           html: confirmHtml,
         });
+        return { success: true };
+      }),
+
+    // Recupera tutti i lead (admin only)
+    getLeads: adminProcedure
+      .input(z.object({
+        source: z.enum(["creator", "editori", "aziende"]).optional(),
+        status: z.enum(["new", "contacted", "closed"]).optional(),
+        limit: z.number().min(1).max(500).default(100),
+        offset: z.number().min(0).default(0),
+      }).optional())
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { leads: [], total: 0 };
+        const { offertaLeads: offertaLeadsTable } = await import('../drizzle/schema');
+        const { desc: descOp, eq: eqOp, and: andOp, count: countOp } = await import('drizzle-orm');
+        
+        const conditions = [];
+        if (input?.source) conditions.push(eqOp(offertaLeadsTable.source, input.source));
+        if (input?.status) conditions.push(eqOp(offertaLeadsTable.status, input.status));
+        
+        const whereClause = conditions.length > 0 ? andOp(...conditions as [any, ...any[]]) : undefined;
+        
+        const [countResult] = await db
+          .select({ cnt: countOp() })
+          .from(offertaLeadsTable)
+          .where(whereClause);
+        
+        const leads = await db
+          .select()
+          .from(offertaLeadsTable)
+          .where(whereClause)
+          .orderBy(descOp(offertaLeadsTable.createdAt))
+          .limit(input?.limit ?? 100)
+          .offset(input?.offset ?? 0);
+        
+        return { leads, total: countResult?.cnt ?? 0 };
+      }),
+
+    // Aggiorna lo stato di un lead (admin only)
+    updateLeadStatus: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        status: z.enum(["new", "contacted", "closed"]),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { offertaLeads: offertaLeadsTable } = await import('../drizzle/schema');
+        const { eq: eqOp } = await import('drizzle-orm');
+        await db.update(offertaLeadsTable)
+          .set({ status: input.status })
+          .where(eqOp(offertaLeadsTable.id, input.id));
         return { success: true };
       }),
   }),

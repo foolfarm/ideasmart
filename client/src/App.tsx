@@ -78,6 +78,7 @@ const EditorialVSI = lazy(() => import("./pages/EditorialVSI"));
 const Dealflow = lazy(() => import("./pages/Dealflow"));
 const SubmitTool = lazy(() => import("./pages/SubmitTool"));
 const AdminToolsFeedback = lazy(() => import("./pages/AdminToolsFeedback"));
+const AdminLeads = lazy(() => import("./pages/AdminLeads"));
 const EbookPrompt = lazy(() => import("./pages/EbookPrompt"));
 const NewsletterFeedback = lazy(() => import("./pages/NewsletterFeedback"));
 
@@ -111,6 +112,7 @@ function Router() {
         <Route path="/admin/system-health" component={AdminSystemHealth} />
         <Route path="/admin/newsletter-content" component={AdminNewsletterContent} />
         <Route path="/admin/tools-feedback" component={AdminToolsFeedback} />
+        <Route path="/admin/leads" component={AdminLeads} />
         <Route path="/privacy" component={Privacy} />
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />

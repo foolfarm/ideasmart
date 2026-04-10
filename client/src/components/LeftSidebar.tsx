@@ -234,42 +234,42 @@ export default function LeftSidebar() {
             </div>
           </div>
 
-          {/* 3 target — crescono per riempire lo spazio */}
+          {/* 3 target — layout compatto con descrizione breve */}
           {[
             {
               icon: "✍️",
               label: "Creator & Giornalisti",
-              desc: "Pubblica con il tuo nome, certificato e verificato. Raggiungi 100k+ lettori senza gestire una redazione.",
-              cta: "Scopri il piano Creator →",
+              desc: "Pubblica certificato, raggiungi 100k+ lettori.",
+              cta: "Scopri →",
               href: "/offerta/creator"
             },
             {
               icon: "📰",
               label: "Testate & Editori",
-              desc: "Una redazione AI che lavora 24/7 al posto tuo. Più contenuti, più lettori, revenue share dal primo giorno.",
-              cta: "Scopri il piano Editori →",
+              desc: "Redazione AI 24/7, revenue share.",
+              cta: "Scopri →",
               href: "/offerta/editori"
             },
             {
               icon: "🏢",
               label: "Aziende & Corporate",
-              desc: "Intelligence certificata e newsroom branded per il tuo settore. Decisioni più veloci, autorevolezza immediata.",
-              cta: "Scopri il piano Aziende →",
+              desc: "Intelligence certificata, newsroom branded.",
+              cta: "Scopri →",
               href: "/offerta/aziende"
             },
           ].map((t, i) => (
-            <Link key={t.href} href={t.href} style={{ flex: 1, display: "flex", minHeight: 0 }}>
+            <Link key={t.href} href={t.href} style={{ display: "flex" }}>
               <div
-                style={{ flex: 1, padding: "10px 13px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s", display: "flex", flexDirection: "column", justifyContent: "center" }}
+                style={{ flex: 1, padding: "12px 13px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s" }}
                 className="hover:bg-[#fff3ee]"
               >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", width: "100%" }}>
-                  <span style={{ fontSize: "18px", lineHeight: 1, flexShrink: 0, marginTop: "1px" }}>{t.icon}</span>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: "13px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3, fontFamily: SF }}>{t.label}</div>
-                    <div style={{ fontSize: "11px", color: "rgba(26,26,26,0.58)", lineHeight: 1.55, fontFamily: SF, marginTop: "4px" }}>{t.desc}</div>
-                    <div style={{ fontSize: "11px", fontWeight: 700, color: "#ff5500", fontFamily: SF, marginTop: "6px" }}>{t.cta}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "9px", width: "100%" }}>
+                  <span style={{ fontSize: "16px", lineHeight: 1, flexShrink: 0 }}>{t.icon}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: "12px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.25, fontFamily: SF }}>{t.label}</div>
+                    <div style={{ fontSize: "10.5px", color: "rgba(26,26,26,0.55)", lineHeight: 1.4, fontFamily: SF, marginTop: "2px" }}>{t.desc}</div>
                   </div>
+                  <div style={{ fontSize: "10.5px", fontWeight: 700, color: "#ff5500", fontFamily: SF, flexShrink: 0, whiteSpace: "nowrap" }}>{t.cta}</div>
                 </div>
               </div>
             </Link>

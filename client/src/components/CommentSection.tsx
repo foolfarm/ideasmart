@@ -1,32 +1,27 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { MessageCircle, Send, User } from "lucide-react";
+import { MessageCircle, Send, ChevronDown, ChevronUp, User } from "lucide-react";
 import { toast } from "sonner";
 
 type Section = "ai" | "startup";
-type ArticleType = "editorial" | "startup" | "reportage" | "analysis";
+type ArticleType = "news" | "editorial" | "startup" | "reportage" | "analysis";
 
 interface CommentSectionProps {
   section: Section;
   articleType: ArticleType;
   articleId: number;
-  accentColor?: string; // es. "cyan" per AI, "purple" per Music
 }
 
-export default function CommentSection({
-  section,
-  articleType,
-  articleId,
-  accentColor = "cyan"
-}: CommentSectionProps) {
+export default function CommentSection({ section, articleType, articleId }: CommentSectionProps) {
+  const [open, setOpen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
-  const [showForm, setShowForm] = useState(false);
 
   const { data: comments = [], refetch } = trpc.comments.getByArticle.useQuery(
     { section, articleType, articleId },
-    { enabled: !!articleId }
+    { enabled: open && !!articleId }
   );
 
   const addComment = trpc.comments.add.useMutation({
@@ -40,7 +35,7 @@ export default function CommentSection({
     },
     onError: (err) => {
       toast.error("Errore: " + err.message);
-    }
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -52,111 +47,126 @@ export default function CommentSection({
       articleId,
       authorName: name.trim(),
       authorEmail: email.trim() || undefined,
-      content: content.trim()
+      content: content.trim(),
     });
   };
 
-  const accent =
-    accentColor === "purple"
-      ? { border: "border-purple-500/30", text: "text-purple-400", bg: "bg-purple-500/10", btn: "bg-purple-600 hover:bg-purple-500" }
-      : { border: "border-cyan-500/30", text: "text-cyan-400", bg: "bg-cyan-500/10", btn: "bg-cyan-600 hover:bg-cyan-500" };
-
   return (
-    <div className={`mt-6 pt-6 border-t ${accent.border}`}>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <MessageCircle className={`w-4 h-4 ${accent.text}`} />
-          <span className={`text-sm font-semibold ${accent.text}`}>
-            {comments.length} {comments.length === 1 ? "commento" : "commenti"}
-          </span>
-        </div>
-        {!showForm && (
-          <button
-            onClick={() => setShowForm(true)}
-            className={`text-xs px-3 py-1.5 rounded-lg ${accent.btn} text-white font-medium transition-colors`}
-          >
-            Lascia un commento
-          </button>
+    <div className="mt-3 border-t border-[#1a1a1a]/8 pt-3">
+      {/* Toggle commenti */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1.5 text-xs text-[#1a1a1a]/50 hover:text-[#ff5500] transition-colors group"
+      >
+        <MessageCircle className="w-3.5 h-3.5" />
+        <span className="font-medium">
+          {open ? "Chiudi commenti" : "Commenta"}
+        </span>
+        {open ? (
+          <ChevronUp className="w-3 h-3" />
+        ) : (
+          <ChevronDown className="w-3 h-3" />
         )}
-      </div>
+      </button>
 
-      {/* Form commento */}
-      {showForm && (
-        <form onSubmit={handleSubmit} className={`mb-5 p-4 rounded-xl border ${accent.border} ${accent.bg}`}>
-          <div className="flex gap-3 mb-3">
-            <div className="flex-1">
-              <input
-                type="text"
-                placeholder="Il tuo nome *"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/30"
-              />
-            </div>
-            <div className="flex-1">
-              <input
-                type="email"
-                placeholder="Email (opzionale)"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/30"
-              />
-            </div>
-          </div>
-          <textarea
-            placeholder="Scrivi il tuo commento..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/30 resize-none mb-3"
-          />
-          <div className="flex gap-2 justify-end">
-            <button
-              type="button"
-              onClick={() => setShowForm(false)}
-              className="text-xs px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 transition-colors"
-            >
-              Annulla
-            </button>
-            <button
-              type="submit"
-              disabled={addComment.isPending}
-              className={`text-xs px-4 py-1.5 rounded-lg ${accent.btn} text-white font-medium transition-colors flex items-center gap-1.5 disabled:opacity-50`}
-            >
-              <Send className="w-3 h-3" />
-              {addComment.isPending ? "Invio..." : "Pubblica"}
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* Lista commenti */}
-      {comments.length > 0 && (
-        <div className="space-y-3">
-          {comments.map((c) => (
-            <div key={c.id} className={`p-3 rounded-xl border ${accent.border} bg-white/3`}>
-              <div className="flex items-center gap-2 mb-1.5">
-                <div className={`w-6 h-6 rounded-full ${accent.bg} flex items-center justify-center`}>
-                  <User className={`w-3 h-3 ${accent.text}`} />
+      {open && (
+        <div className="mt-3 space-y-3">
+          {/* Lista commenti */}
+          {comments.length > 0 && (
+            <div className="space-y-2">
+              {comments.map((c) => (
+                <div
+                  key={c.id}
+                  className="flex gap-2.5 p-3 rounded-lg bg-[#f7f5f0] border border-[#1a1a1a]/6"
+                >
+                  <div className="w-7 h-7 rounded-full bg-[#ff5500]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <User className="w-3.5 h-3.5 text-[#ff5500]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="text-xs font-700 text-[#1a1a1a] font-bold">{c.authorName}</span>
+                      <span className="text-[10px] text-[#1a1a1a]/40">
+                        {new Date(c.createdAt).toLocaleDateString("it-IT", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#1a1a1a]/70 leading-relaxed">{c.content}</p>
+                  </div>
                 </div>
-                <span className="text-sm font-semibold text-white/90">{c.authorName}</span>
-                <span className="text-xs text-white/40 ml-auto">
-                  {new Date(c.createdAt).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}
-                </span>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed pl-8">{c.content}</p>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          )}
 
-      {comments.length === 0 && !showForm && (
-        <p className="text-xs text-white/30 text-center py-2">
-          Sii il primo a commentare questo articolo.
-        </p>
+          {comments.length === 0 && !showForm && (
+            <p className="text-xs text-[#1a1a1a]/35 text-center py-1">
+              Nessun commento ancora. Sii il primo.
+            </p>
+          )}
+
+          {/* Pulsante apri form */}
+          {!showForm && (
+            <button
+              onClick={() => setShowForm(true)}
+              className="text-xs font-semibold text-[#ff5500] hover:underline"
+            >
+              + Lascia un commento
+            </button>
+          )}
+
+          {/* Form commento */}
+          {showForm && (
+            <form
+              onSubmit={handleSubmit}
+              className="p-3 rounded-lg border border-[#1a1a1a]/10 bg-white space-y-2"
+            >
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Il tuo nome *"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="flex-1 text-xs border border-[#1a1a1a]/15 rounded-md px-2.5 py-1.5 bg-[#fafafa] text-[#1a1a1a] placeholder-[#1a1a1a]/35 focus:outline-none focus:border-[#ff5500]/50"
+                />
+                <input
+                  type="email"
+                  placeholder="Email (opzionale)"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 text-xs border border-[#1a1a1a]/15 rounded-md px-2.5 py-1.5 bg-[#fafafa] text-[#1a1a1a] placeholder-[#1a1a1a]/35 focus:outline-none focus:border-[#ff5500]/50"
+                />
+              </div>
+              <textarea
+                placeholder="Scrivi il tuo commento..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+                rows={3}
+                className="w-full text-xs border border-[#1a1a1a]/15 rounded-md px-2.5 py-1.5 bg-[#fafafa] text-[#1a1a1a] placeholder-[#1a1a1a]/35 focus:outline-none focus:border-[#ff5500]/50 resize-none"
+              />
+              <div className="flex gap-2 justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="text-xs px-3 py-1.5 rounded-md border border-[#1a1a1a]/15 text-[#1a1a1a]/60 hover:bg-[#f0f0f0] transition-colors"
+                >
+                  Annulla
+                </button>
+                <button
+                  type="submit"
+                  disabled={addComment.isPending}
+                  className="text-xs px-4 py-1.5 rounded-md bg-[#ff5500] hover:bg-[#e04d00] text-white font-semibold transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  <Send className="w-3 h-3" />
+                  {addComment.isPending ? "Invio..." : "Pubblica"}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       )}
     </div>
   );
