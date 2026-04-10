@@ -10,7 +10,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
-import { sendEmail, buildWeeklyNewsletterHtml, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
+import { sendEmail, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 
 import {
@@ -1070,91 +1070,26 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
       return getNewsletterHistory();
     }),
 
-    // Test send to a single email
+    // Test send to a single email — usa il nuovo template unificato ProofPress
     sendTestEmail: adminProcedure
       .input(z.object({ to: z.string().email() }))
       .mutation(async ({ input }) => {
-        const today = new Date();
-        const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const dateRange = `${weekAgo.toLocaleDateString("it-IT")} - ${today.toLocaleDateString("it-IT")}`;
-
-        // Generate news via LLM
-        const llmResponse = await invokeLLM({
-          messages: [
-            {
-              role: "system",
-              content: `Sei il redattore di Proof Press, una startup italiana di tecnologia e innovazione che analizza le migliori realtà AI per il business. Scrivi in italiano con tono editoriale autorevole. Rispondi SOLO con JSON valido.`,
-            },
-            {
-              role: "user",
-              content: `Genera le 20 notizie più importanti della settimana (${dateRange}) nel mondo dell'AI e delle startup tecnologiche italiane e internazionali. Per ogni notizia includi: titolo, categoria (es. "AI Generativa", "Startup", "Funding", "Prodotto", "Ricerca"), breve descrizione (2-3 frasi), e impatto per il business italiano.
-
-Rispondi con questo JSON:
-{"week":"${dateRange}","news":[{"id":1,"category":"categoria","title":"titolo","description":"descrizione","impact":"impatto"}]}`,
-            },
-          ],
-          response_format: {
-            type: "json_schema",
-            json_schema: {
-              name: "weekly_news",
-              strict: true,
-              schema: {
-                type: "object",
-                properties: {
-                  week: { type: "string" },
-                  news: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        id: { type: "integer" },
-                        category: { type: "string" },
-                        title: { type: "string" },
-                        description: { type: "string" },
-                        impact: { type: "string" },
-                      },
-                      required: ["id", "category", "title", "description", "impact"],
-                      additionalProperties: false,
-                    },
-                  },
-                },
-                required: ["week", "news"],
-                additionalProperties: false,
-              },
-            },
-          },
-        });
-
-        const rawContent = llmResponse.choices[0]?.message?.content;
-        const content = typeof rawContent === "string" ? rawContent : null;
-        if (!content) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Errore generazione notizie dall'AI" });
-
-        const newsData = JSON.parse(content) as {
-          week: string;
-          news: Array<{ id: number; category: string; title: string; description: string; impact: string }>;
-        };
-
-        const htmlContent = buildWeeklyNewsletterHtml(newsData);
-        const subject = `[TEST] Proof Press Weekly — Top 20 AI News | ${newsData.week}`;
-
-        const result = await sendEmail({
-          to: input.to,
-          subject,
-          html: htmlContent,
-        });
-
+        // [LEGACY RIMOSSO] Il vecchio template IDEASMART/buildWeeklyNewsletterHtml è stato eliminato.
+        // Usa sendUnifiedPreview dalla newsletter unificata ProofPress.
+        const { sendUnifiedPreview } = await import("./unifiedNewsletter");
+        const result = await sendUnifiedPreview();
         if (!result.success) {
-          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio email" });
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio email di test" });
         }
-
         return {
           success: true,
           to: input.to,
-          subject,
-          newsCount: newsData.news.length,
-          week: newsData.week,
+          subject: result.subject ?? "ProofPress Daily — Preview",
+          newsCount: 0,
+          week: new Date().toLocaleDateString("it-IT"),
         };
       }),
+
 
     // Aggiornamento manuale delle news AI
     refreshNews: adminProcedure.mutation(async () => {
