@@ -2992,3 +2992,11 @@
 
 - [ ] Auto-remediation Morning Report: se sezione ha 0 notizie, forza refresh automatico dopo invio report
 - [ ] Aggiornamento manuale immediato canali mancanti (Startup News, AI News, DEALROOM)
+
+## Nuovi task (10 Apr 2026 — Hero e Offerta)
+
+- [ ] Aggiornare testo hero: dividere descrizione su due righe (a capo prima di "Per aiutarti")
+- [ ] Creare pagina /offerta/creator (OffertaCreator.tsx)
+- [ ] Creare pagina /offerta/editori (OffertaEditori.tsx)
+- [ ] Creare pagina /offerta/aziende (OffertaAziende.tsx)
+- [ ] Aggiornare menu: voce "Offerta" con dropdown Creator / Testate & Editori / Aziende & Corporate

@@ -146,7 +146,7 @@ export async function sendVerificationEmail({
           <tr>
             <td style="padding:20px 40px;border-top:1px solid rgba(26,26,26,0.08);background:#faf8f3;">
               <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(26,26,26,0.35);">
-                © ${new Date().getFullYear()} Proof Press · AI · Startup · Venture Capital · <a href="https://ideasmart.biz/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
+                © ${new Date().getFullYear()} Proof Press · AI · Startup · Venture Capital · <a href="https://proofpress.ai/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
               </p>
             </td>
           </tr>
@@ -239,7 +239,7 @@ export async function sendWelcomeEmail({
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background:#1a1a1a;padding:14px 28px;">
-                    <a href="https://ideasmart.biz" style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff;text-decoration:none;">
+                    <a href="https://proofpress.ai" style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff;text-decoration:none;">
                       Leggi le ultime notizie &rarr;
                     </a>
                   </td>
@@ -247,7 +247,7 @@ export async function sendWelcomeEmail({
               </table>
               <p style="margin:20px 0 0;font-size:12px;line-height:1.6;color:rgba(26,26,26,0.5);">
                 Riceverai la nostra newsletter ogni lunedi, mercoledi e venerdi con le notizie piu importanti.<br>
-                Puoi gestire le tue preferenze in qualsiasi momento dalla <a href="https://ideasmart.biz/account" style="color:#1a1a1a;">pagina account</a>.
+                Puoi gestire le tue preferenze in qualsiasi momento dalla <a href="https://proofpress.ai/account" style="color:#1a1a1a;">pagina account</a>.
               </p>
             </td>
           </tr>
@@ -255,7 +255,7 @@ export async function sendWelcomeEmail({
           <tr>
             <td style="padding:20px 40px;border-top:1px solid rgba(26,26,26,0.08);background:#faf8f3;">
               <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(26,26,26,0.35);">
-                &copy; ${year} Proof Press &middot; AI &middot; Startup &middot; Venture Capital &middot; <a href="https://ideasmart.biz/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
+                &copy; ${year} Proof Press &middot; AI &middot; Startup &middot; Venture Capital &middot; <a href="https://proofpress.ai/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
               </p>
             </td>
           </tr>
@@ -270,6 +270,6 @@ export async function sendWelcomeEmail({
     to,
     subject: `Benvenuto su Proof Press, ${username} — sei dentro`,
     html,
-    text: `Ciao ${username},\n\nIl tuo account Proof Press e attivo!\n\nDa oggi hai accesso a:\n- AI NEWS: ultime notizie su intelligenza artificiale, LLM e agenti AI\n- STARTUP NEWS: funding, founder stories ed ecosistema startup\n- DEALROOM: round, seed, Series A/B e investimenti VC\n- RICERCHE: analisi approfondite su trend e mercati\n\nLeggi le ultime notizie: https://ideasmart.biz\n\nRiceverai la newsletter ogni lunedi, mercoledi e venerdi.\nGestisci le preferenze: https://ideasmart.biz/account\n\n— Proof Press`,
+    text: `Ciao ${username},\n\nIl tuo account Proof Press e attivo!\n\nDa oggi hai accesso a:\n- AI NEWS: ultime notizie su intelligenza artificiale, LLM e agenti AI\n- STARTUP NEWS: funding, founder stories ed ecosistema startup\n- DEALROOM: round, seed, Series A/B e investimenti VC\n- RICERCHE: analisi approfondite su trend e mercati\n\nLeggi le ultime notizie: https://proofpress.ai\n\nRiceverai la newsletter ogni lunedi, mercoledi e venerdi.\nGestisci le preferenze: https://proofpress.ai/account\n\n— Proof Press`,
   });
 }

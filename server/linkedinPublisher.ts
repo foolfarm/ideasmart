@@ -46,7 +46,7 @@ function computePostHash(text: string): string {
   return createHash("sha256").update(normalized).digest("hex").slice(0, 16);
 }
 
-const SITE_BASE_URL = "https://ideasmart.biz";
+const SITE_BASE_URL = "https://proofpress.ai";
 
 // ── In-memory cache immagini usate oggi (per evitare duplicati tra slot) ────
 const todayImageCache: Set<string> = new Set();
@@ -255,7 +255,7 @@ ${marketData.keyFinding}`;
     slotNote = `Questo è il POST DEL MATTINO (10:00) — Sezione AI News.
 Tono: analitico e strategico. Il tuo pubblico apre LinkedIn a colazione e vuole una lettura che dia loro un vantaggio competitivo per la giornata.
 Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business.
-Includi sempre il link a ideasmart.biz/ai.`;
+Includi sempre il link a proofpress.ai/ai.`;
   } else if (slot === "ai-research-morning") {
     slotNote = `Questo è il 2° EDITORIALE AI (12:30) — basato su ricerche di mercato di alto livello sull'AI.
 Tono: analitico e autorevole. Il tuo pubblico è a pranzo e vuole una lettura strategica profonda sull'AI.
@@ -266,7 +266,7 @@ Includi sempre il link a proofpress.ai.`;
     slotNote = `Questo è il POST DEL POMERIGGIO (14:30) — Sezione Startup News.
 Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire cosa si muove nell'ecosistema startup.
 Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
-Includi sempre il link a ideasmart.biz/startup.`;
+Includi sempre il link a proofpress.ai/startup.`;
   } else if (slot === "research") {
     slotNote = `Questo è il POST SULLE RICERCHE (14:30) — Sezione Proof Press Research.
 Tono: autorevole e data-driven. Il tuo pubblico vuole insight basati su ricerche e dati concreti.
@@ -283,13 +283,13 @@ NON ripetere la stessa ricerca del post delle 14:30: scegli un angolo o una rice
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
 Focus: analizza il deal/round di investimento, il contesto competitivo, le implicazioni per l'ecosistema.
-Includi sempre il link a ideasmart.biz/dealroom.
+Includi sempre il link a proofpress.ai/dealroom.
 Sii specifico su cifre, investitori, valuation se disponibili.`;
   } else {
     // Legacy slots
     slotNote = `Post LinkedIn — Sezione variabile.
 Tono: analitico e approfondito.
-Includi sempre il link a ideasmart.biz.`;
+Includi sempre il link a proofpress.ai.`;
   }
 
   const publishDate = new Date().toLocaleDateString("it-IT", {
@@ -410,7 +410,7 @@ async function uploadImageToLinkedIn(
     const imgResponse = await fetch(imageUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-        "Referer": "https://ideasmart.biz"
+        "Referer": "https://proofpress.ai"
       }
     });
     if (!imgResponse.ok) {
@@ -594,8 +594,8 @@ async function generateLinkedInPostText(
         console.warn(`[LinkedIn] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
         const cutPoint = text.lastIndexOf('\n', 2950);
         text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
-        if (!text.includes('ideasmart.biz')) {
-          text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.biz';
+        if (!text.includes('proofpress.ai')) {
+          text += '\n\nAndrea Cinelli | Tech Expert | proofpress.ai';
         }
       }
       console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars)`);

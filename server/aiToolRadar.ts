@@ -276,10 +276,10 @@ Link: URL diretto
 
 Trend: 1 frase su cosa emerge (max 2 righe)
 
-Segui \u2192 ideasmart.biz
+Segui \u2192 proofpress.ai
 #AI #AITools #Proof Press
 
-Andrea Cinelli | Tech Expert | ideasmart.biz
+Andrea Cinelli | Tech Expert | proofpress.ai
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
 
@@ -298,8 +298,8 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
     console.warn(`[AIToolRadar] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
     const cutPoint = text.lastIndexOf('\n', 2950);
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
-    if (!text.includes('ideasmart.biz')) {
-      text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.biz';
+    if (!text.includes('proofpress.ai')) {
+      text += '\n\nAndrea Cinelli | Tech Expert | proofpress.ai';
     }
   }
   return text;

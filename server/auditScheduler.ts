@@ -151,7 +151,7 @@ function buildAuditReportEmail(result: typeof lastRunResult, anomalies: Awaited<
 
     <!-- Footer -->
     <div style="padding: 16px 32px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center;">
-      <a href="https://www.ideasmart.biz/admin/audit" style="display: inline-block; padding: 10px 24px; background: #0a0f1e; color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: 700;">
+      <a href="https://proofpress.ai/admin/audit" style="display: inline-block; padding: 10px 24px; background: #0a0f1e; color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: 700;">
         Apri Dashboard Audit →
       </a>
       <div style="margin-top: 12px; font-size: 11px; color: #9ca3af;">

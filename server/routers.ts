@@ -2104,7 +2104,7 @@ Rispondi con questo JSON:
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta per <strong>${input.company}</strong>. Ti risponderemo entro <strong>24 ore</strong> con una proposta personalizzata.</p>
               <a href="https://proofpress.ai/advertise" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Esplora i formati →</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@proofpress.ai · <a href="https://proofpress.ai" style="color: #00e5c8;">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@proofpress.ai · <a href="https://proofpress.ai" style="color: #00e5c8;">proofpress.ai</a></p>
           </div>
         `;
 
@@ -2164,7 +2164,7 @@ Rispondi con questo JSON:
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo per Proof Press Business. Ti contatteremo entro <strong>24 ore</strong> per schedulare una call gratuita di 30 minuti.</p>
               <a href="https://proofpress.ai/business" style="display: inline-block; background: #ff5500; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri Proof Press Business →</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@proofpress.ai · <a href="https://proofpress.ai" style="color: #00e5c8;">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press · info@proofpress.ai · <a href="https://proofpress.ai" style="color: #00e5c8;">proofpress.ai</a></p>
           </div>
         `;
         await sendEmail({ to: input.email, subject: `La tua demo Proof Press Business è confermata — ti ricontatteremo presto`, html: htmlConfirm });

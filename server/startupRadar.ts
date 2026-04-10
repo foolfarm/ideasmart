@@ -287,10 +287,10 @@ Link: URL diretto
 
 Trend: 1 insight su cosa emerge (max 2 righe)
 
-Segui \u2192 ideasmart.biz/startup
+Segui \u2192 proofpress.ai/startup
 #Startup #AI #VentureCapital #Proof Press
 
-Andrea Cinelli | Tech Expert | ideasmart.biz
+Andrea Cinelli | Tech Expert | proofpress.ai
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
 
@@ -311,8 +311,8 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
     const cutPoint = text.lastIndexOf('\n', 2950);
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
     // Aggiungi firma se mancante
-    if (!text.includes('ideasmart.biz')) {
-      text += '\n\nAndrea Cinelli | Tech Expert | ideasmart.biz';
+    if (!text.includes('proofpress.ai')) {
+      text += '\n\nAndrea Cinelli | Tech Expert | proofpress.ai';
     }
   }
   return text;
