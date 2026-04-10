@@ -54,6 +54,7 @@ interface NewsItem {
   category: string;
   sourceName?: string | null;
   sourceUrl?: string | null;
+  verifyHash?: string | null;
 }
 
 interface BreakingItem {
@@ -424,33 +425,43 @@ async function collectAllContent() {
   );
 
   return {
-    aiNews: aiNews.map((n: any) => ({
-      id: n.id ?? null,
-      section: "ai",
-      title: n.title,
-      summary: n.summary,
-      category: n.category,
-      sourceName: n.sourceName ?? null,
-      sourceUrl: n.sourceUrl ?? null,
-    })) as NewsItem[],
-    startupNews: startupNews.map((n: any) => ({
-      id: n.id ?? null,
-      section: "startup",
-      title: n.title,
-      summary: n.summary,
-      category: n.category,
-      sourceName: n.sourceName ?? null,
-      sourceUrl: n.sourceUrl ?? null,
-    })) as NewsItem[],
-    dealroomNews: dealroomNews.map((n: any) => ({
-      id: n.id ?? null,
-      section: "dealroom",
-      title: n.title,
-      summary: n.summary,
-      category: n.category,
-      sourceName: n.sourceName ?? null,
-      sourceUrl: n.sourceUrl ?? null,
-    })) as NewsItem[],
+    // REGOLA: includiamo solo notizie con ID numerico valido (esistenti sul sito)
+    aiNews: aiNews
+      .filter((n: any) => n.id != null && typeof n.id === 'number')
+      .map((n: any) => ({
+        id: n.id,
+        section: "ai",
+        title: n.title,
+        summary: n.summary,
+        category: n.category,
+        sourceName: n.sourceName ?? null,
+        sourceUrl: n.sourceUrl ?? null,
+        verifyHash: n.verifyHash ?? null,
+      })) as NewsItem[],
+    startupNews: startupNews
+      .filter((n: any) => n.id != null && typeof n.id === 'number')
+      .map((n: any) => ({
+        id: n.id,
+        section: "startup",
+        title: n.title,
+        summary: n.summary,
+        category: n.category,
+        sourceName: n.sourceName ?? null,
+        sourceUrl: n.sourceUrl ?? null,
+        verifyHash: n.verifyHash ?? null,
+      })) as NewsItem[],
+    dealroomNews: dealroomNews
+      .filter((n: any) => n.id != null && typeof n.id === 'number')
+      .map((n: any) => ({
+        id: n.id,
+        section: "dealroom",
+        title: n.title,
+        summary: n.summary,
+        category: n.category,
+        sourceName: n.sourceName ?? null,
+        sourceUrl: n.sourceUrl ?? null,
+        verifyHash: n.verifyHash ?? null,
+      })) as NewsItem[],
     breakingItems: breakingItems.map((b: any) => ({
       id: b.id,
       title: b.title,
@@ -659,10 +670,15 @@ function buildNewsletterHtmlV2(opts: {
   // ═══════════════════════════════════════════════════════════════
   // BLOCK C: HERO — Notizia di Apertura
   // ═══════════════════════════════════════════════════════════════
-  const heroItem = breakingItems[0] || (aiNews[0] ? { ...aiNews[0], id: String(aiNews[0].id) } : null);
+  // Hero: preferisce breaking news, altrimenti prima notizia AI (solo con ID valido)
+  const heroAiItem = aiNews[0] && aiNews[0].id ? aiNews[0] : null;
+  const heroItem = breakingItems[0] || (heroAiItem ? { ...heroAiItem, id: String(heroAiItem.id) } : null);
   const heroImgUrl = heroImageUrl || pexelsUrl(FALLBACK_PEXELS.ai, 640, 300);
-  // Generate a short hash for ProofPress Verify badge
-  const verifyHash = heroItem ? `PP-${Math.abs(heroItem.title.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % 99999).toString().padStart(5, "0")}` : "PP-00000";
+  // ProofPress Verify badge: usa l'hash reale SHA-256 dal DB (primi 16 char), oppure genera uno sintetico
+  const heroVerifyHash = heroItem && 'verifyHash' in heroItem && (heroItem as any).verifyHash
+    ? `PP-${((heroItem as any).verifyHash as string).slice(0, 16).toUpperCase()}`
+    : heroItem ? `PP-${Math.abs(heroItem.title.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % 99999).toString().padStart(5, "0")}` : "PP-00000";
+  const verifyHash = heroVerifyHash;
   const heroHtml = heroItem ? `
     <tr>
       <td style="padding:0 20px;">
@@ -762,7 +778,12 @@ function buildNewsletterHtmlV2(opts: {
                 <a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}" style="color:${BLACK};text-decoration:none;">${item.title}</a>
               </div>
               <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${item.summary}</div>
-              <a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}_cta" style="font-size:11px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">LEGGI SUBITO →</a>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td><a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}_cta" style="font-size:11px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">LEGGI SUBITO →</a></td>
+                  <td style="text-align:right;"><span style="font-size:9px;color:${MUTED};font-family:${F_SANS};letter-spacing:0.04em;">✓ PROOFPRESS VERIFY</span></td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
@@ -934,32 +955,39 @@ function buildNewsletterHtmlV2(opts: {
   // BLOCK J: QUICK LINKS — "Anche oggi su Proof Press"
   // ═══════════════════════════════════════════════════════════════
   let quickLinksHtml = "";
-  const quickItems: { emoji: string; label: string; title: string; url: string }[] = [];
+  const quickItems: { emoji: string; label: string; title: string; url: string; verifyHash?: string | null }[] = [];
   for (const ch of quickLinkChannels) {
     const item = getBestItemForChannel(ch.key);
     if (item) {
       quickItems.push({ emoji: ch.emoji, label: ch.label, title: item.title, url: item.url });
     }
   }
+  // Solo notizie AI con ID valido (esistenti sul sito)
   for (const n of aiNews.slice(1, 4)) {
     if (quickItems.length >= 6) break;
+    if (!n.id) continue; // salta notizie senza ID
     quickItems.push({
       emoji: "🤖",
       label: "AI NEWS",
       title: n.title,
-      url: n.id ? `${BASE_URL}/ai/news/${n.id}` : `${BASE_URL}/ai`,
+      url: `${BASE_URL}/ai/news/${n.id}`,
+      verifyHash: n.verifyHash ?? null,
     });
   }
   if (quickItems.length > 0) {
-    const rows = quickItems.slice(0, 6).map((q) => `
+    const rows = quickItems.slice(0, 6).map((q) => {
+      const shortHash = q.verifyHash ? q.verifyHash.slice(0, 16).toUpperCase() : null;
+      return `
       <tr>
         <td style="padding:8px 0;border-bottom:1px solid ${BORDER};">
           <a href="${q.url}?utm_source=newsletter&utm_medium=email&utm_campaign=quicklink" style="text-decoration:none;display:block;">
             <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">${q.emoji} ${q.label}</span>
             <span style="font-size:13px;color:${BLACK};font-family:${F_SANS};font-weight:500;margin-left:6px;">${q.title}</span>
+            ${shortHash ? `<div style="font-size:9px;color:${MUTED};font-family:${F_SANS};margin-top:3px;letter-spacing:0.04em;">✓ PROOFPRESS VERIFY &nbsp;·&nbsp; PP-${shortHash}</div>` : ""}
           </a>
         </td>
-      </tr>`).join("");
+      </tr>`;
+    }).join("");
     quickLinksHtml = `
     <tr>
       <td style="padding:0 20px;">
