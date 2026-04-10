@@ -379,6 +379,7 @@ export default function Home() {
   const { data: researchReports } = trpc.news.getResearchReports.useQuery({ limit: 6 }, queryOpts);
   const { data: researchOfDay } = trpc.news.getResearchOfDay.useQuery(undefined, queryOpts);
   const { data: upcomingEvents } = trpc.events.getUpcoming.useQuery({ limit: 6, category: "all" }, queryOpts);
+  const { data: authorPosts } = trpc.news.getAuthorPosts.useQuery({ limit: 5 }, queryOpts);
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -1045,7 +1046,67 @@ export default function Home() {
                     </div>
                   )}
 
-
+                  {/* Post di Andrea Cinelli */}
+                  {authorPosts && authorPosts.length > 0 && (
+                    <div className="mt-6">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
+                          style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          Post di Andrea Cinelli
+                        </span>
+                        <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
+                      </div>
+                      <div className="border-t-[3px] mb-3" style={{ borderColor: "#1a1a1a" }} />
+                      <div className="space-y-4">
+                        {authorPosts.map((post) => {
+                          const firstLine = (post.title || post.postText.split('\n')[0]).replace(/[*_#]/g, '').trim();
+                          const preview = post.postText.replace(/[*_#]/g, '').replace(/\n+/g, ' ').trim();
+                          const postDate = new Date(post.createdAt).toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
+                          return (
+                            <article key={post.id} className="pb-3 border-b border-[#1a1a1a]/10 last:border-0">
+                              <div className="flex items-center gap-1.5 mb-1.5">
+                                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                                  style={{ background: "#0077b5" }}>
+                                  <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                  </svg>
+                                </div>
+                                <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "#0077b5" }}>Andrea Cinelli</span>
+                                <span className="text-[9px] text-[#1a1a1a]/35 ml-auto">{postDate}</span>
+                              </div>
+                              <h4 className="text-[13px] font-bold leading-snug text-[#1a1a1a] mb-1"
+                                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                                {firstLine.length > 90 ? firstLine.slice(0, 90) + '\u2026' : firstLine}
+                              </h4>
+                              <p className="text-[11px] text-[#1a1a1a]/55 line-clamp-2"
+                                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.5 }}>
+                                {preview.length > 140 ? preview.slice(0, 140) + '\u2026' : preview}
+                              </p>
+                              {post.linkedinUrl ? (
+                                <a href={post.linkedinUrl} target="_blank" rel="noopener noreferrer"
+                                  className="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wider"
+                                  style={{ color: "#0077b5" }}>
+                                  Leggi su LinkedIn \u2192
+                                </a>
+                              ) : (
+                                <a href="/andrea-cinelli"
+                                  className="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wider"
+                                  style={{ color: "#0077b5" }}>
+                                  Leggi \u2192
+                                </a>
+                              )}
+                            </article>
+                          );
+                        })}
+                      </div>
+                      <a href="/andrea-cinelli"
+                        className="block mt-3 text-[10px] font-bold uppercase tracking-widest text-center"
+                        style={{ color: "#1a1a1a", opacity: 0.45 }}>
+                        Tutti i post \u2192
+                      </a>
+                    </div>
+                  )}
 
                 </div>
               </div>
