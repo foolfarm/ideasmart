@@ -316,6 +316,7 @@ export const appRouter = router({
               publishedAt: item.publishedAt ?? '',
               imageUrl: item.imageUrl ?? null,
               section: item.section,
+              verifyHash: item.verifyHash ?? null,
             };
           },
           TTL_EDITORIAL_MS // 20 min: articolo stabile
