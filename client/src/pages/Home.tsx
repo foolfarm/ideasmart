@@ -460,7 +460,7 @@ export default function Home() {
             {/* Sopra il titolo: descrizione full-width su una sola riga */}
             <p className="text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
-              ProofPress Magazine ogni giorno analizza e verifica oltre 4.000 fonti per offrirti solo contenuti rilevanti, affidabili e pronti all'uso.
+              Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
 
             {/* Brand centrale con manchette Tradedoubler ai lati */}

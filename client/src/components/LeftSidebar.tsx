@@ -212,75 +212,42 @@ export default function LeftSidebar() {
         })}
       </nav>
 
-      {/* Banner ProofPress — 3 target */}
+      {/* Banner ProofPress — compatto, chiaro, selling */}
       <div className="mx-3 mb-4">
-        <div
-          style={{
-            background: "#ffffff",
-            borderRadius: "12px",
-            overflow: "hidden",
-            border: "1px solid rgba(26,26,26,0.12)",
-            boxShadow: "0 2px 12px rgba(26,26,26,0.06)",
-          }}
-        >
-          {/* Header */}
-          <div style={{ background: "#ff5500", padding: "7px 12px" }}>
-            <div style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#fff", fontFamily: "system-ui, sans-serif" }}>
-              ProofPress — Sei...
-            </div>
+        <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(26,26,26,0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+
+          {/* Header arancione compatto */}
+          <div style={{ background: "#ff5500", padding: "7px 11px" }}>
+            <div style={{ fontSize: "9px", fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase", color: "#fff", fontFamily: "system-ui, sans-serif" }}>ProofPress — Per il tuo business</div>
           </div>
 
-          {/* 3 target cards */}
+          {/* 3 target compatti */}
           {[
-            {
-              icon: "✍️",
-              title: "Un Creator o Giornalista?",
-              desc: "Pubblica con notizie certificate e raggiungi 100k+ lettori.",
-              href: "/offerta/creator",
-              cta: "Scopri →",
-            },
-            {
-              icon: "📰",
-              title: "Una Testata o Editore?",
-              desc: "Redazione AI autonoma. Notizie certificate 24/7.",
-              href: "/offerta/editori",
-              cta: "Scopri →",
-            },
-            {
-              icon: "🏢",
-              title: "Un'Azienda?",
-              desc: "Thought leadership e content marketing certificato.",
-              href: "/offerta/aziende",
-              cta: "Scopri →",
-            },
+            { icon: "✍️", label: "Creator & Giornalisti", desc: "Pubblica certificato, raggiungi 100k+ lettori.", href: "/offerta/creator" },
+            { icon: "📰", label: "Testate & Editori", desc: "Redazione AI autonoma 24/7, revenue share.", href: "/offerta/editori" },
+            { icon: "🏢", label: "Aziende & Corporate", desc: "Intelligence certificata, newsroom branded.", href: "/offerta/aziende" },
           ].map((t, i) => (
             <Link key={t.href} href={t.href}>
               <div
-                style={{
-                  padding: "10px 12px",
-                  borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined,
-                  cursor: "pointer",
-                  transition: "background 0.15s",
-                }}
+                style={{ padding: "8px 11px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s" }}
                 className="hover:bg-[#fff3ee]"
               >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-                  <span style={{ fontSize: "16px", lineHeight: 1, marginTop: "1px", flexShrink: 0 }}>{t.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3, marginBottom: "3px", fontFamily: "system-ui, sans-serif" }}>
-                      {t.title}
-                    </div>
-                    <div style={{ fontSize: "10px", color: "rgba(26,26,26,0.55)", lineHeight: 1.4, marginBottom: "5px", fontFamily: "system-ui, sans-serif" }}>
-                      {t.desc}
-                    </div>
-                    <div style={{ fontSize: "10px", fontWeight: 700, color: "#ff5500", fontFamily: "system-ui, sans-serif" }}>
-                      {t.cta}
-                    </div>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "7px" }}>
+                  <span style={{ fontSize: "13px", lineHeight: 1, marginTop: "1px", flexShrink: 0 }}>{t.icon}</span>
+                  <div>
+                    <div style={{ fontSize: "10px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3, fontFamily: "system-ui, sans-serif" }}>{t.label}</div>
+                    <div style={{ fontSize: "9px", color: "rgba(26,26,26,0.5)", lineHeight: 1.35, fontFamily: "system-ui, sans-serif", marginTop: "1px" }}>{t.desc}</div>
                   </div>
                 </div>
               </div>
             </Link>
           ))}
+
+          {/* Footer */}
+          <div style={{ padding: "6px 11px", background: "#fff8f5", borderTop: "1px solid rgba(255,85,0,0.12)" }}>
+            <div style={{ fontSize: "9px", fontWeight: 700, color: "#ff5500", fontFamily: "system-ui, sans-serif", textAlign: "center" }}>Scopri tutti i piani →</div>
+          </div>
+
         </div>
       </div>
 
