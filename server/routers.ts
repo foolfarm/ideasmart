@@ -2457,7 +2457,7 @@ Rispondi con questo JSON:
         <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
           <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;text-align:center;">
             <p style="color:#fff;font-size:22px;font-weight:900;margin:0;letter-spacing:-0.02em;">ProofPress</p>
-            <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">La prima piattaforma di giornalismo agentico certificato per innovatori, creator, aziende ed editori</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">Per chi vuole capire l'innovazione prima degli altri</p>
           </div>
           <div style="background:#fff;border-radius:8px;padding:32px;border:1px solid rgba(26,26,26,0.1);text-align:center;">
             <div style="font-size:40px;margin-bottom:16px;">✓</div>

@@ -170,11 +170,10 @@ export default function SharedPageHeader() {
                 ProofPress
               </h1>
             </Link>
-            {/* Sottotitolo: riga 1 più grande, riga 2 più piccola */}
+            {/* Sottotitolo */}
             <div className="mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              <div style={{ fontSize: "13px", lineHeight: 1.4 }}>La prima piattaforma di giornalismo agentico certificato</div>
-              <div style={{ fontSize: "10px", lineHeight: 1.4, marginTop: "2px" }}>per innovatori, creator, aziende ed editori</div>
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
+              Per chi vuole capire l’innovazione prima degli altri
             </div>
           </div>
 
