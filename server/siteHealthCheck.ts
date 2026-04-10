@@ -50,9 +50,39 @@ async function fetchWithTimeout(url: string, timeoutMs = FETCH_TIMEOUT): Promise
       "Accept": "text/html,application/json,*/*",
     },
   });
+}// ── Helper fetch con retry e backoff esponenziale ─────────────────────────────
+// Evita falsi positivi 503/502/504 durante il warm-up del server (es. alle 08:00)
+async function fetchWithRetry(
+  url: string,
+  maxRetries = 3,
+  baseDelayMs = 5000,
+  timeoutMs = FETCH_TIMEOUT
+): Promise<Response> {
+  let lastErr: unknown;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetchWithTimeout(url, timeoutMs);
+      // Riprova solo su 503/502/504 (server temporaneamente non disponibile)
+      if ((res.status === 503 || res.status === 502 || res.status === 504) && attempt < maxRetries) {
+        const delay = baseDelayMs * Math.pow(2, attempt); // 5s, 10s, 20s
+        console.log(`[HealthCheck] ⚠️ ${url} → HTTP ${res.status} (tentativo ${attempt + 1}/${maxRetries + 1}) — riprovo tra ${delay / 1000}s...`);
+        await new Promise(r => setTimeout(r, delay));
+        continue;
+      }
+      return res;
+    } catch (err) {
+      lastErr = err;
+      if (attempt < maxRetries) {
+        const delay = baseDelayMs * Math.pow(2, attempt);
+        console.log(`[HealthCheck] ⚠️ ${url} → errore rete (tentativo ${attempt + 1}/${maxRetries + 1}) — riprovo tra ${delay / 1000}s...`);
+        await new Promise(r => setTimeout(r, delay));
+      }
+    }
+  }
+  throw lastErr;
 }
 
-// ── Check 1: Homepage raggiungibile ──────────────────────────────────────────
+// ── Check 1: Homepage raggiungibile ──────────────────────────────────────────────
 
 async function checkHomepage(): Promise<CheckResult> {
   const start = Date.now();
@@ -83,7 +113,7 @@ async function checkHomeDataAPI(): Promise<CheckResult> {
   const start = Date.now();
   const url = `${PROD_URL}/api/trpc/news.getHomeData`;
   try {
-    const res = await fetchWithTimeout(url);
+    const res = await fetchWithRetry(url); // usa retry per evitare falsi positivi 503
     const data = await res.json();
     
     if (res.status !== 200) {
@@ -130,7 +160,7 @@ async function checkBreakingNewsAPI(): Promise<CheckResult> {
   const start = Date.now();
   const url = `${PROD_URL}/api/trpc/news.getBreakingNews`;
   try {
-    const res = await fetchWithTimeout(url);
+    const res = await fetchWithRetry(url); // usa retry per evitare falsi positivi 503
     if (res.status !== 200) {
       return { name: "API Breaking News", ok: false, status: res.status, detail: `HTTP ${res.status}`, responseTimeMs: Date.now() - start };
     }

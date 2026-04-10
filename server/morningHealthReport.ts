@@ -291,6 +291,74 @@ export async function runMorningHealthReport(): Promise<void> {
   } else {
     console.log("[MorningReport] ✅ Tutte le sezioni OK — nessuna remediation necessaria");
   }
+
+  // ── 8. AUTO-REMEDIATION EDITORIALE: rigenera con LLM se manca l'editoriale del giorno ──
+  await remediateEditorial(todayLabel);
+}
+
+async function remediateEditorial(todayLabel: string): Promise<void> {
+  try {
+    const { getTodayEditorial, saveEditorial, getTodayStartup, saveStartupOfDay } = await import("./db");
+    const { generateDailyEditorial, generateStartupOfDay } = await import("./dailyContentScheduler");
+    const { generateImage } = await import("./_core/imageGeneration");
+
+    // Controlla editoriale AI
+    const existingEditorial = await getTodayEditorial(todayLabel);
+    if (!existingEditorial) {
+      console.log("[MorningReport] 📝 Editoriale AI mancante — avvio rigenerazione LLM...");
+      try {
+        const editorial = await generateDailyEditorial();
+        let imageUrl: string | undefined;
+        try {
+          const imgResult = await generateImage({ prompt: `Editorial illustration for: ${editorial.title}. Professional, modern, tech magazine style, dark background.` });
+          imageUrl = imgResult.url;
+        } catch { /* immagine opzionale */ }
+        await saveEditorial({ ...editorial, imageUrl });
+        console.log("[MorningReport] ✅ Editoriale AI rigenerato:", editorial.title);
+        await sendEmail({
+          to: REPORT_EMAIL,
+          subject: `📝 Auto-Remediation Editoriale AI — Rigenerato con successo`,
+          html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;color:#e2e8f0;padding:24px;border-radius:12px;"><h2 style="color:#00e5c8;">📝 Editoriale AI Rigenerato</h2><p><strong>Titolo:</strong> ${editorial.title}</p><p><strong>Sottotitolo:</strong> ${editorial.subtitle}</p><p style="color:#94a3b8;font-size:12px;">Rigenerato automaticamente alle ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} CET</p></div>`
+        });
+      } catch (err) {
+        console.error("[MorningReport] ❌ Rigenerazione editoriale AI fallita:", err);
+        await sendEmail({
+          to: REPORT_EMAIL,
+          subject: `❌ Auto-Remediation Editoriale AI FALLITA`,
+          html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;color:#e2e8f0;padding:24px;border-radius:12px;"><h2 style="color:#ef4444;">❌ Rigenerazione Editoriale AI Fallita</h2><p>Errore: ${err instanceof Error ? err.message : String(err)}</p><p style="color:#94a3b8;font-size:12px;">Richiede intervento manuale dalla dashboard Admin.</p></div>`
+        });
+      }
+    } else {
+      console.log("[MorningReport] ✅ Editoriale AI già presente — nessuna rigenerazione necessaria");
+    }
+
+    // Controlla Startup del Giorno
+    const existingStartup = await getTodayStartup(todayLabel);
+    if (!existingStartup) {
+      console.log("[MorningReport] 🚀 Startup del Giorno mancante — avvio rigenerazione LLM...");
+      try {
+        const startup = await generateStartupOfDay();
+        let imageUrl: string | undefined;
+        try {
+          const imgResult = await generateImage({ prompt: `Startup company illustration for: ${startup.name}. Professional, modern, tech magazine style.` });
+          imageUrl = imgResult.url;
+        } catch { /* immagine opzionale */ }
+        await saveStartupOfDay({ ...startup, imageUrl });
+        console.log("[MorningReport] ✅ Startup del Giorno rigenerata:", startup.name);
+        await sendEmail({
+          to: REPORT_EMAIL,
+          subject: `🚀 Auto-Remediation Startup del Giorno — Rigenerata con successo`,
+          html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;color:#e2e8f0;padding:24px;border-radius:12px;"><h2 style="color:#00e5c8;">🚀 Startup del Giorno Rigenerata</h2><p><strong>Nome:</strong> ${startup.name}</p><p style="color:#94a3b8;font-size:12px;">Rigenerata automaticamente alle ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} CET</p></div>`
+        });
+      } catch (err) {
+        console.error("[MorningReport] ❌ Rigenerazione Startup del Giorno fallita:", err);
+      }
+    } else {
+      console.log("[MorningReport] ✅ Startup del Giorno già presente — nessuna rigenerazione necessaria");
+    }
+  } catch (err) {
+    console.error("[MorningReport] ❌ Errore auto-remediation editoriale:", err);
+  }
 }
 
 // ─── Composizione HTML email ─────────────────────────────────────────────────
