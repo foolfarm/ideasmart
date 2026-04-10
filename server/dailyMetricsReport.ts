@@ -111,8 +111,10 @@ export async function collectDailyMetrics(): Promise<DailyMetrics | null> {
       .where(eq(subscribers.status, "unsubscribed"));
     const totalUnsubscribed = totalUnsubResult?.cnt ?? 0;
 
-    // B) Newsletter inviate oggi
-    const nlSent = await db
+    // B) Newsletter inviate oggi — deduplicazione per subject
+    // Ogni invio può generare più record (retry, test, ecc.)
+    // Prendiamo l'invio con recipientCount massimo per ogni oggetto univoco
+    const nlSentRaw = await db
       .select({
         subject: newsletterSends.subject,
         section: newsletterSends.section,
@@ -126,7 +128,20 @@ export async function collectDailyMetrics(): Promise<DailyMetrics | null> {
         eq(newsletterSends.status, "sent")
       ))
       .orderBy(desc(newsletterSends.sentAt))
-      .limit(10);
+      .limit(50); // prendo più record per poi deduplicare
+
+    // Deduplicazione: per ogni subject univoco, tieni il record con recipientCount massimo
+    // (se recipientCount è uguale, tieni il più recente)
+    const nlBySubject = new Map<string, typeof nlSentRaw[0]>();
+    for (const row of nlSentRaw) {
+      const existing = nlBySubject.get(row.subject);
+      if (!existing || row.recipientCount > existing.recipientCount) {
+        nlBySubject.set(row.subject, row);
+      }
+    }
+    const nlSent = Array.from(nlBySubject.values())
+      .sort((a, b) => (b.sentAt?.getTime() ?? 0) - (a.sentAt?.getTime() ?? 0))
+      .slice(0, 10);
 
     // C) Post LinkedIn di oggi
     const liPosts = await db
@@ -282,8 +297,9 @@ function buildDailyMetricsHtml(metrics: DailyMetrics, date: Date): string {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td width="33%" style="text-align:center;padding:16px;background:#fafafa;border:1px solid #f0f0f0;">
-                    <p style="margin:0;font-size:32px;font-weight:900;color:${BRAND_COLOR};">${metrics.newSubscribersToday > 0 ? "+" : ""}${formatNum(metrics.newSubscribersToday)}</p>
+                    <p style="margin:0;font-size:32px;font-weight:900;color:${metrics.newSubscribersToday > 0 ? '#00b89a' : BRAND_COLOR};">${metrics.newSubscribersToday > 0 ? "+" : ""}${formatNum(metrics.newSubscribersToday)}</p>
                     <p style="margin:4px 0 0;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#999;">Nuovi oggi</p>
+                    ${metrics.newSubscribersToday === 0 ? '<p style="margin:2px 0 0;font-size:9px;color:#ccc;">(nessuna nuova iscrizione)</p>' : ''}
                   </td>
                   <td width="4%"></td>
                   <td width="33%" style="text-align:center;padding:16px;background:#fafafa;border:1px solid #f0f0f0;">
@@ -314,7 +330,7 @@ function buildDailyMetricsHtml(metrics: DailyMetrics, date: Date): string {
                 </tr>
                 ${nlRows}
               </table>
-              <p style="margin:8px 0 0;font-size:11px;color:#999;">Totale: ${formatNum(totalNlRecipients)} inviati · ${formatNum(totalNlOpened)} aperture · ${pct(totalNlOpened, totalNlRecipients)} tasso medio</p>
+              <p style="margin:8px 0 0;font-size:11px;color:#999;">Totale: ${formatNum(totalNlRecipients)} inviati · ${formatNum(totalNlOpened)} aperture · ${pct(totalNlOpened, totalNlRecipients)} tasso medio &nbsp;&middot;&nbsp; <em>${metrics.newslettersSentToday.length} newsletter univoche (deduplicato per oggetto)</em></p>
               ` : `<p style="margin:0;font-size:13px;color:#999;font-style:italic;">Nessuna newsletter inviata oggi.</p>`}
             </td>
           </tr>
