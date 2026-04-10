@@ -36,7 +36,8 @@ import {
   startupOfDay,
   techEvents,
 } from "../drizzle/schema";
-import { eq, desc, and, sql, gte } from "drizzle-orm";
+import { eq, desc, and, sql, gte, gt, lt } from "drizzle-orm";
+import { newsletterSends as newsletterSendsTable } from "../drizzle/schema";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 
@@ -1318,8 +1319,40 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
 
 // ─── Send Functions ─────────────────────────────────────────────────────────
 
-const sentDays = new Map<string, boolean>();
+// NOTA: il guard in-memory è stato sostituito con un controllo DB-based
+// per resistere ai riavvii del server (il guard in-memory si azzera ad ogni restart).
 const testSentDays = new Map<string, boolean>();
+
+/**
+ * Verifica nel DB se la newsletter unificata è già stata inviata oggi con successo.
+ * Usa la data CET (Europe/Rome) per evitare problemi di fuso orario.
+ */
+async function hasAlreadySentTodayDB(): Promise<boolean> {
+  try {
+    const db = await getDb();
+    if (!db) return false;
+    // Calcola inizio giornata in CET
+    const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
+    const todayLabel = nowCET.toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
+    const todayStart = new Date(todayLabel + "T00:00:00+01:00");
+    const todayEnd = new Date(todayLabel + "T23:59:59+01:00");
+    const existing = await db
+      .select({ id: newsletterSendsTable.id, recipientCount: newsletterSendsTable.recipientCount })
+      .from(newsletterSendsTable)
+      .where(
+        and(
+          gte(newsletterSendsTable.createdAt, todayStart),
+          lt(newsletterSendsTable.createdAt, todayEnd),
+          eq(newsletterSendsTable.status, "sent"),
+          gt(newsletterSendsTable.recipientCount, 0)
+        )
+      )
+      .limit(1);
+    return existing.length > 0;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Invia una preview (bozza) della newsletter a ac@acinelli.com
@@ -1448,11 +1481,11 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
   };
   error?: string;
 }> {
-  const dayKey = getDayKey(new Date());
-
-  if (sentDays.get(dayKey)) {
+  // Guard anti-duplicati basato su DB (resiste ai riavvii del server)
+  const alreadySent = await hasAlreadySentTodayDB();
+  if (alreadySent) {
     console.log(
-      `[UnifiedNewsletter] Newsletter già inviata oggi (${dayKey}), skip`
+      `[UnifiedNewsletter] ⚠️ Newsletter già inviata oggi (trovata nel DB con recipientCount > 0), skip per evitare duplicati`
     );
     return {
       success: true,
@@ -1529,7 +1562,8 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     }
 
     await updateNewsletterSendRecipientCount(subject, totalSent);
-    sentDays.set(dayKey, true);
+    // Il guard DB-based non richiede aggiornamento manuale:
+    // il record in newsletter_sends con status='sent' e recipientCount>0 funge da lock.
 
     for (const sid of sponsorIds) {
       await markSponsorSent(sid);

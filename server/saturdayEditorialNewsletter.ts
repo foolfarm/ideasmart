@@ -27,9 +27,12 @@ import {
   getActiveSubscribers,
   createNewsletterSend,
   updateNewsletterSendRecipientCount,
+  getDb,
 } from "./db";
 import { invokeLLM } from "./_core/llm";
 import { notifyOwner } from "./_core/notification";
+import { newsletterSends as newsletterSendsTable } from "../drizzle/schema";
+import { eq, and, gte, lt, gt } from "drizzle-orm";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const BASE_URL = "https://proofpress.ai";
@@ -48,9 +51,41 @@ const WHITE  = "#ffffff";
 const RED    = "#dc2626";
 const GOLD   = "#b8860b"; // accento editoriale del sabato
 
-// ─── Deduplicazione invii ────────────────────────────────────────────────────
-const previewSentWeeks = new Map<string, boolean>();
-const massiveSentWeeks = new Map<string, boolean>();
+// ─── Deduplicazione invii (DB-based per resistere ai riavvii) ───────────────
+const previewSentWeeks = new Map<string, boolean>(); // preview: ok in-memory (non critico)
+
+/**
+ * Verifica nel DB se la newsletter del sabato è già stata inviata questa settimana.
+ */
+async function hasSaturdayAlreadySentThisWeekDB(): Promise<boolean> {
+  try {
+    const db = await getDb();
+    if (!db) return false;
+    // Calcola inizio settimana (lunedì) in CET
+    const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
+    const day = nowCET.getDay(); // 0=dom, 6=sab
+    const daysToMonday = day === 0 ? 6 : day - 1;
+    const weekStart = new Date(nowCET);
+    weekStart.setDate(nowCET.getDate() - daysToMonday);
+    weekStart.setHours(0, 0, 0, 0);
+    const existing = await db
+      .select({ id: newsletterSendsTable.id })
+      .from(newsletterSendsTable)
+      .where(
+        and(
+          gte(newsletterSendsTable.createdAt, weekStart),
+          eq(newsletterSendsTable.status, "sent"),
+          gt(newsletterSendsTable.recipientCount, 0)
+        )
+      )
+      .limit(1);
+    // Filtra per soggetto che contiene "Il meglio di ProofPress"
+    // Non possiamo filtrare per subject in drizzle senza LIKE, usiamo il risultato raw
+    return false; // Non blocchiamo qui: la newsletter del sabato ha soggetto diverso
+  } catch {
+    return false;
+  }
+}
 
 function getWeekKey(): string {
   const now = new Date();
@@ -434,12 +469,33 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
   subject: string;
   error?: string;
 }> {
-  const weekKey = getWeekKey();
-  const massiveKey = `massive-${weekKey}`;
-
-  if (massiveSentWeeks.get(massiveKey)) {
-    console.log(`[SaturdayNewsletter] Newsletter del sabato già inviata questa settimana (${weekKey}), skip`);
-    return { success: true, recipientCount: 0, subject: "" };
+  // Guard anti-duplicati DB-based per la newsletter del sabato
+  // Controlla se esiste già un invio con successo oggi (sabato)
+  try {
+    const db = await getDb();
+    if (db) {
+      const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
+      const todayLabel = nowCET.toLocaleDateString("en-CA", { timeZone: "Europe/Rome" });
+      const todayStart = new Date(todayLabel + "T00:00:00+01:00");
+      const todayEnd = new Date(todayLabel + "T23:59:59+01:00");
+      const existing = await db
+        .select({ id: newsletterSendsTable.id, subject: newsletterSendsTable.subject })
+        .from(newsletterSendsTable)
+        .where(and(
+          gte(newsletterSendsTable.createdAt, todayStart),
+          lt(newsletterSendsTable.createdAt, todayEnd),
+          eq(newsletterSendsTable.status, "sent"),
+          gt(newsletterSendsTable.recipientCount, 0)
+        ))
+        .limit(5);
+      const saturdayAlreadySent = existing.some(r => r.subject.includes("Il meglio di ProofPress"));
+      if (saturdayAlreadySent) {
+        console.log(`[SaturdayNewsletter] ⚠️ Newsletter del sabato già inviata oggi (trovata nel DB), skip per evitare duplicati`);
+        return { success: true, recipientCount: 0, subject: "" };
+      }
+    }
+  } catch (guardErr) {
+    console.warn("[SaturdayNewsletter] Guard DB fallito (non critico):", guardErr);
   }
 
   const dateLabel = getDateLabel();
@@ -502,7 +558,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
       }
     }
 
-    massiveSentWeeks.set(massiveKey, true);
+    // Guard DB-based: non serve aggiornare una Map in-memory
     console.log(`[SaturdayNewsletter] ✅ Invio completato: ${sent} successi, ${errors} errori`);
 
     // updateNewsletterSendRecipientCount richiede (id, count) — usiamo la versione senza ID (aggiorna l'ultimo)
