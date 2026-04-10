@@ -79,7 +79,18 @@ export default function LeftSidebar() {
       </div>
 
       {/* Divider */}
-      <div className="mx-4 mb-3 border-t-[2px] border-[#1a1a1a]" />
+      <div className="mx-4 mb-2 border-t-[2px] border-[#1a1a1a]" />
+
+      {/* Tagline sotto il titolo Menu */}
+      <div className="px-4 mb-3">
+        <p style={{ fontSize: "10px", color: "rgba(26,26,26,0.45)", lineHeight: 1.45, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>
+          ProofPress è la prima piattaforma di AI Journalism Certificata.
+          Scopri la nostra offerta per{" "}
+          <Link href="/offerta/creator"><span style={{ color: "#ff5500", fontWeight: 600, cursor: "pointer" }}>creator</span></Link>,{" "}
+          <Link href="/offerta/aziende"><span style={{ color: "#ff5500", fontWeight: 600, cursor: "pointer" }}>aziende</span></Link>{" "}ed{" "}
+          <Link href="/offerta/editori"><span style={{ color: "#ff5500", fontWeight: 600, cursor: "pointer" }}>editori</span></Link>.
+        </p>
+      </div>
 
       {/* Sezione info */}
       <nav className="flex flex-col gap-0.5 px-2 mb-4">
