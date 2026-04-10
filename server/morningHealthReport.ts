@@ -10,7 +10,7 @@
  */
 
 import { getDb } from "./db";
-import { newsItems, linkedinPosts } from "../drizzle/schema";
+import { newsItems, linkedinPosts, researchReports } from "../drizzle/schema";
 import { eq, gte, and, count, desc } from "drizzle-orm";
 import { sendEmail } from "./email";
 
@@ -171,7 +171,29 @@ export async function runMorningHealthReport(): Promise<void> {
     }
   }
 
-  // ── 4. Calcola statistiche riepilogative ─────────────────────────────────
+  // ── 3b. Conta ricerche Research generate oggi ─────────────────────────────
+  let researchTodayCount = 0;
+  let researchLastTitle: string | undefined;
+  try {
+    const researchCountResult = await db
+      .select({ total: count() })
+      .from(researchReports)
+      .where(eq(researchReports.dateLabel, todayLabel));
+    researchTodayCount = researchCountResult[0]?.total ?? 0;
+    if (researchTodayCount > 0) {
+      const lastResearch = await db
+        .select({ title: researchReports.title })
+        .from(researchReports)
+        .where(eq(researchReports.dateLabel, todayLabel))
+        .orderBy(desc(researchReports.createdAt))
+        .limit(1);
+      researchLastTitle = lastResearch[0]?.title;
+    }
+  } catch (err) {
+    console.error("[MorningReport] Errore conteggio Research:", err);
+  }
+
+  // ── 4. Calcola statistiche riepilogative ───────────────────────────────────────
   const sectionsOk = sectionStatuses.filter(s => s.ok).length;
   const sectionsKo = sectionStatuses.filter(s => !s.ok).length;
   const totalNewsToday = sectionStatuses.reduce((sum, s) => sum + s.count, 0);
@@ -187,7 +209,9 @@ export async function runMorningHealthReport(): Promise<void> {
     sectionsKo,
     totalNewsToday,
     linkedInPublished,
-    overallOk
+    overallOk,
+    researchTodayCount,
+    researchLastTitle
   });
 
   // ── 6. Invia email ────────────────────────────────────────────────────────
@@ -407,8 +431,10 @@ function buildReportHtml(data: {
   totalNewsToday: number;
   linkedInPublished: number;
   overallOk: boolean;
+  researchTodayCount: number;
+  researchLastTitle?: string;
 }): string {
-  const { date, sectionStatuses, linkedInStatuses, sectionsOk, sectionsKo, totalNewsToday, linkedInPublished, overallOk } = data;
+  const { date, sectionStatuses, linkedInStatuses, sectionsOk, sectionsKo, totalNewsToday, linkedInPublished, overallOk, researchTodayCount, researchLastTitle } = data;
 
   const dateStr = date.toLocaleDateString("it-IT", {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
@@ -516,6 +542,23 @@ function buildReportHtml(data: {
                 </thead>
                 <tbody>
                   ${sectionRows}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Research Table -->
+          <tr>
+            <td style="background:#0d1528;border-left:1px solid rgba(0,200,150,0.2);border-right:1px solid rgba(0,200,150,0.2);padding:0 32px 24px;">
+              <h2 style="margin:0 0 12px;font-size:13px;font-weight:700;color:#ffffff;letter-spacing:2px;text-transform:uppercase;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);">🔍 Proof Press Research</h2>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
+                <tbody>
+                  <tr style="background:${researchTodayCount > 0 ? 'transparent' : 'rgba(255,85,0,0.08)'};border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td style="padding:10px 12px;font-size:13px;color:#c8d0dc;">🔍 Ricerche del giorno${researchLastTitle ? `<span style="color:#8892a4;font-size:11px;display:block;margin-top:2px;">${escapeHtml(researchLastTitle.substring(0, 60))}${researchLastTitle.length > 60 ? '…' : ''}</span>` : `<span style="color:#ff5500;font-size:11px;display:block;margin-top:2px;">Nessuna ricerca oggi</span>`}</td>
+                    <td style="padding:10px 12px;text-align:center;font-size:15px;font-weight:700;color:${researchTodayCount > 0 ? '#00c896' : '#ff5500'}">${researchTodayCount}</td>
+                    <td style="padding:10px 12px;text-align:center;font-size:12px;color:#8892a4;">min 5</td>
+                    <td style="padding:10px 12px;text-align:center;font-size:16px;">${researchTodayCount >= 5 ? '✅' : '⚠️'}</td>
+                  </tr>
                 </tbody>
               </table>
             </td>
