@@ -1,6 +1,7 @@
 import { Link, useRoute } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag } from "lucide-react";
+import RequireAuth from "@/components/RequireAuth";
 
 const F_SERIF = "'Georgia', 'Times New Roman', serif";
 const F_SANS = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -72,6 +73,7 @@ export default function NewsArticle() {
   };
 
   return (
+    <RequireAuth>
     <div style={{ minHeight: "100vh", background: BG, fontFamily: F_SANS }}>
       {/* Header nav */}
       <div style={{ background: WHITE, borderBottom: `1px solid ${BORDER}`, padding: "12px 24px" }}>
@@ -202,5 +204,6 @@ export default function NewsArticle() {
         </div>
       </div>
     </div>
+    </RequireAuth>
   );
 }

@@ -1484,9 +1484,36 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
   // Guard anti-duplicati basato su DB (resiste ai riavvii del server)
   const alreadySent = await hasAlreadySentTodayDB();
   if (alreadySent) {
+    const blockedAt = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
     console.log(
       `[UnifiedNewsletter] ⚠️ Newsletter già inviata oggi (trovata nel DB con recipientCount > 0), skip per evitare duplicati`
     );
+    // Alert email immediato: notifica ac@acinelli.com che il guard ha bloccato un invio duplicato
+    try {
+      await sendEmail({
+        to: "ac@acinelli.com",
+        subject: `⚠️ [ProofPress] Invio newsletter bloccato — duplicato rilevato (${blockedAt})`,
+        html: `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;">
+            <div style="background:#1a1a1a;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;">
+              <strong style="font-size:16px;">ProofPress — Alert Anti-Duplicati</strong>
+            </div>
+            <div style="border:1px solid #e5e7eb;border-top:none;padding:20px;border-radius:0 0 8px 8px;">
+              <p style="margin:0 0 12px;font-size:15px;color:#1a1a1a;">Il sistema ha rilevato un tentativo di invio duplicato della newsletter <strong>Proof Press Daily</strong> ed ha bloccato automaticamente l'operazione.</p>
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <tr><td style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Data/Ora blocco</td><td style="padding:8px 12px;border:1px solid #e5e7eb;color:#1a1a1a;">${blockedAt}</td></tr>
+                <tr><td style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;color:#6b7280;">Motivo</td><td style="padding:8px 12px;border:1px solid #e5e7eb;color:#1a1a1a;">Trovato invio già completato oggi nel DB (status=sent, recipientCount&gt;0)</td></tr>
+                <tr><td style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;color:#6b7280;">Azione</td><td style="padding:8px 12px;border:1px solid #e5e7eb;color:#16a34a;"><strong>Invio bloccato automaticamente &#10003;</strong> — nessuna email inviata agli iscritti</td></tr>
+              </table>
+              <p style="margin:16px 0 0;font-size:12px;color:#9ca3af;">Questo alert viene inviato ogni volta che il guard anti-duplicati interviene. Se ricevi questo messaggio inaspettatamente, controlla i log dello scheduler.</p>
+            </div>
+          </div>
+        `,
+      });
+      console.log(`[UnifiedNewsletter] 📧 Alert duplicato inviato a ac@acinelli.com`);
+    } catch (alertErr) {
+      console.error(`[UnifiedNewsletter] Errore invio alert duplicato:`, alertErr);
+    }
     return {
       success: true,
       recipientCount: 0,

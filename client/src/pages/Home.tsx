@@ -59,8 +59,11 @@ function formatShortDate(str: string): string {
     return d.toLocaleDateString("it-IT", { day: "numeric", month: "short" });
   } catch { return str; }
 }
-function NewsItemHref(item: NewsItem): string {
-  return item.sourceUrl && item.sourceUrl !== "#" ? item.sourceUrl : "#";
+function NewsItemHref(item: NewsItem, sectionOverride?: string): string {
+  // REGOLA: tutti i link puntano alle pagine interne /sezione/news/:id
+  // MAI alle fonti esterne dalla home (il paywall blocca i non registrati)
+  const sec = sectionOverride || item.section || "ai";
+  return `/${sec}/news/${item.id}`;
 }
 function Divider({ thick = false }: { thick?: boolean }) {
   return <div className={`w-full ${thick ? "border-t-[3px]" : "border-t"} border-[#1a1a1a]`} />;
@@ -89,8 +92,8 @@ function HeroArticle({ item, section, editorial }: {
   editorial?: { id?: number; title: string; subtitle?: string | null; body: string } | null;
 }) {
   const s = SECTION_COLORS[section];
-  const href = editorial?.id ? `/${section}/editoriale/${editorial.id}` : NewsItemHref(item);
-  const isExternal = !editorial?.id;
+  const href = editorial?.id ? `/${section}/editoriale/${editorial.id}` : NewsItemHref(item, section);
+  const isExternal = false; // tutti i link sono interni — il paywall blocca i non registrati
   const title = editorial?.title || item.title;
   const body = editorial?.body || item.summary;
   const img = item.imageUrl;
@@ -107,15 +110,6 @@ function HeroArticle({ item, section, editorial }: {
   return (
     <article className="pb-4">
       {img && (
-        isExternal ? (
-          <a href={href} target="_blank" rel="noopener noreferrer">
-            <img
-              src={img} alt={title} loading="eager" decoding="async"
-              className="w-full object-cover hover:opacity-95 transition-opacity"
-              style={{ height: "320px", border: "1px solid rgba(26,26,46,0.12)" }}
-            />
-          </a>
-        ) : (
           <Link href={href}>
             <img
               src={img} alt={title} loading="eager" decoding="async"
@@ -123,15 +117,10 @@ function HeroArticle({ item, section, editorial }: {
               style={{ height: "320px", border: "1px solid rgba(26,26,46,0.12)" }}
             />
           </Link>
-        )
       )}
       <div className="mt-3">
         <SectionBadge section={section} />
-        {isExternal ? (
-          <a href={href} target="_blank" rel="noopener noreferrer">{TitleEl}</a>
-        ) : (
-          <Link href={href}>{TitleEl}</Link>
-        )}
+        <Link href={href}>{TitleEl}</Link>
         {editorial?.subtitle && (
           <p className="mt-2 text-lg italic text-[#1a1a1a]/60"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.5 }}>
@@ -169,18 +158,18 @@ function SecondaryArticle({ item, section, showImage = false }: {
   section: SectionKey;
   showImage?: boolean;
 }) {
-  const href = NewsItemHref(item);
+  const href = NewsItemHref(item, section);
   return (
     <article className="py-4">
       {showImage && item.imageUrl && (
-        <a href={href} target="_blank" rel="noopener noreferrer">
+        <Link href={href}>
           <img src={item.imageUrl} alt={item.title} loading="lazy"
-            className="w-full object-cover mb-3"
+            className="w-full object-cover mb-3 cursor-pointer"
             style={{ height: "160px", border: "1px solid rgba(26,26,46,0.10)" }} />
-        </a>
+        </Link>
       )}
       <SectionBadge section={section} />
-      <a href={href} target="_blank" rel="noopener noreferrer">
+      <Link href={href}>
         <h3
           className="mt-2 text-[#1a1a1a] hover:underline leading-snug"
           style={{
@@ -192,7 +181,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
         >
           {item.title}
         </h3>
-      </a>
+      </Link>
       <p className="mt-2 text-[16px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.65 }}>
         {item.summary}
@@ -221,7 +210,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
 function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKey }) {
   const s = SECTION_COLORS[section];
   // font aumentati per leggibilità
-  const href = NewsItemHref(item);
+  const href = NewsItemHref(item, section);
   return (
     <div className="py-3">
       <div className="flex items-center gap-1.5 mb-1">
@@ -237,14 +226,14 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
           </span>
         )}
       </div>
-      <a href={href} target="_blank" rel="noopener noreferrer">
+      <Link href={href}>
         <p
           className="text-[#1a1a1a] hover:underline leading-snug"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, lineHeight: 1.35 }}
         >
           {item.title}
         </p>
-      </a>
+      </Link>
       {item.summary && (
         <p className="mt-1 text-[15px] text-[#1a1a1a]/55 line-clamp-2"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.5 }}>
@@ -604,16 +593,16 @@ export default function Home() {
                       {mainHero.type === "research" ? (
                         <article className="pb-4">
                           {mainHero.data.imageUrl && (
-                            <a href={mainHero.data.sourceUrl ?? `#`} target="_blank" rel="noopener noreferrer">
+                            <Link href={`/research/${mainHero.data.id}`}>
                               <img
                                 src={mainHero.data.imageUrl}
                                 alt={mainHero.data.title}
                                 loading="eager"
                                 decoding="async"
-                                className="w-full object-cover hover:opacity-95 transition-opacity"
+                                className="w-full object-cover hover:opacity-95 transition-opacity cursor-pointer"
                                 style={{ height: "320px", border: "1px solid rgba(26,26,46,0.12)" }}
                               />
-                            </a>
+                            </Link>
                           )}
                           <div className="mt-3">
                             <span
@@ -622,14 +611,14 @@ export default function Home() {
                             >
                               RESEARCH
                             </span>
-                            <a href={mainHero.data.sourceUrl ?? "#"} target="_blank" rel="noopener noreferrer">
+                            <Link href={`/research/${mainHero.data.id}`}>
                               <h3
                                 className="mt-2 leading-tight text-[#1a1a1a] hover:underline"
                                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(30px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
                               >
                                 {mainHero.data.title}
                               </h3>
-                            </a>
+                            </Link>
                             <p className="mt-3 text-[17px] leading-relaxed text-[#1a1a1a]/75"
                               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.7 }}>
                               {mainHero.data.summary.slice(0, 320)}{mainHero.data.summary.length > 320 ? "\u2026" : ""}
