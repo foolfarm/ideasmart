@@ -9,27 +9,36 @@ interface OffertaLeadFormProps {
   subtitle?: string;
 }
 
-const sourceConfig: Record<Source, { label: string; rolePlaceholder: string; color: string }> = {
+const sourceConfig: Record<Source, { label: string; rolePlaceholder: string; orgLabel: string; orgPlaceholder: string; color: string; showOrg: boolean }> = {
   creator: {
     label: "Creator & Giornalisti",
     rolePlaceholder: "es. Giornalista freelance, Content creator, Blogger...",
+    orgLabel: "Testata / Progetto editoriale",
+    orgPlaceholder: "es. La tua newsletter, blog, canale...",
     color: "#ff5500",
+    showOrg: false,
   },
   editori: {
     label: "Testate & Editori",
     rolePlaceholder: "es. Direttore editoriale, Publisher, Responsabile digitale...",
+    orgLabel: "Nome della testata",
+    orgPlaceholder: "es. Il Sole 24 Ore, TechCrunch Italia...",
     color: "#d94f3d",
+    showOrg: true,
   },
   aziende: {
     label: "Aziende & Corporate",
     rolePlaceholder: "es. CEO, CMO, Responsabile comunicazione, Innovation Manager...",
+    orgLabel: "Nome dell'azienda",
+    orgPlaceholder: "es. Acme S.p.A., Startup XYZ...",
     color: "#1a6b8a",
+    showOrg: true,
   },
 };
 
 export default function OffertaLeadForm({ source, title, subtitle }: OffertaLeadFormProps) {
   const config = sourceConfig[source];
-  const [form, setForm] = useState({ name: "", email: "", role: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", role: "", org: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -42,6 +51,7 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
     if (!form.name.trim() || form.name.trim().length < 2) e.name = "Inserisci il tuo nome (min. 2 caratteri)";
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Inserisci un'email valida";
     if (!form.role.trim() || form.role.trim().length < 2) e.role = "Inserisci il tuo ruolo";
+    if (config.showOrg && (!form.org.trim() || form.org.trim().length < 2)) e.org = `Inserisci il nome dell'${source === "editori" ? "testata" : "azienda"}`;
     return e;
   };
 
@@ -50,7 +60,7 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setErrors({});
-    submitLead.mutate({ ...form, source });
+    submitLead.mutate({ name: form.name, email: form.email, role: form.role, org: form.org || undefined, message: form.message || undefined, source });
   };
 
   if (submitted) {
@@ -86,8 +96,8 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
       </div>
 
       <form onSubmit={handleSubmit} noValidate>
+        {/* Riga 1: Nome + Email */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-          {/* Nome */}
           <div>
             <label style={{ display: "block", color: "#374151", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
               Nome e cognome <span style={{ color: config.color }}>*</span>
@@ -97,16 +107,10 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
               value={form.name}
               onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
               placeholder="Mario Rossi"
-              style={{
-                width: "100%", padding: "10px 14px", border: errors.name ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db",
-                borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none",
-                boxSizing: "border-box",
-              }}
+              style={{ width: "100%", padding: "10px 14px", border: errors.name ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none", boxSizing: "border-box" }}
             />
             {errors.name && <p style={{ color: "#e53e3e", fontSize: 12, margin: "4px 0 0" }}>{errors.name}</p>}
           </div>
-
-          {/* Email */}
           <div>
             <label style={{ display: "block", color: "#374151", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
               Email <span style={{ color: config.color }}>*</span>
@@ -116,33 +120,42 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
               value={form.email}
               onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
               placeholder="mario@azienda.it"
-              style={{
-                width: "100%", padding: "10px 14px", border: errors.email ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db",
-                borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none",
-                boxSizing: "border-box",
-              }}
+              style={{ width: "100%", padding: "10px 14px", border: errors.email ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none", boxSizing: "border-box" }}
             />
             {errors.email && <p style={{ color: "#e53e3e", fontSize: 12, margin: "4px 0 0" }}>{errors.email}</p>}
           </div>
         </div>
 
-        {/* Ruolo */}
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: "block", color: "#374151", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
-            Il tuo ruolo <span style={{ color: config.color }}>*</span>
-          </label>
-          <input
-            type="text"
-            value={form.role}
-            onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
-            placeholder={config.rolePlaceholder}
-            style={{
-              width: "100%", padding: "10px 14px", border: errors.role ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db",
-              borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none",
-              boxSizing: "border-box",
-            }}
-          />
-          {errors.role && <p style={{ color: "#e53e3e", fontSize: 12, margin: "4px 0 0" }}>{errors.role}</p>}
+        {/* Riga 2: Ruolo + Azienda/Testata (se rilevante) */}
+        <div style={{ display: "grid", gridTemplateColumns: config.showOrg ? "1fr 1fr" : "1fr", gap: 16, marginBottom: 16 }}>
+          <div>
+            <label style={{ display: "block", color: "#374151", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+              Il tuo ruolo <span style={{ color: config.color }}>*</span>
+            </label>
+            <input
+              type="text"
+              value={form.role}
+              onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+              placeholder={config.rolePlaceholder}
+              style={{ width: "100%", padding: "10px 14px", border: errors.role ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none", boxSizing: "border-box" }}
+            />
+            {errors.role && <p style={{ color: "#e53e3e", fontSize: 12, margin: "4px 0 0" }}>{errors.role}</p>}
+          </div>
+          {config.showOrg && (
+            <div>
+              <label style={{ display: "block", color: "#374151", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+                {config.orgLabel} <span style={{ color: config.color }}>*</span>
+              </label>
+              <input
+                type="text"
+                value={form.org}
+                onChange={e => setForm(f => ({ ...f, org: e.target.value }))}
+                placeholder={config.orgPlaceholder}
+                style={{ width: "100%", padding: "10px 14px", border: errors.org ? "1.5px solid #e53e3e" : "1.5px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none", boxSizing: "border-box" }}
+              />
+              {errors.org && <p style={{ color: "#e53e3e", fontSize: 12, margin: "4px 0 0" }}>{errors.org}</p>}
+            </div>
+          )}
         </div>
 
         {/* Messaggio */}
@@ -155,11 +168,7 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
             onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
             placeholder="Raccontaci brevemente il tuo progetto o le tue esigenze..."
             rows={4}
-            style={{
-              width: "100%", padding: "10px 14px", border: "1.5px solid #d1d5db",
-              borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none",
-              resize: "vertical", fontFamily: "inherit", boxSizing: "border-box",
-            }}
+            style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#1a1a1a", background: "#fff", outline: "none", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box" }}
           />
         </div>
 
@@ -167,12 +176,7 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
         <button
           type="submit"
           disabled={submitLead.isPending}
-          style={{
-            width: "100%", padding: "14px 28px", background: submitLead.isPending ? "#9ca3af" : "#1a1a1a",
-            color: "#fff", border: "none", borderRadius: 6, fontSize: 15, fontWeight: 700,
-            cursor: submitLead.isPending ? "not-allowed" : "pointer", letterSpacing: "0.02em",
-            transition: "background 0.2s",
-          }}
+          style={{ width: "100%", padding: "14px 28px", background: submitLead.isPending ? "#9ca3af" : "#1a1a1a", color: "#fff", border: "none", borderRadius: 6, fontSize: 15, fontWeight: 700, cursor: submitLead.isPending ? "not-allowed" : "pointer", letterSpacing: "0.02em", transition: "background 0.2s" }}
         >
           {submitLead.isPending ? "Invio in corso..." : "Invia richiesta →"}
         </button>
@@ -183,7 +187,7 @@ export default function OffertaLeadForm({ source, title, subtitle }: OffertaLead
           </p>
         )}
 
-        <p style={{ color: "#9ca3af", fontSize: 12, textAlign: "center", marginTop: 16, margin: "16px 0 0" }}>
+        <p style={{ color: "#9ca3af", fontSize: 12, textAlign: "center", margin: "16px 0 0" }}>
           I tuoi dati sono trattati in conformità alla normativa GDPR. Non li condivideremo con terze parti.
         </p>
       </form>

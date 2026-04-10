@@ -2421,6 +2421,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         name: z.string().min(2, "Nome obbligatorio"),
         email: z.string().email("Email non valida"),
         role: z.string().min(2, "Ruolo obbligatorio"),
+        org: z.string().optional(),
         message: z.string().optional(),
         source: z.enum(["creator", "editori", "aziende"]),
       }))
@@ -2438,6 +2439,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
                 <tr style="border-bottom:1px solid #f0ece4;"><td style="padding:10px 0;color:#888;font-size:13px;">Email</td><td style="padding:10px 0;"><a href="mailto:${input.email}" style="color:#d94f3d;font-size:15px;">${input.email}</a></td></tr>
                 <tr style="border-bottom:1px solid #f0ece4;"><td style="padding:10px 0;color:#888;font-size:13px;">Ruolo</td><td style="padding:10px 0;color:#1a1a1a;font-size:15px;">${input.role}</td></tr>
                 <tr style="border-bottom:1px solid #f0ece4;"><td style="padding:10px 0;color:#888;font-size:13px;">Sezione</td><td style="padding:10px 0;color:#ff5500;font-size:15px;font-weight:700;">${sourceLabel}</td></tr>
+                ${input.org ? `<tr style="border-bottom:1px solid #f0ece4;"><td style="padding:10px 0;color:#888;font-size:13px;">Azienda/Testata</td><td style="padding:10px 0;color:#1a1a1a;font-size:15px;font-weight:600;">${input.org}</td></tr>` : ''}
                 ${input.message ? `<tr><td style="padding:10px 0;color:#888;font-size:13px;vertical-align:top;">Messaggio</td><td style="padding:10px 0;color:#374151;font-size:14px;line-height:1.7;">${input.message.replace(/\n/g, '<br>')}</td></tr>` : ''}
               </table>
             </div>
