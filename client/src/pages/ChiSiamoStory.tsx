@@ -43,7 +43,7 @@ export default function ChiSiamoStory() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
         <SEOHead
-          title="La nostra storia — Proof Press by Ideasmart"
+          title="La nostra storia — ProofPress"
           description="Non è nata in un garage. È nata in una chat. La storia di Ideasmart: dal bulletin board dei nerd alla prima piattaforma di giornalismo agentico con informazione certificata."
           canonical="https://proofpress.ai/chi-siamo-story"
           ogSiteName="Proof Press"

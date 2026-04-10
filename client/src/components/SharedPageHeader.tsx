@@ -160,16 +160,12 @@ export default function SharedPageHeader() {
                   lineHeight: 1,
                 }}
               >
-                Proof Press{" "}
-                <span className="font-normal tracking-[0.05em] text-[#1a1a1a]/35 align-baseline"
-                  style={{ fontSize: "clamp(14px,2vw,22px)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  by Ideasmart
-                </span>
+                ProofPress
               </h1>
             </Link>
             <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              <span className="text-[13px]">L'hub informativo per chi deve capire prima degli altri</span>
+              <span className="text-[13px]">Per chi vuole capire l'innovazione prima degli altri</span>
             </p>
           </div>
 
@@ -190,7 +186,7 @@ export default function SharedPageHeader() {
         {/* Sottotitolo full-width */}
         <p className="mt-3 text-center uppercase tracking-[0.18em] text-[#1a1a1a]/45 font-medium"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
-          4.000+ fonti analizzate e certificate 24/7 per offrirti le ultime notizie prima degli altri, per capire, decidere e agire.
+          4.000+ fonti analizzate e certificate 24/7 — Notizie verificate, autori internazionali e editoriali esclusivi per aiutarti a capire, decidere, investire e agire — prima degli altri.
         </p>
 
       </div>

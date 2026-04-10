@@ -22,8 +22,8 @@
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
   *  │  NEWSLETTER UNIFICATA — SOLO LUN/MER/VEN                                  │
-  *  │  08:30 (lun/mer/ven) — Preview unificata → ac@acinelli.com               │
-  *  │  10:30 (lun/mer/ven) — Newsletter unificata → tutti gli iscritti         │
+  *  │  08:30 (lun/mer/ven) — Preview/test unificata → ac@acinelli.com          │
+  *  │  11:00 (lun/mer/ven) — Newsletter unificata → tutti gli iscritti         │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -462,12 +462,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 10:30 CET (lun/mer/ven) ──────────────
-  // ⛔ BLOCCO MANUALE ATTIVO dal 10/04/2026 — sospeso per verifica link newsletter
-  // Per riattivare: rimuovere il commento dal blocco cron.schedule qui sotto
-  /*
-  cron.schedule("30 10 * * 1,3,5", async () => {
-    console.log("[SchedulerManager] ⏰ 10:30 CET — Invio massivo newsletter Proof Press Daily...");
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 11:00 CET (lun/mer/ven) ──────────────
+  cron.schedule("0 11 * * 1,3,5", async () => {
+    console.log("[SchedulerManager] ⏰ 11:00 CET — Invio massivo newsletter Proof Press Daily...");
     await withLock("newsletter-massivo", async () => {
       try {
         const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
@@ -482,7 +479,6 @@ export function startAllSchedulers(): void {
       }
     });
   }, { timezone: TZ });
-  */
 
   // ══════════════════════════════════════════════════════════════════════════
   // NEWSLETTER PROMOZIONALE — Martedì e Giovedì

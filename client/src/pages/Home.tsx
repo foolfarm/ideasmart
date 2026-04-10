@@ -475,7 +475,7 @@ export default function Home() {
               <div className="text-center flex-1 min-w-0">
                 <Link href="/">
                   <div className="cursor-pointer hover:opacity-80 transition-opacity">
-                    {/* Proof Press by Ideasmart — titolo unico */}
+                    {/* ProofPress — titolo aggiornato */}
                     <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
                       style={{
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
@@ -483,17 +483,13 @@ export default function Home() {
                         letterSpacing: "-0.02em",
                         lineHeight: 1
                       }}>
-                      Proof Press{" "}
-                      <span className="text-[clamp(14px,2vw,22px)] font-normal tracking-[0.05em] text-[#1a1a1a]/35 align-baseline"
-                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        by Ideasmart
-                      </span>
+                      ProofPress
                     </h1>
                   </div>
                 </Link>
-                <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
+                <p className="mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  <span className="text-[13px]">L'hub informativo per chi deve capire prima degli altri</span>
+                  <span className="text-[13px]">Per chi vuole capire l'innovazione prima degli altri</span>
                 </p>
               </div>
 
@@ -514,7 +510,7 @@ export default function Home() {
             {/* Sottotitolo full-width */}
             <p className="mt-3 text-center uppercase tracking-[0.18em] text-[#1a1a1a]/45 font-medium"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
-              4.000+ fonti analizzate e certificate 24/7 per offrirti le ultime notizie prima degli altri, per capire, decidere e agire.
+4.000+ fonti analizzate e certificate 24/7 — Notizie verificate, autori internazionali e editoriali esclusivi per aiutarti a capire, decidere, investire e agire — prima degli altri.
             </p>
 
           </div>

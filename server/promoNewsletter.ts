@@ -127,7 +127,7 @@ export const CURRENT_CAMPAIGN: PromoCampaign = {
       answer: "Se usi l'AI nel lavoro almeno una volta a settimana, ti serve. Se non sei soddisfatto entro 7 giorni, ti rimborsiamo."
     }
   ],
-  footerNote: "Stai ricevendo questa email perché sei iscritto alla newsletter di Proof Press by Ideasmart."
+  footerNote: "Stai ricevendo questa email perché sei iscritto alla newsletter di ProofPress."
 };
 
 // ─── Template HTML ───────────────────────────────────────────────────────────
@@ -202,8 +202,8 @@ function buildPromoNewsletterHtml(campaign: PromoCampaign, dateLabel: string): s
       <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <td>
-            <p style="margin:0;font-family:'Georgia',serif;font-size:26px;font-weight:700;color:#f5f3ef;letter-spacing:-0.5px;">Proof Press</p>
-            <p style="margin:2px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;">by Ideasmart</p>
+            <p style="margin:0;font-family:'Georgia',serif;font-size:26px;font-weight:700;color:#f5f3ef;letter-spacing:-0.5px;">ProofPress</p>
+            <p style="margin:2px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;">Per chi vuole capire l'innovazione prima degli altri</p>
           </td>
           <td align="right" valign="middle">
             <span style="background:#d94f3d;color:#fff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:4px;">${campaign.badgeLabel}</span>
@@ -309,8 +309,8 @@ function buildPromoNewsletterHtml(campaign: PromoCampaign, dateLabel: string): s
       <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <td>
-            <p style="margin:0 0 4px;font-family:'Georgia',serif;font-size:16px;font-weight:700;color:#f5f3ef;">Proof Press</p>
-            <p style="margin:0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#666;">by Ideasmart · La prima redazione giornalistica agentica con informazione Certificata</p>
+            <p style="margin:0 0 4px;font-family:'Georgia',serif;font-size:16px;font-weight:700;color:#f5f3ef;">ProofPress</p>
+            <p style="margin:0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#666;">Per chi vuole capire l'innovazione prima degli altri · La prima redazione giornalistica agentica con informazione Certificata</p>
           </td>
           <td align="right" valign="middle">
             <a href="${BASE_URL}" style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#888;text-decoration:none;">proofpress.ai</a>

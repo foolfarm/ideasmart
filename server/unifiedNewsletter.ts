@@ -636,8 +636,8 @@ function buildNewsletterHtmlV2(opts: {
         <div style="text-align:right;margin-bottom:16px;">
           <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
         </div>
-        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1;letter-spacing:-0.02em;margin-bottom:4px;">Proof Press</div>
-        <div style="font-size:14px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">by Ideasmart</div>
+        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1;letter-spacing:-0.02em;margin-bottom:4px;">ProofPress</div>
+        <div style="font-size:14px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">Per chi vuole capire l'innovazione prima degli altri</div>
         <div style="width:40px;height:2px;background:${ACCENT};margin:0 auto 14px;"></div>
         <div style="font-size:11px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">La prima redazione giornalistica agentica con informazione certificata</div>
         <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};line-height:1.5;">
@@ -1120,8 +1120,8 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
             <td style="padding:28px 26px;text-align:center;">
-              <div style="font-size:28px;font-weight:900;color:${BLACK};font-family:${F_SERIF};letter-spacing:-0.01em;margin-bottom:3px;">Proof Press</div>
-              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">by Ideasmart</div>
+              <div style="font-size:28px;font-weight:900;color:${BLACK};font-family:${F_SERIF};letter-spacing:-0.01em;margin-bottom:3px;">ProofPress</div>
+              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">Per chi vuole capire l'innovazione prima degli altri</div>
               <div style="font-size:10px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">La prima redazione giornalistica agentica con informazione certificata</div>
               <div style="margin-bottom:14px;">
                 <a href="https://x.com/proofpress_ai" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">X / Twitter</a>
