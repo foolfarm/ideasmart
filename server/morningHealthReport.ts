@@ -294,6 +294,8 @@ export async function runMorningHealthReport(): Promise<void> {
 
   // ── 8. AUTO-REMEDIATION EDITORIALE: rigenera con LLM se manca l'editoriale del giorno ──
   await remediateEditorial(todayLabel);
+  // ── 9. AUTO-REMEDIATION RESEARCH: rigenera con LLM se mancano le ricerche del giorno ──
+  await remediateResearch();
 }
 
 async function remediateEditorial(todayLabel: string): Promise<void> {
@@ -358,6 +360,39 @@ async function remediateEditorial(todayLabel: string): Promise<void> {
     }
   } catch (err) {
     console.error("[MorningReport] ❌ Errore auto-remediation editoriale:", err);
+  }
+}
+
+async function remediateResearch(): Promise<void> {
+  try {
+    const { getTodayResearch } = await import("./researchGenerator");
+    const { generateDailyResearch } = await import("./researchGenerator");
+    // Controlla quante ricerche ci sono oggi
+    const existingResearch = await getTodayResearch();
+    if (!existingResearch || existingResearch.length === 0) {
+      console.log("[MorningReport] 🔍 Research mancante — avvio rigenerazione LLM...");
+      try {
+        const result = await generateDailyResearch();
+        const generated = result?.generated ?? 0;
+        console.log(`[MorningReport] ✅ Research rigenerata: ${generated} ricerche`);
+        await sendEmail({
+          to: REPORT_EMAIL,
+          subject: `🔍 Auto-Remediation Research — ${generated} ricerche rigenerate`,
+          html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;color:#e2e8f0;padding:24px;border-radius:12px;"><h2 style="color:#00e5c8;">🔍 Research Rigenerata</h2><p><strong>${generated} ricerche</strong> generate automaticamente per oggi.</p><p style="color:#94a3b8;font-size:12px;">Rigenerata automaticamente alle ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} CET</p></div>`
+        });
+      } catch (err) {
+        console.error("[MorningReport] ❌ Rigenerazione Research fallita:", err);
+        await sendEmail({
+          to: REPORT_EMAIL,
+          subject: `❌ Auto-Remediation Research FALLITA`,
+          html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;color:#e2e8f0;padding:24px;border-radius:12px;"><h2 style="color:#ef4444;">❌ Rigenerazione Research Fallita</h2><p>Errore: ${err instanceof Error ? err.message : String(err)}</p><p style="color:#94a3b8;font-size:12px;">Richiede intervento manuale dalla dashboard Admin.</p></div>`
+        });
+      }
+    } else {
+      console.log(`[MorningReport] ✅ Research già presente (${existingResearch.length} ricerche) — nessuna rigenerazione necessaria`);
+    }
+  } catch (err) {
+    console.error("[MorningReport] ❌ Errore auto-remediation research:", err);
   }
 }
 
