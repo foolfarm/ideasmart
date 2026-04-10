@@ -165,7 +165,9 @@ export default function SharedPageHeader() {
             </Link>
             <p className="mt-3 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold leading-relaxed"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              <span className="text-[13px]">Per chi vuole capire l'innovazione prima degli altri</span>
+              <span className="text-[13px]">La prima piattaforma di giornalismo agentico certificato</span>
+              <br />
+              <span className="text-[13px]">per innovatori, creator, aziende ed editori</span>
             </p>
           </div>
 
@@ -186,7 +188,7 @@ export default function SharedPageHeader() {
         {/* Sottotitolo full-width */}
         <p className="mt-3 text-center uppercase tracking-[0.18em] text-[#1a1a1a]/45 font-medium"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
-          4.000+ fonti analizzate e certificate 24/7 — Notizie verificate, autori internazionali e editoriali esclusivi<br />Per aiutarti a capire, decidere, investire e agire — prima degli altri e in completa sicurezza.
+          ProofPress Magazine ogni giorno analizza e verifica oltre 4.000 fonti per offrirti solo contenuti rilevanti, affidabili e pronti all'uso.
         </p>
 
       </div>

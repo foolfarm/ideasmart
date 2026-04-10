@@ -203,7 +203,7 @@ function buildPromoNewsletterHtml(campaign: PromoCampaign, dateLabel: string): s
         <tr>
           <td>
             <p style="margin:0;font-family:'Georgia',serif;font-size:26px;font-weight:700;color:#f5f3ef;letter-spacing:-0.5px;">ProofPress</p>
-            <p style="margin:2px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;">Per chi vuole capire l'innovazione prima degli altri</p>
+            <p style="margin:2px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;">La prima piattaforma di giornalismo agentico certificato per innovatori, creator, aziende ed editori</p>
           </td>
           <td align="right" valign="middle">
             <span style="background:#d94f3d;color:#fff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:4px;">${campaign.badgeLabel}</span>
@@ -310,7 +310,7 @@ function buildPromoNewsletterHtml(campaign: PromoCampaign, dateLabel: string): s
         <tr>
           <td>
             <p style="margin:0 0 4px;font-family:'Georgia',serif;font-size:16px;font-weight:700;color:#f5f3ef;">ProofPress</p>
-            <p style="margin:0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#666;">Per chi vuole capire l'innovazione prima degli altri · La prima redazione giornalistica agentica con informazione Certificata</p>
+            <p style="margin:0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#666;">La prima piattaforma di giornalismo agentico certificato per innovatori, creator, aziende ed editori · La prima redazione giornalistica agentica con informazione Certificata</p>
           </td>
           <td align="right" valign="middle">
             <a href="${BASE_URL}" style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#888;text-decoration:none;">proofpress.ai</a>
