@@ -31,7 +31,12 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
     content: [
       ...(opts.text ? [{ type: "text/plain", value: opts.text }] : []),
       { type: "text/html", value: opts.html }
-    ]
+    ],
+    // Disabilita click tracking SendGrid per evitare sottodomini url*.proofpress.ai senza SSL
+    tracking_settings: {
+      click_tracking: { enable: false },
+      open_tracking: { enable: true }
+    }
   };
 
   try {
