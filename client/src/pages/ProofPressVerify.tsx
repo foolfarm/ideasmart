@@ -3,8 +3,8 @@
  * Struttura: hero → contesto/problema → 3 livelli → form verifica hash →
  *            differenziazione → target → specs tecniche → CTA finale
  */
-import { useState, useRef } from "react";
-import { Link } from "wouter";
+import { useState, useRef, useEffect } from "react";
+import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
@@ -86,11 +86,24 @@ function TechSpecs() {
 }
 
 /* ── Form di verifica hash ── */
-function VerifyForm() {
-  const [inputValue, setInputValue] = useState("");
+function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
+  const [inputValue, setInputValue] = useState(initialHash || "");
   const [submitted, setSubmitted] = useState(false);
   const [searchHash, setSearchHash] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
+
+  // Auto-search quando viene passato un hash dall'URL
+  useEffect(() => {
+    if (initialHash && initialHash.trim().length >= 8) {
+      const normalized = normalizeHash(initialHash);
+      setInputValue(initialHash);
+      setSearchHash(normalized);
+      setSubmitted(true);
+      // Scroll al risultato dopo un breve delay
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 600);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialHash]);
 
   // Normalizza il codice: accetta sia "PP-XXXXXXXXXXXXXXXX" che l'hash completo SHA-256
   const normalizeHash = (raw: string): string => {
@@ -267,6 +280,19 @@ function VerifyForm() {
 ══════════════════════════════════════════════════════════════════════════════ */
 export default function ProofPressVerify() {
   const verifyFormRef = useRef<HTMLDivElement>(null);
+  const searchString = useSearch();
+
+  // Legge il parametro ?hash= dall'URL
+  const urlHash = new URLSearchParams(searchString).get("hash") || "";
+
+  // Scroll automatico al form quando c'è un hash nell'URL
+  useEffect(() => {
+    if (urlHash && urlHash.trim().length >= 8) {
+      setTimeout(() => {
+        verifyFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
+  }, [urlHash]);
 
   const scrollToForm = () => {
     verifyFormRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -532,7 +558,7 @@ export default function ProofPressVerify() {
               <p className="text-base text-[#0a0a0a]/55 mb-10 max-w-2xl">
                 Ogni articolo pubblicato su ProofPress porta un badge con un codice hash univoco. Inseriscilo qui per accedere al Verification Report originale e verificare che il contenuto non sia stato alterato.
               </p>
-              <VerifyForm />
+              <VerifyForm initialHash={urlHash} />
             </div>
           </Section>
 
