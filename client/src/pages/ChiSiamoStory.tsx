@@ -80,6 +80,48 @@ export default function ChiSiamoStory() {
           <Divider />
 
           {/* ═══════════════════════════════════════════════════════
+              TIMELINE
+          ═══════════════════════════════════════════════════════ */}
+          <section className="py-12 md:py-16" style={{ background: "#f8f8f6" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="relative">
+                {/* Linea orizzontale connettore */}
+                <div
+                  className="hidden md:block absolute top-8 left-0 right-0 h-px"
+                  style={{ background: "linear-gradient(90deg, transparent 0%, #ff5500 20%, #ff5500 80%, transparent 100%)", opacity: 0.3 }}
+                />
+                <div className="grid md:grid-cols-4 gap-8 relative z-10">
+                  {[
+                    { year: "2022", dot: "#ff5500", title: "Nasce Ideasmart", desc: "Bulletin board interno tra 15 nerd a Milano, Lisbona, Berlino e Tel Aviv. Strumento di sopravvivenza informativa." },
+                    { year: "2023", dot: "#ff8833", title: "Da 1 a 12 agenti", desc: "I modelli generativi accelerano tutto. Nasce la redazione agentica con 12 agenti specializzati coordinati da un team genetico." },
+                    { year: "2024", dot: "#ffaa55", title: "ProofPress Verify", desc: "Nasce l'algoritmo originale che certifica ogni notizia con hash crittografico e notarizzazione Web3." },
+                    { year: "2026", dot: "#0a0f1e", title: "Ideasmart → ProofPress", desc: "Il prodotto diventa piattaforma. Chiunque può costruirsi la propria redazione AI con informazione certificata." },
+                  ].map(({ year, dot, title, desc }) => (
+                    <div key={year} className="flex flex-col items-start">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div
+                          className="w-4 h-4 rounded-full flex-shrink-0"
+                          style={{ background: dot, boxShadow: `0 0 0 4px ${dot}22` }}
+                        />
+                        <span
+                          className="text-2xl font-black"
+                          style={{ fontFamily: FONT, color: dot }}
+                        >
+                          {year}
+                        </span>
+                      </div>
+                      <div className="font-bold text-sm mb-2" style={{ color: "#0a0a0a" }}>{title}</div>
+                      <div className="text-sm leading-relaxed" style={{ color: "#0a0a0a", opacity: 0.6 }}>{desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════
               ORIGINI
           ═══════════════════════════════════════════════════════ */}
           <Section>
