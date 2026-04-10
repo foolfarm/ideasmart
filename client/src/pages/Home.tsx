@@ -385,7 +385,16 @@ export default function Home() {
 
   const dealroomNews = homeData?.dealroom ?? [];
 
-  // Hero: primo articolo AI con immagine
+  // Hero principale: usa researchOfDay (ricerca del giorno) — mai uguale al Punto del Giorno di Andrea Cinelli
+  // Fallback: primo dealroom con immagine, poi primo AI con immagine
+  const mainHero = useMemo(() => {
+    if (researchOfDay) return { type: "research" as const, data: researchOfDay };
+    const dealHero = dealroomNews.find(n => n.imageUrl);
+    if (dealHero) return { type: "dealroom" as const, data: dealHero };
+    return null;
+  }, [researchOfDay, dealroomNews]);
+
+  // Hero: primo articolo AI con immagine (rimane nella griglia secondaria)
   const aiHero = useMemo(() => aiNews.find(n => n.imageUrl) || aiNews[0] || null, [aiNews]);
   const aiRest = useMemo(() => aiNews.filter(n => n.id !== aiHero?.id), [aiNews, aiHero]);
 
@@ -571,10 +580,51 @@ export default function Home() {
                 {/* ── COLONNA PRINCIPALE (sinistra 70%) ── */}
                 <div className="lg:pr-6 newspaper-col-rule">
 
-                  {/* HERO PRINCIPALE — AI, grande */}
-                  {aiHero && (
+                  {/* HERO PRINCIPALE — Research of Day (mai uguale al Punto del Giorno di Andrea Cinelli) */}
+                  {mainHero && (
                     <div className="pb-5">
-                      <HeroArticle item={aiHero} section="ai" editorial={aiEditorial} />
+                      {mainHero.type === "research" ? (
+                        <article className="pb-4">
+                          {mainHero.data.imageUrl && (
+                            <a href={mainHero.data.sourceUrl ?? `#`} target="_blank" rel="noopener noreferrer">
+                              <img
+                                src={mainHero.data.imageUrl}
+                                alt={mainHero.data.title}
+                                loading="eager"
+                                decoding="async"
+                                className="w-full object-cover hover:opacity-95 transition-opacity"
+                                style={{ height: "320px", border: "1px solid rgba(26,26,46,0.12)" }}
+                              />
+                            </a>
+                          )}
+                          <div className="mt-3">
+                            <span
+                              className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-1.5 py-0.5 mr-1"
+                              style={{ background: "#1a1a1a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                            >
+                              RESEARCH
+                            </span>
+                            <a href={mainHero.data.sourceUrl ?? "#"} target="_blank" rel="noopener noreferrer">
+                              <h3
+                                className="mt-2 leading-tight text-[#1a1a1a] hover:underline"
+                                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(30px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
+                              >
+                                {mainHero.data.title}
+                              </h3>
+                            </a>
+                            <p className="mt-3 text-[17px] leading-relaxed text-[#1a1a1a]/75"
+                              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.7 }}>
+                              {mainHero.data.summary.slice(0, 320)}{mainHero.data.summary.length > 320 ? "\u2026" : ""}
+                            </p>
+                            <p className="mt-2 text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest"
+                              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                              {mainHero.data.source}
+                            </p>
+                          </div>
+                        </article>
+                      ) : (
+                        <HeroArticle item={mainHero.data as NewsItem} section="dealroom" />
+                      )}
                     </div>
                   )}
 

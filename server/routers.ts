@@ -656,6 +656,7 @@ export const appRouter = router({
               keyFindings: (() => { try { return JSON.parse(report.keyFindings); } catch { return []; } })(),
               source: report.source,
               sourceUrl: report.sourceUrl ?? null,
+              imageUrl: report.imageUrl ?? null,
               category: report.category,
               region: report.region,
               dateLabel: report.dateLabel,
