@@ -1,33 +1,36 @@
 {
-  "name": "IDEASMART — Testata Multicanale",
-  "short_name": "IDEASMART",
-  "description": "La piattaforma editoriale italiana su AI e Musica. AI4Business News e ITsMusic aggiornati ogni giorno.",
+  "name": "ProofPress — AI, Startup e Venture Capital",
+  "short_name": "ProofPress",
+  "description": "Il magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l'informazione in insight esclusivi e affidabili su AI, Startup e Venture Capital.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0f1e",
-  "theme_color": "#00b4a0",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "orientation": "portrait-primary",
   "lang": "it",
-  "categories": ["news", "business", "music"],
+  "categories": [
+    "news",
+    "business"
+  ],
   "icons": [
     {
-      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-16_792fe740.png",
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-16_e10e9e81.png",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-32_32e20909.png",
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-32_38a6375b.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-192_1ef5dded.png",
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-192_48cc5a99.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-512-kvZYZR8gxBeEwBNJnxxnLu.png",
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-512-final_6afd42ba.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -35,11 +38,11 @@
   ],
   "screenshots": [
     {
-      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-512-kvZYZR8gxBeEwBNJnxxnLu.png",
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-512-final_6afd42ba.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "IDEASMART — Homepage"
+      "label": "ProofPress — Homepage"
     }
   ],
   "shortcuts": [
@@ -50,19 +53,19 @@
       "url": "/ai",
       "icons": [
         {
-          "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-192_1ef5dded.png",
+          "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-192_48cc5a99.png",
           "sizes": "192x192"
         }
       ]
     },
     {
-      "name": "ITsMusic",
-      "short_name": "Music",
-      "description": "Rock, Indie e AI Music",
-      "url": "/music",
+      "name": "Startup News",
+      "short_name": "Startup",
+      "description": "Notizie su startup e venture capital",
+      "url": "/startup",
       "icons": [
         {
-          "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-icon-192_1ef5dded.png",
+          "src": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-192_48cc5a99.png",
           "sizes": "192x192"
         }
       ]
