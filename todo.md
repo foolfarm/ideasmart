@@ -2987,3 +2987,8 @@
 - [x] Aggiunta voce "Pubblicizza 🎯" → /pubblicita
 - [x] Aggiunta voce "Contatti ✉️" → mailto:info@proofpress.ai
 - [x] Creata pagina /pubblicita con hero, numeri, audience, formati e CTA
+
+## Task (10 Apr 2026 — Auto-remediation Morning Report)
+
+- [ ] Auto-remediation Morning Report: se sezione ha 0 notizie, forza refresh automatico dopo invio report
+- [ ] Aggiornamento manuale immediato canali mancanti (Startup News, AI News, DEALROOM)

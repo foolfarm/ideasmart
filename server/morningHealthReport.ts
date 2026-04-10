@@ -5,6 +5,7 @@
  * 1. Verifica quante notizie sono state pubblicate oggi per ogni sezione
  * 2. Controlla se i post LinkedIn del mattino sono stati pubblicati
  * 3. Invia un report email HTML a info@andreacinelli.com
+ * 4. AUTO-REMEDIATION: se una sezione principale ha 0 notizie, forza refresh
  * ──────────────────────────────────────────────────────────────────────────────
  */
 
@@ -12,6 +13,20 @@ import { getDb } from "./db";
 import { newsItems, linkedinPosts } from "../drizzle/schema";
 import { eq, gte, and, count, desc } from "drizzle-orm";
 import { sendEmail } from "./email";
+
+// Sezioni principali che supportano auto-remediation via RSS
+const REMEDIABLE_SECTIONS: Record<string, () => Promise<void>> = {};
+
+async function loadRemediableSections() {
+  try {
+    const { refreshAINewsFromRSS, refreshStartupNewsFromRSS, refreshDealroomNewsFromRSS } = await import("./rssNewsScheduler");
+    REMEDIABLE_SECTIONS['ai'] = refreshAINewsFromRSS;
+    REMEDIABLE_SECTIONS['startup'] = refreshStartupNewsFromRSS;
+    REMEDIABLE_SECTIONS['dealroom'] = refreshDealroomNewsFromRSS;
+  } catch (err) {
+    console.error("[MorningReport] ⚠️ Impossibile caricare funzioni remediation:", err);
+  }
+}
 
 const REPORT_EMAIL = "info@andreacinelli.com";
 
@@ -193,6 +208,88 @@ export async function runMorningHealthReport(): Promise<void> {
     }
   } catch (err) {
     console.error("[MorningReport] ❌ Errore fatale invio report:", err);
+  }
+
+  // ── 7. AUTO-REMEDIATION: forza refresh sezioni principali con 0 notizie ──
+  if (!overallOk) {
+    console.log("[MorningReport] 🔧 Avvio auto-remediation per sezioni con problemi...");
+    await loadRemediableSections();
+
+    const failedSections = sectionStatuses.filter(s => !s.ok && s.count === 0);
+    const remediationResults: { section: string; label: string; success: boolean; error?: string }[] = [];
+
+    for (const failed of failedSections) {
+      const refreshFn = REMEDIABLE_SECTIONS[failed.key];
+      if (!refreshFn) {
+        console.log(`[MorningReport] ℹ️ Sezione '${failed.key}' (${failed.label}) non ha un refresh automatico disponibile — skip`);
+        continue;
+      }
+      console.log(`[MorningReport] 🔄 Auto-remediation: avvio refresh '${failed.key}' (${failed.label})...`);
+      try {
+        await refreshFn();
+        remediationResults.push({ section: failed.key, label: failed.label, success: true });
+        console.log(`[MorningReport] ✅ Auto-remediation '${failed.key}': refresh completato`);
+      } catch (remErr) {
+        const errMsg = remErr instanceof Error ? remErr.message : String(remErr);
+        remediationResults.push({ section: failed.key, label: failed.label, success: false, error: errMsg });
+        console.error(`[MorningReport] ❌ Auto-remediation '${failed.key}' fallita:`, remErr);
+      }
+      // Pausa tra un refresh e l'altro per non sovraccaricare le API
+      await new Promise(r => setTimeout(r, 15_000));
+    }
+
+    // Invia email di follow-up con esito remediation
+    if (remediationResults.length > 0) {
+      const successCount = remediationResults.filter(r => r.success).length;
+      const failCount = remediationResults.filter(r => !r.success).length;
+      const remediationHtml = `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;color:#e2e8f0;padding:24px;border-radius:12px;">
+          <div style="text-align:center;margin-bottom:20px;">
+            <span style="color:#00e5c8;font-size:11px;letter-spacing:2px;font-weight:700;">PROOF PRESS — AUTO-REMEDIATION</span>
+            <h2 style="color:#fff;margin:8px 0;">🔧 Refresh Automatico Completato</h2>
+            <p style="color:#94a3b8;font-size:13px;">${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} CET</p>
+          </div>
+          <div style="background:#1e293b;border-radius:8px;padding:16px;margin-bottom:16px;">
+            <p style="margin:0 0 8px;">Dopo il Morning Report delle 08:00, il sistema ha rilevato <strong>${failedSections.length} sezioni</strong> con 0 notizie e ha avviato il refresh automatico:</p>
+            <table style="width:100%;border-collapse:collapse;margin-top:12px;">
+              <tr style="border-bottom:1px solid #334155;">
+                <th style="text-align:left;padding:8px;color:#94a3b8;font-size:12px;">SEZIONE</th>
+                <th style="text-align:center;padding:8px;color:#94a3b8;font-size:12px;">ESITO</th>
+              </tr>
+              ${remediationResults.map(r => `
+                <tr style="border-bottom:1px solid #1e293b;">
+                  <td style="padding:8px;font-size:13px;">${r.label} <code style="color:#94a3b8;font-size:11px;">(${r.section})</code></td>
+                  <td style="text-align:center;padding:8px;">
+                    ${r.success
+                      ? '<span style="color:#22c55e;font-weight:700;">✅ OK</span>'
+                      : `<span style="color:#ef4444;font-weight:700;">❌ ERRORE</span><br><span style="color:#94a3b8;font-size:11px;">${r.error ?? ''}</span>`
+                    }
+                  </td>
+                </tr>
+              `).join('')}
+            </table>
+          </div>
+          <div style="text-align:center;padding:12px;background:#${successCount === remediationResults.length ? '14532a' : '450a0a'};border-radius:8px;">
+            <strong style="color:#${successCount === remediationResults.length ? '22c55e' : 'ef4444'};">
+              ${successCount}/${remediationResults.length} refresh riusciti
+            </strong>
+            ${failCount > 0 ? '<p style="color:#fca5a5;font-size:12px;margin:4px 0 0;">Le sezioni fallite richiedono intervento manuale dalla dashboard Admin.</p>' : ''}
+          </div>
+        </div>
+      `;
+      try {
+        await sendEmail({
+          to: REPORT_EMAIL,
+          subject: `🔧 Auto-Remediation ${successCount}/${remediationResults.length} OK — ${remediationResults.map(r => r.label).join(', ')}`,
+          html: remediationHtml
+        });
+        console.log(`[MorningReport] ✅ Email remediation inviata: ${successCount}/${remediationResults.length} refresh riusciti`);
+      } catch (emailErr) {
+        console.error("[MorningReport] ❌ Errore invio email remediation:", emailErr);
+      }
+    }
+  } else {
+    console.log("[MorningReport] ✅ Tutte le sezioni OK — nessuna remediation necessaria");
   }
 }
 
