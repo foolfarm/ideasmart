@@ -522,6 +522,45 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
+  // NEWSLETTER DEL SABATO — "Il meglio di ProofPress"
+  //   10:00 CET (sab) — Preview editoriale → ac@acinelli.com per approvazione
+  //   12:00 CET (sab) — Invio massivo a tutti gli iscritti attivi
+  // ══════════════════════════════════════════════════════════════════════════
+  // ⏰ 10:00 CET (sabato) — Preview editoriale del sabato
+  cron.schedule("0 10 * * 6", async () => {
+    console.log("[SchedulerManager] ⏰ 10:00 CET (sab) — Preview \"Il meglio di ProofPress\"...");
+    await withLock("saturday-preview", async () => {
+      try {
+        const { sendSaturdayPreview } = await import("./saturdayEditorialNewsletter");
+        const result = await sendSaturdayPreview();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Preview sabato inviata: ${result.subject}`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore preview sabato:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico preview sabato:", err);
+      }
+    });
+  }, { timezone: TZ });
+  // ⏰ 12:00 CET (sabato) — Invio massivo newsletter del sabato
+  cron.schedule("0 12 * * 6", async () => {
+    console.log("[SchedulerManager] ⏰ 12:00 CET (sab) — Invio massivo \"Il meglio di ProofPress\"...");
+    await withLock("saturday-massivo", async () => {
+      try {
+        const { sendSaturdayNewsletterToAll } = await import("./saturdayEditorialNewsletter");
+        const result = await sendSaturdayNewsletterToAll();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Newsletter sabato inviata: ${result.recipientCount} destinatari`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore newsletter sabato massiva:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico newsletter sabato massiva:", err);
+      }
+    });
+  }, { timezone: TZ });
+  // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 4 post giornalieri:
   //   10:00 CET — AI News (morning)
   //   12:30 CET — 2° Editoriale AI su ricerche di mercato (ai-research-morning)
