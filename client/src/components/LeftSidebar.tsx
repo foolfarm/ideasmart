@@ -12,10 +12,13 @@ interface SidebarChannel {
 /* ─── SEZIONE INFO ────────────────────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
   { label: "Chi siamo",   icon: "🏗️", href: "/chi-siamo-story" },
-  { label: "Tecnologia",  icon: "✅", href: "/proofpress-verify" },
-  { label: "Demo",        icon: "🎯", href: "https://ideasmart.technology" },
   { label: "Pubblicizza", icon: "📣", href: "/pubblicita" },
   { label: "Contatti",    icon: "✉️", href: "mailto:info@proofpress.ai" },
+];
+
+const PIATTAFORMA_SUBMENU = [
+  { label: "Agentic Platform Demo", icon: "🎯", href: "https://ideasmart.technology", external: true },
+  { label: "ProofPress Verify",     icon: "✅", href: "/proofpress-verify", external: false },
 ];
 
 const OFFERTA_SUBMENU = [
@@ -28,6 +31,9 @@ export default function LeftSidebar() {
   const [location] = useLocation();
   const [offertaOpen, setOffertaOpen] = useState(
     location.startsWith("/offerta")
+  );
+  const [piattaformaOpen, setPiattaformaOpen] = useState(
+    location.startsWith("/proofpress-verify")
   );
 
   const isActive = (href: string) => {
@@ -77,6 +83,52 @@ export default function LeftSidebar() {
 
       {/* Sezione info */}
       <nav className="flex flex-col gap-0.5 px-2 mb-4">
+
+        {/* Voce Piattaforma con submenu */}
+        <div>
+          <button
+            onClick={() => setPiattaformaOpen(!piattaformaOpen)}
+            className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 ${
+              location.startsWith("/proofpress-verify")
+                ? "bg-[#1a1a1a] text-white"
+                : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/70 hover:text-[#1a1a1a]"
+            }`}
+          >
+            <span className="text-[13px] w-4 text-center flex-shrink-0">🖥️</span>
+            <span
+              className="text-[12px] font-medium leading-tight flex-1 text-left"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}
+            >
+              Piattaforma
+            </span>
+            {piattaformaOpen
+              ? <ChevronDown size={12} className="flex-shrink-0 opacity-60" />
+              : <ChevronRight size={12} className="flex-shrink-0 opacity-60" />}
+          </button>
+          {piattaformaOpen && (
+            <div className="ml-4 mt-0.5 flex flex-col gap-0.5 border-l border-[#1a1a1a]/10 pl-2">
+              {PIATTAFORMA_SUBMENU.map((sub) => (
+                sub.external ? (
+                  <a key={sub.href} href={sub.href} target="_blank" rel="noopener noreferrer">
+                    <div className="flex items-center gap-2 px-2 py-1 rounded-md cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/60 hover:text-[#1a1a1a]">
+                      <span className="text-[11px] w-3 text-center flex-shrink-0">{sub.icon}</span>
+                      <span className="text-[11px] font-medium leading-tight" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>{sub.label}</span>
+                    </div>
+                  </a>
+                ) : (
+                  <Link key={sub.href} href={sub.href}>
+                    <div className={`flex items-center gap-2 px-2 py-1 rounded-md cursor-pointer transition-all duration-150 ${
+                      isActive(sub.href) ? "bg-[#ff5500] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/60 hover:text-[#1a1a1a]"
+                    }`}>
+                      <span className="text-[11px] w-3 text-center flex-shrink-0">{sub.icon}</span>
+                      <span className="text-[11px] font-medium leading-tight" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>{sub.label}</span>
+                    </div>
+                  </Link>
+                )
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Voce Offerta con submenu */}
         <div>
