@@ -316,8 +316,8 @@ STRUTTURA DEL POST:
 1. APERTURA (2-3 righe): Inizia con un dato di mercato specifico o un'osservazione controcorrente che sfida il pensiero convenzionale. NON iniziare con "Oggi parliamo di..." o simili. Scrivi in prima persona.
 2. ANALISI (3-4 paragrafi brevi): Collega i dati a implicazioni strategiche concrete per aziende italiane/europee. Usa i dati di mercato forniti. Sii specifico sulle implicazioni operative, non solo sulle tendenze. Usa "io", "ho analizzato", "la mia lettura".
 3. POSIZIONE (1 paragrafo): Qual è la tua lettura personale come imprenditore? Dove vedi il rischio che gli altri non vedono?
-4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Tech Expert"
-5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su Proof Press → ${SITE_BASE_URL}${meta.path}"
+4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Tech Expert @ProofPress"
+5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su @ProofPress → ${SITE_BASE_URL}${meta.path}"
 6. HASHTAG: ${meta.hashtags.join(" ")}
 
 LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
