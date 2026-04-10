@@ -46,6 +46,42 @@ function computePostHash(text: string): string {
   return createHash("sha256").update(normalized).digest("hex").slice(0, 16);
 }
 
+/**
+ * Calcola la similarità di Jaccard tra due testi basandosi sui token (parole).
+ * Restituisce un valore tra 0 (completamente diversi) e 1 (identici).
+ * Ignora stopword comuni italiane e inglesi per un confronto più significativo.
+ */
+const STOPWORDS = new Set([
+  "il","lo","la","i","gli","le","un","uno","una","di","a","da","in","con","su","per","tra","fra",
+  "e","o","ma","se","che","non","è","sono","ha","hanno","del","della","dei","degli","delle",
+  "al","alla","ai","agli","alle","nel","nella","nei","negli","nelle","sul","sulla","sui",
+  "the","a","an","and","or","but","in","on","at","to","for","of","with","by","from","is","are",
+  "was","were","be","been","being","have","has","had","do","does","did","will","would","could",
+  "should","may","might","shall","can","this","that","these","those","it","its","we","they",
+]);
+
+function tokenize(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^a-zàèéìòùa-z0-9\s]/gi, " ")
+      .split(/\s+/)
+      .filter(w => w.length > 3 && !STOPWORDS.has(w))
+  );
+}
+
+function jaccardSimilarity(textA: string, textB: string): number {
+  const setA = tokenize(textA);
+  const setB = tokenize(textB);
+  if (setA.size === 0 || setB.size === 0) return 0;
+  let intersection = 0;
+  Array.from(setA).forEach(token => {
+    if (setB.has(token)) intersection++;
+  });
+  const union = setA.size + setB.size - intersection;
+  return union === 0 ? 0 : intersection / union;
+}
+
 const SITE_BASE_URL = "https://proofpress.ai";
 
 // ── In-memory cache immagini usate oggi (per evitare duplicati tra slot) ────
@@ -149,7 +185,27 @@ async function auditPrePublish(postText: string, imageUrl: string | null, slot: 
       }
     }
     
-    console.log(`[LinkedIn AUDIT] ✅ Audit superato — testo e immagine unici`);
+    // 4. Controllo similarità Jaccard sugli ultimi 30 giorni (soglia: 20%)
+    // Blocca se il nuovo post è simile per più del 20% a qualsiasi post recente
+    const SIMILARITY_THRESHOLD = 0.20; // 20% = blocca se troppo simile
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const thirtyDaysAgoLabel = thirtyDaysAgo.toLocaleDateString("sv-SE", { timeZone: TZ_ROME });
+    const recentPosts = await db.select({ id: linkedinPosts.id, slot: linkedinPosts.slot, dateLabel: linkedinPosts.dateLabel, postText: linkedinPosts.postText })
+      .from(linkedinPosts)
+      .where(gte(linkedinPosts.dateLabel, thirtyDaysAgoLabel))
+      .orderBy(desc(linkedinPosts.id))
+      .limit(50);
+    for (const recent of recentPosts) {
+      if (!recent.postText) continue;
+      const similarity = jaccardSimilarity(postText, recent.postText);
+      if (similarity > SIMILARITY_THRESHOLD) {
+        console.warn(`[LinkedIn AUDIT] 🚫 CONTENUTO TROPPO SIMILE: similarità ${(similarity * 100).toFixed(1)}% con post del ${recent.dateLabel} (slot ${recent.slot}) — soglia: ${(SIMILARITY_THRESHOLD * 100).toFixed(0)}%`);
+        return { pass: false, reason: `Contenuto troppo simile (${(similarity * 100).toFixed(1)}%) a un post del ${recent.dateLabel}. Il post deve essere almeno ${((1 - SIMILARITY_THRESHOLD) * 100).toFixed(0)}% diverso dai contenuti recenti.` };
+      }
+    }
+
+    console.log(`[LinkedIn AUDIT] ✅ Audit superato — testo e immagine unici, similarità OK`);
     return { pass: true };
   } catch (err) {
     console.warn('[LinkedIn AUDIT] ⚠️ Errore durante audit, procedo con cautela:', err);
