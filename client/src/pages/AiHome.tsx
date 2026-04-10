@@ -46,23 +46,23 @@ function NewsCard({ item, showImage = false, large = false }: {
   showImage?: boolean;
   large?: boolean;
 }) {
-  const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
+  const href = `/ai/news/${item.id}`;
   return (
     <div className="py-3">
       {showImage && item.imageUrl && (
-        <a href={href} rel="noopener noreferrer">
+        <Link href={href}>
           <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
             className={`w-full ${large ? "h-52" : "h-32"} object-cover mb-3 cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all`}
             style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
-        </a>
+        </Link>
       )}
       <SectionBadge label={item.category || "AI"} />
-      <a href={href} rel="noopener noreferrer">
+      <Link href={href}>
         <h3 className={`mt-2 ${large ? "text-xl md:text-2xl" : "text-base"} font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer`}
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.title}
         </h3>
-      </a>
+      </Link>
       <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
         {item.summary}
@@ -84,17 +84,17 @@ function NewsCard({ item, showImage = false, large = false }: {
 function NewsRow({ item }: {
   item: { id: number; title: string; category: string; sourceName?: string; publishedAt?: string; sourceUrl?: string };
 }) {
-  const href = item.sourceUrl && item.sourceUrl !== '#' ? item.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
+  const href = `/ai/news/${item.id}`;
   return (
     <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
       <SectionBadge label={item.category || "AI"} />
       <div>
-        <a href={href} rel="noopener noreferrer">
+        <Link href={href}>
           <span className="text-sm font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.title}
           </span>
-        </a>
+        </Link>
         {item.sourceName && (
           <span className="ml-2 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
