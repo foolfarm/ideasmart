@@ -979,6 +979,56 @@ function buildNewsletterHtmlV2(opts: {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // BLOCK J2: PROOF PRESS RESEARCH — Box ricerche del giorno
+  // ═══════════════════════════════════════════════════════════════
+  let researchBoxHtml = "";
+  if (researches.length > 0) {
+    const topResearches = researches.slice(0, 3);
+    const researchRows = topResearches.map((r, i) => {
+      const researchUrl = r.id
+        ? `${BASE_URL}/research/${r.id}?utm_source=newsletter&utm_medium=email&utm_campaign=research_box`
+        : `${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_box`;
+      const isLast = i === topResearches.length - 1;
+      return `
+      <tr>
+        <td style="padding:${i === 0 ? '0' : '12px'} 0 12px;${!isLast ? `border-bottom:1px solid #e5e7eb;` : ''}">
+          <a href="${researchUrl}" style="text-decoration:none;display:block;">
+            ${r.isResearchOfDay
+              ? `<div style="display:inline-block;font-size:9px;font-weight:700;color:#ffffff;background:#0066cc;border-radius:3px;padding:2px 7px;letter-spacing:0.08em;text-transform:uppercase;font-family:Arial,sans-serif;margin-bottom:6px;">RICERCA DEL GIORNO</div>`
+              : `<div style="font-size:10px;font-weight:600;color:#0066cc;font-family:Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${r.category || 'RESEARCH'}</div>`
+            }
+            <div style="font-size:14px;font-weight:700;color:#111827;font-family:Arial,sans-serif;line-height:1.4;margin-bottom:4px;">${r.title}</div>
+            <div style="font-size:12px;color:#6b7280;font-family:Arial,sans-serif;line-height:1.6;">${r.summary ? r.summary.slice(0, 120) + '...' : ''}</div>
+          </a>
+        </td>
+      </tr>`;
+    }).join("");
+    researchBoxHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;border-left:4px solid #0066cc;">
+          <tr>
+            <td style="padding:20px 26px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding-bottom:14px;border-bottom:2px solid #111827;">
+                    <span style="font-size:10px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:Arial,sans-serif;">🔬 PROOF PRESS RESEARCH</span>
+                    <span style="float:right;">
+                      <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_all" style="font-size:10px;color:#9ca3af;text-decoration:none;font-family:Arial,sans-serif;">Tutte le ricerche →</a>
+                    </span>
+                  </td>
+                </tr>
+                ${researchRows}
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:#f9fafb;"></td></tr>`;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // BLOCK K: CONSIGLIATO #2 + FOOTER
   // ═══════════════════════════════════════════════════════════════
   const deal2 = amazonDeals[1];
@@ -1075,6 +1125,7 @@ function buildNewsletterHtmlV2(opts: {
         ${iscrizioneHtml}
         ${eventsHtml}
         ${quickLinksHtml}
+        ${researchBoxHtml}
         ${consigliatoHtml2}
         ${footerHtml}
       </table>
