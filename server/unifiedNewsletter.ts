@@ -58,7 +58,8 @@ interface NewsItem {
 }
 
 interface BreakingItem {
-  id: string;
+  id: string | number;
+  newsItemId?: number | null; // ID della notizia collegata in newsItems (per link diretto)
   title: string;
   summary: string | null;
   sourceUrl: string | null;
@@ -464,6 +465,7 @@ async function collectAllContent() {
       })) as NewsItem[],
     breakingItems: breakingItems.map((b: any) => ({
       id: b.id,
+      newsItemId: b.newsItemId ?? null, // ID della notizia collegata in newsItems (per link diretto)
       title: b.title,
       summary: b.summary,
       sourceUrl: b.sourceUrl,
@@ -673,6 +675,25 @@ function buildNewsletterHtmlV2(opts: {
   // Hero: preferisce breaking news, altrimenti prima notizia AI (solo con ID valido)
   const heroAiItem = aiNews[0] && aiNews[0].id ? aiNews[0] : null;
   const heroItem = breakingItems[0] || (heroAiItem ? { ...heroAiItem, id: String(heroAiItem.id) } : null);
+
+  // Funzione helper: costruisce il link corretto per l'hero
+  // - Breaking news: usa newsItemId se disponibile (link a notizia reale), altrimenti /ai
+  // - NewsItem: usa sempre /ai/news/{id}
+  function buildHeroUrl(item: BreakingItem | NewsItem | null, campaign: string): string {
+    if (!item) return `${BASE_URL}/ai`;
+    const isBreaking = 'breakingReason' in item;
+    if (isBreaking) {
+      const breakingItem = item as BreakingItem;
+      if (breakingItem.newsItemId && typeof breakingItem.newsItemId === 'number') {
+        return `${BASE_URL}/ai/news/${breakingItem.newsItemId}?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}`;
+      }
+      // Breaking senza newsItemId collegato: link alla sezione AI
+      return `${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}`;
+    }
+    // NewsItem normale: link diretto
+    const newsItem = item as NewsItem;
+    return `${BASE_URL}/ai/news/${newsItem.id}?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}`;
+  }
   const heroImgUrl = heroImageUrl || pexelsUrl(FALLBACK_PEXELS.ai, 640, 300);
   // ProofPress Verify badge: usa l'hash reale SHA-256 dal DB (primi 16 char), oppure genera uno sintetico
   const heroVerifyHash = heroItem && 'verifyHash' in heroItem && (heroItem as any).verifyHash
@@ -694,7 +715,7 @@ function buildNewsletterHtmlV2(opts: {
                 ${heroItem.section ? heroItem.section.toUpperCase().replace(/_/g, " ") : "NOTIZIA DEL GIORNO"}
               </div>
               <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:12px;">
-                <a href="${BASE_URL}/ai/news/${heroItem.id}?utm_source=newsletter&utm_medium=email&utm_campaign=hero" style="color:${BLACK};text-decoration:none;">${heroItem.title}</a>
+                <a href="${buildHeroUrl(heroItem, 'hero')}" style="color:${BLACK};text-decoration:none;">${heroItem.title}</a>
               </div>
               ${heroItem.summary ? `<div style="font-size:15px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${heroItem.summary.slice(0, 280)}${heroItem.summary.length > 280 ? "..." : ""}</div>` : ""}
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -703,7 +724,7 @@ function buildNewsletterHtmlV2(opts: {
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td style="background:${ACCENT};border-radius:5px;padding:12px 24px;">
-                          <a href="${BASE_URL}/ai/news/${heroItem.id}?utm_source=newsletter&utm_medium=email&utm_campaign=hero_cta" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">LEGGI SU PROOF PRESS →</a>
+                          <a href="${buildHeroUrl(heroItem, 'hero_cta')}" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">LEGGI SU PROOF PRESS →</a>
                         </td>
                       </tr>
                     </table>

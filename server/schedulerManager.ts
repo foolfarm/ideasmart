@@ -463,6 +463,9 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 10:30 CET (lun/mer/ven) ──────────────
+  // ⛔ BLOCCO MANUALE ATTIVO dal 10/04/2026 — sospeso per verifica link newsletter
+  // Per riattivare: rimuovere il commento dal blocco cron.schedule qui sotto
+  /*
   cron.schedule("30 10 * * 1,3,5", async () => {
     console.log("[SchedulerManager] ⏰ 10:30 CET — Invio massivo newsletter Proof Press Daily...");
     await withLock("newsletter-massivo", async () => {
@@ -479,6 +482,7 @@ export function startAllSchedulers(): void {
       }
     });
   }, { timezone: TZ });
+  */
 
   // ══════════════════════════════════════════════════════════════════════════
   // NEWSLETTER PROMOZIONALE — Martedì e Giovedì
