@@ -314,7 +314,7 @@ export default function Business() {
       <SEOHead
         title="Proof Press Business — Piattaforma AI & Advisory"
         description="Due offerte per chi decide: la piattaforma AI agentica Proof Press Intelligence con 20+ ricerche al giorno, e il servizio di consulenza senior su AI Innovation, M&A e partnership tecnologiche."
-        canonical="https://ideasmart.biz/business"
+        canonical="https://proofpress.ai/business"
         ogSiteName="Proof Press Research"
       />
       <style>{`

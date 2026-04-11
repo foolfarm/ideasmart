@@ -301,7 +301,7 @@ export default function Tecnologia() {
       <SEOHead
         title="Tecnologia — Proof Press"
         description="Come funziona Proof Press: la piattaforma editoriale agentica con Verify, l'algoritmo proprietario che valida ogni notizia su sei dimensioni di qualità informativa."
-        canonical="https://ideasmart.biz/tecnologia"
+        canonical="https://proofpress.ai/tecnologia"
         ogSiteName="Proof Press"
       />
       <style>{`
@@ -772,7 +772,7 @@ export default function Tecnologia() {
             >
               © {new Date().getFullYear()} Proof Press · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
-                ideasmart.biz
+                proofpress.ai
               </a>
             </p>
           </div>

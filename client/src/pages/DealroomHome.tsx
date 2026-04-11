@@ -171,7 +171,7 @@ export default function DealroomHome() {
       <SEOHead
         title="DEALROOM \u2014 Proof Press"
         description="Notizie su round, funding, seed, Series A/B e investimenti venture capital. Focus sul mercato italiano, europeo e globale."
-        canonical="https://ideasmart.biz/dealroom"
+        canonical="https://proofpress.ai/dealroom"
         ogSiteName="Proof Press"
       />
 

@@ -126,7 +126,7 @@ export default function AiHome() {
       <SEOHead
         title="AI NEWS News — Proof Press"
         description="Notizie aggiornate ogni giorno sull'Intelligenza Artificiale per il business italiano. Editoriale, analisi e startup del giorno."
-        canonical="https://ideasmart.biz/ai"
+        canonical="https://proofpress.ai/ai"
         ogSiteName="Proof Press"
       />
 

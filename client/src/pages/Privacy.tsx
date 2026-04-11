@@ -7,7 +7,7 @@ import { useLocation } from "wouter";
 const LAST_UPDATE = "15 marzo 2026";
 const OWNER = "Proof Press — AI for Business";
 const OWNER_EMAIL = "info@proofpress.ai";
-const SITE_URL = "https://ideasmart.biz";
+const SITE_URL = "https://proofpress.ai";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (

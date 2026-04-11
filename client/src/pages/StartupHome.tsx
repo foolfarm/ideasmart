@@ -125,7 +125,7 @@ export default function StartupHome() {
       <SEOHead
         title="STARTUP NEWS — Proof Press"
         description="Notizie aggiornate ogni giorno sull'ecosistema startup italiano ed europeo. Editoriale, analisi e startup del giorno."
-        canonical="https://ideasmart.biz/startup"
+        canonical="https://proofpress.ai/startup"
         ogSiteName="Proof Press"
       />
 

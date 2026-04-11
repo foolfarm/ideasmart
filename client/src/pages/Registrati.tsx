@@ -47,7 +47,7 @@ export default function Registrati() {
       <SEOHead
         title="Registrati — Proof Press"
         description="Crea il tuo account gratuito Proof Press e accedi a tutte le analisi su AI, Startup e Venture Capital."
-        canonical="https://ideasmart.biz/registrati"
+        canonical="https://proofpress.ai/registrati"
         ogSiteName="Proof Press"
       />
       <div className="min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>

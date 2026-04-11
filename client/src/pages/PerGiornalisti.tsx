@@ -121,7 +121,7 @@ export default function PerGiornalisti() {
       <SEOHead
         title="Proof Press — La Redazione AI per Giornalisti e Testate Online | Da €500/mese"
         description="Lancia la tua testata online con una redazione AI. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. 10-15 articoli/giorno da €500/mese. Risparmi fino a €560k/anno rispetto a una redazione tradizionale."
-        canonical="https://ideasmart.biz/offertacommerciale"
+        canonical="https://proofpress.ai/offertacommerciale"
         ogSiteName="Proof Press"
       />
 
@@ -325,8 +325,8 @@ export default function PerGiornalisti() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <a href="https://ideasmart.biz" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline" style={{ fontFamily: FONT }}>
-              Guarda il risultato dal vivo → ideasmart.biz
+            <a href="https://proofpress.ai" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline" style={{ fontFamily: FONT }}>
+              Guarda il risultato dal vivo → proofpress.ai
             </a>
           </div>
         </Section>

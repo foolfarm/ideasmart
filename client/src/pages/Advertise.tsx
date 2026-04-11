@@ -225,7 +225,7 @@ export default function Advertise() {
       <SEOHead
         title="Advertising — Proof Press"
         description="Raggiungi 8.000+ professionisti B2B italiani dell'AI e del business con i formati pubblicitari di Proof Press: banner, newsletter, reportage branded e analisi sponsorizzate."
-        canonical="https://ideasmart.biz/advertise"
+        canonical="https://proofpress.ai/advertise"
         ogSiteName="Proof Press"
       />
       <style>{`
@@ -654,7 +654,7 @@ export default function Advertise() {
             >
               © {new Date().getFullYear()} Proof Press · Tutti i diritti riservati ·{" "}
               <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
-                ideasmart.biz
+                proofpress.ai
               </a>
             </p>
           </div>

@@ -55,7 +55,7 @@ export default function Accedi() {
       <SEOHead
         title="Accedi — Proof Press"
         description="Accedi al tuo account Proof Press per leggere tutte le analisi su AI, Startup e Venture Capital."
-        canonical="https://ideasmart.biz/accedi"
+        canonical="https://proofpress.ai/accedi"
         ogSiteName="Proof Press"
       />
       <div className="min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
