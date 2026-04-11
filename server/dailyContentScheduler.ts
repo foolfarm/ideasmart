@@ -305,7 +305,7 @@ const DIVERSITY_COOLDOWN_KEY = "last_diversity_alert_at";
 
 /**
  * Calcola il diversity score degli ultimi 14 editoriali.
- * Se scende sotto il 70%, invia un alert al proprietario (max 1 volta ogni 24h).
+ * Se scende sotto il 95%, invia un alert al proprietario (max 1 volta ogni 24h).
  * Il cooldown è persistente nel DB — sopravvive ai riavvii del server.
  */
 async function checkDiversityScoreAlert(): Promise<void> {
@@ -326,7 +326,7 @@ async function checkDiversityScoreAlert(): Promise<void> {
 
     console.log(`[DailyContent] Diversity score: ${diversityScore}% (${uniqueTitles}/${editorials.length} titoli unici)`);
 
-    if (diversityScore < 70) {
+    if (diversityScore < 95) {
       const now = Date.now();
       // Cooldown persistente nel DB (sopravvive ai riavvii del server)
       const settingRows = await db.select().from(systemSettings).where(eq(systemSettings.key, DIVERSITY_COOLDOWN_KEY)).limit(1);
@@ -340,7 +340,7 @@ async function checkDiversityScoreAlert(): Promise<void> {
       // Trova le coppie più simili per il report
       const titles = editorials.map(e => `- [${e.dateLabel}] ${e.title}`);
       const alertContent = [
-        `Il diversity score degli ultimi ${editorials.length} editoriali è sceso al ${diversityScore}% (soglia: 70%).`,
+        `Il diversity score degli ultimi ${editorials.length} editoriali è sceso al ${diversityScore}% (soglia: 95%).`,
         ``,
         `Titoli unici: ${uniqueTitles} su ${editorials.length}`,
         ``,
@@ -358,7 +358,7 @@ async function checkDiversityScoreAlert(): Promise<void> {
       await logAlert({
         type: "diversity",
         severity: diversityScore < 50 ? "critical" : "warning",
-        title: `Diversity Score ${diversityScore}% (soglia: 70%)`,
+        title: `Diversity Score ${diversityScore}% (soglia: 95%)`,
         message: `Titoli unici: ${uniqueTitles} su ${editorials.length}\n${titles.join("\n")}`,
         emailSent: true,
       });
