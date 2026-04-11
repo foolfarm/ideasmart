@@ -239,7 +239,7 @@ const SECTION_META: Record<LinkedInSection, { label: string; hashtags: string[];
   research: {
     label: "Proof Press Research",
     hashtags: ["#research", "#AI", "#startup", "#venturecapital", "#marketanalysis", "#Proof Press", "#TechTrends"],
-    path: "/ricerche"
+    path: "/research"
   }
 };
 
