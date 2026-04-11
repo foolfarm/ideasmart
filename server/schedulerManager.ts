@@ -1055,4 +1055,57 @@ export function startAllSchedulers(): void {
   }, 4 * 60 * 1000); // 4 minuti dopo l'avvio
 
   console.log("[SchedulerManager]   🧠 Channel Ingestor → ogni giorno alle 00:00 CET (RSS + AI per 6 canali)");
+
+  // ─── NEWSLETTER PROMOZIONALI ──────────────────────────────────────────────
+  // A) ProofPress Business → mar/ven/sab alle 15:00 CET
+  cron.schedule(
+    "0 15 * * 2,5,6",
+    async () => {
+      try {
+        console.log("[SchedulerManager] 📧 Newsletter Business: avvio invio...");
+        const { sendBusinessNewsletterToAll } = await import("./promoNewsletterBusiness");
+        await sendBusinessNewsletterToAll();
+        console.log("[SchedulerManager] ✅ Newsletter Business: completata");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Newsletter Business errore:", err);
+      }
+    },
+    { timezone: TZ }
+  );
+
+  // B) Prompt Collection 2026 → lun/mer/gio alle 15:00 CET
+  cron.schedule(
+    "0 15 * * 1,3,4",
+    async () => {
+      try {
+        console.log("[SchedulerManager] 📧 Newsletter Prompt Collection: avvio invio...");
+        const { sendPromptCollectionNewsletterToAll } = await import("./promoNewsletterPromptCollection");
+        await sendPromptCollectionNewsletterToAll();
+        console.log("[SchedulerManager] ✅ Newsletter Prompt Collection: completata");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Newsletter Prompt Collection errore:", err);
+      }
+    },
+    { timezone: TZ }
+  );
+
+  // C) Pubblicità su ProofPress → lun/mer/ven alle 18:00 CET
+  cron.schedule(
+    "0 18 * * 1,3,5",
+    async () => {
+      try {
+        console.log("[SchedulerManager] 📧 Newsletter Pubblicità: avvio invio...");
+        const { sendPubblicitaNewsletterToAll } = await import("./promoNewsletterPubblicita");
+        await sendPubblicitaNewsletterToAll();
+        console.log("[SchedulerManager] ✅ Newsletter Pubblicità: completata");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Newsletter Pubblicità errore:", err);
+      }
+    },
+    { timezone: TZ }
+  );
+
+  console.log("[SchedulerManager]   📧 Newsletter Business → mar/ven/sab alle 15:00 CET");
+  console.log("[SchedulerManager]   📧 Newsletter Prompt Collection → lun/mer/gio alle 15:00 CET");
+  console.log("[SchedulerManager]   📧 Newsletter Pubblicità → lun/mer/ven alle 18:00 CET");
 }
