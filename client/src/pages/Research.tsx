@@ -6,6 +6,7 @@ import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
+import SEOHead from "@/components/SEOHead";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import RequireAuth from "@/components/RequireAuth";
 import LeftSidebar from "@/components/LeftSidebar";
@@ -322,6 +323,13 @@ export default function Research() {
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
+        <SEOHead
+          title="Ricerche & Analisi — ProofPress"
+          description="Analisi approfondite su AI, Startup e Venture Capital. Ricerche verificate da ProofPress per chi prende decisioni."
+          canonical="https://proofpress.ai/research"
+          ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-research-cisacbT2pWcoc5B4U27pjr.png"
+          ogSiteName="ProofPress"
+        />
         <SharedPageHeader />
         {/* ── Titolo sezione Research ───────────────────────────────────────── */}
         <div className="max-w-6xl mx-auto px-4 pt-6 pb-2">
@@ -540,12 +548,12 @@ export default function Research() {
 
                 <div className="mt-6 space-y-2">
                   <a
-                    href="mailto:research@ideasmart.biz"
+                    href="mailto:research@proofpress.ai"
                     className="flex items-center justify-center gap-2 w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
                     style={{ background: "#1a1a1a", color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     <Mail className="w-3.5 h-3.5" />
-                    research@ideasmart.biz
+                    research@proofpress.ai
                   </a>
                   <a
                     href="/business"

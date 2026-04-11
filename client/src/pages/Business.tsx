@@ -119,7 +119,7 @@ const PLATFORM_PLANS = [
       "Archivio storico 12 mesi"
     ],
     cta: "Prova 14 giorni gratis",
-    href: "mailto:business@ideasmart.biz?subject=Research Pro",
+    href: "mailto:business@proofpress.ai?subject=Research Pro",
     outline: false,
   },
   {
@@ -138,7 +138,7 @@ const PLATFORM_PLANS = [
       "Account manager dedicato"
     ],
     cta: "Contattaci",
-    href: "mailto:business@ideasmart.biz?subject=Enterprise",
+    href: "mailto:business@proofpress.ai?subject=Enterprise",
     outline: true,
   }
 ];
@@ -764,11 +764,11 @@ export default function Business() {
             </p>
             <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="mailto:business@ideasmart.biz?subject=Proof Press Advisory — Richiesta di contatto"
+                href="mailto:business@proofpress.ai?subject=Proof Press Advisory — Richiesta di contatto"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-sm transition-all hover:opacity-90 text-white"
                 style={{ background: GOLD, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
-                Scrivici a business@ideasmart.biz →
+                Scrivici a business@proofpress.ai →
               </a>
               <a
                 href="https://www.linkedin.com/in/cinellia/"
@@ -803,7 +803,7 @@ export default function Business() {
               </p>
             </div>
             <a
-              href="mailto:business@ideasmart.biz?subject=Collaborazione Proof Press Advisory"
+              href="mailto:business@proofpress.ai?subject=Collaborazione Proof Press Advisory"
               className="flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-sm border-2 transition-all hover:opacity-80 whitespace-nowrap"
               style={{ borderColor: TEAL, color: TEAL, background: "transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
@@ -834,7 +834,7 @@ export default function Business() {
               <Link href="/" className="hover:underline">Home</Link>
               <Link href="/chi-siamo" className="hover:underline">Chi Siamo</Link>
               <Link href="/research" className="hover:underline">Research</Link>
-              <a href="mailto:business@ideasmart.biz" className="hover:underline">business@ideasmart.biz</a>
+              <a href="mailto:business@proofpress.ai" className="hover:underline">business@proofpress.ai</a>
             </div>
           </div>
         </footer>

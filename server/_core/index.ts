@@ -21,7 +21,7 @@ async function notifyServerError(subject: string, body: string): Promise<void> {
       <p style="color: #6b7280; font-size: 13px; margin-top: 24px;">
         Timestamp: ${timestamp}<br>
         Server: Proof Press — AI for Business<br>
-        <a href="https://www.ideasmart.biz" style="color: #2563eb;">ideasmart.biz</a>
+        <a href="https://www.proofpress.ai" style="color: #2563eb;">proofpress.ai</a>
       </p>
     </div>
   `;

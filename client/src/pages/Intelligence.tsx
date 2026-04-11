@@ -338,7 +338,7 @@ export default function Intelligence() {
                 ]}
                 cta="Prova 14 giorni gratis"
                 subCta="Nessuna carta richiesta"
-                ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20trial%20RADAR"
+                ctaHref="mailto:intelligence@proofpress.ai?subject=Richiesta%20trial%20RADAR"
                 ctaAriaLabel="Attiva prova gratuita piano RADAR"
               />
               <PricingCard
@@ -357,7 +357,7 @@ export default function Intelligence() {
                 cta="Attiva INTEL — 14 giorni gratis"
                 subCta="Il piano scelto dal 70% dei decision-maker"
                 highlighted
-                ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20trial%20INTEL"
+                ctaHref="mailto:intelligence@proofpress.ai?subject=Richiesta%20trial%20INTEL"
                 ctaAriaLabel="Attiva prova gratuita piano INTEL - 14 giorni gratis"
               />
               <PricingCard
@@ -374,7 +374,7 @@ export default function Intelligence() {
                   "Account manager dedicato"
                 ]}
                 cta="Parliamone — prenota una call"
-                ctaHref="mailto:intelligence@ideasmart.biz?subject=Richiesta%20ENTERPRISE%20Intelligence"
+                ctaHref="mailto:intelligence@proofpress.ai?subject=Richiesta%20ENTERPRISE%20Intelligence"
                 ctaAriaLabel="Contatta il team per il piano Enterprise"
               />
             </div>
@@ -456,7 +456,7 @@ export default function Intelligence() {
             <p className="text-[11px] mb-4" style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               Project-based · Retainer mensile · Board Advisory
             </p>
-            <a href="mailto:advisory@ideasmart.biz?subject=Richiesta%20consulenza%20Advisory"
+            <a href="mailto:advisory@proofpress.ai?subject=Richiesta%20consulenza%20Advisory"
               aria-label="Richiedi una consulenza Advisory"
               data-cta-name="advisory"
               className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-[11px] uppercase tracking-widest transition-all hover:opacity-90"
@@ -512,18 +512,18 @@ export default function Intelligence() {
               Nessuna carta di credito. Nessun impegno. Configura il tuo profilo in 2 minuti e domani mattina trovi il tuo primo briefing personalizzato pronto.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="mailto:intelligence@ideasmart.biz?subject=Attivazione%20prova%20gratuita%20Intelligence"
+              <a href="mailto:intelligence@proofpress.ai?subject=Attivazione%20prova%20gratuita%20Intelligence"
                 aria-label="Attiva la prova gratuita di Proof Press Intelligence"
                 data-cta-name="cta-finale"
                 className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-[12px] uppercase tracking-widest transition-all hover:opacity-90"
                 style={{ background: "#1a1a1a", color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Attiva la prova gratuita →
               </a>
-              <a href="mailto:intelligence@ideasmart.biz?subject=Richiesta%20prova%20gratuita%20Intelligence"
+              <a href="mailto:intelligence@proofpress.ai?subject=Richiesta%20prova%20gratuita%20Intelligence"
                 className="text-[12px] hover:opacity-70 transition-opacity"
-                aria-label="Scrivi direttamente a intelligence@ideasmart.biz"
+                aria-label="Scrivi direttamente a intelligence@proofpress.ai"
                 style={{ color: "rgba(255,255,255,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                Oppure scrivici a intelligence@ideasmart.biz
+                Oppure scrivici a intelligence@proofpress.ai
               </a>
             </div>
             <div className="mt-6">

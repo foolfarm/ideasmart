@@ -236,8 +236,8 @@ export default function Unsubscribe() {
             </p>
             <p className="text-xs mb-6" style={{ color: "#9ca3af" }}>
               Se desideri annullare la tua iscrizione, scrivi a{" "}
-              <a href="mailto:newsletter@ideasmart.biz" style={{ color: "#1a1a1a" }}>
-                newsletter@ideasmart.biz
+              <a href="mailto:newsletter@proofpress.ai" style={{ color: "#1a1a1a" }}>
+                newsletter@proofpress.ai
               </a>
             </p>
             <button

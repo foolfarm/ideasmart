@@ -789,8 +789,8 @@ export default function PerGiornalisti() {
               <button onClick={scrollToDemo} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: "#dc2626", borderRadius: 0 }}>
                 Prenota una demo →
               </button>
-              <a href="mailto:redazione@ideasmart.biz?subject=Richiesta%20demo%20%E2%80%94%20dalla%20pagina%20offerta-commerciale" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:bg-white hover:text-[#0a0a0a] text-center" style={{ borderRadius: 0 }}>
-                Scrivici: redazione@ideasmart.biz
+              <a href="mailto:redazione@proofpress.ai?subject=Richiesta%20demo%20%E2%80%94%20dalla%20pagina%20offerta-commerciale" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:bg-white hover:text-[#0a0a0a] text-center" style={{ borderRadius: 0 }}>
+                Scrivici: redazione@proofpress.ai
               </a>
             </div>
             <p className="mt-6 text-[13px] text-white/30" style={{ fontFamily: FONT }}>

@@ -127,6 +127,7 @@ export default function AiHome() {
         title="AI NEWS News — Proof Press"
         description="Notizie aggiornate ogni giorno sull'Intelligenza Artificiale per il business italiano. Editoriale, analisi e startup del giorno."
         canonical="https://proofpress.ai/ai"
+        ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-ai-2HNKKGHLmzPvLTRw9y9Nko.png"
         ogSiteName="Proof Press"
       />
 

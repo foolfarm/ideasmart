@@ -126,6 +126,7 @@ export default function StartupHome() {
         title="STARTUP NEWS — Proof Press"
         description="Notizie aggiornate ogni giorno sull'ecosistema startup italiano ed europeo. Editoriale, analisi e startup del giorno."
         canonical="https://proofpress.ai/startup"
+        ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-startup-P8XLJGGbhqxgkX6xLtuFUR.png"
         ogSiteName="Proof Press"
       />
 

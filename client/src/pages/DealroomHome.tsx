@@ -172,6 +172,7 @@ export default function DealroomHome() {
         title="DEALROOM \u2014 Proof Press"
         description="Notizie su round, funding, seed, Series A/B e investimenti venture capital. Focus sul mercato italiano, europeo e globale."
         canonical="https://proofpress.ai/dealroom"
+        ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-dealroom-7mUmbMgvxbCQ26uct7dsis.png"
         ogSiteName="Proof Press"
       />
 
