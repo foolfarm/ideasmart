@@ -45,54 +45,107 @@ export function getBusinessVariant(dayOfWeek?: number): "creator" | "editori" | 
   return "aziende";
 }
 
-// ─── Template HTML — Apple Style ──────────────────────────────────────────
+// ─── Template HTML — Apple Style COMPLETO ────────────────────────────────
 export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "aziende"): string {
 
-  // ── Stile comune Apple ──────────────────────────────────────────────────
   const FONT = `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif`;
   const BG = `#f5f5f7`;
-  const CARD_BG = `#ffffff`;
-  const TEXT_PRIMARY = `#1d1d1f`;
-  const TEXT_SECONDARY = `#6e6e73`;
-  const TEXT_TERTIARY = `#86868b`;
-  const ACCENT = `#0071e3`;
+  const WHITE = `#ffffff`;
+  const BLACK = `#1d1d1f`;
+  const SLATE = `#6e6e73`;
+  const MUTED = `#86868b`;
   const BORDER = `#d2d2d7`;
-  const LIGHT_BG = `#f5f5f7`;
+  const BLUE = `#0071e3`;
+  const GREEN = `#34c759`;
+  const ORANGE = `#ff9f0a`;
 
   const configs = {
     creator: {
       tag: "Per Creator & Giornalisti",
-      tagColor: ACCENT,
+      tagColor: BLUE,
+      accentHex: BLUE,
       headline: "La tua testata.\nLa tua firma.\nZero redazione.",
       subheadline: "Hai il talento. Non hai le 16 ore al giorno per gestire tutto il resto.",
-      intro: `Monitorare le fonti richiede 2 ore al giorno. Scrivere un pezzo decente altre 2. Verificare i dati, formattare, pubblicare, distribuire, gestire la newsletter — altre 3. Moltiplica per 5 giorni e hai un lavoro full-time che produce 5 articoli al giorno.\n\nProofPress ti dà il team che non puoi assumere.`,
+      problemTitle: "Il problema che nessuno ti dice",
+      problemBody: `Fare giornalismo o content creation nel 2025 non è mai stato così difficile — non per mancanza di talento, ma per mancanza di tempo. Monitorare le fonti richiede 2 ore al giorno. Scrivere un pezzo decente altre 2. Verificare i dati, formattare, pubblicare, distribuire, gestire la newsletter — altre 3. Moltiplica per 5 giorni e hai un lavoro full-time che produce 5 articoli.
+
+Il paradosso è questo: più sei bravo, più ti viene chiesto. E più ti viene chiesto, meno tempo hai per fare il lavoro bene. I creator che crescono non sono quelli che lavorano di più — sono quelli che hanno trovato un sistema.
+
+ProofPress è quel sistema. Non un tool in più da imparare. Non un'altra app da gestire. Una redazione AI autonoma che lavora mentre tu dormi, viaggi o pensi alla prossima storia che vale davvero la pena raccontare.`,
+      beforeAfter: [
+        { before: "4 ore al giorno per raccogliere notizie da 50+ fonti", after: "20 minuti per revisionare e approvare ciò che l'AI ha già selezionato" },
+        { before: "1 articolo al giorno, se tutto va bene", after: "15 contenuti certificati pubblicati ogni giorno con la tua firma" },
+        { before: "Newsletter manuale: 3 ore ogni invio", after: "Newsletter automatica: 10 minuti di revisione, poi parte da sola" },
+        { before: "Nessun sistema di verifica — ti fidi delle fonti e speri", after: "Badge ProofPress Verify su ogni contenuto — i lettori vedono che è certificato" },
+      ],
       stats: [
         { value: "4.000+", label: "Fonti monitorate 24/7" },
-        { value: "15×", label: "Articoli al giorno con 1 persona" },
-        { value: "100%", label: "Contenuti certificati" },
+        { value: "15×", label: "Contenuti al giorno con 1 persona" },
+        { value: "48%", label: "Open rate medio newsletter" },
+        { value: "100%", label: "Contenuti certificati ProofPress Verify" },
       ],
       howItWorks: [
-        { step: "1", title: "Monitora", desc: "4.000+ fonti analizzate ogni ora. Solo le notizie rilevanti per il tuo settore, filtrate per rilevanza e qualità." },
-        { step: "2", title: "Verifica", desc: "Confronto multi-fonte automatico. L'AI misura coerenza e affidabilità di ogni informazione prima di pubblicarla." },
-        { step: "3", title: "Pubblica", desc: "Ogni contenuto riceve il badge ProofPress Verify. Newsletter, sito e social — tutto automatico con la tua firma." },
+        { step: "01", title: "Monitora", desc: "4.000+ fonti analizzate ogni ora. Notizie filtrate per rilevanza, qualità e coerenza con il tuo settore. Nessun rumore, solo segnale." },
+        { step: "02", title: "Verifica", desc: "Confronto multi-fonte automatico. L'AI misura coerenza e affidabilità di ogni informazione. Solo i contenuti che superano il controllo ricevono il badge." },
+        { step: "03", title: "Genera", desc: "Articoli scritti in italiano, con il tuo tono editoriale. Titoli, sottotitoli, sommari e tag SEO già pronti. Tu revisioni, non riscrivi." },
+        { step: "04", title: "Pubblica", desc: "Integrazione diretta con il tuo CMS, newsletter e social. Un click per approvare, tutto il resto è automatico — con il badge ProofPress Verify visibile." },
+      ],
+      useCases: [
+        {
+          title: "Newsletter di settore da zero",
+          desc: "Luca, giornalista freelance specializzato in AI, ha lanciato la sua newsletter in 3 giorni. ProofPress seleziona le 10 notizie più rilevanti ogni mattina, Luca sceglie le 5 migliori, aggiunge il suo commento e pubblica. In 90 giorni: 2.400 iscritti, open rate 48%, primo sponsor a 90 giorni.",
+          metric: "2.400 iscritti in 90 giorni",
+        },
+        {
+          title: "Blog tech da 0 a 15 articoli/giorno",
+          desc: "Sara gestisce da sola un blog tech su startup e venture capital. Prima: 2 articoli al giorno, 4 ore di lavoro. Oggi: 15 articoli certificati, 45 minuti di revisione. Il traffico organico è cresciuto del 240% in 6 mesi senza un euro di advertising.",
+          metric: "+240% traffico organico in 6 mesi",
+        },
+        {
+          title: "Canale LinkedIn da esperto di settore",
+          desc: "Marco, consulente di management, pubblica 3 post LinkedIn al giorno su AI e business. ProofPress seleziona le notizie più rilevanti per il suo pubblico, lui aggiunge il suo punto di vista in 10 minuti. Risultato: da 800 a 12.000 follower in 8 mesi.",
+          metric: "Da 800 a 12.000 follower in 8 mesi",
+        },
       ],
       testimonials: [
         {
-          quote: "Prima impiegavo 4 ore al giorno a raccogliere notizie e scrivere. Oggi impiego 25 minuti per revisionare e pubblicare. Il resto lo fa ProofPress, con la mia firma.",
+          quote: "Prima impiegavo 4 ore al giorno a raccogliere notizie e scrivere. Oggi impiego 25 minuti per revisionare e pubblicare. Il resto lo fa ProofPress, con la mia firma. La mia newsletter ha raggiunto 2.400 iscritti in 4 mesi con un open rate del 48%.",
           author: "M.R., giornalista freelance specializzato in AI",
-          detail: "Newsletter da 2.400 iscritti · Milano"
+          detail: "Newsletter da 2.400 iscritti · Milano · Open rate 48%"
         },
         {
-          quote: "Ho lanciato la mia newsletter in 3 giorni. Senza ProofPress ci avrei messo 3 mesi solo per impostare il flusso editoriale.",
+          quote: "Ho lanciato la mia newsletter in 3 giorni. Senza ProofPress ci avrei messo 3 mesi solo per impostare il flusso editoriale. Ora pubblico ogni giorno, ho uno sponsor e guadagno dall'informazione che producevo gratis.",
           author: "L.B., creator tech",
-          detail: "1.800 iscritti in 60 giorni · Roma"
+          detail: "1.800 iscritti in 60 giorni · Roma · Primo sponsor al mese 3"
+        },
+        {
+          quote: "Il badge ProofPress Verify ha cambiato come i miei lettori percepiscono i miei contenuti. Non sono più 'un altro blog' — sono una fonte certificata. I lettori condividono di più, si fidano di più, restano più a lungo.",
+          author: "G.P., blogger specializzato in startup",
+          detail: "Blog da 8.000 lettori mensili · Torino"
         },
       ],
-      caseTitle: "Come funziona nella pratica",
-      caseDesc: `Marco è un giornalista freelance specializzato in AI e startup. Prima di ProofPress: 4 ore al giorno per raccogliere, scrivere e distribuire. Oggi: 25 minuti per revisionare il materiale già pronto, approvare e pubblicare. La newsletter ha raggiunto 2.400 iscritti in 4 mesi con un open rate del 48%.`,
-      ctaText: "Scopri il piano Creator",
+      faq: [
+        {
+          q: "Devo avere competenze tecniche per usarlo?",
+          a: "No. Setup completo in 10 minuti: crei un account, scegli i tuoi canali tematici e ProofPress inizia subito. Se hai già un sito WordPress, Ghost o Substack, la connessione è diretta dalla dashboard — nessun codice."
+        },
+        {
+          q: "I contenuti sembrano davvero scritti da me?",
+          a: "Sì, perché li imposti tu. Carichi il tuo stile editoriale, i tuoi esempi, il tuo tono. L'AI impara dal tuo modo di scrivere e produce contenuti coerenti con la tua voce. Tu revisioni e approvi — la firma è sempre la tua."
+        },
+        {
+          q: "Cosa succede se una notizia è falsa o inaccurata?",
+          a: "ProofPress non pubblica contenuti non verificati. Il sistema confronta ogni informazione su più fonti indipendenti e assegna un punteggio di affidabilità. Solo i contenuti che superano la soglia ricevono il badge ProofPress Verify. Se una notizia non è verificabile, non viene pubblicata."
+        },
+        {
+          q: "Il costo è giustificato per chi inizia?",
+          a: "Un giornalista freelance spende in media 2-3 ore al giorno solo nel monitoraggio delle fonti. A 39€/mese, il costo è inferiore a quello di un'ora di lavoro — e il tempo recuperato si trasforma direttamente in più contenuti, più iscritti e più ricavi."
+        },
+      ],
+      guarantee: "Prova ProofPress gratis per 14 giorni. Nessuna carta di credito richiesta. Se non vedi risultati concreti entro 2 settimane, non ti chiediamo nulla.",
+      ctaText: "Inizia gratis — 14 giorni",
       ctaUrl: "https://proofpress.ai/offerta?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business_creator",
-      altCtaText: "Guarda la demo",
+      altCtaText: "Guarda la demo (5 min)",
       altCtaUrl: "https://proofpress.ai/piattaforma?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business_creator",
       subjectVariants: [
         "ProofPress Business — La tua testata AI. La tua firma. Zero redazione.",
@@ -100,39 +153,93 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
         "ProofPress Creator — Smetti di perdere 4 ore al giorno a raccogliere notizie.",
       ],
     },
+
     editori: {
       tag: "Per Testate & Editori",
-      tagColor: `#34c759`,
+      tagColor: GREEN,
+      accentHex: GREEN,
       headline: "Redazione AI autonoma.\n24/7. Certificata.",
       subheadline: "Il tuo CMS aggiornato ogni ora. Con badge di verifica visibile ai lettori.",
-      intro: `Le testate che non adottano l'AI oggi rischiano di perdere rilevanza domani. ProofPress offre una redazione AI autonoma che produce e certifica contenuti 24/7, si integra direttamente nel tuo CMS e aggiunge il badge ProofPress Verify su ogni articolo.\n\nNon sostituisce i tuoi giornalisti. Li amplifica.`,
+      problemTitle: "Il problema che le testate non possono più ignorare",
+      problemBody: `Le testate che non adottano l'AI oggi rischiano di perdere rilevanza domani. Non è una previsione — è già successo. Mentre le redazioni tradizionali producono 5 articoli al giorno con 3 giornalisti, le testate che usano ProofPress ne producono 20 con lo stesso team.
+
+Il problema non è la qualità dei tuoi giornalisti. Il problema è il volume. I lettori si aspettano aggiornamenti in tempo reale, copertura completa, contenuti verificati. E lo si aspettano da te, non da un aggregatore anonimo.
+
+ProofPress non sostituisce la tua redazione. La amplifica. I tuoi giornalisti si concentrano su inchieste, interviste e analisi — il lavoro che solo loro sanno fare. L'AI gestisce il flusso quotidiano di notizie certificate, con il tuo template, il tuo tono, il tuo brand.`,
+      beforeAfter: [
+        { before: "5 articoli al giorno con 3 giornalisti", after: "20 notizie certificate al giorno con lo stesso team" },
+        { before: "Nessun sistema di verifica visibile ai lettori", after: "Badge ProofPress Verify su ogni articolo — segnale di affidabilità misurabile" },
+        { before: "CMS aggiornato 2-3 volte al giorno", after: "CMS aggiornato ogni ora, 24/7, anche nei weekend" },
+        { before: "I giornalisti perdono tempo su notizie di routine", after: "Il team si concentra su inchieste e contenuti ad alto valore" },
+      ],
       stats: [
-        { value: "4.000+", label: "Fonti in tempo reale" },
-        { value: "24/7", label: "Produzione automatica" },
-        { value: "+34%", label: "Tempo medio di lettura" },
+        { value: "20×", label: "Articoli al giorno con lo stesso team" },
+        { value: "+34%", label: "Tempo medio di lettura con badge Verify" },
+        { value: "+22%", label: "Tasso di ritorno dei lettori" },
+        { value: "24/7", label: "Produzione automatica certificata" },
       ],
       howItWorks: [
-        { step: "1", title: "Integrazione CMS", desc: "Connessione diretta al tuo CMS (WordPress, Ghost, custom). Articoli pubblicati automaticamente con il tuo template." },
-        { step: "2", title: "Certificazione", desc: "Ogni articolo riceve un hash crittografico ProofPress Verify. Il badge è visibile ai lettori — segnale di affidabilità." },
-        { step: "3", title: "Amplificazione", desc: "Il tuo team si concentra su inchieste e interviste. L'AI gestisce il flusso quotidiano di notizie certificate." },
+        { step: "01", title: "Integrazione CMS", desc: "Connessione diretta al tuo CMS (WordPress, Ghost, custom API). Articoli pubblicati automaticamente con il tuo template editoriale, categorie e tag." },
+        { step: "02", title: "Monitoraggio fonti", desc: "4.000+ fonti analizzate ogni ora. Solo le notizie rilevanti per il tuo settore, filtrate per qualità e coerenza con la tua linea editoriale." },
+        { step: "03", title: "Certificazione", desc: "Ogni articolo riceve un hash crittografico ProofPress Verify. Il badge è visibile ai lettori — segnale tangibile di affidabilità che aumenta la fiducia." },
+        { step: "04", title: "Amplificazione", desc: "Il tuo team approva, modifica o pubblica con un click. I giornalisti si concentrano su inchieste e interviste — il lavoro che crea valore reale." },
+      ],
+      useCases: [
+        {
+          title: "Testata B2B finanza e startup",
+          desc: "Una testata specializzata in finanza e startup ha integrato ProofPress nel proprio CMS. Prima: 5 articoli al giorno, 3 giornalisti, aggiornamento manuale. Oggi: 20 notizie certificate al giorno, stesso team, CMS aggiornato ogni ora. Il badge ProofPress Verify ha aumentato il tempo medio di lettura del 34%.",
+          metric: "+34% tempo medio di lettura",
+        },
+        {
+          title: "Media group con 3 testate verticali",
+          desc: "Un gruppo editoriale con 3 testate verticali (tech, finanza, startup) usa ProofPress per gestire il flusso di notizie su tutti e 3 i canali. Un solo editor supervisiona l'output AI di tutte e 3 le testate. Costo di produzione ridotto del 60%, qualità aumentata.",
+          metric: "-60% costo di produzione",
+        },
+        {
+          title: "Newsletter B2B da 12.000 iscritti",
+          desc: "Una newsletter B2B specializzata ha integrato ProofPress per la produzione quotidiana. Il tasso di ritorno degli iscritti è aumentato del 22% da quando il badge ProofPress Verify è visibile in ogni email. Gli inserzionisti pagano il 35% in più per il posizionamento 'certificato'.",
+          metric: "+35% valore spazi pubblicitari",
+        },
       ],
       testimonials: [
         {
-          quote: "Pubblichiamo 20 notizie certificate al giorno senza aver aumentato l'organico. Il badge ProofPress Verify ha cambiato come i lettori percepiscono la nostra affidabilità.",
+          quote: "Pubblichiamo 20 notizie certificate al giorno senza aver aumentato l'organico. Il badge ProofPress Verify ha cambiato come i lettori percepiscono la nostra affidabilità. Il tempo medio di lettura è aumentato del 34%.",
           author: "Direttore editoriale, testata B2B finanza e startup",
-          detail: "45.000 lettori mensili · Nord Italia"
+          detail: "45.000 lettori mensili · Nord Italia · +34% tempo di lettura"
         },
         {
-          quote: "Il tempo medio di lettura è aumentato del 34% da quando abbiamo introdotto il badge di certificazione. I lettori si fidano di più dei contenuti verificati.",
+          quote: "I nostri giornalisti non perdono più tempo sulle notizie di routine. Si concentrano su inchieste e analisi. La qualità del lavoro editoriale è aumentata, non diminuita. E produciamo 4 volte di più.",
+          author: "Caporedattore, media group tecnologia",
+          detail: "3 testate verticali · 80.000 lettori totali"
+        },
+        {
+          quote: "Gli inserzionisti ci chiedono specificamente il posizionamento 'certificato ProofPress'. Pagano il 35% in più per associare il loro brand a contenuti verificati. Il badge non è solo credibilità — è revenue.",
           author: "Head of Digital, media group",
-          detail: "Newsletter da 12.000 iscritti"
+          detail: "Newsletter da 12.000 iscritti · +35% CPM"
         },
       ],
-      caseTitle: "Un caso reale",
-      caseDesc: `Una testata B2B specializzata in finanza e startup ha integrato ProofPress nel proprio CMS. Oggi pubblica 20 notizie certificate al giorno senza aumentare l'organico. Il badge ProofPress Verify ha aumentato il tempo medio di lettura del 34% e il tasso di ritorno dei lettori del 22%.`,
-      ctaText: "Scopri il piano Editore",
+      faq: [
+        {
+          q: "Quanto tempo richiede l'integrazione con il nostro CMS?",
+          a: "L'integrazione con WordPress e Ghost richiede meno di 30 minuti. Per CMS custom, forniamo API documentate e supporto tecnico dedicato. Il team di onboarding ti segue passo dopo passo nella prima settimana."
+        },
+        {
+          q: "I contenuti AI rispettano la nostra linea editoriale?",
+          a: "Sì. Nella fase di setup carichi il tuo manuale di stile, esempi di articoli, tono e vincoli editoriali. L'AI produce contenuti coerenti con la tua identità. Ogni articolo passa attraverso la tua coda di approvazione prima della pubblicazione."
+        },
+        {
+          q: "Come funziona il badge ProofPress Verify?",
+          a: "Ogni articolo riceve un hash crittografico univoco che certifica la fonte, la data di verifica e il punteggio di affidabilità. I lettori possono cliccare sul badge per vedere il dettaglio della verifica. È un segnale di trasparenza misurabile — non un'etichetta decorativa."
+        },
+        {
+          q: "Cosa succede se l'AI pubblica qualcosa di inesatto?",
+          a: "ProofPress non pubblica senza approvazione umana. Ogni contenuto passa attraverso la tua coda di revisione. Puoi impostare soglie di affidabilità: sotto un certo punteggio, l'articolo va in bozza e richiede approvazione manuale. Il controllo finale è sempre tuo."
+        },
+      ],
+      guarantee: "Integrazione gratuita e supporto dedicato per i primi 30 giorni. Se non vedi un aumento misurabile della produzione editoriale entro il primo mese, rimborsiamo l'abbonamento.",
+      ctaText: "Richiedi una demo gratuita",
       ctaUrl: "https://proofpress.ai/offerta?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business_editori",
-      altCtaText: "Guarda la demo",
+      altCtaText: "Scarica il media kit",
       altCtaUrl: "https://proofpress.ai/piattaforma?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business_editori",
       subjectVariants: [
         "ProofPress per Editori — Redazione AI autonoma. 24/7. Certificata.",
@@ -140,39 +247,93 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
         "ProofPress Editori — Il badge che aumenta la fiducia dei tuoi lettori.",
       ],
     },
+
     aziende: {
       tag: "Per Aziende & Corporate",
-      tagColor: `#ff9f0a`,
+      tagColor: ORANGE,
+      accentHex: ORANGE,
       headline: "Intelligence certificata\nper decisioni più rapide.",
       subheadline: "Newsroom interno branded. Report IR, competitor e market intelligence.",
-      intro: `I C-level che prendono decisioni strategiche sull'AI hanno bisogno di informazioni verificate, non di rumore. ProofPress costruisce il tuo newsroom interno: un flusso continuo di intelligence certificata su competitor, mercato, trend AI e venture capital — tutto con il tuo brand.`,
+      problemTitle: "Il problema delle decisioni basate su informazioni sbagliate",
+      problemBody: `I C-level che prendono decisioni strategiche sull'AI hanno bisogno di informazioni verificate, non di rumore. Ogni giorno il tuo team legge decine di articoli, newsletter, report — e non ha il tempo di capire cosa è verificato, cosa è speculazione e cosa è direttamente falso.
+
+Il costo di una decisione basata su informazioni sbagliate è molto più alto del costo di un sistema che le verifica. ProofPress costruisce il tuo newsroom interno: un flusso continuo di intelligence certificata su competitor, mercato, trend AI e venture capital — tutto con il tuo brand, tutto verificato, tutto pronto per il board.
+
+Non è un abbonamento a una newsletter. È un'infrastruttura di intelligence che lavora 24/7 per portare al tuo team solo le informazioni che contano, nel formato che serve, con la certezza che siano accurate.`,
+      beforeAfter: [
+        { before: "Il CEO legge 45 minuti di news ogni mattina — non tutte verificate", after: "Briefing certificato di 10 minuti ogni mattina — solo le notizie che contano" },
+        { before: "Il team marketing produce 1 articolo a settimana sul blog aziendale", after: "3 articoli certificati al giorno, traffico organico +180% in 6 mesi" },
+        { before: "Nessun monitoraggio sistematico dei competitor", after: "Alert automatici su funding, lanci di prodotto e assunzioni chiave dei competitor" },
+        { before: "Report IR preparati manualmente in 2 giorni", after: "Report IR generati automaticamente con dati verificati in 2 ore" },
+      ],
       stats: [
-        { value: "100%", label: "Contenuti certificati" },
-        { value: "4.000+", label: "Fonti per la tua industry" },
-        { value: "1", label: "Persona per gestire tutto" },
+        { value: "+180%", label: "Traffico organico in 6 mesi" },
+        { value: "10 min", label: "Briefing CEO invece di 45 min" },
+        { value: "100%", label: "Contenuti certificati ProofPress Verify" },
+        { value: "1", label: "Persona per gestire tutto il newsroom" },
       ],
       howItWorks: [
-        { step: "1", title: "Intelligence competitiva", desc: "Monitora i movimenti dei tuoi competitor in tempo reale. Alert automatici su funding, lanci di prodotto e assunzioni chiave." },
-        { step: "2", title: "Content marketing", desc: "Pubblica contenuti certificati sul tuo sito e nei tuoi canali. Il badge ProofPress Verify aumenta la credibilità del tuo brand." },
-        { step: "3", title: "Report IR", desc: "Genera report automatici per investor relations con dati verificati. Briefing mattutino per il CEO ogni giorno alle 8:00." },
+        { step: "01", title: "Intelligence competitiva", desc: "Monitora i movimenti dei tuoi competitor in tempo reale. Alert automatici su funding, lanci di prodotto, assunzioni chiave e cambi di strategia." },
+        { step: "02", title: "Briefing esecutivo", desc: "Ogni mattina il CEO riceve un briefing certificato su AI, competitor e mercato. 10 minuti di lettura, informazioni verificate, zero rumore." },
+        { step: "03", title: "Content marketing certificato", desc: "Pubblica contenuti certificati sul tuo sito e nei tuoi canali. Il badge ProofPress Verify aumenta la credibilità del tuo brand con clienti e investitori." },
+        { step: "04", title: "Report IR automatici", desc: "Genera report automatici per investor relations con dati verificati. Briefing per il board, aggiornamenti per i soci, tutto con il tuo template aziendale." },
+      ],
+      useCases: [
+        {
+          title: "Scaleup SaaS B2B — Briefing CEO quotidiano",
+          desc: "Una scaleup SaaS B2B con 50 dipendenti usa ProofPress per il briefing mattutino del CEO. Prima: 45 minuti di lettura di news non verificate. Oggi: 10 minuti di briefing certificato su AI, competitor e mercato. Il CEO prende decisioni più rapide con informazioni più accurate.",
+          metric: "Da 45 min a 10 min di briefing quotidiano",
+        },
+        {
+          title: "Azienda fintech — Content marketing automatico",
+          desc: "Il team marketing di una fintech pubblica 3 articoli certificati al giorno sul blog aziendale usando ProofPress. Nessun aumento di budget, nessuna nuova assunzione. Risultato: +180% traffico organico in 6 mesi, +45% lead qualificati dal blog.",
+          metric: "+180% traffico organico, +45% lead",
+        },
+        {
+          title: "Gruppo industriale — Intelligence competitiva",
+          desc: "Un gruppo industriale con 500 dipendenti usa ProofPress per monitorare 12 competitor in 3 mercati. Alert automatici su ogni movimento rilevante. Il team strategico riceve un report settimanale con analisi certificate. Tempo risparmiato: 8 ore/settimana per analista.",
+          metric: "8 ore/settimana risparmiate per analista",
+        },
       ],
       testimonials: [
         {
-          quote: "Ogni mattina il CEO riceve un briefing certificato su AI, competitor e mercato. Ha ridotto il tempo di lettura delle news da 45 minuti a 10 minuti, con informazioni più accurate.",
+          quote: "Ogni mattina il CEO riceve un briefing certificato su AI, competitor e mercato. Ha ridotto il tempo di lettura delle news da 45 minuti a 10 minuti, con informazioni più accurate. Le decisioni strategiche sono migliorate — non è un'impressione, è misurabile.",
           author: "Chief of Staff, scaleup SaaS B2B",
-          detail: "50 dipendenti · Seed round completato"
+          detail: "50 dipendenti · Seed round completato · Milano"
         },
         {
-          quote: "Il team marketing pubblica 3 articoli certificati al giorno sul blog aziendale. Il traffico organico è cresciuto del 180% in 6 mesi senza aumentare il budget.",
+          quote: "Il team marketing pubblica 3 articoli certificati al giorno sul blog aziendale. Il traffico organico è cresciuto del 180% in 6 mesi senza aumentare il budget. I clienti ci citano come fonte autorevole — questo non aveva prezzo.",
           author: "CMO, azienda fintech",
-          detail: "Serie A · 120 dipendenti"
+          detail: "Serie A · 120 dipendenti · +180% traffico organico"
+        },
+        {
+          quote: "Monitoriamo 12 competitor in 3 mercati con un solo sistema. Quando un competitor ha alzato un round, lo sapevamo 4 ore prima che uscisse sulla stampa. Questo tipo di vantaggio informativo vale molto più del costo dell'abbonamento.",
+          author: "Head of Strategy, gruppo industriale",
+          detail: "500 dipendenti · 3 mercati monitorati"
         },
       ],
-      caseTitle: "Come lo usano le aziende",
-      caseDesc: `Una scaleup SaaS B2B usa ProofPress per il proprio newsroom interno. Il CEO riceve ogni mattina un briefing certificato su AI, competitor e mercato. Il team marketing pubblica 3 articoli certificati al giorno sul blog aziendale senza aumentare il budget. Risultato: +180% traffico organico in 6 mesi.`,
-      ctaText: "Scopri il piano Azienda",
+      faq: [
+        {
+          q: "Come si integra con i nostri strumenti aziendali esistenti?",
+          a: "ProofPress si integra con Slack, Teams, email aziendale e i principali CMS. Il briefing mattutino può essere inviato direttamente nel canale Slack del CEO. I report IR vengono generati nel formato che già usi (Word, PDF, Google Docs)."
+        },
+        {
+          q: "I dati aziendali sono al sicuro?",
+          a: "Sì. ProofPress non accede ai tuoi dati interni — monitora solo fonti pubbliche esterne. I contenuti generati sono ospitati su infrastruttura europea con crittografia end-to-end. Siamo conformi GDPR e disponibili a firmare DPA personalizzati."
+        },
+        {
+          q: "Quante persone servono per gestire il sistema?",
+          a: "Una persona, part-time. Il sistema è progettato per richiedere il minimo intervento umano: approvazione dei contenuti, configurazione degli alert, revisione dei report. La maggior parte delle aziende lo gestisce con 2-3 ore a settimana di supervisione."
+        },
+        {
+          q: "Possiamo personalizzare il brand dei contenuti?",
+          a: "Completamente. Ogni contenuto viene prodotto con il tuo template, il tuo logo, il tuo tono di voce. Il badge ProofPress Verify appare come 'Certificato da ProofPress per [Nome Azienda]'. I tuoi clienti e investitori vedono il tuo brand, non il nostro."
+        },
+      ],
+      guarantee: "Onboarding dedicato e 30 giorni di prova gratuita per aziende. Includiamo la configurazione completa del newsroom interno e il primo report IR. Se non sei soddisfatto, rimborsiamo tutto.",
+      ctaText: "Richiedi una demo aziendale",
       ctaUrl: "https://proofpress.ai/offerta?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business_aziende",
-      altCtaText: "Guarda la demo",
+      altCtaText: "Scarica il caso studio",
       altCtaUrl: "https://proofpress.ai/piattaforma?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business_aziende",
       subjectVariants: [
         "ProofPress Business — Intelligence certificata per decisioni più rapide.",
@@ -184,15 +345,37 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
 
   const c = configs[variant];
 
-  // ── Genera le card "Come funziona" ──────────────────────────────────────
-  const howItWorksCards = c.howItWorks.map(h => `
-    <td width="33%" style="vertical-align:top;padding:0 8px;">
-      <div style="background:${LIGHT_BG};border-radius:12px;padding:20px;height:100%;">
-        <div style="width:32px;height:32px;background:${c.tagColor};border-radius:8px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
-          <span style="font-family:${FONT};font-size:14px;font-weight:700;color:#fff;">${h.step}</span>
-        </div>
-        <div style="font-family:${FONT};font-size:14px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">${h.title}</div>
-        <div style="font-family:${FONT};font-size:13px;color:${TEXT_SECONDARY};line-height:1.6;">${h.desc}</div>
+  // ── Genera le card "Come funziona" (2 colonne) ──────────────────────────
+  const howItWorksRows = [];
+  for (let i = 0; i < c.howItWorks.length; i += 2) {
+    const left = c.howItWorks[i];
+    const right = c.howItWorks[i + 1];
+    howItWorksRows.push(`
+      <tr>
+        <td width="48%" style="vertical-align:top;padding:0 8px 16px 0;">
+          <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:24px;height:100%;">
+            <div style="font-family:${FONT};font-size:22px;font-weight:700;color:${c.accentHex};margin-bottom:10px;letter-spacing:-0.5px;">${left.step}</div>
+            <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${BLACK};margin-bottom:8px;">${left.title}</div>
+            <div style="font-family:${FONT};font-size:14px;color:${SLATE};line-height:1.65;">${left.desc}</div>
+          </div>
+        </td>
+        ${right ? `<td width="48%" style="vertical-align:top;padding:0 0 16px 8px;">
+          <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:24px;height:100%;">
+            <div style="font-family:${FONT};font-size:22px;font-weight:700;color:${c.accentHex};margin-bottom:10px;letter-spacing:-0.5px;">${right.step}</div>
+            <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${BLACK};margin-bottom:8px;">${right.title}</div>
+            <div style="font-family:${FONT};font-size:14px;color:${SLATE};line-height:1.65;">${right.desc}</div>
+          </div>
+        </td>` : '<td width="48%"></td>'}
+      </tr>
+    `);
+  }
+
+  // ── Genera le stat cards ─────────────────────────────────────────────────
+  const statCards = c.stats.map(s => `
+    <td align="center" style="padding:0 6px;">
+      <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:20px 12px;">
+        <div style="font-family:${FONT};font-size:26px;font-weight:700;color:${c.accentHex};letter-spacing:-0.5px;">${s.value}</div>
+        <div style="font-family:${FONT};font-size:12px;color:${SLATE};margin-top:4px;line-height:1.4;">${s.label}</div>
       </div>
     </td>
   `).join("");
@@ -201,27 +384,80 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
   const testimonialCards = c.testimonials.map(t => `
     <tr>
       <td style="padding:0 0 16px 0;">
-        <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
-          <div style="font-family:${FONT};font-size:15px;color:${TEXT_PRIMARY};line-height:1.65;margin-bottom:16px;">"${t.quote}"</div>
-          <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};">${t.author}</div>
-          <div style="font-family:${FONT};font-size:12px;color:${TEXT_TERTIARY};margin-top:2px;">${t.detail}</div>
+        <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:28px;">
+          <div style="font-family:${FONT};font-size:32px;color:${c.accentHex};line-height:1;margin-bottom:12px;opacity:0.4;">"</div>
+          <div style="font-family:${FONT};font-size:15px;color:${BLACK};line-height:1.7;margin-bottom:20px;">${t.quote}</div>
+          <div style="border-top:1px solid ${BORDER};padding-top:16px;">
+            <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${BLACK};">${t.author}</div>
+            <div style="font-family:${FONT};font-size:12px;color:${MUTED};margin-top:3px;">${t.detail}</div>
+          </div>
         </div>
       </td>
     </tr>
   `).join("");
 
-  // ── Genera le stat cards ─────────────────────────────────────────────────
-  const statCards = c.stats.map(s => `
-    <td align="center" style="padding:0 8px;">
-      <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:20px 16px;">
-        <div style="font-family:${FONT};font-size:28px;font-weight:700;color:${c.tagColor};letter-spacing:-0.5px;">${s.value}</div>
-        <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};margin-top:4px;">${s.label}</div>
-      </div>
-    </td>
+  // ── Genera i casi d'uso ──────────────────────────────────────────────────
+  const useCaseCards = c.useCases.map((u, i) => `
+    <tr>
+      <td style="padding:0 0 16px 0;">
+        <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:28px;">
+          <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${c.accentHex};letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px;">Caso ${i + 1}</div>
+          <div style="font-family:${FONT};font-size:16px;font-weight:600;color:${BLACK};margin-bottom:12px;">${u.title}</div>
+          <div style="font-family:${FONT};font-size:14px;color:${SLATE};line-height:1.7;margin-bottom:16px;">${u.desc}</div>
+          <div style="background:${c.accentHex}12;border-radius:8px;padding:10px 16px;display:inline-block;">
+            <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${c.accentHex};">📊 ${u.metric}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+
+  // ── Genera le FAQ ────────────────────────────────────────────────────────
+  const faqItems = c.faq.map(f => `
+    <tr>
+      <td style="padding:0 0 12px 0;">
+        <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
+          <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${BLACK};margin-bottom:10px;">${f.q}</div>
+          <div style="font-family:${FONT};font-size:14px;color:${SLATE};line-height:1.7;">${f.a}</div>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+
+  // ── Genera il confronto prima/dopo ───────────────────────────────────────
+  const beforeAfterRows = c.beforeAfter.map(b => `
+    <tr>
+      <td style="padding:0 0 10px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="48%" style="vertical-align:top;padding-right:6px;">
+              <div style="background:#fff5f5;border:1px solid #ffcdd2;border-radius:8px;padding:14px 16px;">
+                <div style="font-family:${FONT};font-size:10px;font-weight:600;color:#c62828;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;">Prima</div>
+                <div style="font-family:${FONT};font-size:13px;color:#b71c1c;line-height:1.5;">${b.before}</div>
+              </div>
+            </td>
+            <td width="4%" align="center" style="vertical-align:middle;font-size:16px;color:${MUTED};">→</td>
+            <td width="48%" style="vertical-align:top;padding-left:6px;">
+              <div style="background:#f0fff4;border:1px solid #c8e6c9;border-radius:8px;padding:14px 16px;">
+                <div style="font-family:${FONT};font-size:10px;font-weight:600;color:#2e7d32;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;">Con ProofPress</div>
+                <div style="font-family:${FONT};font-size:13px;color:#1b5e20;line-height:1.5;">${b.after}</div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
   `).join("");
 
   // ── Headline con a capo ──────────────────────────────────────────────────
   const headlineHtml = c.headline.split("\n").join("<br>");
+
+  // ── Paragrafi del problema ───────────────────────────────────────────────
+  const problemParagraphs = c.problemBody
+    .split(/\n\n+/)
+    .filter(p => p.trim())
+    .map(p => `<p style="margin:0 0 18px;font-family:${FONT};font-size:15px;color:${SLATE};line-height:1.75;">${p.trim()}</p>`)
+    .join("");
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -232,20 +468,20 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${FONT};">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:${BG};">
-<tr><td align="center" style="padding:32px 16px;">
+<tr><td align="center" style="padding:32px 16px 48px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
   <!-- HEADER -->
   <tr>
-    <td style="background:${CARD_BG};padding:24px 32px;border-radius:16px 16px 0 0;border-bottom:1px solid ${BORDER};">
+    <td style="background:${WHITE};padding:24px 32px;border-radius:16px 16px 0 0;border-bottom:1px solid ${BORDER};">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <div style="font-family:${FONT};font-size:20px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">ProofPress</div>
-            <div style="font-family:${FONT};font-size:11px;color:${TEXT_TERTIARY};margin-top:2px;letter-spacing:0.3px;">AI Journalism Certificato</div>
+            <div style="font-family:${FONT};font-size:22px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;">ProofPress</div>
+            <div style="font-family:${FONT};font-size:11px;color:${MUTED};margin-top:2px;letter-spacing:0.3px;">AI Journalism Certificato</div>
           </td>
           <td align="right">
-            <div style="display:inline-block;background:${c.tagColor}1a;color:${c.tagColor};font-family:${FONT};font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;">${c.tag}</div>
+            <div style="display:inline-block;background:${c.accentHex}18;color:${c.accentHex};font-family:${FONT};font-size:11px;font-weight:600;padding:5px 14px;border-radius:20px;">${c.tag}</div>
           </td>
         </tr>
       </table>
@@ -254,17 +490,18 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
 
   <!-- HERO -->
   <tr>
-    <td style="background:${CARD_BG};padding:48px 32px 40px;">
-      <h1 style="margin:0 0 16px;font-family:${FONT};font-size:36px;font-weight:700;color:${TEXT_PRIMARY};line-height:1.15;letter-spacing:-0.5px;">${headlineHtml}</h1>
-      <p style="margin:0 0 28px;font-family:${FONT};font-size:17px;color:${TEXT_SECONDARY};line-height:1.55;">${c.subheadline}</p>
-      <p style="margin:0 0 32px;font-family:${FONT};font-size:15px;color:${TEXT_SECONDARY};line-height:1.7;">${c.intro.replace(/\n\n/g, '</p><p style="margin:16px 0 0;font-family:' + FONT + ';font-size:15px;color:' + TEXT_SECONDARY + ';line-height:1.7;">')}</p>
+    <td style="background:${WHITE};padding:52px 32px 44px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">ProofPress Business</div>
+      <h1 style="margin:0 0 20px;font-family:${FONT};font-size:40px;font-weight:700;color:${BLACK};line-height:1.1;letter-spacing:-0.8px;">${headlineHtml}</h1>
+      <p style="margin:0 0 20px;font-family:${FONT};font-size:18px;color:${SLATE};line-height:1.55;">${c.subheadline}</p>
+      <p style="margin:0 0 36px;font-family:${FONT};font-size:15px;color:${SLATE};line-height:1.75;">ProofPress è la piattaforma di AI Journalism certificato che trasforma come produci, verifichi e distribuisci contenuti. Usata da creator, testate e aziende che vogliono produrre di più senza perdere qualità.</p>
       <table cellpadding="0" cellspacing="0">
         <tr>
-          <td style="padding-right:12px;">
-            <a href="${c.ctaUrl}" style="display:inline-block;background:${ACCENT};color:#fff;font-family:${FONT};font-size:15px;font-weight:600;padding:13px 24px;border-radius:980px;text-decoration:none;">${c.ctaText}</a>
+          <td style="padding-right:14px;">
+            <a href="${c.ctaUrl}" style="display:inline-block;background:${c.accentHex};color:#fff;font-family:${FONT};font-size:15px;font-weight:600;padding:14px 26px;border-radius:980px;text-decoration:none;">${c.ctaText}</a>
           </td>
           <td>
-            <a href="${c.altCtaUrl}" style="display:inline-block;background:transparent;color:${ACCENT};font-family:${FONT};font-size:15px;font-weight:500;padding:13px 0;text-decoration:none;">${c.altCtaText} →</a>
+            <a href="${c.altCtaUrl}" style="display:inline-block;color:${c.accentHex};font-family:${FONT};font-size:15px;font-weight:500;padding:14px 0;text-decoration:none;">${c.altCtaText} →</a>
           </td>
         </tr>
       </table>
@@ -273,40 +510,68 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
 
   <!-- STATS -->
   <tr>
-    <td style="background:${LIGHT_BG};padding:32px;">
+    <td style="background:${BG};padding:32px;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>${statCards}</tr>
       </table>
     </td>
   </tr>
 
-  <!-- COME FUNZIONA -->
+  <!-- IL PROBLEMA -->
   <tr>
-    <td style="background:${CARD_BG};padding:40px 32px;">
-      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Come funziona</div>
-      <h2 style="margin:0 0 28px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Tre passi. Zero complessità.</h2>
+    <td style="background:${WHITE};padding:44px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Il contesto</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:26px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;line-height:1.2;">${c.problemTitle}</h2>
+      ${problemParagraphs}
+    </td>
+  </tr>
+
+  <!-- PRIMA / DOPO -->
+  <tr>
+    <td style="background:${BG};padding:44px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Il cambiamento</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:26px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;">Prima e dopo ProofPress.</h2>
       <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>${howItWorksCards}</tr>
+        ${beforeAfterRows}
       </table>
     </td>
   </tr>
 
-  <!-- CASO D'USO -->
+  <!-- COME FUNZIONA -->
   <tr>
-    <td style="background:${LIGHT_BG};padding:40px 32px;">
-      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${c.caseTitle}</div>
-      <h2 style="margin:0 0 20px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Un esempio reale.</h2>
-      <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
-        <p style="margin:0;font-family:${FONT};font-size:15px;color:${TEXT_SECONDARY};line-height:1.7;">${c.caseDesc}</p>
-      </div>
+    <td style="background:${WHITE};padding:44px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Come funziona</div>
+      <h2 style="margin:0 0 28px;font-family:${FONT};font-size:26px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;">Quattro passi. Zero complessità.</h2>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${howItWorksRows.join("")}
+      </table>
+    </td>
+  </tr>
+
+  <!-- CTA INTERMEDIO -->
+  <tr>
+    <td style="background:${BG};padding:32px;text-align:center;">
+      <div style="font-family:${FONT};font-size:14px;color:${SLATE};margin-bottom:16px;">Vuoi vedere come funziona nel tuo caso specifico?</div>
+      <a href="${c.altCtaUrl}" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BORDER};font-family:${FONT};font-size:14px;font-weight:600;padding:12px 24px;border-radius:980px;text-decoration:none;">${c.altCtaText} →</a>
+    </td>
+  </tr>
+
+  <!-- CASI D'USO -->
+  <tr>
+    <td style="background:${WHITE};padding:44px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Casi d'uso reali</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:26px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;">Chi lo usa e cosa ottiene.</h2>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${useCaseCards}
+      </table>
     </td>
   </tr>
 
   <!-- TESTIMONIAL -->
   <tr>
-    <td style="background:${CARD_BG};padding:40px 32px;">
-      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Cosa dicono</div>
-      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Chi lo usa ogni giorno.</h2>
+    <td style="background:${BG};padding:44px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Cosa dicono</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:26px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;">Chi lo usa ogni giorno.</h2>
       <table width="100%" cellpadding="0" cellspacing="0">
         ${testimonialCards}
       </table>
@@ -315,47 +580,35 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
 
   <!-- FAQ -->
   <tr>
-    <td style="background:${LIGHT_BG};padding:40px 32px;">
-      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Domande frequenti</div>
-      <h2 style="margin:0 0 28px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Tre dubbi. Tre risposte dirette.</h2>
+    <td style="background:${WHITE};padding:44px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${MUTED};letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Domande frequenti</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:26px;font-weight:700;color:${BLACK};letter-spacing:-0.3px;">Quattro dubbi. Quattro risposte dirette.</h2>
       <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="padding-bottom:16px;">
-            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
-              <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">"Il costo è giustificato per una piccola realtà?"</div>
-              <p style="margin:0;font-family:${FONT};font-size:14px;color:${TEXT_SECONDARY};line-height:1.65;">Un giornalista freelance spende in media 2-3 ore al giorno solo nel monitoraggio delle fonti. ProofPress riduce questo tempo a meno di 20 minuti. A 39€/mese, il costo è inferiore a quello di un'ora di lavoro — e il tempo recuperato si trasforma direttamente in più contenuti pubblicati e più ricavi.</p>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding-bottom:16px;">
-            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
-              <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">"Quanto tempo richiede l'integrazione con il mio workflow?"</div>
-              <p style="margin:0;font-family:${FONT};font-size:14px;color:${TEXT_SECONDARY};line-height:1.65;">Setup completo in meno di 10 minuti: crei un account, imposti i tuoi canali tematici e ProofPress inizia immediatamente a filtrare le notizie rilevanti. Non c'è nessun codice da scrivere, nessun plugin da installare. Chi ha già un sito WordPress o Ghost può collegarlo direttamente dalla dashboard.</p>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
-              <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">"I contenuti generati dall'AI sono davvero affidabili?"</div>
-              <p style="margin:0;font-family:${FONT};font-size:14px;color:${TEXT_SECONDARY};line-height:1.65;">ProofPress non pubblica contenuti non verificati. Ogni notizia passa attraverso il sistema ProofPress Verify: confronto multi-fonte, rilevamento di incoerenze e assegnazione di un hash di certificazione. Il tuo nome appare solo su contenuti che hanno superato questo processo — e ogni lettore può verificarlo in tempo reale con un click.</p>
-            </div>
-          </td>
-        </tr>
+        ${faqItems}
       </table>
+    </td>
+  </tr>
+
+  <!-- GARANZIA -->
+  <tr>
+    <td style="background:${BG};padding:32px;">
+      <div style="background:${WHITE};border:1px solid ${BORDER};border-radius:12px;padding:28px;text-align:center;">
+        <div style="font-family:${FONT};font-size:28px;margin-bottom:12px;">🛡️</div>
+        <div style="font-family:${FONT};font-size:16px;font-weight:600;color:${BLACK};margin-bottom:10px;">La nostra garanzia</div>
+        <div style="font-family:${FONT};font-size:14px;color:${SLATE};line-height:1.7;max-width:460px;margin:0 auto;">${c.guarantee}</div>
+      </div>
     </td>
   </tr>
 
   <!-- CTA FINALE -->
   <tr>
-    <td style="background:${TEXT_PRIMARY};padding:48px 32px;border-radius:0 0 16px 16px;text-align:center;">
-      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Inizia oggi</div>
-      <h2 style="margin:0 0 12px;font-family:${FONT};font-size:28px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Prova ProofPress gratuitamente.</h2>
-      <p style="margin:0 0 28px;font-family:${FONT};font-size:15px;color:rgba(255,255,255,0.6);line-height:1.6;">Nessuna carta di credito. Setup in 10 minuti.</p>
-      <a href="${c.ctaUrl}" style="display:inline-block;background:#ffffff;color:${TEXT_PRIMARY};font-family:${FONT};font-size:15px;font-weight:600;padding:14px 28px;border-radius:980px;text-decoration:none;margin-bottom:16px;">${c.ctaText} →</a>
-      <div style="margin-top:16px;">
-        <a href="${c.altCtaUrl}" style="font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;">${c.altCtaText}</a>
+    <td style="background:${BLACK};padding:52px 32px;border-radius:0 0 16px 16px;text-align:center;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">Inizia oggi</div>
+      <h2 style="margin:0 0 14px;font-family:${FONT};font-size:30px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;line-height:1.2;">Prova ProofPress gratuitamente.</h2>
+      <p style="margin:0 0 32px;font-family:${FONT};font-size:15px;color:rgba(255,255,255,0.55);line-height:1.65;">Nessuna carta di credito. Setup in 10 minuti.<br>Vedi i risultati nella prima settimana.</p>
+      <a href="${c.ctaUrl}" style="display:inline-block;background:#ffffff;color:${BLACK};font-family:${FONT};font-size:15px;font-weight:600;padding:15px 30px;border-radius:980px;text-decoration:none;margin-bottom:20px;">${c.ctaText} →</a>
+      <div>
+        <a href="${c.altCtaUrl}" style="font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.45);text-decoration:none;">${c.altCtaText}</a>
       </div>
     </td>
   </tr>
@@ -369,18 +622,20 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <div style="font-family:${FONT};font-size:12px;color:${TEXT_TERTIARY};">
-              <a href="https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${TEXT_TERTIARY};text-decoration:none;">proofpress.ai</a>
+            <div style="font-family:${FONT};font-size:12px;color:${MUTED};">
+              <a href="https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${MUTED};text-decoration:none;">proofpress.ai</a>
               &nbsp;·&nbsp;
-              <a href="https://proofpress.ai/ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${TEXT_TERTIARY};text-decoration:none;">AI News</a>
+              <a href="https://proofpress.ai/ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${MUTED};text-decoration:none;">AI News</a>
               &nbsp;·&nbsp;
-              <a href="https://proofpress.ai/startup?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${TEXT_TERTIARY};text-decoration:none;">Startup</a>
+              <a href="https://proofpress.ai/startup?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${MUTED};text-decoration:none;">Startup</a>
+              &nbsp;·&nbsp;
+              <a href="https://proofpress.ai/research?utm_source=newsletter&utm_medium=email&utm_campaign=promo_business" style="color:${MUTED};text-decoration:none;">Ricerche</a>
             </div>
           </td>
           <td align="right">
-            <div style="font-family:${FONT};font-size:11px;color:${TEXT_TERTIARY};">
+            <div style="font-family:${FONT};font-size:11px;color:${MUTED};">
               Hai ricevuto questa email perché sei iscritto a ProofPress.<br>
-              <a href="https://proofpress.ai/unsubscribe?email={{email}}" style="color:${TEXT_TERTIARY};">Disiscriviti</a>
+              <a href="https://proofpress.ai/unsubscribe?email={{email}}" style="color:${MUTED};">Disiscriviti</a>
             </div>
           </td>
         </tr>
