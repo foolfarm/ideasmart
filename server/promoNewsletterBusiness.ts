@@ -488,6 +488,12 @@ Non è un abbonamento a una newsletter. È un'infrastruttura di intelligence che
     </td>
   </tr>
 
+  <!-- HERO IMAGE -->
+  <tr>
+    <td style="padding:0;">
+      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/hero_business-Kr57PYrut5Yj3XvrqnRrxN.webp" alt="ProofPress Business" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;" />
+    </td>
+  </tr>
   <!-- HERO -->
   <tr>
     <td style="background:${WHITE};padding:52px 32px 44px;">

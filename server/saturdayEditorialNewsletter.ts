@@ -231,7 +231,12 @@ export function buildSaturdayNewsletterHtml(opts: {
   const bodyParagraphs = editorial.body
     .split(/\n\n+/)
     .filter(p => p.trim().length > 0)
-    .map(p => `<p style="font-size:16px;line-height:1.85;color:${SLATE};font-family:${FONT};margin:0 0 20px;">${p.trim()}</p>`)
+    .map((p, i) => {
+      const accent = i > 0 && i % 2 === 0
+        ? `<div style="width:36px;height:3px;background:${GOLD};border-radius:2px;margin:0 0 20px;"></div>`
+        : '';
+      return `${accent}<p style="font-size:16px;line-height:1.95;color:${SLATE};font-family:${FONT};margin:0 0 24px;">${p.trim()}</p>`;
+    })
     .join("");
 
   return `<!DOCTYPE html>
@@ -294,125 +299,141 @@ export function buildSaturdayNewsletterHtml(opts: {
 
         <!-- BADGE EDITORIALE DEL SABATO -->
         <tr>
-          <td style="background:${CREAM};padding:20px 28px 16px;">
+          <td style="background:${CREAM};padding:24px 28px 20px;">
+            <div style="display:inline-block;font-size:11px;font-weight:600;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:980px;padding:5px 16px;font-family:${FONT};">Il meglio di ProofPress</div>
+            <span style="display:inline-block;margin-left:8px;font-size:11px;font-weight:600;color:${GOLD};background:${GOLD}1a;border-radius:980px;padding:5px 14px;font-family:${FONT};">${editorial.category}</span>
+            <div style="margin-top:10px;font-size:12px;color:${SLATE};font-family:${FONT};font-style:italic;">Editoriale del Sabato &mdash; Ogni settimana, un tema approfondito.</div>
+          </td>
+        </tr>
+
+        <!-- TITOLO EDITORIALE GRANDE -->
+        <tr>
+          <td style="background:${WHITE};padding:44px 28px 24px;border-top:1px solid ${BORDER};">
+            <h1 style="font-size:40px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.08;margin:0 0 18px;letter-spacing:-1px;">${editorial.title}</h1>
+            <p style="font-size:18px;color:${SLATE};font-family:${FONT};line-height:1.55;margin:0 0 24px;font-style:italic;">${editorial.subtitle}</p>
+            <div style="width:48px;height:4px;background:${GOLD};border-radius:2px;"></div>
+          </td>
+        </tr>
+
+        <!-- META INFO: autore + tempo di lettura -->
+        <tr>
+          <td style="background:${WHITE};padding:0 28px 28px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td>
-                  <div style="display:inline-block;font-size:11px;font-weight:600;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:980px;padding:5px 16px;font-family:${FONT};">Il meglio di ProofPress</div>
-                  <div style="margin-top:8px;font-size:12px;color:${SLATE};font-family:${FONT};font-style:italic;">Editoriale del Sabato &mdash; Ogni settimana, un tema approfondito.</div>
-                  <div style="margin-top:4px;">
-                    <span style="display:inline-block;font-size:11px;font-weight:600;color:${GOLD};background:${GOLD}1a;border-radius:980px;padding:3px 12px;font-family:${FONT};">${editorial.category}</span>
-                  </div>
+                <td style="border-top:1px solid ${BORDER};padding-top:16px;">
+                  <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${FONT};">La Redazione ProofPress</span>
+                  <span style="font-size:12px;color:${MUTED};font-family:${FONT};margin:0 8px;">&middot;</span>
+                  <span style="font-size:12px;color:${MUTED};font-family:${FONT};">Lettura: 5 minuti</span>
+                  <span style="font-size:12px;color:${MUTED};font-family:${FONT};margin:0 8px;">&middot;</span>
+                  <span style="font-size:12px;color:${MUTED};font-family:${FONT};">${dateLabel}</span>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- TITOLO EDITORIALE -->
-        <tr>
-          <td style="background:${WHITE};padding:36px 28px 8px;border-top:1px solid ${BORDER};">
-            <h1 style="font-size:32px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.15;margin:0 0 14px;letter-spacing:-0.5px;">${editorial.title}</h1>
-            <p style="font-size:16px;color:${SLATE};font-family:${FONT};line-height:1.5;margin:0 0 20px;font-style:italic;border-left:3px solid ${BORDER};padding-left:16px;">${editorial.subtitle}</p>
-          </td>
-        </tr>
+        <!-- SEPARATORE -->
+        <tr><td style="height:1px;background:${BORDER};"></td></tr>
 
-        <!-- SEPARATORE DECORATIVO -->
+        <!-- INTRO — testo grande, peso visivo -->
         <tr>
-          <td style="padding:0 28px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td style="height:1px;background:${BORDER};"></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- INTRO -->
-        <tr>
-          <td style="background:${WHITE};padding:28px 28px 0;">
-            <p style="font-size:18px;line-height:1.75;color:${DARK};font-family:${FONT};margin:0 0 24px;font-weight:500;">${editorial.intro}</p>
+          <td style="background:${WHITE};padding:36px 28px 8px;">
+            <p style="font-size:20px;line-height:1.8;color:${DARK};font-family:${FONT};margin:0;font-weight:500;padding-left:18px;border-left:4px solid ${GOLD};">${editorial.intro}</p>
           </td>
         </tr>
 
         <!-- CORPO EDITORIALE -->
         <tr>
-          <td style="background:${WHITE};padding:0 28px 28px;">
+          <td style="background:${WHITE};padding:28px 28px 8px;">
             ${bodyParagraphs}
           </td>
         </tr>
 
-        <!-- SEZIONE: PERCHÉ OGGI -->
+        <!-- CITAZIONE CHIAVE — grande, visiva -->
         <tr>
-          <td style="background:${CREAM2};padding:24px 28px;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
-            <div style="font-size:9px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;">PERCH&Eacute; QUESTO TEMA OGGI</div>
-            <p style="font-size:14px;line-height:1.75;color:${SLATE};font-family:${FONT};margin:0;">${editorial.whyToday}</p>
+          <td style="background:${CREAM};padding:36px 28px;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+            <div style="font-size:10px;font-weight:700;color:${GOLD};font-family:${FONT};letter-spacing:0.22em;text-transform:uppercase;margin-bottom:16px;">La frase chiave</div>
+            <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${FONT};line-height:1.38;letter-spacing:-0.3px;">&ldquo;${editorial.keyQuote}&rdquo;</div>
           </td>
         </tr>
 
-        <!-- CITAZIONE CHIAVE -->
+        <!-- SEZIONE: PERCHÉ QUESTO TEMA OGGI — box evidenziato -->
         <tr>
-          <td style="background:${WHITE};padding:28px 28px;">
+          <td style="background:${WHITE};padding:32px 28px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="border-left:3px solid ${GOLD};padding:16px 20px;background:${CREAM};border-radius:0 12px 12px 0;">
-                  <div style="font-size:9px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.18em;text-transform:uppercase;margin-bottom:8px;">DA RICORDARE</div>
-                  <span style="font-size:16px;font-style:italic;color:${DARK};font-family:${FONT};line-height:1.6;font-weight:600;">${editorial.keyQuote}</span>
+                <td style="background:${GOLD}0d;border:1px solid ${GOLD}33;border-radius:14px;padding:28px;">
+                  <div style="font-size:10px;font-weight:700;color:${GOLD};font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:14px;">Perch&eacute; questo tema oggi</div>
+                  <p style="font-size:15px;line-height:1.85;color:${DARK};font-family:${FONT};margin:0;">${editorial.whyToday}</p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- NOTA DELL'AUTORE -->
+        <!-- NOTA DELLA REDAZIONE — firma editoriale con avatar -->
         <tr>
-          <td style="background:${CREAM};padding:24px 28px;border-top:1px solid ${BORDER};">
-            <div style="font-size:9px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;">NOTA DELLA REDAZIONE</div>
-            <p style="font-size:14px;line-height:1.75;color:${DARK};font-family:${FONT};margin:0;font-style:italic;">${editorial.authorNote}</p>
+          <td style="background:${CREAM};padding:32px 28px;border-top:1px solid ${BORDER};">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="52" style="vertical-align:top;padding-right:16px;">
+                  <div style="width:44px;height:44px;background:${BLACK};border-radius:50%;text-align:center;line-height:44px;">
+                    <span style="font-size:20px;font-weight:900;color:#ffffff;font-family:${FONT};">P</span>
+                  </div>
+                </td>
+                <td style="vertical-align:top;">
+                  <div style="font-size:12px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:2px;">La Redazione ProofPress</div>
+                  <div style="font-size:11px;color:${MUTED};font-family:${FONT};margin-bottom:14px;">Editoriale del Sabato</div>
+                  <p style="font-size:15px;line-height:1.85;color:${DARK};font-family:${FONT};margin:0;font-style:italic;">${editorial.authorNote}</p>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
+
+        <!-- SEPARATORE SPESSO -->
+        <tr><td style="height:3px;background:${BLACK};"></td></tr>
+
+        <!-- CTA PROOFPRESS — sezione nera prominente -->
+        <tr>
+          <td style="background:${BLACK};padding:44px 28px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);font-family:${FONT};letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;">Continua a leggere</div>
+            <div style="font-size:30px;font-weight:700;color:#ffffff;font-family:${FONT};margin-bottom:12px;letter-spacing:-0.5px;">Tutto su proofpress.ai</div>
+            <p style="font-size:15px;color:rgba(255,255,255,0.5);font-family:${FONT};margin:0 0 32px;line-height:1.7;">Ogni giorno analizziamo 4.000+ fonti su AI, Startup e Venture Capital.<br>Notizie verificate, approfondimenti e alert per chi prende decisioni.</p>
+            <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=saturday" style="display:inline-block;background:#ffffff;color:${BLACK};font-size:16px;font-weight:600;font-family:${FONT};text-decoration:none;padding:16px 32px;border-radius:980px;margin-bottom:20px;">Leggi su ProofPress &rarr;</a>
+            <div style="margin-top:4px;">
+              <a href="${BASE_URL}/ai" style="font-size:13px;color:rgba(255,255,255,0.4);font-family:${FONT};text-decoration:none;margin:0 12px;">AI News</a>
+              <a href="${BASE_URL}/startup" style="font-size:13px;color:rgba(255,255,255,0.4);font-family:${FONT};text-decoration:none;margin:0 12px;">Startup</a>
+              <a href="${BASE_URL}/dealroom" style="font-size:13px;color:rgba(255,255,255,0.4);font-family:${FONT};text-decoration:none;margin:0 12px;">Dealroom</a>
+              <a href="${BASE_URL}/research" style="font-size:13px;color:rgba(255,255,255,0.4);font-family:${FONT};text-decoration:none;margin:0 12px;">Ricerche</a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- NOTIZIE RECENTI — sezione bianca dopo il CTA nero -->
+        ${recentNews && recentNews.length > 0 ? `
+        <tr>
+          <td style="background:${WHITE};padding:36px 28px 28px;border-top:1px solid ${BORDER};">
+            <div style="font-size:10px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px;">Notizie di questa settimana</div>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              ${recentNews.slice(0, 6).map((n, i) => {
+                const newsUrl = `${BASE_URL}/${n.section === 'startup' ? 'startup' : 'ai'}/news/${n.id}`;
+                const isLast = i === Math.min(recentNews.length, 6) - 1;
+                return `<tr>
+                  <td style="padding:14px 0;${!isLast ? `border-bottom:1px solid ${BORDER};` : ''}">
+                    <div style="font-size:9px;font-weight:700;color:${GOLD};font-family:${FONT};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:5px;">${n.category}</div>
+                    <a href="${newsUrl}" style="font-size:15px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};line-height:1.4;display:block;margin-bottom:5px;">${n.title}</a>
+                    <p style="font-size:13px;color:${SLATE};font-family:${FONT};margin:0 0 6px;line-height:1.55;">${n.summary.slice(0, 130)}${n.summary.length > 130 ? '...' : ''}</p>
+                    <a href="${newsUrl}" style="font-size:12px;font-weight:600;color:${GOLD};text-decoration:none;font-family:${FONT};">Leggi su ProofPress &rarr;</a>
+                  </td>
+                </tr>`;
+              }).join('')}
+            </table>
+          </td>
+        </tr>` : ''}
 
         <!-- SEPARATORE -->
-        <tr><td style="height:2px;background:${BLACK};"></td></tr>
-
-        <!-- CTA: LEGGI LE NOTIZIE DI OGGI -->
-        <tr>
-          <td style="background:${WHITE};padding:32px 28px 24px;border-top:1px solid ${BORDER};">
-            <div style="font-size:9px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px;">CONTINUA A LEGGERE SU PROOFPRESS</div>
-            <div style="font-size:22px;font-weight:900;color:${BLACK};font-family:${FONT};margin-bottom:8px;letter-spacing:-0.5px;">Le notizie di questa settimana</div>
-            <p style="font-size:14px;line-height:1.7;color:${SLATE};font-family:${FONT};margin:0 0 20px;">Ogni giorno analizziamo oltre 4.000 fonti per portarti solo le notizie che contano su AI, Startup e Venture Capital. Leggi l'aggiornamento completo su proofpress.ai.</p>
-            ${recentNews && recentNews.length > 0 ? `
-            <!-- Notizie recenti -->
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
-              ${recentNews.slice(0, 5).map((n, i) => {
-                const newsUrl = `${BASE_URL}/${n.section === 'startup' ? 'startup' : 'ai'}/news/${n.id}`;
-                const isLast = i === recentNews.slice(0, 5).length - 1;
-                return `<tr>
-                <td style="padding:12px 0;${!isLast ? `border-bottom:1px solid ${BORDER};` : ''}">
-                  <div style="font-size:9px;font-weight:700;color:${GOLD};font-family:${FONT};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px;">${n.category}</div>
-                  <a href="${newsUrl}" style="font-size:15px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};line-height:1.4;display:block;margin-bottom:4px;">${n.title}</a>
-                  <p style="font-size:13px;color:${SLATE};font-family:${FONT};margin:0;line-height:1.5;">${n.summary.slice(0, 120)}${n.summary.length > 120 ? '...' : ''}</p>
-                  <a href="${newsUrl}" style="font-size:12px;font-weight:600;color:${GOLD};text-decoration:none;font-family:${FONT};margin-top:6px;display:inline-block;">Leggi l'articolo &rarr;</a>
-                </td>
-              </tr>`;
-              }).join('')}
-            </table>` : ''}
-            <!-- Pulsanti CTA principali -->
-            <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
-              <tr>
-                <td style="padding-right:8px;">
-                  <a href="${BASE_URL}/ai" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:600;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:980px;">AI News &rarr;</a>
-                </td>
-                <td style="padding-right:8px;">
-                  <a href="${BASE_URL}/startup" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:600;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:980px;">Startup &rarr;</a>
-                </td>
-                <td>
-                  <a href="${BASE_URL}/research" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BORDER};font-size:12px;font-weight:600;font-family:${FONT};text-decoration:none;padding:10px 20px;border-radius:980px;">Ricerche &rarr;</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+        <tr><td style="height:1px;background:${BORDER};"></td></tr>
 
         <!-- SEPARATORE 2 -->
         <tr><td style="height:1px;background:${BORDER};"></td></tr>
