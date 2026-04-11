@@ -15,6 +15,7 @@ import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings } from "lucide-react";
 import LeftSidebar from "@/components/LeftSidebar";
+import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 
@@ -114,7 +115,7 @@ function HeroArticle({ item, section, editorial }: {
             <img
               src={img} alt={title} loading="eager" decoding="async"
               className="w-full object-cover hover:opacity-95 transition-opacity cursor-pointer"
-              style={{ height: "420px", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
+              style={{ height: "clamp(200px, 50vw, 420px)", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
             />
           </Link>
       )}
@@ -451,13 +452,17 @@ export default function Home() {
         <div className="flex-1 min-w-0 overflow-x-hidden">
 
         {/* ══ TESTATA ══════════════════════════════════════════════════════════ */}
-        <header className="max-w-[1280px] mx-auto px-4 pt-5 pb-0">
+        <header className="max-w-[1280px] mx-auto px-4 pt-2 pb-0 sm:pt-5">
           {/* Riga data + categorie + auth */}
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              {formatDateIT(today)}
-            </span>
+            <div className="flex items-center gap-2">
+              {/* Hamburger mobile — visibile solo su < lg */}
+              <MobileNav />
+              <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                {formatDateIT(today)}
+              </span>
+            </div>
             <div className="flex items-center gap-3">
               <a href="https://www.linkedin.com/company/proofpress/" target="_blank" rel="noopener noreferrer"
                 className="hidden sm:inline flex items-center gap-1 text-[11px] text-[#1a1a1a]/50 hover:text-[#0077b5] transition-colors uppercase tracking-widest"
@@ -471,10 +476,10 @@ export default function Home() {
           <Divider thick />
 
           {/* Header centrato */}
-          <div className="py-4">
+          <div className="py-1 sm:py-4">
 
             {/* Sopra il titolo: descrizione full-width su una sola riga */}
-            <p className="text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
+            <p className="hidden sm:block text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
               Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
@@ -501,7 +506,7 @@ export default function Home() {
                     <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
                       style={{
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                        fontSize: "clamp(42px, 7vw, 88px)",
+                        fontSize: "clamp(28px, 7vw, 88px)",
                         letterSpacing: "-0.02em",
                         lineHeight: 1
                       }}>
@@ -510,7 +515,7 @@ export default function Home() {
                   </div>
                 </Link>
                 {/* Sottotitolo */}
-                <div className="mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+                <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
                   Per chi vuole capire l’innovazione prima degli altri
                 </div>
@@ -540,25 +545,25 @@ export default function Home() {
         <BreakingNewsTicker />
 
         {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
-        <div className="max-w-[1280px] mx-auto px-4 mt-3">
+        <div className="max-w-[1280px] mx-auto px-4 mt-2 sm:mt-3">
           <a
             href="https://promptcollection2026.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 hover:shadow-sm group"
+            className="flex items-center gap-2 sm:gap-3 p-2 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-200 hover:shadow-sm group"
             style={{ background: "#f5f5f7", border: "1px solid #e5e5ea", textDecoration: "none" }}
           >
-            <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "#1d1d1f" }}>
-              <span className="text-white text-lg">📋</span>
+            <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center" style={{ background: "#1d1d1f" }}>
+              <span className="text-white text-base sm:text-lg">📋</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-0.5" style={{ color: "#86868b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione Proof Press</p>
-              <p className="text-[14px] font-bold leading-tight" style={{ color: "#1d1d1f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
+              <p className="hidden sm:block text-[11px] font-semibold uppercase tracking-[0.12em] mb-0.5" style={{ color: "#86868b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione Proof Press</p>
+              <p className="text-[13px] sm:text-[14px] font-bold leading-tight" style={{ color: "#1d1d1f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
             </div>
             <span className="flex-shrink-0 text-[13px] font-semibold px-5 py-2 group-hover:opacity-80 transition-opacity" style={{ background: "#1d1d1f", color: "#ffffff", borderRadius: "980px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Scopri →</span>
           </a>
         </div> {/* ══ CORPO ═══════════════════════════════════════════════════════════════════ */}
-        <main className="max-w-[1280px] mx-auto px-4 pb-16">
+        <main className="max-w-[1280px] mx-auto px-4 pb-16 lg:pb-16" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 68px)' }}>
 
 
 
@@ -599,7 +604,7 @@ export default function Home() {
                                 loading="eager"
                                 decoding="async"
                                 className="w-full object-cover hover:opacity-95 transition-opacity cursor-pointer"
-                                style={{ height: "420px", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
+                                style={{ height: "clamp(200px, 50vw, 420px)", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
                               />
                             </Link>
                           )}
@@ -613,12 +618,12 @@ export default function Home() {
                             <Link href={`/research/${mainHero.data.id}`}>
                               <h3
                                 className="mt-2 leading-tight text-[#1a1a1a] hover:underline"
-                                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(30px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
+                                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(22px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
                               >
                                 {mainHero.data.title}
                               </h3>
                             </Link>
-                            <p className="mt-3 text-[17px] leading-relaxed text-[#1a1a1a]/75"
+                            <p className="mt-3 text-[15px] sm:text-[17px] leading-relaxed text-[#1a1a1a]/75"
                               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.7 }}>
                               {mainHero.data.summary.slice(0, 320)}{mainHero.data.summary.length > 320 ? "\u2026" : ""}
                             </p>

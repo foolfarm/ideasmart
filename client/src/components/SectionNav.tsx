@@ -98,7 +98,7 @@ export default function SectionNav() {
     <>
       {/* ═══ TOP BAR: CANALI button + Chi Siamo + Demo ═══ */}
       <div
-        className="flex items-center bg-white border-b border-[#1a1a1a]/8"
+        className="flex items-center bg-white border-b border-[#1a1a1a]/8 overflow-x-auto scrollbar-none"
         style={{ fontFamily: SF }}
       >
         {/* Hamburger CANALI button */}
@@ -107,7 +107,7 @@ export default function SectionNav() {
           onClick={() => setOpen(!open)}
           onMouseEnter={scheduleOpen}
           onMouseLeave={scheduleClose}
-          className="flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/10 group"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 cursor-pointer border-r border-[#1a1a1a]/10 group flex-shrink-0"
           aria-label={open ? "Chiudi menu canali" : "Apri menu canali"}
         >
           <span className="relative w-4 h-4 flex items-center justify-center">

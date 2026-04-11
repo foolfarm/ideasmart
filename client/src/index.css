@@ -121,6 +121,7 @@
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.8;
     font-size: 1.0625rem; /* 17px base */
+    overflow-x: hidden; /* Previene scroll orizzontale su mobile */
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
@@ -282,6 +283,10 @@
   body {
     font-size: 1rem;
     line-height: 1.75;
+    overflow-x: hidden;
+  }
+  html {
+    overflow-x: hidden;
   }
   h1 { font-size: 2.5rem; line-height: 1.1; }
   h2 { font-size: 1.875rem; line-height: 1.15; }
@@ -301,4 +306,13 @@
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
   }
+}
+
+/* ── Mobile scrollbar hide ── */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

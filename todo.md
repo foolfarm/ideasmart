@@ -3008,3 +3008,10 @@
 - [ ] Ridisegnare homepage ProofPress Apple style (layout editoriale, card chiare)
 - [ ] Ridisegnare pagine notizie/categorie/articolo singolo Apple style
 - [ ] Ridisegnare footer e componenti secondari ProofPress Apple style
+
+## Mobile Optimization (11 Apr 2026)
+
+- [ ] Fix layout mobile Home: sidebar sinistra nascosta su mobile, contenuto centrale a piena larghezza
+- [ ] Fix layout mobile pagine canali (AI, Startup, Research, Dealroom)
+- [ ] Ottimizzare header, navbar, breaking news e ticker per mobile
+- [ ] Nascondere pubblicità manchette su mobile per non bloccare le notizie

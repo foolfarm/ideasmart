@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import { User, LogOut, Settings } from "lucide-react";
+import MobileNav from "@/components/MobileNav";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -97,9 +98,13 @@ export default function SharedPageHeader() {
     >
       {/* Riga data + tagline + auth */}
       <div className="flex items-center justify-between mb-2">
-        <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest">
-          {formatDateIT(today)}
-        </span>
+        <div className="flex items-center gap-2">
+          {/* Hamburger mobile — visibile solo su < lg */}
+          <MobileNav />
+          <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest">
+            {formatDateIT(today)}
+          </span>
+        </div>
         <div className="flex items-center gap-3">
           <span className="hidden sm:inline text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest">
             Prompt · Tools · Workflow · News
@@ -133,10 +138,10 @@ export default function SharedPageHeader() {
       <Divider thick />
 
       {/* Logo centrale con manchette ai lati */}
-      <div className="py-4">
+      <div className="py-2 sm:py-4">
 
         {/* Sopra il titolo: descrizione full-width su una sola riga */}
-        <p className="text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
+        <p className="hidden sm:block text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
           Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
         </p>
@@ -162,7 +167,7 @@ export default function SharedPageHeader() {
                 className="font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
                 style={{
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                  fontSize: "clamp(42px, 7vw, 88px)",
+                  fontSize: "clamp(28px, 7vw, 88px)",
                   letterSpacing: "-0.02em",
                   lineHeight: 1,
                 }}
@@ -171,7 +176,7 @@ export default function SharedPageHeader() {
               </h1>
             </Link>
             {/* Sottotitolo */}
-            <div className="mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+            <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
               Per chi vuole capire l’innovazione prima degli altri
             </div>

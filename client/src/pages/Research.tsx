@@ -364,7 +364,7 @@ export default function Research() {
         </div>
 
         {/* ── Contenuto principale ──────────────────────────────────────────── */}
-        <div className="max-w-6xl mx-auto px-4 pb-12">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 pb-12 lg:pb-12" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 68px)' }}>
 
           {/* Filtri categoria */}
           <div className="flex flex-wrap gap-2 mb-6 pb-4 border-b border-[#1a1a1a]/10">

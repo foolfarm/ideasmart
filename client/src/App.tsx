@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import CookieBanner from "./components/CookieBanner";
 import PWAInstallBanner from "./components/PWAInstallBanner";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 // ─── Caricamento critico (above-the-fold) ─────────────────────────────────────
 // Home è la pagina più visitata: caricamento sincrono per LCP ottimale
@@ -174,6 +175,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <MobileBottomNav />
           <CookieBanner />
           <PWAInstallBanner />
         </TooltipProvider>

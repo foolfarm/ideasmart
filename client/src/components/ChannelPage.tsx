@@ -423,7 +423,7 @@ export default function ChannelPage({
       <SEOHead title={`${title} — Proof Press`} description={description} />
       <LeftSidebar />
       <div className="flex-1 min-w-0">
-      <div className="max-w-[1200px] mx-auto px-4">
+      <div className="max-w-[1200px] mx-auto px-3 sm:px-4 pb-[68px] lg:pb-0">
         <SharedPageHeader />
         <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#ffffff" }}>
           <SectionNav />

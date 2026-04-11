@@ -117,7 +117,7 @@ export default function BreakingNewsSection() {
           <div style={{ width: "1px", background: "rgba(26,26,26,0.12)", flexShrink: 0 }} />
 
           {/* Contenuto */}
-          <div className="flex-1 flex items-center gap-3 px-4 overflow-hidden">
+          <div className="flex-1 flex items-center gap-2 sm:gap-3 px-2 sm:px-4 overflow-hidden">
             {/* Badge sezione */}
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 uppercase tracking-wide ${sectionColor}`}

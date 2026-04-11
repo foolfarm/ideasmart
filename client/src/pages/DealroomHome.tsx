@@ -181,7 +181,7 @@ export default function DealroomHome() {
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
         <BreakingNewsTicker />
-        <main className="max-w-6xl mx-auto px-4 pb-12">
+        <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
           {/* SEZIONE 1: Deal del Giorno */}
           <div>
             <div className="py-4">
@@ -246,7 +246,7 @@ export default function DealroomHome() {
                         alt={heroNews.title}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
+                        className="w-full h-36 sm:h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
                         style={{ border: "1px solid rgba(26,74,46,0.15)" }}
                       />
                     </a>

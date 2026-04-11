@@ -52,7 +52,7 @@ function NewsCard({ item, showImage = false, large = false }: {
       {showImage && item.imageUrl && (
         <Link href={href}>
           <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
-            className={`w-full ${large ? "h-56" : "h-40"} object-cover mb-3 cursor-pointer hover:opacity-95 transition-opacity`}
+            className={`w-full ${large ? "h-40 sm:h-56" : "h-32 sm:h-40"} object-cover mb-3 cursor-pointer hover:opacity-95 transition-opacity`}
             style={{ borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }} />
         </Link>
       )}
@@ -140,7 +140,7 @@ export default function AiHome() {
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
         <BreakingNewsTicker />
-        <main className="max-w-6xl mx-auto px-4 pb-12">
+        <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
 
           {/* SEZIONE 1: Hero + Sidebar editoriale */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-0 mt-0">
@@ -181,7 +181,7 @@ export default function AiHome() {
                     {heroNews.imageUrl ? (
                       <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
                         <img src={heroNews.imageUrl} alt={heroNews.title} loading="lazy" decoding="async"
-                          className="w-full h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
+                          className="w-full h-36 sm:h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
                           style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
                       </a>
                     ) : (
