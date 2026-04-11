@@ -400,6 +400,13 @@
       "when": 1775926933306,
       "tag": "0056_panoramic_korvac",
       "breakpoints": true
+    },
+    {
+      "idx": 57,
+      "version": "5",
+      "when": 1775929637561,
+      "tag": "0057_absurd_shadow_king",
+      "breakpoints": true
     }
   ]
 }

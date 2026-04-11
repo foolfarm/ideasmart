@@ -1,11 +1,12 @@
 /**
  * Proof Press — LinkedIn Autopost
  *
- * Pubblica 4 post giornalieri su LinkedIn:
+ * Pubblica 5 post giornalieri su LinkedIn:
  *  - Slot MORNING:           10:00 CET — AI News (analisi strategica AI)
- *  - Slot STARTUP-AFTERNOON: 14:30 CET — Startup News (ecosistema startup IT/EU)
- *  - Slot RESEARCH:          17:00 CET — Ricerche Proof Press (ultima ricerca pubblicata)
- *  - Slot DEALROOM:          18:00 CET — Dealroom (ultimo deal/round di investimento)
+ *  - Slot AI-RESEARCH-MORNING: 12:30 CET — 2° Editoriale AI (ricerche di mercato AI)
+ *  - Slot RESEARCH:          14:30 CET — 2° AI News (notizia AI diversa dal mattino)
+ *  - Slot RESEARCH-AFTERNOON: 16:00 CET — 2° Ricerche di mercato (Gartner, McKinsey, ecc.)
+ *  - Slot STARTUP-EVENING:   18:00 CET — Startup News (round investimento, exit, startup IT/EU)
  *
  * Flusso per ogni slot:
  *  1. Recupera il contenuto appropriato (editoriale, ricerca o deal)
@@ -291,7 +292,7 @@ async function auditPrePublish(postText: string, imageUrl: string | null, slot: 
 }
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "ai-tool-radar" | "afternoon" | "evening";
+export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening";
 
 // ── Sezioni supportate per LinkedIn ──────────────────────────────────────────
 type LinkedInSection = "ai" | "startup" | "dealroom" | "research";
@@ -327,6 +328,7 @@ function selectSection(slot: LinkedInSlot): LinkedInSection {
   if (slot === "research") return "research";
   if (slot === "research-afternoon") return "research";
   if (slot === "startup-afternoon") return "startup";
+  if (slot === "startup-evening") return "startup";
   if (slot === "ai-tool-radar") return "ai";
   if (slot === "dealroom") return "dealroom";
   // Legacy slots
@@ -411,6 +413,12 @@ Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://pro
 Tono: autorevole e data-driven. Il tuo pubblico nel tardo pomeriggio vuole ricerche di alto livello con dati quantitativi concreti.
 Focus: ricerche di mercato AI/Tech di alto livello (Gartner, McKinsey, IDC, Stanford HAI, MIT, Forrester, BCG). Dati quantitativi, previsioni di mercato, benchmark di settore. Lettura strategica per il mercato italiano ed europeo.
 NON ripetere lo stesso argomento del post delle 12:30: scegli una ricerca o un tema di mercato completamente diverso.
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+  } else if (slot === "startup-evening") {
+    slotNote = `Questo è il 5° POST STARTUP NEWS (18:00) — Ecosistema Startup IT/EU.
+Tono: energico e informato. Il tuo pubblico a fine giornata vuole sapere cosa si è mosso nell'ecosistema startup.
+Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC, acceleratori, incubatori, founder stories. Cita cifre specifiche (valuation, ammontare round, investitori).
+Aggiungi sempre la tua lettura strategica: cosa significa per l'ecosistema italiano ed europeo.
 Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
@@ -902,7 +910,8 @@ export async function publishLinkedInPost(
     "ai-research-morning": "2° EDITORIALE AI (12:30)",
     research: "RICERCHE (14:30)",
     "research-afternoon": "2° RICERCHE (16:00)",
-    "startup-afternoon": "STARTUP POMERIGGIO (legacy)",
+    "startup-afternoon": "STARTUP POMERIGGIO (14:30)",
+    "startup-evening": "STARTUP NEWS SERA (18:00)",
     "ai-tool-radar": "AI TOOL RADAR (legacy)",
     dealroom: "DEALROOM (legacy)",
     afternoon: "POMERIGGIO (legacy)",
@@ -1296,6 +1305,42 @@ export async function publishLinkedInPost(
       contentImageUrl = editorial.imageUrl ?? null;
       console.log(`[LinkedIn] 📝 2° Research (fallback editoriale): "${contentTitle.slice(0, 60)}..."`);
     }
+  } else if (slot === "startup-evening") {
+    // ── Controllo idempotenza PRIMA della generazione ──
+    if (!force) {
+      try {
+        const db = await getDb();
+        if (db) {
+          const existingStartupEvening = await db.select({ id: linkedinPosts.id })
+            .from(linkedinPosts)
+            .where(and(eq(linkedinPosts.dateLabel, today), eq(linkedinPosts.slot, "startup-evening" as any)))
+            .limit(1);
+          if (existingStartupEvening.length > 0) {
+            console.log(`[LinkedIn] ⏭️ Startup News Sera già pubblicato oggi (${today}) — saltato (pre-generazione).`);
+            return { published: 0, errors: [], posts: [] };
+          }
+        }
+      } catch (idempErr) {
+        console.warn('[LinkedIn] ⚠️ Controllo idempotenza Startup Evening fallito, procedo:', idempErr);
+      }
+    }
+    // Slot 18:00 — Startup News Sera: round di investimento, exit, startup italiane/europee
+    // Usa le notizie startup dalla sezione /startup (diverse dallo slot 14:30 che usa startupRadar)
+    console.log("[LinkedIn] 🚀 Generazione Startup News Sera (18:00)...");
+    const startupNews = await getLatestNews(20, "startup");
+    if (!startupNews || startupNews.length === 0) {
+      console.warn(`[LinkedIn] ⚠️ Nessuna notizia startup disponibile per slot startup-evening. Pubblicazione saltata.`);
+      return { published: 0, errors: ["Nessuna notizia startup disponibile per Startup News Sera"], posts: [] };
+    }
+    // Seleziona una notizia startup non ancora usata oggi
+    const usedTitlesSet = new Set([...Array.from(todayTopicLock), ...recentPostTitles.map(t => t.toLowerCase().trim())]);
+    let selectedStartup = startupNews.find(n => !usedTitlesSet.has(n.title.toLowerCase().trim()));
+    if (!selectedStartup) selectedStartup = startupNews[0]; // fallback
+    contentTitle = selectedStartup.title;
+    contentBody = selectedStartup.summary ?? selectedStartup.title;
+    contentKeyTrend = selectedStartup.category ?? "Startup & VC";
+    contentImageUrl = selectedStartup.imageUrl ?? null;
+    console.log(`[LinkedIn] 🏢 Startup News Sera selezionata: "${contentTitle.slice(0, 60)}..."`);
   } else {
     // Slot Morning: recupera l'editoriale
     const editorial = await getLatestEditorial(section === "research" ? "ai" : section);

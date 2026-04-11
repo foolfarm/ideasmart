@@ -255,7 +255,7 @@ export function startAllSchedulers(): void {
 
 
 
-  // ── Invalidazione cache parziale dopo LinkedIn (10:05, 12:35, 14:35, 16:05, 17:35 CET) ───
+  // ── Invalidazione cache parziale dopo LinkedIn (10:05, 12:35, 14:35, 16:05, 18:05 CET) ───
   // Il post LinkedIn aggiorna il "Punto del Giorno" nella Home.
   // Invalidiamo la cache dopo ogni slot LinkedIn.
   cron.schedule("5 10 * * *", async () => {
@@ -294,10 +294,10 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  cron.schedule("35 17 * * *", async () => {
+  cron.schedule("5 18 * * *", async () => {
     try {
       invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO);
-      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn DEALROOM");
+      console.log("[SchedulerManager] ✅ Cache Punto del Giorno invalidata dopo LinkedIn STARTUP NEWS SERA");
     } catch (err) {
       console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err);
     }
@@ -562,11 +562,12 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
   // ══════════════════════════════════════════════════════════════════════════
-  // LINKEDIN AUTOPOST — 4 post giornalieri:
+  // LINKEDIN AUTOPOST — 5 post giornalieri:
   //   10:00 CET — AI News (morning)
   //   12:30 CET — 2° Editoriale AI su ricerche di mercato (ai-research-morning)
-  //   14:30 CET — Ricerche Proof Press (research)
-  //   16:00 CET — 2° Ricerche Proof Press (research-afternoon)
+  //   14:30 CET — 2° AI News (research)
+  //   16:00 CET — 2° Ricerche di mercato (research-afternoon)
+  //   18:00 CET — Startup News (startup-evening)
   // ══════════════════════════════════════════════════════════════════════════
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -675,6 +676,23 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
+  // 5° Post — Startup News Sera — 18:00 CET
+  cron.schedule("0 18 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 18:00 CET — Pubblicazione LinkedIn STARTUP NEWS SERA...");
+    await withLock("linkedin-startup-evening", async () => {
+      try {
+        const result = await publishLinkedInPost("startup-evening");
+        console.log(`[SchedulerManager] ✅ LinkedIn STARTUP NEWS SERA: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn STARTUP NEWS SERA errori:", result.errors);
+        }
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn STARTUP NEWS SERA:", err);
+      }
+    });
+  }, { timezone: TZ });
+
   // ══════════════════════════════════════════════════════════════════════════
   // CATCH-UP LINKEDIN — all'avvio, recupera i post mancati se il cron era offline
   // Slot: morning (10:00), startup-afternoon (14:30), research (17:00), dealroom (18:00)
@@ -698,6 +716,7 @@ export function startAllSchedulers(): void {
         ["ai-research-morning", 12 * 60 + 30, "2° EDITORIALE AI (12:30)"],
         ["research", 14 * 60 + 30, "RICERCHE (14:30)"],
         ["research-afternoon", 16 * 60, "2° RICERCHE (16:00)"],
+        ["startup-evening", 18 * 60, "STARTUP NEWS SERA (18:00)"],
       ];
 
       for (const [slotName, scheduledMin, label] of catchUpSlots) {

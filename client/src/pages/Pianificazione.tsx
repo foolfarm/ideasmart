@@ -69,6 +69,7 @@ const LINKEDIN_SLOTS = [
   { time: "12:30", type: "2° Editoriale AI — Ricerche di Mercato", content: "Analisi settoriale AI di alto livello" },
   { time: "14:30", type: "Post RICERCHE — Proof Press Research", content: "Ricerca AI/Startup/VC del giorno" },
   { time: "16:00", type: "2° RICERCHE — Proof Press Research", content: "Secondo report di ricerca del giorno" },
+  { time: "18:00", type: "Startup News Sera — Round & Exit", content: "Round di investimento, exit, startup italiane ed europee" },
 ];
 
 const RECAP_NL = [
@@ -86,6 +87,7 @@ const RECAP_LI = [
   { label: "2° Editoriale AI", days: "Ogni giorno", time: "12:30" },
   { label: "Post RICERCHE", days: "Ogni giorno", time: "14:30" },
   { label: "2° RICERCHE", days: "Ogni giorno", time: "16:00" },
+  { label: "Startup News Sera", days: "Ogni giorno", time: "18:00" },
 ];
 
 const RECAP_SYS = [
@@ -233,7 +235,7 @@ export default function Pianificazione() {
         {tab === "linkedin" && (
           <div>
             <div className="bg-[#0077b5] text-white rounded-xl px-4 py-3 mb-5 text-[12px] font-semibold">
-              💼 4 post al giorno · Ogni giorno (lun–dom) · CTA: → proofpress.ai
+              💼 5 post al giorno · Ogni giorno (lun–dom) · CTA: → proofpress.ai
             </div>
             {DAYS.map((day) => (
               <LinkedInDaySection key={day.name} day={day} />
