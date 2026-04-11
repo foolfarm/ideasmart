@@ -3021,3 +3021,7 @@
 - [x] Aggiungere cron newsletter Prompt Collection 2026 il sabato alle 10:30 CET
 - [x] Aggiungere cron newsletter ProofPress Business la domenica alle 15:00 CET
 - [x] Creare tabella pianificazione scaricabile (Excel/CSV)
+
+## Nuovi task (11 Apr 2026 — Pagina pianificazione web)
+
+- [x] Creare pagina /pianificazione su proofpress.ai con pianificazione newsletter + LinkedIn

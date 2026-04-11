@@ -95,6 +95,7 @@ const PromptLibraryLanding = lazy(() => import("./pages/PromptLibraryLanding"));
 const PubblicitaPage = lazy(() => import("./pages/PubblicitaPage"));
 const ChiSiamoStory = lazy(() => import("./pages/ChiSiamoStory"));
 const Piattaforma = lazy(() => import("./pages/Piattaforma"));
+const Pianificazione = lazy(() => import("./pages/Pianificazione"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -124,6 +125,7 @@ function Router() {
         <Route path="/verify">{() => <Redirect to="/proofpress-verify" />}</Route>
         <Route path="/proofpress-verify" component={ProofPressVerify} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
+        <Route path="/pianificazione" component={Pianificazione} />
         <Route path="/ai/news/:id" component={NewsArticle} />
         <Route path="/startup/news/:id" component={StartupNewsArticle} />
         {/* Route generica per tutti i canali — deve stare DOPO le route specifiche */}
