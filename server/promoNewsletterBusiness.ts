@@ -313,6 +313,40 @@ export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "az
     </td>
   </tr>
 
+  <!-- FAQ -->
+  <tr>
+    <td style="background:${LIGHT_BG};padding:40px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Domande frequenti</div>
+      <h2 style="margin:0 0 28px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Tre dubbi. Tre risposte dirette.</h2>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding-bottom:16px;">
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
+              <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">"Il costo è giustificato per una piccola realtà?"</div>
+              <p style="margin:0;font-family:${FONT};font-size:14px;color:${TEXT_SECONDARY};line-height:1.65;">Un giornalista freelance spende in media 2-3 ore al giorno solo nel monitoraggio delle fonti. ProofPress riduce questo tempo a meno di 20 minuti. A 39€/mese, il costo è inferiore a quello di un'ora di lavoro — e il tempo recuperato si trasforma direttamente in più contenuti pubblicati e più ricavi.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:16px;">
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
+              <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">"Quanto tempo richiede l'integrazione con il mio workflow?"</div>
+              <p style="margin:0;font-family:${FONT};font-size:14px;color:${TEXT_SECONDARY};line-height:1.65;">Setup completo in meno di 10 minuti: crei un account, imposti i tuoi canali tematici e ProofPress inizia immediatamente a filtrare le notizie rilevanti. Non c'è nessun codice da scrivere, nessun plugin da installare. Chi ha già un sito WordPress o Ghost può collegarlo direttamente dalla dashboard.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
+              <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:8px;">"I contenuti generati dall'AI sono davvero affidabili?"</div>
+              <p style="margin:0;font-family:${FONT};font-size:14px;color:${TEXT_SECONDARY};line-height:1.65;">ProofPress non pubblica contenuti non verificati. Ogni notizia passa attraverso il sistema ProofPress Verify: confronto multi-fonte, rilevamento di incoerenze e assegnazione di un hash di certificazione. Il tuo nome appare solo su contenuti che hanno superato questo processo — e ogni lettore può verificarlo in tempo reale con un click.</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
   <!-- CTA FINALE -->
   <tr>
     <td style="background:${TEXT_PRIMARY};padding:48px 32px;border-radius:0 0 16px 16px;text-align:center;">

@@ -547,18 +547,18 @@ function buildNewsletterHtmlV2(opts: {
     channelImages,
   } = opts;
 
-  // ── Design Tokens v3 (Proof Press Premium) ──
-  const F_SERIF = "-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif";
-  const F_SANS  = "-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif";
-  const BG      = "#f5f3ef";   // crema off-white
+  // ── Design Tokens v4 (Apple Style — SF Francisco) ──
+  const F_SERIF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
+  const F_SANS  = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
+  const BG      = "#f5f5f7";   // grigio Apple — mai sfondo scuro
   const WHITE   = "#ffffff";
-  const BLACK   = "#1a1a1a";
-  const SLATE   = "#4b5563";
-  const MUTED   = "#9ca3af";
-  const BORDER  = "#e5e3df";
+  const BLACK   = "#1d1d1f";   // Apple text primary
+  const SLATE   = "#6e6e73";   // Apple text secondary
+  const MUTED   = "#86868b";   // Apple text tertiary
+  const BORDER  = "#d2d2d7";   // Apple separator
   const ACCENT  = "#d94f3d";   // rosso Proof Press — solo per CTA
   const ACCENT_DARK = "#b83c2c";
-  const GRAY_DARK   = "#374151";
+  const GRAY_DARK   = "#1d1d1f";
   const AMAZON_ORANGE = "#FF9900";
 
   // ── Select 5-6 strongest channels for today ──
@@ -663,8 +663,8 @@ function buildNewsletterHtmlV2(opts: {
               <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:16px;">La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.</div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:${ACCENT};border-radius:5px;padding:11px 22px;">
-                    <a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=rebrand" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">SCOPRI LA PROOFPRESS VERIFY TECHNOLOGY →</a>
+                  <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
+                    <a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=rebrand" style="font-size:12px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la ProofPress Verify Technology →</a>
                   </td>
                 </tr>
               </table>
@@ -729,8 +729,8 @@ function buildNewsletterHtmlV2(opts: {
                   <td>
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
-                        <td style="background:${ACCENT};border-radius:5px;padding:12px 24px;">
-                          <a href="${buildHeroUrl(heroItem, 'hero_cta')}" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">LEGGI SU PROOF PRESS →</a>
+                        <td style="background:${ACCENT};border-radius:980px;padding:12px 24px;">
+                          <a href="${buildHeroUrl(heroItem, 'hero_cta')}" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Leggi su ProofPress →</a>
                         </td>
                       </tr>
                     </table>
@@ -857,8 +857,8 @@ function buildNewsletterHtmlV2(opts: {
               </table>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:${ACCENT};border-radius:5px;padding:11px 22px;">
-                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:12px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">SCOPRI LA STARTUP →</a>
+                  <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
+                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la startup →</a>
                   </td>
                 </tr>
               </table>
@@ -887,8 +887,8 @@ function buildNewsletterHtmlV2(opts: {
               </div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:${ACCENT};border-radius:5px;padding:12px 26px;">
-                    <a href="${FORUM_URL}/?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_collection" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">SCOPRI LA COLLEZIONE →</a>
+                  <td style="background:${ACCENT};border-radius:980px;padding:12px 26px;">
+                    <a href="${FORUM_URL}/?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_collection" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la Collezione →</a>
                   </td>
                 </tr>
               </table>
@@ -913,8 +913,8 @@ function buildNewsletterHtmlV2(opts: {
               <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:18px;">AI, Startup e Venture Capital — aggiornato ogni giorno.</div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:${BLACK};border-radius:5px;padding:12px 26px;">
-                    <a href="${BASE_URL}/registrati?utm_source=newsletter&utm_medium=email&utm_campaign=iscrizione" style="font-size:13px;font-weight:700;color:${WHITE};text-decoration:none;font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;">ISCRIVITI GRATIS →</a>
+                  <td style="background:${BLACK};border-radius:980px;padding:12px 26px;">
+                    <a href="${BASE_URL}/registrati?utm_source=newsletter&utm_medium=email&utm_campaign=iscrizione" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Iscriviti gratis →</a>
                   </td>
                 </tr>
               </table>
@@ -1061,15 +1061,15 @@ function buildNewsletterHtmlV2(opts: {
     researchBoxHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;border-left:4px solid #0066cc;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #d2d2d7;border-left:4px solid #0071e3;">
           <tr>
             <td style="padding:20px 26px;">
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="padding-bottom:14px;border-bottom:2px solid #111827;">
-                    <span style="font-size:10px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;">🔬 PROOF PRESS RESEARCH</span>
+                  <td style="padding-bottom:14px;border-bottom:1px solid #d2d2d7;">
+                    <span style="font-size:10px;font-weight:700;color:#0071e3;letter-spacing:0.18em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">🔬 PROOF PRESS RESEARCH</span>
                     <span style="float:right;">
-                      <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_all" style="font-size:10px;color:#9ca3af;text-decoration:none;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;">Tutte le ricerche →</a>
+                      <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_all" style="font-size:10px;color:#86868b;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">Tutte le ricerche →</a>
                     </span>
                   </td>
                 </tr>
@@ -1080,7 +1080,7 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:20px;background:#f9fafb;"></td></tr>`;
+    <tr><td style="height:20px;background:#f5f5f7;"></td></tr>`;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -1113,13 +1113,13 @@ function buildNewsletterHtmlV2(opts: {
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="padding-right:8px;">
-                    <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">AI News →</a>
+                    <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:980px;letter-spacing:0.04em;">AI News →</a>
                   </td>
                   <td style="padding-right:8px;">
-                    <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Startup →</a>
+                    <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:980px;letter-spacing:0.04em;">Startup →</a>
                   </td>
                   <td>
-                    <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BLACK};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:9px 18px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Ricerche →</a>
+                    <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BORDER};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:9px 18px;border-radius:980px;letter-spacing:0.04em;">Ricerche →</a>
                   </td>
                 </tr>
               </table>

@@ -38,18 +38,18 @@ import { eq, and, gte, lt, gt } from "drizzle-orm";
 const BASE_URL = "https://proofpress.ai";
 const TEST_EMAIL = "ac@acinelli.com";
 
-// ─── Palette grafica (identica alle altre newsletter) ────────────────────────
-const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
-const BLACK  = "#1a1a1a";
-const DARK   = "#2d2d2d";
-const SLATE  = "#4b5563";
-const MUTED  = "#9ca3af";
-const BORDER = "#d8d0c0";
-const CREAM  = "#f5f0e8";
-const CREAM2 = "#ede8de";
+// ─── Palette grafica Apple Style v4 (SF Francisco) ─────────────────────────
+const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
+const BLACK  = "#1d1d1f";   // Apple text primary
+const DARK   = "#1d1d1f";
+const SLATE  = "#6e6e73";   // Apple text secondary
+const MUTED  = "#86868b";   // Apple text tertiary
+const BORDER = "#d2d2d7";   // Apple separator
+const CREAM  = "#f5f5f7";   // Apple light gray — mai sfondo scuro
+const CREAM2 = "#f5f5f7";
 const WHITE  = "#ffffff";
-const RED    = "#dc2626";
-const GOLD   = "#b8860b"; // accento editoriale del sabato
+const RED    = "#d94f3d";   // ProofPress accent
+const GOLD   = "#0071e3";   // Apple blue — accento editoriale del sabato
 
 // ─── Deduplicazione invii (DB-based per resistere ai riavvii) ───────────────
 const previewSentWeeks = new Map<string, boolean>(); // preview: ok in-memory (non critico)
@@ -279,18 +279,18 @@ export function buildSaturdayNewsletterHtml(opts: {
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td align="center">
-                  <a href="${BASE_URL}/ai" style="display:inline-block;font-size:10px;font-weight:700;color:${WHITE};background:${BLACK};border-radius:2px;padding:5px 14px;letter-spacing:0.1em;text-transform:uppercase;font-family:${FONT};text-decoration:none;margin:0 4px;">AI NEWS</a>
-                  <a href="${BASE_URL}/startup" style="display:inline-block;font-size:10px;font-weight:700;color:${WHITE};background:${BLACK};border-radius:2px;padding:5px 14px;letter-spacing:0.1em;text-transform:uppercase;font-family:${FONT};text-decoration:none;margin:0 4px;">STARTUP</a>
-                  <a href="${BASE_URL}/research" style="display:inline-block;font-size:10px;font-weight:700;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:2px;padding:4px 14px;letter-spacing:0.1em;text-transform:uppercase;font-family:${FONT};text-decoration:none;margin:0 4px;">RICERCHE</a>
-                  <a href="${BASE_URL}/dealroom" style="display:inline-block;font-size:10px;font-weight:700;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:2px;padding:4px 14px;letter-spacing:0.1em;text-transform:uppercase;font-family:${FONT};text-decoration:none;margin:0 4px;">DEALROOM</a>
+                  <a href="${BASE_URL}/ai" style="display:inline-block;font-size:11px;font-weight:600;color:${WHITE};background:${BLACK};border-radius:980px;padding:6px 16px;font-family:${FONT};text-decoration:none;margin:0 4px;">AI News</a>
+                  <a href="${BASE_URL}/startup" style="display:inline-block;font-size:11px;font-weight:600;color:${WHITE};background:${BLACK};border-radius:980px;padding:6px 16px;font-family:${FONT};text-decoration:none;margin:0 4px;">Startup</a>
+                  <a href="${BASE_URL}/research" style="display:inline-block;font-size:11px;font-weight:600;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:980px;padding:5px 16px;font-family:${FONT};text-decoration:none;margin:0 4px;">Ricerche</a>
+                  <a href="${BASE_URL}/dealroom" style="display:inline-block;font-size:11px;font-weight:600;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:980px;padding:5px 16px;font-family:${FONT};text-decoration:none;margin:0 4px;">Dealroom</a>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- SEPARATORE NERO -->
-        <tr><td style="height:3px;background:${BLACK};"></td></tr>
+        <!-- SEPARATORE -->
+        <tr><td style="height:1px;background:${BORDER};"></td></tr>
 
         <!-- BADGE EDITORIALE DEL SABATO -->
         <tr>
@@ -298,10 +298,10 @@ export function buildSaturdayNewsletterHtml(opts: {
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td>
-                  <div style="display:inline-block;font-size:10px;font-weight:800;color:${WHITE};background:${BLACK};border-radius:2px;padding:5px 18px;letter-spacing:0.18em;text-transform:uppercase;font-family:${FONT};">IL MEGLIO DI PROOFPRESS</div>
+                  <div style="display:inline-block;font-size:11px;font-weight:600;color:${BLACK};background:${WHITE};border:1px solid ${BORDER};border-radius:980px;padding:5px 16px;font-family:${FONT};">Il meglio di ProofPress</div>
                   <div style="margin-top:8px;font-size:12px;color:${SLATE};font-family:${FONT};font-style:italic;">Editoriale del Sabato &mdash; Ogni settimana, un tema approfondito.</div>
                   <div style="margin-top:4px;">
-                    <span style="display:inline-block;font-size:10px;font-weight:700;color:${WHITE};background:${DARK};border-radius:2px;padding:3px 10px;letter-spacing:0.1em;text-transform:uppercase;font-family:${FONT};">${editorial.category}</span>
+                    <span style="display:inline-block;font-size:11px;font-weight:600;color:${GOLD};background:${GOLD}1a;border-radius:980px;padding:3px 12px;font-family:${FONT};">${editorial.category}</span>
                   </div>
                 </td>
               </tr>
@@ -313,7 +313,7 @@ export function buildSaturdayNewsletterHtml(opts: {
         <tr>
           <td style="background:${WHITE};padding:36px 28px 8px;border-top:1px solid ${BORDER};">
             <h1 style="font-size:32px;font-weight:900;color:${BLACK};font-family:${FONT};line-height:1.15;margin:0 0 14px;letter-spacing:-0.5px;">${editorial.title}</h1>
-            <p style="font-size:16px;color:${SLATE};font-family:${FONT};line-height:1.5;margin:0 0 20px;font-style:italic;border-left:4px solid ${BLACK};padding-left:16px;">${editorial.subtitle}</p>
+            <p style="font-size:16px;color:${SLATE};font-family:${FONT};line-height:1.5;margin:0 0 20px;font-style:italic;border-left:3px solid ${BORDER};padding-left:16px;">${editorial.subtitle}</p>
           </td>
         </tr>
 
@@ -355,7 +355,7 @@ export function buildSaturdayNewsletterHtml(opts: {
           <td style="background:${WHITE};padding:28px 28px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="border-left:4px solid ${BLACK};padding:16px 20px;background:${CREAM};border-radius:0 6px 6px 0;">
+                <td style="border-left:3px solid ${GOLD};padding:16px 20px;background:${CREAM};border-radius:0 12px 12px 0;">
                   <div style="font-size:9px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.18em;text-transform:uppercase;margin-bottom:8px;">DA RICORDARE</div>
                   <span style="font-size:16px;font-style:italic;color:${DARK};font-family:${FONT};line-height:1.6;font-weight:600;">${editorial.keyQuote}</span>
                 </td>
@@ -401,13 +401,13 @@ export function buildSaturdayNewsletterHtml(opts: {
             <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
               <tr>
                 <td style="padding-right:8px;">
-                  <a href="${BASE_URL}/ai" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:700;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">AI News &rarr;</a>
+                  <a href="${BASE_URL}/ai" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:600;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:980px;">AI News &rarr;</a>
                 </td>
                 <td style="padding-right:8px;">
-                  <a href="${BASE_URL}/startup" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:700;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Startup &rarr;</a>
+                  <a href="${BASE_URL}/startup" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:600;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:980px;">Startup &rarr;</a>
                 </td>
                 <td>
-                  <a href="${BASE_URL}/research" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BLACK};font-size:12px;font-weight:700;font-family:${FONT};text-decoration:none;padding:10px 20px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Ricerche &rarr;</a>
+                  <a href="${BASE_URL}/research" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BORDER};font-size:12px;font-weight:600;font-family:${FONT};text-decoration:none;padding:10px 20px;border-radius:980px;">Ricerche &rarr;</a>
                 </td>
               </tr>
             </table>
@@ -415,18 +415,18 @@ export function buildSaturdayNewsletterHtml(opts: {
         </tr>
 
         <!-- SEPARATORE 2 -->
-        <tr><td style="height:2px;background:${BLACK};"></td></tr>
+        <tr><td style="height:1px;background:${BORDER};"></td></tr>
 
-        <!-- PROMO PROMPT COLLECTION -->
+        <!-- PROMO PROMPT COLLECTION (Apple style) -->
         <tr>
-          <td style="background:${BLACK};padding:28px 28px;text-align:center;">
-            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;">DALLA REDAZIONE PROOFPRESS</div>
-            <div style="font-size:20px;font-weight:900;color:${WHITE};font-family:${FONT};margin-bottom:8px;">Collezione Prompt ProofPress</div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.7);font-family:${FONT};margin-bottom:18px;">I prompt da usare davvero nel lavoro quotidiano &mdash; 39&euro;</div>
+          <td style="background:${CREAM};padding:32px 28px;text-align:center;">
+            <div style="font-size:11px;font-weight:600;color:${MUTED};font-family:${FONT};letter-spacing:0.5px;margin-bottom:10px;">Dalla redazione ProofPress</div>
+            <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${FONT};margin-bottom:8px;letter-spacing:-0.3px;">Collezione Prompt ProofPress</div>
+            <div style="font-size:14px;color:${SLATE};font-family:${FONT};margin-bottom:20px;line-height:1.55;">I prompt da usare davvero nel lavoro quotidiano &mdash; 39&euro;</div>
             <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
               <tr>
-                <td style="background:${WHITE};border-radius:4px;padding:12px 28px;">
-                  <a href="${BASE_URL}/prompt-collection" style="font-size:13px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};letter-spacing:0.05em;">SCOPRI LA COLLEZIONE &rarr;</a>
+                <td style="background:${BLACK};border-radius:980px;padding:12px 24px;">
+                  <a href="${BASE_URL}/prompt-collection" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${FONT};">Scopri la Collezione &rarr;</a>
                 </td>
               </tr>
             </table>
@@ -435,7 +435,7 @@ export function buildSaturdayNewsletterHtml(opts: {
 
         <!-- FOOTER -->
         <tr>
-          <td style="background:${CREAM};padding:24px 28px;border-top:1px solid ${BORDER};">
+          <td style="background:${WHITE};padding:24px 28px;border-top:1px solid ${BORDER};">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td align="center">
