@@ -401,17 +401,17 @@ Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire co
 Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
 Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "research") {
-    slotNote = `Questo è il POST SULLE RICERCHE (14:30) — Sezione Proof Press Research.
-Tono: autorevole e data-driven. Il tuo pubblico vuole insight basati su ricerche e dati concreti.
-Focus: presenta i key findings della ricerca, le implicazioni per il mercato italiano/europeo, e perché questa ricerca è rilevante per decision-maker.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
-NON limitarti a riassumere: aggiungi la tua lettura strategica dei dati.`;
+    slotNote = `Questo è il 2° POST AI NEWS (14:30) — Seconda notizia AI della giornata.
+Tono: analitico e strategico. Il tuo pubblico nel primo pomeriggio vuole un secondo aggiornamento sull'AI con un angolo completamente diverso rispetto al post delle 10:00.
+Focus: scegli una notizia AI diversa da quella del mattino — nuovi prodotti AI, acquisizioni, regolamentazione AI, AI applicata a settori specifici (sanità, finanza, manifattura, retail, HR). Implicazioni concrete per il mercato italiano ed europeo.
+NON ripetere lo stesso argomento del post delle 10:00: scegli una notizia o un angolo completamente diverso.
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "research-afternoon") {
-    slotNote = `Questo è il 2° POST RICERCHE (16:00) — Sezione Proof Press Research.
-Tono: autorevole e data-driven. Il tuo pubblico nel pomeriggio vuole insight concreti e azionabili.
-Focus: presenta i key findings di una nuova ricerca Proof Press, le implicazioni strategiche per il mercato italiano/europeo, e cosa devono fare i decision-maker oggi.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
-NON ripetere la stessa ricerca del post delle 14:30: scegli un angolo o una ricerca diversa.`;
+    slotNote = `Questo è il 2° POST RICERCHE DI MERCATO (16:00) — Seconda analisi di mercato della giornata.
+Tono: autorevole e data-driven. Il tuo pubblico nel tardo pomeriggio vuole ricerche di alto livello con dati quantitativi concreti.
+Focus: ricerche di mercato AI/Tech di alto livello (Gartner, McKinsey, IDC, Stanford HAI, MIT, Forrester, BCG). Dati quantitativi, previsioni di mercato, benchmark di settore. Lettura strategica per il mercato italiano ed europeo.
+NON ripetere lo stesso argomento del post delle 12:30: scegli una ricerca o un tema di mercato completamente diverso.
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
