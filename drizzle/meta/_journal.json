@@ -386,6 +386,13 @@
       "when": 1775832885803,
       "tag": "0054_ancient_doctor_octopus",
       "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "5",
+      "when": 1775925857731,
+      "tag": "0055_cold_sabretooth",
+      "breakpoints": true
     }
   ]
 }

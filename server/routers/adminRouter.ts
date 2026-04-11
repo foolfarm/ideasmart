@@ -15,6 +15,7 @@ import { refreshAINewsFromRSS, refreshStartupNewsFromRSS, refreshDealroomNewsFro
 import { getDb } from "../db";
 import { newsItems, sourceReports, healthCheckLogs } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
+import { getRecentAlerts, markAllAlertsRead, markAlertRead, countUnreadAlerts } from "../alertLogger";
 import { fetchAllSendgridStats } from "../sendgridStats";
 import { runSiteHealthCheck } from "../siteHealthCheck";
 
@@ -317,5 +318,29 @@ export const adminRouter = router({
           message: err instanceof Error ? err.message : "Errore recupero storico health check"
         });
       }
+    }),
+
+  /**
+   * Alert Log: storico alert di sistema (health check, diversity, linkedin, ecc.)
+   */
+  getAlertLogs: adminProcedure
+    .input(z.object({ limit: z.number().min(1).max(200).default(100) }).optional())
+    .query(async ({ input }) => {
+      const alerts = await getRecentAlerts(input?.limit ?? 100);
+      const unread = await countUnreadAlerts();
+      return { alerts, unread };
+    }),
+
+  markAlertRead: adminProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      await markAlertRead(input.id);
+      return { ok: true };
+    }),
+
+  markAllAlertsRead: adminProcedure
+    .mutation(async () => {
+      await markAllAlertsRead();
+      return { ok: true };
     }),
 });

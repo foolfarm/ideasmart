@@ -7,6 +7,7 @@
  */
 
 import { invokeLLM } from "./_core/llm";
+import { logAlert } from "./alertLogger";
 import {
   getTodayEditorial,
   saveEditorial,
@@ -349,6 +350,14 @@ async function checkDiversityScoreAlert(): Promise<void> {
       await notifyOwner({
         title: `⚠️ Alert Ripetitività Editoriali: Diversity Score ${diversityScore}%`,
         content: alertContent,
+      });
+      // Salva nel log DB
+      await logAlert({
+        type: "diversity",
+        severity: diversityScore < 50 ? "critical" : "warning",
+        title: `Diversity Score ${diversityScore}% (soglia: 70%)`,
+        message: `Titoli unici: ${uniqueTitles} su ${editorials.length}\n${titles.join("\n")}`,
+        emailSent: true,
       });
       lastDiversityAlertAt = now;
       console.log(`[DailyContent] ⚠️ Alert inviato: diversity score ${diversityScore}% (prossimo possibile tra 24h)`);

@@ -3029,3 +3029,15 @@
 ## Nuovi task (11 Apr 2026 — Banner + Font)
 - [x] Eliminare banner "ProofPress — Per il tuo business" dalla LeftSidebar (tutto il sito)
 - [x] Font SF Pro Apple già configurato globalmente nel CSS (nessuna modifica necessaria)
+
+## Nuovi task (11 Apr 2026 — Alert Log + Morning Report condizionale)
+
+- [ ] Creare tabella DB alert_logs (tipo, messaggio, severità, timestamp, letto)
+- [ ] tRPC procedure per salvare e leggere alert log
+- [ ] Integrare salvataggio alert in siteHealthCheck e diversityAlert
+- [ ] Creare pannello Alert Log nella dashboard Admin
+- [ ] Morning Health Report condizionale (solo se ci sono anomalie)
+- [ ] Creare tabella DB alert_logs
+- [ ] tRPC procedure alert log
+- [ ] Pannello Alert Log dashboard Admin
+- [ ] Morning Health Report condizionale

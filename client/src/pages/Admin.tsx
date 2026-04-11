@@ -254,6 +254,16 @@ export default function Admin() {
             >
               🟠 Salute Sistema
             </button>
+            <span className="text-white/20">·</span>
+            <button
+              onClick={() => navigate("/admin/alert-log")}
+              className="text-xs font-bold transition-colors"
+              style={{ color: "rgba(255,255,255,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#fb923c")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+            >
+              🔔 Alert Log
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />

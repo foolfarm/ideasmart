@@ -17,6 +17,7 @@
 import { sendEmail } from "./email";
 import { getDb } from "./db";
 import { healthCheckLogs } from "../drizzle/schema";
+import { logAlert } from "./alertLogger";
 
 const PROD_URL = "https://proofpress.ai";
 const ALERT_EMAIL = "info@andreacinelli.com";
@@ -379,6 +380,14 @@ export async function runSiteHealthCheck(): Promise<HealthReport> {
       } catch (err) {
         console.error("[HealthCheck] ❌ Errore invio email alert:", err);
       }
+      // Salva alert nel log DB
+      await logAlert({
+        type: "health_check",
+        severity: failedCount >= 3 ? "critical" : "warning",
+        title: `Health Check FALLITO — ${failedCount} problemi`,
+        message: checks.filter(c => !c.ok).map(c => `❌ ${c.name}: ${c.detail ?? "errore"}`).join("\n"),
+        emailSent: true,
+      });
     }
   }
 

@@ -214,9 +214,15 @@ export async function runMorningHealthReport(): Promise<void> {
     researchLastTitle
   });
 
-  // ── 6. Invia email ────────────────────────────────────────────────────────
-  const statusEmoji = overallOk ? "✅" : "⚠️";
-  const subject = `${statusEmoji} Proof Press Report ${todayLabel} — ${sectionsOk}/${SECTIONS.length} sezioni OK, ${totalNewsToday} notizie, ${linkedInPublished}/3 LinkedIn`;
+  // ── 6. Invia email SOLO se ci sono problemi (sectionsKo > 0) ─────────────
+  // Se tutto è OK, non inviare email per non intasare la casella di posta
+  if (overallOk) {
+    console.log(`[MorningReport] ✅ Tutto OK (${sectionsOk}/${SECTIONS.length} sezioni, ${totalNewsToday} notizie) — email soppressa (nessun problema rilevato)`);
+    return;
+  }
+
+  const statusEmoji = "⚠️";
+  const subject = `${statusEmoji} Proof Press Report ${todayLabel} — ${sectionsKo} sezioni con problemi su ${SECTIONS.length}`;
 
   try {
     const result = await sendEmail({
@@ -226,7 +232,7 @@ export async function runMorningHealthReport(): Promise<void> {
     });
 
     if (result.success) {
-      console.log(`[MorningReport] ✅ Report inviato a ${REPORT_EMAIL} — ${sectionsOk}/${SECTIONS.length} sezioni OK, ${totalNewsToday} notizie oggi`);
+      console.log(`[MorningReport] 📧 Report inviato (${sectionsKo} problemi) a ${REPORT_EMAIL}`);
     } else {
       console.error(`[MorningReport] ❌ Errore invio report: ${result.error}`);
     }

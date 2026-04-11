@@ -808,3 +808,23 @@ export const offertaLeads = mysqlTable("offerta_leads", {
 
 export type OffertaLead = typeof offertaLeads.$inferSelect;
 export type InsertOffertaLead = typeof offertaLeads.$inferInsert;
+
+// ── Alert Logs (storico alert di sistema: health check, diversity, ecc.) ──────
+export const alertLogs = mysqlTable("alert_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  // Tipo alert: 'health_check' | 'diversity' | 'linkedin' | 'newsletter' | 'system'
+  type: mysqlEnum("type", ["health_check", "diversity", "linkedin", "newsletter", "system"]).notNull(),
+  // Severità: 'critical' | 'warning' | 'info'
+  severity: mysqlEnum("severity", ["critical", "warning", "info"]).default("warning").notNull(),
+  // Titolo breve dell'alert
+  title: varchar("title", { length: 255 }).notNull(),
+  // Messaggio dettagliato
+  message: text("message").notNull(),
+  // Se l'email è stata inviata
+  emailSent: boolean("emailSent").default(false).notNull(),
+  // Se l'alert è stato letto dall'admin
+  read: boolean("read").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type AlertLog = typeof alertLogs.$inferSelect;
+export type InsertAlertLog = typeof alertLogs.$inferInsert;
