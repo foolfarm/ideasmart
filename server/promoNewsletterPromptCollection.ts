@@ -3,6 +3,7 @@
  * Invio: lunedì, mercoledì, giovedì alle 15:00 CET
  * Target: tutta la mailing list
  * Prodotto: "Prompt da usare davvero nel lavoro quotidiano" — 39€
+ * Design: Apple-style — SF Francisco, sfondo bianco/grigio chiaro, layout ampio
  */
 
 import { getDb, getActiveSubscribers } from "./db";
@@ -46,45 +47,93 @@ const SUBJECT_VARIANTS = [
 
 function getSubjectVariant(): string {
   const day = new Date().getDay();
-  // lun(1)→0, mer(3)→1, gio(4)→2
   if (day === 1) return SUBJECT_VARIANTS[0];
   if (day === 3) return SUBJECT_VARIANTS[1];
   return SUBJECT_VARIANTS[2];
 }
 
-// ─── Esempi di prompt per il corpo della newsletter ─────────────────────────
+// ─── Esempi di prompt dalla collezione ─────────────────────────────────────
 const PROMPT_EXAMPLES = [
   {
-    category: "STRATEGIA",
+    category: "Strategia",
     title: "Analisi competitiva in 5 minuti",
-    preview: "Sei un consulente McKinsey. Analizza il posizionamento competitivo di [azienda] rispetto ai principali competitor nel mercato [settore]. Identifica i 3 vantaggi competitivi chiave, le 3 vulnerabilità principali e proponi 2 mosse strategiche immediate...",
+    preview: `"Sei un consulente McKinsey. Analizza il posizionamento competitivo di [azienda] rispetto ai principali competitor nel mercato [settore]. Identifica i 3 vantaggi competitivi chiave, le 3 vulnerabilità principali e proponi 2 mosse strategiche immediate con timeline di esecuzione..."`,
+    result: "Output: report strutturato in 3 sezioni, pronto da condividere con il board.",
   },
   {
-    category: "MARKETING",
+    category: "Marketing",
     title: "Email di follow-up che converte",
-    preview: "Scrivi un'email di follow-up per un prospect che ha partecipato a una demo ma non ha risposto negli ultimi 7 giorni. Tono: professionale ma diretto. Obiettivo: ottenere un feedback o una risposta entro 48 ore. Evita frasi generiche come 'spero che tu stia bene'...",
+    preview: `"Scrivi un'email di follow-up per un prospect che ha partecipato a una demo ma non ha risposto negli ultimi 7 giorni. Tono: professionale ma diretto. Obiettivo: ottenere un feedback o una risposta entro 48 ore. Evita frasi generiche come 'spero che tu stia bene'..."`,
+    result: "Output: email di 120 parole con oggetto A/B testato e CTA chiara.",
   },
   {
-    category: "PRODUTTIVITÀ",
+    category: "Produttività",
     title: "Sintesi riunione con action items",
-    preview: "Sei un chief of staff esperto. Trasforma queste note di riunione [incolla note] in: 1) Sintesi esecutiva in 3 righe, 2) Decisioni prese, 3) Action items con responsabile e scadenza, 4) Punti aperti da risolvere. Formato: bullet points chiari...",
+    preview: `"Sei un chief of staff esperto. Trasforma queste note di riunione [incolla note] in: 1) Sintesi esecutiva in 3 righe, 2) Decisioni prese, 3) Action items con responsabile e scadenza, 4) Punti aperti da risolvere. Formato: bullet points chiari..."`,
+    result: "Output: documento strutturato in 4 sezioni, pronto da inviare al team.",
   },
   {
-    category: "CONTENUTI",
+    category: "Contenuti",
     title: "Post LinkedIn che genera engagement",
-    preview: "Scrivi un post LinkedIn per un CEO che vuole condividere una lezione appresa da un fallimento recente. Struttura: hook provocatorio (1 riga), storia in 3-4 paragrafi brevi, lezione chiave, domanda finale per il commento. Tono: autentico, non corporate...",
+    preview: `"Scrivi un post LinkedIn per un CEO che vuole condividere una lezione appresa da un fallimento recente. Struttura: hook provocatorio (1 riga), storia in 3-4 paragrafi brevi, lezione chiave, domanda finale per il commento. Tono: autentico, non corporate..."`,
+    result: "Output: post da 250 parole con hook testato su 1.000+ post analizzati.",
   },
 ];
 
-// ─── Template HTML ─────────────────────────────────────────────────────────
+// ─── Testimonial ────────────────────────────────────────────────────────────
+const TESTIMONIALS = [
+  {
+    quote: "Ho usato il prompt per l'analisi competitiva prima di un board meeting. Il CEO mi ha chiesto chi aveva preparato il report. L'aveva fatto l'AI in 4 minuti.",
+    author: "F.M., Strategy Manager",
+    detail: "Azienda manifatturiera · 200 dipendenti",
+  },
+  {
+    quote: "Il prompt per le email di follow-up ha aumentato il mio tasso di risposta dal 12% al 34%. Non cambierei nulla.",
+    author: "G.T., Account Executive",
+    detail: "SaaS B2B · Milano",
+  },
+  {
+    quote: "Uso la Collezione ogni giorno. Non per tutto — ma per il 20% dei task che mi rubava l'80% del tempo.",
+    author: "A.C., Consulente di management",
+    detail: "Freelance · 15 anni di esperienza",
+  },
+];
+
+// ─── Template HTML — Apple Style ──────────────────────────────────────────
 export function buildPromptCollectionHtml(): string {
-  const promptRows = PROMPT_EXAMPLES.map(p => `
+  const FONT = `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif`;
+  const BG = `#f5f5f7`;
+  const CARD_BG = `#ffffff`;
+  const TEXT_PRIMARY = `#1d1d1f`;
+  const TEXT_SECONDARY = `#6e6e73`;
+  const TEXT_TERTIARY = `#86868b`;
+  const ACCENT = `#ff9f0a`;
+  const ACCENT_DARK = `#e8890a`;
+  const BORDER = `#d2d2d7`;
+  const LIGHT_BG = `#f5f5f7`;
+
+  const promptCards = PROMPT_EXAMPLES.map(p => `
     <tr>
-      <td style="padding:0 0 16px;">
-        <div style="background:#fff;border:1px solid #e8e0d0;border-radius:4px;padding:20px;border-left:3px solid #c8a96e;">
-          <div style="font-size:10px;color:#c8a96e;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">${p.category}</div>
-          <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:8px;">${p.title}</div>
-          <div style="font-size:13px;color:#666;line-height:1.6;font-style:italic;">"${p.preview}"</div>
+      <td style="padding:0 0 16px 0;">
+        <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
+          <div style="display:inline-block;background:${ACCENT}1a;color:${ACCENT_DARK};font-family:${FONT};font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:12px;">${p.category}</div>
+          <div style="font-family:${FONT};font-size:15px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:10px;">${p.title}</div>
+          <div style="font-family:${FONT};font-size:13px;color:${TEXT_SECONDARY};line-height:1.65;margin-bottom:12px;font-style:italic;">${p.preview}</div>
+          <div style="background:${LIGHT_BG};border-radius:8px;padding:10px 14px;">
+            <div style="font-family:${FONT};font-size:12px;color:${TEXT_TERTIARY};">${p.result}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+
+  const testimonialCards = TESTIMONIALS.map(t => `
+    <tr>
+      <td style="padding:0 0 16px 0;">
+        <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:24px;">
+          <div style="font-family:${FONT};font-size:15px;color:${TEXT_PRIMARY};line-height:1.65;margin-bottom:16px;">"${t.quote}"</div>
+          <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};">${t.author}</div>
+          <div style="font-family:${FONT};font-size:12px;color:${TEXT_TERTIARY};margin-top:2px;">${t.detail}</div>
         </div>
       </td>
     </tr>
@@ -97,22 +146,22 @@ export function buildPromptCollectionHtml(): string {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt Collection 2026 — ProofPress</title>
 </head>
-<body style="margin:0;padding:0;background:#f5f0e8;font-family:'Georgia',serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0e8;">
-<tr><td align="center" style="padding:24px 16px;">
+<body style="margin:0;padding:0;background:${BG};font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:${BG};">
+<tr><td align="center" style="padding:32px 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
   <!-- HEADER -->
   <tr>
-    <td style="background:#000;padding:28px 36px;border-radius:4px 4px 0 0;">
+    <td style="background:${CARD_BG};padding:24px 32px;border-radius:16px 16px 0 0;border-bottom:1px solid ${BORDER};">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <div style="font-family:'Georgia',serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-0.5px;">ProofPress</div>
-            <div style="font-size:10px;color:#888;letter-spacing:3px;text-transform:uppercase;margin-top:2px;">COLLEZIONE PROMPT 2026</div>
+            <div style="font-family:${FONT};font-size:20px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">ProofPress</div>
+            <div style="font-family:${FONT};font-size:11px;color:${TEXT_TERTIARY};margin-top:2px;letter-spacing:0.3px;">Collezione Prompt 2026</div>
           </td>
           <td align="right">
-            <div style="background:#c8a96e;color:#000;font-size:12px;font-weight:700;padding:6px 14px;border-radius:2px;letter-spacing:1px;">39€</div>
+            <div style="display:inline-block;background:${ACCENT}1a;color:${ACCENT_DARK};font-family:${FONT};font-size:13px;font-weight:700;padding:5px 14px;border-radius:20px;">39€</div>
           </td>
         </tr>
       </table>
@@ -121,97 +170,124 @@ export function buildPromptCollectionHtml(): string {
 
   <!-- HERO -->
   <tr>
-    <td style="background:#1a1a1a;padding:40px 36px 36px;">
-      <div style="font-size:11px;color:#c8a96e;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;">NUOVA USCITA 2026</div>
-      <h1 style="margin:0 0 16px;font-family:'Georgia',serif;font-size:34px;font-weight:700;color:#fff;line-height:1.2;">Prompt da usare davvero<br>nel lavoro quotidiano.</h1>
-      <p style="margin:0 0 24px;font-size:16px;color:#aaa;line-height:1.6;">Non una raccolta teorica. Non i soliti "scrivi un'email professionale". Questi sono i prompt che funzionano davvero — testati su casi reali, scritti da chi usa l'AI ogni giorno per lavoro.</p>
-      <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="display:inline-block;background:#c8a96e;color:#000;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border-radius:3px;text-decoration:none;">Acquista ora — 39€ →</a>
-    </td>
-  </tr>
-
-  <!-- PROBLEMA -->
-  <tr>
-    <td style="background:#fff;padding:32px 36px;">
-      <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#1a1a1a;font-family:'Georgia',serif;">Il problema con i prompt che trovi online</h2>
-      <p style="margin:0 0 16px;font-size:15px;color:#444;line-height:1.7;">Sono generici. Funzionano in demo, non nella realtà. "Sei un esperto di marketing, scrivi un post" — e ottieni qualcosa che sembra scritto da un ufficio stampa degli anni '90.</p>
-      <p style="margin:0;font-size:15px;color:#444;line-height:1.7;"><strong>I prompt della Collezione 2026 sono diversi.</strong> Ogni prompt è strutturato con contesto, ruolo, vincoli e formato di output. Funzionano perché sono stati scritti partendo da problemi reali — non da tutorial YouTube.</p>
-    </td>
-  </tr>
-
-  <!-- ESEMPI -->
-  <tr>
-    <td style="background:#f5f0e8;padding:28px 36px;">
-      <h2 style="margin:0 0 20px;font-size:14px;font-weight:700;color:#1a1a1a;letter-spacing:2px;text-transform:uppercase;">4 esempi dalla collezione</h2>
-      <table width="100%" cellpadding="0" cellspacing="0">
-        ${promptRows}
-      </table>
-      <p style="margin:8px 0 0;font-size:12px;color:#999;text-align:center;">+ decine di altri prompt per vendite, finanza, HR, legale, AI automation e molto altro.</p>
+    <td style="background:${CARD_BG};padding:48px 32px 40px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Nuova uscita 2026</div>
+      <h1 style="margin:0 0 16px;font-family:${FONT};font-size:36px;font-weight:700;color:${TEXT_PRIMARY};line-height:1.15;letter-spacing:-0.5px;">Prompt da usare davvero<br>nel lavoro quotidiano.</h1>
+      <p style="margin:0 0 24px;font-family:${FONT};font-size:17px;color:${TEXT_SECONDARY};line-height:1.55;">Non una raccolta teorica. Non i soliti "scrivi un'email professionale". Questi sono i prompt che funzionano davvero — testati su casi reali, scritti da chi usa l'AI ogni giorno per lavoro.</p>
+      <p style="margin:0 0 32px;font-family:${FONT};font-size:15px;color:${TEXT_SECONDARY};line-height:1.7;">Il problema con i prompt che trovi online? Sono generici. Funzionano in demo, non nella realtà. I prompt della Collezione 2026 sono diversi: ogni prompt è strutturato con contesto, ruolo, vincoli e formato di output. Funzionano perché sono stati scritti partendo da problemi reali.</p>
+      <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="display:inline-block;background:${ACCENT};color:#ffffff;font-family:${FONT};font-size:15px;font-weight:600;padding:13px 24px;border-radius:980px;text-decoration:none;">Acquista ora — 39€ →</a>
     </td>
   </tr>
 
   <!-- COSA INCLUDE -->
   <tr>
-    <td style="background:#fff;padding:32px 36px;">
-      <h2 style="margin:0 0 20px;font-size:14px;font-weight:700;color:#1a1a1a;letter-spacing:2px;text-transform:uppercase;border-bottom:2px solid #c8a96e;padding-bottom:8px;display:inline-block;">Cosa include la Collezione</h2>
+    <td style="background:${LIGHT_BG};padding:40px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Cosa include</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Tutto quello che ti serve per lavorare meglio con l'AI.</h2>
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
-          <td width="48%" style="vertical-align:top;padding-right:12px;">
-            <div style="font-size:13px;color:#333;line-height:1.8;">
-              ✓ &nbsp;Prompt per strategia e management<br>
-              ✓ &nbsp;Prompt per marketing e contenuti<br>
-              ✓ &nbsp;Prompt per vendite e negoziazione<br>
-              ✓ &nbsp;Prompt per produttività personale
+          <td width="48%" style="vertical-align:top;padding-right:8px;">
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:4px;">Strategia & Management</div>
+              <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};line-height:1.5;">Analisi competitiva, business plan, OKR, presentazioni board.</div>
+            </div>
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:4px;">Marketing & Contenuti</div>
+              <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};line-height:1.5;">Email, post social, landing page, SEO, campagne ADV.</div>
+            </div>
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:16px;">
+              <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:4px;">Vendite & Negoziazione</div>
+              <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};line-height:1.5;">Pitch, follow-up, obiezioni, contratti, cold outreach.</div>
             </div>
           </td>
           <td width="4%"></td>
-          <td width="48%" style="vertical-align:top;padding-left:12px;">
-            <div style="font-size:13px;color:#333;line-height:1.8;">
-              ✓ &nbsp;Prompt per analisi finanziaria<br>
-              ✓ &nbsp;Prompt per HR e recruiting<br>
-              ✓ &nbsp;Prompt per AI automation<br>
-              ✓ &nbsp;Aggiornamenti gratuiti 2026
+          <td width="48%" style="vertical-align:top;padding-left:8px;">
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:4px;">Produttività Personale</div>
+              <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};line-height:1.5;">Sintesi riunioni, to-do, gestione email, prioritizzazione.</div>
+            </div>
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:4px;">Analisi & Finanza</div>
+              <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};line-height:1.5;">Report finanziari, forecast, analisi dati, due diligence.</div>
+            </div>
+            <div style="background:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;padding:16px;">
+              <div style="font-family:${FONT};font-size:13px;font-weight:600;color:${TEXT_PRIMARY};margin-bottom:4px;">HR & Recruiting</div>
+              <div style="font-family:${FONT};font-size:12px;color:${TEXT_SECONDARY};line-height:1.5;">Job description, colloqui, feedback, onboarding, review.</div>
             </div>
           </td>
         </tr>
       </table>
+      <div style="margin-top:16px;text-align:center;">
+        <div style="font-family:${FONT};font-size:12px;color:${TEXT_TERTIARY};">+ Aggiornamenti gratuiti per tutto il 2026</div>
+      </div>
     </td>
   </tr>
 
-  <!-- PREZZO E CTA -->
+  <!-- ESEMPI DALLA COLLEZIONE -->
   <tr>
-    <td style="background:#1a1a1a;padding:36px;text-align:center;">
-      <div style="font-size:13px;color:#888;text-decoration:line-through;margin-bottom:4px;">Valore stimato: 149€</div>
-      <div style="font-size:42px;font-weight:700;color:#c8a96e;font-family:'Georgia',serif;margin-bottom:4px;">39€</div>
-      <div style="font-size:12px;color:#666;margin-bottom:24px;">Pagamento unico · Accesso immediato · Aggiornamenti inclusi</div>
-      <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="display:inline-block;background:#c8a96e;color:#000;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:3px;text-decoration:none;">Acquista la Collezione 2026 →</a>
-      <div style="margin-top:16px;font-size:12px;color:#555;">Disponibile su proofpress.ai</div>
+    <td style="background:${CARD_BG};padding:40px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">4 esempi dalla collezione</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Vedi come funzionano.</h2>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${promptCards}
+      </table>
     </td>
   </tr>
+
+  <!-- TESTIMONIAL -->
+  <tr>
+    <td style="background:${LIGHT_BG};padding:40px 32px;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:${TEXT_TERTIARY};letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Chi l'ha già acquistata</div>
+      <h2 style="margin:0 0 24px;font-family:${FONT};font-size:24px;font-weight:700;color:${TEXT_PRIMARY};letter-spacing:-0.3px;">Risultati reali.</h2>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${testimonialCards}
+      </table>
+    </td>
+  </tr>
+
+  <!-- PREZZO E CTA FINALE -->
+  <tr>
+    <td style="background:${TEXT_PRIMARY};padding:48px 32px;border-radius:0 0 16px 16px;text-align:center;">
+      <div style="font-family:${FONT};font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Prezzo di lancio</div>
+      <div style="font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.4);text-decoration:line-through;margin-bottom:4px;">Valore stimato: 149€</div>
+      <div style="font-family:${FONT};font-size:48px;font-weight:700;color:${ACCENT};letter-spacing:-1px;line-height:1;">39€</div>
+      <div style="font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.5);margin:8px 0 28px;">Pagamento unico · Accesso immediato · Aggiornamenti 2026 inclusi</div>
+      <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="display:inline-block;background:#ffffff;color:${TEXT_PRIMARY};font-family:${FONT};font-size:15px;font-weight:600;padding:14px 28px;border-radius:980px;text-decoration:none;">Acquista la Collezione 2026 →</a>
+      <div style="margin-top:16px;">
+        <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.4);text-decoration:none;">promptcollection2026.com</a>
+      </div>
+    </td>
+  </tr>
+
+  <!-- SPACER -->
+  <tr><td style="height:24px;"></td></tr>
 
   <!-- FOOTER -->
   <tr>
-    <td style="background:#0a0f1e;padding:24px 36px;border-radius:0 0 4px 4px;">
+    <td style="padding:0 8px;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <div style="font-size:12px;color:#666;">
-              <a href="https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt" style="color:#888;text-decoration:none;">proofpress.ai</a>
+            <div style="font-family:${FONT};font-size:12px;color:${TEXT_TERTIARY};">
+              <a href="https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt" style="color:${TEXT_TERTIARY};text-decoration:none;">proofpress.ai</a>
               &nbsp;·&nbsp;
-              <a href="https://proofpress.ai/ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt" style="color:#888;text-decoration:none;">AI News</a>
+              <a href="https://proofpress.ai/ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt" style="color:${TEXT_TERTIARY};text-decoration:none;">AI News</a>
               &nbsp;·&nbsp;
-              <a href="https://proofpress.ai/startup?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt" style="color:#888;text-decoration:none;">Startup</a>
+              <a href="https://proofpress.ai/startup?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt" style="color:${TEXT_TERTIARY};text-decoration:none;">Startup</a>
             </div>
           </td>
           <td align="right">
-            <div style="font-size:11px;color:#555;">
+            <div style="font-family:${FONT};font-size:11px;color:${TEXT_TERTIARY};">
               Hai ricevuto questa email perché sei iscritto a ProofPress.<br>
-              <a href="https://proofpress.ai/unsubscribe?email={{email}}" style="color:#555;">Disiscriviti</a>
+              <a href="https://proofpress.ai/unsubscribe?email={{email}}" style="color:${TEXT_TERTIARY};">Disiscriviti</a>
             </div>
           </td>
         </tr>
       </table>
     </td>
   </tr>
+
+  <tr><td style="height:32px;"></td></tr>
 
 </table>
 </td></tr>
