@@ -25,6 +25,9 @@ const BRAND = "ProofPress";
 const BRAND_COLOR = "#1a1a1a";
 const ACCENT_COLOR = "#ff5500";
 
+// Anti-duplicato: traccia l'ultima data in cui il report è stato inviato (YYYY-MM-DD)
+let lastReportSentDate: string | null = null;
+
 // ─── Utility ─────────────────────────────────────────────────────────────────
 function formatNum(n: number): string {
   return n.toLocaleString("it-IT");
@@ -402,6 +405,13 @@ function buildDailyMetricsHtml(metrics: DailyMetrics, date: Date): string {
 
 // ─── Funzione principale ──────────────────────────────────────────────────────
 export async function sendDailyMetricsReport(): Promise<void> {
+  // Anti-duplicato: non inviare più di 1 volta al giorno
+  const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
+  if (lastReportSentDate === todayKey) {
+    console.log(`[DailyMetrics] ⏳ Report già inviato oggi (${todayKey}) — skip`);
+    return;
+  }
+
   console.log("[DailyMetrics] 📊 Avvio report giornaliero metriche...");
 
   const metrics = await collectDailyMetrics();
@@ -428,7 +438,8 @@ export async function sendDailyMetricsReport(): Promise<void> {
   });
 
   if (result.success) {
-    console.log(`[DailyMetrics] ✅ Report inviato a ${REPORT_EMAIL}`);
+    lastReportSentDate = todayKey; // segna come inviato oggi
+    console.log(`[DailyMetrics] ✅ Report inviato a ${REPORT_EMAIL} (prossimo domani)`);
   } else {
     console.error(`[DailyMetrics] ❌ Errore invio report: ${result.error}`);
   }

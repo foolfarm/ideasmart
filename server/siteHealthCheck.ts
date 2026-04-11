@@ -22,6 +22,10 @@ const PROD_URL = "https://proofpress.ai";
 const ALERT_EMAIL = "info@andreacinelli.com";
 const FETCH_TIMEOUT = 15_000;
 
+// ── Cooldown alert: max 1 email ogni 6 ore per evitare spam ────────────────
+let lastAlertSentAt: number | null = null;
+const ALERT_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6 ore
+
 // ── Tipi ─────────────────────────────────────────────────────────────────────
 
 interface CheckResult {
@@ -351,22 +355,30 @@ export async function runSiteHealthCheck(): Promise<HealthReport> {
     });
   }
 
-  // Invia alert email SOLO se ci sono problemi
+  // Invia alert email SOLO se ci sono problemi E non è stato inviato nelle ultime 6 ore (cooldown anti-spam)
   if (!allOk) {
-    try {
-      const html = buildAlertEmailHtml(report);
-      const result = await sendEmail({
-        to: ALERT_EMAIL,
-        subject: `🚨 Proof Press Health Check FALLITO — ${failedCount} problemi rilevati`,
-        html,
-      });
-      if (result.success) {
-        console.log(`[HealthCheck] 📧 Alert inviato a ${ALERT_EMAIL}`);
-      } else {
-        console.error(`[HealthCheck] ❌ Errore invio alert: ${result.error}`);
+    const now = Date.now();
+    const cooldownOk = !lastAlertSentAt || (now - lastAlertSentAt) > ALERT_COOLDOWN_MS;
+    if (!cooldownOk) {
+      const minutesAgo = Math.round((now - lastAlertSentAt!) / 60_000);
+      console.log(`[HealthCheck] ⏳ Alert soppresso (cooldown 6h — ultimo inviato ${minutesAgo} min fa)`);
+    } else {
+      try {
+        const html = buildAlertEmailHtml(report);
+        const result = await sendEmail({
+          to: ALERT_EMAIL,
+          subject: `🚨 Proof Press Health Check FALLITO — ${failedCount} problemi rilevati`,
+          html,
+        });
+        if (result.success) {
+          lastAlertSentAt = now;
+          console.log(`[HealthCheck] 📧 Alert inviato a ${ALERT_EMAIL} (prossimo possibile tra 6h)`);
+        } else {
+          console.error(`[HealthCheck] ❌ Errore invio alert: ${result.error}`);
+        }
+      } catch (err) {
+        console.error("[HealthCheck] ❌ Errore invio email alert:", err);
       }
-    } catch (err) {
-      console.error("[HealthCheck] ❌ Errore invio email alert:", err);
     }
   }
 

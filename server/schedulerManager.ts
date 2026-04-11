@@ -724,10 +724,10 @@ export function startAllSchedulers(): void {
   }, 30_000); // Attende 30s dopo l'avvio per dare tempo al DB di connettersi
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SITE HEALTH CHECK — ogni ora, verifica che il sito sia online e con contenuti
-  // Se rileva problemi (pagina vuota, API down, sezioni mancanti), invia alert email
-  // ══════════════════════════════════════════════════════════════════════════
-  cron.schedule("0 * * * *", async () => {
+  // SITE HEALTH CHECK — 2 volte al giorno (09:00 e 17:00 CET)
+  // Se rileva problemi, invia alert email con cooldown 6h (max 1 email ogni 6 ore)
+  // ══════════════════════════════════════════════════════════════════════
+  cron.schedule("0 9,17 * * *", async () => {
     console.log("[SchedulerManager] 🏥 Health Check produzione — verifica contenuti sito...");
     try {
       await runSiteHealthCheck();

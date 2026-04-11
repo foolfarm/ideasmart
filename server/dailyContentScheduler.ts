@@ -299,9 +299,13 @@ async function runDailyContentRefresh() {
   }
 }
 
+// Cooldown diversity alert: max 1 notifica ogni 24 ore
+let lastDiversityAlertAt: number | null = null;
+const DIVERSITY_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 ore
+
 /**
  * Calcola il diversity score degli ultimi 14 editoriali.
- * Se scende sotto il 70%, invia un alert al proprietario.
+ * Se scende sotto il 70%, invia un alert al proprietario (max 1 volta ogni 24h).
  */
 async function checkDiversityScoreAlert(): Promise<void> {
   try {
@@ -322,6 +326,13 @@ async function checkDiversityScoreAlert(): Promise<void> {
     console.log(`[DailyContent] Diversity score: ${diversityScore}% (${uniqueTitles}/${editorials.length} titoli unici)`);
 
     if (diversityScore < 70) {
+      const now = Date.now();
+      const cooldownOk = !lastDiversityAlertAt || (now - lastDiversityAlertAt) > DIVERSITY_COOLDOWN_MS;
+      if (!cooldownOk) {
+        const hoursAgo = Math.round((now - lastDiversityAlertAt!) / 3_600_000);
+        console.log(`[DailyContent] ⏳ Diversity alert soppresso (cooldown 24h — ultimo inviato ${hoursAgo}h fa)`);
+        return;
+      }
       // Trova le coppie più simili per il report
       const titles = editorials.map(e => `- [${e.dateLabel}] ${e.title}`);
       const alertContent = [
@@ -339,7 +350,8 @@ async function checkDiversityScoreAlert(): Promise<void> {
         title: `⚠️ Alert Ripetitività Editoriali: Diversity Score ${diversityScore}%`,
         content: alertContent,
       });
-      console.log(`[DailyContent] ⚠️ Alert inviato: diversity score ${diversityScore}%`);
+      lastDiversityAlertAt = now;
+      console.log(`[DailyContent] ⚠️ Alert inviato: diversity score ${diversityScore}% (prossimo possibile tra 24h)`);
     }
   } catch (err) {
     console.error("[DailyContent] Diversity score check error:", err);
