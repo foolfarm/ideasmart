@@ -543,7 +543,7 @@ export default function Home() {
         {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 mt-3">
           <a
-            href="https://ideasmart.forum/"
+            href="https://promptcollection2026.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-4 p-3 rounded-lg transition-all duration-300 hover:shadow-lg group"
@@ -928,7 +928,7 @@ export default function Home() {
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
                   <a
-                    href="https://ideasmart.forum/"
+                    href="https://promptcollection2026.com/"
                     className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
                     style={{ textDecoration: "none" }}
                   >

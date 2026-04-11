@@ -46,7 +46,7 @@ export function getBusinessVariant(dayOfWeek?: number): "creator" | "editori" | 
 }
 
 // ─── Template HTML ─────────────────────────────────────────────────────────
-function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "aziende"): string {
+export function buildBusinessNewsletterHtml(variant: "creator" | "editori" | "aziende"): string {
   const configs = {
     creator: {
       tag: "PER CREATOR & GIORNALISTI",

@@ -11,9 +11,10 @@ interface SidebarChannel {
 
 /* ─── SEZIONE INFO ────────────────────────────────────────────────────── */
 const INFO_LINKS: SidebarChannel[] = [
-  { label: "Chi siamo",   icon: "🏗️", href: "/chi-siamo-story" },
-  { label: "Pubblicizza", icon: "📣", href: "/pubblicita" },
-  { label: "Contatti",    icon: "✉️", href: "mailto:info@proofpress.ai" },
+  { label: "Chi siamo",        icon: "🏗️", href: "/chi-siamo-story" },
+  { label: "Pubblicizza",      icon: "📣", href: "/pubblicita" },
+  { label: "Collezione Prompt", icon: "📋", href: "https://promptcollection2026.com/" },
+  { label: "Contatti",         icon: "✉️", href: "mailto:info@proofpress.ai" },
 ];
 
 const PIATTAFORMA_SUBMENU = [

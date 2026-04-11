@@ -77,7 +77,7 @@ const PROMPT_EXAMPLES = [
 ];
 
 // ─── Template HTML ─────────────────────────────────────────────────────────
-function buildPromptCollectionHtml(): string {
+export function buildPromptCollectionHtml(): string {
   const promptRows = PROMPT_EXAMPLES.map(p => `
     <tr>
       <td style="padding:0 0 16px;">
@@ -125,7 +125,7 @@ function buildPromptCollectionHtml(): string {
       <div style="font-size:11px;color:#c8a96e;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;">NUOVA USCITA 2026</div>
       <h1 style="margin:0 0 16px;font-family:'Georgia',serif;font-size:34px;font-weight:700;color:#fff;line-height:1.2;">Prompt da usare davvero<br>nel lavoro quotidiano.</h1>
       <p style="margin:0 0 24px;font-size:16px;color:#aaa;line-height:1.6;">Non una raccolta teorica. Non i soliti "scrivi un'email professionale". Questi sono i prompt che funzionano davvero — testati su casi reali, scritti da chi usa l'AI ogni giorno per lavoro.</p>
-      <a href="https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection#prompt-collection" style="display:inline-block;background:#c8a96e;color:#000;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border-radius:3px;text-decoration:none;">Acquista ora — 39€ →</a>
+      <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="display:inline-block;background:#c8a96e;color:#000;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border-radius:3px;text-decoration:none;">Acquista ora — 39€ →</a>
     </td>
   </tr>
 
@@ -183,7 +183,7 @@ function buildPromptCollectionHtml(): string {
       <div style="font-size:13px;color:#888;text-decoration:line-through;margin-bottom:4px;">Valore stimato: 149€</div>
       <div style="font-size:42px;font-weight:700;color:#c8a96e;font-family:'Georgia',serif;margin-bottom:4px;">39€</div>
       <div style="font-size:12px;color:#666;margin-bottom:24px;">Pagamento unico · Accesso immediato · Aggiornamenti inclusi</div>
-      <a href="https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection#prompt-collection" style="display:inline-block;background:#c8a96e;color:#000;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:3px;text-decoration:none;">Acquista la Collezione 2026 →</a>
+      <a href="https://promptcollection2026.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo_prompt_collection" style="display:inline-block;background:#c8a96e;color:#000;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:3px;text-decoration:none;">Acquista la Collezione 2026 →</a>
       <div style="margin-top:16px;font-size:12px;color:#555;">Disponibile su proofpress.ai</div>
     </td>
   </tr>

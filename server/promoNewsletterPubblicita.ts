@@ -52,7 +52,7 @@ function getSubjectVariant(): string {
 }
 
 // ─── Template HTML ─────────────────────────────────────────────────────────
-function buildPubblicitaHtml(): string {
+export function buildPubblicitaHtml(): string {
   return `<!DOCTYPE html>
 <html lang="it">
 <head>
