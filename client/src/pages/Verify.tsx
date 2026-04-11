@@ -114,7 +114,7 @@ function VerifyResult({ article }: {
       </div>
 
       {/* Corpo */}
-      <div className="p-6 bg-[#f5f2ec]">
+      <div className="p-6 bg-[#f5f5f7]">
         {/* Badge sezione */}
         <div className="mb-4">
           <span
@@ -193,7 +193,7 @@ function VerifyResult({ article }: {
             </code>
             <button
               onClick={handleCopy}
-              className="flex-shrink-0 p-1.5 hover:bg-[#f5f2ec] transition-colors rounded"
+              className="flex-shrink-0 p-1.5 hover:bg-[#f5f5f7] transition-colors rounded"
               title="Copia hash"
             >
               {copied
@@ -255,7 +255,7 @@ export default function Verify() {
   const isSearching = isLoading || isFetching;
 
   return (
-    <div className="flex min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+    <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
       <LeftSidebar />
       <div className="flex-1 min-w-0 overflow-x-hidden">
       <SharedPageHeader />

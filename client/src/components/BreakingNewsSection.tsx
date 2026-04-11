@@ -83,9 +83,9 @@ export default function BreakingNewsSection() {
   return (
     <div
       style={{
-        background: "#fff8f0",
-        borderTop: "2px solid #ff5500",
-        borderBottom: "1px solid rgba(26,26,26,0.10)",
+        background: "#ffffff",
+        borderTop: "2px solid #1d1d1f",
+        borderBottom: "1px solid #e5e5ea",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 py-0">
@@ -95,7 +95,7 @@ export default function BreakingNewsSection() {
           {/* Badge BREAKING */}
           <div
             style={{
-              background: "#ff5500",
+              background: "#1d1d1f",
               color: "#fff",
               fontWeight: 900,
               fontSize: "10px",
@@ -136,7 +136,7 @@ export default function BreakingNewsSection() {
                   cursor: "pointer",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif",
                 }}
-                className="hover:text-[#ff5500] transition-colors truncate block"
+                className="hover:text-[#0071e3] transition-colors truncate block"
                 title={active.title}
               >
                 {active.title}
@@ -172,8 +172,8 @@ export default function BreakingNewsSection() {
                   onClick={() => setActiveIndex(i)}
                   className={`h-1.5 rounded-full transition-all ${
                     i === activeIndex
-                      ? "bg-[#ff5500] w-3"
-                      : "bg-[#1a1a1a]/20 hover:bg-[#1a1a1a]/40 w-1.5"
+                      ? "bg-[#1d1d1f] w-3"
+                      : "bg-[#1d1d1f]/20 hover:bg-[#1d1d1f]/40 w-1.5"
                   }`}
                   aria-label={`Breaking news ${i + 1}`}
                 />

@@ -7,7 +7,7 @@ export default function PubblicitaPage() {
   return (
     <main
       style={{
-        background: "#faf8f3",
+        background: "#ffffff",
         minHeight: "100vh",
         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
       }}
@@ -115,7 +115,7 @@ export default function PubblicitaPage() {
               <div
                 key={stat.num}
                 style={{
-                  background: "#faf8f3",
+                  background: "#ffffff",
                   borderRadius: "12px",
                   padding: "28px 24px",
                   textAlign: "center",
@@ -145,7 +145,7 @@ export default function PubblicitaPage() {
       </section>
 
       {/* ── AUDIENCE ─────────────────────────────────────────────── */}
-      <section style={{ padding: "56px 24px", background: "#faf8f3" }}>
+      <section style={{ padding: "56px 24px", background: "#ffffff" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <h2
             style={{
@@ -281,7 +281,7 @@ export default function PubblicitaPage() {
                 <div
                   key={fmt.name}
                   style={{
-                    background: "#faf8f3",
+                    background: "#ffffff",
                     borderRadius: "12px",
                     padding: "20px",
                     border: "1px solid rgba(26,26,26,0.08)",
@@ -373,7 +373,7 @@ export default function PubblicitaPage() {
                 <div
                   key={fmt.name}
                   style={{
-                    background: "#faf8f3",
+                    background: "#ffffff",
                     borderRadius: "12px",
                     padding: "20px",
                     border: "1px solid rgba(26,26,26,0.08)",

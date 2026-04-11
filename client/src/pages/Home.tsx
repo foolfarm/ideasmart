@@ -443,7 +443,7 @@ export default function Home() {
         .newspaper-col-rule { border-right: 1px solid rgba(26,26,46,0.15); }
       `}</style>
 
-      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#1d1d1f" }}>
         {/* ══ SIDEBAR SINISTRA FISSA ══════════════════════════════════════════ */}
         <LeftSidebar />
 
@@ -535,30 +535,29 @@ export default function Home() {
           <Divider thick />
 
         </header>
-
-        {/* ══ BREAKING NEWS ════════════════════════════════════════════════════ */}
+        {/* ══ BREAKING NEWS ════════════════════════════════════════════════════════ */}
         <BreakingNewsSection />
         <BreakingNewsTicker />
 
-        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════ */}
+        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 mt-3">
           <a
             href="https://promptcollection2026.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 p-3 rounded-lg transition-all duration-300 hover:shadow-lg group"
-            style={{ background: "#1a1a1a", textDecoration: "none" }}
+            className="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 hover:shadow-sm group"
+            style={{ background: "#f5f5f7", border: "1px solid #e5e5ea", textDecoration: "none" }}
           >
-            <div className="flex-shrink-0 text-2xl">📋</div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-bold uppercase tracking-[0.15em] mb-0.5" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione Proof Press</p>
-              <p className="text-[14px] font-black leading-tight" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "#1d1d1f" }}>
+              <span className="text-white text-lg">📋</span>
             </div>
-            <span className="flex-shrink-0 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded group-hover:opacity-90 transition-opacity" style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Scopri →</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-0.5" style={{ color: "#86868b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione Proof Press</p>
+              <p className="text-[14px] font-bold leading-tight" style={{ color: "#1d1d1f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
+            </div>
+            <span className="flex-shrink-0 text-[13px] font-semibold px-5 py-2 group-hover:opacity-80 transition-opacity" style={{ background: "#1d1d1f", color: "#ffffff", borderRadius: "980px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Scopri →</span>
           </a>
-        </div>
-
-        {/* ══ CORPO ═══════════════════════════════════════════════════════════════════ */}
+        </div> {/* ══ CORPO ═══════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
 
@@ -721,7 +720,7 @@ export default function Home() {
                             : "#1a1a1a";
                           return (
                             <Link key={r.id} href={`/research/${r.id}`}>
-                              <article className="cursor-pointer group border border-[#1a1a1a]/10 p-3 hover:border-[#1a1a1a]/30 transition-colors">
+                              <article className="cursor-pointer group border border-[#e5e5ea] p-3 rounded-xl hover:border-[#1d1d1f]/20 transition-colors">
                                 <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2"
                                   style={{ background: accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                                   {r.category.replace("_", " ")}
@@ -745,7 +744,7 @@ export default function Home() {
                       </div>
                       <div className="mt-4 text-center">
                         <Link href="/research">
-                          <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-6 py-2 border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-colors cursor-pointer"
+                          <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-6 py-2 border border-[#1d1d1f] text-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-white transition-colors cursor-pointer"
                             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                             Vedi tutte le 20 ricerche di oggi →
                           </span>
@@ -980,7 +979,7 @@ export default function Home() {
                       </span>
                       <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
                     </div>
-                    <div className="border-t-[3px] border-[#1a1a1a]" />
+                    <div className="border-t-2 border-[#1d1d1f]" />
 
                     {sidebarFeed.map((item, i) => (
                       <div key={`${item.section}-${item.id}`}>
@@ -1022,7 +1021,7 @@ export default function Home() {
                         </span>
                         <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
                       </div>
-                      <div className="border-t-[3px]" style={{ borderColor: "#1a1a1a" }} />
+                      <div className="border-t-2" style={{ borderColor: "#1d1d1f" }} />
                       <Link href="/research">
                         <article className="cursor-pointer group pt-3">
                           <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2"
@@ -1063,7 +1062,7 @@ export default function Home() {
                         </span>
                         <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
                       </div>
-                      <div className="border-t-[3px] mb-3" style={{ borderColor: "#1a1a1a" }} />
+                      <div className="border-t-2 mb-3" style={{ borderColor: "#1d1d1f" }} />
                       <div className="space-y-4">
                         {authorPosts.map((post) => {
                           const firstLine = (post.title || post.postText.split('\n')[0]).replace(/[*_#]/g, '').trim();

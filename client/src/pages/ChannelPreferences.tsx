@@ -73,7 +73,7 @@ export default function ChannelPreferences() {
   // Stato: nessun token
   if (!token) {
     return (
-      <div style={{ minHeight: "100vh", background: "#f5f0e8", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Georgia, serif" }}>
+      <div style={{ minHeight: "100vh", background: "#f5f5f7", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
         <div style={{ maxWidth: 480, padding: "48px 32px", textAlign: "center" }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔗</div>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#0a1628", marginBottom: 12 }}>Link non valido</h1>
@@ -91,8 +91,8 @@ export default function ChannelPreferences() {
   // Stato: caricamento
   if (prefsQuery.isLoading) {
     return (
-      <div style={{ minHeight: "100vh", background: "#f5f0e8", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ textAlign: "center", fontFamily: "Georgia, serif" }}>
+      <div style={{ minHeight: "100vh", background: "#f5f5f7", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           <div style={{ width: 40, height: 40, border: "3px solid #1a1a1a", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
           <p style={{ color: "#4b5563", fontSize: 15 }}>Caricamento preferenze...</p>
         </div>
@@ -103,7 +103,7 @@ export default function ChannelPreferences() {
   // Stato: token non trovato
   if (prefsQuery.data === null) {
     return (
-      <div style={{ minHeight: "100vh", background: "#f5f0e8", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Georgia, serif" }}>
+      <div style={{ minHeight: "100vh", background: "#f5f5f7", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
         <div style={{ maxWidth: 480, padding: "48px 32px", textAlign: "center" }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>❌</div>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#0a1628", marginBottom: 12 }}>Token non trovato</h1>
@@ -121,7 +121,7 @@ export default function ChannelPreferences() {
   const sub = prefsQuery.data;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f5f0e8", fontFamily: "Georgia, serif" }}>
+    <div style={{ minHeight: "100vh", background: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
         .channel-card { transition: all 0.18s ease; cursor: pointer; }

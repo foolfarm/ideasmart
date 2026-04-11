@@ -1,7 +1,7 @@
 /**
  * IDEASMART — STARTUP NEWS · Sezione Startup
  * Layout editoriale da giornale: testata sezione, editoriale del giorno, notizie in colonne, startup del giorno, reportage.
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento arancione (#2a2a2a).
+ * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), accento arancione (#2a2a2a).
  */
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
@@ -133,7 +133,7 @@ export default function StartupHome() {
         /* SF Pro system font — no external loading needed */
       `}</style>
 
-      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: INK }}>
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />

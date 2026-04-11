@@ -58,14 +58,14 @@ export default function Account() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#faf8f3" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#ffffff" }}>
         <div className="w-8 h-8 border-2 border-[#1a1a1a]/20 border-t-[#1a1a1a] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+    <div className="min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
       <SharedPageHeader />
       <main className="max-w-[900px] mx-auto px-4 py-12">
 

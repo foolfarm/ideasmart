@@ -42,62 +42,72 @@
 }
 
 :root {
-  --radius: 0.375rem;
+  --radius: 0.75rem;
 
-  /* IDEASMART Monochrome Palette — greys only */
-  --background: oklch(0.99 0 0);               /* #fafafa — near white */
-  --foreground: oklch(0.08 0 0);               /* #141414 — near black */
+  /* ProofPress Apple Design System — sfondo bianco puro, palette chiara */
+  --background: oklch(1 0 0);                  /* #ffffff — bianco puro */
+  --foreground: oklch(0.12 0 0);               /* #1d1d1f — Apple near-black */
   --card: oklch(1 0 0);                        /* #ffffff — pure white */
-  --card-foreground: oklch(0.08 0 0);
+  --card-foreground: oklch(0.12 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.08 0 0);
-  --primary: oklch(0.08 0 0);                  /* #141414 — black as primary */
-  --primary-foreground: oklch(1 0 0);          /* white text on black */
-  --secondary: oklch(0.95 0 0);               /* #f2f2f2 — light grey */
-  --secondary-foreground: oklch(0.25 0 0);
-  --muted: oklch(0.95 0 0);
-  --muted-foreground: oklch(0.45 0 0);         /* #737373 — medium grey */
-  --accent: oklch(0.92 0 0);                   /* #ebebeb — accent grey */
-  --accent-foreground: oklch(0.08 0 0);
-  --destructive: oklch(0.35 0 0);              /* dark grey for destructive */
+  --popover-foreground: oklch(0.12 0 0);
+  --primary: oklch(0.12 0 0);                  /* #1d1d1f — Apple black */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.97 0 0);               /* #f5f5f7 — Apple grey */
+  --secondary-foreground: oklch(0.20 0 0);
+  --muted: oklch(0.97 0 0);                    /* #f5f5f7 */
+  --muted-foreground: oklch(0.43 0 0);         /* #6e6e73 — Apple muted */
+  --accent: oklch(0.94 0 0);                   /* #efefef */
+  --accent-foreground: oklch(0.12 0 0);
+  --destructive: oklch(0.55 0.2 25);           /* red */
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.87 0 0);                   /* #dedede — light border */
-  --input: oklch(0.92 0 0);
-  --ring: oklch(0.45 0 0);
-  --chart-1: oklch(0.15 0 0);
-  --chart-2: oklch(0.35 0 0);
-  --chart-3: oklch(0.55 0 0);
-  --chart-4: oklch(0.70 0 0);
-  --chart-5: oklch(0.85 0 0);
+  --border: oklch(0.90 0 0);                   /* #e5e5e5 — Apple border */
+  --input: oklch(0.94 0 0);
+  --ring: oklch(0.43 0 0);
+  --chart-1: oklch(0.12 0 0);
+  --chart-2: oklch(0.32 0 0);
+  --chart-3: oklch(0.52 0 0);
+  --chart-4: oklch(0.68 0 0);
+  --chart-5: oklch(0.84 0 0);
 
-  /* Custom brand tokens — monochrome only */
-  --black: #000000;
-  --near-black: #141414;
-  --grey-900: #1a1a1a;
-  --grey-800: #2a2a2a;
-  --grey-700: #404040;
-  --grey-600: #595959;
-  --grey-500: #737373;
-  --grey-400: #8c8c8c;
-  --grey-300: #b3b3b3;
-  --grey-200: #d9d9d9;
-  --grey-100: #ebebeb;
-  --grey-50: #f5f5f5;
+  /* Apple Design Tokens */
+  --apple-black: #1d1d1f;
+  --apple-slate: #6e6e73;
+  --apple-muted: #86868b;
+  --apple-border: #d2d2d7;
+  --apple-bg: #f5f5f7;
+  --apple-white: #ffffff;
+  --apple-blue: #0071e3;
+  --apple-blue-hover: #0077ed;
+  --apple-green: #34c759;
+  --apple-orange: #ff9f0a;
+
+  /* Legacy aliases — mapped to Apple equivalents */
+  --black: #1d1d1f;
+  --near-black: #1d1d1f;
+  --grey-900: #1d1d1f;
+  --grey-800: #3a3a3c;
+  --grey-700: #48484a;
+  --grey-600: #636366;
+  --grey-500: #8e8e93;
+  --grey-400: #aeaeb2;
+  --grey-300: #c7c7cc;
+  --grey-200: #d1d1d6;
+  --grey-100: #e5e5ea;
+  --grey-50: #f2f2f7;
   --white: #ffffff;
-
-  /* Legacy aliases — mapped to grey equivalents */
-  --cyan: #1a1a1a;
-  --cyan-dark: #000000;
-  --orange: #2a2a2a;
-  --navy: #000000;
-  --navy-light: #1a1a1a;
-  --blue-accent: #1a1a1a;
-  --surface-1: #f5f5f5;
-  --surface-2: #ebebeb;
-  --surface-3: #d9d9d9;
-  --text-primary: #141414;
-  --text-secondary: #404040;
-  --text-muted: #8c8c8c;
+  --cyan: #0071e3;
+  --cyan-dark: #0062cc;
+  --orange: #ff9f0a;
+  --navy: #1d1d1f;
+  --navy-light: #3a3a3c;
+  --blue-accent: #0071e3;
+  --surface-1: #f5f5f7;
+  --surface-2: #efefef;
+  --surface-3: #e5e5ea;
+  --text-primary: #1d1d1f;
+  --text-secondary: #3a3a3c;
+  --text-muted: #86868b;
 }
 
 @layer base {
@@ -171,15 +181,16 @@
     }
   }
 
-  /* Article card hover — monochrome */
+  /* Article card hover — Apple style */
   .article-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--surface-3);
+    border: 1px solid var(--apple-border);
     background: #ffffff;
+    border-radius: 12px;
   }
   .article-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   /* Section divider */
@@ -187,17 +198,17 @@
     border-top: 1px solid var(--surface-3);
   }
 
-  /* News card — monochrome */
+  /* News card — Apple style */
   .news-card {
     background: #ffffff;
-    border: 1px solid var(--surface-3);
-    border-radius: 10px;
+    border: 1px solid var(--apple-border);
+    border-radius: 12px;
     transition: all 0.2s ease;
     margin-bottom: 0.25rem;
   }
   .news-card:hover {
-    border-color: var(--grey-700);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: #aeaeb2;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     transform: translateY(-1px);
   }
 
@@ -225,43 +236,43 @@
     padding: 1rem 1.25rem;
   }
 
-  /* CTA primary button — black */
+  /* CTA primary button — Apple pill style */
   .btn-primary {
-    background: var(--black);
+    background: var(--apple-black);
     color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 0.875rem 1.75rem;
-    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 980px;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
   .btn-primary:hover {
-    background: var(--grey-800);
+    background: #3a3a3c;
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
   }
 
-  /* CTA secondary button — grey outline */
+  /* CTA secondary button — Apple pill outline */
   .btn-secondary {
     background: transparent;
-    color: var(--near-black);
+    color: var(--apple-black);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     font-weight: 600;
-    font-size: 1rem;
-    padding: 0.875rem 1.75rem;
-    border-radius: 6px;
-    border: 1.5px solid var(--grey-300);
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 980px;
+    border: 1.5px solid var(--apple-border);
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
   .btn-secondary:hover {
-    border-color: var(--near-black);
+    border-color: var(--apple-black);
     background: var(--surface-1);
   }
 }

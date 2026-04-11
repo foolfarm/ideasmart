@@ -1,6 +1,6 @@
 /**
  * IDEASMART INTELLIGENCE — Pagina prodotto
- * Design: Dark navy (#0f0f0f) + Cyan (#1a1a1a) + Off-white (#f5f2ec)
+ * Design: Dark navy (#0f0f0f) + Cyan (#1a1a1a) + Off-white (#f5f5f7)
  * Typography: SF Pro Display (titoli), SF Pro Text (body) — sistema Apple
  * 8 sezioni: Hero → Problema → Come funziona → Piani → Tecnologia → Advisory → Social Proof → CTA finale
  */
@@ -137,7 +137,7 @@ export default function Intelligence() {
           ]
         }}
       />
-      <div className="flex" style={{ background: "#f5f2ec", minHeight: "100vh" }}>
+      <div className="flex" style={{ background: "#f5f5f7", minHeight: "100vh" }}>
         <LeftSidebar />
         <div className="flex-1 min-w-0">
         <SharedPageHeader />
@@ -201,7 +201,7 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 2 — IL PROBLEMA ═══════════════════════════════════════════ */}
-        <section className="py-16" style={{ background: "#f5f2ec" }}>
+        <section className="py-16" style={{ background: "#f5f5f7" }}>
           <div className="max-w-[1100px] mx-auto px-4">
             <div className="max-w-[700px]">
               <SectionLabel label="Il problema che risolviamo" />
@@ -256,7 +256,7 @@ export default function Intelligence() {
                   text: "Report board-ready, executive summary, analisi scaricabili. Pronti per il tuo CdA, i tuoi investitori, il tuo team.",
                 }
               ].map((s) => (
-                <div key={s.step} className="p-5 rounded-lg" style={{ background: "#f5f2ec", border: "1px solid rgba(26,26,46,0.06)" }}>
+                <div key={s.step} className="p-5 rounded-lg" style={{ background: "#f5f5f7", border: "1px solid rgba(26,26,46,0.06)" }}>
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-[22px]">{s.icon}</span>
                     <span className="text-[10px] font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>STEP {s.step}</span>
@@ -270,7 +270,7 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 4 — I PIANI ═══════════════════════════════════════════════ */}
-        <section id="pricing" className="py-16" style={{ background: "#f5f2ec" }}>
+        <section id="pricing" className="py-16" style={{ background: "#f5f5f7" }}>
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="I piani" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-3 leading-tight"
@@ -444,7 +444,7 @@ export default function Intelligence() {
                 { icon: "◇", name: "VC Research", desc: "Ricerche di mercato per decisioni di investimento" }
               ].map((s) => (
                 <div key={s.name} className="flex items-start gap-3 p-4 rounded-lg"
-                  style={{ background: "#f5f2ec", border: "1px solid rgba(26,26,46,0.06)" }}>
+                  style={{ background: "#f5f5f7", border: "1px solid rgba(26,26,46,0.06)" }}>
                   <span className="text-[18px] flex-shrink-0" style={{ color: "#1a1a1a" }}>{s.icon}</span>
                   <div>
                     <p className="text-[12px] font-bold mb-0.5" style={{ color: "#0f0f0f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{s.name}</p>
@@ -467,7 +467,7 @@ export default function Intelligence() {
         </section>
 
         {/* ══ SEZIONE 7 — SOCIAL PROOF ══════════════════════════════════════════ */}
-        <section className="py-16" style={{ background: "#f5f2ec" }}>
+        <section className="py-16" style={{ background: "#f5f5f7" }}>
           <div className="max-w-[1100px] mx-auto px-4">
             <SectionLabel label="I numeri" />
             <h2 className="text-[28px] sm:text-[34px] font-black mb-10 leading-tight"

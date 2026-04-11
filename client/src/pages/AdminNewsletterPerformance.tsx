@@ -39,7 +39,7 @@ export default function AdminNewsletterPerformance() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
         <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -47,7 +47,7 @@ export default function AdminNewsletterPerformance() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
         <div className="text-center">
           <p className="text-white/60 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Accesso riservato agli amministratori.
@@ -97,7 +97,7 @@ export default function AdminNewsletterPerformance() {
   });
 
   return (
-    <div className="min-h-screen" style={{ background: "#0f0f0f" }}>
+    <div className="min-h-screen" style={{ background: "#f5f5f7" }}>
 
       {/* Header */}
       <div className="border-b border-white/8" style={{ background: "#060a14" }}>

@@ -68,9 +68,9 @@ export default function EditorialVSI() {
         canonical="/editoriale/venture-studio-index"
       />
 
-      <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: fontSans }}>
+      <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: fontSans }}>
         {/* ─── Testata ─── */}
-        <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
+        <header className="border-b-2 border-[#1a1a1a] bg-[#ffffff]">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: fontSerif }}>
               Proof Press

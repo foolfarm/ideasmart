@@ -68,7 +68,7 @@ export default function RequireAuth({ children, articleId, overlay = false }: Re
 
   const paywall = (
     <div
-      className="border border-[#1a1a1a]/15 bg-[#faf8f3] p-8 text-center max-w-[520px] mx-auto my-8"
+      className="border border-[#1a1a1a]/15 bg-[#ffffff] p-8 text-center max-w-[520px] mx-auto my-8"
       style={{ fontFamily: SF }}
     >
       <p
@@ -150,7 +150,7 @@ export default function RequireAuth({ children, articleId, overlay = false }: Re
     }
 
     return (
-      <div className="min-h-screen" style={{ background: "#faf8f3" }}>
+      <div className="min-h-screen" style={{ background: "#ffffff" }}>
         <SharedPageHeader />
         {freeBanner}
         {children}
@@ -179,7 +179,7 @@ export default function RequireAuth({ children, articleId, overlay = false }: Re
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#faf8f3" }}>
+    <div className="min-h-screen" style={{ background: "#ffffff" }}>
       <SharedPageHeader />
       <div className="py-8">{paywall}</div>
     </div>

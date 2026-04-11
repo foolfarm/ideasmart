@@ -9,7 +9,7 @@ import CommentSection from "@/components/CommentSection";
 
 const INK = "#1a1a1a";
 const ACCENT = "#1a1a1a";
-const PAPER = "#faf8f3";
+const PAPER = "#ffffff";
 
 function formatDateIT(dateLabel: string): string {
   try {

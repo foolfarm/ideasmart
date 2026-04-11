@@ -5,7 +5,7 @@
 import { Link } from "wouter";
 
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-[3px]" : "border-t"} border-[#1a1a1a]`} />;
+  return <div className={`w-full ${thick ? "border-t-2" : "border-t"} border-[#1d1d1f]`} />;
 }
 
 const LinkedInIcon = () => (

@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { Link } from "wouter";
 
 const INK = "#0f0f0f";
-const PAPER = "#faf8f3";
+const PAPER = "#ffffff";
 const ACCENT = "#ff5500";
 
 const SOURCE_LABELS: Record<string, { label: string; color: string }> = {
@@ -330,7 +330,7 @@ export default function AdminLeads() {
                         </td>
                       </tr>
                       {isExpanded && lead.message && (
-                        <tr key={`${lead.id}-msg`} style={{ background: "#fffbf5" }}>
+                        <tr key={`${lead.id}-msg`} style={{ background: "#ffffff" }}>
                           <td colSpan={7} style={{ padding: "12px 14px 16px 14px", borderBottom: "1px solid #f0f0f0" }}>
                             <p style={{ margin: "0 0 4px", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: "#999" }}>Messaggio</p>
                             <p style={{ margin: 0, fontSize: 13, color: INK + "cc", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{lead.message}</p>

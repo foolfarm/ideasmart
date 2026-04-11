@@ -14,7 +14,7 @@ import Home from "./pages/Home";
 // ─── Skeleton loader generico per le pagine lazy ──────────────────────────────
 function PageSkeleton() {
   return (
-    <div className="min-h-screen bg-[#faf8f3] animate-pulse">
+    <div className="min-h-screen bg-[#ffffff] animate-pulse">
       <div className="h-12 bg-[#1a1a1a]/10 w-full" />
       <div className="max-w-[1200px] mx-auto px-4 py-8 space-y-6">
         <div className="h-8 bg-[#1a1a1a]/10 rounded w-1/3" />

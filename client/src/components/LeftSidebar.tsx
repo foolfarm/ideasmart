@@ -53,8 +53,8 @@ export default function LeftSidebar() {
         top: "0",
         height: "100vh",
         overflowY: "auto",
-        background: "#faf8f3",
-        borderRight: "1px solid rgba(26,26,26,0.1)",
+        background: "#ffffff",
+        borderRight: "1px solid #e5e5ea",
         paddingTop: "20px",
         paddingBottom: "32px",
         scrollbarWidth: "none",
@@ -80,15 +80,15 @@ export default function LeftSidebar() {
       </div>
 
       {/* Divider */}
-      <div className="mx-5 mb-4 border-t-[2px] border-[#1a1a1a]" />
+      <div className="mx-5 mb-4 border-t border-[#e5e5ea]" />
 
       {/* Tagline */}
       <div className="px-5 mb-5">
         <p style={{ fontSize: "13px", color: "rgba(26,26,26,0.72)", lineHeight: 1.65, fontFamily: SF }}>
           ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato. Crea la tua testata AI-native: scopri l&apos;offerta per{" "}
-          <Link href="/offerta/creator"><span style={{ color: "#ff5500", fontWeight: 700, cursor: "pointer" }}>creator</span></Link>,{" "}
-          <Link href="/offerta/aziende"><span style={{ color: "#ff5500", fontWeight: 700, cursor: "pointer" }}>aziende</span></Link>{" "}ed{" "}
-          <Link href="/offerta/editori"><span style={{ color: "#ff5500", fontWeight: 700, cursor: "pointer" }}>editori</span></Link>.
+          <Link href="/offerta/creator"><span style={{ color: "#0071e3", fontWeight: 700, cursor: "pointer" }}>creator</span></Link>,{" "}
+          <Link href="/offerta/aziende"><span style={{ color: "#0071e3", fontWeight: 700, cursor: "pointer" }}>aziende</span></Link>{" "}ed{" "}
+          <Link href="/offerta/editori"><span style={{ color: "#0071e3", fontWeight: 700, cursor: "pointer" }}>editori</span></Link>.
         </p>
       </div>
 
@@ -129,7 +129,7 @@ export default function LeftSidebar() {
                 ) : (
                   <Link key={sub.href} href={sub.href}>
                     <div className={`flex items-center gap-2 px-2 py-2 rounded-md cursor-pointer transition-all duration-150 ${
-                      isActive(sub.href) ? "bg-[#ff5500] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/65 hover:text-[#1a1a1a]"
+                      isActive(sub.href) ? "bg-[#f5f5f7] text-[#1d1d1f] font-semibold" : "hover:bg-[#f5f5f7] text-[#1d1d1f]/65 hover:text-[#1d1d1f]"
                     }`}>
                       <span className="text-[13px] w-4 text-center flex-shrink-0">{sub.icon}</span>
                       <span className="text-[13px] font-medium leading-tight" style={{ fontFamily: SF }}>{sub.label}</span>
@@ -169,8 +169,8 @@ export default function LeftSidebar() {
                   <div
                     className={`flex items-center gap-2 px-2 py-2 rounded-md cursor-pointer transition-all duration-150 ${
                       isActive(sub.href)
-                        ? "bg-[#ff5500] text-white"
-                        : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/65 hover:text-[#1a1a1a]"
+                        ? "bg-[#f5f5f7] text-[#1d1d1f] font-semibold"
+                        : "hover:bg-[#f5f5f7] text-[#1d1d1f]/65 hover:text-[#1d1d1f]"
                     }`}
                   >
                     <span className="text-[13px] w-4 text-center flex-shrink-0">{sub.icon}</span>
@@ -228,9 +228,9 @@ export default function LeftSidebar() {
       <div className="mx-3 flex-1 flex flex-col min-h-0 mb-3">
         <div className="flex flex-col flex-1 min-h-0" style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(26,26,26,0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
 
-          {/* Header arancione */}
-          <div style={{ background: "#ff5500", padding: "10px 13px", flexShrink: 0 }}>
-            <div style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.1em", textTransform: "uppercase", color: "#fff", fontFamily: SF }}>
+          {/* Header Apple style */}
+          <div style={{ background: "#f5f5f7", padding: "10px 13px", flexShrink: 0, borderBottom: "1px solid #e5e5ea" }}>
+            <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#86868b", fontFamily: SF }}>
               ProofPress — Per il tuo business
             </div>
           </div>
@@ -262,7 +262,7 @@ export default function LeftSidebar() {
             <Link key={t.href} href={t.href} style={{ display: "flex" }}>
               <div
                 style={{ flex: 1, padding: "12px 13px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s" }}
-                className="hover:bg-[#fff3ee]"
+                className="hover:bg-[#f5f5f7]"
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "9px", width: "100%" }}>
                   <span style={{ fontSize: "16px", lineHeight: 1, flexShrink: 0 }}>{t.icon}</span>
@@ -270,7 +270,7 @@ export default function LeftSidebar() {
                     <div style={{ fontSize: "12px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.25, fontFamily: SF }}>{t.label}</div>
                     <div style={{ fontSize: "10.5px", color: "rgba(26,26,26,0.55)", lineHeight: 1.4, fontFamily: SF, marginTop: "2px" }}>{t.desc}</div>
                   </div>
-                  <div style={{ fontSize: "10.5px", fontWeight: 700, color: "#ff5500", fontFamily: SF, flexShrink: 0, whiteSpace: "nowrap" }}>{t.cta}</div>
+                  <div style={{ fontSize: "10.5px", fontWeight: 700, color: "#0071e3", fontFamily: SF, flexShrink: 0, whiteSpace: "nowrap" }}>{t.cta}</div>
                 </div>
               </div>
             </Link>
@@ -278,8 +278,8 @@ export default function LeftSidebar() {
 
           {/* Footer */}
           <Link href="/offerta">
-            <div style={{ padding: "10px 13px", background: "#fff8f5", borderTop: "1px solid rgba(255,85,0,0.12)", cursor: "pointer", flexShrink: 0 }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "#ff5500", fontFamily: SF, textAlign: "center" }}>
+            <div style={{ padding: "10px 13px", background: "#f5f5f7", borderTop: "1px solid #e5e5ea", cursor: "pointer", flexShrink: 0 }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, color: "#0071e3", fontFamily: SF, textAlign: "center" }}>
                 Scopri tutti i piani →
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function LeftSidebar() {
       </div>
 
       {/* Divider */}
-      <div className="mx-5 mb-3 border-t border-[#1a1a1a]/10" />
+      <div className="mx-5 mb-3 border-t border-[#e5e5ea]" />
 
       {/* Readers counter */}
       <div className="px-5">

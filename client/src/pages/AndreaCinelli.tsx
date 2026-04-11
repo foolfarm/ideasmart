@@ -13,7 +13,7 @@ import LeftSidebar from "@/components/LeftSidebar";
 
 const INK = "#0f0f0f";
 const ACCENT = "#1a1a1a";
-const PAPER = "#faf8f3";
+const PAPER = "#ffffff";
 const LINKEDIN_BLUE = "#0077b5";
 
 const PROFILE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/andrea-cinelli-profile_2084610f.jpeg";

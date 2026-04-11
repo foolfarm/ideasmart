@@ -175,7 +175,7 @@ export default function DealroomHome() {
         ogSiteName="Proof Press"
       />
 
-      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: INK }}>
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />

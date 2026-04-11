@@ -1,7 +1,7 @@
 /**
  * IDEASMART — AI NEWS News · Sezione AI
  * Layout editoriale da giornale: testata sezione, editoriale del giorno, notizie in colonne, reportage, startup del giorno.
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento teal (#1a1a1a).
+ * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), accento teal (#1a1a1a).
  */
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
@@ -16,7 +16,7 @@ import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 
 const ACCENT = "#1a1a1a";
-const ACCENT_LIGHT = "#e6f4f1";
+const ACCENT_LIGHT = "#f5f5f7";
 const INK = "#1a1a1a";
 
 function formatDateIT(date: Date): string {
@@ -134,7 +134,7 @@ export default function AiHome() {
         /* SF Pro system font — no external loading needed */
       `}</style>
 
-      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: INK }}>
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />

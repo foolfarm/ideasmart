@@ -62,7 +62,7 @@ export default function ArchiveSection({
   if (!isExpanded && allItems.length === 0) {
     return (
       <div className="mt-8">
-        <div className="w-full border-t-4 border-[#1a1a1a]" />
+        <div className="w-full border-t-2 border-[#1d1d1f]" />
         <div className="py-3 flex items-center gap-4">
           <span
             className="text-[10px] font-bold uppercase tracking-[0.2em]"
@@ -96,7 +96,7 @@ export default function ArchiveSection({
 
   return (
     <div className="mt-8">
-      <div className="w-full border-t-4 border-[#1a1a1a]" />
+      <div className="w-full border-t-2 border-[#1d1d1f]" />
       <div className="py-3 flex items-center gap-4">
         <span
           className="text-[10px] font-bold uppercase tracking-[0.2em]"

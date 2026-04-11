@@ -26,7 +26,7 @@ export default function StartupNewsArticle() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-[#2a2a2a] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-sm text-[#1a1a1a]/50" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -39,7 +39,7 @@ export default function StartupNewsArticle() {
 
   if (!news) {
     return (
-      <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
         <div className="text-center max-w-sm px-4">
           <h1 className="text-2xl font-bold text-[#1a1a1a] mb-3"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -63,7 +63,7 @@ export default function StartupNewsArticle() {
 
   return (
     <RequireAuth>
-    <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+    <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
       <div className="text-center max-w-lg px-4">
         <div className="w-8 h-8 border-2 border-[#2a2a2a] border-t-transparent rounded-full animate-spin mx-auto mb-6" />
         <h2 className="text-xl font-bold text-[#1a1a1a] mb-2"

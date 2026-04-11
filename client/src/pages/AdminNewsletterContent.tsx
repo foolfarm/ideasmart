@@ -131,7 +131,7 @@ export default function AdminNewsletterContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
         <div className="w-8 h-8 border-2 border-white/20 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -139,7 +139,7 @@ export default function AdminNewsletterContent() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
         <p className="text-white/60 text-sm" style={{ fontFamily: FONT }}>Accesso riservato agli amministratori.</p>
       </div>
     );
@@ -151,7 +151,7 @@ export default function AdminNewsletterContent() {
   const activeSponsors = sponsors.filter((s: any) => s.active);
 
   return (
-    <div className="min-h-screen" style={{ background: "#0f0f0f" }}>
+    <div className="min-h-screen" style={{ background: "#f5f5f7" }}>
       {/* Header */}
       <div className="border-b border-white/8" style={{ background: "#060a14" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">

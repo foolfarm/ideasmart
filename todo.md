@@ -3000,3 +3000,11 @@
 - [ ] Creare pagina /offerta/editori (OffertaEditori.tsx)
 - [ ] Creare pagina /offerta/aziende (OffertaAziende.tsx)
 - [ ] Aggiornare menu: voce "Offerta" con dropdown Creator / Testate & Editori / Aziende & Corporate
+
+## Redesign Apple Style ProofPress (11 Apr 2026)
+
+- [ ] Ridisegnare CSS globale ProofPress: font SF Francisco, palette Apple, spacing system
+- [ ] Ridisegnare header e navbar ProofPress Apple style (sfondo bianco, bordi sottili)
+- [ ] Ridisegnare homepage ProofPress Apple style (layout editoriale, card chiare)
+- [ ] Ridisegnare pagine notizie/categorie/articolo singolo Apple style
+- [ ] Ridisegnare footer e componenti secondari ProofPress Apple style

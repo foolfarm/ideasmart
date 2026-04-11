@@ -5,7 +5,7 @@ import RequireAuth from "@/components/RequireAuth";
 
 const F_SERIF = "'Georgia', 'Times New Roman', serif";
 const F_SANS = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
-const BG = "#f5f0e8";
+const BG = "#f5f5f7";
 const ACCENT = "#d94f3d";
 const BLACK = "#1a1a1a";
 const SLATE = "#4b5563";

@@ -27,7 +27,7 @@ export default function ReportageDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f9f6f0] flex items-center justify-center">
+      <div className="min-h-screen bg-[#ffffff] flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="font-mono text-sm text-[#1a1a1a]/60 tracking-widest uppercase">Caricamento reportage…</p>
@@ -38,7 +38,7 @@ export default function ReportageDetail() {
 
   if (!rep) {
     return (
-      <div className="min-h-screen bg-[#f9f6f0] flex items-center justify-center">
+      <div className="min-h-screen bg-[#ffffff] flex items-center justify-center">
         <div className="text-center">
           <p className="font-mono text-sm text-[#1a1a1a]/60 tracking-widest uppercase mb-4">Reportage non trovato</p>
           <Link href={cfg.path} className="text-sm underline" style={{ color: cfg.color }}>← Torna alla sezione</Link>
@@ -57,9 +57,9 @@ export default function ReportageDetail() {
 
   return (
     <RequireAuth>
-    <div className="min-h-screen bg-[#f9f6f0]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+    <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Testata */}
-      <header className="border-b-2 border-[#1a1a1a] bg-[#f9f6f0]">
+      <header className="border-b-2 border-[#1a1a1a] bg-[#ffffff]">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>
             Proof Press

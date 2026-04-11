@@ -50,7 +50,7 @@ export default function Registrati() {
         canonical="https://ideasmart.biz/registrati"
         ogSiteName="Proof Press"
       />
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+      <div className="min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
         <SharedPageHeader />
 
         <main className="max-w-[480px] mx-auto px-4 py-16">

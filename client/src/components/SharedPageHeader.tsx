@@ -16,7 +16,7 @@ function formatDateIT(date: Date): string {
 }
 
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-[3px]" : "border-t"} border-[#1a1a1a]`} />;
+  return <div className={`w-full ${thick ? "border-t-2" : "border-t"} border-[#1d1d1f]`} />;
 }
 
 // ─── USER PROFILE DROPDOWN ──────────────────────────────────────────────────
@@ -119,7 +119,7 @@ export default function SharedPageHeader() {
                 </Link>
                 <Link href="/registrati">
                   <span
-                    className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-[#1a1a1a] text-white rounded-sm cursor-pointer hover:bg-[#333] transition-colors"
+                    className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 bg-[#1d1d1f] text-white cursor-pointer hover:bg-[#3a3a3c] transition-colors" style={{ borderRadius: '980px' }}
                   >
                     Registrati
                   </span>

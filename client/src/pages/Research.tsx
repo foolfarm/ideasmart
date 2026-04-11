@@ -39,7 +39,7 @@ const REGION_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = 
 };
 
 function getCategoryConfig(cat: string) {
-  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f5f2ec" };
+  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f5f5f7" };
 }
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
@@ -71,7 +71,7 @@ function ResearchHeroCard({ report }: {
   const imgUrl = getImageUrl(report);
 
   return (
-    <div className="border-2 border-[#1a1a1a] overflow-hidden" style={{ background: "#f5f2ec" }}>
+    <div className="border-2 border-[#1a1a1a] overflow-hidden" style={{ background: "#f5f5f7" }}>
       {/* Intestazione categoria */}
       <div
         className="px-6 py-2.5 flex items-center gap-2 border-b border-[#1a1a1a]/10"
@@ -98,7 +98,7 @@ function ResearchHeroCard({ report }: {
             className="w-full h-56 md:h-full object-cover"
             style={{ minHeight: "240px" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#f5f2ec]/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#f5f5f7]/30" />
         </div>
 
         {/* Contenuto */}
@@ -132,7 +132,7 @@ function ResearchHeroCard({ report }: {
           </p>
 
           {report.keyFindings.length > 0 && (
-            <div className="border border-[#1a1a1a]/15 p-4 mb-5" style={{ background: "#faf8f3" }}>
+            <div className="border border-[#1a1a1a]/15 p-4 mb-5" style={{ background: "#ffffff" }}>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 Key Findings
               </p>
@@ -191,7 +191,7 @@ function ResearchCard({ report }: {
   const imgUrl = getImageUrl(report);
 
   return (
-    <div className="border border-[#1a1a1a]/15 overflow-hidden hover:border-[#1a1a1a]/40 transition-colors" style={{ background: "#f5f2ec" }}>
+    <div className="border border-[#1a1a1a]/15 overflow-hidden hover:border-[#1a1a1a]/40 transition-colors" style={{ background: "#f5f5f7" }}>
       {/* Immagine */}
       <div className="relative overflow-hidden" style={{ height: "160px" }}>
         <img src={imgUrl} alt={report.title} className="w-full h-full object-cover" />
@@ -232,7 +232,7 @@ function ResearchCard({ report }: {
               {report.summary}
             </p>
             {report.keyFindings.length > 0 && (
-              <div className="border border-[#1a1a1a]/10 p-3 mb-3" style={{ background: "#faf8f3" }}>
+              <div className="border border-[#1a1a1a]/10 p-3 mb-3" style={{ background: "#ffffff" }}>
                 <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: catConfig.accentColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Key Findings
                 </p>
@@ -319,7 +319,7 @@ export default function Research() {
 
   return (
     <RequireAuth>
-      <div className="flex min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
@@ -362,7 +362,7 @@ export default function Research() {
           <div className="flex flex-wrap gap-2 mb-6 pb-4 border-b border-[#1a1a1a]/10">
             {categories.map(cat => {
               const config = cat === "all"
-                ? { label: "Tutte", icon: null, accentColor: "#1a1a1a", bgColor: "#faf8f3" }
+                ? { label: "Tutte", icon: null, accentColor: "#1a1a1a", bgColor: "#ffffff" }
                 : getCategoryConfig(cat);
               const isActive = activeCategory === cat;
               return (
@@ -372,8 +372,8 @@ export default function Research() {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors"
                   style={{
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                    background: isActive ? "#1a1a1a" : "#faf8f3",
-                    color: isActive ? "#faf8f3" : "#1a1a1a",
+                    background: isActive ? "#1a1a1a" : "#ffffff",
+                    color: isActive ? "#ffffff" : "#1a1a1a",
                     borderColor: isActive ? "#1a1a1a" : "#1a1a1a30"
                   }}
                 >
@@ -426,7 +426,7 @@ export default function Research() {
           )}
 
           {/* ── CHI È IdeaSmart ──────────────────────────────────── */}
-          <div className="mt-16 border-2 border-[#1a1a1a]" style={{ background: "#f5f2ec" }}>
+          <div className="mt-16 border-2 border-[#1a1a1a]" style={{ background: "#f5f5f7" }}>
             {/* Header sezione */}
             <div className="border-b-2 border-[#1a1a1a] px-8 py-4 flex items-center gap-3">
               <FlaskConical className="w-5 h-5" style={{ color: "#1a1a1a" }} />
@@ -473,7 +473,7 @@ export default function Research() {
                     <div
                       key={i}
                       className="border border-[#1a1a1a]/15 p-3 text-center"
-                      style={{ background: "#faf8f3" }}
+                      style={{ background: "#ffffff" }}
                     >
                       <p
                         className="text-2xl font-black text-[#1a1a1a] leading-none mb-1"
@@ -499,14 +499,14 @@ export default function Research() {
               >
                 <span
                   className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.22em] px-2.5 py-1 mb-5 self-start"
-                  style={{ background: "#2a2a2a", color: "#faf8f3", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                  style={{ background: "#2a2a2a", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   <FlaskConical className="w-3 h-3" />
                   Ricerche Dedicate
                 </span>
 
                 <h3
-                  className="text-xl font-black text-[#faf8f3] leading-tight mb-3"
+                  className="text-xl font-black text-[#ffffff] leading-tight mb-3"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
                 >
                   Hai bisogno di una ricerca<br />
@@ -514,7 +514,7 @@ export default function Research() {
                 </h3>
 
                 <p
-                  className="text-[#faf8f3]/55 text-sm leading-relaxed mb-5 flex-1"
+                  className="text-[#ffffff]/55 text-sm leading-relaxed mb-5 flex-1"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                 >
                   Commissiona ricerche specialistiche su Venture Capital, AI Trends, analisi di mercato e scouting di investimento. Pensate per investitori, founder e manager.
@@ -529,7 +529,7 @@ export default function Research() {
                     <div key={i} className="flex items-center gap-2">
                       <span style={{ color: "#1a1a1a" }}>{item.icon}</span>
                       <span
-                        className="text-[10px] text-[#faf8f3]/60 uppercase tracking-widest"
+                        className="text-[10px] text-[#ffffff]/60 uppercase tracking-widest"
                         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                       >
                         {item.label}
@@ -549,8 +549,8 @@ export default function Research() {
                   </a>
                   <a
                     href="/business"
-                    className="flex items-center justify-center gap-2 w-full border border-[#faf8f3]/20 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
-                    style={{ color: "#faf8f3", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                    className="flex items-center justify-center gap-2 w-full border border-[#ffffff]/20 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
+                    style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
                     Proof Press Business
                     <ArrowRight className="w-3 h-3" />

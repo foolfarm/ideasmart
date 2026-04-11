@@ -41,7 +41,7 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
 };
 
 function getCategoryConfig(cat: string) {
-  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f5f2ec" };
+  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f5f5f7" };
 }
 
 export default function ResearchDetail() {
@@ -69,7 +69,7 @@ export default function ResearchDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen" style={{ background: "#faf8f3" }}>
+      <div className="min-h-screen" style={{ background: "#ffffff" }}>
         <SharedPageHeader />
         <div className="max-w-3xl mx-auto px-4 py-16 flex items-center justify-center">
           <div className="text-center">
@@ -83,7 +83,7 @@ export default function ResearchDetail() {
 
   if (!report) {
     return (
-      <div className="min-h-screen" style={{ background: "#faf8f3" }}>
+      <div className="min-h-screen" style={{ background: "#ffffff" }}>
         <SharedPageHeader />
         <div className="max-w-3xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-black mb-3" style={{ fontFamily: SF_DISPLAY, color: "#1a1a1a" }}>
@@ -105,7 +105,7 @@ export default function ResearchDetail() {
 
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: "#1a1a1a" }}>
+      <div className="min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
         <SharedPageHeader />
 
         <div className="max-w-3xl mx-auto px-4 py-8">
@@ -141,7 +141,7 @@ export default function ResearchDetail() {
             {report.isResearchOfDay && (
               <span
                 className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5"
-                style={{ background: "#1a1a1a", color: "#faf8f3", fontFamily: SF }}
+                style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: SF }}
               >
                 ★ Ricerca del Giorno
               </span>
@@ -192,7 +192,7 @@ export default function ResearchDetail() {
 
           {/* Key Findings */}
           {report.keyFindings.length > 0 && (
-            <div className="border-2 border-[#1a1a1a] p-6 mb-8" style={{ background: "#f5f2ec" }}>
+            <div className="border-2 border-[#1a1a1a] p-6 mb-8" style={{ background: "#f5f5f7" }}>
               <p
                 className="text-[10px] font-black uppercase tracking-[0.3em] mb-5"
                 style={{ color: catConfig?.accentColor ?? "#1a1a1a", fontFamily: SF }}
@@ -222,7 +222,7 @@ export default function ResearchDetail() {
 
           {/* Link fonte originale */}
           {report.sourceUrl && (
-            <div className="border border-[#1a1a1a]/15 p-4 flex items-center justify-between mb-8" style={{ background: "#faf8f3" }}>
+            <div className="border border-[#1a1a1a]/15 p-4 flex items-center justify-between mb-8" style={{ background: "#ffffff" }}>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "rgba(26,26,26,0.4)", fontFamily: SF }}>
                   Fonte originale
@@ -236,7 +236,7 @@ export default function ResearchDetail() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest px-4 py-2 hover:opacity-80 transition-opacity"
-                style={{ background: "#1a1a1a", color: "#faf8f3", fontFamily: SF }}
+                style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: SF }}
               >
                 Leggi la fonte <ExternalLink className="w-3 h-3" />
               </a>

@@ -1,6 +1,6 @@
 /**
  * RicercaDelGiorno — Blocco homepage per IDEASMART Research
- * Stile editoriale premium: sfondo carta #faf8f3, inchiostro #1a1a1a
+ * Stile editoriale premium: sfondo carta #ffffff, inchiostro #1a1a1a
  * Layout a doppia colonna con immagine tematica + contenuto
  */
 import { trpc } from "@/lib/trpc";
@@ -33,7 +33,7 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
 };
 
 function getCategoryConfig(cat: string) {
-  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3 h-3" />, accentColor: "#1a1a1a", bgColor: "#f5f2ec" };
+  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3 h-3" />, accentColor: "#1a1a1a", bgColor: "#f5f5f7" };
 }
 
 function getImageUrl(category: string, imageUrl?: string | null): string {
@@ -100,18 +100,18 @@ export default function RicercaDelGiorno() {
 
       {/* ── Card editoriale premium ──────────────────────────────────────── */}
       <div
-        className="border-2 border-[#1a1a1a] overflow-hidden"
-        style={{ background: "#f5f2ec" }}
+        className="border border-[#e5e5ea] overflow-hidden"
+        style={{ background: "#f5f5f7" }}
       >
         {/* Striscia categoria colorata */}
         <div
           className="px-5 py-2 flex items-center gap-2 border-b-2 border-[#1a1a1a]"
           style={{ background: "#1a1a1a" }}
         >
-          <FlaskConical className="w-3.5 h-3.5" style={{ color: "#faf8f3" }} />
+          <FlaskConical className="w-3.5 h-3.5" style={{ color: "#ffffff" }} />
           <span
             className="text-[10px] font-bold uppercase tracking-[0.22em]"
-            style={{ color: "#faf8f3", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+            style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Ricerca del Giorno
           </span>
@@ -122,7 +122,7 @@ export default function RicercaDelGiorno() {
             {catConfig.icon} {catConfig.label}
           </span>
           <span
-            className="ml-auto text-[9px] text-[#faf8f3]/50"
+            className="ml-auto text-[9px] text-[#ffffff]/50"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             {report.dateLabel}
@@ -143,13 +143,13 @@ export default function RicercaDelGiorno() {
             {/* Overlay gradiente */}
             <div
               className="absolute inset-0"
-              style={{ background: "linear-gradient(to right, transparent 60%, #f5f2ec)" }}
+              style={{ background: "linear-gradient(to right, transparent 60%, #f5f5f7)" }}
             />
             {/* Badge fonte */}
             <div className="absolute bottom-3 left-3">
               <span
                 className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest px-2 py-1"
-                style={{ background: "rgba(26,26,46,0.85)", color: "#faf8f3", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                style={{ background: "rgba(26,26,46,0.85)", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 <BookOpen className="w-2.5 h-2.5" /> {report.source}
               </span>
@@ -200,7 +200,7 @@ export default function RicercaDelGiorno() {
             {keyFindings.length > 0 && (
               <div
                 className="border border-[#1a1a1a]/12 p-3.5 mb-4"
-                style={{ background: "#faf8f3" }}
+                style={{ background: "#ffffff" }}
               >
                 <p
                   className="text-[9px] font-bold uppercase tracking-[0.22em] mb-2"
@@ -232,7 +232,7 @@ export default function RicercaDelGiorno() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/research"
-                className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest px-4 py-2 border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#faf8f3] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest px-4 py-2 border border-[#e5e5ea] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#ffffff] transition-colors"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
               >
                 Tutte le ricerche di oggi <ArrowRight className="w-3 h-3" />

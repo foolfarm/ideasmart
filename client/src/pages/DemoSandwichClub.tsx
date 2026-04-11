@@ -323,7 +323,7 @@ export default function DemoSandwichClub() {
   const featured = ARTICLES[0]; // Articolo più recente in evidenza
 
   return (
-    <div className="min-h-screen bg-[#faf8f3]">
+    <div className="min-h-screen bg-[#ffffff]">
       {/* ─── Header con Powered by ──────────────────────────────────────── */}
       <header className="bg-[#1a1a1a] text-white">
         <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center justify-between">

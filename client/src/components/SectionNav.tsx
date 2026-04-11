@@ -168,7 +168,7 @@ export default function SectionNav() {
         className={`fixed top-0 left-0 h-full z-[999] overflow-y-auto overscroll-contain`}
         style={{
           width: "320px",
-          background: "#faf8f3",
+          background: "#ffffff",
           fontFamily: SF,
           boxShadow: open ? "8px 0 40px rgba(0,0,0,0.18)" : "none",
           transform: open ? "translateX(0)" : "translateX(-100%)",
@@ -177,16 +177,16 @@ export default function SectionNav() {
         }}
       >
         {/* Panel header */}
-        <div className="flex items-center justify-between px-5 py-3.5 bg-[#1a1a1a]">
-          <span className="text-[13px] font-black uppercase tracking-[0.15em] text-white">
+        <div className="flex items-center justify-between px-5 py-3.5 bg-[#f5f5f7] border-b border-[#e5e5ea]">
+          <span className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1d1d1f]">
             Proof Press
           </span>
           <button
             onClick={() => setOpen(false)}
-            className="p-1.5 hover:bg-white/15 rounded-md transition-colors duration-150"
+            className="p-1.5 hover:bg-[#e5e5ea] rounded-md transition-colors duration-150"
             aria-label="Chiudi menu"
           >
-            <X size={17} strokeWidth={2} color="#fff" />
+            <X size={17} strokeWidth={2} color="#1d1d1f" />
           </button>
         </div>
 
@@ -214,8 +214,8 @@ export default function SectionNav() {
                 <div
                   className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer mb-px group ${
                     isActive
-                      ? "bg-[#1a1a1a] text-white"
-                      : "text-[#1a1a1a] hover:bg-white"
+                      ? "bg-[#1d1d1f] text-white"
+                      : "text-[#1d1d1f] hover:bg-[#f5f5f7]"
                   }`}
                   onMouseEnter={() => setHoveredKey(c.key)}
                   onMouseLeave={() => setHoveredKey(null)}

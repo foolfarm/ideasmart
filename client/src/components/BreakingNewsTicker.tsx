@@ -74,8 +74,8 @@ export default function BreakingNewsTicker() {
 
   return (
     <div
-      className="w-full overflow-hidden border-b border-[#1a1a1a]/20"
-      style={{ background: "#1a1a1a", height: "36px" }}
+      className="w-full overflow-hidden border-b border-[#e5e5ea]"
+      style={{ background: "#f5f5f7", height: "36px" }}
       onMouseEnter={() => { pausedRef.current = true; }}
       onMouseLeave={() => { pausedRef.current = false; }}
     >
@@ -84,7 +84,7 @@ export default function BreakingNewsTicker() {
         <div
           className="flex-shrink-0 flex items-center px-3 h-full text-[10px] font-bold uppercase tracking-widest z-10"
           style={{
-            background: "#e63946",
+            background: "#1d1d1f",
             color: "#fff",
             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
             minWidth: "90px",
@@ -114,13 +114,13 @@ export default function BreakingNewsTicker() {
                   </span>
                   <Link href={path}>
                     <span
-                      className="text-xs text-white/80 hover:text-white transition-colors cursor-pointer"
+                      className="text-xs text-[#1d1d1f]/70 hover:text-[#1d1d1f] transition-colors cursor-pointer"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                     >
                       {item.title}
                     </span>
                   </Link>
-                  <span className="text-white/20 text-xs mx-1">·</span>
+                  <span className="text-[#1d1d1f]/25 text-xs mx-1">·</span>
                 </span>
               );
             })}

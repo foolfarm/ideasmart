@@ -3,7 +3,7 @@
  * 14 sezioni: Hero, Il Numero, Il Problema, La Soluzione, Come Funziona,
  * Cosa Ottieni, Prove, Agent Giornalisti (NUOVA), Fai Due Conti, Pricing,
  * Revenue Share, Casi d'Uso, FAQ, CTA Finale
- * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f0e8), accento rosso (#dc2626)
+ * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f5f7), accento rosso (#dc2626)
  */
 import { useRef, useState } from "react";
 import { trpc } from "@/lib/trpc";
@@ -243,7 +243,7 @@ export default function PerGiornalisti() {
         <Divider />
 
         {/* ═══ SEZIONE 5 — COME FUNZIONA ═══ */}
-        <Section bg="#f5f0e8" id="come-funziona">
+        <Section bg="#f5f5f7" id="come-funziona">
           <Label>Come Funziona</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
             Da zero a testata online in 4 step.
@@ -303,7 +303,7 @@ export default function PerGiornalisti() {
         <Divider />
 
         {/* ═══ SEZIONE 7 — PROVE ═══ */}
-        <Section bg="#f5f0e8" id="prove">
+        <Section bg="#f5f5f7" id="prove">
           <Label>Già in Produzione</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
             Non è un prototipo.<br /><span className="text-[#0a0a0a]/25">È quello che usiamo noi ogni giorno.</span>
@@ -435,7 +435,7 @@ export default function PerGiornalisti() {
           </div>
 
           {/* Agenti di supporto */}
-          <div className="mt-10 bg-[#f5f0e8] p-6 md:p-8">
+          <div className="mt-10 bg-[#f5f5f7] p-6 md:p-8">
             <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40 mb-4">Agenti di supporto inclusi in tutti i piani</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
@@ -462,7 +462,7 @@ export default function PerGiornalisti() {
         <Divider />
 
         {/* ═══ SEZIONE 9 — FAI DUE CONTI ═══ */}
-        <Section bg="#f5f0e8" id="confronto">
+        <Section bg="#f5f5f7" id="confronto">
           <Label>Fai Due Conti</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
             Quanto costa davvero una redazione?<br />
@@ -548,7 +548,7 @@ export default function PerGiornalisti() {
                 <p>Hosting, CMS — €5.000 – €10.000</p>
                 <p className="font-bold text-[#0a0a0a] pt-2 border-t border-[#0a0a0a]/10">Totale: €190.000 – €283.000/anno</p>
               </div>
-              <div className="bg-[#f5f0e8] p-4 mb-4">
+              <div className="bg-[#f5f5f7] p-4 mb-4">
                 <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">Proof Press — Multi-Channel</p>
                 <p className="text-[13px] text-[#0a0a0a]/60 mt-1">Setup: €5.000 + €750/mese × 12 = €9.000</p>
                 <p className="text-[13px] font-bold text-[#0a0a0a] mt-1">Anno 1: €14.000 · Anno 2+: €9.000</p>
@@ -716,7 +716,7 @@ export default function PerGiornalisti() {
         <Divider />
 
         {/* ═══ SEZIONE 11 — REVENUE SHARE ═══ */}
-        <Section bg="#f5f0e8" id="revenue-share">
+        <Section bg="#f5f5f7" id="revenue-share">
           <div className="max-w-2xl mx-auto text-center">
             <Label>Alternativa</Label>
             <h3 className="text-2xl md:text-3xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>
@@ -765,7 +765,7 @@ export default function PerGiornalisti() {
         <Divider />
 
         {/* ═══ SEZIONE 13 — FAQ ═══ */}
-        <Section bg="#f5f0e8" id="faq">
+        <Section bg="#f5f5f7" id="faq">
           <Label>Domande Frequenti</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a] mb-8">
             Tutto quello che devi sapere.
@@ -800,7 +800,7 @@ export default function PerGiornalisti() {
         </section>
 
         {/* ═══ DEMO FORM ═══ */}
-        <Section bg="#f5f0e8" id="demo-section">
+        <Section bg="#f5f5f7" id="demo-section">
           <div className="text-center mb-10">
             <Label accent>Prenota una Demo</Label>
             <h2 className="text-3xl md:text-4xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>

@@ -112,7 +112,7 @@ export default function Piattaforma() {
   return (
     <div
       className="min-h-screen"
-      style={{ background: "#f5f0e8", fontFamily: fontSans }}
+      style={{ background: "#f5f5f7", fontFamily: fontSans }}
     >
       <SharedPageHeader />
 
@@ -230,7 +230,7 @@ export default function Piattaforma() {
       {/* ── TECNOLOGIE CORE ──────────────────────────────────────────────── */}
       <section
         className="py-14 px-4"
-        style={{ background: "#f5f0e8", borderTop: "1px solid rgba(26,26,26,0.12)" }}
+        style={{ background: "#f5f5f7", borderTop: "1px solid rgba(26,26,26,0.12)" }}
       >
         <div className="max-w-[900px] mx-auto">
           <p

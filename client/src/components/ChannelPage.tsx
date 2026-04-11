@@ -1,6 +1,6 @@
 /**
  * ChannelPage — Layout editoriale magazine per tutti i canali IdeaSmart
- * Stile: giornale carta (#faf8f3), inchiostro (#1a1a1a), layout magazine con immagini
+ * Stile: giornale carta (#ffffff), inchiostro (#1a1a1a), layout magazine con immagini
  * Hero card per il primo articolo + card con thumbnail per gli altri
  */
 import { useState, useMemo } from "react";
@@ -419,13 +419,13 @@ export default function ChannelPage({
   };
 
   return (
-    <div className="flex min-h-screen bg-[#faf8f3] text-[#1a1a1a]">
+    <div className="flex min-h-screen bg-[#ffffff] text-[#1a1a1a]">
       <SEOHead title={`${title} — Proof Press`} description={description} />
       <LeftSidebar />
       <div className="flex-1 min-w-0">
       <div className="max-w-[1200px] mx-auto px-4">
         <SharedPageHeader />
-        <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#faf8f3" }}>
+        <div className="sticky top-0 z-50 border-b border-[#1a1a1a]/15" style={{ background: "#ffffff" }}>
           <SectionNav />
         </div>
 

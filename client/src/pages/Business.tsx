@@ -1,7 +1,7 @@
 /**
  * IDEASMART BUSINESS — Pagina servizi premium
  * Layout editoriale coerente con il resto del sito (stile Il Sole 24 Ore).
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), teal (#1a1a1a), arancio (#2a2a2a).
+ * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), teal (#1a1a1a), arancio (#2a2a2a).
  * Due offerte: A) Piattaforma AI Agentica · B) Consulenza & Advisory
  */
 
@@ -20,7 +20,7 @@ const ORANGE  = "#2a2a2a";
 const ORANGE_LT = "#fff0e6";
 const GOLD    = "#c9a84c";
 const GOLD_LT = "#fdf8ec";
-const PAPER   = "#faf8f3";
+const PAPER   = "#ffffff";
 const MUTED   = "#1a1a1a99";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 /**
  * IDEASMART — Tecnologia
  * Layout editoriale coerente con le pagine sezione del sito.
- * Palette: bianco carta (#faf8f3), inchiostro (#1a1a1a), accento teal (#1a1a1a).
+ * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), accento teal (#1a1a1a).
  * Tipografia: SF Pro Display (titoli), SF Pro Text (corpo) — sistema Apple.
  */
 import { useMemo, useState } from "react";
@@ -307,7 +307,7 @@ export default function Tecnologia() {
       <style>{`
         /* SF Pro system font — no external loading needed */
       `}</style>
-      <div className="min-h-screen" style={{ background: "#faf8f3", color: INK }}>
+      <div className="min-h-screen" style={{ background: "#ffffff", color: INK }}>
 
         {/* ── TESTATA ── */}
         <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
@@ -757,7 +757,7 @@ export default function Tecnologia() {
         {/* ── FOOTER ── */}
         <footer
           className="border-t py-8"
-          style={{ borderColor: "rgba(26,26,46,0.15)", background: "#faf8f3" }}
+          style={{ borderColor: "rgba(26,26,46,0.15)", background: "#ffffff" }}
         >
           <div className="max-w-6xl mx-auto px-4 text-center">
             <p
