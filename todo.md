@@ -3025,3 +3025,7 @@
 ## Nuovi task (11 Apr 2026 — Pagina pianificazione web)
 
 - [x] Creare pagina /pianificazione su proofpress.ai con pianificazione newsletter + LinkedIn
+
+## Nuovi task (11 Apr 2026 — Banner + Font)
+- [x] Eliminare banner "ProofPress — Per il tuo business" dalla LeftSidebar (tutto il sito)
+- [x] Font SF Pro Apple già configurato globalmente nel CSS (nessuna modifica necessaria)

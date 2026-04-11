@@ -224,69 +224,8 @@ export default function LeftSidebar() {
         })}
       </nav>
 
-      {/* Banner ProofPress — espanso fino al ReadersCounter */}
-      <div className="mx-3 flex-1 flex flex-col min-h-0 mb-3">
-        <div className="flex flex-col flex-1 min-h-0" style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(26,26,26,0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-
-          {/* Header Apple style */}
-          <div style={{ background: "#f5f5f7", padding: "10px 13px", flexShrink: 0, borderBottom: "1px solid #e5e5ea" }}>
-            <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#86868b", fontFamily: SF }}>
-              ProofPress — Per il tuo business
-            </div>
-          </div>
-
-          {/* 3 target — layout compatto con descrizione breve */}
-          {[
-            {
-              icon: "✍️",
-              label: "Creator & Giornalisti",
-              desc: "Pubblica certificato, raggiungi 100k+ lettori.",
-              cta: "Scopri →",
-              href: "/offerta/creator"
-            },
-            {
-              icon: "📰",
-              label: "Testate & Editori",
-              desc: "Redazione AI 24/7, revenue share.",
-              cta: "Scopri →",
-              href: "/offerta/editori"
-            },
-            {
-              icon: "🏢",
-              label: "Aziende & Corporate",
-              desc: "Intelligence certificata, newsroom branded.",
-              cta: "Scopri →",
-              href: "/offerta/aziende"
-            },
-          ].map((t, i) => (
-            <Link key={t.href} href={t.href} style={{ display: "flex" }}>
-              <div
-                style={{ flex: 1, padding: "12px 13px", borderTop: i > 0 ? "1px solid rgba(26,26,26,0.07)" : undefined, cursor: "pointer", transition: "background 0.15s" }}
-                className="hover:bg-[#f5f5f7]"
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "9px", width: "100%" }}>
-                  <span style={{ fontSize: "16px", lineHeight: 1, flexShrink: 0 }}>{t.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: "12px", fontWeight: 800, color: "#1a1a1a", lineHeight: 1.25, fontFamily: SF }}>{t.label}</div>
-                    <div style={{ fontSize: "10.5px", color: "rgba(26,26,26,0.55)", lineHeight: 1.4, fontFamily: SF, marginTop: "2px" }}>{t.desc}</div>
-                  </div>
-                  <div style={{ fontSize: "10.5px", fontWeight: 700, color: "#0071e3", fontFamily: SF, flexShrink: 0, whiteSpace: "nowrap" }}>{t.cta}</div>
-                </div>
-              </div>
-            </Link>
-          ))}
-
-          {/* Footer */}
-          <Link href="/offerta">
-            <div style={{ padding: "10px 13px", background: "#f5f5f7", borderTop: "1px solid #e5e5ea", cursor: "pointer", flexShrink: 0 }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "#0071e3", fontFamily: SF, textAlign: "center" }}>
-                Scopri tutti i piani →
-              </div>
-            </div>
-          </Link>
-
-        </div>
-      </div>
+      {/* Spazio flessibile per spingere il LinkedIn e ReadersCounter in fondo */}
+      <div className="flex-1" />
 
       {/* LinkedIn ProofPress */}
       <div className="px-4 mb-3">
