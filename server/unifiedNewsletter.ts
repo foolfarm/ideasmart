@@ -1084,6 +1084,53 @@ function buildNewsletterHtmlV2(opts: {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // BLOCK J2: CTA — LEGGI LE NOTIZIE DI OGGI SU PROOFPRESS
+  // ═══════════════════════════════════════════════════════════════
+  const ctaNewsItems = [...aiNews.slice(0, 3), ...startupNews.slice(0, 2)];
+  const ctaSectionHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:24px 26px 20px;">
+              <div style="font-size:10px;font-weight:700;color:${MUTED};font-family:${F_SANS};letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">CONTINUA A LEGGERE SU PROOFPRESS</div>
+              <div style="font-size:22px;font-weight:900;color:${BLACK};font-family:${F_SERIF};margin-bottom:8px;letter-spacing:-0.5px;">Le notizie di oggi</div>
+              <p style="font-size:13px;line-height:1.7;color:${SLATE};font-family:${F_SANS};margin:0 0 18px;">Ogni giorno analizziamo oltre 4.000 fonti per portarti solo le notizie che contano su AI, Startup e Venture Capital. Leggi l'aggiornamento completo su proofpress.ai.</p>
+              ${ctaNewsItems.length > 0 ? `
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+                ${ctaNewsItems.map((n, i) => {
+                  const newsUrl = `${BASE_URL}/${(n as any).section === 'startup' ? 'startup' : 'ai'}/news/${n.id}`;
+                  const isLast = i === ctaNewsItems.length - 1;
+                  return `<tr>
+                    <td style="padding:10px 0;${!isLast ? `border-bottom:1px solid ${BORDER};` : ''}">
+                      <div style="font-size:9px;font-weight:700;color:${ACCENT};font-family:${F_SANS};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">${n.category}</div>
+                      <a href="${newsUrl}" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F_SANS};line-height:1.4;display:block;margin-bottom:3px;">${n.title}</a>
+                      <a href="${newsUrl}" style="font-size:11px;font-weight:600;color:${ACCENT};text-decoration:none;font-family:${F_SANS};">Leggi l'articolo →</a>
+                    </td>
+                  </tr>`;
+                }).join('')}
+              </table>` : ''}
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding-right:8px;">
+                    <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">AI News →</a>
+                  </td>
+                  <td style="padding-right:8px;">
+                    <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Startup →</a>
+                  </td>
+                  <td>
+                    <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BLACK};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:9px 18px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Ricerche →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
+
+  // ═══════════════════════════════════════════════════════════════
   // BLOCK K: CONSIGLIATO #2 + FOOTER
   // ═══════════════════════════════════════════════════════════════
   const deal2 = amazonDeals[1];
@@ -1181,6 +1228,7 @@ function buildNewsletterHtmlV2(opts: {
         ${eventsHtml}
         ${quickLinksHtml}
         ${researchBoxHtml}
+        ${ctaSectionHtml}
         ${consigliatoHtml2}
         ${footerHtml}
       </table>
