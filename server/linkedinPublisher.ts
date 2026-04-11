@@ -88,6 +88,83 @@ const SITE_BASE_URL = "https://proofpress.ai";
 const todayImageCache: Set<string> = new Set();
 let todayImageCacheDate = "";
 
+// ── In-memory TOPIC LOCK: titoli già usati oggi in qualsiasi slot ────────────
+// Previene duplicati anche quando il DB non ha ancora committato il post precedente
+const todayTopicLock: Set<string> = new Set();
+let todayTopicLockDate = "";
+
+/**
+ * Registra un titolo come usato oggi nel topic lock in-memory.
+ */
+function lockTopic(title: string): void {
+  const today = getTodayCET();
+  if (todayTopicLockDate !== today) {
+    todayTopicLock.clear();
+    todayTopicLockDate = today;
+  }
+  todayTopicLock.add(title.toLowerCase().trim());
+}
+
+/**
+ * Verifica se un titolo è già stato usato oggi (DB + cache in-memory).
+ */
+async function isTopicUsedToday(title: string): Promise<boolean> {
+  const today = getTodayCET();
+  if (todayTopicLockDate !== today) {
+    todayTopicLock.clear();
+    todayTopicLockDate = today;
+  }
+  const normalizedTitle = title.toLowerCase().trim();
+  // 1. Controlla cache in-memory (per slot pubblicati nella stessa sessione)
+  if (todayTopicLock.has(normalizedTitle)) return true;
+  // 2. Controlla DB (per slot pubblicati in sessioni precedenti)
+  try {
+    const db = await getDb();
+    if (db) {
+      const existing = await db.select({ id: linkedinPosts.id })
+        .from(linkedinPosts)
+        .where(and(
+          eq(linkedinPosts.dateLabel, today),
+          eq(linkedinPosts.title, title)
+        ))
+        .limit(1);
+      if (existing.length > 0) {
+        todayTopicLock.add(normalizedTitle); // Sincronizza cache
+        return true;
+      }
+    }
+  } catch (err) {
+    console.warn('[LinkedIn TopicLock] ⚠️ Errore verifica DB:', err);
+  }
+  return false;
+}
+
+/**
+ * Carica tutti i titoli già pubblicati oggi dal DB nella cache in-memory.
+ * Da chiamare all'inizio di ogni slot per sincronizzare lo stato.
+ */
+async function syncTopicLockFromDB(): Promise<void> {
+  const today = getTodayCET();
+  if (todayTopicLockDate !== today) {
+    todayTopicLock.clear();
+    todayTopicLockDate = today;
+  }
+  try {
+    const db = await getDb();
+    if (db) {
+      const todayPosts = await db.select({ title: linkedinPosts.title })
+        .from(linkedinPosts)
+        .where(eq(linkedinPosts.dateLabel, today));
+      for (const p of todayPosts) {
+        if (p.title) todayTopicLock.add(p.title.toLowerCase().trim());
+      }
+      console.log(`[LinkedIn TopicLock] 🔒 Sincronizzati ${todayTopicLock.size} titoli già usati oggi`);
+    }
+  } catch (err) {
+    console.warn('[LinkedIn TopicLock] ⚠️ Errore sync DB:', err);
+  }
+}
+
 /**
  * Recupera TUTTE le immagini usate OGGI (da tutti gli slot) dal DB + cache in-memory.
  * Questo previene duplicati anche quando i post vengono pubblicati in rapida successione
@@ -311,41 +388,41 @@ ${marketData.keyFinding}`;
     slotNote = `Questo è il POST DEL MATTINO (10:00) — Sezione AI News.
 Tono: analitico e strategico. Il tuo pubblico apre LinkedIn a colazione e vuole una lettura che dia loro un vantaggio competitivo per la giornata.
 Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business.
-Includi sempre il link a proofpress.ai/ai.`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "ai-research-morning") {
     slotNote = `Questo è il 2° EDITORIALE AI (12:30) — basato su ricerche di mercato di alto livello sull'AI.
 Tono: analitico e autorevole. Il tuo pubblico è a pranzo e vuole una lettura strategica profonda sull'AI.
 Focus: ricerche di mercato AI di alto livello, dati di adozione enterprise, impatto economico, trend emergenti. Cita fonti autorevoli (Gartner, McKinsey, IDC, Stanford HAI, MIT).
 Aggiungi sempre la tua lettura strategica personale: cosa significa per il mercato italiano ed europeo.
-Includi sempre il link a proofpress.ai.`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "startup-afternoon") {
     slotNote = `Questo è il POST DEL POMERIGGIO (14:30) — Sezione Startup News.
 Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire cosa si muove nell'ecosistema startup.
 Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
-Includi sempre il link a proofpress.ai/startup.`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "research") {
     slotNote = `Questo è il POST SULLE RICERCHE (14:30) — Sezione Proof Press Research.
 Tono: autorevole e data-driven. Il tuo pubblico vuole insight basati su ricerche e dati concreti.
 Focus: presenta i key findings della ricerca, le implicazioni per il mercato italiano/europeo, e perché questa ricerca è rilevante per decision-maker.
-Invita a leggere la ricerca completa su proofpress.ai.
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
 NON limitarti a riassumere: aggiungi la tua lettura strategica dei dati.`;
   } else if (slot === "research-afternoon") {
     slotNote = `Questo è il 2° POST RICERCHE (16:00) — Sezione Proof Press Research.
 Tono: autorevole e data-driven. Il tuo pubblico nel pomeriggio vuole insight concreti e azionabili.
 Focus: presenta i key findings di una nuova ricerca Proof Press, le implicazioni strategiche per il mercato italiano/europeo, e cosa devono fare i decision-maker oggi.
-Invita a leggere la ricerca completa su proofpress.ai.
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
 NON ripetere la stessa ricerca del post delle 14:30: scegli un angolo o una ricerca diversa.`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
 Focus: analizza il deal/round di investimento, il contesto competitivo, le implicazioni per l'ecosistema.
-Includi sempre il link a proofpress.ai/dealroom.
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
 Sii specifico su cifre, investitori, valuation se disponibili.`;
   } else {
     // Legacy slots
     slotNote = `Post LinkedIn — Sezione variabile.
 Tono: analitico e approfondito.
-Includi sempre il link a proofpress.ai.`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   }
 
   const publishDate = new Date().toLocaleDateString("it-IT", {
@@ -373,7 +450,7 @@ STRUTTURA DEL POST:
 2. ANALISI (3-4 paragrafi brevi): Collega i dati a implicazioni strategiche concrete per aziende italiane/europee. Usa i dati di mercato forniti. Sii specifico sulle implicazioni operative, non solo sulle tendenze. Usa "io", "ho analizzato", "la mia lettura".
 3. POSIZIONE (1 paragrafo): Qual è la tua lettura personale come imprenditore? Dove vedi il rischio che gli altri non vedono?
 4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Tech Expert @ProofPress"
-5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Analisi completa su @ProofPress → ${SITE_BASE_URL}${meta.path}"
+5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Approfondisci su Proof Press → https://proofpress.ai"
 6. HASHTAG: ${meta.hashtags.join(" ")}
 
 LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
@@ -666,17 +743,16 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `📊 Analisi completa su Proof Press → ${SITE_BASE_URL}${meta.path}`,
+      `📊 Approfondisci su Proof Press → https://proofpress.ai`,
       "",
       meta.hashtags.join(" ")
     ].join("\n");
   }
 }
-
-// ── Recupera contenuto per lo slot Research ──────────────────────────────────
+// ── Recupera contenuto per lo slot Research ────────────────────────────────────────────
 /**
  * Recupera una delle ultime ricerche pubblicate su Proof Press per il post LinkedIn.
- * Seleziona una ricerca non ancora usata nei post LinkedIn recenti.
+ * Usa il topic lock in-memory + DB per garantire che ogni slot abbia un argomento diverso.
  */
 async function getResearchForLinkedIn(recentPostTitles: string[]): Promise<{
   title: string;
@@ -691,14 +767,60 @@ async function getResearchForLinkedIn(recentPostTitles: string[]): Promise<{
       return null;
     }
 
-    // Preferisci una ricerca non ancora usata nei post LinkedIn recenti
-    let selected = researches.find(r => !recentPostTitles.includes(r.title));
-    if (!selected) {
-      // Fallback: usa la ricerca del giorno o la prima disponibile
-      selected = researches.find(r => r.isResearchOfDay) ?? researches[0];
+    // Filtra ricerche già usate oggi (topic lock in-memory + DB + recentPostTitles)
+    const today = getTodayCET();
+    if (todayTopicLockDate !== today) {
+      todayTopicLock.clear();
+      todayTopicLockDate = today;
     }
-
-    // Costruisci il body dalla ricerca
+    const allUsedTitles = new Set([
+      ...Array.from(todayTopicLock),
+      ...recentPostTitles.map(t => t.toLowerCase().trim())
+    ]);
+    
+    // Cerca una ricerca non ancora usata oggi
+    let selected = researches.find(r => !allUsedTitles.has(r.title.toLowerCase().trim()));
+    if (!selected) {
+      // Se tutte le ricerche di oggi sono già state usate, prendi una ricerca degli ultimi 7 giorni
+      console.warn('[LinkedIn] ⚠️ Tutte le ricerche di oggi già usate, cerco negli ultimi 7 giorni...');
+      try {
+        const db = await getDb();
+        if (db) {
+          const sevenDaysAgo = new Date();
+          sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+          const sevenDaysAgoLabel = sevenDaysAgo.toLocaleDateString('sv-SE', { timeZone: TZ_ROME });
+          const recentResearches = await db.select()
+            .from(researchReports)
+            .where(gte(researchReports.dateLabel, sevenDaysAgoLabel))
+            .orderBy(desc(researchReports.id))
+            .limit(50);
+          const freshResearch = recentResearches.find(r => !allUsedTitles.has(r.title.toLowerCase().trim()));
+          if (freshResearch) {
+            let keyFindings: string[] = [];
+            try { keyFindings = JSON.parse(freshResearch.keyFindings); } catch { /* ignore */ }
+            const body = [
+              freshResearch.summary,
+              '',
+              keyFindings.length > 0 ? 'Key Findings:' : '',
+              ...keyFindings.map((f: string, i: number) => `${i + 1}. ${f}`),
+              '',
+              `Fonte: ${freshResearch.source}`,
+              freshResearch.sourceUrl ? `Link: ${freshResearch.sourceUrl}` : ''
+            ].filter(Boolean).join('\n');
+            return {
+              title: freshResearch.title,
+              body,
+              keyTrend: freshResearch.category ?? 'AI Trends & Startup',
+              imageUrl: freshResearch.imageUrl ?? null
+            };
+          }
+        }
+      } catch (dbErr) {
+        console.warn('[LinkedIn] ⚠️ Errore ricerca fallback 7gg:', dbErr);
+      }
+      // Ultimo fallback: prima ricerca disponibile
+      selected = researches.find(r => r.isResearchOfDay) ?? researches[0];
+    }   // Costruisci il body dalla ricerca
     let keyFindings: string[] = [];
     try {
       keyFindings = JSON.parse(selected.keyFindings);
@@ -832,6 +954,11 @@ export async function publishLinkedInPost(
       const todayMemoryImages = await getTodayUsedImages();
       recentImageUrls = Array.from(new Set([...recentImageUrls, ...todayMemoryImages]));
       console.log(`[LinkedIn] 📋 Immagini escluse: ${recentImageUrls.length} (DB + cache)`);
+      
+      // Sincronizza il topic lock con i titoli già pubblicati OGGI (prevenzione duplicati)
+      await syncTopicLockFromDB();
+      // Aggiungi anche i titoli recenti degli ultimi 7 giorni al topic lock
+      for (const t of recentPostTitles) lockTopic(t);
     }
   } catch (checkErr) {
     console.warn('[LinkedIn] ⚠️ Controllo idempotenza fallito, procedo con cautela:', checkErr);
@@ -1272,7 +1399,7 @@ export async function publishLinkedInPost(
   }
 
   // ── URL di destinazione ────────────────────────────────────────────────
-  const articleUrl = `${SITE_BASE_URL}${meta.path}`;
+  const articleUrl = `${SITE_BASE_URL}`;
 
   // ── AUDIT PRE-PUBBLICAZIONE: verifica unicità immagine e testo ─────────
   const audit = await auditPrePublish(postText, imageUrl, slot);
@@ -1374,6 +1501,9 @@ export async function publishLinkedInPost(
             }
           });
         console.log(`[LinkedIn] 💾 Post slot ${slotLabel} salvato nel DB (${dateLabel})`);
+        // Blocca il titolo nel topic lock in-memory per prevenire duplicati negli slot successivi
+        lockTopic(contentTitle);
+        console.log(`[LinkedIn TopicLock] 🔒 Titolo bloccato: "${contentTitle.slice(0, 60)}..."`);
       }
     } catch (dbErr) {
       console.error('[LinkedIn] ⚠️ Errore salvataggio post nel DB:', dbErr);
