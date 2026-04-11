@@ -66,7 +66,7 @@ function NewsItemHref(item: NewsItem, sectionOverride?: string): string {
   return `/${sec}/news/${item.id}`;
 }
 function Divider({ thick = false }: { thick?: boolean }) {
-  return <div className={`w-full ${thick ? "border-t-[3px]" : "border-t"} border-[#1a1a1a]`} />;
+  return <div className={`w-full ${thick ? "border-t-2" : "border-t"} border-[#1a1a1a]`} />;
 }
 function ThinDivider() {
   return <div className="w-full border-t border-[#1a1a1a]/12" />;
@@ -77,8 +77,8 @@ function SectionBadge({ section }: { section: SectionKey }) {
   const s = SECTION_COLORS[section];
   return (
     <span
-      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-1.5 py-0.5 mr-1"
-      style={{ background: s.accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.12em] px-2 py-1 mr-1"
+      style={{ background: s.accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", borderRadius: "4px" }}
     >
       {s.label}
     </span>
@@ -101,7 +101,7 @@ function HeroArticle({ item, section, editorial }: {
   const TitleEl = (
     <h3
       className="mt-2 leading-tight text-[#1a1a1a] hover:underline"
-      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(30px, 4vw, 42px)", fontWeight: 800, lineHeight: 1.15 }}
+      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(32px, 4.5vw, 50px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.025em" }}
     >
       {title}
     </h3>
@@ -114,11 +114,11 @@ function HeroArticle({ item, section, editorial }: {
             <img
               src={img} alt={title} loading="eager" decoding="async"
               className="w-full object-cover hover:opacity-95 transition-opacity cursor-pointer"
-              style={{ height: "320px", border: "1px solid rgba(26,26,46,0.12)" }}
+              style={{ height: "420px", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
             />
           </Link>
       )}
-      <div className="mt-3">
+      <div className="mt-5">
         <SectionBadge section={section} />
         <Link href={href}>{TitleEl}</Link>
         {editorial?.subtitle && (
@@ -127,8 +127,8 @@ function HeroArticle({ item, section, editorial }: {
             {editorial.subtitle}
           </p>
         )}
-        <p className="mt-3 text-[17px] leading-relaxed text-[#1a1a1a]/75"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.7 }}>
+        <p className="mt-4 text-[18px] leading-relaxed text-[#1a1a1a]/70"
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.75 }}>
           {body.slice(0, 320)}{body.length > 320 ? "…" : ""}
         </p>
         <p className="mt-2 text-[11px] text-[#1a1a1a]/40 uppercase tracking-widest"
@@ -165,7 +165,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
         <Link href={href}>
           <img src={item.imageUrl} alt={item.title} loading="lazy"
             className="w-full object-cover mb-3 cursor-pointer"
-            style={{ height: "160px", border: "1px solid rgba(26,26,46,0.10)" }} />
+            style={{ height: "200px", borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)" }} />
         </Link>
       )}
       <SectionBadge section={section} />
@@ -215,8 +215,8 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
     <div className="py-3">
       <div className="flex items-center gap-1.5 mb-1">
         <span
-          className="text-[9px] font-bold uppercase tracking-[0.12em] px-1 py-0.5"
-          style={{ background: s.accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+          className="text-[9px] font-bold uppercase tracking-[0.12em] px-1.5 py-0.5"
+          style={{ background: s.accent, color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", borderRadius: "3px" }}
         >
           {s.label}
         </span>
@@ -229,7 +229,7 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
       <Link href={href}>
         <p
           className="text-[#1a1a1a] hover:underline leading-snug"
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, lineHeight: 1.35 }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "18px", fontWeight: 700, lineHeight: 1.3, letterSpacing: "-0.01em" }}
         >
           {item.title}
         </p>
@@ -363,9 +363,9 @@ function HomeAuthButtons() {
 function SectionLabel({ label, accent }: { label: string; accent: string }) {
   return (
     <div className="flex items-center gap-2 mb-2">
-      <div className="h-[3px] w-6" style={{ background: accent }} />
-      <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] m-0 p-0"
-        style={{ color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", lineHeight: 1 }}>
+      <div className="h-[3px] w-8" style={{ background: accent }} />
+      <h2 className="text-[12px] font-bold uppercase tracking-[0.18em] m-0 p-0"
+        style={{ color: accent, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", lineHeight: 1 }}>
         {label}
       </h2>
     </div>
@@ -599,7 +599,7 @@ export default function Home() {
                                 loading="eager"
                                 decoding="async"
                                 className="w-full object-cover hover:opacity-95 transition-opacity cursor-pointer"
-                                style={{ height: "320px", border: "1px solid rgba(26,26,46,0.12)" }}
+                                style={{ height: "420px", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
                               />
                             </Link>
                           )}
@@ -693,7 +693,7 @@ export default function Home() {
 
                   {/* STRISCIA RESEARCH */}
                   {researchReports && researchReports.length > 0 && (
-                    <div className="mt-8">
+                    <div className="mt-12">
                       <Divider thick />
                       <div className="py-2 flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -755,7 +755,7 @@ export default function Home() {
 
                   {/* ── SEZIONE DEALROOM — Round, Funding, VC, M&A ── */}
                   {dealroomNews.length > 0 && (
-                    <div className="mt-8">
+                    <div className="mt-12">
                       <Divider thick />
                       <div className="py-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -807,7 +807,7 @@ export default function Home() {
 
                   {/* TERZA RIGA: Startup approfondimenti */}
                   {startupRest.length > 5 && (
-                    <div className="mt-8">
+                    <div className="mt-12">
                       <Divider thick />
                       <div className="py-2 flex items-center justify-between">
                         <SectionLabel label="STARTUP NEWS — Approfondimenti" accent={SECTION_COLORS.startup.accent} />
@@ -832,7 +832,7 @@ export default function Home() {
 
                   {/* STARTUP EDITORIALE */}
                   {startupEditorial && (
-                    <div className="mt-8">
+                    <div className="mt-12">
                       <Divider thick />
                       <div className="py-2">
                         <span className="text-[11px] font-bold uppercase tracking-[0.2em]"
@@ -874,7 +874,7 @@ export default function Home() {
 
                   {/* ALTRE NOTIZIE AI */}
                   {aiRest.length > 3 && (
-                    <div className="mt-8">
+                    <div className="mt-12">
                       <Divider thick />
                       <div className="py-2 flex items-center justify-between">
                         <SectionLabel label="AI NEWS — Approfondimenti" accent={SECTION_COLORS.ai.accent} />

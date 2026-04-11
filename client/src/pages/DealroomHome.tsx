@@ -38,7 +38,7 @@ function ThinDivider() {
 function DealBadge({ label }: { label: string }) {
   return (
     <span
-      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg"
       style={{ background: ACCENT_LIGHT, color: ACCENT }}
     >
       {label}
@@ -68,7 +68,7 @@ function NewsCard({
       ? item.sourceUrl
       : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
-    <div className="py-3">
+    <div className="py-4">
       {showImage && item.imageUrl && (
         <a href={href} target="_blank" rel="noopener noreferrer">
           <img
@@ -87,7 +87,7 @@ function NewsCard({
           {item.title}
         </h3>
       </a>
-      <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3">
+      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3">
         {item.summary}
       </p>
       {item.sourceName && (
@@ -126,7 +126,7 @@ function NewsRow({
       <DealBadge label={item.category || "Deal"} />
       <div>
         <a href={href} target="_blank" rel="noopener noreferrer">
-          <span className="text-sm font-semibold text-[#1a1a1a] hover:underline cursor-pointer">
+          <span className="text-[15px] font-semibold text-[#1a1a1a] hover:underline cursor-pointer">
             {item.title}
           </span>
         </a>
@@ -183,7 +183,7 @@ export default function DealroomHome() {
         <main className="max-w-6xl mx-auto px-4 pb-12">
           {/* SEZIONE 1: Deal del Giorno */}
           <div>
-            <div className="py-3">
+            <div className="py-4">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
                 Deal del Giorno
               </span>
@@ -296,7 +296,7 @@ export default function DealroomHome() {
           {gridNews.length > 0 && (
             <div className="mt-6">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
                   Ultime Notizie Deal &amp; Funding
                 </span>
@@ -334,7 +334,7 @@ export default function DealroomHome() {
           {listNews.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
                   Altre Notizie
                 </span>

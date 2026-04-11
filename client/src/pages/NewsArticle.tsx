@@ -3,10 +3,10 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 
-const F_SERIF = "'Georgia', 'Times New Roman', serif";
+const F_SERIF = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 const F_SANS = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
-const BG = "#f5f5f7";
-const ACCENT = "#d94f3d";
+const BG = "#ffffff";
+const ACCENT = "#1d1d1f";
 const BLACK = "#1a1a1a";
 const SLATE = "#4b5563";
 const MUTED = "#9ca3af";
@@ -78,7 +78,7 @@ export default function NewsArticle() {
       {/* Header nav */}
       <div style={{ background: WHITE, borderBottom: `1px solid ${BORDER}`, padding: "12px 24px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
-          <Link href="/ai" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: ACCENT, textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <Link href="/ai" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: "#1d1d1f", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             <ArrowLeft size={14} />
             AI NEWS
           </Link>
@@ -90,18 +90,18 @@ export default function NewsArticle() {
       </div>
 
       {/* Article */}
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px 80px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "56px 32px 100px" }}>
 
         {/* Category badge */}
         <div style={{ marginBottom: 16 }}>
-          <span style={{ display: "inline-block", background: ACCENT, color: WHITE, fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 3, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          <span style={{ display: "inline-block", background: "#1d1d1f", color: WHITE, fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 4, letterSpacing: "0.1em", textTransform: "uppercase" }}>
             <Tag size={9} style={{ display: "inline", marginRight: 4, verticalAlign: "middle" }} />
             {news.category}
           </span>
         </div>
 
         {/* Title */}
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: BLACK, fontFamily: F_SERIF, lineHeight: 1.3, marginBottom: 16 }}>
+        <h1 style={{ fontSize: 40, fontWeight: 800, color: BLACK, fontFamily: F_SERIF, lineHeight: 1.1, marginBottom: 20, letterSpacing: "-0.025em" }}>
           {news.title}
         </h1>
 
@@ -126,13 +126,13 @@ export default function NewsArticle() {
             <img
               src={news.imageUrl}
               alt={news.title}
-              style={{ width: "100%", maxHeight: 380, objectFit: "cover", display: "block" }}
+              style={{ width: "100%", maxHeight: 480, objectFit: "cover", display: "block" }}
             />
           </div>
         )}
 
         {/* Summary / body */}
-        <div style={{ fontSize: 17, color: SLATE, fontFamily: F_SANS, lineHeight: 1.85, marginBottom: 40, whiteSpace: "pre-wrap" }}>
+        <div style={{ fontSize: 18, color: "#374151", fontFamily: F_SANS, lineHeight: 1.9, marginBottom: 48, whiteSpace: "pre-wrap" }}>
           {news.summary}
         </div>
 
@@ -162,7 +162,7 @@ export default function NewsArticle() {
               href={sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: ACCENT, textDecoration: "none", fontWeight: 600 }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#0071e3", textDecoration: "none", fontWeight: 600 }}
             >
               <ExternalLink size={14} />
               {news.sourceName || "Leggi l'articolo originale"}

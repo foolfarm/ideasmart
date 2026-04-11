@@ -34,7 +34,7 @@ function ThinDivider() { return <div className="w-full border-t border-[#1a1a1a]
 
 function SectionBadge({ label }: { label: string }) {
   return (
-    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg"
       style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {label}
     </span>
@@ -48,22 +48,22 @@ function NewsCard({ item, showImage = false, large = false }: {
 }) {
   const href = `/ai/news/${item.id}`;
   return (
-    <div className="py-3">
+    <div className="py-4">
       {showImage && item.imageUrl && (
         <Link href={href}>
           <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
-            className={`w-full ${large ? "h-52" : "h-32"} object-cover mb-3 cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all`}
-            style={{ border: "1px solid rgba(26,26,46,0.1)" }} />
+            className={`w-full ${large ? "h-56" : "h-40"} object-cover mb-3 cursor-pointer hover:opacity-95 transition-opacity`}
+            style={{ borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }} />
         </Link>
       )}
       <SectionBadge label={item.category || "AI"} />
       <Link href={href}>
-        <h3 className={`mt-2 ${large ? "text-xl md:text-2xl" : "text-base"} font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer`}
-          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+        <h3 className={`mt-2 ${large ? "text-2xl md:text-3xl" : "text-[17px]"} font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer`}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: large ? "-0.02em" : "-0.01em", lineHeight: 1.25 }}>
           {item.title}
         </h3>
       </Link>
-      <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
         {item.summary}
       </p>
@@ -90,7 +90,7 @@ function NewsRow({ item }: {
       <SectionBadge label={item.category || "AI"} />
       <div>
         <Link href={href}>
-          <span className="text-sm font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
+          <span className="text-[15px] font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.title}
           </span>
@@ -146,7 +146,7 @@ export default function AiHome() {
 
             {/* Colonna principale: notizia hero + 2 secondarie */}
             <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a1a]/20">
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Notizia del Giorno
@@ -222,7 +222,7 @@ export default function AiHome() {
 
             {/* Sidebar: editoriale del giorno */}
             <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Editoriale del Giorno
@@ -231,7 +231,7 @@ export default function AiHome() {
               <ThinDivider />
 
               {editorial ? (
-                <div className="py-3">
+                <div className="py-4">
                   <Link href={`/ai/editoriale/${editorial.id}`}>
                     <p className="text-base font-bold text-[#1a1a1a] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -277,7 +277,7 @@ export default function AiHome() {
           {remainingNews.length > 0 && (
             <div className="mt-6">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Ultime Notizie AI
@@ -312,7 +312,7 @@ export default function AiHome() {
           {startupData && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Startup del Giorno
@@ -364,7 +364,7 @@ export default function AiHome() {
                       { label: "Fondata", value: startupData.foundedYear || "N/D" },
                       { label: "Funding", value: startupData.funding || "N/D" }
                     ].map(({ label, value }) => (
-                      <div key={label} className="p-3 rounded-sm" style={{ background: ACCENT_LIGHT }}>
+                      <div key={label} className="p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}>
                         <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
                           style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                           {label}
@@ -377,7 +377,7 @@ export default function AiHome() {
                     ))}
                   </div>
                   {startupData.aiScore != null && startupData.aiScore > 0 && (
-                    <div className="mt-3 p-3 rounded-sm" style={{ background: ACCENT_LIGHT }}>
+                    <div className="mt-3 p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}>
                       <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
                         style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         AI Score
@@ -400,7 +400,7 @@ export default function AiHome() {
           {reportageItems && reportageItems.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Reportage della Settimana
@@ -418,7 +418,7 @@ export default function AiHome() {
                         {item.headline}
                       </h3>
                     </Link>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       {item.subheadline || item.bodyText?.slice(0, 200)}
                     </p>
@@ -445,7 +445,7 @@ export default function AiHome() {
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Analisi di Mercato
@@ -463,7 +463,7 @@ export default function AiHome() {
                         {item.title}
                       </h3>
                     </Link>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       {item.summary}
                     </p>
@@ -482,7 +482,7 @@ export default function AiHome() {
           {listNews.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Altre Notizie

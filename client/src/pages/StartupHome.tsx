@@ -34,7 +34,7 @@ function ThinDivider() { return <div className="w-full border-t border-[#1a1a1a]
 
 function SectionBadge({ label }: { label: string }) {
   return (
-    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg"
       style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {label}
     </span>
@@ -47,7 +47,7 @@ function NewsCard({ item, showImage = false }: {
 }) {
   const href = `/startup/news/${item.id}`;
   return (
-    <div className="py-3">
+    <div className="py-4">
       {showImage && item.imageUrl && (
         <Link href={href}>
           <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
@@ -62,7 +62,7 @@ function NewsCard({ item, showImage = false }: {
           {item.title}
         </h3>
       </Link>
-      <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
         {item.summary}
       </p>
@@ -89,7 +89,7 @@ function NewsRow({ item }: {
       <SectionBadge label={item.category || "Startup"} />
       <div>
         <Link href={href}>
-          <span className="text-sm font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
+          <span className="text-[15px] font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.title}
           </span>
@@ -144,7 +144,7 @@ export default function StartupHome() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-0 mt-0">
 
             <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a1a]/20">
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Notizia del Giorno
@@ -220,7 +220,7 @@ export default function StartupHome() {
 
             {/* Sidebar: editoriale */}
             <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Editoriale del Giorno
@@ -229,7 +229,7 @@ export default function StartupHome() {
               <ThinDivider />
 
               {editorial ? (
-                <div className="py-3">
+                <div className="py-4">
                   <Link href={`/startup/editoriale/${editorial.id}`}>
                     <p className="text-base font-bold text-[#1a1a1a] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -275,7 +275,7 @@ export default function StartupHome() {
           {remainingNews.length > 0 && (
             <div className="mt-6">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Ultime Notizie Startup
@@ -310,7 +310,7 @@ export default function StartupHome() {
           {startupData && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Startup del Giorno
@@ -356,7 +356,7 @@ export default function StartupHome() {
                       { label: "Fondata", value: startupData.foundedYear || "N/D" },
                       { label: "Funding", value: startupData.funding || "N/D" }
                     ].map(({ label, value }) => (
-                      <div key={label} className="p-3 rounded-sm" style={{ background: ACCENT_LIGHT }}>
+                      <div key={label} className="p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}>
                         <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
                           style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                           {label}
@@ -369,7 +369,7 @@ export default function StartupHome() {
                     ))}
                   </div>
                   {startupData.aiScore != null && startupData.aiScore > 0 && (
-                    <div className="mt-3 p-3 rounded-sm" style={{ background: ACCENT_LIGHT }}>
+                    <div className="mt-3 p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}>
                       <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
                         style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Innovation Score
@@ -392,7 +392,7 @@ export default function StartupHome() {
           {reportageItems && reportageItems.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Reportage della Settimana
@@ -410,7 +410,7 @@ export default function StartupHome() {
                         {item.headline}
                       </h3>
                     </Link>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       {item.subheadline || item.bodyText?.slice(0, 200)}
                     </p>
@@ -437,7 +437,7 @@ export default function StartupHome() {
           {analyses && analyses.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Analisi di Mercato
@@ -455,7 +455,7 @@ export default function StartupHome() {
                         {item.title}
                       </h3>
                     </Link>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       {item.summary}
                     </p>
@@ -474,7 +474,7 @@ export default function StartupHome() {
           {listNews.length > 0 && (
             <div className="mt-8">
               <Divider thick />
-              <div className="py-3">
+              <div className="py-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   Altre Notizie
