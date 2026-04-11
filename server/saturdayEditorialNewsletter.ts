@@ -210,13 +210,22 @@ Rispondi SOLO con questo JSON (nessun testo prima o dopo):
 
 // ─── Template HTML editoriale del sabato ─────────────────────────────────────
 
+interface RecentNewsItem {
+  id: number;
+  title: string;
+  summary: string;
+  category: string;
+  section: string;
+}
+
 export function buildSaturdayNewsletterHtml(opts: {
   editorial: SaturdayEditorial;
   dateLabel: string;
   unsubscribeUrl?: string;
   isTest?: boolean;
+  recentNews?: RecentNewsItem[];
 }): string {
-  const { editorial, dateLabel, unsubscribeUrl, isTest } = opts;
+  const { editorial, dateLabel, unsubscribeUrl, isTest, recentNews } = opts;
   const unsubLink = unsubscribeUrl ?? `${BASE_URL}/unsubscribe`;
 
   const bodyParagraphs = editorial.body
@@ -366,6 +375,48 @@ export function buildSaturdayNewsletterHtml(opts: {
         <!-- SEPARATORE -->
         <tr><td style="height:2px;background:${BLACK};"></td></tr>
 
+        <!-- CTA: LEGGI LE NOTIZIE DI OGGI -->
+        <tr>
+          <td style="background:${WHITE};padding:32px 28px 24px;border-top:1px solid ${BORDER};">
+            <div style="font-size:9px;font-weight:700;color:${MUTED};font-family:${FONT};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px;">CONTINUA A LEGGERE SU PROOFPRESS</div>
+            <div style="font-size:22px;font-weight:900;color:${BLACK};font-family:${FONT};margin-bottom:8px;letter-spacing:-0.5px;">Le notizie di questa settimana</div>
+            <p style="font-size:14px;line-height:1.7;color:${SLATE};font-family:${FONT};margin:0 0 20px;">Ogni giorno analizziamo oltre 4.000 fonti per portarti solo le notizie che contano su AI, Startup e Venture Capital. Leggi l'aggiornamento completo su proofpress.ai.</p>
+            ${recentNews && recentNews.length > 0 ? `
+            <!-- Notizie recenti -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+              ${recentNews.slice(0, 5).map((n, i) => {
+                const newsUrl = `${BASE_URL}/${n.section === 'startup' ? 'startup' : 'ai'}/news/${n.id}`;
+                const isLast = i === recentNews.slice(0, 5).length - 1;
+                return `<tr>
+                <td style="padding:12px 0;${!isLast ? `border-bottom:1px solid ${BORDER};` : ''}">
+                  <div style="font-size:9px;font-weight:700;color:${GOLD};font-family:${FONT};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px;">${n.category}</div>
+                  <a href="${newsUrl}" style="font-size:15px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${FONT};line-height:1.4;display:block;margin-bottom:4px;">${n.title}</a>
+                  <p style="font-size:13px;color:${SLATE};font-family:${FONT};margin:0;line-height:1.5;">${n.summary.slice(0, 120)}${n.summary.length > 120 ? '...' : ''}</p>
+                  <a href="${newsUrl}" style="font-size:12px;font-weight:600;color:${GOLD};text-decoration:none;font-family:${FONT};margin-top:6px;display:inline-block;">Leggi l'articolo &rarr;</a>
+                </td>
+              </tr>`;
+              }).join('')}
+            </table>` : ''}
+            <!-- Pulsanti CTA principali -->
+            <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
+              <tr>
+                <td style="padding-right:8px;">
+                  <a href="${BASE_URL}/ai" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:700;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">AI News &rarr;</a>
+                </td>
+                <td style="padding-right:8px;">
+                  <a href="${BASE_URL}/startup" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:12px;font-weight:700;font-family:${FONT};text-decoration:none;padding:11px 20px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Startup &rarr;</a>
+                </td>
+                <td>
+                  <a href="${BASE_URL}/research" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BLACK};font-size:12px;font-weight:700;font-family:${FONT};text-decoration:none;padding:10px 20px;border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;">Ricerche &rarr;</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- SEPARATORE 2 -->
+        <tr><td style="height:2px;background:${BLACK};"></td></tr>
+
         <!-- PROMO PROMPT COLLECTION -->
         <tr>
           <td style="background:${BLACK};padding:28px 28px;text-align:center;">
@@ -434,10 +485,18 @@ export async function sendSaturdayPreview(): Promise<{
     const editorial = await generateSaturdayEditorial();
     const subject = `Il meglio di ProofPress — ${editorial.title}`;
 
+    // Recupera le notizie recenti per la sezione CTA
+    const [aiNewsForCta, startupNewsForCta] = await Promise.all([
+      getLatestNews(3, "ai"),
+      getLatestNews(2, "startup"),
+    ]);
+    const recentNewsForCta = [...aiNewsForCta, ...startupNewsForCta];
+
     const html = buildSaturdayNewsletterHtml({
       editorial,
       dateLabel,
       isTest: true,
+      recentNews: recentNewsForCta,
     });
 
     const result = await sendEmail({ to: TEST_EMAIL, subject, html });
@@ -513,10 +572,17 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
     const editorial = await generateSaturdayEditorial();
     const subject = `Il meglio di ProofPress — ${editorial.title}`;
 
+    // 2b. Recupera le notizie recenti per la sezione CTA (una volta sola, condivisa da tutti i batch)
+    const [aiNewsForCta, startupNewsForCta] = await Promise.all([
+      getLatestNews(3, "ai"),
+      getLatestNews(2, "startup"),
+    ]);
+    const recentNewsForCta = [...aiNewsForCta, ...startupNewsForCta];
+
     // 3. Registra nel DB
     await createNewsletterSend({
       subject,
-      htmlContent: buildSaturdayNewsletterHtml({ editorial, dateLabel, isTest: false }),
+      htmlContent: buildSaturdayNewsletterHtml({ editorial, dateLabel, isTest: false, recentNews: recentNewsForCta }),
       recipientCount: 0,
     });
 
@@ -527,7 +593,6 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
 
     for (let i = 0; i < allSubscribers.length; i += BATCH_SIZE) {
       const batch = allSubscribers.slice(i, i + BATCH_SIZE);
-      const emails = batch.map(s => s.email);
 
       // HTML personalizzato con link disiscrizione per ogni iscritto
       const batchResults = await Promise.allSettled(
@@ -539,6 +604,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
               ? `${BASE_URL}/unsubscribe?token=${subscriber.unsubscribeToken}`
               : `${BASE_URL}/unsubscribe`,
             isTest: false,
+            recentNews: recentNewsForCta,
           });
           return sendEmail({ to: subscriber.email, subject, html: personalizedHtml });
         })
