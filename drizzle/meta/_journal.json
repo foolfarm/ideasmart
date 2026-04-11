@@ -393,6 +393,13 @@
       "when": 1775925857731,
       "tag": "0055_cold_sabretooth",
       "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "5",
+      "when": 1775926933306,
+      "tag": "0056_panoramic_korvac",
+      "breakpoints": true
     }
   ]
 }

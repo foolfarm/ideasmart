@@ -17,8 +17,8 @@ import {
 import { findEditorialImage, findStartupImage } from "./stockImages";
 import { generateDailyResearch } from "./researchGenerator";
 import { getDb } from "./db";
-import { dailyEditorial } from "../drizzle/schema";
-import { desc } from "drizzle-orm";
+import { dailyEditorial, systemSettings } from "../drizzle/schema";
+import { desc, eq } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 
 // ── Recupera titoli editoriali recenti per anti-ripetitività ─────────────────
@@ -300,13 +300,13 @@ async function runDailyContentRefresh() {
   }
 }
 
-// Cooldown diversity alert: max 1 notifica ogni 24 ore
-let lastDiversityAlertAt: number | null = null;
 const DIVERSITY_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 ore
+const DIVERSITY_COOLDOWN_KEY = "last_diversity_alert_at";
 
 /**
  * Calcola il diversity score degli ultimi 14 editoriali.
  * Se scende sotto il 70%, invia un alert al proprietario (max 1 volta ogni 24h).
+ * Il cooldown è persistente nel DB — sopravvive ai riavvii del server.
  */
 async function checkDiversityScoreAlert(): Promise<void> {
   try {
@@ -328,10 +328,13 @@ async function checkDiversityScoreAlert(): Promise<void> {
 
     if (diversityScore < 70) {
       const now = Date.now();
-      const cooldownOk = !lastDiversityAlertAt || (now - lastDiversityAlertAt) > DIVERSITY_COOLDOWN_MS;
+      // Cooldown persistente nel DB (sopravvive ai riavvii del server)
+      const settingRows = await db.select().from(systemSettings).where(eq(systemSettings.key, DIVERSITY_COOLDOWN_KEY)).limit(1);
+      const lastSentAt = settingRows[0] ? parseInt(settingRows[0].value, 10) : null;
+      const cooldownOk = !lastSentAt || (now - lastSentAt) > DIVERSITY_COOLDOWN_MS;
       if (!cooldownOk) {
-        const hoursAgo = Math.round((now - lastDiversityAlertAt!) / 3_600_000);
-        console.log(`[DailyContent] ⏳ Diversity alert soppresso (cooldown 24h — ultimo inviato ${hoursAgo}h fa)`);
+        const hoursAgo = Math.round((now - lastSentAt!) / 3_600_000);
+        console.log(`[DailyContent] ⏳ Diversity alert soppresso (cooldown 24h DB — ultimo inviato ${hoursAgo}h fa)`);
         return;
       }
       // Trova le coppie più simili per il report
@@ -359,7 +362,9 @@ async function checkDiversityScoreAlert(): Promise<void> {
         message: `Titoli unici: ${uniqueTitles} su ${editorials.length}\n${titles.join("\n")}`,
         emailSent: true,
       });
-      lastDiversityAlertAt = now;
+      // Salva il timestamp nel DB per il cooldown persistente
+      await db.insert(systemSettings).values({ key: DIVERSITY_COOLDOWN_KEY, value: String(now) })
+        .onDuplicateKeyUpdate({ set: { value: String(now) } });
       console.log(`[DailyContent] ⚠️ Alert inviato: diversity score ${diversityScore}% (prossimo possibile tra 24h)`);
     }
   } catch (err) {

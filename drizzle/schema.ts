@@ -828,3 +828,11 @@ export const alertLogs = mysqlTable("alert_logs", {
 });
 export type AlertLog = typeof alertLogs.$inferSelect;
 export type InsertAlertLog = typeof alertLogs.$inferInsert;
+
+// ── System Settings (key-value persistente per cooldown e configurazioni) ──────
+export const systemSettings = mysqlTable("system_settings", {
+  key: varchar("key", { length: 100 }).primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type SystemSetting = typeof systemSettings.$inferSelect;
