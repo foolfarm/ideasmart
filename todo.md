@@ -3015,3 +3015,9 @@
 - [ ] Fix layout mobile pagine canali (AI, Startup, Research, Dealroom)
 - [ ] Ottimizzare header, navbar, breaking news e ticker per mobile
 - [ ] Nascondere pubblicità manchette su mobile per non bloccare le notizie
+
+## Nuovi task (11 Apr 2026 — Pianificazione newsletter)
+
+- [x] Aggiungere cron newsletter Prompt Collection 2026 il sabato alle 10:30 CET
+- [x] Aggiungere cron newsletter ProofPress Business la domenica alle 15:00 CET
+- [x] Creare tabella pianificazione scaricabile (Excel/CSV)

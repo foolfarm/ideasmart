@@ -1057,9 +1057,9 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🧠 Channel Ingestor → ogni giorno alle 00:00 CET (RSS + AI per 6 canali)");
 
   // ─── NEWSLETTER PROMOZIONALI ──────────────────────────────────────────────
-  // A) ProofPress Business → mar/ven/sab alle 15:00 CET
+  // A) ProofPress Business → dom/mar/ven/sab alle 15:00 CET
   cron.schedule(
-    "0 15 * * 2,5,6",
+    "0 15 * * 0,2,5,6",
     async () => {
       try {
         console.log("[SchedulerManager] 📧 Newsletter Business: avvio invio...");
@@ -1073,9 +1073,9 @@ export function startAllSchedulers(): void {
     { timezone: TZ }
   );
 
-  // B) Prompt Collection 2026 → lun/mer/gio alle 15:00 CET
+  // B) Prompt Collection 2026 → lun/mer/gio/sab alle 10:30 CET
   cron.schedule(
-    "0 15 * * 1,3,4",
+    "30 10 * * 1,3,4,6",
     async () => {
       try {
         console.log("[SchedulerManager] 📧 Newsletter Prompt Collection: avvio invio...");
@@ -1105,7 +1105,7 @@ export function startAllSchedulers(): void {
     { timezone: TZ }
   );
 
-  console.log("[SchedulerManager]   📧 Newsletter Business → mar/ven/sab alle 15:00 CET");
-  console.log("[SchedulerManager]   📧 Newsletter Prompt Collection → lun/mer/gio alle 15:00 CET");
+  console.log("[SchedulerManager]   📧 Newsletter Business → dom/mar/ven/sab alle 15:00 CET");
+  console.log("[SchedulerManager]   📧 Newsletter Prompt Collection → lun/mer/gio/sab alle 10:30 CET");
   console.log("[SchedulerManager]   📧 Newsletter Pubblicità → lun/mer/ven alle 18:00 CET");
 }
