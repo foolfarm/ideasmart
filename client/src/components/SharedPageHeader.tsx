@@ -148,8 +148,8 @@ export default function SharedPageHeader() {
 
         <div className="flex items-center justify-center gap-4">
           {/* Manchette sinistra — Tradedoubler */}
-          <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
-            <a href="https://clk.tradedoubler.com/click?p=365615&a=3477790&g=26113480" target="_blank" rel="noopener noreferrer sponsored">
+          <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden rounded-xl" style={{ border: '1px solid #e5e5ea', background: '#f5f5f7' }}>
+            <a href="https://clk.tradedoubler.com/click?p=365615&a=3477790&g=26113480" target="_blank" rel="noopener noreferrer sponsored" style={{ display: 'block', borderRadius: '11px', overflow: 'hidden' }}>
               <img
                 src={`https://imp.tradedoubler.com/imp?type(img)g(26113480)a(3477790)${Math.random().toString().substring(2, 11)}`}
                 width="300"
@@ -197,8 +197,8 @@ export default function SharedPageHeader() {
           </div>
 
           {/* Manchette destra — Tradedoubler */}
-          <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
-            <a href="https://clk.tradedoubler.com/click?p=341133&a=3477790&g=26092910" target="_blank" rel="noopener noreferrer sponsored">
+          <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden rounded-xl" style={{ border: '1px solid #e5e5ea', background: '#f5f5f7' }}>
+            <a href="https://clk.tradedoubler.com/click?p=341133&a=3477790&g=26092910" target="_blank" rel="noopener noreferrer sponsored" style={{ display: 'block', borderRadius: '11px', overflow: 'hidden' }}>
               <img
                 src={`https://imp.tradedoubler.com/imp?type(img)g(26092910)a(3477790)${Math.random().toString().substring(2, 11)}`}
                 width="300"
