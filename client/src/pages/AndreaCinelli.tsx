@@ -1,6 +1,6 @@
 /**
  * Pagina autore — Andrea Cinelli
- * Pagina autore Andrea Cinelli — Direttore Editoriale ProofPress Magazine
+ * Pagina autore Andrea Cinelli — Tech Editor ProofPress Magazine
  * Layout: editoriale bianco-carta con foto profilo, bio, archivio post LinkedIn e CTA contatto
  */
 import { useState } from "react";
@@ -212,7 +212,7 @@ export default function AndreaCinelli() {
   return (
     <>
       <SEOHead
-        title="Andrea Cinelli — Direttore Editoriale, ProofPress Magazine"
+        title="Andrea Cinelli — Tech Editor, ProofPress Magazine"
         description="Editoriali quotidiani su AI, Startup e Venture Capital. Serial entrepreneur, 2 exit. Fondatore di FoolFarm. Professore di AI al Sole 24 Ore Business School."
       />
     <div className="flex" style={{ background: PAPER, minHeight: "100vh" }}>
@@ -303,7 +303,7 @@ export default function AndreaCinelli() {
               className="text-base mb-5"
               style={{ color: INK + "70", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.05em" }}
             >
-              Direttore Editoriale, ProofPress Magazine
+              Tech Editor, ProofPress Magazine
             </p>
 
             <div className="space-y-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
@@ -314,7 +314,7 @@ export default function AndreaCinelli() {
                 Professore di AI al <strong>Sole 24 Ore Business School</strong>. Membro dell'Advisory Board di <strong>Deloitte Central Mediterranean</strong>. Keynote speaker internazionale e autore di 30+ pubblicazioni su AI e innovazione.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Direttore editoriale di <strong>Proof Press</strong> — analisi quotidiane su AI, startup e venture capital per chi prende decisioni.
+                Tech Editor di <strong>Proof Press</strong> — analisi quotidiane su AI, startup e venture capital per chi prende decisioni.
               </p>
             </div>
 

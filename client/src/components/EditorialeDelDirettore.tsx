@@ -1,12 +1,12 @@
 /**
- * EditorialeDelDirettore — Sezione Home Page
+ * DeepDive — Sezione Home Page
  *
- * Mostra l'editoriale giornaliero del direttore Andrea Cinelli (sezione "ai")
+ * Mostra l'editoriale giornaliero di Andrea Cinelli (sezione "ai")
  * con firma Andrea Cinelli, data e link alla pagina autore.
  *
  * Design: stile quotidiano di qualità — sfondo bianco, bordo nero spesso,
  * colonna sinistra con firma, colonna destra con testo editoriale completo.
- * Distinto dal "Punto del Giorno" (post LinkedIn): questo è l'editoriale lungo.
+ * Distinto dal "Punto del Giorno" (post LinkedIn): questo è il Deep Dive approfondito.
  */
 
 import { trpc } from "@/lib/trpc";
@@ -98,7 +98,7 @@ export default function EditorialeDelDirettore() {
               fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
             }}
           >
-            Editoriale del Direttore
+            Deep Dive
           </span>
         </div>
         {editorial?.dateLabel && (
@@ -164,7 +164,7 @@ export default function EditorialeDelDirettore() {
                       fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     }}
                   >
-                    Direttore editoriale
+                    Tech Editor
                   </p>
                 </div>
               </div>

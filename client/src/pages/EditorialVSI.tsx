@@ -121,7 +121,7 @@ export default function EditorialVSI() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-[#1a1a1a]" style={{ fontFamily: fontSerif }}>Adrian Lenice</p>
-                <p className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">Direttore Editoriale</p>
+                <p className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">Tech Editor</p>
               </div>
             </div>
             <div className="w-px h-8 bg-[#1a1a1a]/20 hidden sm:block" />
