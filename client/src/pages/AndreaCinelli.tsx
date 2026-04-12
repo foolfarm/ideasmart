@@ -1,6 +1,6 @@
 /**
  * Pagina autore — Andrea Cinelli
- * Tech Expert
+ * Pagina autore Andrea Cinelli — Direttore Editoriale ProofPress Magazine
  * Layout: editoriale bianco-carta con foto profilo, bio, archivio post LinkedIn e CTA contatto
  */
 import { useState } from "react";
@@ -25,7 +25,13 @@ const SECTION_COLORS: Record<string, { accent: string; label: string }> = {
 
 function formatDateIT(dateLabel: string): string {
   try {
-    const [year, month, day] = dateLabel.split("-").map(Number);
+    const parts = dateLabel.split("-").map(Number);
+    let year: number, month: number, day: number;
+    if (parts[0] > 31) {
+      [year, month, day] = parts;
+    } else {
+      [day, month, year] = parts;
+    }
     const date = new Date(year, month - 1, day);
     return date.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
   } catch {
@@ -206,8 +212,8 @@ export default function AndreaCinelli() {
   return (
     <>
       <SEOHead
-        title="Andrea Cinelli — Tech Expert"
-        description="Editoriali quotidiani su AI, Startup e Venture Capital. Tech Expert e fondatore di Proof Press."
+        title="Andrea Cinelli — Direttore Editoriale, ProofPress Magazine"
+        description="Editoriali quotidiani su AI, Startup e Venture Capital. Serial entrepreneur, 2 exit. Fondatore di FoolFarm. Professore di AI al Sole 24 Ore Business School."
       />
     <div className="flex" style={{ background: PAPER, minHeight: "100vh" }}>
       <LeftSidebar />
@@ -297,7 +303,7 @@ export default function AndreaCinelli() {
               className="text-base mb-5"
               style={{ color: INK + "70", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "0.05em" }}
             >
-              Tech Expert
+              Direttore Editoriale, ProofPress Magazine
             </p>
 
             <div className="space-y-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>

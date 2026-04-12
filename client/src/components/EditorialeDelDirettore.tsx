@@ -19,7 +19,15 @@ const AUTHOR_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n
 
 function formatDateIT(dateLabel: string): string {
   try {
-    const [year, month, day] = dateLabel.split("-").map(Number);
+    const parts = dateLabel.split("-").map(Number);
+    let year: number, month: number, day: number;
+    if (parts[0] > 31) {
+      // Formato ISO: YYYY-MM-DD
+      [year, month, day] = parts;
+    } else {
+      // Formato italiano invertito: DD-MM-YYYY
+      [day, month, year] = parts;
+    }
     const date = new Date(year, month - 1, day);
     return date.toLocaleDateString("it-IT", {
       weekday: "long",
