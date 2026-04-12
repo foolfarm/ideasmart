@@ -19,7 +19,7 @@
 
 import Parser from "rss-parser";
 import axios from "axios";
-import { invokeLLM } from "./_core/llm";
+import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
 import { AI_SOURCES, STARTUP_SOURCES, DEALROOM_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
@@ -230,7 +230,7 @@ IMPORTANTE — ITALIA FIRST:
 Rispondi SOLO con JSON valido.`;
 
   try {
-    const response = await invokeLLM({
+    const response = await invokeLLMFast({
       messages: [
         { role: "system", content: "Sei un redattore editoriale esperto. Rispondi sempre con JSON valido." },
         { role: "user", content: prompt }
@@ -266,7 +266,7 @@ Rispondi SOLO con JSON valido.`;
     });
 
     const content = response.choices[0]?.message?.content as string;
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(stripJsonBackticks(content));
 
     const result: ScrapedArticle[] = [];
     for (const item of (parsed.items || []).slice(0, 20)) {

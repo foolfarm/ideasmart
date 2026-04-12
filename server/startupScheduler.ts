@@ -3,7 +3,7 @@
  * Genera contenuti per la sezione /startup: news, editoriale, startup della settimana, reportage, analisi
  * Usa la stessa struttura degli scheduler AI e Music ma con focus sulle startup italiane e internazionali
  */
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems, dailyEditorial, startupOfDay, weeklyReportage, marketAnalysis } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -75,7 +75,7 @@ Restituisci un JSON con questa struttura:
         },
       },
     });
-    const content = JSON.parse(response.choices[0].message.content as string);
+    const content = JSON.parse(stripJsonBackticks(response.choices[0].message.content));
     const db = await getDb();
     if (!db) throw new Error("DB not available");
     // Rimuovi le news startup precedenti
@@ -153,7 +153,7 @@ Restituisci JSON:
         },
       },
     });
-    const content = JSON.parse(response.choices[0].message.content as string);
+    const content = JSON.parse(stripJsonBackticks(response.choices[0].message.content));
     const db = await getDb();
     if (!db) throw new Error("DB not available");
     const imageUrl = await findEditorialImage(content.title, content.keyTrend);
@@ -232,7 +232,7 @@ Restituisci JSON:
         },
       },
     });
-    const content = JSON.parse(response.choices[0].message.content as string);
+    const content = JSON.parse(stripJsonBackticks(response.choices[0].message.content));
     const db = await getDb();
     if (!db) throw new Error("DB not available");
     const imageUrl = await findStartupImage(content.name, content.category, content.tagline);
@@ -339,7 +339,7 @@ Restituisci JSON:
         },
       },
     });
-    const content = JSON.parse(response.choices[0].message.content as string);
+    const content = JSON.parse(stripJsonBackticks(response.choices[0].message.content));
     const db = await getDb();
     if (!db) throw new Error("DB not available");
     await db.delete(weeklyReportage).where(eq(weeklyReportage.section, 'startup'));
@@ -450,7 +450,7 @@ Restituisci JSON:
         },
       },
     });
-    const content = JSON.parse(response.choices[0].message.content as string);
+    const content = JSON.parse(stripJsonBackticks(response.choices[0].message.content));
     const db = await getDb();
     if (!db) throw new Error("DB not available");
     await db.delete(marketAnalysis).where(eq(marketAnalysis.section, 'startup'));

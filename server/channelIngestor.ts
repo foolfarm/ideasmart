@@ -11,7 +11,7 @@
 import { getDb } from "./db";
 import { channelContent, rssFeedSources, rssIngestLog } from "../drizzle/schema";
 import { eq, and, desc, sql } from "drizzle-orm";
-import { invokeLLM } from "./_core/llm";
+import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
 import { findStockImage } from "./stockImages";
 
 // ── RSS Parser (lightweight, no external dep) ──────────────────────────────
@@ -230,7 +230,7 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
   const today = new Date().toISOString().slice(0, 10);
 
   try {
-    const response = await invokeLLM({
+    const response = await invokeLLMFast({
       messages: [
         { role: "system", content: channelPrompt },
         { role: "user", content: `Ecco le ultime notizie/risorse raccolte oggi. Genera esattamente ${maxItems} contenuti strutturati.\n\n${digest}` },
@@ -273,7 +273,7 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
     const content = response?.choices?.[0]?.message?.content;
     if (!content) throw new Error("Empty LLM response");
 
-    const parsed = JSON.parse(content as string);
+    const parsed = JSON.parse(stripJsonBackticks(content));
     const items = parsed.items || [];
 
     // 5. Save to DB (con ricerca immagini Pexels)

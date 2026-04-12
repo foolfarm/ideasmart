@@ -21,7 +21,7 @@
  *  - Google AI Blog
  */
 
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { linkedinPosts } from "../drizzle/schema";
 import { eq, and, gte, desc } from "drizzle-orm";
@@ -238,7 +238,7 @@ Rispondi SOLO con un array JSON valido di 10 oggetti. Nessun altro testo.`;
     const rawContent = response.choices?.[0]?.message?.content;
     if (!rawContent) return [];
     const content = typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent);
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(stripJsonBackticks(content));
     return (parsed.tools || []).slice(0, 10);
   } catch (err) {
     console.error("[AIToolRadar] ❌ Errore parsing risposta LLM:", err);

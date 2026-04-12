@@ -221,6 +221,7 @@ const normalizeResponseFormat = ({
 // ─── Provider: Anthropic Claude ──────────────────────────────────────────────
 
 const CLAUDE_MODEL = "claude-sonnet-4-5";
+const CLAUDE_HAIKU_MODEL = "claude-haiku-3-5"; // Modello veloce ed economico per classificazione/summarizzazione
 const CLAUDE_MAX_TOKENS = 8192;
 
 /**
@@ -445,6 +446,60 @@ async function invokeForge(params: InvokeParams): Promise<InvokeResult> {
  *
  * L'interfaccia di input/output è identica indipendentemente dal provider.
  */
+/**
+ * Rimuove i backtick markdown (```json ... ```) che Claude a volte aggiunge
+ * attorno alle risposte JSON. Usare prima di JSON.parse su qualsiasi risposta LLM.
+ *
+ * @example
+ *   const raw = response.choices[0].message.content;
+ *   const parsed = JSON.parse(stripJsonBackticks(raw));
+ */
+export function stripJsonBackticks(raw: unknown): string {
+  const str = typeof raw === "string" ? raw : JSON.stringify(raw ?? "{}");
+  return str.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+}
+
+/**
+ * Provider veloce ed economico — usa Claude Haiku invece di Sonnet.
+ * Ideale per operazioni di classificazione, summarizzazione breve e tagging
+ * dove la qualità editoriale non è critica ma il volume è alto.
+ *
+ * Se ANTHROPIC_API_KEY non è configurata, usa il fallback Forge come invokeLLM.
+ */
+export async function invokeLLMFast(params: InvokeParams): Promise<InvokeResult> {
+  if (ENV.anthropicApiKey && ENV.anthropicApiKey.trim().length > 0) {
+    console.log(`[LLM] Provider: Anthropic Claude Haiku (fast/cheap)`);
+    // Usa Haiku sovrascrivendo il modello nell'invocazione Claude
+    const client = new Anthropic({ apiKey: ENV.anthropicApiKey });
+    const { messages, outputSchema, output_schema, responseFormat, response_format } = params;
+    const maxTokens = params.maxTokens || params.max_tokens || 4096;
+    const { system, messages: anthropicMessages } = toAnthropicMessages(messages);
+    const normalizedFormat = normalizeResponseFormat({ responseFormat, response_format, outputSchema, output_schema });
+    const systemWithStyle = system ? `${ANDREA_CINELLI_STYLE}\n\n${system}` : ANDREA_CINELLI_STYLE;
+    let systemWithJson = systemWithStyle;
+    if (normalizedFormat?.type === "json_schema") {
+      const schemaStr = JSON.stringify(normalizedFormat.json_schema?.schema ?? {}, null, 2);
+      systemWithJson = `${systemWithStyle}\n\nRispondi SEMPRE con un oggetto JSON valido che rispetti questo schema:\n${schemaStr}\n\nNon aggiungere testo prima o dopo il JSON.`;
+    }
+    const response = await client.messages.create({
+      model: CLAUDE_HAIKU_MODEL,
+      max_tokens: maxTokens,
+      ...(systemWithJson ? { system: systemWithJson } : {}),
+      messages: anthropicMessages,
+    });
+    const textBlock = response.content.find(b => b.type === "text");
+    const text = textBlock?.type === "text" ? textBlock.text : "";
+    return {
+      id: response.id,
+      created: Math.floor(Date.now() / 1000),
+      model: CLAUDE_HAIKU_MODEL,
+      choices: [{ index: 0, message: { role: "assistant" as const, content: text }, finish_reason: response.stop_reason ?? null }],
+      usage: { prompt_tokens: response.usage.input_tokens, completion_tokens: response.usage.output_tokens, total_tokens: response.usage.input_tokens + response.usage.output_tokens },
+    };
+  }
+  return invokeForge(params);
+}
+
 export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
   if (ENV.anthropicApiKey && ENV.anthropicApiKey.trim().length > 0) {
     console.log(`[LLM] Provider: Anthropic Claude (${CLAUDE_MODEL})`);

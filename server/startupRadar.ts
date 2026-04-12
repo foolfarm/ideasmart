@@ -14,7 +14,7 @@
  * Stile: VC insider, curation + opinione, non semplice lista
  */
 
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { dealflowPicks } from "../drizzle/schema";
 
@@ -243,7 +243,7 @@ Rispondi SOLO con un JSON valido. Nessun altro testo.`;
     const rawContent = response.choices?.[0]?.message?.content;
     if (!rawContent) return [];
     const content = typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent);
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(stripJsonBackticks(content));
     return (parsed.startups || []).slice(0, 10);
   } catch (err) {
     console.error("[StartupRadar] ❌ Errore parsing risposta LLM:", err);

@@ -4,7 +4,7 @@
  * le 3-5 più urgenti/straordinarie usando l'AI.
  * Le breaking news vengono archiviate dopo 6 ore (isActive = false).
  */
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems as newsItemsTable, breakingNews as breakingNewsTable } from "../drizzle/schema";
 import { desc, eq, gte, and } from "drizzle-orm";
@@ -243,12 +243,11 @@ Massimo 5 breaking news, ordinate per urgenza/rilevanza decrescente.`
     });
 
     const rawContent = response?.choices?.[0]?.message?.content;
-    const content = typeof rawContent === 'string' ? rawContent : null;
-    if (!content) {
+    if (!rawContent) {
       return { selected: 0, archived, error: "LLM non ha risposto" };
     }
 
-    const parsed: LLMBreakingResponse = JSON.parse(content);
+    const parsed: LLMBreakingResponse = JSON.parse(stripJsonBackticks(rawContent));
     const selected = parsed.breaking ?? [];
 
     if (selected.length === 0) {

@@ -3,7 +3,7 @@
  * Genera contenuti editoriali per la sezione /dealroom: editoriale settimanale sui deal più rilevanti.
  * Focus: round di finanziamento, venture capital, M&A, exit, ecosistema startup italiano ed europeo.
  */
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { dailyEditorial } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -60,7 +60,7 @@ Restituisci JSON:
       },
     });
 
-    const content = JSON.parse(response.choices[0].message.content as string);
+    const content = JSON.parse(stripJsonBackticks(response.choices[0].message.content));
     const db = await getDb();
     if (!db) throw new Error("DB not available");
 

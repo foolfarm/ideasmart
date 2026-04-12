@@ -4,7 +4,7 @@
  * usando l'AI per cercare e selezionare i nuovi eventi più significativi
  */
 
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
@@ -135,7 +135,7 @@ Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
     });
 
     const content = response.choices[0]?.message?.content as string;
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(stripJsonBackticks(content));
     const items: NewsItemData[] = (parsed.items || []).slice(0, 20).map((item: any) => ({
       title: item.title,
       summary: item.summary,

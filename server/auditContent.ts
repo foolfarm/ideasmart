@@ -13,7 +13,7 @@
 
 import { getDb } from "./db";
 import { contentAudit, newsItems, marketAnalysis, weeklyReportage } from "../drizzle/schema";
-import { invokeLLM } from "./_core/llm";
+import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
 import { eq, and, isNotNull, desc } from "drizzle-orm";
 
 // ── Configurazione ─────────────────────────────────────────────────────────
@@ -137,7 +137,7 @@ Rispondi SOLO con JSON valido in questo formato:
 {"score": <numero 0-100>, "note": "<spiegazione breve>"}`;
 
   try {
-    const response = await invokeLLM({
+    const response = await invokeLLMFast({
       messages: [
         { role: "system" as const, content: "Sei un editor giornalistico preciso. Rispondi sempre e solo con JSON valido." },
         { role: "user" as const, content: prompt }
@@ -164,7 +164,7 @@ Rispondi SOLO con JSON valido in questo formato:
     if (!rawContent) throw new Error("LLM non ha restituito contenuto");
     const content = typeof rawContent === "string" ? rawContent : JSON.stringify(rawContent);
 
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(stripJsonBackticks(content));
     const score = Math.max(0, Math.min(100, Number(parsed.score) || 0));
     const note = String(parsed.note || "").slice(0, 500);
 

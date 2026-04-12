@@ -3,7 +3,7 @@
  * Ogni giorno genera 20 ricerche su Startup, Venture Capital e AI Trends
  * attingendo da fonti specializzate come Gartner, CB Insights, Statista.
  */
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { researchReports } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
@@ -295,7 +295,7 @@ IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e p
       return { generated: 0, error: "LLM non ha risposto" };
     }
 
-    const parsed: LLMResearchResponse = JSON.parse(content);
+    const parsed: LLMResearchResponse = JSON.parse(stripJsonBackticks(content));
     const researches = parsed.researches ?? [];
 
     if (researches.length === 0) {

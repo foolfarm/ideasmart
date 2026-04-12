@@ -5,7 +5,7 @@
  * Cron: ogni giovedì alle 06:00 UTC
  */
 
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { saveMarketAnalysis, getLatestMarketAnalysis, deleteMarketAnalysisByWeek } from "./db";
 import { findMarketAnalysisImage } from "./stockImages";
 
@@ -162,7 +162,7 @@ Rispondi SOLO con un JSON valido, senza markdown, nel formato:
     });
 
     const content = response.choices[0].message.content;
-    const parsed = JSON.parse(typeof content === "string" ? content : JSON.stringify(content));
+    const parsed = JSON.parse(stripJsonBackticks(content));
     const analyses: MarketAnalysisItem[] = parsed.analyses.slice(0, 4).map((a: MarketAnalysisItem, i: number) => ({
       ...a,
       position: i + 1,
