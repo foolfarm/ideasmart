@@ -981,6 +981,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💼 LinkedIn 2° EDITORIALE AI → ogni giorno alle 12:30 CET (ricerche di mercato AI)");
   console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (Proof Press Research)");
   console.log("[SchedulerManager]   💼 LinkedIn 2° RICERCHE    → ogni giorno alle 16:00 CET (2° Proof Press Research)");
+  console.log("[SchedulerManager]   💼 LinkedIn STARTUP NEWS SERA → ogni giorno alle 18:00 CET (round, exit, startup IT/EU)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
    console.log("[SchedulerManager]   Keep-Alive      -> ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   [OFF] Catch-up NL     -> DISABILITATO (richiede approvazione manuale)");

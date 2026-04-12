@@ -415,11 +415,29 @@ Focus: ricerche di mercato AI/Tech di alto livello (Gartner, McKinsey, IDC, Stan
 NON ripetere lo stesso argomento del post delle 12:30: scegli una ricerca o un tema di mercato completamente diverso.
 Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
   } else if (slot === "startup-evening") {
-    slotNote = `Questo è il 5° POST STARTUP NEWS (18:00) — Ecosistema Startup IT/EU.
-Tono: energico e informato. Il tuo pubblico a fine giornata vuole sapere cosa si è mosso nell'ecosistema startup.
-Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC, acceleratori, incubatori, founder stories. Cita cifre specifiche (valuation, ammontare round, investitori).
-Aggiungi sempre la tua lettura strategica: cosa significa per l'ecosistema italiano ed europeo.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+    slotNote = `Questo è il POST STARTUP NEWS SERA (18:00) — Deal, Round & Ecosistema Startup IT/EU.
+
+IL TUO RUOLO: Sei un LP (Limited Partner) e advisor di fondi VC europei che commenta il deal del giorno con la precisione di un analista Pitchbook e la visione di chi ha co-investito in decine di round.
+
+TONO: Insider del mercato VC europeo. Non giornalista che riporta, ma operatore che interpreta. Il tuo pubblico è composto da founder in fundraising, angel investor, family office, e CFO che valutano M&A.
+
+FOCUS OBBLIGATORIO — Scegli il frame più rilevante per la notizia:
+- ROUND DI INVESTIMENTO: Analizza la deal anatomy (ammontare, lead investor, valuation implicita, settore verticale). Confronta con benchmark europei (median Series A EU = ~8M€, Series B = ~25M€). Cosa segnala questo round sul sentiment del mercato VC europeo?
+- EXIT / ACQUISIZIONE: Chi ha comprato, a che multiplo stimato, quale strategia di consolidamento rivela? Cosa significa per i founder dello stesso verticale?
+- NUOVA STARTUP IT/EU: Qual è il problema che risolve, chi sono i founder, perché ora? Valuta il timing di mercato e la competitività rispetto ai player US.
+- TREND VC: Quali settori stanno vedendo più deal in Europa? Dove si sta spostando il capitale?
+
+STRUTTURA SPECIFICA PER QUESTO SLOT:
+1. APERTURA (2 righe): Inizia con il dato più specifico e sorprendente del deal/notizia — cifra, multiplo, nome del fondo, settore. Non iniziare mai con "Oggi" o "Una startup".
+2. DEAL ANATOMY (2-3 paragrafi): Scomponi il deal nei suoi elementi chiave. Cita sempre: ammontare (se disponibile), investitori lead, settore verticale, stage. Confronta con benchmark di mercato.
+3. LETTURA STRATEGICA (1 paragrafo): Cosa rivela questo deal sul mercato italiano/europeo? Qual è il segnale che gli altri stanno perdendo?
+4. IMPLICAZIONE PRATICA (1 paragrafo): Una cosa concreta che un founder o un investitore dovrebbe fare o sapere dopo aver letto questo post.
+
+LINGUAGGIO TECNICO OBBLIGATORIO: Usa terminologia VC precisa — pre-money/post-money valuation, lead investor, co-investor, runway, burn rate, ARR multiple, exit multiple, acqui-hire, strategic vs financial buyer, secondary, pro-rata rights.
+
+AGGIUNGI SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
+
+HASHTAG DEDICATI SERA: #VentureCapital #StartupEurope #StartupItalia #Funding #PrivateEquity #Dealflow #ProofPress #VC`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
@@ -441,6 +459,11 @@ Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://pro
     year: "numeric"
   });
 
+  // Per startup-evening usa hashtag VC dedicati invece di quelli generici della sezione
+  const effectiveHashtags = slot === "startup-evening"
+    ? ["#VentureCapital", "#StartupEurope", "#StartupItalia", "#Funding", "#PrivateEquity", "#Dealflow", "#ProofPress", "#VC"]
+    : meta.hashtags;
+
   return `Basandoti sull'editoriale/ricerca di Proof Press e sui dati di mercato forniti, scrivi un post LinkedIn di alto profilo.
 
 DATA DI PUBBLICAZIONE: ${publishDate} (usa QUESTA data se menzioni il giorno nel post, NON usare altre date)
@@ -448,7 +471,7 @@ DATA DI PUBBLICAZIONE: ${publishDate} (usa QUESTA data se menzioni il giorno nel
 ${slotNote}
 
 TEMA: ${title}
-TREND CHIAVE: ${keyTrend || "Agenti AI autonomi e trasformazione digitale"}
+TREND CHIAVE: ${keyTrend || (slot === "startup-evening" ? "Round di investimento e deal VC in Europa" : "Agenti AI autonomi e trasformazione digitale")}
 CONTENUTO:
 ${body.slice(0, 1200)}
 ${dataSection}
@@ -459,7 +482,7 @@ STRUTTURA DEL POST:
 3. POSIZIONE (1 paragrafo): Qual è la tua lettura personale come imprenditore? Dove vedi il rischio che gli altri non vedono?
 4. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Tech Expert @ProofPress"
 5. CHIUSURA: Aggiungi ESATTAMENTE questa riga: "📊 Approfondisci su Proof Press → https://proofpress.ai"
-6. HASHTAG: ${meta.hashtags.join(" ")}
+6. HASHTAG: ${effectiveHashtags.join(" ")}
 
 LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
 LINGUA: Italiano
@@ -1327,20 +1350,53 @@ export async function publishLinkedInPost(
     // Slot 18:00 — Startup News Sera: round di investimento, exit, startup italiane/europee
     // Usa le notizie startup dalla sezione /startup (diverse dallo slot 14:30 che usa startupRadar)
     console.log("[LinkedIn] 🚀 Generazione Startup News Sera (18:00)...");
-    const startupNews = await getLatestNews(20, "startup");
+    const startupNews = await getLatestNews(30, "startup");
     if (!startupNews || startupNews.length === 0) {
       console.warn(`[LinkedIn] ⚠️ Nessuna notizia startup disponibile per slot startup-evening. Pubblicazione saltata.`);
       return { published: 0, errors: ["Nessuna notizia startup disponibile per Startup News Sera"], posts: [] };
     }
-    // Seleziona una notizia startup non ancora usata oggi
+
+    // ── Filtro VC: priorità a notizie con parole chiave di funding/deal/exit ──
+    const VC_KEYWORDS = [
+      "funding", "round", "exit", "seed", "series a", "series b", "series c", "series d",
+      "raise", "raised", "raccolta", "raccolta fondi", "investimento", "investimenti",
+      "acquisition", "acquisizione", "acquired", "acquisita", "acquistata",
+      "ipo", "quotazione", "borsa", "spac",
+      "venture capital", "venture", "vc", "startup",
+      "milioni", "miliardi", "million", "billion",
+      "valuation", "valorizzazione", "unicorn", "unicorno",
+      "incubator", "accelerator", "acceleratore", "incubatore",
+      "m&a", "merger", "fusione", "deal", "finanziamento",
+      "pre-seed", "seed round", "growth", "late stage"
+    ];
+
     const usedTitlesSet = new Set([...Array.from(todayTopicLock), ...recentPostTitles.map(t => t.toLowerCase().trim())]);
-    let selectedStartup = startupNews.find(n => !usedTitlesSet.has(n.title.toLowerCase().trim()));
-    if (!selectedStartup) selectedStartup = startupNews[0]; // fallback
+
+    // Prima passa: notizie VC non usate oggi
+    const vcNews = startupNews.filter(n => {
+      if (usedTitlesSet.has(n.title.toLowerCase().trim())) return false;
+      const text = (n.title + " " + (n.summary ?? "") + " " + (n.category ?? "")).toLowerCase();
+      return VC_KEYWORDS.some(kw => text.includes(kw));
+    });
+
+    // Seconda passa: qualsiasi notizia startup non usata (fallback se nessuna notizia VC trovata)
+    const anyUnusedNews = startupNews.filter(n => !usedTitlesSet.has(n.title.toLowerCase().trim()));
+
+    // Terza passa: fallback assoluto (prima notizia disponibile)
+    let selectedStartup = vcNews[0] ?? anyUnusedNews[0] ?? startupNews[0];
+
+    const selectionSource = vcNews.length > 0 ? "VC/funding" : (anyUnusedNews.length > 0 ? "startup generica (no VC trovata)" : "fallback assoluto");
+    console.log(`[LinkedIn] 🏢 Startup News Sera selezionata (${selectionSource}): "${selectedStartup.title.slice(0, 60)}..."`);
+    console.log(`[LinkedIn] 📊 Pool VC disponibili: ${vcNews.length}/${startupNews.length} notizie con keyword VC`);
+
     contentTitle = selectedStartup.title;
     contentBody = selectedStartup.summary ?? selectedStartup.title;
-    contentKeyTrend = selectedStartup.category ?? "Startup & VC";
+    // Arricchisci il keyTrend con il contesto VC se la categoria è generica
+    const rawCategory = selectedStartup.category ?? "";
+    contentKeyTrend = rawCategory && rawCategory.toLowerCase() !== "startup" && rawCategory.toLowerCase() !== "news"
+      ? rawCategory
+      : "Round di investimento e deal VC in Europa";
     contentImageUrl = selectedStartup.imageUrl ?? null;
-    console.log(`[LinkedIn] 🏢 Startup News Sera selezionata: "${contentTitle.slice(0, 60)}..."`);
   } else {
     // Slot Morning: recupera l'editoriale
     const editorial = await getLatestEditorial(section === "research" ? "ai" : section);
@@ -1359,17 +1415,17 @@ export async function publishLinkedInPost(
     console.log(`[LinkedIn] 📝 Editoriale trovato: "${contentTitle.slice(0, 60)}..."`);
   }
 
-  // ── Market intelligence + immagine ─────────────────────────────────────
+  // ── Market intelligence + immagine ──────────────────────────────────────────────────────────────────────────
   console.log("[LinkedIn] 🔍 Ricerca dati market intelligence...");
+  // Per startup-evening usa query arricchita con contesto VC per trovare dati più rilevanti
   const marketIntelSection: "ai" | "startup" = (section === "startup") ? "startup" : "ai";
+  const marketIntelQuery = slot === "startup-evening"
+    ? `${contentTitle} ${contentKeyTrend} venture capital funding europe startup investment`
+    : `${contentTitle} ${contentKeyTrend}`;
   const { data: marketData, image: marketImage } = await getMarketIntelligence(
-    `${contentTitle} ${contentKeyTrend}`,
+    marketIntelQuery,
     marketIntelSection
   );
-
-  if (marketData) {
-    console.log(`[LinkedIn] 📊 Dati trovati: ${marketData.stats.length} statistiche`);
-  }
 
   // Determina l'immagine da usare
   let imageUrl: string | null = null;
