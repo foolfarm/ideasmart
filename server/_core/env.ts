@@ -12,4 +12,5 @@ export const ENV = {
   sendgridApiKey: process.env.SENDGRID_API_KEY ?? "",
   sendgridFromEmail: process.env.SENDGRID_FROM_EMAIL ?? "",
   sendgridFromName: process.env.SENDGRID_FROM_NAME ?? "",
+  anthropicApiKey: process.env.ANTHROPIC_API_KEY ?? "",
 };

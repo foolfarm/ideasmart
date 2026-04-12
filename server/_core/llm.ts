@@ -1,4 +1,22 @@
+/**
+ * LLM helper — supporta due provider:
+ *
+ *  1. Anthropic Claude  (provider primario)
+ *     Attivato quando ANTHROPIC_API_KEY è configurata.
+ *     Modello default: claude-sonnet-4-5 (bilanciamento qualità/costo ottimale).
+ *
+ *  2. Manus Forge API   (fallback)
+ *     Usato automaticamente se ANTHROPIC_API_KEY non è presente.
+ *     Compatibile OpenAI — nessuna modifica necessaria al codice chiamante.
+ *
+ * L'interfaccia pubblica `invokeLLM()` è identica in entrambi i casi:
+ * il resto del codebase non deve essere modificato per cambiare provider.
+ */
+
+import Anthropic from "@anthropic-ai/sdk";
 import { ENV } from "./env";
+
+// ─── Tipi pubblici (invariati rispetto alla versione precedente) ──────────────
 
 export type Role = "system" | "user" | "assistant" | "tool" | "function";
 
@@ -19,7 +37,7 @@ export type FileContent = {
   type: "file_url";
   file_url: {
     url: string;
-    mime_type?: "audio/mpeg" | "audio/wav" | "application/pdf" | "audio/mp4" | "video/mp4" ;
+    mime_type?: "audio/mpeg" | "audio/wav" | "application/pdf" | "audio/mp4" | "video/mp4";
   };
 };
 
@@ -110,6 +128,8 @@ export type ResponseFormat =
   | { type: "json_object" }
   | { type: "json_schema"; json_schema: JsonSchema };
 
+// ─── Helpers interni ─────────────────────────────────────────────────────────
+
 const ensureArray = (
   value: MessageContent | MessageContent[]
 ): MessageContent[] => (Array.isArray(value) ? value : [value]);
@@ -117,22 +137,10 @@ const ensureArray = (
 const normalizeContentPart = (
   part: MessageContent
 ): TextContent | ImageContent | FileContent => {
-  if (typeof part === "string") {
-    return { type: "text", text: part };
-  }
-
-  if (part.type === "text") {
-    return part;
-  }
-
-  if (part.type === "image_url") {
-    return part;
-  }
-
-  if (part.type === "file_url") {
-    return part;
-  }
-
+  if (typeof part === "string") return { type: "text", text: part };
+  if (part.type === "text") return part;
+  if (part.type === "image_url") return part;
+  if (part.type === "file_url") return part;
   throw new Error("Unsupported message content part");
 };
 
@@ -143,31 +151,16 @@ const normalizeMessage = (message: Message) => {
     const content = ensureArray(message.content)
       .map(part => (typeof part === "string" ? part : JSON.stringify(part)))
       .join("\n");
-
-    return {
-      role,
-      name,
-      tool_call_id,
-      content,
-    };
+    return { role, name, tool_call_id, content };
   }
 
   const contentParts = ensureArray(message.content).map(normalizeContentPart);
 
-  // If there's only text content, collapse to a single string for compatibility
   if (contentParts.length === 1 && contentParts[0].type === "text") {
-    return {
-      role,
-      name,
-      content: contentParts[0].text,
-    };
+    return { role, name, content: contentParts[0].text };
   }
 
-  return {
-    role,
-    name,
-    content: contentParts,
-  };
+  return { role, name, content: contentParts };
 };
 
 const normalizeToolChoice = (
@@ -175,49 +168,18 @@ const normalizeToolChoice = (
   tools: Tool[] | undefined
 ): "none" | "auto" | ToolChoiceExplicit | undefined => {
   if (!toolChoice) return undefined;
-
-  if (toolChoice === "none" || toolChoice === "auto") {
-    return toolChoice;
-  }
+  if (toolChoice === "none" || toolChoice === "auto") return toolChoice;
 
   if (toolChoice === "required") {
-    if (!tools || tools.length === 0) {
-      throw new Error(
-        "tool_choice 'required' was provided but no tools were configured"
-      );
-    }
-
-    if (tools.length > 1) {
-      throw new Error(
-        "tool_choice 'required' needs a single tool or specify the tool name explicitly"
-      );
-    }
-
-    return {
-      type: "function",
-      function: { name: tools[0].function.name },
-    };
+    if (!tools || tools.length === 0)
+      throw new Error("tool_choice 'required' was provided but no tools were configured");
+    if (tools.length > 1)
+      throw new Error("tool_choice 'required' needs a single tool or specify the tool name explicitly");
+    return { type: "function", function: { name: tools[0].function.name } };
   }
 
-  if ("name" in toolChoice) {
-    return {
-      type: "function",
-      function: { name: toolChoice.name },
-    };
-  }
-
+  if ("name" in toolChoice) return { type: "function", function: { name: toolChoice.name } };
   return toolChoice;
-};
-
-const resolveApiUrl = () =>
-  ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
-    ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
-    : "https://forge.manus.im/v1/chat/completions";
-
-const assertApiKey = () => {
-  if (!ENV.forgeApiKey) {
-    throw new Error("OPENAI_API_KEY is not configured");
-  }
 };
 
 const normalizeResponseFormat = ({
@@ -237,23 +199,14 @@ const normalizeResponseFormat = ({
   | undefined => {
   const explicitFormat = responseFormat || response_format;
   if (explicitFormat) {
-    if (
-      explicitFormat.type === "json_schema" &&
-      !explicitFormat.json_schema?.schema
-    ) {
-      throw new Error(
-        "responseFormat json_schema requires a defined schema object"
-      );
-    }
+    if (explicitFormat.type === "json_schema" && !explicitFormat.json_schema?.schema)
+      throw new Error("responseFormat json_schema requires a defined schema object");
     return explicitFormat;
   }
 
   const schema = outputSchema || output_schema;
   if (!schema) return undefined;
-
-  if (!schema.name || !schema.schema) {
-    throw new Error("outputSchema requires both name and schema");
-  }
+  if (!schema.name || !schema.schema) throw new Error("outputSchema requires both name and schema");
 
   return {
     type: "json_schema",
@@ -265,8 +218,149 @@ const normalizeResponseFormat = ({
   };
 };
 
-export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
-  assertApiKey();
+// ─── Provider: Anthropic Claude ──────────────────────────────────────────────
+
+const CLAUDE_MODEL = "claude-sonnet-4-5";
+const CLAUDE_MAX_TOKENS = 8192;
+
+/**
+ * Converte i messaggi nel formato Anthropic.
+ * - Il messaggio "system" viene estratto e passato come parametro separato.
+ * - I messaggi "user" e "assistant" vengono mappati direttamente.
+ * - I contenuti multimodali (image_url) vengono convertiti nel formato Anthropic.
+ */
+function toAnthropicMessages(messages: Message[]): {
+  system: string | undefined;
+  messages: Anthropic.MessageParam[];
+} {
+  let system: string | undefined;
+  const anthropicMessages: Anthropic.MessageParam[] = [];
+
+  for (const msg of messages) {
+    if (msg.role === "system") {
+      // Anthropic vuole il system prompt come parametro separato
+      const parts = ensureArray(msg.content);
+      system = parts
+        .map(p => (typeof p === "string" ? p : p.type === "text" ? p.text : ""))
+        .join("\n");
+      continue;
+    }
+
+    if (msg.role === "user" || msg.role === "assistant") {
+      const parts = ensureArray(msg.content);
+
+      // Contenuto semplice testuale
+      if (parts.length === 1 && (typeof parts[0] === "string" || parts[0].type === "text")) {
+        const text = typeof parts[0] === "string" ? parts[0] : (parts[0] as TextContent).text;
+        anthropicMessages.push({ role: msg.role, content: text });
+        continue;
+      }
+
+      // Contenuto multimodale
+      const anthropicContent: Anthropic.ContentBlockParam[] = [];
+      for (const part of parts) {
+        if (typeof part === "string") {
+          anthropicContent.push({ type: "text", text: part });
+        } else if (part.type === "text") {
+          anthropicContent.push({ type: "text", text: part.text });
+        } else if (part.type === "image_url") {
+          // Anthropic supporta URL diretti come source type "url"
+          anthropicContent.push({
+            type: "image",
+            source: {
+              type: "url",
+              url: part.image_url.url,
+            },
+          } as Anthropic.ImageBlockParam);
+        }
+        // file_url non supportato da Anthropic — ignorato con warning
+      }
+      anthropicMessages.push({ role: msg.role, content: anthropicContent });
+    }
+    // tool/function messages: ignorati (non usati nel codebase attuale)
+  }
+
+  return { system, messages: anthropicMessages };
+}
+
+async function invokeClaude(params: InvokeParams): Promise<InvokeResult> {
+  const client = new Anthropic({ apiKey: ENV.anthropicApiKey });
+
+  const {
+    messages,
+    outputSchema,
+    output_schema,
+    responseFormat,
+    response_format,
+  } = params;
+
+  const maxTokens = params.maxTokens || params.max_tokens || CLAUDE_MAX_TOKENS;
+  const { system, messages: anthropicMessages } = toAnthropicMessages(messages);
+
+  // Gestione JSON strutturato: se richiesto, aggiungiamo istruzione nel system prompt
+  const normalizedFormat = normalizeResponseFormat({
+    responseFormat,
+    response_format,
+    outputSchema,
+    output_schema,
+  });
+
+  let systemPrompt = system;
+  if (normalizedFormat?.type === "json_schema" || normalizedFormat?.type === "json_object") {
+    const schemaHint =
+      normalizedFormat.type === "json_schema"
+        ? `\n\nRispondi ESCLUSIVAMENTE con un oggetto JSON valido che rispetti questo schema:\n${JSON.stringify((normalizedFormat as { type: "json_schema"; json_schema: JsonSchema }).json_schema.schema, null, 2)}\nNon aggiungere testo prima o dopo il JSON.`
+        : "\n\nRispondi ESCLUSIVAMENTE con un oggetto JSON valido. Non aggiungere testo prima o dopo il JSON.";
+    systemPrompt = (systemPrompt ?? "") + schemaHint;
+  }
+
+  const requestParams: Anthropic.MessageCreateParamsNonStreaming = {
+    model: CLAUDE_MODEL,
+    max_tokens: maxTokens,
+    messages: anthropicMessages,
+    ...(systemPrompt ? { system: systemPrompt } : {}),
+  };
+
+  const response = await client.messages.create(requestParams);
+
+  // Estrai il testo dalla risposta
+  const textContent = response.content
+    .filter((b): b is Anthropic.TextBlock => b.type === "text")
+    .map(b => b.text)
+    .join("");
+
+  // Normalizza in formato OpenAI-compatibile (InvokeResult)
+  return {
+    id: response.id,
+    created: Math.floor(Date.now() / 1000),
+    model: response.model,
+    choices: [
+      {
+        index: 0,
+        message: {
+          role: "assistant",
+          content: textContent,
+        },
+        finish_reason: response.stop_reason ?? null,
+      },
+    ],
+    usage: {
+      prompt_tokens: response.usage.input_tokens,
+      completion_tokens: response.usage.output_tokens,
+      total_tokens: response.usage.input_tokens + response.usage.output_tokens,
+    },
+  };
+}
+
+// ─── Provider: Manus Forge (fallback OpenAI-compatible) ──────────────────────
+
+const resolveForgeApiUrl = () =>
+  ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
+    ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
+    : "https://forge.manus.im/v1/chat/completions";
+
+async function invokeForge(params: InvokeParams): Promise<InvokeResult> {
+  if (!ENV.forgeApiKey) throw new Error("Nessun provider LLM configurato: imposta ANTHROPIC_API_KEY o BUILT_IN_FORGE_API_KEY");
 
   const {
     messages,
@@ -284,22 +378,13 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     messages: messages.map(normalizeMessage),
   };
 
-  if (tools && tools.length > 0) {
-    payload.tools = tools;
-  }
+  if (tools && tools.length > 0) payload.tools = tools;
 
-  const normalizedToolChoice = normalizeToolChoice(
-    toolChoice || tool_choice,
-    tools
-  );
-  if (normalizedToolChoice) {
-    payload.tool_choice = normalizedToolChoice;
-  }
+  const normalizedToolChoice = normalizeToolChoice(toolChoice || tool_choice, tools);
+  if (normalizedToolChoice) payload.tool_choice = normalizedToolChoice;
 
-  payload.max_tokens = 32768
-  payload.thinking = {
-    "budget_tokens": 128
-  }
+  payload.max_tokens = 32768;
+  payload.thinking = { budget_tokens: 128 };
 
   const normalizedResponseFormat = normalizeResponseFormat({
     responseFormat,
@@ -307,12 +392,9 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     outputSchema,
     output_schema,
   });
+  if (normalizedResponseFormat) payload.response_format = normalizedResponseFormat;
 
-  if (normalizedResponseFormat) {
-    payload.response_format = normalizedResponseFormat;
-  }
-
-  const response = await fetch(resolveApiUrl(), {
+  const response = await fetch(resolveForgeApiUrl(), {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -323,10 +405,29 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(
-      `LLM invoke failed: ${response.status} ${response.statusText} – ${errorText}`
-    );
+    throw new Error(`LLM invoke failed: ${response.status} ${response.statusText} – ${errorText}`);
   }
 
   return (await response.json()) as InvokeResult;
+}
+
+// ─── Entry point pubblico ─────────────────────────────────────────────────────
+
+/**
+ * Chiama il provider LLM configurato.
+ *
+ * Priorità:
+ *  1. Anthropic Claude  → se ANTHROPIC_API_KEY è impostata
+ *  2. Manus Forge API   → fallback automatico
+ *
+ * L'interfaccia di input/output è identica indipendentemente dal provider.
+ */
+export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
+  if (ENV.anthropicApiKey && ENV.anthropicApiKey.trim().length > 0) {
+    console.log(`[LLM] Provider: Anthropic Claude (${CLAUDE_MODEL})`);
+    return invokeClaude(params);
+  }
+
+  console.log("[LLM] Provider: Manus Forge API (fallback — configura ANTHROPIC_API_KEY per usare Claude)");
+  return invokeForge(params);
 }
