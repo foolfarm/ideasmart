@@ -13,6 +13,7 @@ import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
+import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings } from "lucide-react";
 import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
@@ -708,6 +709,11 @@ export default function Home() {
                   {/* ── PUNTO DEL GIORNO — colonna editoriale a metà pagina ── */}
                   <div className="my-8">
                     <PuntoDelGiorno />
+                  </div>
+
+                  {/* ── EDITORIALE DEL DIRETTORE ── */}
+                  <div className="my-10">
+                    <EditorialeDelDirettore />
                   </div>
 
                   {/* STRISCIA RESEARCH */}
