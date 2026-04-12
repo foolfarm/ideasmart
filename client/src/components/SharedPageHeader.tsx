@@ -163,22 +163,36 @@ export default function SharedPageHeader() {
           {/* Titolo centrale + sottotitolo 2 righe */}
           <div className="text-center flex-1 min-w-0">
             <Link href="/">
-              <h1
-                className="font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
-                style={{
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                  fontSize: "clamp(28px, 7vw, 88px)",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1,
-                }}
-              >
-                ProofPress
-              </h1>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "0.35em" }}>
+                <span className="font-black tracking-tight text-[#1a1a1a]"
+                  style={{
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                    fontSize: "clamp(14px, 2.5vw, 32px)",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1,
+                    textTransform: "uppercase",
+                    opacity: 0.55,
+                    fontWeight: 700
+                  }}>
+                  Proofpress
+                </span>
+                <h1
+                  className="font-black tracking-tight text-[#1a1a1a] cursor-pointer hover:opacity-80 transition-opacity"
+                  style={{
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                    fontSize: "clamp(28px, 7vw, 88px)",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1,
+                  }}
+                >
+                  Magazine
+                </h1>
+              </div>
             </Link>
             {/* Sottotitolo */}
             <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
-              Per chi vuole capire l’innovazione prima degli altri
+              Innovazione, AI, Startup, Venture, Tecnologia
             </div>
           </div>
 
