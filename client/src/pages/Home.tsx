@@ -321,7 +321,7 @@ function HomeUserProfileDropdown({ user, logout }: { user: { username?: string |
         </Link>
         <button
           onClick={() => { setOpen(false); logout(); }}
-          className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#dc2626] hover:bg-[#fef2f2] transition-colors w-full text-left"
+          className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors w-full text-left"
           style={{ fontFamily: SF }}
         >
           <LogOut size={14} strokeWidth={2} />
@@ -929,8 +929,8 @@ export default function Home() {
 
                   {/* ── Box Annuncio ProofPress ── */}
                   <Link href="/proofpress-verify">
-                    <div className="mb-5 p-5 rounded-lg cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
-                      style={{ background: "#f5f3ee", border: "1px solid rgba(26,26,26,0.08)" }}>
+                    <div className="mb-5 p-5 rounded-2xl cursor-pointer transition-all duration-200 hover:shadow-lg group"
+                      style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
                       <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
                         style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>
                         Novità
@@ -943,8 +943,8 @@ export default function Home() {
                         style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.
                       </p>
-                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-80 transition-opacity rounded"
-                        style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-75 transition-opacity rounded-lg"
+                        style={{ background: "#1d1d1f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Scopri La ProofPress Verify Technology →
                       </span>
                     </div>
@@ -956,7 +956,7 @@ export default function Home() {
                     className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
                     style={{ textDecoration: "none" }}
                   >
-                    <div className="p-5 rounded-lg" style={{ background: "#f5f3ee", border: "1px solid rgba(26,26,26,0.08)" }}>
+                    <div className="p-5 rounded-2xl" style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
                       <p className="text-[18px] font-black leading-tight mb-3"
                         style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
                         La collezione Proof Press di prompt da usare davvero nel lavoro quotidiano.
@@ -965,15 +965,15 @@ export default function Home() {
                         style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Un funnel semplice e concreto: arrivi dalla newsletter, acquisti a <strong style={{ color: "#1a1a1a" }}>39 €</strong> e ottieni accesso alla libreria ricercabile con il PDF completo incluso.
                       </p>
-                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-90 transition-opacity rounded"
-                        style={{ background: "#e74c3c", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-75 transition-opacity rounded-lg"
+                        style={{ background: "#1d1d1f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                         Scopri la collezione →
                       </span>
                     </div>
                   </a>
 
                   {/* ── Banner iscrizione gratuita — sidebar ── */}
-                  <div className="mb-5 p-4 border-l-4" style={{ background: "#f5f3ee", borderColor: "#1a1a1a" }}>
+                  <div className="mb-5 p-4 rounded-2xl" style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
                       style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                       Proof Press

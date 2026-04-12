@@ -101,7 +101,7 @@ export default function SectionChannelBar() {
               onClick={() => setMoreOpen((v) => !v)}
               className={`flex items-center gap-1 px-3 py-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] cursor-pointer transition-all duration-200 border-b-2 h-full ${
                 activeInMore || moreOpen
-                  ? "border-[#dc2626] text-[#dc2626]"
+                  ? "border-[#1d1d1f] text-[#1d1d1f]"
                   : "border-transparent text-[#1a1a1a]/50 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/20"
               }`}
             >

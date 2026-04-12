@@ -76,7 +76,7 @@ function UserProfileDropdown({ user, logout }: { user: { username?: string | nul
         </Link>
         <button
           onClick={() => { setOpen(false); logout(); }}
-          className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#dc2626] hover:bg-[#fef2f2] transition-colors w-full text-left"
+          className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors w-full text-left"
           style={{ fontFamily: SF }}
         >
           <LogOut size={14} strokeWidth={2} />

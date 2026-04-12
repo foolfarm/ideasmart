@@ -129,7 +129,7 @@ export default function SectionNav() {
         {activeChannel && (
           <Link href={activeChannel.path}>
             <span
-              className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#dc2626] hover:text-[#b91c1c] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#1d1d1f] hover:text-[#3a3a3c] transition-colors cursor-pointer"
             >
               <activeChannel.icon size={13} strokeWidth={2.2} />
               {activeChannel.label}
@@ -143,7 +143,7 @@ export default function SectionNav() {
         {/* Tecnologia button */}
         <Link href="/proofpress-verify">
           <span
-            className="flex items-center gap-1.5 mr-3 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white bg-[#dc2626] hover:bg-[#b91c1c] rounded-sm transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-1.5 mr-3 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white bg-[#1d1d1f] hover:bg-[#3a3a3c] rounded-sm transition-all duration-200 cursor-pointer"
           >
             <Info size={13} strokeWidth={2} />
             Tecnologia
@@ -193,7 +193,7 @@ export default function SectionNav() {
         {/* Title section */}
         <div className="px-5 pt-4 pb-2">
           <div className="flex items-center gap-2 mb-0.5">
-            <Sparkles size={13} strokeWidth={2} className="text-[#dc2626]" />
+            <Sparkles size={13} strokeWidth={2} className="text-[#6e6e73]" />
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/45">
               Naviga i canali
             </span>
@@ -233,7 +233,7 @@ export default function SectionNav() {
                   {/* Active indicator bar */}
                   {isActive && (
                     <div
-                      className="absolute left-0 top-1/2 w-[3px] h-5 bg-[#dc2626] rounded-r-full"
+                      className="absolute left-0 top-1/2 w-[3px] h-5 bg-[#1d1d1f] rounded-r-full"
                       style={{ transform: "translateY(-50%)" }}
                     />
                   )}
@@ -242,7 +242,7 @@ export default function SectionNav() {
                   <span
                     className={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-md transition-all duration-200 ${
                       isActive
-                        ? "bg-[#dc2626]/20 text-[#dc2626]"
+                        ? "bg-[#1d1d1f]/12 text-[#1d1d1f]"
                         : isHovered
                           ? "bg-[#1a1a1a]/10 text-[#1a1a1a] scale-105"
                           : "bg-[#1a1a1a]/5 text-[#1a1a1a]/45"
@@ -286,7 +286,7 @@ export default function SectionNav() {
         {/* Footer branding */}
         <div className="px-5 py-4 mt-2 border-t border-[#1a1a1a]/8 bg-[#1a1a1a]/[0.03]">
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#dc2626] animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f] opacity-40" />
             <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/35">
               Il tuo sistema operativo sull'AI
             </span>
