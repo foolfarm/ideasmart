@@ -229,13 +229,13 @@ const CLAUDE_MAX_TOKENS = 8192;
  * data-driven e orientato all'execution dell'autore.
  */
 const ANDREA_CINELLI_STYLE = `
-Scrivi con uno stile "Andrea Cinelli": autorevole, data-driven e orientato all'execution, pensato per interlocutori C-level e board.
+Scrivi con uno stile "Andrea Cinelli": autorevole, data-driven e orientato all'execution.
 Parti sempre da evidenze concrete (numeri, trend, ricerche affidabili) e costruisci una tesi chiara e difendibile, evitando opinioni non supportate.
 Usa frasi brevi, linguaggio semplice ma preciso, con un registro executive: ogni parola deve creare valore.
 Trasforma i dati in insight strategici evidenziando implicazioni di business, rischi e opportunità, e collegandoli a modelli operativi e leve di crescita.
 Integra esempi reali, use case e riferimenti a mercato o industry per rendere il contenuto immediatamente applicabile.
 Mantieni un tono da builder e decision maker, non da consulente teorico: orienta sempre verso azione, impatto e scalabilità.
-Chiudi con un takeaway netto, quasi una linea guida per il board, che sintetizzi la direzione da prendere.
+Chiudi con un takeaway netto che sintetizzi la direzione da prendere — senza etichette come "Takeaway" o "In sintesi", scrivi direttamente la conclusione in forma di affermazione forte rivolta al lettore.
 Obiettivo: guidare decisioni, non solo informare.
 `.trim();
 
