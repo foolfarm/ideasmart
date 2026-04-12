@@ -1,0 +1,25 @@
+800 milioni di persone usano ChatGPT ogni settimana. È il 10% della popolazione mondiale. Eppure solo l'11% delle aziende ha agenti AI in produzione.
+
+Il gap tra hype e execution non è mai stato così evidente.
+
+Il Tech Trends 2026 di Deloitte arriva nel momento giusto: quando serve smettere di sperimentare e iniziare a costruire. I numeri raccontano una storia chiara. Il 64% delle organizzazioni sta aumentando gli investimenti in AI, ma il 93% di questi soldi va in tecnologia e solo il 7% in persone. Stiamo comprando infrastruttura per processi che non abbiamo ancora ridisegnato.
+
+Gartner stima che il 40% dei progetti agentic fallirà entro il 2027. Non per limiti della tecnologia, ma perché stiamo automatizzando processi rotti. È il tema che vedo ogni giorno: team che costruiscono agenti per accelerare workflow inefficienti invece di ripartire da zero.
+
+Il CFO di HPE lo dice meglio di chiunque: volevamo trasformare un processo end-to-end, non risolvere un singolo pain point. Questo è il mindset da cui partire. Non chatbot che rispondono alle email. Non copilot che generano codice più velocemente. Ma ripensare come si lavora, come si decide, come si scala.
+
+Il vero shift è quello di Coca-Cola: da "cosa possiamo fare" a "cosa dovremmo fare". Finché ragioniamo per feature disponibili invece che per business outcome, stiamo solo aggiungendo complessità.
+
+I costi di inferenza sono scesi di 280 volte in due anni, ma alcune enterprise pagano decine di milioni al mese. L'infrastruttura non è più un tema tecnico, è una leva economica. Chi non costruisce un modello ibrido cloud-on premise-edge pagherà un premium insostenibile.
+
+Amazon ha deployato un milione di robot e usa DeepFleet AI per migliorare l'efficienza del 10%. BMW ha auto che si guidano da sole nelle fabbriche. La convergenza tra AI e robotica non è fantascienza, è operational reality. Entro il 2035 avremo due milioni di robot umanoidi nei luoghi di lavoro. Chi non sta costruendo capacity interna per gestire workforce silicon-based resterà indietro.
+
+Per le aziende italiane ed europee la sfida è doppia. Meno capitale disponibile e tessuto industriale frammentato rendono più difficile scalare velocemente. Ma è proprio questo il punto: le startup AI passano da 1 a 30 milioni di revenue cinque volte più velocemente delle SaaS. Non serve essere grandi, serve essere veloci e focalizzati.
+
+Il CIO di Western Digital ha ragione: meglio fallire velocemente su piccoli pilot che perdere l'onda. L'execution batte la perfezione. Sempre.
+
+La domanda non è più se investire in AI, ma come costruire un modello operativo che regga l'impatto. Solo l'1% dei CIO non ha cambiamenti al modello operativo in corso. Gli altri stanno ricostruendo da zero. La differenza la farà chi inizia dai processi, non dalla tecnologia.
+
+Scarica il report completo Deloitte Tech Trends 2026 → https://www.deloitte.com/it/it/Industries/tmt/research/tech-trends-2026.html?utm_source=linkedin&utm_medium=organic&utm_campaign=techtrends-26&id=it:2sm:3li:4eb:5:6:20260403::20114108838
+
+Leggi l'analisi completa su ProofPress → https://proofpress.ai
