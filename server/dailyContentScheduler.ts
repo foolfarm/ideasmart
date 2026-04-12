@@ -135,8 +135,11 @@ Restituisci un JSON con questa struttura esatta:
     },
   });
 
-  const raw = response.choices?.[0]?.message?.content ?? "{}";
-  const parsed = JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw));
+  const rawContent = response.choices?.[0]?.message?.content ?? "{}";
+  // Claude a volte avvolge il JSON in backtick markdown (```json ... ```) — li rimuoviamo
+  const rawStr = typeof rawContent === "string" ? rawContent : JSON.stringify(rawContent);
+  const raw = rawStr.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+  const parsed = JSON.parse(raw);
 
   return {
     section: 'ai' as const,

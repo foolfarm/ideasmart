@@ -214,6 +214,29 @@ export const appRouter = router({
           return items[0] ?? null;
         }, TTL_EDITORIAL_MS);
       }),
+    getAll: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(100).default(60) }).optional())
+      .query(async ({ input }) => {
+        const limit = input?.limit ?? 60;
+        return cached(`editorial:all:${limit}`, async () => {
+          const db = await getDbInstance();
+          if (!db) return [];
+          const items = await db.select({
+            id: dailyEditorialTable.id,
+            dateLabel: dailyEditorialTable.dateLabel,
+            title: dailyEditorialTable.title,
+            subtitle: dailyEditorialTable.subtitle,
+            keyTrend: dailyEditorialTable.keyTrend,
+            section: dailyEditorialTable.section,
+            imageUrl: dailyEditorialTable.imageUrl,
+            authorNote: dailyEditorialTable.authorNote,
+            createdAt: dailyEditorialTable.createdAt,
+          }).from(dailyEditorialTable)
+            .orderBy(desc(dailyEditorialTable.createdAt))
+            .limit(limit);
+          return items;
+        }, EDITORIAL_TTL_MS);
+      }),
   }),
 
   // ── Startup of the Day (public) ─────────────────────────────────────────────────────────────────────────────

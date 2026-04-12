@@ -142,12 +142,63 @@ function PostCard({ post }: {
   );
 }
 
+function EditorialeCard({ item }: {
+  item: {
+    id: number;
+    dateLabel: string;
+    title: string;
+    subtitle: string | null;
+    keyTrend: string | null;
+    section: string;
+    imageUrl: string | null;
+    authorNote: string | null;
+  }
+}) {
+  const sec = SECTION_COLORS[item.section] ?? { accent: "#1a1a1a", label: item.section.toUpperCase() };
+  return (
+    <article className="border-t py-6 grid grid-cols-1 md:grid-cols-4 gap-4" style={{ borderColor: INK + "15" }}>
+      {item.imageUrl && (
+        <div className="md:col-span-1 h-36 overflow-hidden rounded">
+          <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover grayscale-[10%] hover:grayscale-0 transition-all duration-500" loading="lazy" />
+        </div>
+      )}
+      <div className={item.imageUrl ? "md:col-span-3" : "md:col-span-4"}>
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm" style={{ color: sec.accent, background: sec.accent + "15", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{sec.label}</span>
+          <span className="text-[10px]" style={{ color: INK + "50", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{formatDateIT(item.dateLabel)}</span>
+          {item.keyTrend && (
+            <span className="text-[9px] px-2 py-0.5 rounded-full" style={{ background: "#f0f0f0", color: INK + "80", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>{item.keyTrend}</span>
+          )}
+        </div>
+        <Link href={`/ai/editoriale/${item.id}`}>
+          <h3 className="text-lg font-bold leading-snug mb-2 hover:underline cursor-pointer" style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>{item.title}</h3>
+        </Link>
+        {item.subtitle && (
+          <p className="text-sm leading-relaxed mb-2" style={{ color: INK + "80", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>{item.subtitle}</p>
+        )}
+        {item.authorNote && (
+          <p className="text-xs italic" style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>— {item.authorNote}</p>
+        )}
+        <div className="mt-3">
+          <Link href={`/ai/editoriale/${item.id}`}>
+            <span className="text-[10px] font-bold uppercase tracking-widest hover:underline" style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Leggi l'editoriale completo →</span>
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function AndreaCinelli() {
   const { data: posts, isLoading } = trpc.news.getAuthorPosts.useQuery(
     { limit: 30 },
     { staleTime: 1000 * 60 * 30, refetchOnWindowFocus: false }
   );
-
+  const { data: editorials, isLoading: editorialsLoading } = trpc.editorial.getAll.useQuery(
+    { limit: 60 },
+    { staleTime: 1000 * 60 * 30, refetchOnWindowFocus: false }
+  );
+  const [activeTab, setActiveTab] = useState<"editoriali" | "post">("editoriali");
   const totalPosts = posts?.length ?? 0;
   const aiPosts = posts?.filter(p => p.section === "ai").length ?? 0;
   const startupPosts = posts?.filter(p => p.section === "startup").length ?? 0;
@@ -284,54 +335,83 @@ export default function AndreaCinelli() {
         </div>
       </div>
 
-      {/* ── Divisore ─────────────────────────────────────────────────────── */}
+      {/* ── Divisore con Tab ───────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-4">
         <div className="w-full border-t-4" style={{ borderColor: INK }} />
-        <div className="py-3 flex items-center gap-4">
-          <span
-            className="text-[11px] font-bold uppercase tracking-[0.25em]"
-            style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+        <div className="py-3 flex items-center gap-6">
+          <button
+            onClick={() => setActiveTab("editoriali")}
+            className="text-[11px] font-bold uppercase tracking-[0.25em] pb-1 transition-colors"
+            style={{ color: activeTab === "editoriali" ? INK : INK + "40", borderBottom: activeTab === "editoriali" ? `2px solid ${INK}` : "2px solid transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
             Archivio Editoriali
-          </span>
-          <div className="flex-1 border-t" style={{ borderColor: INK + "20" }} />
-          <span
-            className="text-[10px] uppercase tracking-widest"
-            style={{ color: INK + "50", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+          </button>
+          <button
+            onClick={() => setActiveTab("post")}
+            className="text-[11px] font-bold uppercase tracking-[0.25em] pb-1 transition-colors"
+            style={{ color: activeTab === "post" ? INK : INK + "40", borderBottom: activeTab === "post" ? `2px solid ${INK}` : "2px solid transparent", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
           >
-            Post mattino · 10:30 CET
+            Post LinkedIn
+          </button>
+          <div className="flex-1 border-t" style={{ borderColor: INK + "20" }} />
+          <span className="text-[10px] uppercase tracking-widest" style={{ color: INK + "50", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+            {activeTab === "editoriali" ? `${editorials?.length ?? 0} editoriali` : `${posts?.length ?? 0} post`}
           </span>
         </div>
       </div>
 
-      {/* ── Lista editoriali ─────────────────────────────────────────────── */}
+      {/* ── Lista contenuti ───────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-4 pb-16">
-        {isLoading && (
-          <div className="space-y-6 py-4">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="border-t pt-6 animate-pulse" style={{ borderColor: INK + "15" }}>
-                <div className="h-3 rounded w-24 mb-2" style={{ background: INK + "15" }} />
-                <div className="h-5 rounded w-2/3 mb-3" style={{ background: INK + "20" }} />
-                <div className="space-y-2">
-                  <div className="h-3 rounded w-full" style={{ background: INK + "10" }} />
-                  <div className="h-3 rounded w-5/6" style={{ background: INK + "10" }} />
-                </div>
+        {/* Tab Editoriali */}
+        {activeTab === "editoriali" && (
+          <>
+            {editorialsLoading && (
+              <div className="space-y-6 py-4">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} className="border-t pt-6 animate-pulse" style={{ borderColor: INK + "15" }}>
+                    <div className="h-3 rounded w-24 mb-2" style={{ background: INK + "15" }} />
+                    <div className="h-5 rounded w-2/3 mb-3" style={{ background: INK + "20" }} />
+                    <div className="space-y-2">
+                      <div className="h-3 rounded w-full" style={{ background: INK + "10" }} />
+                      <div className="h-3 rounded w-5/6" style={{ background: INK + "10" }} />
+                    </div>
+                  </div>
+                ))}
               </div>
+            )}
+            {!editorialsLoading && (!editorials || editorials.length === 0) && (
+              <div className="py-12 text-center">
+                <p className="text-sm" style={{ color: INK + "60", fontFamily: "'Source Serif 4', serif" }}>Nessun editoriale disponibile al momento.</p>
+              </div>
+            )}
+            {!editorialsLoading && editorials && editorials.map(item => (
+              <EditorialeCard key={item.id} item={item} />
             ))}
-          </div>
+          </>
         )}
-
-        {!isLoading && posts && posts.length === 0 && (
-          <div className="py-12 text-center">
-            <p className="text-sm" style={{ color: INK + "60", fontFamily: "'Source Serif 4', serif" }}>
-              Nessun editoriale disponibile al momento.
-            </p>
-          </div>
+        {/* Tab Post LinkedIn */}
+        {activeTab === "post" && (
+          <>
+            {isLoading && (
+              <div className="space-y-6 py-4">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} className="border-t pt-6 animate-pulse" style={{ borderColor: INK + "15" }}>
+                    <div className="h-3 rounded w-24 mb-2" style={{ background: INK + "15" }} />
+                    <div className="h-5 rounded w-2/3 mb-3" style={{ background: INK + "20" }} />
+                  </div>
+                ))}
+              </div>
+            )}
+            {!isLoading && (!posts || posts.length === 0) && (
+              <div className="py-12 text-center">
+                <p className="text-sm" style={{ color: INK + "60", fontFamily: "'Source Serif 4', serif" }}>Nessun post disponibile al momento.</p>
+              </div>
+            )}
+            {!isLoading && posts && posts.map(post => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </>
         )}
-
-        {!isLoading && posts && posts.map(post => (
-          <PostCard key={post.id} post={post} />
-        ))}
 
         {/* CTA finale */}
         {!isLoading && posts && posts.length > 0 && (

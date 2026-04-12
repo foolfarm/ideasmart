@@ -12,6 +12,7 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 
@@ -272,6 +273,11 @@ export default function AiHome() {
                 <div className="py-6 text-center text-[#1a1a1a]/25 text-sm">Caricamento editoriale…</div>
               )}
             </div>
+          </div>
+
+          {/* ── EDITORIALE DEL DIRETTORE ── */}
+          <div className="mt-10">
+            <EditorialeDelDirettore />
           </div>
 
           {/* SEZIONE 2: Griglia notizie 3 colonne */}
