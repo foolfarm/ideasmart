@@ -503,19 +503,7 @@ export default function Home() {
               <div className="text-center flex-1 min-w-0">
                 <Link href="/">
                   <div className="cursor-pointer hover:opacity-80 transition-opacity">
-                    <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "0.35em" }}>
-                      <span className="font-black tracking-tight text-[#1a1a1a]"
-                        style={{
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                          fontSize: "clamp(14px, 2.5vw, 32px)",
-                          letterSpacing: "-0.01em",
-                          lineHeight: 1,
-                          textTransform: "uppercase",
-                          opacity: 0.55,
-                          fontWeight: 700
-                        }}>
-                        Proofpress
-                      </span>
+                    <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
                       <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
                         style={{
                           fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
@@ -523,8 +511,20 @@ export default function Home() {
                           letterSpacing: "-0.02em",
                           lineHeight: 1
                         }}>
-                        Magazine
+                        ProofPress
                       </h1>
+                      <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                        style={{
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "clamp(8px, 1vw, 14px)",
+                          letterSpacing: "0.15em",
+                          textTransform: "uppercase",
+                          lineHeight: 1,
+                          marginTop: "0.3em",
+                          marginLeft: "0.4em"
+                        }}>
+                        Magazine
+                      </span>
                     </div>
                   </div>
                 </Link>
