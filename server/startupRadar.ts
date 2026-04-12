@@ -257,7 +257,7 @@ async function generateStartupRadarPost(startups: StartupPick[]): Promise<string
     .map((s, i) => `${i + 1}. ${s.name} \u2014 ${s.description}\n   USP: ${s.usp}\n   Perch\u00e9 investire: ${s.whyInteresting}\n   Stato: ${s.status} | Funding: ${s.funding} | Valutazione: ${s.valuation}\n   Rating: ${s.investRating}\n   Link: ${s.link}`)
     .join("\n\n");
 
-  const systemPrompt = `Sei Andrea Cinelli, Tech Expert e VC advisor. Scrivi un post LinkedIn "AI Dealflow Europe by Proof Press".
+  const systemPrompt = `Sei Andrea Cinelli, Direttore Editoriale di ProofPress Magazine e advisor VC. Scrivi un post LinkedIn "AI Dealflow Europe by Proof Press".
 
 REGOLE FERREE:
 - MASSIMO 2800 caratteri TOTALI (LinkedIn taglia a 3000). Conta i caratteri!
@@ -290,7 +290,7 @@ Trend: 1 insight su cosa emerge (max 2 righe)
 Segui \u2192 proofpress.ai/startup
 #Startup #AI #VentureCapital #Proof Press
 
-Andrea Cinelli | Tech Expert | proofpress.ai
+Andrea Cinelli | ProofPress Magazine | proofpress.ai
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
 
@@ -312,7 +312,7 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
     // Aggiungi firma se mancante
     if (!text.includes('proofpress.ai')) {
-      text += '\n\nAndrea Cinelli | Tech Expert | proofpress.ai';
+      text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
     }
   }
   return text;

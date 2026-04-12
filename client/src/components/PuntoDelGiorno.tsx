@@ -138,7 +138,7 @@ export default function PuntoDelGiorno() {
                     className="text-[11px] mt-0.5 leading-snug"
                     style={{ color: INK + "60", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
-                    Tech Expert
+                    Direttore Editoriale
                   </p>
                   <a
                     href="https://www.linkedin.com/in/cinellia/"

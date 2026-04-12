@@ -228,7 +228,13 @@ export function buildSaturdayNewsletterHtml(opts: {
   const { editorial, dateLabel, unsubscribeUrl, isTest, recentNews } = opts;
   const unsubLink = unsubscribeUrl ?? `${BASE_URL}/unsubscribe`;
 
-  const bodyParagraphs = editorial.body
+  // Rimuove formattazione Markdown residua (asterischi, underscore) dal body
+  const cleanBody = editorial.body
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_]+)_/g, '$1');
+  const bodyParagraphs = cleanBody
     .split(/\n\n+/)
     .filter(p => p.trim().length > 0)
     .map((p, i) => {

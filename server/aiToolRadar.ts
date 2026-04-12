@@ -252,7 +252,7 @@ async function generateToolRadarPost(tools: AITool[]): Promise<string> {
     .map((t, i) => `${i + 1}. ${t.name} — ${t.description}\n   Perché: ${t.whyInteresting}\n   Verdetto: ${t.verdict}\n   Link: ${t.link}`)
     .join("\n\n");
 
-  const systemPrompt = `Sei Andrea Cinelli, Tech Expert. Scrivi un post LinkedIn "AI Radar by Proof Press".
+  const systemPrompt = `Sei Andrea Cinelli, Direttore Editoriale di ProofPress Magazine. Scrivi un post LinkedIn "AI Radar by ProofPress Magazine".
 
 REGOLE FERREE:
 - MASSIMO 2800 caratteri TOTALI. LinkedIn taglia a 3000, quindi stai sotto 2800!
@@ -279,7 +279,7 @@ Trend: 1 frase su cosa emerge (max 2 righe)
 Segui \u2192 proofpress.ai
 #AI #AITools #Proof Press
 
-Andrea Cinelli | Tech Expert | proofpress.ai
+Andrea Cinelli | ProofPress Magazine
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
 
@@ -299,7 +299,7 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
     const cutPoint = text.lastIndexOf('\n', 2950);
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
     if (!text.includes('proofpress.ai')) {
-      text += '\n\nAndrea Cinelli | Tech Expert | proofpress.ai';
+      text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
     }
   }
   return text;
