@@ -711,11 +711,6 @@ export default function Home() {
                     <PuntoDelGiorno />
                   </div>
 
-                  {/* ── EDITORIALE DEL DIRETTORE ── */}
-                  <div className="my-10">
-                    <EditorialeDelDirettore />
-                  </div>
-
                   {/* STRISCIA RESEARCH */}
                   {researchReports && researchReports.length > 0 && (
                     <div className="mt-12">
@@ -829,6 +824,11 @@ export default function Home() {
                       </div>
                     </div>
                   )}
+
+                  {/* ── DEEP DIVE — distanziato dal Punto del Giorno ── */}
+                  <div className="mt-16 mb-4">
+                    <EditorialeDelDirettore />
+                  </div>
 
                   {/* TERZA RIGA: Startup approfondimenti */}
                   {startupRest.length > 5 && (
