@@ -16,8 +16,9 @@ import {
 } from "./db";
 import { findEditorialImage, findStartupImage } from "./stockImages";
 import { generateDailyResearch } from "./researchGenerator";
+import { publishToLinkedIn } from "./linkedinPublisher";
 import { getDb } from "./db";
-import { dailyEditorial, systemSettings } from "../drizzle/schema";
+import { dailyEditorial, linkedinPosts, systemSettings } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 
@@ -259,6 +260,8 @@ async function runDailyContentRefresh() {
       }
       await saveEditorial({ ...editorial, imageUrl: editorialImageUrl ?? undefined });
       console.log(`[DailyContent] Editorial saved: "${editorial.title}"`);
+      // Pubblica l'editoriale su LinkedIn come post editoriale firmato Andrea Cinelli
+      await publishEditorialToLinkedIn(editorial, editorialImageUrl ?? null);
     } else {
       console.log("[DailyContent] Editorial already exists for today, skipping.");
     }
@@ -372,6 +375,98 @@ async function checkDiversityScoreAlert(): Promise<void> {
     }
   } catch (err) {
     console.error("[DailyContent] Diversity score check error:", err);
+  }
+}
+
+// ── Pubblicazione Editoriale su LinkedIn ─────────────────────────────────────
+
+/**
+ * Converte l'editoriale giornaliero in un post LinkedIn firmato Andrea Cinelli.
+ * Idempotente: salta se esiste già un post editoriale per oggi.
+ */
+export async function publishEditorialToLinkedIn(
+  editorial: {
+    title: string;
+    subtitle: string;
+    keyTrend: string;
+    body: string;
+    authorNote: string;
+    dateLabel: string;
+  },
+  imageUrl: string | null
+): Promise<void> {
+  const today = editorial.dateLabel;
+  try {
+    // Idempotenza: controlla se esiste già un post editoriale per oggi
+    const db = await getDb();
+    if (db) {
+      const existing = await db
+        .select({ id: linkedinPosts.id })
+        .from(linkedinPosts)
+        .where(eq(linkedinPosts.slot, "editorial" as any))
+        .limit(1);
+      // Cerca anche per dateLabel
+      const existingToday = await db
+        .select({ id: linkedinPosts.id })
+        .from(linkedinPosts)
+        .where(eq(linkedinPosts.dateLabel, today))
+        .limit(20);
+      const hasEditorial = existingToday.some((p: any) => p.slot === "editorial");
+      if (hasEditorial) {
+        console.log("[DailyContent] LinkedIn editorial already published today, skipping.");
+        return;
+      }
+    }
+
+    // Costruisci il testo del post LinkedIn (max 3000 caratteri)
+    const firstParagraph = editorial.body.split("\n\n")[0] ?? editorial.body.slice(0, 600);
+    const postText = [
+      `📌 ${editorial.title}`,
+      ``,
+      `${editorial.subtitle}`,
+      ``,
+      firstParagraph.slice(0, 800),
+      ``,
+      editorial.authorNote ? `— ${editorial.authorNote}` : "",
+      ``,
+      `Leggi l'analisi completa su Proof Press → https://proofpress.ai`,
+      ``,
+      `#AI #IntelligenzaArtificiale #Business #Innovation #ProofPress`,
+    ]
+      .filter(Boolean)
+      .join("\n")
+      .slice(0, 3000);
+
+    console.log(`[DailyContent] Publishing editorial to LinkedIn: "${editorial.title}"`);
+    const result = await publishToLinkedIn(
+      postText,
+      "https://proofpress.ai",
+      imageUrl,
+      editorial.title,
+      editorial.subtitle
+    );
+
+    if (result.success) {
+      console.log(`[DailyContent] ✅ Editorial published to LinkedIn (postId: ${result.postId})`);
+      // Salva nel DB come post LinkedIn editoriale (slot "morning" come fallback — editoriale del direttore)
+      if (db) {
+        const editorialPostId = result.postId ?? "";
+        await db.insert(linkedinPosts).values({
+          slot: "morning" as any,
+          dateLabel: `${today}-editorial`,
+          title: editorial.title,
+          postText,
+          imageUrl: imageUrl ?? undefined,
+          linkedinUrl: editorialPostId ? `https://www.linkedin.com/feed/update/${editorialPostId}` : undefined,
+          section: "ai" as any,
+        }).onDuplicateKeyUpdate({ set: { linkedinUrl: editorialPostId ? `https://www.linkedin.com/feed/update/${editorialPostId}` : undefined } });
+      }
+    } else {
+      console.error(`[DailyContent] ❌ LinkedIn editorial publish failed: ${result.error}`);
+    }
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[DailyContent] ❌ publishEditorialToLinkedIn error: ${msg}`);
   }
 }
 

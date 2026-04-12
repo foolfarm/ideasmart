@@ -302,25 +302,13 @@ export default function AndreaCinelli() {
 
             <div className="space-y-3" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Imprenditore seriale con oltre 30 anni di esperienza nella costruzione di prodotti digitali, aziende AI-native e piattaforme tecnologiche su larga scala tra Europa e Stati Uniti.
+                Serial entrepreneur con 2 exit. Co-fondatore di <strong>Libero.it</strong> (10M+ utenti). Fondatore di <strong>FoolFarm</strong>, uno dei principali AI Venture Studio europei. Autore di 25+ brevetti, tra cui le tecnologie alla base di <strong>SPID</strong>.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Opera all'intersezione tra strategia, tecnologia, execution e capitale, con un focus su disruption, AI transformation e reinvenzione dei modelli di business. È advisor di CEO, board e fondi di investimento in fasi critiche di crescita, turnaround e trasformazione.
+                Professore di AI al <strong>Sole 24 Ore Business School</strong>. Membro dell'Advisory Board di <strong>Deloitte Central Mediterranean</strong>. Keynote speaker internazionale e autore di 30+ pubblicazioni su AI e innovazione.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Dopo un'esperienza iniziale nella Silicon Valley negli anni '90, è stato co-fondatore di <strong>Libero.it</strong> (oltre 10 milioni di utenti) all'interno del gruppo Infostrada–Olivetti. Ha ricoperto ruoli chiave nel mondo Telco, tra cui Head of Mobile VAS GPM in <strong>Vodafone Global</strong> a Düsseldorf, ed è stato tra i pionieri europei dei servizi mobili in Omnitel–Vodafone e Wind Orascom, oltre che co-fondatore di <strong>Alice</strong> in Telecom Italia.
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                È fondatore di oltre 12 iniziative imprenditoriali in ambito AI (voice, biometria, cybersecurity, generative AI), con diversi exit all'attivo, e angel investor in più di 10 startup. È autore di oltre 25 brevetti, tra cui tecnologie alla base del sistema di identità digitale italiano <strong>SPID</strong>.
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Ha fondato uno dei principali AI Venture Studio europei e una piattaforma di venture capital e venture building negli Stati Uniti. È membro dell'Advisory Board di <strong>Deloitte Central Mediterranean</strong>, docente di AI presso <strong>Il Sole 24 Ore Business School</strong> e keynote speaker internazionale, autore di oltre 30 pubblicazioni su AI e innovazione.
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Co-fondatore di <strong>Proof Press</strong>, la prima piattaforma italiana di analisi quotidiane su AI, startup e venture capital, basata su <strong>ProofPress</strong>: una tecnologia proprietaria che integra AI e Web3 per certificare le fonti e garantire contenuti verificati, rilevanti e affidabili.
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: INK + "cc" }}>
-                Con Proof Press ha costruito uno strumento pensato per chi prende decisioni: un'unica fonte ad alto valore che aggrega ogni giorno ricerche, notizie e analisi editoriali per supportare imprenditori, investitori e manager con insight concreti e azionabili.
+                Direttore editoriale di <strong>Proof Press</strong> — analisi quotidiane su AI, startup e venture capital per chi prende decisioni.
               </p>
             </div>
 

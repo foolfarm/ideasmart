@@ -1,7 +1,7 @@
 /**
  * EditorialeDelDirettore — Sezione Home Page
  *
- * Mostra l'editoriale giornaliero generato da Claude (sezione "ai")
+ * Mostra l'editoriale giornaliero del direttore Andrea Cinelli (sezione "ai")
  * con firma Andrea Cinelli, data e link alla pagina autore.
  *
  * Design: stile quotidiano di qualità — sfondo bianco, bordo nero spesso,
@@ -170,7 +170,7 @@ export default function EditorialeDelDirettore() {
                   fontStyle: "italic",
                 }}
               >
-                Imprenditore seriale, fondatore di FoolFarm e co-fondatore di Libero.it. Autore di 25+ brevetti, advisor di fondi VC e professore di AI al Sole 24 Ore Business School.
+                Serial entrepreneur, 2 exit. Co-fondatore di Libero.it. Fondatore di FoolFarm. Professore di AI al Sole 24 Ore Business School.
               </p>
 
               {/* Key trend del giorno */}
@@ -283,13 +283,7 @@ export default function EditorialeDelDirettore() {
             )}
 
             {/* Footer: link pagina completa */}
-            <div className="mt-6 pt-4 border-t flex items-center justify-between" style={{ borderColor: INK + "12" }}>
-              <p
-                className="text-[11px]"
-                style={{ color: INK + "40", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                Generato da Claude · ProofPress Magazine
-              </p>
+            <div className="mt-6 pt-4 border-t flex items-center justify-end" style={{ borderColor: INK + "12" }}>
               {editorial.id && (
                 <Link href={`/ai/editoriale/${editorial.id}`}>
                   <span
