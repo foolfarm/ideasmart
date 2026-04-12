@@ -224,6 +224,22 @@ const CLAUDE_MODEL = "claude-sonnet-4-5";
 const CLAUDE_MAX_TOKENS = 8192;
 
 /**
+ * Stile editoriale Andrea Cinelli — iniettato come prefisso in ogni system prompt.
+ * Garantisce che tutti i contenuti generati riflettano il registro executive,
+ * data-driven e orientato all'execution dell'autore.
+ */
+const ANDREA_CINELLI_STYLE = `
+Scrivi con uno stile "Andrea Cinelli": autorevole, data-driven e orientato all'execution, pensato per interlocutori C-level e board.
+Parti sempre da evidenze concrete (numeri, trend, ricerche affidabili) e costruisci una tesi chiara e difendibile, evitando opinioni non supportate.
+Usa frasi brevi, linguaggio semplice ma preciso, con un registro executive: ogni parola deve creare valore.
+Trasforma i dati in insight strategici evidenziando implicazioni di business, rischi e opportunità, e collegandoli a modelli operativi e leve di crescita.
+Integra esempi reali, use case e riferimenti a mercato o industry per rendere il contenuto immediatamente applicabile.
+Mantieni un tono da builder e decision maker, non da consulente teorico: orienta sempre verso azione, impatto e scalabilità.
+Chiudi con un takeaway netto, quasi una linea guida per il board, che sintetizzi la direzione da prendere.
+Obiettivo: guidare decisioni, non solo informare.
+`.trim();
+
+/**
  * Converte i messaggi nel formato Anthropic.
  * - Il messaggio "system" viene estratto e passato come parametro separato.
  * - I messaggi "user" e "assistant" vengono mappati direttamente.
@@ -305,7 +321,14 @@ async function invokeClaude(params: InvokeParams): Promise<InvokeResult> {
     output_schema,
   });
 
-  let systemPrompt = system;
+  // Inietta lo stile Andrea Cinelli come prefisso del system prompt.
+  // Se il chiamante ha già un system prompt, lo stile viene preposto — così
+  // le istruzioni specifiche del task mantengono la precedenza ma il registro
+  // editoriale è sempre garantito.
+  let systemPrompt = system
+    ? `${ANDREA_CINELLI_STYLE}\n\n${system}`
+    : ANDREA_CINELLI_STYLE;
+
   if (normalizedFormat?.type === "json_schema" || normalizedFormat?.type === "json_object") {
     const schemaHint =
       normalizedFormat.type === "json_schema"
