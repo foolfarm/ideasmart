@@ -445,8 +445,8 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA — 08:30 CET (lun/mer/ven) ──────────────────
-  cron.schedule("30 8 * * 1,3,5", async () => {
+  // ── PREVIEW NEWSLETTER UNIFICATA — 08:30 CET (lun–ven) ──────────────────────
+  cron.schedule("30 8 * * 1-5", async () => {
     console.log("[SchedulerManager] ⏰ 08:30 CET — Invio preview newsletter Proof Press Daily...");
     await withLock("newsletter-preview", async () => {
       try {
@@ -463,8 +463,8 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 11:00 CET (lun/mer/ven) ──────────────
-  cron.schedule("0 11 * * 1,3,5", async () => {
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 11:00 CET (lun–ven) ────────────────
+  cron.schedule("0 11 * * 1-5", async () => {
     console.log("[SchedulerManager] ⏰ 11:00 CET — Invio massivo newsletter Proof Press Daily...");
     await withLock("newsletter-massivo", async () => {
       try {
@@ -481,46 +481,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // NEWSLETTER PROMOZIONALE — Martedì e Giovedì
-  //   08:30 CET — Preview promo (solo owner, per approvazione)
-  //   10:30 CET — Invio massivo promo a tutti gli iscritti
-  // ══════════════════════════════════════════════════════════════════════════
-  // ⏰ 08:30 CET (mar/gio) — Preview newsletter promozionale
-  cron.schedule("30 8 * * 2,4", async () => {
-    console.log("[SchedulerManager] ⏰ 08:30 CET (mar/gio) — Preview newsletter promozionale...");
-    await withLock("promo-preview", async () => {
-      try {
-        const { sendPromoPreview } = await import("./promoNewsletter");
-        const result = await sendPromoPreview();
-        if (result.success) {
-          console.log(`[SchedulerManager] ✅ Preview promo inviata: ${result.subject}`);
-        } else {
-          console.error("[SchedulerManager] ❌ Errore preview promo:", result.error);
-        }
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico preview promo:", err);
-      }
-    });
-  }, { timezone: TZ });
-
-  // ⏰ 10:30 CET (mar/gio) — Invio massivo newsletter promozionale
-  cron.schedule("30 10 * * 2,4", async () => {
-    console.log("[SchedulerManager] ⏰ 10:30 CET (mar/gio) — Invio massivo newsletter promozionale...");
-    await withLock("promo-massivo", async () => {
-      try {
-        const { sendPromoNewsletterToAll } = await import("./promoNewsletter");
-        const result = await sendPromoNewsletterToAll();
-        if (result.success) {
-          console.log(`[SchedulerManager] ✅ Newsletter promo inviata: ${result.recipientCount} destinatari`);
-        } else {
-          console.error("[SchedulerManager] ❌ Errore newsletter promo massiva:", result.error);
-        }
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico newsletter promo massiva:", err);
-      }
-    });
-  }, { timezone: TZ });
+  // NEWSLETTER PROMOZIONALE — DISABILITATA (rimossa 2026-04-12 per decisione editoriale)
+  // Tutte le newsletter promozionali (promo generica, business, prompt collection, pubblicità)
+  // sono state cancellate. Restano attive solo: Daily Unificata (lun–ven) + Newsletter Sabato.
 
   // ══════════════════════════════════════════════════════════════════════════
   // NEWSLETTER DEL SABATO — "Il meglio di ProofPress"
@@ -974,8 +937,9 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → lun/mer/ven alle 01:35 CET");
   console.log("[SchedulerManager]   Audit notturno   -> ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   📧 Audit link NL     -> RIMOSSO (non necessario con nuovo template)");
-  console.log("[SchedulerManager]   📧 Preview newsletter -> lun/mer/ven alle 08:30 CET → ac@acinelli.com");
-  console.log("[SchedulerManager]   📧 Newsletter UNIFICATA -> lun/mer/ven alle 10:30 CET → tutti gli iscritti");
+  console.log("[SchedulerManager]   📧 Preview newsletter -> lun–ven alle 08:30 CET → ac@acinelli.com");
+  console.log("[SchedulerManager]   📧 Newsletter UNIFICATA -> lun–ven alle 11:00 CET → tutti gli iscritti");
+  console.log("[SchedulerManager]   📧 Newsletter Promozionali -> DISABILITATE (rimossa 2026-04-12)");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
   console.log("[SchedulerManager]   💼 LinkedIn 2° EDITORIALE AI → ogni giorno alle 12:30 CET (ricerche di mercato AI)");
@@ -1076,56 +1040,8 @@ export function startAllSchedulers(): void {
 
   console.log("[SchedulerManager]   🧠 Channel Ingestor → ogni giorno alle 00:00 CET (RSS + AI per 6 canali)");
 
-  // ─── NEWSLETTER PROMOZIONALI ──────────────────────────────────────────────
-  // A) ProofPress Business → dom/mar/ven/sab alle 15:00 CET
-  cron.schedule(
-    "0 15 * * 0,2,5,6",
-    async () => {
-      try {
-        console.log("[SchedulerManager] 📧 Newsletter Business: avvio invio...");
-        const { sendBusinessNewsletterToAll } = await import("./promoNewsletterBusiness");
-        await sendBusinessNewsletterToAll();
-        console.log("[SchedulerManager] ✅ Newsletter Business: completata");
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Newsletter Business errore:", err);
-      }
-    },
-    { timezone: TZ }
-  );
-
-  // B) Prompt Collection 2026 → lun/mer/gio/sab alle 10:30 CET
-  cron.schedule(
-    "30 10 * * 1,3,4,6",
-    async () => {
-      try {
-        console.log("[SchedulerManager] 📧 Newsletter Prompt Collection: avvio invio...");
-        const { sendPromptCollectionNewsletterToAll } = await import("./promoNewsletterPromptCollection");
-        await sendPromptCollectionNewsletterToAll();
-        console.log("[SchedulerManager] ✅ Newsletter Prompt Collection: completata");
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Newsletter Prompt Collection errore:", err);
-      }
-    },
-    { timezone: TZ }
-  );
-
-  // C) Pubblicità su ProofPress → lun/mer/ven alle 18:00 CET
-  cron.schedule(
-    "0 18 * * 1,3,5",
-    async () => {
-      try {
-        console.log("[SchedulerManager] 📧 Newsletter Pubblicità: avvio invio...");
-        const { sendPubblicitaNewsletterToAll } = await import("./promoNewsletterPubblicita");
-        await sendPubblicitaNewsletterToAll();
-        console.log("[SchedulerManager] ✅ Newsletter Pubblicità: completata");
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Newsletter Pubblicità errore:", err);
-      }
-    },
-    { timezone: TZ }
-  );
-
-  console.log("[SchedulerManager]   📧 Newsletter Business → dom/mar/ven/sab alle 15:00 CET");
-  console.log("[SchedulerManager]   📧 Newsletter Prompt Collection → lun/mer/gio/sab alle 10:30 CET");
-  console.log("[SchedulerManager]   📧 Newsletter Pubblicità → lun/mer/ven alle 18:00 CET");
+  // NEWSLETTER PROMOZIONALI (Business, Prompt Collection, Pubblicità) — TUTTE DISABILITATE
+  // Rimossa per decisione editoriale 2026-04-12.
+  // Restano attive solo: Daily Unificata (lun–ven 11:00) + Newsletter Sabato (12:00).
+  console.log("[SchedulerManager]   📧 Newsletter Promozionali (Business/PromptCollection/Pubblicità) → DISABILITATE");
 }
