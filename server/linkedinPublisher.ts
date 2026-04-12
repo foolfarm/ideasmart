@@ -18,7 +18,7 @@
 
 import { createHash } from "crypto";
 import { ENV } from "./_core/env";
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, sanitizeForLinkedIn } from "./_core/llm";
 import { getLatestEditorial, getDb, getLatestNews, saveEditorial } from "./db";
 import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
 import { findEditorialImage } from "./stockImages";
@@ -752,17 +752,18 @@ async function generateLinkedInPostText(
 
     const content = response?.choices?.[0]?.message?.content;
     if (typeof content === "string" && content.trim().length > 200) {
-      let text = content.trim();
+      // Rimuove formattazione Markdown (asterischi, underscore, ecc.) prima della pubblicazione
+      let text = sanitizeForLinkedIn(content.trim());
       // Troncamento di sicurezza: LinkedIn ha un limite di 3000 caratteri
       if (text.length > 2950) {
         console.warn(`[LinkedIn] \u26a0\ufe0f Post troppo lungo (${text.length} chars), tronco a 2950`);
         const cutPoint = text.lastIndexOf('\n', 2950);
         text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
         if (!text.includes('proofpress.ai')) {
-          text += '\n\nAndrea Cinelli | Tech Expert | proofpress.ai';
+          text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
         }
       }
-      console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars)`);
+      console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars, Markdown rimosso)`);
       return text;
     }
     throw new Error("Risposta LLM vuota o troppo corta");
@@ -1040,8 +1041,10 @@ export async function publishLinkedInPost(
     }
 
     // Pubblica direttamente il post generato dal radar (ha già il suo format)
+    // Rimuove formattazione Markdown prima della pubblicazione
+    const cleanRadarText = sanitizeForLinkedIn(radarResult.postText);
     const articleUrl = `${SITE_BASE_URL}/ai`;
-    console.log(`[LinkedIn] 🚀 Pubblicazione AI Tool Radar — ${radarResult.toolCount} tool, ${radarResult.postText.length} caratteri`);
+    console.log(`[LinkedIn] 🚀 Pubblicazione AI Tool Radar — ${radarResult.toolCount} tool, ${cleanRadarText.length} caratteri (Markdown rimosso)`);
 
     // Cerca un'immagine tematica per il post (con controllo anti-duplicati globale)
     let pexelsImage = await findEditorialImage(
@@ -1053,14 +1056,14 @@ export async function publishLinkedInPost(
 
     // AUDIT PRE-PUBBLICAZIONE: verifica unicità immagine
     if (pexelsImage) {
-      const audit = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+      const audit = await auditPrePublish(cleanRadarText, pexelsImage, slot);
       if (!audit.pass) {
         console.warn(`[LinkedIn AUDIT] \u26a0\ufe0f AI Tool Radar: ${audit.reason} — cerco immagine alternativa`);
         // Retry con immagine diversa
         const altExclude = [...recentImageUrls, pexelsImage];
         pexelsImage = await findEditorialImage("technology innovation digital", "new AI tools 2026", "ai", altExclude);
         if (pexelsImage) {
-          const audit2 = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+          const audit2 = await auditPrePublish(cleanRadarText, pexelsImage, slot);
           if (!audit2.pass) {
             console.warn(`[LinkedIn AUDIT] \ud83d\udeab AI Tool Radar: anche immagine alternativa duplicata — procedo senza immagine`);
             pexelsImage = null;
@@ -1070,7 +1073,7 @@ export async function publishLinkedInPost(
     }
 
     const result = await publishToLinkedIn(
-      radarResult.postText,
+      cleanRadarText,
       articleUrl,
       pexelsImage || null,
       "AI Tool Radar \u2014 10 nuovi tool AI",
@@ -1096,20 +1099,20 @@ export async function publishLinkedInPost(
             .values({
               dateLabel,
               slot: "ai-tool-radar" as any,
-              postText: radarResult.postText,
+              postText: cleanRadarText,
               linkedinUrl: linkedinUrl ?? null,
               title: "AI Tool Radar — 10 nuovi tool AI",
               section: "ai" as any,
               imageUrl: pexelsImage ?? null,
               hashtags: "#AI #AITools #Innovation #Proof Press #TechRadar",
-              postHash: computePostHash(radarResult.postText)
+              postHash: computePostHash(cleanRadarText)
             })
             .onDuplicateKeyUpdate({
               set: {
-                postText: radarResult.postText,
+                postText: cleanRadarText,
                 linkedinUrl: linkedinUrl ?? null,
                 imageUrl: pexelsImage ?? null,
-                postHash: computePostHash(radarResult.postText)
+                postHash: computePostHash(cleanRadarText)
               }
             });
           console.log(`[LinkedIn] 💾 AI Tool Radar salvato nel DB (${dateLabel})`);
@@ -1194,8 +1197,10 @@ export async function publishLinkedInPost(
     }
 
     // Pubblica direttamente il post generato dal radar
+    // Rimuove formattazione Markdown prima della pubblicazione
+    const cleanStartupText = sanitizeForLinkedIn(radarResult.postText);
     const articleUrl = `${SITE_BASE_URL}/startup`;
-    console.log(`[LinkedIn] 🚀 Pubblicazione Startup Radar — ${radarResult.startupCount} startup, ${radarResult.postText.length} caratteri`);
+    console.log(`[LinkedIn] 🚀 Pubblicazione Startup Radar — ${radarResult.startupCount} startup, ${cleanStartupText.length} caratteri (Markdown rimosso)`);
 
     let pexelsImage = await findEditorialImage(
       "startup europe investment venture capital",
@@ -1206,13 +1211,13 @@ export async function publishLinkedInPost(
 
     // AUDIT PRE-PUBBLICAZIONE: verifica unicità immagine
     if (pexelsImage) {
-      const audit = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+      const audit = await auditPrePublish(cleanStartupText, pexelsImage, slot);
       if (!audit.pass) {
         console.warn(`[LinkedIn AUDIT] \u26a0\ufe0f Startup Radar: ${audit.reason} — cerco immagine alternativa`);
         const altExclude = [...recentImageUrls, pexelsImage];
         pexelsImage = await findEditorialImage("european innovation startup team", "venture capital Europe 2026", "startup", altExclude);
         if (pexelsImage) {
-          const audit2 = await auditPrePublish(radarResult.postText, pexelsImage, slot);
+          const audit2 = await auditPrePublish(cleanStartupText, pexelsImage, slot);
           if (!audit2.pass) {
             console.warn(`[LinkedIn AUDIT] \ud83d\udeab Startup Radar: anche immagine alternativa duplicata — procedo senza immagine`);
             pexelsImage = null;
@@ -1222,7 +1227,7 @@ export async function publishLinkedInPost(
     }
 
     const result = await publishToLinkedIn(
-      radarResult.postText,
+      cleanStartupText,
       articleUrl,
       pexelsImage || null,
       "AI Dealflow Europe \u2014 10 startup investibili",
@@ -1248,20 +1253,20 @@ export async function publishLinkedInPost(
             .values({
               dateLabel,
               slot: "startup-afternoon" as any,
-              postText: radarResult.postText,
+              postText: cleanStartupText,
               linkedinUrl: linkedinUrl ?? null,
               title: "AI Dealflow Europe — 10 startup investibili",
               section: "startup" as any,
               imageUrl: pexelsImage ?? null,
               hashtags: "#Startup #AI #VentureCapital #Proof Press #StartupEurope",
-              postHash: computePostHash(radarResult.postText)
+              postHash: computePostHash(cleanStartupText)
             })
             .onDuplicateKeyUpdate({
               set: {
-                postText: radarResult.postText,
+                postText: cleanStartupText,
                 linkedinUrl: linkedinUrl ?? null,
                 imageUrl: pexelsImage ?? null,
-                postHash: computePostHash(radarResult.postText)
+                postHash: computePostHash(cleanStartupText)
               }
             });
           console.log(`[LinkedIn] 💾 Startup Radar salvato nel DB (${dateLabel})`);

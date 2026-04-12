@@ -238,6 +238,14 @@ Integra esempi reali, use case e riferimenti a mercato o industry per rendere il
 Mantieni un tono da builder e decision maker, non da consulente teorico: orienta sempre verso azione, impatto e scalabilità.
 Chiudi con un takeaway netto che sintetizzi la direzione da prendere — senza etichette come "Takeaway" o "In sintesi", scrivi direttamente la conclusione in forma di affermazione forte rivolta al lettore.
 Obiettivo: guidare decisioni, non solo informare.
+
+REGOLE DI FORMATTAZIONE ASSOLUTE (non derogabili):
+- NON usare mai asterischi (*) o doppi asterischi (**) per il grassetto o qualsiasi altra formattazione.
+- NON usare mai underscore (_) per il corsivo.
+- NON usare mai simboli Markdown di nessun tipo: niente #, niente >, niente -, niente backtick.
+- Scrivi testo puro, come un essere umano che digita su LinkedIn o in un articolo di giornale.
+- Per enfatizzare un concetto, usa la struttura della frase, non la formattazione tipografica.
+- Il testo deve sembrare scritto da una persona, non da un sistema AI.
 `.trim();
 
 /**
@@ -457,6 +465,36 @@ async function invokeForge(params: InvokeParams): Promise<InvokeResult> {
 export function stripJsonBackticks(raw: unknown): string {
   const str = typeof raw === "string" ? raw : JSON.stringify(raw ?? "{}");
   return str.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+}
+
+/**
+ * Rimuove qualsiasi formattazione Markdown dal testo prima della pubblicazione su LinkedIn.
+ * LinkedIn non interpreta il Markdown: asterischi, underscore e altri simboli
+ * vengono mostrati letteralmente, rendendo il testo non professionale.
+ *
+ * Applica questa funzione a QUALSIASI testo generato da LLM prima di pubblicarlo su LinkedIn.
+ */
+export function sanitizeForLinkedIn(text: string): string {
+  return text
+    // Rimuove grassetto: **testo** o __testo__
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    // Rimuove corsivo: *testo* o _testo_
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/_(.+?)_/g, "$1")
+    // Rimuove intestazioni Markdown: # ## ###
+    .replace(/^#{1,6}\s+/gm, "")
+    // Rimuove blockquote: > testo
+    .replace(/^>\s+/gm, "")
+    // Rimuove backtick inline: `codice`
+    .replace(/`(.+?)`/g, "$1")
+    // Rimuove blocchi di codice: ```...```
+    .replace(/```[\s\S]*?```/g, "")
+    // Rimuove trattini come bullet list: - item
+    .replace(/^[\-\*]\s+/gm, "\u2022 ")
+    // Normalizza spazi multipli
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
 }
 
 /**
