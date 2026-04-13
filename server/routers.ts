@@ -504,12 +504,20 @@ export const appRouter = router({
         const db = await getDbInstance();
         if (!db) return [];
         const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
-        const { desc: descOp, eq: eqOp } = await import('drizzle-orm');
+        const { desc: descOp } = await import('drizzle-orm');
+        // Recupera tutti gli slot (non solo morning) per mostrare tutti i post dell'autore
         const posts = await db.select().from(linkedinPostsTable)
-          .where(eqOp(linkedinPostsTable.slot, 'morning'))
           .orderBy(descOp(linkedinPostsTable.createdAt))
-          .limit(limit);
-        return posts.map(post => ({
+          .limit(limit * 3); // Recupera più post per compensare deduplicazione per titolo
+        // Deduplicazione per titolo: mostra solo il post più recente per ogni titolo univoco
+        const seenTitles = new Set<string>();
+        const deduplicated = posts.filter(post => {
+          const key = (post.title ?? post.postText.substring(0, 80)).toLowerCase().trim();
+          if (seenTitles.has(key)) return false;
+          seenTitles.add(key);
+          return true;
+        }).slice(0, limit);
+        return deduplicated.map(post => ({
           id: post.id,
           dateLabel: post.dateLabel,
           slot: (post as any).slot ?? 'morning',
@@ -1625,6 +1633,51 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           })),
           message: `${result.published}/${result.posts.length} post pubblicati su LinkedIn (slot: ${slot})`,
         };
+      }),
+
+    // ── Inserimento manuale post LinkedIn nel DB ─────────────────────────────────────
+    insertLinkedinPost: adminProcedure
+      .input(z.object({
+        postText: z.string().min(10),
+        title: z.string().min(1),
+        linkedinUrl: z.string().url().optional(),
+        imageUrl: z.string().url().optional(),
+        hashtags: z.string().optional(),
+        section: z.enum(["ai", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi", "dealroom", "research", "music"]).default("ai"),
+        slot: z.enum(["morning", "ai-research-morning", "research", "research-afternoon", "startup-afternoon", "startup-evening", "afternoon", "evening", "dealroom", "ai-tool-radar"]).default("morning"),
+        dateLabel: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+        const crypto = await import('crypto');
+        const postHash = crypto.createHash('sha256').update(input.postText).digest('hex');
+        // Usa la data di oggi se non specificata
+        const dateLabel = input.dateLabel ?? new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+        await db.insert(linkedinPostsTable)
+          .values({
+            dateLabel,
+            slot: input.slot as any,
+            postText: input.postText,
+            linkedinUrl: input.linkedinUrl ?? null,
+            title: input.title,
+            section: input.section as any,
+            imageUrl: input.imageUrl ?? null,
+            hashtags: input.hashtags ?? null,
+            postHash,
+          })
+          .onDuplicateKeyUpdate({
+            set: {
+              postText: input.postText,
+              linkedinUrl: input.linkedinUrl ?? null,
+              title: input.title,
+              imageUrl: input.imageUrl ?? null,
+              hashtags: input.hashtags ?? null,
+              postHash,
+            }
+          });
+        return { success: true, message: `Post "${input.title}" inserito nel DB per il ${dateLabel}` };
       }),
   }),
   // ── Report Ripetitività Editoriali ──────────────────────────────────────────────

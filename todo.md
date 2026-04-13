@@ -3098,3 +3098,9 @@
 ## Ottimizzazione mobile home (13 Apr 2026)
 
 - [x] Nascondere su mobile: BreakingNewsSection, BreakingNewsTicker, strip Amazon deals (hidden sm:block)
+
+## Nuovi task (13 Apr 2026 — Fix POST DI ANDREA CINELLI)
+
+- [x] Correggere duplicato "L'Aia di Domani" nella sezione POST DI ANDREA CINELLI
+- [x] Far apparire il post McKinsey Agentic AI nella sezione POST DI ANDREA CINELLI
+- [x] Aggiungere procedura tRPC admin.insertLinkedinPost per inserimento manuale post nel DB
