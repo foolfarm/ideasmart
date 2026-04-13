@@ -22,13 +22,15 @@ export default function AmazonDealBanner({
   offset = 0,
   className = "",
 }: AmazonDealBannerProps) {
-  const { data: deals, isLoading } = trpc.amazonDeals.getActiveDeals.useQuery(
+  const { data: allDeals, isLoading } = trpc.amazonDeals.getDealsWithImage.useQuery(
     { limit: 12 },
     { staleTime: 1000 * 60 * 60 }
   );
   const trackClick = trpc.amazonDeals.trackClick.useMutation();
 
-  const deal = deals && deals.length > 0 ? deals[offset % deals.length] : null;
+  // Solo deal con immagine valida per manchette e sidebar
+  const deals = allDeals?.filter(d => d.imageUrl && d.imageUrl.startsWith('http')) ?? [];
+  const deal = deals.length > 0 ? deals[offset % deals.length] : null;
 
   // ── LOADING ────────────────────────────────────────────────────────────────
   if (isLoading) {
@@ -43,19 +45,8 @@ export default function AmazonDealBanner({
     );
   }
 
-  // ── NO DEAL ────────────────────────────────────────────────────────────────
-  if (!deal) {
-    if (variant === "strip") return null;
-    return (
-      <div className={`border border-[#e5e5ea] rounded-xl bg-[#f5f5f7] flex flex-col items-center justify-center gap-2 p-4 ${className}`}
-        style={{ minHeight: variant === "sidebar" ? "160px" : "80px" }}>
-        <ShoppingCart size={22} color="#aeaeb2" strokeWidth={1.5} />
-        <span style={{ fontFamily: SF, fontSize: '11px', color: '#aeaeb2', textAlign: 'center' }}>
-          Offerte Amazon in arrivo
-        </span>
-      </div>
-    );
-  }
+  // ── NO DEAL (nessun deal con immagine: non mostrare nulla) ────────────────────────────────────────────
+  if (!deal) return null;
 
   const handleClick = () => trackClick.mutate({ id: deal.id });
 

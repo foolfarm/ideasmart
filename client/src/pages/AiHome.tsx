@@ -15,6 +15,8 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
+import AmazonSectionStrip from "@/components/AmazonSectionStrip";
+
 
 const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#f5f5f7";
@@ -539,6 +541,9 @@ export default function AiHome() {
             accentColor="#1a1a1a"
             skipCount={10}
           />
+
+          {/* ── AMAZON DEALS STRIP ── */}
+          <AmazonSectionStrip />
 
           <div className="max-w-[1280px] mx-auto">
             <SharedPageFooter />
