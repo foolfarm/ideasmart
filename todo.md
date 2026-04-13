@@ -3071,3 +3071,7 @@
 
 - [x] Fix definitivo sidebar: banner Amazon non si sovrappone mai ai canali (rimuovere dal DOM quando collassata)
 - [x] Fix definitivo header manchette: larghezze fisse max 160px per non spingere il logo ProofPress
+
+## Restyling manchette header (13 Apr 2026)
+
+- [x] Ridurre dimensioni banner manchette header: immagine 100px→68px, colonne 160px→120px, font proporzionati

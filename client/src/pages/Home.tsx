@@ -31,42 +31,43 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
 
   // REGOLA: nessun carrello vuoto. Se non c'è immagine, spazio trasparente.
   if (!deal || !deal.imageUrl || !deal.imageUrl.startsWith('http')) {
-    return <div className="hidden lg:block flex-shrink-0 w-[140px]" />;
+    return <div className="hidden lg:block flex-shrink-0 w-[110px]" />;
   }
 
   return (
-    <div className="hidden lg:flex flex-col flex-shrink-0 w-[140px] items-center gap-1">
+    // Manchette compatta: 110px larghezza, immagine 68px altezza — proporzione da giornale
+    <div className="hidden lg:flex flex-col flex-shrink-0 items-center gap-0.5" style={{ width: '110px' }}>
       <a
         href={deal.affiliateUrl}
         target="_blank"
         rel="noopener noreferrer sponsored"
         onClick={() => trackClick.mutate({ id: deal.id })}
-        className="w-full block rounded-xl overflow-hidden border border-[#e5e5ea] bg-white hover:border-[#ff9900] transition-colors group"
+        className="w-full block rounded-lg overflow-hidden border border-[#e5e5ea] bg-white hover:border-[#ff9900] transition-colors group"
         style={{ textDecoration: 'none' }}
         title={deal.title}
       >
-        <div className="w-full overflow-hidden" style={{ height: '100px', background: '#fff' }}>
-          <img src={deal.imageUrl} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '4px' }} />
+        <div className="w-full overflow-hidden" style={{ height: '68px', background: '#fff' }}>
+          <img src={deal.imageUrl} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '3px' }} />
         </div>
-        <div className="px-2 py-1.5 bg-white">
-          <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <div className="px-1.5 py-1 bg-white">
+          <p style={{ fontFamily: SF, fontSize: '8px', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.25, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {deal.title}
           </p>
           {deal.price && deal.price !== '...' && (
-            <p style={{ fontFamily: SF, fontSize: '10px', fontWeight: 800, color: '#ff9900', marginTop: '2px' }}>{deal.price}</p>
+            <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 800, color: '#ff9900', marginTop: '1px' }}>{deal.price}</p>
           )}
           {deal.rating && (
             <div className="flex items-center gap-0.5 mt-0.5">
-              <Star size={8} fill="#ff9900" color="#ff9900" />
-              <span style={{ fontFamily: SF, fontSize: '8px', color: '#6e6e73' }}>{deal.rating}</span>
+              <Star size={7} fill="#ff9900" color="#ff9900" />
+              <span style={{ fontFamily: SF, fontSize: '7px', color: '#6e6e73' }}>{deal.rating}</span>
             </div>
           )}
         </div>
-        <div className="px-2 py-1 bg-[#ff9900] group-hover:bg-[#e68900] transition-colors">
-          <p style={{ fontFamily: SF, fontSize: '8px', fontWeight: 700, color: '#fff', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Vedi su Amazon</p>
+        <div className="px-1.5 py-0.5 bg-[#ff9900] group-hover:bg-[#e68900] transition-colors">
+          <p style={{ fontFamily: SF, fontSize: '7px', fontWeight: 700, color: '#fff', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Vedi su Amazon</p>
         </div>
       </a>
-      <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
+      <span style={{ fontFamily: SF, fontSize: '8px', letterSpacing: '0.06em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
     </div>
   );
 }
@@ -635,7 +636,7 @@ export default function Home() {
 
             {/* Brand centrale con manchette Amazon ai lati */}
             {/* LAYOUT: grid 3 colonne — colonne laterali max 160px, titolo centr. garantito */}
-            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 160px) 1fr minmax(0, 160px)', alignItems: 'center', overflow: 'hidden' }}>
+            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 120px) 1fr minmax(0, 120px)', alignItems: 'center', overflow: 'hidden' }}>
               {/* Manchette sinistra — Amazon Deal */}
               <div className="flex justify-start">
                 <HomeAmazonDeal offset={0} />
