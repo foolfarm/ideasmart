@@ -136,7 +136,7 @@ export default function AdminLeads() {
           <Link href="/admin" style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, textDecoration: "none" }}>
             ← Admin
           </Link>
-          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+          <span style={{ color: "#aeaeb2" }}>|</span>
           <p style={{ margin: 0, color: "#fff", fontWeight: 900, fontSize: 16, letterSpacing: "-0.02em" }}>
             ProofPress <span style={{ color: ACCENT }}>Leads</span>
           </p>

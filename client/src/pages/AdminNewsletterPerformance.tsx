@@ -49,10 +49,10 @@ export default function AdminNewsletterPerformance() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
         <div className="text-center">
-          <p className="text-white/60 mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+          <p className="text-[#6e6e73] mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Accesso riservato agli amministratori.
           </p>
-          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-bold" style={{ background: "#1a1a1a", color: "#0f0f0f" }}>
+          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-bold" style={{ background: "#1d1d1f", color: "#ffffff" }}>
             Torna alla Home
           </button>
         </div>
@@ -100,10 +100,10 @@ export default function AdminNewsletterPerformance() {
     <div className="min-h-screen" style={{ background: "#f5f5f7" }}>
 
       {/* Header */}
-      <div className="border-b border-white/8" style={{ background: "#060a14" }}>
+      <div className="border-b" style={{ background: "#ffffff" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/admin")} className="text-white/40 hover:text-white transition-colors text-sm">
+            <button onClick={() => navigate("/admin")} className="text-sm transition-colors">
               ← Admin
             </button>
             <span className="text-white/20">/</span>
@@ -113,7 +113,7 @@ export default function AdminNewsletterPerformance() {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs text-white/40">{user.name ?? user.email}</span>
+            <span className="text-xs">{user.name ?? user.email}</span>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default function AdminNewsletterPerformance() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* Segmentazione Canali */}
-        <div className="rounded-2xl border border-white/8 p-5 mb-8" style={{ background: "rgba(255,255,255,0.02)" }}>
+        <div className="rounded-2xl border border-[#e5e5ea] p-5 mb-8" style={{ background: "#ffffff" }}>
           <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Iscritti Attivi per Canale</p>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
             {channelStats.map(ch => (
@@ -138,7 +138,7 @@ export default function AdminNewsletterPerformance() {
                 <div className="text-2xl font-black mb-0.5" style={{ color: ch.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   {ch.count}
                 </div>
-                <div className="text-xs text-white/40 uppercase tracking-wider">{ch.label}</div>
+                <div className="text-xs uppercase tracking-wider">{ch.label}</div>
               </button>
             ))}
           </div>
@@ -153,18 +153,18 @@ export default function AdminNewsletterPerformance() {
             { label: "Tasso apertura medio", value: `${avgOpenRate}%`, color: avgOpenRate >= 20 ? "#1a1a1a" : avgOpenRate >= 10 ? "#ff9900" : "#2a2a2a", icon: "📊" },
             { label: "Disiscrizioni totali", value: totalUnsubscribed.toLocaleString("it-IT"), color: "#2a2a2a", icon: "🚫" }
           ].map((stat) => (
-            <div key={stat.label} className="rounded-2xl p-5 border border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
+            <div key={stat.label} className="rounded-2xl p-5 border border-[#e5e5ea]" style={{ background: "#ffffff" }}>
               <div className="text-2xl mb-1">{stat.icon}</div>
               <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 {stat.value}
               </div>
-              <div className="text-xs text-white/40 uppercase tracking-wider">{stat.label}</div>
+              <div className="text-xs uppercase tracking-wider">{stat.label}</div>
             </div>
           ))}
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b border-white/8 pb-0">
+        <div className="flex gap-2 mb-8 border-b pb-0">
           {[
             { id: "campaigns", label: `Campagne (${campaigns.length})` },
             { id: "subscribers", label: `Iscritti (${allSubs.length})` }
@@ -187,12 +187,12 @@ export default function AdminNewsletterPerformance() {
 
         {/* ── TAB: CAMPAGNE ─────────────────────────────────────────────────── */}
         {tab === "campaigns" && (
-          <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
-            <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
+          <div className="rounded-2xl border border-[#e5e5ea] overflow-hidden" style={{ background: "#ffffff" }}>
+            <div className="px-6 py-4 border-b flex items-center justify-between">
               <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ◆ Storico Campagne Newsletter
               </p>
-              <button onClick={() => campaignsQuery.refetch()} className="text-xs text-white/30 hover:text-white/60 transition-colors">
+              <button onClick={() => campaignsQuery.refetch()} className="text-xs text-[#aeaeb2] hover:text-[#6e6e73] transition-colors">
                 ↻ Aggiorna
               </button>
             </div>
@@ -203,19 +203,19 @@ export default function AdminNewsletterPerformance() {
               </div>
             ) : campaigns.length === 0 ? (
               <div className="p-12 text-center">
-                <p className="text-white/30 text-sm">Nessuna campagna newsletter inviata ancora.</p>
+                <p className="text-[#aeaeb2] text-sm">Nessuna campagna newsletter inviata ancora.</p>
                 <p className="text-white/20 text-xs mt-2">Le statistiche appariranno dopo il primo invio.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/6">
-                      <th className="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Oggetto</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Data invio</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Inviati</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Aperti</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Tasso apertura</th>
+                    <tr className="border-b border-[#e5e5ea]">
+                      <th className="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Oggetto</th>
+                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Data invio</th>
+                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Inviati</th>
+                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Aperti</th>
+                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Tasso apertura</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -223,11 +223,11 @@ export default function AdminNewsletterPerformance() {
                       const rate = c.openRate ?? 0;
                       const rateColor = rate >= 25 ? "#1a1a1a" : rate >= 15 ? "#ff9900" : rate >= 5 ? "#ffcc00" : "#2a2a2a";
                       return (
-                        <tr key={c.id} className="border-b border-white/4 hover:bg-white/2 transition-colors">
-                          <td className="px-5 py-4 text-sm text-white/80 max-w-xs" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        <tr key={c.id} className="border-b border-[#e5e5ea] hover:bg-white/2 transition-colors">
+                          <td className="px-5 py-4 text-sm text-[#1d1d1f] max-w-xs" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                             <span className="line-clamp-2">{c.subject}</span>
                           </td>
-                          <td className="px-5 py-4 text-xs text-white/40 text-center whitespace-nowrap">
+                          <td className="px-5 py-4 text-xs text-center whitespace-nowrap">
                             {fmt(c.sentAt)}
                           </td>
                           <td className="px-5 py-4 text-sm text-white/70 text-center font-mono">
@@ -300,17 +300,17 @@ export default function AdminNewsletterPerformance() {
                 <option value="startup">Startup</option>
                 <option value="health">Health</option>
               </select>
-              <span className="ml-auto text-xs text-white/30 self-center">
+              <span className="ml-auto text-xs text-[#aeaeb2] self-center">
                 {filtered.length} / {allSubs.length} iscritti
               </span>
             </div>
 
-            <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
-              <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
+            <div className="rounded-2xl border border-[#e5e5ea] overflow-hidden" style={{ background: "#ffffff" }}>
+              <div className="px-6 py-4 border-b flex items-center justify-between">
                 <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                   ◆ Iscritti con Tracking ({filtered.length})
                 </p>
-                <button onClick={() => subscribersQuery.refetch()} className="text-xs text-white/30 hover:text-white/60 transition-colors">
+                <button onClick={() => subscribersQuery.refetch()} className="text-xs text-[#aeaeb2] hover:text-[#6e6e73] transition-colors">
                   ↻ Aggiorna
                 </button>
               </div>
@@ -321,21 +321,21 @@ export default function AdminNewsletterPerformance() {
                 </div>
               ) : filtered.length === 0 ? (
                 <div className="p-8 text-center">
-                  <p className="text-white/30 text-sm">Nessun iscritto trovato con i filtri selezionati.</p>
+                  <p className="text-[#aeaeb2] text-sm">Nessun iscritto trovato con i filtri selezionati.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/6">
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Email</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Nome</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Stato</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Inviati</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Aperture</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Ultima apertura</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-white/30">Iscritto il</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/30">Canali</th>
+                      <tr className="border-b border-[#e5e5ea]">
+                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Email</th>
+                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Nome</th>
+                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Stato</th>
+                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Inviati</th>
+                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Aperture</th>
+                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Ultima apertura</th>
+                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Iscritto il</th>
+                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Canali</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -343,8 +343,8 @@ export default function AdminNewsletterPerformance() {
                         const hasOpened = sub.totalOpened && sub.totalOpened > 0;
                         const isUnsub = sub.status === "unsubscribed";
                         return (
-                          <tr key={sub.id} className="border-b border-white/4 hover:bg-white/2 transition-colors">
-                            <td className="px-4 py-3 text-sm text-white/80" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          <tr key={sub.id} className="border-b border-[#e5e5ea] hover:bg-white/2 transition-colors">
+                            <td className="px-4 py-3 text-sm text-[#1d1d1f]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                               {sub.email}
                             </td>
                             <td className="px-4 py-3 text-sm text-white/40">{sub.name ?? "—"}</td>
@@ -359,7 +359,7 @@ export default function AdminNewsletterPerformance() {
                                 {isUnsub ? "Disattivato" : "Attivo"}
                               </span>
                             </td>
-                            <td className="px-4 py-3 text-center text-sm font-mono text-white/50">
+                            <td className="px-4 py-3 text-center text-sm font-mono text-[#6e6e73]">
                               {sub.totalSent ?? 0}
                             </td>
                             <td className="px-4 py-3 text-center">
@@ -375,7 +375,7 @@ export default function AdminNewsletterPerformance() {
                             <td className="px-4 py-3 text-center text-xs text-white/35 whitespace-nowrap">
                               {fmtFull(sub.lastOpenedAt)}
                             </td>
-                            <td className="px-4 py-3 text-center text-xs text-white/30 whitespace-nowrap">
+                            <td className="px-4 py-3 text-center text-xs text-[#aeaeb2] whitespace-nowrap">
                               {fmt(sub.subscribedAt)}
                             </td>
                             <td className="px-4 py-3">

@@ -36,7 +36,7 @@ function AmazonDealForm({ onSuccess }: { onSuccess: () => void }) {
       </div>
       <textarea placeholder="Descrizione breve *" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} className="w-full px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-orange-400 resize-none" style={{ fontFamily: FONT }} />
       <div className="flex items-center gap-3">
-        <label className="text-xs text-white/40" style={{ fontFamily: FONT }}>Data programmata:</label>
+        <label className="text-xs" style={{ fontFamily: FONT }}>Data programmata:</label>
         <input type="date" value={form.scheduledDate} onChange={e => setForm(f => ({ ...f, scheduledDate: e.target.value }))} className="px-3 py-1.5 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-orange-400" style={{ fontFamily: FONT }} />
       </div>
       <button
@@ -83,9 +83,9 @@ function SponsorForm({ onSuccess }: { onSuccess: () => void }) {
       <textarea placeholder="Descrizione breve *" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} className="w-full px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-cyan-400 resize-none" style={{ fontFamily: FONT }} />
       <textarea placeholder='Features (una per riga, es: "Data Room con NDA")' value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="w-full px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-cyan-400 resize-none" style={{ fontFamily: FONT }} />
       <div className="flex items-center gap-3">
-        <label className="text-xs text-white/40" style={{ fontFamily: FONT }}>Peso rotazione:</label>
+        <label className="text-xs" style={{ fontFamily: FONT }}>Peso rotazione:</label>
         <input type="number" min={1} max={10} value={form.weight} onChange={e => setForm(f => ({ ...f, weight: parseInt(e.target.value) || 1 }))} className="w-20 px-3 py-1.5 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-cyan-400" style={{ fontFamily: FONT }} />
-        <span className="text-xs text-white/30" style={{ fontFamily: FONT }}>Piu alto = appare piu spesso</span>
+        <span className="text-xs text-[#aeaeb2]" style={{ fontFamily: FONT }}>Piu alto = appare piu spesso</span>
       </div>
       <button
         onClick={() => {
@@ -140,7 +140,7 @@ export default function AdminNewsletterContent() {
   if (!user || user.role !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
-        <p className="text-white/60 text-sm" style={{ fontFamily: FONT }}>Accesso riservato agli amministratori.</p>
+        <p className="text-[#6e6e73] text-sm" style={{ fontFamily: FONT }}>Accesso riservato agli amministratori.</p>
       </div>
     );
   }
@@ -153,10 +153,10 @@ export default function AdminNewsletterContent() {
   return (
     <div className="min-h-screen" style={{ background: "#f5f5f7" }}>
       {/* Header */}
-      <div className="border-b border-white/8" style={{ background: "#060a14" }}>
+      <div className="border-b" style={{ background: "#ffffff" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/admin")} className="text-white/40 hover:text-white transition-colors text-sm">
+            <button onClick={() => navigate("/admin")} className="text-sm transition-colors">
               &larr; Admin
             </button>
             <span className="text-white/20">/</span>
@@ -187,7 +187,7 @@ export default function AdminNewsletterContent() {
                 </div>
                 <div>
                   <h2 className="text-sm font-bold text-white" style={{ fontFamily: FONT }}>Amazon Deals</h2>
-                  <p className="text-xs text-white/40" style={{ fontFamily: FONT }}>Rotazione giornaliera automatica nella newsletter</p>
+                  <p className="text-xs" style={{ fontFamily: FONT }}>Rotazione giornaliera automatica nella newsletter</p>
                 </div>
               </div>
               <button
@@ -212,13 +212,13 @@ export default function AdminNewsletterContent() {
                   <div className="w-6 h-6 border-2 border-orange-400/30 border-t-orange-400 rounded-full animate-spin mx-auto" />
                 </div>
               ) : deals.length === 0 ? (
-                <div className="rounded-2xl border border-white/8 p-8 text-center" style={{ background: "rgba(255,255,255,0.02)" }}>
-                  <p className="text-white/30 text-sm" style={{ fontFamily: FONT }}>Nessun Amazon Deal inserito.</p>
+                <div className="rounded-2xl border border-[#e5e5ea] p-8 text-center" style={{ background: "#ffffff" }}>
+                  <p className="text-[#aeaeb2] text-sm" style={{ fontFamily: FONT }}>Nessun Amazon Deal inserito.</p>
                   <p className="text-white/20 text-xs mt-1" style={{ fontFamily: FONT }}>Clicca "+ Nuovo Deal" per aggiungerne uno.</p>
                 </div>
               ) : (
                 deals.map((deal: any) => (
-                  <div key={deal.id} className={`rounded-xl border p-4 transition-all ${deal.active ? "border-orange-500/20" : "border-white/8 opacity-50"}`} style={{ background: deal.active ? "rgba(249,115,22,0.04)" : "rgba(255,255,255,0.02)" }}>
+                  <div key={deal.id} className={`rounded-xl border p-4 transition-all ${deal.active ? "border-orange-500/20" : "border-[#e5e5ea] opacity-50"}`} style={{ background: deal.active ? "rgba(249,115,22,0.04)" : "rgba(255,255,255,0.02)" }}>
                     <div className="flex items-start gap-3">
                       {deal.imageUrl && (
                         <img src={deal.imageUrl} alt={deal.title} className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
@@ -227,14 +227,14 @@ export default function AdminNewsletterContent() {
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <p className="text-sm font-bold text-white truncate" style={{ fontFamily: FONT }}>{deal.title}</p>
-                            <p className="text-xs text-white/40 mt-0.5" style={{ fontFamily: FONT }}>{deal.category}</p>
+                            <p className="text-xs mt-0.5" style={{ fontFamily: FONT }}>{deal.category}</p>
                           </div>
                           <span className="text-sm font-black flex-shrink-0" style={{ color: "#f97316", fontFamily: FONT }}>{deal.price}</span>
                         </div>
-                        <p className="text-xs text-white/50 mt-1 line-clamp-2" style={{ fontFamily: FONT }}>{deal.description}</p>
+                        <p className="text-xs text-[#6e6e73] mt-1 line-clamp-2" style={{ fontFamily: FONT }}>{deal.description}</p>
                         <div className="flex items-center gap-3 mt-2">
                           {deal.rating && <span className="text-xs text-yellow-400">{deal.rating}</span>}
-                          {deal.reviewCount && <span className="text-xs text-white/30">{deal.reviewCount} recensioni</span>}
+                          {deal.reviewCount && <span className="text-xs text-[#aeaeb2]">{deal.reviewCount} recensioni</span>}
                           <span className="text-xs text-white/20">Programmato: {deal.scheduledDate}</span>
                           <span className="text-xs text-white/20">Click: {deal.clickCount}</span>
                         </div>
@@ -274,7 +274,7 @@ export default function AdminNewsletterContent() {
                 </div>
                 <div>
                   <h2 className="text-sm font-bold text-white" style={{ fontFamily: FONT }}>Sponsor Newsletter</h2>
-                  <p className="text-xs text-white/40" style={{ fontFamily: FONT }}>Primary (in alto) e Spotlight (a meta) — rotazione pesata</p>
+                  <p className="text-xs" style={{ fontFamily: FONT }}>Primary (in alto) e Spotlight (a meta) — rotazione pesata</p>
                 </div>
               </div>
               <button
@@ -299,13 +299,13 @@ export default function AdminNewsletterContent() {
                   <div className="w-6 h-6 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto" />
                 </div>
               ) : sponsors.length === 0 ? (
-                <div className="rounded-2xl border border-white/8 p-8 text-center" style={{ background: "rgba(255,255,255,0.02)" }}>
-                  <p className="text-white/30 text-sm" style={{ fontFamily: FONT }}>Nessuno sponsor inserito.</p>
+                <div className="rounded-2xl border border-[#e5e5ea] p-8 text-center" style={{ background: "#ffffff" }}>
+                  <p className="text-[#aeaeb2] text-sm" style={{ fontFamily: FONT }}>Nessuno sponsor inserito.</p>
                   <p className="text-white/20 text-xs mt-1" style={{ fontFamily: FONT }}>Clicca "+ Nuovo Sponsor" per aggiungerne uno.</p>
                 </div>
               ) : (
                 sponsors.map((sponsor) => (
-                  <div key={sponsor.id} className={`rounded-xl border p-4 transition-all ${sponsor.active ? "border-cyan-500/20" : "border-white/8 opacity-50"}`} style={{ background: sponsor.active ? "rgba(6,182,212,0.04)" : "rgba(255,255,255,0.02)" }}>
+                  <div key={sponsor.id} className={`rounded-xl border p-4 transition-all ${sponsor.active ? "border-cyan-500/20" : "border-[#e5e5ea] opacity-50"}`} style={{ background: sponsor.active ? "rgba(6,182,212,0.04)" : "rgba(255,255,255,0.02)" }}>
                     <div className="flex items-start gap-3">
                       {sponsor.imageUrl && (
                         <img src={sponsor.imageUrl} alt={sponsor.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" />
@@ -314,17 +314,17 @@ export default function AdminNewsletterContent() {
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <p className="text-sm font-bold text-white" style={{ fontFamily: FONT }}>{sponsor.name}</p>
-                            <p className="text-xs text-white/50 mt-0.5" style={{ fontFamily: FONT }}>{sponsor.headline}</p>
+                            <p className="text-xs text-[#6e6e73] mt-0.5" style={{ fontFamily: FONT }}>{sponsor.headline}</p>
                           </div>
                           <span className={`text-xs px-2 py-0.5 rounded-full font-bold flex-shrink-0 ${sponsor.placement === "primary" ? "bg-cyan-500/15 text-cyan-400" : "bg-purple-500/15 text-purple-400"}`}>
                             {sponsor.placement === "primary" ? "Primary" : "Spotlight"}
                           </span>
                         </div>
-                        <p className="text-xs text-white/40 mt-1 line-clamp-2" style={{ fontFamily: FONT }}>{sponsor.description}</p>
+                        <p className="text-xs mt-1 line-clamp-2" style={{ fontFamily: FONT }}>{sponsor.description}</p>
                         <div className="flex items-center gap-3 mt-2">
-                          <span className="text-xs text-white/30">Peso: {sponsor.weight}</span>
-                          <span className="text-xs text-white/30">Invii: {sponsor.sendCount}</span>
-                          <span className="text-xs text-white/30">CTA: {sponsor.ctaText}</span>
+                          <span className="text-xs text-[#aeaeb2]">Peso: {sponsor.weight}</span>
+                          <span className="text-xs text-[#aeaeb2]">Invii: {sponsor.sendCount}</span>
+                          <span className="text-xs text-[#aeaeb2]">CTA: {sponsor.ctaText}</span>
                           {sponsor.lastSentAt && <span className="text-xs text-white/20">Ultimo: {new Date(sponsor.lastSentAt).toLocaleDateString("it-IT")}</span>}
                         </div>
                         {sponsor.features && (() => {

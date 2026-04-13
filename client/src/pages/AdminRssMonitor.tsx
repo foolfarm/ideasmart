@@ -123,11 +123,11 @@ export default function AdminRssMonitor() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
         <div className="text-center">
-          <p className="text-white/60 mb-4">Accesso riservato agli amministratori.</p>
+          <p className="text-[#6e6e73] mb-4">Accesso riservato agli amministratori.</p>
           <button
             onClick={() => navigate("/")}
             className="px-4 py-2 rounded-lg text-sm font-bold"
-            style={{ background: "#1a1a1a", color: "#0f0f0f" }}
+            style={{ background: "#1d1d1f", color: "#ffffff" }}
           >
             Torna alla Home
           </button>
@@ -143,10 +143,10 @@ export default function AdminRssMonitor() {
   return (
     <div className="min-h-screen" style={{ background: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Header */}
-      <div className="border-b border-white/8" style={{ background: "#060a14" }}>
+      <div className="border-b" style={{ background: "#ffffff" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/admin")} className="text-white/40 hover:text-white transition-colors text-sm">
+            <button onClick={() => navigate("/admin")} className="text-sm transition-colors">
               ← Admin
             </button>
             <span className="text-white/20">/</span>
@@ -156,7 +156,7 @@ export default function AdminRssMonitor() {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs text-white/40">{user.name ?? user.email}</span>
+            <span className="text-xs">{user.name ?? user.email}</span>
           </div>
         </div>
       </div>
@@ -168,7 +168,7 @@ export default function AdminRssMonitor() {
           <h1 className="text-2xl font-black text-white mb-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
             Monitor Qualità Fonti RSS
           </h1>
-          <p className="text-white/50 text-sm">
+          <p className="text-[#6e6e73] text-sm">
             Monitora le fonti certificate, verifica lo stato dei sourceUrl nel DB e avvia scraping manuale per ogni sezione.
           </p>
         </div>
@@ -219,15 +219,15 @@ export default function AdminRssMonitor() {
                 <div className="grid grid-cols-3 gap-2 text-center">
                   <div>
                     <div className="text-lg font-black text-white">{statsQuery.isLoading ? "–" : ok}</div>
-                    <div className="text-xs text-white/40">Homepage OK</div>
+                    <div className="text-xs">Homepage OK</div>
                   </div>
                   <div>
                     <div className="text-lg font-black" style={{ color: bad > 0 ? "#f59e0b" : "rgba(255,255,255,0.3)" }}>{statsQuery.isLoading ? "–" : bad}</div>
-                    <div className="text-xs text-white/40">URL specifici</div>
+                    <div className="text-xs">URL specifici</div>
                   </div>
                   <div>
                     <div className="text-lg font-black" style={{ color: missing > 0 ? "#ef4444" : "rgba(255,255,255,0.3)" }}>{statsQuery.isLoading ? "–" : missing}</div>
-                    <div className="text-xs text-white/40">Mancanti</div>
+                    <div className="text-xs">Mancanti</div>
                   </div>
                 </div>
               </div>
@@ -247,12 +247,12 @@ export default function AdminRssMonitor() {
                 triggerScrapingMutation.mutate({ section: sec });
               }}
               className="rounded-xl p-4 text-left border transition-all disabled:opacity-50"
-              style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.08)" }}
+              style={{ background: "#ffffff", borderColor: "rgba(255,255,255,0.08)" }}
             >
               <div className="text-lg mb-1">
               </div>
               <div className="text-sm font-bold text-white">{scrapingSection === sec ? "Scraping..." : `Scraping ${SECTION_LABELS[sec]}`}</div>
-              <div className="text-xs text-white/40 mt-1">Aggiorna notizie da RSS</div>
+              <div className="text-xs mt-1">Aggiorna notizie da RSS</div>
             </button>
           ))}
 
@@ -268,14 +268,14 @@ export default function AdminRssMonitor() {
           >
             <div className="text-lg mb-1">{fixingUrls === "all" ? "⏳" : "🔧"}</div>
             <div className="text-sm font-bold text-white">{fixingUrls === "all" ? "Fix in corso..." : "Fix URL (tutto il DB)"}</div>
-            <div className="text-xs text-white/40 mt-1">Corregge URL non-homepage</div>
+            <div className="text-xs mt-1">Corregge URL non-homepage</div>
           </button>
         </div>
 
         {/* Fonti certificate per sezione attiva */}
-        <div className="rounded-2xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
+        <div className="rounded-2xl border border-[#e5e5ea] overflow-hidden" style={{ background: "#ffffff" }}>
           {/* Tab sezione */}
-          <div className="flex border-b border-white/8">
+          <div className="flex border-b">
             {(["ai", "startup", "dealroom"] as const).map((sec) => (
               <button
                 key={sec}
@@ -294,10 +294,10 @@ export default function AdminRssMonitor() {
 
           {/* Intestazione tabella */}
           <div className="grid grid-cols-12 gap-2 px-6 py-3 border-b border-white/5">
-            <div className="col-span-5 text-xs text-white/30 uppercase tracking-wider">Fonte</div>
-            <div className="col-span-3 text-xs text-white/30 uppercase tracking-wider">Homepage</div>
-            <div className="col-span-2 text-xs text-white/30 uppercase tracking-wider">Lingua</div>
-            <div className="col-span-2 text-xs text-white/30 uppercase tracking-wider">Priorità</div>
+            <div className="col-span-5 text-xs text-[#aeaeb2] uppercase tracking-wider">Fonte</div>
+            <div className="col-span-3 text-xs text-[#aeaeb2] uppercase tracking-wider">Homepage</div>
+            <div className="col-span-2 text-xs text-[#aeaeb2] uppercase tracking-wider">Lingua</div>
+            <div className="col-span-2 text-xs text-[#aeaeb2] uppercase tracking-wider">Priorità</div>
           </div>
 
           {/* Righe fonti */}
@@ -349,10 +349,10 @@ export default function AdminRssMonitor() {
 
           {/* Footer con totali */}
           <div className="px-6 py-4 flex items-center justify-between">
-            <span className="text-xs text-white/30">
+            <span className="text-xs text-[#aeaeb2]">
               {sources.length} fonti certificate · {sources.filter((s: any) => s.lang === "IT").length} italiane · {sources.filter((s: any) => s.lang === "EN").length} internazionali
             </span>
-            <span className="text-xs text-white/30">
+            <span className="text-xs text-[#aeaeb2]">
               Aggiornamento automatico ogni giorno alle {activeSection === "ai" ? "00:00" : activeSection === "dealroom" ? "01:30" : "01:00"} CET
             </span>
           </div>
@@ -360,8 +360,8 @@ export default function AdminRssMonitor() {
 
         {/* Legenda */}
         <div className="mt-6 p-4 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.01)" }}>
-          <p className="text-xs text-white/30 leading-relaxed">
-            <strong className="text-white/50">Come funziona l'audit:</strong> Ad ogni aggiornamento RSS, il sistema verifica ogni sourceUrl con una richiesta HTTP reale. Se l'URL risponde con 404 o non è raggiungibile, viene automaticamente sostituito con la homepage del dominio. Se il dominio non è in whitelist, viene usata la fonte di fallback della sezione. Il fix manuale "Fix URL (tutto il DB)" corregge tutte le notizie esistenti in batch.
+          <p className="text-xs text-[#aeaeb2] leading-relaxed">
+            <strong className="text-[#6e6e73]">Come funziona l'audit:</strong> Ad ogni aggiornamento RSS, il sistema verifica ogni sourceUrl con una richiesta HTTP reale. Se l'URL risponde con 404 o non è raggiungibile, viene automaticamente sostituito con la homepage del dominio. Se il dominio non è in whitelist, viene usata la fonte di fallback della sezione. Il fix manuale "Fix URL (tutto il DB)" corregge tutte le notizie esistenti in batch.
           </p>
         </div>
       </div>

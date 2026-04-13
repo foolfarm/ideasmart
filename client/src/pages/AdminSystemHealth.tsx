@@ -88,7 +88,7 @@ export default function AdminSystemHealth() {
   if (!user || user.role !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
-        <p className="text-white/60">Accesso non autorizzato.</p>
+        <p className="text-[#6e6e73]">Accesso non autorizzato.</p>
       </div>
     );
   }
@@ -106,7 +106,7 @@ export default function AdminSystemHealth() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate("/admin")}
-              className="flex items-center gap-2 text-white/40 hover:text-white/80 transition-colors text-sm"
+              className="flex items-center gap-2 text-white/40 hover:text-[#1d1d1f] transition-colors text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               Admin
@@ -117,7 +117,7 @@ export default function AdminSystemHealth() {
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-white/30">
+            <span className="text-xs text-[#aeaeb2]">
               {dataUpdatedAt ? `Aggiornato ${formatRelativeTime(new Date(dataUpdatedAt))}` : ""}
             </span>
             <Button
@@ -140,7 +140,7 @@ export default function AdminSystemHealth() {
           <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
             <div className="flex items-center gap-2 mb-1">
               <Activity className="w-4 h-4 text-cyan-400" />
-              <span className="text-xs text-white/40 uppercase tracking-wider">Uptime</span>
+              <span className="text-xs uppercase tracking-wider">Uptime</span>
             </div>
             <p className="text-2xl font-bold text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {data ? formatUptime(data.uptime) : "—"}
@@ -149,7 +149,7 @@ export default function AdminSystemHealth() {
           <div className="rounded-xl p-4" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}>
             <div className="flex items-center gap-2 mb-1">
               <div className="w-2 h-2 rounded-full bg-green-400" />
-              <span className="text-xs text-white/40 uppercase tracking-wider">Aggiornate oggi</span>
+              <span className="text-xs uppercase tracking-wider">Aggiornate oggi</span>
             </div>
             <p className="text-2xl font-bold text-green-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {greenCount}
@@ -158,7 +158,7 @@ export default function AdminSystemHealth() {
           <div className="rounded-xl p-4" style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.2)" }}>
             <div className="flex items-center gap-2 mb-1">
               <div className="w-2 h-2 rounded-full bg-yellow-400" />
-              <span className="text-xs text-white/40 uppercase tracking-wider">Parziali</span>
+              <span className="text-xs uppercase tracking-wider">Parziali</span>
             </div>
             <p className="text-2xl font-bold text-yellow-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {yellowCount}
@@ -167,7 +167,7 @@ export default function AdminSystemHealth() {
           <div className="rounded-xl p-4" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}>
             <div className="flex items-center gap-2 mb-1">
               <div className="w-2 h-2 rounded-full bg-red-400" />
-              <span className="text-xs text-white/40 uppercase tracking-wider">Da aggiornare</span>
+              <span className="text-xs uppercase tracking-wider">Da aggiornare</span>
             </div>
             <p className="text-2xl font-bold text-red-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {redCount}
@@ -187,11 +187,11 @@ export default function AdminSystemHealth() {
             {triggeringSection === "all" ? "Avvio in corso..." : "Aggiorna Tutti i Canali"}
           </Button>
           {lastTriggered["all"] && (
-            <span className="text-xs text-white/30">
+            <span className="text-xs text-[#aeaeb2]">
               Avviato {formatRelativeTime(lastTriggered["all"])}
             </span>
           )}
-          <span className="text-xs text-white/30">Lo scraping parte in background — ricarica tra 2-3 minuti</span>
+          <span className="text-xs text-[#aeaeb2]">Lo scraping parte in background — ricarica tra 2-3 minuti</span>
         </div>
 
         {/* Section table */}
@@ -233,7 +233,7 @@ export default function AdminSystemHealth() {
                   {/* Latest news */}
                   <div className="flex-1 min-w-0">
                     {s.latestTitle ? (
-                      <p className="text-xs text-white/60 truncate">{s.latestTitle}</p>
+                      <p className="text-xs text-[#6e6e73] truncate">{s.latestTitle}</p>
                     ) : (
                       <p className="text-xs text-red-400/60 italic">Nessuna notizia nel DB</p>
                     )}
@@ -242,7 +242,7 @@ export default function AdminSystemHealth() {
                   {/* Stats */}
                   <div className="flex items-center gap-4 flex-shrink-0">
                     <div className="text-center">
-                      <div className="flex items-center gap-1 text-white/30 text-xs mb-0.5">
+                      <div className="flex items-center gap-1 text-[#aeaeb2] text-xs mb-0.5">
                         <Clock className="w-3 h-3" />
                         <span>Ultima</span>
                       </div>
@@ -251,7 +251,7 @@ export default function AdminSystemHealth() {
                       </p>
                     </div>
                     <div className="text-center">
-                      <div className="flex items-center gap-1 text-white/30 text-xs mb-0.5">
+                      <div className="flex items-center gap-1 text-[#aeaeb2] text-xs mb-0.5">
                         <Activity className="w-3 h-3" />
                         <span>Oggi</span>
                       </div>
@@ -267,11 +267,11 @@ export default function AdminSystemHealth() {
                       </Badge>
                     </div>
                     <div className="text-center">
-                      <div className="flex items-center gap-1 text-white/30 text-xs mb-0.5">
+                      <div className="flex items-center gap-1 text-[#aeaeb2] text-xs mb-0.5">
                         <Database className="w-3 h-3" />
                         <span>Tot.</span>
                       </div>
-                      <p className="text-xs font-semibold text-white/50">{s.totalCount}</p>
+                      <p className="text-xs font-semibold text-[#6e6e73]">{s.totalCount}</p>
                     </div>
                   </div>
 
@@ -298,22 +298,22 @@ export default function AdminSystemHealth() {
 
         {/* Server info */}
         {data && (
-          <div className="mt-6 rounded-xl p-4 flex items-center gap-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="mt-6 rounded-xl p-4 flex items-center gap-6" style={{ background: "#ffffff", border: "1px solid rgba(255,255,255,0.06)" }}>
             <div>
-              <p className="text-xs text-white/30 uppercase tracking-wider mb-1">Server Time</p>
-              <p className="text-sm text-white/60">{new Date(data.serverTime).toLocaleString("it-IT", { timeZone: "Europe/Rome" })} CET</p>
+              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Server Time</p>
+              <p className="text-sm text-[#6e6e73]">{new Date(data.serverTime).toLocaleString("it-IT", { timeZone: "Europe/Rome" })} CET</p>
             </div>
             <div>
-              <p className="text-xs text-white/30 uppercase tracking-wider mb-1">Uptime</p>
-              <p className="text-sm text-white/60">{formatUptime(data.uptime)}</p>
+              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Uptime</p>
+              <p className="text-sm text-[#6e6e73]">{formatUptime(data.uptime)}</p>
             </div>
             <div>
-              <p className="text-xs text-white/30 uppercase tracking-wider mb-1">Sezioni monitorate</p>
-              <p className="text-sm text-white/60">{sections.length}</p>
+              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Sezioni monitorate</p>
+              <p className="text-sm text-[#6e6e73]">{sections.length}</p>
             </div>
             <div>
-              <p className="text-xs text-white/30 uppercase tracking-wider mb-1">Totale notizie DB</p>
-              <p className="text-sm text-white/60">{sections.reduce((acc, s) => acc + s.totalCount, 0).toLocaleString("it-IT")}</p>
+              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Totale notizie DB</p>
+              <p className="text-sm text-[#6e6e73]">{sections.reduce((acc, s) => acc + s.totalCount, 0).toLocaleString("it-IT")}</p>
             </div>
           </div>
         )}
