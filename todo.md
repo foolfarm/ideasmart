@@ -3066,3 +3066,8 @@
 - [x] Endpoint admin POST /api/admin/newsletter/unsub per disiscrizioni manuali sicure
 - [x] Disiscrizione manuale david@skala.it (richiesta via email)
 - [x] Disiscrizione manuale andrea.bonabello@ulixescapital.com (richiesta via email)
+
+## Fix banner Amazon (13 Apr 2026 — round 2)
+
+- [x] Fix definitivo sidebar: banner Amazon non si sovrappone mai ai canali (rimuovere dal DOM quando collassata)
+- [x] Fix definitivo header manchette: larghezze fisse max 160px per non spingere il logo ProofPress

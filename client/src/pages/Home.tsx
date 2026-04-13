@@ -634,8 +634,8 @@ export default function Home() {
             </p>
 
             {/* Brand centrale con manchette Amazon ai lati */}
-            {/* LAYOUT: grid 3 colonne — colonne laterali larghezza fissa 150px per simmetria garantita */}
-            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: '150px 1fr 150px', alignItems: 'center' }}>
+            {/* LAYOUT: grid 3 colonne — colonne laterali max 160px, titolo centr. garantito */}
+            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 160px) 1fr minmax(0, 160px)', alignItems: 'center', overflow: 'hidden' }}>
               {/* Manchette sinistra — Amazon Deal */}
               <div className="flex justify-start">
                 <HomeAmazonDeal offset={0} />
