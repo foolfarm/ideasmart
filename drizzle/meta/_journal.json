@@ -407,6 +407,20 @@
       "when": 1775929637561,
       "tag": "0057_absurd_shadow_king",
       "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "5",
+      "when": 1776069572093,
+      "tag": "0058_wise_stardust",
+      "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "5",
+      "when": 1776070149217,
+      "tag": "0059_flat_silver_sable",
+      "breakpoints": true
     }
   ]
 }

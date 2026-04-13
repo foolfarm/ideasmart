@@ -5,11 +5,11 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
-import { useLocation } from "wouter";
+import AdminHeader from "@/components/AdminHeader";
 
 export default function AdminToolsFeedback() {
   const { user, loading } = useAuth();
-  const [, navigate] = useLocation();
+  const [, navigate] = [null, (path: string) => { window.location.href = path; }];
   const [tab, setTab] = useState<"tools" | "feedback" | "opensource">("tools");
 
   // Queries
@@ -85,24 +85,7 @@ export default function AdminToolsFeedback() {
 
   return (
     <div className="min-h-screen" style={{ background: "#f5f5f7" }}>
-      {/* Header */}
-      <div className="border-b" style={{ background: "#ffffff" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/admin")} className="text-sm transition-colors">
-              ← Admin
-            </button>
-            <span className="text-white/20">/</span>
-            <span className="text-sm font-bold text-[#1d1d1f]" style={{ fontFamily: F }}>
-              Tool Submissions & Feedback
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs">{user.name ?? user.email}</span>
-          </div>
-        </div>
-      </div>
+      <AdminHeader />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Tabs */}

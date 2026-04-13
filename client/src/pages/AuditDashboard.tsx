@@ -13,8 +13,8 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
-import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
+import AdminHeader from "@/components/AdminHeader";
 
 // ── Colori status ──────────────────────────────────────────────────────────
 const STATUS_CONFIG = {
@@ -158,7 +158,7 @@ export default function AuditDashboard() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-4">
         <div className="text-2xl font-bold text-gray-800">Accesso riservato</div>
         <p className="text-gray-500">Questa pagina è riservata agli amministratori.</p>
-        <Link href="/" className="text-teal-600 hover:underline">← Torna alla home</Link>
+        <a href="/" className="text-teal-600 hover:underline">← Torna alla home</a>
       </div>
     );
   }
@@ -167,31 +167,7 @@ export default function AuditDashboard() {
     <div className="min-h-screen bg-gray-50">
       <SEOHead title="Audit Contenuti — Proof Press Admin" description="Dashboard di audit editoriale" robots="noindex, nofollow" />
 
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 sm:px-8 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <Link href="/admin" className="text-sm text-gray-400 hover:text-gray-600">← Admin</Link>
-            <h1 className="text-2xl font-black text-gray-900 mt-1">Audit Coerenza Contenuti</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
-              Verifica automatica ogni 24 ore — News · Analisi · Reportage
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {schedulerStatus?.isRunning ? (
-              <div className="flex items-center gap-2 text-sm text-amber-600 font-medium">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse inline-block" />
-                Audit in corso...
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 text-sm text-green-600">
-                <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                Scheduler attivo
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <AdminHeader />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
 

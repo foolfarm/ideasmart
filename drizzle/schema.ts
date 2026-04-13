@@ -83,10 +83,14 @@ export const newsletterSends = mysqlTable("newsletter_sends", {
   htmlContent: mediumtext("htmlContent").notNull(),
   recipientCount: int("recipientCount").default(0).notNull(),
   openedCount: int("openedCount").default(0).notNull(),
-  status: mysqlEnum("status", ["pending", "sending", "sent", "failed"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "sending", "sent", "failed", "approved"]).default("pending").notNull(),
   scheduledAt: timestamp("scheduledAt"),
   sentAt: timestamp("sentAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
+  // Approvazione manuale obbligatoria prima dell'invio massivo
+  approvalToken: varchar("approvalToken", { length: 128 }).unique(),
+  approvedAt: timestamp("approvedAt"),
+  approvedBy: varchar("approvedBy", { length: 255 }),
 });
 
 export type NewsletterSend = typeof newsletterSends.$inferSelect;

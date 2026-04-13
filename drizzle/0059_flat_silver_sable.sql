@@ -1,0 +1,1 @@
+ALTER TABLE `newsletter_sends` MODIFY COLUMN `status` enum('pending','sending','sent','failed','approved') NOT NULL DEFAULT 'pending';
