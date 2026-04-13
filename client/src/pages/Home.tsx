@@ -72,6 +72,62 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
   );
 }
 
+// ─── Banner Amazon Verticale — colonna destra sidebar ────────────────
+function AmazonDealVertical() {
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+  const { data: deals } = trpc.amazonDeals.getDealsWithImage.useQuery({ limit: 6 }, { staleTime: 1000 * 60 * 60 });
+  const trackClick = trpc.amazonDeals.trackClick.useMutation();
+
+  // Usa deal diverso dalle manchette (offset 2)
+  const deal = deals && deals.length > 2 ? deals[2] : deals && deals.length > 0 ? deals[0] : null;
+
+  if (!deal || !deal.imageUrl || !deal.imageUrl.startsWith('http')) return null;
+
+  return (
+    <div className="mb-5">
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: 'rgba(26,26,26,0.45)', fontFamily: SF }}>
+        Offerta Amazon
+      </p>
+      <a
+        href={deal.affiliateUrl}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        onClick={() => trackClick.mutate({ id: deal.id })}
+        className="block rounded-2xl overflow-hidden border border-[#e5e5ea] bg-white hover:border-[#ff9900] hover:shadow-md transition-all group"
+        style={{ textDecoration: 'none' }}
+      >
+        <div className="w-full flex items-center justify-center" style={{ height: '160px', background: '#fafafa' }}>
+          <img
+            src={deal.imageUrl}
+            alt={deal.title}
+            style={{ maxWidth: '80%', maxHeight: '140px', objectFit: 'contain', display: 'block' }}
+          />
+        </div>
+        <div className="p-3">
+          <p style={{ fontFamily: SF, fontSize: '12px', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '6px' }}>
+            {deal.title}
+          </p>
+          {deal.price && deal.price !== '...' && (
+            <p style={{ fontFamily: SF, fontSize: '16px', fontWeight: 800, color: '#ff9900', marginBottom: '4px' }}>
+              {deal.price}
+            </p>
+          )}
+          {deal.rating && (
+            <div className="flex items-center gap-1 mb-3">
+              <Star size={11} fill="#ff9900" color="#ff9900" />
+              <span style={{ fontFamily: SF, fontSize: '11px', color: '#6e6e73' }}>{deal.rating} su 5</span>
+            </div>
+          )}
+          <div className="w-full py-2 rounded-lg bg-[#ff9900] group-hover:bg-[#e68900] transition-colors text-center">
+            <span style={{ fontFamily: SF, fontSize: '11px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Vedi su Amazon →</span>
+          </div>
+        </div>
+      </a>
+      <p className="text-center mt-1" style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.06em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</p>
+    </div>
+  );
+}
+
 // ─── Strip Amazon Deals orizzontale (max 4 deal con immagine) ────────────────
 function AmazonDealsStrip() {
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
@@ -631,7 +687,7 @@ export default function Home() {
           <div className="py-1 sm:py-4">
 
             {/* Sopra il titolo: descrizione full-width su una sola riga */}
-            <p className="hidden sm:block text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
+            <p className="block text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
               Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
@@ -1106,6 +1162,9 @@ export default function Home() {
                       </span>
                     </div>
                   </Link>
+
+                  {/* ── Banner Amazon Verticale — sidebar destra ── */}
+                  <AmazonDealVertical />
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
                   <a

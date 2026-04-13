@@ -3084,3 +3084,9 @@
 ## Strip Amazon centrata (13 Apr 2026)
 
 - [x] Centrare la strip "Offerte Amazon del Giorno" sotto l'header (spostata a sinistra) — aggiunto max-w-7xl mx-auto
+
+## Tre miglioramenti UX (13 Apr 2026)
+
+- [x] Pagina /unsubscribe con form email di fallback (per chi arriva senza token) — già implementata
+- [x] Banner Amazon verticale nella colonna destra sotto widget Novità
+- [x] Sottotitolo "IL MAGAZINE CHE ANALIZZA..." visibile su mobile nell'header
