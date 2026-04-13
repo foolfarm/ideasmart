@@ -1,24 +1,30 @@
 /**
  * IDEASMART — Monitor RSS
- * Pagina admin per monitorare la qualità delle fonti RSS,
- * visualizzare le statistiche URL e triggerare lo scraping manuale.
+ * Stile Apple monocromatico con AdminHeader condiviso
  */
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import AdminHeader from "@/components/AdminHeader";
 
 type Section = "ai" | "startup" | "dealroom" | "all";
 
-const SECTION_COLORS: Record<string, string> = {
-  ai: "#1a1a1a",
-  startup: "#2a2a2a"
+const C = {
+  bg: "#f5f5f7",
+  white: "#ffffff",
+  black: "#1d1d1f",
+  mid: "#6e6e73",
+  light: "#aeaeb2",
+  border: "#e5e5ea",
+  font: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
 };
 
 const SECTION_LABELS: Record<string, string> = {
   ai: "AI NEWS",
-  startup: "STARTUP NEWS"
+  startup: "STARTUP NEWS",
+  dealroom: "DEALROOM",
 };
 
 // Fonti RSS certificate (per visualizzazione)
@@ -49,13 +55,22 @@ const RSS_SOURCES = {
     { name: "EU-Startups", url: "https://www.eu-startups.com", lang: "EN", priority: 1 },
     { name: "Forbes Entrepreneurs", url: "https://www.forbes.com", lang: "EN", priority: 2 },
     { name: "Wired Startup", url: "https://www.wired.com", lang: "EN", priority: 2 },
-    { name: "Startup Italia", url: "https://www.startupitalia.eu", lang: "IT", priority: 1 },
+    { name: "StartupItalia", url: "https://www.startupitalia.eu", lang: "IT", priority: 1 },
     { name: "Il Sole 24 Ore Startup", url: "https://www.ilsole24ore.com", lang: "IT", priority: 1 },
-    { name: "Corriere Economia", url: "https://www.corriere.it", lang: "IT", priority: 2 },
+    { name: "Corriere Innovazione", url: "https://www.corriere.it", lang: "IT", priority: 2 },
     { name: "Repubblica Economia", url: "https://www.repubblica.it", lang: "IT", priority: 2 },
     { name: "Startup Business", url: "https://www.startupbusiness.it", lang: "IT", priority: 1 },
     { name: "Ninja Marketing", url: "https://www.ninjamarketing.it", lang: "IT", priority: 2 },
-    { name: "Economyup", url: "https://www.economyup.it", lang: "IT", priority: 1 }
+    { name: "EconomyUp", url: "https://www.economyup.it", lang: "IT", priority: 1 },
+    { name: "ScaleUp Italy", url: "https://scaleupitaly.com", lang: "IT", priority: 2 },
+    { name: "Econopoly (Il Sole 24 Ore)", url: "https://www.econopoly.ilsole24ore.com", lang: "IT", priority: 2 },
+    { name: "Forbes Italia", url: "https://forbes.it", lang: "IT", priority: 1 },
+    { name: "Agenda Digitale Startup", url: "https://www.agendadigitale.eu", lang: "IT", priority: 2 },
+    { name: "Il Post Startup", url: "https://www.ilpost.it", lang: "IT", priority: 2 },
+    { name: "HuffPost Innovazione", url: "https://www.huffingtonpost.it", lang: "IT", priority: 2 },
+    { name: "Open Online", url: "https://www.open.online", lang: "IT", priority: 2 },
+    { name: "Panorama Economia", url: "https://www.panorama.it", lang: "IT", priority: 2 },
+    { name: "Milano Investment", url: "https://milanoinvestment.com", lang: "IT", priority: 2 },
   ],
   dealroom: [
     { name: "Dealroom.co", url: "https://dealroom.co", lang: "EN", priority: 1 },
@@ -77,13 +92,11 @@ export default function AdminRssMonitor() {
   const [fixingUrls, setFixingUrls] = useState<Section | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
 
-  // Statistiche notizie nel DB
   const statsQuery = trpc.adminTools.newsStats.useQuery(undefined, {
     enabled: user?.role === "admin",
     refetchInterval: 30_000
   });
 
-  // Trigger scraping RSS
   const triggerScrapingMutation = trpc.adminTools.triggerRssScraping.useMutation({
     onSuccess: (data) => {
       setScrapingSection(null);
@@ -97,7 +110,6 @@ export default function AdminRssMonitor() {
     }
   });
 
-  // Fix URL nel DB
   const fixUrlsMutation = trpc.adminTools.fixSourceUrls.useMutation({
     onSuccess: (data) => {
       setFixingUrls(null);
@@ -113,22 +125,18 @@ export default function AdminRssMonitor() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
-        <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: C.bg }}>
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: C.black }} />
       </div>
     );
   }
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: C.bg }}>
         <div className="text-center">
-          <p className="text-[#6e6e73] mb-4">Accesso riservato agli amministratori.</p>
-          <button
-            onClick={() => navigate("/")}
-            className="px-4 py-2 rounded-lg text-sm font-bold"
-            style={{ background: "#1d1d1f", color: "#ffffff" }}
-          >
+          <p className="text-sm mb-4" style={{ color: C.mid, fontFamily: C.font }}>Accesso riservato agli amministratori.</p>
+          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: C.black, color: "#fff" }}>
             Torna alla Home
           </button>
         </div>
@@ -138,50 +146,30 @@ export default function AdminRssMonitor() {
 
   const stats = statsQuery.data;
   const sources = (RSS_SOURCES as Record<string, typeof RSS_SOURCES.ai>)[activeSection] || [];
-  const sectionColor = SECTION_COLORS[activeSection];
 
   return (
-    <div className="min-h-screen" style={{ background: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-      {/* Header */}
-      <div className="border-b" style={{ background: "#ffffff" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/admin")} className="text-sm transition-colors">
-              ← Admin
-            </button>
-            <span className="text-white/20">/</span>
-            <span className="text-sm font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              📡 Monitor RSS
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs">{user.name ?? user.email}</span>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen" style={{ background: C.bg, fontFamily: C.font }}>
+      <AdminHeader title="Monitor RSS" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Titolo */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-black text-white mb-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-            Monitor Qualità Fonti RSS
-          </h1>
-          <p className="text-[#6e6e73] text-sm">
+        <div className="mb-6">
+          <h1 className="text-xl font-bold mb-1" style={{ color: C.black }}>Monitor Qualità Fonti RSS</h1>
+          <p className="text-sm" style={{ color: C.mid }}>
             Monitora le fonti certificate, verifica lo stato dei sourceUrl nel DB e avvia scraping manuale per ogni sezione.
           </p>
         </div>
 
         {/* Action result banner */}
         {lastAction && (
-          <div className="mb-6 p-4 rounded-xl border border-[#1a1a1a]/30" style={{ background: "rgba(0,229,200,0.06)" }}>
-            <p className="text-sm font-medium" style={{ color: "#1a1a1a" }}>{lastAction}</p>
+          <div className="mb-5 p-3 rounded-xl border" style={{ background: "#f0fdf4", borderColor: "#bbf7d0" }}>
+            <p className="text-sm font-medium" style={{ color: "#166534" }}>{lastAction}</p>
           </div>
         )}
 
         {/* Stats per sezione */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {(["ai", "startup", "dealroom"] as const).map((sec) => {
             const s = stats?.[sec];
             const total = s?.total ?? 0;
@@ -189,27 +177,26 @@ export default function AdminRssMonitor() {
             const bad = s?.specificUrls ?? 0;
             const missing = s?.missingUrls ?? 0;
             const pct = total > 0 ? Math.round((ok / total) * 100) : 0;
-            const color = SECTION_COLORS[sec];
 
             return (
               <div
                 key={sec}
-                className="rounded-2xl border p-6 cursor-pointer transition-all"
+                className="rounded-2xl border p-5 cursor-pointer transition-all"
                 style={{
-                  background: activeSection === sec ? `rgba(${sec === "ai" ? "0,229,200" : sec === "dealroom" ? "255,200,0" : "255,85,0"},0.08)` : "rgba(255,255,255,0.02)",
-                  borderColor: activeSection === sec ? color : "rgba(255,255,255,0.08)"
+                  background: activeSection === sec ? "#f0f0f5" : C.white,
+                  borderColor: activeSection === sec ? C.black : C.border,
                 }}
                 onClick={() => setActiveSection(sec)}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color }}>{SECTION_LABELS[sec]}</span>
-                  <span className="text-xs px-2 py-1 rounded-full font-bold" style={{ background: `${color}20`, color }}>
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: C.black }}>{SECTION_LABELS[sec]}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: "#f0f0f5", color: C.mid }}>
                     {statsQuery.isLoading ? "..." : `${pct}% ok`}
                   </span>
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-2 rounded-full mb-4 overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
+                <div className="h-1.5 rounded-full mb-4 overflow-hidden" style={{ background: C.border }}>
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${pct}%`, background: pct >= 90 ? "#22c55e" : pct >= 70 ? "#f59e0b" : "#ef4444" }}
@@ -218,16 +205,16 @@ export default function AdminRssMonitor() {
 
                 <div className="grid grid-cols-3 gap-2 text-center">
                   <div>
-                    <div className="text-lg font-black text-white">{statsQuery.isLoading ? "–" : ok}</div>
-                    <div className="text-xs">Homepage OK</div>
+                    <div className="text-lg font-black" style={{ color: C.black }}>{statsQuery.isLoading ? "–" : ok}</div>
+                    <div className="text-xs" style={{ color: C.mid }}>Homepage OK</div>
                   </div>
                   <div>
-                    <div className="text-lg font-black" style={{ color: bad > 0 ? "#f59e0b" : "rgba(255,255,255,0.3)" }}>{statsQuery.isLoading ? "–" : bad}</div>
-                    <div className="text-xs">URL specifici</div>
+                    <div className="text-lg font-black" style={{ color: bad > 0 ? "#f59e0b" : C.light }}>{statsQuery.isLoading ? "–" : bad}</div>
+                    <div className="text-xs" style={{ color: C.mid }}>URL specifici</div>
                   </div>
                   <div>
-                    <div className="text-lg font-black" style={{ color: missing > 0 ? "#ef4444" : "rgba(255,255,255,0.3)" }}>{statsQuery.isLoading ? "–" : missing}</div>
-                    <div className="text-xs">Mancanti</div>
+                    <div className="text-lg font-black" style={{ color: missing > 0 ? "#ef4444" : C.light }}>{statsQuery.isLoading ? "–" : missing}</div>
+                    <div className="text-xs" style={{ color: C.mid }}>Mancanti</div>
                   </div>
                 </div>
               </div>
@@ -236,8 +223,7 @@ export default function AdminRssMonitor() {
         </div>
 
         {/* Azioni rapide */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          {/* Scraping per sezione */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {(["ai", "startup", "dealroom"] as const).map((sec) => (
             <button
               key={sec}
@@ -246,45 +232,45 @@ export default function AdminRssMonitor() {
                 setScrapingSection(sec);
                 triggerScrapingMutation.mutate({ section: sec });
               }}
-              className="rounded-xl p-4 text-left border transition-all disabled:opacity-50"
-              style={{ background: "#ffffff", borderColor: "rgba(255,255,255,0.08)" }}
+              className="rounded-xl p-4 text-left border transition-all disabled:opacity-50 hover:bg-[#f0f0f5]"
+              style={{ background: C.white, borderColor: C.border }}
             >
-              <div className="text-lg mb-1">
+              <div className="text-sm font-semibold mb-1" style={{ color: C.black }}>
+                {scrapingSection === sec ? "⏳ Scraping..." : `Scraping ${SECTION_LABELS[sec]}`}
               </div>
-              <div className="text-sm font-bold text-white">{scrapingSection === sec ? "Scraping..." : `Scraping ${SECTION_LABELS[sec]}`}</div>
-              <div className="text-xs mt-1">Aggiorna notizie da RSS</div>
+              <div className="text-xs" style={{ color: C.mid }}>Aggiorna notizie da RSS</div>
             </button>
           ))}
 
-          {/* Fix URL tutti */}
           <button
             disabled={fixingUrls !== null}
             onClick={() => {
               setFixingUrls("all");
               fixUrlsMutation.mutate({ section: "all" });
             }}
-            className="rounded-xl p-4 text-left border transition-all disabled:opacity-50"
-            style={{ background: "rgba(255,85,0,0.05)", borderColor: "rgba(255,85,0,0.2)" }}
+            className="rounded-xl p-4 text-left border transition-all disabled:opacity-50 hover:bg-[#fff5f0]"
+            style={{ background: "#fff8f5", borderColor: "#ffd0b8" }}
           >
-            <div className="text-lg mb-1">{fixingUrls === "all" ? "⏳" : "🔧"}</div>
-            <div className="text-sm font-bold text-white">{fixingUrls === "all" ? "Fix in corso..." : "Fix URL (tutto il DB)"}</div>
-            <div className="text-xs mt-1">Corregge URL non-homepage</div>
+            <div className="text-sm font-semibold mb-1" style={{ color: C.black }}>
+              {fixingUrls === "all" ? "⏳ Fix in corso..." : "🔧 Fix URL (tutto il DB)"}
+            </div>
+            <div className="text-xs" style={{ color: C.mid }}>Corregge URL non-homepage</div>
           </button>
         </div>
 
         {/* Fonti certificate per sezione attiva */}
-        <div className="rounded-2xl border border-[#e5e5ea] overflow-hidden" style={{ background: "#ffffff" }}>
+        <div className="rounded-2xl border overflow-hidden" style={{ background: C.white, borderColor: C.border }}>
           {/* Tab sezione */}
-          <div className="flex border-b">
+          <div className="flex border-b" style={{ borderColor: C.border }}>
             {(["ai", "startup", "dealroom"] as const).map((sec) => (
               <button
                 key={sec}
                 onClick={() => setActiveSection(sec)}
                 className="flex-1 py-3 text-xs font-bold uppercase tracking-wider transition-all"
                 style={{
-                  color: activeSection === sec ? SECTION_COLORS[sec] : "rgba(255,255,255,0.3)",
-                  borderBottom: activeSection === sec ? `2px solid ${SECTION_COLORS[sec]}` : "2px solid transparent",
-                  background: activeSection === sec ? `rgba(${sec === "ai" ? "0,229,200" : sec === "dealroom" ? "255,200,0" : "255,85,0"},0.05)` : "transparent"
+                  color: activeSection === sec ? C.black : C.mid,
+                  borderBottom: activeSection === sec ? `2px solid ${C.black}` : "2px solid transparent",
+                  background: activeSection === sec ? "#f5f5f7" : "transparent",
                 }}
               >
                 {SECTION_LABELS[sec]}
@@ -293,31 +279,30 @@ export default function AdminRssMonitor() {
           </div>
 
           {/* Intestazione tabella */}
-          <div className="grid grid-cols-12 gap-2 px-6 py-3 border-b border-white/5">
-            <div className="col-span-5 text-xs text-[#aeaeb2] uppercase tracking-wider">Fonte</div>
-            <div className="col-span-3 text-xs text-[#aeaeb2] uppercase tracking-wider">Homepage</div>
-            <div className="col-span-2 text-xs text-[#aeaeb2] uppercase tracking-wider">Lingua</div>
-            <div className="col-span-2 text-xs text-[#aeaeb2] uppercase tracking-wider">Priorità</div>
+          <div className="grid grid-cols-12 gap-2 px-6 py-3 border-b" style={{ borderColor: C.border, background: "#f9f9fb" }}>
+            <div className="col-span-5 text-xs font-semibold uppercase tracking-wider" style={{ color: C.light }}>Fonte</div>
+            <div className="col-span-3 text-xs font-semibold uppercase tracking-wider" style={{ color: C.light }}>Homepage</div>
+            <div className="col-span-2 text-xs font-semibold uppercase tracking-wider" style={{ color: C.light }}>Lingua</div>
+            <div className="col-span-2 text-xs font-semibold uppercase tracking-wider" style={{ color: C.light }}>Priorità</div>
           </div>
 
           {/* Righe fonti */}
           {sources.map((source: any, i: number) => (
             <div
               key={i}
-              className="grid grid-cols-12 gap-2 px-6 py-4 border-b border-white/5 hover:bg-white/2 transition-colors items-center"
+              className="grid grid-cols-12 gap-2 px-6 py-3.5 border-b hover:bg-[#f9f9fb] transition-colors items-center"
+              style={{ borderColor: C.border }}
             >
               <div className="col-span-5">
-                <span className="text-sm font-semibold text-white">{source.name}</span>
+                <span className="text-sm font-medium" style={{ color: C.black }}>{source.name}</span>
               </div>
               <div className="col-span-3">
                 <a
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs transition-colors truncate block"
-                  style={{ color: sectionColor }}
-                  onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
+                  className="text-xs transition-colors truncate block hover:underline"
+                  style={{ color: "#007aff" }}
                 >
                   {source.url.replace("https://", "")}
                 </a>
@@ -326,8 +311,8 @@ export default function AdminRssMonitor() {
                 <span
                   className="text-xs font-bold px-2 py-0.5 rounded-full"
                   style={{
-                    background: source.lang === "IT" ? "rgba(0,229,200,0.15)" : "rgba(255,255,255,0.08)",
-                    color: source.lang === "IT" ? "#1a1a1a" : "rgba(255,255,255,0.5)"
+                    background: source.lang === "IT" ? "#e8f5e9" : "#f0f0f5",
+                    color: source.lang === "IT" ? "#2e7d32" : C.mid,
                   }}
                 >
                   {source.lang}
@@ -339,7 +324,7 @@ export default function AdminRssMonitor() {
                     <div
                       key={p}
                       className="w-2 h-2 rounded-full"
-                      style={{ background: p <= (4 - source.priority) ? sectionColor : "rgba(255,255,255,0.1)" }}
+                      style={{ background: p <= (4 - source.priority) ? C.black : C.border }}
                     />
                   ))}
                 </div>
@@ -348,20 +333,20 @@ export default function AdminRssMonitor() {
           ))}
 
           {/* Footer con totali */}
-          <div className="px-6 py-4 flex items-center justify-between">
-            <span className="text-xs text-[#aeaeb2]">
-              {sources.length} fonti certificate · {sources.filter((s: any) => s.lang === "IT").length} italiane · {sources.filter((s: any) => s.lang === "EN").length} internazionali
+          <div className="px-6 py-4 flex items-center justify-between" style={{ background: "#f9f9fb" }}>
+            <span className="text-xs" style={{ color: C.light }}>
+              {sources.length} fonti · {sources.filter((s: any) => s.lang === "IT").length} italiane · {sources.filter((s: any) => s.lang === "EN").length} internazionali
             </span>
-            <span className="text-xs text-[#aeaeb2]">
+            <span className="text-xs" style={{ color: C.light }}>
               Aggiornamento automatico ogni giorno alle {activeSection === "ai" ? "00:00" : activeSection === "dealroom" ? "01:30" : "01:00"} CET
             </span>
           </div>
         </div>
 
         {/* Legenda */}
-        <div className="mt-6 p-4 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.01)" }}>
-          <p className="text-xs text-[#aeaeb2] leading-relaxed">
-            <strong className="text-[#6e6e73]">Come funziona l'audit:</strong> Ad ogni aggiornamento RSS, il sistema verifica ogni sourceUrl con una richiesta HTTP reale. Se l'URL risponde con 404 o non è raggiungibile, viene automaticamente sostituito con la homepage del dominio. Se il dominio non è in whitelist, viene usata la fonte di fallback della sezione. Il fix manuale "Fix URL (tutto il DB)" corregge tutte le notizie esistenti in batch.
+        <div className="mt-5 p-4 rounded-xl border" style={{ background: "#f9f9fb", borderColor: C.border }}>
+          <p className="text-xs leading-relaxed" style={{ color: C.mid }}>
+            <strong style={{ color: C.black }}>Come funziona l'audit:</strong> Ad ogni aggiornamento RSS, il sistema verifica ogni sourceUrl con una richiesta HTTP reale. Se l'URL risponde con 404 o non è raggiungibile, viene automaticamente sostituito con la homepage del dominio. Il fix manuale "Fix URL (tutto il DB)" corregge tutte le notizie esistenti in batch.
           </p>
         </div>
       </div>

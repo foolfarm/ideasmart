@@ -152,20 +152,22 @@ export default function Admin() {
   ).length;
 
   // ─── Prossimi invii newsletter ───────────────────────────────────────────────
+  // Lo scheduler invia SOLO lun(1), mer(3), ven(5) alle 11:00 CET
   const ALL_CHANNELS = [
     "AI NEWS", "PROMPT AI", "USE CASE AI", "FARE SOLDI", "AI TOOLS",
     "PROOFPRESS VERIFY", "AI INVEST", "AI RESEARCH", "AI VENTURE",
-    "AI INVEST", "AI STARTUP NEWS", "AI DEALFLOW", "AI RADAR",
+    "AI STARTUP NEWS", "AI DEALFLOW", "AI RADAR",
   ];
   const dayNames = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
   const now = new Date();
   const upcomingSends: Array<{ date: Date; dayName: string; channel: string }> = [];
-  for (let i = 0; i < 30 && upcomingSends.length < 6; i++) {
+  for (let i = 0; i < 60 && upcomingSends.length < 7; i++) {
     const d = new Date(now);
     d.setDate(now.getDate() + i);
     d.setHours(11, 0, 0, 0);
     const dow = d.getDay();
-    if (dow === 0 || dow === 6) continue;
+    // Solo lunedì (1), mercoledì (3), venerdì (5)
+    if (dow !== 1 && dow !== 3 && dow !== 5) continue;
     if (d <= now) continue;
     const dayOfYear = Math.floor((d.getTime() - new Date(d.getFullYear(), 0, 0).getTime()) / 86400000);
     upcomingSends.push({ date: d, dayName: dayNames[dow], channel: ALL_CHANNELS[dayOfYear % ALL_CHANNELS.length] });

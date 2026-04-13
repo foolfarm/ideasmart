@@ -6,6 +6,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
+import AdminHeader from "@/components/AdminHeader";
 
 const C = {
   bg: "#f5f5f7",
@@ -59,6 +60,10 @@ export default function AdminNewsletterPerformance() {
     { days: sgDays },
     { enabled: user?.role === "admin" }
   );
+  const creditsQuery = trpc.adminTools.getSendgridCredits.useQuery(undefined, {
+    enabled: user?.role === "admin",
+    staleTime: 1000 * 60 * 30, // 30 min cache
+  });
   const campaignsQuery = trpc.admin.getNewsletterCampaignStats.useQuery(undefined, {
     enabled: user?.role === "admin"
   });
@@ -88,6 +93,7 @@ export default function AdminNewsletterPerformance() {
   }
 
   const sg = sgQuery.data;
+  const credits = creditsQuery.data;
   const campaigns = campaignsQuery.data ?? [];
   const allSubs = subscribersQuery.data ?? [];
 
@@ -115,26 +121,7 @@ export default function AdminNewsletterPerformance() {
   return (
     <div className="min-h-screen" style={{ background: C.bg, fontFamily: C.font }}>
 
-      {/* Header */}
-      <div className="border-b sticky top-0 z-10" style={{ background: C.white, borderColor: C.border }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/admin")}
-              className="text-sm font-medium transition-colors hover:opacity-70"
-              style={{ color: C.gray1 }}
-            >
-              ← Admin
-            </button>
-            <span style={{ color: C.border }}>/</span>
-            <span className="text-sm font-bold" style={{ color: C.black }}>Performance Newsletter</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500" />
-            <span className="text-xs" style={{ color: C.gray1 }}>{user.name ?? user.email}</span>
-          </div>
-        </div>
-      </div>
+      <AdminHeader title="Performance Newsletter" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -156,6 +143,52 @@ export default function AdminNewsletterPerformance() {
             </div>
           </div>
         </div>
+
+        {/* Piano SendGrid */}
+        {credits && credits.success && (
+          <div className="rounded-2xl border p-5 mb-6" style={{ background: C.white, borderColor: C.border }}>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.gray1 }}>Piano SendGrid — Utilizzo Mensile</p>
+              <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: '#e3f2fd', color: '#1565c0' }}>
+                {credits.plan?.toUpperCase()} · Rep. {credits.reputation}%
+              </span>
+            </div>
+            <div className="flex items-center gap-6 mb-3">
+              <div>
+                <div className="text-3xl font-black" style={{ color: C.black }}>{(credits.usedCredits ?? 0).toLocaleString('it-IT')}</div>
+                <div className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: C.gray1 }}>Email usate</div>
+              </div>
+              <div>
+                <div className="text-3xl font-black" style={{ color: '#34c759' }}>{(credits.remainCredits ?? 0).toLocaleString('it-IT')}</div>
+                <div className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: C.gray1 }}>Rimanenti</div>
+              </div>
+              <div>
+                <div className="text-3xl font-black" style={{ color: C.black }}>{(credits.totalCredits ?? 0).toLocaleString('it-IT')}</div>
+                <div className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: C.gray1 }}>Incluse nel piano</div>
+              </div>
+              {(credits.overage ?? 0) > 0 && (
+                <div>
+                  <div className="text-3xl font-black" style={{ color: '#ff3b30' }}>{(credits.overage ?? 0).toLocaleString('it-IT')}</div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: C.gray1 }}>Overage</div>
+                </div>
+              )}
+            </div>
+            {/* Barra utilizzo */}
+            <div className="w-full rounded-full h-2 mb-2" style={{ background: C.border }}>
+              <div
+                className="h-2 rounded-full transition-all"
+                style={{
+                  width: `${Math.min(credits.usagePercent ?? 0, 100)}%`,
+                  background: (credits.usagePercent ?? 0) > 80 ? '#ff3b30' : (credits.usagePercent ?? 0) > 60 ? '#ff9500' : '#34c759'
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-xs" style={{ color: C.gray2 }}>{credits.usagePercent ?? 0}% utilizzato</p>
+              <p className="text-xs" style={{ color: C.gray2 }}>Reset: {credits.nextReset ?? '—'} · {credits.resetFrequency === 'monthly' ? 'mensile' : credits.resetFrequency}</p>
+            </div>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="flex gap-0 mb-6 border-b" style={{ borderColor: C.border }}>

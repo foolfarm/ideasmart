@@ -12,7 +12,7 @@ import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
-import { Link } from "wouter";
+import AdminHeader from "@/components/AdminHeader";
 
 const INK = "#0f0f0f";
 const PAPER = "#ffffff";
@@ -122,46 +122,34 @@ export default function AdminLeads() {
       <div style={{ background: PAPER, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center" }}>
           <p style={{ color: "#dc2626", fontFamily: "system-ui, sans-serif", fontWeight: 700 }}>Accesso negato</p>
-          <Link href="/admin" style={{ color: ACCENT, fontSize: 13 }}>← Torna all'admin</Link>
+          <a href="/admin" style={{ color: "#007aff", fontSize: 13 }}>← Torna all'admin</a>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ background: PAPER, minHeight: "100vh", fontFamily: "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" }}>
-      {/* Header */}
-      <div style={{ background: INK, padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <Link href="/admin" style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, textDecoration: "none" }}>
-            ← Admin
-          </Link>
-          <span style={{ color: "#aeaeb2" }}>|</span>
-          <p style={{ margin: 0, color: "#fff", fontWeight: 900, fontSize: 16, letterSpacing: "-0.02em" }}>
-            ProofPress <span style={{ color: ACCENT }}>Leads</span>
-          </p>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>{total} lead totali</span>
-          <button
-            onClick={() => exportToCSV(leads)}
-            disabled={leads.length === 0}
-            style={{
-              padding: "6px 16px",
-              background: leads.length === 0 ? "rgba(255,255,255,0.1)" : ACCENT,
-              color: "#fff",
-              border: "none",
-              borderRadius: 4,
-              fontSize: 12,
-              fontWeight: 700,
-              cursor: leads.length === 0 ? "not-allowed" : "pointer",
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-            }}
-          >
-            ↓ Export CSV
-          </button>
-        </div>
+    <div style={{ background: "#f5f5f7", minHeight: "100vh", fontFamily: "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" }}>
+      <AdminHeader title="Leads" />
+      {/* Export bar */}
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "16px 24px 0", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12 }}>
+        <span style={{ color: "#6e6e73", fontSize: 12 }}>{total} lead totali</span>
+        <button
+          onClick={() => exportToCSV(leads)}
+          disabled={leads.length === 0}
+          style={{
+            padding: "6px 16px",
+            background: leads.length === 0 ? "#e5e5ea" : "#1d1d1f",
+            color: leads.length === 0 ? "#aeaeb2" : "#fff",
+            border: "none",
+            borderRadius: 8,
+            fontSize: 12,
+            fontWeight: 700,
+            cursor: leads.length === 0 ? "not-allowed" : "pointer",
+          }}
+        >
+          ↓ Export CSV
+        </button>
       </div>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px" }}>

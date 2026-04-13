@@ -1,22 +1,26 @@
 /**
  * AdminSystemHealth — Pannello "Salute del Sistema"
- * Mostra lo stato di aggiornamento di tutte le 14 sezioni:
- * - Ultima notizia inserita (titolo + timestamp)
- * - Notizie inserite oggi
- * - Totale notizie nel DB
- * - Pulsante trigger manuale scraping per ogni sezione
- * - Pulsante "Aggiorna Tutto" per avviare tutti i canali
+ * Stile Apple monocromatico con AdminHeader condiviso
  */
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { RefreshCw, ArrowLeft, Activity, Clock, Database, Zap } from "lucide-react";
+import { RefreshCw, Activity, Clock, Database, Zap } from "lucide-react";
+import AdminHeader from "@/components/AdminHeader";
 
 type SectionKey = "ai" | "startup" | "dealroom" | "all";
+
+const C = {
+  bg: "#f5f5f7",
+  white: "#ffffff",
+  black: "#1d1d1f",
+  mid: "#6e6e73",
+  light: "#aeaeb2",
+  border: "#e5e5ea",
+  font: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+};
 
 function formatUptime(seconds: number): string {
   const h = Math.floor(seconds / 3600);
@@ -55,7 +59,7 @@ export default function AdminSystemHealth() {
   const [lastTriggered, setLastTriggered] = useState<Record<string, Date>>({});
 
   const { data, isLoading, refetch, dataUpdatedAt } = trpc.health.getSystemHealth.useQuery(undefined, {
-    refetchInterval: 60_000, // aggiorna ogni minuto
+    refetchInterval: 60_000,
   });
 
   const triggerMutation = trpc.health.triggerSectionScraping.useMutation({
@@ -63,7 +67,6 @@ export default function AdminSystemHealth() {
       setLastTriggered(prev => ({ ...prev, [variables.section]: new Date() }));
       toast.success("Scraping avviato", { description: result.message });
       setTriggeringSection(null);
-      // Ricarica i dati dopo 10 secondi
       setTimeout(() => refetch(), 10_000);
     },
     onError: (err) => {
@@ -79,16 +82,21 @@ export default function AdminSystemHealth() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
-        <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: C.bg }}>
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: C.black }} />
       </div>
     );
   }
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
-        <p className="text-[#6e6e73]">Accesso non autorizzato.</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: C.bg }}>
+        <div className="text-center">
+          <p className="text-sm mb-4" style={{ color: C.mid }}>Accesso non autorizzato.</p>
+          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: C.black, color: "#fff" }}>
+            Torna alla Home
+          </button>
+        </div>
       </div>
     );
   }
@@ -99,106 +107,69 @@ export default function AdminSystemHealth() {
   const redCount = sections.filter(s => getStatusColor(s.todayCount, s.latestCreatedAt) === "red").length;
 
   return (
-    <div className="min-h-screen" style={{ background: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-      {/* Header */}
-      <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", background: "rgba(0,0,0,0.4)" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/admin")}
-              className="flex items-center gap-2 text-white/40 hover:text-[#1d1d1f] transition-colors text-sm"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Admin
-            </button>
-            <span className="text-white/20">/</span>
-            <span className="text-white font-bold" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Salute del Sistema
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-[#aeaeb2]">
-              {dataUpdatedAt ? `Aggiornato ${formatRelativeTime(new Date(dataUpdatedAt))}` : ""}
-            </span>
-            <Button
-              size="sm"
-              onClick={() => refetch()}
-              disabled={isLoading}
-              className="bg-white/10 hover:bg-white/20 text-white border-0"
-            >
-              <RefreshCw className={`w-3 h-3 mr-1 ${isLoading ? "animate-spin" : ""}`} />
-              Aggiorna
-            </Button>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen" style={{ background: C.bg, fontFamily: C.font }}>
+      <AdminHeader title="Salute Sistema" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Summary cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="rounded-xl p-4 border" style={{ background: C.white, borderColor: C.border }}>
             <div className="flex items-center gap-2 mb-1">
-              <Activity className="w-4 h-4 text-cyan-400" />
-              <span className="text-xs uppercase tracking-wider">Uptime</span>
+              <Activity className="w-4 h-4" style={{ color: C.mid }} />
+              <span className="text-xs uppercase tracking-wider" style={{ color: C.light }}>Uptime</span>
             </div>
-            <p className="text-2xl font-bold text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+            <p className="text-2xl font-bold" style={{ color: C.black }}>
               {data ? formatUptime(data.uptime) : "—"}
             </p>
           </div>
-          <div className="rounded-xl p-4" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}>
+          <div className="rounded-xl p-4 border" style={{ background: "#f0fdf4", borderColor: "#bbf7d0" }}>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-2 h-2 rounded-full bg-green-400" />
-              <span className="text-xs uppercase tracking-wider">Aggiornate oggi</span>
+              <div className="w-2 h-2 rounded-full bg-green-500" />
+              <span className="text-xs uppercase tracking-wider" style={{ color: C.light }}>Aggiornate oggi</span>
             </div>
-            <p className="text-2xl font-bold text-green-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              {greenCount}
-            </p>
+            <p className="text-2xl font-bold text-green-600">{greenCount}</p>
           </div>
-          <div className="rounded-xl p-4" style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.2)" }}>
+          <div className="rounded-xl p-4 border" style={{ background: "#fffbeb", borderColor: "#fde68a" }}>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-2 h-2 rounded-full bg-yellow-400" />
-              <span className="text-xs uppercase tracking-wider">Parziali</span>
+              <div className="w-2 h-2 rounded-full bg-yellow-500" />
+              <span className="text-xs uppercase tracking-wider" style={{ color: C.light }}>Parziali</span>
             </div>
-            <p className="text-2xl font-bold text-yellow-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              {yellowCount}
-            </p>
+            <p className="text-2xl font-bold text-yellow-600">{yellowCount}</p>
           </div>
-          <div className="rounded-xl p-4" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}>
+          <div className="rounded-xl p-4 border" style={{ background: "#fef2f2", borderColor: "#fecaca" }}>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-2 h-2 rounded-full bg-red-400" />
-              <span className="text-xs uppercase tracking-wider">Da aggiornare</span>
+              <div className="w-2 h-2 rounded-full bg-red-500" />
+              <span className="text-xs uppercase tracking-wider" style={{ color: C.light }}>Da aggiornare</span>
             </div>
-            <p className="text-2xl font-bold text-red-400" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              {redCount}
-            </p>
+            <p className="text-2xl font-bold text-red-600">{redCount}</p>
           </div>
         </div>
 
         {/* Trigger All button */}
         <div className="mb-6 flex items-center gap-4">
-          <Button
+          <button
             onClick={() => handleTrigger("all")}
             disabled={triggeringSection === "all"}
-            className="font-bold"
-            style={{ background: "#2a2a2a", color: "#fff", border: "none" }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all disabled:opacity-50"
+            style={{ background: C.black, color: "#fff" }}
           >
-            <Zap className={`w-4 h-4 mr-2 ${triggeringSection === "all" ? "animate-spin" : ""}`} />
+            <Zap className={`w-4 h-4 ${triggeringSection === "all" ? "animate-spin" : ""}`} />
             {triggeringSection === "all" ? "Avvio in corso..." : "Aggiorna Tutti i Canali"}
-          </Button>
+          </button>
           {lastTriggered["all"] && (
-            <span className="text-xs text-[#aeaeb2]">
+            <span className="text-xs" style={{ color: C.light }}>
               Avviato {formatRelativeTime(lastTriggered["all"])}
             </span>
           )}
-          <span className="text-xs text-[#aeaeb2]">Lo scraping parte in background — ricarica tra 2-3 minuti</span>
+          <span className="text-xs" style={{ color: C.light }}>Lo scraping parte in background — ricarica tra 2–3 minuti</span>
         </div>
 
         {/* Section table */}
         {isLoading ? (
           <div className="space-y-3">
-            {Array.from({ length: 14 }).map((_, i) => (
-              <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: "rgba(255,255,255,0.04)" }} />
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: C.border }} />
             ))}
           </div>
         ) : (
@@ -207,113 +178,125 @@ export default function AdminSystemHealth() {
               const status = getStatusColor(s.todayCount, s.latestCreatedAt);
               const isTriggering = triggeringSection === s.key;
               const wasTriggered = !!lastTriggered[s.key];
-              const statusColors = {
-                green: { dot: "bg-green-400", border: "rgba(34,197,94,0.15)", bg: "rgba(34,197,94,0.04)" },
-                yellow: { dot: "bg-yellow-400", border: "rgba(234,179,8,0.2)", bg: "rgba(234,179,8,0.04)" },
-                red: { dot: "bg-red-400", border: "rgba(239,68,68,0.2)", bg: "rgba(239,68,68,0.04)" }
+              const statusStyles = {
+                green: { dot: "bg-green-500", border: "#bbf7d0", bg: "#f0fdf4" },
+                yellow: { dot: "bg-yellow-500", border: "#fde68a", bg: "#fffbeb" },
+                red: { dot: "bg-red-500", border: "#fecaca", bg: "#fef2f2" }
               };
-              const sc = statusColors[status];
+              const sc = statusStyles[status];
 
               return (
                 <div
                   key={s.key}
-                  className="rounded-xl p-4 flex items-center gap-4"
-                  style={{ background: sc.bg, border: `1px solid ${sc.border}` }}
+                  className="rounded-xl p-4 flex items-center gap-4 border"
+                  style={{ background: sc.bg, borderColor: sc.border }}
                 >
-                  {/* Status dot */}
                   <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${sc.dot}`} />
 
-                  {/* Icon + label */}
                   <div className="w-36 flex-shrink-0">
-                    <p className="text-sm font-bold text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                    <p className="text-sm font-semibold" style={{ color: C.black }}>
                       {s.icon} {s.label}
                     </p>
                   </div>
 
-                  {/* Latest news */}
                   <div className="flex-1 min-w-0">
                     {s.latestTitle ? (
-                      <p className="text-xs text-[#6e6e73] truncate">{s.latestTitle}</p>
+                      <p className="text-xs truncate" style={{ color: C.mid }}>{s.latestTitle}</p>
                     ) : (
-                      <p className="text-xs text-red-400/60 italic">Nessuna notizia nel DB</p>
+                      <p className="text-xs italic text-red-500">Nessuna notizia nel DB</p>
                     )}
                   </div>
 
-                  {/* Stats */}
                   <div className="flex items-center gap-4 flex-shrink-0">
                     <div className="text-center">
-                      <div className="flex items-center gap-1 text-[#aeaeb2] text-xs mb-0.5">
+                      <div className="flex items-center gap-1 text-xs mb-0.5" style={{ color: C.light }}>
                         <Clock className="w-3 h-3" />
                         <span>Ultima</span>
                       </div>
-                      <p className="text-xs font-semibold text-white/70">
+                      <p className="text-xs font-semibold" style={{ color: C.mid }}>
                         {formatRelativeTime(s.latestCreatedAt)}
                       </p>
                     </div>
                     <div className="text-center">
-                      <div className="flex items-center gap-1 text-[#aeaeb2] text-xs mb-0.5">
+                      <div className="flex items-center gap-1 text-xs mb-0.5" style={{ color: C.light }}>
                         <Activity className="w-3 h-3" />
                         <span>Oggi</span>
                       </div>
-                      <Badge
-                        className="text-xs font-bold"
+                      <span
+                        className="text-xs font-bold px-1.5 py-0.5 rounded-full"
                         style={{
-                          background: s.todayCount > 0 ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
-                          color: s.todayCount > 0 ? "#4ade80" : "#f87171",
-                          border: "none"
+                          background: s.todayCount > 0 ? "#dcfce7" : "#fee2e2",
+                          color: s.todayCount > 0 ? "#166534" : "#991b1b",
                         }}
                       >
                         {s.todayCount}
-                      </Badge>
+                      </span>
                     </div>
                     <div className="text-center">
-                      <div className="flex items-center gap-1 text-[#aeaeb2] text-xs mb-0.5">
+                      <div className="flex items-center gap-1 text-xs mb-0.5" style={{ color: C.light }}>
                         <Database className="w-3 h-3" />
                         <span>Tot.</span>
                       </div>
-                      <p className="text-xs font-semibold text-[#6e6e73]">{s.totalCount}</p>
+                      <p className="text-xs font-semibold" style={{ color: C.mid }}>{s.totalCount}</p>
                     </div>
                   </div>
 
-                  {/* Trigger button */}
-                  <Button
-                    size="sm"
+                  <button
                     onClick={() => handleTrigger(s.key as SectionKey)}
                     disabled={isTriggering || triggeringSection === "all"}
-                    className="flex-shrink-0 text-xs font-bold"
+                    className="flex-shrink-0 flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all disabled:opacity-50"
                     style={{
-                      background: wasTriggered ? "rgba(0,229,200,0.15)" : "rgba(255,255,255,0.08)",
-                      color: wasTriggered ? "#1a1a1a" : "rgba(255,255,255,0.6)",
-                      border: wasTriggered ? "1px solid rgba(0,229,200,0.3)" : "1px solid rgba(255,255,255,0.1)"
+                      background: wasTriggered ? "#f0fdf4" : C.white,
+                      color: wasTriggered ? "#166534" : C.black,
+                      borderColor: wasTriggered ? "#bbf7d0" : C.border,
                     }}
                   >
-                    <RefreshCw className={`w-3 h-3 mr-1 ${isTriggering ? "animate-spin" : ""}`} />
+                    <RefreshCw className={`w-3 h-3 ${isTriggering ? "animate-spin" : ""}`} />
                     {isTriggering ? "Avvio..." : wasTriggered ? "Avviato" : "Aggiorna"}
-                  </Button>
+                  </button>
                 </div>
               );
             })}
           </div>
         )}
 
-        {/* Server info */}
+        {/* Refresh + Server info */}
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => refetch()}
+              disabled={isLoading}
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
+              style={{ background: C.white, color: C.black, borderColor: C.border }}
+            >
+              <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
+              Aggiorna
+            </button>
+            {dataUpdatedAt && (
+              <span className="text-xs" style={{ color: C.light }}>
+                Aggiornato {formatRelativeTime(new Date(dataUpdatedAt))}
+              </span>
+            )}
+          </div>
+        </div>
+
         {data && (
-          <div className="mt-6 rounded-xl p-4 flex items-center gap-6" style={{ background: "#ffffff", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="mt-4 rounded-xl p-4 flex items-center gap-6 border" style={{ background: C.white, borderColor: C.border }}>
             <div>
-              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Server Time</p>
-              <p className="text-sm text-[#6e6e73]">{new Date(data.serverTime).toLocaleString("it-IT", { timeZone: "Europe/Rome" })} CET</p>
+              <p className="text-xs uppercase tracking-wider mb-1" style={{ color: C.light }}>Server Time</p>
+              <p className="text-sm" style={{ color: C.mid }}>{new Date(data.serverTime).toLocaleString("it-IT", { timeZone: "Europe/Rome" })} CET</p>
             </div>
             <div>
-              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Uptime</p>
-              <p className="text-sm text-[#6e6e73]">{formatUptime(data.uptime)}</p>
+              <p className="text-xs uppercase tracking-wider mb-1" style={{ color: C.light }}>Uptime</p>
+              <p className="text-sm" style={{ color: C.mid }}>{formatUptime(data.uptime)}</p>
             </div>
             <div>
-              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Sezioni monitorate</p>
-              <p className="text-sm text-[#6e6e73]">{sections.length}</p>
+              <p className="text-xs uppercase tracking-wider mb-1" style={{ color: C.light }}>Sezioni monitorate</p>
+              <p className="text-sm" style={{ color: C.mid }}>{sections.length}</p>
             </div>
             <div>
-              <p className="text-xs text-[#aeaeb2] uppercase tracking-wider mb-1">Totale notizie DB</p>
-              <p className="text-sm text-[#6e6e73]">{sections.reduce((acc, s) => acc + s.totalCount, 0).toLocaleString("it-IT")}</p>
+              <p className="text-xs uppercase tracking-wider mb-1" style={{ color: C.light }}>Totale notizie DB</p>
+              <p className="text-sm" style={{ color: C.mid }}>{sections.reduce((acc, s) => acc + s.totalCount, 0).toLocaleString("it-IT")}</p>
             </div>
           </div>
         )}

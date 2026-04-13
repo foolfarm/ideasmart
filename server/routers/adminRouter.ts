@@ -382,4 +382,43 @@ export const adminRouter = router({
         };
       }
     }),
+
+  /**
+   * Recupera utilizzo piano SendGrid (crediti email, piano, reset mensile)
+   */
+  getSendgridCredits: adminProcedure
+    .query(async () => {
+      const apiKey = process.env.SENDGRID_API_KEY;
+      if (!apiKey) return { success: false, error: 'API key mancante' };
+
+      async function sgGet(path: string) {
+        const res = await fetch(`https://api.sendgrid.com${path}`, {
+          headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+        return res.json();
+      }
+
+      try {
+        const [credits, account] = await Promise.all([
+          sgGet('/v3/user/credits'),
+          sgGet('/v3/user/account'),
+        ]);
+        return {
+          success: true,
+          plan: account.type ?? 'unknown',
+          reputation: account.reputation ?? 0,
+          totalCredits: credits.total ?? 0,
+          usedCredits: credits.used ?? 0,
+          remainCredits: credits.remain ?? 0,
+          overage: credits.overage ?? 0,
+          lastReset: credits.last_reset ?? null,
+          nextReset: credits.next_reset ?? null,
+          resetFrequency: credits.reset_frequency ?? 'monthly',
+          isHardLimit: credits.is_hard_limit ?? true,
+          usagePercent: credits.total > 0 ? Math.round((credits.used / credits.total) * 100) : 0,
+        };
+      } catch (err) {
+        return { success: false, error: (err as Error).message };
+      }
+    }),
 });

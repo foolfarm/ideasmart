@@ -7,21 +7,19 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   AlertTriangle,
   AlertCircle,
   Info,
   CheckCheck,
   Check,
-  ArrowLeft,
   RefreshCw,
   Bell,
   BellOff,
 } from "lucide-react";
+import AdminHeader from "@/components/AdminHeader";
 
 type AlertType = "health_check" | "diversity" | "linkedin" | "newsletter" | "system";
 type AlertSeverity = "critical" | "warning" | "info";
@@ -105,58 +103,12 @@ export default function AdminAlertLog() {
 
   return (
     <div
-      className="min-h-screen bg-gray-50 pb-20"
-      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif" }}
+      className="min-h-screen pb-20"
+      style={{ background: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif" }}
     >
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/admin">
-              <Button variant="ghost" size="sm" className="gap-1 text-gray-600">
-                <ArrowLeft className="w-4 h-4" />
-                Admin
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <Bell className="w-4 h-4 text-orange-500" />
-                Alert Log
-                {unread > 0 && (
-                  <span className="bg-red-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                    {unread}
-                  </span>
-                )}
-              </h1>
-              <p className="text-xs text-gray-500">Storico alert di sistema</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => refetch()}
-              className="text-gray-500"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </Button>
-            {unread > 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => markAllReadMutation.mutate()}
-                disabled={markAllReadMutation.isPending}
-                className="gap-1 text-xs"
-              >
-                <CheckCheck className="w-3.5 h-3.5" />
-                Segna tutti letti
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
+      <AdminHeader title="Alert Log" />
 
-      <div className="max-w-4xl mx-auto px-4 py-4 space-y-4">
+      <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         {/* Stats cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {(["all", "health_check", "diversity", "linkedin"] as const).map((t) => {

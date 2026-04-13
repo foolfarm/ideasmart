@@ -47,9 +47,9 @@ import {
   AlertTriangle,
   Ban,
   RefreshCw,
-  ArrowLeft,
   CheckCircle2,
 } from "lucide-react";
+import AdminHeader from "@/components/AdminHeader";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -141,52 +141,37 @@ export default function AdminSendgridStats() {
     })) ?? [];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <div className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/admin")}
-              className="gap-1.5"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Admin
-            </Button>
-            <div className="h-5 w-px bg-border" />
-            <div>
-              <h1 className="text-lg font-bold">Email Stats — SendGrid</h1>
-              <p className="text-xs text-muted-foreground">
-                Performance newsletter · aggiornato in tempo reale da SendGrid API
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Select value={String(days)} onValueChange={(v) => setDays(Number(v))}>
-              <SelectTrigger className="w-36 h-8 text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7">Ultimi 7 giorni</SelectItem>
-                <SelectItem value="14">Ultimi 14 giorni</SelectItem>
-                <SelectItem value="30">Ultimi 30 giorni</SelectItem>
-                <SelectItem value="60">Ultimi 60 giorni</SelectItem>
-                <SelectItem value="90">Ultimi 90 giorni</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => statsQuery.refetch()}
-              disabled={statsQuery.isFetching}
-              className="gap-1.5"
-            >
-              <RefreshCw className={`w-4 h-4 ${statsQuery.isFetching ? "animate-spin" : ""}`} />
-              Aggiorna
-            </Button>
-          </div>
+    <div className="min-h-screen" style={{ background: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+      <AdminHeader title="Email Stats" />
+      {/* Periodo selector */}
+      <div className="max-w-7xl mx-auto px-4 pt-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold" style={{ color: "#1d1d1f" }}>Email Stats — SendGrid</h1>
+          <p className="text-sm" style={{ color: "#6e6e73" }}>Performance newsletter · aggiornato in tempo reale da SendGrid API</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select value={String(days)} onValueChange={(v) => setDays(Number(v))}>
+            <SelectTrigger className="w-36 h-8 text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7">Ultimi 7 giorni</SelectItem>
+              <SelectItem value="14">Ultimi 14 giorni</SelectItem>
+              <SelectItem value="30">Ultimi 30 giorni</SelectItem>
+              <SelectItem value="60">Ultimi 60 giorni</SelectItem>
+              <SelectItem value="90">Ultimi 90 giorni</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => statsQuery.refetch()}
+            disabled={statsQuery.isFetching}
+            className="gap-1.5"
+          >
+            <RefreshCw className={`w-4 h-4 ${statsQuery.isFetching ? "animate-spin" : ""}`} />
+            Aggiorna
+          </Button>
         </div>
       </div>
 
