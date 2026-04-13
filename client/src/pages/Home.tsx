@@ -956,10 +956,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ── DEEP DIVE — distanziato dal Punto del Giorno ── */}
-                  <div className="mt-16 mb-4">
-                    <EditorialeDelDirettore />
-                  </div>
 
                   {/* TERZA RIGA: Startup approfondimenti */}
                   {startupRest.length > 5 && (
@@ -1264,10 +1260,15 @@ export default function Home() {
                       <a href="/andrea-cinelli"
                         className="block mt-3 text-[10px] font-bold uppercase tracking-widest text-center"
                         style={{ color: "#1a1a1a", opacity: 0.45 }}>
-                        Tutti i post \u2192
+                        Tutti i post →
                       </a>
                     </div>
                   )}
+
+                  {/* ── DEEP DIVE — sotto i post LinkedIn di Andrea ── */}
+                  <div className="mt-8">
+                    <EditorialeDelDirettore />
+                  </div>
 
                 </div>
               </div>
