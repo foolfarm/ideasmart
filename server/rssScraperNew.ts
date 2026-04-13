@@ -294,16 +294,22 @@ Rispondi SOLO con JSON valido.`;
     return result;
   } catch (err) {
     console.error(`[RssScraper] Errore selezione LLM per ${section}:`, err);
-    // Fallback: prendi i primi 20 articoli senza traduzione
-    return articles.slice(0, 20).map(a => ({
+    // Fallback: privilegia le fonti italiane per non esporre titoli in inglese grezzo.
+    // Se non ci sono abbastanza fonti italiane, usa tutti gli articoli disponibili.
+    const itFallback = articles.filter(a =>
+      itDomainPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p.replace(".it/", "").replace(".it", "")))
+    );
+    const fallbackList = itFallback.length >= 5 ? itFallback : articles;
+    const catLabel = section === "ai" ? "Ricerca & Innovazione" : section === "startup" ? "Startup" : "Dealroom";
+    return fallbackList.slice(0, 20).map(a => ({
       title: a.title,
       summary: a.content.slice(0, 250),
-      category: section === "ai" ? "Ricerca & Innovazione" : "Startup Internazionale",
+      category: catLabel,
       sourceName: a.sourceName,
-      sourceUrl: a.link,           // URL articolo originale
+      sourceUrl: a.link,
       sourceHomepage: a.sourceHomepage,
       publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
-      language: "en" as const
+      language: "it" as const  // Marchiamo come it anche se il titolo potrebbe essere in EN — verrà ritradotto al prossimo ciclo LLM
     }));
   }
 }
