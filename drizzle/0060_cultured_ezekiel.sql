@@ -1,0 +1,1 @@
+ALTER TABLE `amazon_daily_deals` ADD `scrapingStatus` enum('pending','done','failed') DEFAULT 'pending' NOT NULL;

@@ -3041,3 +3041,18 @@
 - [ ] tRPC procedure alert log
 - [ ] Pannello Alert Log dashboard Admin
 - [ ] Morning Health Report condizionale
+
+## Amazon Deals System (13 Apr 2026)
+- [x] Schema DB tabella amazon_daily_deals con campi completi
+- [x] Migrazione DB eseguita con pnpm db:push
+- [x] Router tRPC amazonDeals: getActiveDeals, adminGetAll, adminCreate, adminBulkCreate, adminToggle, adminDelete, adminRescrape, trackClick
+- [x] Scraping automatico metadati Amazon via fetch + parsing HTML
+- [x] Rotazione giornaliera automatica round-robin sui deal attivi
+- [x] Rimozione completa banner Tradedoubler da SharedPageHeader e Home.tsx
+- [x] Componente HomeAmazonDeal (manchette header) con immagine, prezzo, rating, CTA Amazon
+- [x] Componente AmazonDealBanner riutilizzabile (varianti: sidebar, inline, strip, card)
+- [x] Integrazione AmazonDealBanner nella LeftSidebar
+- [x] Pagina AdminAmazonDeals (/admin/amazon-deals): form singolo, upload massivo TXT/RTF, lista deals con toggle/rescrape/delete
+- [x] Link Amazon Deals nel menu admin principale
+- [x] Route /admin/amazon-deals registrata in App.tsx
+- [x] Newsletter integrata con getTodayAmazonDeals() in unifiedNewsletter.ts

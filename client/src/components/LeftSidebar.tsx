@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
+import AmazonDealBanner from "@/components/AmazonDealBanner";
 import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
@@ -355,7 +356,10 @@ export default function LeftSidebar() {
 
       {/* Spazio flessibile */}
       <div className="flex-1" />
-
+      {/* ── Amazon Deal Banner ── */}
+      <div className="px-3 mb-4" style={fadeBlock}>
+        <AmazonDealBanner variant="sidebar" offset={0} />
+      </div>
       {/* ── LinkedIn ── */}
       <div className="px-2 mb-3 mt-3">
         <a

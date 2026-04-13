@@ -613,10 +613,11 @@ export const amazonDailyDeals = mysqlTable("amazon_daily_deals", {
   active: boolean("active").default(true).notNull(),
   // Contatore click (quante volte è stato cliccato dalla newsletter)
   clickCount: int("clickCount").default(0).notNull(),
+  // Stato scraping metadati: pending | done | failed
+  scrapingStatus: mysqlEnum("scrapingStatus", ["pending", "done", "failed"]).default("pending").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
-
 export type AmazonDailyDeal = typeof amazonDailyDeals.$inferSelect;
 export type InsertAmazonDailyDeal = typeof amazonDailyDeals.$inferInsert;
 

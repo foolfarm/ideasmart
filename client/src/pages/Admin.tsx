@@ -198,6 +198,7 @@ export default function Admin() {
               { label: "Email Stats", path: "/admin/sendgrid-stats" },
               { label: "Salute Sistema", path: "/admin/system-health" },
               { label: "Alert Log", path: "/admin/alert-log" },
+              { label: "Amazon Deals", path: "/admin/amazon-deals" },
             ].map((item) => (
               <button
                 key={item.path}

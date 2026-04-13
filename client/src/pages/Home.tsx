@@ -14,13 +14,76 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
-import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings } from "lucide-react";
+import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings, ShoppingCart, Star } from "lucide-react";
 import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 
-// ─── Costanti colori sezione ─────────────────────────────────────────────────
+// ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
+function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+  const { data: deals } = trpc.amazonDeals.getActiveDeals.useQuery({ limit: 6 }, { staleTime: 1000 * 60 * 60 });
+  const trackClick = trpc.amazonDeals.trackClick.useMutation();
+
+  const deal = deals && deals.length > 0 ? deals[offset % deals.length] : null;
+
+  if (!deal) {
+    return (
+      <div className="hidden lg:flex flex-col flex-shrink-0 w-[140px] items-center gap-1">
+        <div className="w-full rounded-xl border border-[#e5e5ea] bg-[#f5f5f7] flex flex-col items-center justify-center p-3 gap-2" style={{ minHeight: '120px' }}>
+          <ShoppingCart size={20} color="#aeaeb2" strokeWidth={1.5} />
+          <span style={{ fontFamily: SF, fontSize: '9px', color: '#aeaeb2', textAlign: 'center', lineHeight: 1.3 }}>Offerte Amazon</span>
+        </div>
+        <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="hidden lg:flex flex-col flex-shrink-0 w-[140px] items-center gap-1">
+      <a
+        href={deal.affiliateUrl}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        onClick={() => trackClick.mutate({ id: deal.id })}
+        className="w-full block rounded-xl overflow-hidden border border-[#e5e5ea] bg-white hover:border-[#ff9900] transition-colors group"
+        style={{ textDecoration: 'none' }}
+        title={deal.title}
+      >
+        {deal.imageUrl ? (
+          <div className="w-full overflow-hidden" style={{ height: '100px', background: '#fff' }}>
+            <img src={deal.imageUrl} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '4px' }} />
+          </div>
+        ) : (
+          <div className="w-full flex items-center justify-center bg-[#f5f5f7]" style={{ height: '80px' }}>
+            <ShoppingCart size={24} color="#aeaeb2" strokeWidth={1.5} />
+          </div>
+        )}
+        <div className="px-2 py-1.5 bg-white">
+          <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            {deal.title}
+          </p>
+          {deal.price && deal.price !== '...' && (
+            <p style={{ fontFamily: SF, fontSize: '10px', fontWeight: 800, color: '#ff9900', marginTop: '2px' }}>{deal.price}</p>
+          )}
+          {deal.rating && (
+            <div className="flex items-center gap-0.5 mt-0.5">
+              <Star size={8} fill="#ff9900" color="#ff9900" />
+              <span style={{ fontFamily: SF, fontSize: '8px', color: '#6e6e73' }}>{deal.rating}</span>
+            </div>
+          )}
+        </div>
+        <div className="px-2 py-1 bg-[#ff9900] group-hover:bg-[#e68900] transition-colors">
+          <p style={{ fontFamily: SF, fontSize: '8px', fontWeight: 700, color: '#fff', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Vedi su Amazon</p>
+        </div>
+      </a>
+      <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
+    </div>
+  );
+}
+
+// ─── Costanti colori sezione ─────────────────────────────────────────────────────
 const SECTION_COLORS = {
   ai:            { accent: "#1a1a1a", light: "#f5f5f5", label: "AI NEWS",        path: "/ai" },
   startup:       { accent: "#2a2a2a", light: "#f5f5f5", label: "STARTUP NEWS",        path: "/startup" },
@@ -485,20 +548,10 @@ export default function Home() {
               Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
 
-            {/* Brand centrale con manchette Tradedoubler ai lati */}
+            {/* Brand centrale con manchette Amazon ai lati */}
             <div className="flex items-center justify-center gap-4">
-              {/* Manchette sinistra — Tradedoubler */}
-              <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
-                <a href="https://clk.tradedoubler.com/click?p=365615&a=3477790&g=26113480" target="_blank" rel="noopener noreferrer sponsored">
-                  <img
-                    src={`https://imp.tradedoubler.com/imp?type(img)g(26113480)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                    width="300"
-                    height="250"
-                    alt="Pubblicità"
-                    style={{ width: '160px', height: 'auto', display: 'block', border: 0 }}
-                  />
-                </a>
-              </div>
+              {/* Manchette sinistra — Amazon Deal */}
+              <HomeAmazonDeal offset={0} />
 
               {/* Titolo centrale + sottotitolo 2 righe */}
               <div className="text-center flex-1 min-w-0">
@@ -536,18 +589,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Manchette destra — Tradedoubler */}
-              <div className="hidden lg:flex flex-shrink-0 w-[160px] items-center justify-center overflow-hidden">
-                <a href="https://clk.tradedoubler.com/click?p=341133&a=3477790&g=26092910" target="_blank" rel="noopener noreferrer sponsored">
-                  <img
-                    src={`https://imp.tradedoubler.com/imp?type(img)g(26092910)a(3477790)${Math.random().toString().substring(2, 11)}`}
-                    width="300"
-                    height="250"
-                    alt="Pubblicità"
-                    style={{ width: '160px', height: 'auto', display: 'block', border: 0 }}
-                  />
-                </a>
-              </div>
+              {/* Manchette destra — Amazon Deal */}
+              <HomeAmazonDeal offset={1} />
             </div>
 
           </div>
