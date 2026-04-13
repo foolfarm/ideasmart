@@ -1615,23 +1615,31 @@ export async function publishLinkedInPost(
       console.error('[LinkedIn] ⚠️ Errore salvataggio post nel DB:', dbErr);
     }
 
-    // ── Salva automaticamente come editoriale sulla Home ──────────────────
-    // Regola: ogni post LinkedIn pubblicato deve comparire sulla Home come Punto del Giorno
-    try {
-      const editorialSection = (section === 'research' || section === 'dealroom') ? 'ai' : section;
-      await saveEditorial({
-        section: editorialSection as any,
-        dateLabel: getTodayCET().split('-').reverse().join('-'), // DD-MM-YYYY
-        title: contentTitle,
-        subtitle: `Post LinkedIn — ${meta.label}`,
-        body: contentBody,
-        keyTrend: contentKeyTrend || undefined,
-        imageUrl: imageUrl || undefined,
-        authorNote: `Pubblicato su LinkedIn il ${new Date().toLocaleDateString('it-IT', { timeZone: 'Europe/Rome' })} — Slot ${slotLabel}.`,
-      });
-      console.log(`[LinkedIn] 🏠 Editoriale salvato sulla Home (sezione ${editorialSection})`);
-    } catch (editErr) {
-      console.warn('[LinkedIn] ⚠️ Errore salvataggio editoriale sulla Home:', editErr);
+    // ── Salva come Punto del Giorno (daily_editorial) SOLO per slot morning ──
+    // REGOLA EDITORIALE: Il Deep Dive e il Punto del Giorno sono sezioni DISTINTE.
+    // - Punto del Giorno (PdG): aggiornato dal post LinkedIn morning (10:00)
+    // - Deep Dive: contenuto autonomo generato dal dailyContentScheduler o inserito manualmente
+    // Gli altri slot (research, startup, dealroom, ecc.) NON sovrascrivono mai il Deep Dive.
+    if (slot === 'morning') {
+      try {
+        await saveEditorial({
+          section: 'ai' as any,
+          dateLabel: getTodayCET().split('-').reverse().join('-'), // DD-MM-YYYY
+          title: contentTitle,
+          subtitle: `Punto del Giorno — ${meta.label}`,
+          body: contentBody,
+          keyTrend: contentKeyTrend || undefined,
+          imageUrl: imageUrl || undefined,
+          authorNote: `Post del mattino pubblicato su LinkedIn il ${new Date().toLocaleDateString('it-IT', { timeZone: 'Europe/Rome' })}.`,
+        });
+        console.log(`[LinkedIn] 🏠 Punto del Giorno salvato sulla Home (slot morning)`);
+      } catch (editErr) {
+        console.warn('[LinkedIn] ⚠️ Errore salvataggio Punto del Giorno sulla Home:', editErr);
+      }
+    } else {
+      // Gli altri slot (research, startup, dealroom, ai-research-morning, ecc.)
+      // NON aggiornano il Deep Dive — mantengono la separazione editoriale.
+      console.log(`[LinkedIn] ℹ️ Slot ${slotLabel}: Deep Dive invariato (solo slot morning aggiorna il Punto del Giorno)`);
     }
 
     return { published: 1, errors: [], posts };
