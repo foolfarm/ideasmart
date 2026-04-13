@@ -19,6 +19,7 @@ import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
+import AdSenseUnit from "@/components/AdSenseUnit";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -800,7 +801,14 @@ export default function Home() {
         {/* ══ STRIP AMAZON DEALS — nascosta su mobile ═══════════════════════════════════════════════════════════════════ */}
         <div className="hidden sm:block">
           <AmazonDealsStrip />
-        </div>   {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
+        </div>
+
+        {/* ══ ADSENSE LEADERBOARD 728×90 — visibile solo da sm in su ══════════════════════════════════════════════ */}
+        <div className="hidden sm:flex justify-center items-center w-full py-2" style={{ background: "#fafafa", borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
+          <AdSenseUnit format="leaderboard" className="mx-auto" />
+        </div>
+
+        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 mt-2 sm:mt-3">
           <a
             href="https://promptcollection2026.com/"
@@ -1189,6 +1197,11 @@ export default function Home() {
 
                   {/* ── Banner Amazon Verticale — sidebar destra ── */}
                   <AmazonDealVertical />
+
+                  {/* ── AdSense 300×250 — colonna destra ── */}
+                  <div className="mb-5 flex flex-col items-center">
+                    <AdSenseUnit format="medium-rect" />
+                  </div>
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
                   <a
