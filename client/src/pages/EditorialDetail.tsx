@@ -7,6 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
+import AdSenseUnit from "@/components/AdSenseUnit";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
@@ -152,6 +153,11 @@ export default function EditorialDetail() {
             </p>
           </blockquote>
         )}
+
+        {/* ── ADSENSE proopress1 ── */}
+        <div className="my-8">
+          <AdSenseUnit format="proopress1" />
+        </div>
 
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-[#1a1a1a]/20">

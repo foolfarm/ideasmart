@@ -2,6 +2,7 @@ import { Link, useRoute } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
+import AdSenseUnit from "@/components/AdSenseUnit";
 
 // ─── Banner Amazon inline per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -225,6 +226,11 @@ export default function NewsArticle() {
 
         {/* ── AMAZON DEAL BANNER — tra corpo e correlati ── */}
         <AmazonArticleBanner />
+
+        {/* ── ADSENSE proopress1 — dopo il corpo dell'articolo ── */}
+        <div className="my-6">
+          <AdSenseUnit format="proopress1" />
+        </div>
 
         {/* Related news */}
         {related && related.length > 0 && (

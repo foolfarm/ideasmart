@@ -8,6 +8,7 @@ import { trpc } from "@/lib/trpc";
 import RequireAuth from "@/components/RequireAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
+import AdSenseUnit from "@/components/AdSenseUnit";
 import { useEffect, useRef } from "react";
 import {
   ArrowLeft, ExternalLink, Globe, MapPin, BookOpen,
@@ -242,6 +243,11 @@ export default function ResearchDetail() {
               </a>
             </div>
           )}
+
+          {/* ── ADSENSE proopress1 ── */}
+          <div className="my-8">
+            <AdSenseUnit format="proopress1" />
+          </div>
 
           {/* CTA bottom */}
           <div className="border-t-2 border-[#1a1a1a] pt-8 mt-8 text-center">
