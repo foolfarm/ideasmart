@@ -73,18 +73,41 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
 }
 
 // ─── Banner Amazon Verticale — colonna destra sidebar ────────────────
+const ROTATION_MS = 30 * 60 * 1000; // 30 minuti
+
 function AmazonDealVertical() {
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
-  const { data: deals } = trpc.amazonDeals.getDealsWithImage.useQuery({ limit: 6 }, { staleTime: 1000 * 60 * 60 });
+  const { data: deals } = trpc.amazonDeals.getDealsWithImage.useQuery({ limit: 8 }, { staleTime: 1000 * 60 * 60 });
   const trackClick = trpc.amazonDeals.trackClick.useMutation();
 
-  // Usa deal diverso dalle manchette (offset 2)
-  const deal = deals && deals.length > 2 ? deals[2] : deals && deals.length > 0 ? deals[0] : null;
+  // Offset iniziale: parte da 2 (diverso dalle manchette header che usano 0 e 1)
+  const [offset, setOffset] = useState(2);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    if (!deals || deals.length === 0) return;
+    const interval = setInterval(() => {
+      // Fade out
+      setFade(false);
+      setTimeout(() => {
+        setOffset(prev => {
+          // Cicla tra gli indici disponibili, saltando 0 e 1 (usati dalle manchette)
+          const available = deals.length;
+          const next = prev + 1 >= available ? 2 : prev + 1;
+          return next;
+        });
+        setFade(true);
+      }, 400);
+    }, ROTATION_MS);
+    return () => clearInterval(interval);
+  }, [deals]);
+
+  const deal = deals && deals.length > offset ? deals[offset] : deals && deals.length > 0 ? deals[0] : null;
 
   if (!deal || !deal.imageUrl || !deal.imageUrl.startsWith('http')) return null;
 
   return (
-    <div className="mb-5">
+    <div className="mb-5" style={{ transition: 'opacity 0.4s ease', opacity: fade ? 1 : 0 }}>
       <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: 'rgba(26,26,26,0.45)', fontFamily: SF }}>
         Offerta Amazon
       </p>
@@ -766,17 +789,18 @@ export default function Home() {
 
           </div>
 
-          <Divider thick />
-
         </header>
-        {/* ══ BREAKING NEWS ════════════════════════════════════════════════════════ */}
-        <BreakingNewsSection />
-        <BreakingNewsTicker />
 
-        {/* ══ STRIP AMAZON DEALS ════════════════════════════════════════════════════════ */}
-        <AmazonDealsStrip />
+              {/* ══ BREAKING NEWS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
+        <div className="hidden sm:block">
+          <BreakingNewsSection />
+          <BreakingNewsTicker />
+        </div>
 
-        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
+        {/* ══ STRIP AMAZON DEALS — nascosta su mobile ═══════════════════════════════════════════════════════════════════ */}
+        <div className="hidden sm:block">
+          <AmazonDealsStrip />
+        </div>   {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 mt-2 sm:mt-3">
           <a
             href="https://promptcollection2026.com/"

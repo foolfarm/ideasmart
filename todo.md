@@ -3090,3 +3090,11 @@
 - [x] Pagina /unsubscribe con form email di fallback (per chi arriva senza token) — già implementata
 - [x] Banner Amazon verticale nella colonna destra sotto widget Novità
 - [x] Sottotitolo "IL MAGAZINE CHE ANALIZZA..." visibile su mobile nell'header
+
+## Rotazione automatica banner Amazon (13 Apr 2026)
+
+- [ ] Rotazione automatica prodotto Amazon verticale ogni 30 minuti con useEffect + setInterval
+
+## Ottimizzazione mobile home (13 Apr 2026)
+
+- [x] Nascondere su mobile: BreakingNewsSection, BreakingNewsTicker, strip Amazon deals (hidden sm:block)
