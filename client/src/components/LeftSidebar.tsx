@@ -354,12 +354,28 @@ export default function LeftSidebar() {
         </nav>
       )}
 
-      {/* Spazio flessibile */}
-      <div className="flex-1" />
+      {/* ── Separatore pre-Amazon ── */}
+      {/* Nascosto quando collassata per evitare overflow */}
+      <div className="mx-3 mt-2 mb-3 border-t border-[#e5e5ea]" style={fadeBlock} />
+
       {/* ── Amazon Deal Banner ── */}
-      <div className="px-3 mb-4" style={fadeBlock}>
+      {/* overflow:hidden + pointer-events:none quando collassata per evitare sovrapposizione */}
+      <div
+        className="px-3 mb-3"
+        style={{
+          ...fadeBlock,
+          overflow: 'hidden',
+          pointerEvents: expanded ? 'auto' : 'none',
+          maxHeight: expanded ? '400px' : '0px',
+          transition: 'opacity 150ms ease, max-height 230ms cubic-bezier(0.4,0,0.2,1)',
+        }}
+      >
         <AmazonDealBanner variant="sidebar" offset={0} />
       </div>
+
+      {/* Spazio flessibile */}
+      <div className="flex-1" />
+
       {/* ── LinkedIn ── */}
       <div className="px-2 mb-3 mt-3">
         <a

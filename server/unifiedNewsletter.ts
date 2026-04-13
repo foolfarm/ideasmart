@@ -1688,6 +1688,8 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
           to: sub.email,
           subject,
           html: personalizedHtml,
+          // List-Unsubscribe header: abilita il pulsante nativo di disiscrizione in Gmail/Outlook/Apple Mail
+          listUnsubscribeUrl: unsubUrl,
         });
         if (result.success) totalSent++;
         else {

@@ -3056,3 +3056,13 @@
 - [x] Link Amazon Deals nel menu admin principale
 - [x] Route /admin/amazon-deals registrata in App.tsx
 - [x] Newsletter integrata con getTodayAmazonDeals() in unifiedNewsletter.ts
+
+## Fix banner Amazon e sistema disiscrizione (13 Apr 2026)
+
+- [x] Fix sidebar: banner Amazon completamente nascosto quando collassata (overflow:hidden + maxHeight:0 + pointerEvents:none)
+- [x] Fix header manchette: layout grid 3 colonne simmetrico per centratura perfetta del logo ProofPress
+- [x] Fix header manchette: fallback mobile/tablet senza banner
+- [x] Sistema disiscrizione: aggiunto List-Unsubscribe header (RFC 2369 + RFC 8058) in tutte le newsletter massicce
+- [x] Endpoint admin POST /api/admin/newsletter/unsub per disiscrizioni manuali sicure
+- [x] Disiscrizione manuale david@skala.it (richiesta via email)
+- [x] Disiscrizione manuale andrea.bonabello@ulixescapital.com (richiesta via email)

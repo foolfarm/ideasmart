@@ -634,12 +634,15 @@ export default function Home() {
             </p>
 
             {/* Brand centrale con manchette Amazon ai lati */}
-            <div className="flex items-center justify-center gap-4">
+            {/* LAYOUT: grid 3 colonne — colonne laterali larghezza fissa 150px per simmetria garantita */}
+            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: '150px 1fr 150px', alignItems: 'center' }}>
               {/* Manchette sinistra — Amazon Deal */}
-              <HomeAmazonDeal offset={0} />
+              <div className="flex justify-start">
+                <HomeAmazonDeal offset={0} />
+              </div>
 
               {/* Titolo centrale + sottotitolo 2 righe */}
-              <div className="text-center flex-1 min-w-0">
+              <div className="text-center">
                 <Link href="/">
                   <div className="cursor-pointer hover:opacity-80 transition-opacity">
                     <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
@@ -675,7 +678,31 @@ export default function Home() {
               </div>
 
               {/* Manchette destra — Amazon Deal */}
-              <HomeAmazonDeal offset={1} />
+              <div className="flex justify-end">
+                <HomeAmazonDeal offset={1} />
+              </div>
+            </div>
+
+            {/* Fallback mobile/tablet: solo titolo centrato senza banner */}
+            <div className="lg:hidden text-center">
+              <Link href="/">
+                <div className="cursor-pointer hover:opacity-80 transition-opacity">
+                  <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center" }}>
+                    <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(28px, 10vw, 56px)", letterSpacing: "-0.02em", lineHeight: 1 }}>
+                      ProofPress
+                    </h1>
+                    <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(8px, 1.5vw, 12px)", letterSpacing: "0.15em", textTransform: "uppercase", lineHeight: 1, marginTop: "0.3em", marginLeft: "0.4em" }}>
+                      Magazine
+                    </span>
+                  </div>
+                </div>
+              </Link>
+              <div className="mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", lineHeight: 1.4 }}>
+                Innovazione, AI, Startup, Venture, Tecnologia
+              </div>
             </div>
 
           </div>

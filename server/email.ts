@@ -5,6 +5,8 @@ interface SendEmailOptions {
   subject: string;
   html: string;
   text?: string;
+  /** URL per il List-Unsubscribe header (RFC 2369) — usato nelle newsletter massicce */
+  listUnsubscribeUrl?: string;
 }
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
@@ -36,7 +38,15 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
     tracking_settings: {
       click_tracking: { enable: false },
       open_tracking: { enable: true }
-    }
+    },
+    // List-Unsubscribe header per il pulsante nativo dei client email (RFC 2369 + RFC 8058)
+    // Permette a Gmail, Outlook, Apple Mail di mostrare il pulsante "Annulla iscrizione"
+    ...(opts.listUnsubscribeUrl ? {
+      headers: {
+        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:newsletter@proofpress.ai?subject=unsubscribe>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
+      }
+    } : {})
   };
 
   try {

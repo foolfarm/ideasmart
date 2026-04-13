@@ -361,6 +361,31 @@ async function startServer() {
     return res.json(stats);
   });
 
+  // ── Admin: disiscrizione manuale newsletter (protetto da JWT_SECRET) ──────────────
+  // POST /api/admin/newsletter/unsub — disiscrive una email dal DB
+  // Body: { email: string }
+  // Auth: Authorization: Bearer <JWT_SECRET>
+  app.post("/api/admin/newsletter/unsub", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { email } = req.body || {};
+    if (!email || typeof email !== 'string') {
+      return res.status(400).json({ error: 'Email mancante' });
+    }
+    try {
+      const { unsubscribeEmail } = await import('../db');
+      await unsubscribeEmail(email.trim().toLowerCase());
+      console.log(`[AdminUnsub] ✅ Disiscritta manualmente: ${email}`);
+      return res.json({ success: true, email: email.trim().toLowerCase() });
+    } catch (err: any) {
+      console.error('[AdminUnsub] Errore:', err);
+      return res.status(500).json({ error: err.message || 'Errore interno' });
+    }
+  });
+
   // ── Cache-Control headers per le risposte tRPC pubbliche ────────────────────
   // Le procedure pubbliche (news, editorial, ecc.) sono cachate in-memory lato server.
   // Aggiungiamo anche un header HTTP per il CDN/browser: max-age=60s (1 minuto).
