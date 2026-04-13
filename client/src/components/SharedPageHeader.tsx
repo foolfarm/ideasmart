@@ -24,33 +24,30 @@ function Divider({ thick = false }: { thick?: boolean }) {
 // ─── AMAZON DEAL MANCHETTE ───────────────────────────────────────────────────
 function AmazonDealManchette({ side }: { side: "left" | "right" }) {
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
-  const { data: deal, isLoading } = trpc.amazonDeals.getTodayDeal.useQuery(undefined, {
-    staleTime: 1000 * 60 * 60, // 1 ora
-  });
+  // Carica solo deal CON immagine reale: manchette sinistra = [0], destra = [1]
+  const { data: deals, isLoading } = trpc.amazonDeals.getDealsWithImage.useQuery(
+    { limit: 2 },
+    { staleTime: 1000 * 60 * 60 } // 1 ora
+  );
   const trackClick = trpc.amazonDeals.trackClick.useMutation();
 
   if (isLoading) {
     return (
-      <div className="hidden lg:flex flex-col flex-shrink-0 w-[140px] items-center gap-1">
-        <div className="w-full h-[140px] rounded-xl bg-[#f5f5f7] border border-[#e5e5ea] animate-pulse" />
-        <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Amazon</span>
+      <div className="hidden lg:block flex-shrink-0 w-[140px]">
+        <div className="w-full h-[150px] rounded-xl bg-[#f5f5f7] border border-[#e5e5ea] animate-pulse" />
       </div>
     );
   }
 
-  if (!deal) {
-    // Placeholder vuoto quando non ci sono deals
-    return (
-      <div className="hidden lg:flex flex-col flex-shrink-0 w-[140px] items-center gap-1">
-        <div className="w-full rounded-xl border border-[#e5e5ea] bg-[#f5f5f7] flex flex-col items-center justify-center p-3 gap-2" style={{ minHeight: '120px' }}>
-          <ShoppingCart size={20} color="#aeaeb2" strokeWidth={1.5} />
-          <span style={{ fontFamily: SF, fontSize: '9px', color: '#aeaeb2', textAlign: 'center', lineHeight: 1.3 }}>
-            Offerte Amazon
-          </span>
-        </div>
-        <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
-      </div>
-    );
+  // Seleziona deal: sinistra = indice 0, destra = indice 1 (o 0 se ne esiste solo uno)
+  const dealIndex = side === "left" ? 0 : 1;
+  const deal = deals && deals.length > dealIndex
+    ? deals[dealIndex]
+    : deals && deals.length > 0 ? deals[0] : null;
+
+  // REGOLA ASSOLUTA: se non c'è un deal con immagine HTTP valida, non mostrare nulla
+  if (!deal || !deal.imageUrl || !deal.imageUrl.startsWith('http')) {
+    return <div className="hidden lg:block flex-shrink-0 w-[140px]" />;
   }
 
   return (
@@ -64,19 +61,13 @@ function AmazonDealManchette({ side }: { side: "left" | "right" }) {
         style={{ textDecoration: 'none' }}
         title={deal.title}
       >
-        {deal.imageUrl ? (
-          <div className="w-full overflow-hidden" style={{ height: '100px', background: '#fff' }}>
-            <img
-              src={deal.imageUrl}
-              alt={deal.title}
-              style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '4px' }}
-            />
-          </div>
-        ) : (
-          <div className="w-full flex items-center justify-center bg-[#f5f5f7]" style={{ height: '80px' }}>
-            <ShoppingCart size={24} color="#aeaeb2" strokeWidth={1.5} />
-          </div>
-        )}
+        <div className="w-full overflow-hidden" style={{ height: '100px', background: '#fff' }}>
+          <img
+            src={deal.imageUrl}
+            alt={deal.title}
+            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '4px' }}
+          />
+        </div>
         <div className="px-2 py-1.5 bg-white">
           <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {deal.title}

@@ -21,23 +21,17 @@ import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
+// Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
 function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
-  const { data: deals } = trpc.amazonDeals.getActiveDeals.useQuery({ limit: 6 }, { staleTime: 1000 * 60 * 60 });
+  const { data: deals } = trpc.amazonDeals.getDealsWithImage.useQuery({ limit: 6 }, { staleTime: 1000 * 60 * 60 });
   const trackClick = trpc.amazonDeals.trackClick.useMutation();
 
   const deal = deals && deals.length > 0 ? deals[offset % deals.length] : null;
 
-  if (!deal) {
-    return (
-      <div className="hidden lg:flex flex-col flex-shrink-0 w-[140px] items-center gap-1">
-        <div className="w-full rounded-xl border border-[#e5e5ea] bg-[#f5f5f7] flex flex-col items-center justify-center p-3 gap-2" style={{ minHeight: '120px' }}>
-          <ShoppingCart size={20} color="#aeaeb2" strokeWidth={1.5} />
-          <span style={{ fontFamily: SF, fontSize: '9px', color: '#aeaeb2', textAlign: 'center', lineHeight: 1.3 }}>Offerte Amazon</span>
-        </div>
-        <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
-      </div>
-    );
+  // REGOLA: nessun carrello vuoto. Se non c'è immagine, spazio trasparente.
+  if (!deal || !deal.imageUrl || !deal.imageUrl.startsWith('http')) {
+    return <div className="hidden lg:block flex-shrink-0 w-[140px]" />;
   }
 
   return (
@@ -51,15 +45,9 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
         style={{ textDecoration: 'none' }}
         title={deal.title}
       >
-        {deal.imageUrl ? (
-          <div className="w-full overflow-hidden" style={{ height: '100px', background: '#fff' }}>
-            <img src={deal.imageUrl} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '4px' }} />
-          </div>
-        ) : (
-          <div className="w-full flex items-center justify-center bg-[#f5f5f7]" style={{ height: '80px' }}>
-            <ShoppingCart size={24} color="#aeaeb2" strokeWidth={1.5} />
-          </div>
-        )}
+        <div className="w-full overflow-hidden" style={{ height: '100px', background: '#fff' }}>
+          <img src={deal.imageUrl} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '4px' }} />
+        </div>
         <div className="px-2 py-1.5 bg-white">
           <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {deal.title}
@@ -79,6 +67,103 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
         </div>
       </a>
       <span style={{ fontFamily: SF, fontSize: '9px', letterSpacing: '0.08em', color: '#aeaeb2', textTransform: 'uppercase' }}>Sponsorizzato</span>
+    </div>
+  );
+}
+
+// ─── Strip Amazon Deals orizzontale (max 4 deal con immagine) ────────────────
+function AmazonDealsStrip() {
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+  const { data: deals } = trpc.amazonDeals.getDealsWithImage.useQuery({ limit: 4 }, { staleTime: 1000 * 60 * 30 });
+  const trackClick = trpc.amazonDeals.trackClick.useMutation();
+
+  if (!deals || deals.length === 0) return null;
+
+  return (
+    <div className="w-full border-t border-b border-[#e5e5ea] bg-[#fafafa] py-3 px-4">
+      <div className="flex items-center gap-2 mb-2">
+        <span style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#ff9900', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Offerte Amazon del Giorno</span>
+        <div className="flex-1 h-px bg-[#e5e5ea]" />
+        <span style={{ fontFamily: SF, fontSize: '8px', color: '#aeaeb2', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Sponsorizzato</span>
+      </div>
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+        {deals.map((deal) => (
+          <a
+            key={deal.id}
+            href={deal.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            onClick={() => trackClick.mutate({ id: deal.id })}
+            className="flex-shrink-0 flex items-center gap-2 bg-white rounded-lg border border-[#e5e5ea] hover:border-[#ff9900] transition-colors px-2 py-1.5 group"
+            style={{ textDecoration: 'none', minWidth: '180px', maxWidth: '220px' }}
+          >
+            <div className="flex-shrink-0" style={{ width: '40px', height: '40px', background: '#fff' }}>
+              <img src={deal.imageUrl!} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 600, color: '#1d1d1f', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {deal.title}
+              </p>
+              {deal.price && deal.price !== '...' && (
+                <p style={{ fontFamily: SF, fontSize: '10px', fontWeight: 800, color: '#ff9900' }}>{deal.price}</p>
+              )}
+            </div>
+            <div className="flex-shrink-0 bg-[#ff9900] group-hover:bg-[#e68900] rounded px-1.5 py-0.5 transition-colors">
+              <span style={{ fontFamily: SF, fontSize: '7px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>Vedi</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Griglia Amazon Deals (banner mid-page, 2-4 deal con immagine) ────────────
+function AmazonDealsGrid({ startOffset = 0, maxDeals = 4 }: { startOffset?: number; maxDeals?: number }) {
+  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+  const { data: allDeals } = trpc.amazonDeals.getDealsWithImage.useQuery({ limit: 8 }, { staleTime: 1000 * 60 * 30 });
+  const trackClick = trpc.amazonDeals.trackClick.useMutation();
+
+  if (!allDeals || allDeals.length === 0) return null;
+
+  // Prendi deal a partire dall'offset per mostrare prodotti diversi in aree diverse
+  const deals = allDeals.slice(startOffset % allDeals.length).concat(allDeals.slice(0, startOffset % allDeals.length)).slice(0, maxDeals);
+
+  return (
+    <div className="w-full">
+      <div className="flex items-center gap-2 mb-3">
+        <span style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#ff9900', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Selezione Amazon</span>
+        <div className="flex-1 h-px bg-[#e5e5ea]" />
+        <span style={{ fontFamily: SF, fontSize: '8px', color: '#aeaeb2', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Sponsorizzato</span>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {deals.map((deal) => (
+          <a
+            key={deal.id}
+            href={deal.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            onClick={() => trackClick.mutate({ id: deal.id })}
+            className="block rounded-xl overflow-hidden border border-[#e5e5ea] bg-white hover:border-[#ff9900] transition-colors group"
+            style={{ textDecoration: 'none' }}
+          >
+            <div style={{ height: '80px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+              <img src={deal.imageUrl!} alt={deal.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            </div>
+            <div className="px-2 py-1 bg-white">
+              <p style={{ fontFamily: SF, fontSize: '8px', fontWeight: 600, color: '#1d1d1f', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {deal.title}
+              </p>
+              {deal.price && deal.price !== '...' && (
+                <p style={{ fontFamily: SF, fontSize: '9px', fontWeight: 800, color: '#ff9900' }}>{deal.price}</p>
+              )}
+            </div>
+            <div className="px-2 py-1 bg-[#ff9900] group-hover:bg-[#e68900] transition-colors">
+              <p style={{ fontFamily: SF, fontSize: '7px', fontWeight: 700, color: '#fff', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Vedi su Amazon</p>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
@@ -601,6 +686,9 @@ export default function Home() {
         {/* ══ BREAKING NEWS ════════════════════════════════════════════════════════ */}
         <BreakingNewsSection />
         <BreakingNewsTicker />
+
+        {/* ══ STRIP AMAZON DEALS ════════════════════════════════════════════════════════ */}
+        <AmazonDealsStrip />
 
         {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 mt-2 sm:mt-3">
@@ -1270,6 +1358,11 @@ export default function Home() {
 
 
 
+
+          {/* ── AMAZON DEALS GRID — Prima del footer ── */}
+          <div className="mt-12 mb-8">
+            <AmazonDealsGrid startOffset={2} maxDeals={4} />
+          </div>
 
           {/* ── FOOTER ── */}
           <div className="mt-12">

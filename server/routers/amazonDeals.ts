@@ -10,7 +10,7 @@ import { protectedProcedure, publicProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { getDb } from "../db";
 import { amazonDailyDeals } from "../../drizzle/schema";
-import { eq, desc, and, asc, sql } from "drizzle-orm";
+import { eq, desc, and, asc, sql, isNotNull } from "drizzle-orm";
 
 // ─── Middleware admin ─────────────────────────────────────────────────────────
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -230,6 +230,59 @@ export const amazonDealsRouter = router({
       const result: typeof amazonDailyDeals.$inferSelect[] = [];
       for (let i = 0; i < Math.min(lim, all.length); i++) {
         result.push(all[(dayOfYear + i) % all.length]);
+      }
+      return result;
+    }),
+
+  // ── Pubblico: deal CON immagine (manchette, sidebar, banner visivi) ──────────
+  getDealsWithImage: publicProcedure
+    .input(z.object({ limit: z.number().min(1).max(12).default(4) }).optional())
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) return [];
+      const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+      const all = await db
+        .select()
+        .from(amazonDailyDeals)
+        .where(and(
+          eq(amazonDailyDeals.active, true),
+          eq(amazonDailyDeals.scrapingStatus, "done"),
+          isNotNull(amazonDailyDeals.imageUrl)
+        ))
+        .orderBy(asc(amazonDailyDeals.id));
+      // Filtra ulteriormente: imageUrl deve essere una URL valida (non stringa vuota)
+      const withRealImage = all.filter(d => d.imageUrl && d.imageUrl.startsWith('http'));
+      if (withRealImage.length === 0) return [];
+      const lim = input?.limit ?? 4;
+      const result: typeof amazonDailyDeals.$inferSelect[] = [];
+      for (let i = 0; i < Math.min(lim, withRealImage.length); i++) {
+        result.push(withRealImage[(dayOfYear + i) % withRealImage.length]);
+      }
+      return result;
+    }),
+
+  // ── Pubblico: deal SENZA immagine (promo testuale in newsletter e sito) ──────
+  getDealsTextOnly: publicProcedure
+    .input(z.object({ limit: z.number().min(1).max(12).default(4) }).optional())
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) return [];
+      const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+      const all = await db
+        .select()
+        .from(amazonDailyDeals)
+        .where(and(
+          eq(amazonDailyDeals.active, true),
+          eq(amazonDailyDeals.scrapingStatus, "done")
+        ))
+        .orderBy(asc(amazonDailyDeals.id));
+      // Solo quelli senza immagine valida
+      const textOnly = all.filter(d => !d.imageUrl || !d.imageUrl.startsWith('http'));
+      if (textOnly.length === 0) return [];
+      const lim = input?.limit ?? 4;
+      const result: typeof amazonDailyDeals.$inferSelect[] = [];
+      for (let i = 0; i < Math.min(lim, textOnly.length); i++) {
+        result.push(textOnly[(dayOfYear + i) % textOnly.length]);
       }
       return result;
     }),
