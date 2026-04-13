@@ -172,6 +172,11 @@ export default function GenericNewsArticle() {
           <AdSenseUnit format="proopress1" />
         </div>
 
+        {/* ── ADSENSE autorelaxed ── */}
+        <div className="mt-8 mb-4">
+          <AdSenseUnit format="autorelaxed" />
+        </div>
+
         <Link
           href={sectionInfo.path}
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"

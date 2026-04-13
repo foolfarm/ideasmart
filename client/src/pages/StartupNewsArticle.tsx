@@ -159,6 +159,11 @@ export default function StartupNewsArticle() {
           <AdSenseUnit format="proopress1" />
         </div>
 
+        {/* ── ADSENSE autorelaxed ── */}
+        <div className="mt-8 mb-4">
+          <AdSenseUnit format="autorelaxed" />
+        </div>
+
         <div className="mt-4">
           <Link href="/startup" className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 transition-colors"
             style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>

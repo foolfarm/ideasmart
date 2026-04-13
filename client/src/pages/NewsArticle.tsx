@@ -267,6 +267,11 @@ export default function NewsArticle() {
           </div>
         )}
 
+        {/* ── ADSENSE autorelaxed ── */}
+        <div className="mt-8 mb-4">
+          <AdSenseUnit format="autorelaxed" />
+        </div>
+
         {/* Back link */}
         <div style={{ marginTop: 40 }}>
           <Link href="/ai" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: MUTED, textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.06em" }}>

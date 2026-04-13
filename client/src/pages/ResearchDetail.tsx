@@ -259,6 +259,11 @@ export default function ResearchDetail() {
             <AdSenseUnit format="proopress1" />
           </div>
 
+          {/* ── ADSENSE autorelaxed ── */}
+          <div className="mt-4 mb-8">
+            <AdSenseUnit format="autorelaxed" />
+          </div>
+
           {/* CTA bottom */}
           <div className="border-t-2 border-[#1a1a1a] pt-8 mt-8 text-center">
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3" style={{ color: "rgba(26,26,26,0.4)", fontFamily: SF }}>

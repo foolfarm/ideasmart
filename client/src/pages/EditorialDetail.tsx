@@ -169,6 +169,11 @@ export default function EditorialDetail() {
           <AdSenseUnit format="proopress1" />
         </div>
 
+        {/* ── ADSENSE autorelaxed ── */}
+        <div className="mt-4 mb-8">
+          <AdSenseUnit format="autorelaxed" />
+        </div>
+
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-[#1a1a1a]/20">
           {/* Pulsante Condividi su LinkedIn */}
