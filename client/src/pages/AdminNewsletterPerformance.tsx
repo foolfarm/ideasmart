@@ -1,13 +1,21 @@
 /**
  * IDEASMART — Admin Newsletter Performance
- * Statistiche aperture per campagna + tabella iscritti con tracking
+ * Statistiche reali da SendGrid API + tabella iscritti con tracking
  */
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+const C = {
+  bg: "#f5f5f7",
+  white: "#ffffff",
+  black: "#1d1d1f",
+  gray1: "#6e6e73",
+  gray2: "#aeaeb2",
+  border: "#e5e5ea",
+  font: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+};
 
 function fmt(d: Date | string | null | undefined) {
   if (!d) return "—";
@@ -19,7 +27,23 @@ function fmtFull(d: Date | string | null | undefined) {
   return new Date(d).toLocaleString("it-IT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+function KpiCard({ icon, label, value, sub, highlight = false }: {
+  icon: string; label: string; value: string; sub?: string; highlight?: boolean;
+}) {
+  return (
+    <div className="rounded-2xl p-5 border" style={{ background: C.white, borderColor: C.border }}>
+      <div className="text-2xl mb-2">{icon}</div>
+      <div
+        className="text-3xl font-black mb-1 tabular-nums"
+        style={{ color: highlight ? "#007aff" : C.black, fontFamily: C.font }}
+      >
+        {value}
+      </div>
+      <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray1 }}>{label}</div>
+      {sub && <div className="text-xs mt-1" style={{ color: C.gray2 }}>{sub}</div>}
+    </div>
+  );
+}
 
 export default function AdminNewsletterPerformance() {
   const { user, loading } = useAuth();
@@ -27,9 +51,14 @@ export default function AdminNewsletterPerformance() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "unsubscribed">("all");
   const [filterOpened, setFilterOpened] = useState<"all" | "opened" | "never">("all");
-  const [filterChannel, setFilterChannel] = useState<"all" | "ai" | "startup" | "health">("all");
-  const [tab, setTab] = useState<"campaigns" | "subscribers">("campaigns");
+  const [filterChannel, setFilterChannel] = useState<"all" | "ai" | "startup">("all");
+  const [tab, setTab] = useState<"sendgrid" | "campaigns" | "subscribers">("sendgrid");
+  const [sgDays, setSgDays] = useState(90);
 
+  const sgQuery = trpc.adminTools.getSendgridSummary.useQuery(
+    { days: sgDays },
+    { enabled: user?.role === "admin" }
+  );
   const campaignsQuery = trpc.admin.getNewsletterCampaignStats.useQuery(undefined, {
     enabled: user?.role === "admin"
   });
@@ -39,20 +68,18 @@ export default function AdminNewsletterPerformance() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
-        <div className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: C.bg }}>
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: C.black }} />
       </div>
     );
   }
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#f5f5f7" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: C.bg }}>
         <div className="text-center">
-          <p className="text-[#6e6e73] mb-4" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-            Accesso riservato agli amministratori.
-          </p>
-          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-bold" style={{ background: "#1d1d1f", color: "#ffffff" }}>
+          <p className="mb-4 text-sm" style={{ color: C.gray1, fontFamily: C.font }}>Accesso riservato agli amministratori.</p>
+          <button onClick={() => navigate("/")} className="px-4 py-2 rounded-lg text-sm font-bold" style={{ background: C.black, color: C.white }}>
             Torna alla Home
           </button>
         </div>
@@ -60,29 +87,18 @@ export default function AdminNewsletterPerformance() {
     );
   }
 
+  const sg = sgQuery.data;
   const campaigns = campaignsQuery.data ?? [];
   const allSubs = subscribersQuery.data ?? [];
 
-  // Statistiche globali
-  const totalSent = campaigns.reduce((s, c) => s + (c.recipientCount ?? 0), 0);
-  const totalOpened = campaigns.reduce((s, c) => s + (c.openedCount ?? 0), 0);
-  const avgOpenRate = campaigns.length > 0
-    ? Math.round(campaigns.reduce((s, c) => s + (c.openRate ?? 0), 0) / campaigns.length)
-    : 0;
-  const totalUnsubscribed = allSubs.filter(s => s.status === "unsubscribed").length;
-
-  // Definizione canali con colori
+  // Statistiche iscritti per canale
   const CHANNELS = [
-    { key: "ai", label: "AI", color: "#1a1a1a" },
-    { key: "startup", label: "Startup", color: "#2a2a2a" }
+    { key: "ai", label: "AI" },
+    { key: "startup", label: "Startup" },
   ] as const;
-
-  // Statistiche segmentazione per canale (iscritti attivi per ogni canale)
   const channelStats = CHANNELS.map(ch => ({
     ...ch,
-    count: allSubs.filter(s =>
-      s.status === "active" && (s.parsedChannels as string[] ?? []).includes(ch.key)
-    ).length
+    count: allSubs.filter(s => s.status === "active" && (s.parsedChannels as string[] ?? []).includes(ch.key)).length
   }));
 
   // Filtra iscritti
@@ -97,87 +113,66 @@ export default function AdminNewsletterPerformance() {
   });
 
   return (
-    <div className="min-h-screen" style={{ background: "#f5f5f7" }}>
+    <div className="min-h-screen" style={{ background: C.bg, fontFamily: C.font }}>
 
       {/* Header */}
-      <div className="border-b" style={{ background: "#ffffff" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/admin")} className="text-sm transition-colors">
+      <div className="border-b sticky top-0 z-10" style={{ background: C.white, borderColor: C.border }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/admin")}
+              className="text-sm font-medium transition-colors hover:opacity-70"
+              style={{ color: C.gray1 }}
+            >
               ← Admin
             </button>
-            <span className="text-white/20">/</span>
-            <span className="text-sm font-bold" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              Performance Newsletter
-            </span>
+            <span style={{ color: C.border }}>/</span>
+            <span className="text-sm font-bold" style={{ color: C.black }}>Performance Newsletter</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs">{user.name ?? user.email}</span>
+            <div className="w-2 h-2 rounded-full bg-green-500" />
+            <span className="text-xs" style={{ color: C.gray1 }}>{user.name ?? user.email}</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        {/* Segmentazione Canali */}
-        <div className="rounded-2xl border border-[#e5e5ea] p-5 mb-8" style={{ background: "#ffffff" }}>
-          <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>◆ Iscritti Attivi per Canale</p>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
+        {/* Iscritti per canale */}
+        <div className="rounded-2xl border p-5 mb-6" style={{ background: C.white, borderColor: C.border }}>
+          <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: C.gray1 }}>Iscritti attivi per canale</p>
+          <div className="flex gap-4">
             {channelStats.map(ch => (
-              <button
-                key={ch.key}
-                onClick={() => setFilterChannel(filterChannel === ch.key ? "all" : ch.key as typeof filterChannel)}
-                className="rounded-xl p-3 border transition-all text-center"
-                style={{
-                  background: filterChannel === ch.key ? `${ch.color}22` : "rgba(255,255,255,0.03)",
-                  borderColor: filterChannel === ch.key ? ch.color : "rgba(255,255,255,0.08)",
-                  cursor: "pointer"
-                }}
-              >
-                <div className="text-2xl font-black mb-0.5" style={{ color: ch.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  {ch.count}
-                </div>
-                <div className="text-xs uppercase tracking-wider">{ch.label}</div>
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-white/20 mt-3">Clicca su un canale per filtrare la tabella iscritti · Gli iscritti legacy (pre-preferenze) ricevono tutti i canali</p>
-        </div>
-
-        {/* KPI Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-          {[
-            { label: "Email totali inviate", value: totalSent.toLocaleString("it-IT"), color: "#1a1a1a", icon: "📤" },
-            { label: "Aperture totali", value: totalOpened.toLocaleString("it-IT"), color: "#1a1a1a", icon: "👁" },
-            { label: "Tasso apertura medio", value: `${avgOpenRate}%`, color: avgOpenRate >= 20 ? "#1a1a1a" : avgOpenRate >= 10 ? "#ff9900" : "#2a2a2a", icon: "📊" },
-            { label: "Disiscrizioni totali", value: totalUnsubscribed.toLocaleString("it-IT"), color: "#2a2a2a", icon: "🚫" }
-          ].map((stat) => (
-            <div key={stat.label} className="rounded-2xl p-5 border border-[#e5e5ea]" style={{ background: "#ffffff" }}>
-              <div className="text-2xl mb-1">{stat.icon}</div>
-              <div className="text-3xl font-black mb-1" style={{ color: stat.color, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                {stat.value}
+              <div key={ch.key} className="text-center">
+                <div className="text-3xl font-black" style={{ color: C.black, fontFamily: C.font }}>{ch.count.toLocaleString("it-IT")}</div>
+                <div className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: C.gray1 }}>{ch.label}</div>
               </div>
-              <div className="text-xs uppercase tracking-wider">{stat.label}</div>
+            ))}
+            <div className="text-center ml-4">
+              <div className="text-3xl font-black" style={{ color: C.black, fontFamily: C.font }}>
+                {allSubs.filter(s => s.status === "active").length.toLocaleString("it-IT")}
+              </div>
+              <div className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: C.gray1 }}>Totale attivi</div>
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b pb-0">
+        <div className="flex gap-0 mb-6 border-b" style={{ borderColor: C.border }}>
           {[
-            { id: "campaigns", label: `Campagne (${campaigns.length})` },
-            { id: "subscribers", label: `Iscritti (${allSubs.length})` }
+            { id: "sendgrid", label: "📊 Statistiche SendGrid" },
+            { id: "campaigns", label: `📧 Campagne (${campaigns.length})` },
+            { id: "subscribers", label: `👥 Iscritti (${allSubs.length})` },
           ].map(t => (
             <button
               key={t.id}
-              onClick={() => setTab(t.id as "campaigns" | "subscribers")}
-              className="px-5 py-3 text-sm font-bold transition-all border-b-2 -mb-px"
+              onClick={() => setTab(t.id as typeof tab)}
+              className="px-5 py-3 text-sm font-semibold transition-all border-b-2 -mb-px"
               style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                color: tab === t.id ? "#1a1a1a" : "rgba(255,255,255,0.35)",
-                borderBottomColor: tab === t.id ? "#1a1a1a" : "transparent",
-                background: "transparent"
+                color: tab === t.id ? C.black : C.gray1,
+                borderBottomColor: tab === t.id ? C.black : "transparent",
+                background: "transparent",
+                fontFamily: C.font,
               }}
             >
               {t.label}
@@ -185,74 +180,181 @@ export default function AdminNewsletterPerformance() {
           ))}
         </div>
 
-        {/* ── TAB: CAMPAGNE ─────────────────────────────────────────────────── */}
-        {tab === "campaigns" && (
-          <div className="rounded-2xl border border-[#e5e5ea] overflow-hidden" style={{ background: "#ffffff" }}>
-            <div className="px-6 py-4 border-b flex items-center justify-between">
-              <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                ◆ Storico Campagne Newsletter
-              </p>
-              <button onClick={() => campaignsQuery.refetch()} className="text-xs text-[#aeaeb2] hover:text-[#6e6e73] transition-colors">
+        {/* ── TAB: SENDGRID STATS ─────────────────────────────────────────────── */}
+        {tab === "sendgrid" && (
+          <div>
+            {/* Selettore periodo */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-sm font-medium" style={{ color: C.gray1 }}>Periodo:</span>
+              {[30, 60, 90, 180, 365].map(d => (
+                <button
+                  key={d}
+                  onClick={() => setSgDays(d)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                  style={{
+                    background: sgDays === d ? C.black : C.white,
+                    color: sgDays === d ? C.white : C.gray1,
+                    border: `1px solid ${sgDays === d ? C.black : C.border}`,
+                  }}
+                >
+                  {d === 365 ? "1 anno" : `${d}gg`}
+                </button>
+              ))}
+              <button
+                onClick={() => sgQuery.refetch()}
+                className="ml-auto text-xs font-medium transition-colors hover:opacity-70"
+                style={{ color: C.gray1 }}
+              >
                 ↻ Aggiorna
               </button>
             </div>
 
+            {sgQuery.isLoading ? (
+              <div className="flex items-center justify-center py-16">
+                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: C.black }} />
+              </div>
+            ) : !sg || !sg.success ? (
+              <div className="rounded-2xl border p-8 text-center" style={{ background: C.white, borderColor: C.border }}>
+                <p className="text-sm" style={{ color: C.gray1 }}>Impossibile recuperare le statistiche SendGrid.</p>
+              </div>
+            ) : (
+              <>
+                {/* KPI principali */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                  <KpiCard
+                    icon="📤"
+                    label="Email consegnate"
+                    value={sg.delivered.toLocaleString("it-IT")}
+                    sub={`Ultimi ${sg.days} giorni`}
+                  />
+                  <KpiCard
+                    icon="👁"
+                    label="Aperture uniche"
+                    value={sg.uniqueOpens.toLocaleString("it-IT")}
+                    highlight
+                  />
+                  <KpiCard
+                    icon="📊"
+                    label="Open Rate"
+                    value={`${sg.openRate}%`}
+                    sub={sg.openRate >= 20 ? "✅ Ottimo" : sg.openRate >= 15 ? "⚠️ Nella media" : "❌ Sotto media"}
+                    highlight={sg.openRate >= 20}
+                  />
+                  <KpiCard
+                    icon="🚫"
+                    label="Disiscrizioni"
+                    value={sg.unsubscribes.toLocaleString("it-IT")}
+                    sub={`Bounce: ${sg.bounces} · Spam: ${sg.spamReports}`}
+                  />
+                </div>
+
+                {/* Statistiche secondarie */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                  <div className="rounded-2xl border p-4" style={{ background: C.white, borderColor: C.border }}>
+                    <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: C.gray1 }}>Aperture totali (incl. riaperture)</div>
+                    <div className="text-2xl font-black" style={{ color: C.black, fontFamily: C.font }}>{sg.opens.toLocaleString("it-IT")}</div>
+                  </div>
+                  <div className="rounded-2xl border p-4" style={{ background: C.white, borderColor: C.border }}>
+                    <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: C.gray1 }}>Click Rate</div>
+                    <div className="text-2xl font-black" style={{ color: C.black, fontFamily: C.font }}>{sg.clickRate}%</div>
+                  </div>
+                  <div className="rounded-2xl border p-4" style={{ background: C.white, borderColor: C.border }}>
+                    <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: C.gray1 }}>Aggiornato il</div>
+                    <div className="text-sm font-semibold" style={{ color: C.black }}>{fmtFull(sg.fetchedAt)}</div>
+                  </div>
+                </div>
+
+                {/* Trend giornaliero */}
+                {sg.dailyStats && sg.dailyStats.length > 0 && (
+                  <div className="rounded-2xl border p-5" style={{ background: C.white, borderColor: C.border }}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: C.gray1 }}>Trend aperture — ultimi 30 giorni</p>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b" style={{ borderColor: C.border }}>
+                            <th className="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Data</th>
+                            <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Consegnate</th>
+                            <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Aperture uniche</th>
+                            <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Open Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[...sg.dailyStats].reverse().filter(d => d.delivered > 0).map(d => (
+                            <tr key={d.date} className="border-b hover:bg-gray-50 transition-colors" style={{ borderColor: C.border }}>
+                              <td className="px-3 py-2.5 text-sm" style={{ color: C.black }}>{fmt(d.date)}</td>
+                              <td className="px-3 py-2.5 text-sm text-right tabular-nums" style={{ color: C.gray1 }}>{d.delivered.toLocaleString("it-IT")}</td>
+                              <td className="px-3 py-2.5 text-sm text-right tabular-nums font-semibold" style={{ color: "#007aff" }}>{d.uniqueOpens.toLocaleString("it-IT")}</td>
+                              <td className="px-3 py-2.5 text-right">
+                                <span
+                                  className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
+                                  style={{
+                                    background: d.openRate >= 25 ? "#e8f5e9" : d.openRate >= 15 ? "#fff8e1" : "#fce4ec",
+                                    color: d.openRate >= 25 ? "#2e7d32" : d.openRate >= 15 ? "#f57f17" : "#c62828",
+                                  }}
+                                >
+                                  {d.openRate}%
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* ── TAB: CAMPAGNE ─────────────────────────────────────────────────── */}
+        {tab === "campaigns" && (
+          <div className="rounded-2xl border overflow-hidden" style={{ background: C.white, borderColor: C.border }}>
+            <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: C.border }}>
+              <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.gray1 }}>Storico campagne newsletter</p>
+              <button onClick={() => campaignsQuery.refetch()} className="text-xs transition-colors hover:opacity-70" style={{ color: C.gray2 }}>↻ Aggiorna</button>
+            </div>
+            <div className="px-6 py-3 border-b" style={{ borderColor: C.border, background: "#f9f9fb" }}>
+              <p className="text-xs" style={{ color: C.gray1 }}>
+                ℹ️ Le aperture per campagna vengono tracciate tramite pixel di tracking interno. Per le statistiche aggregate reali, usa la tab "Statistiche SendGrid".
+              </p>
+            </div>
             {campaignsQuery.isLoading ? (
               <div className="p-8 text-center">
-                <div className="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin mx-auto" style={{ borderColor: C.black }} />
               </div>
             ) : campaigns.length === 0 ? (
               <div className="p-12 text-center">
-                <p className="text-[#aeaeb2] text-sm">Nessuna campagna newsletter inviata ancora.</p>
-                <p className="text-white/20 text-xs mt-2">Le statistiche appariranno dopo il primo invio.</p>
+                <p className="text-sm" style={{ color: C.gray1 }}>Nessuna campagna newsletter inviata ancora.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-[#e5e5ea]">
-                      <th className="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Oggetto</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Data invio</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Inviati</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Aperti</th>
-                      <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Tasso apertura</th>
+                    <tr className="border-b" style={{ borderColor: C.border }}>
+                      <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Oggetto</th>
+                      <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Data invio</th>
+                      <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Inviati</th>
+                      <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Aperture (pixel)</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {[...campaigns].reverse().map((c) => {
-                      const rate = c.openRate ?? 0;
-                      const rateColor = rate >= 25 ? "#1a1a1a" : rate >= 15 ? "#ff9900" : rate >= 5 ? "#ffcc00" : "#2a2a2a";
-                      return (
-                        <tr key={c.id} className="border-b border-[#e5e5ea] hover:bg-white/2 transition-colors">
-                          <td className="px-5 py-4 text-sm text-[#1d1d1f] max-w-xs" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                            <span className="line-clamp-2">{c.subject}</span>
-                          </td>
-                          <td className="px-5 py-4 text-xs text-center whitespace-nowrap">
-                            {fmt(c.sentAt)}
-                          </td>
-                          <td className="px-5 py-4 text-sm text-white/70 text-center font-mono">
-                            {(c.recipientCount ?? 0).toLocaleString("it-IT")}
-                          </td>
-                          <td className="px-5 py-4 text-sm text-center font-mono" style={{ color: "#1a1a1a" }}>
-                            {(c.openedCount ?? 0).toLocaleString("it-IT")}
-                          </td>
-                          <td className="px-5 py-4 text-center">
-                            <div className="flex flex-col items-center gap-1">
-                              <span className="text-sm font-black" style={{ color: rateColor, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                                {rate}%
-                              </span>
-                              {/* Barra visuale */}
-                              <div className="w-20 h-1.5 rounded-full bg-white/8 overflow-hidden">
-                                <div
-                                  className="h-full rounded-full transition-all"
-                                  style={{ width: `${Math.min(rate, 100)}%`, background: rateColor }}
-                                />
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {[...campaigns].reverse().map((c) => (
+                      <tr key={c.id} className="border-b hover:bg-gray-50 transition-colors" style={{ borderColor: C.border }}>
+                        <td className="px-5 py-4 text-sm max-w-xs" style={{ color: C.black, fontFamily: C.font }}>
+                          <span className="line-clamp-2">{c.subject}</span>
+                        </td>
+                        <td className="px-5 py-4 text-xs text-center whitespace-nowrap" style={{ color: C.gray1 }}>
+                          {fmt(c.sentAt)}
+                        </td>
+                        <td className="px-5 py-4 text-sm text-center font-mono" style={{ color: C.gray1 }}>
+                          {(c.recipientCount ?? 0).toLocaleString("it-IT")}
+                        </td>
+                        <td className="px-5 py-4 text-sm text-center font-mono" style={{ color: C.black }}>
+                          {(c.openedCount ?? 0).toLocaleString("it-IT")}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -270,12 +372,14 @@ export default function AdminNewsletterPerformance() {
                 placeholder="Cerca per email o nome..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white placeholder-white/30 focus:outline-none focus:border-[#1a1a1a] transition-colors w-64"
+                className="px-3 py-2 rounded-lg text-sm focus:outline-none transition-colors w-64"
+                style={{ border: `1px solid ${C.border}`, background: C.white, color: C.black, fontFamily: C.font }}
               />
               <select
                 value={filterStatus}
-                onChange={e => setFilterStatus(e.target.value as "all" | "active" | "unsubscribed")}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#1a1a1a] transition-colors"
+                onChange={e => setFilterStatus(e.target.value as typeof filterStatus)}
+                className="px-3 py-2 rounded-lg text-sm focus:outline-none"
+                style={{ border: `1px solid ${C.border}`, background: C.white, color: C.black }}
               >
                 <option value="all">Tutti gli stati</option>
                 <option value="active">Solo attivi</option>
@@ -283,8 +387,9 @@ export default function AdminNewsletterPerformance() {
               </select>
               <select
                 value={filterOpened}
-                onChange={e => setFilterOpened(e.target.value as "all" | "opened" | "never")}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#1a1a1a] transition-colors"
+                onChange={e => setFilterOpened(e.target.value as typeof filterOpened)}
+                className="px-3 py-2 rounded-lg text-sm focus:outline-none"
+                style={{ border: `1px solid ${C.border}`, background: C.white, color: C.black }}
               >
                 <option value="all">Tutte le aperture</option>
                 <option value="opened">Ha aperto almeno 1 volta</option>
@@ -293,49 +398,47 @@ export default function AdminNewsletterPerformance() {
               <select
                 value={filterChannel}
                 onChange={e => setFilterChannel(e.target.value as typeof filterChannel)}
-                className="px-3 py-2 rounded-lg text-sm border border-white/15 bg-white/5 text-white focus:outline-none focus:border-[#1a1a1a] transition-colors"
+                className="px-3 py-2 rounded-lg text-sm focus:outline-none"
+                style={{ border: `1px solid ${C.border}`, background: C.white, color: C.black }}
               >
                 <option value="all">Tutti i canali</option>
                 <option value="ai">AI</option>
                 <option value="startup">Startup</option>
-                <option value="health">Health</option>
               </select>
-              <span className="ml-auto text-xs text-[#aeaeb2] self-center">
+              <span className="ml-auto text-xs self-center" style={{ color: C.gray2 }}>
                 {filtered.length} / {allSubs.length} iscritti
               </span>
             </div>
 
-            <div className="rounded-2xl border border-[#e5e5ea] overflow-hidden" style={{ background: "#ffffff" }}>
-              <div className="px-6 py-4 border-b flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                  ◆ Iscritti con Tracking ({filtered.length})
+            <div className="rounded-2xl border overflow-hidden" style={{ background: C.white, borderColor: C.border }}>
+              <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: C.border }}>
+                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.gray1 }}>
+                  Iscritti con tracking ({filtered.length})
                 </p>
-                <button onClick={() => subscribersQuery.refetch()} className="text-xs text-[#aeaeb2] hover:text-[#6e6e73] transition-colors">
-                  ↻ Aggiorna
-                </button>
+                <button onClick={() => subscribersQuery.refetch()} className="text-xs transition-colors hover:opacity-70" style={{ color: C.gray2 }}>↻ Aggiorna</button>
               </div>
 
               {subscribersQuery.isLoading ? (
                 <div className="p-8 text-center">
-                  <div className="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin mx-auto" />
+                  <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin mx-auto" style={{ borderColor: C.black }} />
                 </div>
               ) : filtered.length === 0 ? (
                 <div className="p-8 text-center">
-                  <p className="text-[#aeaeb2] text-sm">Nessun iscritto trovato con i filtri selezionati.</p>
+                  <p className="text-sm" style={{ color: C.gray1 }}>Nessun iscritto trovato con i filtri selezionati.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-[#e5e5ea]">
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Email</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Nome</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Stato</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Inviati</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Aperture</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Ultima apertura</th>
-                        <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Iscritto il</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-[#aeaeb2]">Canali</th>
+                      <tr className="border-b" style={{ borderColor: C.border }}>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Email</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Nome</th>
+                        <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Stato</th>
+                        <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Inviati</th>
+                        <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Aperture</th>
+                        <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Ultima apertura</th>
+                        <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Iscritto il</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: C.gray2 }}>Canali</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -343,54 +446,47 @@ export default function AdminNewsletterPerformance() {
                         const hasOpened = sub.totalOpened && sub.totalOpened > 0;
                         const isUnsub = sub.status === "unsubscribed";
                         return (
-                          <tr key={sub.id} className="border-b border-[#e5e5ea] hover:bg-white/2 transition-colors">
-                            <td className="px-4 py-3 text-sm text-[#1d1d1f]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                              {sub.email}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-white/40">{sub.name ?? "—"}</td>
+                          <tr key={sub.id} className="border-b hover:bg-gray-50 transition-colors" style={{ borderColor: C.border }}>
+                            <td className="px-4 py-3 text-sm" style={{ color: C.black, fontFamily: C.font }}>{sub.email}</td>
+                            <td className="px-4 py-3 text-sm" style={{ color: C.gray1 }}>{sub.name ?? "—"}</td>
                             <td className="px-4 py-3 text-center">
                               <span
                                 className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
                                 style={{
-                                  background: isUnsub ? "rgba(255,85,0,0.15)" : "rgba(0,229,200,0.15)",
-                                  color: isUnsub ? "#2a2a2a" : "#1a1a1a"
+                                  background: isUnsub ? "#fce4ec" : "#e8f5e9",
+                                  color: isUnsub ? "#c62828" : "#2e7d32",
                                 }}
                               >
                                 {isUnsub ? "Disattivato" : "Attivo"}
                               </span>
                             </td>
-                            <td className="px-4 py-3 text-center text-sm font-mono text-[#6e6e73]">
-                              {sub.totalSent ?? 0}
-                            </td>
+                            <td className="px-4 py-3 text-center text-sm font-mono" style={{ color: C.gray1 }}>{sub.totalSent ?? 0}</td>
                             <td className="px-4 py-3 text-center">
                               {hasOpened ? (
-                                <span className="inline-flex items-center gap-1 text-sm font-bold" style={{ color: "#1a1a1a" }}>
-                                  <span>👁</span>
-                                  <span>{sub.totalOpened}</span>
-                                </span>
+                                <span className="text-sm font-bold" style={{ color: "#007aff" }}>👁 {sub.totalOpened}</span>
                               ) : (
-                                <span className="text-xs text-white/20">—</span>
+                                <span className="text-xs" style={{ color: C.gray2 }}>—</span>
                               )}
                             </td>
-                            <td className="px-4 py-3 text-center text-xs text-white/35 whitespace-nowrap">
+                            <td className="px-4 py-3 text-center text-xs whitespace-nowrap" style={{ color: C.gray1 }}>
                               {fmtFull(sub.lastOpenedAt)}
                             </td>
-                            <td className="px-4 py-3 text-center text-xs text-[#aeaeb2] whitespace-nowrap">
+                            <td className="px-4 py-3 text-center text-xs whitespace-nowrap" style={{ color: C.gray2 }}>
                               {fmt(sub.subscribedAt)}
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex flex-wrap gap-1">
                                 {(sub.parsedChannels as string[] ?? []).map((ch: string) => {
                                   const chInfo = [
-                                    { key: "ai", label: "AI", color: "#1a1a1a" },
-                                    { key: "startup", label: "ST", color: "#2a2a2a" }
+                                    { key: "ai", label: "AI" },
+                                    { key: "startup", label: "ST" },
                                   ].find(c => c.key === ch);
                                   if (!chInfo) return null;
                                   return (
                                     <span
                                       key={ch}
                                       className="inline-block px-1.5 py-0.5 rounded font-bold"
-                                      style={{ background: `${chInfo.color}22`, color: chInfo.color, fontSize: "10px" }}
+                                      style={{ background: "#f0f0f5", color: C.black, fontSize: "10px" }}
                                     >
                                       {chInfo.label}
                                     </span>

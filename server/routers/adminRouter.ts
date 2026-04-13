@@ -343,4 +343,43 @@ export const adminRouter = router({
       await markAllAlertsRead();
       return { ok: true };
     }),
+
+  /**
+   * Statistiche SendGrid aggregate per la pagina Performance Newsletter.
+   * Recupera direttamente dall'API SendGrid: delivered, unique_opens, open_rate, unsubscribes.
+   */
+  getSendgridSummary: adminProcedure
+    .input(z.object({ days: z.number().int().min(1).max(365).default(90) }))
+    .query(async ({ input }) => {
+      try {
+        const stats = await fetchAllSendgridStats(input.days);
+        return {
+          success: true,
+          delivered: stats.totals.delivered,
+          uniqueOpens: stats.totals.unique_opens,
+          opens: stats.totals.opens,
+          openRate: stats.totals.open_rate,
+          clickRate: stats.totals.click_rate,
+          bounces: stats.totals.bounces,
+          unsubscribes: stats.totals.unsubscribes,
+          spamReports: stats.totals.spam_reports,
+          days: input.days,
+          fetchedAt: stats.fetchedAt,
+          // Ultimi 30 giorni per il trend
+          dailyStats: stats.stats.slice(-30).map(d => ({
+            date: d.date,
+            delivered: d.delivered,
+            uniqueOpens: d.unique_opens,
+            openRate: d.open_rate,
+          }))
+        };
+      } catch (err) {
+        return {
+          success: false,
+          delivered: 0, uniqueOpens: 0, opens: 0, openRate: 0,
+          clickRate: 0, bounces: 0, unsubscribes: 0, spamReports: 0,
+          days: input.days, fetchedAt: new Date().toISOString(), dailyStats: []
+        };
+      }
+    }),
 });
