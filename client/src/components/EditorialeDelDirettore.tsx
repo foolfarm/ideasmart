@@ -127,105 +127,10 @@ export default function EditorialeDelDirettore() {
         </div>
       ) : editorial ? (
         <div
-          className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-0 border-l-4"
+          className="border-l-4"
           style={{ borderColor: ACCENT, background: PAPER }}
         >
-          {/* ── Colonna sinistra: firma autore ── */}
-          <div
-            className="flex flex-col justify-between p-5 border-r"
-            style={{ borderColor: INK + "10" }}
-          >
-            {/* Avatar + nome */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src={AUTHOR_IMG}
-                  alt="Andrea Cinelli"
-                  className="w-14 h-14 rounded-full object-cover object-top border-2 flex-shrink-0"
-                  style={{ borderColor: ACCENT }}
-                />
-                <div>
-                  <Link href="/andrea-cinelli">
-                    <p
-                      className="font-bold leading-tight cursor-pointer hover:underline"
-                      style={{
-                        color: INK,
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                        fontSize: "15px",
-                      }}
-                    >
-                      Andrea Cinelli
-                    </p>
-                  </Link>
-                  <p
-                    className="text-[11px] mt-0.5 leading-snug"
-                    style={{
-                      color: INK + "60",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                    }}
-                  >
-                    Tech Editor
-                  </p>
-                </div>
-              </div>
-
-              {/* Ruolo / bio breve */}
-              <p
-                className="text-[12px] leading-relaxed mb-4"
-                style={{
-                  color: INK + "70",
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif",
-                  fontStyle: "italic",
-                }}
-              >
-                Serial entrepreneur, 2 exit. Co-fondatore di Libero.it. Fondatore di FoolFarm. Professore di AI al Sole 24 Ore Business School.
-              </p>
-
-              {/* Key trend del giorno */}
-              {editorial.keyTrend && (
-                <div
-                  className="px-3 py-2 mb-4"
-                  style={{ background: INK + "06", borderLeft: `3px solid ${ACCENT}` }}
-                >
-                  <p
-                    className="text-[9px] font-bold uppercase tracking-widest mb-1"
-                    style={{ color: INK + "50", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-                  >
-                    Trend del giorno
-                  </p>
-                  <p
-                    className="text-[13px] font-semibold leading-snug"
-                    style={{ color: INK, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
-                  >
-                    {editorial.keyTrend}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Footer firma: LinkedIn + archivio */}
-            <div className="space-y-2 pt-4 border-t" style={{ borderColor: INK + "10" }}>
-              <a
-                href="https://www.linkedin.com/in/cinellia/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] font-bold uppercase tracking-widest hover:underline block"
-                style={{ color: "#0077b5", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                Seguimi su LinkedIn →
-              </a>
-              <Link href="/andrea-cinelli">
-                <span
-                  className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer block"
-                  style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-                >
-                  Tutti gli editoriali →
-                </span>
-              </Link>
-            </div>
-          </div>
-
-          {/* ── Colonna destra: testo editoriale ── */}
+          {/* ── Testo editoriale a tutta larghezza ── */}
           <div className="p-6 md:p-8">
             {/* Titolo */}
             <h3

@@ -13,8 +13,8 @@ interface SendGridPayload {
 
 async function sendEmail({ to, subject, html, text }: SendGridPayload): Promise<void> {
   const apiKey = process.env.SENDGRID_API_KEY || ENV.sendgridApiKey;
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || ENV.sendgridFromEmail || "info@proofpress.ai";
-  const fromName = "ProofPress.AI";
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL || ENV.sendgridFromEmail || "noreply@proofpress.ai";
+  const fromName = process.env.SENDGRID_FROM_NAME || ENV.sendgridFromName || "Daily AI Business Intelligence- Per Decidere, Informarsi, Investire by ProofPress Magazine";
   const replyTo = "noreply@proofpress.ai";
 
   if (!apiKey) {
