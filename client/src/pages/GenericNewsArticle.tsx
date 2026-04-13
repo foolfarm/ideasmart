@@ -154,6 +154,11 @@ export default function GenericNewsArticle() {
         >
           Apertura articolo su {news.sourceName ?? "fonte originale"}…
         </p>
+        {/* ── ADSENSE fluid native ── */}
+        <div className="my-4">
+          <AdSenseUnit format="fluid" />
+        </div>
+
         {/* ── AMAZON DEAL BANNER ── */}
         <AmazonArticleBanner />
 

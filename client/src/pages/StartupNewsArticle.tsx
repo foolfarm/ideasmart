@@ -141,6 +141,11 @@ export default function StartupNewsArticle() {
             Torna a STARTUP NEWS
           </Link>
         )}
+        {/* ── ADSENSE fluid native ── */}
+        <div className="my-4">
+          <AdSenseUnit format="fluid" />
+        </div>
+
         {/* ── AMAZON DEAL BANNER ── */}
         <AmazonArticleBanner />
 

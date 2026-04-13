@@ -190,6 +190,11 @@ export default function NewsArticle() {
           {news.summary}
         </div>
 
+        {/* ── ADSENSE fluid native ── */}
+        <div className="my-4">
+          <AdSenseUnit format="fluid" />
+        </div>
+
         {/* ProofPress Verify badge */}
         <div style={{ background: WHITE, border: `1px solid ${BORDER}`, borderLeft: `4px solid ${BLACK}`, borderRadius: 8, padding: "18px 22px", marginBottom: 32 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>

@@ -1,14 +1,14 @@
 /**
  * AdSenseUnit — Componente riutilizzabile per le unità display Google AdSense
  *
- * Unità configurate:
- *  - "proopress1"   → slot 9347464483, formato auto responsive (default per articoli)
- *  - "leaderboard"  → slot 9347464483, 728×90 (banner orizzontale sotto l'header)
+ * Formati disponibili:
+ *  - "proopress1"   → slot 9347464483, auto responsive (dopo il corpo articolo)
+ *  - "fluid"        → slot 5451008544, fluid native inline (inizio articolo)
+ *  - "leaderboard"  → slot 9347464483, 728×90 (sotto l'header, desktop)
  *  - "medium-rect"  → slot 9347464483, 300×250 (colonna destra home)
  *
  * Lo script adsbygoogle.js è già caricato in index.html.
- * Questo componente chiama (adsbygoogle = window.adsbygoogle || []).push({})
- * una sola volta per istanza al mount, tramite useEffect.
+ * Ogni istanza chiama push({}) una sola volta al mount (anti-doppio push in StrictMode).
  *
  * NOTA: In sviluppo (localhost) gli annunci non vengono visualizzati — normale.
  * In produzione (proofpress.ai) vengono serviti automaticamente dopo approvazione AdSense.
@@ -16,7 +16,7 @@
 
 import { useEffect, useRef } from "react";
 
-type AdFormat = "proopress1" | "leaderboard" | "medium-rect";
+export type AdFormat = "proopress1" | "fluid" | "leaderboard" | "medium-rect";
 
 interface AdSenseUnitProps {
   format: AdFormat;
@@ -29,8 +29,12 @@ declare global {
   }
 }
 
-const AD_CLIENT = "ca-pub-7185482526978993";
-const AD_SLOT   = "9347464483";
+const AD_CLIENT      = "ca-pub-7185482526978993";
+const SLOT_AUTO      = "9347464483";   // proopress1 — auto responsive
+const SLOT_FLUID     = "5451008544";   // fluid native inline
+const FLUID_LAYOUT   = "-4p+cn+4z-cw-v";
+
+const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
 
 export default function AdSenseUnit({ format, className = "" }: AdSenseUnitProps) {
   const pushed = useRef(false);
@@ -45,9 +49,29 @@ export default function AdSenseUnit({ format, className = "" }: AdSenseUnitProps
     }
   }, []);
 
-  const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+  /* ── Fluid native inline ── */
+  if (format === "fluid") {
+    return (
+      <div className={`adsense-unit w-full ${className}`}>
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-format="fluid"
+          data-ad-layout-key={FLUID_LAYOUT}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={SLOT_FLUID}
+        />
+        <span
+          className="block text-center mt-0.5"
+          style={{ fontFamily: SF, fontSize: "9px", color: "#aeaeb2", textTransform: "uppercase", letterSpacing: "0.1em" }}
+        >
+          Pubblicità
+        </span>
+      </div>
+    );
+  }
 
-  /* ── Formato auto responsive (articoli) ── */
+  /* ── Auto responsive (proopress1) ── */
   if (format === "proopress1") {
     return (
       <div className={`adsense-unit w-full ${className}`}>
@@ -55,7 +79,7 @@ export default function AdSenseUnit({ format, className = "" }: AdSenseUnitProps
           className="adsbygoogle"
           style={{ display: "block" }}
           data-ad-client={AD_CLIENT}
-          data-ad-slot={AD_SLOT}
+          data-ad-slot={SLOT_AUTO}
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
@@ -77,7 +101,7 @@ export default function AdSenseUnit({ format, className = "" }: AdSenseUnitProps
           className="adsbygoogle"
           style={{ display: "block", width: 728, height: 90 }}
           data-ad-client={AD_CLIENT}
-          data-ad-slot={AD_SLOT}
+          data-ad-slot={SLOT_AUTO}
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
@@ -98,7 +122,7 @@ export default function AdSenseUnit({ format, className = "" }: AdSenseUnitProps
         className="adsbygoogle"
         style={{ display: "block", width: 300, height: 250 }}
         data-ad-client={AD_CLIENT}
-        data-ad-slot={AD_SLOT}
+        data-ad-slot={SLOT_AUTO}
         data-ad-format="auto"
         data-full-width-responsive="true"
       />

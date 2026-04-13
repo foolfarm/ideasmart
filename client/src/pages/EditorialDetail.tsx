@@ -154,6 +154,11 @@ export default function EditorialDetail() {
           </blockquote>
         )}
 
+        {/* ── ADSENSE fluid native ── */}
+        <div className="my-6">
+          <AdSenseUnit format="fluid" />
+        </div>
+
         {/* ── ADSENSE proopress1 ── */}
         <div className="my-8">
           <AdSenseUnit format="proopress1" />
