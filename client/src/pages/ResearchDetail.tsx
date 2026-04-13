@@ -249,6 +249,11 @@ export default function ResearchDetail() {
             <AdSenseUnit format="fluid" />
           </div>
 
+          {/* ── ADSENSE in-article ── */}
+          <div className="my-6">
+            <AdSenseUnit format="in-article" />
+          </div>
+
           {/* ── ADSENSE proopress1 ── */}
           <div className="my-8">
             <AdSenseUnit format="proopress1" />

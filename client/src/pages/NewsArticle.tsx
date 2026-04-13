@@ -211,6 +211,11 @@ export default function NewsArticle() {
           </code>
         </div>
 
+        {/* ── ADSENSE in-article ── */}
+        <div className="my-6">
+          <AdSenseUnit format="in-article" />
+        </div>
+
         {/* Link alla fonte (opzionale, non redirect) */}
         {sourceUrl && (
           <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 24, marginBottom: 32 }}>

@@ -146,6 +146,11 @@ export default function StartupNewsArticle() {
           <AdSenseUnit format="fluid" />
         </div>
 
+        {/* ── ADSENSE in-article ── */}
+        <div className="my-6">
+          <AdSenseUnit format="in-article" />
+        </div>
+
         {/* ── AMAZON DEAL BANNER ── */}
         <AmazonArticleBanner />
 
