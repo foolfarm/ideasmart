@@ -46,9 +46,60 @@ async function saveScrapedNews(
   await db.delete(newsItems).where(eq(newsItems.section, section));
   console.log(`[RssNewsScheduler] Notizie ${section} precedenti eliminate`);
 
+  // Filtro topic: scarta articoli off-topic per la sezione
+  const OFF_TOPIC_KEYWORDS = [
+    "orban", "bonolis", "sinner", "calcio", "serie a", "fiorentina", "juventus", "inter", "milan",
+    "formula 1", "motogp", "tennis", "golf", "olimpiadi", "mondiali", "europei",
+    "gossip", "oroscopo", "meteo", "ricette", "cucina", "moda", "cinema", "musica",
+    "politica", "elezioni", "parlamento", "governo", "ministro", "premier", "trump", "biden",
+    "iran", "ucraina", "russia", "guerra", "nigeria", "raid aereo",
+    "salis", "meloni", "schlein", "salvini", "renzi",
+    "apprentice", "lord sugar", "love island",
+    "belve", "carlo conti", "giulia michelini", "chiofalo", "amici", "grande fratello",
+    "sanremo", "festival", "x factor", "masterchef", "ballando",
+    "fiorentina", "lazio", "napoli", "roma", "atalanta", "torino", "bologna",
+    "serie b", "champions league", "europa league", "coppa italia"
+  ];
+  const SECTION_REQUIRED_KEYWORDS: Record<string, string[]> = {
+    startup: ["startup", "ai", "tech", "venture", "funding", "founder", "seed", "series", "round",
+              "innovazione", "tecnologia", "intelligenza artificiale", "machine learning", "software",
+              "app", "platform", "saas", "fintech", "healthtech", "deeptech", "scale", "growth",
+              "investment", "investor", "unicorn", "accelerator", "incubator", "pitch", "mvp"],
+    dealroom: ["funding", "round", "venture", "capital", "investment", "m&a", "ipo", "acquisition",
+               "finanziamento", "investimento", "fondo", "private equity", "deal", "valuation",
+               "startup", "scaleup", "unicorn", "exit", "buyout", "merger"],
+    ai: ["ai", "artificial intelligence", "machine learning", "llm", "gpt", "model", "neural",
+         "intelligenza artificiale", "modello", "algoritmo", "automazione", "generativo", "openai",
+         "anthropic", "google", "microsoft", "meta", "nvidia", "deep learning", "transformer"]
+  };
+
+  const filteredArticles = articles.filter(article => {
+    // Applica il filtro off-topic SOLO al titolo per evitare falsi positivi nel summary
+    const titleLower = article.title.toLowerCase();
+    const textFull = (article.title + " " + article.summary).toLowerCase();
+    // Scarta se il TITOLO contiene keyword off-topic (word boundary per evitare falsi positivi)
+    const matchesOffTopic = OFF_TOPIC_KEYWORDS.some(kw => {
+      const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp(`\\b${escaped}\\b`).test(titleLower);
+    });
+    if (matchesOffTopic) {
+      console.log(`[RssNewsScheduler] ⚠️ Scartato off-topic [${section}]: ${article.title.slice(0, 60)}`);
+      return false;
+    }
+    // Per startup e dealroom, richiede almeno una keyword di sezione
+    const required = SECTION_REQUIRED_KEYWORDS[section];
+    if (required && !required.some(kw => textFull.includes(kw))) {
+      console.log(`[RssNewsScheduler] ⚠️ Scartato non-pertinente [${section}]: ${article.title.slice(0, 60)}`);
+      return false;
+    }
+    return true;
+  });
+
+  console.log(`[RssNewsScheduler] Filtro topic: ${articles.length} → ${filteredArticles.length} articoli pertinenti per ${section}`);
+
   let saved = 0;
-  for (let i = 0; i < articles.length; i++) {
-    const article = articles[i];
+  for (let i = 0; i < filteredArticles.length; i++) {
+    const article = filteredArticles[i];
 
     // REGOLA FONDAMENTALE: preservare SEMPRE l'URL articolo originale dal feed RSS.
     // Il feed RSS contiene già l'URL diretto all'articolo — non va mai sostituito con la homepage.

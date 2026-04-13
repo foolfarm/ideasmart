@@ -266,7 +266,52 @@ Rispondi SOLO con JSON valido.`;
     });
 
     const content = response.choices[0]?.message?.content as string;
-    const parsed = JSON.parse(stripJsonBackticks(content));
+    let parsed: { items?: Array<{ title: string; summary: string; category: string; sourceIndex: number }> };
+    try {
+      parsed = JSON.parse(stripJsonBackticks(content));
+    } catch (jsonErr) {
+      // Secondo tentativo: prompt semplificato con meno articoli per ridurre la probabilità di JSON malformato
+      console.warn(`[RssScraper] JSON malformato al primo tentativo per ${section}, ritento con prompt semplificato...`);
+      const shortList = sortedArticles.slice(0, 20).map((a, i) =>
+        `[${i}] ${a.sourceName}: ${a.title}`
+      ).join("\n");
+      const retryResponse = await invokeLLMFast({
+        messages: [
+          { role: "system", content: "Sei un redattore. Rispondi SOLO con JSON valido, nessun testo aggiuntivo." },
+          { role: "user", content: `Seleziona i 15 articoli più rilevanti su ${cfg.label} da questa lista e traducili in italiano.\n\n${shortList}\n\nRispondi con JSON: {\"items\":[{\"title\":\"...\",\"summary\":\"...\",\"category\":\"...\",\"sourceIndex\":0}]}` }
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "selected_articles",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                items: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      title: { type: "string" },
+                      summary: { type: "string" },
+                      category: { type: "string" },
+                      sourceIndex: { type: "integer" }
+                    },
+                    required: ["title", "summary", "category", "sourceIndex"],
+                    additionalProperties: false
+                  }
+                }
+              },
+              required: ["items"],
+              additionalProperties: false
+            }
+          }
+        }
+      });
+      const retryContent = retryResponse.choices[0]?.message?.content as string;
+      parsed = JSON.parse(stripJsonBackticks(retryContent));
+    }
 
     const result: ScrapedArticle[] = [];
     for (const item of (parsed.items || []).slice(0, 20)) {
@@ -294,14 +339,32 @@ Rispondi SOLO con JSON valido.`;
     return result;
   } catch (err) {
     console.error(`[RssScraper] Errore selezione LLM per ${section}:`, err);
-    // Fallback: privilegia le fonti italiane per non esporre titoli in inglese grezzo.
-    // Se non ci sono abbastanza fonti italiane, usa tutti gli articoli disponibili.
-    const itFallback = articles.filter(a =>
-      itDomainPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p.replace(".it/", "").replace(".it", "")))
+
+    // Fallback SELETTIVO: usa solo fonti specializzate per la sezione,
+    // mai fonti generaliste (Corriere, Repubblica, etc.) che porterebbero notizie off-topic.
+    const SECTION_SPECIFIC_PATTERNS: Record<string, string[]> = {
+      ai: ["openai", "deepmind", "anthropic", "huggingface", "venturebeat", "techcrunch", "wired",
+           "ansa.it", "agendadigitale", "digital4", "innovationpost", "corrierecomunicazioni",
+           "ilsole24ore", "sole24ore", "startupitalia", "economyup", "milanofinanza"],
+      startup: ["startupitalia", "economyup", "techcrunch", "venturebeat", "crunchbase",
+                "startupbusiness", "bebeez", "ilsole24ore", "sole24ore", "milanofinanza",
+                "sifted", "eu-startups", "dealroom", "pitchbook", "bloomberg"],
+      dealroom: ["bebeez", "dealroom", "pitchbook", "crunchbase", "techcrunch", "venturebeat",
+                 "ilsole24ore", "sole24ore", "milanofinanza", "bloomberg", "reuters",
+                 "startupbusiness", "startupitalia", "economyup"]
+    };
+    const sectionPatterns = SECTION_SPECIFIC_PATTERNS[section] || itDomainPatterns;
+    const sectionFallback = articles.filter(a =>
+      sectionPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p))
     );
-    const fallbackList = itFallback.length >= 5 ? itFallback : articles;
+    // Se non ci sono abbastanza fonti specializzate, usa solo quelle disponibili.
+    // NON usare mai fonti generaliste come fallback: meglio pochi articoli corretti che molti off-topic.
+    const cleanFallback = sectionFallback.length > 0
+      ? sectionFallback
+      : []; // Nessuna fonte specializzata disponibile: restituisce array vuoto
     const catLabel = section === "ai" ? "Ricerca & Innovazione" : section === "startup" ? "Startup" : "Dealroom";
-    return fallbackList.slice(0, 20).map(a => ({
+    console.log(`[RssScraper] Fallback selettivo per ${section}: ${cleanFallback.length} articoli specializzati`);
+    return cleanFallback.slice(0, 20).map(a => ({
       title: a.title,
       summary: a.content.slice(0, 250),
       category: catLabel,
@@ -309,7 +372,7 @@ Rispondi SOLO con JSON valido.`;
       sourceUrl: a.link,
       sourceHomepage: a.sourceHomepage,
       publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
-      language: "it" as const  // Marchiamo come it anche se il titolo potrebbe essere in EN — verrà ritradotto al prossimo ciclo LLM
+      language: "it" as const
     }));
   }
 }

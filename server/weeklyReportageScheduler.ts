@@ -124,7 +124,8 @@ Rispondi con un array JSON di esattamente 4 oggetti, uno per settore. Nessun tes
 
     let parsed: { reportage: Array<Record<string, string>> };
     try {
-      parsed = JSON.parse(content);
+      const { stripJsonBackticks } = await import("./_core/llm");
+      parsed = JSON.parse(stripJsonBackticks(content));
     } catch {
       // Fallback: try to extract JSON array
       const match = content.match(/\[[\s\S]*\]/);

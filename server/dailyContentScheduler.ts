@@ -6,7 +6,7 @@
  *  3. 20 Ricerche Proof Press Research su Startup, Venture Capital e AI Trends
  */
 
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { logAlert } from "./alertLogger";
 import {
   getTodayEditorial,
@@ -139,7 +139,7 @@ Restituisci un JSON con questa struttura esatta:
   const rawContent = response.choices?.[0]?.message?.content ?? "{}";
   // Claude a volte avvolge il JSON in backtick markdown (```json ... ```) — li rimuoviamo
   const rawStr = typeof rawContent === "string" ? rawContent : JSON.stringify(rawContent);
-  const raw = rawStr.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+  const raw = stripJsonBackticks(rawStr);
   const parsed = JSON.parse(raw);
 
   return {
@@ -220,7 +220,7 @@ Restituisci un JSON con questa struttura esatta:
   });
 
   const raw = response.choices?.[0]?.message?.content ?? "{}";
-  const parsed = JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw));
+  const parsed = JSON.parse(stripJsonBackticks(raw));
 
   return {
     section: 'ai' as const,

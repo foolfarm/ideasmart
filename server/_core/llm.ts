@@ -464,7 +464,15 @@ async function invokeForge(params: InvokeParams): Promise<InvokeResult> {
  */
 export function stripJsonBackticks(raw: unknown): string {
   const str = typeof raw === "string" ? raw : JSON.stringify(raw ?? "{}");
-  return str.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+  // 1. Rimuove backtick markdown (```json ... ```)
+  let cleaned = str.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+  // 2. Estrae solo il blocco JSON se c'è testo prima/dopo
+  const firstBrace = cleaned.indexOf("{");
+  const lastBrace = cleaned.lastIndexOf("}");
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    cleaned = cleaned.slice(firstBrace, lastBrace + 1);
+  }
+  return cleaned;
 }
 
 /**
