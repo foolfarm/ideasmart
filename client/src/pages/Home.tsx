@@ -710,6 +710,11 @@ export default function Home() {
           {/* Header centrato */}
           <div className="py-1 sm:py-4">
 
+            {/* Ticker LIVE — sopra il tagline */}
+            <div className="hidden sm:block mb-2">
+              <BreakingNewsTicker />
+            </div>
+
             {/* Sopra il titolo: descrizione full-width su una sola riga */}
             <p className="block text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
               style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
@@ -795,20 +800,9 @@ export default function Home() {
               {/* ══ BREAKING NEWS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
         <div className="hidden sm:block">
           <BreakingNewsSection />
-          <BreakingNewsTicker />
         </div>
 
-        {/* ══ STRIP AMAZON DEALS — nascosta su mobile ═══════════════════════════════════════════════════════════════════ */}
-        <div className="hidden sm:block">
-          <AmazonDealsStrip />
-        </div>
-
-        {/* ══ ADSENSE LEADERBOARD 728×90 — visibile solo da sm in su ══════════════════════════════════════════════ */}
-        <div className="hidden sm:flex justify-center items-center w-full py-2" style={{ background: "#fafafa", borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
-          <AdSenseUnit format="leaderboard" className="mx-auto" />
-        </div>
-
-        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════ */}
+        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 mt-2 sm:mt-3">
           <a
             href="https://promptcollection2026.com/"
@@ -902,6 +896,16 @@ export default function Home() {
                       )}
                     </div>
                   )}
+
+                  {/* ══ ADSENSE LEADERBOARD 728×90 — dopo la prima notizia, prima di Amazon ══ */}
+                  <div className="hidden sm:flex justify-center items-center w-full py-3 my-2" style={{ background: "#fafafa", borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
+                    <AdSenseUnit format="leaderboard" className="mx-auto" />
+                  </div>
+
+                  {/* ══ STRIP AMAZON DEALS — dopo il banner AdSense ══ */}
+                  <div className="hidden sm:block my-4">
+                    <AmazonDealsStrip />
+                  </div>
 
                   <ThinDivider />
 
