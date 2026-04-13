@@ -1,6 +1,5 @@
 import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
-import AmazonDealBanner from "@/components/AmazonDealBanner";
 import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
@@ -352,17 +351,6 @@ export default function LeftSidebar() {
             );
           })}
         </nav>
-      )}
-
-      {/* ── Amazon Deal Banner ── */}
-      {/* Renderizzato SOLO quando la sidebar è espansa per evitare qualsiasi sovrapposizione */}
-      {expanded && (
-        <>
-          <div className="mx-3 mt-2 mb-3 border-t border-[#e5e5ea]" />
-          <div className="px-3 mb-3" style={{ overflow: 'hidden' }}>
-            <AmazonDealBanner variant="sidebar" offset={0} />
-          </div>
-        </>
       )}
 
       {/* Spazio flessibile */}

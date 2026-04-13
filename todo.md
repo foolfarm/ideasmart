@@ -3075,3 +3075,12 @@
 ## Restyling manchette header (13 Apr 2026)
 
 - [x] Ridurre dimensioni banner manchette header: immagine 100px→68px, colonne 160px→120px, font proporzionati
+
+## Rimozione banner Amazon dalla sidebar (13 Apr 2026 — fix definitivo)
+
+- [x] Rimuovere completamente il banner Amazon dalla sidebar sinistra (rimane nell'header e nella strip)
+- [x] Correggere header manchette: banner ancora troppo grandi rispetto al logo — ridotti a 90px, visibili solo su xl (1280px+)
+
+## Strip Amazon centrata (13 Apr 2026)
+
+- [x] Centrare la strip "Offerte Amazon del Giorno" sotto l'header (spostata a sinistra) — aggiunto max-w-7xl mx-auto

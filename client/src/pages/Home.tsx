@@ -31,12 +31,12 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
 
   // REGOLA: nessun carrello vuoto. Se non c'è immagine, spazio trasparente.
   if (!deal || !deal.imageUrl || !deal.imageUrl.startsWith('http')) {
-    return <div className="hidden lg:block flex-shrink-0 w-[110px]" />;
+    return <div className="hidden xl:block flex-shrink-0" style={{ width: '90px' }} />;
   }
 
   return (
-    // Manchette compatta: 110px larghezza, immagine 68px altezza — proporzione da giornale
-    <div className="hidden lg:flex flex-col flex-shrink-0 items-center gap-0.5" style={{ width: '110px' }}>
+    // Manchette compatta: 90px larghezza, immagine 60px altezza — proporzione da giornale
+    <div className="hidden xl:flex flex-col flex-shrink-0 items-center gap-0.5" style={{ width: '90px' }}>
       <a
         href={deal.affiliateUrl}
         target="_blank"
@@ -46,7 +46,7 @@ function HomeAmazonDeal({ offset = 0 }: { offset?: number }) {
         style={{ textDecoration: 'none' }}
         title={deal.title}
       >
-        <div className="w-full overflow-hidden" style={{ height: '68px', background: '#fff' }}>
+        <div className="w-full overflow-hidden" style={{ height: '60px', background: '#fff' }}>
           <img src={deal.imageUrl} alt={deal.title} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '3px' }} />
         </div>
         <div className="px-1.5 py-1 bg-white">
@@ -81,7 +81,8 @@ function AmazonDealsStrip() {
   if (!deals || deals.length === 0) return null;
 
   return (
-    <div className="w-full border-t border-b border-[#e5e5ea] bg-[#fafafa] py-3 px-4">
+    <div className="w-full border-t border-b border-[#e5e5ea] bg-[#fafafa] py-3">
+      <div className="max-w-7xl mx-auto px-4">
       <div className="flex items-center gap-2 mb-2">
         <span style={{ fontFamily: SF, fontSize: '9px', fontWeight: 700, color: '#ff9900', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Offerte Amazon del Giorno</span>
         <div className="flex-1 h-px bg-[#e5e5ea]" />
@@ -114,6 +115,7 @@ function AmazonDealsStrip() {
             </div>
           </a>
         ))}
+      </div>
       </div>
     </div>
   );
@@ -636,7 +638,7 @@ export default function Home() {
 
             {/* Brand centrale con manchette Amazon ai lati */}
             {/* LAYOUT: grid 3 colonne — colonne laterali max 160px, titolo centr. garantito */}
-            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 120px) 1fr minmax(0, 120px)', alignItems: 'center', overflow: 'hidden' }}>
+            <div className="hidden xl:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 100px) 1fr minmax(0, 100px)', alignItems: 'center', overflow: 'hidden' }}>
               {/* Manchette sinistra — Amazon Deal */}
               <div className="flex justify-start">
                 <HomeAmazonDeal offset={0} />
@@ -685,7 +687,7 @@ export default function Home() {
             </div>
 
             {/* Fallback mobile/tablet: solo titolo centrato senza banner */}
-            <div className="lg:hidden text-center">
+            <div className="xl:hidden text-center">
               <Link href="/">
                 <div className="cursor-pointer hover:opacity-80 transition-opacity">
                   <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center" }}>
