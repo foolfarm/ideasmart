@@ -2624,6 +2624,43 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
   }),
+
+  // ── Investor interest form ─────────────────────────────────────────────────
+  investor: router({
+    submitInterest: publicProcedure
+      .input(z.object({
+        name: z.string().min(2),
+        email: z.string().email(),
+        message: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const html = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a0f1e;padding:32px;border-radius:12px;">
+            <div style="border-bottom:1px solid rgba(232,201,122,0.2);padding-bottom:20px;margin-bottom:24px;">
+              <p style="color:#e8c97a;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin:0 0 4px;">ProofPress · Investor Relations</p>
+              <p style="color:#ffffff;font-size:22px;font-weight:700;margin:0;">Nuovo interesse investitore</p>
+            </div>
+            <table style="width:100%;border-collapse:collapse;">
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:10px 0;color:rgba(255,255,255,0.5);font-size:13px;width:100px;">Nome</td><td style="padding:10px 0;color:#ffffff;font-size:15px;font-weight:600;">${input.name}</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:10px 0;color:rgba(255,255,255,0.5);font-size:13px;">Email</td><td style="padding:10px 0;"><a href="mailto:${input.email}" style="color:#e8c97a;font-size:15px;text-decoration:none;">${input.email}</a></td></tr>
+              ${input.message ? `<tr><td style="padding:10px 0;color:rgba(255,255,255,0.5);font-size:13px;vertical-align:top;">Messaggio</td><td style="padding:10px 0;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;">${input.message.replace(/\n/g, '<br>')}</td></tr>` : ''}
+            </table>
+            <div style="margin-top:24px;padding:16px;background:rgba(232,201,122,0.08);border:1px solid rgba(232,201,122,0.2);border-radius:8px;">
+              <p style="color:rgba(255,255,255,0.6);font-size:12px;margin:0;">Ricevuto il ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })} · proofpress.ai/investor</p>
+            </div>
+          </div>`;
+        try {
+          await sendEmail({
+            to: 'ac@acinelli.com',
+            subject: `🔒 Investor Interest: ${input.name} (${input.email})`,
+            html,
+          });
+        } catch (err) {
+          console.error('[investor.submitInterest] Errore invio email:', err);
+        }
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

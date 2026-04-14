@@ -3104,3 +3104,4 @@
 - [x] Correggere duplicato "L'Aia di Domani" nella sezione POST DI ANDREA CINELLI
 - [x] Far apparire il post McKinsey Agentic AI nella sezione POST DI ANDREA CINELLI
 - [x] Aggiungere procedura tRPC admin.insertLinkedinPost per inserimento manuale post nel DB
+- [x] Pagina /investor — pitch page per investitori ProofPress con metriche, roadmap, founder bio e form di contatto
