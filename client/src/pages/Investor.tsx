@@ -196,11 +196,11 @@ export default function Investor() {
     <>
       <SEOHead
         title="Investi in ProofPress — Pre-Seed Round 250K · AI Journalism Certificato"
-        description="ProofPress sta aprendo il suo primo round pre-seed da 250.000 € a valutazione 2,5M. Una piattaforma di giornalismo agentico certificato che trasforma il modo in cui si costruiscono e distribuiscono le notizie. Guidata da Andrea Cinelli (2 exit, 25+ brevetti)."
+        description="ProofPress sta aprendo il suo primo round pre-seed da 250.000 € a valutazione 2,5M. Una piattaforma di giornalismo agentico certificato che trasforma il modo in cui si costruiscono e distribuiscono le notizie."
         canonical="https://proofpress.ai/investor"
         ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-512-final_6afd42ba.png"
         ogType="website"
-        keywords="ProofPress investor, pre-seed round, AI journalism, giornalismo agentico, startup investimento, Andrea Cinelli"
+        keywords="ProofPress investor, pre-seed round, AI journalism, giornalismo agentico, startup investimento"
       />
     <div className="flex min-h-screen">
       <LeftSidebar />
@@ -470,7 +470,7 @@ export default function Investor() {
             <p className="text-base text-[#0a0a0a]/55 mb-14 max-w-2xl">
               Il round pre-seed serve a trasformare ProofPress da proof of concept operativo
               a piattaforma scalabile. Valutazione pre-money: <strong>2,5 milioni di euro</strong>.
-              Team guidato da Andrea Cinelli (2 exit, 25+ brevetti).
+              Il team combina competenze editoriali, tecnologiche e di business development.
             </p>
             <div className="grid md:grid-cols-3 gap-6 mb-14">
               {[
@@ -535,85 +535,7 @@ export default function Investor() {
 
           <Divider />
 
-          {/* ── FOUNDER ──────────────────────────────────────────────────────── */}
-          <Section bg="#f8f8f6" id="founder">
-            <Label>Il Fondatore</Label>
-            <div className="grid md:grid-cols-12 gap-10 items-start">
-              {/* Avatar monogramma */}
-              <div className="md:col-span-2 flex flex-col items-start gap-4">
-                <div
-                  className="w-20 h-20 flex items-center justify-center text-3xl font-black border-2 border-[#0a0a0a]/20"
-                  style={{ background: "#0a0a0a", color: "#ffffff", fontFamily: FONT, letterSpacing: "-0.04em" }}
-                >
-                  AC
-                </div>
-              </div>
 
-              {/* Bio */}
-              <div className="md:col-span-10">
-                <h2 className="text-2xl md:text-4xl font-black mb-1 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                  Andrea Cinelli
-                </h2>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] mb-1" style={{ color: ORANGE }}>
-                  Co-Founder ProofPress
-                </p>
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#0a0a0a]/40 mb-7">
-                  2 Exit (Inventia, Takeacoder) · 25+ Brevetti · 30+ anni di esperienza
-                </p>
-
-                <p className="text-base text-[#0a0a0a]/70 leading-relaxed mb-5">
-                  30+ anni di esperienza nella costruzione di prodotti digitali e piattaforme tecnologiche
-                  a scala. Co-fondatore di <strong className="text-[#0a0a0a]">Libero.it</strong> (10M+ utenti, Infostrada–Olivetti Group),
-                  Head of Mobile VAS <strong className="text-[#0a0a0a]">Vodafone Global</strong> a Düsseldorf,
-                  serial entrepreneur con <strong className="text-[#0a0a0a]">2 exit</strong> (Inventia, Takeacoder).
-                </p>
-                <p className="text-base text-[#0a0a0a]/70 leading-relaxed mb-5">
-                  Autore di <strong className="text-[#0a0a0a]">25+ brevetti</strong> — tra cui IP alla base del sistema
-                  <strong className="text-[#0a0a0a]"> SPID</strong> italiano.
-                  Membro dell'<strong className="text-[#0a0a0a]">Advisory Board Deloitte</strong> Central Mediterranean.
-                  Professore di AI al <strong className="text-[#0a0a0a]">Sole 24 Ore Business School</strong>.
-                </p>
-                <p className="text-base text-[#0a0a0a]/70 leading-relaxed mb-8">
-                  Keynote speaker internazionale su AI e innovazione. Fondatore di
-                  <strong className="text-[#0a0a0a]"> FoolFarm</strong>, uno dei principali AI Venture Studio europei.
-                </p>
-
-                {/* Tag credenziali */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {[
-                    "Co-fondatore Libero.it",
-                    "2 Exit",
-                    "25+ Brevetti",
-                    "Advisory Board Deloitte",
-                    "Prof. AI Sole 24 Ore",
-                    "FoolFarm Venture Studio",
-                  ].map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-bold uppercase tracking-wide px-3 py-1.5 border border-[#0a0a0a]/15"
-                      style={{ color: "#0a0a0a", background: "#ffffff" }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* LinkedIn CTA */}
-                <a
-                  href="https://linkedin.com/in/andreacinelli"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-70"
-                  style={{ color: ORANGE, fontFamily: FONT }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
-                  LinkedIn → linkedin.com/in/andreacinelli
-                </a>
-              </div>
-            </div>
-          </Section>
 
           <Divider />
 
@@ -653,7 +575,7 @@ export default function Investor() {
               </div>
 
               <p className="text-xs text-[#0a0a0a]/40 mb-8 italic">
-                Valutazione pre-money: 2,5M €. Il team è guidato da Andrea Cinelli (2 exit, 25+ brevetti).
+                Valutazione pre-money: 2,5M €.
                 Equity calcolata indicativamente su valutazione pre-money. I termini definitivi saranno
                 concordati con ogni investitore.
               </p>
@@ -664,7 +586,7 @@ export default function Investor() {
                     Proposta ricevuta.
                   </div>
                   <p className="text-base text-[#0a0a0a]/65">
-                    Ti rispondo entro 24 ore con i termini del round. — Andrea Cinelli
+                    Il team ti risponderà entro 24 ore con i termini del round.
                   </p>
                 </div>
               ) : (
@@ -739,7 +661,7 @@ export default function Investor() {
                   {submitMutation.isError && (
                     <p className="text-sm text-red-500">
                       Errore nell'invio. Scrivi direttamente a{" "}
-                      <a href="mailto:ac@acinelli.com" style={{ color: ORANGE }}>ac@acinelli.com</a>
+                      <a href="mailto:info@proofpress.ai" style={{ color: ORANGE }}>info@proofpress.ai</a>
                     </p>
                   )}
                 </form>
@@ -760,8 +682,8 @@ export default function Investor() {
               </p>
               <p className="text-xs text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
                 Investor Relations:{" "}
-                <a href="mailto:ac@acinelli.com" className="hover:opacity-70 transition-opacity" style={{ color: ORANGE }}>
-                  ac@acinelli.com
+                <a href="mailto:info@proofpress.ai" className="hover:opacity-70 transition-opacity" style={{ color: ORANGE }}>
+                  info@proofpress.ai
                 </a>
               </p>
             </div>
