@@ -481,47 +481,77 @@ export default function Investor() {
           {/* ── FOUNDER ──────────────────────────────────────────────────────── */}
           <Section bg="#f8f8f6" id="founder">
             <Label>Il Fondatore</Label>
-            <div className="grid md:grid-cols-12 gap-8 items-start">
-              <div className="md:col-span-2">
+            <div className="grid md:grid-cols-12 gap-10 items-start">
+              {/* Avatar monogramma */}
+              <div className="md:col-span-2 flex flex-col items-start gap-4">
                 <div
-                  className="w-16 h-16 flex items-center justify-center text-2xl font-black border border-[#0a0a0a]/15"
-                  style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}
+                  className="w-20 h-20 flex items-center justify-center text-3xl font-black border-2 border-[#0a0a0a]/20"
+                  style={{ background: "#0a0a0a", color: "#ffffff", fontFamily: FONT, letterSpacing: "-0.04em" }}
                 >
                   AC
                 </div>
               </div>
+
+              {/* Bio */}
               <div className="md:col-span-10">
-                <h2 className="text-2xl md:text-3xl font-black mb-2 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
+                <h2 className="text-2xl md:text-4xl font-black mb-1 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
                   Andrea Cinelli
                 </h2>
-                <p className="text-sm font-bold uppercase tracking-[0.15em] mb-6" style={{ color: ORANGE }}>
-                  Founder & CEO, ProofPress · 2 Exit · 25+ Brevetti
+                <p className="text-sm font-bold uppercase tracking-[0.18em] mb-1" style={{ color: ORANGE }}>
+                  Co-Founder ProofPress
                 </p>
-                <p className="text-base text-[#0a0a0a]/65 leading-relaxed mb-6">
-                  30+ anni di esperienza nella costruzione di prodotti digitali e piattaforme
-                  tecnologiche a scala. Co-fondatore di Libero.it (10M+ utenti, Infostrada–Olivetti Group),
-                  Head of Mobile VAS Vodafone Global, serial entrepreneur con 2 exit.
-                  Autore di 25+ brevetti — tra cui IP alla base del sistema SPID italiano.
+                <p className="text-xs font-semibold uppercase tracking-widest text-[#0a0a0a]/40 mb-7">
+                  2 Exit (Inventia, Takeacoder) · 25+ Brevetti · 30+ anni di esperienza
                 </p>
-                <p className="text-base text-[#0a0a0a]/65 leading-relaxed mb-8">
-                  Membro dell'Advisory Board Deloitte Central Mediterranean. Professore di AI
-                  al Sole 24 Ore Business School. Keynote speaker internazionale su AI e innovazione.
-                  Fondatore di FoolFarm, uno dei principali AI Venture Studio europei.
+
+                <p className="text-base text-[#0a0a0a]/70 leading-relaxed mb-5">
+                  30+ anni di esperienza nella costruzione di prodotti digitali e piattaforme tecnologiche
+                  a scala. Co-fondatore di <strong className="text-[#0a0a0a]">Libero.it</strong> (10M+ utenti, Infostrada–Olivetti Group),
+                  Head of Mobile VAS <strong className="text-[#0a0a0a]">Vodafone Global</strong> a Düsseldorf,
+                  serial entrepreneur con <strong className="text-[#0a0a0a]">2 exit</strong> (Inventia, Takeacoder).
                 </p>
-                <div className="flex flex-wrap gap-3 mb-6">
-                  {["Co-fondatore Libero.it", "2 Exit", "25+ Brevetti", "Advisory Board Deloitte", "Prof. AI Sole 24 Ore", "FoolFarm Venture Studio"].map((tag) => (
-                    <span key={tag} className="text-xs font-bold uppercase tracking-wide px-3 py-1.5 border border-[#0a0a0a]/15" style={{ color: "#0a0a0a", background: "#ffffff" }}>
+                <p className="text-base text-[#0a0a0a]/70 leading-relaxed mb-5">
+                  Autore di <strong className="text-[#0a0a0a]">25+ brevetti</strong> — tra cui IP alla base del sistema
+                  <strong className="text-[#0a0a0a]"> SPID</strong> italiano.
+                  Membro dell'<strong className="text-[#0a0a0a]">Advisory Board Deloitte</strong> Central Mediterranean.
+                  Professore di AI al <strong className="text-[#0a0a0a]">Sole 24 Ore Business School</strong>.
+                </p>
+                <p className="text-base text-[#0a0a0a]/70 leading-relaxed mb-8">
+                  Keynote speaker internazionale su AI e innovazione. Fondatore di
+                  <strong className="text-[#0a0a0a]"> FoolFarm</strong>, uno dei principali AI Venture Studio europei.
+                </p>
+
+                {/* Tag credenziali */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {[
+                    "Co-fondatore Libero.it",
+                    "2 Exit",
+                    "25+ Brevetti",
+                    "Advisory Board Deloitte",
+                    "Prof. AI Sole 24 Ore",
+                    "FoolFarm Venture Studio",
+                  ].map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs font-bold uppercase tracking-wide px-3 py-1.5 border border-[#0a0a0a]/15"
+                      style={{ color: "#0a0a0a", background: "#ffffff" }}
+                    >
                       {tag}
                     </span>
                   ))}
                 </div>
+
+                {/* LinkedIn CTA */}
                 <a
                   href="https://linkedin.com/in/andreacinelli"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-70"
+                  className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-70"
                   style={{ color: ORANGE, fontFamily: FONT }}
                 >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
                   LinkedIn → linkedin.com/in/andreacinelli
                 </a>
               </div>
