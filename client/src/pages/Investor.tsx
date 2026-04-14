@@ -1,597 +1,751 @@
-/**
- * Pagina /investor — "Cerchiamo Investitori"
- * ProofPress: la prima piattaforma italiana di giornalismo agentico certificato.
- * Design: sfondo #0a0f1e (navy profondo) + accento #e8c97a (oro) + bianco
- * Tono: pitch board-level, dati concreti, CTA diretta
+/*
+ * /investor — ProofPress Pre-Seed Round
+ * Stile: Apple/ghiaccio — sfondo #ffffff, testo #0a0a0a, accento #ff5500 (orange)
+ * Coerente con ChiSiamo.tsx e il resto del sito ProofPress
+ * Tono: board-level, dati concreti, visione chiara, CTA diretta
  */
 import { useState } from "react";
 import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import LeftSidebar from "@/components/LeftSidebar";
 import { trpc } from "@/lib/trpc";
 
-// ─── Dati metriche chiave ────────────────────────────────────────────────────
-const METRICS = [
-  { value: "6.259", label: "Iscritti newsletter attivi", note: "crescita organica, zero paid" },
-  { value: "4.000+", label: "Fonti monitorate ogni giorno", note: "RSS, API, database istituzionali" },
-  { value: "100%", label: "Notizie certificate con hash SHA-256", note: "protocollo ProofPress Verify" },
-  { value: "24/7", label: "Pipeline agentica autonoma", note: "zero intervento umano nella produzione" },
-];
+const FONT =
+  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+const ORANGE = "#ff5500";
 
-// ─── Perché investire ────────────────────────────────────────────────────────
-const WHY = [
-  {
-    icon: "📰",
-    title: "Il mercato è rotto",
-    body: "Il 65% degli italiani non si fida più dei media tradizionali (Reuters Institute 2024). La disinformazione costa all'economia globale 78 miliardi di dollari l'anno. ProofPress risolve il problema alla radice: ogni notizia è verificata, certificata e tracciabile.",
-  },
-  {
-    icon: "🤖",
-    title: "Tecnologia proprietaria",
-    body: "La pipeline agentica ProofPress è l'unica in Italia a combinare multi-agent AI, verifica crittografica e distribuzione certificata in un unico sistema operativo. Non è un prodotto editoriale: è un'infrastruttura per l'informazione del futuro.",
-  },
-  {
-    icon: "📈",
-    title: "Traction reale",
-    body: "6.259 iscritti attivi alla newsletter in meno di 6 mesi, crescita organica. Lunedì, mercoledì e venerdì: invio massivo a tutta la lista. Open rate superiore alla media di settore. Zero budget marketing.",
-  },
-  {
-    icon: "🌍",
-    title: "Mercato enorme, timing perfetto",
-    body: "Il mercato globale dei media digitali vale 460 miliardi di dollari. L'AI journalism è ancora un territorio vergine: chi entra ora costruisce il moat. ProofPress è già operativa, con contenuti, utenti e tecnologia.",
-  },
-  {
-    icon: "⚖️",
-    title: "Regolatorio: vento in poppa",
-    body: "L'AI Act europeo e le nuove norme sulla disinformazione premiano le piattaforme con sistemi di verifica certificata. ProofPress è già conforme e posizionata come standard di riferimento.",
-  },
-  {
-    icon: "🏆",
-    title: "Team con track record",
-    body: "Fondato da Andrea Cinelli: co-fondatore di Libero.it (10M+ utenti), 2 exit, 25+ brevetti, Advisory Board Deloitte, professore di AI al Sole 24 Ore Business School. Non è la prima volta che costruiamo qualcosa che scala.",
-  },
-];
+// ─── Utility components ──────────────────────────────────────────────────────
+function Divider() {
+  return (
+    <div className="max-w-5xl mx-auto px-5 md:px-8">
+      <div className="border-t border-[#0a0a0a]/8" />
+    </div>
+  );
+}
 
-// ─── Use case della piattaforma ──────────────────────────────────────────────
-const USE_CASES = [
-  { label: "Media & Publisher", desc: "Licenza della pipeline per produrre contenuti certificati" },
-  { label: "Enterprise", desc: "Intelligence certificata per decisioni C-level e board" },
-  { label: "Finanza & Legal", desc: "News verification per compliance, M&A e due diligence" },
-  { label: "Istituzioni", desc: "Monitoraggio disinformazione per enti pubblici e PA" },
-];
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] mb-4"
+      style={{ color: "rgba(10,10,10,0.4)", fontFamily: FONT }}
+    >
+      {children}
+    </span>
+  );
+}
 
-// ─── Timeline ────────────────────────────────────────────────────────────────
-const TIMELINE = [
-  { phase: "Q2 2026", title: "Seed Round", desc: "Chiusura round pre-seed / seed. Target: 500K–1,5M €" },
-  { phase: "Q3 2026", title: "Press Release & PR", desc: "Lancio ufficiale in Italia con copertura media nazionale" },
-  { phase: "Q4 2026", title: "Enterprise Pilot", desc: "3 clienti enterprise in beta: media group, banca, PA" },
-  { phase: "Q1 2027", title: "Espansione EU", desc: "Versioni in inglese, francese, spagnolo. Target: 50K iscritti" },
-];
+function Section({
+  children,
+  bg = "transparent",
+  id,
+}: {
+  children: React.ReactNode;
+  bg?: string;
+  id?: string;
+}) {
+  return (
+    <section id={id} className="py-20 md:py-28" style={{ background: bg }}>
+      <div className="max-w-5xl mx-auto px-5 md:px-8">{children}</div>
+    </section>
+  );
+}
 
-// ─── Componente principale ───────────────────────────────────────────────────
+// ─── Main component ───────────────────────────────────────────────────────────
 export default function Investor() {
-  const [submitted, setSubmitted] = useState(false);
-  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-
-  const fontSans =
-    "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
-  const fontDisplay =
-    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
+  const [submitted, setSubmitted] = useState(false);
 
   const submitMutation = trpc.investor.submitInterest.useMutation({
     onSuccess: () => setSubmitted(true),
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !name) return;
+    if (!name || !email) return;
     submitMutation.mutate({ name, email, message: message || undefined });
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0f1e", fontFamily: fontSans }}>
-      <SharedPageHeader />
+    <div className="flex min-h-screen">
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
+        <div
+          className="min-h-screen"
+          style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}
+        >
+          <SharedPageHeader />
+          <BreakingNewsTicker />
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section
-        style={{
-          background: "linear-gradient(135deg, #0a0f1e 0%, #0d1a2e 60%, #0a1628 100%)",
-          borderBottom: "1px solid rgba(232,201,122,0.15)",
-          paddingTop: "80px",
-          paddingBottom: "80px",
-        }}
-      >
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
-          {/* Badge */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              background: "rgba(232,201,122,0.12)",
-              border: "1px solid rgba(232,201,122,0.3)",
-              borderRadius: 100,
-              padding: "6px 16px",
-              marginBottom: 32,
-            }}
+          {/* ── HERO ─────────────────────────────────────────────────────────── */}
+          <section
+            className="pt-24 pb-20 md:pt-32 md:pb-28"
+            style={{ background: "#ffffff" }}
           >
-            <span style={{ color: "#e8c97a", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" }}>
-              🔒 Pre-Seed Round · Apertura limitata
-            </span>
-          </div>
-
-          <h1
-            style={{
-              fontFamily: fontDisplay,
-              fontSize: "clamp(36px, 6vw, 64px)",
-              fontWeight: 700,
-              color: "#ffffff",
-              lineHeight: 1.1,
-              marginBottom: 24,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Il giornalismo è rotto.
-            <br />
-            <span style={{ color: "#e8c97a" }}>Noi lo stiamo ricostruendo.</span>
-          </h1>
-
-          <p
-            style={{
-              fontSize: "clamp(16px, 2vw, 20px)",
-              color: "rgba(255,255,255,0.7)",
-              lineHeight: 1.7,
-              maxWidth: 680,
-              margin: "0 auto 40px",
-            }}
-          >
-            ProofPress è la prima piattaforma italiana di giornalismo agentico certificato.
-            Ogni notizia è verificata da AI multi-agente, sigillata con hash crittografico e
-            distribuita in tempo reale. Non un media: un'infrastruttura per l'informazione del futuro.
-          </p>
-
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="#contact"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "#e8c97a",
-                color: "#0a0f1e",
-                padding: "14px 32px",
-                borderRadius: 8,
-                fontWeight: 700,
-                fontSize: 15,
-                textDecoration: "none",
-                letterSpacing: "0.02em",
-                transition: "opacity 0.2s",
-              }}
-            >
-              Sono interessato →
-            </a>
-            <a
-              href="/piattaforma"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "transparent",
-                color: "#ffffff",
-                padding: "14px 32px",
-                borderRadius: 8,
-                fontWeight: 600,
-                fontSize: 15,
-                textDecoration: "none",
-                border: "1px solid rgba(255,255,255,0.2)",
-                transition: "border-color 0.2s",
-              }}
-            >
-              Vedi la tecnologia
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── METRICHE ──────────────────────────────────────────────────────── */}
-      <section style={{ background: "#0d1428", padding: "64px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 40 }}>
-            Traction attuale · Aprile 2026
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: 1,
-              background: "rgba(255,255,255,0.06)",
-              borderRadius: 12,
-              overflow: "hidden",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            {METRICS.map((m) => (
-              <div
-                key={m.value}
-                style={{
-                  background: "#0d1428",
-                  padding: "32px 24px",
-                  textAlign: "center",
-                }}
-              >
-                <div
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              {/* Badge pre-seed */}
+              <div className="mb-6">
+                <span
+                  className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
                   style={{
-                    fontFamily: fontDisplay,
-                    fontSize: "clamp(28px, 4vw, 40px)",
-                    fontWeight: 700,
-                    color: "#e8c97a",
-                    lineHeight: 1,
-                    marginBottom: 8,
+                    color: ORANGE,
+                    borderColor: `${ORANGE}44`,
+                    background: `${ORANGE}0d`,
+                    fontFamily: FONT,
                   }}
                 >
-                  {m.value}
-                </div>
-                <div style={{ color: "#ffffff", fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
-                  {m.label}
-                </div>
-                <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11 }}>{m.note}</div>
+                  Pre-Seed Round · Apertura Limitata · Target 250.000 €
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ── PERCHÉ INVESTIRE ──────────────────────────────────────────────── */}
-      <section style={{ background: "#0a0f1e", padding: "80px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontFamily: fontDisplay,
-              fontSize: "clamp(24px, 4vw, 36px)",
-              fontWeight: 700,
-              color: "#ffffff",
-              textAlign: "center",
-              marginBottom: 16,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Perché ProofPress, perché adesso
-          </h2>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.5)", fontSize: 15, marginBottom: 56, maxWidth: 560, margin: "0 auto 56px" }}>
-            Sei ragioni per cui questo è il momento giusto per entrare.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
-            {WHY.map((item) => (
-              <div
-                key={item.title}
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 12,
-                  padding: "28px 24px",
-                  transition: "border-color 0.2s",
-                }}
-              >
-                <div style={{ fontSize: 28, marginBottom: 12 }}>{item.icon}</div>
-                <h3 style={{ color: "#ffffff", fontSize: 16, fontWeight: 700, marginBottom: 10, fontFamily: fontDisplay }}>
-                  {item.title}
-                </h3>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>
-                  {item.body}
+              {/* Headline */}
+              <div className="max-w-3xl mb-10">
+                <h1
+                  className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-6"
+                  style={{ fontFamily: FONT }}
+                >
+                  Il giornalismo<br />
+                  <span style={{ color: ORANGE }}>non è mai stato</span><br />
+                  così rotto.
+                </h1>
+                <p
+                  className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl"
+                  style={{ fontFamily: FONT }}
+                >
+                  ProofPress nasce per ricostruirlo. La prima piattaforma italiana di
+                  AI Journalism certificato: dove l'intelligenza artificiale e il giornalismo
+                  umano collaborano per portare l'informazione a un livello superiore.
+                  Notizie verificate, certificate, distribuite in tempo reale.
                 </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ── USE CASE / MERCATO ────────────────────────────────────────────── */}
-      <section style={{ background: "#0d1428", padding: "80px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontFamily: fontDisplay,
-              fontSize: "clamp(22px, 3.5vw, 32px)",
-              fontWeight: 700,
-              color: "#ffffff",
-              textAlign: "center",
-              marginBottom: 48,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Chi paga per ProofPress
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-            {USE_CASES.map((uc) => (
-              <div
-                key={uc.label}
-                style={{
-                  background: "rgba(232,201,122,0.06)",
-                  border: "1px solid rgba(232,201,122,0.15)",
-                  borderRadius: 10,
-                  padding: "24px 20px",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ color: "#e8c97a", fontSize: 13, fontWeight: 700, marginBottom: 8, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                  {uc.label}
-                </div>
-                <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.6 }}>
-                  {uc.desc}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TIMELINE ──────────────────────────────────────────────────────── */}
-      <section style={{ background: "#0a0f1e", padding: "80px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontFamily: fontDisplay,
-              fontSize: "clamp(22px, 3.5vw, 32px)",
-              fontWeight: 700,
-              color: "#ffffff",
-              textAlign: "center",
-              marginBottom: 56,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Roadmap 2026–2027
-          </h2>
-          <div style={{ position: "relative" }}>
-            {/* Linea verticale */}
-            <div style={{ position: "absolute", left: 20, top: 0, bottom: 0, width: 1, background: "rgba(232,201,122,0.2)" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-              {TIMELINE.map((t, i) => (
-                <div key={t.phase} style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
-                  {/* Dot */}
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: "50%",
-                      background: i === 0 ? "#e8c97a" : "rgba(232,201,122,0.15)",
-                      border: "1px solid rgba(232,201,122,0.4)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      zIndex: 1,
-                    }}
-                  >
-                    <span style={{ color: i === 0 ? "#0a0f1e" : "#e8c97a", fontSize: 11, fontWeight: 700 }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+              {/* Metriche hero */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 py-8 border-t border-b border-[#0a0a0a]/8">
+                {[
+                  { val: "6.259", label: "iscritti newsletter attivi" },
+                  { val: "4.000+", label: "fonti monitorate 24/7" },
+                  { val: "100%", label: "notizie certificate SHA-256" },
+                  { val: "250K €", label: "target pre-seed round" },
+                ].map(({ val, label }) => (
+                  <div key={val}>
+                    <div
+                      className="text-3xl md:text-4xl font-black mb-1"
+                      style={{ color: ORANGE, fontFamily: FONT }}
+                    >
+                      {val}
+                    </div>
+                    <div className="text-xs text-[#0a0a0a]/50 uppercase tracking-wide leading-snug">
+                      {label}
+                    </div>
                   </div>
-                  <div style={{ paddingTop: 8 }}>
-                    <span style={{ color: "#e8c97a", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                      {t.phase}
-                    </span>
-                    <h3 style={{ color: "#ffffff", fontSize: 16, fontWeight: 700, margin: "4px 0 6px", fontFamily: fontDisplay }}>
-                      {t.title}
+                ))}
+              </div>
+
+              {/* CTA hero */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="#form-investor"
+                  className="inline-block px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
+                  style={{ background: ORANGE, fontFamily: FONT }}
+                >
+                  Sono interessato →
+                </a>
+                <a
+                  href="#cosa-e"
+                  className="inline-block px-8 py-4 text-sm font-bold uppercase tracking-widest border transition-colors hover:bg-[#0a0a0a]/5"
+                  style={{ borderColor: "#0a0a0a", color: "#0a0a0a", fontFamily: FONT }}
+                >
+                  Scopri ProofPress
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <Divider />
+
+          {/* ── COSA È PROOFPRESS ────────────────────────────────────────────── */}
+          <Section bg="#f8f8f6" id="cosa-e">
+            <Label>Cos'è ProofPress</Label>
+            <h2
+              className="text-3xl md:text-4xl font-black leading-tight mb-6"
+              style={{ fontFamily: FONT }}
+            >
+              Non un media.<br />Un'infrastruttura per<br />l'informazione del futuro.
+            </h2>
+            <p className="text-base text-[#0a0a0a]/65 leading-relaxed max-w-2xl mb-12">
+              ProofPress è una piattaforma agentica che trasforma il modo in cui le notizie
+              vengono create, verificate e distribuite. Dodici agenti AI lavorano in parallelo
+              24 ore su 24: monitorano oltre 4.000 fonti, scrivono articoli, li verificano
+              con il protocollo ProofPress Verify e li pubblicano in tempo reale.
+              Il giornalista umano mantiene il controllo strategico ed editoriale.
+              La macchina fa il resto.
+            </p>
+
+            {/* Tre pilastri */}
+            <div className="space-y-10">
+              {[
+                {
+                  n: "01",
+                  title: "Giornalismo Agentico",
+                  text: "Una redazione di 12 agenti AI che scrivono, riscrivono, titolano e pubblicano in automatico. Ogni agente è specializzato su un verticale: AI, startup, finanza, mercati, ricerca. Nessun intervento umano nella produzione — solo nella direzione.",
+                },
+                {
+                  n: "02",
+                  title: "Certificazione ProofPress Verify",
+                  text: "Ogni notizia viene analizzata da un sistema multi-agente che ne misura affidabilità, coerenza fattuale e obiettività. Il Verification Report viene sigillato con hash crittografico SHA-256 immutabile: la notizia è tracciabile, verificabile nel tempo, impossibile da alterare. Ispirato alla notarizzazione Web3.",
+                },
+                {
+                  n: "03",
+                  title: "Distribuzione Certificata",
+                  text: "Newsletter quotidiana a 6.259 iscritti attivi (crescita organica, zero paid). Sito live su proofpress.ai. Pipeline di distribuzione multicanale: email, web, social, API. Ogni contenuto porta il sigillo ProofPress Verify — differenziazione immediata sul mercato.",
+                },
+              ].map(({ n, title, text }) => (
+                <div key={n} className="grid md:grid-cols-12 gap-6 items-start">
+                  <div className="md:col-span-1">
+                    <div
+                      className="text-5xl font-black leading-none"
+                      style={{ color: `${ORANGE}33`, fontFamily: FONT }}
+                    >
+                      {n}
+                    </div>
+                  </div>
+                  <div className="md:col-span-11">
+                    <h3
+                      className="text-lg font-black mb-2 text-[#0a0a0a]"
+                      style={{ fontFamily: FONT }}
+                    >
+                      {title}
                     </h3>
-                    <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-                      {t.desc}
-                    </p>
+                    <p className="text-base text-[#0a0a0a]/65 leading-relaxed">{text}</p>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </Section>
 
-      {/* ── FOUNDER ───────────────────────────────────────────────────────── */}
-      <section style={{ background: "#0d1428", padding: "80px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-          <div
-            style={{
-              width: 72,
-              height: 72,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #e8c97a, #c9a84c)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 24px",
-              fontSize: 28,
-              fontWeight: 700,
-              color: "#0a0f1e",
-              fontFamily: fontDisplay,
-            }}
-          >
-            AC
-          </div>
-          <h2 style={{ fontFamily: fontDisplay, fontSize: 24, fontWeight: 700, color: "#ffffff", marginBottom: 16 }}>
-            Andrea Cinelli
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.8, marginBottom: 24 }}>
-            Co-fondatore di Libero.it (10M+ utenti, Infostrada–Olivetti Group) · Head of Mobile VAS Vodafone Global ·
-            Serial entrepreneur con 2 exit · 25+ brevetti (tra cui IP alla base di SPID) ·
-            Advisory Board Deloitte Central Mediterranean · Professore di AI al Sole 24 Ore Business School ·
-            Keynote speaker internazionale
-          </p>
-          <a
-            href="https://www.linkedin.com/in/andreacinelli/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              color: "#e8c97a",
-              fontSize: 13,
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
-            LinkedIn → linkedin.com/in/andreacinelli
-          </a>
-        </div>
-      </section>
+          <Divider />
 
-      {/* ── FORM CONTATTO ─────────────────────────────────────────────────── */}
-      <section id="contact" style={{ background: "#0a0f1e", padding: "80px 24px 100px" }}>
-        <div style={{ maxWidth: 560, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontFamily: fontDisplay,
-              fontSize: "clamp(24px, 4vw, 36px)",
-              fontWeight: 700,
-              color: "#ffffff",
-              textAlign: "center",
-              marginBottom: 12,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Sei interessato?
-          </h2>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.5)", fontSize: 15, marginBottom: 40, lineHeight: 1.6 }}>
-            Scrivici. Risponde direttamente Andrea Cinelli entro 24 ore.
-            Nessun pitch deck da scaricare: parliamo.
-          </p>
-
-          {submitted ? (
-            <div
-              style={{
-                background: "rgba(232,201,122,0.1)",
-                border: "1px solid rgba(232,201,122,0.3)",
-                borderRadius: 12,
-                padding: "40px 32px",
-                textAlign: "center",
-              }}
+          {/* ── MODELLO DI OFFERTA ───────────────────────────────────────────── */}
+          <Section id="offerta">
+            <Label>Modello di offerta</Label>
+            <h2
+              className="text-3xl md:text-4xl font-black leading-tight mb-4"
+              style={{ fontFamily: FONT }}
             >
-              <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>
-              <h3 style={{ color: "#e8c97a", fontSize: 20, fontWeight: 700, marginBottom: 8, fontFamily: fontDisplay }}>
-                Messaggio ricevuto
-              </h3>
-              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7 }}>
-                Andrea ti risponderà direttamente entro 24 ore.
-                <br />
-                Nel frattempo, esplora la piattaforma su{" "}
-                <a href="https://proofpress.ai" style={{ color: "#e8c97a", textDecoration: "none" }}>
+              Chi paga per ProofPress.
+            </h2>
+            <p className="text-base text-[#0a0a0a]/55 mb-14 max-w-2xl">
+              Tre mercati distinti, tre flussi di ricavo. La piattaforma è già operativa
+              su ProofPress Magazine come proof of concept. Il round serve a scalare
+              la tecnologia e acquisire i primi clienti enterprise.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: "📰",
+                  segment: "Media & Publisher",
+                  model: "Licenza SaaS",
+                  desc: "Editori, testate digitali e creator che vogliono una redazione AI-native. Licenza della pipeline agentica per produrre contenuti certificati in autonomia. Setup una tantum + canone mensile.",
+                  price: "Da €690/mese",
+                  alt: "Alternativa: revenue sharing 20%",
+                },
+                {
+                  icon: "🏢",
+                  segment: "Enterprise & Corporate",
+                  model: "Intelligence Certificata",
+                  desc: "Aziende e C-suite che necessitano di intelligence su mercati, competitor e trend. Report certificati per decisioni strategiche, board e investor relations. Contratti annuali.",
+                  price: "Da €2.500/mese",
+                  alt: "Pilota enterprise Q4 2026",
+                },
+                {
+                  icon: "⚖️",
+                  segment: "Finanza, Legal & PA",
+                  model: "Compliance & Monitoring",
+                  desc: "Banche, studi legali e pubblica amministrazione che necessitano di monitoraggio disinformazione e news verification per compliance, M&A e due diligence. SLA garantito.",
+                  price: "Custom pricing",
+                  alt: "Conforme AI Act europeo",
+                },
+              ].map(({ icon, segment, model, desc, price, alt }) => (
+                <div
+                  key={segment}
+                  className="border border-[#0a0a0a]/10 p-7 flex flex-col"
+                  style={{ background: "#ffffff" }}
+                >
+                  <div className="text-3xl mb-4">{icon}</div>
+                  <div
+                    className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
+                    style={{ color: "rgba(10,10,10,0.35)" }}
+                  >
+                    {model}
+                  </div>
+                  <h3
+                    className="text-lg font-black mb-3 text-[#0a0a0a]"
+                    style={{ fontFamily: FONT }}
+                  >
+                    {segment}
+                  </h3>
+                  <p className="text-sm text-[#0a0a0a]/60 leading-relaxed flex-1 mb-4">
+                    {desc}
+                  </p>
+                  <div
+                    className="text-base font-black mb-1"
+                    style={{ color: ORANGE, fontFamily: FONT }}
+                  >
+                    {price}
+                  </div>
+                  <div className="text-xs text-[#0a0a0a]/40 italic">{alt}</div>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ── VISIONE ──────────────────────────────────────────────────────── */}
+          <Section bg="#f8f8f6" id="visione">
+            <Label>Visione</Label>
+            <h2
+              className="text-3xl md:text-4xl font-black leading-tight mb-6"
+              style={{ fontFamily: FONT }}
+            >
+              Nasce un nuovo media.<br />
+              <span style={{ color: ORANGE }}>Dove AI e uomo</span><br />
+              collaborano per informare meglio.
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-12 mb-14">
+              <div>
+                <p className="text-base text-[#0a0a0a]/65 leading-relaxed mb-6">
+                  Il giornalismo tradizionale è in crisi strutturale: costi insostenibili,
+                  velocità insufficiente, fiducia ai minimi storici. Il 65% degli italiani
+                  non si fida più dei media (Reuters Institute 2024). La disinformazione
+                  costa all'economia globale 78 miliardi di dollari l'anno.
+                </p>
+                <p className="text-base text-[#0a0a0a]/65 leading-relaxed">
+                  ProofPress non sostituisce il giornalista: lo amplifica. L'AI gestisce
+                  il volume, la velocità e la verifica. Il giornalista umano porta
+                  giudizio, etica e direzione editoriale. Il risultato è un nuovo modello
+                  di media: più veloce, più affidabile, più scalabile.
+                </p>
+              </div>
+              <div>
+                <p className="text-base text-[#0a0a0a]/65 leading-relaxed mb-6">
+                  Il mercato globale dei media digitali vale 460 miliardi di dollari.
+                  L'AI journalism è ancora un territorio vergine: chi entra ora costruisce
+                  il moat. L'AI Act europeo e le nuove norme sulla disinformazione premiano
+                  le piattaforme con sistemi di verifica certificata.
+                </p>
+                <p className="text-base text-[#0a0a0a]/65 leading-relaxed">
+                  ProofPress è già conforme, già operativa, già distribuita.
+                  L'obiettivo è diventare il <strong>market leader europeo
+                  dell'AI Journalism certificato</strong> entro il 2027,
+                  con 50.000 iscritti e 10 clienti enterprise attivi.
+                </p>
+              </div>
+            </div>
+
+            {/* Perché adesso */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: "📉",
+                  title: "Il mercato è rotto",
+                  text: "Fiducia nei media ai minimi. Disinformazione dilagante. La domanda di informazione certificata non ha ancora un'offerta strutturata. ProofPress risolve il problema alla radice.",
+                },
+                {
+                  icon: "⏱",
+                  title: "Timing perfetto",
+                  text: "AI Act europeo in vigore. Norme anti-disinformazione in arrivo. Chi costruisce ora l'infrastruttura di verifica diventa lo standard di riferimento del settore.",
+                },
+                {
+                  icon: "🏆",
+                  title: "Team con track record",
+                  text: "Fondato da Andrea Cinelli: co-fondatore Libero.it (10M+ utenti), 2 exit, 25+ brevetti, Advisory Board Deloitte, professore AI al Sole 24 Ore Business School.",
+                },
+              ].map(({ icon, title, text }) => (
+                <div
+                  key={title}
+                  className="border border-[#0a0a0a]/10 p-6"
+                  style={{ background: "#ffffff" }}
+                >
+                  <div className="text-2xl mb-3">{icon}</div>
+                  <h3
+                    className="text-base font-black mb-2 text-[#0a0a0a]"
+                    style={{ fontFamily: FONT }}
+                  >
+                    {title}
+                  </h3>
+                  <p className="text-sm text-[#0a0a0a]/60 leading-relaxed">{text}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ── PRE-SEED ROUND ───────────────────────────────────────────────── */}
+          <Section id="round">
+            <Label>Pre-Seed Round 2026</Label>
+            <h2
+              className="text-3xl md:text-4xl font-black leading-tight mb-4"
+              style={{ fontFamily: FONT }}
+            >
+              250.000 € per diventare<br />market leader.
+            </h2>
+            <p className="text-base text-[#0a0a0a]/55 mb-14 max-w-2xl">
+              Il round pre-seed serve a trasformare ProofPress da proof of concept
+              operativo a piattaforma scalabile. Tre aree di investimento, impatto misurabile,
+              timeline definita.
+            </p>
+
+            {/* Allocazione */}
+            <div className="grid md:grid-cols-3 gap-6 mb-14">
+              {[
+                {
+                  pct: "40%",
+                  area: "Tecnologia",
+                  amount: "100.000 €",
+                  items: [
+                    "Scalabilità pipeline agentica",
+                    "API ProofPress Verify per terze parti",
+                    "Dashboard enterprise self-service",
+                    "Integrazione multicanale (Slack, API, webhook)",
+                  ],
+                },
+                {
+                  pct: "35%",
+                  area: "Go-to-Market",
+                  amount: "87.500 €",
+                  items: [
+                    "3 pilot enterprise (media group, banca, PA)",
+                    "PR e lancio ufficiale in Italia",
+                    "Sales & business development",
+                    "Certificazioni e compliance AI Act",
+                  ],
+                },
+                {
+                  pct: "25%",
+                  area: "Operations",
+                  amount: "62.500 €",
+                  items: [
+                    "Team editoriale e supervisione AI",
+                    "Infrastruttura cloud e sicurezza",
+                    "Legal, IP e protezione brevetti",
+                    "Runway 12 mesi fino al Seed",
+                  ],
+                },
+              ].map(({ pct, area, amount, items }) => (
+                <div
+                  key={area}
+                  className="border border-[#0a0a0a]/10 p-7"
+                  style={{ background: "#f8f8f6" }}
+                >
+                  <div
+                    className="text-4xl font-black mb-1"
+                    style={{ color: ORANGE, fontFamily: FONT }}
+                  >
+                    {pct}
+                  </div>
+                  <div
+                    className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
+                    style={{ color: "rgba(10,10,10,0.35)" }}
+                  >
+                    {area}
+                  </div>
+                  <div
+                    className="text-base font-black mb-4 text-[#0a0a0a]"
+                    style={{ fontFamily: FONT }}
+                  >
+                    {amount}
+                  </div>
+                  <ul className="space-y-2">
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2 text-sm text-[#0a0a0a]/65"
+                      >
+                        <span style={{ color: ORANGE }} className="font-bold mt-0.5">
+                          →
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* Roadmap */}
+            <div className="border-t border-[#0a0a0a]/8 pt-12">
+              <Label>Roadmap 2026–2027</Label>
+              <div className="space-y-8">
+                {[
+                  {
+                    q: "Q2 2026",
+                    title: "Chiusura Pre-Seed",
+                    desc: "Raccolta 250K €. Avvio sviluppo API Verify. Primo pilot enterprise.",
+                  },
+                  {
+                    q: "Q3 2026",
+                    title: "Lancio Ufficiale Italia",
+                    desc: "PR nazionale. Versione enterprise della piattaforma. 3 clienti beta attivi.",
+                  },
+                  {
+                    q: "Q4 2026",
+                    title: "Enterprise Traction",
+                    desc: "3 contratti enterprise firmati. 15.000 iscritti newsletter. Avvio Seed Round.",
+                  },
+                  {
+                    q: "Q1–Q2 2027",
+                    title: "Espansione EU",
+                    desc: "Versioni in inglese, francese, spagnolo. Target 50.000 iscritti. Market leader EU.",
+                  },
+                ].map(({ q, title, desc }) => (
+                  <div key={q} className="grid md:grid-cols-12 gap-4 items-start">
+                    <div className="md:col-span-2">
+                      <div
+                        className="text-xs font-bold uppercase tracking-[0.15em]"
+                        style={{ color: ORANGE }}
+                      >
+                        {q}
+                      </div>
+                    </div>
+                    <div className="md:col-span-10">
+                      <h3
+                        className="text-base font-black mb-1 text-[#0a0a0a]"
+                        style={{ fontFamily: FONT }}
+                      >
+                        {title}
+                      </h3>
+                      <p className="text-sm text-[#0a0a0a]/60 leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ── FOUNDER ──────────────────────────────────────────────────────── */}
+          <Section bg="#f8f8f6" id="founder">
+            <Label>Il Fondatore</Label>
+            <div className="grid md:grid-cols-12 gap-8 items-start">
+              <div className="md:col-span-2">
+                <div
+                  className="w-16 h-16 flex items-center justify-center text-2xl font-black border border-[#0a0a0a]/15"
+                  style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}
+                >
+                  AC
+                </div>
+              </div>
+              <div className="md:col-span-10">
+                <h2
+                  className="text-2xl md:text-3xl font-black mb-2 text-[#0a0a0a]"
+                  style={{ fontFamily: FONT }}
+                >
+                  Andrea Cinelli
+                </h2>
+                <p
+                  className="text-sm font-bold uppercase tracking-[0.15em] mb-6"
+                  style={{ color: ORANGE }}
+                >
+                  Founder & CEO, ProofPress
+                </p>
+                <p className="text-base text-[#0a0a0a]/65 leading-relaxed mb-6">
+                  30+ anni di esperienza nella costruzione di prodotti digitali e piattaforme
+                  tecnologiche a scala. Co-fondatore di Libero.it (10M+ utenti, Infostrada–Olivetti Group),
+                  Head of Mobile VAS Vodafone Global, serial entrepreneur con 2 exit.
+                  Autore di 25+ brevetti — tra cui IP alla base del sistema SPID italiano.
+                </p>
+                <p className="text-base text-[#0a0a0a]/65 leading-relaxed mb-8">
+                  Membro dell'Advisory Board Deloitte Central Mediterranean. Professore di AI
+                  al Sole 24 Ore Business School. Keynote speaker internazionale su AI e innovazione.
+                  Fondatore di FoolFarm, uno dei principali AI Venture Studio europei.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    "Co-fondatore Libero.it",
+                    "2 Exit",
+                    "25+ Brevetti",
+                    "Advisory Board Deloitte",
+                    "Prof. AI Sole 24 Ore",
+                    "FoolFarm Venture Studio",
+                  ].map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs font-bold uppercase tracking-wide px-3 py-1.5 border border-[#0a0a0a]/15"
+                      style={{ color: "#0a0a0a", background: "#ffffff" }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6">
+                  <a
+                    href="https://linkedin.com/in/andreacinelli"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-70"
+                    style={{ color: ORANGE, fontFamily: FONT }}
+                  >
+                    LinkedIn → linkedin.com/in/andreacinelli
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ── FORM CONTATTO ────────────────────────────────────────────────── */}
+          <Section id="form-investor">
+            <div className="max-w-2xl">
+              <Label>Investor Relations</Label>
+              <h2
+                className="text-3xl md:text-4xl font-black leading-tight mb-4"
+                style={{ fontFamily: FONT }}
+              >
+                Sei interessato?
+              </h2>
+              <p className="text-base text-[#0a0a0a]/55 mb-10">
+                Scrivici. Risponde direttamente Andrea Cinelli entro 24 ore.
+                Nessun pitch deck da scaricare, nessuna call di discovery infinita.
+                Parliamo.
+              </p>
+
+              {submitted ? (
+                <div
+                  className="border border-[#0a0a0a]/10 p-8"
+                  style={{ background: "#f8f8f6" }}
+                >
+                  <div
+                    className="text-2xl font-black mb-2"
+                    style={{ color: ORANGE, fontFamily: FONT }}
+                  >
+                    Messaggio ricevuto.
+                  </div>
+                  <p className="text-base text-[#0a0a0a]/65">
+                    Ti rispondo entro 24 ore. — Andrea Cinelli
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label
+                        className="block text-xs font-bold uppercase tracking-[0.15em] mb-2 text-[#0a0a0a]/50"
+                        htmlFor="inv-name"
+                      >
+                        Nome *
+                      </label>
+                      <input
+                        id="inv-name"
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Mario Rossi"
+                        className="w-full border border-[#0a0a0a]/15 px-4 py-3 text-sm outline-none focus:border-[#0a0a0a]/40 transition-colors"
+                        style={{ background: "#f8f8f6", fontFamily: FONT }}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        className="block text-xs font-bold uppercase tracking-[0.15em] mb-2 text-[#0a0a0a]/50"
+                        htmlFor="inv-email"
+                      >
+                        Email *
+                      </label>
+                      <input
+                        id="inv-email"
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="mario@fund.com"
+                        className="w-full border border-[#0a0a0a]/15 px-4 py-3 text-sm outline-none focus:border-[#0a0a0a]/40 transition-colors"
+                        style={{ background: "#f8f8f6", fontFamily: FONT }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      className="block text-xs font-bold uppercase tracking-[0.15em] mb-2 text-[#0a0a0a]/50"
+                      htmlFor="inv-message"
+                    >
+                      Messaggio (opzionale)
+                    </label>
+                    <textarea
+                      id="inv-message"
+                      rows={4}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Sono un investitore / fondo / family office interessato a capire di più su ProofPress..."
+                      className="w-full border border-[#0a0a0a]/15 px-4 py-3 text-sm outline-none focus:border-[#0a0a0a]/40 transition-colors resize-none"
+                      style={{ background: "#f8f8f6", fontFamily: FONT }}
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-4 items-start">
+                    <button
+                      type="submit"
+                      disabled={submitMutation.isPending || !name || !email}
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+                      style={{ background: ORANGE, fontFamily: FONT, border: "none", cursor: name && email ? "pointer" : "not-allowed" }}
+                    >
+                      {submitMutation.isPending ? "Invio..." : "Invia il tuo interesse →"}
+                    </button>
+                    <p className="text-xs text-[#0a0a0a]/35 mt-3 sm:mt-4 leading-relaxed">
+                      I tuoi dati non vengono condivisi con terze parti.<br />
+                      Nessuna newsletter automatica.
+                    </p>
+                  </div>
+                  {submitMutation.isError && (
+                    <p className="text-sm text-red-500">
+                      Errore nell'invio. Scrivi direttamente a{" "}
+                      <a href="mailto:ac@acinelli.com" style={{ color: ORANGE }}>
+                        ac@acinelli.com
+                      </a>
+                    </p>
+                  )}
+                </form>
+              )}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ── FOOTER MINI ──────────────────────────────────────────────────── */}
+          <section className="py-10" style={{ background: "#ffffff" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-xs text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
+                © 2026 ProofPress · Agentic Certified Journalism Platform ·{" "}
+                <a
+                  href="https://proofpress.ai"
+                  className="hover:opacity-70 transition-opacity"
+                  style={{ color: ORANGE }}
+                >
                   proofpress.ai
                 </a>
               </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                <div>
-                  <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                    Nome *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Mario Rossi"
-                    style={{
-                      width: "100%",
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: 8,
-                      padding: "12px 14px",
-                      color: "#ffffff",
-                      fontSize: 14,
-                      outline: "none",
-                      boxSizing: "border-box",
-                    }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="mario@fund.com"
-                    style={{
-                      width: "100%",
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: 8,
-                      padding: "12px 14px",
-                      color: "#ffffff",
-                      fontSize: 14,
-                      outline: "none",
-                      boxSizing: "border-box",
-                    }}
-                  />
-                </div>
-              </div>
-              <div>
-                <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                  Messaggio (opzionale)
-                </label>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Sono un investitore / fondo / family office interessato a capire di più..."
-                  rows={4}
-                  style={{
-                    width: "100%",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    borderRadius: 8,
-                    padding: "12px 14px",
-                    color: "#ffffff",
-                    fontSize: 14,
-                    outline: "none",
-                    resize: "vertical",
-                    boxSizing: "border-box",
-                    fontFamily: fontSans,
-                  }}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={submitMutation.isPending || !name || !email}
-                style={{
-                  background: name && email ? "#e8c97a" : "rgba(232,201,122,0.3)",
-                  color: "#0a0f1e",
-                  border: "none",
-                  borderRadius: 8,
-                  padding: "14px 32px",
-                  fontWeight: 700,
-                  fontSize: 15,
-                  cursor: name && email ? "pointer" : "not-allowed",
-                  transition: "opacity 0.2s",
-                  fontFamily: fontSans,
-                }}
-              >
-                {submitMutation.isPending ? "Invio in corso..." : "Invia il tuo interesse →"}
-              </button>
-              <p style={{ textAlign: "center", color: "rgba(255,255,255,0.3)", fontSize: 12, margin: 0 }}>
-                I tuoi dati non vengono condivisi con terze parti. Nessuna newsletter automatica.
+              <p className="text-xs text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
+                Investor Relations:{" "}
+                <a
+                  href="mailto:ac@acinelli.com"
+                  className="hover:opacity-70 transition-opacity"
+                  style={{ color: ORANGE }}
+                >
+                  ac@acinelli.com
+                </a>
               </p>
-            </form>
-          )}
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* ── FOOTER MINIMAL ────────────────────────────────────────────────── */}
-      <div
-        style={{
-          background: "#060a14",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          padding: "24px",
-          textAlign: "center",
-        }}
-      >
-        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 12, margin: 0 }}>
-          © 2026 ProofPress · Agentic Certified Journalism Platform ·{" "}
-          <a href="/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>
-            proofpress.ai
-          </a>
-        </p>
+          <SharedPageFooter />
+        </div>
       </div>
     </div>
   );
