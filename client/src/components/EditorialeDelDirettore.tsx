@@ -76,12 +76,23 @@ function renderBody(body: string) {
 }
 
 export default function EditorialeDelDirettore() {
-  const { data: editorial, isLoading } = trpc.editorial.getLatest.useQuery(
-    { section: "ai" },
+  const { data: deepDiveRaw, isLoading } = trpc.news.getDeepDivePost.useQuery(
+    undefined,
     { staleTime: 1000 * 60 * 30, refetchOnWindowFocus: false }
   );
 
-  // Non mostrare nulla se non c'è editoriale e non sta caricando
+  // Normalizza i dati del post LinkedIn per il rendering
+  const editorial = deepDiveRaw ? {
+    id: deepDiveRaw.id,
+    dateLabel: deepDiveRaw.dateLabel,
+    title: deepDiveRaw.title ?? '',
+    subtitle: null as string | null,
+    body: deepDiveRaw.postText,
+    authorNote: null as string | null,
+    linkedinUrl: deepDiveRaw.linkedinUrl,
+  } : null;
+
+  // Non mostrare nulla se non c'è post e non sta caricando
   if (!isLoading && !editorial) return null;
 
   return (
@@ -197,15 +208,15 @@ export default function EditorialeDelDirettore() {
 
             {/* Footer: link pagina completa */}
             <div className="mt-6 pt-4 border-t flex items-center justify-end" style={{ borderColor: INK + "12" }}>
-              {editorial.id && (
-                <Link href={`/ai/editoriale/${editorial.id}`}>
+              {editorial.linkedinUrl && (
+                <a href={editorial.linkedinUrl} target="_blank" rel="noopener noreferrer">
                   <span
                     className="text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
                     style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
                   >
-                    Leggi l'analisi completa →
+                    Leggi su LinkedIn →
                   </span>
-                </Link>
+                </a>
               )}
             </div>
           </div>

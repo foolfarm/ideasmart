@@ -496,6 +496,48 @@ export const appRouter = router({
         );
       }),
 
+    // Deep Dive: secondo post LinkedIn del giorno (slot ai-research-morning), diverso dal Punto del Giorno
+    getDeepDivePost: publicProcedure
+      .query(async () => {
+        return cached(
+          'news:deepDivePost',
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return null;
+            const { linkedinPosts: linkedinPostsTable } = await import('../drizzle/schema');
+            const { eq: eqOp, desc: descOp } = await import('drizzle-orm');
+            // Prima prendi il titolo del Punto del Giorno (slot morning) per escluderlo
+            const morningPosts = await db.select({ title: linkedinPostsTable.title })
+              .from(linkedinPostsTable)
+              .where(eqOp(linkedinPostsTable.slot, 'morning'))
+              .orderBy(descOp(linkedinPostsTable.createdAt))
+              .limit(1);
+            const morningTitle = morningPosts[0]?.title ?? '';
+            // Prendi i post ai-research-morning piu' recenti
+            const posts = await db.select().from(linkedinPostsTable)
+              .where(eqOp(linkedinPostsTable.slot, 'ai-research-morning'))
+              .orderBy(descOp(linkedinPostsTable.createdAt))
+              .limit(5);
+            // Filtra per titolo diverso dal Punto del Giorno
+            const deepDive = posts.find(p => p.title !== morningTitle) ?? posts[0] ?? null;
+            if (!deepDive) return null;
+            return {
+              id: deepDive.id,
+              dateLabel: deepDive.dateLabel,
+              slot: (deepDive as any).slot ?? 'ai-research-morning',
+              postText: deepDive.postText,
+              linkedinUrl: deepDive.linkedinUrl ?? null,
+              title: deepDive.title ?? null,
+              section: deepDive.section,
+              imageUrl: deepDive.imageUrl ?? null,
+              hashtags: deepDive.hashtags ?? null,
+              createdAt: deepDive.createdAt,
+            };
+          },
+          EDITORIAL_TTL_MS
+        );
+      }),
+
     // Archivio editoriali dell'autore (per pagina /andrea-cinelli)
     getAuthorPosts: publicProcedure
       .input(z.object({ limit: z.number().min(1).max(100).default(30) }).optional())
