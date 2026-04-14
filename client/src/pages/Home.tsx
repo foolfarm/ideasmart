@@ -20,6 +20,7 @@ import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFNative, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
+import TradedoublerAd, { TradedoublerAdLeft, TradedoublerAdRight } from "@/components/TradedoublerAd";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -721,8 +722,14 @@ export default function Home() {
               Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
 
-            {/* Brand centrale */}
-            <div className="text-center">
+            {/* Brand centrale con manchette Tradedoubler ai lati — grid 3 colonne su xl */}
+            <div className="hidden xl:grid xl:grid-cols-[170px_1fr_170px] items-center gap-4">
+              {/* Manchette sinistra */}
+              <div className="flex justify-center items-center">
+                <TradedoublerAdLeft displayWidth={160} displayHeight={160} />
+              </div>
+              {/* Titolo centrale */}
+              <div className="text-center">
                 <Link href="/">
                   <div className="cursor-pointer hover:opacity-80 transition-opacity">
                     <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
@@ -756,10 +763,48 @@ export default function Home() {
                   Innovazione, AI, Startup, Venture, Tecnologia
                  </div>
               </div>
+              {/* Manchette destra */}
+              <div className="flex justify-center items-center">
+                <TradedoublerAdRight displayWidth={160} displayHeight={160} />
+              </div>
+            </div>
+            {/* Fallback mobile/tablet — solo titolo centrato senza manchette */}
+            <div className="xl:hidden text-center">
+              <Link href="/">
+                <div className="cursor-pointer hover:opacity-80 transition-opacity">
+                  <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
+                    <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
+                      style={{
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                        fontSize: "clamp(28px, 7vw, 88px)",
+                        letterSpacing: "-0.02em",
+                        lineHeight: 1
+                      }}>
+                      ProofPress
+                    </h1>
+                    <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                      style={{
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                        fontSize: "clamp(8px, 1vw, 14px)",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        lineHeight: 1,
+                        marginTop: "0.3em",
+                        marginLeft: "0.4em"
+                      }}>
+                      Magazine
+                    </span>
+                  </div>
+                </div>
+              </Link>
+              <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
+                Innovazione, AI, Startup, Venture, Tecnologia
+              </div>
+            </div>
           </div>
         </header>
-
-              {/* ══ BREAKING NEWS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
+            {/* ══ BREAKING NEWSS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
         <div className="hidden sm:block">
           <BreakingNewsSection />
         </div>
