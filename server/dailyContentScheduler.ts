@@ -400,20 +400,15 @@ export async function publishEditorialToLinkedIn(
     // Idempotenza: controlla se esiste già un post editoriale per oggi
     const db = await getDb();
     if (db) {
-      const existing = await db
-        .select({ id: linkedinPosts.id })
-        .from(linkedinPosts)
-        .where(eq(linkedinPosts.slot, "editorial" as any))
-        .limit(1);
-      // Cerca anche per dateLabel
+      // Cerca per dateLabel standard + slot 'editorial' (UNIQUE constraint garantisce deduplicazione)
       const existingToday = await db
-        .select({ id: linkedinPosts.id })
+        .select({ id: linkedinPosts.id, slot: linkedinPosts.slot })
         .from(linkedinPosts)
         .where(eq(linkedinPosts.dateLabel, today))
         .limit(20);
       const hasEditorial = existingToday.some((p: any) => p.slot === "editorial");
       if (hasEditorial) {
-        console.log("[DailyContent] LinkedIn editorial already published today, skipping.");
+        console.log(`[DailyContent] LinkedIn editorial already published today (${today}), skipping — found slots: ${existingToday.map((p:any)=>p.slot).join(", ")}`);
         return;
       }
     }
@@ -448,18 +443,20 @@ export async function publishEditorialToLinkedIn(
 
     if (result.success) {
       console.log(`[DailyContent] ✅ Editorial published to LinkedIn (postId: ${result.postId})`);
-      // Salva nel DB come post LinkedIn editoriale (slot "morning" come fallback — editoriale del direttore)
+      // Salva nel DB con slot 'editorial' e dateLabel standard (YYYY-MM-DD)
+      // Il UNIQUE constraint (dateLabel, slot) impedisce duplicati automaticamente
       if (db) {
         const editorialPostId = result.postId ?? "";
         await db.insert(linkedinPosts).values({
-          slot: "morning" as any,
-          dateLabel: `${today}-editorial`,
+          slot: "editorial" as any,
+          dateLabel: today,
           title: editorial.title,
           postText,
           imageUrl: imageUrl ?? undefined,
           linkedinUrl: editorialPostId ? `https://www.linkedin.com/feed/update/${editorialPostId}` : undefined,
           section: "ai" as any,
         }).onDuplicateKeyUpdate({ set: { linkedinUrl: editorialPostId ? `https://www.linkedin.com/feed/update/${editorialPostId}` : undefined } });
+        console.log(`[DailyContent] ✅ Editorial saved to DB: slot=editorial, dateLabel=${today}`);
       }
     } else {
       console.error(`[DailyContent] ❌ LinkedIn editorial publish failed: ${result.error}`);
