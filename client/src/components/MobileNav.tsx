@@ -17,7 +17,7 @@ const INFO_LINKS = [
 
 const PIATTAFORMA_SUBMENU = [
   { label: "Piattaforma ProofPress", icon: "🚀", href: "/piattaforma",          external: false },
-  { label: "Agentic Platform Demo",  icon: "🎯", href: "https://ideasmart.technology", external: true },
+  { label: "Agentic Platform Demo",  icon: "🎯", href: "https://proofpress.tech/", external: true },
   { label: "ProofPress Verify",      icon: "✅", href: "/proofpress-verify",    external: false },
 ];
 

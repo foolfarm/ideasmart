@@ -152,6 +152,8 @@ function Router() {
         <Route path="/registrati" component={Registrati} />
         <Route path="/accedi" component={Accedi} />
         <Route path="/demo/sandwichclub" component={DemoSandwichClub} />
+        {/* /demo senza path specifico → redirect esterno proofpress.tech */}
+        <Route path="/demo">{() => { window.location.replace("https://proofpress.tech/"); return null; }}</Route>
         <Route path="/dealflow" component={Dealflow} />
         <Route path="/editoriale/venture-studio-index" component={EditorialVSI} />
         <Route path="/start-here" component={StartHere} />

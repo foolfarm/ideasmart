@@ -22,7 +22,7 @@ const CHANNELS = [
 /* ─── MENU PRINCIPALE ────────────────────────────────────────────────── */
 const PIATTAFORMA_SUBMENU = [
   { label: "Piattaforma ProofPress", Icon: Monitor,    href: "/piattaforma",                 external: false },
-  { label: "Agentic Platform Demo",  Icon: Zap,        href: "https://ideasmart.technology", external: true  },
+  { label: "Agentic Platform Demo",  Icon: Zap,        href: "https://proofpress.tech/", external: true  },
   { label: "ProofPress Verify",      Icon: BookMarked, href: "/proofpress-verify",           external: false },
 ];
 
