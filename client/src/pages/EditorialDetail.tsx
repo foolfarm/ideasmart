@@ -8,6 +8,7 @@ import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
 import AdSenseUnit from "@/components/AdSenseUnit";
+import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
@@ -154,24 +155,24 @@ export default function EditorialDetail() {
           </blockquote>
         )}
 
-        {/* ── ADSENSE fluid native ── */}
-        <div className="my-6">
-          <AdSenseUnit format="fluid" />
+        {/* ── HPF Square 300x250 ── */}
+        <div className="my-6 flex justify-center">
+          <HPFSquare />
         </div>
 
-        {/* ── ADSENSE in-article ── */}
-        <div className="my-6">
-          <AdSenseUnit format="in-article" />
+        {/* ── HPF Leaderboard 728x90 (desktop) ── */}
+        <div className="hidden sm:flex justify-center my-6">
+          <HPFLeaderboard />
         </div>
 
-        {/* ── ADSENSE proopress1 ── */}
-        <div className="my-8">
-          <AdSenseUnit format="proopress1" />
+        {/* ── HPF Mobile Banner 320x50 (mobile) ── */}
+        <div className="flex sm:hidden justify-center my-4">
+          <HPFMobileBanner />
         </div>
 
-        {/* ── ADSENSE autorelaxed ── */}
-        <div className="mt-4 mb-8">
-          <AdSenseUnit format="autorelaxed" />
+        {/* ── HPF Square 300x250 secondo ── */}
+        <div className="mt-4 mb-8 flex justify-center">
+          <HPFSquare />
         </div>
 
         {/* Footer */}

@@ -10,6 +10,7 @@ import { useSiteAuth } from "@/hooks/useSiteAuth";
 import { User, LogOut, Settings, ShoppingCart, Star } from "lucide-react";
 import MobileNav from "@/components/MobileNav";
 import { trpc } from "@/lib/trpc";
+import { HPFSquare } from "@/components/HPFAd";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -220,7 +221,7 @@ export default function SharedPageHeader() {
 
         <div className="flex items-center justify-center gap-4">
           {/* Manchette sinistra — Amazon Deal */}
-          <AmazonDealManchette side="left" />
+          <HPFSquare className="hidden lg:flex" />
 
           {/* Titolo centrale + sottotitolo */}
           <div className="text-center flex-1 min-w-0">
@@ -258,7 +259,7 @@ export default function SharedPageHeader() {
           </div>
 
           {/* Manchette destra — Amazon Deal (deal diverso: +1 nella rotazione) */}
-          <AmazonDealManchette side="right" />
+          <HPFSquare className="hidden lg:flex" />
         </div>
       </div>
 

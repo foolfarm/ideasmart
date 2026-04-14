@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import AdSenseUnit from "@/components/AdSenseUnit";
+import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Banner Amazon compatto per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -141,27 +142,24 @@ export default function StartupNewsArticle() {
             Torna a STARTUP NEWS
           </Link>
         )}
-        {/* ── ADSENSE fluid native ── */}
-        <div className="my-4">
-          <AdSenseUnit format="fluid" />
+        {/* ── HPF Square 300x250 ── */}
+        <div className="my-4 flex justify-center">
+          <HPFSquare />
         </div>
 
-        {/* ── ADSENSE in-article ── */}
-        <div className="my-6">
-          <AdSenseUnit format="in-article" />
+        {/* ── HPF Leaderboard 728x90 (desktop) ── */}
+        <div className="hidden sm:flex justify-center my-6">
+          <HPFLeaderboard />
         </div>
 
-        {/* ── AMAZON DEAL BANNER ── */}
-        <AmazonArticleBanner />
-
-        {/* ── ADSENSE proopress1 ── */}
-        <div className="my-6">
-          <AdSenseUnit format="proopress1" />
+        {/* ── HPF Mobile Banner 320x50 (mobile) ── */}
+        <div className="flex sm:hidden justify-center my-3">
+          <HPFMobileBanner />
         </div>
 
-        {/* ── ADSENSE autorelaxed ── */}
-        <div className="mt-8 mb-4">
-          <AdSenseUnit format="autorelaxed" />
+        {/* ── HPF Square 300x250 secondo ── */}
+        <div className="mt-8 mb-4 flex justify-center">
+          <HPFSquare />
         </div>
 
         <div className="mt-4">

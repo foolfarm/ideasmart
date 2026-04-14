@@ -20,6 +20,7 @@ import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import AdSenseUnit from "@/components/AdSenseUnit";
+import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFNative, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -723,10 +724,10 @@ export default function Home() {
 
             {/* Brand centrale con manchette Amazon ai lati */}
             {/* LAYOUT: grid 3 colonne — colonne laterali max 160px, titolo centr. garantito */}
-            <div className="hidden xl:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 100px) 1fr minmax(0, 100px)', alignItems: 'center', overflow: 'hidden' }}>
-              {/* Manchette sinistra — Amazon Deal */}
+            <div className="hidden xl:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 300px) 1fr minmax(0, 300px)', alignItems: 'center', overflow: 'hidden' }}>
+              {/* Manchette sinistra — HPF Square 300x250 */}
               <div className="flex justify-start">
-                <HomeAmazonDeal offset={0} />
+                <HPFSquare />
               </div>
 
               {/* Titolo centrale + sottotitolo 2 righe */}
@@ -765,9 +766,9 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Manchette destra — Amazon Deal */}
+              {/* Manchette destra — HPF Square 300x250 */}
               <div className="flex justify-end">
-                <HomeAmazonDeal offset={1} />
+                <HPFSquare />
               </div>
             </div>
 
@@ -902,9 +903,13 @@ export default function Home() {
                     <AdSenseUnit format="leaderboard" className="mx-auto" />
                   </div>
 
-                  {/* ══ STRIP AMAZON DEALS — dopo il banner AdSense ══ */}
-                  <div className="hidden sm:block my-4">
-                    <AmazonDealsStrip />
+                  {/* ══ HPF Leaderboard 728x90 — dopo il banner AdSense ══ */}
+                  <div className="hidden sm:flex justify-center my-4">
+                    <HPFLeaderboard />
+                  </div>
+                  {/* ══ HPF Mobile Banner 320x50 — solo mobile ══ */}
+                  <div className="flex sm:hidden justify-center my-3">
+                    <HPFMobileBanner />
                   </div>
 
                   <ThinDivider />
@@ -1199,8 +1204,10 @@ export default function Home() {
                     </div>
                   </Link>
 
-                  {/* ── Banner Amazon Verticale — sidebar destra ── */}
-                  <AmazonDealVertical />
+                  {/* ── HPF Sidebar Tall 160x600 — sidebar destra ── */}
+                  <div className="flex justify-center mb-5">
+                    <HPFSidebarTall />
+                  </div>
 
                   {/* ── AdSense 300×250 — colonna destra ── */}
                   <div className="mb-5 flex flex-col items-center">
@@ -1490,9 +1497,12 @@ export default function Home() {
 
 
 
-          {/* ── AMAZON DEALS GRID — Prima del footer ── */}
+          {/* ── HPF Native + Banner — Prima del footer ── */}
           <div className="mt-12 mb-8">
-            <AmazonDealsGrid startOffset={2} maxDeals={4} />
+            <div className="hidden sm:flex justify-center mb-6">
+              <HPFBanner />
+            </div>
+            <HPFNative />
           </div>
 
           {/* ── FOOTER ── */}

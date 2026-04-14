@@ -3,6 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import AdSenseUnit from "@/components/AdSenseUnit";
+import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Banner Amazon inline per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -190,9 +191,9 @@ export default function NewsArticle() {
           {news.summary}
         </div>
 
-        {/* ── ADSENSE fluid native ── */}
-        <div className="my-4">
-          <AdSenseUnit format="fluid" />
+        {/* ── HPF Square 300x250 top ── */}
+        <div className="my-4 flex justify-center">
+          <HPFSquare />
         </div>
 
         {/* ProofPress Verify badge */}
@@ -211,10 +212,7 @@ export default function NewsArticle() {
           </code>
         </div>
 
-        {/* ── ADSENSE in-article ── */}
-        <div className="my-6">
-          <AdSenseUnit format="in-article" />
-        </div>
+
 
         {/* Link alla fonte (opzionale, non redirect) */}
         {sourceUrl && (
@@ -234,12 +232,19 @@ export default function NewsArticle() {
           </div>
         )}
 
-        {/* ── AMAZON DEAL BANNER — tra corpo e correlati ── */}
-        <AmazonArticleBanner />
+        {/* ── HPF Square 300x250 — tra corpo e correlati ── */}
+        <div className="my-6 flex justify-center">
+          <HPFSquare />
+        </div>
 
-        {/* ── ADSENSE proopress1 — dopo il corpo dell'articolo ── */}
-        <div className="my-6">
-          <AdSenseUnit format="proopress1" />
+        {/* ── HPF Leaderboard 728x90 (desktop) ── */}
+        <div className="hidden sm:flex justify-center my-4">
+          <HPFLeaderboard />
+        </div>
+
+        {/* ── HPF Mobile Banner 320x50 (mobile) ── */}
+        <div className="flex sm:hidden justify-center my-3">
+          <HPFMobileBanner />
         </div>
 
         {/* Related news */}
@@ -267,9 +272,9 @@ export default function NewsArticle() {
           </div>
         )}
 
-        {/* ── ADSENSE autorelaxed ── */}
-        <div className="mt-8 mb-4">
-          <AdSenseUnit format="autorelaxed" />
+        {/* ── HPF Square 300x250 bottom ── */}
+        <div className="mt-8 mb-4 flex justify-center">
+          <HPFSquare />
         </div>
 
         {/* Back link */}
