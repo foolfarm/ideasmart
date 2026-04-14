@@ -253,6 +253,65 @@ function AmazonDealsGrid({ startOffset = 0, maxDeals = 4 }: { startOffset?: numb
 }
 
 // ─── Costanti colori sezione ─────────────────────────────────────────────────────
+// ─── Carosello Prompt Collection 2026 ─────────────────────────────────────────
+const PROMPT_BANNERS = [
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-banner-collection-2026-square_a775263d.png",
+    alt: "Prompt Collection 2026 — 99 prompt premium per ChatGPT, Claude, Perplexity",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-banner-verticale-commercialisti-square_bc6e5af2.png",
+    alt: "Prompt Book per Commercialisti — Verticale Professionale",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-banner-verticale-avvocati-square_136c47a1.png",
+    alt: "Prompt Book per Avvocati — Verticale Professionale",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart-banner-verticale-studenti-square_6d00b84f.png",
+    alt: "Prompt Book per Studenti — Verticale Professionale",
+  },
+];
+
+function PromptCollectionCarousel() {
+  const [current, setCurrent] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setCurrent(prev => (prev + 1) % PROMPT_BANNERS.length);
+        setVisible(true);
+      }, 400);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const banner = PROMPT_BANNERS[current];
+
+  return (
+    <a
+      href="https://promptcollection2026.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1"
+      style={{ textDecoration: "none" }}
+    >
+      <img
+        src={banner.src}
+        alt={banner.alt}
+        className="w-full rounded-2xl"
+        style={{
+          display: "block",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 0.4s ease",
+        }}
+      />
+    </a>
+  );
+}
+
 const SECTION_COLORS = {
   ai:            { accent: "#1a1a1a", light: "#f5f5f5", label: "AI NEWS",        path: "/ai" },
   startup:       { accent: "#2a2a2a", light: "#f5f5f5", label: "STARTUP NEWS",        path: "/startup" },
@@ -808,26 +867,7 @@ export default function Home() {
         <div className="hidden sm:block">
           <BreakingNewsSection />
         </div>
-
-        {/* ══ BANNER COLLEZIONE PROMPT ════════════════════════════════════════════════════════════════ */}
-        <div className="max-w-[1280px] mx-auto px-4 mt-2 sm:mt-3">
-          <a
-            href="https://promptcollection2026.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 sm:gap-3 p-2 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-200 hover:shadow-sm group"
-            style={{ background: "#f5f5f7", border: "1px solid #e5e5ea", textDecoration: "none" }}
-          >
-            <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center" style={{ background: "#1d1d1f" }}>
-              <span className="text-white text-base sm:text-lg">📋</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="hidden sm:block text-[11px] font-semibold uppercase tracking-[0.12em] mb-0.5" style={{ color: "#86868b", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Collezione Proof Press</p>
-              <p className="text-[13px] sm:text-[14px] font-bold leading-tight" style={{ color: "#1d1d1f", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif" }}>Prompt da usare davvero nel lavoro quotidiano — 39€</p>
-            </div>
-            <span className="flex-shrink-0 text-[13px] font-semibold px-5 py-2 group-hover:opacity-80 transition-opacity" style={{ background: "#1d1d1f", color: "#ffffff", borderRadius: "980px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>Scopri →</span>
-          </a>
-        </div> {/* ══ CORPO ═══════════════════════════════════════════════════════════════════ */}
+        {/* ══ CORPO ═════════════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16 lg:pb-16" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 68px)' }}>
 
 
@@ -1187,28 +1227,21 @@ export default function Home() {
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
 
-                  {/* ── Box Annuncio ProofPress ── */}
-                  <Link href="/proofpress-verify">
-                    <div className="mb-5 p-5 rounded-2xl cursor-pointer transition-all duration-200 hover:shadow-lg group"
-                      style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
-                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
-                        style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif" }}>
-                        Novità
-                      </p>
-                      <p className="text-[18px] font-black leading-tight mb-2"
-                        style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
-                        ProofPress: la prima piattaforma di AI Journalism certificato.
-                      </p>
-                      <p className="text-[12px] leading-relaxed mb-4"
-                        style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.
-                      </p>
-                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-75 transition-opacity rounded-lg"
-                        style={{ background: "#1d1d1f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        Scopri La ProofPress Verify Technology →
-                      </span>
-                    </div>
-                  </Link>
+                  {/* ── Banner ProofPress Business ── */}
+                  <a
+                    href="https://proofpress.ai/offerta/creator"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-business-banner_eecb762f.png"
+                      alt="ProofPress Business — Crea il tuo giornale con l'AI"
+                      className="w-full rounded-2xl"
+                      style={{ display: "block" }}
+                    />
+                  </a>
 
                   {/* ── HPF Sidebar Tall 160x600 — sidebar destra ── */}
                   <div className="flex justify-center mb-5">
@@ -1220,27 +1253,8 @@ export default function Home() {
                     <HPFSquare />
                   </div>
 
-                  {/* ── Banner Collezione Prompt — sidebar ── */}
-                  <a
-                    href="https://promptcollection2026.com/"
-                    className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <div className="p-5 rounded-2xl" style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
-                      <p className="text-[18px] font-black leading-tight mb-3"
-                        style={{ color: "#1a1a1a", fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif", letterSpacing: "-0.02em" }}>
-                        La collezione Proof Press di prompt da usare davvero nel lavoro quotidiano.
-                      </p>
-                      <p className="text-[12px] leading-relaxed mb-4"
-                        style={{ color: "rgba(26,26,26,0.6)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        Un funnel semplice e concreto: arrivi dalla newsletter, acquisti a <strong style={{ color: "#1a1a1a" }}>39 €</strong> e ottieni accesso alla libreria ricercabile con il PDF completo incluso.
-                      </p>
-                      <span className="block text-center text-[11px] font-bold uppercase tracking-wider py-2.5 group-hover:opacity-75 transition-opacity rounded-lg"
-                        style={{ background: "#1d1d1f", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        Scopri la collezione →
-                      </span>
-                    </div>
-                  </a>
+                  {/* ── Carosello Prompt Collection 2026 — rotazione ogni 30s ── */}
+                  <PromptCollectionCarousel />
 
                   {/* ── Banner iscrizione gratuita — sidebar ── */}
                   <div className="mb-5 p-4 rounded-2xl" style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
