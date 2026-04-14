@@ -10,7 +10,6 @@ import { useSiteAuth } from "@/hooks/useSiteAuth";
 import { User, LogOut, Settings, ShoppingCart, Star } from "lucide-react";
 import MobileNav from "@/components/MobileNav";
 import { trpc } from "@/lib/trpc";
-import { HPFSquare } from "@/components/HPFAd";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -219,12 +218,9 @@ export default function SharedPageHeader() {
           Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l'informazione in insight esclusivi e affidabili.
         </p>
 
-        <div className="flex items-center justify-center gap-4">
-          {/* Manchette sinistra — Amazon Deal */}
-          <HPFSquare className="hidden lg:flex" />
-
+        <div className="flex items-center justify-center">
           {/* Titolo centrale + sottotitolo */}
-          <div className="text-center flex-1 min-w-0">
+          <div className="text-center">
             <Link href="/">
               <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
                 <h1
@@ -257,9 +253,6 @@ export default function SharedPageHeader() {
               Innovazione, AI, Startup, Venture, Tecnologia
             </div>
           </div>
-
-          {/* Manchette destra — Amazon Deal (deal diverso: +1 nella rotazione) */}
-          <HPFSquare className="hidden lg:flex" />
         </div>
       </div>
 
