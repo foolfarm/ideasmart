@@ -724,7 +724,7 @@ export default function Home() {
 
             {/* Brand centrale con manchette Amazon ai lati */}
             {/* LAYOUT: grid 3 colonne — colonne laterali max 160px, titolo centr. garantito */}
-            <div className="hidden xl:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 300px) 1fr minmax(0, 300px)', alignItems: 'center', overflow: 'hidden' }}>
+            <div className="hidden lg:grid w-full" style={{ gridTemplateColumns: 'minmax(0, 200px) 1fr minmax(0, 200px)', alignItems: 'center', overflow: 'hidden' }}>
               {/* Manchette sinistra — HPF Square 300x250 */}
               <div className="flex justify-start">
                 <HPFSquare />
@@ -773,7 +773,7 @@ export default function Home() {
             </div>
 
             {/* Fallback mobile/tablet: solo titolo centrato senza banner */}
-            <div className="xl:hidden text-center">
+            <div className="lg:hidden text-center">
               <Link href="/">
                 <div className="cursor-pointer hover:opacity-80 transition-opacity">
                   <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center" }}>
@@ -898,12 +898,7 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ══ ADSENSE LEADERBOARD 728×90 — dopo la prima notizia, prima di Amazon ══ */}
-                  <div className="hidden sm:flex justify-center items-center w-full py-3 my-2" style={{ background: "#fafafa", borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
-                    <AdSenseUnit format="leaderboard" className="mx-auto" />
-                  </div>
-
-                  {/* ══ HPF Leaderboard 728x90 — dopo il banner AdSense ══ */}
+                  {/* ══ HPF Leaderboard 728x90 — dopo la prima notizia ══ */}
                   <div className="hidden sm:flex justify-center my-4">
                     <HPFLeaderboard />
                   </div>
@@ -1030,6 +1025,14 @@ export default function Home() {
                       </div>
                     </div>
                   )}
+
+                  {/* ── HPF Banner orizzontale — dopo Research, prima di Dealroom ── */}
+                  <div className="hidden sm:flex justify-center items-center w-full py-4 my-4" style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
+                    <HPFLeaderboard />
+                  </div>
+                  <div className="flex sm:hidden justify-center my-3">
+                    <HPFMobileBanner />
+                  </div>
 
                   {/* ── SEZIONE DEALROOM — Round, Funding, VC, M&A ── */}
                   {dealroomNews.length > 0 && (
@@ -1209,9 +1212,9 @@ export default function Home() {
                     <HPFSidebarTall />
                   </div>
 
-                  {/* ── AdSense 300×250 — colonna destra ── */}
+                  {/* ── HPF Square 300x250 — colonna destra ── */}
                   <div className="mb-5 flex flex-col items-center">
-                    <AdSenseUnit format="medium-rect" />
+                    <HPFSquare />
                   </div>
 
                   {/* ── Banner Collezione Prompt — sidebar ── */}
