@@ -1256,28 +1256,6 @@ export default function Home() {
                   {/* ── Carosello Prompt Collection 2026 — rotazione ogni 30s ── */}
                   <PromptCollectionCarousel />
 
-                  {/* ── Banner iscrizione gratuita — sidebar ── */}
-                  <div className="mb-5 p-4 rounded-2xl" style={{ background: "#f5f5f7", border: "1px solid #e5e5ea" }}>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
-                      style={{ color: "rgba(26,26,26,0.45)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                      Proof Press
-                    </p>
-                    <p className="text-[15px] font-black leading-snug mb-1"
-                      style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.01em" }}>
-                      Ogni giorno 400 news, ricerche e notizie gratis.
-                    </p>
-                    <p className="text-[11px] mb-3"
-                      style={{ color: "rgba(26,26,26,0.5)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                      AI, Startup e Venture Capital — aggiornato ogni giorno.
-                    </p>
-                    <Link href="/registrati">
-                      <span className="block text-center text-[11px] font-bold uppercase tracking-widest py-2.5 transition-opacity hover:opacity-80 cursor-pointer"
-                        style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-                        Iscriviti gratis →
-                      </span>
-                    </Link>
-                  </div>
-
                   {/* Ultime Notizie — stream */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
