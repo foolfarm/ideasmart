@@ -5,7 +5,7 @@ import {
   ChevronDown, ChevronRight,
   Home, Zap, BookOpen, Rocket, TrendingUp,
   Monitor, Briefcase, Info, Mail, BookMarked,
-  PenLine, Newspaper, Building2,
+  PenLine, Newspaper, Building2, CircleDollarSign,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -33,6 +33,7 @@ const OFFERTA_SUBMENU = [
 ];
 
 const INFO_LINKS = [
+  { label: "Investor — Pre-Seed Open", Icon: CircleDollarSign, href: "/investor", external: false, badge: true },
   { label: "Chi siamo",         Icon: Info,       href: "/chi-siamo-story",                  external: false },
   { label: "Pubblicizza",       Icon: Briefcase,  href: "/pubblicita",                       external: false },
   { label: "Collezione Prompt", Icon: BookMarked, href: "https://promptcollection2026.com/", external: true  },
@@ -279,9 +280,27 @@ export default function LeftSidebar() {
             <div
               className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
               title={!expanded ? ch.label : undefined}
+              style={(ch as any).badge ? { background: "rgba(255,85,0,0.07)" } : undefined}
             >
-              <MenuIcon Icon={ch.Icon} active={!ch.external && isActive(ch.href)} />
-              <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>{ch.label}</span>
+              <span
+                className="flex-shrink-0 flex items-center justify-center"
+                style={{
+                  width: 32, height: 32, borderRadius: 9,
+                  background: (ch as any).badge ? "rgba(255,85,0,0.15)" : ((!ch.external && isActive(ch.href)) ? "#1d1d1f" : "#f2f2f7"),
+                  transition: "background 0.15s ease",
+                }}
+              >
+                <ch.Icon size={15} strokeWidth={1.9} color={(ch as any).badge ? "#ff5500" : ((!ch.external && isActive(ch.href)) ? "#ffffff" : "#1d1d1f")} />
+              </span>
+              <span
+                className="text-[13px] font-semibold"
+                style={{ ...labelStyle, color: (ch as any).badge ? "#ff5500" : "#1d1d1f" }}
+              >
+                {(ch as any).badge && (
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
+                )}
+                {ch.label}
+              </span>
             </div>
           );
           return ch.external ? (

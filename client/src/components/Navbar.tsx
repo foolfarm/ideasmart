@@ -177,6 +177,15 @@ export default function Navbar() {
 
           {/* Destra: Newsletter CTA + mobile hamburger */}
           <div className="flex items-center gap-2">
+            {/* Investor badge — desktop */}
+            <Link
+              href="/investor"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-200 hover:opacity-85"
+              style={{ background: "#ff5500", color: "#ffffff", fontFamily: SF, letterSpacing: "0.07em" }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse inline-block flex-shrink-0" />
+              Pre-Seed Open
+            </Link>
             {isHome ? (
               <button
                 onClick={() => scrollTo("newsletter")}
@@ -301,6 +310,7 @@ export default function Navbar() {
             <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mb-2">Canali</p>
             <div className="flex flex-col gap-1 px-2">
               {[
+                { label: "🟠 Investor — Pre-Seed Open", href: "/investor" },
                 { label: "Chi Siamo", href: "/chi-siamo" },
                 { label: "AI News", href: "/ai" },
                 { label: "Copy & Paste AI", href: "/copy-paste-ai" },
