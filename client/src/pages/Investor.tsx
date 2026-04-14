@@ -9,6 +9,7 @@ import SharedPageFooter from "@/components/SharedPageFooter";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import { trpc } from "@/lib/trpc";
+import SEOHead from "@/components/SEOHead";
 
 const FONT =
   "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -192,6 +193,15 @@ export default function Investor() {
   };
 
   return (
+    <>
+      <SEOHead
+        title="Investi in ProofPress — Pre-Seed Round 250K · AI Journalism Certificato"
+        description="ProofPress sta aprendo il suo primo round pre-seed da 250.000 € a valutazione 2,5M. Una piattaforma di giornalismo agentico certificato che trasforma il modo in cui si costruiscono e distribuiscono le notizie. Guidata da Andrea Cinelli (2 exit, 25+ brevetti)."
+        canonical="https://proofpress.ai/investor"
+        ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-512-final_6afd42ba.png"
+        ogType="website"
+        keywords="ProofPress investor, pre-seed round, AI journalism, giornalismo agentico, startup investimento, Andrea Cinelli"
+      />
     <div className="flex min-h-screen">
       <LeftSidebar />
       <div className="flex-1 min-w-0">
@@ -761,5 +771,6 @@ export default function Investor() {
         </div>
       </div>
     </div>
+    </>
   );
 }
