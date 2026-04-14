@@ -2,7 +2,6 @@ import { Link, useRoute } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
-import AdSenseUnit from "@/components/AdSenseUnit";
 import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Banner Amazon inline per pagine articolo ───────────────────────────────────────────

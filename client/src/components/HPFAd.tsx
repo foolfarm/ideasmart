@@ -66,11 +66,15 @@ const AD_CONFIGS: Record<
 interface HPFAdProps {
   format: HPFAdFormat;
   className?: string;
+  /** Fattore di scala CSS (es. 0.53 porta 300x250 → ~160x133). Default: 1 */
+  scale?: number;
 }
 
-export default function HPFAd({ format, className = "" }: HPFAdProps) {
+export default function HPFAd({ format, className = "", scale = 1 }: HPFAdProps) {
   const config = AD_CONFIGS[format];
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const scaledW = Math.round(config.width * scale);
+  const scaledH = Math.round(config.height * scale);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -111,17 +115,25 @@ export default function HPFAd({ format, className = "" }: HPFAdProps) {
   return (
     <div
       className={`flex flex-col items-center ${className}`}
-      style={{ width: config.width, minHeight: config.height + 14 }}
+      style={{ width: scaledW, minHeight: scaledH + 14, overflow: 'hidden' }}
     >
-      <iframe
-        ref={iframeRef}
-        width={config.width}
-        height={config.height}
-        frameBorder="0"
-        scrolling="no"
-        style={{ display: "block", border: "none" }}
-        title={`ad-${config.key}`}
-      />
+      <div style={{
+        width: config.width,
+        height: config.height,
+        transform: scale !== 1 ? `scale(${scale})` : undefined,
+        transformOrigin: 'top left',
+        flexShrink: 0,
+      }}>
+        <iframe
+          ref={iframeRef}
+          width={config.width}
+          height={config.height}
+          frameBorder="0"
+          scrolling="no"
+          style={{ display: "block", border: "none" }}
+          title={`ad-${config.key}`}
+        />
+      </div>
       <span
         style={{
           fontSize: "9px",
@@ -168,12 +180,12 @@ function NativeAd({ className = "" }: { className?: string }) {
 
 // ─── Shorthand exports ────────────────────────────────────────────────────────
 
-export function HPFSidebarTall({ className = "" }: { className?: string }) {
-  return <HPFAd format="sidebar-tall" className={className} />;
+export function HPFSidebarTall({ className = "", scale }: { className?: string; scale?: number }) {
+  return <HPFAd format="sidebar-tall" className={className} scale={scale} />;
 }
 
-export function HPFSquare({ className = "" }: { className?: string }) {
-  return <HPFAd format="square" className={className} />;
+export function HPFSquare({ className = "", scale }: { className?: string; scale?: number }) {
+  return <HPFAd format="square" className={className} scale={scale} />;
 }
 
 export function HPFMobileBanner({ className = "" }: { className?: string }) {

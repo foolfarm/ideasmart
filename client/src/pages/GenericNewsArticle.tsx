@@ -1,9 +1,9 @@
 import { useEffect } from "react";
+import { HPFLeaderboard, HPFSquare } from "@/components/HPFAd";
 import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
-import AdSenseUnit from "@/components/AdSenseUnit";
 
 // ─── Banner Amazon compatto per pagine articolo generiche ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -154,27 +154,27 @@ export default function GenericNewsArticle() {
         >
           Apertura articolo su {news.sourceName ?? "fonte originale"}…
         </p>
-        {/* ── ADSENSE fluid native ── */}
+        
         <div className="my-4">
-          <AdSenseUnit format="fluid" />
+          <HPFLeaderboard />
         </div>
 
-        {/* ── ADSENSE in-article ── */}
+        
         <div className="my-6">
-          <AdSenseUnit format="in-article" />
+          <HPFSquare />
         </div>
 
         {/* ── AMAZON DEAL BANNER ── */}
         <AmazonArticleBanner />
 
-        {/* ── ADSENSE proopress1 ── */}
+        
         <div className="my-6">
-          <AdSenseUnit format="proopress1" />
+          <HPFLeaderboard />
         </div>
 
-        {/* ── ADSENSE autorelaxed ── */}
+        
         <div className="mt-8 mb-4">
-          <AdSenseUnit format="autorelaxed" />
+          <HPFSquare />
         </div>
 
         <Link

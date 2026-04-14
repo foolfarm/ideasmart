@@ -19,7 +19,6 @@ import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
-import AdSenseUnit from "@/components/AdSenseUnit";
 import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFNative, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
@@ -722,53 +721,55 @@ export default function Home() {
               Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
 
-            {/* Brand centrale con manchette HPF ai lati — visibile da xl (1280px) */}
-            {/* LAYOUT: posizione relativa con manchette assolute ai bordi */}
-            <div className="relative text-center">
+            {/* Brand centrale con manchette HPF ai lati — grid a 3 colonne */}
+            <div className="grid grid-cols-1 xl:grid-cols-[160px_1fr_160px] items-center gap-2">
 
-              {/* Manchette sinistra — HPF Square 300x250 — solo su schermi molto larghi */}
-              <div className="hidden xl:block absolute left-0 top-1/2 -translate-y-1/2">
-                <HPFSquare />
+              {/* Manchette sinistra — HPF Square scalato a ~160x133 — solo xl */}
+              <div className="hidden xl:flex justify-center items-center">
+                <HPFSquare scale={0.53} />
               </div>
 
-              {/* Titolo centrale — invariato rispetto all'originale */}
-              <Link href="/">
-                <div className="cursor-pointer hover:opacity-80 transition-opacity">
-                  <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
-                    <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
-                      style={{
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                        fontSize: "clamp(28px, 7vw, 88px)",
-                        letterSpacing: "-0.02em",
-                        lineHeight: 1
-                      }}>
-                      ProofPress
-                    </h1>
-                    <span className="font-bold tracking-widest text-[#1a1a1a]/50"
-                      style={{
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                        fontSize: "clamp(8px, 1vw, 14px)",
-                        letterSpacing: "0.15em",
-                        textTransform: "uppercase",
-                        lineHeight: 1,
-                        marginTop: "0.3em",
-                        marginLeft: "0.4em"
-                      }}>
-                      Magazine
-                    </span>
+              {/* Titolo centrale */}
+              <div className="text-center">
+                <Link href="/">
+                  <div className="cursor-pointer hover:opacity-80 transition-opacity">
+                    <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
+                      <h1 className="font-black tracking-tight text-[#1a1a1a] inline"
+                        style={{
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "clamp(28px, 7vw, 88px)",
+                          letterSpacing: "-0.02em",
+                          lineHeight: 1
+                        }}>
+                        ProofPress
+                      </h1>
+                      <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                        style={{
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "clamp(8px, 1vw, 14px)",
+                          letterSpacing: "0.15em",
+                          textTransform: "uppercase",
+                          lineHeight: 1,
+                          marginTop: "0.3em",
+                          marginLeft: "0.4em"
+                        }}>
+                        Magazine
+                      </span>
+                    </div>
                   </div>
+                </Link>
+                {/* Sottotitolo */}
+                <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
+                  Innovazione, AI, Startup, Venture, Tecnologia
                 </div>
-              </Link>
-              {/* Sottotitolo */}
-              <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
-                Innovazione, AI, Startup, Venture, Tecnologia
               </div>
 
-              {/* Manchette destra — HPF Square 300x250 — solo su schermi molto larghi */}
-              <div className="hidden xl:block absolute right-0 top-1/2 -translate-y-1/2">
-                <HPFSquare />
+              {/* Manchette destra — HPF Square scalato a ~160x133 — solo xl */}
+              <div className="hidden xl:flex justify-center items-center">
+                <HPFSquare scale={0.53} />
               </div>
+
             </div>
 
           </div>

@@ -1,4 +1,5 @@
 /**
+import { HPFLeaderboard, HPFSquare } from "@/components/HPFAd";
  * ResearchDetail — Pagina dettaglio di una singola ricerca
  * Route: /research/:id
  * Protetta da RequireAuth (solo utenti loggati)
@@ -8,7 +9,6 @@ import { trpc } from "@/lib/trpc";
 import RequireAuth from "@/components/RequireAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import AdSenseUnit from "@/components/AdSenseUnit";
 import { useEffect, useRef } from "react";
 import {
   ArrowLeft, ExternalLink, Globe, MapPin, BookOpen,
@@ -246,22 +246,22 @@ export default function ResearchDetail() {
 
           {/* ── ADSENSE fluid native ── */}
           <div className="my-6">
-            <AdSenseUnit format="fluid" />
+            <HPFLeaderboard />
           </div>
 
           {/* ── ADSENSE in-article ── */}
           <div className="my-6">
-            <AdSenseUnit format="in-article" />
+            <HPFSquare />
           </div>
 
           {/* ── ADSENSE proopress1 ── */}
           <div className="my-8">
-            <AdSenseUnit format="proopress1" />
+            <HPFLeaderboard />
           </div>
 
           {/* ── ADSENSE autorelaxed ── */}
           <div className="mt-4 mb-8">
-            <AdSenseUnit format="autorelaxed" />
+            <HPFSquare />
           </div>
 
           {/* CTA bottom */}

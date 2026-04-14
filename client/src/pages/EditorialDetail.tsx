@@ -7,7 +7,6 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
-import AdSenseUnit from "@/components/AdSenseUnit";
 import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 const SECTION_CONFIG = {
