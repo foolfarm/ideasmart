@@ -3,13 +3,13 @@
  *
  * Formati disponibili:
  *   sidebar-tall   → 160×600  (skyscraper laterale)
- *   square         → 300×250  (rettangolo medio, sostituisce manchette Amazon)
+ *   square         → 300×250  (rettangolo medio, manchette)
  *   mobile-banner  → 320×50   (banner mobile)
  *   banner         → 468×60   (banner standard)
  *   leaderboard    → 728×90   (leaderboard)
  *   native         → native ads (profitablecpmratenetwork)
  */
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 
 type HPFAdFormat =
   | "sidebar-tall"
@@ -68,18 +68,19 @@ interface HPFAdProps {
 
 export default function HPFAd({ format, className = "" }: HPFAdProps) {
   const config = AD_CONFIGS[format];
+  const uid = useId().replace(/:/g, "");
   const containerRef = useRef<HTMLDivElement>(null);
-  const loadedRef = useRef(false);
 
   useEffect(() => {
-    if (loadedRef.current) return;
-    loadedRef.current = true;
-
     const container = containerRef.current;
     if (!container) return;
 
+    // Pulisce il container prima di iniettare nuovi script
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
     if (format === "native") {
-      // Native ads: div container + script async
       const script = document.createElement("script");
       script.async = true;
       script.setAttribute("data-cfasync", "false");
@@ -88,17 +89,18 @@ export default function HPFAd({ format, className = "" }: HPFAdProps) {
       return;
     }
 
-    // Formato iframe standard: imposta atOptions poi carica invoke.js
+    // Imposta atOptions con chiave univoca per questa istanza
     const scriptOptions = document.createElement("script");
     scriptOptions.type = "text/javascript";
     scriptOptions.text = `
-      atOptions = {
+      window['atOptions_${uid}'] = {
         'key': '${config.key}',
         'format': 'iframe',
         'height': ${config.height},
         'width': ${config.width},
         'params': {}
       };
+      atOptions = window['atOptions_${uid}'];
     `;
     container.appendChild(scriptOptions);
 
@@ -108,19 +110,17 @@ export default function HPFAd({ format, className = "" }: HPFAdProps) {
     container.appendChild(scriptInvoke);
 
     return () => {
-      // Cleanup
       while (container.firstChild) {
         container.removeChild(container.firstChild);
       }
-      loadedRef.current = false;
     };
-  }, [format]);
+  }, [format, uid]);
 
   if (format === "native") {
     return (
       <div
         ref={containerRef}
-        id={`container-${config.key}`}
+        id={`container-${config.key}-${uid}`}
         className={className}
         style={{ minHeight: "100px", width: "100%" }}
       />
