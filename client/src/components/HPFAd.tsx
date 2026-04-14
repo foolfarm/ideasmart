@@ -1,6 +1,8 @@
 /**
  * HPFAd — Banner pubblicitari HighPerformanceFormat
  *
+ * Usa iframe diretto per evitare conflitti tra istanze multiple sulla stessa pagina.
+ *
  * Formati disponibili:
  *   sidebar-tall   → 160×600  (skyscraper laterale)
  *   square         → 300×250  (rettangolo medio, manchette)
@@ -9,7 +11,7 @@
  *   leaderboard    → 728×90   (leaderboard)
  *   native         → native ads (profitablecpmratenetwork)
  */
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 type HPFAdFormat =
   | "sidebar-tall"
@@ -68,73 +70,57 @@ interface HPFAdProps {
 
 export default function HPFAd({ format, className = "" }: HPFAdProps) {
   const config = AD_CONFIGS[format];
-  const uid = useId().replace(/:/g, "");
-  const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const iframe = iframeRef.current;
+    if (!iframe || format === "native") return;
 
-    // Pulisce il container prima di iniettare nuovi script
-    while (container.firstChild) {
-      container.removeChild(container.firstChild);
-    }
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (!iframeDoc) return;
 
-    if (format === "native") {
-      const script = document.createElement("script");
-      script.async = true;
-      script.setAttribute("data-cfasync", "false");
-      script.src = config.src;
-      container.appendChild(script);
-      return;
-    }
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>body{margin:0;padding:0;overflow:hidden;}</style>
+</head>
+<body>
+<script type="text/javascript">
+  atOptions = {
+    'key': '${config.key}',
+    'format': 'iframe',
+    'height': ${config.height},
+    'width': ${config.width},
+    'params': {}
+  };
+<\/script>
+<script type="text/javascript" src="${config.src}"><\/script>
+</body>
+</html>`;
 
-    // Imposta atOptions con chiave univoca per questa istanza
-    const scriptOptions = document.createElement("script");
-    scriptOptions.type = "text/javascript";
-    scriptOptions.text = `
-      window['atOptions_${uid}'] = {
-        'key': '${config.key}',
-        'format': 'iframe',
-        'height': ${config.height},
-        'width': ${config.width},
-        'params': {}
-      };
-      atOptions = window['atOptions_${uid}'];
-    `;
-    container.appendChild(scriptOptions);
-
-    const scriptInvoke = document.createElement("script");
-    scriptInvoke.type = "text/javascript";
-    scriptInvoke.src = config.src;
-    container.appendChild(scriptInvoke);
-
-    return () => {
-      while (container.firstChild) {
-        container.removeChild(container.firstChild);
-      }
-    };
-  }, [format, uid]);
+    iframeDoc.open();
+    iframeDoc.write(html);
+    iframeDoc.close();
+  }, [format, config.key, config.width, config.height, config.src]);
 
   if (format === "native") {
-    return (
-      <div
-        ref={containerRef}
-        id={`container-${config.key}-${uid}`}
-        className={className}
-        style={{ minHeight: "100px", width: "100%" }}
-      />
-    );
+    return <NativeAd className={className} />;
   }
 
   return (
     <div
       className={`flex flex-col items-center ${className}`}
-      style={{ width: config.width, minHeight: config.height }}
+      style={{ width: config.width, minHeight: config.height + 14 }}
     >
-      <div
-        ref={containerRef}
-        style={{ width: config.width, minHeight: config.height, overflow: "hidden" }}
+      <iframe
+        ref={iframeRef}
+        width={config.width}
+        height={config.height}
+        frameBorder="0"
+        scrolling="no"
+        style={{ display: "block", border: "none" }}
+        title={`ad-${config.key}`}
       />
       <span
         style={{
@@ -149,6 +135,34 @@ export default function HPFAd({ format, className = "" }: HPFAdProps) {
         Pubblicità
       </span>
     </div>
+  );
+}
+
+// ─── Native Ad (profitablecpmratenetwork) ────────────────────────────────────
+
+function NativeAd({ className = "" }: { className?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const injected = useRef(false);
+
+  useEffect(() => {
+    if (injected.current || !containerRef.current) return;
+    injected.current = true;
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.setAttribute("data-cfasync", "false");
+    script.src =
+      "https://pl29152692.profitablecpmratenetwork.com/27ed91d4ee0c313a62fb977faa5fd775/invoke.js";
+    containerRef.current.appendChild(script);
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      id="container-27ed91d4ee0c313a62fb977faa5fd775"
+      className={className}
+      style={{ minHeight: "100px", width: "100%" }}
+    />
   );
 }
 

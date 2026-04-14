@@ -1004,11 +1004,8 @@ export default function Home() {
                   )}
 
                   {/* ── HPF Banner orizzontale — dopo Research, prima di Dealroom ── */}
-                  <div className="hidden sm:flex justify-center items-center w-full py-4 my-4" style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
+                  <div className="flex justify-center items-center w-full py-4 my-4" style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
                     <HPFLeaderboard />
-                  </div>
-                  <div className="flex sm:hidden justify-center my-3">
-                    <HPFMobileBanner />
                   </div>
 
                   {/* ── SEZIONE DEALROOM — Round, Funding, VC, M&A ── */}
