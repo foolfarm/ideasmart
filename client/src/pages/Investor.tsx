@@ -13,7 +13,7 @@ import { trpc } from "@/lib/trpc";
 const FONT =
   "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const ORANGE = "#ff5500";
-const DEADLINE = new Date("2026-04-30T23:59:59+02:00"); // 30 aprile 2026 mezzanotte CET
+const DEADLINE = new Date("2026-05-30T23:59:59+02:00"); // 30 maggio 2026 mezzanotte CET
 
 // ─── Utility components ──────────────────────────────────────────────────────
 function Divider() {
@@ -96,7 +96,7 @@ function Countdown() {
           className="text-[11px] font-bold uppercase tracking-[0.25em]"
           style={{ color: ORANGE, fontFamily: FONT }}
         >
-          Soft Commitment Window — Chiude il 30 Aprile 2026
+          Soft Commitment Window — Chiude il 30 Maggio 2026
         </span>
       </div>
 
@@ -144,7 +144,7 @@ function Countdown() {
           className="text-base md:text-lg font-bold mb-2"
           style={{ color: "#ffffff", fontFamily: FONT }}
         >
-          Entro il 30 aprile organizzeremo un Investor Day riservato a chi ha espresso interesse.
+          Entro il 30 maggio organizzeremo un Investor Day riservato a chi ha espresso interesse.
         </p>
         <p
           className="text-sm leading-relaxed mb-6"
@@ -154,7 +154,7 @@ function Countdown() {
           presentazione privato con il team ProofPress — demo live della piattaforma, roadmap dettagliata
           e accesso ai termini definitivi del round.{" "}
           Il lancio ufficiale è fissato per il{" "}
-          <strong style={{ color: "#ffffff" }}>1 maggio 2026</strong>.
+          <strong style={{ color: "#ffffff" }}>1 giugno 2026</strong>.
           I posti sono limitati.
         </p>
         <a
@@ -504,7 +504,7 @@ export default function Investor() {
               <Label>Roadmap 2026–2027</Label>
               <div className="space-y-8">
                 {[
-                  { q: "1 Maggio 2026", title: "Lancio Ufficiale", desc: "Chiusura pre-seed. Lancio pubblico ProofPress. Avvio sviluppo API Verify. Primo pilot enterprise." },
+                  { q: "1 Giugno 2026", title: "Lancio Ufficiale", desc: "Chiusura pre-seed. Lancio pubblico ProofPress. Avvio sviluppo API Verify. Primo pilot enterprise." },
                   { q: "Q3 2026", title: "Enterprise Traction", desc: "Versione enterprise della piattaforma. 3 clienti beta attivi. 15.000 iscritti newsletter." },
                   { q: "Q4 2026", title: "Seed Round", desc: "3 contratti enterprise firmati. Avvio raccolta Seed Round. Espansione team." },
                   { q: "Q1–Q2 2027", title: "Espansione EU", desc: "Versioni in inglese, francese, spagnolo. Target 50.000 iscritti. Market leader EU certificato." },
