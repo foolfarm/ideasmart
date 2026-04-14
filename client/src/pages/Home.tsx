@@ -721,16 +721,8 @@ export default function Home() {
               Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
             </p>
 
-            {/* Brand centrale con manchette HPF ai lati — grid a 3 colonne */}
-            <div className="grid grid-cols-1 xl:grid-cols-[160px_1fr_160px] items-center gap-2">
-
-              {/* Manchette sinistra — HPF Square scalato a ~160x133 — solo xl */}
-              <div className="hidden xl:flex justify-center items-center">
-                <HPFSquare scale={0.53} />
-              </div>
-
-              {/* Titolo centrale */}
-              <div className="text-center">
+            {/* Brand centrale */}
+            <div className="text-center">
                 <Link href="/">
                   <div className="cursor-pointer hover:opacity-80 transition-opacity">
                     <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
@@ -762,18 +754,9 @@ export default function Home() {
                 <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
                   Innovazione, AI, Startup, Venture, Tecnologia
-                </div>
+                 </div>
               </div>
-
-              {/* Manchette destra — HPF Square scalato a ~160x133 — solo xl */}
-              <div className="hidden xl:flex justify-center items-center">
-                <HPFSquare scale={0.53} />
-              </div>
-
-            </div>
-
           </div>
-
         </header>
 
               {/* ══ BREAKING NEWS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}

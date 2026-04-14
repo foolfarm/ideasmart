@@ -1,10 +1,10 @@
 /**
-import { HPFLeaderboard, HPFSquare } from "@/components/HPFAd";
  * ResearchDetail — Pagina dettaglio di una singola ricerca
  * Route: /research/:id
  * Protetta da RequireAuth (solo utenti loggati)
  */
 import { useRoute, Link } from "wouter";
+import { HPFLeaderboard, HPFSquare } from "@/components/HPFAd";
 import { trpc } from "@/lib/trpc";
 import RequireAuth from "@/components/RequireAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
