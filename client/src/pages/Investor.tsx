@@ -79,45 +79,92 @@ function Countdown() {
 
   return (
     <div
-      className="border border-[#0a0a0a]/10 p-6 md:p-8 mt-10"
-      style={{ background: "#f8f8f6" }}
+      className="mt-12 w-full"
+      style={{
+        background: "#0a0a0a",
+        borderLeft: `4px solid ${ORANGE}`,
+        padding: "2rem 2.5rem",
+      }}
     >
-      <p
-        className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4"
-        style={{ color: ORANGE }}
-      >
-        Chiusura Pre-Seed Round — 30 aprile 2026 · Lancio ufficiale 1 maggio
-      </p>
-      <div className="flex gap-6 md:gap-10 items-end">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-6">
+        <span
+          className="inline-block w-2 h-2 rounded-full animate-pulse"
+          style={{ background: ORANGE }}
+        />
+        <span
+          className="text-[11px] font-bold uppercase tracking-[0.25em]"
+          style={{ color: ORANGE, fontFamily: FONT }}
+        >
+          Soft Commitment Window — Chiude il 30 Aprile 2026
+        </span>
+      </div>
+
+      {/* Timer grande */}
+      <div className="flex flex-wrap gap-2 md:gap-6 items-end mb-8">
         {[
-          { val: timeLeft.days, label: "giorni" },
-          { val: timeLeft.hours, label: "ore" },
-          { val: timeLeft.minutes, label: "minuti" },
-          { val: timeLeft.seconds, label: "secondi" },
-        ].map(({ val, label }) => (
-          <div key={label} className="text-center">
-            <div
-              className="text-4xl md:text-5xl font-black leading-none tabular-nums"
-              style={{ color: "#0a0a0a", fontFamily: FONT }}
-            >
-              {pad(val)}
+          { val: timeLeft.days, label: "Giorni" },
+          { val: timeLeft.hours, label: "Ore" },
+          { val: timeLeft.minutes, label: "Minuti" },
+          { val: timeLeft.seconds, label: "Secondi" },
+        ].map(({ val, label }, i) => (
+          <div key={label} className="flex items-end gap-2 md:gap-6">
+            <div className="text-center">
+              <div
+                className="text-5xl md:text-7xl font-black leading-none tabular-nums"
+                style={{ color: "#ffffff", fontFamily: FONT, letterSpacing: "-0.04em" }}
+              >
+                {pad(val)}
+              </div>
+              <div
+                className="text-[10px] uppercase tracking-[0.2em] mt-2"
+                style={{ color: "rgba(255,255,255,0.4)" }}
+              >
+                {label}
+              </div>
             </div>
-            <div className="text-[10px] uppercase tracking-[0.15em] mt-1 text-[#0a0a0a]/40">
-              {label}
-            </div>
+            {i < 3 && (
+              <span
+                className="text-3xl md:text-5xl font-black mb-4"
+                style={{ color: ORANGE, lineHeight: 1 }}
+              >
+                :
+              </span>
+            )}
           </div>
         ))}
-        <div className="hidden md:block flex-1 border-l border-[#0a0a0a]/8 pl-8 ml-2">
-          <p className="text-sm text-[#0a0a0a]/55 leading-relaxed">
-            Il round pre-seed si chiude il <strong>30 aprile 2026</strong>.<br />
-            Il lancio ufficiale della piattaforma è fissato per il <strong>1 maggio 2026</strong>.<br />
-            I posti sono limitati. Chi entra ora entra ai termini migliori.
-          </p>
-        </div>
       </div>
-      <p className="block md:hidden text-sm text-[#0a0a0a]/55 leading-relaxed mt-4">
-        Il round si chiude il <strong>30 aprile</strong>. Lancio ufficiale <strong>1 maggio 2026</strong>. Posti limitati.
-      </p>
+
+      {/* Messaggio evento */}
+      <div
+        className="border-t pt-6"
+        style={{ borderColor: "rgba(255,255,255,0.1)" }}
+      >
+        <p
+          className="text-base md:text-lg font-bold mb-2"
+          style={{ color: "#ffffff", fontFamily: FONT }}
+        >
+          Entro il 30 aprile organizzeremo un Investor Day riservato a chi ha espresso interesse.
+        </p>
+        <p
+          className="text-sm leading-relaxed mb-6"
+          style={{ color: "rgba(255,255,255,0.55)" }}
+        >
+          Chi invia un soft commitment entro questa data riceverà un invito personale all'evento di
+          presentazione privato con il team ProofPress — demo live della piattaforma, roadmap dettagliata
+          e accesso ai termini definitivi del round.{" "}
+          Il lancio ufficiale è fissato per il{" "}
+          <strong style={{ color: "#ffffff" }}>1 maggio 2026</strong>.
+          I posti sono limitati.
+        </p>
+        <a
+          href="#form-investor"
+          className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
+          style={{ background: ORANGE, color: "#ffffff", fontFamily: FONT }}
+        >
+          Invia il tuo interesse →
+        </a>
+      </div>
     </div>
   );
 }
