@@ -669,26 +669,6 @@ export default function Investor() {
             </div>
           </Section>
 
-          <Divider />
-
-          {/* ── FOOTER MINI ──────────────────────────────────────────────────── */}
-          <section className="py-10" style={{ background: "#ffffff" }}>
-            <div className="max-w-5xl mx-auto px-5 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-xs text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
-                © 2026 ProofPress · Agentic Certified Journalism Platform ·{" "}
-                <a href="https://proofpress.ai" className="hover:opacity-70 transition-opacity" style={{ color: ORANGE }}>
-                  proofpress.ai
-                </a>
-              </p>
-              <p className="text-xs text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
-                Investor Relations:{" "}
-                <a href="mailto:info@proofpress.ai" className="hover:opacity-70 transition-opacity" style={{ color: ORANGE }}>
-                  info@proofpress.ai
-                </a>
-              </p>
-            </div>
-          </section>
-
           <SharedPageFooter />
         </div>
       </div>

@@ -638,24 +638,18 @@ export default function Advertise() {
 
         {/* ── FOOTER ── */}
         <footer
-          className="border-t py-8"
+          className="border-t py-4"
           style={{ borderColor: "rgba(26,26,46,0.15)", background: "#ffffff" }}
         >
           <div className="max-w-6xl mx-auto px-4 text-center">
             <p
-              className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
-              style={{ color: "rgba(26,26,46,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+              className="text-[11px]"
+              style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
-              Proof Press — Advertising
-            </p>
-            <p
-              className="text-xs"
-              style={{ color: "rgba(26,26,46,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              © {new Date().getFullYear()} Proof Press · Tutti i diritti riservati ·{" "}
-              <a href="/" style={{ color: "rgba(26,26,46,0.4)" }}>
-                proofpress.ai
-              </a>
+              ProofPress Magazine è parte del gruppo{" "}
+              <span style={{ fontWeight: 600, color: "rgba(26,26,46,0.55)" }}>AxiomX</span>
+              {" · "}
+              <a href="/privacy" style={{ color: "rgba(26,26,46,0.4)", textDecoration: "underline" }}>Privacy</a>
             </p>
           </div>
         </footer>

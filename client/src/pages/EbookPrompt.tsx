@@ -204,9 +204,10 @@ export default function EbookPrompt() {
       </section>
 
       {/* Footer mini */}
-      <footer className="py-8 px-4 border-t border-white/5 text-center">
-        <p className="text-gray-500 text-sm">
-          © 2026 Proof Press — Intelligence Quotidiana
+      <footer className="py-4 px-4 border-t border-white/5 text-center">
+        <p className="text-gray-500 text-xs">
+          ProofPress Magazine è parte del gruppo <span className="font-semibold">AxiomX</span>{" · "}
+          <a href="/privacy" className="underline hover:opacity-70">Privacy</a>
         </p>
       </footer>
     </div>
