@@ -395,7 +395,7 @@ export default function Investor() {
                 {
                   icon: "⚡",
                   title: "Built to Scale",
-                  text: "Architettura cloud-native, API-first, multi-lingua. Da 1 a 100 clienti senza riscrivere una riga. Il modello FoolFarm: costruito per crescere veloce e uscire strategicamente.",
+                  text: "Architettura cloud-native, API-first, multi-lingua. Da 1 a 100 clienti senza riscrivere una riga. Costruito per crescere veloce e uscire strategicamente.",
                 },
               ].map(({ icon, title, text }) => (
                 <div key={title} className="border border-[#0a0a0a]/10 p-6" style={{ background: "#f8f8f6" }}>

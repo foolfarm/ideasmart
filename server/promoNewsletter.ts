@@ -322,7 +322,7 @@ function buildPromoNewsletterHtml(campaign: PromoCampaign, dateLabel: string): s
               ${campaign.footerNote}<br>
               <a href="${BASE_URL}/unsubscribe" style="color:#666;text-decoration:underline;">Cancella iscrizione</a> · 
               <a href="${BASE_URL}/privacy" style="color:#666;text-decoration:underline;">Privacy Policy</a> · 
-              © ${new Date().getFullYear()} FoolFarm S.r.l. — Via Tortona 37, Milano
+              © ${new Date().getFullYear()} AxiomX LLC — USA · <a href="https://proofpress.ai/chi-siamo" style="color:#666;text-decoration:underline;">Chi Siamo</a>
             </p>
           </td>
         </tr>
