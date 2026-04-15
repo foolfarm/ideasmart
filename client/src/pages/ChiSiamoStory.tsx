@@ -319,16 +319,9 @@ export default function ChiSiamoStory() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="/offerta"
-                  className="inline-block px-8 py-4 rounded-lg font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
-                  style={{ background: "#ff5500", color: "#ffffff" }}
-                >
-                  Scopri l'offerta →
-                </a>
-                <a
                   href="mailto:info@proofpress.ai"
                   className="inline-block px-8 py-4 rounded-lg font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
-                  style={{ background: "transparent", color: "#0a0a0a", border: "2px solid rgba(10,10,10,0.15)" }}
+                  style={{ background: "#0a0a0a", color: "#ffffff" }}
                 >
                   Scrivici
                 </a>

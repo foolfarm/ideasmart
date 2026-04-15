@@ -154,7 +154,7 @@ export default function Piattaforma() {
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="https://ideasmart.technology"
+              href="https://proofpress.tech/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[13px] uppercase tracking-wider transition-opacity hover:opacity-80"

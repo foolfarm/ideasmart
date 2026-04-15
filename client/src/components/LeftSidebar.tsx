@@ -33,7 +33,6 @@ const OFFERTA_SUBMENU = [
 ];
 
 const INFO_LINKS = [
-  { label: "Chi Siamo",    Icon: Info,      href: "/chi-siamo-story",          external: false },
   { label: "Pubblicizza", Icon: Briefcase, href: "/pubblicita",               external: false },
   { label: "Contatti",    Icon: Mail,      href: "mailto:info@proofpress.ai", external: true  },
 ];
@@ -195,43 +194,27 @@ export default function LeftSidebar() {
       {/* ══════════════════════════════════════════════════════════════
           NAV PRINCIPALE
       ══════════════════════════════════════════════════════════════ */}
-      <nav className="flex flex-col gap-0.5 px-2 mb-3">
-
-        {/* PIATTAFORMA */}
-        <div>
-          <button
-            onClick={() => expanded && setPiattaformaOpen(!piattaformaOpen)}
-            className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+       <nav className="flex flex-col gap-0.5 px-2 mb-3">
+        {/* CHI SIAMO — primo */}
+        <Link href="/chi-siamo-story">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+            title={!expanded ? "Chi Siamo" : undefined}
+          >
+            <MenuIcon Icon={Info} active={location.startsWith("/chi-siamo")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Chi Siamo</span>
+          </div>
+        </Link>
+        {/* PIATTAFORMA — voce singola senza sottomenu */}
+        <Link href="/piattaforma">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
             title={!expanded ? "Piattaforma" : undefined}
           >
             <MenuIcon Icon={Monitor} active={location.startsWith("/piattaforma") || location.startsWith("/proofpress-verify")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Piattaforma</span>
-            {expanded && (piattaformaOpen
-              ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
-              : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
-          </button>
-          {piattaformaOpen && expanded && (
-            <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
-              {PIATTAFORMA_SUBMENU.map((sub) =>
-                sub.external ? (
-                  <a key={sub.href} href={sub.href} target="_blank" rel="noopener noreferrer">
-                    <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] transition-all cursor-pointer">
-                      <sub.Icon size={11} strokeWidth={2} />
-                      <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>{sub.label}</span>
-                    </div>
-                  </a>
-                ) : (
-                  <Link key={sub.href} href={sub.href}>
-                    <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${isActive(sub.href) ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"}`}>
-                      <sub.Icon size={11} strokeWidth={2} />
-                      <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>{sub.label}</span>
-                    </div>
-                  </Link>
-                )
-              )}
-            </div>
-          )}
-        </div>
+            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Piattaforma</span>
+          </div>
+        </Link>
 
         {/* OFFERTA — temporaneamente nascosta */}
         {false && (
