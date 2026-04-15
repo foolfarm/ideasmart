@@ -1,10 +1,12 @@
 /**
- * VerifyWidget — Widget compatto per la verifica dell'autenticità delle notizie
- * tramite hash ProofPress Verify. Da inserire nella sidebar sinistra della Home.
+ * VerifyWidget — Widget di verifica autenticità notizie ProofPress Verify
+ * Posizionato nella sidebar destra, sopra il banner "Crea il tuo giornale AI"
+ * Design: dark editorial, impattante, stile certificazione blockchain
  */
 import { useState, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+import { ShieldCheck, ShieldX, Search, RotateCcw } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
@@ -23,7 +25,7 @@ export default function VerifyWidget() {
   const [searchHash, setSearchHash] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data, isFetching, error } = trpc.news.lookupByHash.useQuery(
+  const { data, isFetching } = trpc.news.lookupByHash.useQuery(
     { hash: searchHash! },
     { enabled: !!searchHash, retry: false }
   );
@@ -34,7 +36,7 @@ export default function VerifyWidget() {
     setSearchHash(h);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") handleVerify();
   }
 
@@ -44,86 +46,79 @@ export default function VerifyWidget() {
     setTimeout(() => inputRef.current?.focus(), 50);
   }
 
-  const verified = searchHash && data !== undefined && !isFetching;
-  const found = verified && data !== null;
-  const notFound = verified && data === null;
+  const hasResult = searchHash && !isFetching && data !== undefined;
+  const found = hasResult && data !== null;
+  const notFound = hasResult && data === null;
 
   return (
     <div
       className="mb-5 rounded-2xl overflow-hidden"
-      style={{
-        background: "#f5f5f7",
-        border: "1px solid #e5e5ea",
-        fontFamily: SF,
-      }}
+      style={{ fontFamily: SF, border: "1px solid #e5e5ea" }}
     >
-      {/* Header */}
-      <div className="px-4 pt-4 pb-3" style={{ borderBottom: "1px solid #e5e5ea" }}>
-        <div className="flex items-center gap-2 mb-1">
-          {/* Icona scudo */}
-          <div
-            className="flex items-center justify-center rounded-md flex-shrink-0"
-            style={{ width: 24, height: 24, background: "#1a1a1a" }}
-          >
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-              <path
-                d="M6.5 1L2 3v3.5c0 2.5 1.9 4.8 4.5 5.5C9.1 11.3 11 9 11 6.5V3L6.5 1z"
-                fill="#fff"
-                stroke="#fff"
-                strokeWidth="0.3"
-              />
-              <path d="M4.5 6.5l1.5 1.5 2.5-2.5" stroke="#1a1a1a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <p
-            className="text-[11px] font-black uppercase tracking-[0.12em]"
-            style={{ color: "#1a1a1a" }}
+      {/* ── Header dark ── */}
+      <div
+        className="px-4 pt-4 pb-3"
+        style={{ background: "#1a1a1a" }}
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <ShieldCheck size={16} color="#00e5c8" strokeWidth={2.2} />
+          <span
+            className="text-[11px] font-black uppercase tracking-[0.14em]"
+            style={{ color: "#fff" }}
           >
             ProofPress Verify
-          </p>
+          </span>
         </div>
-        <p className="text-[10px] leading-snug" style={{ color: "rgba(26,26,26,0.55)" }}>
+        <p className="text-[10px] leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
           Verifica l'autenticità di una notizia. Copia il codice hash ProofPress Verify e controlla.
         </p>
       </div>
 
-      {/* Input + Pulsante */}
-      <div className="px-4 py-3">
-        {!found ? (
+      {/* ── Body ── */}
+      <div className="px-4 py-3" style={{ background: "#f5f5f7" }}>
+
+        {/* INPUT + PULSANTE — sempre visibile finché non c'è risultato positivo */}
+        {!found && (
           <>
             <div className="flex gap-2 mb-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputHash}
-                onChange={e => { setInputHash(e.target.value); setSearchHash(null); }}
-                onKeyDown={handleKeyDown}
-                placeholder="Incolla il codice hash…"
-                className="flex-1 text-[10px] px-2.5 py-2 rounded-lg outline-none transition-all"
-                style={{
-                  background: "#fff",
-                  border: "1px solid #d1d1d6",
-                  color: "#1a1a1a",
-                  fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "9px",
-                  letterSpacing: "0.03em",
-                  minWidth: 0,
-                }}
-                onFocus={e => (e.target.style.borderColor = "#1a1a1a")}
-                onBlur={e => (e.target.style.borderColor = "#d1d1d6")}
-              />
+              <div className="relative flex-1">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputHash}
+                  onChange={e => { setInputHash(e.target.value); setSearchHash(null); }}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Incolla il codice hash…"
+                  className="w-full text-[9px] pl-2.5 pr-2 py-2 rounded-xl outline-none transition-all"
+                  style={{
+                    background: "#fff",
+                    border: "1.5px solid #d1d1d6",
+                    color: "#1a1a1a",
+                    fontFamily: "JetBrains Mono, 'Courier New', monospace",
+                    letterSpacing: "0.02em",
+                  }}
+                  onFocus={e => (e.target.style.borderColor = "#1a1a1a")}
+                  onBlur={e => (e.target.style.borderColor = "#d1d1d6")}
+                />
+              </div>
               <button
                 onClick={handleVerify}
                 disabled={!inputHash.trim() || isFetching}
-                className="flex-shrink-0 px-3 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all"
+                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all"
                 style={{
                   background: inputHash.trim() ? "#1a1a1a" : "#d1d1d6",
                   color: "#fff",
                   cursor: inputHash.trim() ? "pointer" : "not-allowed",
                   fontFamily: SF,
+                  whiteSpace: "nowrap",
                 }}
               >
-                {isFetching ? "…" : "Verifica"}
+                {isFetching ? (
+                  <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full" />
+                ) : (
+                  <Search size={11} strokeWidth={2.5} />
+                )}
+                {isFetching ? "" : "Verifica"}
               </button>
             </div>
 
@@ -133,109 +128,117 @@ export default function VerifyWidget() {
                 className="rounded-xl px-3 py-2.5 flex items-start gap-2"
                 style={{ background: "#fff3f3", border: "1px solid #ffcdd2" }}
               >
-                <span style={{ fontSize: 14, lineHeight: 1 }}>✗</span>
+                <ShieldX size={14} color="#c62828" strokeWidth={2} className="flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-[10px] font-bold" style={{ color: "#c62828" }}>
-                    Hash non trovato
+                    Hash non riconosciuto
                   </p>
-                  <p className="text-[9px] mt-0.5" style={{ color: "rgba(198,40,40,0.7)" }}>
+                  <p className="text-[9px] mt-0.5 leading-snug" style={{ color: "rgba(198,40,40,0.75)" }}>
                     Questo codice non corrisponde ad alcuna notizia certificata ProofPress.
                   </p>
                   <button
                     onClick={handleReset}
-                    className="text-[9px] font-bold mt-1.5 underline"
+                    className="flex items-center gap-1 text-[9px] font-bold mt-1.5"
                     style={{ color: "#c62828", background: "none", border: "none", cursor: "pointer", padding: 0 }}
                   >
+                    <RotateCcw size={9} />
                     Prova un altro codice
                   </button>
                 </div>
               </div>
             )}
           </>
-        ) : (
-          /* Risultato: trovato */
+        )}
+
+        {/* RISULTATO POSITIVO */}
+        {found && data && (
           <div
-            className="rounded-xl px-3 py-3"
-            style={{ background: "#f0faf4", border: "1px solid #a5d6b7" }}
+            className="rounded-xl overflow-hidden"
+            style={{ border: "1.5px solid #a5d6b7" }}
           >
-            {/* Badge verificato */}
-            <div className="flex items-center gap-1.5 mb-2">
-              <div
-                className="flex items-center justify-center rounded-full flex-shrink-0"
-                style={{ width: 18, height: 18, background: "#2e7d32" }}
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 5l2 2 4-4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.1em]" style={{ color: "#2e7d32" }}>
-                Notizia Certificata
-              </p>
-            </div>
-
-            {/* Titolo */}
-            <p
-              className="text-[11px] font-bold leading-snug mb-2"
-              style={{ color: "#1a1a1a", lineHeight: 1.4 }}
-            >
-              {data!.title}
-            </p>
-
-            {/* Metadati */}
-            <div className="flex flex-col gap-1 mb-2">
-              {data!.sourceName && (
-                <div className="flex items-center gap-1">
-                  <span className="text-[9px] uppercase tracking-widest font-bold" style={{ color: "rgba(26,26,26,0.4)", minWidth: 48 }}>Fonte</span>
-                  <span className="text-[9px]" style={{ color: "#1a1a1a" }}>{data!.sourceName}</span>
-                </div>
-              )}
-              {data!.publishedAt && (
-                <div className="flex items-center gap-1">
-                  <span className="text-[9px] uppercase tracking-widest font-bold" style={{ color: "rgba(26,26,26,0.4)", minWidth: 48 }}>Data</span>
-                  <span className="text-[9px]" style={{ color: "#1a1a1a" }}>{data!.publishedAt}</span>
-                </div>
-              )}
-              {data!.section && (
-                <div className="flex items-center gap-1">
-                  <span className="text-[9px] uppercase tracking-widest font-bold" style={{ color: "rgba(26,26,26,0.4)", minWidth: 48 }}>Sezione</span>
-                  <span className="text-[9px]" style={{ color: "#1a1a1a" }}>{SECTION_LABELS[data!.section] ?? data!.section}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Hash (troncato) */}
+            {/* Badge header verde */}
             <div
-              className="rounded-lg px-2 py-1.5 mb-2"
-              style={{ background: "rgba(46,125,50,0.08)", border: "1px solid rgba(46,125,50,0.2)" }}
+              className="px-3 py-2 flex items-center gap-2"
+              style={{ background: "#2e7d32" }}
             >
-              <p className="text-[8px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "rgba(46,125,50,0.7)" }}>
-                Hash SHA-256
-              </p>
-              <p
-                className="break-all"
-                style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "8px", color: "#2e7d32", lineHeight: 1.5 }}
-              >
-                {data!.verifyHash}
-              </p>
+              <ShieldCheck size={14} color="#fff" strokeWidth={2.5} />
+              <span className="text-[10px] font-black uppercase tracking-[0.12em]" style={{ color: "#fff" }}>
+                Notizia Certificata ProofPress
+              </span>
             </div>
 
-            {/* CTA: leggi articolo */}
-            <div className="flex items-center justify-between">
-              <Link href={`/news/${data!.id}`}>
-                <span
-                  className="text-[9px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
-                  style={{ color: "#1a1a1a", textDecoration: "underline" }}
-                >
-                  Leggi l'articolo →
-                </span>
-              </Link>
-              <button
-                onClick={handleReset}
-                className="text-[9px]"
-                style={{ color: "rgba(26,26,26,0.4)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            {/* Contenuto */}
+            <div className="px-3 py-3" style={{ background: "#f0faf4" }}>
+              {/* Titolo */}
+              <p
+                className="text-[12px] font-bold leading-snug mb-3"
+                style={{ color: "#1a1a1a", lineHeight: 1.4 }}
               >
-                Nuova verifica
-              </button>
+                {data.title}
+              </p>
+
+              {/* Metadati in tabella compatta */}
+              <div className="flex flex-col gap-1 mb-3">
+                {data.sourceName && (
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-[8px] uppercase tracking-widest font-black" style={{ color: "rgba(26,26,26,0.4)", minWidth: 44 }}>Fonte</span>
+                    <span className="text-[10px] font-medium" style={{ color: "#1a1a1a" }}>{data.sourceName}</span>
+                  </div>
+                )}
+                {data.publishedAt && (
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-[8px] uppercase tracking-widest font-black" style={{ color: "rgba(26,26,26,0.4)", minWidth: 44 }}>Data</span>
+                    <span className="text-[10px] font-medium" style={{ color: "#1a1a1a" }}>{data.publishedAt}</span>
+                  </div>
+                )}
+                {data.section && (
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-[8px] uppercase tracking-widest font-black" style={{ color: "rgba(26,26,26,0.4)", minWidth: 44 }}>Canale</span>
+                    <span className="text-[10px] font-medium" style={{ color: "#1a1a1a" }}>{SECTION_LABELS[data.section] ?? data.section}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Hash SHA-256 */}
+              <div
+                className="rounded-lg px-2.5 py-2 mb-3"
+                style={{ background: "rgba(46,125,50,0.1)", border: "1px solid rgba(46,125,50,0.25)" }}
+              >
+                <p className="text-[8px] font-black uppercase tracking-widest mb-1" style={{ color: "rgba(46,125,50,0.8)" }}>
+                  Hash SHA-256 certificato
+                </p>
+                <p
+                  className="break-all"
+                  style={{
+                    fontFamily: "JetBrains Mono, 'Courier New', monospace",
+                    fontSize: "8px",
+                    color: "#2e7d32",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {data.verifyHash}
+                </p>
+              </div>
+
+              {/* CTA */}
+              <div className="flex items-center justify-between">
+                <Link href={`/news/${data.id}`}>
+                  <span
+                    className="flex items-center gap-1 text-[10px] font-bold cursor-pointer hover:opacity-70 transition-opacity"
+                    style={{ color: "#1a1a1a" }}
+                  >
+                    Leggi l'articolo →
+                  </span>
+                </Link>
+                <button
+                  onClick={handleReset}
+                  className="flex items-center gap-1 text-[9px]"
+                  style={{ color: "rgba(26,26,26,0.4)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                >
+                  <RotateCcw size={9} />
+                  Nuova verifica
+                </button>
+              </div>
             </div>
           </div>
         )}

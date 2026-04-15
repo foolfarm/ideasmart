@@ -21,6 +21,7 @@ import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFNative, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 import TradedoublerAd, { TradedoublerAdLeft, TradedoublerAdRight } from "@/components/TradedoublerAd";
+import VerifyWidget from "@/components/VerifyWidget";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -1226,6 +1227,9 @@ export default function Home() {
 
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
+
+                  {/* ── ProofPress Verify Widget ── */}
+                  <VerifyWidget />
 
                   {/* ── Banner ProofPress Business ── */}
                   <a
