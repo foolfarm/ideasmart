@@ -849,8 +849,8 @@ export const banners = mysqlTable("banners", {
   imageUrl: text("imageUrl").notNull(),
   imageKey: varchar("imageKey", { length: 512 }),
   clickUrl: text("clickUrl").notNull(),
-  // Slot: 'left' | 'right' | 'both' | 'sidebar' | 'horizontal'
-  slot: mysqlEnum("slot", ["left", "right", "both", "sidebar", "horizontal"]).default("both").notNull(),
+  // Slot: 'left' | 'right' | 'both' | 'sidebar' | 'horizontal' | 'both_sidebar'
+  slot: mysqlEnum("slot", ["left", "right", "both", "sidebar", "horizontal", "both_sidebar"]).default("both").notNull(),
   // Stato: attivo/disattivo
   active: boolean("active").default(true).notNull(),
   // Peso rotazione 1-10 (default 5)
