@@ -29,7 +29,7 @@ interface Banner {
   name: string;
   imageUrl: string;
   clickUrl: string;
-  slot: "left" | "right" | "both" | "sidebar" | "horizontal";
+  slot: "left" | "right" | "both" | "sidebar" | "horizontal" | "all";
   weight: number;
   active: boolean;
   sortOrder: number;
@@ -247,7 +247,7 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
   const [form, setForm] = useState({
     name: initialData?.name ?? "",
     clickUrl: initialData?.clickUrl ?? "",
-    slot: (initialData?.slot ?? "both") as "left" | "right" | "both" | "sidebar" | "horizontal",
+    slot: (initialData?.slot ?? "both") as "left" | "right" | "both" | "sidebar" | "horizontal" | "all",
     weight: initialData?.weight ?? 5,
     active: initialData?.active ?? true,
     startsAt: initialData?.startsAt ? new Date(initialData.startsAt).toISOString().split("T")[0] : "",
@@ -435,10 +435,11 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="col-span-2">
               <Label>Posizione slot</Label>
-              <Select value={form.slot} onValueChange={(v) => setForm({ ...form, slot: v as "left" | "right" | "both" | "sidebar" | "horizontal" })}>
+              <Select value={form.slot} onValueChange={(v) => setForm({ ...form, slot: v as "left" | "right" | "both" | "sidebar" | "horizontal" | "all" })}>
                 <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="both">Entrambe le manchette (header sx + dx)</SelectItem>
+                  <SelectItem value="all">Entrambe manchette + Sidebar 300x250</SelectItem>
                   <SelectItem value="left">Solo manchette sinistra</SelectItem>
                   <SelectItem value="right">Solo manchette destra</SelectItem>
                   <SelectItem value="sidebar">Sidebar destra 300x250</SelectItem>
@@ -446,10 +447,12 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
                 </SelectContent>
               </Select>
               <p className="text-xs text-[#6e6e73] mt-1">
-                {form.slot === "both" && "Apparira in entrambe le manchette dell'header"}
+                {form.slot === "both" && "Apparirà in entrambe le manchette dell'header (sx + dx)"}
+                {form.slot === "all" && "Manchette sx + dx (header) E sidebar destra 300x250 — massima visibilità"}
                 {form.slot === "left" && "Manchette sinistra dell'header (160x160)"}
                 {form.slot === "right" && "Manchette destra dell'header (160x160)"}
                 {form.slot === "sidebar" && "Colonna destra della home, sotto ProofPress Verify (300x250)"}
+                {form.slot === "horizontal" && "Banner orizzontale sotto la sezione Research (720x90)"}
               </p>
             </div>
             <div>

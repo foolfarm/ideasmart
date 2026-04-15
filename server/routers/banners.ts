@@ -60,15 +60,15 @@ export const bannersRouter = router({
     type BannerSlim = { id: number; name: string; imageUrl: string; clickUrl: string; weight: number };
 
     const leftBanners: BannerSlim[] = activeBanners
-      .filter((b: Banner) => b.slot === "left" || b.slot === "both")
+      .filter((b: Banner) => b.slot === "left" || b.slot === "both" || b.slot === "all")
       .map((b: Banner) => ({ id: b.id, name: b.name, imageUrl: b.imageUrl, clickUrl: b.clickUrl, weight: b.weight }));
 
     const rightBanners: BannerSlim[] = activeBanners
-      .filter((b: Banner) => b.slot === "right" || b.slot === "both")
+      .filter((b: Banner) => b.slot === "right" || b.slot === "both" || b.slot === "all")
       .map((b: Banner) => ({ id: b.id, name: b.name, imageUrl: b.imageUrl, clickUrl: b.clickUrl, weight: b.weight }));
 
-     const sidebarBanners: BannerSlim[] = activeBanners
-      .filter((b: Banner) => b.slot === "sidebar")
+    const sidebarBanners: BannerSlim[] = activeBanners
+      .filter((b: Banner) => b.slot === "sidebar" || b.slot === "all")
       .map((b: Banner) => ({ id: b.id, name: b.name, imageUrl: b.imageUrl, clickUrl: b.clickUrl, weight: b.weight }));
     const horizontalBanners: BannerSlim[] = activeBanners
       .filter((b: Banner) => b.slot === "horizontal")
@@ -90,7 +90,7 @@ export const bannersRouter = router({
   trackImpression: publicProcedure
     .input(z.object({
       bannerId: z.number(),
-      slot: z.enum(["left", "right", "sidebar", "horizontal"]),
+      slot: z.enum(["left", "right", "sidebar", "horizontal", "all"]),
       userAgent: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
@@ -118,7 +118,7 @@ export const bannersRouter = router({
   trackClick: publicProcedure
     .input(z.object({
       bannerId: z.number(),
-      slot: z.enum(["left", "right", "sidebar", "horizontal"]),
+      slot: z.enum(["left", "right", "sidebar", "horizontal", "all"]),
       referrer: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
@@ -156,7 +156,7 @@ export const bannersRouter = router({
       imageMime: z.string().default("image/png"),
       imageUrl: z.string().url().optional(),
       clickUrl: z.string().url(),
-      slot: z.enum(["left", "right", "both", "sidebar", "horizontal"]).default("both"),
+      slot: z.enum(["left", "right", "both", "sidebar", "horizontal", "all"]).default("both"),
       weight: z.number().int().min(1).max(10).default(5),
       active: z.boolean().default(true),
       startsAt: z.string().optional(),
@@ -204,7 +204,7 @@ export const bannersRouter = router({
       id: z.number(),
       name: z.string().min(1).max(255).optional(),
       clickUrl: z.string().url().optional(),
-      slot: z.enum(["left", "right", "both", "sidebar", "horizontal"]).optional(),
+      slot: z.enum(["left", "right", "both", "sidebar", "horizontal", "all"]).optional(),
       weight: z.number().int().min(1).max(10).optional(),
       active: z.boolean().optional(),
       startsAt: z.string().nullable().optional(),

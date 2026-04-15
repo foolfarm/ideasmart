@@ -477,6 +477,13 @@
       "when": 1776273688599,
       "tag": "0067_far_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "5",
+      "when": 1776286869079,
+      "tag": "0068_smiling_wendell_vaughn",
+      "breakpoints": true
     }
   ]
 }
