@@ -199,6 +199,7 @@ export default function Admin() {
               { label: "Salute Sistema", path: "/admin/system-health" },
               { label: "Alert Log", path: "/admin/alert-log" },
               { label: "Amazon Deals", path: "/admin/amazon-deals" },
+              { label: "Pubblicità", path: "/admin/pubblicita" },
             ].map((item) => (
               <button
                 key={item.path}

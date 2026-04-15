@@ -849,8 +849,8 @@ export const banners = mysqlTable("banners", {
   imageUrl: text("imageUrl").notNull(),
   imageKey: varchar("imageKey", { length: 512 }),
   clickUrl: text("clickUrl").notNull(),
-  // Slot: 'left' | 'right' | 'both' | 'sidebar'
-  slot: mysqlEnum("slot", ["left", "right", "both", "sidebar"]).default("both").notNull(),
+  // Slot: 'left' | 'right' | 'both' | 'sidebar' | 'horizontal'
+  slot: mysqlEnum("slot", ["left", "right", "both", "sidebar", "horizontal"]).default("both").notNull(),
   // Stato: attivo/disattivo
   active: boolean("active").default(true).notNull(),
   // Peso rotazione 1-10 (default 5)
@@ -876,7 +876,7 @@ export const bannerEvents = mysqlTable("banner_events", {
   bannerId: int("bannerId").notNull(),
   // Tipo evento: 'impression' | 'click'
   eventType: mysqlEnum("eventType", ["impression", "click"]).notNull(),
-  slot: mysqlEnum("slot", ["left", "right", "sidebar"]).notNull(),
+  slot: mysqlEnum("slot", ["left", "right", "sidebar", "horizontal"]).notNull(),
   userAgent: varchar("userAgent", { length: 512 }),
   referrer: varchar("referrer", { length: 512 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

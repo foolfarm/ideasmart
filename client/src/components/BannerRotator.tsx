@@ -18,7 +18,7 @@ interface BannerItem {
 }
 
 interface BannerRotatorProps {
-  slot: "left" | "right" | "sidebar";
+  slot: "left" | "right" | "sidebar" | "horizontal";
   width?: number;
   height?: number;
   className?: string;
@@ -59,7 +59,13 @@ export default function BannerRotator({
   const trackedIds = useRef<Set<number>>(new Set());
 
   const bannerList: BannerItem[] = manchetteData
-    ? (slot === "left" ? manchetteData.left : slot === "right" ? manchetteData.right : (manchetteData as { sidebar?: BannerItem[] }).sidebar ?? [])
+    ? (slot === "left"
+        ? manchetteData.left
+        : slot === "right"
+          ? manchetteData.right
+          : slot === "horizontal"
+            ? (manchetteData as { horizontal?: BannerItem[] }).horizontal ?? []
+            : (manchetteData as { sidebar?: BannerItem[] }).sidebar ?? [])
     : [];
 
   const rotationMs = manchetteData?.settings?.rotationIntervalMs ?? 15000;

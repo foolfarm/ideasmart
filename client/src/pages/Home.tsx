@@ -1073,9 +1073,9 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ── HPF Banner orizzontale — dopo Research, prima di Dealroom ── */}
+                  {/* ── Banner Rotazione Orizzontale (slot 4) — dopo Research, prima di Dealroom ── */}
                   <div className="flex justify-center items-center w-full py-4 my-4" style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
-                    <HPFLeaderboard />
+                    <BannerRotator slot="horizontal" width={728} height={90} />
                   </div>
 
                   {/* ── SEZIONE DEALROOM — Round, Funding, VC, M&A ── */}

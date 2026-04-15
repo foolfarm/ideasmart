@@ -1,0 +1,2 @@
+ALTER TABLE `banner_events` MODIFY COLUMN `slot` enum('left','right','sidebar','horizontal') NOT NULL;--> statement-breakpoint
+ALTER TABLE `banners` MODIFY COLUMN `slot` enum('left','right','both','sidebar','horizontal') NOT NULL DEFAULT 'both';

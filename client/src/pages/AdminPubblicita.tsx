@@ -29,7 +29,7 @@ interface Banner {
   name: string;
   imageUrl: string;
   clickUrl: string;
-  slot: "left" | "right" | "both" | "sidebar";
+  slot: "left" | "right" | "both" | "sidebar" | "horizontal";
   weight: number;
   active: boolean;
   sortOrder: number;
@@ -52,12 +52,14 @@ const SLOT_LABELS: Record<string, string> = {
   right: "Manchette Destra",
   both: "Entrambe le manchette",
   sidebar: "Sidebar Destra (300x250)",
+  horizontal: "Orizzontale sotto Research (728x90)",
 };
 const SLOT_COLORS: Record<string, string> = {
   left: "bg-blue-100 text-blue-700",
   right: "bg-purple-100 text-purple-700",
   both: "bg-green-100 text-green-700",
   sidebar: "bg-orange-100 text-orange-700",
+  horizontal: "bg-teal-100 text-teal-700",
 };
 
 // ── Componente principale ─────────────────────────────────────────────────────
@@ -245,7 +247,7 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
   const [form, setForm] = useState({
     name: initialData?.name ?? "",
     clickUrl: initialData?.clickUrl ?? "",
-    slot: (initialData?.slot ?? "both") as "left" | "right" | "both" | "sidebar",
+    slot: (initialData?.slot ?? "both") as "left" | "right" | "both" | "sidebar" | "horizontal",
     weight: initialData?.weight ?? 5,
     active: initialData?.active ?? true,
     startsAt: initialData?.startsAt ? new Date(initialData.startsAt).toISOString().split("T")[0] : "",
@@ -433,13 +435,14 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="col-span-2">
               <Label>Posizione slot</Label>
-              <Select value={form.slot} onValueChange={(v) => setForm({ ...form, slot: v as "left" | "right" | "both" | "sidebar" })}>
+              <Select value={form.slot} onValueChange={(v) => setForm({ ...form, slot: v as "left" | "right" | "both" | "sidebar" | "horizontal" })}>
                 <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="both">Entrambe le manchette (header sx + dx)</SelectItem>
                   <SelectItem value="left">Solo manchette sinistra</SelectItem>
                   <SelectItem value="right">Solo manchette destra</SelectItem>
                   <SelectItem value="sidebar">Sidebar destra 300x250</SelectItem>
+                  <SelectItem value="horizontal">Orizzontale sotto Research 728x90</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-xs text-[#6e6e73] mt-1">

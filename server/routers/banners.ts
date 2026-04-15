@@ -67,14 +67,17 @@ export const bannersRouter = router({
       .filter((b: Banner) => b.slot === "right" || b.slot === "both")
       .map((b: Banner) => ({ id: b.id, name: b.name, imageUrl: b.imageUrl, clickUrl: b.clickUrl, weight: b.weight }));
 
-    const sidebarBanners: BannerSlim[] = activeBanners
+     const sidebarBanners: BannerSlim[] = activeBanners
       .filter((b: Banner) => b.slot === "sidebar")
       .map((b: Banner) => ({ id: b.id, name: b.name, imageUrl: b.imageUrl, clickUrl: b.clickUrl, weight: b.weight }));
-
+    const horizontalBanners: BannerSlim[] = activeBanners
+      .filter((b: Banner) => b.slot === "horizontal")
+      .map((b: Banner) => ({ id: b.id, name: b.name, imageUrl: b.imageUrl, clickUrl: b.clickUrl, weight: b.weight }));
     return {
       left: leftBanners,
       right: rightBanners,
       sidebar: sidebarBanners,
+      horizontal: horizontalBanners,
       settings: {
         rotationIntervalMs: settings.rotationIntervalMs,
         transition: settings.transition,
@@ -87,7 +90,7 @@ export const bannersRouter = router({
   trackImpression: publicProcedure
     .input(z.object({
       bannerId: z.number(),
-      slot: z.enum(["left", "right", "sidebar"]),
+      slot: z.enum(["left", "right", "sidebar", "horizontal"]),
       userAgent: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
@@ -115,7 +118,7 @@ export const bannersRouter = router({
   trackClick: publicProcedure
     .input(z.object({
       bannerId: z.number(),
-      slot: z.enum(["left", "right", "sidebar"]),
+      slot: z.enum(["left", "right", "sidebar", "horizontal"]),
       referrer: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
@@ -153,12 +156,13 @@ export const bannersRouter = router({
       imageMime: z.string().default("image/png"),
       imageUrl: z.string().url().optional(),
       clickUrl: z.string().url(),
-      slot: z.enum(["left", "right", "both", "sidebar"]).default("both"),
+      slot: z.enum(["left", "right", "both", "sidebar", "horizontal"]).default("both"),
       weight: z.number().int().min(1).max(10).default(5),
       active: z.boolean().default(true),
       startsAt: z.string().optional(),
       endsAt: z.string().optional(),
-    }))
+    })
+  )
     .mutation(async ({ input }) => {
       const db = await getDb();
   if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
@@ -200,7 +204,7 @@ export const bannersRouter = router({
       id: z.number(),
       name: z.string().min(1).max(255).optional(),
       clickUrl: z.string().url().optional(),
-      slot: z.enum(["left", "right", "both", "sidebar"]).optional(),
+      slot: z.enum(["left", "right", "both", "sidebar", "horizontal"]).optional(),
       weight: z.number().int().min(1).max(10).optional(),
       active: z.boolean().optional(),
       startsAt: z.string().nullable().optional(),
