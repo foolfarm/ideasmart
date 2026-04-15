@@ -56,7 +56,8 @@ export default function SharedPageFooter() {
               { href: "/startup",   label: "STARTUP NEWS",   color: "#2a2a2a" },
               { href: "/research",  label: "RICERCHE",       color: "#1a1a1a" },
               { href: "/chi-siamo", label: "Chi Siamo",      color: "#1a1a1a" },
-              { href: "/privacy",   label: "Privacy Policy", color: "#1a1a1a" }
+              { href: "/privacy",   label: "Privacy Policy", color: "#1a1a1a" },
+              { href: "/pubblicita", label: "Pubblicizza",    color: "#ff5500" }
             ].map(item => (
               <Link key={item.href} href={item.href}>
                 <span
