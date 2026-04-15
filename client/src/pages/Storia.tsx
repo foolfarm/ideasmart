@@ -7,6 +7,8 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import SEOHead from "@/components/SEOHead";
 import LeftSidebar from "@/components/LeftSidebar";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import { Link } from "wouter";
 
 // ─── Design tokens Apple-style ────────────────────────────────────────────────
@@ -131,6 +133,7 @@ export default function Storia() {
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
           <SharedPageHeader />
+          <BreakingNewsTicker />
 
           <main style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 96px", fontFamily: SF }}>
 
@@ -437,45 +440,25 @@ export default function Storia() {
               italiani che bussano alla porta, potrebbe essere anche l'unica scommessa rimasta.
             </BodyText>
 
-            {/* ── CTA FINALE ───────────────────────────────────────────────── */}
+            {/* ── CTA NEWSLETTER ───────────────────────────────────────────── */}
             <div style={{
               marginTop: "72px",
-              background: BG_DARK,
-              borderRadius: "20px",
-              padding: "48px 40px",
-              textAlign: "center",
+              paddingTop: "40px",
+              borderTop: `1px solid ${BORDER_LT}`,
             }}>
-              <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: "16px", fontFamily: SF }}>
-                Proof prima di Press
-              </p>
-              <h3 style={{ fontFamily: SF_DISPLAY, fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, color: "#fff", letterSpacing: "-0.02em", marginBottom: "16px" }}>
-                Vuoi portare ProofPress nella tua organizzazione?
-              </h3>
-              <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, marginBottom: "32px", maxWidth: "480px", margin: "0 auto 32px" }}>
-                Scopri come la piattaforma può trasformare la tua redazione, la tua azienda o il tuo progetto editoriale.
-              </p>
-              <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-                <Link href="/piattaforma">
-                  <button style={{
-                    background: "#fff", color: BG_DARK, border: "none",
-                    padding: "14px 28px", borderRadius: "980px",
-                    fontWeight: 700, fontSize: "15px", cursor: "pointer",
-                    fontFamily: SF, letterSpacing: "-0.01em",
-                  }}>
-                    Scopri la piattaforma
-                  </button>
-                </Link>
-                <Link href="/chi-siamo-story">
-                  <button style={{
-                    background: "rgba(255,255,255,0.1)", color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    padding: "14px 28px", borderRadius: "980px",
-                    fontWeight: 600, fontSize: "15px", cursor: "pointer",
-                    fontFamily: SF, letterSpacing: "-0.01em",
-                  }}>
-                    Il team
-                  </button>
-                </Link>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center" }}>
+                <div>
+                  <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: TEXT_SEC, fontFamily: SF, marginBottom: "10px" }}>Newsletter</p>
+                  <h3 style={{ fontFamily: SF_DISPLAY, fontSize: "clamp(20px, 2.5vw, 26px)", fontWeight: 700, color: TEXT_PRI, letterSpacing: "-0.015em", lineHeight: 1.2, marginBottom: "12px" }}>
+                    Ricevi ProofPress<br />ogni settimana
+                  </h3>
+                  <p style={{ fontSize: "15px", color: TEXT_SEC, lineHeight: 1.6, margin: 0 }}>
+                    AI, startup e venture capital: le notizie più importanti per il business italiano, certificate e verificate, direttamente nella tua inbox.
+                  </p>
+                </div>
+                <div>
+                  <NewsletterSubscribeForm defaultChannel="ai" accentColor="#1d1d1f" />
+                </div>
               </div>
             </div>
 
