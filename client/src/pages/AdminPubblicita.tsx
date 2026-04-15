@@ -255,18 +255,51 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
   const createMut = trpc.banners.create.useMutation({ onSuccess, onError: (e) => toast.error(e.message) });
   const updateMut = trpc.banners.update.useMutation({ onSuccess, onError: (e) => toast.error(e.message) });
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Auto-resize: ridimensiona l'immagine via canvas prima dell'upload
+  // Mantiene le proporzioni originali, max 1600px su lato lungo
+  const resizeImage = (file: File, maxPx = 1600): Promise<{ base64: string; mime: string }> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = (ev) => {
+        const src = ev.target?.result as string;
+        const img = new Image();
+        img.onerror = reject;
+        img.onload = () => {
+          const { naturalWidth: w, naturalHeight: h } = img;
+          const scale = Math.min(1, maxPx / Math.max(w, h));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.round(w * scale);
+          canvas.height = Math.round(h * scale);
+          const ctx = canvas.getContext("2d")!;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const mime = file.type === "image/png" ? "image/png" : "image/jpeg";
+          const quality = mime === "image/jpeg" ? 0.88 : undefined;
+          const base64 = canvas.toDataURL(mime, quality);
+          resolve({ base64, mime });
+        };
+        img.src = src;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { toast.error("Immagine troppo grande (max 2MB)"); return; }
-    setImageMime(file.type);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const result = ev.target?.result as string;
-      setPreview(result);
-      setImageBase64(result);
-    };
-    reader.readAsDataURL(file);
+    if (file.size > 10 * 1024 * 1024) { toast.error("Immagine troppo grande (max 10MB)"); return; }
+    toast.info("Ridimensionamento immagine in corso...");
+    try {
+      const { base64, mime } = await resizeImage(file);
+      setImageMime(mime);
+      setPreview(base64);
+      setImageBase64(base64);
+      // Mostra dimensioni finali
+      const kb = Math.round(base64.length * 0.75 / 1024);
+      toast.success(`Immagine pronta (${kb} KB dopo resize)`);
+    } catch {
+      toast.error("Errore nel processare l'immagine");
+    }
   };
 
   const handleExternalUrlChange = (url: string) => {
@@ -344,7 +377,8 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
                         <div>
                           <Upload size={24} className="mx-auto text-[#aeaeb2] mb-2" />
                           <p className="text-sm text-[#6e6e73]">Clicca per caricare</p>
-                          <p className="text-xs text-[#aeaeb2]">PNG, JPG, WebP — max 2MB</p>
+                          <p className="text-xs text-[#aeaeb2]">PNG, JPG, WebP — max 10MB</p>
+                          <p className="text-xs text-[#aeaeb2]">Auto-resize a 1600px</p>
                         </div>
                       )}
                     </div>

@@ -188,9 +188,10 @@ async function startServer() {
     },
   }));
 
-  // Body parser — limite ridotto a 2MB (era 50MB: eccessivo e rischioso per DoS)
-  app.use(express.json({ limit: "2mb" }));
-  app.use(express.urlencoded({ limit: "2mb", extended: true }));
+  // Body parser — 14MB per gestire upload immagini banner in base64
+  // (base64 aumenta la dimensione del 33%: immagine 10MB → ~13.3MB base64)
+  app.use(express.json({ limit: "14mb" }));
+  app.use(express.urlencoded({ limit: "14mb", extended: true }));
   // Cookie parser — necessario per leggere req.cookies nelle procedure tRPC
   app.use(cookieParser());
   // OAuth callback under /api/oauth/callback

@@ -4,6 +4,7 @@
  * - Fade transition configurabile
  * - Tracking impression + click via tRPC
  * - Fallback su banner statici se DB vuoto
+ * - object-contain: immagine sempre visibile completa, senza tagli
  */
 import { useEffect, useRef, useState, useCallback } from "react";
 import { trpc } from "@/lib/trpc";
@@ -131,20 +132,39 @@ export default function BannerRotator({
     });
   }, [currentBanner, slot, trackClick]);
 
+  // ── Stile contenitore: dimensioni fisse, immagine sempre intera ─────────────
+  const containerStyle: React.CSSProperties = {
+    width,
+    height,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+  };
+
+  const imgStyle = (opacity: number): React.CSSProperties => ({
+    maxWidth: "100%",
+    maxHeight: "100%",
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",   // mostra l'immagine completa senza tagli
+    objectPosition: "center",
+    opacity,
+    transition: `opacity ${transitionMs}ms ease-in-out`,
+    display: "block",
+  });
+
   // ── Fallback: nessun banner nel DB ─────────────────────────────────────────
   if (!bannerList.length && fallbackBanners.length > 0) {
     const fb = fallbackBanners[0];
     return (
       <div className={`flex flex-col items-center gap-1 ${className}`}>
         <a href={fb.clickUrl} target="_blank" rel="noopener noreferrer">
-          <img
-            src={fb.imageUrl}
-            alt={fb.name}
-            width={width}
-            height={height}
-            className="rounded object-cover"
-            style={{ width, height }}
-          />
+          <div style={containerStyle}>
+            <img src={fb.imageUrl} alt={fb.name} style={imgStyle(1)} />
+          </div>
         </a>
         <p className="text-[9px] text-gray-400 uppercase tracking-widest">Pubblicità</p>
       </div>
@@ -162,21 +182,15 @@ export default function BannerRotator({
         rel="noopener noreferrer"
         onClick={handleClick}
         title={currentBanner.name}
-        style={{ display: "block", width, height }}
+        style={{ display: "block" }}
       >
-        <img
-          src={currentBanner.imageUrl}
-          alt={currentBanner.name}
-          width={width}
-          height={height}
-          className="rounded object-cover"
-          style={{
-            width,
-            height,
-            opacity: visible ? 1 : 0,
-            transition: `opacity ${transitionMs}ms ease-in-out`,
-          }}
-        />
+        <div style={containerStyle}>
+          <img
+            src={currentBanner.imageUrl}
+            alt={currentBanner.name}
+            style={imgStyle(visible ? 1 : 0)}
+          />
+        </div>
       </a>
       <p className="text-[9px] text-gray-400 uppercase tracking-widest">Pubblicità</p>
     </div>
