@@ -24,12 +24,21 @@ export default function SharedPageFooter() {
       <div className="mt-12">
         <Divider thick />
         <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p
-            className="text-[11px] text-[#1a1a1a]/40"
-            style={{ fontFamily: SF }}
-          >
-            {`© ${year} Proof Press · AI · Startup · Venture Capital`}
-          </p>
+          <div className="flex flex-col gap-0.5">
+            <p
+              className="text-[11px] text-[#1a1a1a]/40"
+              style={{ fontFamily: SF }}
+            >
+              {`© ${year} Proof Press · AI · Startup · Venture Capital`}
+            </p>
+            <p
+              className="text-[10px] text-[#1a1a1a]/35"
+              style={{ fontFamily: SF }}
+            >
+              ProofPress Magazine è parte del gruppo{" "}
+              <span className="font-semibold text-[#1a1a1a]/50">AxiomX</span>
+            </p>
+          </div>
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
             {/* LinkedIn ProofPress */}
             <a
