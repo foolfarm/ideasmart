@@ -22,6 +22,7 @@ import CommentSection from "@/components/CommentSection";
 import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFNative, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 import TradedoublerAd, { TradedoublerAdLeft, TradedoublerAdRight } from "@/components/TradedoublerAd";
 import VerifyWidget from "@/components/VerifyWidget";
+import ChannelsBar from "@/components/ChannelsBar";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -868,15 +869,14 @@ export default function Home() {
         <div className="hidden sm:block">
           <BreakingNewsSection />
         </div>
-        {/* ══ CORPO ═════════════════════════════════════════════════════════════════════════════ */}
+        {/* ══ BARRA CANALI ORIZZONTALE ════════════════════════════════════════════════════════════ */}
+        <ChannelsBar />
+        {/* ══ CORPO ═════════════════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16 lg:pb-16" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 68px)' }}>
-
-
-
-          {/* ══════════════════════════════════════════════════════════════════
+          {/* ══════════════════════════════════════════════════════════════
               PRIMA PAGINA — Layout giornale
               [Colonna principale 70%] | [Sidebar notizie 30%]
-          ══════════════════════════════════════════════════════════════════ */}
+          ══════════════════════════════════════════════════════════════ */}
           {!homeLoading && (
             <section className="mt-4">
               <Divider thick />

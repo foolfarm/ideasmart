@@ -116,7 +116,6 @@ export default function LeftSidebar() {
   const [piattaformaOpen, setPiattaformaOpen] = useState(
     location.startsWith("/proofpress-verify") || location.startsWith("/piattaforma")
   );
-  const [canaliOpen, setCanaliOpen] = useState(true);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMouseEnter = () => {
@@ -311,66 +310,7 @@ export default function LeftSidebar() {
         })}
       </nav>
 
-      {/* ══════════════════════════════════════════════════════════════
-          SEZIONE CANALI — icone grandi monocromatiche
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="mx-3 mb-2 border-t border-[#e5e5ea]" />
 
-      {/* Header CANALI */}
-      <div className="px-2 mb-1.5">
-        <button
-          onClick={() => expanded && setCanaliOpen(!canaliOpen)}
-          className="w-full flex items-center gap-3 px-1 py-1 rounded-lg hover:bg-[#f5f5f7] transition-all"
-          title={!expanded ? "Canali" : undefined}
-        >
-          <span className="w-[38px] flex items-center justify-center flex-shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f] opacity-40" />
-          </span>
-          <span
-            className="text-[10px] font-black uppercase tracking-[0.22em] text-[#1d1d1f]/35 flex-1 text-left"
-            style={{ ...labelStyle, fontFamily: SF }}
-          >
-            Canali
-          </span>
-          {expanded && (canaliOpen
-            ? <ChevronDown size={11} className="flex-shrink-0 opacity-25 mr-1" />
-            : <ChevronRight size={11} className="flex-shrink-0 opacity-25 mr-1" />)}
-        </button>
-      </div>
-
-      {/* Lista canali */}
-      {(canaliOpen || !expanded) && (
-        <nav className="flex flex-col gap-1 px-2 pb-2">
-          {CHANNELS.map(({ label, sublabel, path, Icon }) => {
-            const active = location === path || location.startsWith(path + "/");
-            return (
-              <Link key={path} href={path}>
-                <div
-                  className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-                  title={!expanded ? label : undefined}
-                  style={{ minHeight: 52 }}
-                >
-                  <ChannelIcon Icon={Icon} active={active} />
-                  <div className="flex flex-col min-w-0" style={labelStyle}>
-                    <span
-                      className="text-[13px] font-bold leading-tight"
-                      style={{ color: active ? "#1d1d1f" : "#1d1d1f", fontFamily: SF }}
-                    >
-                      {label}
-                    </span>
-                    <span
-                      className="text-[10px] leading-tight mt-0.5"
-                      style={{ color: "#8e8e93", fontFamily: SF }}
-                    >
-                      {sublabel}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
-      )}
 
       {/* Spazio flessibile */}
       <div className="flex-1" />
