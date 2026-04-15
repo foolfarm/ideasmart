@@ -146,12 +146,11 @@ export default function BannerRotator({
   const containerStyle: React.CSSProperties = fullWidth
     ? {
         width: "100%",
-        height: height,          // altezza fissa 90px
         display: "block",
-        overflow: "hidden",
         borderRadius: "6px",
         backgroundColor: "transparent",
-        position: "relative",
+        overflow: "hidden",
+        lineHeight: 0,
       }
     : {
         width,
@@ -168,12 +167,10 @@ export default function BannerRotator({
     fullWidth
       ? {
           width: "100%",
-          height: "100%",
-          objectFit: "contain",  // mostra il banner intero senza tagli
-          objectPosition: "center center",
+          height: "auto",        // altezza naturale proporzionale alla larghezza
+          display: "block",
           opacity,
           transition: `opacity ${transitionMs}ms ease-in-out`,
-          display: "block",
         }
       : {
           maxWidth: "100%",
