@@ -463,6 +463,20 @@
       "when": 1776250042109,
       "tag": "0065_red_yellowjacket",
       "breakpoints": true
+    },
+    {
+      "idx": 66,
+      "version": "5",
+      "when": 1776273427292,
+      "tag": "0066_broad_blade",
+      "breakpoints": true
+    },
+    {
+      "idx": 67,
+      "version": "5",
+      "when": 1776273688599,
+      "tag": "0067_far_ricochet",
+      "breakpoints": true
     }
   ]
 }

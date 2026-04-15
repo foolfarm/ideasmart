@@ -1111,6 +1111,11 @@ export default function Home() {
                           );
                         })}
                       </div>
+                      {/* ── Banner Orizzontale 728x90 — subito dopo la griglia Research ── */}
+                      <div className="w-full mt-6" style={{ borderTop: "1px solid #e8e8ed", borderBottom: "1px solid #e8e8ed", padding: "12px 0" }}>
+                        <BannerRotator slot="horizontal" height={90} fullWidth />
+                      </div>
+
                       <div className="mt-4 text-center">
                         <Link href="/research">
                           <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-6 py-2 border border-[#1d1d1f] text-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-white transition-colors cursor-pointer"
@@ -1121,11 +1126,6 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-
-                  {/* ── Banner Rotazione Orizzontale (slot 4) — dopo Research, prima di Dealroom ── */}
-                  <div className="flex justify-center items-center w-full py-4 my-4" style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
-                    <BannerRotator slot="horizontal" width={728} height={90} />
-                  </div>
 
                   {/* ── SEZIONE DEALROOM — Round, Funding, VC, M&A ── */}
                   {dealroomNews.length > 0 && (

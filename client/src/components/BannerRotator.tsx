@@ -5,6 +5,7 @@
  * - Tracking impression + click via tRPC
  * - Fallback su banner statici se DB vuoto
  * - object-contain: immagine sempre visibile completa, senza tagli
+ * - fullWidth: per banner leaderboard 728x90 a piena larghezza
  */
 import { useEffect, useRef, useState, useCallback } from "react";
 import { trpc } from "@/lib/trpc";
@@ -22,6 +23,8 @@ interface BannerRotatorProps {
   width?: number;
   height?: number;
   className?: string;
+  /** Se true, il contenitore si espande a piena larghezza (per banner leaderboard 728x90) */
+  fullWidth?: boolean;
   /** Banner statici di fallback se il DB è vuoto */
   fallbackBanners?: Array<{ imageUrl: string; clickUrl: string; name: string }>;
 }
@@ -43,6 +46,7 @@ export default function BannerRotator({
   width = 300,
   height = 250,
   className = "",
+  fullWidth = false,
   fallbackBanners = [],
 }: BannerRotatorProps) {
   const { data: manchetteData } = trpc.banners.getManchette.useQuery(undefined, {
@@ -138,29 +142,50 @@ export default function BannerRotator({
     });
   }, [currentBanner, slot, trackClick]);
 
-  // ── Stile contenitore: dimensioni fisse, immagine sempre intera ─────────────
-  const containerStyle: React.CSSProperties = {
-    width,
-    height,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    borderRadius: "6px",
-    backgroundColor: "transparent",
-  };
+  // ── Stile contenitore ────────────────────────────────────────────────────────
+  const containerStyle: React.CSSProperties = fullWidth
+    ? {
+        width: "100%",
+        height: height,          // altezza fissa 90px
+        display: "block",
+        overflow: "hidden",
+        borderRadius: "6px",
+        backgroundColor: "transparent",
+        position: "relative",
+      }
+    : {
+        width,
+        height,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+        borderRadius: "6px",
+        backgroundColor: "transparent",
+      };
 
-  const imgStyle = (opacity: number): React.CSSProperties => ({
-    maxWidth: "100%",
-    maxHeight: "100%",
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",   // mostra l'immagine completa senza tagli
-    objectPosition: "center",
-    opacity,
-    transition: `opacity ${transitionMs}ms ease-in-out`,
-    display: "block",
-  });
+  const imgStyle = (opacity: number): React.CSSProperties =>
+    fullWidth
+      ? {
+          width: "100%",
+          height: "100%",        // riempie esattamente i 90px del contenitore
+          objectFit: "cover",    // taglia l'eccesso verticale
+          objectPosition: "center center",
+          opacity,
+          transition: `opacity ${transitionMs}ms ease-in-out`,
+          display: "block",
+        }
+      : {
+          maxWidth: "100%",
+          maxHeight: "100%",
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center",
+          opacity,
+          transition: `opacity ${transitionMs}ms ease-in-out`,
+          display: "block",
+        };
 
   // ── Fallback: nessun banner nel DB ─────────────────────────────────────────
   if (!bannerList.length && fallbackBanners.length > 0) {
@@ -181,14 +206,16 @@ export default function BannerRotator({
   if (!currentBanner) return null;
 
   return (
-    <div className={`flex flex-col items-center gap-1 ${className}`}>
+    <div
+      className={`flex flex-col gap-1 ${fullWidth ? "w-full" : "items-center"} ${className}`}
+    >
       <a
         href={currentBanner.clickUrl}
         target="_blank"
         rel="noopener noreferrer"
         onClick={handleClick}
         title={currentBanner.name}
-        style={{ display: "block" }}
+        style={{ display: "block", width: "100%" }}
       >
         <div style={containerStyle}>
           <img
@@ -198,7 +225,12 @@ export default function BannerRotator({
           />
         </div>
       </a>
-      <p className="text-[9px] text-gray-400 uppercase tracking-widest">Pubblicità</p>
+      <p
+        className="text-[9px] text-gray-400 uppercase tracking-widest"
+        style={{ textAlign: fullWidth ? "center" : undefined }}
+      >
+        Pubblicità
+      </p>
     </div>
   );
 }
