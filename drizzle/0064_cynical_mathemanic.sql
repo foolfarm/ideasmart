@@ -1,0 +1,1 @@
+ALTER TABLE `banner_events` MODIFY COLUMN `slot` enum('left','right','sidebar') NOT NULL;

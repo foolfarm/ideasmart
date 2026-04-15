@@ -19,8 +19,8 @@ import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
-import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
-import TradedoublerAd, { TradedoublerAdLeft, TradedoublerAdRight } from "@/components/TradedoublerAd";
+import { HPFLeaderboard, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
+import BannerRotator from "@/components/BannerRotator";
 import VerifyWidget from "@/components/VerifyWidget";
 import ChannelsBar from "@/components/ChannelsBar";
 
@@ -787,7 +787,7 @@ export default function Home() {
             <div className="hidden xl:grid xl:grid-cols-[170px_1fr_170px] items-center gap-4">
               {/* Manchette sinistra */}
               <div className="flex justify-center items-center">
-                <TradedoublerAdLeft displayWidth={160} displayHeight={160} />
+                <BannerRotator slot="left" width={160} height={160} />
               </div>
               {/* Titolo centrale */}
               <div className="text-center">
@@ -826,7 +826,7 @@ export default function Home() {
               </div>
               {/* Manchette destra */}
               <div className="flex justify-center items-center">
-                <TradedoublerAdRight displayWidth={160} displayHeight={160} />
+                <BannerRotator slot="right" width={160} height={160} />
               </div>
             </div>
             {/* Fallback mobile/tablet — solo titolo centrato senza manchette */}
@@ -1231,34 +1231,11 @@ export default function Home() {
                   {/* ── ProofPress Verify Widget ── */}
                   <VerifyWidget />
 
-                  {/* ── Banner ProofPress Business ── */}
-                  <a
-                    href="https://proofpress.ai/offerta/creator"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block mb-5 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <img
-                      src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-business-banner_eecb762f.png"
-                      alt="ProofPress Business — Crea il tuo giornale con l'AI"
-                      className="w-full rounded-2xl"
-                      style={{ display: "block" }}
-                    />
-                  </a>
-
-                  {/* ── HPF Sidebar Tall 160x600 — sidebar destra ── */}
-                  <div className="flex justify-center mb-5">
-                    <HPFSidebarTall />
-                  </div>
-
-                  {/* ── HPF Square 300x250 — colonna destra ── */}
+                  {/* ── Slot 3: Banner rotante sidebar destra 300x250 ── */}
                   <div className="mb-5 flex flex-col items-center">
-                    <HPFSquare />
+                    <BannerRotator slot="sidebar" width={300} height={250} />
                   </div>
 
-                  {/* ── Carosello Prompt Collection 2026 — rotazione ogni 30s ── */}
-                  <PromptCollectionCarousel />
 
                   {/* Ultime Notizie — stream */}
                   <div>

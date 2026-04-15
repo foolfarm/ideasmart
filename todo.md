@@ -3105,3 +3105,13 @@
 - [x] Far apparire il post McKinsey Agentic AI nella sezione POST DI ANDREA CINELLI
 - [x] Aggiungere procedura tRPC admin.insertLinkedinPost per inserimento manuale post nel DB
 - [x] Pagina /investor — pitch page per investitori ProofPress con metriche, roadmap, founder bio e form di contatto
+
+## Sistema Banner DB (15 Apr 2026)
+- [x] Schema DB tabelle banners, banner_events, banner_settings con slot enum (left/right/both/sidebar)
+- [x] Backend tRPC bannersRouter: getManchette, trackImpression, trackClick, CRUD admin, stats
+- [x] Componente BannerRotator con fade, weighted random, tracking impression/click
+- [x] Pagina admin /admin/pubblicita per gestione CRUD banner
+- [x] Migrazione banner esistenti nel DB: 4 Prompt Collection (slot=both), ProofPress Business + Prompt Collection Sidebar (slot=sidebar)
+- [x] 3 slot BannerRotator in Home.tsx: slot=left (manchette sx header), slot=right (manchette dx header), slot=sidebar (colonna destra 300x250)
+- [x] Rimossi banner statici duplicati dalla sidebar — ora gestiti da BannerRotator
+- [x] TypeScript: 0 errori

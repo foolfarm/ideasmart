@@ -841,3 +841,57 @@ export const systemSettings = mysqlTable("system_settings", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 export type SystemSetting = typeof systemSettings.$inferSelect;
+
+// ── Banner Manchette (sistema rotazione pubblicitaria) ──────────────────────
+export const banners = mysqlTable("banners", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  imageUrl: text("imageUrl").notNull(),
+  imageKey: varchar("imageKey", { length: 512 }),
+  clickUrl: text("clickUrl").notNull(),
+  // Slot: 'left' | 'right' | 'both' | 'sidebar'
+  slot: mysqlEnum("slot", ["left", "right", "both", "sidebar"]).default("both").notNull(),
+  // Stato: attivo/disattivo
+  active: boolean("active").default(true).notNull(),
+  // Peso rotazione 1-10 (default 5)
+  weight: int("weight").default(5).notNull(),
+  // Scheduling opzionale
+  startsAt: timestamp("startsAt"),
+  endsAt: timestamp("endsAt"),
+  // Contatori aggregati (cache per performance)
+  impressions: int("impressions").default(0).notNull(),
+  clicks: int("clicks").default(0).notNull(),
+  // Ordinamento drag&drop
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Banner = typeof banners.$inferSelect;
+export type InsertBanner = typeof banners.$inferInsert;
+
+// ── Banner Events (tracking impression e click) ─────────────────────────────
+export const bannerEvents = mysqlTable("banner_events", {
+  id: int("id").autoincrement().primaryKey(),
+  bannerId: int("bannerId").notNull(),
+  // Tipo evento: 'impression' | 'click'
+  eventType: mysqlEnum("eventType", ["impression", "click"]).notNull(),
+  slot: mysqlEnum("slot", ["left", "right", "sidebar"]).notNull(),
+  userAgent: varchar("userAgent", { length: 512 }),
+  referrer: varchar("referrer", { length: 512 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type BannerEvent = typeof bannerEvents.$inferSelect;
+export type InsertBannerEvent = typeof bannerEvents.$inferInsert;
+
+// ── Banner Settings (configurazione globale rotazione) ──────────────────────
+export const bannerSettings = mysqlTable("banner_settings", {
+  id: int("id").autoincrement().primaryKey(),
+  rotationIntervalMs: int("rotationIntervalMs").default(15000).notNull(),
+  transition: mysqlEnum("transition", ["fade", "slide", "none"]).default("fade").notNull(),
+  transitionDurationMs: int("transitionDurationMs").default(400).notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BannerSettings = typeof bannerSettings.$inferSelect;

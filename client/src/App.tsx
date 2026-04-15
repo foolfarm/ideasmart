@@ -82,6 +82,7 @@ const AdminToolsFeedback = lazy(() => import("./pages/AdminToolsFeedback"));
 const AdminLeads = lazy(() => import("./pages/AdminLeads"));
 const AdminAlertLog = lazy(() => import("./pages/AdminAlertLog"));
 const AdminAmazonDeals = lazy(() => import("./pages/AdminAmazonDeals"));
+const AdminPubblicita = lazy(() => import("./pages/AdminPubblicita"));
 const EbookPrompt = lazy(() => import("./pages/EbookPrompt"));
 const NewsletterFeedback = lazy(() => import("./pages/NewsletterFeedback"));
 
@@ -120,6 +121,7 @@ function Router() {
         <Route path="/admin/leads" component={AdminLeads} />
         <Route path="/admin/alert-log" component={AdminAlertLog} />
         <Route path="/admin/amazon-deals" component={AdminAmazonDeals} />
+        <Route path="/admin/pubblicita" component={AdminPubblicita} />
         <Route path="/privacy" component={Privacy} />
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />

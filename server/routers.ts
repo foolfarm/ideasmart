@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { adminRouter as adminToolsRouter } from "./routers/adminRouter";
+import { bannersRouter } from "./routers/banners";
 import { amazonDealsRouter } from "./routers/amazonDeals";
 import { siteAuthRouter } from "./routers/siteAuth";
 import { accountRouter } from "./routers/account";
@@ -78,6 +79,7 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 });
 
 export const appRouter = router({
+  banners: bannersRouter,
   system: systemRouter,
   adminTools: adminToolsRouter,
   amazonDeals: amazonDealsRouter,
