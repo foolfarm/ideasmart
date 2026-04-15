@@ -100,6 +100,7 @@ const ChiSiamoStory = lazy(() => import("./pages/ChiSiamoStory"));
 const Piattaforma = lazy(() => import("./pages/Piattaforma"));
 const Pianificazione = lazy(() => import("./pages/Pianificazione"));
 const Investor = lazy(() => import("./pages/Investor"));
+const NewsletterView = lazy(() => import("./pages/NewsletterView"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -168,6 +169,7 @@ function Router() {
         <Route path="/ai-opportunities" component={AIOpportunities} />
         <Route path="/submit-tool" component={SubmitTool} />
         <Route path="/ebook/prompt-2026" component={EbookPrompt} />
+        <Route path="/newsletter/:id" component={NewsletterView} />
         <Route path="/newsletter-feedback" component={NewsletterFeedback} />
         <Route path="/pubblicita" component={PubblicitaPage} />
         <Route path="/chi-siamo-story" component={ChiSiamoStory} />

@@ -1089,6 +1089,29 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
         return result;
       }),
+    // Recupera una newsletter per ID (per visualizzazione nel browser)
+    getById: publicProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'DB non disponibile' });
+        const { newsletterSends: nlSends } = await import('../drizzle/schema');
+        const rows = await db
+          .select({
+            id: nlSends.id,
+            subject: nlSends.subject,
+            htmlContent: nlSends.htmlContent,
+            sentAt: nlSends.sentAt,
+            createdAt: nlSends.createdAt,
+            status: nlSends.status,
+            section: nlSends.section,
+          })
+          .from(nlSends)
+          .where(eq(nlSends.id, input.id))
+          .limit(1);
+        if (!rows.length) throw new TRPCError({ code: 'NOT_FOUND', message: 'Newsletter non trovata' });
+        return rows[0];
+      }),
   }),
 
   // ── Admin: migrazione token ────────────────────────────────────────────────

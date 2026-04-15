@@ -232,16 +232,17 @@ export async function deleteSubscriber(id: number) {
 }
 
 // ── Newsletter Sends ─────────────────────────────────────────────────────────
-export async function createNewsletterSend(data: { subject: string; htmlContent: string; recipientCount: number }) {
+export async function createNewsletterSend(data: { subject: string; htmlContent: string; recipientCount: number }): Promise<number | null> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.insert(newsletterSends).values({
+  const [result] = await db.insert(newsletterSends).values({
     subject: data.subject,
     htmlContent: data.htmlContent,
     recipientCount: data.recipientCount,
     status: "sent",
     sentAt: new Date()
   });
+  return (result as any).insertId ?? null;
 }
 
 export async function updateNewsletterSendRecipientCount(subject: string, recipientCount: number): Promise<void> {

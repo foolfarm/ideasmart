@@ -1661,11 +1661,19 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     const { html: baseHtml, subject, stats, sponsorIds } =
       await buildUnifiedNewsletter(false);
 
-    await createNewsletterSend({
+    const newsletterId = await createNewsletterSend({
       subject,
       htmlContent: baseHtml,
       recipientCount: 0,
     });
+
+    // Aggiorna il link "Leggi nel browser" con l'ID reale della newsletter
+    const finalBaseHtml = newsletterId
+      ? baseHtml.replace(
+          `${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`,
+          `${BASE_URL}/newsletter/${newsletterId}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`
+        )
+      : baseHtml;
 
     const BATCH_SIZE = 50;
     let totalSent = 0;
@@ -1682,7 +1690,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
           ? `${BASE_URL}/preferenze-newsletter?token=${sub.unsubscribeToken}`
           : `${BASE_URL}/preferenze-newsletter`;
 
-        let personalizedHtml = baseHtml
+        let personalizedHtml = finalBaseHtml
           .replace(`${BASE_URL}/unsubscribe`, unsubUrl)
           .replace(`${BASE_URL}/preferenze-newsletter`, prefsUrl);
 
