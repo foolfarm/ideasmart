@@ -870,7 +870,7 @@ export default function Home() {
           <BreakingNewsSection />
         </div>
         {/* ══ BARRA CANALI ORIZZONTALE ════════════════════════════════════════════════════════════ */}
-        <ChannelsBar />
+        {/* <ChannelsBar /> — temporaneamente nascosta */}
         {/* ══ CORPO ═════════════════════════════════════════════════════════════════════════════════ */}
         <main className="max-w-[1280px] mx-auto px-4 pb-16 lg:pb-16" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 68px)' }}>
           {/* ══════════════════════════════════════════════════════════════
