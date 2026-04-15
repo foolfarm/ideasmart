@@ -168,8 +168,8 @@ export default function BannerRotator({
     fullWidth
       ? {
           width: "100%",
-          height: "100%",        // riempie esattamente i 90px del contenitore
-          objectFit: "cover",    // taglia l'eccesso verticale
+          height: "100%",
+          objectFit: "contain",  // mostra il banner intero senza tagli
           objectPosition: "center center",
           opacity,
           transition: `opacity ${transitionMs}ms ease-in-out`,

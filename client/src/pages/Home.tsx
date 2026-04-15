@@ -1112,8 +1112,8 @@ export default function Home() {
                         })}
                       </div>
                       {/* ── Banner Orizzontale 728x90 — subito dopo la griglia Research ── */}
-                      <div className="w-full mt-6" style={{ borderTop: "1px solid #e8e8ed", borderBottom: "1px solid #e8e8ed", padding: "12px 0" }}>
-                        <BannerRotator slot="horizontal" height={90} fullWidth />
+                      <div className="w-full mt-6" style={{ borderTop: "1px solid #e8e8ed", borderBottom: "1px solid #e8e8ed", padding: "16px 0" }}>
+                        <BannerRotator slot="horizontal" height={100} fullWidth />
                       </div>
 
                       <div className="mt-4 text-center">
