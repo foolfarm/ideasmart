@@ -4,7 +4,6 @@
  * Protetta da RequireAuth (solo utenti loggati)
  */
 import { useRoute, Link } from "wouter";
-import { HPFLeaderboard, HPFSquare } from "@/components/HPFAd";
 import { trpc } from "@/lib/trpc";
 import RequireAuth from "@/components/RequireAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
@@ -244,25 +243,9 @@ export default function ResearchDetail() {
             </div>
           )}
 
-          {/* ── ADSENSE fluid native ── */}
-          <div className="my-6">
-            <HPFLeaderboard />
-          </div>
 
-          {/* ── ADSENSE in-article ── */}
-          <div className="my-6">
-            <HPFSquare />
-          </div>
 
-          {/* ── ADSENSE proopress1 ── */}
-          <div className="my-8">
-            <HPFLeaderboard />
-          </div>
 
-          {/* ── ADSENSE autorelaxed ── */}
-          <div className="mt-4 mb-8">
-            <HPFSquare />
-          </div>
 
           {/* CTA bottom */}
           <div className="border-t-2 border-[#1a1a1a] pt-8 mt-8 text-center">

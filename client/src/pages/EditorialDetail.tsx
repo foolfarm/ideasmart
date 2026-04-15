@@ -7,7 +7,6 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
-import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
@@ -153,26 +152,6 @@ export default function EditorialDetail() {
             </p>
           </blockquote>
         )}
-
-        {/* ── HPF Square 300x250 ── */}
-        <div className="my-6 flex justify-center">
-          <HPFSquare />
-        </div>
-
-        {/* ── HPF Leaderboard 728x90 (desktop) ── */}
-        <div className="hidden sm:flex justify-center my-6">
-          <HPFLeaderboard />
-        </div>
-
-        {/* ── HPF Mobile Banner 320x50 (mobile) ── */}
-        <div className="flex sm:hidden justify-center my-4">
-          <HPFMobileBanner />
-        </div>
-
-        {/* ── HPF Square 300x250 secondo ── */}
-        <div className="mt-4 mb-8 flex justify-center">
-          <HPFSquare />
-        </div>
 
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-[#1a1a1a]/20">

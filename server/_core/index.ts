@@ -141,8 +141,8 @@ async function startServer() {
   // ── Security Headers (Helmet) ─────────────────────────────────────────────────────────────
   // X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, ecc.
   app.use(helmet({
-    contentSecurityPolicy: false, // Disabilitato: AdSense + Google Fonts richiedono CSP permissiva
-    crossOriginEmbedderPolicy: false, // Disabilitato: necessario per AdSense iframes
+    contentSecurityPolicy: false, // Disabilitato: Google Fonts e analytics richiedono CSP permissiva
+    crossOriginEmbedderPolicy: false, // Disabilitato: necessario per iframe di terze parti (Calendly)
     hsts: {
       maxAge: 31536000,        // 1 anno
       includeSubDomains: true,
@@ -255,7 +255,7 @@ async function startServer() {
   });
 
   // ── ads.txt — servito come file statico da client/public/ads.txt ──────────
-  // Il file contiene le righe AdSense (pub-7185482526978993) + reseller network.
+  // Il file contiene solo il publisher diretto Google (pub-7185482526978993).
   // Per aggiornarlo: modificare direttamente client/public/ads.txt
   console.log("[ads.txt] Servito come file statico da client/public/ads.txt");
 

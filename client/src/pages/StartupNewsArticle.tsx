@@ -3,7 +3,6 @@ import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
-import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Banner Amazon compatto per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -141,25 +140,6 @@ export default function StartupNewsArticle() {
             Torna a STARTUP NEWS
           </Link>
         )}
-        {/* ── HPF Square 300x250 ── */}
-        <div className="my-4 flex justify-center">
-          <HPFSquare />
-        </div>
-
-        {/* ── HPF Leaderboard 728x90 (desktop) ── */}
-        <div className="hidden sm:flex justify-center my-6">
-          <HPFLeaderboard />
-        </div>
-
-        {/* ── HPF Mobile Banner 320x50 (mobile) ── */}
-        <div className="flex sm:hidden justify-center my-3">
-          <HPFMobileBanner />
-        </div>
-
-        {/* ── HPF Square 300x250 secondo ── */}
-        <div className="mt-8 mb-4 flex justify-center">
-          <HPFSquare />
-        </div>
 
         <div className="mt-4">
           <Link href="/startup" className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 transition-colors"

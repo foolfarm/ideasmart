@@ -19,7 +19,6 @@ import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
-import { HPFLeaderboard, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 import BannerRotator from "@/components/BannerRotator";
 import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
@@ -1004,15 +1003,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ══ HPF Leaderboard 728x90 — dopo la prima notizia ══ */}
-                  <div className="hidden sm:flex justify-center my-4">
-                    <HPFLeaderboard />
-                  </div>
-                  {/* ══ HPF Mobile Banner 320x50 — solo mobile ══ */}
-                  <div className="flex sm:hidden justify-center my-3">
-                    <HPFMobileBanner />
-                  </div>
-
                   <ThinDivider />
 
                   {/* GRIGLIA 2 COLONNE: Startup hero + AI secondary */}
@@ -1530,16 +1520,7 @@ export default function Home() {
                 </div>
               </div>
             </section>
-          )}
-
-
-
-
-          {/* ── HPF Native + Banner — Prima del footer ── */}
-          <div className="mt-12 mb-8">
-            <div className="hidden sm:flex justify-center mb-6">
-              <HPFBanner />
-            </div>
+          )}          <div className="mt-12 mb-8">
           </div>
 
           {/* ── FOOTER ── */}

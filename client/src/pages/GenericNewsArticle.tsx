@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { HPFLeaderboard, HPFSquare } from "@/components/HPFAd";
 import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Star } from "lucide-react";
@@ -154,28 +153,9 @@ export default function GenericNewsArticle() {
         >
           Apertura articolo su {news.sourceName ?? "fonte originale"}…
         </p>
-        
-        <div className="my-4">
-          <HPFLeaderboard />
-        </div>
-
-        
-        <div className="my-6">
-          <HPFSquare />
-        </div>
 
         {/* ── AMAZON DEAL BANNER ── */}
         <AmazonArticleBanner />
-
-        
-        <div className="my-6">
-          <HPFLeaderboard />
-        </div>
-
-        
-        <div className="mt-8 mb-4">
-          <HPFSquare />
-        </div>
 
         <Link
           href={sectionInfo.path}

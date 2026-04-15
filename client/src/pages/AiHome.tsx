@@ -16,7 +16,6 @@ import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 import AmazonSectionStrip from "@/components/AmazonSectionStrip";
-import { HPFLeaderboard, HPFSidebarTall } from "@/components/HPFAd";
 
 
 const ACCENT = "#1a1a1a";
@@ -283,10 +282,7 @@ export default function AiHome() {
             <EditorialeDelDirettore />
           </div>
 
-          {/* ── HPF Leaderboard 728x90 — tra sezione 1 e 2 ── */}
-          <div className="flex justify-center items-center w-full py-4 my-2" style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0" }}>
-            <HPFLeaderboard />
-          </div>
+
 
           {/* SEZIONE 2: Griglia notizie 3 colonne */}
           {remainingNews.length > 0 && (

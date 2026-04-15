@@ -2,7 +2,6 @@ import { Link, useRoute } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
-import { HPFSquare, HPFLeaderboard, HPFMobileBanner } from "@/components/HPFAd";
 
 // ─── Banner Amazon inline per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -190,11 +189,6 @@ export default function NewsArticle() {
           {news.summary}
         </div>
 
-        {/* ── HPF Square 300x250 top ── */}
-        <div className="my-4 flex justify-center">
-          <HPFSquare />
-        </div>
-
         {/* ProofPress Verify badge */}
         <div style={{ background: WHITE, border: `1px solid ${BORDER}`, borderLeft: `4px solid ${BLACK}`, borderRadius: 8, padding: "18px 22px", marginBottom: 32 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
@@ -231,21 +225,6 @@ export default function NewsArticle() {
           </div>
         )}
 
-        {/* ── HPF Square 300x250 — tra corpo e correlati ── */}
-        <div className="my-6 flex justify-center">
-          <HPFSquare />
-        </div>
-
-        {/* ── HPF Leaderboard 728x90 (desktop) ── */}
-        <div className="hidden sm:flex justify-center my-4">
-          <HPFLeaderboard />
-        </div>
-
-        {/* ── HPF Mobile Banner 320x50 (mobile) ── */}
-        <div className="flex sm:hidden justify-center my-3">
-          <HPFMobileBanner />
-        </div>
-
         {/* Related news */}
         {related && related.length > 0 && (
           <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 32 }}>
@@ -270,11 +249,6 @@ export default function NewsArticle() {
             </div>
           </div>
         )}
-
-        {/* ── HPF Square 300x250 bottom ── */}
-        <div className="mt-8 mb-4 flex justify-center">
-          <HPFSquare />
-        </div>
 
         {/* Back link */}
         <div style={{ marginTop: 40 }}>
