@@ -21,6 +21,7 @@ import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import { HPFLeaderboard, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 import BannerRotator from "@/components/BannerRotator";
+import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
 import ChannelsBar from "@/components/ChannelsBar";
 
@@ -671,8 +672,9 @@ function SectionLabel({ label, accent }: { label: string; accent: string }) {
 export default function Home() {
   const today = useMemo(() => new Date(), []);
   const queryOpts = { staleTime: 10 * 60 * 1000, refetchOnWindowFocus: false };
+  const criticalQueryOpts = { ...queryOpts, retry: 2, retryDelay: 1500 };
 
-  const { data: homeData, isLoading: homeLoadingRaw } = trpc.news.getHomeData.useQuery(undefined, queryOpts);
+  const { data: homeData, isLoading: homeLoadingRaw } = trpc.news.getHomeData.useQuery(undefined, criticalQueryOpts);
   // Timeout di sicurezza: dopo 8 secondi forza il rendering anche se homeLoading è ancora true
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   useEffect(() => {
@@ -683,7 +685,7 @@ export default function Home() {
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" }, queryOpts);
   const { data: startupEditorial } = trpc.editorial.getLatest.useQuery({ section: "startup" }, queryOpts);
   const { data: researchReports } = trpc.news.getResearchReports.useQuery({ limit: 6 }, queryOpts);
-  const { data: researchOfDay } = trpc.news.getResearchOfDay.useQuery(undefined, queryOpts);
+  const { data: researchOfDay } = trpc.news.getResearchOfDay.useQuery(undefined, criticalQueryOpts);
   const { data: upcomingEvents } = trpc.events.getUpcoming.useQuery({ limit: 6, category: "all" }, queryOpts);
   const { data: authorPosts } = trpc.news.getAuthorPosts.useQuery({ limit: 5 }, queryOpts);
 
@@ -884,6 +886,56 @@ export default function Home() {
               PRIMA PAGINA — Layout giornale
               [Colonna principale 70%] | [Sidebar notizie 30%]
           ══════════════════════════════════════════════════════════════ */}
+          {homeLoading && (
+            <section className="mt-4">
+              <Divider thick />
+              <div className="py-2 flex items-center justify-between">
+                <Skeleton className="h-3 w-48" />
+                <Skeleton className="h-3 w-36" />
+              </div>
+              <Divider />
+              {/* Skeleton layout: colonna principale + sidebar */}
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-0 mt-4">
+                {/* Colonna principale */}
+                <div className="lg:pr-6 space-y-6">
+                  {/* Hero skeleton */}
+                  <Skeleton className="w-full h-[320px] rounded-none" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-4/5" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
+                  </div>
+                  {/* Grid notizie skeleton */}
+                  <div className="grid grid-cols-2 gap-4 mt-6">
+                    {[...Array(4)].map((_, i) => (
+                      <div key={i} className="space-y-2">
+                        <Skeleton className="w-full h-[140px] rounded-none" />
+                        <Skeleton className="h-3 w-16" />
+                        <Skeleton className="h-5 w-full" />
+                        <Skeleton className="h-5 w-4/5" />
+                        <Skeleton className="h-3 w-24" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Sidebar skeleton */}
+                <div className="hidden lg:block pl-6 space-y-4">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="flex gap-3">
+                      <Skeleton className="w-16 h-16 flex-shrink-0 rounded-none" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-3 w-16" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-3/4" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
           {!homeLoading && (
             <section className="mt-4">
               <Divider thick />
