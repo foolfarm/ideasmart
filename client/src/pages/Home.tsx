@@ -672,7 +672,14 @@ export default function Home() {
   const today = useMemo(() => new Date(), []);
   const queryOpts = { staleTime: 10 * 60 * 1000, refetchOnWindowFocus: false };
 
-  const { data: homeData, isLoading: homeLoading } = trpc.news.getHomeData.useQuery(undefined, queryOpts);
+  const { data: homeData, isLoading: homeLoadingRaw } = trpc.news.getHomeData.useQuery(undefined, queryOpts);
+  // Timeout di sicurezza: dopo 8 secondi forza il rendering anche se homeLoading è ancora true
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setLoadingTimeout(true), 8000);
+    return () => clearTimeout(t);
+  }, []);
+  const homeLoading = homeLoadingRaw && !loadingTimeout;
   const { data: aiEditorial } = trpc.editorial.getLatest.useQuery({ section: "ai" }, queryOpts);
   const { data: startupEditorial } = trpc.editorial.getLatest.useQuery({ section: "startup" }, queryOpts);
   const { data: researchReports } = trpc.news.getResearchReports.useQuery({ limit: 6 }, queryOpts);
