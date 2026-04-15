@@ -3,7 +3,7 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
-  Home, Zap, BookOpen, Rocket, TrendingUp,
+  Zap, BookOpen, Rocket, TrendingUp,
   Monitor, Briefcase, Info, Mail, BookMarked,
   PenLine, Newspaper, Building2, CircleDollarSign,
 } from "lucide-react";
@@ -33,11 +33,9 @@ const OFFERTA_SUBMENU = [
 ];
 
 const INFO_LINKS = [
-  { label: "Investor — Pre-Seed Open", Icon: CircleDollarSign, href: "/investor", external: false, badge: true },
-  { label: "Chi siamo",         Icon: Info,       href: "/chi-siamo-story",                  external: false },
-  { label: "Pubblicizza",       Icon: Briefcase,  href: "/pubblicita",                       external: false },
-  { label: "Collezione Prompt", Icon: BookMarked, href: "https://promptcollection2026.com/", external: true  },
-  { label: "Contatti",          Icon: Mail,       href: "mailto:info@proofpress.ai",         external: true  },
+  { label: "Chi Siamo",    Icon: Info,      href: "/chi-siamo-story",          external: false },
+  { label: "Pubblicizza", Icon: Briefcase, href: "/pubblicita",               external: false },
+  { label: "Contatti",    Icon: Mail,      href: "mailto:info@proofpress.ai", external: true  },
 ];
 
 /* ─── DIMENSIONI ─────────────────────────────────────────────────────── */
@@ -199,17 +197,6 @@ export default function LeftSidebar() {
       ══════════════════════════════════════════════════════════════ */}
       <nav className="flex flex-col gap-0.5 px-2 mb-3">
 
-        {/* HOME */}
-        <Link href="/">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Home" : undefined}
-          >
-            <MenuIcon Icon={Home} active={location === "/"} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Home</span>
-          </div>
-        </Link>
-
         {/* PIATTAFORMA */}
         <div>
           <button
@@ -314,6 +301,31 @@ export default function LeftSidebar() {
 
       {/* Spazio flessibile */}
       <div className="flex-1" />
+
+      {/* ── Investi in noi ── */}
+      <div className="px-2 mb-1">
+        <Link href="/investor">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#fff3ee]"
+            title={!expanded ? "Investi in noi" : undefined}
+            style={{ background: "rgba(255,85,0,0.07)" }}
+          >
+            <span
+              className="flex-shrink-0 flex items-center justify-center"
+              style={{ width: 32, height: 32, borderRadius: 9, background: "rgba(255,85,0,0.15)" }}
+            >
+              <CircleDollarSign size={15} strokeWidth={1.9} color="#ff5500" />
+            </span>
+            <div style={{ flex: 1, minWidth: 0, ...fadeBlock }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
+                Investi in noi
+              </div>
+              <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.65, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
+            </div>
+          </div>
+        </Link>
+      </div>
 
       {/* ── LinkedIn ── */}
       <div className="px-2 mb-3 mt-3">
