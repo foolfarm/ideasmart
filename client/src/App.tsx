@@ -110,7 +110,6 @@ function Router() {
         <Route path="/ai" component={AiHome} />
         <Route path="/startup" component={StartupHome} />
         <Route path="/dealroom" component={DealroomHome} />
-        <Route path="/admin" component={Admin} />
         <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
         <Route path="/admin/rss-monitor" component={AdminRssMonitor} />
         <Route path="/admin/audit" component={AuditDashboard} />
@@ -122,6 +121,7 @@ function Router() {
         <Route path="/admin/alert-log" component={AdminAlertLog} />
         <Route path="/admin/amazon-deals" component={AdminAmazonDeals} />
         <Route path="/admin/pubblicita" component={AdminPubblicita} />
+        <Route path="/admin" component={Admin} />
         <Route path="/privacy" component={Privacy} />
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />

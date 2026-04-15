@@ -193,13 +193,13 @@ export default function Admin() {
 
             {[
               { label: "Performance", path: "/admin/newsletter-performance" },
+              { label: "Pubblicità", path: "/admin/pubblicita" },
               { label: "Audit Contenuti", path: "/admin/audit" },
               { label: "Monitor RSS", path: "/admin/rss-monitor" },
               { label: "Email Stats", path: "/admin/sendgrid-stats" },
               { label: "Salute Sistema", path: "/admin/system-health" },
               { label: "Alert Log", path: "/admin/alert-log" },
               { label: "Amazon Deals", path: "/admin/amazon-deals" },
-              { label: "Pubblicità", path: "/admin/pubblicita" },
             ].map((item) => (
               <button
                 key={item.path}
