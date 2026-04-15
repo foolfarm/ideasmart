@@ -113,6 +113,7 @@ export default function LeftSidebar() {
   const [piattaformaOpen, setPiattaformaOpen] = useState(
     location.startsWith("/proofpress-verify") || location.startsWith("/piattaforma")
   );
+  const [investOpen, setInvestOpen] = useState(location.startsWith("/investor") || location.startsWith("/chi-siamo"));
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMouseEnter = () => {
@@ -195,16 +196,46 @@ export default function LeftSidebar() {
           NAV PRINCIPALE
       ══════════════════════════════════════════════════════════════ */}
        <nav className="flex flex-col gap-0.5 px-2 mb-3">
-        {/* CHI SIAMO — primo */}
-        <Link href="/chi-siamo-story">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+        {/* CHI SIAMO — primo, con dropdown */}
+        <div>
+          <button
+            onClick={() => expanded && setInvestOpen(!investOpen)}
+            className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
             title={!expanded ? "Chi Siamo" : undefined}
           >
-            <MenuIcon Icon={Info} active={location.startsWith("/chi-siamo")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Chi Siamo</span>
-          </div>
-        </Link>
+            <MenuIcon Icon={Info} active={location.startsWith("/chi-siamo") || location.startsWith("/investor")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Chi Siamo</span>
+            {expanded && (investOpen
+              ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
+              : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
+          </button>
+          {investOpen && expanded && (
+            <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
+              <Link href="/chi-siamo-story">
+                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  isActive("/chi-siamo") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
+                }`}>
+                  <Info size={11} strokeWidth={2} />
+                  <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Chi Siamo</span>
+                </div>
+              </Link>
+              <Link href="/investor">
+                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  isActive("/investor") ? "text-[#ff5500] font-semibold" : "text-[#ff5500] hover:bg-[#fff3ee]"
+                }`}>
+                  <CircleDollarSign size={11} strokeWidth={2} color="#ff5500" />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
+                      Invest in us
+                    </div>
+                    <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          )}
+        </div>
         {/* PIATTAFORMA — voce singola senza sottomenu */}
         <Link href="/piattaforma">
           <div
@@ -287,30 +318,7 @@ export default function LeftSidebar() {
       {/* Spazio flessibile */}
       <div className="flex-1" />
 
-      {/* ── Investi in noi ── */}
-      <div className="px-2 mb-1">
-        <Link href="/investor">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#fff3ee]"
-            title={!expanded ? "Investi in noi" : undefined}
-            style={{ background: "rgba(255,85,0,0.07)" }}
-          >
-            <span
-              className="flex-shrink-0 flex items-center justify-center"
-              style={{ width: 32, height: 32, borderRadius: 9, background: "rgba(255,85,0,0.15)" }}
-            >
-              <CircleDollarSign size={15} strokeWidth={1.9} color="#ff5500" />
-            </span>
-            <div style={{ flex: 1, minWidth: 0, ...fadeBlock }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                Investi in noi
-              </div>
-              <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.65, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
-            </div>
-          </div>
-        </Link>
-      </div>
+      {/* Investi in noi spostato nel dropdown di Invest in us */}
 
       {/* ── LinkedIn ── */}
       <div className="px-2 mb-3 mt-3">

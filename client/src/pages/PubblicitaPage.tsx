@@ -336,6 +336,45 @@ export default function PubblicitaPage() {
 
           <main style={{ maxWidth: "900px", margin: "0 auto", padding: "64px 24px 96px", fontFamily: SF }}>
 
+            {/* ── BANNER EASTER ────────────────────────────────────────────── */}
+            <div style={{
+              background: "linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 100%)",
+              borderRadius: "16px", padding: "20px 28px", marginBottom: "40px",
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              flexWrap: "wrap", gap: "12px",
+              border: "1px solid rgba(255,255,255,0.08)",
+              position: "relative", overflow: "hidden",
+            }}>
+              {/* Decorazione pasquale */}
+              <div style={{ position: "absolute", top: "-20px", right: "120px", fontSize: "60px", opacity: 0.08, userSelect: "none" }}>🐣</div>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+                <div style={{
+                  background: "#ff5500", color: "#fff", fontWeight: 800,
+                  fontSize: "13px", padding: "6px 14px", borderRadius: "980px",
+                  letterSpacing: "0.02em", fontFamily: SF, flexShrink: 0,
+                }}>🐣 EASTER PROMO</div>
+                <div>
+                  <div style={{ fontFamily: SF_DISPLAY, fontWeight: 700, fontSize: "20px", color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.2 }}>
+                    Sconto 30% su tutti gli spazi
+                  </div>
+                  <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", marginTop: "3px" }}>
+                    Usa il coupon <span style={{ fontWeight: 700, color: "#ff5500", fontFamily: "'SF Mono', 'JetBrains Mono', monospace", background: "rgba(255,85,0,0.15)", padding: "2px 8px", borderRadius: "6px" }}>Easter</span> al momento del contatto · Valido fino al 30 aprile 2026
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => scrollToForm()}
+                style={{
+                  background: "#ff5500", color: "#fff", border: "none",
+                  padding: "12px 24px", borderRadius: "980px",
+                  fontWeight: 700, fontSize: "14px", cursor: "pointer",
+                  fontFamily: SF, letterSpacing: "-0.01em", flexShrink: 0,
+                }}
+              >
+                Approfitta ora
+              </button>
+            </div>
+
             {/* ── HERO ─────────────────────────────────────────────────────── */}
             <div style={{ marginBottom: "80px" }}>
               <SectionLabel>Listino Pubblicitario 2026 · Tutti i prezzi IVA esclusa</SectionLabel>
@@ -367,8 +406,160 @@ export default function PubblicitaPage() {
               </div>
             </div>
 
-            {/* ── SPAZI SITO WEB ───────────────────────────────────────────── */}
+            {/* ── SISTEMA UNIFICATO ───────────────────────────────────────────── */}
             <div style={{ marginBottom: "80px" }}>
+              <SectionLabel>Come funziona</SectionLabel>
+              <div style={{ background: BG_CARD, borderRadius: "18px", border: `1px solid ${BORDER_LT}`, padding: "28px 32px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: BG_DARK, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="white" strokeWidth="1.5"/><path d="M6 8h8M6 11h5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: SF_DISPLAY, fontWeight: 700, fontSize: "17px", color: TEXT_PRI, marginBottom: "4px" }}>Sistema unificato Sito + Newsletter</div>
+                    <div style={{ fontSize: "14px", color: TEXT_SEC, lineHeight: 1.5 }}>
+                      Tutti gli spazi pubblicitari — sito web e newsletter — pescano dallo <strong>stesso repository di banner</strong>. Il team carica le creatività una volta, il sistema distribuisce ovunque. Rotazione automatica sul sito, selezione intelligente per la newsletter.
+                    </div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", paddingTop: "16px", borderTop: `1px solid ${BORDER_LT}` }}>
+                  {[
+                    { icon: "📊", label: "Admin carica banner" },
+                    { icon: "→", label: null },
+                    { icon: "🗂️", label: "Repository unico" },
+                    { icon: "→", label: null },
+                    { icon: "🖥️", label: "Sito (rotazione)" },
+                    { icon: "+", label: null },
+                    { icon: "✉️", label: "Newsletter (scheduling)" },
+                  ].map((step, i) =>
+                    step.label === null ? (
+                      <span key={i} style={{ fontSize: "16px", color: TEXT_TER, fontWeight: 300 }}>{step.icon}</span>
+                    ) : (
+                      <div key={i} style={{ background: i === 0 ? BG_DARK : BG, border: `1px solid ${i === 0 ? BG_DARK : BORDER_LT}`, borderRadius: "8px", padding: "7px 14px", fontSize: "12px", fontWeight: 600, color: i === 0 ? "#fff" : TEXT_PRI, display: "flex", alignItems: "center", gap: "6px" }}>
+                        <span>{step.icon}</span> {step.label}
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* ── MAPPA VISIVA SPAZI ──────────────────────────────────────────── */}
+            <div style={{ marginBottom: "80px" }}>
+              <SectionLabel>Mappa degli spazi</SectionLabel>
+              <h2 style={{ fontFamily: SF_DISPLAY, fontSize: "28px", fontWeight: 700, letterSpacing: "-0.015em", color: TEXT_PRI, marginBottom: "8px" }}>Dove appare il tuo brand</h2>
+              <p style={{ fontSize: "15px", color: TEXT_SEC, marginBottom: "32px" }}>Visualizzazione delle posizioni pubblicitarie disponibili su sito e newsletter.</p>
+
+              {/* Due colonne: Sito + Newsletter */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+
+                {/* SITO WEB */}
+                <div style={{ background: BG_CARD, borderRadius: "18px", border: `1px solid ${BORDER_LT}`, padding: "24px", overflow: "hidden" }}>
+                  <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: TEXT_SEC, marginBottom: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/></svg>
+                    Sito Web — 4 spazi in rotazione
+                  </div>
+                  {/* Griglia mockup homepage */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gridTemplateRows: "auto auto auto", gap: "6px" }}>
+                    {/* Riga 1: W1 | Logo | W2 */}
+                    <div style={{ border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.06)", padding: "12px 8px", textAlign: "center", position: "relative", minHeight: "80px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ position: "absolute", top: "-9px", left: "8px", background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 7px", borderRadius: "3px" }}>W1</span>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#00a07a" }}>Manchette<br/>SX</div>
+                      <div style={{ fontSize: "10px", color: TEXT_TER, marginTop: "2px" }}>300×250</div>
+                      <div style={{ fontSize: "10px", color: "#00a07a", fontWeight: 600, marginTop: "4px" }}>da €75/g</div>
+                    </div>
+                    <div style={{ background: BG_DARK, borderRadius: "8px", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "center", minWidth: "90px" }}>
+                      <div style={{ fontFamily: "Georgia, serif", fontWeight: 900, fontSize: "13px", color: "#fff", textAlign: "center", lineHeight: 1.2 }}>ProofPress<br/><span style={{ fontSize: "8px", fontWeight: 400, opacity: 0.5 }}>MAGAZINE</span></div>
+                    </div>
+                    <div style={{ border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.06)", padding: "12px 8px", textAlign: "center", position: "relative", minHeight: "80px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ position: "absolute", top: "-9px", left: "8px", background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 7px", borderRadius: "3px" }}>W2</span>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#00a07a" }}>Manchette<br/>DX</div>
+                      <div style={{ fontSize: "10px", color: TEXT_TER, marginTop: "2px" }}>300×250</div>
+                      <div style={{ fontSize: "10px", color: "#00a07a", fontWeight: 600, marginTop: "4px" }}>da €75/g</div>
+                    </div>
+                    {/* Riga 2: Area editoriale | W3 */}
+                    <div style={{ gridColumn: "1 / 3", background: BG, borderRadius: "8px", padding: "12px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60px" }}>
+                      <span style={{ fontSize: "11px", color: TEXT_TER }}>← Editoriale →</span>
+                    </div>
+                    <div style={{ border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.06)", padding: "10px 8px", textAlign: "center", position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ position: "absolute", top: "-9px", left: "8px", background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 7px", borderRadius: "3px" }}>W3</span>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#00a07a" }}>Sidebar<br/>DX</div>
+                      <div style={{ fontSize: "10px", color: TEXT_TER, marginTop: "2px" }}>300×250</div>
+                      <div style={{ fontSize: "10px", color: "#00a07a", fontWeight: 600, marginTop: "4px" }}>da €50/g</div>
+                    </div>
+                    {/* Riga 3: W4 full width */}
+                    <div style={{ gridColumn: "1 / 4", border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.06)", padding: "14px", textAlign: "center", position: "relative" }}>
+                      <span style={{ position: "absolute", top: "-9px", left: "8px", background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 7px", borderRadius: "3px" }}>W4</span>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#00a07a" }}>Banner Orizzontale · 728×90 / 970×250</div>
+                      <div style={{ fontSize: "10px", color: "#00a07a", fontWeight: 600, marginTop: "4px" }}>da €80/g</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* NEWSLETTER */}
+                <div style={{ background: BG_CARD, borderRadius: "18px", border: `1px solid ${BORDER_LT}`, padding: "24px", overflow: "hidden" }}>
+                  <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: TEXT_SEC, marginBottom: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 3l5 4 5-4M1 3v7h10V3H1z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+                    Newsletter Daily — 5 spazi vendibili
+                  </div>
+                  {/* Mockup newsletter */}
+                  <div style={{ border: `1px solid ${BORDER_LT}`, borderRadius: "10px", overflow: "hidden", background: "#fff" }}>
+                    {/* Header newsletter */}
+                    <div style={{ padding: "14px 16px", textAlign: "center", borderBottom: `1px solid ${BORDER_LT}` }}>
+                      <div style={{ fontFamily: "Georgia, serif", fontWeight: 900, fontSize: "18px", color: TEXT_PRI, marginBottom: "2px" }}>ProofPress</div>
+                      <div style={{ fontSize: "10px", color: TEXT_TER }}>Per chi vuole capire l’innovazione prima degli altri</div>
+                      <div style={{ fontSize: "9px", color: TEXT_TER, marginTop: "2px" }}>N° 30 · <strong>6.651 lettori</strong></div>
+                    </div>
+                    {/* NL-1 */}
+                    <div style={{ margin: "8px", border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.05)", padding: "10px 12px", position: "relative" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                        <span style={{ background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 8px", borderRadius: "3px" }}>NL-1 · IN VENDITA</span>
+                        <span style={{ background: BG_DARK, color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 8px", borderRadius: "3px" }}>€350/invio</span>
+                      </div>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: TEXT_PRI, textAlign: "center" }}>⭐ SPONSOR OF THE DAY</div>
+                      <div style={{ fontSize: "9px", color: TEXT_SEC, textAlign: "center", marginTop: "2px" }}>Logo + headline + testo (80 parole) + CTA · Top placement</div>
+                    </div>
+                    {/* Contenuto editoriale */}
+                    <div style={{ padding: "8px 12px" }}>
+                      <div style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.08em", color: TEXT_TER, textTransform: "uppercase", marginBottom: "6px" }}>Breaking + Startup</div>
+                      <div style={{ height: "8px", background: BG, borderRadius: "4px", marginBottom: "4px" }} />
+                      <div style={{ height: "8px", background: BG, borderRadius: "4px", marginBottom: "4px", width: "80%" }} />
+                      <div style={{ height: "8px", background: BG, borderRadius: "4px", width: "60%" }} />
+                    </div>
+                    {/* NL-2 */}
+                    <div style={{ margin: "8px", border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.05)", padding: "10px 12px", position: "relative" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                        <span style={{ background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 8px", borderRadius: "3px" }}>NL-2 · IN VENDITA</span>
+                        <span style={{ background: BG_DARK, color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 8px", borderRadius: "3px" }}>€250/invio</span>
+                      </div>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: TEXT_PRI, textAlign: "center" }}>🛒 CONSIGLIATO</div>
+                      <div style={{ fontSize: "9px", color: TEXT_SEC, textAlign: "center", marginTop: "2px" }}>Prodotto/servizio consigliato · Immagine + titolo + prezzo + link</div>
+                    </div>
+                    {/* Research */}
+                    <div style={{ padding: "8px 12px" }}>
+                      <div style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.08em", color: TEXT_TER, textTransform: "uppercase", marginBottom: "6px" }}>Research del giorno</div>
+                      <div style={{ height: "8px", background: BG, borderRadius: "4px", marginBottom: "4px" }} />
+                      <div style={{ height: "8px", background: BG, borderRadius: "4px", width: "70%" }} />
+                    </div>
+                    {/* NL-3 */}
+                    <div style={{ margin: "8px", border: "2px dashed #00c896", borderRadius: "8px", background: "rgba(0,200,150,0.05)", padding: "10px 12px", position: "relative" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                        <span style={{ background: "#00c896", color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 8px", borderRadius: "3px" }}>NL-3 · IN VENDITA</span>
+                        <span style={{ background: BG_DARK, color: "#fff", fontSize: "9px", fontWeight: 700, padding: "2px 8px", borderRadius: "3px" }}>€180/invio</span>
+                      </div>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: TEXT_PRI, textAlign: "center" }}>🏷️ SPONSOR SECONDARIO</div>
+                      <div style={{ fontSize: "9px", color: TEXT_SEC, textAlign: "center", marginTop: "2px" }}>Logo + testo breve + link · Mid placement</div>
+                    </div>
+                    {/* Footer newsletter */}
+                    <div style={{ padding: "8px 12px", borderTop: `1px solid ${BORDER_LT}`, marginTop: "4px" }}>
+                      <div style={{ fontSize: "9px", color: TEXT_TER, textAlign: "center" }}>AI News · Dealroom · Startup</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* ── SPAZI SITO WEB ────────────────────────────────────────────────── */}        <div style={{ marginBottom: "80px" }}>
               <SectionLabel>Spazi Sito Web · proofpress.ai</SectionLabel>
               <h2 style={{ fontFamily: SF_DISPLAY, fontSize: "28px", fontWeight: 700, letterSpacing: "-0.015em", color: TEXT_PRI, marginBottom: "8px" }}>4 posizioni premium</h2>
               <p style={{ fontSize: "15px", color: TEXT_SEC, marginBottom: "28px" }}>Visibili su tutte le pagine del sito, con rotazione ogni 15 secondi.</p>
