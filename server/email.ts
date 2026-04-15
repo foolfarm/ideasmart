@@ -7,14 +7,34 @@ interface SendEmailOptions {
   text?: string;
   /** URL per il List-Unsubscribe header (RFC 2369) — usato nelle newsletter massicce */
   listUnsubscribeUrl?: string;
+  /** Override mittente: 'daily' = Ai4Business by ProofPress (noreply@ai4business.news),
+   *  'promo' = ProofPress Business (noreply@proofpress.biz),
+   *  default = ProofPress.AI (info@proofpress.ai) */
+  sender?: 'daily' | 'promo' | 'default';
 }
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
   const apiKey = process.env.SENDGRID_API_KEY;
-  // Mittente ufficiale ProofPress.AI
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@proofpress.ai";
-  const fromName = process.env.SENDGRID_FROM_NAME || "ProofPress.AI";
-  const replyTo = "noreply@proofpress.ai";
+  // Mittente differenziato per tipo di newsletter
+  let fromEmail: string;
+  let fromName: string;
+  let replyTo: string;
+  if (opts.sender === 'daily') {
+    // Newsletter Daily: Ai4Business by ProofPress
+    fromEmail = "noreply@ai4business.news";
+    fromName = "Ai4Business by ProofPress";
+    replyTo = "noreply@ai4business.news";
+  } else if (opts.sender === 'promo') {
+    // Newsletter promozionali: ProofPress Business
+    fromEmail = "noreply@proofpress.biz";
+    fromName = "ProofPress Business";
+    replyTo = "noreply@proofpress.biz";
+  } else {
+    // Default: ProofPress.AI (transazionali, welcome, report)
+    fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@proofpress.ai";
+    fromName = process.env.SENDGRID_FROM_NAME || "ProofPress.AI";
+    replyTo = "noreply@proofpress.ai";
+  }
 
   if (!apiKey) {
     console.error("[Email] SENDGRID_API_KEY not set");

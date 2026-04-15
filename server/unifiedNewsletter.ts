@@ -1465,7 +1465,7 @@ export async function sendUnifiedPreview(): Promise<{
     const htmlWithApproval = html.replace(/<body([^>]*)>/, `<body$1>${approvalBanner}`);
 
     const sendResults = await Promise.all(
-      TEST_EMAILS.map(email => sendEmail({ to: email, subject: `[BOZZA - APPROVAZIONE RICHIESTA] ${subject}`, html: htmlWithApproval }))
+      TEST_EMAILS.map(email => sendEmail({ sender: 'daily', to: email, subject: `[BOZZA - APPROVAZIONE RICHIESTA] ${subject}`, html: htmlWithApproval }))
     );
     const allSuccess = sendResults.every(r => r.success);
     const result = sendResults[0];
@@ -1523,7 +1523,7 @@ export async function sendUnifiedTestToEmail(toEmail: string): Promise<{
 
   try {
     const { html, subject, stats } = await buildUnifiedNewsletter(true);
-    const result = await sendEmail({ to: toEmail, subject, html });
+    const result = await sendEmail({ sender: 'daily', to: toEmail, subject, html });
 
     if (result.success) {
       console.log(`[UnifiedNewsletter] ✅ Test inviato a ${toEmail}`);
@@ -1581,6 +1581,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
       console.log(`[UnifiedNewsletter] 🔒 Invio bloccato: nessuna approvazione ricevuta per oggi (${now})`);
       try {
         await sendEmail({
+        sender: 'daily',
           to: "ac@acinelli.com",
           subject: `🔒 [ProofPress] Newsletter NON inviata — approvazione mancante (${now})`,
           html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:32px;"><h2 style="color:#1d1d1f;font-size:20px;margin:0 0 16px;">Newsletter bloccata</h2><p style="color:#3a3a3c;font-size:15px;margin:0 0 12px;">La newsletter <strong>Proof Press Daily</strong> delle 11:00 <strong>non è stata inviata</strong> perché non è stata ricevuta l'approvazione.</p><p style="color:#3a3a3c;font-size:15px;margin:0;">Controlla l'email di preview delle 08:30 e clicca il pulsante <strong>"Approva e Invia"</strong> per autorizzare l'invio.</p></div>`,
@@ -1609,6 +1610,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     // Alert email immediato: notifica ac@acinelli.com che il guard ha bloccato un invio duplicato
     try {
       await sendEmail({
+        sender: 'daily',
         to: "ac@acinelli.com",
         subject: `⚠️ [ProofPress] Invio newsletter bloccato — duplicato rilevato (${blockedAt})`,
         html: `
@@ -1685,6 +1687,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
           .replace(`${BASE_URL}/preferenze-newsletter`, prefsUrl);
 
         const result = await sendEmail({
+        sender: 'daily',
           to: sub.email,
           subject,
           html: personalizedHtml,

@@ -266,7 +266,7 @@ export async function sendDailyChannelPreview(): Promise<{
   try {
     const { html, subject, newsCount } = await buildChannelNewsletter(channel, true);
 
-    const result = await sendEmail({ to: TEST_EMAIL, subject, html });
+    const result = await sendEmail({ sender: 'daily', to: TEST_EMAIL, subject, html });
 
     if (result.success) {
       testSentDays.set(testKey, true);
@@ -367,7 +367,7 @@ export async function sendDailyChannelNewsletter(): Promise<{
           prefsUrl
         );
 
-        const result = await sendEmail({ to: sub.email, subject, html: personalizedHtml });
+        const result = await sendEmail({ sender: 'daily', to: sub.email, subject, html: personalizedHtml });
         if (result.success) {
           totalSent++;
         } else {
@@ -442,7 +442,7 @@ export async function sendChannelNewsletterManual(
 
   if (testOnly) {
     const { html, subject, newsCount } = await buildChannelNewsletter(channel, true);
-    const result = await sendEmail({ to: TEST_EMAIL, subject, html });
+    const result = await sendEmail({ sender: 'daily', to: TEST_EMAIL, subject, html });
     return {
       success: result.success,
       channel: channel.name,
@@ -472,7 +472,7 @@ export async function sendChannelNewsletterManual(
         : `${BASE_URL}/unsubscribe`;
       const { html } = await buildChannelNewsletter(channel, false);
       const personalizedHtml = html.replace(`${BASE_URL}/unsubscribe`, unsubUrl);
-      const result = await sendEmail({ to: sub.email, subject, html: personalizedHtml });
+      const result = await sendEmail({ sender: 'daily', to: sub.email, subject, html: personalizedHtml });
       if (result.success) totalSent++;
       else sendError = result.error;
     }
@@ -519,7 +519,7 @@ export async function sendChannelTestToEmail(
 
   try {
     const { html, subject, newsCount } = await buildChannelNewsletter(channel, true);
-    const result = await sendEmail({ to: toEmail, subject, html });
+    const result = await sendEmail({ sender: 'daily', to: toEmail, subject, html });
 
     if (result.success) {
       console.log(`[DailyNewsletter] ✅ Test ${channel.name} inviato a ${toEmail}`);
@@ -586,7 +586,7 @@ export async function sendPromoNewsletterToAll(): Promise<{
           : `${BASE_URL}/unsubscribe`;
         const personalizedHtml = baseHtml
           .replace(`${BASE_URL}/unsubscribe`, unsubUrl);
-        const result = await sendEmail({ to: sub.email, subject, html: personalizedHtml });
+        const result = await sendEmail({ sender: 'daily', to: sub.email, subject, html: personalizedHtml });
         if (result.success) totalSent++;
         else sendError = result.error;
       }

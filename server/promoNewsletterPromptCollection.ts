@@ -566,6 +566,7 @@ export async function sendPromptCollectionNewsletterToAll(): Promise<void> {
     await Promise.allSettled(
       batch.map(sub =>
         sendEmail({
+          sender: 'promo',
           to: sub.email,
           subject,
           html: html.replace("{{email}}", encodeURIComponent(sub.email)),

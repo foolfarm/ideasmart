@@ -166,6 +166,7 @@ export async function sendTestNewsletter(): Promise<{
     const { html, subject, newsCount } = await buildNewsletterFromDb();
 
     const result = await sendEmail({
+        sender: 'daily',
       to: TEST_EMAIL,
       subject,
       html,

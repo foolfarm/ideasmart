@@ -364,6 +364,7 @@ export async function sendPromoPreview(campaign: PromoCampaign = CURRENT_CAMPAIG
 
     for (const email of TEST_EMAILS) {
       await sendEmail({
+        sender: 'promo',
         to: email,
         subject,
         html,
@@ -407,6 +408,7 @@ export async function sendPromoNewsletterToAll(campaign: PromoCampaign = CURRENT
       await Promise.all(
         batch.map(sub =>
           sendEmail({
+        sender: 'promo',
             to: sub.email,
             subject,
             html,

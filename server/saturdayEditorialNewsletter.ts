@@ -526,7 +526,7 @@ export async function sendSaturdayPreview(): Promise<{
       recentNews: recentNewsForCta,
     });
 
-    const result = await sendEmail({ to: TEST_EMAIL, subject, html });
+    const result = await sendEmail({ sender: 'daily', to: TEST_EMAIL, subject, html });
 
     if (result.success) {
       previewSentWeeks.set(previewKey, true);
@@ -633,7 +633,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
             isTest: false,
             recentNews: recentNewsForCta,
           });
-          return sendEmail({ to: subscriber.email, subject, html: personalizedHtml });
+          return sendEmail({ sender: 'daily', to: subscriber.email, subject, html: personalizedHtml });
         })
       );
 

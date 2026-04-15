@@ -525,6 +525,7 @@ export async function sendPubblicitaNewsletterToAll(): Promise<void> {
     console.log("[PubblicitaNewsletter] Guard: già inviata oggi. Skip.");
     try {
       await sendEmail({
+        sender: 'promo',
         to: "ac@acinelli.com",
         subject: `[ProofPress] ⚠️ Newsletter Pubblicità bloccata — già inviata oggi`,
         html: `<p>Il guard anti-duplicati ha bloccato un secondo invio della newsletter Pubblicità in data ${new Date().toLocaleDateString("it-IT")}.</p>`,
@@ -568,6 +569,7 @@ export async function sendPubblicitaNewsletterToAll(): Promise<void> {
     await Promise.allSettled(
       batch.map(sub =>
         sendEmail({
+          sender: 'promo',
           to: sub.email,
           subject,
           html: html.replace("{{email}}", encodeURIComponent(sub.email)),
