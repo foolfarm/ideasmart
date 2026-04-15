@@ -1,1 +1,0 @@
-ALTER TABLE `banners` MODIFY COLUMN `slot` enum('left','right','both','sidebar','horizontal','both_sidebar') NOT NULL DEFAULT 'both';
