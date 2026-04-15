@@ -213,10 +213,18 @@ export default function LeftSidebar() {
             <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
               <Link href="/chi-siamo-story">
                 <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  isActive("/chi-siamo") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
+                  isActive("/chi-siamo-story") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
                 }`}>
                   <Info size={11} strokeWidth={2} />
                   <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Chi Siamo</span>
+                </div>
+              </Link>
+              <Link href="/storia">
+                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  isActive("/storia") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
+                }`}>
+                  <BookOpen size={11} strokeWidth={2} />
+                  <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Storia</span>
                 </div>
               </Link>
               <Link href="/investor">

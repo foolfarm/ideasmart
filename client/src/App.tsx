@@ -97,6 +97,7 @@ const AIOpportunities = lazy(() => import("./pages/AIOpportunities"));
 const PromptLibraryLanding = lazy(() => import("./pages/PromptLibraryLanding"));
 const PubblicitaPage = lazy(() => import("./pages/PubblicitaPage"));
 const ChiSiamoStory = lazy(() => import("./pages/ChiSiamoStory"));
+const Storia = lazy(() => import("./pages/Storia"));
 const Piattaforma = lazy(() => import("./pages/Piattaforma"));
 const Pianificazione = lazy(() => import("./pages/Pianificazione"));
 const Investor = lazy(() => import("./pages/Investor"));
@@ -173,6 +174,7 @@ function Router() {
         <Route path="/newsletter-feedback" component={NewsletterFeedback} />
         <Route path="/pubblicita" component={PubblicitaPage} />
         <Route path="/chi-siamo-story" component={ChiSiamoStory} />
+        <Route path="/storia" component={Storia} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
