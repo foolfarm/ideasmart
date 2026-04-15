@@ -63,7 +63,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
     // Permette a Gmail, Outlook, Apple Mail di mostrare il pulsante "Annulla iscrizione"
     ...(opts.listUnsubscribeUrl ? {
       headers: {
-        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:newsletter@proofpress.ai?subject=unsubscribe>`,
+        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:${opts.sender === 'daily' ? 'newsletter@ai4business.news' : opts.sender === 'promo' ? 'newsletter@proofpress.biz' : 'newsletter@proofpress.ai'}?subject=unsubscribe>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
       }
     } : {})
