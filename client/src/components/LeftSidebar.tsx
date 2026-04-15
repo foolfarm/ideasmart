@@ -233,7 +233,8 @@ export default function LeftSidebar() {
           )}
         </div>
 
-        {/* OFFERTA */}
+        {/* OFFERTA — temporaneamente nascosta */}
+        {false && (
         <div>
           <button
             onClick={() => expanded && setOffertaOpen(!offertaOpen)}
@@ -259,6 +260,7 @@ export default function LeftSidebar() {
             </div>
           )}
         </div>
+        )}
 
         {/* INFO LINKS */}
         {INFO_LINKS.map((ch) => {
