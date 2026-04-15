@@ -53,23 +53,23 @@ export default function VerifyWidget() {
   return (
     <div
       className="mb-5 rounded-2xl overflow-hidden"
-      style={{ fontFamily: SF, border: "1px solid #e5e5ea" }}
+      style={{ fontFamily: SF, border: "1.5px solid #00c4ae" }}
     >
-      {/* ── Header dark ── */}
+      {/* ── Header chiaro con accento teal ── */}
       <div
         className="px-4 pt-4 pb-3"
-        style={{ background: "#1a1a1a" }}
+        style={{ background: "#f0fdfb", borderBottom: "1px solid #b2ece6" }}
       >
-        <div className="flex items-center gap-2 mb-2">
-          <ShieldCheck size={16} color="#00e5c8" strokeWidth={2.2} />
+        <div className="flex items-center gap-2 mb-1.5">
+          <ShieldCheck size={16} color="#00897b" strokeWidth={2.2} />
           <span
             className="text-[11px] font-black uppercase tracking-[0.14em]"
-            style={{ color: "#fff" }}
+            style={{ color: "#00897b" }}
           >
             ProofPress Verify
           </span>
         </div>
-        <p className="text-[10px] leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+        <p className="text-[10px] leading-relaxed" style={{ color: "#1a1a1a", opacity: 0.6 }}>
           Verifica l'autenticità di una notizia. Copia il codice hash ProofPress Verify e controlla.
         </p>
       </div>
@@ -85,10 +85,14 @@ export default function VerifyWidget() {
                 <input
                   ref={inputRef}
                   type="text"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
                   value={inputHash}
                   onChange={e => { setInputHash(e.target.value); setSearchHash(null); }}
                   onKeyDown={handleKeyDown}
-                  placeholder="Incolla il codice hash…"
+                  placeholder="es. a3f9b2c1d4e5f678…"
                   className="w-full text-[9px] pl-2.5 pr-2 py-2 rounded-xl outline-none transition-all"
                   style={{
                     background: "#fff",
