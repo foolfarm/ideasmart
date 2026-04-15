@@ -2728,6 +2728,68 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
   }),
+
+  // ─── PUBBLICITA ──────────────────────────────────────────────────────────────
+  pubblicita: router({
+    sendContact: publicProcedure
+      .input(z.object({
+        nome:      z.string().min(2).max(100),
+        email:     z.string().email(),
+        azienda:   z.string().max(200).optional(),
+        budget:    z.string().max(100).optional(),
+        brief:     z.string().max(2000).optional(),
+        pacchetto: z.string().max(100).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const now = new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' });
+
+        const htmlAdmin = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f5f7;padding:32px;border-radius:12px;">
+            <div style="background:#1d1d1f;padding:24px 28px;border-radius:10px;margin-bottom:24px;">
+              <p style="color:rgba(255,255,255,0.5);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 4px;">ProofPress &middot; Richiesta Pubblicitaria</p>
+              <p style="color:#ffffff;font-size:20px;font-weight:700;margin:0;">Nuovo contatto inserzionista</p>
+            </div>
+            <table style="width:100%;border-collapse:collapse;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid #e8e8ed;">
+              <tr style="border-bottom:1px solid #e8e8ed;"><td style="padding:14px 20px;color:#6e6e73;font-size:13px;width:110px;">Nome</td><td style="padding:14px 20px;color:#1d1d1f;font-size:15px;font-weight:600;">${input.nome}</td></tr>
+              <tr style="border-bottom:1px solid #e8e8ed;"><td style="padding:14px 20px;color:#6e6e73;font-size:13px;">Email</td><td style="padding:14px 20px;"><a href="mailto:${input.email}" style="color:#1d1d1f;">${input.email}</a></td></tr>
+              ${input.azienda ? `<tr style="border-bottom:1px solid #e8e8ed;"><td style="padding:14px 20px;color:#6e6e73;font-size:13px;">Azienda</td><td style="padding:14px 20px;color:#1d1d1f;font-size:15px;">${input.azienda}</td></tr>` : ''}
+              ${input.pacchetto ? `<tr style="border-bottom:1px solid #e8e8ed;"><td style="padding:14px 20px;color:#6e6e73;font-size:13px;">Pacchetto</td><td style="padding:14px 20px;color:#1d1d1f;font-size:15px;font-weight:600;">${input.pacchetto}</td></tr>` : ''}
+              ${input.budget ? `<tr style="border-bottom:1px solid #e8e8ed;"><td style="padding:14px 20px;color:#6e6e73;font-size:13px;">Budget</td><td style="padding:14px 20px;color:#1d1d1f;font-size:15px;">${input.budget}</td></tr>` : ''}
+              ${input.brief ? `<tr><td style="padding:14px 20px;color:#6e6e73;font-size:13px;vertical-align:top;">Brief</td><td style="padding:14px 20px;color:#1d1d1f;font-size:14px;line-height:1.7;">${input.brief.replace(/\n/g, '<br>')}</td></tr>` : ''}
+            </table>
+            <p style="color:#aeaeb2;font-size:12px;margin-top:20px;text-align:center;">Ricevuto il ${now} &middot; proofpress.ai/pubblicita</p>
+          </div>`;
+
+        const htmlConfirm = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f5f7;padding:32px;border-radius:12px;">
+            <div style="background:#1d1d1f;padding:24px 28px;border-radius:10px;margin-bottom:24px;">
+              <p style="color:rgba(255,255,255,0.5);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 4px;">ProofPress Magazine</p>
+              <p style="color:#ffffff;font-size:20px;font-weight:700;margin:0;">Abbiamo ricevuto la tua richiesta</p>
+            </div>
+            <p style="color:#1d1d1f;font-size:16px;line-height:1.6;">Ciao ${input.nome},</p>
+            <p style="color:#1d1d1f;font-size:15px;line-height:1.7;">Grazie per averci contattato. Il team ProofPress ha ricevuto la tua richiesta pubblicitaria e ti risponder&agrave; entro <strong>24 ore lavorative</strong>.</p>
+            <p style="color:#6e6e73;font-size:14px;line-height:1.7;">Nel frattempo puoi consultare il listino completo su <a href="https://proofpress.ai/pubblicita" style="color:#1d1d1f;">proofpress.ai/pubblicita</a>.</p>
+            <p style="color:#aeaeb2;font-size:12px;margin-top:32px;">ProofPress Magazine &middot; pubblicita@proofpress.ai</p>
+          </div>`;
+
+        try {
+          await sendEmail({
+            to: 'ac@acinelli.com',
+            subject: `Nuovo inserzionista: ${input.nome} (${input.email})`,
+            html: htmlAdmin,
+          });
+          await sendEmail({
+            to: input.email,
+            subject: 'Abbiamo ricevuto la tua richiesta \u2014 ProofPress Magazine',
+            html: htmlConfirm,
+          });
+        } catch (err) {
+          console.error('[pubblicita.sendContact] Errore invio email:', err);
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Errore invio. Riprova o scrivi a pubblicita@proofpress.ai' });
+        }
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
