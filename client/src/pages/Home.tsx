@@ -734,7 +734,7 @@ export default function Home() {
     <>
       <SEOHead
         title="Proof Press — AI, Startup e Venture Capital"
-        description="Analisi quotidiane su Startup, Venture Capital e AI Trends — dati dalle principali fonti di ricerca globali ed europee."
+        description="Il tuo punto di riferimento per Innovazione, AI, Startup, Venture. Analisi quotidiane verificate da 4.000+ fonti — insight esclusivi per decision maker, founder e investitori."
         canonical="https://proofpress.ai"
         ogSiteName="Proof Press"
       />
@@ -827,8 +827,8 @@ export default function Home() {
                   </div>
                 </Link>
                 {/* Sottotitolo */}
-                <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
+                <div className="hidden sm:block mt-2 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(9px, 1.1vw, 13px)", lineHeight: 1.4 }}>
                   IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
                  </div>
               </div>
@@ -866,8 +866,8 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-              <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
+              <div className="hidden sm:block mt-2 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(9px, 1.1vw, 13px)", lineHeight: 1.4 }}>
                 IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
               </div>
             </div>

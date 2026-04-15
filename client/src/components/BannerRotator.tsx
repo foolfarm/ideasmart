@@ -64,8 +64,8 @@ export default function BannerRotator({
         : slot === "right"
           ? manchetteData.right
           : slot === "horizontal"
-            ? (manchetteData as { horizontal?: BannerItem[] }).horizontal ?? []
-            : (manchetteData as { sidebar?: BannerItem[] }).sidebar ?? [])
+            ? manchetteData.horizontal
+            : manchetteData.sidebar)
     : [];
 
   const rotationMs = manchetteData?.settings?.rotationIntervalMs ?? 15000;

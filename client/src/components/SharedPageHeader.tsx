@@ -248,8 +248,8 @@ export default function SharedPageHeader() {
                 </span>
               </div>
             </Link>
-            <div className="hidden sm:block mt-2 uppercase tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.4 }}>
+            <div className="hidden sm:block mt-2 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(9px, 1.1vw, 13px)", lineHeight: 1.4 }}>
               IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
             </div>
           </div>
