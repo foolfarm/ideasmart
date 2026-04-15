@@ -10,6 +10,7 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
+import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
 import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -653,47 +654,25 @@ export default function ProofPressVerify() {
           <Divider />
 
           {/* ═══════════════════════════════════════════════════════════════════
-              CTA FINALE
+              CTA FINALE — FORM DI CONTATTO
           ═══════════════════════════════════════════════════════════════════ */}
-          <section className="py-24 md:py-32" style={{ background: "#0a0a0a" }}>
-            <div className="max-w-5xl mx-auto px-5 md:px-8 text-center">
-              <Label light>Incluso in tutti i piani</Label>
-              <h2
-                className="text-3xl md:text-5xl font-black leading-tight mb-6 text-white"
-                style={{ fontFamily: FONT }}
-              >
-                L'informazione certificata<br />
-                non è un lusso.<br />
-                <span style={{ color: ORANGE }}>È il nuovo standard.</span>
-              </h2>
-              <p className="text-base text-white/55 mb-12 max-w-xl mx-auto">
-                ProofPress Verify è incluso in ogni piano della piattaforma ProofPress. Ogni notizia pubblicata dalla tua redazione agentica viene automaticamente analizzata, verificata e sigillata. Zero configurazione, zero costi aggiuntivi.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <Link href="/chi-siamo">
-                  <button
-                    className="px-10 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
-                    style={{ background: ORANGE, fontFamily: FONT }}
-                  >
-                    Scopri i piani →
-                  </button>
-                </Link>
-                <Link href="/demo">
-                  <button
-                    className="px-10 py-4 text-sm font-bold uppercase tracking-widest border text-white transition-colors hover:bg-white/10"
-                    style={{ borderColor: "#ffffff33", fontFamily: FONT }}
-                  >
-                    Richiedi una demo
-                  </button>
-                </Link>
+          <section className="py-24 md:py-32" style={{ background: "#f5f5f7" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="text-center mb-12">
+                <Label>Incluso in tutti i piani</Label>
+                <h2
+                  className="text-3xl md:text-5xl font-black leading-tight mb-6"
+                  style={{ fontFamily: FONT, color: "#0a0a0a" }}
+                >
+                  L'informazione certificata<br />
+                  non è un lusso.<br />
+                  <span style={{ color: ORANGE }}>È il nuovo standard.</span>
+                </h2>
+                <p className="text-base mb-4 max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.55 }}>
+                  Scrivici per integrare ProofPress Verify nella tua redazione o per richiedere una demo personalizzata.
+                </p>
               </div>
-              <div className="flex flex-wrap justify-center gap-6 text-xs text-white/30 uppercase tracking-widest">
-                <span>Verifiche illimitate</span>
-                <span>·</span>
-                <span>Incluso in tutti i piani</span>
-                <span>·</span>
-                <span>Nessun setup aggiuntivo</span>
-              </div>
+              <ContactForm origine="ProofPress Verify" />
             </div>
           </section>
 

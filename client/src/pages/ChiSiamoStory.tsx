@@ -7,6 +7,7 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
+import ContactForm from "@/components/ContactForm";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
@@ -306,27 +307,19 @@ export default function ChiSiamoStory() {
               CTA
           ═══════════════════════════════════════════════════════ */}
           <Section>
-            <div className="text-center">
+            <div className="text-center mb-10">
               <Label>Vuoi far parte di questa storia?</Label>
               <h2
-                className="text-3xl md:text-4xl font-black leading-tight mb-6"
+                className="text-3xl md:text-4xl font-black leading-tight mb-4"
                 style={{ fontFamily: FONT }}
               >
                 Costruisci la tua redazione AI.
               </h2>
-              <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.6 }}>
+              <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.6 }}>
                 Scopri come ProofPress può diventare la tua infrastruttura editoriale — o scrivici per collaborare.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="mailto:info@proofpress.ai"
-                  className="inline-block px-8 py-4 rounded-lg font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
-                  style={{ background: "#0a0a0a", color: "#ffffff" }}
-                >
-                  Scrivici
-                </a>
-              </div>
             </div>
+            <ContactForm origine="Chi Siamo — ProofPress" />
           </Section>
 
           <SharedPageFooter />

@@ -6,6 +6,7 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
+import WithSidebar from "@/components/WithSidebar";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
@@ -42,6 +43,7 @@ export default function MarketAnalysisDetail() {
   const dataPoints = [analysis.dataPoint1, analysis.dataPoint2, analysis.dataPoint3].filter(Boolean);
 
   return (
+    <WithSidebar>
     <RequireAuth>
     <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       <header className="border-b-2 border-[#1a1a1a] bg-[#ffffff]">
@@ -191,5 +193,6 @@ export default function MarketAnalysisDetail() {
       </article>
     </div>
     </RequireAuth>
+    </WithSidebar>
   );
 }

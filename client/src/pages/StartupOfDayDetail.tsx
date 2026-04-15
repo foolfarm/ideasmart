@@ -6,6 +6,7 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, MapPin, Calendar, Linkedin } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
+import WithSidebar from "@/components/WithSidebar";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai", spotlightLabel: "Startup del Giorno" },
@@ -40,6 +41,7 @@ export default function StartupOfDayDetail() {
   }
 
   return (
+    <WithSidebar>
     <RequireAuth>
     <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       <header className="border-b-2 border-[#1a1a1a] bg-[#ffffff]">
@@ -184,5 +186,6 @@ export default function StartupOfDayDetail() {
       </article>
     </div>
     </RequireAuth>
+    </WithSidebar>
   );
 }

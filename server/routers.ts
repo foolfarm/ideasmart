@@ -2790,6 +2790,48 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
   }),
+
+  // ── Contact form generico (chi-siamo, proofpress-verify, ecc.) ────────────
+  contact: router({
+    send: publicProcedure
+      .input(z.object({
+        nome: z.string().min(2, 'Nome obbligatorio'),
+        email: z.string().email('Email non valida'),
+        azienda: z.string().optional(),
+        ruolo: z.string().optional(),
+        messaggio: z.string().min(10, 'Messaggio troppo breve'),
+        origine: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const htmlAdmin = `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+            <h2 style="color:#0a0a0a;border-bottom:2px solid #0a0a0a;padding-bottom:12px">Nuova richiesta di contatto — ${input.origine ?? 'ProofPress'}</h2>
+            <table style="width:100%;border-collapse:collapse">
+              <tr><td style="padding:8px;background:#f5f5f5;font-weight:bold;width:140px">Nome</td><td style="padding:8px">${input.nome}</td></tr>
+              <tr><td style="padding:8px;font-weight:bold">Email</td><td style="padding:8px"><a href="mailto:${input.email}">${input.email}</a></td></tr>
+              ${input.azienda ? `<tr><td style="padding:8px;background:#f5f5f5;font-weight:bold">Azienda</td><td style="padding:8px">${input.azienda}</td></tr>` : ''}
+              ${input.ruolo ? `<tr><td style="padding:8px;font-weight:bold">Ruolo</td><td style="padding:8px">${input.ruolo}</td></tr>` : ''}
+              ${input.origine ? `<tr><td style="padding:8px;background:#f5f5f5;font-weight:bold">Pagina</td><td style="padding:8px">${input.origine}</td></tr>` : ''}
+            </table>
+            <h3 style="margin-top:20px;color:#0a0a0a">Messaggio</h3>
+            <div style="background:#f9f9f9;border-left:4px solid #0a0a0a;padding:16px;border-radius:4px">${input.messaggio.replace(/\n/g, '<br>')}</div>
+          </div>`;
+        const htmlConfirm = `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+            <h2 style="color:#0a0a0a">Grazie per averci scritto, ${input.nome}.</h2>
+            <p style="color:#444">Abbiamo ricevuto la tua richiesta e ti risponderemo entro 24 ore lavorative.</p>
+            <p style="color:#888;font-size:13px">Il team ProofPress</p>
+          </div>`;
+        try {
+          await sendEmail({ to: 'info@proofpress.ai', subject: `Nuova richiesta: ${input.nome} — ${input.origine ?? 'ProofPress'}`, html: htmlAdmin });
+          await sendEmail({ to: input.email, subject: 'Abbiamo ricevuto la tua richiesta — ProofPress', html: htmlConfirm });
+        } catch (err) {
+          console.error('[contact.send] Errore invio email:', err);
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Errore invio. Riprova o scrivi a info@proofpress.ai' });
+        }
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

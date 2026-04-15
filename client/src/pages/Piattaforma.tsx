@@ -5,6 +5,8 @@
 
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
+import ContactForm from "@/components/ContactForm";
+import WithSidebar from "@/components/WithSidebar";
 
 // ─── Sezione: Come funziona ──────────────────────────────────────────────────
 const STEPS = [
@@ -110,6 +112,7 @@ export default function Piattaforma() {
     "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 
   return (
+    <WithSidebar>
     <div
       className="min-h-screen"
       style={{ background: "#f5f5f7", fontFamily: fontSans }}
@@ -326,61 +329,31 @@ export default function Piattaforma() {
         </div>
       </section>
 
-      {/* ── CTA FINALE ───────────────────────────────────────────────────── */}
+      {/* ── CTA FINALE — FORM DI CONTATTO ────────────────────────────────── */}
       <section
-        className="py-14 px-4 text-center"
-        style={{ background: "#fff", borderTop: "2px solid #1a1a1a" }}
+        className="py-20 px-4"
+        style={{ background: "#f5f5f7", borderTop: "1px solid #e8e8ed" }}
       >
-        <div className="max-w-[600px] mx-auto">
-          <h2
-            className="text-[28px] font-black mb-4"
-            style={{ fontFamily: fontDisplay, color: "#1a1a1a" }}
-          >
-            Vuoi integrare ProofPress nella tua organizzazione?
-          </h2>
-          <p
-            className="text-[15px] leading-relaxed mb-8"
-            style={{ color: "#1a1a1a", opacity: 0.65, fontFamily: fontSans }}
-          >
-            Contattaci per una demo personalizzata o scrivi a{" "}
-            <a
-              href="mailto:info@proofpress.ai"
-              style={{ color: "#e74c3c", textDecoration: "underline" }}
+        <div className="max-w-[900px] mx-auto">
+          <div className="text-center mb-12">
+            <h2
+              className="text-[32px] font-black mb-4"
+              style={{ fontFamily: fontDisplay, color: "#1a1a1a" }}
             >
-              info@proofpress.ai
-            </a>
-            .
-          </p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <a
-              href="https://ideasmart.technology"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[13px] uppercase tracking-wider transition-opacity hover:opacity-80"
-              style={{
-                background: "#e74c3c",
-                color: "#fff",
-                fontFamily: fontSans,
-              }}
+              Vuoi integrare ProofPress nella tua organizzazione?
+            </h2>
+            <p
+              className="text-[16px] leading-relaxed max-w-xl mx-auto"
+              style={{ color: "#1a1a1a", opacity: 0.55, fontFamily: fontSans }}
             >
-              Prova la Demo ↗
-            </a>
-            <Link href="/contatti">
-              <span
-                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[13px] uppercase tracking-wider cursor-pointer transition-opacity hover:opacity-80"
-                style={{
-                  background: "transparent",
-                  color: "#1a1a1a",
-                  border: "2px solid #1a1a1a",
-                  fontFamily: fontSans,
-                }}
-              >
-                Contattaci →
-              </span>
-            </Link>
+              Scrivici per una demo personalizzata o per scoprire come ProofPress
+              può diventare l'infrastruttura editoriale della tua redazione.
+            </p>
           </div>
+          <ContactForm origine="Piattaforma ProofPress" />
         </div>
       </section>
     </div>
+    </WithSidebar>
   );
 }
