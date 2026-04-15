@@ -227,6 +227,14 @@ export default function LeftSidebar() {
                   <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Storia</span>
                 </div>
               </Link>
+              <Link href="/cosa-facciamo">
+                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  isActive("/cosa-facciamo") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
+                }`}>
+                  <Briefcase size={11} strokeWidth={2} />
+                  <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Cosa Facciamo</span>
+                </div>
+              </Link>
               <Link href="/investor">
                 <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
                   isActive("/investor") ? "text-[#ff5500] font-semibold" : "text-[#ff5500] hover:bg-[#fff3ee]"

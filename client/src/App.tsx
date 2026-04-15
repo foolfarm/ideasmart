@@ -103,6 +103,7 @@ const Piattaforma = lazy(() => import("./pages/Piattaforma"));
 const Pianificazione = lazy(() => import("./pages/Pianificazione"));
 const Investor = lazy(() => import("./pages/Investor"));
 const NewsletterView = lazy(() => import("./pages/NewsletterView"));
+const CosaFacciamo = lazy(() => import("./pages/CosaFacciamo"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -177,6 +178,7 @@ function Router() {
         <Route path="/pubblicita" component={PubblicitaPage} />
         <Route path="/chi-siamo-story" component={ChiSiamoStory} />
         <Route path="/storia" component={Storia} />
+        <Route path="/cosa-facciamo" component={CosaFacciamo} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
