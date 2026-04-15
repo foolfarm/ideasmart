@@ -19,7 +19,7 @@ import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
-import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFNative, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
+import { HPFSquare, HPFLeaderboard, HPFSidebarTall, HPFBanner, HPFMobileBanner } from "@/components/HPFAd";
 import TradedoublerAd, { TradedoublerAdLeft, TradedoublerAdRight } from "@/components/TradedoublerAd";
 import VerifyWidget from "@/components/VerifyWidget";
 import ChannelsBar from "@/components/ChannelsBar";
@@ -1504,7 +1504,6 @@ export default function Home() {
             <div className="hidden sm:flex justify-center mb-6">
               <HPFBanner />
             </div>
-            <HPFNative />
           </div>
 
           {/* ── FOOTER ── */}
@@ -1514,6 +1513,10 @@ export default function Home() {
               <p className="text-[11px] text-[#1a1a1a]/40"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 {`© ${today.getFullYear()} Proof Press · AI · Startup · Venture Capital`}
+              </p>
+              <p className="text-[10px] text-[#1a1a1a]/35 mt-1"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                ProofPress Magazine è parte del gruppo <span className="font-semibold text-[#1a1a1a]/50">AxiomX</span>
               </p>
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
                 {(["ai", "startup"] as const).map(sec => (
