@@ -1277,8 +1277,8 @@ export default function Home() {
                 {/* ── SIDEBAR DESTRA (30%) ── */}
                 <div className="lg:pl-6 mt-6 lg:mt-0">
 
-                  {/* ── ProofPress Verify Widget ── */}
-                  <VerifyWidget />
+                  {/* ── ProofPress Verify Widget ── (temporaneamente nascosto) */}
+                  {false && <VerifyWidget />}
 
                   {/* ── Slot 3: Banner rotante sidebar destra 300x250 ── */}
                   <div className="mb-5 flex flex-col items-center">
