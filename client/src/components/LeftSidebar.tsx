@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
+import VerifyWidget from "@/components/VerifyWidget";
 import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
@@ -398,6 +399,14 @@ export default function LeftSidebar() {
             <div style={{ fontSize: "10px", color: "#8e8e93", fontFamily: SF, lineHeight: 1.2 }}>Seguici su LinkedIn</div>
           </div>
         </a>
+      </div>
+
+      {/* ── ProofPress Verify Widget ── */}
+      <div style={fadeBlock}>
+        <div className="mx-3 mb-3 border-t border-[#e5e5ea]" />
+        <div className="px-3">
+          <VerifyWidget />
+        </div>
       </div>
 
       {/* ── Readers counter ── */}
