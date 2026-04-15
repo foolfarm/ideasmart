@@ -1200,3 +1200,209 @@ ${trackingPixelUrl ? `<img src="${trackingPixelUrl}" width="1" height="1" border
 </body>
 </html>`;
 }
+
+
+// ─── TEMPLATE NEWSLETTER PUBBLICITARIA: PROMPT COLLECTION 2026 ───────────────
+/**
+ * Template promozionale per la Prompt Collection 2026.
+ * Mittente: ProofPress Business (noreply@proofpress.biz)
+ * Parametri personalizzabili: oggetto, preheader, unsubscribeUrl, isTest
+ */
+export function buildPromptCollectionNewsletterHtml(opts: {
+  unsubscribeUrl?: string;
+  trackingPixelUrl?: string;
+  isTest?: boolean;
+  customSubject?: string;
+}): string {
+  const { unsubscribeUrl, trackingPixelUrl, isTest } = opts;
+  const unsubLink = unsubscribeUrl ?? "https://proofpress.ai/unsubscribe";
+
+  return `<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prompt Collection 2026 — ProofPress Business</title>
+  <style>
+    body{margin:0;padding:0;background-color:#f7f1e7;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    table{border-spacing:0;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;}
+    img{border:0;display:block;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;}
+    a{text-decoration:none;}
+    @media only screen and (max-width:660px){
+      .wrapper{width:100%!important;}
+      .grid-cell{display:block!important;width:100%!important;padding-bottom:12px!important;}
+      .hero-title{font-size:26px!important;line-height:1.2!important;}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background-color:#f7f1e7;">
+
+${isTest ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f59e0b;">
+  <tr><td align="center" style="padding:8px 20px;">
+    <span style="font-size:11px;font-weight:700;color:#1a1a1a;font-family:Arial,sans-serif;letter-spacing:0.1em;">&#9888; EMAIL DI PROVA — NON DISTRIBUIRE</span>
+  </td></tr>
+</table>` : ''}
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f1e7;">
+  <tr>
+    <td align="center" style="padding:24px 0;">
+      <table role="presentation" class="wrapper" width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;border:1px solid #e8dfc8;">
+
+        <!-- TOP BAR -->
+        <tr>
+          <td style="background-color:#fbf8f1;padding:14px 28px;border-bottom:1px solid #ece3d4;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-size:12px;line-height:18px;letter-spacing:1.4px;text-transform:uppercase;color:#7d7467;font-family:Arial,Helvetica,sans-serif;">
+                  IDEASMART · PROMPT COLLECTION 2026
+                </td>
+                <td align="right">
+                  <a href="https://promptcollection2026.com/" style="font-size:11px;color:#b59457;font-family:Arial,Helvetica,sans-serif;text-decoration:underline;">Vedi online</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- HERO TITLE -->
+        <tr>
+          <td style="padding:36px 28px 8px 28px;text-align:center;">
+            <h1 class="hero-title" style="margin:0;font-size:36px;line-height:42px;color:#171717;font-weight:700;font-family:Georgia,'Times New Roman',serif;">99 prompt curati per lavorare meglio con l'AI</h1>
+          </td>
+        </tr>
+
+        <!-- SUBTITLE -->
+        <tr>
+          <td style="padding:0 28px 18px 28px;text-align:center;font-size:18px;line-height:29px;color:#4c463d;font-family:Arial,Helvetica,sans-serif;">
+            Una raccolta operativa pensata per chi vuole passare da sperimentazione a execution. Accesso immediato, PDF incluso, casi d'uso concreti e verticali pronti all'uso.
+          </td>
+        </tr>
+
+        <!-- HERO IMAGE -->
+        <tr>
+          <td style="padding:0 20px 24px 20px;">
+            <a href="https://promptcollection2026.com/" target="_blank" style="text-decoration:none;display:block;">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/4idF8uJSyVCDapKVHjfSyb/prompt-collection-2026-horizontal-clean-8ay62TiBPYMCMrBAxEPJQB.webp" alt="Prompt Collection 2026" width="600" style="display:block;width:100%;max-width:600px;border:0;border-radius:18px;height:auto;" />
+            </a>
+          </td>
+        </tr>
+
+        <!-- BODY TEXT -->
+        <tr>
+          <td style="padding:0 28px 24px 28px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td style="font-size:16px;line-height:28px;color:#302c25;font-family:Arial,Helvetica,sans-serif;">
+                  <strong>Perché funziona.</strong> La maggior parte dei team usa ancora prompt generici. Il risultato è prevedibile: output medi, tempi lunghi, qualità variabile. La Prompt Collection 2026 nasce per ridurre questo gap. Ogni prompt è progettato per contesti reali di lavoro, con struttura chiara, obiettivo definito e leva operativa immediata.
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-top:18px;font-size:16px;line-height:28px;color:#302c25;font-family:Arial,Helvetica,sans-serif;">
+                  Dentro trovi framework trasversali e verticali ad alta utilità. Non è una libreria da consultazione passiva. È un asset di execution pensato per manager, founder, professionisti e knowledge worker che vogliono trasformare l'AI in produttività misurabile.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- CTA PRINCIPALE -->
+        <tr>
+          <td style="padding:0 28px 28px 28px;text-align:center;">
+            <a href="https://promptcollection2026.com/" target="_blank" style="display:inline-block;padding:16px 28px;border-radius:12px;background-color:#b59457;color:#ffffff;text-decoration:none;font-size:16px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">Scopri la Prompt Collection 2026</a>
+          </td>
+        </tr>
+
+        <!-- VERTICALI TITOLO -->
+        <tr>
+          <td style="padding:0 28px 10px 28px;font-size:24px;line-height:30px;font-weight:700;color:#171717;text-align:center;font-family:Georgia,'Times New Roman',serif;">
+            Verticali già pronti all'uso
+          </td>
+        </tr>
+
+        <!-- GRIGLIA 3 VERTICALI -->
+        <tr>
+          <td style="padding:0 20px 28px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <!-- Commercialisti -->
+                <td class="grid-cell" style="padding:8px;" width="33.33%" valign="top">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#fbf8f1;border:1px solid #ece3d4;border-radius:16px;">
+                    <tr><td style="padding:10px 10px 0 10px;">
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/4idF8uJSyVCDapKVHjfSyb/prompt-commercialisti-square-final-KfKzd2UvXkNWQbuoZck7PL.webp" alt="Prompt per Commercialisti" width="184" style="display:block;width:100%;border:0;border-radius:12px;height:auto;" />
+                    </td></tr>
+                    <tr><td style="padding:14px 14px 8px 14px;font-size:18px;line-height:24px;font-weight:700;color:#171717;font-family:Arial,Helvetica,sans-serif;">Commercialisti</td></tr>
+                    <tr><td style="padding:0 14px 12px 14px;font-size:14px;line-height:22px;color:#4c463d;font-family:Arial,Helvetica,sans-serif;">Studio, clienti, checklist, sintesi normative.</td></tr>
+                    <tr><td style="padding:0 14px 16px 14px;">
+                      <a href="https://buy.stripe.com/dRm7sNckPd1k4WffoUcbC0a" target="_blank" style="display:inline-block;padding:12px 16px;border-radius:10px;background-color:#171717;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">Acquista a €29</a>
+                    </td></tr>
+                  </table>
+                </td>
+                <!-- Studenti -->
+                <td class="grid-cell" style="padding:8px;" width="33.33%" valign="top">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#fbf8f1;border:1px solid #ece3d4;border-radius:16px;">
+                    <tr><td style="padding:10px 10px 0 10px;">
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/4idF8uJSyVCDapKVHjfSyb/prompt-studenti-square-final-9iqGgMUZ8yE48bGZMuxHXr.webp" alt="Prompt per Studenti" width="184" style="display:block;width:100%;border:0;border-radius:12px;height:auto;" />
+                    </td></tr>
+                    <tr><td style="padding:14px 14px 8px 14px;font-size:18px;line-height:24px;font-weight:700;color:#171717;font-family:Arial,Helvetica,sans-serif;">Studenti</td></tr>
+                    <tr><td style="padding:0 14px 12px 14px;font-size:14px;line-height:22px;color:#4c463d;font-family:Arial,Helvetica,sans-serif;">Esami, riassunti, mappe, tesi.</td></tr>
+                    <tr><td style="padding:0 14px 16px 14px;">
+                      <a href="https://buy.stripe.com/eVq8wR84zgdw3Sb3GccbC0d" target="_blank" style="display:inline-block;padding:12px 16px;border-radius:10px;background-color:#171717;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">Acquista a €29</a>
+                    </td></tr>
+                  </table>
+                </td>
+                <!-- Avvocati -->
+                <td class="grid-cell" style="padding:8px;" width="33.33%" valign="top">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#fbf8f1;border:1px solid #ece3d4;border-radius:16px;">
+                    <tr><td style="padding:10px 10px 0 10px;">
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/4idF8uJSyVCDapKVHjfSyb/prompt-avvocati-square-final-nNNr3jxp9QsFjnQxtCG9hY.webp" alt="Prompt per Avvocati" width="184" style="display:block;width:100%;border:0;border-radius:12px;height:auto;" />
+                    </td></tr>
+                    <tr><td style="padding:14px 14px 8px 14px;font-size:18px;line-height:24px;font-weight:700;color:#171717;font-family:Arial,Helvetica,sans-serif;">Avvocati</td></tr>
+                    <tr><td style="padding:0 14px 12px 14px;font-size:14px;line-height:22px;color:#4c463d;font-family:Arial,Helvetica,sans-serif;">Ricerca, bozze, fascicoli, email cliente.</td></tr>
+                    <tr><td style="padding:0 14px 16px 14px;">
+                      <a href="https://buy.stripe.com/5kQaEZesX5yS88r2C8cbC0e" target="_blank" style="display:inline-block;padding:12px 16px;border-radius:10px;background-color:#171717;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">Acquista a €29</a>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- QUOTE FINALE -->
+        <tr>
+          <td style="padding:0 28px 12px 28px;font-size:16px;line-height:28px;color:#302c25;font-family:Arial,Helvetica,sans-serif;border-left:3px solid #b59457;margin-left:28px;">
+            &gt; Se vuoi un punto di partenza unico, la collezione generale è la scelta più efficiente. Se invece hai un bisogno immediato e verticale, i pacchetti dedicati riducono il time-to-value e accelerano l'adozione operativa.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 28px 30px 28px;font-size:16px;line-height:28px;color:#302c25;font-family:Arial,Helvetica,sans-serif;">
+            Takeaway per il board: <strong>chi standardizza i migliori prompt prima dei concorrenti crea un vantaggio composto su qualità, velocità e costo del lavoro cognitivo.</strong>
+          </td>
+        </tr>
+
+        <!-- CTA SECONDARIA -->
+        <tr>
+          <td style="padding:0 28px 32px 28px;text-align:center;">
+            <a href="https://promptcollection2026.com/" target="_blank" style="display:inline-block;padding:14px 24px;border-radius:10px;background-color:#171717;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">Vai a promptcollection2026.com →</a>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="padding:20px 28px 28px 28px;background-color:#f7f1e7;font-size:12px;line-height:20px;color:#6d6558;text-align:center;font-family:Arial,Helvetica,sans-serif;">
+            Hai ricevuto questa email perché sei iscritto alla newsletter di ProofPress.<br/>
+            <a href="${unsubLink}" style="color:#6d6558;text-decoration:underline;">Annulla iscrizione</a>
+            &nbsp;&middot;&nbsp;
+            <a href="https://proofpress.ai/privacy" style="color:#6d6558;text-decoration:underline;">Privacy Policy</a><br/><br/>
+            ProofPress Business · noreply@proofpress.biz
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+${trackingPixelUrl ? `<img src="${trackingPixelUrl}" width="1" height="1" border="0" style="display:block;width:1px;height:1px;" alt="" />` : ''}
+</body>
+</html>`;
+}

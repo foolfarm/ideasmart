@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { label: "Salute Sistema", path: "/admin/system-health" },
   { label: "Alert Log", path: "/admin/alert-log" },
   { label: "Amazon Deals", path: "/admin/amazon-deals" },
+  { label: "Promo Newsletter", path: "/admin/promo-newsletter" },
 ];
 
 interface AdminHeaderProps {

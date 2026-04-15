@@ -13,11 +13,12 @@ import { fixAllSourceUrls } from "../urlAuditFix";
 import { publishDailyLinkedInPosts } from "../linkedinPublisher";
 import { refreshAINewsFromRSS, refreshStartupNewsFromRSS, refreshDealroomNewsFromRSS, refreshAllNewsFromRSS } from "../rssNewsScheduler";
 import { getDb } from "../db";
-import { newsItems, sourceReports, healthCheckLogs } from "../../drizzle/schema";
+import { newsItems, sourceReports, healthCheckLogs, subscribers } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
 import { getRecentAlerts, markAllAlertsRead, markAlertRead, countUnreadAlerts } from "../alertLogger";
 import { fetchAllSendgridStats } from "../sendgridStats";
 import { runSiteHealthCheck } from "../siteHealthCheck";
+import { sendEmail, buildPromptCollectionNewsletterHtml } from "../email";
 
 // Middleware admin
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -419,6 +420,51 @@ export const adminRouter = router({
         };
       } catch (err) {
         return { success: false, error: (err as Error).message };
+      };
+    }),
+
+  /**
+   * Invia la newsletter pubblicitaria Prompt Collection 2026
+   * Mittente: ProofPress Business (noreply@proofpress.biz)
+   */
+  sendPromptCollectionNewsletter: adminProcedure
+    .input(z.object({
+      mode: z.enum(["test", "full"]),
+      testEmail: z.string().email().optional(),
+      subject: z.string().min(1).default("99 prompt curati per lavorare meglio con l'AI"),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+
+      if (input.mode === "test") {
+        const email = input.testEmail || ctx.user.email;
+        if (!email) throw new TRPCError({ code: "BAD_REQUEST", message: "Email di test richiesta" });
+        const html = buildPromptCollectionNewsletterHtml({ unsubscribeUrl: `https://proofpress.ai/unsubscribe`, isTest: true });
+        const result = await sendEmail({ sender: "promo", to: email, subject: `[TEST] ${input.subject}`, html, listUnsubscribeUrl: `https://proofpress.ai/unsubscribe` });
+        return { success: result.success, sent: result.success ? 1 : 0, error: result.error };
       }
+
+      const allSubscribers = await db
+        .select({ id: subscribers.id, email: subscribers.email, unsubscribeToken: subscribers.unsubscribeToken })
+        .from(subscribers)
+        .where(eq(subscribers.status, "active"));
+
+      let sent = 0;
+      let errors = 0;
+      const BATCH_SIZE = 50;
+      for (let i = 0; i < allSubscribers.length; i += BATCH_SIZE) {
+        const batch = allSubscribers.slice(i, i + BATCH_SIZE);
+        await Promise.all(batch.map(async (sub) => {
+          const unsubscribeUrl = sub.unsubscribeToken
+            ? `https://proofpress.ai/unsubscribe?token=${sub.unsubscribeToken}`
+            : `https://proofpress.ai/unsubscribe`;
+          const html = buildPromptCollectionNewsletterHtml({ unsubscribeUrl, isTest: false });
+          const result = await sendEmail({ sender: "promo", to: sub.email, subject: input.subject, html, listUnsubscribeUrl: unsubscribeUrl });
+          if (result.success) sent++; else errors++;
+        }));
+        if (i + BATCH_SIZE < allSubscribers.length) await new Promise(r => setTimeout(r, 500));
+      }
+      return { success: true, sent, errors, total: allSubscribers.length };
     }),
 });
