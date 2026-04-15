@@ -338,7 +338,7 @@ async function startServer() {
         return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>📧 Già inviata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata inviata.</p></body></html>`);
       }
       await db.update(newsletterSends)
-        .set({ approvedAt: new Date(), approvedBy: "ac@acinelli.com" })
+        .set({ approvedAt: new Date(), approvedBy: "ac@acinelli.com", status: "approved" })
         .where(eq(newsletterSends.id, record.id));
       console.log(`[Approval] ✅ Newsletter approvata: "${record.subject}" (id: ${record.id})`);
       try { await notifyOwner({ title: "✅ Newsletter approvata", content: `"${record.subject}" approvata. Invio massivo alle 11:00 CET.` }); } catch {}
@@ -346,6 +346,26 @@ async function startServer() {
     } catch (err) {
       console.error("[Approval] Errore:", err);
       return res.status(500).send("Errore interno");
+    }
+  });
+
+  // ── Newsletter Trigger manuale (solo admin, protetto da JWT_SECRET) ──────────────
+  // POST /api/newsletter/trigger-send — forza l'invio della newsletter se approvata
+  app.post("/api/newsletter/trigger-send", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+      const { sendUnifiedNewsletterToAll } = await import('../unifiedNewsletter');
+      console.log('[ManualTrigger] Avvio invio manuale newsletter...');
+      const result = await sendUnifiedNewsletterToAll();
+      console.log('[ManualTrigger] Risultato:', JSON.stringify(result));
+      return res.json(result);
+    } catch (err: any) {
+      console.error('[ManualTrigger] Errore:', err);
+      return res.status(500).json({ error: err.message });
     }
   });
 
