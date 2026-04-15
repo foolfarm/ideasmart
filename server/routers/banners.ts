@@ -144,32 +144,44 @@ export const bannersRouter = router({
     return db.select().from(banners).orderBy(banners.sortOrder, banners.id);
   }),
 
-  // ── ADMIN: crea banner (upload immagine base64 → S3) ──────────────────
+   // ── ADMIN: crea banner (upload immagine base64 → S3 oppure URL esterna) ──────────────
   create: adminProcedure
     .input(z.object({
       name: z.string().min(1).max(255),
-      imageBase64: z.string(), // "data:image/png;base64,..."
+      // Immagine: upload base64 OPPURE URL esterna (uno dei due è obbligatorio)
+      imageBase64: z.string().optional(),
       imageMime: z.string().default("image/png"),
+      imageUrl: z.string().url().optional(),
       clickUrl: z.string().url(),
       slot: z.enum(["left", "right", "both", "sidebar"]).default("both"),
       weight: z.number().int().min(1).max(10).default(5),
       active: z.boolean().default(true),
-      startsAt: z.string().optional(), // ISO date string
+      startsAt: z.string().optional(),
       endsAt: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
       const db = await getDb();
   if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
-      // Upload immagine su S3
-      const base64Data = input.imageBase64.replace(/^data:[^;]+;base64,/, "");
-      const buffer = Buffer.from(base64Data, "base64");
-      const ext = input.imageMime.split("/")[1] ?? "png";
-      const fileKey = `banners/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      const { url: imageUrl } = await storagePut(fileKey, buffer, input.imageMime);
-
-      const [result] = await db.insert(banners).values({
+      if (!input.imageBase64 && !input.imageUrl) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Fornire un'immagine (upload o URL)" });
+      }
+      let finalImageUrl: string;
+      let fileKey: string | null = null;
+      if (input.imageBase64) {
+        // Upload su S3
+        const base64Data = input.imageBase64.replace(/^data:[^;]+;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        const ext = input.imageMime.split("/")[1] ?? "png";
+        fileKey = `banners/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const { url } = await storagePut(fileKey, buffer, input.imageMime);
+        finalImageUrl = url;
+      } else {
+        // URL esterna
+        finalImageUrl = input.imageUrl!;
+      }
+      await db.insert(banners).values({
         name: input.name,
-        imageUrl,
+        imageUrl: finalImageUrl,
         imageKey: fileKey,
         clickUrl: input.clickUrl,
         slot: input.slot,
@@ -179,8 +191,7 @@ export const bannersRouter = router({
         endsAt: input.endsAt ? new Date(input.endsAt) : null,
         sortOrder: 0,
       });
-
-      return { success: true, imageUrl };
+      return { success: true, imageUrl: finalImageUrl };
     }),
 
   // ── ADMIN: aggiorna banner ─────────────────────────────────────────────
@@ -195,15 +206,32 @@ export const bannersRouter = router({
       startsAt: z.string().nullable().optional(),
       endsAt: z.string().nullable().optional(),
       sortOrder: z.number().int().optional(),
+      // Aggiornamento immagine opzionale: base64 upload oppure URL esterna
+      imageBase64: z.string().optional(),
+      imageMime: z.string().optional(),
+      imageUrl: z.string().url().optional(),
     }))
     .mutation(async ({ input }) => {
       const db = await getDb();
   if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
-      const { id, startsAt, endsAt, ...rest } = input;
+      const { id, startsAt, endsAt, imageBase64, imageMime, imageUrl: inputImageUrl, ...rest } = input;
       const updateData: Record<string, unknown> = { ...rest };
       if (startsAt !== undefined) updateData.startsAt = startsAt ? new Date(startsAt) : null;
       if (endsAt !== undefined) updateData.endsAt = endsAt ? new Date(endsAt) : null;
-
+      // Aggiornamento immagine via upload base64
+      if (imageBase64) {
+        const base64Data = imageBase64.replace(/^data:[^;]+;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        const ext = (imageMime ?? "image/png").split("/")[1] ?? "png";
+        const fileKey = `banners/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const { url } = await storagePut(fileKey, buffer, imageMime ?? "image/png");
+        updateData.imageUrl = url;
+        updateData.imageKey = fileKey;
+      } else if (inputImageUrl) {
+        // Aggiornamento immagine via URL esterna
+        updateData.imageUrl = inputImageUrl;
+        updateData.imageKey = null;
+      }
       await db.update(banners).set(updateData).where(eq(banners.id, id));
       return { success: true };
     }),

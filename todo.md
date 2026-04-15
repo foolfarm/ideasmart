@@ -3115,3 +3115,9 @@
 - [x] 3 slot BannerRotator in Home.tsx: slot=left (manchette sx header), slot=right (manchette dx header), slot=sidebar (colonna destra 300x250)
 - [x] Rimossi banner statici duplicati dalla sidebar — ora gestiti da BannerRotator
 - [x] TypeScript: 0 errori
+
+## Miglioramenti Admin Banner (15 Apr 2026)
+- [x] Fix: aggiungere opzione "sidebar" nel Select slot del form AddBannerForm
+- [x] Aggiungere opzione URL immagine esterna (alternativa all'upload file)
+- [x] Aggiungere funzione modifica banner esistente (edit inline)
+- [x] Migliorare UX: preview immagine più grande, indicatori slot visivi
