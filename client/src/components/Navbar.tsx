@@ -1,6 +1,6 @@
 /*
  * IDEASMART RESEARCH Navbar
- * Logo a sinistra + dropdown Offerta + pulsante Newsletter/utente a destra
+ * Struttura menu: Chi Siamo (dropdown) | Cosa Facciamo (dropdown) | Pubblicizza | Contatti | Investi
  */
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
@@ -9,10 +9,10 @@ import { ChevronDown } from "lucide-react";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [offertaOpen, setOffertaOpen] = useState(false);
-  const [mobileOffertaOpen, setMobileOffertaOpen] = useState(false);
-  const [piattaformaOpen, setPiattaformaOpen] = useState(false);
-  const [mobilePiattaformaOpen, setMobilePiattaformaOpen] = useState(false);
+  const [chiSiamoOpen, setChiSiamoOpen] = useState(false);
+  const [cosaFacciamoOpen, setCosaFacciamoOpen] = useState(false);
+  const [mobileChiSiamoOpen, setMobileChiSiamoOpen] = useState(false);
+  const [mobileCosaFacciamoOpen, setMobileCosaFacciamoOpen] = useState(false);
   const [location] = useLocation();
   const isHome = location === "/" || location === "";
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -23,12 +23,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Chiudi dropdown se si clicca fuori
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setOffertaOpen(false);
-        setPiattaformaOpen(false);
+        setChiSiamoOpen(false);
+        setCosaFacciamoOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -43,17 +42,40 @@ export default function Navbar() {
 
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
-  const offertaItems = [
-    { label: "Per Creator", href: "/offerta/creator", desc: "Newsletter, social, monetizzazione" },
-    { label: "Per Testate & Editori", href: "/offerta/editori", desc: "Nuovi verticali, più inventory" },
-    { label: "Per Aziende", href: "/offerta/aziende", desc: "Newsroom, IR, intelligence interna" },
+  const chiSiamoItems = [
+    { label: "Chi Siamo", href: "/chi-siamo-story", desc: "La nostra storia e il team" },
+    { label: "Storia", href: "/storia", desc: "Come è nata ProofPress" },
   ];
 
-  const piattaformaItems = [
-    { label: "Piattaforma ProofPress", href: "/piattaforma", desc: "Scopri la tecnologia agentica", external: false },
-    { label: "Agentic Platform Demo", href: "https://proofpress.tech/", desc: "Prova la piattaforma live", external: true },
-    { label: "ProofPress Verify", href: "/proofpress-verify", desc: "Verifica l'autenticità degli articoli", external: false },
+  const cosaFacciamoItems = [
+    { label: "Cosa Offriamo", href: "/cosa-facciamo", desc: "Prodotti e servizi per editori e aziende" },
+    { label: "Piattaforma Agentica", href: "/piattaforma", desc: "La tecnologia AI Journalism certificato" },
+    { label: "Tecnologia Verify", href: "/proofpress-verify", desc: "Verifica e certificazione degli articoli" },
   ];
+
+  const DropdownItem = ({
+    item,
+    onClose,
+  }: {
+    item: { label: string; href: string; desc: string };
+    onClose: () => void;
+  }) => (
+    <Link
+      href={item.href}
+      onClick={onClose}
+      className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
+    >
+      <div>
+        <div
+          className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors"
+          style={{ fontFamily: SF }}
+        >
+          {item.label}
+        </div>
+        <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
+      </div>
+    </Link>
+  );
 
   return (
     <nav
@@ -75,117 +97,83 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Centro: dropdown Piattaforma + Offerta (desktop) */}
+          {/* Centro: menu desktop */}
           <div className="hidden sm:flex items-center gap-1" ref={dropdownRef}>
 
-            {/* Dropdown Piattaforma */}
-            <button
-              onClick={() => { setPiattaformaOpen(!piattaformaOpen); setOffertaOpen(false); }}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+            {/* A) Chi Siamo dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => { setChiSiamoOpen(!chiSiamoOpen); setCosaFacciamoOpen(false); }}
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                Chi Siamo
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${chiSiamoOpen ? "rotate-180" : ""}`} />
+              </button>
+              {chiSiamoOpen && (
+                <div className="absolute top-10 left-0 w-[300px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+                  <div className="p-2">
+                    {chiSiamoItems.map((item) => (
+                      <DropdownItem key={item.href} item={item} onClose={() => setChiSiamoOpen(false)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* B) Cosa Facciamo dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => { setCosaFacciamoOpen(!cosaFacciamoOpen); setChiSiamoOpen(false); }}
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                Cosa Facciamo
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${cosaFacciamoOpen ? "rotate-180" : ""}`} />
+              </button>
+              {cosaFacciamoOpen && (
+                <div className="absolute top-10 left-0 w-[340px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+                  <div className="p-2">
+                    {cosaFacciamoItems.map((item) => (
+                      <DropdownItem key={item.href} item={item} onClose={() => setCosaFacciamoOpen(false)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Pubblicizza */}
+            <Link
+              href="/pubblicizza"
+              className="px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
-              Piattaforma
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-200 ${piattaformaOpen ? "rotate-180" : ""}`}
-              />
-            </button>
+              Pubblicizza
+            </Link>
 
-            {piattaformaOpen && (
-              <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[380px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
-                <div className="p-2">
-                  {piattaformaItems.map((item) => (
-                    item.external ? (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setPiattaformaOpen(false)}
-                        className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                      >
-                        <div>
-                          <div className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors" style={{ fontFamily: SF }}>
-                            {item.label} ↗
-                          </div>
-                          <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
-                        </div>
-                      </a>
-                    ) : (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setPiattaformaOpen(false)}
-                        className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                      >
-                        <div>
-                          <div className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors" style={{ fontFamily: SF }}>
-                            {item.label}
-                          </div>
-                          <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
-                        </div>
-                      </Link>
-                    )
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Dropdown Offerta */}
-            <button
-              onClick={() => { setOffertaOpen(!offertaOpen); setPiattaformaOpen(false); }}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+            {/* Contatti */}
+            <Link
+              href="/contatti"
+              className="px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
-              Offerta
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-200 ${offertaOpen ? "rotate-180" : ""}`}
-              />
-            </button>
+              Contatti
+            </Link>
 
-            {/* Dropdown panel */}
-            {offertaOpen && (
-              <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[420px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
-                <div className="p-2">
-                  {offertaItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setOffertaOpen(false)}
-                      className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                    >
-                      <div>
-                        <div className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors" style={{ fontFamily: SF }}>
-                          {item.label}
-                        </div>
-                        <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-                <div className="border-t border-gray-100 px-4 py-3 bg-gray-50/50">
-                  <Link
-                    href="/chi-siamo"
-                    onClick={() => setOffertaOpen(false)}
-                    className="text-[12px] font-semibold text-[#1a1a1a]/50 hover:text-[#c0392b] transition-colors"
-                  >
-                    Chi siamo →
-                  </Link>
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Destra: Newsletter CTA + mobile hamburger */}
+          {/* Destra: Investi badge + Newsletter/Home + hamburger */}
           <div className="flex items-center gap-2">
-            {/* Investor badge — desktop */}
+            {/* Investi badge — desktop */}
             <Link
               href="/investor"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-200 hover:opacity-85"
               style={{ background: "#ff5500", color: "#ffffff", fontFamily: SF, letterSpacing: "0.07em" }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse inline-block flex-shrink-0" />
-              Pre-Seed Open
+              Investi
             </Link>
+
             {isHome ? (
               <button
                 onClick={() => scrollTo("newsletter")}
@@ -212,10 +200,7 @@ export default function Navbar() {
             >
               <div
                 className="w-5 h-0.5 mb-1.5 transition-all duration-300 origin-center"
-                style={{
-                  background: "#1a1a1a",
-                  transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none",
-                }}
+                style={{ background: "#1a1a1a", transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none" }}
               />
               <div
                 className="w-5 h-0.5 mb-1.5 transition-all duration-300"
@@ -223,10 +208,7 @@ export default function Navbar() {
               />
               <div
                 className="w-5 h-0.5 transition-all duration-300 origin-center"
-                style={{
-                  background: "#1a1a1a",
-                  transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none",
-                }}
+                style={{ background: "#1a1a1a", transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none" }}
               />
             </button>
           </div>
@@ -235,68 +217,38 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div
           className="md:hidden overflow-hidden transition-all duration-300"
-          style={{ maxHeight: menuOpen ? "700px" : "0px" }}
+          style={{ maxHeight: menuOpen ? "800px" : "0px" }}
         >
           <div className="border-t border-gray-100 py-3 bg-white">
 
-            {/* Piattaforma dropdown mobile */}
-            <div className="px-2 mb-2">
-              <button
-                onClick={() => setMobilePiattaformaOpen(!mobilePiattaformaOpen)}
-                className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
-                style={{ color: "#1a1a1a", fontFamily: SF }}
-              >
-                <span>Piattaforma</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobilePiattaformaOpen ? "rotate-180" : ""}`} />
-              </button>
-              {mobilePiattaformaOpen && (
-                <div className="ml-4 mt-1 space-y-1">
-                  {piattaformaItems.map((item) => (
-                    item.external ? (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => { setMenuOpen(false); setMobilePiattaformaOpen(false); }}
-                        className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                      >
-                        <span className="font-semibold text-[#c0392b]">{item.label} ↗</span>
-                        <span className="text-[12px] text-[#1a1a1a]/50">{item.desc}</span>
-                      </a>
-                    ) : (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => { setMenuOpen(false); setMobilePiattaformaOpen(false); }}
-                        className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                      >
-                        <span className="font-semibold text-[#c0392b]">{item.label}</span>
-                        <span className="text-[12px] text-[#1a1a1a]/50">{item.desc}</span>
-                      </Link>
-                    )
-                  ))}
-                </div>
-              )}
+            {/* Testo descrittivo */}
+            <div className="px-5 pb-4 pt-1">
+              <p className="text-sm text-[#1a1a1a]/60 leading-relaxed" style={{ fontFamily: SF }}>
+                ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato.
+                Crea la tua testata AI-native: scopri l'offerta per{" "}
+                <Link href="/offerta/creator" onClick={() => setMenuOpen(false)} className="font-bold text-[#c0392b]">creator</Link>,{" "}
+                <Link href="/offerta/aziende" onClick={() => setMenuOpen(false)} className="font-bold text-[#c0392b]">aziende</Link> ed{" "}
+                <Link href="/offerta/editori" onClick={() => setMenuOpen(false)} className="font-bold text-[#c0392b]">editori</Link>.
+              </p>
             </div>
 
-            {/* Offerta dropdown mobile */}
-            <div className="px-2 mb-2">
+            {/* A) Chi Siamo dropdown mobile */}
+            <div className="px-2 mb-1">
               <button
-                onClick={() => setMobileOffertaOpen(!mobileOffertaOpen)}
+                onClick={() => setMobileChiSiamoOpen(!mobileChiSiamoOpen)}
                 className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
                 style={{ color: "#1a1a1a", fontFamily: SF }}
               >
-                <span>Offerta</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileOffertaOpen ? "rotate-180" : ""}`} />
+                <span>Chi Siamo</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileChiSiamoOpen ? "rotate-180" : ""}`} />
               </button>
-              {mobileOffertaOpen && (
+              {mobileChiSiamoOpen && (
                 <div className="ml-4 mt-1 space-y-1">
-                  {offertaItems.map((item) => (
+                  {chiSiamoItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => { setMenuOpen(false); setMobileOffertaOpen(false); }}
+                      onClick={() => { setMenuOpen(false); setMobileChiSiamoOpen(false); }}
                       className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <span className="font-semibold text-[#c0392b]">{item.label}</span>
@@ -307,11 +259,56 @@ export default function Navbar() {
               )}
             </div>
 
-            <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mb-2">Canali</p>
+            {/* B) Cosa Facciamo dropdown mobile */}
+            <div className="px-2 mb-1">
+              <button
+                onClick={() => setMobileCosaFacciamoOpen(!mobileCosaFacciamoOpen)}
+                className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                <span>Cosa Facciamo</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileCosaFacciamoOpen ? "rotate-180" : ""}`} />
+              </button>
+              {mobileCosaFacciamoOpen && (
+                <div className="ml-4 mt-1 space-y-1">
+                  {cosaFacciamoItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => { setMenuOpen(false); setMobileCosaFacciamoOpen(false); }}
+                      className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <span className="font-semibold text-[#c0392b]">{item.label}</span>
+                      <span className="text-[12px] text-[#1a1a1a]/50">{item.desc}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Pubblicizza, Contatti, Investi — voci dirette */}
+            <div className="flex flex-col gap-1 px-2 mt-1">
+              {[
+                { label: "Pubblicizza", href: "/pubblicizza" },
+                { label: "Contatti", href: "/contatti" },
+                { label: "🟠 Investi — Pre-Seed Open", href: "/investor" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                  style={{ color: "#1a1a1a", fontFamily: SF }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Canali */}
+            <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mt-3 mb-2">Canali</p>
             <div className="flex flex-col gap-1 px-2">
               {[
-                { label: "🟠 Investor — Pre-Seed Open", href: "/investor" },
-                { label: "Chi Siamo", href: "/chi-siamo" },
                 { label: "AI News", href: "/ai" },
                 { label: "Copy & Paste AI", href: "/copy-paste-ai" },
                 { label: "Automate", href: "/automate-with-ai" },
@@ -335,6 +332,7 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
+
             <div className="border-t border-gray-100 mt-3 pt-3 px-2">
               {isHome ? (
                 <button
