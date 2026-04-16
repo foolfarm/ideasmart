@@ -3147,3 +3147,9 @@
 - [ ] Aggiorna sezioni contesto, Cos'è, 5 step
 - [ ] Nuova sezione Use Case comparativi (Giulia + Direttore testata)
 - [ ] Aggiorna sezioni Perché non diciamo non-AI, Differenziazione, Per chi, Stack tecnico, CTA, pull quote
+
+## Task (16 Apr 2026 — ProofPress Verify pricing + UX)
+- [ ] Sezione pricing ProofPress Verify (incluso nei piani + add-on SaaS con prezzi ipotetici)
+- [ ] Voce menu ProofPress Verify nella navigazione principale
+- [ ] Pulsante "Verifica un articolo" nella pagina /proofpress-verify
+- [ ] Sezione esempi reali articoli verificati in /proofpress-verify

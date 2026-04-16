@@ -571,22 +571,28 @@ export default function ProofPressVerify() {
               </div>
 
               {/* CTA */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
                 <button
                   onClick={scrollToForm}
                   className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
                   style={{ background: ORANGE, fontFamily: FONT }}
                 >
-                  Verifica una notizia ↓
+                  Verifica un articolo ↓
                 </button>
-                <Link href="/chi-siamo">
-                  <button
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-widest border transition-colors hover:bg-[#0a0a0a]/5"
-                    style={{ borderColor: "#0a0a0a", color: "#0a0a0a", fontFamily: FONT }}
-                  >
-                    Scopri i piani →
-                  </button>
-                </Link>
+                <a
+                  href="#pricing"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest border transition-colors hover:bg-[#0a0a0a]/5 text-center"
+                  style={{ borderColor: "#0a0a0a", color: "#0a0a0a", fontFamily: FONT }}
+                >
+                  Piani e prezzi →
+                </a>
+                <a
+                  href="#contact"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-80 text-center"
+                  style={{ background: "#0a0a0a", color: "#00e5c8", fontFamily: FONT }}
+                >
+                  Richiedi demo
+                </a>
               </div>
             </div>
           </section>
@@ -977,11 +983,167 @@ export default function ProofPressVerify() {
           </Section>
 
           <Divider />
-
+          {/* ═══════════════════════════════════════════════════════════════════
+              ESEMPI VERIFICATI
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section bg="#0a0a0a" id="esempi">
+            <Label light>Verify in azione</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4 text-white" style={{ fontFamily: FONT }}>
+              Cosa vede il lettore.
+            </h2>
+            <p className="text-base text-white/40 max-w-2xl mb-12 leading-relaxed">
+              Ogni articolo pubblicato su ProofPress nasce con un Verification Report. Ecco come appare il badge trust grade e il certificato IPFS su contenuti reali.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {[
+                {
+                  grade: "A",
+                  score: "92%",
+                  title: "OpenAI lancia GPT-5: capacità multimodali avanzate e nuove API per sviluppatori",
+                  category: "AI",
+                  claims: 8,
+                  supported: 8,
+                  color: "#22c55e",
+                  note: "8/8 claim corroborati da fonti IFCN e media tech tier-1",
+                },
+                {
+                  grade: "B",
+                  score: "74%",
+                  title: "Startup italiana raccoglie 12M€ in Series A: focus su AI per la supply chain",
+                  category: "Startup",
+                  claims: 6,
+                  supported: 5,
+                  color: "#3b82f6",
+                  note: "5/6 claim verificati. 1 claim su valutazione non corroborato da fonti pubbliche",
+                },
+                {
+                  grade: "C",
+                  score: "51%",
+                  title: "Il mercato VC europeo rallenta: investimenti in calo del 18% nel Q1 2026",
+                  category: "Venture Capital",
+                  claims: 5,
+                  supported: 3,
+                  color: "#eab308",
+                  note: "3/5 claim verificati. Dato percentuale non confermato da fonti primarie",
+                },
+              ].map(({ grade, score, title, category, claims, supported, color, note }) => (
+                <div key={title} className="bg-white/5 border border-white/8 p-6 flex flex-col gap-4">
+                  {/* Header badge */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-widest text-white/30">{category}</span>
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-9 h-9 flex items-center justify-center font-black text-lg"
+                        style={{ background: color, color: grade === "C" ? "#0a0a0a" : "#fff", fontFamily: FONT }}
+                      >
+                        {grade}
+                      </div>
+                      <span className="text-sm font-bold text-white/60">{score}</span>
+                    </div>
+                  </div>
+                  {/* Titolo */}
+                  <p className="text-sm font-semibold text-white leading-snug">{title}</p>
+                  {/* Barra claim */}
+                  <div>
+                    <div className="flex justify-between text-xs text-white/40 mb-1">
+                      <span>Claim corroborati</span>
+                      <span>{supported}/{claims}</span>
+                    </div>
+                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{ width: `${(supported / claims) * 100}%`, background: color }}
+                      />
+                    </div>
+                  </div>
+                  {/* Nota */}
+                  <p className="text-xs text-white/35 leading-relaxed italic">{note}</p>
+                  {/* CID mock */}
+                  <div className="pt-3 border-t border-white/8">
+                    <span className="text-xs font-mono text-white/20">IPFS · CID: bafkrei… ✓ certificato</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="p-4 border border-white/8 text-xs text-white/25 leading-relaxed">
+              Esempi rappresentativi basati su contenuti reali della piattaforma. Il sistema di verifica è attivo su ogni articolo pubblicato. I grade variano in base al numero di claim fattuali e alla disponibilità di fonti indipendenti.
+            </div>
+          </Section>
+          <Divider />
+          {/* ═══════════════════════════════════════════════════════════════════
+              PRICING
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section bg="#fff" id="pricing">
+            <Label>Modello di accesso</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
+              Incluso. O potenziato.
+            </h2>
+            <p className="text-base text-[#0a0a0a]/55 max-w-2xl mb-12 leading-relaxed">
+              ProofPress Verify è già integrato nella piattaforma ProofPress. Chi pubblica con noi ottiene la corroborazione verificabile senza costi aggiuntivi. Per redazioni esterne, media company e brand publisher, è disponibile come add-on SaaS indipendente.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              {/* Piano 1 — Incluso */}
+              <div className="p-8 border-2 border-[#0a0a0a]/8 bg-[#f8f8f6] flex flex-col">
+                <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-3">Per i publisher ProofPress</div>
+                <h3 className="text-2xl font-black mb-2" style={{ fontFamily: FONT }}>Incluso</h3>
+                <div className="text-4xl font-black mb-1" style={{ fontFamily: FONT, color: "#00e5c8" }}>€0</div>
+                <div className="text-sm text-[#0a0a0a]/40 mb-6">già nel piano ProofPress</div>
+                <ul className="space-y-3 text-sm text-[#0a0a0a]/65 flex-1">
+                  {["Verifica automatica su ogni articolo", "Badge trust grade A–F visibile ai lettori", "Certificato IPFS permanente", "Verification Report pubblico", "Fino a 500 articoli/mese"].map(f => (
+                    <li key={f} className="flex items-start gap-2"><span style={{ color: "#00e5c8" }} className="font-bold mt-0.5">✓</span>{f}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
+                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 border-2 border-[#0a0a0a]/20 hover:border-[#0a0a0a]/40 transition-colors">
+                    Diventa publisher
+                  </a>
+                </div>
+              </div>
+              {/* Piano 2 — Add-on SaaS Starter */}
+              <div className="p-8 border-2 flex flex-col" style={{ borderColor: ORANGE }}>
+                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE }}>Add-on SaaS — Starter</div>
+                <h3 className="text-2xl font-black mb-2" style={{ fontFamily: FONT }}>Verify Essential</h3>
+                <div className="text-4xl font-black mb-1" style={{ fontFamily: FONT, color: ORANGE }}>€490</div>
+                <div className="text-sm text-[#0a0a0a]/40 mb-6">/mese · fino a 1.000 articoli</div>
+                <ul className="space-y-3 text-sm text-[#0a0a0a]/65 flex-1">
+                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "Onboarding tecnico incluso"].map(f => (
+                    <li key={f} className="flex items-start gap-2"><span style={{ color: ORANGE }} className="font-bold mt-0.5">✓</span>{f}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
+                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 text-white transition-colors" style={{ background: ORANGE }}>
+                    Richiedi demo
+                  </a>
+                </div>
+              </div>
+              {/* Piano 3 — Add-on SaaS Pro */}
+              <div className="p-8 border-2 border-[#0a0a0a] bg-[#0a0a0a] flex flex-col">
+                <div className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Add-on SaaS — Pro</div>
+                <h3 className="text-2xl font-black mb-2 text-white" style={{ fontFamily: FONT }}>Verify Pro</h3>
+                <div className="text-4xl font-black mb-1 text-white" style={{ fontFamily: FONT }}>€1.490</div>
+                <div className="text-sm text-white/30 mb-6">/mese · articoli illimitati</div>
+                <ul className="space-y-3 text-sm text-white/60 flex-1">
+                  {["Tutto di Verify Essential", "White-label: badge con il tuo brand", "Verifica in tempo reale (< 60 sec)", "Export report in PDF/JSON", "Accesso prioritario a nuove feature", "Account manager dedicato"].map(f => (
+                    <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#00e5c8" }}>✓</span>{f}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 text-[#0a0a0a] transition-colors" style={{ background: "#00e5c8" }}>
+                    Contattaci
+                  </a>
+                </div>
+              </div>
+            </div>
+            {/* Nota prezzi */}
+            <div className="p-5 border border-[#0a0a0a]/8 bg-[#f8f8f6] text-sm text-[#0a0a0a]/50 leading-relaxed">
+              <strong className="text-[#0a0a0a]/70">Prezzi indicativi.</strong> I piani SaaS sono in fase di definizione. Contattaci per un'offerta personalizzata basata su volumi, verticale editoriale e livello di integrazione richiesto. È disponibile anche un modello <strong className="text-[#0a0a0a]/70">revenue sharing</strong> per media company con volumi elevati.
+            </div>
+          </Section>
+          <Divider />
           {/* ═══════════════════════════════════════════════════════════════════
               CTA FINALE — FORM DI CONTATTO
           ═══════════════════════════════════════════════════════════════════ */}
-          <section className="py-24 md:py-32" style={{ background: "#f5f5f7" }}>
+          <section id="contact" className="py-24 md:py-32" style={{ background: "#f5f5f7" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
               <div className="text-center mb-12">
                 <Label>Incluso in tutti i piani</Label>
