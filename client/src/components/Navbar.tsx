@@ -286,51 +286,41 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Pubblicizza, Contatti, Investi — voci dirette */}
-            <div className="flex flex-col gap-1 px-2 mt-1">
-              {[
-                { label: "Pubblicizza", href: "/pubblicita" },
-                { label: "Contatti", href: "/contatti" },
-                { label: "🟠 Investi — Pre-Seed Open", href: "/investor" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
-                  style={{ color: "#1a1a1a", fontFamily: SF }}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            {/* C) Pubblicizza — voce diretta */}
+            <div className="px-2 mb-1">
+              <Link
+                href="/pubblicita"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                Pubblicizza
+              </Link>
             </div>
 
-            {/* Canali */}
-            <p className="px-4 py-1 text-xs font-mono tracking-widest uppercase text-gray-400 mt-3 mb-2">Canali</p>
-            <div className="flex flex-col gap-1 px-2">
-              {[
-                { label: "AI News", href: "/ai" },
-                { label: "Copy & Paste AI", href: "/copy-paste-ai" },
-                { label: "Automate", href: "/automate-with-ai" },
-                { label: "Make Money", href: "/make-money-with-ai" },
-                { label: "Daily AI Tools", href: "/daily-ai-tools" },
-                { label: "ProofPress Verify", href: "/verified-ai-news" },
-                { label: "AI Opportunities", href: "/ai-opportunities" },
-                { label: "AI Research", href: "/research" },
-                { label: "AI Venture", href: "/dealroom" },
-                { label: "AI Invest", href: "/dealflow" },
-                { label: "Startup News", href: "/startup" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
-                  style={{ color: "#1a1a1a", fontFamily: SF }}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            {/* D) Contatti — voce diretta */}
+            <div className="px-2 mb-1">
+              <Link
+                href="/contatti"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                Contatti
+              </Link>
+            </div>
+
+            {/* E) Investi — badge arancio */}
+            <div className="px-2 mb-1">
+              <Link
+                href="/investor"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 px-3 py-2.5 text-sm font-bold rounded-lg transition-colors"
+                style={{ color: "#ff5500", fontFamily: SF }}
+              >
+                <span className="w-2 h-2 rounded-full bg-[#ff5500] animate-pulse inline-block flex-shrink-0" />
+                Investi — Pre-Seed Open
+              </Link>
             </div>
 
             <div className="border-t border-gray-100 mt-3 pt-3 px-2">
