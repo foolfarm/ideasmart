@@ -1,5 +1,6 @@
 /**
  * MobileNav — Hamburger button + slide-in drawer per mobile
+ * Struttura menu: A) Chi Siamo | B) Cosa Facciamo | C) Pubblicizza | D) Contatti | E) Investi
  * Visibile solo su schermi < lg (1024px)
  */
 import { useState, useEffect } from "react";
@@ -8,36 +9,10 @@ import { X, Menu, ChevronDown, ChevronRight } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
-const INFO_LINKS = [
-  { label: "Chi siamo",         icon: "🏗️", href: "/chi-siamo-story" },
-  { label: "Pubblicizza",       icon: "📣", href: "/pubblicita" },
-  { label: "Collezione Prompt", icon: "📋", href: "https://promptcollection2026.com/" },
-  { label: "Contatti",          icon: "✉️", href: "mailto:info@proofpress.ai" },
-];
-
-const PIATTAFORMA_SUBMENU = [
-  { label: "Piattaforma ProofPress", icon: "🚀", href: "/piattaforma",          external: false },
-  { label: "Agentic Platform Demo",  icon: "🎯", href: "https://proofpress.tech/", external: true },
-  { label: "ProofPress Verify",      icon: "✅", href: "/proofpress-verify",    external: false },
-];
-
-const OFFERTA_SUBMENU = [
-  { label: "Creator & Giornalisti", icon: "✍️", href: "/offerta/creator" },
-  { label: "Testate & Editori",     icon: "📰", href: "/offerta/editori" },
-  { label: "Aziende & Corporate",   icon: "🏢", href: "/offerta/aziende" },
-];
-
-const CANALI = [
-  { label: "AI News",   icon: "🤖", href: "/ai" },
-  { label: "Startup",   icon: "🚀", href: "/startup" },
-  { label: "Research",  icon: "🔬", href: "/research" },
-  { label: "Dealroom",  icon: "💼", href: "/dealroom" },
-];
-
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [offertaOpen, setOffertaOpen] = useState(false);
-  const [piattaformaOpen, setPiattaformaOpen] = useState(false);
+  const [chiSiamoOpen, setChiSiamoOpen] = useState(false);
+  const [cosaFacciamoOpen, setCosaFacciamoOpen] = useState(false);
   const [location] = useLocation();
 
   // Chiude il drawer quando cambia la pagina
@@ -47,13 +22,27 @@ export default function MobileNav() {
 
   // Blocca lo scroll del body quando il drawer è aperto
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
+
+  const close = () => setOpen(false);
+  const isActive = (href: string) => location.startsWith(href);
+
+  /* ── Sub-link helper ── */
+  const SubLink = ({ href, icon, label }: { href: string; icon: string; label: string }) => (
+    <Link href={href}>
+      <div
+        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
+          isActive(href) ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/70"
+        }`}
+        onClick={close}
+      >
+        <span className="text-[13px] w-4 text-center flex-shrink-0">{icon}</span>
+        <span style={{ fontSize: "13px", fontWeight: 500, fontFamily: SF }}>{label}</span>
+      </div>
+    </Link>
+  );
 
   return (
     <>
@@ -70,7 +59,7 @@ export default function MobileNav() {
       {open && (
         <div
           className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm lg:hidden"
-          onClick={() => setOpen(false)}
+          onClick={close}
         />
       )}
 
@@ -83,15 +72,13 @@ export default function MobileNav() {
       >
         {/* Header drawer */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-[#e5e5ea]">
-          <Link href="/">
-            <span
-              style={{ fontFamily: SF, fontSize: "22px", fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.02em", cursor: "pointer" }}
-            >
+          <Link href="/" onClick={close}>
+            <span style={{ fontFamily: SF, fontSize: "22px", fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.02em", cursor: "pointer" }}>
               Menu
             </span>
           </Link>
           <button
-            onClick={() => setOpen(false)}
+            onClick={close}
             className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-[#1a1a1a]/8 transition-colors"
             aria-label="Chiudi menu"
           >
@@ -101,118 +88,98 @@ export default function MobileNav() {
 
         {/* Tagline */}
         <div className="px-5 py-4 border-b border-[#e5e5ea]">
-          <p style={{ fontSize: "13px", color: "rgba(26,26,26,0.65)", lineHeight: 1.6, fontFamily: SF }}>
+          <p style={{ fontSize: "13px", color: "rgba(26,26,26,0.55)", lineHeight: 1.6, fontFamily: SF }}>
             ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato.
           </p>
         </div>
 
-        {/* Canali principali */}
-        <div className="px-3 py-3 border-b border-[#e5e5ea]">
-          <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868b", letterSpacing: "0.12em", fontFamily: SF, paddingLeft: "12px", marginBottom: "6px" }}>
-            CANALI
-          </p>
-          {CANALI.map((c) => (
-            <Link key={c.href} href={c.href}>
-              <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
-                location.startsWith(c.href) ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
-              }`}>
-                <span className="text-[16px] w-5 text-center flex-shrink-0">{c.icon}</span>
-                <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF }}>{c.label}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {/* ══════════════════════════════════════════════════════════
+            NAV PRINCIPALE — struttura A/B/C/D/E
+        ══════════════════════════════════════════════════════════ */}
+        <nav className="flex flex-col gap-0.5 px-3 py-4">
 
-        {/* Nav principale */}
-        <nav className="flex flex-col gap-0.5 px-3 py-3 border-b border-[#e5e5ea]">
-          <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868b", letterSpacing: "0.12em", fontFamily: SF, paddingLeft: "12px", marginBottom: "6px" }}>
-            PIATTAFORMA
-          </p>
-
-          {/* Piattaforma con submenu */}
+          {/* A) CHI SIAMO — dropdown */}
           <div>
             <button
-              onClick={() => setPiattaformaOpen(!piattaformaOpen)}
+              onClick={() => setChiSiamoOpen(!chiSiamoOpen)}
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
+            >
+              <span className="text-[15px] w-5 text-center flex-shrink-0">🏛️</span>
+              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF, flex: 1, textAlign: "left" }}>Chi Siamo</span>
+              {chiSiamoOpen
+                ? <ChevronDown size={14} className="opacity-40 flex-shrink-0" />
+                : <ChevronRight size={14} className="opacity-40 flex-shrink-0" />}
+            </button>
+            {chiSiamoOpen && (
+              <div className="ml-5 mt-1 flex flex-col gap-0.5 border-l-2 border-[#1a1a1a]/10 pl-3 pb-1">
+                <SubLink href="/chi-siamo" icon="ℹ️" label="Chi Siamo" />
+                <SubLink href="/storia" icon="📖" label="Storia" />
+              </div>
+            )}
+          </div>
+
+          {/* B) COSA FACCIAMO — dropdown */}
+          <div>
+            <button
+              onClick={() => setCosaFacciamoOpen(!cosaFacciamoOpen)}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
             >
               <span className="text-[15px] w-5 text-center flex-shrink-0">🖥️</span>
-              <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF, flex: 1, textAlign: "left" }}>Piattaforma</span>
-              {piattaformaOpen ? <ChevronDown size={14} className="opacity-50" /> : <ChevronRight size={14} className="opacity-50" />}
+              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF, flex: 1, textAlign: "left" }}>Cosa Facciamo</span>
+              {cosaFacciamoOpen
+                ? <ChevronDown size={14} className="opacity-40 flex-shrink-0" />
+                : <ChevronRight size={14} className="opacity-40 flex-shrink-0" />}
             </button>
-            {piattaformaOpen && (
-              <div className="ml-5 mt-1 flex flex-col gap-0.5 border-l-2 border-[#1a1a1a]/12 pl-3">
-                {PIATTAFORMA_SUBMENU.map((sub) =>
-                  sub.external ? (
-                    <a key={sub.href} href={sub.href} target="_blank" rel="noopener noreferrer">
-                      <div className="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/65">
-                        <span className="text-[13px] w-4 text-center flex-shrink-0">{sub.icon}</span>
-                        <span style={{ fontSize: "13px", fontWeight: 500, fontFamily: SF }}>{sub.label}</span>
-                      </div>
-                    </a>
-                  ) : (
-                    <Link key={sub.href} href={sub.href}>
-                      <div className="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/65">
-                        <span className="text-[13px] w-4 text-center flex-shrink-0">{sub.icon}</span>
-                        <span style={{ fontSize: "13px", fontWeight: 500, fontFamily: SF }}>{sub.label}</span>
-                      </div>
-                    </Link>
-                  )
-                )}
+            {cosaFacciamoOpen && (
+              <div className="ml-5 mt-1 flex flex-col gap-0.5 border-l-2 border-[#1a1a1a]/10 pl-3 pb-1">
+                <SubLink href="/cosa-facciamo" icon="💡" label="Cosa Offriamo" />
+                <SubLink href="/piattaforma" icon="🚀" label="Piattaforma Agentica" />
+                <SubLink href="/proofpress-verify" icon="✅" label="Tecnologia Verify" />
               </div>
             )}
           </div>
 
-          {/* Offerta con submenu */}
-          <div>
-            <button
-              onClick={() => setOffertaOpen(!offertaOpen)}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
+          {/* C) PUBBLICIZZA */}
+          <Link href="/pubblicita" onClick={close}>
+            <div className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
+              isActive("/pubblicita") ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
+            }`}>
+              <span className="text-[15px] w-5 text-center flex-shrink-0">📣</span>
+              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF }}>Pubblicizza</span>
+            </div>
+          </Link>
+
+          {/* D) CONTATTI */}
+          <Link href="/contatti" onClick={close}>
+            <div className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
+              isActive("/contatti") ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
+            }`}>
+              <span className="text-[15px] w-5 text-center flex-shrink-0">✉️</span>
+              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF }}>Contatti</span>
+            </div>
+          </Link>
+
+          {/* E) INVESTI — badge arancio */}
+          <Link href="/investor" onClick={close}>
+            <div
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150"
+              style={{ background: "rgba(255,85,0,0.07)" }}
             >
-              <span className="text-[15px] w-5 text-center flex-shrink-0">💼</span>
-              <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF, flex: 1, textAlign: "left" }}>Offerta</span>
-              {offertaOpen ? <ChevronDown size={14} className="opacity-50" /> : <ChevronRight size={14} className="opacity-50" />}
-            </button>
-            {offertaOpen && (
-              <div className="ml-5 mt-1 flex flex-col gap-0.5 border-l-2 border-[#1a1a1a]/12 pl-3">
-                {OFFERTA_SUBMENU.map((sub) => (
-                  <Link key={sub.href} href={sub.href}>
-                    <div className="flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/65">
-                      <span className="text-[13px] w-4 text-center flex-shrink-0">{sub.icon}</span>
-                      <span style={{ fontSize: "13px", fontWeight: 500, fontFamily: SF }}>{sub.label}</span>
-                    </div>
-                  </Link>
-                ))}
+              <span className="text-[15px] w-5 text-center flex-shrink-0">💰</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "14px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
+                  Investi
+                </div>
+                <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
               </div>
-            )}
-          </div>
-        </nav>
+            </div>
+          </Link>
 
-        {/* Info links */}
-        <nav className="flex flex-col gap-0.5 px-3 py-3">
-          <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868b", letterSpacing: "0.12em", fontFamily: SF, paddingLeft: "12px", marginBottom: "6px" }}>
-            INFO
-          </p>
-          {INFO_LINKS.map((link) =>
-            link.href.startsWith("http") || link.href.startsWith("mailto") ? (
-              <a key={link.href} href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
-                <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-[#1a1a1a]/6 text-[#1a1a1a]">
-                  <span className="text-[15px] w-5 text-center flex-shrink-0">{link.icon}</span>
-                  <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF }}>{link.label}</span>
-                </div>
-              </a>
-            ) : (
-              <Link key={link.href} href={link.href}>
-                <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-[#1a1a1a]/6 text-[#1a1a1a]">
-                  <span className="text-[15px] w-5 text-center flex-shrink-0">{link.icon}</span>
-                  <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF }}>{link.label}</span>
-                </div>
-              </Link>
-            )
-          )}
         </nav>
 
         {/* LinkedIn */}
-        <div className="px-4 pb-8">
+        <div className="px-4 pb-8 border-t border-[#e5e5ea] pt-4 mt-2">
           <a
             href="https://www.linkedin.com/company/proofpress/"
             target="_blank"
@@ -220,13 +187,16 @@ export default function MobileNav() {
             className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#f0f7ff] transition-colors"
             style={{ border: "1px solid rgba(10,102,194,0.15)", background: "rgba(10,102,194,0.04)" }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: "11px", fontWeight: 800, color: "#0a66c2", fontFamily: "system-ui, sans-serif" }}>ProofPress</div>
               <div style={{ fontSize: "10px", color: "rgba(26,26,26,0.5)", fontFamily: "system-ui, sans-serif" }}>Seguici su LinkedIn</div>
             </div>
           </a>
         </div>
+
       </div>
     </>
   );
