@@ -863,11 +863,16 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
             id: newsItemsTable.id,
             title: newsItemsTable.title,
             summary: newsItemsTable.summary,
+            category: newsItemsTable.category,
+            weekLabel: newsItemsTable.weekLabel,
             sourceName: newsItemsTable.sourceName,
             sourceUrl: newsItemsTable.sourceUrl,
             section: newsItemsTable.section,
             publishedAt: newsItemsTable.publishedAt,
             verifyHash: newsItemsTable.verifyHash,
+            ipfsCid: newsItemsTable.ipfsCid,
+            ipfsUrl: newsItemsTable.ipfsUrl,
+            ipfsPinnedAt: newsItemsTable.ipfsPinnedAt,
           })
           .from(newsItemsTable)
           .where(eq(newsItemsTable.verifyHash, input.hash))
@@ -878,12 +883,64 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           id: r.id,
           title: r.title,
           summary: r.summary,
+          category: r.category,
+          weekLabel: r.weekLabel,
           sourceName: r.sourceName,
           sourceUrl: r.sourceUrl ?? null,
           section: r.section,
           publishedAt: r.publishedAt,
           verifyHash: r.verifyHash ?? null,
+          ipfsCid: r.ipfsCid ?? null,
+          ipfsUrl: r.ipfsUrl ?? null,
+          ipfsPinnedAt: r.ipfsPinnedAt ?? null,
         };
+      }),
+
+    // Ancora un articolo su IPFS via Pinata — restituisce CID e URL gateway
+    pinToIPFS: publicProcedure
+      .input(z.object({ hash: z.string().min(8).max(128) }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'DB non disponibile' });
+
+        // Recupera l'articolo
+        const rows = await db
+          .select()
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.verifyHash, input.hash))
+          .limit(1);
+        if (!rows.length) throw new TRPCError({ code: 'NOT_FOUND', message: 'Articolo non trovato' });
+        const article = rows[0];
+
+        // Se già pinnato, restituisce i dati esistenti
+        if (article.ipfsCid && article.ipfsUrl) {
+          return { cid: article.ipfsCid, ipfsUrl: article.ipfsUrl, alreadyPinned: true };
+        }
+
+        // Pinna su IPFS via Pinata
+        const { pinVerificationReport } = await import('./pinata.js');
+        const { cid, ipfsUrl } = await pinVerificationReport({
+          verifyHash: article.verifyHash!,
+          article: {
+            id: article.id,
+            title: article.title,
+            summary: article.summary,
+            section: article.section,
+            sourceName: article.sourceName,
+            sourceUrl: article.sourceUrl,
+            publishedAt: article.publishedAt,
+            category: article.category,
+            weekLabel: article.weekLabel,
+          },
+        });
+
+        // Salva CID e URL nel DB
+        await db
+          .update(newsItemsTable)
+          .set({ ipfsCid: cid, ipfsUrl: ipfsUrl, ipfsPinnedAt: new Date() })
+          .where(eq(newsItemsTable.id, article.id));
+
+        return { cid, ipfsUrl, alreadyPinned: false };
       }),
 
     // Contatore notizie per sezione — usato dal SectionNav per mostrare badge live

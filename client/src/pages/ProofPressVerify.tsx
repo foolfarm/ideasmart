@@ -142,6 +142,9 @@ function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
   const isLoading = verifyQuery?.isLoading;
   const isError = verifyQuery?.isError;
 
+  // Pinning su IPFS via Pinata
+  const pinMutation = trpc.news.pinToIPFS.useMutation();
+
   // Adatta il risultato al formato atteso dalla UI
   const result = rawResult
     ? {
@@ -155,6 +158,9 @@ function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
         id: rawResult.id,
         sourceName: rawResult.sourceName,
         summary: rawResult.summary,
+        ipfsCid: rawResult.ipfsCid ?? null,
+        ipfsUrl: rawResult.ipfsUrl ?? null,
+        ipfsPinnedAt: rawResult.ipfsPinnedAt ?? null,
       }
     : submitted && !isLoading
     ? { status: "not_found" as const }
@@ -240,10 +246,92 @@ function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
                     </div>
                   )}
                   {result.verifyHash && (
-                    <div className="text-xs text-green-600/70 mt-2 font-mono">
-                      <span className="font-bold">Hash SHA-256:</span> {result.verifyHash}
+                    <div className="text-xs text-green-600/70 mt-2 font-mono break-all">
+                      <span className="font-bold not-italic" style={{ fontFamily: FONT }}>Hash SHA-256:</span>{" "}
+                      {result.verifyHash}
                     </div>
                   )}
+
+                  {/* ── Sezione IPFS / Blockchain ── */}
+                  <div className="mt-4 pt-4 border-t border-green-200">
+                    {'ipfsCid' in result && result.ipfsCid ? (
+                      // Già pinnato su IPFS
+                      <div
+                        className="rounded-lg px-4 py-3"
+                        style={{ background: "rgba(0,150,136,0.08)", border: "1px solid rgba(0,150,136,0.25)" }}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#00897b", fontFamily: FONT }}>⛓ Ancorato su IPFS</span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: "#00897b", color: "#fff", fontFamily: FONT }}>IMMUTABILE</span>
+                        </div>
+                        <p className="text-[10px] mb-2" style={{ color: "rgba(0,77,64,0.75)", fontFamily: FONT }}>
+                          Il Verification Report è ancorato permanentemente su IPFS tramite Pinata. Il CID garantisce l'immutabilità del contenuto certificato.
+                        </p>
+                        <div className="text-[9px] font-mono break-all mb-2" style={{ color: "#00695c" }}>
+                          <span className="font-bold not-italic" style={{ fontFamily: FONT }}>CID:</span>{" "}
+                          {result.ipfsCid}
+                        </div>
+                        {'ipfsUrl' in result && result.ipfsUrl && (
+                          <a
+                            href={result.ipfsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] font-bold hover:opacity-70 transition-opacity"
+                            style={{ color: "#00897b", fontFamily: FONT }}
+                          >
+                            Visualizza su IPFS Gateway →
+                          </a>
+                        )}
+                        {'ipfsPinnedAt' in result && result.ipfsPinnedAt && (
+                          <div className="text-[9px] mt-1" style={{ color: "rgba(0,77,64,0.5)", fontFamily: FONT }}>
+                            Pinnato il {new Date(result.ipfsPinnedAt).toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      // Non ancora pinnato — mostra pulsante
+                      <div
+                        className="rounded-lg px-4 py-3"
+                        style={{ background: "rgba(255,85,0,0.05)", border: "1px solid rgba(255,85,0,0.2)" }}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: ORANGE, fontFamily: FONT }}>⛓ Ancora su IPFS</span>
+                        </div>
+                        <p className="text-[10px] mb-3" style={{ color: "rgba(10,10,10,0.55)", fontFamily: FONT }}>
+                          Ancora questo Verification Report su IPFS per garantirne l'immutabilità permanente tramite blockchain.
+                        </p>
+                        {pinMutation.isSuccess ? (
+                          <div className="text-[10px] font-bold" style={{ color: "#2e7d32", fontFamily: FONT }}>
+                            ✅ Ancorato! CID: <span className="font-mono">{pinMutation.data?.cid?.substring(0, 20)}…</span>
+                            {pinMutation.data?.ipfsUrl && (
+                              <a href={pinMutation.data.ipfsUrl} target="_blank" rel="noopener noreferrer" className="ml-2 underline hover:no-underline">
+                                Visualizza →
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => result.verifyHash && pinMutation.mutate({ hash: result.verifyHash })}
+                            disabled={pinMutation.isPending || !result.verifyHash}
+                            className="flex items-center gap-2 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+                            style={{ background: ORANGE, fontFamily: FONT }}
+                          >
+                            {pinMutation.isPending ? (
+                              <><span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full" /> Pinning in corso…</>
+                            ) : (
+                              <>⛓ Ancora su IPFS</>
+                            )}
+                          </button>
+                        )}
+                        {pinMutation.isError && (
+                          <p className="text-[9px] mt-2" style={{ color: "#c62828", fontFamily: FONT }}>
+                            Errore: {pinMutation.error?.message}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
                   {result.id && (
                     <Link
                       href={`/${result.section}/news/${result.id}`}

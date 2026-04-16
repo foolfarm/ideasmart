@@ -205,7 +205,7 @@ export default function VerifyWidget() {
 
               {/* Hash SHA-256 */}
               <div
-                className="rounded-lg px-2.5 py-2 mb-3"
+                className="rounded-lg px-2.5 py-2 mb-2"
                 style={{ background: "rgba(46,125,50,0.1)", border: "1px solid rgba(46,125,50,0.25)" }}
               >
                 <p className="text-[8px] font-black uppercase tracking-widest mb-1" style={{ color: "rgba(46,125,50,0.8)" }}>
@@ -223,6 +223,33 @@ export default function VerifyWidget() {
                   {data.verifyHash}
                 </p>
               </div>
+
+              {/* Badge IPFS se pinnato */}
+              {'ipfsCid' in data && data.ipfsCid && (
+                <div
+                  className="rounded-lg px-2.5 py-2 mb-3"
+                  style={{ background: "rgba(0,150,136,0.08)", border: "1px solid rgba(0,150,136,0.25)" }}
+                >
+                  <div className="flex items-center gap-1 mb-1">
+                    <span className="text-[8px] font-black uppercase tracking-widest" style={{ color: "#00897b" }}>⛓ IPFS</span>
+                    <span className="text-[7px] px-1 py-0.5 rounded" style={{ background: "#00897b", color: "#fff" }}>IMMUTABILE</span>
+                  </div>
+                  <p className="text-[8px] break-all mb-1" style={{ fontFamily: "JetBrains Mono, 'Courier New', monospace", color: "#00695c" }}>
+                    {(data.ipfsCid as string).substring(0, 24)}…
+                  </p>
+                  {'ipfsUrl' in data && data.ipfsUrl && (
+                    <a
+                      href={data.ipfsUrl as string}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[8px] font-bold hover:opacity-70 transition-opacity"
+                      style={{ color: "#00897b" }}
+                    >
+                      Visualizza su IPFS →
+                    </a>
+                  )}
+                </div>
+              )}
 
               {/* CTA */}
               <div className="flex items-center justify-between">

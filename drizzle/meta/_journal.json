@@ -484,6 +484,13 @@
       "when": 1776286869079,
       "tag": "0068_smiling_wendell_vaughn",
       "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "5",
+      "when": 1776323783588,
+      "tag": "0069_jazzy_tarantula",
+      "breakpoints": true
     }
   ]
 }

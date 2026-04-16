@@ -117,6 +117,13 @@ export const newsItems = mysqlTable("news_items", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   // VERIFY: hash SHA-256 univoco (titolo+summary+sourceUrl) — certifica l'articolo
   verifyHash: varchar("verifyHash", { length: 64 }),
+  // IPFS/PINATA: CID del Verification Report ancorato su IPFS via Pinata
+  // Formato: Qm... (CIDv0) o bafy... (CIDv1)
+  ipfsCid: varchar("ipfsCid", { length: 128 }),
+  // URL pubblico IPFS gateway (https://gateway.pinata.cloud/ipfs/<cid>)
+  ipfsUrl: varchar("ipfsUrl", { length: 512 }),
+  // Timestamp del pinning su IPFS
+  ipfsPinnedAt: timestamp("ipfsPinnedAt"),
 }, (t) => ({
   // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)
   sectionIdx: index("idx_news_section").on(t.section),
