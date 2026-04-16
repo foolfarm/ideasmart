@@ -371,6 +371,75 @@ function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
   );
 }
 
+/* ── FAQ ── */
+const FAQ_ITEMS = [
+  {
+    q: "Cosa significa grade F per un articolo?",
+    a: "Il grade F indica che il sistema non ha trovato corroborazione esterna sufficiente per i claim identificati. Non significa necessariamente che l’articolo sia falso: può trattarsi di contenuto di opinione, analisi soggettiva o notizie su eventi molto recenti non ancora indicizzati dalle fonti IFCN. Il grade misura la verificabilità fattuale, non la qualità editoriale.",
+  },
+  {
+    q: "Posso usare ProofPress Verify per articoli di altre testate?",
+    a: "Sì, con il piano Verify Essential o Pro. Tramite API REST puoi inviare qualsiasi contenuto testuale al motore di verifica e ricevere un Verification Report con trust score, claim corroborati e certificato IPFS. L’integrazione è compatibile con qualsiasi CMS.",
+  },
+  {
+    q: "Il badge trust grade è personalizzabile con il mio brand?",
+    a: "Sì, nel piano Verify Pro è disponibile la versione white-label: il badge può essere configurato con i colori e il logo della tua testata. Il certificato IPFS rimane pubblico e verificabile indipendentemente dal brand applicato.",
+  },
+  {
+    q: "Quanto tempo richiede la verifica di un articolo?",
+    a: "In media meno di 60 secondi dall’invio alla generazione del certificato IPFS. Il tempo varia in base al numero di claim identificati (tipicamente 4–10 per articolo) e alla disponibilità delle fonti esterne. La verifica è asincrona: il badge si aggiorna automaticamente quando il report è pronto.",
+  },
+  {
+    q: "Cosa succede se Pinata o il gateway IPFS non sono disponibili?",
+    a: "Il Verification Report viene generato e salvato nel database ProofPress indipendentemente dallo stato di Pinata. Il pinning IPFS viene ritentato automaticamente. Il badge trust grade è sempre visibile anche senza CID IPFS attivo, perché il trust score è calcolato e persistito localmente.",
+  },
+  {
+    q: "I prezzi indicati sono definitivi?",
+    a: "No. I piani Verify Essential (€490/mese) e Verify Pro (€1.490/mese) sono prezzi indicativi in fase di validazione commerciale. Per redazioni con volumi elevati è disponibile un modello revenue sharing. Contattaci per un’offerta personalizzata basata su volumi, verticale editoriale e livello di integrazione richiesto.",
+  },
+  {
+    q: "Come funziona il certificato IPFS? Posso verificarlo indipendentemente?",
+    a: "Sì. Ogni Verification Report viene caricato su IPFS tramite Pinata e ottiene un CID (Content Identifier) univoco. Chiunque può recuperare il report originale da qualsiasi gateway IPFS pubblico (es. ipfs.io, cloudflare-ipfs.com) usando il CID. Se il contenuto fosse alterato, il CID non corrisponderebbe più: è la garanzia crittografica di immutabilità.",
+  },
+];
+
+function FaqSection() {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <Section bg="#f8f8f6" id="faq">
+      <Label>Domande frequenti</Label>
+      <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
+        Tutto quello che devi sapere.
+      </h2>
+      <p className="text-base text-[#0a0a0a]/55 max-w-2xl mb-12 leading-relaxed">
+        Sul funzionamento del sistema, sui grade, sui prezzi e sull’integrazione tecnica.
+      </p>
+      <div className="divide-y divide-[#0a0a0a]/8 border-t border-b border-[#0a0a0a]/8">
+        {FAQ_ITEMS.map((item, i) => (
+          <div key={i}>
+            <button
+              className="w-full text-left py-5 flex items-start justify-between gap-4 group"
+              onClick={() => setOpen(open === i ? null : i)}
+            >
+              <span className="text-base font-bold text-[#0a0a0a] leading-snug group-hover:text-[#ff5500] transition-colors" style={{ fontFamily: FONT }}>
+                {item.q}
+              </span>
+              <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-[#0a0a0a]/40 text-xl font-light mt-0.5">
+                {open === i ? "−" : "+"}
+              </span>
+            </button>
+            {open === i && (
+              <div className="pb-6 pr-10">
+                <p className="text-sm text-[#0a0a0a]/60 leading-relaxed">{item.a}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 /* ── Pannello Esegui Verifica Completa ── */
 function FullVerifyPanel() {
   const [hashInput, setHashInput] = useState("");
@@ -1139,6 +1208,11 @@ export default function ProofPressVerify() {
               <strong className="text-[#0a0a0a]/70">Prezzi indicativi.</strong> I piani SaaS sono in fase di definizione. Contattaci per un'offerta personalizzata basata su volumi, verticale editoriale e livello di integrazione richiesto. È disponibile anche un modello <strong className="text-[#0a0a0a]/70">revenue sharing</strong> per media company con volumi elevati.
             </div>
           </Section>
+          <Divider />
+          {/* ═══════════════════════════════════════════════════════════════════
+              FAQ
+          ═══════════════════════════════════════════════════════════════════ */}
+          <FaqSection />
           <Divider />
           {/* ═══════════════════════════════════════════════════════════════════
               CTA FINALE — FORM DI CONTATTO
