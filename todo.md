@@ -3140,3 +3140,6 @@
 - [x] news.getById ora restituisce trustGrade, trustScore, verifyReport, ipfsCid, ipfsUrl
 - [x] NewsArticle.tsx: blocco ProofPress Verify arricchito con trust grade badge colorato (A=verde/B=blu/C=giallo/D=arancio/F=rosso), score percentuale, claim corroborati (✓/✗/?), link IPFS certificato
 - [x] Test pipeline end-to-end: Claude Haiku ✓, Google Fact Check API ✓, schema DB ✓ (5 colonne verify)
+- [x] Pulsante "Copia CID" che sostituisce il CID abbreviato in NewsArticle.tsx
+- [x] Icona stato verifica accanto al link IPFS (in attesa / verificato / fallito)
+- [x] Test verifica end-to-end articolo ID 5100136 — grade F (15%), pipeline 4.1s

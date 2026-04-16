@@ -1,6 +1,7 @@
 import { Link, useRoute } from "wouter";
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star } from "lucide-react";
+import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star, Copy, Check, AlertCircle } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import WithSidebar from "@/components/WithSidebar";
 
@@ -75,6 +76,7 @@ const BORDER = "#e5e3df";
 export default function NewsArticle() {
   const [, params] = useRoute("/ai/news/:id");
   const newsId = params?.id ? parseInt(params.id, 10) : null;
+  const [cidCopied, setCidCopied] = useState(false);
 
   const { data: news, isLoading } = trpc.news.getById.useQuery(
     { id: newsId! },
@@ -248,7 +250,25 @@ export default function NewsArticle() {
             } catch { /* ignore parse errors */ }
             return null;
           })()}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            {/* Icona stato verifica */}
+            {news.trustGrade ? (
+              <span title="Verifica completata" style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: "#00b894", fontWeight: 700 }}>
+                <Check size={13} />
+                Verificato
+              </span>
+            ) : news.ipfsCid ? (
+              <span title="Certificato su IPFS, verifica in attesa" style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: "#fdcb6e", fontWeight: 700 }}>
+                <Clock size={13} />
+                In attesa
+              </span>
+            ) : (
+              <span title="Non ancora certificato" style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: MUTED, fontWeight: 600 }}>
+                <AlertCircle size={13} />
+                Non certificato
+              </span>
+            )}
+            {/* Link certificato IPFS */}
             {news.ipfsUrl ? (
               <a
                 href={news.ipfsUrl}
@@ -274,10 +294,31 @@ export default function NewsArticle() {
                 ✓ {verifyCode}
               </code>
             )}
+            {/* Pulsante Copia CID */}
             {news.ipfsCid && (
-              <span style={{ fontSize: 11, color: MUTED, fontFamily: "monospace", letterSpacing: "0.04em", wordBreak: "break-all" }}>
-                CID: {news.ipfsCid.slice(0, 20)}…
-              </span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(news.ipfsCid!).then(() => {
+                    setCidCopied(true);
+                    setTimeout(() => setCidCopied(false), 2000);
+                  });
+                }}
+                title={`Copia CID completo: ${news.ipfsCid}`}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 5,
+                  background: cidCopied ? "#00b89415" : `${BLACK}06`,
+                  border: `1px solid ${cidCopied ? "#00b894" : BLACK + "18"}`,
+                  borderRadius: 4, padding: "4px 10px",
+                  fontSize: 11, fontWeight: 600,
+                  color: cidCopied ? "#00b894" : SLATE,
+                  cursor: "pointer", letterSpacing: "0.04em",
+                  transition: "all 0.2s",
+                  fontFamily: "monospace",
+                }}
+              >
+                {cidCopied ? <Check size={11} /> : <Copy size={11} />}
+                {cidCopied ? "Copiato!" : `CID: ${news.ipfsCid.slice(0, 12)}…`}
+              </button>
             )}
           </div>
         </div>
