@@ -62,7 +62,7 @@ import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
 import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
-import { eq, isNull, and, desc, count, gte, sql } from "drizzle-orm";
+import { eq, isNull, isNotNull, and, desc, count, gte, sql } from "drizzle-orm";
 import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, runFullAudit, auditReportage } from "./auditContent";
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
@@ -968,6 +968,177 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           }
         }
         throw new TRPCError({ code: 'NOT_FOUND', message: `Impossibile caricare il report da IPFS: ${lastError}` });
+      }),
+
+    // Contatore articoli certificati su IPFS — usato nella homepage come proof point
+    getIPFSCount: publicProcedure.query(async () => {
+      return cached(
+        'news:ipfs_count',
+        async () => {
+          const db = await getDbInstance();
+          if (!db) return { count: 0 };
+          const rows = await db
+            .select({ cnt: count() })
+            .from(newsItemsTable)
+            .where(isNotNull(newsItemsTable.ipfsCid));
+          return { count: rows[0]?.cnt ?? 0 };
+        },
+        5 * 60 * 1000 // 5 minuti
+      );
+    }),
+
+    // ── Verify Engine: pipeline completa (claim extraction + corroboration + trust score + IPFS) ──
+    runFullVerify: publicProcedure
+      .input(z.object({ hash: z.string().length(64) }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'DB non disponibile' });
+
+        const rows = await db
+          .select({
+            id: newsItemsTable.id,
+            title: newsItemsTable.title,
+            summary: newsItemsTable.summary,
+            sourceUrl: newsItemsTable.sourceUrl,
+            verifyHash: newsItemsTable.verifyHash,
+            trustScore: newsItemsTable.trustScore,
+            trustGrade: newsItemsTable.trustGrade,
+            section: newsItemsTable.section,
+            sourceName: newsItemsTable.sourceName,
+            publishedAt: newsItemsTable.publishedAt,
+            category: newsItemsTable.category,
+            weekLabel: newsItemsTable.weekLabel,
+          })
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.verifyHash, input.hash))
+          .limit(1);
+
+        const article = rows[0];
+        if (!article) throw new TRPCError({ code: 'NOT_FOUND', message: 'Articolo non trovato' });
+        if (!article.verifyHash) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Hash non presente' });
+
+        // Se già verificato, restituisce i dati salvati
+        if (article.trustScore !== null && article.trustGrade !== null) {
+          const existing = await db
+            .select({ verifyReport: newsItemsTable.verifyReport })
+            .from(newsItemsTable)
+            .where(eq(newsItemsTable.verifyHash, input.hash))
+            .limit(1);
+          return {
+            status: 'cached' as const,
+            trustScore: article.trustScore,
+            trustGrade: article.trustGrade,
+            report: existing[0]?.verifyReport ?? null,
+          };
+        }
+
+        // Esegui pipeline verify
+        const { runVerifyPipeline } = await import('./verifyEngine.js');
+        const { corroborateClaims } = await import('./corroborator.js');
+
+        const report = await runVerifyPipeline({
+          articleId: article.id,
+          title: article.title,
+          summary: article.summary,
+          sourceUrl: article.sourceUrl,
+          verifyHash: article.verifyHash,
+          corroborationFn: corroborateClaims,
+        });
+
+        // Salva risultati nel DB
+        await db
+          .update(newsItemsTable)
+          .set({
+            verifyReport: report as unknown as Record<string, unknown>,
+            trustScore: report.trust_score.overall,
+            trustGrade: report.trust_score.grade,
+          })
+          .where(eq(newsItemsTable.verifyHash, input.hash));
+
+        // Aggiorna IPFS con il report arricchito (se già pinnato, skippa)
+        try {
+          const ipfsRows = await db
+            .select({ ipfsCid: newsItemsTable.ipfsCid })
+            .from(newsItemsTable)
+            .where(eq(newsItemsTable.verifyHash, input.hash))
+            .limit(1);
+
+          if (!ipfsRows[0]?.ipfsCid) {
+            const { pinVerificationReport } = await import('./pinata.js');
+            const { cid, ipfsUrl } = await pinVerificationReport({
+              verifyHash: article.verifyHash,
+              article: {
+                id: article.id,
+                title: article.title,
+                summary: article.summary,
+                section: article.section,
+                sourceName: article.sourceName ?? null,
+                sourceUrl: article.sourceUrl ?? null,
+                publishedAt: article.publishedAt ?? null,
+                category: article.category,
+                weekLabel: article.weekLabel,
+              },
+            });
+            await db
+              .update(newsItemsTable)
+              .set({ ipfsCid: cid, ipfsUrl: ipfsUrl, ipfsPinnedAt: new Date() })
+              .where(eq(newsItemsTable.verifyHash, input.hash));
+          }
+        } catch (ipfsErr) {
+          console.warn('[VerifyEngine] IPFS pinning fallito (non bloccante):', ipfsErr);
+        }
+
+        return {
+          status: 'completed' as const,
+          trustScore: report.trust_score.overall,
+          trustGrade: report.trust_score.grade,
+          report,
+        };
+      }),
+
+    // Restituisce il Verification Report salvato per un articolo
+    getVerifyReport: publicProcedure
+      .input(z.object({ hash: z.string().length(64) }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const rows = await db
+          .select({
+            verifyReport: newsItemsTable.verifyReport,
+            trustScore: newsItemsTable.trustScore,
+            trustGrade: newsItemsTable.trustGrade,
+            ipfsCid: newsItemsTable.ipfsCid,
+            ipfsUrl: newsItemsTable.ipfsUrl,
+          })
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.verifyHash, input.hash))
+          .limit(1);
+        return rows[0] ?? null;
+      }),
+
+    // Stato rapido del verify per un articolo (senza caricare il report completo)
+    getVerifyStatus: publicProcedure
+      .input(z.object({ hash: z.string().length(64) }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const rows = await db
+          .select({
+            trustScore: newsItemsTable.trustScore,
+            trustGrade: newsItemsTable.trustGrade,
+            ipfsCid: newsItemsTable.ipfsCid,
+          })
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.verifyHash, input.hash))
+          .limit(1);
+        const r = rows[0];
+        if (!r) return null;
+        return {
+          verified: r.trustScore !== null,
+          trustScore: r.trustScore ?? null,
+          trustGrade: r.trustGrade ?? null,
+          ipfsCid: r.ipfsCid ?? null,
+        };
       }),
 
     // Contatore notizie per sezione — usato dal SectionNav per mostrare badge live

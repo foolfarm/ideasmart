@@ -687,6 +687,8 @@ export default function Home() {
   const { data: researchOfDay } = trpc.news.getResearchOfDay.useQuery(undefined, criticalQueryOpts);
   const { data: upcomingEvents } = trpc.events.getUpcoming.useQuery({ limit: 6, category: "all" }, queryOpts);
   const { data: authorPosts } = trpc.news.getAuthorPosts.useQuery({ limit: 5 }, queryOpts);
+  const { data: ipfsCountData } = trpc.news.getIPFSCount.useQuery(undefined, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const ipfsCount = ipfsCountData?.count ?? 0;
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -786,10 +788,19 @@ export default function Home() {
             </div>
 
             {/* Sopra il titolo: descrizione full-width su una sola riga */}
-            <p className="block text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-3"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
-              Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l’informazione in insight esclusivi e affidabili.
-            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-3">
+              <p className="text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px" }}>
+                Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l'informazione in insight esclusivi e affidabili.
+              </p>
+              {ipfsCount > 0 && (
+                <a href="/proofpress-verify" className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#1a1a1a]/15 hover:border-[#1a1a1a]/30 transition-colors no-underline flex-shrink-0"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "9px", textDecoration: "none" }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00897b] inline-block flex-shrink-0" />
+                  <span className="font-bold text-[#00897b] uppercase tracking-widest">{ipfsCount.toLocaleString("it-IT")} articoli su IPFS</span>
+                </a>
+              )}
+            </div>
 
             {/* Brand centrale con manchette Tradedoubler ai lati — grid 3 colonne su xl */}
             <div className="hidden xl:grid xl:grid-cols-[170px_1fr_170px] items-center gap-4">

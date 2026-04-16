@@ -1,4 +1,4 @@
-import { boolean, float, index, uniqueIndex, int, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, float, index, uniqueIndex, int, json, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
 
 export const users = mysqlTable("users", {
@@ -124,6 +124,12 @@ export const newsItems = mysqlTable("news_items", {
   ipfsUrl: varchar("ipfsUrl", { length: 512 }),
   // Timestamp del pinning su IPFS
   ipfsPinnedAt: timestamp("ipfsPinnedAt"),
+  // VERIFY ENGINE: report JSON completo (claims, corroboration, trust score)
+  verifyReport: json("verifyReport"),
+  // VERIFY ENGINE: trust score numerico [0.0 - 1.0]
+  trustScore: float("trustScore"),
+  // VERIFY ENGINE: grade (A/B/C/D/F)
+  trustGrade: varchar("trustGrade", { length: 1 }),
 }, (t) => ({
   // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)
   sectionIdx: index("idx_news_section").on(t.section),
