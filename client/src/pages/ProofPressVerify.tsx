@@ -514,7 +514,7 @@ export default function ProofPressVerify() {
       <div className="flex-1 min-w-0">
         <SEOHead
           title="ProofPress Verify — Verifiable Corroboration per il giornalismo"
-          description="Ogni notizia nasce con un Verification Report pubblico, claim per claim, ancorato su Bitcoin. Non promettiamo verità. Forniamo evidenza."
+          description="Ogni notizia nasce con un Verification Report pubblico, claim per claim, sigillato crittograficamente. Non promettiamo verità. Forniamo evidenza."
           canonical="https://proofpress.ai/proofpress-verify"
           ogSiteName="Proof Press"
         />
@@ -548,7 +548,7 @@ export default function ProofPressVerify() {
                   <span style={{ color: ORANGE }}>Verificala.</span>
                 </h1>
                 <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl">
-                  ProofPress Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano, con quale credibilità, e dove è ancorata la prova su Bitcoin.
+                  ProofPress Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità.
                 </p>
                 <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mt-4 font-semibold tracking-wide">
                   Non promettiamo verità. Forniamo evidenza.
@@ -633,7 +633,7 @@ export default function ProofPressVerify() {
                 ProofPress Verify è un sistema di corroborazione verificabile per il giornalismo agentico. Non è un tool che “controlla i fatti” — è un protocollo strutturato che estrae i claim fattuali da ogni articolo, li confronta con fonti indipendenti classificate per credibilità, e produce un Verification Report pubblico con esito per ogni singolo claim.
               </p>
               <p>
-                Il report viene sigillato con hash crittografico SHA-256, archiviato su IPFS tramite Pinata, e ancorato su Bitcoin mainnet tramite OpenTimestamps. Una volta pubblicato, nessuno può modificarlo senza che la modifica sia rilevabile.
+                Il report viene sigillato con hash crittografico SHA-256 e archiviato su IPFS tramite Pinata. Una volta pubblicato, nessuno può modificarlo senza che la modifica sia rilevabile: il CID IPFS è la prova permanente dell'integrità del contenuto.
               </p>
               <p>
                 Non è un filtro editoriale. Non decide cosa pubblicare.{" "}
@@ -755,14 +755,14 @@ export default function ProofPressVerify() {
                 </div>
                 <div className="md:col-span-11">
                   <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Ancoraggio on-chain su Bitcoin
+                    Certificato pubblico e verificabile
                   </h3>
                   <p className="text-base leading-relaxed text-[#0a0a0a]/65">
-                    L’hash del report viene ancorato su Bitcoin mainnet tramite OpenTimestamps — protocollo standard aperto, gratuito, verificabile da qualsiasi block explorer. Il timestamp è immutabile: nessuno può retrodatare o antedatare la certificazione. Nemmeno ProofPress.
+                    Il Verification Report viene archiviato su IPFS tramite Pinata con un CID permanente. Chiunque può recuperarlo da qualsiasi gateway IPFS e confrontarlo con il contenuto originale: se il CID corrisponde, il contenuto non è stato alterato. La verifica è indipendente da ProofPress.
                   </p>
                   <div className="mt-5 p-5 border-l-2" style={{ borderColor: ORANGE, background: `${ORANGE}08` }}>
                     <p className="text-sm leading-relaxed text-[#0a0a0a]/75 font-semibold">
-                      Trustless by design. La verifica non richiede di fidarsi di ProofPress — richiede solo di fidarsi di Bitcoin.
+                      Il CID IPFS è la prova. Chiunque può verificare — senza chiedere permesso a nessuno.
                     </p>
                   </div>
                 </div>
@@ -881,7 +881,7 @@ export default function ProofPressVerify() {
                 },
                 {
                   title: "AI senza crittografia vs. ProofPress Verify",
-                  text: "Molti tool usano l’AI per ‘analizzare’ le notizie. Ma senza un layer crittografico, l’output può essere modificato o cancellato dopo la pubblicazione. ProofPress Verify aggiunge il sigillo IPFS + Bitcoin che rende la certificazione permanente, pubblica e trustless.",
+                  text: "Molti tool usano l'AI per 'analizzare' le notizie. Ma senza un layer crittografico, l'output può essere modificato o cancellato dopo la pubblicazione. ProofPress Verify aggiunge il sigillo IPFS che rende la certificazione permanente, pubblica e verificabile da chiunque.",
                 },
                 {
                   title: "Blockchain senza AI vs. ProofPress Verify",
@@ -944,23 +944,32 @@ export default function ProofPressVerify() {
               SPECIFICHE TECNICHE
           ═══════════════════════════════════════════════════════════════════ */}
           <Section bg="#f8f8f6" id="specs">
-            <Label>Stack tecnico</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
-              Sotto il cofano.
+            <Label>Come funziona sotto</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-6" style={{ fontFamily: FONT }}>
+              Tre principi. Zero compromessi.
             </h2>
-            <div className="grid md:grid-cols-2 gap-6 mb-10">
+            <div className="grid md:grid-cols-3 gap-8 mb-10">
               {[
-                { layer: "Claim extraction", tech: "Claude Haiku (Anthropic)", desc: "Identifica e classifica ogni affermazione fattuale verificabile" },
-                { layer: "Corroboration engine", tech: "Google Fact Check Tools API + DuckDuckGo", desc: "200+ organizzazioni IFCN, 12.000+ domini classificati" },
-                { layer: "Trust scoring", tech: "Algoritmo proprietario", desc: "Score 0–100 basato su ratio claim supportati, numero fonti, credibilità media" },
-                { layer: "Hashing", tech: "SHA-256", desc: "Fingerprint crittografico del contenuto + report" },
-                { layer: "Archiviazione immutabile", tech: "IPFS via Pinata", desc: "CID permanente, recuperabile da qualsiasi gateway IPFS" },
-                { layer: "Ancoraggio temporale", tech: "OpenTimestamps su Bitcoin mainnet", desc: "Timestamp immutabile verificabile da qualsiasi block explorer" },
-              ].map(({ layer, tech, desc }) => (
-                <div key={layer} className="p-5 border border-[#0a0a0a]/8 bg-white">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-1">{layer}</div>
-                  <div className="text-sm font-black text-[#0a0a0a] mb-2" style={{ fontFamily: FONT }}>{tech}</div>
-                  <div className="text-xs text-[#0a0a0a]/50 leading-relaxed">{desc}</div>
+                {
+                  icon: "🔍",
+                  title: "AI multi-fonte",
+                  text: "Ogni claim viene estratto e confrontato con 200+ organizzazioni di fact-checking e migliaia di fonti classificate per credibilità. Il risultato è un trust score documentato, non un'opinione.",
+                },
+                {
+                  icon: "🔐",
+                  title: "Sigillo crittografico",
+                  text: "Il Verification Report viene hashato con SHA-256: un fingerprint unico che cambia se anche un solo carattere del contenuto viene alterato. L'integrità è matematicamente verificabile.",
+                },
+                {
+                  icon: "📦",
+                  title: "Archiviazione immutabile",
+                  text: "Il report viene archiviato su IPFS tramite Pinata con un CID permanente. Chiunque può recuperarlo da qualsiasi gateway IPFS e verificare che il contenuto non sia stato modificato.",
+                },
+              ].map(({ icon, title, text }) => (
+                <div key={title} className="p-6 border border-[#0a0a0a]/8 bg-white">
+                  <div className="text-3xl mb-4">{icon}</div>
+                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
+                  <p className="text-sm leading-relaxed text-[#0a0a0a]/60">{text}</p>
                 </div>
               ))}
             </div>
