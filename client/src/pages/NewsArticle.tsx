@@ -249,15 +249,35 @@ export default function NewsArticle() {
             return null;
           })()}
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-            <code style={{ fontSize: 12, fontWeight: 700, color: BLACK, background: `${BLACK}08`, padding: "4px 10px", borderRadius: 4, letterSpacing: "0.08em" }}>
-              ✓ {verifyCode}
-            </code>
-            {news.ipfsUrl && (
-              <a href={news.ipfsUrl} target="_blank" rel="noopener noreferrer"
-                style={{ fontSize: 11, color: "#0071e3", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>
+            {news.ipfsUrl ? (
+              <a
+                href={news.ipfsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Apri certificato IPFS: ${news.ipfsCid ?? verifyCode}`}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  background: `${BLACK}08`, border: `1px solid ${BLACK}18`,
+                  borderRadius: 4, padding: "4px 10px",
+                  fontSize: 12, fontWeight: 700, color: "#0071e3",
+                  textDecoration: "none", letterSpacing: "0.08em",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = `${BLACK}14`)}
+                onMouseLeave={e => (e.currentTarget.style.background = `${BLACK}08`)}
+              >
                 <ExternalLink size={11} />
-                Certificato IPFS
+                ✓ {verifyCode}
               </a>
+            ) : (
+              <code style={{ fontSize: 12, fontWeight: 700, color: BLACK, background: `${BLACK}08`, padding: "4px 10px", borderRadius: 4, letterSpacing: "0.08em" }}>
+                ✓ {verifyCode}
+              </code>
+            )}
+            {news.ipfsCid && (
+              <span style={{ fontSize: 11, color: MUTED, fontFamily: "monospace", letterSpacing: "0.04em", wordBreak: "break-all" }}>
+                CID: {news.ipfsCid.slice(0, 20)}…
+              </span>
             )}
           </div>
         </div>
