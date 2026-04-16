@@ -191,20 +191,75 @@ export default function NewsArticle() {
           {news.summary}
         </div>
 
-        {/* ProofPress Verify badge */}
-        <div style={{ background: WHITE, border: `1px solid ${BORDER}`, borderLeft: `4px solid ${BLACK}`, borderRadius: 8, padding: "18px 22px", marginBottom: 32 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-            <Shield size={16} color={BLACK} />
-            <span style={{ fontSize: 11, fontWeight: 700, color: BLACK, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-              ProofPress Verify Technology
-            </span>
+        {/* ProofPress Verify badge — arricchito con trust grade e claim */}
+        <div style={{ background: WHITE, border: `1px solid ${BORDER}`, borderLeft: `4px solid ${news.trustGrade === 'A' ? '#00b894' : news.trustGrade === 'B' ? '#0984e3' : news.trustGrade === 'C' ? '#fdcb6e' : news.trustGrade === 'D' ? '#e17055' : news.trustGrade === 'F' ? '#d63031' : BLACK}`, borderRadius: 8, padding: "18px 22px", marginBottom: 32 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Shield size={16} color={BLACK} />
+              <span style={{ fontSize: 11, fontWeight: 700, color: BLACK, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                ProofPress Verify Technology
+              </span>
+            </div>
+            {news.trustGrade && (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  width: 32, height: 32, borderRadius: 6, fontWeight: 900, fontSize: 16,
+                  background: news.trustGrade === 'A' ? '#00b894' : news.trustGrade === 'B' ? '#0984e3' : news.trustGrade === 'C' ? '#fdcb6e' : news.trustGrade === 'D' ? '#e17055' : '#d63031',
+                  color: news.trustGrade === 'C' ? '#1a1a1a' : WHITE
+                }}>{news.trustGrade}</span>
+                {news.trustScore !== null && news.trustScore !== undefined && (
+                  <span style={{ fontSize: 12, color: SLATE, fontWeight: 600 }}>Score: {Math.round(news.trustScore * 100)}%</span>
+                )}
+              </div>
+            )}
           </div>
-          <p style={{ fontSize: 13, color: SLATE, margin: "0 0 8px", lineHeight: 1.6 }}>
-            Questo articolo è stato verificato e certificato dal sistema ProofPress. L'hash crittografico garantisce l'autenticità del contenuto al momento della pubblicazione.
+          <p style={{ fontSize: 13, color: SLATE, margin: "0 0 10px", lineHeight: 1.6 }}>
+            {news.trustGrade
+              ? `Questo articolo ha superato la verifica ProofPress con grade ${news.trustGrade}. L'hash crittografico garantisce l'autenticità del contenuto.`
+              : "Questo articolo è stato certificato dal sistema ProofPress. L'hash crittografico garantisce l'autenticità del contenuto al momento della pubblicazione."
+            }
           </p>
-          <code style={{ fontSize: 12, fontWeight: 700, color: BLACK, background: `${BLACK}08`, padding: "4px 10px", borderRadius: 4, letterSpacing: "0.08em" }}>
-            ✓ {verifyCode}
-          </code>
+          {/* Claim corroborati dal verifyReport */}
+          {news.verifyReport && (() => {
+            try {
+              const report = typeof news.verifyReport === 'string' ? JSON.parse(news.verifyReport) : news.verifyReport;
+              const claims = report?.claims as Array<{ text: string; verdict: string; confidence: number }> | undefined;
+              if (claims && claims.length > 0) {
+                return (
+                  <div style={{ marginBottom: 12 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: BLACK, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Claim verificati</p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      {claims.slice(0, 3).map((claim, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12, color: SLATE, lineHeight: 1.5 }}>
+                          <span style={{
+                            flexShrink: 0, marginTop: 2, width: 14, height: 14, borderRadius: 3, display: "inline-flex", alignItems: "center", justifyContent: "center",
+                            background: claim.verdict === 'supported' ? '#00b89420' : claim.verdict === 'refuted' ? '#d6303120' : '#fdcb6e20',
+                            color: claim.verdict === 'supported' ? '#00b894' : claim.verdict === 'refuted' ? '#d63031' : '#e17055',
+                            fontSize: 9, fontWeight: 900
+                          }}>{claim.verdict === 'supported' ? '✓' : claim.verdict === 'refuted' ? '✗' : '?'}</span>
+                          <span>{claim.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+            } catch { /* ignore parse errors */ }
+            return null;
+          })()}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            <code style={{ fontSize: 12, fontWeight: 700, color: BLACK, background: `${BLACK}08`, padding: "4px 10px", borderRadius: 4, letterSpacing: "0.08em" }}>
+              ✓ {verifyCode}
+            </code>
+            {news.ipfsUrl && (
+              <a href={news.ipfsUrl} target="_blank" rel="noopener noreferrer"
+                style={{ fontSize: 11, color: "#0071e3", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                <ExternalLink size={11} />
+                Certificato IPFS
+              </a>
+            )}
+          </div>
         </div>
 
 

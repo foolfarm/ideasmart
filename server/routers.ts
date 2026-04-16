@@ -346,6 +346,11 @@ export const appRouter = router({
               imageUrl: item.imageUrl ?? null,
               section: item.section,
               verifyHash: item.verifyHash ?? null,
+              trustGrade: item.trustGrade ?? null,
+              trustScore: item.trustScore ?? null,
+              verifyReport: item.verifyReport ?? null,
+              ipfsCid: item.ipfsCid ?? null,
+              ipfsUrl: item.ipfsUrl ?? null,
             };
           },
           TTL_EDITORIAL_MS // 20 min: articolo stabile

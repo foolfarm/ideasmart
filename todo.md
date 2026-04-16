@@ -3134,3 +3134,9 @@
 - [x] Pulsante "Esegui Verifica Completa" nella pagina /verify con pannello risultati
 - [x] Sottotitolo hero aggiornato con tagline ProofPress Verify Technology
 - [x] news.getLatest ora restituisce trustGrade e trustScore per ogni articolo
+
+## Task completati (16 Apr 2026 — Badge dettaglio articolo + test pipeline)
+
+- [x] news.getById ora restituisce trustGrade, trustScore, verifyReport, ipfsCid, ipfsUrl
+- [x] NewsArticle.tsx: blocco ProofPress Verify arricchito con trust grade badge colorato (A=verde/B=blu/C=giallo/D=arancio/F=rosso), score percentuale, claim corroborati (✓/✗/?), link IPFS certificato
+- [x] Test pipeline end-to-end: Claude Haiku ✓, Google Fact Check API ✓, schema DB ✓ (5 colonne verify)
