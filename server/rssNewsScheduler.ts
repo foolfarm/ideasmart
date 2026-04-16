@@ -131,7 +131,7 @@ async function saveScrapedNews(
     }
 
     const verifyHash = generateVerifyHash(article.title, article.summary, finalSourceUrl, new Date());
-    await db.insert(newsItems).values({
+    const [inserted] = await db.insert(newsItems).values({
       section,
       title: article.title,
       summary: article.summary,
@@ -144,8 +144,36 @@ async function saveScrapedNews(
       imageUrl,
       videoUrl: article.videoUrl ?? null,
       verifyHash,
-    });
+    }).$returningId();
     saved++;
+
+    // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso
+    setImmediate(async () => {
+      try {
+        const { pinVerificationReport } = await import('./pinata.js');
+        const { cid, ipfsUrl } = await pinVerificationReport({
+          verifyHash,
+          article: {
+            id: inserted.id,
+            title: article.title,
+            summary: article.summary,
+            section,
+            sourceName: article.sourceName,
+            sourceUrl: finalSourceUrl,
+            publishedAt: article.publishedAt,
+            category: article.category,
+            weekLabel,
+          },
+        });
+        await db
+          .update(newsItems)
+          .set({ ipfsCid: cid, ipfsUrl, ipfsPinnedAt: new Date() })
+          .where(eq(newsItems.id, inserted.id));
+        console.log(`[RssNewsScheduler] ⛓ IPFS pinned: ${article.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+      } catch (pinErr) {
+        console.warn(`[RssNewsScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
+      }
+    });
   }
 
   // Log del refresh

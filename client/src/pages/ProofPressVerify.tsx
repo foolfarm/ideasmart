@@ -301,13 +301,20 @@ function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
                           Ancora questo Verification Report su IPFS per garantirne l'immutabilità permanente tramite blockchain.
                         </p>
                         {pinMutation.isSuccess ? (
-                          <div className="text-[10px] font-bold" style={{ color: "#2e7d32", fontFamily: FONT }}>
-                            ✅ Ancorato! CID: <span className="font-mono">{pinMutation.data?.cid?.substring(0, 20)}…</span>
-                            {pinMutation.data?.ipfsUrl && (
-                              <a href={pinMutation.data.ipfsUrl} target="_blank" rel="noopener noreferrer" className="ml-2 underline hover:no-underline">
-                                Visualizza →
-                              </a>
-                            )}
+                          <div className="text-[10px]" style={{ color: "#2e7d32", fontFamily: FONT }}>
+                            <div className="font-bold mb-2">✅ Ancorato! CID: <span className="font-mono">{pinMutation.data?.cid?.substring(0, 20)}…</span></div>
+                            <div className="flex flex-wrap gap-2">
+                              {pinMutation.data?.ipfsUrl && (
+                                <a href={pinMutation.data.ipfsUrl} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+                                  JSON su IPFS →
+                                </a>
+                              )}
+                              {pinMutation.data?.cid && (
+                                <a href={`/verify/${pinMutation.data.cid}`} target="_blank" rel="noopener noreferrer" className="font-bold underline hover:no-underline" style={{ color: "#00897b" }}>
+                                  📄 Pagina pubblica Verification Report →
+                                </a>
+                              )}
+                            </div>
                           </div>
                         ) : (
                           <button

@@ -85,7 +85,7 @@ Restituisci un JSON con questa struttura:
       const item = content.news[i];
       const imageUrl = await findNewsImage(item.title, item.category);
       const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
-      await db.insert(newsItems).values({
+      const [insertedSU] = await db.insert(newsItems).values({
         title: item.title,
         summary: item.summary,
         category: item.category,
@@ -97,6 +97,34 @@ Restituisci un JSON con questa struttura:
         position: i + 1,
         publishedAt: new Date().toISOString(),
         verifyHash,
+      }).$returningId();
+
+      // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso
+      setImmediate(async () => {
+        try {
+          const { pinVerificationReport } = await import('./pinata.js');
+          const { cid, ipfsUrl } = await pinVerificationReport({
+            verifyHash,
+            article: {
+              id: insertedSU.id,
+              title: item.title,
+              summary: item.summary,
+              section: 'startup',
+              sourceName: item.sourceName,
+              sourceUrl: item.sourceUrl,
+              publishedAt: new Date().toISOString(),
+              category: item.category,
+              weekLabel,
+            },
+          });
+          await db
+            .update(newsItems)
+            .set({ ipfsCid: cid, ipfsUrl, ipfsPinnedAt: new Date() })
+            .where(eq(newsItems.id, insertedSU.id));
+          console.log(`[StartupScheduler] ⛓ IPFS pinned: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+        } catch (pinErr) {
+          console.warn(`[StartupScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
+        }
       });
     }
     console.log(`[StartupScheduler] Saved ${Math.min(content.news.length, 20)} startup news`);

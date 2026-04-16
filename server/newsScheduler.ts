@@ -177,7 +177,7 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         console.log(`[NewsScheduler] Stock image found for AI news ${i + 1}: ${item.title.slice(0, 40)}...`);
       }
       const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
-      await db.insert(newsItems).values({
+      const [insertedAI] = await db.insert(newsItems).values({
         section: 'ai',
         title: item.title,
         summary: item.summary,
@@ -189,6 +189,34 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         position: i + 1,
         imageUrl: imageUrl ?? null,
         verifyHash,
+      }).$returningId();
+
+      // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso
+      setImmediate(async () => {
+        try {
+          const { pinVerificationReport } = await import('./pinata.js');
+          const { cid, ipfsUrl } = await pinVerificationReport({
+            verifyHash,
+            article: {
+              id: insertedAI.id,
+              title: item.title,
+              summary: item.summary,
+              section: 'ai',
+              sourceName: item.sourceName,
+              sourceUrl: item.sourceUrl,
+              publishedAt: item.publishedAt,
+              category: item.category,
+              weekLabel: dayLabel,
+            },
+          });
+          await db
+            .update(newsItems)
+            .set({ ipfsCid: cid, ipfsUrl, ipfsPinnedAt: new Date() })
+            .where(eq(newsItems.id, insertedAI.id));
+          console.log(`[NewsScheduler] ⛓ IPFS pinned: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+        } catch (pinErr) {
+          console.warn(`[NewsScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
+        }
       });
     }
 

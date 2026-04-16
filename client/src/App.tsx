@@ -104,6 +104,7 @@ const Pianificazione = lazy(() => import("./pages/Pianificazione"));
 const Investor = lazy(() => import("./pages/Investor"));
 const NewsletterView = lazy(() => import("./pages/NewsletterView"));
 const CosaFacciamo = lazy(() => import("./pages/CosaFacciamo"));
+const VerifyReport = lazy(() => import("./pages/VerifyReport"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -136,6 +137,7 @@ function Router() {
         <Route path="/research" component={Research} />
         <Route path="/verify">{() => <Redirect to="/proofpress-verify" />}</Route>
         <Route path="/proofpress-verify" component={ProofPressVerify} />
+        <Route path="/verify/:cid" component={VerifyReport} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/pianificazione" component={Pianificazione} />
         <Route path="/ai/news/:id" component={NewsArticle} />
