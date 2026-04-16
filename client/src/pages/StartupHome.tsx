@@ -43,7 +43,7 @@ function SectionBadge({ label }: { label: string }) {
 }
 
 function NewsCard({ item, showImage = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null };
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null; trustGrade?: string | null; trustScore?: number | null };
   showImage?: boolean;
 }) {
   const href = `/startup/news/${item.id}`;
@@ -74,7 +74,7 @@ function NewsCard({ item, showImage = false }: {
       )}
       {item.verifyHash && (
         <div className="mt-1">
-          <VerifyBadge hash={item.verifyHash} size="sm" />
+          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
         </div>
       )}
     </div>
@@ -196,7 +196,7 @@ export default function StartupHome() {
                     )}
                     {heroNews.verifyHash && (
                       <div className="mt-1.5">
-                        <VerifyBadge hash={heroNews.verifyHash} size="sm" />
+                        <VerifyBadge hash={heroNews.verifyHash} size="sm" trustGrade={heroNews.trustGrade} trustScore={heroNews.trustScore} />
                       </div>
                     )}
                   </div>

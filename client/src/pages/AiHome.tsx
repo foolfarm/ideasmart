@@ -45,7 +45,7 @@ function SectionBadge({ label }: { label: string }) {
 }
 
 function NewsCard({ item, showImage = false, large = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null };
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null; trustGrade?: string | null; trustScore?: number | null };
   showImage?: boolean;
   large?: boolean;
 }) {
@@ -77,7 +77,7 @@ function NewsCard({ item, showImage = false, large = false }: {
       )}
       {item.verifyHash && (
         <div className="mt-1">
-          <VerifyBadge hash={item.verifyHash} size="sm" />
+          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
         </div>
       )}
     </div>

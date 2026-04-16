@@ -838,10 +838,15 @@ export default function Home() {
                   </div>
                 </Link>
                 {/* Sottotitolo */}
-                <div className="hidden sm:block mt-2 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(9px, 1.1vw, 13px)", lineHeight: 1.4 }}>
-                  IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
-                 </div>
+                <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
+                  <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
+                    IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
+                  </div>
+                  <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
+                    INFORMAZIONE 100% VERIFICATA CON PROOFPRESS VERIFY TECHNOLOGY
+                  </div>
+                </div>
               </div>
               {/* Manchette destra */}
               <div className="flex justify-center items-center">
@@ -877,9 +882,14 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-              <div className="hidden sm:block mt-2 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[#1a1a1a]/60 font-semibold"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(9px, 1.1vw, 13px)", lineHeight: 1.4 }}>
-                IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
+              <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
+                <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
+                  IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
+                </div>
+                <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
+                  INFORMAZIONE 100% VERIFICATA CON PROOFPRESS VERIFY TECHNOLOGY
+                </div>
               </div>
             </div>
           </div>

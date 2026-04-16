@@ -61,6 +61,8 @@ function NewsCard({
     publishedAt?: string;
     sourceUrl?: string;
     verifyHash?: string | null;
+    trustGrade?: string | null;
+    trustScore?: number | null;
   };
   showImage?: boolean;
 }) {
@@ -99,7 +101,7 @@ function NewsCard({
       )}
       {item.verifyHash && (
         <div className="mt-1">
-          <VerifyBadge hash={item.verifyHash} size="sm" />
+          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
         </div>
       )}
     </div>

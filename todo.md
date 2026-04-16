@@ -3121,3 +3121,16 @@
 - [x] Aggiungere opzione URL immagine esterna (alternativa all'upload file)
 - [x] Aggiungere funzione modifica banner esistente (edit inline)
 - [x] Migliorare UX: preview immagine più grande, indicatori slot visivi
+
+## Task completati (16 Apr 2026 — Verify Engine + Google Fact Check + Badge Trust Grade)
+
+- [x] Porting verify-engine Python → TypeScript (server/verifyEngine.ts): claim extraction con Claude Haiku + trust scoring
+- [x] Corroborator TypeScript (server/corroborator.ts): DuckDuckGo + Google Fact Check API
+- [x] 3 nuove procedure tRPC: news.runFullVerify, news.getVerifyReport, news.getVerifyStatus
+- [x] Schema DB: colonne verifyReport (JSON), trustScore (float), trustGrade (varchar) su news_items
+- [x] Google Fact Check API key configurata (GOOGLE_FACTCHECK_API_KEY)
+- [x] Test vitest validazione Google Fact Check API (2/2 passati)
+- [x] Badge trust grade (A/B/C/D/F) con trust score nelle card articoli (AiHome, StartupHome, DealroomHome)
+- [x] Pulsante "Esegui Verifica Completa" nella pagina /verify con pannello risultati
+- [x] Sottotitolo hero aggiornato con tagline ProofPress Verify Technology
+- [x] news.getLatest ora restituisce trustGrade e trustScore per ogni articolo

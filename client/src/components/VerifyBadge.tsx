@@ -6,6 +6,8 @@
  *
  * L'hash certifica il contenuto dell'articolo al momento della pubblicazione,
  * garantendo tracciabilità e verificabilità nel tempo.
+ *
+ * trustGrade: se valorizzato, mostra il badge A/B/C/D/F accanto all'hash.
  */
 import { useState } from "react";
 import { ShieldCheck, Copy, Check } from "lucide-react";
@@ -14,15 +16,26 @@ import { Link } from "wouter";
 interface VerifyBadgeProps {
   hash?: string | null;
   size?: "sm" | "md";
+  trustGrade?: string | null;
+  trustScore?: number | null;
 }
 
-export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
+const GRADE_COLOR: Record<string, string> = {
+  A: "#00b894",
+  B: "#00cec9",
+  C: "#fdcb6e",
+  D: "#e17055",
+  F: "#d63031",
+};
+
+export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore }: VerifyBadgeProps) {
   const [copied, setCopied] = useState(false);
 
   if (!hash) return null;
 
   const displayHash = "#" + hash.substring(0, 16).toUpperCase();
   const verifyUrl = `/proofpress-verify?hash=${encodeURIComponent(hash)}`;
+  const gradeColor = trustGrade ? (GRADE_COLOR[trustGrade] ?? "#636e72") : null;
 
   async function handleCopy(e: React.MouseEvent) {
     e.preventDefault();
@@ -32,7 +45,6 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback per browser che non supportano clipboard API
       const el = document.createElement("textarea");
       el.value = hash!;
       el.style.position = "fixed";
@@ -49,6 +61,23 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
   if (size === "sm") {
     return (
       <span className="inline-flex items-center gap-1 select-none">
+        {/* Trust grade badge — mostrato solo se disponibile */}
+        {trustGrade && gradeColor && (
+          <span
+            title={`Trust Score: ${trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—"}/100 — Grade ${trustGrade}`}
+            className="inline-flex items-center justify-center font-black text-white rounded"
+            style={{
+              background: gradeColor,
+              fontSize: "8px",
+              width: "14px",
+              height: "14px",
+              flexShrink: 0,
+              letterSpacing: 0,
+            }}
+          >
+            {trustGrade}
+          </span>
+        )}
         {/* Copia hash — click principale */}
         <button
           onClick={handleCopy}
@@ -91,6 +120,22 @@ export default function VerifyBadge({ hash, size = "sm" }: VerifyBadgeProps) {
 
   return (
     <span className="inline-flex items-center gap-2 select-none">
+      {/* Trust grade badge md */}
+      {trustGrade && gradeColor && (
+        <span
+          title={`Trust Score: ${trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—"}/100 — Grade ${trustGrade}`}
+          className="inline-flex items-center justify-center font-black text-white rounded"
+          style={{
+            background: gradeColor,
+            fontSize: "10px",
+            width: "20px",
+            height: "20px",
+            flexShrink: 0,
+          }}
+        >
+          {trustGrade}
+        </span>
+      )}
       {/* Copia hash */}
       <button
         onClick={handleCopy}

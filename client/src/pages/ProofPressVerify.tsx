@@ -371,6 +371,120 @@ function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
   );
 }
 
+/* ── Pannello Esegui Verifica Completa ── */
+function FullVerifyPanel() {
+  const [hashInput, setHashInput] = useState("");
+  const [activeHash, setActiveHash] = useState("");
+  const runVerify = trpc.news.runFullVerify.useMutation();
+  const verifyStatus = trpc.news.getVerifyStatus.useQuery(
+    { hash: activeHash },
+    { enabled: activeHash.length === 64 }
+  );
+
+  const GRADE_COLOR: Record<string, string> = {
+    A: "#00b894", B: "#00cec9", C: "#fdcb6e", D: "#e17055", F: "#d63031",
+  };
+
+  const handleRun = (e: React.FormEvent) => {
+    e.preventDefault();
+    const h = hashInput.trim().toLowerCase();
+    if (h.length !== 64) return;
+    setActiveHash(h);
+    runVerify.mutate({ hash: h });
+  };
+
+  const grade = runVerify.data?.trustGrade ?? verifyStatus.data?.trustGrade ?? null;
+  const score = runVerify.data?.trustScore ?? verifyStatus.data?.trustScore ?? null;
+  const gradeColor = grade ? (GRADE_COLOR[grade] ?? "#636e72") : "#636e72";
+
+  return (
+    <div className="mt-16 pt-10 border-t border-[#0a0a0a]/8">
+      <div className="mb-6">
+        <span
+          className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
+          style={{ color: "#00b894", borderColor: "#00b89444", background: "#00b8940d", fontFamily: FONT }}
+        >
+          VERIFY ENGINE — ANALISI COMPLETA
+        </span>
+      </div>
+      <h3 className="text-2xl md:text-3xl font-black leading-tight mb-3" style={{ fontFamily: FONT }}>
+        Esegui la Verifica Completa
+      </h3>
+      <p className="text-sm text-[#0a0a0a]/55 mb-8 max-w-2xl leading-relaxed">
+        Inserisci l'hash SHA-256 completo (64 caratteri) per avviare il pipeline di analisi: claim extraction via AI, corroborazione multi-fonte (DuckDuckGo + Google Fact Check), trust scoring e ancoraggio IPFS automatico.
+      </p>
+
+      <form onSubmit={handleRun} className="flex flex-col sm:flex-row gap-3 mb-6">
+        <input
+          type="text"
+          value={hashInput}
+          onChange={(e) => setHashInput(e.target.value)}
+          placeholder="Hash SHA-256 completo (64 caratteri esadecimali)"
+          maxLength={64}
+          className="flex-1 px-5 py-4 text-sm border border-[#0a0a0a]/20 bg-white text-[#0a0a0a] placeholder-[#0a0a0a]/35 outline-none focus:border-[#00b894]/60 transition-colors"
+          style={{ fontFamily: MONO }}
+        />
+        <button
+          type="submit"
+          disabled={hashInput.trim().length !== 64 || runVerify.isPending}
+          className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+          style={{ background: "#00b894", fontFamily: FONT }}
+        >
+          {runVerify.isPending ? (
+            <span className="flex items-center gap-2">
+              <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full" />
+              Analisi in corso…
+            </span>
+          ) : (
+            "Esegui Verifica →"
+          )}
+        </button>
+      </form>
+
+      {/* Risultato */}
+      {runVerify.isError && (
+        <div className="border border-red-200 bg-red-50 p-5 text-sm text-red-700">
+          ❌ Errore: {runVerify.error?.message}
+        </div>
+      )}
+
+      {(runVerify.isSuccess || (verifyStatus.data?.verified)) && grade !== null && (
+        <div
+          className="rounded-lg p-6 border"
+          style={{ background: `${gradeColor}0d`, borderColor: `${gradeColor}44` }}
+        >
+          <div className="flex items-start gap-6">
+            {/* Grade badge */}
+            <div
+              className="flex-shrink-0 w-20 h-20 rounded-xl flex flex-col items-center justify-center"
+              style={{ background: gradeColor }}
+            >
+              <span className="text-3xl font-black text-white leading-none">{grade}</span>
+              <span className="text-[9px] font-bold text-white/80 uppercase tracking-widest mt-1">Grade</span>
+            </div>
+            {/* Dettagli */}
+            <div className="flex-1">
+              <div className="font-black text-lg mb-1" style={{ color: gradeColor, fontFamily: FONT }}>
+                Trust Score: {score !== null ? Math.round(Number(score)) : "—"}/100
+              </div>
+              <div className="text-sm text-[#0a0a0a]/65 mb-3">
+                {runVerify.data?.status === "cached"
+                  ? "Risultato dalla cache — questo articolo è già stato verificato in precedenza."
+                  : "Verifica completata. Il Verification Report è stato salvato e ancorato su IPFS."}
+              </div>
+              {runVerify.data?.report && typeof runVerify.data.report === "object" && "claims" in (runVerify.data.report as Record<string, unknown>) && (
+                <div className="text-xs text-[#0a0a0a]/50 font-mono">
+                  {(runVerify.data.report as { claims?: unknown[] }).claims?.length ?? 0} claim analizzati
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    COMPONENTE PRINCIPALE
 ══════════════════════════════════════════════════════════════════════════════ */
@@ -655,6 +769,9 @@ export default function ProofPressVerify() {
                 Ogni articolo pubblicato su ProofPress porta un badge con un codice hash univoco. Inseriscilo qui per accedere al Verification Report originale e verificare che il contenuto non sia stato alterato.
               </p>
               <VerifyForm initialHash={urlHash} />
+
+              {/* ── Esegui Verifica Completa (Verify Engine) ── */}
+              <FullVerifyPanel />
             </div>
           </Section>
 

@@ -287,6 +287,8 @@ export const appRouter = router({
           publishedAt: item.publishedAt ?? "",
           imageUrl: item.imageUrl ?? null,
           verifyHash: item.verifyHash ?? null,
+          trustGrade: (item as Record<string, unknown>).trustGrade as string | null ?? null,
+          trustScore: (item as Record<string, unknown>).trustScore as number | null ?? null,
         }));
       }),
 
