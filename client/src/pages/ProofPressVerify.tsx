@@ -513,8 +513,8 @@ export default function ProofPressVerify() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
         <SEOHead
-          title="ProofPress Verify — Il protocollo di certificazione giornalistica"
-          description="Non fidarti della notizia. Verificala. ProofPress Verify unisce AI e crittografia Web3 per certificare ogni notizia con hash immutabile. 4.000+ fonti, 100k+ verifiche/mese."
+          title="ProofPress Verify — Verifiable Corroboration per il giornalismo"
+          description="Ogni notizia nasce con un Verification Report pubblico, claim per claim, ancorato su Bitcoin. Non promettiamo verità. Forniamo evidenza."
           canonical="https://proofpress.ai/proofpress-verify"
           ogSiteName="Proof Press"
         />
@@ -534,7 +534,7 @@ export default function ProofPressVerify() {
                   className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
                   style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
                 >
-                  PROOFPRESS VERIFY — PROTOCOLLO DI CERTIFICAZIONE
+                  PROOFPRESS VERIFY · VERIFIABLE CORROBORATION PROTOCOL
                 </span>
               </div>
 
@@ -548,17 +548,20 @@ export default function ProofPressVerify() {
                   <span style={{ color: ORANGE }}>Verificala.</span>
                 </h1>
                 <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl">
-                  ProofPress Verify è il primo protocollo di certificazione giornalistica che unisce intelligenza artificiale e crittografia Web3. Ogni notizia viene analizzata su fonti multiple, valutata per affidabilità e bias, e sigillata con un hash crittografico immutabile. Il risultato non è un'opinione — è una prova.
+                  ProofPress Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano, con quale credibilità, e dove è ancorata la prova su Bitcoin.
+                </p>
+                <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mt-4 font-semibold tracking-wide">
+                  Non promettiamo verità. Forniamo evidenza.
                 </p>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 py-8 border-t border-b border-[#0a0a0a]/8">
                 {[
-                  { val: "4.000+", label: "fonti monitorate in tempo reale" },
-                  { val: "100k+", label: "verifiche eseguite ogni mese" },
-                  { val: "< 3 min", label: "tempo medio di certificazione" },
-                  { val: "100%", label: "contenuti ProofPress certificati" },
+                  { val: "4.000+", label: "fonti classificate per credibilità" },
+                  { val: "14/16", label: "claim corroborati in media per articolo" },
+                  { val: "3,2", label: "fonti indipendenti per claim" },
+                  { val: "< 60 sec", label: "tempo medio di verifica end-to-end" },
                 ].map(({ val, label }) => (
                   <div key={val}>
                     <div className="text-3xl md:text-4xl font-black mb-1" style={{ color: ORANGE, fontFamily: FONT }}>{val}</div>
@@ -597,17 +600,17 @@ export default function ProofPressVerify() {
             <Label>Il contesto</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
               Il giornalismo ha un problema di fiducia.<br />
-              E l'AI generativa lo sta peggiorando.
+              L'AI generativa lo sta amplificando.
             </h2>
             <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
               <p>
-                Nel 2025 sono stati generati più contenuti fake che in tutta la storia del giornalismo digitale. Un articolo credibile si produce in 30 secondi con un prompt. Un deepfake video in 5 minuti. I lettori non hanno strumenti per distinguere il reale dal fabbricato — e i giornalisti onesti non hanno modo di dimostrare che il loro lavoro è diverso.
+                Secondo il Reuters Institute Digital News Report 2024, il 59% dei lettori ha difficoltà a distinguere notizie vere da false online. L'AI generativa ha abbassato il costo di produzione di disinformazione credibile a zero. Un articolo plausibile si genera in 30 secondi. Un deepfake video in 5 minuti. La velocità di diffusione supera qualsiasi capacità di verifica umana.
               </p>
               <p>
-                I fact-checker umani non scalano: una redazione media riesce a verificare il 5-10% di quello che pubblica. I disclaimer tipo "secondo fonti" o "come riportato da" non valgono nulla — sono formule vuote, non prove.
+                I fact-checker tradizionali coprono meno del 3% dei contenuti pubblicati ogni giorno. I disclaimer — "secondo fonti", "come riportato da" — non sono prove: sono formule retoriche che non reggono a nessuna verifica indipendente.
               </p>
-              <p className="font-semibold text-[#0a0a0a]">
-                Il problema non è la velocità di pubblicazione. Il problema è che non esiste un sistema scalabile per dimostrare che una notizia è vera.
+              <p>
+                Il problema non è la velocità di pubblicazione. Il problema è che non esiste un sistema scalabile per <strong className="text-[#0a0a0a]">dimostrare</strong> che una notizia è affidabile.
               </p>
               <p>
                 ProofPress Verify è quel sistema.
@@ -623,18 +626,18 @@ export default function ProofPressVerify() {
           <Section id="cose">
             <Label>Cos'è ProofPress Verify</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
-              Un protocollo, non un plugin.<br />Un certificato, non un'opinione.
+              Un protocollo, non un plugin.<br />Corroborazione verificabile, non un'opinione.
             </h2>
             <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
               <p>
-                ProofPress Verify è un sistema proprietario di validazione e certificazione agentica delle notizie. Non è un tool che "controlla i fatti" — è un protocollo strutturato che analizza, valuta, documenta e sigilla ogni contenuto prima della pubblicazione.
+                ProofPress Verify è un sistema di corroborazione verificabile per il giornalismo agentico. Non è un tool che “controlla i fatti” — è un protocollo strutturato che estrae i claim fattuali da ogni articolo, li confronta con fonti indipendenti classificate per credibilità, e produce un Verification Report pubblico con esito per ogni singolo claim.
               </p>
               <p>
-                Ogni notizia che passa per ProofPress Verify viene sottoposta a tre livelli di analisi indipendenti, e il risultato viene registrato in modo permanente e non modificabile.
+                Il report viene sigillato con hash crittografico SHA-256, archiviato su IPFS tramite Pinata, e ancorato su Bitcoin mainnet tramite OpenTimestamps. Una volta pubblicato, nessuno può modificarlo senza che la modifica sia rilevabile.
               </p>
               <p>
                 Non è un filtro editoriale. Non decide cosa pubblicare.{" "}
-                <strong className="text-[#0a0a0a]">Certifica quello che viene pubblicato</strong> — e rende la certificazione verificabile da chiunque, in qualsiasi momento.
+                <strong className="text-[#0a0a0a]">Certifica quello che viene pubblicato</strong> — e rende la certificazione verificabile da chiunque, in qualsiasi momento, senza intermediari.
               </p>
             </div>
           </Section>
@@ -647,65 +650,47 @@ export default function ProofPressVerify() {
           <Section bg="#f8f8f6" id="livelli">
             <Label>Come funziona</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-16" style={{ fontFamily: FONT }}>
-              Tre livelli di verifica.<br />Zero margine di dubbio.
+              Cinque passi. Un certificato immutabile.
             </h2>
 
             <div className="space-y-16">
-              {/* Livello 1 */}
+              {/* Step 1 */}
               <div className="grid md:grid-cols-12 gap-8">
                 <div className="md:col-span-1">
                   <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>01</div>
                 </div>
                 <div className="md:col-span-11">
                   <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Analisi multi-fonte AI
+                    Claim extraction
                   </h3>
-                  <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-6">
-                    Il sistema acquisisce il contenuto e lo confronta simultaneamente con un network di oltre 4.000 fonti certificate a livello globale: agenzie stampa, database istituzionali, registri pubblici, pubblicazioni scientifiche, report finanziari, fonti governative.
-                  </p>
-                  <div className="space-y-2">
-                    {[
-                      "Identifica le fonti primarie che confermano o contraddicono ogni claim",
-                      "Misura il grado di coerenza fattuale tra fonti indipendenti",
-                      "Rileva eventuali bias (politico, commerciale, emotivo)",
-                      "Valuta la freschezza e l'autorevolezza di ogni fonte utilizzata",
-                    ].map((item) => (
-                      <div key={item} className="flex items-start gap-3 text-sm text-[#0a0a0a]/65">
-                        <span style={{ color: ORANGE }} className="flex-shrink-0 mt-0.5 font-bold">—</span>
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-sm text-[#0a0a0a]/50 mt-5 italic">
-                    Non si tratta di "cercare su Google se è vero". È un'analisi strutturata, multi-dimensionale, che incrocia decine di fonti in parallelo in meno di 3 minuti.
+                  <p className="text-base leading-relaxed text-[#0a0a0a]/65">
+                    Il sistema legge l’articolo e identifica automaticamente ogni affermazione fattuale verificabile: numeri, date, attribuzioni, eventi, relazioni causali. Non opinioni, non retoriche — solo claim che possono essere confermati o smentiti da fonti esterne.
                   </p>
                 </div>
               </div>
 
               <div className="border-t border-[#0a0a0a]/8" />
 
-              {/* Livello 2 */}
+              {/* Step 2 */}
               <div className="grid md:grid-cols-12 gap-8">
                 <div className="md:col-span-1">
                   <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>02</div>
                 </div>
                 <div className="md:col-span-11">
                   <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Verification Report
+                    Multi-source corroboration
                   </h3>
                   <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-6">
-                    Al termine dell'analisi, il sistema genera un <strong className="text-[#0a0a0a]">Verification Report</strong> completo e strutturato — il "certificato di nascita" della notizia.
+                    Ogni claim viene confrontato con fonti indipendenti classificate per credibilità: database Google Fact Check Tools (200+ organizzazioni IFCN), Media Bias/Fact Check, Iffy Index (12.000+ domini classificati), agenzie stampa internazionali. Il sistema calcola quante fonti confermano, quante contraddicono, quante sono neutrali.
                   </p>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-3 gap-4">
                     {[
-                      { label: "Punteggio di affidabilità (0-100)", desc: "Quanto il contenuto è supportato dalle fonti" },
-                      { label: "Indice di bias", desc: "Misura dell'eventuale orientamento del testo" },
-                      { label: "Mappa delle fonti", desc: "Elenco delle fonti incrociate, con peso e rilevanza" },
-                      { label: "Flag di attenzione", desc: "Segnalazioni su claim non sufficientemente supportati" },
-                      { label: "Criteri di analisi", desc: "Metodo esatto utilizzato per quella specifica verifica" },
-                    ].map(({ label, desc }) => (
+                      { label: "SUPPORTED", desc: "Claim confermato da fonti indipendenti", color: "#00b894" },
+                      { label: "REFUTED", desc: "Claim contraddetto da fonti verificate", color: "#d63031" },
+                      { label: "UNVERIFIED", desc: "Fonti insufficienti per un esito definitivo", color: "#fdcb6e" },
+                    ].map(({ label, desc, color }) => (
                       <div key={label} className="p-4 border border-[#0a0a0a]/8 bg-white">
-                        <div className="text-xs font-bold text-[#0a0a0a] mb-1">{label}</div>
+                        <div className="text-xs font-black mb-1" style={{ color, fontFamily: FONT }}>{label}</div>
                         <div className="text-xs text-[#0a0a0a]/50">{desc}</div>
                       </div>
                     ))}
@@ -715,40 +700,115 @@ export default function ProofPressVerify() {
 
               <div className="border-t border-[#0a0a0a]/8" />
 
-              {/* Livello 3 */}
+              {/* Step 3 */}
               <div className="grid md:grid-cols-12 gap-8">
                 <div className="md:col-span-1">
                   <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>03</div>
                 </div>
                 <div className="md:col-span-11">
                   <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Sigillo crittografico Web3
+                    Trust Score e Verification Report
                   </h3>
                   <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-6">
-                    Il Verification Report viene sigillato attraverso un <strong className="text-[#0a0a0a]">hash crittografico immutabile</strong>. L'hash registra:
+                    Il sistema aggrega gli esiti in un Trust Score (0–100) e assegna un grade (A–F). Il Verification Report documenta ogni claim con le fonti usate, l’esito, e il numero di corroborazioni. È pubblico, leggibile da chiunque, esportabile in JSON-LD compatibile con schema.org/ClaimReview.
                   </p>
-                  <div className="space-y-2 mb-6">
+                  <div className="flex flex-wrap gap-3">
                     {[
-                      "Il contenuto esatto dell'articolo al momento della pubblicazione",
-                      "Il Verification Report completo con tutti i parametri",
-                      "Il timestamp preciso della certificazione",
-                      "L'identità degli agenti AI che hanno eseguito la verifica",
-                    ].map((item) => (
-                      <div key={item} className="flex items-start gap-3 text-sm text-[#0a0a0a]/65">
-                        <span style={{ color: ORANGE }} className="flex-shrink-0 mt-0.5 font-bold">—</span>
-                        <span>{item}</span>
+                      { grade: "A", range: "85–100", color: "#00b894" },
+                      { grade: "B", range: "70–84", color: "#0984e3" },
+                      { grade: "C", range: "55–69", color: "#fdcb6e" },
+                      { grade: "D", range: "40–54", color: "#e17055" },
+                      { grade: "F", range: "0–39", color: "#d63031" },
+                    ].map(({ grade, range, color }) => (
+                      <div key={grade} className="flex items-center gap-2 px-4 py-2 border" style={{ borderColor: `${color}44`, background: `${color}0d` }}>
+                        <span className="text-xl font-black" style={{ color, fontFamily: FONT }}>{grade}</span>
+                        <span className="text-xs text-[#0a0a0a]/50">{range}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="p-5 border-l-2" style={{ borderColor: ORANGE, background: `${ORANGE}08` }}>
-                    <p className="text-sm leading-relaxed text-[#0a0a0a]/75">
-                      L'hash funziona come una notarizzazione digitale ispirata alla logica blockchain: una volta generato,{" "}
-                      <strong className="text-[#0a0a0a]">nessuno può modificare il contenuto o il report senza che l'hash cambi</strong>. Né l'editore, né la piattaforma, né l'autore.
-                    </p>
-                    <p className="text-sm leading-relaxed text-[#0a0a0a]/65 mt-3">
-                      Questo significa che un lettore, un investitore, un tribunale possono verificare in qualsiasi momento che quella notizia è esattamente come è stata certificata al momento della pubblicazione.
+                </div>
+              </div>
+
+              <div className="border-t border-[#0a0a0a]/8" />
+
+              {/* Step 4 */}
+              <div className="grid md:grid-cols-12 gap-8">
+                <div className="md:col-span-1">
+                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>04</div>
+                </div>
+                <div className="md:col-span-11">
+                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
+                    Archiviazione immutabile su IPFS
+                  </h3>
+                  <p className="text-base leading-relaxed text-[#0a0a0a]/65">
+                    Il Verification Report viene archiviato su IPFS tramite Pinata. Il CID (Content Identifier) crittografico garantisce che il contenuto non possa essere alterato senza che il CID cambi. Chiunque può recuperare il report originale da qualsiasi gateway IPFS, indipendentemente da ProofPress.
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-[#0a0a0a]/8" />
+
+              {/* Step 5 */}
+              <div className="grid md:grid-cols-12 gap-8">
+                <div className="md:col-span-1">
+                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>05</div>
+                </div>
+                <div className="md:col-span-11">
+                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
+                    Ancoraggio on-chain su Bitcoin
+                  </h3>
+                  <p className="text-base leading-relaxed text-[#0a0a0a]/65">
+                    L’hash del report viene ancorato su Bitcoin mainnet tramite OpenTimestamps — protocollo standard aperto, gratuito, verificabile da qualsiasi block explorer. Il timestamp è immutabile: nessuno può retrodatare o antedatare la certificazione. Nemmeno ProofPress.
+                  </p>
+                  <div className="mt-5 p-5 border-l-2" style={{ borderColor: ORANGE, background: `${ORANGE}08` }}>
+                    <p className="text-sm leading-relaxed text-[#0a0a0a]/75 font-semibold">
+                      Trustless by design. La verifica non richiede di fidarsi di ProofPress — richiede solo di fidarsi di Bitcoin.
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              USE CASE COMPARATIVI
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section id="use-case">
+            <Label>Use case</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
+              Due redazioni. Due scelte.
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Senza ProofPress */}
+              <div className="border border-[#d63031]/20 bg-[#d63031]/3 p-8">
+                <div className="text-xs font-bold uppercase tracking-widest text-[#d63031] mb-6">Senza ProofPress Verify</div>
+                <div className="space-y-5">
+                  {[
+                    { persona: "Giulia, 34 anni, lettrice", text: "Legge un articolo su un nuovo farmaco. Non sa se le fonti citate esistono davvero. Non sa se il giornalista ha verificato i dati clinici. Condivide comunque, perché sembra credibile." },
+                    { persona: "Il direttore di una testata", text: "Pubblica 80 articoli al giorno. Il suo team verifica manualmente il 4% dei contenuti. Sa che qualcosa potrebbe essere sbagliato, ma non ha strumenti per sapere cosa e quando." },
+                  ].map(({ persona, text }) => (
+                    <div key={persona} className="border-l-2 border-[#d63031]/30 pl-4">
+                      <div className="text-xs font-bold text-[#d63031]/70 mb-2">{persona}</div>
+                      <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Con ProofPress */}
+              <div className="border border-[#00b894]/20 bg-[#00b894]/3 p-8">
+                <div className="text-xs font-bold uppercase tracking-widest text-[#00b894] mb-6">Con ProofPress Verify</div>
+                <div className="space-y-5">
+                  {[
+                    { persona: "Giulia, 34 anni, lettrice", text: "Vede il badge Grade A sull’articolo. Clicca. Legge che 14 dei 16 claim sono stati corroborati da fonti indipendenti. Condivide con fiducia, citando il report come fonte." },
+                    { persona: "Il direttore di una testata", text: "Ogni articolo esce con un Verification Report pubblico. I lettori possono controllare. La redazione può dimostrare il proprio rigore con dati, non con dichiarazioni. La credibilità diventa misurabile." },
+                  ].map(({ persona, text }) => (
+                    <div key={persona} className="border-l-2 border-[#00b894]/40 pl-4">
+                      <div className="text-xs font-bold text-[#00b894]/80 mb-2">{persona}</div>
+                      <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -778,26 +838,54 @@ export default function ProofPressVerify() {
           <Divider />
 
           {/* ═══════════════════════════════════════════════════════════════════
+              PERCHÉ NON DICIAMO NON-AI
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section id="non-ai">
+            <Label>Una posizione chiara</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
+              Perché non diciamo “non-AI”.
+            </h2>
+            <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
+              <p>
+                Molti competitor si posizionano come “non-AI” per rassicurare i lettori. È una scelta di marketing che non regge a un’analisi seria.
+              </p>
+              <p>
+                L’AI non è il problema del giornalismo. Il problema è l’AI <strong className="text-[#0a0a0a]">senza accountability</strong>. Un articolo scritto da un umano senza fonti verificate è meno affidabile di un articolo generato da AI con un Verification Report pubblico. Il medium non determina la qualità. Il metodo sì.
+              </p>
+              <p>
+                ProofPress usa AI per fare ciò che nessun umano può fare a scala: estrarre ogni claim, confrontarlo con migliaia di fonti, produrre un report strutturato in meno di 60 secondi. Poi usa la crittografia per rendere quel report immutabile e verificabile.
+              </p>
+              <div className="p-5 border-l-2 mt-6" style={{ borderColor: ORANGE, background: `${ORANGE}08` }}>
+                <p className="text-sm leading-relaxed text-[#0a0a0a]/75 font-semibold">
+                  Non è “non-AI”. È AI con prova. La differenza è tutto.
+                </p>
+              </div>
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════════════════
               DIFFERENZIAZIONE
           ═══════════════════════════════════════════════════════════════════ */}
           <Section bg="#f8f8f6" id="differenziazione">
             <Label>Differenziazione</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
-              Non è un fact-checker.<br />È infrastruttura di fiducia.
+              Non è un fact-checker.<br />È corroborazione verificabile.
             </h2>
             <div className="space-y-8">
               {[
                 {
                   title: "Fact-checker tradizionali vs. ProofPress Verify",
-                  text: "I fact-checker umani controllano una notizia alla volta, impiegano ore, e il risultato è un giudizio soggettivo ('True', 'Mostly True', 'Misleading'). Non è scalabile, non è verificabile, e non è immutabile. ProofPress Verify certifica migliaia di notizie al giorno, in tempo reale, con un metodo documentato e un output crittograficamente sigillato. Non dice 'è vero' — dimostra perché è affidabile e lo rende verificabile da chiunque.",
+                  text: "I fact-checker umani producono giudizi soggettivi (‘True’, ‘Mostly True’, ‘Misleading’). Sono lenti, non scalano, e il loro output non è verificabile né immutabile. ProofPress Verify produce un Verification Report strutturato, con esito per ogni singolo claim, ancorato crittograficamente. Non dice ‘è vero’ — mostra quante fonti indipendenti lo confermano e con quale credibilità.",
                 },
                 {
                   title: "AI senza crittografia vs. ProofPress Verify",
-                  text: "Molti tool usano l'AI per \"analizzare\" le notizie. Ma senza un layer crittografico, l'output può essere modificato, cancellato o manipolato dopo la pubblicazione. ProofPress Verify aggiunge il sigillo che rende la certificazione permanente e trustless.",
+                  text: "Molti tool usano l’AI per ‘analizzare’ le notizie. Ma senza un layer crittografico, l’output può essere modificato o cancellato dopo la pubblicazione. ProofPress Verify aggiunge il sigillo IPFS + Bitcoin che rende la certificazione permanente, pubblica e trustless.",
                 },
                 {
                   title: "Blockchain senza AI vs. ProofPress Verify",
-                  text: "Registrare un contenuto su blockchain non serve a niente se il contenuto stesso non è stato prima verificato. Notarizzi spazzatura, hai spazzatura notarizzata. ProofPress Verify unisce l'analisi AI (che verifica) e la crittografia Web3 (che sigilla). Uno senza l'altro non funziona.",
+                  text: "Registrare un contenuto su blockchain non serve se il contenuto non è stato prima verificato. Notarizzi spazzatura, hai spazzatura notarizzata. ProofPress Verify unisce corroborazione AI (che verifica claim per claim) e crittografia Web3 (che sigilla il risultato). Uno senza l’altro non produce accountability reale.",
                 },
               ].map(({ title, text }) => (
                 <div key={title} className="border-l-2 pl-6" style={{ borderColor: ORANGE }}>
@@ -823,22 +911,22 @@ export default function ProofPressVerify() {
                 {
                   icon: "📰",
                   title: "Editori e redazioni",
-                  text: "Ogni articolo esce con un certificato. Il badge ProofPress Verify è visibile al lettore. La credibilità della testata non è più un'affermazione — è un dato misurabile. I lettori possono controllare autonomamente ogni notizia.",
+                  text: "Ogni articolo esce con un Verification Report pubblico. Il badge ProofPress Verify è visibile al lettore con grade e score. La credibilità della testata non è più un’affermazione — è un dato misurabile, verificabile da chiunque in qualsiasi momento.",
                 },
                 {
                   icon: "✍️",
                   title: "Giornalisti indipendenti e freelance",
-                  text: "Un freelance non ha una redazione di fact-checker alle spalle. Con ProofPress Verify, ogni suo contenuto è certificato con lo stesso rigore di una testata strutturata. La certificazione diventa il suo biglietto da visita.",
+                  text: "Un freelance non ha una redazione di fact-checker alle spalle. Con ProofPress Verify, ogni suo contenuto è certificato con lo stesso rigore metodologico di una testata strutturata. Il Verification Report diventa il suo portfolio di credibilità.",
                 },
                 {
                   icon: "🏢",
                   title: "Aziende e brand media",
-                  text: "Le corporate newsroom soffrono di un deficit cronico di credibilità. I lettori le percepiscono come PR mascherata. ProofPress Verify dà ai contenuti aziendali un livello di certificazione indipendente che nessun disclaimer può sostituire.",
+                  text: "Le corporate newsroom soffrono di un deficit strutturale di credibilità: i lettori le percepiscono come PR mascherata. ProofPress Verify dà ai contenuti aziendali un layer di certificazione indipendente che nessun disclaimer può sostituire.",
                 },
                 {
                   icon: "📊",
-                  title: "Lettori e decision-maker",
-                  text: "Investitori, manager, analisti prendono decisioni basandosi su informazioni. Con ProofPress Verify possono controllare in autonomia che le notizie su cui basano le loro scelte siano state verificate con un metodo trasparente e documentato.",
+                  title: "Investitori e decision-maker",
+                  text: "Investitori, board, analisti prendono decisioni basandosi su informazioni. Con ProofPress Verify possono verificare in autonomia che le notizie su cui basano le loro scelte siano state corroborate con un metodo trasparente, documentato e immutabile.",
                 },
               ].map(({ icon, title, text }) => (
                 <div key={title} className="p-6 border border-[#0a0a0a]/8">
@@ -856,10 +944,26 @@ export default function ProofPressVerify() {
               SPECIFICHE TECNICHE
           ═══════════════════════════════════════════════════════════════════ */}
           <Section bg="#f8f8f6" id="specs">
-            <Label>Sotto il cofano</Label>
+            <Label>Stack tecnico</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
-              Specifiche tecniche.
+              Sotto il cofano.
             </h2>
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              {[
+                { layer: "Claim extraction", tech: "Claude Haiku (Anthropic)", desc: "Identifica e classifica ogni affermazione fattuale verificabile" },
+                { layer: "Corroboration engine", tech: "Google Fact Check Tools API + DuckDuckGo", desc: "200+ organizzazioni IFCN, 12.000+ domini classificati" },
+                { layer: "Trust scoring", tech: "Algoritmo proprietario", desc: "Score 0–100 basato su ratio claim supportati, numero fonti, credibilità media" },
+                { layer: "Hashing", tech: "SHA-256", desc: "Fingerprint crittografico del contenuto + report" },
+                { layer: "Archiviazione immutabile", tech: "IPFS via Pinata", desc: "CID permanente, recuperabile da qualsiasi gateway IPFS" },
+                { layer: "Ancoraggio temporale", tech: "OpenTimestamps su Bitcoin mainnet", desc: "Timestamp immutabile verificabile da qualsiasi block explorer" },
+              ].map(({ layer, tech, desc }) => (
+                <div key={layer} className="p-5 border border-[#0a0a0a]/8 bg-white">
+                  <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-1">{layer}</div>
+                  <div className="text-sm font-black text-[#0a0a0a] mb-2" style={{ fontFamily: FONT }}>{tech}</div>
+                  <div className="text-xs text-[#0a0a0a]/50 leading-relaxed">{desc}</div>
+                </div>
+              ))}
+            </div>
             <TechSpecs />
           </Section>
 
@@ -876,12 +980,12 @@ export default function ProofPressVerify() {
                   className="text-3xl md:text-5xl font-black leading-tight mb-6"
                   style={{ fontFamily: FONT, color: "#0a0a0a" }}
                 >
-                  L'informazione certificata<br />
+                  La corroborazione verificabile<br />
                   non è un lusso.<br />
                   <span style={{ color: ORANGE }}>È il nuovo standard.</span>
                 </h2>
                 <p className="text-base mb-4 max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.55 }}>
-                  Scrivici per integrare ProofPress Verify nella tua redazione o per richiedere una demo personalizzata.
+                  Scrivici per integrare ProofPress Verify nella tua redazione, per richiedere una demo personalizzata, o per esplorare partnership tecnologiche.
                 </p>
               </div>
               <ContactForm origine="ProofPress Verify" />
@@ -891,7 +995,7 @@ export default function ProofPressVerify() {
           {/* Quote footer */}
           <div className="py-12 text-center" style={{ background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
             <p className="text-sm text-white/30 italic max-w-2xl mx-auto px-5" style={{ fontFamily: FONT }}>
-              "In un mondo dove chiunque può generare una notizia, solo chi la certifica merita di essere letto."
+              “Non promettiamo verità. Forniamo evidenza. La differenza è tutto.”
             </p>
           </div>
 

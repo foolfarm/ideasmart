@@ -3143,3 +3143,7 @@
 - [x] Pulsante "Copia CID" che sostituisce il CID abbreviato in NewsArticle.tsx
 - [x] Icona stato verifica accanto al link IPFS (in attesa / verificato / fallito)
 - [x] Test verifica end-to-end articolo ID 5100136 — grade F (15%), pipeline 4.1s
+- [ ] Aggiorna hero + KPI bar ProofPressVerify.tsx (copy v2)
+- [ ] Aggiorna sezioni contesto, Cos'è, 5 step
+- [ ] Nuova sezione Use Case comparativi (Giulia + Direttore testata)
+- [ ] Aggiorna sezioni Perché non diciamo non-AI, Differenziazione, Per chi, Stack tecnico, CTA, pull quote
