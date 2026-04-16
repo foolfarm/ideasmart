@@ -43,7 +43,7 @@ export default function Navbar() {
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
   const chiSiamoItems = [
-    { label: "Chi Siamo", href: "/chi-siamo-story", desc: "La nostra storia e il team" },
+    { label: "Chi Siamo", href: "/chi-siamo", desc: "La nostra storia e il team" },
     { label: "Storia", href: "/storia", desc: "Come è nata ProofPress" },
   ];
 
@@ -144,7 +144,7 @@ export default function Navbar() {
 
             {/* Pubblicizza */}
             <Link
-              href="/pubblicizza"
+              href="/pubblicita"
               className="px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
@@ -289,7 +289,7 @@ export default function Navbar() {
             {/* Pubblicizza, Contatti, Investi — voci dirette */}
             <div className="flex flex-col gap-1 px-2 mt-1">
               {[
-                { label: "Pubblicizza", href: "/pubblicizza" },
+                { label: "Pubblicizza", href: "/pubblicita" },
                 { label: "Contatti", href: "/contatti" },
                 { label: "🟠 Investi — Pre-Seed Open", href: "/investor" },
               ].map((item) => (
