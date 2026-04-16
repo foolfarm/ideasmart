@@ -7,10 +7,11 @@
  * lo mostra in una pagina branded ProofPress utilizzabile come prova legale
  * indipendente dal sito. Ogni CID è immutabile e verificabile da chiunque.
  */
-import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { ShieldCheck, ShieldX, ExternalLink, Copy, Check, Loader2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import { trpc } from "@/lib/trpc";
+import { useState } from "react";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const MONO = "JetBrains Mono, 'Courier New', monospace";
@@ -73,44 +74,16 @@ export default function VerifyReport() {
   const params = useParams<{ cid: string }>();
   const cid = params.cid;
 
-  const [report, setReport] = useState<VerificationReport | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const ipfsUrl = cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null;
 
-  useEffect(() => {
-    if (!cid) {
-      setError("CID non valido");
-      setLoading(false);
-      return;
-    }
+  // Usa il proxy tRPC server-side per bypassare il CORS di IPFS Gateway
+  const { data: rawReport, isLoading: loading, error: queryError } = trpc.news.fetchIPFSReport.useQuery(
+    { cid: cid! },
+    { enabled: !!cid, retry: 1 }
+  );
 
-    const controller = new AbortController();
-    setLoading(true);
-    setError(null);
-
-    fetch(`https://gateway.pinata.cloud/ipfs/${cid}`, {
-      signal: controller.signal,
-    })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`Gateway error: ${res.status}`);
-        const data = await res.json();
-        // Valida che sia un report ProofPress
-        if (!data.protocol || !data.protocol.startsWith("ProofPress-Verify")) {
-          throw new Error("Il file non è un Verification Report ProofPress valido");
-        }
-        setReport(data as VerificationReport);
-      })
-      .catch((err) => {
-        if (err.name !== "AbortError") {
-          setError(err.message || "Impossibile caricare il Verification Report da IPFS");
-        }
-      })
-      .finally(() => setLoading(false));
-
-    return () => controller.abort();
-  }, [cid]);
+  const report = rawReport as VerificationReport | undefined;
+  const error = queryError?.message ?? null;
 
   const pinnedDate = report?.pinnedAt
     ? new Date(report.pinnedAt).toLocaleDateString("it-IT", {

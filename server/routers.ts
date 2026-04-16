@@ -943,6 +943,33 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { cid, ipfsUrl, alreadyPinned: false };
       }),
 
+    // Proxy server-side per caricare un Verification Report da IPFS — bypassa il CORS
+    fetchIPFSReport: publicProcedure
+      .input(z.object({ cid: z.string().min(10).max(200) }))
+      .query(async ({ input }) => {
+        const gateways = [
+          `https://gateway.pinata.cloud/ipfs/${input.cid}`,
+          `https://ipfs.io/ipfs/${input.cid}`,
+          `https://cloudflare-ipfs.com/ipfs/${input.cid}`,
+        ];
+        let lastError = '';
+        for (const url of gateways) {
+          try {
+            const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+            if (!res.ok) { lastError = `HTTP ${res.status} from ${url}`; continue; }
+            const data = await res.json();
+            if (!data.protocol || !String(data.protocol).startsWith('ProofPress-Verify')) {
+              throw new TRPCError({ code: 'BAD_REQUEST', message: 'Il file non è un Verification Report ProofPress valido' });
+            }
+            return data as Record<string, unknown>;
+          } catch (err: unknown) {
+            if (err instanceof TRPCError) throw err;
+            lastError = err instanceof Error ? err.message : String(err);
+          }
+        }
+        throw new TRPCError({ code: 'NOT_FOUND', message: `Impossibile caricare il report da IPFS: ${lastError}` });
+      }),
+
     // Contatore notizie per sezione — usato dal SectionNav per mostrare badge live
     getSectionCounts: publicProcedure.query(async () => {
       return cached(
