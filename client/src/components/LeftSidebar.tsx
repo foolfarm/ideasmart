@@ -3,105 +3,29 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
-  Zap, BookOpen, Rocket, TrendingUp,
-  Monitor, Briefcase, Info, Mail, BookMarked,
-  PenLine, Newspaper, Building2, CircleDollarSign,
+  Info, BookOpen, Briefcase, Mail,
+  Monitor, BookMarked, CircleDollarSign,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif";
 
-/* ─── CANALI (aggiornati ogni giorno) ────────────────────────────────── */
-const CHANNELS = [
-  { label: "Breaking News", sublabel: "AI & Tech",      path: "/ai",       Icon: Zap        },
-  { label: "Research",      sublabel: "Analisi & Dati", path: "/research", Icon: BookOpen   },
-  { label: "Venture",       sublabel: "Startup",        path: "/startup",  Icon: Rocket     },
-  { label: "Dealroom",      sublabel: "Investimenti",   path: "/dealroom", Icon: TrendingUp },
-];
-
-/* ─── MENU PRINCIPALE ────────────────────────────────────────────────── */
-const PIATTAFORMA_SUBMENU = [
-  { label: "Piattaforma ProofPress", Icon: Monitor,    href: "/piattaforma",                 external: false },
-  { label: "Agentic Platform Demo",  Icon: Zap,        href: "https://proofpress.tech/", external: true  },
-  { label: "ProofPress Verify",      Icon: BookMarked, href: "/proofpress-verify",           external: false },
-];
-
-const OFFERTA_SUBMENU = [
-  { label: "Creator & Giornalisti", Icon: PenLine,   href: "/offerta/creator" },
-  { label: "Testate & Editori",     Icon: Newspaper, href: "/offerta/editori" },
-  { label: "Aziende & Corporate",   Icon: Building2, href: "/offerta/aziende" },
-];
-
-const INFO_LINKS = [
-  { label: "Pubblicizza", Icon: Briefcase, href: "/pubblicita",               external: false },
-  { label: "Contatti",    Icon: Mail,      href: "mailto:info@proofpress.ai", external: true  },
-];
-
 /* ─── DIMENSIONI ─────────────────────────────────────────────────────── */
 const COLLAPSED_W = 62;
 const EXPANDED_W  = 236;
 
-/* ─────────────────────────────────────────────────────────────────────
-   ICONA CANALE — grande, monocromatica, stile Apple SF Symbols
-   Stato normale:  sfondo #f2f2f7 (Apple grey-50), icona #3a3a3c
-   Stato attivo:   sfondo #1d1d1f (Apple black),   icona #ffffff
-   Hover:          sfondo #e5e5ea
-───────────────────────────────────────────────────────────────────── */
-function ChannelIcon({
-  Icon,
-  active,
-}: {
-  Icon: React.ElementType;
-  active: boolean;
-}) {
+/* ─── ICONA MENU ─────────────────────────────────────────────────────── */
+function MenuIcon({ Icon, active }: { Icon: React.ElementType; active: boolean }) {
   return (
     <span
       className="flex-shrink-0 flex items-center justify-center"
       style={{
-        width: 38,
-        height: 38,
-        borderRadius: 12,
+        width: 32, height: 32, borderRadius: 9,
         background: active ? "#1d1d1f" : "#f2f2f7",
         transition: "background 0.15s ease",
       }}
     >
-      <Icon
-        size={19}
-        strokeWidth={1.8}
-        color={active ? "#ffffff" : "#3a3a3c"}
-      />
-    </span>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────────
-   ICONA MENU — media, monocromatica
-   Normale: sfondo #f2f2f7, icona #48484a
-   Attivo:  sfondo #1d1d1f, icona #ffffff
-───────────────────────────────────────────────────────────────────── */
-function MenuIcon({
-  Icon,
-  active,
-}: {
-  Icon: React.ElementType;
-  active: boolean;
-}) {
-  return (
-    <span
-      className="flex-shrink-0 flex items-center justify-center"
-      style={{
-        width: 32,
-        height: 32,
-        borderRadius: 9,
-        background: active ? "#1d1d1f" : "#f2f2f7",
-        transition: "background 0.15s ease",
-      }}
-    >
-      <Icon
-        size={15}
-        strokeWidth={1.9}
-        color={active ? "#ffffff" : "#48484a"}
-      />
+      <Icon size={15} strokeWidth={1.9} color={active ? "#ffffff" : "#48484a"} />
     </span>
   );
 }
@@ -109,11 +33,12 @@ function MenuIcon({
 export default function LeftSidebar() {
   const [location] = useLocation();
   const [hovered, setHovered] = useState(false);
-  const [offertaOpen, setOffertaOpen]     = useState(location.startsWith("/offerta"));
-  const [piattaformaOpen, setPiattaformaOpen] = useState(
-    location.startsWith("/proofpress-verify") || location.startsWith("/piattaforma")
+  const [chiSiamoOpen, setChiSiamoOpen] = useState(
+    location.startsWith("/chi-siamo") || location.startsWith("/storia")
   );
-  const [investOpen, setInvestOpen] = useState(location.startsWith("/investor") || location.startsWith("/chi-siamo"));
+  const [cosaFacciamoOpen, setCosaFacciamoOpen] = useState(
+    location.startsWith("/cosa-facciamo") || location.startsWith("/piattaforma") || location.startsWith("/proofpress-verify")
+  );
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMouseEnter = () => {
@@ -132,7 +57,6 @@ export default function LeftSidebar() {
   const expanded = hovered;
   const w = expanded ? EXPANDED_W : COLLAPSED_W;
 
-  /* helpers */
   const labelStyle: React.CSSProperties = {
     fontFamily: SF,
     opacity: expanded ? 1 : 0,
@@ -145,6 +69,18 @@ export default function LeftSidebar() {
     transition: "opacity 150ms ease",
     overflow: "hidden",
   };
+
+  /* ── Sub-link helper ── */
+  const SubLink = ({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) => (
+    <Link href={href}>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
+        isActive(href) ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
+      }`}>
+        <Icon size={11} strokeWidth={2} />
+        <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>{label}</span>
+      </div>
+    </Link>
+  );
 
   return (
     <aside
@@ -174,167 +110,115 @@ export default function LeftSidebar() {
 
       {/* ── Titolo Menu ── */}
       <div className="px-3 mb-3" style={fadeBlock}>
-        <Link href="/chi-siamo-story">
-          <div style={{ fontFamily: SF, fontSize: "20px", fontWeight: 900, color: "#1d1d1f", letterSpacing: "-0.02em", lineHeight: 1.1, cursor: "pointer" }}>
-            Menu
-          </div>
-        </Link>
+        <div style={{ fontFamily: SF, fontSize: "20px", fontWeight: 900, color: "#1d1d1f", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+          Menu
+        </div>
       </div>
       <div className="mx-3 mb-3 border-t border-[#e5e5ea]" style={fadeBlock} />
 
       {/* ── Tagline ── */}
       <div className="px-3 mb-5" style={{ ...fadeBlock, whiteSpace: "normal" }}>
         <p style={{ fontSize: "12px", color: "rgba(29,29,31,0.5)", lineHeight: 1.6, fontFamily: SF }}>
-          ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato. Crea la tua testata AI-native: scopri l&apos;offerta per{" "}
-          <Link href="/offerta/creator"><span style={{ color: "#0071e3", fontWeight: 700, cursor: "pointer" }}>creator</span></Link>,{" "}
-          <Link href="/offerta/aziende"><span style={{ color: "#0071e3", fontWeight: 700, cursor: "pointer" }}>aziende</span></Link>{" "}ed{" "}
-          <Link href="/offerta/editori"><span style={{ color: "#0071e3", fontWeight: 700, cursor: "pointer" }}>editori</span></Link>.
+          ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato.
         </p>
       </div>
 
       {/* ══════════════════════════════════════════════════════════════
-          NAV PRINCIPALE
+          NAV PRINCIPALE — struttura A/B/C/D/E
       ══════════════════════════════════════════════════════════════ */}
-       <nav className="flex flex-col gap-0.5 px-2 mb-3">
-        {/* CHI SIAMO — primo, con dropdown */}
+      <nav className="flex flex-col gap-0.5 px-2 mb-3">
+
+        {/* A) CHI SIAMO — dropdown */}
         <div>
           <button
-            onClick={() => expanded && setInvestOpen(!investOpen)}
+            onClick={() => expanded && setChiSiamoOpen(!chiSiamoOpen)}
             className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
             title={!expanded ? "Chi Siamo" : undefined}
           >
-            <MenuIcon Icon={Info} active={location.startsWith("/chi-siamo") || location.startsWith("/investor")} />
+            <MenuIcon Icon={Info} active={isActive("/chi-siamo") || isActive("/storia")} />
             <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Chi Siamo</span>
-            {expanded && (investOpen
+            {expanded && (chiSiamoOpen
               ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
               : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
           </button>
-          {investOpen && expanded && (
+          {chiSiamoOpen && expanded && (
             <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
-              <Link href="/chi-siamo-story">
-                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  isActive("/chi-siamo-story") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
-                }`}>
-                  <Info size={11} strokeWidth={2} />
-                  <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Chi Siamo</span>
-                </div>
-              </Link>
-              <Link href="/storia">
-                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  isActive("/storia") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
-                }`}>
-                  <BookOpen size={11} strokeWidth={2} />
-                  <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Storia</span>
-                </div>
-              </Link>
-              <Link href="/cosa-facciamo">
-                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  isActive("/cosa-facciamo") ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
-                }`}>
-                  <Briefcase size={11} strokeWidth={2} />
-                  <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>Cosa Facciamo</span>
-                </div>
-              </Link>
-              <Link href="/investor">
-                <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  isActive("/investor") ? "text-[#ff5500] font-semibold" : "text-[#ff5500] hover:bg-[#fff3ee]"
-                }`}>
-                  <CircleDollarSign size={11} strokeWidth={2} color="#ff5500" />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                      Invest in us
-                    </div>
-                    <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
-                  </div>
-                </div>
-              </Link>
+              <SubLink href="/chi-siamo" icon={Info} label="Chi Siamo" />
+              <SubLink href="/storia" icon={BookOpen} label="Storia" />
             </div>
           )}
         </div>
-        {/* PIATTAFORMA — voce singola senza sottomenu */}
-        <Link href="/piattaforma">
+
+        {/* B) COSA FACCIAMO — dropdown */}
+        <div>
+          <button
+            onClick={() => expanded && setCosaFacciamoOpen(!cosaFacciamoOpen)}
+            className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+            title={!expanded ? "Cosa Facciamo" : undefined}
+          >
+            <MenuIcon Icon={Monitor} active={isActive("/cosa-facciamo") || isActive("/piattaforma") || isActive("/proofpress-verify")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Cosa Facciamo</span>
+            {expanded && (cosaFacciamoOpen
+              ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
+              : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
+          </button>
+          {cosaFacciamoOpen && expanded && (
+            <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
+              <SubLink href="/cosa-facciamo" icon={Briefcase} label="Cosa Offriamo" />
+              <SubLink href="/piattaforma" icon={Monitor} label="Piattaforma Agentica" />
+              <SubLink href="/proofpress-verify" icon={BookMarked} label="Tecnologia Verify" />
+            </div>
+          )}
+        </div>
+
+        {/* C) PUBBLICIZZA */}
+        <Link href="/pubblicita">
           <div
             className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Piattaforma" : undefined}
+            title={!expanded ? "Pubblicizza" : undefined}
           >
-            <MenuIcon Icon={Monitor} active={location.startsWith("/piattaforma") || location.startsWith("/proofpress-verify")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Piattaforma</span>
+            <MenuIcon Icon={Briefcase} active={isActive("/pubblicita")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Pubblicizza</span>
           </div>
         </Link>
 
-        {/* OFFERTA — temporaneamente nascosta */}
-        {false && (
-        <div>
-          <button
-            onClick={() => expanded && setOffertaOpen(!offertaOpen)}
-            className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Offerta" : undefined}
+        {/* D) CONTATTI */}
+        <Link href="/contatti">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+            title={!expanded ? "Contatti" : undefined}
           >
-            <MenuIcon Icon={Briefcase} active={location.startsWith("/offerta")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Offerta</span>
-            {expanded && (offertaOpen
-              ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
-              : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
-          </button>
-          {offertaOpen && expanded && (
-            <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
-              {OFFERTA_SUBMENU.map((sub) => (
-                <Link key={sub.href} href={sub.href}>
-                  <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${isActive(sub.href) ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"}`}>
-                    <sub.Icon size={11} strokeWidth={2} />
-                    <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>{sub.label}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-        )}
+            <MenuIcon Icon={Mail} active={isActive("/contatti")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Contatti</span>
+          </div>
+        </Link>
 
-        {/* INFO LINKS */}
-        {INFO_LINKS.map((ch) => {
-          const inner = (
-            <div
-              className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-              title={!expanded ? ch.label : undefined}
-              style={(ch as any).badge ? { background: "rgba(255,85,0,0.07)" } : undefined}
+        {/* E) INVESTI */}
+        <Link href="/investor">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#fff3ee]"
+            title={!expanded ? "Investi" : undefined}
+          >
+            <span
+              className="flex-shrink-0 flex items-center justify-center"
+              style={{ width: 32, height: 32, borderRadius: 9, background: "rgba(255,85,0,0.12)", transition: "background 0.15s ease" }}
             >
-              <span
-                className="flex-shrink-0 flex items-center justify-center"
-                style={{
-                  width: 32, height: 32, borderRadius: 9,
-                  background: (ch as any).badge ? "rgba(255,85,0,0.15)" : ((!ch.external && isActive(ch.href)) ? "#1d1d1f" : "#f2f2f7"),
-                  transition: "background 0.15s ease",
-                }}
-              >
-                <ch.Icon size={15} strokeWidth={1.9} color={(ch as any).badge ? "#ff5500" : ((!ch.external && isActive(ch.href)) ? "#ffffff" : "#1d1d1f")} />
-              </span>
-              <span
-                className="text-[13px] font-semibold"
-                style={{ ...labelStyle, color: (ch as any).badge ? "#ff5500" : "#1d1d1f" }}
-              >
-                {(ch as any).badge && (
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                )}
-                {ch.label}
-              </span>
+              <CircleDollarSign size={15} strokeWidth={1.9} color="#ff5500" />
+            </span>
+            <div style={{ ...labelStyle, flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: "13px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
+                Investi
+              </div>
+              <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
             </div>
-          );
-          return ch.external ? (
-            <a key={ch.href + ch.label} href={ch.href} target={ch.href.startsWith("mailto:") ? "_self" : "_blank"} rel="noopener noreferrer">{inner}</a>
-          ) : (
-            <Link key={ch.href + ch.label} href={ch.href}>{inner}</Link>
-          );
-        })}
+          </div>
+        </Link>
+
       </nav>
-
-
 
       {/* Spazio flessibile */}
       <div className="flex-1" />
-
-      {/* Investi in noi spostato nel dropdown di Invest in us */}
 
       {/* ── LinkedIn ── */}
       <div className="px-2 mb-3 mt-3">
@@ -345,7 +229,6 @@ export default function LeftSidebar() {
           className="flex items-center gap-3 px-1 py-1.5 rounded-xl hover:bg-[#f5f5f7] transition-colors cursor-pointer"
           title={!expanded ? "LinkedIn" : undefined}
         >
-          {/* Icona LinkedIn monocromatica */}
           <span
             className="flex-shrink-0 flex items-center justify-center"
             style={{ width: 32, height: 32, borderRadius: 9, background: "#f2f2f7" }}
