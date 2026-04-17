@@ -33,31 +33,22 @@ export default function PWAInstallBanner() {
           gap: "12px",
         }}
       >
-        {/* Logo */}
+        {/* Logo — icona ProofPress reale */}
         <div
           style={{
             width: "48px",
             height: "48px",
             borderRadius: "12px",
-            background: "#0f0f0f",
-            border: "1px solid rgba(0,229,200,0.20)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            overflow: "hidden",
             flexShrink: 0,
+            border: "1px solid rgba(0,229,200,0.20)",
           }}
         >
-          <span
-            style={{
-              fontSize: "13px",
-              fontWeight: 900,
-              color: "#ffffff",
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            IS
-          </span>
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-icon-192_48cc5a99.png"
+            alt="ProofPress"
+            style={{ width: "48px", height: "48px", display: "block", objectFit: "cover" }}
+          />
         </div>
 
         {/* Testo */}
@@ -71,7 +62,7 @@ export default function PWAInstallBanner() {
               marginBottom: "2px",
             }}
           >
-            Aggiungi Proof Press
+            Aggiungi ProofPress
           </div>
           <div
             style={{

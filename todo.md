@@ -3265,3 +3265,7 @@
 - [x] Endpoint tRPC news.getTrustDistribution con cache
 - [x] Componente TrustScoreWidget con barre distribuzione A-F
 - [x] Widget integrato nella sidebar Home dopo Research del Giorno
+
+## Bug Fix PWA Banner
+- [x] Logo IS sostituito con icona ProofPress reale nel PWAInstallBanner
+- [x] Testo titolo banner corretto: Aggiungi ProofPress (senza spazio)
