@@ -909,3 +909,57 @@ export const bannerSettings = mysqlTable("banner_settings", {
 });
 
 export type BannerSettings = typeof bannerSettings.$inferSelect;
+
+// ── Journalist Portal ────────────────────────────────────────────────────────
+// Giornalisti accreditati con chiave di firma univoca per certificazione Verify
+
+export const journalists = mysqlTable("journalists", {
+  id: int("id").autoincrement().primaryKey(),
+  username: varchar("username", { length: 64 }).notNull().unique(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  passwordHash: varchar("passwordHash", { length: 255 }).notNull(),
+  displayName: varchar("displayName", { length: 255 }).notNull(),
+  bio: text("bio"),
+  avatarUrl: varchar("avatarUrl", { length: 1000 }),
+  linkedinUrl: varchar("linkedinUrl", { length: 500 }),
+  // Chiave pubblica univoca — inclusa nel payload SHA-256 per certificare la paternità
+  journalistKey: varchar("journalistKey", { length: 64 }).notNull().unique(),
+  isActive: boolean("isActive").default(true).notNull(),
+  sessionToken: varchar("sessionToken", { length: 255 }).unique(),
+  sessionExpiresAt: timestamp("sessionExpiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  lastLoginAt: timestamp("lastLoginAt"),
+  totalArticles: int("totalArticles").default(0).notNull(),
+  avgTrustScore: float("avgTrustScore"),
+});
+export type Journalist = typeof journalists.$inferSelect;
+export type InsertJournalist = typeof journalists.$inferInsert;
+
+// Articoli scritti dai giornalisti accreditati
+export const journalistArticles = mysqlTable("journalist_articles", {
+  id: int("id").autoincrement().primaryKey(),
+  journalistId: int("journalistId").notNull().references(() => journalists.id),
+  title: varchar("title", { length: 500 }).notNull(),
+  body: mediumtext("body").notNull(),
+  summary: text("summary"),
+  category: varchar("category", { length: 100 }).notNull(),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  // draft → review → published | rejected
+  status: mysqlEnum("status", ["draft", "review", "published", "rejected"]).default("draft").notNull(),
+  // Hash SHA-256 che include journalistKey — certifica autore + contenuto
+  verifyHash: varchar("verifyHash", { length: 64 }),
+  // Bollino pubblico: PP-J-XXXXXXXXXXXXXXXX
+  verifyBadge: varchar("verifyBadge", { length: 32 }),
+  verifyReport: json("verifyReport"),
+  trustScore: float("trustScore"),
+  trustGrade: varchar("trustGrade", { length: 1 }),
+  publishedAt: timestamp("publishedAt"),
+  newsItemId: int("newsItemId"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  journalistIdx: index("idx_ja_journalist").on(t.journalistId),
+  statusIdx: index("idx_ja_status").on(t.status),
+}));
+export type JournalistArticle = typeof journalistArticles.$inferSelect;
+export type InsertJournalistArticle = typeof journalistArticles.$inferInsert;
