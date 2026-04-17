@@ -3269,3 +3269,8 @@
 ## Bug Fix PWA Banner
 - [x] Logo IS sostituito con icona ProofPress reale nel PWAInstallBanner
 - [x] Testo titolo banner corretto: Aggiungi ProofPress (senza spazio)
+
+## Fix Bug Critici (17 Apr 2026)
+- [x] LinkedIn doppio post: analisi DB confermata (5 post distinti, nessun duplicato reale); aggiunto guard log per monitoraggio futuro
+- [x] Articoli RSS in inglese: prompt newsScheduler + rssScraperNew aggiornati con obbligo ITALIANO; fallback con traduzione LLM
+- [x] Foto Research sempre uguale: getImageForCategory usa seed giornaliero (dailySeed + index); immagine oggi aggiornata nel DB

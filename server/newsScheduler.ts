@@ -75,8 +75,8 @@ Genera esattamente 20 notizie AI reali e verificabili di oggi (${dayStr}).
 Le notizie devono riguardare eventi, annunci, ricerche e sviluppi REALI nel mondo dell'intelligenza artificiale.
 
 Per ogni notizia fornisci:
-- title: titolo giornalistico incisivo (max 80 caratteri)
-- summary: riassunto editoriale (2-3 frasi, max 250 caratteri)
+- title: titolo giornalistico incisivo IN ITALIANO (max 80 caratteri) — OBBLIGATORIO in italiano, mai in inglese
+- summary: riassunto editoriale IN ITALIANO (2-3 frasi, max 250 caratteri) — OBBLIGATORIO in italiano, mai in inglese
 - category: una tra [${NEWS_CATEGORIES.join(", ")}]
 - sourceName: nome della fonte (es. "VentureBeat", "TechCrunch", "Il Sole 24 Ore", "MIT Sloan", ecc.)
 - sourceUrl: URL homepage del sito sorgente (es. https://techcrunch.com, https://www.wired.com) — NON inventare URL di articoli specifici
@@ -91,6 +91,7 @@ Criteri editoriali:
 6. Includi almeno 1 notizia su regolamentazione AI (EU AI Act, normative)
 7. Il tono deve essere editoriale, non promozionale
 8. Distribuisci le categorie in modo equilibrato tra le 20 notizie
+9. LINGUA OBBLIGATORIA: tutti i titoli e i summary DEVONO essere in ITALIANO. Non usare mai l'inglese, anche se la fonte è in inglese. Traduci sempre.
 
 Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
 
@@ -99,7 +100,7 @@ Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
       messages: [
         {
           role: "system",
-          content: "Sei un redattore AI esperto di tecnologia e innovazione. Rispondi sempre con JSON valido."
+          content: "Sei un redattore AI esperto di tecnologia e innovazione. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese."
         },
         { role: "user", content: prompt }
       ],

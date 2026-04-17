@@ -77,9 +77,18 @@ const CATEGORY_IMAGES: Record<string, string[]> = {
   ],
 };
 
+// Seed giornaliero basato sulla data (YYYYMMDD) per garantire rotazione immagini ogni giorno
+function getDailySeed(): number {
+  const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
+  // Somma dei codici ASCII delle cifre della data (es. "2026-04-17" → somma univoca per ogni giorno)
+  return today.replace(/-/g, "").split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+}
+
 function getImageForCategory(category: string, index: number): string {
   const imgs = CATEGORY_IMAGES[category] ?? CATEGORY_IMAGES["ai_trends"];
-  return imgs[index % imgs.length];
+  // Combina seed giornaliero + index: garantisce (1) immagine diversa ogni giorno, (2) immagini diverse tra articoli dello stesso giorno
+  const dailySeed = getDailySeed();
+  return imgs[(dailySeed + index) % imgs.length];
 }
 
 

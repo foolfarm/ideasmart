@@ -212,8 +212,8 @@ Hai a disposizione questi articoli reali recuperati dai feed RSS delle nostre fo
 ${articlesForPrompt}
 
 COMPITO: Seleziona i 20 articoli più rilevanti per il nostro pubblico e per ognuno produci:
-- title: titolo giornalistico in ITALIANO, incisivo (max 80 caratteri)
-- summary: riassunto editoriale in ITALIANO (2-3 frasi, max 250 caratteri)  
+- title: titolo giornalistico in ITALIANO, incisivo (max 80 caratteri) — OBBLIGATORIO in italiano, mai in inglese
+- summary: riassunto editoriale in ITALIANO (2-3 frasi, max 250 caratteri) — OBBLIGATORIO in italiano, mai in inglese
 - category: una tra [${cfg.categories.join(", ")}]
 - sourceIndex: indice dell'articolo originale (numero tra parentesi quadre)
 
@@ -223,7 +223,8 @@ IMPORTANTE — ITALIA FIRST:
 - Gli articoli marcati 🇮🇹 provengono da fonti italiane: PRIVILEGIALI nella selezione.
 - Includi almeno 8-10 articoli da fonti italiane (🇮🇹) nei 20 selezionati, se disponibili.
 - Seleziona SOLO articoli dalla lista fornita (usa sourceIndex per riferimento)
-- Traduci e adatta i titoli in italiano giornalistico
+- Traduci e adatta i titoli in italiano giornalistico — TUTTI i titoli devono essere in ITALIANO, anche se la fonte è in inglese
+- LINGUA OBBLIGATORIA: titoli e summary SEMPRE in italiano, mai in inglese
 - Distribuisci le categorie in modo equilibrato
 - Includi almeno 3-4 fonti diverse tra i 20 selezionati
 
@@ -232,7 +233,7 @@ Rispondi SOLO con JSON valido.`;
   try {
     const response = await invokeLLMFast({
       messages: [
-        { role: "system", content: "Sei un redattore editoriale esperto. Rispondi sempre con JSON valido." },
+        { role: "system", content: "Sei un redattore editoriale italiano esperto. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese, anche se la fonte è in inglese." },
         { role: "user", content: prompt }
       ],
       response_format: {
@@ -364,16 +365,69 @@ Rispondi SOLO con JSON valido.`;
       : []; // Nessuna fonte specializzata disponibile: restituisce array vuoto
     const catLabel = section === "ai" ? "Ricerca & Innovazione" : section === "startup" ? "Startup" : "Dealroom";
     console.log(`[RssScraper] Fallback selettivo per ${section}: ${cleanFallback.length} articoli specializzati`);
-    return cleanFallback.slice(0, 20).map(a => ({
-      title: a.title,
-      summary: a.content.slice(0, 250),
-      category: catLabel,
-      sourceName: a.sourceName,
-      sourceUrl: a.link,
-      sourceHomepage: a.sourceHomepage,
-      publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
-      language: "it" as const
-    }));
+    // Fallback: tenta una traduzione LLM semplificata dei titoli in italiano
+    const fallbackArticles = cleanFallback.slice(0, 20);
+    try {
+      const titlesForTranslation = fallbackArticles.map((a, i) => `[${i}] ${a.title}`).join("\n");
+      const transResponse = await invokeLLMFast({
+        messages: [
+          { role: "system", content: "Sei un traduttore italiano. Traduci i titoli in italiano giornalistico. Rispondi con JSON valido." },
+          { role: "user", content: `Traduci questi titoli in italiano giornalistico incisivo (max 80 caratteri ciascuno).\n\n${titlesForTranslation}\n\nRispondi con JSON: {"translations":[{"index":0,"title":"..."}]}` }
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "translations",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                translations: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      index: { type: "integer" },
+                      title: { type: "string" }
+                    },
+                    required: ["index", "title"],
+                    additionalProperties: false
+                  }
+                }
+              },
+              required: ["translations"],
+              additionalProperties: false
+            }
+          }
+        }
+      });
+      const transContent = transResponse.choices[0]?.message?.content as string;
+      const transParsed: { translations?: Array<{ index: number; title: string }> } = JSON.parse(stripJsonBackticks(transContent));
+      const titleMap = new Map((transParsed.translations || []).map(t => [t.index, t.title]));
+      console.log(`[RssScraper] Fallback traduzione: ${titleMap.size} titoli tradotti in italiano`);
+      return fallbackArticles.map((a, i) => ({
+        title: titleMap.get(i) || a.title,
+        summary: a.content.slice(0, 250),
+        category: catLabel,
+        sourceName: a.sourceName,
+        sourceUrl: a.link,
+        sourceHomepage: a.sourceHomepage,
+        publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
+        language: "it" as const
+      }));
+    } catch (transErr) {
+      console.warn(`[RssScraper] Traduzione fallback fallita, uso titoli originali:`, transErr);
+      return fallbackArticles.map(a => ({
+        title: a.title,
+        summary: a.content.slice(0, 250),
+        category: catLabel,
+        sourceName: a.sourceName,
+        sourceUrl: a.link,
+        sourceHomepage: a.sourceHomepage,
+        publishedAt: new Date(a.pubDate).toISOString().split("T")[0],
+        language: "it" as const
+      }));
+    }
   }
 }
 
