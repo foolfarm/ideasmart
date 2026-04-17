@@ -51,6 +51,7 @@ export default function Navbar() {
     { label: "Cosa Offriamo", href: "/cosa-facciamo", desc: "Prodotti e servizi per editori e aziende" },
     { label: "Piattaforma Agentica", href: "/piattaforma", desc: "La tecnologia AI Journalism certificato" },
     { label: "Tecnologia Verify", href: "/proofpress-verify", desc: "Verifica e certificazione degli articoli" },
+    { label: "Trust Score A–F", href: "/trust-score", desc: "Come valutiamo ogni articolo" },
   ];
 
   const DropdownItem = ({

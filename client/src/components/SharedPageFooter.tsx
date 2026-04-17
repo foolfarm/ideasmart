@@ -1,6 +1,6 @@
 /**
  * SharedPageFooter — Footer minimalista
- * Contenuto: ProofPress Magazine è parte del gruppo AxiomX · Privacy Policy
+ * Contenuto: ProofPress Magazine è parte del gruppo AxiomX · Privacy Policy · Trust Score
  */
 import { Link } from "wouter";
 
@@ -19,6 +19,10 @@ export default function SharedPageFooter() {
           {" · "}
           <Link href="/privacy">
             <span className="hover:underline cursor-pointer">Privacy</span>
+          </Link>
+          {" · "}
+          <Link href="/trust-score">
+            <span className="hover:underline cursor-pointer">Trust Score</span>
           </Link>
         </p>
       </div>

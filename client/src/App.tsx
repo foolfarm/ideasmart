@@ -69,6 +69,7 @@ const OffertaAziende = lazy(() => import("./pages/OffertaAziende"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
 const PerGiornalisti = lazy(() => import("./pages/PerGiornalisti"));
 const Tecnologia = lazy(() => import("./pages/Tecnologia"));
+const TrustScore = lazy(() => import("./pages/TrustScore"));
 const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
 const Registrati = lazy(() => import("./pages/Registrati"));
 const Accedi = lazy(() => import("./pages/Accedi"));
@@ -161,6 +162,7 @@ function Router() {
         <Route path="/offerta/aziende" component={OffertaAziende} />
         <Route path="/offertacommerciale" component={PerGiornalisti} />
         <Route path="/tecnologia" component={Tecnologia} />
+        <Route path="/trust-score" component={TrustScore} />
         <Route path="/piattaforma" component={Piattaforma} />
         <Route path="/investor" component={Investor} />
         <Route path="/account" component={Account} />

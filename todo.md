@@ -3231,3 +3231,18 @@
 - [x] Upgrade automatico B→A nel setImmediate IPFS di startupScheduler.ts
 - [x] Aggiungere pin IPFS asincrono + upgrade B→A in approveArticle (journalist router)
 - [x] Zero errori TypeScript — sistema production-ready
+
+## Pagina pubblica /trust-score — 17 Apr 2026
+
+- [x] Creare TrustScore.tsx con layout editoriale completo
+- [x] Hero section con titolo, sottotitolo, data e 3 stat card (5 criteri, 100 punti, A-F)
+- [x] Sezione criteri con 5 card numerate (SHA-256 +40, IPFS +25, fonte +15, contenuto +15, report +5)
+- [x] Simulatore interattivo Trust Score con toggle criteri e calcolo real-time
+- [x] Scala grading A-F con badge colorati, range punti, descrizione ed esempi
+- [x] Sezione badge ProofPress Verify con esempi visivi A/B/C
+- [x] FAQ accordion con 6 domande frequenti
+- [x] CTA dark section con link a Tecnologia Verify e Pubblicizza
+- [x] Registrare route /trust-score in App.tsx
+- [x] Aggiungere Trust Score A-F nel dropdown Cosa Facciamo della Navbar
+- [x] Aggiungere link Trust Score nel SharedPageFooter
+- [x] Zero errori TypeScript
