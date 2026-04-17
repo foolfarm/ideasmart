@@ -1,38 +1,33 @@
 /**
  * Journalist Portal — Area privata per giornalisti accreditati ProofPress
- * Login con username + password → dashboard articoli → editor → pubblica con bollino Verify
+ * Template visivo: /chi-siamo (LeftSidebar + SharedPageHeader + BreakingNewsTicker)
  */
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import SEOHead from "@/components/SEOHead";
+import SharedPageHeader from "@/components/SharedPageHeader";
+import SharedPageFooter from "@/components/SharedPageFooter";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import LeftSidebar from "@/components/LeftSidebar";
 import {
   PenLine, LogOut, Plus, FileText, CheckCircle2, Clock, XCircle,
-  Shield, Eye, Trash2, Send, ChevronLeft, User, Hash, Award, BarChart3,
-  BookOpen, AlertCircle
+  Shield, Eye, Trash2, ChevronLeft, Key, Lock, Award
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
+const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif";
+const MONO = "JetBrains Mono, 'Courier New', monospace";
+const ORANGE = "#ff5500";
 
 const CATEGORIES = [
   "AI & Tecnologia", "Startup & Innovazione", "Economia & Finanza",
@@ -40,129 +35,375 @@ const CATEGORIES = [
   "Cybersecurity", "Sostenibilità", "Salute & Biotech", "Altro"
 ];
 
-type View = "login" | "dashboard" | "editor" | "published";
+type View = "login" | "dashboard" | "editor";
 
-// ── Status badge ──────────────────────────────────────────────────────────────
+function Divider() {
+  return (
+    <div className="max-w-5xl mx-auto px-5 md:px-8">
+      <div className="border-t border-[#0a0a0a]/8" />
+    </div>
+  );
+}
+
+function OrangeLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border mb-4"
+      style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d` }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] mb-4"
+      style={{ color: "rgba(10,10,10,0.4)" }}
+    >
+      {children}
+    </span>
+  );
+}
+
 function StatusBadge({ status }: { status: string }) {
   const config = {
-    draft: { label: "Bozza", color: "bg-gray-100 text-gray-600", icon: Clock },
-    review: { label: "In revisione", color: "bg-amber-100 text-amber-700", icon: Clock },
-    published: { label: "Pubblicato", color: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
-    rejected: { label: "Rifiutato", color: "bg-red-100 text-red-700", icon: XCircle },
-  }[status] ?? { label: status, color: "bg-gray-100 text-gray-500", icon: FileText };
-  const Icon = config.icon;
+    draft: { label: "Bozza", bg: "#f3f4f6", color: "#4b5563", Icon: Clock },
+    review: { label: "In revisione", bg: "#fef3c7", color: "#d97706", Icon: Clock },
+    published: { label: "Pubblicato", bg: "#d1fae5", color: "#059669", Icon: CheckCircle2 },
+    rejected: { label: "Rifiutato", bg: "#fee2e2", color: "#dc2626", Icon: XCircle },
+  }[status] ?? { label: status, bg: "#f3f4f6", color: "#6b7280", Icon: FileText };
+  const { Icon } = config;
   return (
-    <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${config.color}`}>
-      <Icon size={11} />
+    <span
+      className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
+      style={{ background: config.bg, color: config.color, fontFamily: FONT }}
+    >
+      <Icon size={10} />
       {config.label}
     </span>
   );
 }
 
-// ── Verify Badge ──────────────────────────────────────────────────────────────
-function VerifyBadgeDisplay({ badge, hash }: { badge: string; hash: string }) {
+/* ── Wrapper layout ── */
+function PageWrapper({ children, title, description, canonical }: {
+  children: React.ReactNode;
+  title?: string;
+  description?: string;
+  canonical?: string;
+}) {
   return (
-    <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-      <Shield size={16} className="text-emerald-600 shrink-0" />
-      <div>
-        <p className="text-xs font-bold text-emerald-700">{badge}</p>
-        <p className="text-[10px] text-emerald-600 font-mono">{hash.substring(0, 32)}...</p>
+    <div className="flex min-h-screen" style={{ fontFamily: FONT }}>
+      <LeftSidebar />
+      <div className="flex-1 min-w-0">
+        <SEOHead
+          title={title ?? "Portale Giornalisti — ProofPress"}
+          description={description ?? "Area privata per i giornalisti accreditati ProofPress."}
+          canonical={canonical ?? "https://proofpress.ai/journalist-portal"}
+          ogSiteName="Proof Press"
+        />
+        <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a" }}>
+          <SharedPageHeader />
+          <BreakingNewsTicker />
+          {children}
+          <Divider />
+          <SharedPageFooter />
+        </div>
       </div>
     </div>
   );
 }
 
-// ── Login Form ────────────────────────────────────────────────────────────────
-function LoginForm({ onSuccess }: { onSuccess: () => void }) {
+/* ── Login ── */
+function LoginView({ onSuccess }: { onSuccess: () => void }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const loginMutation = trpc.journalist.login.useMutation({
-    onSuccess: () => {
-      toast.success("Accesso effettuato");
-      onSuccess();
-    },
+    onSuccess: () => { toast.success("Accesso effettuato"); onSuccess(); },
     onError: (e) => toast.error(e.message),
   });
 
+  const submit = () => {
+    if (!username.trim() || !password.trim()) return;
+    loginMutation.mutate({ username: username.trim(), password });
+  };
+
   return (
-    <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 bg-[#0a0a0a] rounded-lg flex items-center justify-center">
-              <PenLine size={20} className="text-white" />
-            </div>
-            <span className="text-xl font-bold text-[#0a0a0a]">ProofPress</span>
-          </div>
-          <h1 className="text-2xl font-bold text-[#0a0a0a] mb-1">Portale Giornalisti</h1>
-          <p className="text-sm text-gray-500">Accedi con le credenziali fornite dalla redazione</p>
-        </div>
-
-        {/* Form */}
-        <Card className="border-0 shadow-lg">
-          <CardContent className="pt-6 space-y-4">
+    <PageWrapper>
+      {/* Hero */}
+      <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8">
+          <div className="mb-6"><OrangeLabel>AREA RISERVATA</OrangeLabel></div>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left */}
             <div>
-              <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-                Username
-              </label>
-              <Input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="il-tuo-username"
-                className="border-gray-200"
-                onKeyDown={(e) => e.key === "Enter" && loginMutation.mutate({ username, password })}
-              />
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight mb-6" style={{ color: "#0a0a0a" }}>
+                Portale<br />
+                <span style={{ color: ORANGE }}>Giornalisti</span><br />
+                ProofPress
+              </h1>
+              <p className="text-base md:text-lg leading-relaxed mb-8" style={{ color: "#0a0a0a", opacity: 0.6 }}>
+                Scrivi il tuo articolo, pubblicalo su ProofPress e ottieni automaticamente il bollino di certificazione crittografica con la tua firma digitale.
+              </p>
+              <div className="grid grid-cols-3 gap-4 py-6 border-t border-b border-[#0a0a0a]/8">
+                {[
+                  { Icon: Shield, label: "Certificazione", val: "SHA-256" },
+                  { Icon: Key, label: "Firma digitale", val: "Journalist Key" },
+                  { Icon: Award, label: "Bollino", val: "PP-Verify" },
+                ].map(({ Icon, label, val }) => (
+                  <div key={label} className="text-center">
+                    <Icon size={20} className="mx-auto mb-1" style={{ color: ORANGE }} />
+                    <div className="text-xs font-black" style={{ color: "#0a0a0a" }}>{val}</div>
+                    <div className="text-[10px] uppercase tracking-wide" style={{ color: "#0a0a0a", opacity: 0.45 }}>{label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div>
-              <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-                Password
-              </label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="border-gray-200"
-                onKeyDown={(e) => e.key === "Enter" && loginMutation.mutate({ username, password })}
-              />
-            </div>
-            <Button
-              className="w-full bg-[#0a0a0a] hover:bg-[#1a1a1a] text-white"
-              onClick={() => loginMutation.mutate({ username, password })}
-              disabled={loginMutation.isPending || !username || !password}
-            >
-              {loginMutation.isPending ? "Accesso in corso..." : "Accedi al Portale"}
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Info */}
-        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
-          <div className="flex gap-2">
-            <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
-            <div>
-              <p className="text-xs font-semibold text-amber-800">Accesso riservato</p>
-              <p className="text-xs text-amber-700 mt-0.5">
-                Il portale è accessibile solo ai giornalisti accreditati da ProofPress.
-                Per richiedere l'accreditamento, visita{" "}
-                <Link href="/contatti" className="underline">la pagina Contatti</Link>.
+            {/* Login card */}
+            <div className="border border-[#0a0a0a]/10 bg-[#f9f9f9] p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: ORANGE }}>
+                  <Lock size={18} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#0a0a0a", opacity: 0.45 }}>Accesso riservato</p>
+                  <p className="text-sm font-bold" style={{ color: "#0a0a0a" }}>Inserisci le tue credenziali</p>
+                </div>
+              </div>
+              <form onSubmit={(e) => { e.preventDefault(); submit(); }} className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Username</label>
+                  <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="il tuo username" className="border-[#0a0a0a]/20 bg-white" style={{ fontFamily: MONO }} autoComplete="username" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Password</label>
+                  <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="border-[#0a0a0a]/20 bg-white" autoComplete="current-password" />
+                </div>
+                <button type="submit" disabled={loginMutation.isPending || !username.trim() || !password.trim()} className="w-full py-3 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40" style={{ background: "#0a0a0a" }}>
+                  {loginMutation.isPending ? "Accesso in corso..." : "Accedi al Portale →"}
+                </button>
+              </form>
+              <p className="text-xs mt-4 text-center" style={{ color: "#0a0a0a", opacity: 0.4 }}>
+                Non hai le credenziali?{" "}
+                <Link href="/contatti" className="underline hover:no-underline" style={{ color: ORANGE }}>Contattaci</Link>
               </p>
             </div>
           </div>
         </div>
+      </section>
 
-        <p className="text-center text-xs text-gray-400 mt-6">
-          <Link href="/" className="hover:text-gray-600 transition-colors">← Torna a ProofPress</Link>
-        </p>
-      </div>
-    </div>
+      <Divider />
+
+      {/* Come funziona */}
+      <section className="py-20 md:py-28" style={{ background: "#f9f9f9" }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8">
+          <div className="mb-12">
+            <SectionLabel>Come funziona</SectionLabel>
+            <h2 className="text-2xl md:text-3xl font-black" style={{ color: "#0a0a0a" }}>Dal testo al bollino certificato in 4 passi</h2>
+          </div>
+          <div className="grid md:grid-cols-4 gap-6">
+            {[
+              { n: "01", title: "Accedi", desc: "Entra nel portale con le credenziali fornite dalla redazione ProofPress." },
+              { n: "02", title: "Scrivi", desc: "Usa l'editor integrato. Salva come bozza in qualsiasi momento." },
+              { n: "03", title: "Pubblica", desc: "Con un click, il tuo articolo va live su ProofPress.ai." },
+              { n: "04", title: "Certifica", desc: "Il sistema genera l'hash SHA-256 con la tua Journalist Key. Il bollino PP-Verify è tuo." },
+            ].map(({ n, title, desc }) => (
+              <div key={n} className="border border-[#0a0a0a]/8 bg-white p-6">
+                <div className="text-4xl font-black mb-3" style={{ color: ORANGE, fontFamily: MONO }}>{n}</div>
+                <h3 className="text-base font-bold mb-2" style={{ color: "#0a0a0a" }}>{title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: "#0a0a0a", opacity: 0.6 }}>{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </PageWrapper>
   );
 }
 
-// ── Article Editor ────────────────────────────────────────────────────────────
-function ArticleEditor({
+/* ── Dashboard ── */
+function DashboardView({
+  journalist,
+  onNewArticle,
+  onEditArticle,
+  onLogout,
+}: {
+  journalist: { id: number; displayName: string; username: string; bio?: string | null; journalistKey: string; totalArticles: number; avgTrustScore?: number | null };
+  onNewArticle: () => void;
+  onEditArticle: (id: number) => void;
+  onLogout: () => void;
+}) {
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const articlesQuery = trpc.journalist.myArticles.useQuery();
+  const deleteMutation = trpc.journalist.deleteDraft.useMutation({
+    onSuccess: () => { toast.success("Bozza eliminata"); articlesQuery.refetch(); setDeleteId(null); },
+    onError: (e: { message: string }) => toast.error(e.message),
+  });
+  const articles = articlesQuery.data ?? [];
+
+  return (
+    <PageWrapper>
+      {/* Hero */}
+      <section className="pt-24 pb-16 md:pt-28 md:pb-20" style={{ background: "#ffffff" }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8">
+          <div className="flex items-start justify-between gap-4 mb-8">
+            <div>
+              <div className="mb-3"><OrangeLabel>PORTALE GIORNALISTI</OrangeLabel></div>
+              <h1 className="text-3xl md:text-4xl font-black mb-1" style={{ color: "#0a0a0a" }}>
+                Benvenuto, <span style={{ color: ORANGE }}>{journalist.displayName}</span>
+              </h1>
+              <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.5 }}>@{journalist.username}</p>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <button onClick={onNewArticle} className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80" style={{ background: ORANGE }}>
+                <Plus size={16} />Nuovo Articolo
+              </button>
+              <button onClick={onLogout} className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors" style={{ color: "#0a0a0a" }}>
+                <LogOut size={14} />Esci
+              </button>
+            </div>
+          </div>
+
+          {/* KPI */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-t border-b border-[#0a0a0a]/8 mb-10">
+            {[
+              { val: articles.length.toString(), label: "Articoli totali", Icon: FileText },
+              { val: articles.filter(a => a.status === "draft").length.toString(), label: "Bozze", Icon: Clock },
+              { val: articles.filter((a: { status: string }) => a.status === "published").length.toString(), label: "Pubblicati", Icon: CheckCircle2 },
+              { val: journalist.avgTrustScore ? `${Math.round(journalist.avgTrustScore * 100)}%` : "—", label: "Trust Score medio", Icon: Shield },
+            ].map(({ val, label, Icon }) => (
+              <div key={label}>
+                <div className="flex items-center gap-2 mb-1">
+                  <Icon size={14} style={{ color: ORANGE }} />
+                  <span className="text-xs uppercase tracking-wide" style={{ color: "#0a0a0a", opacity: 0.45 }}>{label}</span>
+                </div>
+                <div className="text-3xl font-black" style={{ color: "#0a0a0a" }}>{val}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Journalist Key */}
+          <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] p-5 flex items-start gap-4">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#0a0a0a" }}>
+              <Key size={18} className="text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#0a0a0a", opacity: 0.45 }}>La tua Journalist Key</p>
+              <p className="text-sm font-mono truncate" style={{ color: "#0a0a0a" }}>{journalist.journalistKey}</p>
+              <p className="text-xs mt-1" style={{ color: "#0a0a0a", opacity: 0.45 }}>
+                Incorporata nell'hash SHA-256 di ogni tuo articolo pubblicato — certifica la tua paternità in modo crittograficamente verificabile.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* Articoli */}
+      <section className="py-16 md:py-20">
+        <div className="max-w-5xl mx-auto px-5 md:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <SectionLabel>I tuoi articoli</SectionLabel>
+              <h2 className="text-xl font-black" style={{ color: "#0a0a0a" }}>
+                {articles.length === 0 ? "Nessun articolo ancora" : `${articles.length} articol${articles.length === 1 ? "o" : "i"}`}
+              </h2>
+            </div>
+            {articles.length > 0 && (
+              <button onClick={onNewArticle} className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors" style={{ color: "#0a0a0a" }}>
+                <Plus size={14} />Nuovo
+              </button>
+            )}
+          </div>
+
+          {articlesQuery.isLoading ? (
+            <div className="py-16 text-center">
+              <div className="w-6 h-6 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin mx-auto mb-3" />
+              <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.45 }}>Caricamento...</p>
+            </div>
+          ) : articles.length === 0 ? (
+            <div className="border border-[#0a0a0a]/8 py-16 text-center">
+              <PenLine size={32} className="mx-auto mb-4" style={{ color: "#0a0a0a", opacity: 0.2 }} />
+              <p className="text-base font-bold mb-2" style={{ color: "#0a0a0a" }}>Nessun articolo ancora</p>
+              <p className="text-sm mb-6" style={{ color: "#0a0a0a", opacity: 0.5 }}>Scrivi il tuo primo articolo e ottieni il bollino ProofPress Verify.</p>
+              <button onClick={onNewArticle} className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white" style={{ background: ORANGE }}>
+                <Plus size={16} />Scrivi il primo articolo
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-[#0a0a0a]/6 border border-[#0a0a0a]/8">
+              {articles.map((article) => (
+                <div key={article.id} className="p-5 hover:bg-[#f9f9f9] transition-colors">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <StatusBadge status={article.status} />
+                        {article.category && (
+                          <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color: "#0a0a0a", opacity: 0.4 }}>{article.category}</span>
+                        )}
+                      </div>
+                      <h3 className="text-sm font-bold mb-1 truncate" style={{ color: "#0a0a0a" }}>
+                        {article.title || <span style={{ opacity: 0.4 }}>Senza titolo</span>}
+                      </h3>
+                      {article.summary && (
+                        <p className="text-xs line-clamp-2 mb-2" style={{ color: "#0a0a0a", opacity: 0.55 }}>{article.summary}</p>
+                      )}
+                      {article.verifyBadge && (
+                        <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold" style={{ background: "#d1fae5", color: "#059669" }}>
+                          <Shield size={10} />{article.verifyBadge}
+                        </div>
+                      )}
+                      <p className="text-[10px] mt-2" style={{ color: "#0a0a0a", opacity: 0.35 }}>
+                        {new Date(article.createdAt).toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {article.status !== "published" && (
+                        <>
+                          <button onClick={() => onEditArticle(article.id)} className="p-2 border border-[#0a0a0a]/10 hover:bg-[#0a0a0a]/5 transition-colors" title="Modifica">
+                            <PenLine size={14} style={{ color: "#0a0a0a", opacity: 0.6 }} />
+                          </button>
+                          <button onClick={() => setDeleteId(article.id)} className="p-2 border border-[#0a0a0a]/10 hover:bg-red-50 hover:border-red-200 transition-colors" title="Elimina">
+                            <Trash2 size={14} className="text-red-400" />
+                          </button>
+                        </>
+                      )}
+                      {article.status === "published" && (
+                        <Link href="/">
+                          <button className="p-2 border border-[#0a0a0a]/10 hover:bg-[#0a0a0a]/5 transition-colors" title="Visualizza">
+                            <Eye size={14} style={{ color: "#0a0a0a", opacity: 0.6 }} />
+                          </button>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(o) => !o && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Eliminare la bozza?</AlertDialogTitle>
+            <AlertDialogDescription>Questa azione è irreversibile. La bozza verrà eliminata definitivamente.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annulla</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => deleteId && deleteMutation.mutate({ id: deleteId })}>Elimina</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </PageWrapper>
+  );
+}
+
+/* ── Editor ── */
+function EditorView({
   articleId,
   onBack,
   onPublished,
@@ -177,463 +418,151 @@ function ArticleEditor({
   const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [savedId, setSavedId] = useState<number | undefined>(articleId);
-  const [showPublishConfirm, setShowPublishConfirm] = useState(false);
-  const [publishResult, setPublishResult] = useState<{
-    verifyBadge: string; verifyHash: string; publishedAt: Date;
-  } | null>(null);
+  const [publishResult, setPublishResult] = useState<{ verifyBadge: string; verifyHash: string } | null>(null);
 
-  const { data: existingArticle } = trpc.journalist.getArticle.useQuery(
-    { id: articleId! },
-    { enabled: !!articleId }
-  );
+  const { data: existing } = trpc.journalist.getArticle.useQuery({ id: articleId! }, { enabled: !!articleId });
 
   useEffect(() => {
-    if (existingArticle) {
-      setTitle(existingArticle.title);
-      setBody(existingArticle.body);
-      setSummary(existingArticle.summary ?? "");
-      setCategory(existingArticle.category);
-      setImageUrl(existingArticle.imageUrl ?? "");
+    if (existing) {
+      setTitle(existing.title ?? "");
+      setBody(existing.body ?? "");
+      setSummary(existing.summary ?? "");
+      setCategory(existing.category ?? "");
+      setImageUrl(existing.imageUrl ?? "");
     }
-  }, [existingArticle]);
+  }, [existing]);
 
   const saveMutation = trpc.journalist.saveDraft.useMutation({
-    onSuccess: (data) => {
-      setSavedId(data.id);
-      toast.success("Bozza salvata");
-    },
+    onSuccess: (data) => { setSavedId(data.id); toast.success("Bozza salvata"); },
     onError: (e) => toast.error(e.message),
   });
 
   const publishMutation = trpc.journalist.publish.useMutation({
     onSuccess: (data) => {
-      setPublishResult({
-        verifyBadge: data.verifyBadge,
-        verifyHash: data.verifyHash,
-        publishedAt: data.publishedAt,
-      });
-      toast.success("Articolo pubblicato e certificato con ProofPress Verify!");
+      setPublishResult({ verifyBadge: data.verifyBadge, verifyHash: data.verifyHash });
+      toast.success("Articolo pubblicato e certificato!");
       onPublished();
     },
     onError: (e) => toast.error(e.message),
   });
 
-  const canSave = title.length >= 5 && body.length >= 50 && category;
-  const canPublish = canSave && !!savedId;
-
-  if (publishResult) {
-    return (
-      <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={32} className="text-emerald-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-[#0a0a0a] mb-2">Articolo Pubblicato!</h2>
-          <p className="text-gray-500 text-sm mb-6">
-            Il tuo articolo è ora live su ProofPress, certificato e firmato con la tua chiave giornalista.
-          </p>
-          <VerifyBadgeDisplay badge={publishResult.verifyBadge} hash={publishResult.verifyHash} />
-          <p className="text-xs text-gray-400 mt-3 mb-6">
-            Pubblicato il {new Date(publishResult.publishedAt).toLocaleString("it-IT")}
-          </p>
-          <Button onClick={onBack} className="bg-[#0a0a0a] text-white hover:bg-[#1a1a1a]">
-            Torna alla Dashboard
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const canSave = title.length >= 5 && body.length >= 50 && !!category;
+  const canPublish = canSave && !!savedId && !!summary.trim();
 
   return (
-    <div className="min-h-screen bg-[#f5f5f0]">
-      {/* Top bar */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-10">
-        <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors">
-          <ChevronLeft size={16} />
-          Dashboard
-        </button>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => saveMutation.mutate({ id: savedId, title, body, summary, category, imageUrl })}
-            disabled={!canSave || saveMutation.isPending}
-          >
-            {saveMutation.isPending ? "Salvataggio..." : "Salva bozza"}
-          </Button>
-          <Button
-            size="sm"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white"
-            onClick={() => setShowPublishConfirm(true)}
-            disabled={!canPublish || publishMutation.isPending}
-          >
-            <Send size={14} className="mr-1.5" />
-            Pubblica e Certifica
-          </Button>
-        </div>
-      </div>
+    <PageWrapper title={`${articleId ? "Modifica" : "Nuovo"} Articolo — ProofPress`}>
+      <section className="pt-24 pb-20 md:pt-28 md:pb-24">
+        <div className="max-w-5xl mx-auto px-5 md:px-8">
+          <button onClick={onBack} className="inline-flex items-center gap-2 text-sm mb-8 hover:opacity-70 transition-opacity" style={{ color: "#0a0a0a", opacity: 0.5 }}>
+            <ChevronLeft size={16} />Torna alla dashboard
+          </button>
 
-      {/* Editor */}
-      <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-        {/* Verify info */}
-        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex gap-3">
-          <Shield size={18} className="text-emerald-600 shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-semibold text-emerald-800">Certificazione ProofPress Verify</p>
-            <p className="text-xs text-emerald-700 mt-0.5">
-              Al momento della pubblicazione, il tuo articolo riceverà un hash SHA-256 che include la tua chiave giornalista.
-              Questo certifica in modo crittografico che sei l'autore e che il contenuto non è stato alterato.
-            </p>
-          </div>
-        </div>
+          <div className="mb-6"><OrangeLabel>{articleId ? "MODIFICA ARTICOLO" : "NUOVO ARTICOLO"}</OrangeLabel></div>
+          <h1 className="text-3xl md:text-4xl font-black mb-8" style={{ color: "#0a0a0a" }}>
+            {articleId ? "Modifica il tuo articolo" : "Scrivi un nuovo articolo"}
+          </h1>
 
-        {/* Titolo */}
-        <div>
-          <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-            Titolo *
-          </label>
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Il titolo del tuo articolo..."
-            className="text-lg font-semibold border-gray-200"
-          />
-          <p className="text-xs text-gray-400 mt-1">{title.length}/500 caratteri</p>
-        </div>
-
-        {/* Categoria */}
-        <div>
-          <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-            Categoria *
-          </label>
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="border-gray-200">
-              <SelectValue placeholder="Seleziona una categoria..." />
-            </SelectTrigger>
-            <SelectContent>
-              {CATEGORIES.map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Summary */}
-        <div>
-          <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-            Sommario <span className="text-gray-400 font-normal">(opzionale — max 500 caratteri)</span>
-          </label>
-          <Textarea
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-            placeholder="Una breve descrizione dell'articolo per i lettori..."
-            rows={2}
-            maxLength={500}
-            className="border-gray-200 resize-none"
-          />
-        </div>
-
-        {/* URL immagine */}
-        <div>
-          <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-            URL Immagine <span className="text-gray-400 font-normal">(opzionale)</span>
-          </label>
-          <Input
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="https://..."
-            className="border-gray-200"
-          />
-        </div>
-
-        {/* Body */}
-        <div>
-          <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5 block">
-            Testo dell'articolo *
-          </label>
-          <Textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="Scrivi qui il tuo articolo..."
-            rows={20}
-            className="border-gray-200 font-serif text-base leading-relaxed"
-          />
-          <p className="text-xs text-gray-400 mt-1">{body.length} caratteri · min 50</p>
-        </div>
-      </div>
-
-      {/* Confirm publish dialog */}
-      <AlertDialog open={showPublishConfirm} onOpenChange={setShowPublishConfirm}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Pubblica e certifica l'articolo?</AlertDialogTitle>
-            <AlertDialogDescription>
-              L'articolo verrà pubblicato su ProofPress e riceverà un bollino di certificazione
-              ProofPress Verify con la tua firma digitale. Una volta pubblicato, non potrà essere
-              modificato. Sei sicuro di voler procedere?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-emerald-600 hover:bg-emerald-700"
-              onClick={() => {
-                setShowPublishConfirm(false);
-                if (savedId) publishMutation.mutate({ articleId: savedId });
-              }}
-            >
-              Pubblica e Certifica
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
-  );
-}
-
-// ── Dashboard ─────────────────────────────────────────────────────────────────
-function Dashboard({
-  journalist,
-  onNewArticle,
-  onEditArticle,
-  onLogout,
-}: {
-  journalist: { displayName: string; username: string; journalistKey: string; totalArticles: number; avgTrustScore?: number | null };
-  onNewArticle: () => void;
-  onEditArticle: (id: number) => void;
-  onLogout: () => void;
-}) {
-  const { data: articles, refetch } = trpc.journalist.myArticles.useQuery();
-  const [deleteId, setDeleteId] = useState<number | null>(null);
-
-  const deleteMutation = trpc.journalist.deleteDraft.useMutation({
-    onSuccess: () => {
-      toast.success("Bozza eliminata");
-      refetch();
-      setDeleteId(null);
-    },
-    onError: (e) => toast.error(e.message),
-  });
-
-  const logoutMutation = trpc.journalist.logout.useMutation({
-    onSuccess: onLogout,
-  });
-
-  const drafts = articles?.filter((a) => a.status !== "published") ?? [];
-  const published = articles?.filter((a) => a.status === "published") ?? [];
-
-  return (
-    <div className="min-h-screen bg-[#f5f5f0]">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-[#0a0a0a] rounded-lg flex items-center justify-center">
-              <PenLine size={16} className="text-white" />
+          {publishResult && (
+            <div className="border border-[#0a0a0a]/8 bg-[#f0fdf4] p-6 mb-8 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#059669" }}>
+                <Shield size={18} className="text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-bold mb-1" style={{ color: "#059669" }}>✅ Articolo pubblicato e certificato</p>
+                <p className="text-xs font-mono mb-1" style={{ color: "#059669" }}>{publishResult.verifyBadge}</p>
+                <p className="text-[10px] font-mono" style={{ color: "#059669", opacity: 0.7 }}>{publishResult.verifyHash.substring(0, 48)}...</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-bold text-[#0a0a0a]">ProofPress — Portale Giornalisti</p>
-              <p className="text-xs text-gray-500">Benvenuto, {journalist.displayName}</p>
+          )}
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="md:col-span-2 flex flex-col gap-5">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Titolo *</label>
+                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Il titolo del tuo articolo" className="border-[#0a0a0a]/20 bg-white text-lg font-bold" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Sommario * <span className="normal-case font-normal">(richiesto per la pubblicazione)</span></label>
+                <Textarea value={summary} onChange={(e) => setSummary(e.target.value)} placeholder="Breve sommario (max 300 caratteri)" rows={3} maxLength={300} className="border-[#0a0a0a]/20 bg-white resize-none" />
+                <p className="text-[10px] mt-1" style={{ color: "#0a0a0a", opacity: 0.35 }}>{summary.length}/300</p>
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Contenuto *</label>
+                <Textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="Scrivi il tuo articolo qui..." rows={18} className="border-[#0a0a0a]/20 bg-white resize-none" style={{ fontFamily: FONT, lineHeight: 1.7 }} />
+                <p className="text-[10px] mt-1" style={{ color: "#0a0a0a", opacity: 0.35 }}>{body.length} caratteri</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-gray-500"
-              onClick={() => logoutMutation.mutate()}
-            >
-              <LogOut size={14} className="mr-1.5" />
-              Esci
-            </Button>
-          </div>
-        </div>
-      </div>
+            {/* Sidebar metadati */}
+            <div className="flex flex-col gap-5">
+              <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] p-5">
+                <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#0a0a0a", opacity: 0.45 }}>Metadati</p>
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Categoria *</label>
+                    <Select value={category} onValueChange={setCategory}>
+                      <SelectTrigger className="border-[#0a0a0a]/20 bg-white">
+                        <SelectValue placeholder="Seleziona..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>URL Immagine</label>
+                    <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className="border-[#0a0a0a]/20 bg-white" />
+                  </div>
+                </div>
+              </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="border-0 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <FileText size={14} className="text-gray-400" />
-                <span className="text-xs text-gray-500 uppercase tracking-wide">Articoli</span>
+              <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] p-5 flex flex-col gap-3">
+                <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#0a0a0a", opacity: 0.45 }}>Azioni</p>
+                <button
+                  onClick={() => saveMutation.mutate({ id: savedId, title, body, summary, category, imageUrl })}
+                  disabled={!canSave || saveMutation.isPending}
+                  className="w-full py-2.5 text-sm font-bold border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors disabled:opacity-40"
+                  style={{ color: "#0a0a0a" }}
+                >
+                  {saveMutation.isPending ? "Salvataggio..." : "💾 Salva Bozza"}
+                </button>
+                <button
+                  onClick={async () => {
+                    // Prima salva la bozza aggiornata, poi pubblica
+                    const saved = await saveMutation.mutateAsync({ id: savedId, title, body, summary, category, imageUrl });
+                    publishMutation.mutate({ articleId: saved.id });
+                  }}
+                  disabled={!canPublish || publishMutation.isPending}
+                  className="w-full py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+                  style={{ background: ORANGE }}
+                >
+                  {publishMutation.isPending ? "Pubblicazione..." : "🔏 Pubblica e Certifica"}
+                </button>
+                <p className="text-[10px] text-center" style={{ color: "#0a0a0a", opacity: 0.4 }}>
+                  {!savedId ? "Salva prima la bozza per poter pubblicare" : "La pubblicazione genera il bollino PP-Verify"}
+                </p>
               </div>
-              <p className="text-2xl font-bold text-[#0a0a0a]">{journalist.totalArticles}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <BookOpen size={14} className="text-gray-400" />
-                <span className="text-xs text-gray-500 uppercase tracking-wide">Bozze</span>
-              </div>
-              <p className="text-2xl font-bold text-[#0a0a0a]">{drafts.length}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Award size={14} className="text-gray-400" />
-                <span className="text-xs text-gray-500 uppercase tracking-wide">Trust Score</span>
-              </div>
-              <p className="text-2xl font-bold text-[#0a0a0a]">
-                {journalist.avgTrustScore ? `${Math.round(journalist.avgTrustScore * 100)}%` : "—"}
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Shield size={14} className="text-emerald-500" />
-                <span className="text-xs text-gray-500 uppercase tracking-wide">Certificati</span>
-              </div>
-              <p className="text-2xl font-bold text-emerald-600">{published.length}</p>
-            </CardContent>
-          </Card>
-        </div>
 
-        {/* Journalist Key */}
-        <Card className="border-0 shadow-sm mb-8 bg-[#0a0a0a] text-white">
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-start gap-3">
-              <Hash size={18} className="text-[#ff5500] shrink-0 mt-0.5" />
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">La tua Journalist Key</p>
-                <p className="font-mono text-sm text-white break-all">{journalist.journalistKey}</p>
-                <p className="text-xs text-gray-500 mt-1.5">
-                  Questa chiave viene inclusa nell'hash SHA-256 di ogni tuo articolo pubblicato,
-                  certificando crittograficamente la tua paternità in modo immutabile.
+              <div className="border border-[#0a0a0a]/8 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Shield size={14} style={{ color: ORANGE }} />
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#0a0a0a", opacity: 0.45 }}>ProofPress Verify</p>
+                </div>
+                <p className="text-xs leading-relaxed" style={{ color: "#0a0a0a", opacity: 0.55 }}>
+                  Al momento della pubblicazione, il sistema genera un hash SHA-256 che include il contenuto e la tua Journalist Key univoca. Il bollino <strong>PP-XXXXXXXXXXXXXXXX</strong> certifica la paternità in modo crittograficamente immutabile.
                 </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Nuovo articolo */}
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-[#0a0a0a]">I tuoi articoli</h2>
-          <Button
-            className="bg-[#ff5500] hover:bg-[#e04a00] text-white"
-            onClick={onNewArticle}
-          >
-            <Plus size={16} className="mr-1.5" />
-            Nuovo articolo
-          </Button>
-        </div>
-
-        {/* Lista articoli */}
-        {!articles ? (
-          <div className="text-center py-12 text-gray-400">Caricamento...</div>
-        ) : articles.length === 0 ? (
-          <Card className="border-0 shadow-sm">
-            <CardContent className="py-12 text-center">
-              <PenLine size={32} className="text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 font-medium">Nessun articolo ancora</p>
-              <p className="text-sm text-gray-400 mt-1 mb-4">
-                Inizia a scrivere il tuo primo articolo certificato ProofPress.
-              </p>
-              <Button onClick={onNewArticle} className="bg-[#0a0a0a] text-white hover:bg-[#1a1a1a]">
-                Scrivi il primo articolo
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-3">
-            {articles.map((article) => (
-              <Card key={article.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="pt-4 pb-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <StatusBadge status={article.status} />
-                        <span className="text-xs text-gray-400">{article.category}</span>
-                        <span className="text-xs text-gray-300">·</span>
-                        <span className="text-xs text-gray-400">
-                          {new Date(article.createdAt).toLocaleDateString("it-IT")}
-                        </span>
-                      </div>
-                      <h3 className="font-semibold text-[#0a0a0a] text-sm leading-snug mb-1 truncate">
-                        {article.title}
-                      </h3>
-                      {article.status === "published" && article.verifyBadge && (
-                        <div className="flex items-center gap-1.5 mt-2">
-                          <Shield size={12} className="text-emerald-600" />
-                          <span className="text-xs font-mono text-emerald-700 font-semibold">{article.verifyBadge}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1 shrink-0">
-                      {article.status !== "published" && (
-                        <>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0 text-gray-400 hover:text-[#0a0a0a]"
-                            onClick={() => onEditArticle(article.id)}
-                          >
-                            <PenLine size={14} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0 text-gray-400 hover:text-red-500"
-                            onClick={() => setDeleteId(article.id)}
-                          >
-                            <Trash2 size={14} />
-                          </Button>
-                        </>
-                      )}
-                      {article.status === "published" && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 text-gray-400 hover:text-emerald-600"
-                          asChild
-                        >
-                          <Link href="/">
-                            <Eye size={14} />
-                          </Link>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
-        )}
-      </div>
-
-      {/* Delete confirm */}
-      <AlertDialog open={!!deleteId} onOpenChange={(o) => !o && setDeleteId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Eliminare la bozza?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Questa azione è irreversibile. La bozza verrà eliminata definitivamente.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700"
-              onClick={() => deleteId && deleteMutation.mutate({ id: deleteId })}
-            >
-              Elimina
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+        </div>
+      </section>
+    </PageWrapper>
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+/* ── Main Component ── */
 export default function JournalistPortal() {
   const [view, setView] = useState<View>("login");
   const [editingArticleId, setEditingArticleId] = useState<number | undefined>();
-
   const utils = trpc.useUtils();
   const { data: journalist, isLoading } = trpc.journalist.me.useQuery();
 
@@ -643,54 +572,42 @@ export default function JournalistPortal() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[#0a0a0a] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-gray-500">Caricamento...</p>
+      <div className="flex min-h-screen" style={{ fontFamily: FONT }}>
+        <LeftSidebar />
+        <div className="flex-1 min-w-0">
+          <SharedPageHeader />
+          <BreakingNewsTicker />
+          <div className="flex items-center justify-center py-32">
+            <div className="text-center">
+              <div className="w-6 h-6 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin mx-auto mb-3" />
+              <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.45 }}>Caricamento...</p>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
-  // Login
   if (!journalist || view === "login") {
-    return <LoginForm onSuccess={() => { utils.journalist.me.invalidate(); }} />;
+    return <LoginView onSuccess={() => { utils.journalist.me.invalidate(); }} />;
   }
 
-  // Editor
   if (view === "editor") {
     return (
-      <ArticleEditor
+      <EditorView
         articleId={editingArticleId}
-        onBack={() => {
-          setEditingArticleId(undefined);
-          setView("dashboard");
-          utils.journalist.myArticles.invalidate();
-        }}
-        onPublished={() => {
-          utils.journalist.myArticles.invalidate();
-          utils.journalist.me.invalidate();
-        }}
+        onBack={() => { setEditingArticleId(undefined); setView("dashboard"); utils.journalist.myArticles.invalidate(); }}
+        onPublished={() => { utils.journalist.myArticles.invalidate(); utils.journalist.me.invalidate(); }}
       />
     );
   }
 
-  // Dashboard
   return (
-    <Dashboard
+    <DashboardView
       journalist={journalist}
-      onNewArticle={() => {
-        setEditingArticleId(undefined);
-        setView("editor");
-      }}
-      onEditArticle={(id) => {
-        setEditingArticleId(id);
-        setView("editor");
-      }}
-      onLogout={() => {
-        utils.journalist.me.invalidate();
-        setView("login");
-      }}
+      onNewArticle={() => { setEditingArticleId(undefined); setView("editor"); }}
+      onEditArticle={(id) => { setEditingArticleId(id); setView("editor"); }}
+      onLogout={() => { utils.journalist.me.invalidate(); setView("login"); }}
     />
   );
 }

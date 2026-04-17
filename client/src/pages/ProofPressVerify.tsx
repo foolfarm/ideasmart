@@ -12,7 +12,7 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
-import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp, FileText, BookOpen, ExternalLink, Download } from "lucide-react";
+import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp, FileText, BookOpen, Lock } from "lucide-react";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const MONO = "JetBrains Mono, 'Courier New', monospace";
@@ -1223,7 +1223,7 @@ export default function ProofPressVerify() {
                   Metodologia e Specifiche Tecniche
                 </h2>
                 <p className="text-sm max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.55 }}>
-                  Tutta la documentazione tecnica del protocollo ProofPress Verify è pubblica e verificabile.
+                  La documentazione tecnica del protocollo ProofPress Verify è riservata. Accedi con le credenziali fornite da AxiomiX LLC.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1245,16 +1245,14 @@ export default function ProofPressVerify() {
                       <span key={tag} className="text-[10px] font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>
                     ))}
                   </div>
-                  <a
-                    href="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Verify_WhitePaper_v4.0_6067b788.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/methodology/v1"
                     className="mt-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white transition-colors hover:opacity-80"
                     style={{ background: "#0a0a0a" }}
                   >
-                    <Download className="w-4 h-4" />
-                    Scarica PDF (286 KB)
-                  </a>
+                    <Lock className="w-4 h-4" />
+                    Accedi e Scarica PDF →
+                  </Link>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
                   <div className="flex items-start gap-3">
@@ -1278,8 +1276,8 @@ export default function ProofPressVerify() {
                     href="/methodology/v1"
                     className="mt-auto inline-flex items-center gap-2 border border-[#0a0a0a] text-[#0a0a0a] px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0a0a0a] hover:text-white transition-colors"
                   >
-                    <ExternalLink className="w-4 h-4" />
-                    Leggi la Metodologia
+                    <Lock className="w-4 h-4" />
+                    Accedi e Leggi la Metodologia
                   </Link>
                 </div>
               </div>
