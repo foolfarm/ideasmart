@@ -36,6 +36,7 @@ const CATEGORIES = [
 ];
 
 type View = "login" | "dashboard" | "editor";
+type DashTab = "articles" | "rejected";
 
 function Divider() {
   return (
@@ -251,12 +252,30 @@ function DashboardView({
   onLogout: () => void;
 }) {
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<DashTab>("articles");
+  const [resubmitId, setResubmitId] = useState<number | null>(null);
+  const [resubmitTitle, setResubmitTitle] = useState("");
+  const [resubmitBody, setResubmitBody] = useState("");
+  const [resubmitSummary, setResubmitSummary] = useState("");
+  const [resubmitCategory, setResubmitCategory] = useState("");
+  const [resubmitImageUrl, setResubmitImageUrl] = useState("");
+
   const articlesQuery = trpc.journalist.myArticles.useQuery();
+  const rejectedQuery = trpc.journalist.getRejectedArticles.useQuery();
   const deleteMutation = trpc.journalist.deleteDraft.useMutation({
     onSuccess: () => { toast.success("Bozza eliminata"); articlesQuery.refetch(); setDeleteId(null); },
     onError: (e: { message: string }) => toast.error(e.message),
   });
+  const resubmitMutation = trpc.journalist.resubmitForReview.useMutation({
+    onSuccess: () => {
+      toast.success("Articolo reinviato in revisione!");
+      rejectedQuery.refetch();
+      setResubmitId(null);
+    },
+    onError: (e: { message: string }) => toast.error(e.message),
+  });
   const articles = articlesQuery.data ?? [];
+  const rejected = rejectedQuery.data ?? [];
 
   return (
     <PageWrapper>
@@ -287,7 +306,7 @@ function DashboardView({
               { val: articles.length.toString(), label: "Articoli totali", Icon: FileText },
               { val: articles.filter(a => a.status === "draft").length.toString(), label: "Bozze", Icon: Clock },
               { val: articles.filter((a: { status: string }) => a.status === "published").length.toString(), label: "Pubblicati", Icon: CheckCircle2 },
-              { val: journalist.avgTrustScore ? `${Math.round(journalist.avgTrustScore * 100)}%` : "—", label: "Trust Score medio", Icon: Shield },
+              { val: rejected.length.toString(), label: "Rifiutati", Icon: XCircle },
             ].map(({ val, label, Icon }) => (
               <div key={label}>
                 <div className="flex items-center gap-2 mb-1">
@@ -320,84 +339,249 @@ function DashboardView({
       {/* Articoli */}
       <section className="py-16 md:py-20">
         <div className="max-w-5xl mx-auto px-5 md:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <SectionLabel>I tuoi articoli</SectionLabel>
-              <h2 className="text-xl font-black" style={{ color: "#0a0a0a" }}>
-                {articles.length === 0 ? "Nessun articolo ancora" : `${articles.length} articol${articles.length === 1 ? "o" : "i"}`}
-              </h2>
-            </div>
-            {articles.length > 0 && (
+          {/* Tab navigation */}
+          <div className="flex items-center gap-0 mb-8 border-b border-[#0a0a0a]/8">
+            <button
+              onClick={() => setActiveTab("articles")}
+              className={`px-5 py-3 text-sm font-bold border-b-2 transition-colors ${
+                activeTab === "articles"
+                  ? "border-[#0a0a0a] text-[#0a0a0a]"
+                  : "border-transparent text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70"
+              }`}
+            >
+              I miei articoli
+              {articles.length > 0 && (
+                <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#f3f4f6", color: "#4b5563" }}>{articles.length}</span>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("rejected")}
+              className={`px-5 py-3 text-sm font-bold border-b-2 transition-colors ${
+                activeTab === "rejected"
+                  ? "border-[#dc2626] text-[#dc2626]"
+                  : "border-transparent text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70"
+              }`}
+            >
+              Rifiutati
+              {rejected.length > 0 && (
+                <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#fee2e2", color: "#dc2626" }}>{rejected.length}</span>
+              )}
+            </button>
+            <div className="ml-auto">
               <button onClick={onNewArticle} className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors" style={{ color: "#0a0a0a" }}>
-                <Plus size={14} />Nuovo
+                <Plus size={14} />Nuovo articolo
               </button>
-            )}
+            </div>
           </div>
 
-          {articlesQuery.isLoading ? (
-            <div className="py-16 text-center">
-              <div className="w-6 h-6 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin mx-auto mb-3" />
-              <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.45 }}>Caricamento...</p>
-            </div>
-          ) : articles.length === 0 ? (
-            <div className="border border-[#0a0a0a]/8 py-16 text-center">
-              <PenLine size={32} className="mx-auto mb-4" style={{ color: "#0a0a0a", opacity: 0.2 }} />
-              <p className="text-base font-bold mb-2" style={{ color: "#0a0a0a" }}>Nessun articolo ancora</p>
-              <p className="text-sm mb-6" style={{ color: "#0a0a0a", opacity: 0.5 }}>Scrivi il tuo primo articolo e ottieni il bollino ProofPress Verify.</p>
-              <button onClick={onNewArticle} className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white" style={{ background: ORANGE }}>
-                <Plus size={16} />Scrivi il primo articolo
-              </button>
-            </div>
-          ) : (
-            <div className="divide-y divide-[#0a0a0a]/6 border border-[#0a0a0a]/8">
-              {articles.map((article) => (
-                <div key={article.id} className="p-5 hover:bg-[#f9f9f9] transition-colors">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
-                        <StatusBadge status={article.status} />
-                        {article.category && (
-                          <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color: "#0a0a0a", opacity: 0.4 }}>{article.category}</span>
+          {/* Tab: I miei articoli */}
+          {activeTab === "articles" && (
+            articlesQuery.isLoading ? (
+              <div className="py-16 text-center">
+                <div className="w-6 h-6 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.45 }}>Caricamento...</p>
+              </div>
+            ) : articles.length === 0 ? (
+              <div className="border border-[#0a0a0a]/8 py-16 text-center">
+                <PenLine size={32} className="mx-auto mb-4" style={{ color: "#0a0a0a", opacity: 0.2 }} />
+                <p className="text-base font-bold mb-2" style={{ color: "#0a0a0a" }}>Nessun articolo ancora</p>
+                <p className="text-sm mb-6" style={{ color: "#0a0a0a", opacity: 0.5 }}>Scrivi il tuo primo articolo e ottieni il bollino ProofPress Verify.</p>
+                <button onClick={onNewArticle} className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white" style={{ background: ORANGE }}>
+                  <Plus size={16} />Scrivi il primo articolo
+                </button>
+              </div>
+            ) : (
+              <div className="divide-y divide-[#0a0a0a]/6 border border-[#0a0a0a]/8">
+                {articles.map((article) => (
+                  <div key={article.id} className="p-5 hover:bg-[#f9f9f9] transition-colors">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-2">
+                          <StatusBadge status={article.status} />
+                          {article.category && (
+                            <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color: "#0a0a0a", opacity: 0.4 }}>{article.category}</span>
+                          )}
+                        </div>
+                        <h3 className="text-sm font-bold mb-1 truncate" style={{ color: "#0a0a0a" }}>
+                          {article.title || <span style={{ opacity: 0.4 }}>Senza titolo</span>}
+                        </h3>
+                        {article.summary && (
+                          <p className="text-xs line-clamp-2 mb-2" style={{ color: "#0a0a0a", opacity: 0.55 }}>{article.summary}</p>
+                        )}
+                        {article.verifyBadge && (
+                          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold" style={{ background: "#d1fae5", color: "#059669" }}>
+                            <Shield size={10} />{article.verifyBadge}
+                          </div>
+                        )}
+                        <p className="text-[10px] mt-2" style={{ color: "#0a0a0a", opacity: 0.35 }}>
+                          {new Date(article.createdAt).toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" })}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {article.status !== "published" && (
+                          <>
+                            <button onClick={() => onEditArticle(article.id)} className="p-2 border border-[#0a0a0a]/10 hover:bg-[#0a0a0a]/5 transition-colors" title="Modifica">
+                              <PenLine size={14} style={{ color: "#0a0a0a", opacity: 0.6 }} />
+                            </button>
+                            <button onClick={() => setDeleteId(article.id)} className="p-2 border border-[#0a0a0a]/10 hover:bg-red-50 hover:border-red-200 transition-colors" title="Elimina">
+                              <Trash2 size={14} className="text-red-400" />
+                            </button>
+                          </>
+                        )}
+                        {article.status === "published" && (
+                          <Link href="/">
+                            <button className="p-2 border border-[#0a0a0a]/10 hover:bg-[#0a0a0a]/5 transition-colors" title="Visualizza">
+                              <Eye size={14} style={{ color: "#0a0a0a", opacity: 0.6 }} />
+                            </button>
+                          </Link>
                         )}
                       </div>
-                      <h3 className="text-sm font-bold mb-1 truncate" style={{ color: "#0a0a0a" }}>
-                        {article.title || <span style={{ opacity: 0.4 }}>Senza titolo</span>}
-                      </h3>
-                      {article.summary && (
-                        <p className="text-xs line-clamp-2 mb-2" style={{ color: "#0a0a0a", opacity: 0.55 }}>{article.summary}</p>
-                      )}
-                      {article.verifyBadge && (
-                        <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold" style={{ background: "#d1fae5", color: "#059669" }}>
-                          <Shield size={10} />{article.verifyBadge}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          )}
+
+          {/* Tab: Rifiutati */}
+          {activeTab === "rejected" && (
+            rejectedQuery.isLoading ? (
+              <div className="py-16 text-center">
+                <div className="w-6 h-6 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.45 }}>Caricamento...</p>
+              </div>
+            ) : rejected.length === 0 ? (
+              <div className="border border-[#0a0a0a]/8 py-16 text-center">
+                <CheckCircle2 size={32} className="mx-auto mb-4" style={{ color: "#059669", opacity: 0.5 }} />
+                <p className="text-base font-bold mb-2" style={{ color: "#0a0a0a" }}>Nessun articolo rifiutato</p>
+                <p className="text-sm" style={{ color: "#0a0a0a", opacity: 0.5 }}>Ottimo! Tutti i tuoi articoli sono stati approvati o sono in attesa di revisione.</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-5">
+                <div className="border border-[#dc2626]/20 bg-[#fef2f2] px-5 py-3 flex items-center gap-3">
+                  <XCircle size={16} style={{ color: "#dc2626" }} />
+                  <p className="text-sm" style={{ color: "#dc2626" }}>
+                    {rejected.length} articol{rejected.length === 1 ? "o" : "i"} rifiutat{rejected.length === 1 ? "o" : "i"} — leggi le note della redazione e modifica prima di reinviare.
+                  </p>
+                </div>
+                {rejected.map((article) => (
+                  <div key={article.id} className="border border-[#0a0a0a]/8 overflow-hidden">
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-4 mb-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-2">
+                            <StatusBadge status="rejected" />
+                            {article.category && (
+                              <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color: "#0a0a0a", opacity: 0.4 }}>{article.category}</span>
+                            )}
+                          </div>
+                          <h3 className="text-sm font-bold" style={{ color: "#0a0a0a" }}>{article.title}</h3>
+                          <p className="text-[10px] mt-1" style={{ color: "#0a0a0a", opacity: 0.35 }}>
+                            Rifiutato il {article.reviewedAt ? new Date(article.reviewedAt).toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" }) : "—"}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Note della redazione */}
+                      {article.reviewNotes && (
+                        <div className="border-l-4 border-[#dc2626] bg-[#fef2f2] px-4 py-3 mb-4">
+                          <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "#dc2626" }}>Note della redazione</p>
+                          <p className="text-sm leading-relaxed" style={{ color: "#1a1a1a" }}>{article.reviewNotes}</p>
                         </div>
                       )}
-                      <p className="text-[10px] mt-2" style={{ color: "#0a0a0a", opacity: 0.35 }}>
-                        {new Date(article.createdAt).toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" })}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      {article.status !== "published" && (
-                        <>
-                          <button onClick={() => onEditArticle(article.id)} className="p-2 border border-[#0a0a0a]/10 hover:bg-[#0a0a0a]/5 transition-colors" title="Modifica">
-                            <PenLine size={14} style={{ color: "#0a0a0a", opacity: 0.6 }} />
-                          </button>
-                          <button onClick={() => setDeleteId(article.id)} className="p-2 border border-[#0a0a0a]/10 hover:bg-red-50 hover:border-red-200 transition-colors" title="Elimina">
-                            <Trash2 size={14} className="text-red-400" />
-                          </button>
-                        </>
-                      )}
-                      {article.status === "published" && (
-                        <Link href="/">
-                          <button className="p-2 border border-[#0a0a0a]/10 hover:bg-[#0a0a0a]/5 transition-colors" title="Visualizza">
-                            <Eye size={14} style={{ color: "#0a0a0a", opacity: 0.6 }} />
-                          </button>
-                        </Link>
+
+                      {/* Editor inline per reinvio */}
+                      {resubmitId === article.id ? (
+                        <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] p-4 mt-3">
+                          <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#0a0a0a", opacity: 0.45 }}>Modifica e reinvia</p>
+                          <div className="flex flex-col gap-3">
+                            <Input
+                              value={resubmitTitle}
+                              onChange={(e) => setResubmitTitle(e.target.value)}
+                              placeholder="Titolo"
+                              className="border-[#0a0a0a]/20 bg-white font-bold"
+                            />
+                            <Textarea
+                              value={resubmitSummary}
+                              onChange={(e) => setResubmitSummary(e.target.value)}
+                              placeholder="Sommario (opzionale)"
+                              rows={2}
+                              className="border-[#0a0a0a]/20 bg-white resize-none"
+                            />
+                            <Textarea
+                              value={resubmitBody}
+                              onChange={(e) => setResubmitBody(e.target.value)}
+                              placeholder="Contenuto dell'articolo"
+                              rows={10}
+                              className="border-[#0a0a0a]/20 bg-white resize-none"
+                            />
+                            <Select value={resubmitCategory} onValueChange={setResubmitCategory}>
+                              <SelectTrigger className="border-[#0a0a0a]/20 bg-white">
+                                <SelectValue placeholder="Categoria" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                              </SelectContent>
+                            </Select>
+                            <Input
+                              value={resubmitImageUrl}
+                              onChange={(e) => setResubmitImageUrl(e.target.value)}
+                              placeholder="URL immagine (opzionale)"
+                              className="border-[#0a0a0a]/20 bg-white"
+                            />
+                            <div className="flex items-center gap-3 pt-1">
+                              <button
+                                onClick={() => {
+                                  if (!resubmitTitle.trim() || resubmitBody.length < 50 || !resubmitCategory) {
+                                    toast.error("Compila titolo, contenuto (min 50 caratteri) e categoria.");
+                                    return;
+                                  }
+                                  resubmitMutation.mutate({
+                                    articleId: article.id,
+                                    title: resubmitTitle,
+                                    body: resubmitBody,
+                                    summary: resubmitSummary || undefined,
+                                    category: resubmitCategory,
+                                    imageUrl: resubmitImageUrl || undefined,
+                                  });
+                                }}
+                                disabled={resubmitMutation.isPending}
+                                className="px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+                                style={{ background: ORANGE }}
+                              >
+                                {resubmitMutation.isPending ? "Invio..." : "🔏 Reinvia in revisione"}
+                              </button>
+                              <button
+                                onClick={() => setResubmitId(null)}
+                                className="px-4 py-2.5 text-sm font-medium border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors"
+                                style={{ color: "#0a0a0a" }}
+                              >
+                                Annulla
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setResubmitId(article.id);
+                            setResubmitTitle(article.title);
+                            setResubmitBody(article.body);
+                            setResubmitSummary(article.summary ?? "");
+                            setResubmitCategory(article.category);
+                            setResubmitImageUrl(article.imageUrl ?? "");
+                          }}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80"
+                          style={{ background: ORANGE }}
+                        >
+                          <PenLine size={14} />Modifica e reinvia
+                        </button>
                       )}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )
           )}
         </div>
       </section>

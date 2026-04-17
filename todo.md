@@ -3175,4 +3175,10 @@
 - [x] Aggiungere stato "review" alla tabella journalistArticles (pending/review/approved/rejected/published)
 - [x] Procedure tRPC: submitForReview, approveArticle, rejectArticle (con note), listPendingReview
 - [x] Coda di moderazione in /admin/journalists: tab "In Revisione" con anteprima articolo, approva/rifiuta
-- [ ] Notifica al giornalista quando l'articolo viene approvato o rifiutato
+- [x] Notifica al giornalista quando l'articolo viene approvato o rifiutato
+
+## Nuovi task (17 Apr 2026 — Email notifica giornalista + Tab Rifiutati)
+- [x] Email SendGrid al giornalista quando articolo approvato (con link all'articolo)
+- [x] Email SendGrid al giornalista quando articolo rifiutato (con note della redazione)
+- [x] Tab "Rifiutati" nel portale giornalista: lista articoli rifiutati con note redazione
+- [x] Pulsante "Modifica e Reinvia" per articoli rifiutati (riapre editor con testo esistente)

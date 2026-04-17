@@ -11,6 +11,7 @@ import crypto from "crypto";
 import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { journalists, journalistArticles, newsItems } from "../../drizzle/schema";
+import { sendArticleApprovedEmail, sendArticleRejectedEmail } from "../_core/mailer";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -464,6 +465,78 @@ export const journalistRouter = router({
 
       return { ok: true };
     }),
+
+  /** Recupera gli articoli rifiutati del giornalista (con note della redazione) */
+  getRejectedArticles: publicProcedure.query(async ({ ctx }) => {
+    const journalist = await getJournalistFromSession(ctx);
+    if (!journalist) throw new TRPCError({ code: "UNAUTHORIZED", message: "Accesso richiesto." });
+
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+    const articles = await db
+      .select()
+      .from(journalistArticles)
+      .where(
+        and(
+          eq(journalistArticles.journalistId, journalist.id),
+          eq(journalistArticles.status, "rejected")
+        )
+      )
+      .orderBy(desc(journalistArticles.reviewedAt));
+
+    return articles;
+  }),
+
+  /** Reinvia un articolo rifiutato in revisione (dopo le modifiche) */
+  resubmitForReview: publicProcedure
+    .input(z.object({
+      articleId: z.number(),
+      title: z.string().min(5).max(500),
+      body: z.string().min(50),
+      summary: z.string().max(500).optional(),
+      category: z.string().min(2).max(100),
+      imageUrl: z.string().url().optional().or(z.literal("")),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const journalist = await getJournalistFromSession(ctx);
+      if (!journalist) throw new TRPCError({ code: "UNAUTHORIZED", message: "Accesso richiesto." });
+
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const rows = await db
+        .select()
+        .from(journalistArticles)
+        .where(
+          and(
+            eq(journalistArticles.id, input.articleId),
+            eq(journalistArticles.journalistId, journalist.id)
+          )
+        )
+        .limit(1);
+
+      if (rows.length === 0) throw new TRPCError({ code: "NOT_FOUND" });
+      if (rows[0].status !== "rejected") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Solo gli articoli rifiutati possono essere reinviati." });
+      }
+
+      await db
+        .update(journalistArticles)
+        .set({
+          title: input.title,
+          body: input.body,
+          summary: input.summary ?? null,
+          category: input.category,
+          imageUrl: input.imageUrl || null,
+          status: "review",
+          reviewNotes: null,
+          reviewedAt: null,
+        })
+        .where(eq(journalistArticles.id, input.articleId));
+
+      return { ok: true };
+    }),
 });
 
 // ── Admin tRPC procedures ────────────────────────────────────────────────────
@@ -714,6 +787,17 @@ export const journalistAdminRouter = router({
         .set({ totalArticles: journalist.totalArticles + 1 })
         .where(eq(journalists.id, journalist.id));
 
+      // Invia email di notifica al giornalista (non-blocking)
+      if (journalist.email) {
+        const articleUrl = `https://proofpress.ai/article/${newsItemId}`;
+        sendArticleApprovedEmail({
+          to: journalist.email,
+          journalistName: journalist.displayName,
+          articleTitle: article.title,
+          articleUrl,
+        }).catch((err) => console.error("[Mailer] Errore invio email approvazione:", err));
+      }
+
       return { ok: true, verifyHash, verifyBadge, newsItemId };
     }),
 
@@ -735,6 +819,17 @@ export const journalistAdminRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST", message: "L'articolo non è in stato di revisione." });
       }
 
+      // Recupera dati giornalista per l'email
+      const fullRows = await db
+        .select()
+        .from(journalistArticles)
+        .innerJoin(journalists, eq(journalistArticles.journalistId, journalists.id))
+        .where(eq(journalistArticles.id, input.articleId))
+        .limit(1);
+
+      const articleData = fullRows.length > 0 ? fullRows[0].journalist_articles : null;
+      const journalistData = fullRows.length > 0 ? fullRows[0].journalists : null;
+
       await db
         .update(journalistArticles)
         .set({
@@ -743,6 +838,17 @@ export const journalistAdminRouter = router({
           reviewedAt: new Date(),
         })
         .where(eq(journalistArticles.id, input.articleId));
+
+      // Invia email di notifica al giornalista (non-blocking)
+      if (journalistData?.email && articleData) {
+        sendArticleRejectedEmail({
+          to: journalistData.email,
+          journalistName: journalistData.displayName,
+          articleTitle: articleData.title,
+          reviewNotes: input.notes,
+          portalUrl: "https://proofpress.ai/journalist-portal",
+        }).catch((err) => console.error("[Mailer] Errore invio email rifiuto:", err));
+      }
 
       return { ok: true };
     }),

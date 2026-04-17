@@ -273,3 +273,161 @@ export async function sendWelcomeEmail({
     text: `Ciao ${username},\n\nIl tuo account Proof Press e attivo!\n\nDa oggi hai accesso a:\n- AI NEWS: ultime notizie su intelligenza artificiale, LLM e agenti AI\n- STARTUP NEWS: funding, founder stories ed ecosistema startup\n- DEALROOM: round, seed, Series A/B e investimenti VC\n- RICERCHE: analisi approfondite su trend e mercati\n\nLeggi le ultime notizie: https://proofpress.ai\n\nRiceverai la newsletter ogni lunedi, mercoledi e venerdi.\nGestisci le preferenze: https://proofpress.ai/account\n\n— Proof Press`,
   });
 }
+
+/** Invia email di notifica approvazione articolo al giornalista */
+export async function sendArticleApprovedEmail({
+  to,
+  journalistName,
+  articleTitle,
+  articleUrl,
+}: {
+  to: string;
+  journalistName: string;
+  articleTitle: string;
+  articleUrl: string;
+}): Promise<void> {
+  const year = new Date().getFullYear();
+  const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articolo approvato — ProofPress</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f2ec;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f2ec;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid rgba(26,26,26,0.1);">
+          <tr>
+            <td style="padding:32px 40px 24px;border-bottom:2px solid #1a1a1a;">
+              <p style="margin:0;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(26,26,26,0.4);">Portale Giornalisti ProofPress</p>
+              <h1 style="margin:8px 0 0;font-size:32px;font-weight:900;letter-spacing:-0.02em;color:#1a1a1a;">Proof Press</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#059669;padding:32px 40px;">
+              <p style="margin:0 0 6px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);">✅ Articolo approvato</p>
+              <h2 style="margin:0 0 12px;font-size:24px;font-weight:800;letter-spacing:-0.02em;color:#ffffff;line-height:1.3;">Il tuo articolo è stato pubblicato su ProofPress!</h2>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.85);">La redazione ha approvato e pubblicato il tuo articolo con bollino PP-Verify. È ora visibile su proofpress.ai.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px 40px;">
+              <p style="margin:0 0 8px;font-size:13px;color:rgba(26,26,26,0.6);">Ciao <strong style="color:#1a1a1a;">${journalistName}</strong>,</p>
+              <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:rgba(26,26,26,0.75);">Il tuo articolo <strong style="color:#1a1a1a;">"${articleTitle}"</strong> è stato approvato dalla redazione ProofPress ed è ora online, certificato con il bollino PP-Verify.</p>
+              <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+                <tr>
+                  <td style="background:#1a1a1a;">
+                    <a href="${articleUrl}" style="display:inline-block;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff;text-decoration:none;">
+                      Leggi il tuo articolo →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0;font-size:12px;color:rgba(26,26,26,0.4);">Puoi accedere al portale giornalisti per scrivere nuovi articoli: <a href="https://proofpress.ai/journalist-portal" style="color:#1a1a1a;">proofpress.ai/journalist-portal</a></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 40px;border-top:1px solid rgba(26,26,26,0.08);background:#faf8f3;">
+              <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(26,26,26,0.35);">
+                &copy; ${year} Proof Press &middot; <a href="https://proofpress.ai/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  await sendEmail({
+    to,
+    subject: `✅ Articolo approvato — "${articleTitle}" è online su ProofPress`,
+    html,
+    text: `Ciao ${journalistName},\n\nOttima notizia! Il tuo articolo "${articleTitle}" è stato approvato dalla redazione ProofPress ed è ora online con bollino PP-Verify.\n\nLeggilo qui: ${articleUrl}\n\nContinua a scrivere dal portale: https://proofpress.ai/journalist-portal\n\n— Redazione ProofPress`,
+  });
+}
+
+/** Invia email di notifica rifiuto articolo al giornalista */
+export async function sendArticleRejectedEmail({
+  to,
+  journalistName,
+  articleTitle,
+  reviewNotes,
+  portalUrl,
+}: {
+  to: string;
+  journalistName: string;
+  articleTitle: string;
+  reviewNotes: string;
+  portalUrl: string;
+}): Promise<void> {
+  const year = new Date().getFullYear();
+  const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articolo in revisione — ProofPress</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f2ec;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f2ec;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid rgba(26,26,26,0.1);">
+          <tr>
+            <td style="padding:32px 40px 24px;border-bottom:2px solid #1a1a1a;">
+              <p style="margin:0;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(26,26,26,0.4);">Portale Giornalisti ProofPress</p>
+              <h1 style="margin:8px 0 0;font-size:32px;font-weight:900;letter-spacing:-0.02em;color:#1a1a1a;">Proof Press</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#dc2626;padding:32px 40px;">
+              <p style="margin:0 0 6px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);">Revisione necessaria</p>
+              <h2 style="margin:0 0 12px;font-size:24px;font-weight:800;letter-spacing:-0.02em;color:#ffffff;line-height:1.3;">Il tuo articolo richiede alcune modifiche</h2>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.85);">La redazione ha esaminato il tuo articolo e ha alcune note per te. Puoi modificarlo e reinviarlo.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px 40px;">
+              <p style="margin:0 0 8px;font-size:13px;color:rgba(26,26,26,0.6);">Ciao <strong style="color:#1a1a1a;">${journalistName}</strong>,</p>
+              <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:rgba(26,26,26,0.75);">Il tuo articolo <strong style="color:#1a1a1a;">"${articleTitle}"</strong> è stato esaminato dalla redazione. Ecco le note:</p>
+              <div style="background:#fef2f2;border-left:3px solid #dc2626;padding:16px 20px;margin:0 0 24px;">
+                <p style="margin:0;font-size:13px;line-height:1.7;color:#1a1a1a;">${reviewNotes}</p>
+              </div>
+              <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:rgba(26,26,26,0.75);">Apporta le modifiche suggerite e reinvia l'articolo dalla sezione "Rifiutati" del portale.</p>
+              <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+                <tr>
+                  <td style="background:#1a1a1a;">
+                    <a href="${portalUrl}" style="display:inline-block;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff;text-decoration:none;">
+                      Vai al portale e modifica →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0;font-size:12px;color:rgba(26,26,26,0.4);">Per domande, rispondi a questa email o contatta la redazione.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 40px;border-top:1px solid rgba(26,26,26,0.08);background:#faf8f3;">
+              <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(26,26,26,0.35);">
+                &copy; ${year} Proof Press &middot; <a href="https://proofpress.ai/privacy" style="color:rgba(26,26,26,0.35);">Privacy</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  await sendEmail({
+    to,
+    subject: `Revisione necessaria — "${articleTitle}" su ProofPress`,
+    html,
+    text: `Ciao ${journalistName},\n\nIl tuo articolo "${articleTitle}" è stato esaminato dalla redazione ProofPress.\n\nNote della redazione:\n${reviewNotes}\n\nApporta le modifiche suggerite e reinvia dal portale: ${portalUrl}\n\nPer domande, rispondi a questa email.\n\n— Redazione ProofPress`,
+  });
+}
