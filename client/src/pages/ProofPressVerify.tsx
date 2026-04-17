@@ -12,7 +12,7 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
-import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
+import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp, FileText, BookOpen, ExternalLink, Download } from "lucide-react";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const MONO = "JetBrains Mono, 'Courier New', monospace";
@@ -1212,6 +1212,80 @@ export default function ProofPressVerify() {
           {/* ═══════════════════════════════════════════════════════════════════
               FAQ
           ═══════════════════════════════════════════════════════════════════ */}
+          {/* ═══════════════════════════════════════════════════════════════════
+              RISORSE TECNICHE — WHITE PAPER + METHODOLOGY
+          ═══════════════════════════════════════════════════════════════════ */}
+          <section className="py-16 md:py-20" style={{ background: "#f9f9f9", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="text-center mb-10">
+                <Label>Documentazione Tecnica</Label>
+                <h2 className="text-2xl md:text-3xl font-black mb-3" style={{ fontFamily: FONT, color: "#0a0a0a" }}>
+                  Metodologia e Specifiche Tecniche
+                </h2>
+                <p className="text-sm max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.55 }}>
+                  Tutta la documentazione tecnica del protocollo ProofPress Verify è pubblica e verificabile.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-[#0a0a0a] rounded-lg flex items-center justify-center shrink-0">
+                      <FileText className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-0.5">White Paper</p>
+                      <h3 className="text-base font-bold text-[#0a0a0a] leading-tight">Technical White Paper v4.0</h3>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Specifica tecnica completa: architettura SHA-256, pipeline di verifica agentica, formula Trust Score, Journalist Portal, API, compliance AI Act. Redatto da AxiomiX LLC.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {["SHA-256", "Claude AI", "Trust Score", "Journalist Key", "AI Act"].map(tag => (
+                      <span key={tag} className="text-[10px] font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>
+                    ))}
+                  </div>
+                  <a
+                    href="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Verify_WhitePaper_v4.0_6067b788.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white transition-colors hover:opacity-80"
+                    style={{ background: "#0a0a0a" }}
+                  >
+                    <Download className="w-4 h-4" />
+                    Scarica PDF (286 KB)
+                  </a>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: ORANGE }}>
+                      <BookOpen className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-0.5">Methodology Reference</p>
+                      <h3 className="text-base font-bold text-[#0a0a0a] leading-tight">Methodology v1 — Specifiche interattive</h3>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Pagina tecnica interattiva con formula Trust Score, tabelle grading, schema JSON del Verification Report, Domain Credibility Registry e implementazione TypeScript.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Formula", "Grading A–F", "JSON Schema", "Domain Registry", "TypeScript"].map(tag => (
+                      <span key={tag} className="text-[10px] font-mono bg-orange-50 text-orange-700 px-2 py-0.5 rounded">{tag}</span>
+                    ))}
+                  </div>
+                  <Link
+                    href="/methodology/v1"
+                    className="mt-auto inline-flex items-center gap-2 border border-[#0a0a0a] text-[#0a0a0a] px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0a0a0a] hover:text-white transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Leggi la Metodologia
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+          <Divider />
           <FaqSection />
           <Divider />
           {/* ═══════════════════════════════════════════════════════════════════
