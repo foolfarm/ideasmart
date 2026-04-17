@@ -50,30 +50,55 @@ const CATEGORY_IMAGES: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
     "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
     "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+    // Nuove immagini startup (team, pitch, innovation lab, coworking)
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80",
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80",
+    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80",
   ],
   venture_capital: [
     "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
     "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&q=80",
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
     "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&q=80",
+    // Nuove immagini VC (deal, handshake, trading floor, boardroom)
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
+    "https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=800&q=80",
+    "https://images.unsplash.com/photo-1559526324-593bc073d938?w=800&q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
   ],
   ai_trends: [
     "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80",
     "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
     "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80",
     "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
+    // Nuove immagini AI (neural network, data center, robot, chip)
+    "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80",
+    "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=800&q=80",
+    "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80",
+    "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=800&q=80",
   ],
   technology: [
     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
     "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80",
     "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
     "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+    // Nuove immagini technology (server, code, circuit, digital)
+    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
+    "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=800&q=80",
+    "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80",
   ],
   market: [
     "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
     "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=800&q=80",
     "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80",
     "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+    // Nuove immagini market (stock chart, economy, finance, growth)
+    "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80",
+    "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&q=80",
+    "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
   ],
 };
 

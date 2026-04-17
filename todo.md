@@ -3274,3 +3274,8 @@
 - [x] LinkedIn doppio post: analisi DB confermata (5 post distinti, nessun duplicato reale); aggiunto guard log per monitoraggio futuro
 - [x] Articoli RSS in inglese: prompt newsScheduler + rssScraperNew aggiornati con obbligo ITALIANO; fallback con traduzione LLM
 - [x] Foto Research sempre uguale: getImageForCategory usa seed giornaliero (dailySeed + index); immagine oggi aggiornata nel DB
+
+## Miglioramenti (17 Apr 2026 - batch 2)
+- [x] Alert owner su LinkedIn deduplication guard (doppio post bloccato)
+- [x] Arricchimento pool immagini Research (4-6 immagini per categoria: 4→8 per categoria, 40 totali)
+- [x] Audit e ritraduzione LLM articoli in inglese nel DB (21/21 articoli tradotti)

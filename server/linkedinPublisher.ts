@@ -993,6 +993,16 @@ export async function publishLinkedInPost(
           console.log(`[LinkedIn] ⚡ Modalità FORCE: post slot ${slotLabel} già presente, ma force=true — procedo.`);
         } else {
           console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today} CET) — saltato.`);
+          // Notifica owner: tentativo di doppio post bloccato
+          try {
+            const { notifyOwner } = await import("./_core/notification");
+            await notifyOwner({
+              title: `⚠️ LinkedIn: doppio post bloccato (slot ${slotLabel})`,
+              content: `Il guard di deduplication ha bloccato un tentativo di pubblicare due volte lo slot "${slotLabel}" in data ${today}. Nessun post duplicato è stato inviato a LinkedIn. Verifica i log del server per capire la causa del doppio trigger.`,
+            });
+          } catch (notifyErr) {
+            console.warn('[LinkedIn] Notifica owner fallita:', notifyErr);
+          }
           return { published: 0, errors: [], posts: [] };
         }
       }
