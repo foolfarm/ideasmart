@@ -9,6 +9,7 @@ import { newsItems, dailyEditorial, startupOfDay, weeklyReportage, marketAnalysi
 import { eq } from "drizzle-orm";
 import { findNewsImage, findEditorialImage, findStartupImage, findReportageImage, findMarketAnalysisImage } from "./stockImages";
 import { generateVerifyHash } from "./verify";
+import { computeTrustGrade } from "./trustScore";
 
 // ─── Genera 20 news startup ───────────────────────────────────────────────────
 export async function generateStartupNews(): Promise<void> {
@@ -85,6 +86,7 @@ Restituisci un JSON con questa struttura:
       const item = content.news[i];
       const imageUrl = await findNewsImage(item.title, item.category);
       const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
+      const trustResult = computeTrustGrade({ verifyHash, ipfsCid: null, sourceName: item.sourceName, sourceUrl: item.sourceUrl, summary: item.summary });
       const [insertedSU] = await db.insert(newsItems).values({
         title: item.title,
         summary: item.summary,
@@ -97,6 +99,8 @@ Restituisci un JSON con questa struttura:
         position: i + 1,
         publishedAt: new Date().toISOString(),
         verifyHash,
+        trustScore: trustResult.score / 100,
+        trustGrade: trustResult.grade,
       }).$returningId();
 
       // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso

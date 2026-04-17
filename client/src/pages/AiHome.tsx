@@ -200,7 +200,7 @@ export default function AiHome() {
                     )}
                     {heroNews.verifyHash && (
                       <div className="mt-1.5">
-                        <VerifyBadge hash={heroNews.verifyHash} size="sm" />
+                        <VerifyBadge hash={heroNews.verifyHash} size="sm" trustGrade={heroNews.trustGrade} trustScore={heroNews.trustScore} />
                       </div>
                     )}
                   </div>

@@ -939,6 +939,8 @@ export interface HomeSectionItem {
   imageUrl: string | null;
   videoUrl: string | null;
   verifyHash: string | null;
+  trustGrade: string | null;
+  trustScore: number | null;
   section: HomeSection;
 }
 
@@ -966,6 +968,8 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           imageUrl: item.imageUrl ?? null,
           videoUrl: (item as typeof item & { videoUrl?: string | null }).videoUrl ?? null,
           verifyHash: item.verifyHash ?? null,
+          trustGrade: (item as typeof item & { trustGrade?: string | null }).trustGrade ?? null,
+          trustScore: (item as typeof item & { trustScore?: number | null }).trustScore ?? null,
           section
         }))
       };

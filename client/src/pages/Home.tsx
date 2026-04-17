@@ -335,6 +335,8 @@ type NewsItem = {
   videoUrl?: string | null;
   section?: string;
   verifyHash?: string | null;
+  trustGrade?: string | null;
+  trustScore?: number | null;
 };
 
 // ─── Utility ─────────────────────────────────────────────────────────────────
@@ -433,7 +435,7 @@ function HeroArticle({ item, section, editorial }: {
         </p>
         {item.verifyHash && (
           <div className="mt-1.5">
-            <VerifyBadge hash={item.verifyHash} size="sm" />
+            <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
           </div>
         )}
         {(section === "ai" || section === "startup") && (
@@ -488,7 +490,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
       </p>
       {item.verifyHash && (
         <div className="mt-1">
-          <VerifyBadge hash={item.verifyHash} size="sm" />
+          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
         </div>
       )}
       {(section === "ai" || section === "startup") && (

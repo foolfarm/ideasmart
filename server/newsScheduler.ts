@@ -11,6 +11,7 @@ import { desc, eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
 import { runBatchAudit } from "./auditContent";
 import { generateVerifyHash } from "./verify";
+import { computeTrustGrade } from "./trustScore";
 
 // Intervallo: 24 ore in millisecondi
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -177,6 +178,8 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         console.log(`[NewsScheduler] Stock image found for AI news ${i + 1}: ${item.title.slice(0, 40)}...`);
       }
       const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
+      // Trust Score calcolato al momento dell'insert (ipfsCid non ancora disponibile → aggiornato dopo IPFS pin)
+      const trustResult = computeTrustGrade({ verifyHash, ipfsCid: null, sourceName: item.sourceName, sourceUrl: item.sourceUrl, summary: item.summary });
       const [insertedAI] = await db.insert(newsItems).values({
         section: 'ai',
         title: item.title,
@@ -189,6 +192,8 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         position: i + 1,
         imageUrl: imageUrl ?? null,
         verifyHash,
+        trustScore: trustResult.score / 100,
+        trustGrade: trustResult.grade,
       }).$returningId();
 
       // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso

@@ -22,6 +22,7 @@ import { scrapeAINews, scrapeStartupNews, scrapeDealroomNews, verifyUrl, sanitiz
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
 import { generateVerifyHash } from "./verify";
+import { computeTrustGrade } from "./trustScore";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -131,6 +132,7 @@ async function saveScrapedNews(
     }
 
     const verifyHash = generateVerifyHash(article.title, article.summary, finalSourceUrl, new Date());
+    const trustResult = computeTrustGrade({ verifyHash, ipfsCid: null, sourceName: article.sourceName, sourceUrl: finalSourceUrl, summary: article.summary });
     const [inserted] = await db.insert(newsItems).values({
       section,
       title: article.title,
@@ -144,6 +146,8 @@ async function saveScrapedNews(
       imageUrl,
       videoUrl: article.videoUrl ?? null,
       verifyHash,
+      trustScore: trustResult.score / 100,
+      trustGrade: trustResult.grade,
     }).$returningId();
     saved++;
 

@@ -3188,3 +3188,37 @@
 - [ ] Redesign EditorView: layout full-width, textarea grande (min 600px), sidebar metadati compatta
 - [ ] Pulsante "Importa da Word/PDF" con drag&drop che pre-carica il testo nell'editor
 - [ ] Feedback visivo durante il parsing del documento (loading state)
+
+## Trust Score (A-F) — Aprile 2026
+
+- [ ] Creare server/trustScore.ts con funzione computeTrustGrade
+- [ ] Backfill trustGrade su tutti i 39 articoli esistenti (verifyHash IS NOT NULL)
+- [ ] Auto-assign trustGrade in approveArticle (journalist portal)
+- [ ] Auto-assign trustGrade in news_items insert (curator/scheduler)
+- [ ] Badge TrustScore visibile su card Home.tsx (Prima Pagina)
+- [ ] Badge TrustScore visibile su card AiHome.tsx e DealroomHome.tsx
+- [ ] Vitest per computeTrustGrade
+
+## Trust Score (A-F)
+- [x] Creare funzione computeTrustGrade (server/trustScore.ts) con scoring A-F
+- [x] Backfill 39 articoli esistenti con trustGrade=B (verifyHash + sourceName + sourceUrl)
+- [x] Auto-assign trustGrade in newsScheduler.ts (AI news)
+- [x] Auto-assign trustGrade in rssNewsScheduler.ts (RSS news: AI, startup, dealroom)
+- [x] Auto-assign trustGrade in startupScheduler.ts (startup news)
+- [x] Auto-assign trustGrade in approveArticle journalist router
+- [x] Aggiornare HomeSectionItem interface in db.ts con trustGrade e trustScore
+- [x] Passare trustGrade e trustScore al VerifyBadge in Home.tsx (HeroArticle + SecondaryArticle)
+- [x] Passare trustGrade e trustScore al VerifyBadge in AiHome.tsx (hero + cards)
+- [x] Upgrade IPFS post-pin: aggiornare trustGrade da B ad A quando ipfsCid disponibile
+
+## Trust Score (A-F) — 17 Apr 2026
+
+- [x] Creare funzione computeTrustGrade (server/trustScore.ts) con scoring A-F
+- [x] Backfill 39 articoli esistenti con trustGrade=B (verifyHash + sourceName + sourceUrl)
+- [x] Auto-assign trustGrade in newsScheduler.ts (AI news)
+- [x] Auto-assign trustGrade in rssNewsScheduler.ts (RSS news: AI, startup, dealroom)
+- [x] Auto-assign trustGrade in startupScheduler.ts (startup news)
+- [x] Auto-assign trustGrade in approveArticle journalist router
+- [x] Aggiornare HomeSectionItem interface in db.ts con trustGrade e trustScore
+- [x] Passare trustGrade e trustScore al VerifyBadge in Home.tsx (HeroArticle + SecondaryArticle)
+- [x] Passare trustGrade e trustScore al VerifyBadge in AiHome.tsx (hero + cards)

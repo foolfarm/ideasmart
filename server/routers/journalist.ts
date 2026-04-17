@@ -12,6 +12,7 @@ import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { journalists, journalistArticles, newsItems } from "../../drizzle/schema";
 import { sendArticleApprovedEmail, sendArticleRejectedEmail } from "../_core/mailer";
+import { computeTrustGrade } from "../trustScore";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -749,6 +750,16 @@ export const journalistAdminRouter = router({
       );
       const weekLabel = `${now.getFullYear()}-W${String(weekNum).padStart(2, "0")}`;
 
+      // Calcola Trust Score per l'articolo certificato del giornalista
+      const trustResult = computeTrustGrade({
+        verifyHash,
+        ipfsCid: null,
+        sourceName: `${journalist.displayName} — ProofPress Certified`,
+        sourceUrl: null,
+        body: article.body,
+        summary,
+      });
+
       // Inserisce in news_items
       const [newsResult] = await db.insert(newsItems).values({
         section: "news",
@@ -762,12 +773,14 @@ export const journalistAdminRouter = router({
         position: 0,
         imageUrl: article.imageUrl ?? null,
         verifyHash,
+        trustScore: trustResult.score / 100,
+        trustGrade: trustResult.grade,
         createdAt: now,
       });
 
       const newsItemId = (newsResult as any).insertId;
 
-      // Aggiorna articolo
+      // Aggiorna articolo (incluso trustScore e trustGrade)
       await db
         .update(journalistArticles)
         .set({
@@ -778,6 +791,8 @@ export const journalistAdminRouter = router({
           newsItemId,
           reviewedAt: now,
           reviewNotes: null,
+          trustScore: trustResult.score / 100,
+          trustGrade: trustResult.grade,
         })
         .where(eq(journalistArticles.id, article.id));
 
