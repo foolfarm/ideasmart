@@ -346,6 +346,56 @@ async function startServer() {
     }
   });
 
+  // ── Import documento Word/PDF per il portale giornalisti ──────────────────
+  // POST /api/journalist/import-document — accetta .docx o .pdf, ritorna il testo estratto
+  {
+    const multer = (await import("multer")).default;
+    const upload = multer({
+      storage: multer.memoryStorage(),
+      limits: { fileSize: 20 * 1024 * 1024 }, // 20MB max
+      fileFilter: (_req, file, cb) => {
+        const allowed = [
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/msword",
+          "application/pdf",
+        ];
+        const allowedExt = [".docx", ".doc", ".pdf"];
+        const ext = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf("."));
+        if (allowed.includes(file.mimetype) || allowedExt.includes(ext)) {
+          cb(null, true);
+        } else {
+          cb(new Error("Formato non supportato. Usa .docx o .pdf"));
+        }
+      },
+    });
+    app.post("/api/journalist/import-document", upload.single("file"), async (req, res) => {
+      try {
+        if (!req.file) return res.status(400).json({ error: "Nessun file ricevuto" });
+        const ext = req.file.originalname.toLowerCase().slice(req.file.originalname.lastIndexOf("."));
+        let extractedText = "";
+        if (ext === ".docx" || ext === ".doc" || req.file.mimetype.includes("wordprocessingml") || req.file.mimetype.includes("msword")) {
+          // Parsing Word con mammoth
+          const mammoth = await import("mammoth");
+          const result = await mammoth.extractRawText({ buffer: req.file.buffer });
+          extractedText = result.value.trim();
+        } else if (ext === ".pdf" || req.file.mimetype === "application/pdf") {
+          // Parsing PDF con pdf-parse
+          const pdfParseModule = await import("pdf-parse");
+          const pdfParse = (pdfParseModule as any).default ?? pdfParseModule;
+          const data = await pdfParse(req.file.buffer);
+          extractedText = data.text.trim();
+        } else {
+          return res.status(400).json({ error: "Formato non supportato" });
+        }
+        if (!extractedText) return res.status(422).json({ error: "Impossibile estrarre testo dal documento" });
+        return res.json({ ok: true, text: extractedText, filename: req.file.originalname });
+      } catch (err: any) {
+        console.error("[ImportDoc] Error:", err);
+        return res.status(500).json({ error: err?.message || "Errore durante l'elaborazione del documento" });
+      }
+    });
+  }
+
   // ── ads.txt — servito come file statico da client/public/ads.txt ──────────
   // Il file contiene solo il publisher diretto Google (pub-7185482526978993).
   // Per aggiornarlo: modificare direttamente client/public/ads.txt

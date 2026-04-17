@@ -2,7 +2,7 @@
  * Journalist Portal — Area privata per giornalisti accreditati ProofPress
  * Template visivo: /chi-siamo (LeftSidebar + SharedPageHeader + BreakingNewsTicker)
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { Link } from "wouter";
@@ -13,7 +13,7 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import {
   PenLine, LogOut, Plus, FileText, CheckCircle2, Clock, XCircle,
-  Shield, Eye, Trash2, ChevronLeft, Key, Lock, Award
+  Shield, Eye, Trash2, ChevronLeft, Key, Lock, Award, Upload, FileUp, X as XIcon, Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -602,6 +602,115 @@ function DashboardView({
   );
 }
 
+/* ── Import Document Drop Zone ── */
+function ImportDropZone({ onImport }: { onImport: (text: string, filename: string) => void }) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [importedFile, setImportedFile] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const processFile = useCallback(async (file: File) => {
+    const allowedExts = [".docx", ".doc", ".pdf"];
+    const ext = file.name.toLowerCase().slice(file.name.lastIndexOf("."));
+    if (!allowedExts.includes(ext)) {
+      toast.error("Formato non supportato. Usa .docx, .doc o .pdf");
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      toast.error("File troppo grande. Massimo 20MB.");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/journalist/import-document", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Errore durante l'elaborazione");
+      onImport(data.text, file.name);
+      setImportedFile(file.name);
+      toast.success(`Documento importato: ${file.name}`);
+    } catch (err: any) {
+      toast.error(err?.message ?? "Errore durante l'importazione");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [onImport]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  }, [processFile]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
+    e.target.value = "";
+  };
+
+  return (
+    <div>
+      <input ref={fileInputRef} type="file" accept=".docx,.doc,.pdf" className="hidden" onChange={handleFileChange} />
+      {importedFile ? (
+        <div className="flex items-center gap-3 px-4 py-3 border border-green-200 bg-green-50 rounded-lg">
+          <FileText size={16} className="text-green-600 shrink-0" />
+          <span className="text-sm font-medium text-green-700 truncate flex-1">{importedFile} importato</span>
+          <button
+            onClick={() => { setImportedFile(null); }}
+            className="text-green-500 hover:text-green-700 transition-colors shrink-0"
+          >
+            <XIcon size={14} />
+          </button>
+        </div>
+      ) : (
+        <div
+          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={handleDrop}
+          onClick={() => !isLoading && fileInputRef.current?.click()}
+          className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
+            isDragging
+              ? "border-[#ff5500] bg-[#ff5500]/5"
+              : "border-[#0a0a0a]/15 hover:border-[#ff5500]/50 hover:bg-[#ff5500]/3"
+          }`}
+        >
+          {isLoading ? (
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 size={28} className="animate-spin" style={{ color: ORANGE }} />
+              <p className="text-sm font-medium" style={{ color: "#0a0a0a", opacity: 0.6 }}>Elaborazione documento in corso...</p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${ORANGE}15` }}>
+                <FileUp size={22} style={{ color: ORANGE }} />
+              </div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: "#0a0a0a" }}>Importa da Word o PDF</p>
+                <p className="text-xs mt-1" style={{ color: "#0a0a0a", opacity: 0.5 }}>Trascina qui il file oppure clicca per selezionarlo</p>
+                <p className="text-[11px] mt-1" style={{ color: "#0a0a0a", opacity: 0.35 }}>.docx · .doc · .pdf · max 20MB</p>
+              </div>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors hover:bg-[#0a0a0a]/5"
+                style={{ color: ORANGE, borderColor: `${ORANGE}44` }}
+              >
+                <Upload size={12} />
+                Seleziona file
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Editor ── */
 function EditorView({
   articleId,
@@ -619,6 +728,7 @@ function EditorView({
   const [imageUrl, setImageUrl] = useState("");
   const [savedId, setSavedId] = useState<number | undefined>(articleId);
   const [publishResult, setPublishResult] = useState<{ verifyBadge: string; verifyHash: string } | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const { data: existing } = trpc.journalist.getArticle.useQuery({ id: articleId! }, { enabled: !!articleId });
 
@@ -646,54 +756,157 @@ function EditorView({
     onError: (e) => toast.error(e.message),
   });
 
+  const handleImport = useCallback((text: string, filename: string) => {
+    // Prova a estrarre il titolo dalla prima riga non vuota
+    const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+    if (lines.length > 0 && !title) {
+      const firstLine = lines[0];
+      if (firstLine.length <= 200) {
+        setTitle(firstLine);
+        setBody(lines.slice(1).join("\n\n"));
+      } else {
+        setBody(text);
+      }
+    } else {
+      // Appende al testo esistente se c'è già contenuto
+      setBody(prev => prev ? `${prev}\n\n--- Importato da ${filename} ---\n\n${text}` : text);
+    }
+    // Scroll alla textarea
+    setTimeout(() => textareaRef.current?.focus(), 100);
+  }, [title]);
+
   const canSave = title.length >= 5 && body.length >= 50 && !!category;
   const canPublish = canSave && !!savedId && !!summary.trim();
 
+  // Conta parole
+  const wordCount = body.trim() ? body.trim().split(/\s+/).length : 0;
+  const readTime = Math.max(1, Math.round(wordCount / 200));
+
   return (
     <PageWrapper title={`${articleId ? "Modifica" : "Nuovo"} Articolo — ProofPress`}>
-      <section className="pt-24 pb-20 md:pt-28 md:pb-24">
-        <div className="max-w-5xl mx-auto px-5 md:px-8">
-          <button onClick={onBack} className="inline-flex items-center gap-2 text-sm mb-8 hover:opacity-70 transition-opacity" style={{ color: "#0a0a0a", opacity: 0.5 }}>
-            <ChevronLeft size={16} />Torna alla dashboard
+      {/* Header editor sticky */}
+      <div className="sticky top-0 z-20 border-b border-[#0a0a0a]/8 bg-white/95 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 py-3 flex items-center justify-between gap-4">
+          <button onClick={onBack} className="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity shrink-0" style={{ color: "#0a0a0a", opacity: 0.5 }}>
+            <ChevronLeft size={16} /><span className="hidden sm:inline">Dashboard</span>
           </button>
+          <div className="flex items-center gap-2 text-xs" style={{ color: "#0a0a0a", opacity: 0.4 }}>
+            <span>{wordCount} parole</span>
+            <span>·</span>
+            <span>{readTime} min lettura</span>
+            <span>·</span>
+            <span>{body.length} caratteri</span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => saveMutation.mutate({ id: savedId, title, body, summary, category, imageUrl })}
+              disabled={!canSave || saveMutation.isPending}
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors disabled:opacity-40"
+              style={{ color: "#0a0a0a" }}
+            >
+              {saveMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : null}
+              {saveMutation.isPending ? "Salvo..." : "💾 Salva"}
+            </button>
+            <button
+              onClick={async () => {
+                const saved = await saveMutation.mutateAsync({ id: savedId, title, body, summary, category, imageUrl });
+                submitForReviewMutation.mutate({ articleId: saved.id });
+              }}
+              disabled={!canPublish || submitForReviewMutation.isPending}
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+              style={{ background: ORANGE }}
+            >
+              {submitForReviewMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : null}
+              {submitForReviewMutation.isPending ? "Invio..." : "🔏 Invia in Revisione"}
+            </button>
+          </div>
+        </div>
+      </div>
 
-          <div className="mb-6"><OrangeLabel>{articleId ? "MODIFICA ARTICOLO" : "NUOVO ARTICOLO"}</OrangeLabel></div>
-          <h1 className="text-3xl md:text-4xl font-black mb-8" style={{ color: "#0a0a0a" }}>
-            {articleId ? "Modifica il tuo articolo" : "Scrivi un nuovo articolo"}
-          </h1>
+      <section className="pt-8 pb-16">
+        <div className="max-w-7xl mx-auto px-5 md:px-8">
 
           {publishResult && (
-            <div className="border border-[#0a0a0a]/8 p-6 mb-8 flex items-start gap-4" style={{ background: "#fffbeb" }}>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#d97706" }}>
-                <Shield size={18} className="text-white" />
-              </div>
+            <div className="border border-amber-200 p-4 mb-6 flex items-start gap-3 rounded-lg" style={{ background: "#fffbeb" }}>
+              <Shield size={16} className="text-amber-600 mt-0.5 shrink-0" />
               <div>
-                <p className="text-sm font-bold mb-1" style={{ color: "#d97706" }}>⏳ Articolo inviato in revisione</p>
-                <p className="text-xs" style={{ color: "#92400e" }}>La redazione ProofPress esaminerà il tuo articolo e lo pubblicherà con bollino PP-Verify una volta approvato.</p>
+                <p className="text-sm font-bold text-amber-700">⏳ Articolo inviato in revisione</p>
+                <p className="text-xs text-amber-600 mt-0.5">La redazione ProofPress esaminerà il tuo articolo e lo pubblicherà con bollino PP-Verify una volta approvato.</p>
               </div>
             </div>
           )}
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="md:col-span-2 flex flex-col gap-5">
+          <div className="grid lg:grid-cols-[1fr_300px] gap-8 items-start">
+            {/* ── Colonna principale: editor ── */}
+            <div className="flex flex-col gap-6">
+              {/* Titolo grande */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Titolo *</label>
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Il titolo del tuo articolo" className="border-[#0a0a0a]/20 bg-white text-lg font-bold" />
+                <textarea
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Titolo dell'articolo..."
+                  rows={2}
+                  maxLength={300}
+                  className="w-full resize-none border-0 border-b-2 border-[#0a0a0a]/10 focus:border-[#ff5500] focus:outline-none bg-transparent text-3xl md:text-4xl font-black leading-tight pb-3 transition-colors"
+                  style={{ color: "#0a0a0a", fontFamily: FONT }}
+                />
+                <div className="flex items-center justify-between mt-1">
+                  <span className="text-[11px]" style={{ color: "#0a0a0a", opacity: 0.3 }}>Titolo *</span>
+                  <span className="text-[11px]" style={{ color: title.length < 5 ? "#dc2626" : "#0a0a0a", opacity: title.length < 5 ? 1 : 0.3 }}>{title.length}/300</span>
+                </div>
               </div>
+
+              {/* Sommario */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Sommario * <span className="normal-case font-normal">(richiesto per la pubblicazione)</span></label>
-                <Textarea value={summary} onChange={(e) => setSummary(e.target.value)} placeholder="Breve sommario (max 300 caratteri)" rows={3} maxLength={300} className="border-[#0a0a0a]/20 bg-white resize-none" />
-                <p className="text-[10px] mt-1" style={{ color: "#0a0a0a", opacity: 0.35 }}>{summary.length}/300</p>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.4 }}>Sommario <span className="normal-case font-normal opacity-70">(richiesto per la pubblicazione, max 300 caratteri)</span></label>
+                <Textarea
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
+                  placeholder="Breve sommario che apparirà in anteprima..."
+                  rows={3}
+                  maxLength={300}
+                  className="border-[#0a0a0a]/15 bg-[#fafafa] focus:bg-white resize-none text-sm leading-relaxed transition-colors"
+                  style={{ fontFamily: FONT }}
+                />
+                <p className="text-[11px] mt-1 text-right" style={{ color: summary.length > 280 ? "#d97706" : "#0a0a0a", opacity: summary.length > 280 ? 1 : 0.3 }}>{summary.length}/300</p>
               </div>
+
+              {/* Import documento */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Contenuto *</label>
-                <Textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="Scrivi il tuo articolo qui..." rows={18} className="border-[#0a0a0a]/20 bg-white resize-none" style={{ fontFamily: FONT, lineHeight: 1.7 }} />
-                <p className="text-[10px] mt-1" style={{ color: "#0a0a0a", opacity: 0.35 }}>{body.length} caratteri</p>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#0a0a0a", opacity: 0.4 }}>Importa documento <span className="normal-case font-normal opacity-70">(opzionale — pre-carica il testo nell'editor)</span></label>
+                <ImportDropZone onImport={handleImport} />
+              </div>
+
+              {/* Corpo articolo */}
+              <div className="flex flex-col">
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.4 }}>Contenuto *</label>
+                <textarea
+                  ref={textareaRef}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  placeholder="Scrivi il tuo articolo qui...&#10;&#10;Puoi anche importare un documento Word o PDF qui sopra per pre-caricare il testo."
+                  className="w-full border border-[#0a0a0a]/12 bg-[#fafafa] focus:bg-white focus:border-[#0a0a0a]/25 focus:outline-none rounded-lg p-5 resize-y transition-colors"
+                  style={{
+                    fontFamily: FONT,
+                    fontSize: "16px",
+                    lineHeight: "1.8",
+                    color: "#0a0a0a",
+                    minHeight: "600px",
+                  }}
+                />
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-[11px]" style={{ color: body.length < 50 ? "#dc2626" : "#0a0a0a", opacity: body.length < 50 ? 1 : 0.3 }}>
+                    {body.length < 50 ? `Minimo 50 caratteri (mancano ${50 - body.length})` : `${body.length} caratteri`}
+                  </span>
+                  <span className="text-[11px]" style={{ color: "#0a0a0a", opacity: 0.3 }}>{wordCount} parole · ~{readTime} min</span>
+                </div>
               </div>
             </div>
-            {/* Sidebar metadati */}
-            <div className="flex flex-col gap-5">
-              <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] p-5">
+
+            {/* ── Sidebar destra: metadati + azioni ── */}
+            <div className="flex flex-col gap-4 lg:sticky lg:top-[57px]">
+              {/* Metadati */}
+              <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#0a0a0a", opacity: 0.45 }}>Metadati</p>
                 <div className="flex flex-col gap-4">
                   <div>
@@ -709,45 +922,68 @@ function EditorView({
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>URL Immagine</label>
-                    <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className="border-[#0a0a0a]/20 bg-white" />
+                    <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className="border-[#0a0a0a]/20 bg-white text-sm" />
                   </div>
                 </div>
               </div>
 
-              <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] p-5 flex flex-col gap-3">
+              {/* Azioni */}
+              <div className="border border-[#0a0a0a]/8 bg-[#f9f9f9] rounded-xl p-5 flex flex-col gap-3">
                 <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#0a0a0a", opacity: 0.45 }}>Azioni</p>
                 <button
                   onClick={() => saveMutation.mutate({ id: savedId, title, body, summary, category, imageUrl })}
                   disabled={!canSave || saveMutation.isPending}
-                  className="w-full py-2.5 text-sm font-bold border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors disabled:opacity-40"
+                  className="w-full py-3 text-sm font-bold border border-[#0a0a0a]/15 hover:bg-[#0a0a0a]/5 transition-colors disabled:opacity-40 rounded-lg flex items-center justify-center gap-2"
                   style={{ color: "#0a0a0a" }}
                 >
+                  {saveMutation.isPending && <Loader2 size={14} className="animate-spin" />}
                   {saveMutation.isPending ? "Salvataggio..." : "💾 Salva Bozza"}
                 </button>
                 <button
                   onClick={async () => {
-                    // Prima salva la bozza aggiornata, poi invia in revisione
                     const saved = await saveMutation.mutateAsync({ id: savedId, title, body, summary, category, imageUrl });
                     submitForReviewMutation.mutate({ articleId: saved.id });
                   }}
                   disabled={!canPublish || submitForReviewMutation.isPending}
-                  className="w-full py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+                  className="w-full py-3 text-sm font-bold text-white transition-opacity hover:opacity-80 disabled:opacity-40 rounded-lg flex items-center justify-center gap-2"
                   style={{ background: ORANGE }}
                 >
+                  {submitForReviewMutation.isPending && <Loader2 size={14} className="animate-spin" />}
                   {submitForReviewMutation.isPending ? "Invio in corso..." : "🔏 Invia in Revisione"}
                 </button>
-                <p className="text-[10px] text-center" style={{ color: "#0a0a0a", opacity: 0.4 }}>
-                  {!savedId ? "Salva prima la bozza per poter inviare" : "L'articolo sarà revisionato dalla redazione ProofPress"}
+                <p className="text-[11px] text-center" style={{ color: "#0a0a0a", opacity: 0.4 }}>
+                  {!savedId ? "Salva prima la bozza per poter inviare" : "Sarà revisionato dalla redazione ProofPress"}
                 </p>
               </div>
 
-              <div className="border border-[#0a0a0a]/8 p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <Shield size={14} style={{ color: ORANGE }} />
+              {/* Stato validazione */}
+              <div className="border border-[#0a0a0a]/8 rounded-xl p-4">
+                <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#0a0a0a", opacity: 0.45 }}>Stato</p>
+                <div className="flex flex-col gap-2">
+                  {[
+                    { ok: title.length >= 5, label: "Titolo (min 5 caratteri)" },
+                    { ok: body.length >= 50, label: "Contenuto (min 50 caratteri)" },
+                    { ok: !!category, label: "Categoria selezionata" },
+                    { ok: !!summary.trim(), label: "Sommario (per invio)" },
+                  ].map(({ ok, label }) => (
+                    <div key={label} className="flex items-center gap-2">
+                      <div className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${ok ? "bg-green-100" : "bg-[#0a0a0a]/8"}`}>
+                        {ok ? <CheckCircle2 size={10} className="text-green-600" /> : <div className="w-1.5 h-1.5 rounded-full bg-[#0a0a0a]/25" />}
+                      </div>
+                      <span className="text-[11px]" style={{ color: "#0a0a0a", opacity: ok ? 0.7 : 0.4 }}>{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ProofPress Verify */}
+              <div className="border border-[#0a0a0a]/8 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield size={13} style={{ color: ORANGE }} />
                   <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#0a0a0a", opacity: 0.45 }}>ProofPress Verify</p>
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: "#0a0a0a", opacity: 0.55 }}>
-                  Al momento della pubblicazione, il sistema genera un hash SHA-256 che include il contenuto e la tua Journalist Key univoca. Il bollino <strong>PP-XXXXXXXXXXXXXXXX</strong> certifica la paternità in modo crittograficamente immutabile.
+                <p className="text-[11px] leading-relaxed" style={{ color: "#0a0a0a", opacity: 0.5 }}>
+                  All'approvazione, il sistema genera un hash SHA-256 con la tua Journalist Key. Il bollino <strong>PP-Verify</strong> certifica la paternità in modo crittograficamente immutabile.
                 </p>
               </div>
             </div>

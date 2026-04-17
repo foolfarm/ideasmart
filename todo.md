@@ -3182,3 +3182,9 @@
 - [x] Email SendGrid al giornalista quando articolo rifiutato (con note della redazione)
 - [x] Tab "Rifiutati" nel portale giornalista: lista articoli rifiutati con note redazione
 - [x] Pulsante "Modifica e Reinvia" per articoli rifiutati (riapre editor con testo esistente)
+
+## Nuovi task (17 Apr 2026 — Editor Redesign + Import Word/PDF)
+- [ ] Endpoint server /api/journalist/import-document per parsing Word (.docx) e PDF
+- [ ] Redesign EditorView: layout full-width, textarea grande (min 600px), sidebar metadati compatta
+- [ ] Pulsante "Importa da Word/PDF" con drag&drop che pre-carica il testo nell'editor
+- [ ] Feedback visivo durante il parsing del documento (loading state)
