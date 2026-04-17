@@ -248,10 +248,19 @@ export async function createNewsletterSend(data: { subject: string; htmlContent:
 export async function updateNewsletterSendRecipientCount(subject: string, recipientCount: number): Promise<void> {
   const db = await getDb();
   if (!db) return;
-  // Aggiorna il recipientCount sull'ultimo record con questo subject
+  // Aggiorna SOLO il record in stato 'sending' (lock atomico) con questo subject
+  // Imposta status='sent' e sentAt per completare il ciclo di invio
   await db.update(newsletterSends)
-    .set({ recipientCount })
-    .where(eq(newsletterSends.subject, subject));
+    .set({ recipientCount, status: "sent", sentAt: new Date() })
+    .where(
+      and(
+        eq(newsletterSends.subject, subject),
+        or(
+          eq(newsletterSends.status, "sending"),
+          eq(newsletterSends.status, "approved")
+        )
+      )
+    );
 }
 
 export async function getNewsletterHistory() {

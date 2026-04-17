@@ -1596,8 +1596,27 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
       };
     }
 
-    // Usa l'HTML pre-generato dalla preview se disponibile
-    console.log(`[UnifiedNewsletter] ✅ Approvazione trovata — procedo con l'invio`);
+    // ── LOCK ATOMICO DB-LEVEL: approved → sending ─────────────────────────
+    // Previene invii multipli anche in caso di riavvii del processo.
+    // Solo il processo che riesce ad aggiornare il record procede con l'invio.
+    try {
+      const lockResult = await db.execute(
+        sql`UPDATE newsletter_sends SET status = 'sending' WHERE status = 'approved' AND DATE(createdAt) = CURDATE() LIMIT 1`
+      );
+      const rowsAffected = (lockResult as any).rowsAffected ?? (lockResult as any)[0]?.affectedRows ?? 0;
+      if (rowsAffected === 0) {
+        console.log(`[UnifiedNewsletter] 🔒 Lock atomico: un altro processo ha già preso il lock (0 righe aggiornate) — skip`);
+        return {
+          success: true,
+          recipientCount: 0,
+          subject: "",
+          stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+        };
+      }
+      console.log(`[UnifiedNewsletter] ✅ Lock atomico acquisito — procedo con l'invio`);
+    } catch (lockErr) {
+      console.error(`[UnifiedNewsletter] ⚠️ Errore lock atomico (continuo con guard standard):`, lockErr);
+    }
   }
 
   // Guard anti-duplicati basato su DB (resiste ai riavvii del server)
