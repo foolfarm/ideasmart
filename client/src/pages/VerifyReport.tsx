@@ -1,3 +1,4 @@
+import SharedPageHeader from "@/components/SharedPageHeader";
 /**
  * PROOFPRESS VERIFY REPORT — Pagina pubblica del Verification Report IPFS
  *
@@ -112,32 +113,7 @@ export default function VerifyReport() {
       />
 
       {/* ── Header minimal ── */}
-      <header
-        className="border-b"
-        style={{ borderColor: "rgba(10,10,10,0.08)", background: "#fff" }}
-      >
-        <div className="max-w-3xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
-          <Link href="/">
-            <span
-              className="text-lg font-black cursor-pointer hover:opacity-70 transition-opacity"
-              style={{ fontFamily: FONT, letterSpacing: "-0.02em" }}
-            >
-              ProofPress
-              <span className="text-xs font-bold ml-1.5 px-1.5 py-0.5 rounded" style={{ background: TEAL, color: "#fff", letterSpacing: "0.05em" }}>
-                VERIFY
-              </span>
-            </span>
-          </Link>
-          <Link href="/proofpress-verify">
-            <span
-              className="text-xs font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity"
-              style={{ color: "rgba(10,10,10,0.4)", fontFamily: FONT }}
-            >
-              Verifica un altro hash →
-            </span>
-          </Link>
-        </div>
-      </header>
+      <SharedPageHeader />
 
       {/* ── Contenuto principale ── */}
       <main className="min-h-screen" style={{ background: "#f5f5f7" }}>

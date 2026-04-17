@@ -1,3 +1,4 @@
+import SharedPageHeader from "@/components/SharedPageHeader";
 /**
  * StartupOfDayDetail — Pagina dettaglio startup/artista del giorno
  */
@@ -44,21 +45,7 @@ export default function StartupOfDayDetail() {
     <WithSidebar>
     <RequireAuth>
     <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-      <header className="border-b-2 border-[#1a1a1a] bg-[#ffffff]">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', serif" }}>Proof Press</Link>
-          <span className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">
-            {new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-          </span>
-        </div>
-        <div className="border-t border-[#1a1a1a]/20">
-          <div className="max-w-4xl mx-auto px-4 py-1 flex gap-6">
-            {Object.entries(SECTION_CONFIG).map(([key, s]) => (
-              <Link key={key} href={s.path} className="font-mono text-xs tracking-widest uppercase py-1 hover:opacity-70 transition-opacity" style={{ color: key === section ? s.color : "#1a1a1a" }}>{s.label}</Link>
-            ))}
-          </div>
-        </div>
-      </header>
+      <SharedPageHeader />
 
       <div className="max-w-4xl mx-auto px-4 py-4">
         <Link href={cfg.path} className="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity" style={{ color: cfg.color }}>

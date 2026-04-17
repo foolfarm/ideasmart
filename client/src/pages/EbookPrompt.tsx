@@ -2,7 +2,7 @@
  * EbookPrompt.tsx — Landing page "Collezione dei migliori Prompt 2026"
  * Stile ispirato a TAAFT Prompt Pack, adattato per IdeaSmart in italiano
  */
-import Navbar from "@/components/Navbar";
+import SharedPageHeader from "@/components/SharedPageHeader";
 import { Button } from "@/components/ui/button";
 import {
   BookOpen,
@@ -41,7 +41,7 @@ const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/4gM5kFdoT5yS0FZ6SocbC07";
 export default function EbookPrompt() {
   return (
     <div className="min-h-screen bg-[#0a0f1e]">
-      <Navbar />
+      <SharedPageHeader />
 
       {/* Hero Section */}
       <section className="relative pt-28 pb-20 px-4 overflow-hidden">

@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import Navbar from "@/components/Navbar";
+import SharedPageHeader from "@/components/SharedPageHeader";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, ThumbsUp, Smile, Meh, ThumbsDown } from "lucide-react";
@@ -41,7 +41,7 @@ export default function NewsletterFeedback() {
 
   return (
     <div className="min-h-screen bg-[#faf9f7]">
-      <Navbar />
+      <SharedPageHeader />
 
       <div className="max-w-lg mx-auto px-4 py-16 pt-28">
         <div className="text-center mb-10">

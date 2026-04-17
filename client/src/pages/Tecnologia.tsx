@@ -1,3 +1,4 @@
+import SharedPageHeader from "@/components/SharedPageHeader";
 /**
  * IDEASMART — Tecnologia
  * Layout editoriale coerente con le pagine sezione del sito.
@@ -310,41 +311,7 @@ export default function Tecnologia() {
       <div className="min-h-screen" style={{ background: "#ffffff", color: INK }}>
 
         {/* ── TESTATA ── */}
-        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
-          <div className="flex items-center justify-between mb-2">
-            <Link href="/">
-              <span
-                className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                ← Proof Press
-              </span>
-            </Link>
-            <span
-              className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              {formatDateIT(today)}
-            </span>
-          </div>
-          <Divider thick />
-          <div className="text-center py-6">
-            <SectionBadge label="Tecnologia" />
-            <h1
-              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a]"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
-            >
-              L'informazione non è più un'opinione.
-            </h1>
-            <p
-              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              È un calcolo.
-            </p>
-          </div>
-          <Divider />
-        </header>
+        <SharedPageHeader />
 
         <BreakingNewsTicker />
 

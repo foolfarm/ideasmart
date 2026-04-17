@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
-import Navbar from "@/components/Navbar";
+import SharedPageHeader from "@/components/SharedPageHeader";
 import LeftSidebar from "@/components/LeftSidebar";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
@@ -324,7 +324,7 @@ export default function Business() {
       <div className="min-h-screen" style={{ background: PAPER, color: INK }}>
 
         {/* ── NAVBAR STANDARD ── */}
-        <Navbar />
+        <SharedPageHeader />
 
         <BreakingNewsTicker />
 

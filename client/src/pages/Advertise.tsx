@@ -1,3 +1,4 @@
+import SharedPageHeader from "@/components/SharedPageHeader";
 /**
  * Proof Press — Advertising / Media Kit
  * Layout editoriale coerente con le pagine sezione del sito.
@@ -234,41 +235,7 @@ export default function Advertise() {
       <div className="min-h-screen" style={{ background: "#ffffff", color: INK }}>
 
         {/* ── TESTATA ── */}
-        <header className="max-w-6xl mx-auto px-4 pt-6 pb-0">
-          <div className="flex items-center justify-between mb-2">
-            <Link href="/">
-              <span
-                className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70 cursor-pointer uppercase tracking-widest"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                ← Proof Press
-              </span>
-            </Link>
-            <span
-              className="text-xs text-[#1a1a1a]/40 uppercase tracking-widest"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              {formatDateIT(today)}
-            </span>
-          </div>
-          <Divider thick />
-          <div className="text-center py-6">
-            <SectionBadge label="Media Kit" />
-            <h1
-              className="mt-3 text-4xl md:text-6xl font-black tracking-tight text-[#1a1a1a]"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: "-0.02em" }}
-            >
-              Advertising
-            </h1>
-            <p
-              className="mt-2 text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/50"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-            >
-              Raggiungi {subscriberCount ? `${subscriberCount.toLocaleString("it-IT")}+` : "5.400+"} professionisti B2B italiani
-            </p>
-          </div>
-          <Divider />
-        </header>
+        <SharedPageHeader />
 
         <BreakingNewsTicker />
 

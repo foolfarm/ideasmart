@@ -1,3 +1,4 @@
+import SharedPageHeader from "@/components/SharedPageHeader";
 /**
  * EditorialVSI — Editoriale: Venture Studio Index
  * Stile: prima pagina di giornale (bianco carta, inchiostro, SF Pro)
@@ -70,21 +71,7 @@ export default function EditorialVSI() {
 
       <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: fontSans }}>
         {/* ─── Testata ─── */}
-        <header className="border-b-2 border-[#1a1a1a] bg-[#ffffff]">
-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-[#1a1a1a] tracking-tight" style={{ fontFamily: fontSerif }}>
-              Proof Press
-            </Link>
-            <span className="font-mono text-xs text-[#1a1a1a]/50 tracking-widest uppercase">{today}</span>
-          </div>
-          <div className="border-t border-[#1a1a1a]/20">
-            <div className="max-w-4xl mx-auto px-4 py-1 flex gap-6">
-              <Link href="/startup" className="font-mono text-xs tracking-widest uppercase py-1 hover:opacity-70 transition-opacity text-[#1a1a1a]">Startup News</Link>
-              <Link href="/ricerche" className="font-mono text-xs tracking-widest uppercase py-1 hover:opacity-70 transition-opacity text-[#1a1a1a]">Ricerche</Link>
-              <Link href="/dealroom" className="font-mono text-xs tracking-widest uppercase py-1 hover:opacity-70 transition-opacity text-[#1a1a1a]">Dealroom</Link>
-            </div>
-          </div>
-        </header>
+        <SharedPageHeader />
 
         {/* ─── Breadcrumb ─── */}
         <div className="max-w-4xl mx-auto px-4 py-4">
