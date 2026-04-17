@@ -3259,3 +3259,9 @@
 - [x] Endpoint tRPC news.getGradeA con fallback Grade B >= 80
 - [x] Sezione Certificazione Massima nella Home (grid 3 colonne)
 - [x] Sottotitolo adattivo: Grade A vs Grade B fallback
+
+## Trust Score Widget Sidebar
+- [x] Funzione getTrustDistribution in db.ts con stats aggregate
+- [x] Endpoint tRPC news.getTrustDistribution con cache
+- [x] Componente TrustScoreWidget con barre distribuzione A-F
+- [x] Widget integrato nella sidebar Home dopo Research del Giorno

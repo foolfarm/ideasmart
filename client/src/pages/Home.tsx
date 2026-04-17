@@ -23,6 +23,7 @@ import BannerRotator from "@/components/BannerRotator";
 import CollaboratoriBanner from "@/components/CollaboratoriBanner";
 import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
+import TrustScoreWidget from "@/components/TrustScoreWidget";
 import ChannelsBar from "@/components/ChannelsBar";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
@@ -1392,6 +1393,9 @@ export default function Home() {
                       </Link>
                     </div>
                   )}
+
+                  {/* ── Trust Score Widget ── */}
+                  <TrustScoreWidget />
 
                   {/* Post di Andrea Cinelli */}
                   {authorPosts && authorPosts.length > 0 && (

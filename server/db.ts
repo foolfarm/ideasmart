@@ -1,4 +1,4 @@
-import { eq, desc, count, and, or, inArray, gte } from "drizzle-orm";
+import { eq, desc, count, and, or, inArray, gte, sql } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
@@ -1175,4 +1175,60 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     trustScore: item.trustScore ?? null,
     section: (item.section ?? 'ai') as HomeSection,
   }));
+}
+
+// ─── Trust Score Distribution ─────────────────────────────────────────────────
+// Restituisce la distribuzione dei grade A-F per il widget sidebar.
+export interface TrustDistribution {
+  grade: string;
+  count: number;
+  avgScore: number;
+}
+export interface TrustStats {
+  distribution: TrustDistribution[];
+  total: number;
+  certified: number;   // articoli con trustGrade non null
+  topGrade: string | null;
+  avgScore: number;
+}
+export async function getTrustDistribution(): Promise<TrustStats> {
+  const db = await getDb();
+  if (!db) return { distribution: [], total: 0, certified: 0, topGrade: null, avgScore: 0 };
+
+  // Distribuzione per grade
+  const rows = await db.execute(sql`
+    SELECT 
+      trustGrade AS grade,
+      COUNT(*) AS cnt,
+      AVG(trustScore) AS avgScore
+    FROM news_items
+    WHERE trustGrade IS NOT NULL
+    GROUP BY trustGrade
+    ORDER BY trustGrade ASC
+  `);
+
+  // Totale articoli
+  const totalRows = await db.execute(sql`SELECT COUNT(*) AS total FROM news_items`);
+  const certifiedRows = await db.execute(sql`SELECT COUNT(*) AS cnt FROM news_items WHERE trustGrade IS NOT NULL`);
+
+  const distribution: TrustDistribution[] = ((rows[0] as unknown) as Array<{grade: string; cnt: number; avgScore: number}>).map(r => ({
+    grade: r.grade,
+    count: Number(r.cnt),
+    avgScore: Math.round(Number(r.avgScore) * 100),
+  }));
+
+  const total = Number(((totalRows[0] as unknown) as Array<{total: number}>)[0]?.total ?? 0);
+  const certified = Number(((certifiedRows[0] as unknown) as Array<{cnt: number}>)[0]?.cnt ?? 0);
+
+  // Grade più alto presente (A > B > C > D > F)
+  const gradeOrder = ['A', 'B', 'C', 'D', 'F'];
+  const presentGrades = distribution.map(d => d.grade);
+  const topGrade = gradeOrder.find(g => presentGrades.includes(g)) ?? null;
+
+  // Score medio globale
+  const avgScore = distribution.length > 0
+    ? Math.round(distribution.reduce((sum, d) => sum + d.avgScore * d.count, 0) / certified)
+    : 0;
+
+  return { distribution, total, certified, topGrade, avgScore };
 }

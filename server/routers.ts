@@ -59,7 +59,7 @@ import { generateStartupNews, generateStartupEditorial, generateStartupOfWeek, g
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
-import { getLatestWeeklyReportage, getLatestMarketAnalysis, getGradeAArticles } from "./db";
+import { getLatestWeeklyReportage, getLatestMarketAnalysis, getGradeAArticles, getTrustDistribution } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
 import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
@@ -320,6 +320,14 @@ export const appRouter = router({
           DEFAULT_TTL_MS
         );
       }),
+    // Distribuzione Trust Score per widget sidebar
+    getTrustDistribution: publicProcedure.query(async () => {
+      return cached(
+        'news:trustDistribution',
+        () => getTrustDistribution(),
+        DEFAULT_TTL_MS
+      );
+    }),
     // Statistiche filtro audit per la dashboard admin
     getFilterStats: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))
