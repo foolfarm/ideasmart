@@ -221,11 +221,14 @@ async function startServer() {
       const sessionToken = randomBytes(64).toString("hex");
       const sessionExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
       await db.update(siteUsers).set({ sessionToken, sessionExpiresAt, lastLoginAt: new Date() }).where(eq(siteUsers.id, user.id));
-      const isProduction = process.env.NODE_ENV === "production";
+      // Rileva HTTPS sia in produzione che in dev (proxy Manus usa HTTPS anche in dev)
+      const isSecureConn = req.secure ||
+        req.headers["x-forwarded-proto"] === "https" ||
+        (req.headers["x-forwarded-proto"] as string)?.startsWith("https");
       res.cookie("ideasmart_session", sessionToken, {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        secure: isSecureConn,
+        sameSite: isSecureConn ? "none" : "lax",
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/",
       });
@@ -287,18 +290,20 @@ async function startServer() {
         return res.status(401).json({ error: "Username o password non corretti." });
       }
 
-      const sessionToken = randomBytes(64).toString("hex");
+       const sessionToken = randomBytes(64).toString("hex");
       const sessionExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
       await db
         .update(journalists)
         .set({ sessionToken, sessionExpiresAt, lastLoginAt: new Date() })
         .where(eq(journalists.id, journalist.id));
-
-      const isProduction = process.env.NODE_ENV === "production";
+      // Rileva HTTPS sia in produzione che in dev (proxy Manus usa HTTPS anche in dev)
+      const isSecure = req.secure ||
+        req.headers["x-forwarded-proto"] === "https" ||
+        (req.headers["x-forwarded-proto"] as string)?.startsWith("https");
       res.cookie("journalist_session", sessionToken, {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        secure: isSecure,
+        sameSite: isSecure ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
         path: "/",
       });
