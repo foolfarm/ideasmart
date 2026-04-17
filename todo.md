@@ -3153,3 +3153,9 @@
 - [ ] Voce menu ProofPress Verify nella navigazione principale
 - [ ] Pulsante "Verifica un articolo" nella pagina /proofpress-verify
 - [ ] Sezione esempi reali articoli verificati in /proofpress-verify
+
+## Task (17 Apr 2026 — Banner Collaboratori + Landing Scrivi per Noi)
+- [x] Componente CollaboratoriBanner (varianti full + compact) per reclutare collaboratori
+- [x] Banner CollaboratoriBanner inserito nella Home prima del footer
+- [x] Landing page /scrivi-per-noi con pitch editoriale completo (hero, chi siamo, perché scrivere, formati, chi cerchiamo, processo 4 step, form candidatura)
+- [x] Route /scrivi-per-noi registrata in App.tsx

@@ -20,6 +20,7 @@ import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import BannerRotator from "@/components/BannerRotator";
+import CollaboratoriBanner from "@/components/CollaboratoriBanner";
 import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
 import ChannelsBar from "@/components/ChannelsBar";
@@ -1542,6 +1543,11 @@ export default function Home() {
               </div>
             </section>
           )}          <div className="mt-12 mb-8">
+          </div>
+
+          {/* ── BANNER COLLABORATORI ── */}
+          <div className="mt-10 mb-2">
+            <CollaboratoriBanner variant="full" />
           </div>
 
           {/* ── FOOTER ── */}

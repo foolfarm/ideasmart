@@ -106,6 +106,7 @@ const NewsletterView = lazy(() => import("./pages/NewsletterView"));
 const CosaFacciamo = lazy(() => import("./pages/CosaFacciamo"));
 const VerifyReport = lazy(() => import("./pages/VerifyReport"));
 const Contatti = lazy(() => import("./pages/Contatti"));
+const ScriviPerNoi = lazy(() => import("./pages/ScriviPerNoi"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -183,6 +184,7 @@ function Router() {
         <Route path="/storia" component={Storia} />
         <Route path="/cosa-facciamo" component={CosaFacciamo} />
         <Route path="/contatti" component={Contatti} />
+        <Route path="/scrivi-per-noi" component={ScriviPerNoi} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
