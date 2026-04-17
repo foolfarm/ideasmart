@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
   Info, BookOpen, Briefcase, Mail,
-  Monitor, BookMarked, CircleDollarSign, PenLine,
+  Monitor, BookMarked, CircleDollarSign, PenLine, KeyRound,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -190,6 +190,17 @@ export default function LeftSidebar() {
           >
             <MenuIcon Icon={PenLine} active={isActive("/scrivi-per-noi")} />
             <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Scrivi per Noi</span>
+          </div>
+        </Link>
+
+        {/* C3) PORTALE GIORNALISTI */}
+        <Link href="/journalist-portal">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+            title={!expanded ? "Portale Giornalisti" : undefined}
+          >
+            <MenuIcon Icon={KeyRound} active={isActive("/journalist-portal")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Portale Giornalisti</span>
           </div>
         </Link>
 
