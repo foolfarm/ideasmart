@@ -3168,3 +3168,11 @@
 - [x] Link "Giornalisti" nel navbar admin
 - [x] Route /admin/journalists in App.tsx
 - [x] Creare primo account giornalista: admin / admin.123
+
+## Nuovi task (17 Apr 2026 — Fix login portale + Workflow revisione articoli)
+
+- [x] Fix bug: login portale giornalisti dice "Accesso effettuato" ma non naviga alla dashboard
+- [x] Aggiungere stato "review" alla tabella journalistArticles (pending/review/approved/rejected/published)
+- [x] Procedure tRPC: submitForReview, approveArticle, rejectArticle (con note), listPendingReview
+- [x] Coda di moderazione in /admin/journalists: tab "In Revisione" con anteprima articolo, approva/rifiuta
+- [ ] Notifica al giornalista quando l'articolo viene approvato o rifiutato

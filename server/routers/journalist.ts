@@ -264,7 +264,50 @@ export const journalistRouter = router({
     }),
 
   /**
-   * Pubblica l'articolo su ProofPress.
+   * Invia l'articolo in revisione (workflow moderazione).
+   * Il giornalista non pubblica direttamente: l'articolo passa in stato "review"
+   * e attende l'approvazione dell'admin prima di essere pubblicato.
+   */
+  submitForReview: publicProcedure
+    .input(z.object({ articleId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const journalist = await getJournalistFromSession(ctx);
+      if (!journalist) throw new TRPCError({ code: "UNAUTHORIZED", message: "Accesso richiesto." });
+
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const rows = await db
+        .select()
+        .from(journalistArticles)
+        .where(
+          and(
+            eq(journalistArticles.id, input.articleId),
+            eq(journalistArticles.journalistId, journalist.id)
+          )
+        )
+        .limit(1);
+
+      if (rows.length === 0) throw new TRPCError({ code: "NOT_FOUND" });
+      const article = rows[0];
+
+      if (article.status === "published") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Articolo già pubblicato." });
+      }
+      if (article.status === "review") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Articolo già in revisione." });
+      }
+
+      await db
+        .update(journalistArticles)
+        .set({ status: "review", reviewNotes: null, reviewedAt: null })
+        .where(eq(journalistArticles.id, article.id));
+
+      return { ok: true };
+    }),
+
+  /**
+   * Pubblica l'articolo su ProofPress (chiamato dall'admin dopo approvazione).
    * 1. Genera l'hash SHA-256 con journalistKey inclusa
    * 2. Genera il bollino PP-J-XXXXXXXXXXXXXXXX
    * 3. Inserisce in news_items come articolo certificato
@@ -564,6 +607,142 @@ export const journalistAdminRouter = router({
 
       // Poi elimina il giornalista
       await db.delete(journalists).where(eq(journalists.id, input.id));
+
+      return { ok: true };
+    }),
+
+  /** Lista articoli in attesa di revisione */
+  listPendingReview: adminProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    const rows = await db
+      .select({
+        id: journalistArticles.id,
+        journalistId: journalistArticles.journalistId,
+        title: journalistArticles.title,
+        body: journalistArticles.body,
+        summary: journalistArticles.summary,
+        category: journalistArticles.category,
+        imageUrl: journalistArticles.imageUrl,
+        status: journalistArticles.status,
+        reviewNotes: journalistArticles.reviewNotes,
+        reviewedAt: journalistArticles.reviewedAt,
+        createdAt: journalistArticles.createdAt,
+        updatedAt: journalistArticles.updatedAt,
+        journalistDisplayName: journalists.displayName,
+        journalistUsername: journalists.username,
+        journalistKey: journalists.journalistKey,
+      })
+      .from(journalistArticles)
+      .innerJoin(journalists, eq(journalistArticles.journalistId, journalists.id))
+      .where(eq(journalistArticles.status, "review"))
+      .orderBy(desc(journalistArticles.updatedAt));
+    return rows;
+  }),
+
+  /** Approva un articolo e lo pubblica */
+  approveArticle: adminProcedure
+    .input(z.object({ articleId: z.number() }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      // Recupera articolo + giornalista
+      const rows = await db
+        .select()
+        .from(journalistArticles)
+        .innerJoin(journalists, eq(journalistArticles.journalistId, journalists.id))
+        .where(eq(journalistArticles.id, input.articleId))
+        .limit(1);
+
+      if (rows.length === 0) throw new TRPCError({ code: "NOT_FOUND" });
+      const { journalist_articles: article, journalists: journalist } = rows[0];
+
+      if (article.status !== "review") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "L'articolo non è in stato di revisione." });
+      }
+
+      const now = new Date();
+
+      // Genera hash con journalistKey
+      const crypto = await import("crypto");
+      const contentToHash = `${article.title}|${article.body}|${journalist.journalistKey}|${now.toISOString()}`;
+      const verifyHash = crypto.createHash("sha256").update(contentToHash).digest("hex");
+      const verifyBadge = `PP-J-${verifyHash.substring(0, 16).toUpperCase()}`;
+      const summary = article.summary || article.body.substring(0, 300).trim() + "...";
+
+      const weekNum = Math.ceil(
+        ((now.getTime() - new Date(now.getFullYear(), 0, 1).getTime()) / 86400000 + 1) / 7
+      );
+      const weekLabel = `${now.getFullYear()}-W${String(weekNum).padStart(2, "0")}`;
+
+      // Inserisce in news_items
+      const [newsResult] = await db.insert(newsItems).values({
+        section: "news",
+        title: article.title,
+        summary,
+        category: article.category,
+        sourceName: `${journalist.displayName} — ProofPress Certified`,
+        sourceUrl: null,
+        publishedAt: now.toISOString(),
+        weekLabel,
+        position: 0,
+        imageUrl: article.imageUrl ?? null,
+        verifyHash,
+        createdAt: now,
+      });
+
+      const newsItemId = (newsResult as any).insertId;
+
+      // Aggiorna articolo
+      await db
+        .update(journalistArticles)
+        .set({
+          status: "published",
+          verifyHash,
+          verifyBadge,
+          publishedAt: now,
+          newsItemId,
+          reviewedAt: now,
+          reviewNotes: null,
+        })
+        .where(eq(journalistArticles.id, article.id));
+
+      // Aggiorna contatore
+      await db
+        .update(journalists)
+        .set({ totalArticles: journalist.totalArticles + 1 })
+        .where(eq(journalists.id, journalist.id));
+
+      return { ok: true, verifyHash, verifyBadge, newsItemId };
+    }),
+
+  /** Rifiuta un articolo con note di feedback */
+  rejectArticle: adminProcedure
+    .input(z.object({ articleId: z.number(), notes: z.string().min(1).max(1000) }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const rows = await db
+        .select({ id: journalistArticles.id, status: journalistArticles.status })
+        .from(journalistArticles)
+        .where(eq(journalistArticles.id, input.articleId))
+        .limit(1);
+
+      if (rows.length === 0) throw new TRPCError({ code: "NOT_FOUND" });
+      if (rows[0].status !== "review") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "L'articolo non è in stato di revisione." });
+      }
+
+      await db
+        .update(journalistArticles)
+        .set({
+          status: "rejected",
+          reviewNotes: input.notes,
+          reviewedAt: new Date(),
+        })
+        .where(eq(journalistArticles.id, input.articleId));
 
       return { ok: true };
     }),

@@ -442,9 +442,8 @@ export const breakingNews = mysqlTable("breaking_news", {
   // Indice su isActive+createdAt: ottimizza la query "ultime breaking attive"
   activeCreatedIdx: index("idx_breaking_active_created").on(t.isActive, t.createdAt),
 }));
-
 export type BreakingNewsItem = typeof breakingNews.$inferSelect;
-export type InsertBreakingNewsItem = typeof breakingNews.$inferInsert;
+export type InsertBreakingNewsItem = typeof breakingNews.$inferInsert;;
 
 // ── IDEASMART Research ───────────────────────────────────────────────────────
 export const researchReports = mysqlTable("research_reports", {
@@ -954,6 +953,8 @@ export const journalistArticles = mysqlTable("journalist_articles", {
   trustScore: float("trustScore"),
   trustGrade: varchar("trustGrade", { length: 1 }),
   publishedAt: timestamp("publishedAt"),
+  reviewNotes: text("reviewNotes"),
+  reviewedAt: timestamp("reviewedAt"),
   newsItemId: int("newsItemId"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

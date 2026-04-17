@@ -119,14 +119,30 @@ function PageWrapper({ children, title, description, canonical }: {
 function LoginView({ onSuccess }: { onSuccess: () => void }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const loginMutation = trpc.journalist.login.useMutation({
-    onSuccess: () => { toast.success("Accesso effettuato"); onSuccess(); },
-    onError: (e) => toast.error(e.message),
-  });
+  const [isPending, setIsPending] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
     if (!username.trim() || !password.trim()) return;
-    loginMutation.mutate({ username: username.trim(), password });
+    setIsPending(true);
+    try {
+      const res = await fetch("/api/journalist/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ username: username.trim(), password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Errore di accesso");
+      } else {
+        toast.success("Accesso effettuato");
+        onSuccess();
+      }
+    } catch {
+      toast.error("Errore di rete. Riprova.");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -180,8 +196,8 @@ function LoginView({ onSuccess }: { onSuccess: () => void }) {
                   <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#0a0a0a", opacity: 0.5 }}>Password</label>
                   <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="border-[#0a0a0a]/20 bg-white" autoComplete="current-password" />
                 </div>
-                <button type="submit" disabled={loginMutation.isPending || !username.trim() || !password.trim()} className="w-full py-3 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40" style={{ background: "#0a0a0a" }}>
-                  {loginMutation.isPending ? "Accesso in corso..." : "Accedi al Portale →"}
+                <button type="submit" disabled={isPending || !username.trim() || !password.trim()} className="w-full py-3 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40" style={{ background: "#0a0a0a" }}>
+                  {isPending ? "Accesso in corso..." : "Accedi al Portale →"}
                 </button>
               </form>
               <p className="text-xs mt-4 text-center" style={{ color: "#0a0a0a", opacity: 0.4 }}>
@@ -437,10 +453,10 @@ function EditorView({
     onError: (e) => toast.error(e.message),
   });
 
-  const publishMutation = trpc.journalist.publish.useMutation({
-    onSuccess: (data) => {
-      setPublishResult({ verifyBadge: data.verifyBadge, verifyHash: data.verifyHash });
-      toast.success("Articolo pubblicato e certificato!");
+  const submitForReviewMutation = trpc.journalist.submitForReview.useMutation({
+    onSuccess: () => {
+      setPublishResult({ verifyBadge: "IN_REVISIONE", verifyHash: "" });
+      toast.success("Articolo inviato in revisione! La redazione ProofPress lo esaminerà a breve.");
       onPublished();
     },
     onError: (e) => toast.error(e.message),
@@ -463,14 +479,13 @@ function EditorView({
           </h1>
 
           {publishResult && (
-            <div className="border border-[#0a0a0a]/8 bg-[#f0fdf4] p-6 mb-8 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#059669" }}>
+            <div className="border border-[#0a0a0a]/8 p-6 mb-8 flex items-start gap-4" style={{ background: "#fffbeb" }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#d97706" }}>
                 <Shield size={18} className="text-white" />
               </div>
               <div>
-                <p className="text-sm font-bold mb-1" style={{ color: "#059669" }}>✅ Articolo pubblicato e certificato</p>
-                <p className="text-xs font-mono mb-1" style={{ color: "#059669" }}>{publishResult.verifyBadge}</p>
-                <p className="text-[10px] font-mono" style={{ color: "#059669", opacity: 0.7 }}>{publishResult.verifyHash.substring(0, 48)}...</p>
+                <p className="text-sm font-bold mb-1" style={{ color: "#d97706" }}>⏳ Articolo inviato in revisione</p>
+                <p className="text-xs" style={{ color: "#92400e" }}>La redazione ProofPress esaminerà il tuo articolo e lo pubblicherà con bollino PP-Verify una volta approvato.</p>
               </div>
             </div>
           )}
@@ -527,18 +542,18 @@ function EditorView({
                 </button>
                 <button
                   onClick={async () => {
-                    // Prima salva la bozza aggiornata, poi pubblica
+                    // Prima salva la bozza aggiornata, poi invia in revisione
                     const saved = await saveMutation.mutateAsync({ id: savedId, title, body, summary, category, imageUrl });
-                    publishMutation.mutate({ articleId: saved.id });
+                    submitForReviewMutation.mutate({ articleId: saved.id });
                   }}
-                  disabled={!canPublish || publishMutation.isPending}
+                  disabled={!canPublish || submitForReviewMutation.isPending}
                   className="w-full py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80 disabled:opacity-40"
                   style={{ background: ORANGE }}
                 >
-                  {publishMutation.isPending ? "Pubblicazione..." : "🔏 Pubblica e Certifica"}
+                  {submitForReviewMutation.isPending ? "Invio in corso..." : "🔏 Invia in Revisione"}
                 </button>
                 <p className="text-[10px] text-center" style={{ color: "#0a0a0a", opacity: 0.4 }}>
-                  {!savedId ? "Salva prima la bozza per poter pubblicare" : "La pubblicazione genera il bollino PP-Verify"}
+                  {!savedId ? "Salva prima la bozza per poter inviare" : "L'articolo sarà revisionato dalla redazione ProofPress"}
                 </p>
               </div>
 
@@ -607,7 +622,13 @@ export default function JournalistPortal() {
       journalist={journalist}
       onNewArticle={() => { setEditingArticleId(undefined); setView("editor"); }}
       onEditArticle={(id) => { setEditingArticleId(id); setView("editor"); }}
-      onLogout={() => { utils.journalist.me.invalidate(); setView("login"); }}
+      onLogout={async () => {
+        try {
+          await fetch("/api/journalist/logout", { method: "POST", credentials: "include" });
+        } catch { /* ignora errori di rete */ }
+        utils.journalist.me.invalidate();
+        setView("login");
+      }}
     />
   );
 }

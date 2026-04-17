@@ -254,6 +254,93 @@ async function startServer() {
     }
   });
 
+  // ── Journalist Portal Login — endpoint Express nativo ──────────────────────
+  // tRPC v11 serializza la risposta prima che Express possa aggiungere Set-Cookie.
+  // Questo endpoint nativo garantisce che il cookie journalist_session venga impostato.
+  app.post("/api/journalist/login", async (req, res) => {
+    try {
+      const { username, password } = req.body || {};
+      if (!username || !password) {
+        return res.status(400).json({ error: "Username e password richiesti" });
+      }
+      const { journalists } = await import("../../drizzle/schema");
+      const { eq } = await import("drizzle-orm");
+      const { createHash, randomBytes } = await import("crypto");
+      const db = await getDb();
+      if (!db) return res.status(500).json({ error: "Database non disponibile" });
+
+      const rows = await db
+        .select()
+        .from(journalists)
+        .where(eq(journalists.username, username.toLowerCase().trim()))
+        .limit(1);
+
+      if (rows.length === 0) {
+        return res.status(401).json({ error: "Username o password non corretti." });
+      }
+      const journalist = rows[0];
+      if (!journalist.isActive) {
+        return res.status(403).json({ error: "Account disattivato. Contatta la redazione ProofPress." });
+      }
+      const passwordHash = createHash("sha256").update(password + "pp_journalist_salt_2026").digest("hex");
+      if (journalist.passwordHash !== passwordHash) {
+        return res.status(401).json({ error: "Username o password non corretti." });
+      }
+
+      const sessionToken = randomBytes(64).toString("hex");
+      const sessionExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      await db
+        .update(journalists)
+        .set({ sessionToken, sessionExpiresAt, lastLoginAt: new Date() })
+        .where(eq(journalists.id, journalist.id));
+
+      const isProduction = process.env.NODE_ENV === "production";
+      res.cookie("journalist_session", sessionToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/",
+      });
+
+      return res.json({
+        ok: true,
+        journalist: {
+          id: journalist.id,
+          username: journalist.username,
+          displayName: journalist.displayName,
+          journalistKey: journalist.journalistKey,
+          totalArticles: journalist.totalArticles,
+        },
+      });
+    } catch (err) {
+      console.error("[Journalist] Login error:", err);
+      return res.status(500).json({ error: "Errore interno" });
+    }
+  });
+
+  app.post("/api/journalist/logout", async (req, res) => {
+    try {
+      const sessionToken = req.cookies?.journalist_session;
+      if (sessionToken) {
+        const { journalists } = await import("../../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const db = await getDb();
+        if (db) {
+          await db
+            .update(journalists)
+            .set({ sessionToken: null, sessionExpiresAt: null })
+            .where(eq(journalists.sessionToken, sessionToken));
+        }
+      }
+      res.clearCookie("journalist_session", { path: "/" });
+      return res.json({ ok: true });
+    } catch (err) {
+      console.error("[Journalist] Logout error:", err);
+      return res.status(500).json({ error: "Errore interno" });
+    }
+  });
+
   // ── ads.txt — servito come file statico da client/public/ads.txt ──────────
   // Il file contiene solo il publisher diretto Google (pub-7185482526978993).
   // Per aggiornarlo: modificare direttamente client/public/ads.txt
