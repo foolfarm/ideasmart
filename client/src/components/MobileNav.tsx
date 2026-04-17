@@ -1,18 +1,30 @@
 /**
  * MobileNav — Hamburger button + slide-in drawer per mobile
- * Struttura menu: A) Chi Siamo | B) Cosa Facciamo | C) Pubblicizza | D) Contatti | E) Investi
+ * Struttura menu: 10 voci flat (Platform, Demo, Verify, Magazine, Advertise,
+ *                 Contribute, Journalists Portal, About, Contact, Invest)
  * Visibile solo su schermi < lg (1024px)
  */
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { X, Menu, ChevronDown, ChevronRight } from "lucide-react";
+import { X, Menu } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
+/* ─── VOCI MENU ─────────────────────────────────────────────────────── */
+const NAV_ITEMS = [
+  { href: "/piattaforma",             label: "Platform",            icon: "🖥️",  external: false },
+  { href: "https://proofpress.tech/", label: "Demo Platform",       icon: "🚀",  external: true  },
+  { href: "/proofpress-verify",       label: "Verify",              icon: "✅",  external: false },
+  { href: "/",                        label: "Magazine",            icon: "📰",  external: false },
+  { href: "/pubblicita",              label: "Advertise",           icon: "📣",  external: false },
+  { href: "/scrivi-per-noi",          label: "Contribute",          icon: "✍️",  external: false },
+  { href: "/journalist-portal",       label: "Journalists Portal",  icon: "🔑",  external: false },
+  { href: "/cosa-facciamo",           label: "About",               icon: "ℹ️",  external: false },
+  { href: "/contatti",                label: "Contact",             icon: "✉️",  external: false },
+];
+
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [chiSiamoOpen, setChiSiamoOpen] = useState(false);
-  const [cosaFacciamoOpen, setCosaFacciamoOpen] = useState(false);
   const [location] = useLocation();
 
   // Chiude il drawer quando cambia la pagina
@@ -27,22 +39,11 @@ export default function MobileNav() {
   }, [open]);
 
   const close = () => setOpen(false);
-  const isActive = (href: string) => location.startsWith(href);
-
-  /* ── Sub-link helper ── */
-  const SubLink = ({ href, icon, label }: { href: string; icon: string; label: string }) => (
-    <Link href={href}>
-      <div
-        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
-          isActive(href) ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]/70"
-        }`}
-        onClick={close}
-      >
-        <span className="text-[13px] w-4 text-center flex-shrink-0">{icon}</span>
-        <span style={{ fontSize: "13px", fontWeight: 500, fontFamily: SF }}>{label}</span>
-      </div>
-    </Link>
-  );
+  const isActive = (href: string) => {
+    if (href === "/") return location === "/";
+    if (href.startsWith("http")) return false;
+    return location.startsWith(href);
+  };
 
   return (
     <>
@@ -65,7 +66,7 @@ export default function MobileNav() {
 
       {/* ── Drawer laterale ── */}
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-[280px] bg-white shadow-2xl lg:hidden transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-50 h-full w-[290px] bg-white shadow-2xl lg:hidden transition-transform duration-300 ease-in-out ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ overflowY: "auto", scrollbarWidth: "none" }}
@@ -86,80 +87,46 @@ export default function MobileNav() {
           </button>
         </div>
 
-        {/* Tagline */}
+        {/* Tagline istituzionale */}
         <div className="px-5 py-4 border-b border-[#e5e5ea]">
-          <p style={{ fontSize: "13px", color: "rgba(26,26,26,0.55)", lineHeight: 1.6, fontFamily: SF }}>
-            ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato.
+          <p style={{ fontSize: "12.5px", color: "rgba(26,26,26,0.55)", lineHeight: 1.65, fontFamily: SF }}>
+            ProofPress Magazine nato in California come un bulletin board privato nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificata con hash crittografico SHA-256 e archiviata su IPFS. Vogliamo costruire un mondo con informazione certa e sicura.
           </p>
         </div>
 
         {/* ══════════════════════════════════════════════════════════
-            NAV PRINCIPALE — struttura A/B/C/D/E
+            NAV PRINCIPALE — 9 voci flat + 1 Invest
         ══════════════════════════════════════════════════════════ */}
         <nav className="flex flex-col gap-0.5 px-3 py-4">
 
-          {/* A) CHI SIAMO — dropdown */}
-          <div>
-            <button
-              onClick={() => setChiSiamoOpen(!chiSiamoOpen)}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
-            >
-              <span className="text-[15px] w-5 text-center flex-shrink-0">🏛️</span>
-              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF, flex: 1, textAlign: "left" }}>Chi Siamo</span>
-              {chiSiamoOpen
-                ? <ChevronDown size={14} className="opacity-40 flex-shrink-0" />
-                : <ChevronRight size={14} className="opacity-40 flex-shrink-0" />}
-            </button>
-            {chiSiamoOpen && (
-              <div className="ml-5 mt-1 flex flex-col gap-0.5 border-l-2 border-[#1a1a1a]/10 pl-3 pb-1">
-                <SubLink href="/chi-siamo" icon="ℹ️" label="Chi Siamo" />
-                <SubLink href="/storia" icon="📖" label="Storia" />
-              </div>
-            )}
-          </div>
+          {NAV_ITEMS.map(({ href, label, icon, external }) =>
+            external ? (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
+              >
+                <span className="text-[15px] w-5 text-center flex-shrink-0">{icon}</span>
+                <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF, flex: 1 }}>{label}</span>
+                <span style={{ fontSize: "10px", color: "rgba(26,26,26,0.3)", fontFamily: SF }}>↗</span>
+              </a>
+            ) : (
+              <Link key={href} href={href} onClick={close}>
+                <div
+                  className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
+                    isActive(href) ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
+                  }`}
+                >
+                  <span className="text-[15px] w-5 text-center flex-shrink-0">{icon}</span>
+                  <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: SF }}>{label}</span>
+                </div>
+              </Link>
+            )
+          )}
 
-          {/* B) COSA FACCIAMO — dropdown */}
-          <div>
-            <button
-              onClick={() => setCosaFacciamoOpen(!cosaFacciamoOpen)}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
-            >
-              <span className="text-[15px] w-5 text-center flex-shrink-0">🖥️</span>
-              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF, flex: 1, textAlign: "left" }}>Cosa Facciamo</span>
-              {cosaFacciamoOpen
-                ? <ChevronDown size={14} className="opacity-40 flex-shrink-0" />
-                : <ChevronRight size={14} className="opacity-40 flex-shrink-0" />}
-            </button>
-            {cosaFacciamoOpen && (
-              <div className="ml-5 mt-1 flex flex-col gap-0.5 border-l-2 border-[#1a1a1a]/10 pl-3 pb-1">
-                <SubLink href="/cosa-facciamo" icon="💡" label="Cosa Offriamo" />
-                <SubLink href="/piattaforma" icon="🚀" label="Piattaforma Agentica" />
-                <SubLink href="/proofpress-verify" icon="✅" label="Tecnologia Verify" />
-              </div>
-            )}
-          </div>
-
-          {/* C) PUBBLICIZZA */}
-          <Link href="/pubblicita" onClick={close}>
-            <div className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
-              isActive("/pubblicita") ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
-            }`}>
-              <span className="text-[15px] w-5 text-center flex-shrink-0">📣</span>
-              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF }}>Pubblicizza</span>
-            </div>
-          </Link>
-
-          {/* D) CONTATTI */}
-          <Link href="/contatti" onClick={close}>
-            <div className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
-              isActive("/contatti") ? "bg-[#1a1a1a] text-white" : "hover:bg-[#1a1a1a]/6 text-[#1a1a1a]"
-            }`}>
-              <span className="text-[15px] w-5 text-center flex-shrink-0">✉️</span>
-              <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: SF }}>Contatti</span>
-            </div>
-          </Link>
-
-          {/* E) INVESTI — badge arancio */}
+          {/* INVEST — voce speciale arancio */}
           <Link href="/investor" onClick={close}>
             <div
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150"
@@ -169,7 +136,7 @@ export default function MobileNav() {
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: "14px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                  Investi
+                  Invest
                 </div>
                 <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
               </div>

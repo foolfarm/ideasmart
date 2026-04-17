@@ -2,9 +2,8 @@ import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
-  ChevronDown, ChevronRight,
-  Info, BookOpen, Briefcase, Mail,
-  Monitor, BookMarked, CircleDollarSign, PenLine, KeyRound,
+  Monitor, CheckCircle, Newspaper, Megaphone, PenLine,
+  KeyRound, Info, Mail, CircleDollarSign, ExternalLink,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -12,33 +11,44 @@ const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 
 
 /* ─── DIMENSIONI ─────────────────────────────────────────────────────── */
 const COLLAPSED_W = 62;
-const EXPANDED_W  = 236;
+const EXPANDED_W  = 248;
 
 /* ─── ICONA MENU ─────────────────────────────────────────────────────── */
-function MenuIcon({ Icon, active }: { Icon: React.ElementType; active: boolean }) {
+function MenuIcon({ Icon, active, orange }: { Icon: React.ElementType; active: boolean; orange?: boolean }) {
   return (
     <span
       className="flex-shrink-0 flex items-center justify-center"
       style={{
         width: 32, height: 32, borderRadius: 9,
-        background: active ? "#1d1d1f" : "#f2f2f7",
+        background: orange ? "rgba(255,85,0,0.12)" : active ? "#1d1d1f" : "#f2f2f7",
         transition: "background 0.15s ease",
       }}
     >
-      <Icon size={15} strokeWidth={1.9} color={active ? "#ffffff" : "#48484a"} />
+      <Icon
+        size={15}
+        strokeWidth={1.9}
+        color={orange ? "#ff5500" : active ? "#ffffff" : "#48484a"}
+      />
     </span>
   );
 }
 
+/* ─── VOCI MENU ─────────────────────────────────────────────────────── */
+const NAV_ITEMS = [
+  { href: "/piattaforma",       label: "Platform",          Icon: Monitor,          external: false },
+  { href: "https://proofpress.tech/", label: "Demo Platform", Icon: ExternalLink,   external: true  },
+  { href: "/proofpress-verify", label: "Verify",            Icon: CheckCircle,      external: false },
+  { href: "/",                  label: "Magazine",          Icon: Newspaper,        external: false },
+  { href: "/pubblicita",        label: "Advertise",         Icon: Megaphone,        external: false },
+  { href: "/scrivi-per-noi",    label: "Contribute",        Icon: PenLine,          external: false },
+  { href: "/journalist-portal", label: "Journalists Portal",Icon: KeyRound,         external: false },
+  { href: "/cosa-facciamo",     label: "About",             Icon: Info,             external: false },
+  { href: "/contatti",          label: "Contact",           Icon: Mail,             external: false },
+];
+
 export default function LeftSidebar() {
   const [location] = useLocation();
   const [hovered, setHovered] = useState(false);
-  const [chiSiamoOpen, setChiSiamoOpen] = useState(
-    location.startsWith("/chi-siamo") || location.startsWith("/storia")
-  );
-  const [cosaFacciamoOpen, setCosaFacciamoOpen] = useState(
-    location.startsWith("/cosa-facciamo") || location.startsWith("/piattaforma") || location.startsWith("/proofpress-verify")
-  );
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMouseEnter = () => {
@@ -51,6 +61,7 @@ export default function LeftSidebar() {
 
   const isActive = (href: string) => {
     if (href === "/") return location === "/";
+    if (href.startsWith("http")) return false;
     return location.startsWith(href);
   };
 
@@ -69,18 +80,6 @@ export default function LeftSidebar() {
     transition: "opacity 150ms ease",
     overflow: "hidden",
   };
-
-  /* ── Sub-link helper ── */
-  const SubLink = ({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) => (
-    <Link href={href}>
-      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all cursor-pointer ${
-        isActive(href) ? "text-[#1d1d1f] font-semibold" : "text-[#6e6e73] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]"
-      }`}>
-        <Icon size={11} strokeWidth={2} />
-        <span className="text-[12px] font-medium" style={{ fontFamily: SF }}>{label}</span>
-      </div>
-    </Link>
-  );
 
   return (
     <aside
@@ -118,119 +117,56 @@ export default function LeftSidebar() {
 
       {/* ── Tagline ── */}
       <div className="px-3 mb-5" style={{ ...fadeBlock, whiteSpace: "normal" }}>
-        <p style={{ fontSize: "12px", color: "rgba(29,29,31,0.5)", lineHeight: 1.6, fontFamily: SF }}>
-          ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato.
+        <p style={{ fontSize: "11.5px", color: "rgba(29,29,31,0.5)", lineHeight: 1.65, fontFamily: SF }}>
+          ProofPress Magazine nato in California come un bulletin board privato nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificata con hash crittografico SHA-256 e archiviata su IPFS. Vogliamo costruire un mondo con informazione certa e sicura.
         </p>
       </div>
 
       {/* ══════════════════════════════════════════════════════════════
-          NAV PRINCIPALE — struttura A/B/C/D/E
+          NAV PRINCIPALE — 9 voci flat + 1 Invest
       ══════════════════════════════════════════════════════════════ */}
       <nav className="flex flex-col gap-0.5 px-2 mb-3">
 
-        {/* A) CHI SIAMO — dropdown */}
-        <div>
-          <button
-            onClick={() => expanded && setChiSiamoOpen(!chiSiamoOpen)}
-            className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Chi Siamo" : undefined}
-          >
-            <MenuIcon Icon={Info} active={isActive("/chi-siamo") || isActive("/storia")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Chi Siamo</span>
-            {expanded && (chiSiamoOpen
-              ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
-              : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
-          </button>
-          {chiSiamoOpen && expanded && (
-            <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
-              <SubLink href="/chi-siamo" icon={Info} label="Chi Siamo" />
-              <SubLink href="/storia" icon={BookOpen} label="Storia" />
-            </div>
-          )}
-        </div>
+        {NAV_ITEMS.map(({ href, label, Icon, external }) =>
+          external ? (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+              title={!expanded ? label : undefined}
+            >
+              <MenuIcon Icon={Icon} active={false} />
+              <span className="text-[13px] font-semibold text-[#1d1d1f] flex items-center gap-1" style={labelStyle}>
+                {label}
+                <ExternalLink size={10} className="opacity-30 flex-shrink-0" />
+              </span>
+            </a>
+          ) : (
+            <Link key={href} href={href}>
+              <div
+                className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+                title={!expanded ? label : undefined}
+              >
+                <MenuIcon Icon={Icon} active={isActive(href)} />
+                <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>{label}</span>
+              </div>
+            </Link>
+          )
+        )}
 
-        {/* B) COSA FACCIAMO — dropdown */}
-        <div>
-          <button
-            onClick={() => expanded && setCosaFacciamoOpen(!cosaFacciamoOpen)}
-            className="w-full flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Cosa Facciamo" : undefined}
-          >
-            <MenuIcon Icon={Monitor} active={isActive("/cosa-facciamo") || isActive("/piattaforma") || isActive("/proofpress-verify")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1 text-left" style={labelStyle}>Cosa Facciamo</span>
-            {expanded && (cosaFacciamoOpen
-              ? <ChevronDown size={12} className="flex-shrink-0 opacity-30 mr-1" />
-              : <ChevronRight size={12} className="flex-shrink-0 opacity-30 mr-1" />)}
-          </button>
-          {cosaFacciamoOpen && expanded && (
-            <div className="ml-11 mt-0.5 flex flex-col gap-0.5 border-l border-[#e5e5ea] pl-3">
-              <SubLink href="/cosa-facciamo" icon={Briefcase} label="Cosa Offriamo" />
-              <SubLink href="/piattaforma" icon={Monitor} label="Piattaforma Agentica" />
-              <SubLink href="/proofpress-verify" icon={BookMarked} label="Tecnologia Verify" />
-            </div>
-          )}
-        </div>
-
-        {/* C) PUBBLICIZZA */}
-        <Link href="/pubblicita">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Pubblicizza" : undefined}
-          >
-            <MenuIcon Icon={Briefcase} active={isActive("/pubblicita")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Pubblicizza</span>
-          </div>
-        </Link>
-
-        {/* C2) SCRIVI PER NOI */}
-        <Link href="/scrivi-per-noi">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Scrivi per Noi" : undefined}
-          >
-            <MenuIcon Icon={PenLine} active={isActive("/scrivi-per-noi")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Scrivi per Noi</span>
-          </div>
-        </Link>
-
-        {/* C3) PORTALE GIORNALISTI */}
-        <Link href="/journalist-portal">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Portale Giornalisti" : undefined}
-          >
-            <MenuIcon Icon={KeyRound} active={isActive("/journalist-portal")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Portale Giornalisti</span>
-          </div>
-        </Link>
-
-        {/* D) CONTATTI */}
-        <Link href="/contatti">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-            title={!expanded ? "Contatti" : undefined}
-          >
-            <MenuIcon Icon={Mail} active={isActive("/contatti")} />
-            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Contatti</span>
-          </div>
-        </Link>
-
-        {/* E) INVESTI */}
+        {/* INVEST — voce speciale arancio */}
         <Link href="/investor">
           <div
             className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#fff3ee]"
-            title={!expanded ? "Investi" : undefined}
+            title={!expanded ? "Invest" : undefined}
           >
-            <span
-              className="flex-shrink-0 flex items-center justify-center"
-              style={{ width: 32, height: 32, borderRadius: 9, background: "rgba(255,85,0,0.12)", transition: "background 0.15s ease" }}
-            >
-              <CircleDollarSign size={15} strokeWidth={1.9} color="#ff5500" />
-            </span>
+            <MenuIcon Icon={CircleDollarSign} active={false} orange />
             <div style={{ ...labelStyle, flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: "13px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                Investi
+                Invest
               </div>
               <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
             </div>
