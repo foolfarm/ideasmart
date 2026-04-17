@@ -692,6 +692,7 @@ export default function Home() {
   const { data: authorPosts } = trpc.news.getAuthorPosts.useQuery({ limit: 5 }, queryOpts);
   const { data: ipfsCountData } = trpc.news.getIPFSCount.useQuery(undefined, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
   const ipfsCount = ipfsCountData?.count ?? 0;
+  const { data: gradeAArticles } = trpc.news.getGradeA.useQuery({ limit: 6 }, queryOpts);
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -1546,6 +1547,118 @@ export default function Home() {
             </section>
           )}          <div className="mt-12 mb-8">
           </div>
+
+          {/* ── SEZIONE GRADE A — Articoli con massima certificazione Trust Score ── */}
+          {gradeAArticles && gradeAArticles.length > 0 && (
+            <section className="mt-10">
+              <Divider />
+              <div className="mt-8">
+                {/* Header sezione */}
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="inline-flex items-center justify-center font-black text-white rounded"
+                      style={{ background: "#00b894", fontSize: "11px", width: "18px", height: "18px", flexShrink: 0 }}
+                    >
+                      A
+                    </span>
+                    <h2
+                      style={{
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                        fontSize: "1.1rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        color: "#1a1a1a",
+                        margin: 0,
+                      }}
+                    >
+                      Certificazione Massima
+                    </h2>
+                  </div>
+                  <Link
+                    href="/trust-score"
+                    className="text-[10px] font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: "#00b894" }}
+                  >
+                    Cos’è il Trust Score →
+                  </Link>
+                </div>
+                <p
+                  className="text-[11px] uppercase tracking-widest mb-6"
+                  style={{
+                    color: "#1a1a1a",
+                    opacity: 0.45,
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  }}
+                >
+                  {gradeAArticles.some((a) => a.trustGrade === "A")
+                    ? "Articoli con SHA-256 · IPFS · Fonte verificata · Contenuto certificato"
+                    : "Articoli con il più alto Trust Score · SHA-256 · IPFS · Fonte verificata"}
+                </p>
+                {/* Grid articoli */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {gradeAArticles.map((item) => (
+                    <Link key={item.id} href={`/news/${item.id}`}>
+                      <article
+                        className="p-4 border border-[#1a1a1a]/10 rounded-lg hover:border-[#00b894]/40 hover:shadow-sm transition-all group cursor-pointer"
+                        style={{ background: "#fff" }}
+                      >
+                        {/* Grade badge + categoria */}
+                        <div className="flex items-center justify-between mb-2">
+                          <span
+                            className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded"
+                            style={{ background: "#f0f9f6", color: "#00b894" }}
+                          >
+                            {item.category || item.section?.toUpperCase()}
+                          </span>
+                          <VerifyBadge
+                            hash={item.verifyHash}
+                            size="sm"
+                            trustGrade={item.trustGrade}
+                            trustScore={item.trustScore}
+                          />
+                        </div>
+                        {/* Titolo */}
+                        <h3
+                          className="font-bold leading-snug mb-2 group-hover:text-[#00b894] transition-colors line-clamp-2"
+                          style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                            fontSize: "0.9rem",
+                            color: "#1a1a1a",
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                        {/* Summary */}
+                        <p
+                          className="text-[12px] leading-relaxed line-clamp-2 mb-3"
+                          style={{ color: "#1a1a1a", opacity: 0.6 }}
+                        >
+                          {item.summary}
+                        </p>
+                        {/* Footer: fonte + data */}
+                        <div className="flex items-center justify-between">
+                          <span
+                            className="text-[10px] font-semibold"
+                            style={{ color: "#1a1a1a", opacity: 0.45 }}
+                          >
+                            {item.sourceName}
+                          </span>
+                          <span
+                            className="text-[10px]"
+                            style={{ color: "#1a1a1a", opacity: 0.35 }}
+                          >
+                            {item.publishedAt}
+                          </span>
+                        </div>
+                      </article>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* ── BANNER COLLABORATORI ── */}
           <div className="mt-10 mb-2">

@@ -8,6 +8,7 @@
  * garantendo tracciabilità e verificabilità nel tempo.
  *
  * trustGrade: se valorizzato, mostra il badge A/B/C/D/F accanto all'hash.
+ * Il badge grade è cliccabile e porta alla pagina /trust-score.
  */
 import { useState } from "react";
 import { ShieldCheck, Copy, Check } from "lucide-react";
@@ -28,6 +29,14 @@ const GRADE_COLOR: Record<string, string> = {
   F: "#d63031",
 };
 
+const GRADE_LABEL: Record<string, string> = {
+  A: "Certificazione Massima",
+  B: "Alta Affidabilità",
+  C: "Affidabilità Standard",
+  D: "Verifica Parziale",
+  F: "Non Verificato",
+};
+
 export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore }: VerifyBadgeProps) {
   const [copied, setCopied] = useState(false);
 
@@ -36,6 +45,9 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
   const displayHash = "#" + hash.substring(0, 16).toUpperCase();
   const verifyUrl = `/proofpress-verify?hash=${encodeURIComponent(hash)}`;
   const gradeColor = trustGrade ? (GRADE_COLOR[trustGrade] ?? "#636e72") : null;
+  const gradeLabel = trustGrade ? (GRADE_LABEL[trustGrade] ?? "") : "";
+  const scoreText = trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—";
+  const gradeTooltip = `Trust Score: ${scoreText}/100 — Grade ${trustGrade} (${gradeLabel}) · Clicca per scoprire come funziona il sistema di valutazione`;
 
   async function handleCopy(e: React.MouseEvent) {
     e.preventDefault();
@@ -61,22 +73,24 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
   if (size === "sm") {
     return (
       <span className="inline-flex items-center gap-1 select-none">
-        {/* Trust grade badge — mostrato solo se disponibile */}
+        {/* Trust grade badge — cliccabile → /trust-score */}
         {trustGrade && gradeColor && (
-          <span
-            title={`Trust Score: ${trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—"}/100 — Grade ${trustGrade}`}
-            className="inline-flex items-center justify-center font-black text-white rounded"
-            style={{
-              background: gradeColor,
-              fontSize: "8px",
-              width: "14px",
-              height: "14px",
-              flexShrink: 0,
-              letterSpacing: 0,
-            }}
-          >
-            {trustGrade}
-          </span>
+          <Link href="/trust-score">
+            <span
+              title={gradeTooltip}
+              className="inline-flex items-center justify-center font-black text-white rounded cursor-pointer transition-opacity hover:opacity-75"
+              style={{
+                background: gradeColor,
+                fontSize: "8px",
+                width: "14px",
+                height: "14px",
+                flexShrink: 0,
+                letterSpacing: 0,
+              }}
+            >
+              {trustGrade}
+            </span>
+          </Link>
         )}
         {/* Copia hash — click principale */}
         <button
@@ -120,21 +134,23 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
 
   return (
     <span className="inline-flex items-center gap-2 select-none">
-      {/* Trust grade badge md */}
+      {/* Trust grade badge md — cliccabile → /trust-score */}
       {trustGrade && gradeColor && (
-        <span
-          title={`Trust Score: ${trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—"}/100 — Grade ${trustGrade}`}
-          className="inline-flex items-center justify-center font-black text-white rounded"
-          style={{
-            background: gradeColor,
-            fontSize: "10px",
-            width: "20px",
-            height: "20px",
-            flexShrink: 0,
-          }}
-        >
-          {trustGrade}
-        </span>
+        <Link href="/trust-score">
+          <span
+            title={gradeTooltip}
+            className="inline-flex items-center justify-center font-black text-white rounded cursor-pointer transition-opacity hover:opacity-75"
+            style={{
+              background: gradeColor,
+              fontSize: "10px",
+              width: "20px",
+              height: "20px",
+              flexShrink: 0,
+            }}
+          >
+            {trustGrade}
+          </span>
+        </Link>
       )}
       {/* Copia hash */}
       <button

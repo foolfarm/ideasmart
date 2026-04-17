@@ -3246,3 +3246,16 @@
 - [x] Aggiungere Trust Score A-F nel dropdown Cosa Facciamo della Navbar
 - [x] Aggiungere link Trust Score nel SharedPageFooter
 - [x] Zero errori TypeScript
+
+## Badge VerifyBadge + Sezione Grade A — 17 Apr 2026
+
+- [ ] Aggiungere link /trust-score cliccabile sul badge grade nel VerifyBadge
+- [ ] Aggiungere tooltip esplicativo sul badge grade
+- [ ] Creare endpoint tRPC getGradeAArticles in routers.ts
+- [ ] Creare sezione Grade A nella Home con articoli meglio certificati
+
+## Trust Score Badge & Grade A Section
+- [x] Link /trust-score cliccabile dal badge VerifyBadge
+- [x] Endpoint tRPC news.getGradeA con fallback Grade B >= 80
+- [x] Sezione Certificazione Massima nella Home (grid 3 colonne)
+- [x] Sottotitolo adattivo: Grade A vs Grade B fallback

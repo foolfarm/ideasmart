@@ -59,7 +59,7 @@ import { generateStartupNews, generateStartupEditorial, generateStartupOfWeek, g
 import { generateDailyEditorial, generateStartupOfDay } from "./dailyContentScheduler";
 import { generateWeeklyReportage } from "./weeklyReportageScheduler";
 import { generateMarketAnalysis } from "./marketAnalysisScheduler";
-import { getLatestWeeklyReportage, getLatestMarketAnalysis } from "./db";
+import { getLatestWeeklyReportage, getLatestMarketAnalysis, getGradeAArticles } from "./db";
 import { generateImage } from "./_core/imageGeneration";
 import { getDb as getDbInstance } from "./db";
 import { newsItems as newsItemsTable, weeklyReportage as weeklyReportageTable, marketAnalysis as marketAnalysisTable, dailyEditorial as dailyEditorialTable, startupOfDay as startupOfDayTable, articleComments as articleCommentsTable, contentAudit as contentAuditTable } from "../drizzle/schema";
@@ -309,6 +309,17 @@ export const appRouter = router({
       );
     }),
 
+    // Articoli con Trust Score Grade A (massima certificazione) — o i migliori Grade B come fallback
+    getGradeA: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(12).default(6) }).optional())
+      .query(async ({ input }) => {
+        const limit = input?.limit ?? 6;
+        return cached(
+          `news:gradeA:${limit}`,
+          () => getGradeAArticles(limit),
+          DEFAULT_TTL_MS
+        );
+      }),
     // Statistiche filtro audit per la dashboard admin
     getFilterStats: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))

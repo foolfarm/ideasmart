@@ -1091,3 +1091,88 @@ export async function saveOpenSourceTool(data: {
   });
   return (result as any).insertId ?? null;
 }
+
+// ─── Grade A Articles ─────────────────────────────────────────────────────────
+// Restituisce gli articoli con trustGrade = 'A' (massima certificazione).
+// Se non ce ne sono ancora, restituisce i migliori per trustScore (Grade B ≥ 80).
+export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  // Prima prova: articoli Grade A
+  const gradeA = await db.select({
+    id: newsItems.id,
+    title: newsItems.title,
+    summary: newsItems.summary,
+    category: newsItems.category,
+    sourceName: newsItems.sourceName,
+    sourceUrl: newsItems.sourceUrl,
+    publishedAt: newsItems.publishedAt,
+    imageUrl: newsItems.imageUrl,
+    verifyHash: newsItems.verifyHash,
+    trustGrade: newsItems.trustGrade,
+    trustScore: newsItems.trustScore,
+    section: newsItems.section,
+  })
+    .from(newsItems)
+    .where(eq(newsItems.trustGrade, 'A'))
+    .orderBy(desc(newsItems.publishedAt))
+    .limit(limit);
+
+  if (gradeA.length > 0) {
+    return gradeA.map(item => ({
+      id: item.id,
+      title: item.title,
+      summary: item.summary ?? '',
+      category: item.category ?? '',
+      sourceName: item.sourceName ?? '',
+      sourceUrl: item.sourceUrl ?? '#',
+      publishedAt: item.publishedAt ?? '',
+      imageUrl: item.imageUrl ?? null,
+      videoUrl: null,
+      verifyHash: item.verifyHash ?? null,
+      trustGrade: item.trustGrade ?? null,
+      trustScore: item.trustScore ?? null,
+      section: (item.section ?? 'ai') as HomeSection,
+    }));
+  }
+
+  // Fallback: i migliori per trustScore (Grade B con score >= 80)
+  const topScored = await db.select({
+    id: newsItems.id,
+    title: newsItems.title,
+    summary: newsItems.summary,
+    category: newsItems.category,
+    sourceName: newsItems.sourceName,
+    sourceUrl: newsItems.sourceUrl,
+    publishedAt: newsItems.publishedAt,
+    imageUrl: newsItems.imageUrl,
+    verifyHash: newsItems.verifyHash,
+    trustGrade: newsItems.trustGrade,
+    trustScore: newsItems.trustScore,
+    section: newsItems.section,
+  })
+    .from(newsItems)
+    .where(and(
+      eq(newsItems.trustGrade, 'B'),
+      gte(newsItems.trustScore, 80)
+    ))
+    .orderBy(desc(newsItems.trustScore), desc(newsItems.publishedAt))
+    .limit(limit);
+
+  return topScored.map(item => ({
+    id: item.id,
+    title: item.title,
+    summary: item.summary ?? '',
+    category: item.category ?? '',
+    sourceName: item.sourceName ?? '',
+    sourceUrl: item.sourceUrl ?? '#',
+    publishedAt: item.publishedAt ?? '',
+    imageUrl: item.imageUrl ?? null,
+    videoUrl: null,
+    verifyHash: item.verifyHash ?? null,
+    trustGrade: item.trustGrade ?? null,
+    trustScore: item.trustScore ?? null,
+    section: (item.section ?? 'ai') as HomeSection,
+  }));
+}
