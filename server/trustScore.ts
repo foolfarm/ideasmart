@@ -130,6 +130,20 @@ export function trustGradeLabel(grade: string): string {
 }
 
 /**
+ * Ricalcola il Trust Score dopo che il pin IPFS è stato completato con successo.
+ * Aggiorna trustScore e trustGrade nel record DB passato come parametro.
+ * Usato nei callback setImmediate post-pin in tutti gli scheduler.
+ *
+ * @param currentInput - i dati dell'articolo già salvati (con ipfsCid ora disponibile)
+ * @returns il nuovo TrustResult con ipfsCid incluso
+ */
+export function upgradeTrustGradeAfterIpfs(
+  currentInput: Omit<TrustInput, 'ipfsCid'> & { ipfsCid: string }
+): TrustResult {
+  return computeTrustGrade({ ...currentInput });
+}
+
+/**
  * Colore badge per grade (Tailwind class suffix)
  */
 export function trustGradeColor(grade: string): string {

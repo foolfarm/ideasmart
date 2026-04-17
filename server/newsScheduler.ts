@@ -11,7 +11,7 @@ import { desc, eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
 import { runBatchAudit } from "./auditContent";
 import { generateVerifyHash } from "./verify";
-import { computeTrustGrade } from "./trustScore";
+import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
 
 // Intervallo: 24 ore in millisecondi
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -214,11 +214,25 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
               weekLabel: dayLabel,
             },
           });
+          // Upgrade Trust Score: ora che IPFS è disponibile, ricalcola (B → A se tutti i criteri soddisfatti)
+          const upgraded = upgradeTrustGradeAfterIpfs({
+            verifyHash,
+            ipfsCid: cid,
+            sourceName: item.sourceName,
+            sourceUrl: item.sourceUrl,
+            summary: item.summary,
+          });
           await db
             .update(newsItems)
-            .set({ ipfsCid: cid, ipfsUrl, ipfsPinnedAt: new Date() })
+            .set({
+              ipfsCid: cid,
+              ipfsUrl,
+              ipfsPinnedAt: new Date(),
+              trustScore: upgraded.score / 100,
+              trustGrade: upgraded.grade,
+            })
             .where(eq(newsItems.id, insertedAI.id));
-          console.log(`[NewsScheduler] ⛓ IPFS pinned: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+          console.log(`[NewsScheduler] ⛓ IPFS pinned + Trust upgraded ${trustResult.grade}→${upgraded.grade}: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
         } catch (pinErr) {
           console.warn(`[NewsScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
         }

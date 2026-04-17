@@ -9,7 +9,7 @@ import { newsItems, dailyEditorial, startupOfDay, weeklyReportage, marketAnalysi
 import { eq } from "drizzle-orm";
 import { findNewsImage, findEditorialImage, findStartupImage, findReportageImage, findMarketAnalysisImage } from "./stockImages";
 import { generateVerifyHash } from "./verify";
-import { computeTrustGrade } from "./trustScore";
+import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
 
 // ─── Genera 20 news startup ───────────────────────────────────────────────────
 export async function generateStartupNews(): Promise<void> {
@@ -121,11 +121,25 @@ Restituisci un JSON con questa struttura:
               weekLabel,
             },
           });
+          // Upgrade Trust Score: ora che IPFS è disponibile, ricalcola (B → A se tutti i criteri soddisfatti)
+          const upgraded = upgradeTrustGradeAfterIpfs({
+            verifyHash,
+            ipfsCid: cid,
+            sourceName: item.sourceName,
+            sourceUrl: item.sourceUrl,
+            summary: item.summary,
+          });
           await db
             .update(newsItems)
-            .set({ ipfsCid: cid, ipfsUrl, ipfsPinnedAt: new Date() })
+            .set({
+              ipfsCid: cid,
+              ipfsUrl,
+              ipfsPinnedAt: new Date(),
+              trustScore: upgraded.score / 100,
+              trustGrade: upgraded.grade,
+            })
             .where(eq(newsItems.id, insertedSU.id));
-          console.log(`[StartupScheduler] ⛓ IPFS pinned: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+          console.log(`[StartupScheduler] ⛓ IPFS pinned + Trust upgraded →${upgraded.grade}: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
         } catch (pinErr) {
           console.warn(`[StartupScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
         }

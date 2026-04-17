@@ -12,7 +12,7 @@ import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { journalists, journalistArticles, newsItems } from "../../drizzle/schema";
 import { sendArticleApprovedEmail, sendArticleRejectedEmail } from "../_core/mailer";
-import { computeTrustGrade } from "../trustScore";
+import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "../trustScore";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -812,6 +812,65 @@ export const journalistAdminRouter = router({
           articleUrl,
         }).catch((err) => console.error("[Mailer] Errore invio email approvazione:", err));
       }
+
+      // Pinning IPFS asincrono — non blocca la risposta all'admin
+      const _articleId = article.id;
+      const _newsItemId = newsItemId;
+      const _title = article.title;
+      const _summary = summary;
+      const _sourceName = `${journalist.displayName} — ProofPress Certified`;
+      setImmediate(async () => {
+        try {
+          const dbInner = await (await import('../db')).getDb();
+          if (!dbInner) return;
+          const { pinVerificationReport } = await import('../pinata.js');
+          const { cid, ipfsUrl } = await pinVerificationReport({
+            verifyHash,
+            article: {
+              id: _newsItemId,
+              title: _title,
+              summary: _summary,
+              section: 'news',
+              sourceName: _sourceName,
+              sourceUrl: null,
+              publishedAt: now.toISOString(),
+              category: article.category,
+              weekLabel,
+            },
+          });
+          // Upgrade Trust Score con ipfsCid ora disponibile
+          const upgraded = upgradeTrustGradeAfterIpfs({
+            verifyHash,
+            ipfsCid: cid,
+            sourceName: _sourceName,
+            sourceUrl: null,
+            body: article.body,
+            summary: _summary,
+          });
+          // Aggiorna news_items con IPFS + nuovo grade
+          await dbInner
+            .update((await import('../../drizzle/schema')).newsItems)
+            .set({
+              ipfsCid: cid,
+              ipfsUrl,
+              ipfsPinnedAt: now,
+              trustScore: upgraded.score / 100,
+              trustGrade: upgraded.grade,
+            })
+            .where((await import('drizzle-orm')).eq((await import('../../drizzle/schema')).newsItems.id, _newsItemId));
+          // Aggiorna anche journalist_articles con il nuovo grade
+          await dbInner
+            .update((await import('../../drizzle/schema')).journalistArticles)
+            .set({
+              trustScore: upgraded.score / 100,
+              trustGrade: upgraded.grade,
+            })
+            .where((await import('drizzle-orm')).eq((await import('../../drizzle/schema')).journalistArticles.id, _articleId));
+          console.log(`[JournalistRouter] ⛓ IPFS pinned + Trust upgraded →${upgraded.grade}: ${_title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+        } catch (pinErr) {
+          console.warn('[JournalistRouter] ⚠️ IPFS pin fallito (non critico):', pinErr);
+        }
+      });
 
       return { ok: true, verifyHash, verifyBadge, newsItemId };
     }),

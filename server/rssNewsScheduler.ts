@@ -22,7 +22,7 @@ import { scrapeAINews, scrapeStartupNews, scrapeDealroomNews, verifyUrl, sanitiz
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
 import { generateVerifyHash } from "./verify";
-import { computeTrustGrade } from "./trustScore";
+import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -169,11 +169,25 @@ async function saveScrapedNews(
             weekLabel,
           },
         });
+        // Upgrade Trust Score: ora che IPFS è disponibile, ricalcola (B → A se tutti i criteri soddisfatti)
+        const upgraded = upgradeTrustGradeAfterIpfs({
+          verifyHash,
+          ipfsCid: cid,
+          sourceName: article.sourceName,
+          sourceUrl: finalSourceUrl,
+          summary: article.summary,
+        });
         await db
           .update(newsItems)
-          .set({ ipfsCid: cid, ipfsUrl, ipfsPinnedAt: new Date() })
+          .set({
+            ipfsCid: cid,
+            ipfsUrl,
+            ipfsPinnedAt: new Date(),
+            trustScore: upgraded.score / 100,
+            trustGrade: upgraded.grade,
+          })
           .where(eq(newsItems.id, inserted.id));
-        console.log(`[RssNewsScheduler] ⛓ IPFS pinned: ${article.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+        console.log(`[RssNewsScheduler] ⛓ IPFS pinned + Trust upgraded →${upgraded.grade}: ${article.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
       } catch (pinErr) {
         console.warn(`[RssNewsScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
       }

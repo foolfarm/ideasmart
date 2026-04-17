@@ -3222,3 +3222,12 @@
 - [x] Aggiornare HomeSectionItem interface in db.ts con trustGrade e trustScore
 - [x] Passare trustGrade e trustScore al VerifyBadge in Home.tsx (HeroArticle + SecondaryArticle)
 - [x] Passare trustGrade e trustScore al VerifyBadge in AiHome.tsx (hero + cards)
+
+## Trust Score Upgrade B→A post-IPFS — 17 Apr 2026
+
+- [x] Aggiungere upgradeTrustGradeAfterIpfs() in server/trustScore.ts
+- [x] Upgrade automatico B→A nel setImmediate IPFS di newsScheduler.ts
+- [x] Upgrade automatico B→A nel setImmediate IPFS di rssNewsScheduler.ts
+- [x] Upgrade automatico B→A nel setImmediate IPFS di startupScheduler.ts
+- [x] Aggiungere pin IPFS asincrono + upgrade B→A in approveArticle (journalist router)
+- [x] Zero errori TypeScript — sistema production-ready
