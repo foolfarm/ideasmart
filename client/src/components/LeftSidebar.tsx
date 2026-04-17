@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import {
   ChevronDown, ChevronRight,
   Info, BookOpen, Briefcase, Mail,
-  Monitor, BookMarked, CircleDollarSign,
+  Monitor, BookMarked, CircleDollarSign, PenLine,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -179,6 +179,17 @@ export default function LeftSidebar() {
           >
             <MenuIcon Icon={Briefcase} active={isActive("/pubblicita")} />
             <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Pubblicizza</span>
+          </div>
+        </Link>
+
+        {/* C2) SCRIVI PER NOI */}
+        <Link href="/scrivi-per-noi">
+          <div
+            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+            title={!expanded ? "Scrivi per Noi" : undefined}
+          >
+            <MenuIcon Icon={PenLine} active={isActive("/scrivi-per-noi")} />
+            <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>Scrivi per Noi</span>
           </div>
         </Link>
 
