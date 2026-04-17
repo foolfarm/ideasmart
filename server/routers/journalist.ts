@@ -8,7 +8,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { eq, desc, and, gt } from "drizzle-orm";
 import crypto from "crypto";
-import { publicProcedure, router } from "../_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { journalists, journalistArticles, newsItems } from "../../drizzle/schema";
 
@@ -418,6 +418,152 @@ export const journalistRouter = router({
       await db
         .delete(journalistArticles)
         .where(eq(journalistArticles.id, input.id));
+
+      return { ok: true };
+    }),
+});
+
+// ── Admin tRPC procedures ────────────────────────────────────────────────────
+// Protette da adminProcedure (solo utenti con role=admin)
+
+const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (ctx.user.role !== "admin") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Solo gli admin possono eseguire questa operazione" });
+  }
+  return next({ ctx });
+});
+
+export const journalistAdminRouter = router({
+  /** Lista tutti i giornalisti */
+  list: adminProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    const rows = await db
+      .select({
+        id: journalists.id,
+        username: journalists.username,
+        email: journalists.email,
+        displayName: journalists.displayName,
+        bio: journalists.bio,
+        journalistKey: journalists.journalistKey,
+        isActive: journalists.isActive,
+        totalArticles: journalists.totalArticles,
+        createdAt: journalists.createdAt,
+        lastLoginAt: journalists.lastLoginAt,
+      })
+      .from(journalists)
+      .orderBy(desc(journalists.createdAt));
+    return rows;
+  }),
+
+  /** Crea un nuovo account giornalista */
+  create: adminProcedure
+    .input(
+      z.object({
+        username: z.string().min(3).max(64),
+        password: z.string().min(6).max(128),
+        displayName: z.string().min(2).max(255),
+        email: z.string().email(),
+        bio: z.string().max(1000).optional(),
+        linkedinUrl: z.string().url().optional().or(z.literal("")),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      // Controlla duplicati
+      const existing = await db
+        .select({ id: journalists.id })
+        .from(journalists)
+        .where(eq(journalists.username, input.username.toLowerCase().trim()))
+        .limit(1);
+      if (existing.length > 0) {
+        throw new TRPCError({ code: "CONFLICT", message: "Username già in uso." });
+      }
+
+      const journalistKey = generateJournalistKey();
+      const passwordHash = hashPassword(input.password);
+
+      const [result] = await db.insert(journalists).values({
+        username: input.username.toLowerCase().trim(),
+        email: input.email.toLowerCase().trim(),
+        passwordHash,
+        displayName: input.displayName,
+        bio: input.bio ?? null,
+        linkedinUrl: input.linkedinUrl || null,
+        journalistKey,
+        isActive: true,
+      });
+
+      return {
+        ok: true,
+        id: (result as any).insertId,
+        username: input.username,
+        journalistKey,
+      };
+    }),
+
+  /** Attiva o disattiva un account giornalista */
+  toggleActive: adminProcedure
+    .input(z.object({ id: z.number(), isActive: z.boolean() }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+      await db
+        .update(journalists)
+        .set({ isActive: input.isActive })
+        .where(eq(journalists.id, input.id));
+      return { ok: true };
+    }),
+
+  /** Reset password di un giornalista */
+  resetPassword: adminProcedure
+    .input(z.object({ id: z.number(), newPassword: z.string().min(6) }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+      const passwordHash = hashPassword(input.newPassword);
+      await db
+        .update(journalists)
+        .set({ passwordHash, sessionToken: null, sessionExpiresAt: null })
+        .where(eq(journalists.id, input.id));
+      return { ok: true };
+    }),
+
+  /** Elimina un account giornalista (solo se non ha articoli pubblicati) */
+  delete: adminProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      // Verifica che non abbia articoli pubblicati
+      const published = await db
+        .select({ id: journalistArticles.id })
+        .from(journalistArticles)
+        .where(
+          and(
+            eq(journalistArticles.journalistId, input.id),
+            eq(journalistArticles.status, "published")
+          )
+        )
+        .limit(1);
+
+      if (published.length > 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Non puoi eliminare un giornalista con articoli pubblicati. Disattivalo invece.",
+        });
+      }
+
+      // Elimina prima gli articoli in bozza
+      await db
+        .delete(journalistArticles)
+        .where(eq(journalistArticles.journalistId, input.id));
+
+      // Poi elimina il giornalista
+      await db.delete(journalists).where(eq(journalists.id, input.id));
 
       return { ok: true };
     }),

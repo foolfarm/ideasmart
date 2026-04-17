@@ -3159,3 +3159,12 @@
 - [x] Banner CollaboratoriBanner inserito nella Home prima del footer
 - [x] Landing page /scrivi-per-noi con pitch editoriale completo (hero, chi siamo, perché scrivere, formati, chi cerchiamo, processo 4 step, form candidatura)
 - [x] Route /scrivi-per-noi registrata in App.tsx
+
+## Nuovi task (17 Apr 2026 — Admin Gestione Giornalisti)
+
+- [x] tRPC admin: procedure adminListJournalists, adminCreateJournalist, adminToggleJournalist, adminResetPassword
+- [x] Pagina AdminJournalists.tsx: lista account giornalisti con azioni (attiva/disattiva, reset password)
+- [x] Form creazione nuovo account giornalista (username, password, displayName, email, bio, specializations)
+- [x] Link "Giornalisti" nel navbar admin
+- [x] Route /admin/journalists in App.tsx
+- [x] Creare primo account giornalista: admin / admin.123

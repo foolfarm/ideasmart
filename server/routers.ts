@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { adminRouter as adminToolsRouter } from "./routers/adminRouter";
-import { journalistRouter } from "./routers/journalist";
+import { journalistRouter, journalistAdminRouter } from "./routers/journalist";
 import { bannersRouter } from "./routers/banners";
 import { amazonDealsRouter } from "./routers/amazonDeals";
 import { siteAuthRouter } from "./routers/siteAuth";
@@ -88,6 +88,7 @@ export const appRouter = router({
   account: accountRouter,
   channels: channelsRouter,
   journalist: journalistRouter,
+  journalistAdmin: journalistAdminRouter,
 
   // ── Notification Preferences (public) ─────────────────────────────────────
   notifications: router({

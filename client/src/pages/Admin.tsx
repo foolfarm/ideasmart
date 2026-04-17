@@ -200,6 +200,7 @@ export default function Admin() {
               { label: "Salute Sistema", path: "/admin/system-health" },
               { label: "Alert Log", path: "/admin/alert-log" },
               { label: "Amazon Deals", path: "/admin/amazon-deals" },
+              { label: "Giornalisti", path: "/admin/journalists" },
             ].map((item) => (
               <button
                 key={item.path}
