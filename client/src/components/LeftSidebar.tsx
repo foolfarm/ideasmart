@@ -3,7 +3,7 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
   Monitor, CheckCircle, Newspaper, Megaphone, PenLine,
-  KeyRound, Info, Mail, CircleDollarSign, ExternalLink,
+  KeyRound, Info, Mail, CircleDollarSign, ExternalLink, Download,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -43,6 +43,7 @@ const NAV_ITEMS = [
   { href: "/scrivi-per-noi",    label: "Contribute",        Icon: PenLine,          external: false },
   { href: "/journalist-portal", label: "Journalists Portal",Icon: KeyRound,         external: false },
   { href: "/cosa-facciamo",     label: "About",             Icon: Info,             external: false },
+  { href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf", label: "Download Brochure", Icon: Download, external: true  },
   { href: "/contatti",          label: "Contact",           Icon: Mail,             external: false },
 ];
 

@@ -20,6 +20,7 @@ const NAV_ITEMS = [
   { href: "/scrivi-per-noi",          label: "Contribute",          icon: "✍️",  external: false },
   { href: "/journalist-portal",       label: "Journalists Portal",  icon: "🔑",  external: false },
   { href: "/cosa-facciamo",           label: "About",               icon: "ℹ️",  external: false },
+  { href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf", label: "Download Brochure", icon: "📄", external: true  },
   { href: "/contatti",                label: "Contact",             icon: "✉️",  external: false },
 ];
 

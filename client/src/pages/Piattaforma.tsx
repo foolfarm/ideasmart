@@ -681,7 +681,7 @@ export default function Piattaforma() {
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-200 hover:opacity-90 cursor-pointer"
                     style={{ background: ORANGE, color: "#ffffff", fontFamily: FONT }}
                   >
-                    Richiedi una demo →
+                    Parla con il team →
                   </span>
                 </Link>
                 <a
