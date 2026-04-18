@@ -500,9 +500,36 @@ export async function sendSaturdayPreview(): Promise<{
   const weekKey = getWeekKey();
   const previewKey = `preview-${weekKey}`;
 
+  // ── Guard in-memory (resiste entro la stessa sessione) ───────────────────
   if (previewSentWeeks.get(previewKey)) {
-    console.log(`[SaturdayNewsletter] Preview già inviata questa settimana (${weekKey}), skip`);
+    console.log(`[SaturdayNewsletter] Preview già inviata questa settimana (${weekKey}), skip (guard in-memory)`);
     return { success: true, subject: "" };
+  }
+
+  // ── Guard DB-level (resiste ai riavvii del server) ───────────────────────
+  // Controlla se esiste già un record per questa settimana (sabato corrente).
+  try {
+    const dbGuard = await getDb();
+    if (dbGuard) {
+      const todaySat = new Date();
+      todaySat.setHours(0, 0, 0, 0);
+      const existingToday = await dbGuard
+        .select({ id: newsletterSendsTable.id, status: newsletterSendsTable.status })
+        .from(newsletterSendsTable)
+        .where(
+          gte(newsletterSendsTable.createdAt, todaySat)
+        )
+        .limit(1);
+      if (existingToday.length > 0) {
+        console.log(
+          `[SaturdayNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${existingToday[0].id}, status=${existingToday[0].status}) — skip`
+        );
+        previewSentWeeks.set(previewKey, true);
+        return { success: true, subject: "" };
+      }
+    }
+  } catch (guardErr) {
+    console.warn(`[SaturdayNewsletter] ⚠️ Guard DB preview fallito (continuo):`, guardErr);
   }
 
   const dateLabel = getDateLabel();

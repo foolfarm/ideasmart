@@ -3279,3 +3279,10 @@
 - [x] Alert owner su LinkedIn deduplication guard (doppio post bloccato)
 - [x] Arricchimento pool immagini Research (4-6 immagini per categoria: 4→8 per categoria, 40 totali)
 - [x] Audit e ritraduzione LLM articoli in inglese nel DB (21/21 articoli tradotti)
+
+## Fix Triplo Invio Newsletter (18 Apr 2026)
+- [x] Analisi causa root: guard in-memory testSentDays si azzera ad ogni restart del server
+- [x] Fix guard DB-level in sendUnifiedPreview (unifiedNewsletter.ts)
+- [x] Fix guard DB-level in sendSaturdayPreview (saturdayEditorialNewsletter.ts)
+- [x] Zero errori TypeScript
+- [x] Verifica DB: nessun record newsletter per oggi (sabato 18) — guard pronto

@@ -36,7 +36,7 @@ import {
   startupOfDay,
   techEvents,
 } from "../drizzle/schema";
-import { eq, desc, and, sql, gte, gt, lt } from "drizzle-orm";
+import { eq, desc, and, sql, gte, gt, lt, inArray } from "drizzle-orm";
 import { newsletterSends as newsletterSendsTable } from "../drizzle/schema";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -1420,15 +1420,50 @@ export async function sendUnifiedPreview(): Promise<{
   const dayKey = getDayKey(new Date());
   const testKey = `unified-test-${dayKey}`;
 
+  // ── Guard in-memory (resiste entro la stessa sessione) ───────────────────
   if (testSentDays.get(testKey)) {
     console.log(
-      `[UnifiedNewsletter] Preview già inviata oggi (${dayKey}), skip`
+      `[UnifiedNewsletter] Preview già inviata oggi (${dayKey}), skip (guard in-memory)`
     );
     return {
       success: true,
       subject: "",
       stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
     };
+  }
+
+  // ── Guard DB-level (resiste ai riavvii del server) ───────────────────────
+  // Controlla se esiste già un record pending/approved/sending/sent per oggi.
+  // Questo previene la creazione di record duplicati in caso di restart multipli.
+  try {
+    const dbGuard = await getDb();
+    if (dbGuard) {
+      const todayGuard = new Date();
+      todayGuard.setHours(0, 0, 0, 0);
+      const existingToday = await dbGuard
+        .select({ id: newsletterSendsTable.id, status: newsletterSendsTable.status })
+        .from(newsletterSendsTable)
+        .where(
+          and(
+            gte(newsletterSendsTable.createdAt, todayGuard),
+            inArray(newsletterSendsTable.status, ["pending", "approved", "sending", "sent"])
+          )
+        )
+        .limit(1);
+      if (existingToday.length > 0) {
+        console.log(
+          `[UnifiedNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${existingToday[0].id}, status=${existingToday[0].status}) — skip`
+        );
+        testSentDays.set(testKey, true); // aggiorna anche il guard in-memory
+        return {
+          success: true,
+          subject: "",
+          stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+        };
+      }
+    }
+  } catch (guardErr) {
+    console.warn(`[UnifiedNewsletter] ⚠️ Guard DB preview fallito (continuo):`, guardErr);
   }
 
   console.log(`[UnifiedNewsletter] 📧 Preview → ${TEST_EMAILS.join(", ")}`);
