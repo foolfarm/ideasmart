@@ -507,9 +507,9 @@ export function startAllSchedulers(): void {
       }
     });
   }, { timezone: TZ });
-  // ⏰ 12:00 CET (sabato) — Invio massivo newsletter del sabato
-  cron.schedule("0 12 * * 6", async () => {
-    console.log("[SchedulerManager] ⏰ 12:00 CET (sab) — Invio massivo \"Il meglio di ProofPress\"...");
+  // ⏰ 12:30 CET (sabato) — Invio massivo newsletter del sabato
+  cron.schedule("30 12 * * 6", async () => {
+    console.log("[SchedulerManager] ⏰ 12:30 CET (sab) — Invio massivo \"Il meglio di ProofPress\"...");
     await withLock("saturday-massivo", async () => {
       try {
         const { sendSaturdayNewsletterToAll } = await import("./saturdayEditorialNewsletter");

@@ -10,7 +10,7 @@ interface SendEmailOptions {
   /** Override mittente: 'daily' = ProofPress Daily (Adrian@proofpress.ai),
    *  'promo' = ProofPress Business (noreply@proofpress.biz),
    *  default = ProofPress.AI (info@proofpress.ai) */
-  sender?: 'daily' | 'promo' | 'default';
+  sender?: 'daily' | 'promo' | 'ai4business' | 'default';
 }
 
 export async function sendEmail(opts: SendEmailOptions): Promise<{ success: boolean; error?: string }> {
@@ -21,14 +21,19 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
   let replyTo: string;
   if (opts.sender === 'daily') {
     // Newsletter Daily: ProofPress Magazine (IP dedicato)
-    fromEmail = "Adrian@proofpress.ai";
+    fromEmail = "adrian@proofpress.ai";
     fromName = "ProofPress Magazine";
-    replyTo = "Adrian@proofpress.ai";
+    replyTo = "adrian@proofpress.ai";
   } else if (opts.sender === 'promo') {
     // Newsletter promozionali: ProofPress Business
     fromEmail = "noreply@proofpress.biz";
     fromName = "ProofPress Business";
     replyTo = "noreply@proofpress.biz";
+  } else if (opts.sender === 'ai4business') {
+    // Preview editoriale: usa ai4business.news (non bloccato da Apple Mail)
+    fromEmail = "adrian@ai4business.news";
+    fromName = "ProofPress Magazine";
+    replyTo = "adrian@ai4business.news";
   } else {
     // Default: ProofPress.AI (transazionali, welcome, report)
     fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@proofpress.ai";

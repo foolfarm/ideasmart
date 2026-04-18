@@ -553,14 +553,14 @@ export async function sendSaturdayPreview(): Promise<{
       recentNews: recentNewsForCta,
     });
 
-    const result = await sendEmail({ sender: 'daily', to: TEST_EMAIL, subject, html });
+    const result = await sendEmail({ sender: 'ai4business', to: TEST_EMAIL, subject, html });
 
     if (result.success) {
       previewSentWeeks.set(previewKey, true);
       console.log(`[SaturdayNewsletter] ✅ Preview inviata a ${TEST_EMAIL}: "${subject}"`);
       await notifyOwner({
         title: `📖 Preview "Il meglio di ProofPress" — ${dateLabel}`,
-        content: `Preview dell'editoriale del sabato inviata a ${TEST_EMAIL}.\n\nTema: ${editorial.topic}\nTitolo: ${editorial.title}\n\nL'invio massivo è previsto alle 12:00 CET.`,
+        content: `Preview dell'editoriale del sabato inviata a ${TEST_EMAIL}.\n\nTema: ${editorial.topic}\nTitolo: ${editorial.title}\n\nL'invio massivo è previsto alle 12:30 CET.`,
       });
       return { success: true, subject };
     } else {
