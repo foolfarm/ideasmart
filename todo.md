@@ -3306,3 +3306,9 @@
 - [x] Rimuovere dal DB indirizzi no-reply, noreply, assistenza, servizio clienti, support, info, admin, postmaster, mailer-daemon (11 attivi rimossi)
 - [x] Recuperare da SendGrid indirizzi in block e spam e marcarli unsubscribed nel DB (4.139 blocks + 3 invalid → 3.976 rimossi)
 - [x] Blindare filtro invio newsletter: escludere tutti gli unsubscribed (status != 'active') — già corretto, tutte le funzioni usano getActiveSubscribers()
+
+## Task (19 apr 2026 — Registration Wall + Warm-up IP + Delivery Monitor)
+
+- [x] Registration Wall: modale iscrizione newsletter al click su articolo per utenti non registrati (upgrade da metered paywall a hard wall immediato)
+- [x] Warm-up IP graduale: invio newsletter in batch da 500-800 email con delay 5 min tra batch (fase 1: max 500, fase 2: max 800, fase 3+: full send)
+- [x] Monitoraggio delivery rate automatico: cron 11:30/13:30/15:30 CET lun/mer/ven, alert owner se delivery < 85% o bounce > 5%

@@ -17,6 +17,7 @@
  */
 
 import { sendEmail } from "./email";
+import { sendWithWarmup } from "./newsletterWarmup";
 import {
   getLatestNews,
   getActiveSubscribers,
@@ -1729,49 +1730,32 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
         )
       : baseHtml;
 
-    const BATCH_SIZE = 50;
-    let totalSent = 0;
     let sendError: string | undefined;
-
-    for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
-      const batch = subscribers.slice(i, i + BATCH_SIZE);
-
-      for (const sub of batch) {
+    const warmupResult = await sendWithWarmup(
+      subscribers,
+      async (sub) => {
         const unsubUrl = sub.unsubscribeToken
           ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
           : `${BASE_URL}/unsubscribe`;
         const prefsUrl = sub.unsubscribeToken
           ? `${BASE_URL}/preferenze-newsletter?token=${sub.unsubscribeToken}`
           : `${BASE_URL}/preferenze-newsletter`;
-
-        let personalizedHtml = finalBaseHtml
+        const personalizedHtml = finalBaseHtml
           .replace(`${BASE_URL}/unsubscribe`, unsubUrl)
           .replace(`${BASE_URL}/preferenze-newsletter`, prefsUrl);
-
         const result = await sendEmail({
-        sender: 'daily',
+          sender: 'daily',
           to: sub.email,
           subject,
           html: personalizedHtml,
-          // List-Unsubscribe header: abilita il pulsante nativo di disiscrizione in Gmail/Outlook/Apple Mail
           listUnsubscribeUrl: unsubUrl,
         });
-        if (result.success) totalSent++;
-        else {
-          sendError = result.error;
-          console.error(
-            `[UnifiedNewsletter] Errore invio a ${sub.email}:`,
-            result.error
-          );
-        }
-      }
-
-      if (i % 200 === 0 && i > 0) {
-        console.log(
-          `[UnifiedNewsletter] Progresso: ${totalSent}/${subscribers.length}`
-        );
-      }
-    }
+        if (!result.success) sendError = result.error;
+        return result;
+      },
+      '[UnifiedNewsletter]'
+    );
+    const totalSent = warmupResult.totalSent;
 
     await updateNewsletterSendRecipientCount(subject, totalSent);
     // Il guard DB-based non richiede aggiornamento manuale:

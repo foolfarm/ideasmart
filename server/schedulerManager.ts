@@ -1111,4 +1111,45 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
   console.log("[SchedulerManager]   🧹 List Hygiene → ogni domenica alle 06:00 CET (Global Unsubscribe + Bounce + Spam)");
+
+  // ─── Delivery Rate Monitor ─────────────────────────────────────────────────
+  // Controlla le statistiche SendGrid ogni giorno alle 11:30, 13:30 e 15:30 CET
+  // (1h dopo i principali invii newsletter: 10:30, 12:30, 14:30)
+  // Se il delivery rate scende sotto l'85%, notifica il proprietario.
+  cron.schedule("0 30 9,11,13 * * 1,3,5", async () => {
+    try {
+      const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+      if (!SENDGRID_API_KEY) return;
+      const today = new Date().toISOString().split("T")[0];
+      const res = await fetch(
+        `https://api.sendgrid.com/v3/stats?start_date=${today}&end_date=${today}&aggregated_by=day`,
+        { headers: { Authorization: `Bearer ${SENDGRID_API_KEY}` } }
+      );
+      if (!res.ok) return;
+      const data = await res.json() as Array<{ stats: Array<{ metrics: Record<string, number> }> }>;
+      if (!data || data.length === 0) return;
+      const metrics = data[0]?.stats?.[0]?.metrics ?? {};
+      const requests = metrics.requests ?? 0;
+      const delivered = metrics.delivered ?? 0;
+      const bounces = (metrics.bounces ?? 0) + (metrics.blocks ?? 0);
+      if (requests < 10) return; // Troppo pochi invii, skip
+      const deliveryRate = requests > 0 ? (delivered / requests) * 100 : 0;
+      const bounceRate = requests > 0 ? (bounces / requests) * 100 : 0;
+      const DELIVERY_THRESHOLD = 85;
+      const BOUNCE_THRESHOLD = 5;
+      if (deliveryRate < DELIVERY_THRESHOLD || bounceRate > BOUNCE_THRESHOLD) {
+        const { notifyOwner } = await import("./_core/notification");
+        await notifyOwner({
+          title: `⚠️ Alert Deliverability — ${today}`,
+          content: `Delivery rate: ${deliveryRate.toFixed(1)}% (soglia: ${DELIVERY_THRESHOLD}%)\nBounce rate: ${bounceRate.toFixed(1)}% (soglia: ${BOUNCE_THRESHOLD}%)\nRichieste: ${requests} | Consegnate: ${delivered} | Bounce/Block: ${bounces}\n\nAzione consigliata: verificare la reputazione IP su SendGrid Dashboard → Sender Authentication.`,
+        });
+        console.warn(`[DeliveryMonitor] ⚠️ Delivery rate basso: ${deliveryRate.toFixed(1)}% (${delivered}/${requests})`);
+      } else {
+        console.log(`[DeliveryMonitor] ✅ Delivery OK: ${deliveryRate.toFixed(1)}% (${delivered}/${requests})`);
+      }
+    } catch (err) {
+      console.error("[DeliveryMonitor] Errore:", err);
+    }
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   📊 Delivery Monitor → 11:30, 13:30, 15:30 CET lun/mer/ven (alert se delivery < 85%)");
 }

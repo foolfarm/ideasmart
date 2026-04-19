@@ -1,56 +1,71 @@
 /**
- * RequireAuth — wrapper per proteggere le pagine articolo
+ * RequireAuth — Registration Wall per le pagine articolo di ProofPress
  *
- * Logica metered paywall:
- * - Utente autenticato → accesso completo sempre
- * - Utente non autenticato:
- *   - Primi 4 articoli/mese → accesso libero (con banner "X rimasti")
- *   - Dal 5° articolo → paywall completo con CTA registrazione
+ * Logica hard wall:
+ * - Utente autenticato (siteAuth o OAuth) → accesso completo sempre
+ * - Utente non autenticato → modale iscrizione newsletter inline
+ *   - Inserisce email (+ nome opzionale) → iscrizione + accesso immediato
+ *   - Oppure "Accedi" se già registrato
  *
- * Il contatore è salvato in localStorage con reset mensile automatico.
+ * Il modale appare sopra un'anteprima sfumata dell'articolo (fade-out).
+ * Dopo l'iscrizione, il contenuto si sblocca senza reload.
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
-import {
-  recordArticleRead,
-  getFreeReadsRemaining,
-  FREE_LIMIT,
-} from "@/hooks/useFreeArticleCounter";
+import { trpc } from "@/lib/trpc";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 
 interface RequireAuthProps {
   children: React.ReactNode;
-  /** ID univoco dell'articolo per il contatore (es. "ai-news-123") */
+  /** ID univoco dell'articolo (non più usato per il contatore, mantenuto per compatibilità) */
   articleId?: string;
-  /** Mostra solo il paywall senza bloccare la pagina (per articoli con preview) */
+  /** Mostra il wall come overlay sopra l'anteprima (default: false = pagina intera) */
   overlay?: boolean;
 }
 
-export default function RequireAuth({ children, articleId, overlay = false }: RequireAuthProps) {
+export default function RequireAuth({ children, overlay = false }: RequireAuthProps) {
   const { isAuthenticated, isLoading } = useSiteAuth();
-  const [accessGranted, setAccessGranted] = useState<boolean | null>(null);
-  const [remaining, setRemaining] = useState<number>(FREE_LIMIT);
 
-  useEffect(() => {
-    if (isLoading) return;
-    if (isAuthenticated) {
-      setAccessGranted(true);
+  // Stato form iscrizione
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [unlocked, setUnlocked] = useState(false);
+
+  const subscribeMutation = trpc.newsletter.subscribe.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      // Sblocca il contenuto dopo 1.2s (mostra messaggio di conferma brevemente)
+      setTimeout(() => setUnlocked(true), 1200);
+    },
+    onError: (err) => {
+      // Se già iscritto, sblocca comunque
+      if (err.message?.toLowerCase().includes("già iscritto") || err.message?.toLowerCase().includes("already")) {
+        setSubmitted(true);
+        setTimeout(() => setUnlocked(true), 800);
+      } else {
+        setError(err.message ?? "Errore durante l'iscrizione. Riprova.");
+      }
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!email.trim() || !email.includes("@")) {
+      setError("Inserisci un indirizzo email valido.");
       return;
     }
+    subscribeMutation.mutate({ email: email.trim(), name: name.trim() || undefined });
+  };
 
-    // Utente non autenticato: controlla il contatore
-    const id = articleId ?? window.location.pathname;
-    const allowed = recordArticleRead(id);
-    setAccessGranted(allowed);
-    setRemaining(getFreeReadsRemaining());
-  }, [isAuthenticated, isLoading, articleId]);
-
-  // Durante il caricamento mostra uno skeleton neutro
-  if (isLoading || accessGranted === null) {
+  // Loading auth
+  if (isLoading) {
     return (
       <div className="min-h-[200px] flex items-center justify-center">
         <div className="w-6 h-6 border-2 border-[#1a1a1a]/20 border-t-[#1a1a1a] rounded-full animate-spin" />
@@ -58,130 +73,220 @@ export default function RequireAuth({ children, articleId, overlay = false }: Re
     );
   }
 
-  // Utente autenticato → mostra il contenuto senza banner
-  if (isAuthenticated) {
+  // Autenticato o appena iscritto → accesso completo
+  if (isAuthenticated || unlocked) {
     return <>{children}</>;
   }
 
-  // Paywall completo (5° articolo in poi)
   const returnTo = encodeURIComponent(window.location.pathname);
 
-  const paywall = (
+  // Modale di iscrizione
+  const wall = (
     <div
-      className="border border-[#1a1a1a]/15 bg-[#ffffff] p-8 text-center max-w-[520px] mx-auto my-8"
-      style={{ fontFamily: SF }}
+      style={{
+        background: "#fff",
+        border: "1px solid rgba(26,26,26,0.12)",
+        borderRadius: "2px",
+        padding: "40px 36px",
+        maxWidth: "480px",
+        margin: "0 auto",
+        fontFamily: SF,
+        boxShadow: "0 8px 40px rgba(0,0,0,0.08)",
+      }}
     >
-      <p
-        className="text-[10px] uppercase tracking-[0.2em] mb-4"
-        style={{ color: "rgba(26,26,26,0.4)" }}
-      >
-        Hai raggiunto il limite gratuito
-      </p>
-      <div style={{ height: "2px", background: "#1a1a1a", marginBottom: "24px" }} />
-      <h2
-        className="text-xl font-black mb-3"
-        style={{ fontFamily: SF_DISPLAY, letterSpacing: "-0.02em", color: "#1a1a1a" }}
-      >
-        Hai letto i tuoi {FREE_LIMIT} articoli gratuiti del mese
-      </h2>
-      <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(26,26,26,0.6)" }}>
-        Registrati gratis per accesso illimitato a tutte le analisi, ricerche e news
-        su AI, Startup e Venture Capital. Richiede meno di un minuto.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href="/registrati">
-          <button
-            className="px-6 py-3 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
-            style={{ background: "#1a1a1a", color: "#ffffff", fontFamily: SF }}
-          >
-            Registrati gratis →
-          </button>
-        </Link>
-        <Link href={`/accedi?returnTo=${returnTo}`}>
-          <button
-            className="px-6 py-3 text-xs font-bold uppercase tracking-widest border border-[#1a1a1a]/30 hover:border-[#1a1a1a] transition-colors bg-transparent"
-            style={{ color: "#1a1a1a", fontFamily: SF }}
-          >
-            Accedi
-          </button>
-        </Link>
+      {/* Header */}
+      <div style={{ marginBottom: "28px", textAlign: "center" }}>
+        <p
+          style={{
+            fontSize: "9px",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "rgba(26,26,26,0.4)",
+            marginBottom: "10px",
+          }}
+        >
+          ProofPress · Accesso riservato
+        </p>
+        <div style={{ height: "2px", background: "#1a1a1a", marginBottom: "20px" }} />
+        {submitted ? (
+          <div>
+            <div style={{ fontSize: "28px", marginBottom: "8px" }}>✓</div>
+            <h2
+              style={{
+                fontFamily: SF_DISPLAY,
+                fontSize: "20px",
+                fontWeight: 900,
+                letterSpacing: "-0.02em",
+                color: "#1a1a1a",
+                marginBottom: "8px",
+              }}
+            >
+              Iscrizione confermata
+            </h2>
+            <p style={{ fontSize: "13px", color: "rgba(26,26,26,0.6)", lineHeight: 1.5 }}>
+              Benvenuto in ProofPress. Sblocco articolo in corso…
+            </p>
+          </div>
+        ) : (
+          <>
+            <h2
+              style={{
+                fontFamily: SF_DISPLAY,
+                fontSize: "22px",
+                fontWeight: 900,
+                letterSpacing: "-0.02em",
+                color: "#1a1a1a",
+                marginBottom: "10px",
+                lineHeight: 1.2,
+              }}
+            >
+              Iscriviti gratis e leggi subito
+            </h2>
+            <p style={{ fontSize: "13px", color: "rgba(26,26,26,0.55)", lineHeight: 1.6 }}>
+              Accesso illimitato a tutte le analisi, ricerche e news su AI, Startup e Venture Capital.
+              Nessuna carta di credito. Disiscrizione in un click.
+            </p>
+          </>
+        )}
       </div>
+
+      {/* Form */}
+      {!submitted && (
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <input
+            type="text"
+            placeholder="Nome (opzionale)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={{
+              border: "1px solid rgba(26,26,26,0.18)",
+              borderRadius: "2px",
+              padding: "11px 14px",
+              fontSize: "14px",
+              fontFamily: SF,
+              color: "#1a1a1a",
+              outline: "none",
+              background: "#fafafa",
+            }}
+          />
+          <input
+            type="email"
+            placeholder="La tua email *"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+            style={{
+              border: error ? "1px solid #e53e3e" : "1px solid rgba(26,26,26,0.18)",
+              borderRadius: "2px",
+              padding: "11px 14px",
+              fontSize: "14px",
+              fontFamily: SF,
+              color: "#1a1a1a",
+              outline: "none",
+              background: "#fafafa",
+            }}
+          />
+          {error && (
+            <p style={{ fontSize: "12px", color: "#e53e3e", margin: "0" }}>{error}</p>
+          )}
+          <button
+            type="submit"
+            disabled={subscribeMutation.isPending}
+            style={{
+              background: "#1a1a1a",
+              color: "#fff",
+              border: "none",
+              borderRadius: "2px",
+              padding: "13px 24px",
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              cursor: subscribeMutation.isPending ? "not-allowed" : "pointer",
+              opacity: subscribeMutation.isPending ? 0.6 : 1,
+              fontFamily: SF,
+              transition: "opacity 0.15s",
+            }}
+          >
+            {subscribeMutation.isPending ? "Iscrizione in corso…" : "Iscriviti gratis e leggi subito →"}
+          </button>
+
+          {/* Divider */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "4px 0" }}>
+            <div style={{ flex: 1, height: "1px", background: "rgba(26,26,26,0.1)" }} />
+            <span style={{ fontSize: "11px", color: "rgba(26,26,26,0.35)", fontWeight: 600 }}>oppure</span>
+            <div style={{ flex: 1, height: "1px", background: "rgba(26,26,26,0.1)" }} />
+          </div>
+
+          <Link href={`/accedi?returnTo=${returnTo}`}>
+            <button
+              type="button"
+              style={{
+                background: "transparent",
+                color: "#1a1a1a",
+                border: "1px solid rgba(26,26,26,0.25)",
+                borderRadius: "2px",
+                padding: "11px 24px",
+                fontSize: "11px",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                fontFamily: SF,
+                width: "100%",
+                transition: "border-color 0.15s",
+              }}
+            >
+              Accedi
+            </button>
+          </Link>
+
+          <p style={{ fontSize: "10px", color: "rgba(26,26,26,0.35)", textAlign: "center", lineHeight: 1.5 }}>
+            Iscrivendoti accetti la nostra{" "}
+            <Link href="/privacy-policy">
+              <span style={{ textDecoration: "underline", cursor: "pointer" }}>Privacy Policy</span>
+            </Link>
+            . Puoi disiscriverti in qualsiasi momento.
+          </p>
+        </form>
+      )}
     </div>
   );
 
-  // Accesso consentito (entro i 4 gratuiti) — mostra il contenuto con banner informativo
-  if (accessGranted) {
-    const bannerText =
-      remaining === 0
-        ? "Hai letto l'ultimo articolo gratuito di questo mese."
-        : remaining === 1
-        ? "Ti rimane 1 articolo gratuito questo mese."
-        : `Ti rimangono ${remaining} articoli gratuiti questo mese.`;
-
-    const freeBanner = (
-      <div
-        className="w-full py-2 px-4 text-center text-[11px] font-semibold"
-        style={{
-          background: "#1a1a1a",
-          color: "#fff",
-          fontFamily: SF,
-          letterSpacing: "0.04em",
-        }}
-      >
-        {bannerText}{" "}
-        <Link href="/registrati">
-          <span
-            className="underline cursor-pointer hover:opacity-80"
-            style={{ color: "#e5c97e" }}
-          >
-            Registrati gratis per accesso illimitato →
-          </span>
-        </Link>
-      </div>
-    );
-
-    if (overlay) {
-      return (
-        <div className="relative">
-          {freeBanner}
-          {children}
-        </div>
-      );
-    }
-
-    return (
-      <div className="min-h-screen" style={{ background: "#ffffff" }}>
-        <SharedPageHeader />
-        {freeBanner}
-        {children}
-      </div>
-    );
-  }
-
-  // Paywall completo
+  // Modalità overlay: mostra anteprima sfumata + wall sovrapposto
   if (overlay) {
     return (
-      <div className="relative">
+      <div style={{ position: "relative" }}>
+        {/* Anteprima sfumata */}
         <div
-          className="pointer-events-none select-none"
           style={{
-            maxHeight: "320px",
+            maxHeight: "280px",
             overflow: "hidden",
-            maskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black 30%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 30%, transparent 100%)",
+            pointerEvents: "none",
+            userSelect: "none",
           }}
         >
           {children}
         </div>
-        {paywall}
+        {/* Wall */}
+        <div style={{ padding: "32px 16px 48px" }}>
+          {wall}
+        </div>
       </div>
     );
   }
 
+  // Modalità pagina intera
   return (
     <div className="min-h-screen" style={{ background: "#ffffff" }}>
       <SharedPageHeader />
-      <div className="py-8">{paywall}</div>
+      <div style={{ padding: "48px 16px 80px" }}>
+        {wall}
+      </div>
     </div>
   );
 }
