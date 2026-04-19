@@ -1044,4 +1044,71 @@ export function startAllSchedulers(): void {
   // Rimossa per decisione editoriale 2026-04-12.
   // Restano attive solo: Daily Unificata (lun–ven 11:00) + Newsletter Sabato (12:00).
   console.log("[SchedulerManager]   📧 Newsletter Promozionali (Business/PromptCollection/Pubblicità) → DISABILITATE");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // LIST HYGIENE AUTOMATICA — ogni domenica alle 06:00 CET
+  //   Recupera Global Unsubscribe + Bounce + Spam Report da SendGrid
+  //   e marca come 'unsubscribed' nel DB tutti gli iscritti corrispondenti.
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 6 * * 0", async () => {
+    console.log("[SchedulerManager] ⏰ 06:00 CET (dom) — List Hygiene automatica...");
+    await withLock("list-hygiene", async () => {
+      try {
+        const SENDGRID_KEY = process.env.SENDGRID_API_KEY;
+        if (!SENDGRID_KEY) { console.warn("[ListHygiene] SENDGRID_API_KEY mancante — skip"); return; }
+
+        const suppressedEmails = new Set<string>();
+        const endpoints = [
+          "asm/suppressions/global",
+          "suppression/bounces",
+          "suppression/spam_reports",
+        ];
+        for (const path of endpoints) {
+          let offset = 0;
+          while (true) {
+            const res = await fetch(`https://api.sendgrid.com/v3/${path}?limit=500&offset=${offset}`, {
+              headers: { Authorization: `Bearer ${SENDGRID_KEY}` },
+            });
+            if (!res.ok) break;
+            const data = await res.json();
+            const items: any[] = Array.isArray(data) ? data : (data.suppressions ?? []);
+            if (items.length === 0) break;
+            for (const item of items) {
+              const email = (item.email ?? item).toString().toLowerCase().trim();
+              if (email) suppressedEmails.add(email);
+            }
+            if (items.length < 500) break;
+            offset += 500;
+          }
+        }
+        console.log(`[ListHygiene] Totale soppressi SendGrid: ${suppressedEmails.size}`);
+
+        const db = await getDb();
+        if (!db) { console.warn("[ListHygiene] DB non disponibile — skip"); return; }
+        const { subscribers: subsTable } = await import("../drizzle/schema");
+        const { inArray } = await import("drizzle-orm");
+        const activeRows = await db.select({ id: subsTable.id, email: subsTable.email })
+          .from(subsTable)
+          .where(eq(subsTable.status, "active"));
+        const toRemove = activeRows.filter(r => suppressedEmails.has(r.email.toLowerCase().trim()));
+        if (toRemove.length === 0) {
+          console.log("[ListHygiene] ✅ Nessun iscritto da rimuovere — lista già pulita");
+          return;
+        }
+        const ids = toRemove.map(r => r.id);
+        await db.update(subsTable)
+          .set({ status: "unsubscribed", unsubscribedAt: new Date() })
+          .where(inArray(subsTable.id, ids));
+        console.log(`[ListHygiene] ✅ ${toRemove.length} iscritti marcati 'unsubscribed'`);
+        const { notifyOwner } = await import("./_core/notification");
+        await notifyOwner({
+          title: `🧹 List Hygiene domenicale completata`,
+          content: `Rimossi ${toRemove.length} iscritti corrispondenti a indirizzi soppressi su SendGrid.\nTotale soppressi: ${suppressedEmails.size}`,
+        });
+      } catch (err) {
+        console.error("[ListHygiene] ❌ Errore:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   🧹 List Hygiene → ogni domenica alle 06:00 CET (Global Unsubscribe + Bounce + Spam)");
 }

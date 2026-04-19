@@ -3293,3 +3293,16 @@
 - [x] Confronto con DB: 247 iscritti attivi corrispondenti a indirizzi soppressi
 - [x] Aggiornamento status a 'unsubscribed' per 247 iscritti nel DB (lista attiva: 6.697 → 6.450)
 - [x] Script list-hygiene.mjs creato in scripts/ per esecuzioni future periodiche
+
+## Task (19 apr 2026 — List Hygiene avanzata + Registration Wall)
+
+- [ ] Rimuovere dal DB i 263 indirizzi in hard bounce (status → 'unsubscribed')
+- [ ] Rimuovere dal DB tutti gli indirizzi che hanno segnalato spam (status → 'unsubscribed')
+- [ ] Cron job domenicale (ogni domenica 06:00 CET) per list hygiene automatica in schedulerManager.ts
+- [ ] Registration Wall su ProofPress: modale iscrizione newsletter al click su qualsiasi articolo per utenti non registrati
+
+## Pulizia avanzata lista (19 apr 2026)
+
+- [x] Rimuovere dal DB indirizzi no-reply, noreply, assistenza, servizio clienti, support, info, admin, postmaster, mailer-daemon (11 attivi rimossi)
+- [x] Recuperare da SendGrid indirizzi in block e spam e marcarli unsubscribed nel DB (4.139 blocks + 3 invalid → 3.976 rimossi)
+- [x] Blindare filtro invio newsletter: escludere tutti gli unsubscribed (status != 'active') — già corretto, tutte le funzioni usano getActiveSubscribers()
