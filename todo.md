@@ -3286,3 +3286,10 @@
 - [x] Fix guard DB-level in sendSaturdayPreview (saturdayEditorialNewsletter.ts)
 - [x] Zero errori TypeScript
 - [x] Verifica DB: nessun record newsletter per oggi (sabato 18) — guard pronto
+
+## List Hygiene (18 apr 2026)
+
+- [x] Recupero Global Unsubscribe + Bounce + Spam Report da SendGrid (301 indirizzi soppressi)
+- [x] Confronto con DB: 247 iscritti attivi corrispondenti a indirizzi soppressi
+- [x] Aggiornamento status a 'unsubscribed' per 247 iscritti nel DB (lista attiva: 6.697 → 6.450)
+- [x] Script list-hygiene.mjs creato in scripts/ per esecuzioni future periodiche
