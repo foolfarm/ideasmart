@@ -76,6 +76,7 @@ process.on("unhandledRejection", (reason) => {
 });
 
 import { registerOAuthRoutes } from "./oauth";
+import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -194,6 +195,8 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "14mb", extended: true }));
   // Cookie parser — necessario per leggere req.cookies nelle procedure tRPC
   app.use(cookieParser());
+  // Storage proxy — serve /manus-storage/* files via signed URLs
+  registerStorageProxy(app);
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 

@@ -1312,6 +1312,80 @@ export default function Home() {
                   </div>
 
 
+                  {/* ── Widget Audio: Scopri ProofPress ── */}
+                  <div className="mb-5">
+                    <div
+                      style={{
+                        background: "#f8f9fa",
+                        border: "1px solid #e5e7eb",
+                        borderRadius: "10px",
+                        padding: "16px 18px",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <div
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: "50%",
+                            background: "#1a1a2e",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <p
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.12em",
+                              color: "#6b7280",
+                              margin: 0,
+                              lineHeight: 1.2,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                            }}
+                          >
+                            Scopri ProofPress
+                          </p>
+                          <p
+                            style={{
+                              fontSize: 12,
+                              fontWeight: 600,
+                              color: "#1a1a2e",
+                              margin: 0,
+                              lineHeight: 1.3,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                            }}
+                          >
+                            Il fact-checking crittografico
+                          </p>
+                        </div>
+                      </div>
+                      <audio
+                        controls
+                        preload="none"
+                        style={{
+                          width: "100%",
+                          height: 36,
+                          borderRadius: 6,
+                          outline: "none",
+                          accentColor: "#1a1a2e",
+                        }}
+                      >
+                        <source src="/manus-storage/ProofPress_e_il_fact-checking_crittografico_1783b572.m4a" type="audio/mp4" />
+                        Il tuo browser non supporta la riproduzione audio.
+                      </audio>
+                    </div>
+                  </div>
+
                   {/* Ultime Notizie — stream */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
