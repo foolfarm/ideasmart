@@ -101,7 +101,7 @@ async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<vo
 }
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
-import { invalidateAll, invalidateBySection, invalidateSection, CACHE_KEYS } from "./cache";
+import { invalidateAll, invalidateBySection, invalidateSection, invalidateCache, CACHE_KEYS } from "./cache";
 import { getDb } from "./db";
 import { eq } from "drizzle-orm";
 import { aggregateEvents } from "./eventsAggregator";
@@ -401,6 +401,10 @@ export function startAllSchedulers(): void {
         const result = await generateDailyResearch();
         if (result.generated > 0) {
           console.log(`[SchedulerManager] ✅ VERIFICA 07:15: ${result.generated} ricerche generate (erano mancanti)`);
+          // Invalida la cache così la homepage mostra subito la nuova ricerca del giorno
+          invalidateCache('research:ofDay');
+          invalidateCache('research:*');
+          console.log("[SchedulerManager] 🔄 Cache research:ofDay invalidata — homepage aggiornata");
           // Alert email: le ricerche erano mancanti e sono state rigenerate
           const todayLabelR = new Date().toLocaleDateString("en-CA", { timeZone: TZ });
           sendSchedulerAlert(
@@ -822,6 +826,10 @@ export function startAllSchedulers(): void {
         const result = await generateDailyResearch();
         if (result.generated > 0) {
           console.log(`[SchedulerManager] ✅ Research: ${result.generated} ricerche generate`);
+          // Invalida la cache research:ofDay così la homepage mostra la nuova ricerca del giorno
+          invalidateCache('research:ofDay');
+          invalidateCache('research:*');
+          console.log("[SchedulerManager] 🔄 Cache research:ofDay invalidata — homepage aggiornata");
         } else if (result.error) {
           console.warn(`[SchedulerManager] ⚠️ Research: ${result.error}`);
         } else {
@@ -894,6 +902,10 @@ export function startAllSchedulers(): void {
       const result = await generateDailyResearch();
       if (result.generated > 0) {
         console.log(`[SchedulerManager] ✅ Research avvio: ${result.generated} ricerche generate`);
+        // Invalida la cache così la homepage mostra subito la nuova ricerca del giorno
+        invalidateCache('research:ofDay');
+        invalidateCache('research:*');
+        console.log("[SchedulerManager] 🔄 Cache research:ofDay invalidata — homepage aggiornata");
       } else {
         console.log("[SchedulerManager] ℹ️ Research avvio: ricerche già presenti");
       }

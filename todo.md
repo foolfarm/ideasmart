@@ -3312,3 +3312,6 @@
 - [x] Registration Wall: modale iscrizione newsletter al click su articolo per utenti non registrati (upgrade da metered paywall a hard wall immediato)
 - [x] Warm-up IP graduale: invio newsletter in batch da 500-800 email con delay 5 min tra batch (fase 1: max 500, fase 2: max 800, fase 3+: full send)
 - [x] Monitoraggio delivery rate automatico: cron 11:30/13:30/15:30 CET lun/mer/ven, alert owner se delivery < 85% o bounce > 5%
+
+## Bug (20 apr 2026)
+- [x] Fix research homepage: mostra sempre la stessa notizia ogni mattina — causa: cache research:ofDay non invalidata dopo generazione 06:00 CET. Fix: invalidateCache() in tutti i punti di generazione (cron 06:00, catch-up avvio, verifica 07:15)
