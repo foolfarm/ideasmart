@@ -7,7 +7,7 @@ import { useState } from "react";
 import { ArrowRight, Check, Lock, Star, Users, Zap, BookOpen, Download } from "lucide-react";
 import SharedPageHeader from "@/components/SharedPageHeader";
 
-const PRODUCT_URL = "https://ideasmart.forum/";
+const PRODUCT_URL = "https://promptcollection2026.com/";
 
 // ─── Dati ────────────────────────────────────────────────────────────────────
 const TARGETS = [

@@ -164,7 +164,7 @@ function StartHereContent() {
           99 prompt professionali organizzati in 5 macro-sezioni. Framework multi-paragrafo con ruolo, contesto, istruzioni e formato di output. Funziona con ChatGPT, Claude, Gemini e altri.
         </p>
         <a
-          href="https://ideasmart.forum"
+          href="https://promptcollection2026.com"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#ff5500] text-white font-bold rounded-md hover:bg-[#e64d00] transition-colors text-sm"

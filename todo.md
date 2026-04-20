@@ -3332,3 +3332,11 @@
 - [x] Cambiare nome visualizzato: "The ProofPress AI Business Digest"
 - [x] Aggiornare tutti i riferimenti agli orari nei messaggi di notifica e nei template email
 - [x] Inviare preview di oggi (20 apr 2026) con i nuovi parametri — preview inviata a ac@acinelli.com (token: 7904191f)
+
+## Task (20 apr 2026 — Forum URL + Banner Newsletter)
+- [ ] Sostituire ideasmart.forum con promptcollection2026.com in tutto il codice (newsletter, frontend, backend)
+- [ ] Banner pubblicitari a rotazione nella newsletter: 2 banner al giorno presi da /admin/pubblicita
+
+## URGENTE (20 apr 2026 — Audit Invii + Rimozione Chizzoni)
+- [ ] Audit completo invii newsletter oggi: verificare cosa è partito, quando, e se ci sono cron non autorizzati
+- [ ] Rimuovere A_CHIZZONI@vittoriaassicurazioni.it dalla lista iscritti

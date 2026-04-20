@@ -29,10 +29,11 @@ describe("Newsletter Proof Press Daily v3 — Design Tokens & Brand", () => {
     expect(src).toContain("Proof Press Daily");
   });
 
-  it("Template usa sfondo crema #f5f3ef", async () => {
+  it("Template usa sfondo Apple #f5f5f7", async () => {
     const { readFileSync } = await import("fs");
     const src = readFileSync("server/unifiedNewsletter.ts", "utf8");
-    expect(src).toContain("#f5f3ef");
+    // Il template v4 usa sfondo Apple #f5f5f7 (non più crema #f5f3ef)
+    expect(src).toContain("#f5f5f7");
   });
 
   it("Template usa CTA rosso #d94f3d", async () => {
@@ -41,11 +42,11 @@ describe("Newsletter Proof Press Daily v3 — Design Tokens & Brand", () => {
     expect(src).toContain("#d94f3d");
   });
 
-  it("Header contiene 'Proof Press' e 'by Ideasmart'", async () => {
+  it("Header contiene 'Proof Press' e 'ProofPress'", async () => {
     const { readFileSync } = await import("fs");
     const src = readFileSync("server/unifiedNewsletter.ts", "utf8");
     expect(src).toContain("Proof Press");
-    expect(src).toContain("by Ideasmart");
+    expect(src).toContain("ProofPress");
   });
 
   it("Blocco rebrand: 'Ideasmart diventa Proof Press'", async () => {
@@ -64,8 +65,8 @@ describe("Newsletter Proof Press Daily v3 — Design Tokens & Brand", () => {
     const { readFileSync } = await import("fs");
     const src = readFileSync("server/unifiedNewsletter.ts", "utf8");
     expect(src).toContain("proofpress.ai");
-    // ideasmart.forum è l'unica eccezione consentita
-    expect(src).toContain("ideasmart.forum");
+    // promptcollection2026.com è l'unica eccezione consentita
+    expect(src).toContain("promptcollection2026.com");
   });
 
   it("Footer contiene AxiomX LLC copyright", async () => {
@@ -78,9 +79,9 @@ describe("Newsletter Proof Press Daily v3 — Design Tokens & Brand", () => {
   it("Routine newsletter Proof Press Daily attive nello schedulerManager", async () => {
     const { readFileSync } = await import("fs");
     const src = readFileSync("server/schedulerManager.ts", "utf8");
-    // Le routine newsletter Proof Press Daily devono essere attive (preview 08:30 + massivo 10:30)
-    expect(src).toContain('"30 8 * * 1,3,5"'); // preview
-    expect(src).toContain('"30 10 * * 1,3,5"'); // massivo
+    // Le routine newsletter Proof Press Daily devono essere attive (preview 14:30 + massivo 17:30)
+    expect(src).toContain('"30 14 * * 1-5"'); // preview 14:30 CET
+    expect(src).toContain('"30 17 * * 1-5"'); // massivo 17:30 CET
     expect(src).toContain('sendUnifiedPreview');
     expect(src).toContain('sendUnifiedNewsletterToAll');
   });

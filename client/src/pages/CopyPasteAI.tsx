@@ -16,7 +16,7 @@ export default function CopyPasteAI() {
       showPrompt={true}
       ctaTitle="L'AI che usi ogni giorno potrebbe fare 10 volte di più."
       ctaDescription="99 prompt selezionati da professionisti reali — per manager, founder, marketer e consulenti. Libreria ricercabile + PDF incluso. Pagamento unico €39, accesso permanente."
-      ctaLink="https://ideasmart.forum"
+      ctaLink="https://promptcollection2026.com"
       ctaLabel="🔓 Accedi subito per €39 →"
     />
   );

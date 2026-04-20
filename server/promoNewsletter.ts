@@ -4,7 +4,7 @@
  * Newsletter promozionale inviata il martedì e giovedì.
  * Ogni settimana promuove un prodotto/servizio specifico.
  * 
- * Prima campagna (questa settimana): ideasmart.forum — Prompt Library €39
+ * Prima campagna (questa settimana): promptcollection2026.com — Prompt Library €39
  * 
  * Struttura:
  *   A. Header (logo Proof Press + "Edizione Speciale")
@@ -55,7 +55,7 @@ export interface PromoCampaign {
   footerNote: string;       // nota finale
 }
 
-// ─── Campagna attiva: ideasmart.forum Prompt Library ────────────────────────
+// ─── Campagna attiva: promptcollection2026.com Prompt Library ────────────────────────
 export const CURRENT_CAMPAIGN: PromoCampaign = {
   subject: "Stai usando l'AI come si deve? Questi 99 prompt cambiano tutto.",
   preheader: "Manager, freelance, marketer, founder: i prompt che usano i professionisti veri. €39 una volta sola.",
@@ -105,7 +105,7 @@ export const CURRENT_CAMPAIGN: PromoCampaign = {
     { label: "Accesso", value: "Permanente" },
     { label: "Prezzo", value: "€39 una tantum" }
   ],
-  ctaUrl: "https://ideasmart.forum/",
+  ctaUrl: "https://promptcollection2026.com/",
   ctaText: "🔓 Accedi subito per €39 →",
   ctaSubtext: "Pagamento unico · Nessun abbonamento · Accesso permanente · PDF incluso",
   price: "€39",

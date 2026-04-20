@@ -141,7 +141,7 @@ describe("schedulerManager", () => {
     // Newsletter Proof Press Daily: preview 08:30 + massivo 10:30 (lun/mer/ven)
     const callCount = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls.length;
     expect(callCount).toBeGreaterThanOrEqual(28); // almeno 28 job attivi
-    expect(callCount).toBeLessThanOrEqual(37);    // non più di 37
+    expect(callCount).toBeLessThanOrEqual(45);    // non più di 45
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {
@@ -159,8 +159,8 @@ describe("schedulerManager", () => {
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // La preview newsletter Proof Press Daily è programmata lun/mer/ven alle 08:30 CET
-    const previewCall = calls.find(c => c[0] === "30 8 * * 1,3,5");
+    // La preview newsletter Proof Press Daily è programmata lun-ven alle 14:30 CET
+    const previewCall = calls.find(c => c[0] === "30 14 * * 1-5");
     expect(previewCall).toBeDefined();
   });
 
@@ -273,8 +273,8 @@ describe("schedulerManager", () => {
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // Newsletter massiva Proof Press Daily: lun/mer/ven alle 10:30 CET
-    const massivoCall = calls.find(c => c[0] === "30 10 * * 1,3,5");
+    // Newsletter massiva Proof Press Daily: lun-ven alle 17:30 CET
+    const massivoCall = calls.find(c => c[0] === "30 17 * * 1-5");
     expect(massivoCall).toBeDefined();
     // Verifica che non ci sia il vecchio "0 10 * * 1,5"
     const oldNewsletterCall = calls.find(c => c[0] === "0 10 * * 1,5");

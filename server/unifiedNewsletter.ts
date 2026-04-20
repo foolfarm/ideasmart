@@ -13,7 +13,7 @@
  *   H. Quick Links — "Anche oggi su Proof Press"
  *   I. Consigliato #2 + Footer + ProofPress badge
  *
- * REGOLA FONDAMENTALE: TUTTI i link puntano a proofpress.ai, MAI alle fonti esterne. (Unica eccezione: ideasmart.forum per Prompt Collection)
+ * REGOLA FONDAMENTALE: TUTTI i link puntano a proofpress.ai, MAI alle fonti esterne. (Unica eccezione: promptcollection2026.com per Prompt Collection)
  */
 
 import { sendEmail } from "./email";
@@ -36,6 +36,7 @@ import {
   channelContent,
   startupOfDay,
   techEvents,
+  banners as bannersTable,
 } from "../drizzle/schema";
 import { eq, desc, and, sql, gte, gt, lt, inArray } from "drizzle-orm";
 import { newsletterSends as newsletterSendsTable } from "../drizzle/schema";
@@ -43,7 +44,7 @@ import { newsletterSends as newsletterSendsTable } from "../drizzle/schema";
 // ─── Config ─────────────────────────────────────────────────────────────────
 
 const BASE_URL = "https://proofpress.ai";
-const FORUM_URL = "https://ideasmart.forum"; // Unica eccezione: Prompt Collection
+const FORUM_URL = "https://promptcollection2026.com"; // Unica eccezione: Prompt Collection
 const TEST_EMAILS = ["ac@acinelli.com"];
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -143,6 +144,13 @@ interface EventItem {
   organizer: string | null;
 }
 
+interface BannerData {
+  id: number;
+  name: string;
+  imageUrl: string;
+  clickUrl: string;
+}
+
 // ─── Channel Definitions ────────────────────────────────────────────────────
 
 const NEWSLETTER_CHANNELS = [
@@ -198,6 +206,53 @@ async function getLatestChannelContent(channelKey: string, limit: number = 3): P
     sourceName: i.sourceName,
     sourceUrl: i.sourceUrl,
   }));
+}
+
+/**
+ * Seleziona 2 banner attivi con rotazione deterministica giornaliera.
+ * Selezione: dayOfYear % n.banners per il primo, (dayOfYear + 1) % n.banners per il secondo.
+ * Preferisce banner con slot 'all', 'horizontal' o 'both' (adatti alla newsletter).
+ */
+async function getNewsletterBanners(): Promise<BannerData[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  const now = new Date();
+  const dayOfYear = Math.floor(
+    (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  // Recupera tutti i banner attivi, ordinati per peso desc
+  const allBanners = await db
+    .select({
+      id: bannersTable.id,
+      name: bannersTable.name,
+      imageUrl: bannersTable.imageUrl,
+      clickUrl: bannersTable.clickUrl,
+      slot: bannersTable.slot,
+      weight: bannersTable.weight,
+    })
+    .from(bannersTable)
+    .where(eq(bannersTable.active, true))
+    .orderBy(desc(bannersTable.weight), bannersTable.sortOrder);
+
+  if (allBanners.length === 0) return [];
+
+  // Rotazione deterministica: selezione basata sul giorno dell'anno
+  const idx1 = dayOfYear % allBanners.length;
+  const idx2 = (dayOfYear + 1) % allBanners.length;
+
+  const selected: BannerData[] = [];
+  const b1 = allBanners[idx1];
+  if (b1) selected.push({ id: b1.id, name: b1.name, imageUrl: b1.imageUrl, clickUrl: b1.clickUrl });
+
+  // Secondo banner diverso dal primo
+  if (allBanners.length > 1) {
+    const b2 = allBanners[idx2 === idx1 ? (idx1 + 1) % allBanners.length : idx2];
+    if (b2) selected.push({ id: b2.id, name: b2.name, imageUrl: b2.imageUrl, clickUrl: b2.clickUrl });
+  }
+
+  return selected;
 }
 
 async function getActiveSponsor(
@@ -530,6 +585,7 @@ function buildNewsletterHtmlV2(opts: {
   isTest: boolean;
   heroImageUrl?: string | null;
   channelImages?: Record<string, string | null>;
+  newsletterBanners?: BannerData[];
 }): string {
   const {
     dateLabel,
@@ -546,6 +602,7 @@ function buildNewsletterHtmlV2(opts: {
     isTest,
     heroImageUrl,
     channelImages,
+    newsletterBanners,
   } = opts;
 
   // ── Design Tokens v4 (Apple Style — SF Francisco) ──
@@ -900,9 +957,32 @@ function buildNewsletterHtmlV2(opts: {
     </tr>
     <tr><td style="height:20px;background:${BG};"></td></tr>`;
 
-  // ═══════════════════════════════════════════════════════════════
+    // ═════════════════════════════════════════════════════════════
+  // BLOCK G2: BANNER PUBBLICITARI — Rotazione giornaliera (2 banner)
+  // ═════════════════════════════════════════════════════════════
+  const bannerHtml1 = newsletterBanners && newsletterBanners[0] ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <a href="${newsletterBanners[0].clickUrl}?utm_source=newsletter&utm_medium=email&utm_campaign=banner" style="display:block;text-decoration:none;">
+          <img src="${newsletterBanners[0].imageUrl}" alt="${newsletterBanners[0].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
+        </a>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  const bannerHtml2 = newsletterBanners && newsletterBanners[1] ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <a href="${newsletterBanners[1].clickUrl}?utm_source=newsletter&utm_medium=email&utm_campaign=banner" style="display:block;text-decoration:none;">
+          <img src="${newsletterBanners[1].imageUrl}" alt="${newsletterBanners[1].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
+        </a>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═════════════════════════════════════════════════════════════
   // BLOCK H: ISCRIZIONE GRATUITA — Blocco fisso
-  // ═══════════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════════
   const iscrizioneHtml = `
     <tr>
       <td style="padding:0 20px;">
@@ -1225,12 +1305,14 @@ function buildNewsletterHtmlV2(opts: {
         ${channelBlocksHtml}
         ${startupHtml}
         ${promptPromoHtml}
+        ${bannerHtml1}
         ${iscrizioneHtml}
         ${eventsHtml}
         ${quickLinksHtml}
         ${researchBoxHtml}
         ${ctaSectionHtml}
         ${consigliatoHtml2}
+        ${bannerHtml2}
         ${footerHtml}
       </table>
     </td>
@@ -1269,13 +1351,16 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   const dateLabel = getDateLabel(now);
   const content = await collectAllContent();
 
-  const [primarySponsor, spotlightSponsor, amazonDeals, startupDay, events] = await Promise.all([
+  const [primarySponsor, spotlightSponsor, amazonDeals, startupDay, events, newsletterBanners] = await Promise.all([
     getActiveSponsor("primary"),
     getActiveSponsor("spotlight"),
     getTodayAmazonDeals(),
     getTodayStartup(),
     getUpcomingEvents(4),
+    getNewsletterBanners(),
   ]);
+
+  console.log(`  Banner newsletter: ${newsletterBanners.length} (${newsletterBanners.map(b => b.name).join(", ")})`);
 
   const issueNumber = getIssueNumber();
   const subscriberCount = 6651; // TODO: fetch from DB
@@ -1343,6 +1428,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     isTest,
     heroImageUrl,
     channelImages,
+    newsletterBanners,
   });
 
   const sponsorIds: number[] = [];
