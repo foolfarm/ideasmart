@@ -482,59 +482,66 @@ Sii specifico su cifre, investitori, valuation se disponibili.`;
     slotNote = `This is the ENGLISH EVENING AI NEWS POST (20:00 CET) — AI News section.
 TONE: Senior analyst and operator with skin in the game. Your audience is the global English-speaking tech and business community: VCs, founders, CTOs, and executives.
 FOCUS: The most relevant AI news of the day — new models, major product launches, policy shifts, enterprise AI adoption. Choose a different angle from the Italian morning post.
+SOURCES: Draw exclusively from international English-language sources: TechCrunch, Financial Times, Wall Street Journal, The Information, Wired, MIT Technology Review, Reuters, Bloomberg, VentureBeat. Do NOT cite Italian sources, Italian companies, or Italian market data.
 STRUCTURE:
 1. OPENING (2-4 lines): Start with a broad market observation or a provocative insight, anchored immediately to a concrete data point. Do NOT start with "Today", "I analyzed", "As an entrepreneur".
-2. DEVELOPMENT (2-3 paragraphs): Explain the forces at play. Use data as argument, not decoration. Cite sources naturally.
+2. DEVELOPMENT (2-3 paragraphs): Explain the forces at play. Use data as argument, not decoration. Cite sources naturally (e.g., "according to TechCrunch", "FT reports").
 3. PERSONAL STANCE (1 paragraph): Take a clear, possibly contrarian position. Use "I" or "we" only here.
 4. PROVOCATIVE CLOSE (1-2 lines): A question or challenge to conventional thinking.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
 7. HASHTAGS: #AINews #ArtificialIntelligence #AIStrategy #DigitalTransformation #TechStartups #VentureCapital #EnterpriseAI #ProofPress
 LANGUAGE: English — clear, authoritative, no jargon for jargon's sake. Technical terms (LLM, RAG, ARR, burn rate) are fine without explanation.
-AVOID: "game changer", "the future is now", "I analyzed", bullet points as main structure, AI-sounding parallel phrases.
+AVOID: Italian companies, Italian market references, "game changer", "the future is now", "I analyzed", bullet points as main structure, AI-sounding parallel phrases.
 LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
   } else if (slot === "en-ai-research") {
     slotNote = `This is the ENGLISH 2ND AI EDITORIAL POST (21:30 CET) — AI Market Research section.
 TONE: Senior market analyst — data-driven, authoritative, globally minded. Your audience is the international tech and investment community.
-FOCUS: High-level AI market research and analysis (Gartner, McKinsey, IDC, Stanford HAI, MIT, Forrester, BCG). Quantitative data, market forecasts, sector benchmarks. Strategic reading for the global market.
+FOCUS: High-level AI market research and analysis. Draw from authoritative international research firms and publications.
+SOURCES: Use exclusively international sources: McKinsey Global Institute, Gartner, IDC, Forrester, BCG, Deloitte Insights, KPMG, Stanford HAI, MIT, CB Insights, PitchBook, Crunchbase, Sifted, TechCrunch, Financial Times, Wall Street Journal. Do NOT cite Italian sources, Italian companies, or Italian market data.
 Do NOT repeat the same topic as the 20:00 post: choose a completely different research angle.
 STRUCTURE:
 1. OPENING (2-4 lines): Lead with the most surprising data point or the strategic question the research opens. Do NOT start with "Today", "This research", "The article".
-2. DEVELOPMENT (2-3 paragraphs): Unpack the research findings. Use numbers as arguments. Explain implications for global tech and business leaders.
+2. DEVELOPMENT (2-3 paragraphs): Unpack the research findings. Use numbers as arguments (e.g., "McKinsey estimates...", "PitchBook data shows..."). Explain implications for global tech and business leaders.
 3. PERSONAL STANCE (1 paragraph): Take a clear position on what this data means for the next 12-24 months.
 4. PROVOCATIVE CLOSE (1-2 lines): A forward-looking question or challenge.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #MarketAnalysis #AIStrategy #Innovation #ProofPress
 LANGUAGE: English — precise, analytical, never academic or bureaucratic.
+AVOID: Italian companies, Italian market references, generic statements without data.
 LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
   } else if (slot === "en-research") {
     slotNote = `This is the ENGLISH 3RD POST — PROOFPRESS RESEARCH (22:30 CET) — Research section.
 TONE: Strategic analyst with a builder's mindset. Your audience is global: founders, investors, and tech executives who read at night.
 FOCUS: A Proof Press Research report — AI, startup, or VC market analysis. Choose a topic not yet covered in the 20:00 or 21:30 posts.
+SOURCES: Draw exclusively from international sources: PitchBook, Crunchbase, CB Insights, Sifted, TechCrunch, Financial Times, Wall Street Journal, McKinsey, Deloitte, KPMG, BCG, Gartner, IDC, Stanford HAI, MIT. Do NOT cite Italian sources, Italian startups, or Italian market data. Use US, European (non-Italian), and global examples.
 STRUCTURE:
 1. OPENING (2-4 lines): Start with the key finding or the market signal that makes this research worth reading at 10pm. Do NOT start with "This research", "The report", "Today".
-2. DEVELOPMENT (2-3 paragraphs): Break down the key findings. Connect data to business implications. Cite the source naturally.
+2. DEVELOPMENT (2-3 paragraphs): Break down the key findings. Connect data to business implications. Cite the source naturally (e.g., "PitchBook data shows...", "CB Insights reports...").
 3. PERSONAL STANCE (1 paragraph): What does this mean for founders and investors right now?
 4. PROVOCATIVE CLOSE (1-2 lines): A sharp question or observation that stays with the reader.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #Research #TechTrends #Innovation #ProofPress
 LANGUAGE: English — clear, direct, no filler words.
+AVOID: Italian companies, Italian market references, generic statements without data.
 LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
   } else if (slot === "en-research-late") {
     slotNote = `This is the ENGLISH 4TH EVENING POST — 3RD PROOFPRESS RESEARCH (23:30 CET) — Research section.
-TONE: Late-night insight for the global tech community — concise, sharp, thought-provoking. Your audience is in different time zones: US West Coast morning, Asia evening.
+TONE: Late-night insight for the global tech community — concise, sharp, thought-provoking. Your audience spans time zones: US West Coast morning, Asia evening, Europe late night.
 FOCUS: A Proof Press Research report with a global angle — AI adoption, market shifts, investment trends. Choose a topic not yet covered in the 20:00, 21:30, or 22:30 posts.
+SOURCES: Use exclusively international sources: McKinsey, Deloitte, KPMG, BCG, PitchBook, Crunchbase, CB Insights, Sifted, TechCrunch, Financial Times, Wall Street Journal, Gartner, IDC, Stanford HAI, MIT Technology Review. Do NOT cite Italian sources, Italian startups, or Italian market data. Prioritize US, UK, and global examples that resonate with an international audience.
 STRUCTURE:
 1. OPENING (2-4 lines): Lead with the single most actionable insight from the research. Do NOT start with "This research", "The report", "Tonight".
-2. DEVELOPMENT (2-3 paragraphs): Explain the key data points and their strategic implications. Keep it tight — late-night readers want signal, not noise.
+2. DEVELOPMENT (2-3 paragraphs): Explain the key data points and their strategic implications. Keep it tight — late-night readers want signal, not noise. Cite sources naturally.
 3. PERSONAL STANCE (1 paragraph): One clear takeaway for founders and investors.
 4. PROVOCATIVE CLOSE (1-2 lines): A question that makes the reader think before they sleep.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #GlobalTech #Innovation #AIStrategy #ProofPress
-LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms.
+LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms, no Italian references.
+AVOID: Italian companies, Italian market data, generic statements without data, verbose openings.
 LENGTH: MAXIMUM 2800 characters. Target 1200-1800 characters (shorter is better for late-night posts).`;
   } else {
     // Legacy slots
