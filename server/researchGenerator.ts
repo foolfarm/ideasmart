@@ -6,7 +6,7 @@
 import { invokeLLM, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { researchReports } from "../drizzle/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 // ── Fonti specializzate ──────────────────────────────────────────────────────
 const RESEARCH_SOURCES = [
@@ -400,33 +400,43 @@ export async function getTodayResearch(): Promise<typeof researchReports.$inferS
 }
 
 /**
- * Recupera la "Ricerca del Giorno".
+ * Recupera la "Ricerca del Giorno" con rotazione oraria.
+ * Ogni ora viene mostrata una research diversa tra quelle del giorno,
+ * dando priorità a quelle con isResearchOfDay=true.
+ * La rotazione è deterministica: stessa ora = stessa research per tutti gli utenti.
  */
 export async function getResearchOfDay(): Promise<typeof researchReports.$inferSelect | null> {
   const db = await getDb();
   if (!db) return null;
 
-  const today = new Date().toISOString().split("T")[0];
+  // Usa il timezone CET per allineare la rotazione all'orario italiano
+  const nowCET = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Rome' }));
+  const today = nowCET.toISOString().split('T')[0];
+  const currentHour = nowCET.getHours(); // 0-23, cambia ogni ora
 
-  const results = await db
-    .select()
-    .from(researchReports)
-    .where(
-      and(
-        eq(researchReports.dateLabel, today),
-        eq(researchReports.isResearchOfDay, true)
-      )
-    )
-    .limit(1);
-
-  if (results.length > 0) return results[0];
-
-  // Fallback: prima ricerca di oggi
-  const fallback = await db
+  // Recupera tutte le research di oggi, prima quelle isResearchOfDay=true poi le altre
+  const allToday = await db
     .select()
     .from(researchReports)
     .where(eq(researchReports.dateLabel, today))
-    .limit(1);
+    .orderBy(desc(researchReports.isResearchOfDay), researchReports.id);
 
-  return fallback[0] ?? null;
+  if (allToday.length === 0) {
+    // Fallback: ieri
+    const yesterday = new Date(nowCET.getTime() - 24 * 60 * 60 * 1000)
+      .toISOString().split('T')[0];
+    const fallbackYesterday = await db
+      .select()
+      .from(researchReports)
+      .where(eq(researchReports.dateLabel, yesterday))
+      .orderBy(desc(researchReports.isResearchOfDay), researchReports.id)
+      .limit(10);
+    if (fallbackYesterday.length === 0) return null;
+    const idxYesterday = currentHour % fallbackYesterday.length;
+    return fallbackYesterday[idxYesterday];
+  }
+
+  // Rotazione deterministica: ora corrente % numero di research disponibili
+  const idx = currentHour % allToday.length;
+  return allToday[idx];
 }

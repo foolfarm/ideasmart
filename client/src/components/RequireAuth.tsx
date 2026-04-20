@@ -61,7 +61,7 @@ export default function RequireAuth({ children, overlay = false }: RequireAuthPr
       setError("Inserisci un indirizzo email valido.");
       return;
     }
-    subscribeMutation.mutate({ email: email.trim(), name: name.trim() || undefined });
+    subscribeMutation.mutate({ email: email.trim(), name: name.trim() || undefined, source: 'article_wall' });
   };
 
   // Loading auth

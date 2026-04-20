@@ -750,8 +750,11 @@ export const appRouter = router({
       }),
     getResearchOfDay: publicProcedure
       .query(async () => {
+        // Chiave cache con ora CET: cambia ogni ora, garantendo la rotazione della research
+        const hourCET = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Rome' })).getHours();
+        const cacheKey = `research:ofDay:h${hourCET}`;
         return cached(
-          'research:ofDay',
+          cacheKey,
           async () => {
             const report = await getResearchOfDay();
             if (!report) return null;
@@ -770,7 +773,7 @@ export const appRouter = router({
               createdAt: report.createdAt,
             };
           },
-          1000 * 60 * 30
+          1000 * 60 * 60 // TTL 60 min: allineato alla rotazione oraria
         );
       }),
 
@@ -1210,13 +1213,14 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         z.object({
           email: z.string().email("Email non valida"),
           name: z.string().optional(),
+          source: z.enum(["website", "article_wall", "newsletter", "referral", "social", "api"]).optional().default("website"),
         })
       )
       .mutation(async ({ input }) => {
         const result = await addSubscriber({
           email: input.email,
           name: input.name,
-          source: "website",
+          source: input.source ?? "website",
         });
 
         // Invia email di benvenuto solo ai nuovi iscritti (non a chi è già iscritto)

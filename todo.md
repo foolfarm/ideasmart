@@ -3315,3 +3315,8 @@
 
 ## Bug (20 apr 2026)
 - [x] Fix research homepage: mostra sempre la stessa notizia ogni mattina — causa: cache research:ofDay non invalidata dopo generazione 06:00 CET. Fix: invalidateCache() in tutti i punti di generazione (cron 06:00, catch-up avvio, verifica 07:15)
+
+## Task (20 apr 2026 — Rotazione Research + Wall Source)
+- [x] Rotazione research in homepage: rotazione oraria deterministica (ora CET % n.research del giorno), cache key con ora, TTL 60 min
+- [x] Contatore iscrizioni da Registration Wall: campo source già presente in DB, aggiunto source='article_wall' al Registration Wall + enum nel router
+- [ ] A/B test titolo sezione Research in homepage per ottimizzare CTR (rimandato)
