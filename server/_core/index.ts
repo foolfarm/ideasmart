@@ -85,7 +85,7 @@ import { runDailyContentRefresh } from "../dailyContentScheduler";
 import { fixAllSourceUrls } from "../urlAuditFix";
 // import { startAuditScheduler } from "../auditScheduler"; // RIMOSSO — audit disabilitato definitivamente il 14/03/2026
 import { getDb } from "../db";
-import { subscribers, emailOpens, newsletterSends } from "../../drizzle/schema";
+import { subscribers, emailOpens, newsletterSends, banners, bannerEvents } from "../../drizzle/schema";
 import { eq, sql } from "drizzle-orm";
 import { invalidateAll, getCacheStats } from "../cache";
 import fs from "fs";
@@ -456,6 +456,55 @@ async function startServer() {
     } catch (err) {
       console.error("[Track] Errore tracking apertura:", err);
     }
+  });
+
+  // ── Banner Newsletter Click Tracking ─────────────────────────────────────────────────────────────────────
+  // GET /api/nl/b/:bannerId — traccia click banner dalla newsletter e redirige all'URL del banner
+  // Parametri query: sid=<newsletter_send_id>
+  app.get("/api/nl/b/:bannerId", async (req, res) => {
+    const bannerId = parseInt(req.params.bannerId, 10);
+    const sendId = req.query.sid ? parseInt(req.query.sid as string, 10) : null;
+    if (isNaN(bannerId)) return res.redirect(302, "https://proofpress.ai");
+    let targetUrl = "https://proofpress.ai";
+    try {
+      const db = await getDb();
+      if (db) {
+        const [banner] = await db
+          .select({ id: banners.id, clickUrl: banners.clickUrl })
+          .from(banners)
+          .where(eq(banners.id, bannerId))
+          .limit(1);
+        if (banner?.clickUrl) {
+          targetUrl = banner.clickUrl;
+          // Registra il click newsletter in background (non blocca il redirect)
+          (async () => {
+            try {
+              await db.insert(bannerEvents).values({
+                bannerId: banner.id,
+                eventType: "click",
+                slot: "newsletter",
+                source: "newsletter",
+                newsletterSendId: sendId,
+                referrer: ((req.headers.referer || "") as string).substring(0, 512) || null,
+                userAgent: ((req.headers["user-agent"] || "") as string).substring(0, 512) || null,
+              });
+              await db.update(banners)
+                .set({
+                  clicks: sql`${banners.clicks} + 1`,
+                  newsletterClicks: sql`${banners.newsletterClicks} + 1`,
+                })
+                .where(eq(banners.id, bannerId));
+              console.log(`[BannerTrack] ✅ Click newsletter: banner=${bannerId}, send=${sendId}`);
+            } catch (trackErr) {
+              console.error("[BannerTrack] Errore tracking:", trackErr);
+            }
+          })();
+        }
+      }
+    } catch (err) {
+      console.error("[BannerTrack] Errore:", err);
+    }
+    return res.redirect(302, targetUrl);
   });
 
   // ── Newsletter Approval endpoint ────────────────────────────────────────────────────────────────────────

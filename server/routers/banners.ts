@@ -7,7 +7,7 @@ import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { banners, bannerEvents, bannerSettings, Banner } from "../../drizzle/schema";
-import { eq, gte, sql } from "drizzle-orm";
+import { eq, gte, sql, and } from "drizzle-orm";
 import { storagePut } from "../storage";
 
 // ── Helper: controlla se un banner è attivo in questo momento ──────────────
@@ -283,9 +283,26 @@ export const bannersRouter = router({
 
       const allBanners = await db.select().from(banners).orderBy(banners.sortOrder, banners.id);
 
+      // Aggregazione per bannerId + eventType + source
+      const nlEvents = await db
+        .select({
+          bannerId: bannerEvents.bannerId,
+          count: sql<number>`COUNT(*)`,
+        })
+        .from(bannerEvents)
+        .where(
+          and(
+            gte(bannerEvents.createdAt, since),
+            eq(bannerEvents.eventType, "click"),
+            eq(bannerEvents.source, "newsletter")
+          )
+        )
+        .groupBy(bannerEvents.bannerId);
+
       return allBanners.map((b) => {
         const imp = events.find((e) => e.bannerId === b.id && e.eventType === "impression")?.count ?? 0;
         const clk = events.find((e) => e.bannerId === b.id && e.eventType === "click")?.count ?? 0;
+        const nlClk = nlEvents.find((e) => e.bannerId === b.id)?.count ?? 0;
         const ctr = imp > 0 ? ((Number(clk) / Number(imp)) * 100).toFixed(2) : "0.00";
         return {
           id: b.id,
@@ -294,9 +311,11 @@ export const bannersRouter = router({
           active: b.active,
           impressions: Number(imp),
           clicks: Number(clk),
+          newsletterClicks: Number(nlClk),
           ctr: parseFloat(ctr),
           totalImpressions: b.impressions,
           totalClicks: b.clicks,
+          totalNewsletterClicks: b.newsletterClicks ?? 0,
         };
       });
     }),

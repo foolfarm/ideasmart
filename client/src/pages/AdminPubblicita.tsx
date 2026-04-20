@@ -44,7 +44,9 @@ interface BannerStats {
   active: boolean;
   impressions: number;
   clicks: number;
+  newsletterClicks?: number;
   ctr: number | string;
+  totalNewsletterClicks?: number;
 }
 
 const SLOT_LABELS: Record<string, string> = {
@@ -554,19 +556,29 @@ function StatsTab() {
                         </Badge>
                         {!s.active && <Badge variant="secondary" className="text-[10px]">Disattivo</Badge>}
                       </div>
-                      <div className="flex gap-8">
+                      <div className="flex gap-6 flex-wrap">
                         <div className="text-center">
                           <p className="text-2xl font-bold text-[#007aff]">{s.impressions.toLocaleString("it-IT")}</p>
                           <p className="text-xs text-[#6e6e73] uppercase tracking-wide">Impression</p>
                         </div>
                         <div className="text-center">
                           <p className="text-2xl font-bold text-[#34c759]">{s.clicks.toLocaleString("it-IT")}</p>
-                          <p className="text-xs text-[#6e6e73] uppercase tracking-wide">Click</p>
+                          <p className="text-xs text-[#6e6e73] uppercase tracking-wide">Click Web</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-[#af52de]">{(s.newsletterClicks ?? 0).toLocaleString("it-IT")}</p>
+                          <p className="text-xs text-[#6e6e73] uppercase tracking-wide">Click Newsletter</p>
                         </div>
                         <div className="text-center">
                           <p className="text-2xl font-bold text-[#ff9500]">{ctrNum.toFixed(2)}%</p>
                           <p className="text-xs text-[#6e6e73] uppercase tracking-wide">CTR</p>
                         </div>
+                        {(s.totalNewsletterClicks ?? 0) > 0 && (
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-[#af52de]">{(s.totalNewsletterClicks ?? 0).toLocaleString("it-IT")}</p>
+                            <p className="text-xs text-[#6e6e73] uppercase tracking-wide">Tot. NL Click</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

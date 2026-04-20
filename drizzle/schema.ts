@@ -874,6 +874,8 @@ export const banners = mysqlTable("banners", {
   // Contatori aggregati (cache per performance)
   impressions: int("impressions").default(0).notNull(),
   clicks: int("clicks").default(0).notNull(),
+  // Click provenienti dalla newsletter (tracciamento separato)
+  newsletterClicks: int("newsletterClicks").default(0).notNull(),
   // Ordinamento drag&drop
   sortOrder: int("sortOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -889,9 +891,13 @@ export const bannerEvents = mysqlTable("banner_events", {
   bannerId: int("bannerId").notNull(),
   // Tipo evento: 'impression' | 'click'
   eventType: mysqlEnum("eventType", ["impression", "click"]).notNull(),
-  slot: mysqlEnum("slot", ["left", "right", "sidebar", "horizontal", "all"]).notNull(),
+  slot: mysqlEnum("slot", ["left", "right", "sidebar", "horizontal", "all", "newsletter"]).notNull(),
+  // Sorgente: 'web' (click dal sito) | 'newsletter' (click dall'email)
+  source: mysqlEnum("source", ["web", "newsletter"]).default("web").notNull(),
   userAgent: varchar("userAgent", { length: 512 }),
   referrer: varchar("referrer", { length: 512 }),
+  // ID dell'invio newsletter (se source = 'newsletter')
+  newsletterSendId: int("newsletterSendId"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

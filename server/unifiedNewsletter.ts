@@ -26,6 +26,7 @@ import {
 } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { getTodayResearch } from "./researchGenerator";
+import { schedulePostSendReport } from "./newsletterPostSendReport";
 import { getDb } from "./db";
 import {
   breakingNews as breakingNewsTable,
@@ -959,11 +960,12 @@ function buildNewsletterHtmlV2(opts: {
 
     // ═════════════════════════════════════════════════════════════
   // BLOCK G2: BANNER PUBBLICITARI — Rotazione giornaliera (2 banner)
-  // ═════════════════════════════════════════════════════════════
+  // I link usano /api/nl/b/:id per tracciare i click dalla newsletter
+  // ═════════════════════════════
   const bannerHtml1 = newsletterBanners && newsletterBanners[0] ? `
     <tr>
       <td style="padding:0 20px;">
-        <a href="${newsletterBanners[0].clickUrl}?utm_source=newsletter&utm_medium=email&utm_campaign=banner" style="display:block;text-decoration:none;">
+        <a href="${BASE_URL}/api/nl/b/${newsletterBanners[0].id}" style="display:block;text-decoration:none;">
           <img src="${newsletterBanners[0].imageUrl}" alt="${newsletterBanners[0].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
         </a>
       </td>
@@ -973,7 +975,7 @@ function buildNewsletterHtmlV2(opts: {
   const bannerHtml2 = newsletterBanners && newsletterBanners[1] ? `
     <tr>
       <td style="padding:0 20px;">
-        <a href="${newsletterBanners[1].clickUrl}?utm_source=newsletter&utm_medium=email&utm_campaign=banner" style="display:block;text-decoration:none;">
+        <a href="${BASE_URL}/api/nl/b/${newsletterBanners[1].id}" style="display:block;text-decoration:none;">
           <img src="${newsletterBanners[1].imageUrl}" alt="${newsletterBanners[1].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
         </a>
       </td>
@@ -1883,11 +1885,17 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
       await markSponsorSent(sid);
     }
 
-    await notifyOwner({
+     await notifyOwner({
       title: `📧 Proof Press Daily inviata — ${new Date().toLocaleDateString("it-IT")}`,
       content: `Newsletter v2 inviata a ${totalSent}/${subscribers.length} iscritti.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.`,
     });
-
+    // ── Report post-invio a +1h ──────────────────────────────────────────────
+    schedulePostSendReport({
+      subject,
+      recipientCount: totalSent,
+      sendDate: new Date(),
+      delayMs: 60 * 60 * 1000, // 1 ora
+    });
     console.log(
       `[UnifiedNewsletter] ✅ ${totalSent}/${subscribers.length} inviati`
     );

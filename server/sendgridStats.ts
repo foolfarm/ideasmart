@@ -164,6 +164,21 @@ export async function fetchSendgridSpamReports(limit = 100): Promise<SendgridSup
 }
 
 /**
+ * Recupera i blocchi recenti (email bloccate per policy o reputazione).
+ */
+export async function fetchSendgridBlocks(limit = 100): Promise<SendgridSuppression[]> {
+  const url = `${SG_BASE}/suppression/blocks?limit=${limit}`;
+  const res = await fetch(url, { headers: sgHeaders() });
+  if (!res.ok) {
+    const err = await res.text();
+    console.warn(`[SendGrid] Blocks API error ${res.status}: ${err}`);
+    return [];
+  }
+  const data = await res.json() as Array<{ email: string; created: number; reason?: string }>;
+  return data.map((b) => ({ email: b.email, created: b.created, reason: b.reason }));
+}
+
+/**
  * Recupera tutte le statistiche SendGrid in un'unica chiamata aggregata.
  */
 export async function fetchAllSendgridStats(days = 30): Promise<SendgridStatsResult> {
