@@ -1055,7 +1055,7 @@ export async function publishLinkedInPost(
   try {
     const db = await getDb();
     if (db) {
-      const existing = await db.select({ id: linkedinPosts.id, postText: linkedinPosts.postText })
+      const existing = await db.select({ id: linkedinPosts.id, postText: linkedinPosts.postText, linkedinUrl: linkedinPosts.linkedinUrl })
         .from(linkedinPosts)
         .where(and(
           eq(linkedinPosts.dateLabel, today),
@@ -1066,13 +1066,15 @@ export async function publishLinkedInPost(
         if (force) {
           console.log(`[LinkedIn] ⚡ Modalità FORCE: post slot ${slotLabel} già presente, ma force=true — procedo.`);
         } else {
-          console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today} CET) — saltato.`);
+          // Guard rafforzato: blocca anche se il record ha già un linkedinUrl (post già inviato a LinkedIn)
+          const alreadySentToLinkedIn = !!existing[0].linkedinUrl;
+          console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today} CET) — saltato. (linkedinUrl: ${alreadySentToLinkedIn ? 'presente' : 'assente'})`);
           // Notifica owner: tentativo di doppio post bloccato
           try {
             const { notifyOwner } = await import("./_core/notification");
             await notifyOwner({
               title: `⚠️ LinkedIn: doppio post bloccato (slot ${slotLabel})`,
-              content: `Il guard di deduplication ha bloccato un tentativo di pubblicare due volte lo slot "${slotLabel}" in data ${today}. Nessun post duplicato è stato inviato a LinkedIn. Verifica i log del server per capire la causa del doppio trigger.`,
+              content: `Il guard di deduplication ha bloccato un tentativo di pubblicare due volte lo slot "${slotLabel}" in data ${today}. Record DB già presente (linkedinUrl: ${alreadySentToLinkedIn ? 'sì' : 'no'}). Nessun post duplicato è stato inviato a LinkedIn.`,
             });
           } catch (notifyErr) {
             console.warn('[LinkedIn] Notifica owner fallita:', notifyErr);

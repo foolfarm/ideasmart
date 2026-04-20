@@ -1966,7 +1966,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
     // ── LinkedIn Autopost manuale ────────────────────────────────────────────────────────
     publishLinkedIn: adminProcedure
       .input(z.object({
-        slot: z.enum(["morning", "afternoon", "startup-afternoon", "research", "dealroom", "ai-tool-radar"]).default("morning"),
+        slot: z.enum(["morning", "afternoon", "startup-afternoon", "startup-evening", "research", "research-afternoon", "ai-research-morning", "dealroom", "ai-tool-radar", "en-evening-news", "en-ai-research", "en-research", "en-research-late"]).default("morning"),
         force: z.boolean().default(false),
       }).optional())
       .mutation(async ({ input }) => {
