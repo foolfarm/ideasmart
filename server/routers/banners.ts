@@ -335,8 +335,49 @@ export const bannersRouter = router({
       return { success: true };
     }),
 
-  // ── ADMIN: ottieni impostazioni ────────────────────────────────────────
+  // ── ADMIN: ottieni impostazioni ───────────────────────────────────────────────────
   getSettings: adminProcedure.query(async () => {
     return getOrCreateSettings();
   }),
+
+  // ── ADMIN: click newsletter per banner per giorno (per grafico) ────────────────
+  statsPerDay: adminProcedure
+    .input(z.object({ days: z.number().int().min(1).max(90).default(30) }))
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+      const since = new Date();
+      since.setDate(since.getDate() - input.days);
+      // Click newsletter per bannerId per giorno
+      const rows = await db
+        .select({
+          bannerId: bannerEvents.bannerId,
+          day: sql<string>`DATE(${bannerEvents.createdAt})`,
+          clicks: sql<number>`COUNT(*)`,
+        })
+        .from(bannerEvents)
+        .where(
+          and(
+            gte(bannerEvents.createdAt, since),
+            eq(bannerEvents.eventType, "click"),
+            eq(bannerEvents.source, "newsletter")
+          )
+        )
+        .groupBy(bannerEvents.bannerId, sql`DATE(${bannerEvents.createdAt})`);
+      const allBanners = await db
+        .select({ id: banners.id, name: banners.name })
+        .from(banners)
+        .where(eq(banners.active, true));
+      // Restituisce solo i banner che hanno almeno un click
+      return allBanners
+        .filter((b) => rows.some((r) => r.bannerId === b.id))
+        .map((b) => ({
+          bannerId: b.id,
+          bannerName: b.name,
+          data: rows
+            .filter((r) => r.bannerId === b.id)
+            .map((r) => ({ day: r.day, clicks: Number(r.clicks) }))
+            .sort((a, z) => a.day.localeCompare(z.day)),
+        }));
+    }),
 });

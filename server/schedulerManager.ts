@@ -1164,4 +1164,66 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
   console.log("[SchedulerManager]   📊 Delivery Monitor → 11:30, 13:30, 15:30 CET lun/mer/ven (alert se delivery < 85%)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SPAM RATE MONITOR — ogni giorno alle 19:00 CET
+  //   Controlla il tasso di spam degli ultimi 2 giorni.
+  //   Se supera lo 0.1% (soglia critica SendGrid), invia un alert immediato.
+  //   Soglia 0.1% = 1 segnalazione ogni 1.000 email inviate.
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 19 * * *", async () => {
+    console.log("[SpamMonitor] ⏰ 19:00 CET — Controllo spam rate...");
+    try {
+      const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+      if (!SENDGRID_API_KEY) { console.warn("[SpamMonitor] SENDGRID_API_KEY mancante — skip"); return; }
+      // Recupera statistiche degli ultimi 2 giorni
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 2);
+      const start = startDate.toISOString().split("T")[0];
+      const end = endDate.toISOString().split("T")[0];
+      const res = await fetch(
+        `https://api.sendgrid.com/v3/stats?start_date=${start}&end_date=${end}&aggregated_by=day`,
+        { headers: { Authorization: `Bearer ${SENDGRID_API_KEY}` } }
+      );
+      if (!res.ok) { console.warn(`[SpamMonitor] API error ${res.status}`); return; }
+      const data = await res.json() as Array<{ date: string; stats: Array<{ metrics: Record<string, number> }> }>;
+      if (!data || data.length === 0) return;
+      // Aggrega i dati degli ultimi 2 giorni
+      let totalDelivered = 0;
+      let totalSpam = 0;
+      for (const day of data) {
+        const metrics = day.stats?.[0]?.metrics ?? {};
+        totalDelivered += metrics.delivered ?? 0;
+        totalSpam += metrics.spam_reports ?? 0;
+      }
+      if (totalDelivered < 100) { console.log(`[SpamMonitor] Troppo pochi invii (${totalDelivered}) — skip`); return; }
+      const spamRate = (totalSpam / totalDelivered) * 100;
+      const SPAM_THRESHOLD = 0.1; // Soglia critica SendGrid
+      console.log(`[SpamMonitor] Spam rate: ${spamRate.toFixed(3)}% (${totalSpam}/${totalDelivered} email)`);
+      if (spamRate >= SPAM_THRESHOLD) {
+        const { notifyOwner } = await import("./_core/notification");
+        const severity = spamRate >= 0.3 ? "🔴 CRITICO" : spamRate >= 0.2 ? "🟠 ALTO" : "🟡 ATTENZIONE";
+        await notifyOwner({
+          title: `${severity} Spam Rate Alert — ${spamRate.toFixed(3)}%`,
+          content: `Il tasso di spam ha superato la soglia critica SendGrid (0.1%).\n\n` +
+            `📊 Dati ultimi 2 giorni:\n` +
+            `• Email consegnate: ${totalDelivered.toLocaleString("it-IT")}\n` +
+            `• Segnalazioni spam: ${totalSpam}\n` +
+            `• Spam rate: ${spamRate.toFixed(3)}% (soglia: ${SPAM_THRESHOLD}%)\n\n` +
+            `⚠️ Azioni immediate consigliate:\n` +
+            `1. Verificare la lista iscritti (rimuovere inattivi da >6 mesi)\n` +
+            `2. Controllare SendGrid Dashboard → Reputation\n` +
+            `3. Rivedere oggetto e contenuto dell'ultima newsletter\n` +
+            `4. Verificare se ci sono email acquistate o non opt-in nella lista`,
+        });
+        console.warn(`[SpamMonitor] ⚠️ ALERT: spam rate ${spamRate.toFixed(3)}% supera soglia ${SPAM_THRESHOLD}%`);
+      } else {
+        console.log(`[SpamMonitor] ✅ Spam rate OK: ${spamRate.toFixed(3)}% (sotto soglia ${SPAM_THRESHOLD}%)`);
+      }
+    } catch (err) {
+      console.error("[SpamMonitor] ❌ Errore:", err);
+    }
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   🚨 Spam Monitor → ogni giorno alle 19:00 CET (alert se spam rate ≥ 0.1%)");
 }

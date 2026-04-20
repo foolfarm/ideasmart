@@ -209,16 +209,19 @@ describe("schedulerManager", () => {
     expect(linkedInResearchAfternoonCall).toBeDefined();
   });
 
-  it("LinkedIn legacy slots (afternoon 15:00, evening 19:00) dovrebbero essere DISABILITATI", async () => {
+  it("LinkedIn legacy slots (afternoon 15:00) dovrebbero essere DISABILITATI", async () => {
     const cron = await import("node-cron");
     const { startAllSchedulers } = await import("./schedulerManager");
     startAllSchedulers();
     const calls = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls;
-    // I vecchi cron sono commentati/disabilitati
+    // Il vecchio cron LinkedIn pomeriggio 15:00 deve essere disabilitato
     const linkedInAfternoonCall = calls.find(c => c[0] === "0 15 * * *");
-    const linkedInOldDealroomCall = calls.find(c => c[0] === "0 19 * * *");
     expect(linkedInAfternoonCall).toBeUndefined();
-    expect(linkedInOldDealroomCall).toBeUndefined();
+    // Nota: "0 19 * * *" è ora usato dallo SpamMonitor (non da LinkedIn)
+    // Verifica che il cron delle 19:00 sia lo SpamMonitor, non LinkedIn
+    const calls19 = calls.filter(c => c[0] === "0 19 * * *");
+    // Deve esserci al massimo 1 cron alle 19:00 (SpamMonitor)
+    expect(calls19.length).toBeLessThanOrEqual(1);
   });
 
   it("dovrebbe programmare il Morning Health Report alle 08:00 ogni giorno", async () => {

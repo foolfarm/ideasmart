@@ -20,8 +20,11 @@ import { toast } from "sonner";
 import {
   Plus, Trash2, Eye, EyeOff, BarChart2, Settings2,
   Upload, ExternalLink, RefreshCw, Image as ImageIcon,
-  Pencil, X, Check, Link as LinkIcon
+  Pencil, X, Check, Link as LinkIcon, TrendingUp
 } from "lucide-react";
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from "recharts";
 
 // ── Tipi ──────────────────────────────────────────────────────────────────────
 interface Banner {
@@ -501,7 +504,66 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
   );
 }
 
-// ── Tab Statistiche ───────────────────────────────────────────────────────────
+// ─// ── Colori per le linee del grafico ────────────────────────────────────────────────
+const LINE_COLORS = ["#af52de", "#007aff", "#34c759", "#ff9500", "#ff3b30", "#5856d6", "#ff2d55", "#00c7be"];
+
+// ── Grafico click newsletter per giorno ──────────────────────────────────────────────
+function BannerClicksChart({ days }: { days: number }) {
+  const { data: perDay, isLoading } = trpc.banners.statsPerDay.useQuery({ days });
+
+  if (isLoading) return <div className="text-center py-8 text-[#6e6e73] text-sm">Caricamento grafico...</div>;
+  if (!perDay || perDay.length === 0) {
+    return (
+      <div className="text-center py-10 text-[#aeaeb2]">
+        <TrendingUp size={32} className="mx-auto mb-2" />
+        <p className="text-sm">Nessun click newsletter registrato nel periodo</p>
+        <p className="text-xs mt-1">I dati appariranno dopo il primo invio massivo</p>
+      </div>
+    );
+  }
+
+  // Costruisce dataset unificato per giorno (asse X)
+  const allDays = Array.from(
+    new Set(perDay.flatMap((b) => b.data.map((d) => d.day)))
+  ).sort();
+
+  const chartData = allDays.map((day) => {
+    const row: Record<string, string | number> = { day };
+    perDay.forEach((b) => {
+      const found = b.data.find((d) => d.day === day);
+      row[b.bannerName] = found?.clicks ?? 0;
+    });
+    return row;
+  });
+
+  return (
+    <ResponsiveContainer width="100%" height={280}>
+      <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+        <XAxis dataKey="day" tick={{ fontSize: 11, fill: "#6e6e73" }} tickLine={false} />
+        <YAxis tick={{ fontSize: 11, fill: "#6e6e73" }} tickLine={false} axisLine={false} allowDecimals={false} />
+        <Tooltip
+          contentStyle={{ background: "#fff", border: "1px solid #e5e5ea", borderRadius: 8, fontSize: 12 }}
+          formatter={(value: number, name: string) => [value, name]}
+        />
+        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        {perDay.map((b, i) => (
+          <Line
+            key={b.bannerId}
+            type="monotone"
+            dataKey={b.bannerName}
+            stroke={LINE_COLORS[i % LINE_COLORS.length]}
+            strokeWidth={2}
+            dot={{ r: 3 }}
+            activeDot={{ r: 5 }}
+          />
+        ))}
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
+// ── Tab Statistiche ───────────────────────────────────────────────────
 function StatsTab() {
   const [days, setDays] = useState(30);
   const { data: stats, isLoading, refetch } = trpc.banners.stats.useQuery({ days });
@@ -510,6 +572,19 @@ function StatsTab() {
 
   return (
     <div className="space-y-4">
+      {/* Grafico click newsletter per giorno */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold text-[#1d1d1f] flex items-center gap-2">
+            <TrendingUp size={16} className="text-[#af52de]" />
+            Click Banner Newsletter per Giorno
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <BannerClicksChart days={days} />
+        </CardContent>
+      </Card>
+
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-[#1d1d1f]">Performance Banner</h2>
         <div className="flex items-center gap-3">
