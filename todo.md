@@ -3320,3 +3320,6 @@
 - [x] Rotazione research in homepage: rotazione oraria deterministica (ora CET % n.research del giorno), cache key con ora, TTL 60 min
 - [x] Contatore iscrizioni da Registration Wall: campo source già presente in DB, aggiunto source='article_wall' al Registration Wall + enum nel router
 - [ ] A/B test titolo sezione Research in homepage per ottimizzare CTR (rimandato)
+
+## Bug critico (20 apr 2026 — Approvazione Newsletter)
+- [ ] BUG: newsletter 11:00 non inviata nonostante approvazione ricevuta alle 08:58 — audit e fix

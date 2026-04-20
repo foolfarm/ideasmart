@@ -1601,6 +1601,38 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
   if (db) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // ── RECOVERY: record 'sending' bloccati (riavvio server durante invio) ──
+    // Se un record è rimasto in 'sending' da più di 30 minuti senza sentAt,
+    // significa che il server si è riavviato durante l'invio.
+    // Lo resettiamo a 'approved' per permettere il reinvio automatico.
+    try {
+      const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+      const stuckSending = await db
+        .select({ id: newsletterSendsTable.id, subject: newsletterSendsTable.subject })
+        .from(newsletterSendsTable)
+        .where(
+          and(
+            eq(newsletterSendsTable.status, 'sending'),
+            gte(newsletterSendsTable.createdAt, today),
+            sql`${newsletterSendsTable.sentAt} IS NULL`,
+            sql`${newsletterSendsTable.createdAt} < ${thirtyMinutesAgo.toISOString().replace('T', ' ').slice(0, 19)}`
+          )
+        )
+        .limit(1);
+      if (stuckSending.length > 0) {
+        await db.execute(
+          sql`UPDATE newsletter_sends SET status = 'approved' WHERE status = 'sending' AND sentAt IS NULL AND DATE(createdAt) = CURDATE() AND createdAt < DATE_SUB(NOW(), INTERVAL 30 MINUTE) LIMIT 1`
+        );
+        console.log(`[UnifiedNewsletter] 🔄 Recovery: record 'sending' bloccato (id=${stuckSending[0].id}) resettato a 'approved' — riprovo l'invio`);
+        try {
+          await notifyOwner({ title: '⚠️ Newsletter: recovery invio bloccato', content: `Il record "${stuckSending[0].subject}" era bloccato in stato 'sending' (riavvio server). Resettato a 'approved' — invio ripreso automaticamente.` });
+        } catch {}
+      }
+    } catch (recoveryErr) {
+      console.warn('[UnifiedNewsletter] ⚠️ Recovery sending bloccato fallito (non critico):', recoveryErr);
+    }
+
     const pendingApproved = await db
       .select()
       .from(newsletterSendsTable)
