@@ -489,7 +489,7 @@ STRUCTURE:
 4. PROVOCATIVE CLOSE (1-2 lines): A question or challenge to conventional thinking.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
-7. HASHTAGS: #AI #ArtificialIntelligence #AIStrategy #DigitalTransformation #ProofPress #FutureOfWork #EnterpriseAI
+7. HASHTAGS: #AINews #ArtificialIntelligence #AIStrategy #DigitalTransformation #TechStartups #VentureCapital #EnterpriseAI #ProofPress
 LANGUAGE: English — clear, authoritative, no jargon for jargon's sake. Technical terms (LLM, RAG, ARR, burn rate) are fine without explanation.
 AVOID: "game changer", "the future is now", "I analyzed", bullet points as main structure, AI-sounding parallel phrases.
 LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
@@ -505,7 +505,7 @@ STRUCTURE:
 4. PROVOCATIVE CLOSE (1-2 lines): A forward-looking question or challenge.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
-7. HASHTAGS: #AI #Research #MarketAnalysis #TechTrends #ProofPress #AIStrategy #Innovation
+7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #MarketAnalysis #AIStrategy #Innovation #ProofPress
 LANGUAGE: English — precise, analytical, never academic or bureaucratic.
 LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
   } else if (slot === "en-research") {
@@ -519,7 +519,7 @@ STRUCTURE:
 4. PROVOCATIVE CLOSE (1-2 lines): A sharp question or observation that stays with the reader.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
-7. HASHTAGS: #AI #Research #VentureCapital #Startup #ProofPress #TechTrends #Innovation
+7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #Research #TechTrends #Innovation #ProofPress
 LANGUAGE: English — clear, direct, no filler words.
 LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
   } else if (slot === "en-research-late") {
@@ -533,7 +533,7 @@ STRUCTURE:
 4. PROVOCATIVE CLOSE (1-2 lines): A question that makes the reader think before they sleep.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
 6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
-7. HASHTAGS: #AI #Research #GlobalTech #ProofPress #Innovation #AIStrategy #VentureCapital
+7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #GlobalTech #Innovation #AIStrategy #ProofPress
 LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms.
 LENGTH: MAXIMUM 2800 characters. Target 1200-1800 characters (shorter is better for late-night posts).`;
   } else {

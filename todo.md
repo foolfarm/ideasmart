@@ -3340,3 +3340,14 @@
 ## URGENTE (20 apr 2026 — Audit Invii + Rimozione Chizzoni)
 - [ ] Audit completo invii newsletter oggi: verificare cosa è partito, quando, e se ci sono cron non autorizzati
 - [ ] Rimuovere A_CHIZZONI@vittoriaassicurazioni.it dalla lista iscritti
+
+## Task completati (20 Apr 2026 — LinkedIn 9 post/giorno + EN hashtag)
+
+- [x] Aggiunta programmazione LinkedIn serale in inglese: 4 nuovi slot (en-evening-news 20:00, en-ai-research 21:30, en-research 22:30, en-research-late 23:30)
+- [x] Schema DB aggiornato: enum slot linkedin_posts esteso con 4 nuovi valori EN
+- [x] Cron job schedulerManager: 4 nuovi cron + 4 cache invalidation per slot EN
+- [x] Catch-up automatico aggiornato: include tutti e 9 gli slot giornalieri
+- [x] Log di avvio schedulerManager aggiornati con nuovi slot EN
+- [x] Hashtag internazionali EN: #AINews #ArtificialIntelligence #TechStartups #VentureCapital in tutti e 4 gli slot serali
+- [x] Prompt EN ottimizzati: struttura giornalistica internazionale, CTA in inglese, firma "Andrea Cinelli | ProofPress Magazine"
+- [x] db:push completato: migrazioni 0067-0074 applicate, schema in produzione
