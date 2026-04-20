@@ -42,6 +42,14 @@ export default function RequireAuth({ children, overlay = false }: RequireAuthPr
       setSubmitted(true);
       // Sblocca il contenuto dopo 1.2s (mostra messaggio di conferma brevemente)
       setTimeout(() => setUnlocked(true), 1200);
+      // Google Ads conversion tracking
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'conversion', {
+          send_to: 'AW-18029091273/kDaQCMeGpIwcEMmz-JRD',
+          value: 1.0,
+          currency: 'EUR'
+        });
+      }
     },
     onError: (err) => {
       // Se già iscritto, sblocca comunque

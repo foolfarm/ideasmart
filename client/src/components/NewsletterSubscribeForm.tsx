@@ -37,6 +37,14 @@ export default function NewsletterSubscribeForm({
     onSuccess: () => {
       setSubscribed(true);
       toast.success("Iscrizione confermata! Controlla la tua email.");
+      // Google Ads conversion tracking
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'conversion', {
+          send_to: 'AW-18029091273/kDaQCMeGpIwcEMmz-JRD',
+          value: 1.0,
+          currency: 'EUR'
+        });
+      }
     },
     onError: (err) => {
       toast.error("Errore: " + err.message);
