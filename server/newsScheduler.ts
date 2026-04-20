@@ -76,11 +76,29 @@ Le notizie devono riguardare eventi, annunci, ricerche e sviluppi REALI nel mond
 
 Per ogni notizia fornisci:
 - title: titolo giornalistico incisivo IN ITALIANO (max 80 caratteri) — OBBLIGATORIO in italiano, mai in inglese
-- summary: riassunto editoriale IN ITALIANO (2-3 frasi, max 250 caratteri) — OBBLIGATORIO in italiano, mai in inglese
+- summary: articolo giornalistico completo IN ITALIANO (5-8 frasi, 600-900 caratteri) — OBBLIGATORIO in italiano, mai in inglese
 - category: una tra [${NEWS_CATEGORIES.join(", ")}]
 - sourceName: nome della fonte (es. "VentureBeat", "TechCrunch", "Il Sole 24 Ore", "MIT Sloan", ecc.)
 - sourceUrl: URL homepage del sito sorgente (es. https://techcrunch.com, https://www.wired.com) — NON inventare URL di articoli specifici
 - publishedAt: data di pubblicazione in formato YYYY-MM-DD (es. "2026-03-12")
+
+REGOLE FONDAMENTALI PER IL CAMPO summary — STILE GIORNALISTICO PROFESSIONALE:
+Scrivi ogni summary come un articolo giornalistico completo, con il tono del Corriere della Sera o del Financial Times. NON descrivere la notizia dall'esterno: RACCONTA il fatto direttamente.
+
+VIETATO iniziare con: "L'articolo", "Questo articolo", "Il pezzo", "Lo studio", "La ricerca", "Il report", "Il documento", "La notizia riguarda".
+
+STRUTTURA OBBLIGATORIA di ogni summary:
+1. APERTURA (1-2 frasi): il fatto chiave con soggetto, verbo, numeri concreti.
+2. CONTESTO (1-2 frasi): perché questo fatto è rilevante ora, cosa lo ha preceduto.
+3. IMPATTO BUSINESS (1-2 frasi): cosa cambia per aziende, investitori, professionisti — con dati o nomi specifici.
+4. PROSPETTIVA (1 frase): una domanda aperta, un rischio, un'opportunità o una previsione credibile.
+
+VARIA gli incipit tra questi pattern:
+- Soggetto + azione: "OpenAI ha chiuso un round da 40 miliardi...", "Il Parlamento Europeo ha approvato..."
+- Dato numerico: "Quaranta miliardi di dollari in un solo round.", "Il 73% dei manager italiani..."
+- Contesto di mercato: "Mentre il settore AI attraversa...", "In un mercato che vale già..."
+- Paradosso o tensione: "Più potente, ma anche più costoso.", "La promessa è ambiziosa."
+- Nome del protagonista: "Elon Musk torna a scommettere su...", "Anthropic ha scelto..."
 
 Criteri editoriali:
 1. Privilegia notizie con impatto concreto sul business e sull'ecosistema startup
@@ -100,7 +118,7 @@ Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
       messages: [
         {
           role: "system",
-          content: "Sei un redattore AI esperto di tecnologia e innovazione. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese."
+          content: "Sei un giornalista senior italiano con 20 anni di esperienza al Corriere della Sera e al Financial Times. Scrivi notizie dirette, concrete, con fatti e numeri. Non descrivi mai le notizie dall'esterno: racconti i fatti. Il tuo stile è autorevole, preciso, mai burocratico. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese."
         },
         { role: "user", content: prompt }
       ],

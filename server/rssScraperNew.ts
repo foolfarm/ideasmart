@@ -213,11 +213,29 @@ ${articlesForPrompt}
 
 COMPITO: Seleziona i 20 articoli più rilevanti per il nostro pubblico e per ognuno produci:
 - title: titolo giornalistico in ITALIANO, incisivo (max 80 caratteri) — OBBLIGATORIO in italiano, mai in inglese
-- summary: riassunto editoriale in ITALIANO (2-3 frasi, max 250 caratteri) — OBBLIGATORIO in italiano, mai in inglese
+- summary: articolo giornalistico completo in ITALIANO (5-8 frasi, 600-900 caratteri) — OBBLIGATORIO in italiano, mai in inglese
 - category: una tra [${cfg.categories.join(", ")}]
 - sourceIndex: indice dell'articolo originale (numero tra parentesi quadre)
 
 CRITERI: ${cfg.instructions}
+
+REGOLE FONDAMENTALI PER IL CAMPO summary — STILE GIORNALISTICO PROFESSIONALE:
+Scrivi ogni summary come un articolo giornalistico completo, con il tono del Corriere della Sera o del Financial Times. NON descrivere l'articolo sorgente: RACCONTA la notizia direttamente.
+
+VIETATO iniziare con queste formule: "L'articolo", "Questo articolo", "Il pezzo", "Lo studio", "La ricerca", "Il report", "Il documento", "Il post", "La guida", "Il tutorial".
+
+STRUTTURA OBBLIGATORIA di ogni summary:
+1. APERTURA (1-2 frasi): il fatto chiave con soggetto, verbo, numeri concreti. Es: "OpenAI ha chiuso un round da 40 miliardi di dollari, la più grande raccolta di capitale privato nella storia della Silicon Valley."
+2. CONTESTO (1-2 frasi): perché questo fatto è rilevante ora, cosa lo ha preceduto o reso possibile.
+3. IMPATTO BUSINESS (1-2 frasi): cosa cambia per aziende, investitori, professionisti — con dati o nomi specifici quando disponibili.
+4. PROSPETTIVA (1 frase): una domanda aperta, un rischio, un'opportunità o una previsione credibile.
+
+VARIA gli incipit tra questi pattern (non usare sempre lo stesso):
+- Inizio con soggetto + azione: "Google ha annunciato...", "Il Parlamento Europeo ha approvato..."
+- Inizio con dato numerico: "Quaranta miliardi di dollari in un solo round.", "Il 73% dei manager italiani..."
+- Inizio con contesto di mercato: "Mentre il settore AI attraversa...", "In un mercato che vale già..."
+- Inizio con il paradosso o la tensione: "Più potente, ma anche più costoso.", "La promessa è ambiziosa."
+- Inizio con il nome del protagonista: "Elon Musk torna a scommettere su...", "Anthropic ha scelto..."
 
 IMPORTANTE — ITALIA FIRST:
 - Gli articoli marcati 🇮🇹 provengono da fonti italiane: PRIVILEGIALI nella selezione.
@@ -233,7 +251,7 @@ Rispondi SOLO con JSON valido.`;
   try {
     const response = await invokeLLMFast({
       messages: [
-        { role: "system", content: "Sei un redattore editoriale italiano esperto. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese, anche se la fonte è in inglese." },
+        { role: "system", content: "Sei un giornalista senior italiano con 20 anni di esperienza al Corriere della Sera e al Financial Times. Scrivi notizie dirette, concrete, con fatti e numeri. Non descrivi mai gli articoli: racconti le notizie. Il tuo stile è autorevole, preciso, mai burocratico. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese, anche se la fonte è in inglese." },
         { role: "user", content: prompt }
       ],
       response_format: {
