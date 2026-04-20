@@ -1492,9 +1492,9 @@ export async function sendUnifiedPreview(): Promise<{
     const approvalBanner = `
       <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:20px 24px;margin:0 0 0;text-align:center;">
         <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:700;color:#856404;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 10px;">⚠️ BOZZA — In attesa di approvazione</p>
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1d1d1f;margin:0 0 16px;">Clicca il pulsante per approvare l'invio massivo alle <strong>11:00 CET</strong> a tutti gli iscritti.</p>
+        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1d1d1f;margin:0 0 16px;">Clicca il pulsante per approvare l'invio massivo alle <strong>17:30 CET</strong> a tutti gli iscritti.</p>
         <a href="${approvalUrl}" style="display:inline-block;background:#1d1d1f;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:980px;">✅ Approva e Invia Newsletter</a>
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;color:#856404;margin:12px 0 0;">Senza approvazione, la newsletter <strong>NON</strong> verrà inviata alle 11:00.</p>
+        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;color:#856404;margin:12px 0 0;">Senza approvazione, la newsletter <strong>NON</strong> verrà inviata alle 17:30.</p>
       </div>
     `;
     // Inserisce il banner subito dopo il tag <body>
@@ -1652,7 +1652,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
         sender: 'daily',
           to: "ac@acinelli.com",
           subject: `🔒 [ProofPress] Newsletter NON inviata — approvazione mancante (${now})`,
-          html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:32px;"><h2 style="color:#1d1d1f;font-size:20px;margin:0 0 16px;">Newsletter bloccata</h2><p style="color:#3a3a3c;font-size:15px;margin:0 0 12px;">La newsletter <strong>Proof Press Daily</strong> delle 11:00 <strong>non è stata inviata</strong> perché non è stata ricevuta l'approvazione.</p><p style="color:#3a3a3c;font-size:15px;margin:0;">Controlla l'email di preview delle 08:30 e clicca il pulsante <strong>"Approva e Invia"</strong> per autorizzare l'invio.</p></div>`,
+          html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:32px;"><h2 style="color:#1d1d1f;font-size:20px;margin:0 0 16px;">Newsletter bloccata</h2><p style="color:#3a3a3c;font-size:15px;margin:0 0 12px;">La newsletter <strong>Proof Press Daily</strong> delle 17:30 <strong>non è stata inviata</strong> perché non è stata ricevuta l'approvazione.</p><p style="color:#3a3a3c;font-size:15px;margin:0;">Controlla l'email di preview delle 14:30 e clicca il pulsante <strong>"Approva e Invia"</strong> per autorizzare l'invio.</p></div>`,
         });
       } catch {}
       return {

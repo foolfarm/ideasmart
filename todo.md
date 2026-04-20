@@ -3322,4 +3322,13 @@
 - [ ] A/B test titolo sezione Research in homepage per ottimizzare CTR (rimandato)
 
 ## Bug critico (20 apr 2026 — Approvazione Newsletter)
-- [ ] BUG: newsletter 11:00 non inviata nonostante approvazione ricevuta alle 08:58 — audit e fix
+- [x] BUG: newsletter 11:00 non inviata nonostante approvazione ricevuta alle 08:58 — fix: recovery automatico record 'sending' bloccati >30 min senza sentAt
+
+## Task (20 apr 2026 — Orari e Mittente Newsletter)
+- [x] Cambiare orario preview newsletter: da 08:30 CET a 14:30 CET (cron: 30 12 * * 1,3,5)
+- [x] Cambiare orario invio massivo newsletter: da 11:00 CET a 17:30 CET (cron: 30 15 * * 1,3,5)
+- [x] Cambiare mittente newsletter: da noreply@proofpress.ai a redazione@proofpress.ai
+- [x] Cambiare reply-to newsletter: noreply@proofpress.ai
+- [x] Cambiare nome visualizzato: "The ProofPress AI Business Digest"
+- [x] Aggiornare tutti i riferimenti agli orari nei messaggi di notifica e nei template email
+- [x] Inviare preview di oggi (20 apr 2026) con i nuovi parametri — preview inviata a ac@acinelli.com (token: 7904191f)

@@ -7,7 +7,7 @@ interface SendEmailOptions {
   text?: string;
   /** URL per il List-Unsubscribe header (RFC 2369) — usato nelle newsletter massicce */
   listUnsubscribeUrl?: string;
-  /** Override mittente: 'daily' = ProofPress Daily (Adrian@proofpress.ai),
+  /** Override mittente: 'daily' = The ProofPress AI Business Digest (redazione@proofpress.ai),
    *  'promo' = ProofPress Business (noreply@proofpress.biz),
    *  default = ProofPress.AI (info@proofpress.ai) */
   sender?: 'daily' | 'promo' | 'ai4business' | 'default';
@@ -20,10 +20,10 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
   let fromName: string;
   let replyTo: string;
   if (opts.sender === 'daily') {
-    // Newsletter Daily: ProofPress Magazine (IP dedicato)
-    fromEmail = "adrian@proofpress.ai";
-    fromName = "ProofPress Magazine";
-    replyTo = "adrian@proofpress.ai";
+    // Newsletter Daily: The ProofPress AI Business Digest
+    fromEmail = "redazione@proofpress.ai";
+    fromName = "The ProofPress AI Business Digest";
+    replyTo = "noreply@proofpress.ai";
   } else if (opts.sender === 'promo') {
     // Newsletter promozionali: ProofPress Business
     fromEmail = "noreply@proofpress.biz";
@@ -68,7 +68,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
     // Permette a Gmail, Outlook, Apple Mail di mostrare il pulsante "Annulla iscrizione"
     ...(opts.listUnsubscribeUrl ? {
       headers: {
-        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:${opts.sender === 'daily' ? 'newsletter@proofpress.ai' : opts.sender === 'promo' ? 'newsletter@proofpress.biz' : 'newsletter@proofpress.ai'}?subject=unsubscribe>`,
+        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:noreply@proofpress.ai?subject=unsubscribe>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
       }
     } : {})

@@ -21,9 +21,9 @@
  *  │  06:45 — Audit link newsletter pre-invio                                │
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
-  *  │  NEWSLETTER UNIFICATA — SOLO LUN/MER/VEN                                  │
-  *  │  08:30 (lun/mer/ven) — Preview/test unificata → ac@acinelli.com          │
-  *  │  11:00 (lun/mer/ven) — Newsletter unificata → tutti gli iscritti         │
+  *  │  NEWSLETTER UNIFICATA — OGNI GIORNO (lun–ven)                              │
+  *  │  14:30 (lun–ven) — Preview/test unificata → ac@acinelli.com              │
+  *  │  17:30 (lun–ven) — Newsletter unificata → tutti gli iscritti             │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -449,9 +449,9 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA — 08:30 CET (lun–ven) ──────────────────────
-  cron.schedule("30 8 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio preview newsletter Proof Press Daily...");
+  // ── PREVIEW NEWSLETTER UNIFICATA — 14:30 CET (lun–ven) ──────────────────────
+  cron.schedule("30 14 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 14:30 CET — Invio preview newsletter Proof Press Daily...");
     await withLock("newsletter-preview", async () => {
       try {
         const { sendUnifiedPreview } = await import("./unifiedNewsletter");
@@ -467,9 +467,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 11:00 CET (lun–ven) ────────────────
-  cron.schedule("0 11 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 11:00 CET — Invio massivo newsletter Proof Press Daily...");
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 17:30 CET (lun–ven) ────────────────
+  cron.schedule("30 17 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 17:30 CET — Invio massivo newsletter Proof Press Daily...");
     await withLock("newsletter-massivo", async () => {
       try {
         const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
