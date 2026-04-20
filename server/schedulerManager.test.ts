@@ -141,7 +141,7 @@ describe("schedulerManager", () => {
     // Newsletter Proof Press Daily: preview 08:30 + massivo 10:30 (lun/mer/ven)
     const callCount = (cron.default.schedule as ReturnType<typeof vi.fn>).mock.calls.length;
     expect(callCount).toBeGreaterThanOrEqual(28); // almeno 28 job attivi
-    expect(callCount).toBeLessThanOrEqual(45);    // non più di 45
+    expect(callCount).toBeLessThanOrEqual(55);    // non più di 55 (aggiornato con 4 slot EN + 4 cache invalidation)
   });
 
   it("dovrebbe usare il fuso orario Europe/Rome per tutti i cron job", async () => {

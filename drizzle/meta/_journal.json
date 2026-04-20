@@ -519,6 +519,13 @@
       "when": 1776680288877,
       "tag": "0073_little_human_torch",
       "breakpoints": true
+    },
+    {
+      "idx": 74,
+      "version": "5",
+      "when": 1776701560641,
+      "tag": "0074_talented_magneto",
+      "breakpoints": true
     }
   ]
 }

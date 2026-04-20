@@ -292,7 +292,7 @@ async function auditPrePublish(postText: string, imageUrl: string | null, slot: 
 }
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening";
+export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening" | "en-evening-news" | "en-ai-research" | "en-research" | "en-research-late";
 
 // ── Sezioni supportate per LinkedIn ──────────────────────────────────────────
 type LinkedInSection = "ai" | "startup" | "dealroom" | "research";
@@ -331,6 +331,11 @@ function selectSection(slot: LinkedInSlot): LinkedInSection {
   if (slot === "startup-evening") return "startup";
   if (slot === "ai-tool-radar") return "ai";
   if (slot === "dealroom") return "dealroom";
+  // English evening slots
+  if (slot === "en-evening-news") return "ai";
+  if (slot === "en-ai-research") return "ai";
+  if (slot === "en-research") return "research";
+  if (slot === "en-research-late") return "research";
   // Legacy slots
   if (slot === "afternoon") return "ai";
   return "startup"; // evening legacy
@@ -473,6 +478,64 @@ Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto 
 Focus: analizza il deal/round di investimento, il contesto competitivo, le implicazioni per l'ecosistema.
 Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
 Sii specifico su cifre, investitori, valuation se disponibili.`;
+  } else if (slot === "en-evening-news") {
+    slotNote = `This is the ENGLISH EVENING AI NEWS POST (20:00 CET) — AI News section.
+TONE: Senior analyst and operator with skin in the game. Your audience is the global English-speaking tech and business community: VCs, founders, CTOs, and executives.
+FOCUS: The most relevant AI news of the day — new models, major product launches, policy shifts, enterprise AI adoption. Choose a different angle from the Italian morning post.
+STRUCTURE:
+1. OPENING (2-4 lines): Start with a broad market observation or a provocative insight, anchored immediately to a concrete data point. Do NOT start with "Today", "I analyzed", "As an entrepreneur".
+2. DEVELOPMENT (2-3 paragraphs): Explain the forces at play. Use data as argument, not decoration. Cite sources naturally.
+3. PERSONAL STANCE (1 paragraph): Take a clear, possibly contrarian position. Use "I" or "we" only here.
+4. PROVOCATIVE CLOSE (1-2 lines): A question or challenge to conventional thinking.
+5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
+6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+7. HASHTAGS: #AI #ArtificialIntelligence #AIStrategy #DigitalTransformation #ProofPress #FutureOfWork #EnterpriseAI
+LANGUAGE: English — clear, authoritative, no jargon for jargon's sake. Technical terms (LLM, RAG, ARR, burn rate) are fine without explanation.
+AVOID: "game changer", "the future is now", "I analyzed", bullet points as main structure, AI-sounding parallel phrases.
+LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
+  } else if (slot === "en-ai-research") {
+    slotNote = `This is the ENGLISH 2ND AI EDITORIAL POST (21:30 CET) — AI Market Research section.
+TONE: Senior market analyst — data-driven, authoritative, globally minded. Your audience is the international tech and investment community.
+FOCUS: High-level AI market research and analysis (Gartner, McKinsey, IDC, Stanford HAI, MIT, Forrester, BCG). Quantitative data, market forecasts, sector benchmarks. Strategic reading for the global market.
+Do NOT repeat the same topic as the 20:00 post: choose a completely different research angle.
+STRUCTURE:
+1. OPENING (2-4 lines): Lead with the most surprising data point or the strategic question the research opens. Do NOT start with "Today", "This research", "The article".
+2. DEVELOPMENT (2-3 paragraphs): Unpack the research findings. Use numbers as arguments. Explain implications for global tech and business leaders.
+3. PERSONAL STANCE (1 paragraph): Take a clear position on what this data means for the next 12-24 months.
+4. PROVOCATIVE CLOSE (1-2 lines): A forward-looking question or challenge.
+5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
+6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+7. HASHTAGS: #AI #Research #MarketAnalysis #TechTrends #ProofPress #AIStrategy #Innovation
+LANGUAGE: English — precise, analytical, never academic or bureaucratic.
+LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
+  } else if (slot === "en-research") {
+    slotNote = `This is the ENGLISH 3RD POST — PROOFPRESS RESEARCH (22:30 CET) — Research section.
+TONE: Strategic analyst with a builder's mindset. Your audience is global: founders, investors, and tech executives who read at night.
+FOCUS: A Proof Press Research report — AI, startup, or VC market analysis. Choose a topic not yet covered in the 20:00 or 21:30 posts.
+STRUCTURE:
+1. OPENING (2-4 lines): Start with the key finding or the market signal that makes this research worth reading at 10pm. Do NOT start with "This research", "The report", "Today".
+2. DEVELOPMENT (2-3 paragraphs): Break down the key findings. Connect data to business implications. Cite the source naturally.
+3. PERSONAL STANCE (1 paragraph): What does this mean for founders and investors right now?
+4. PROVOCATIVE CLOSE (1-2 lines): A sharp question or observation that stays with the reader.
+5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
+6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+7. HASHTAGS: #AI #Research #VentureCapital #Startup #ProofPress #TechTrends #Innovation
+LANGUAGE: English — clear, direct, no filler words.
+LENGTH: MAXIMUM 2800 characters. Target 1400-2000 characters.`;
+  } else if (slot === "en-research-late") {
+    slotNote = `This is the ENGLISH 4TH EVENING POST — 3RD PROOFPRESS RESEARCH (23:30 CET) — Research section.
+TONE: Late-night insight for the global tech community — concise, sharp, thought-provoking. Your audience is in different time zones: US West Coast morning, Asia evening.
+FOCUS: A Proof Press Research report with a global angle — AI adoption, market shifts, investment trends. Choose a topic not yet covered in the 20:00, 21:30, or 22:30 posts.
+STRUCTURE:
+1. OPENING (2-4 lines): Lead with the single most actionable insight from the research. Do NOT start with "This research", "The report", "Tonight".
+2. DEVELOPMENT (2-3 paragraphs): Explain the key data points and their strategic implications. Keep it tight — late-night readers want signal, not noise.
+3. PERSONAL STANCE (1 paragraph): One clear takeaway for founders and investors.
+4. PROVOCATIVE CLOSE (1-2 lines): A question that makes the reader think before they sleep.
+5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
+6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+7. HASHTAGS: #AI #Research #GlobalTech #ProofPress #Innovation #AIStrategy #VentureCapital
+LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms.
+LENGTH: MAXIMUM 2800 characters. Target 1200-1800 characters (shorter is better for late-night posts).`;
   } else {
     // Legacy slots
     slotNote = `Post LinkedIn — Sezione variabile.
@@ -969,7 +1032,11 @@ export async function publishLinkedInPost(
     "ai-tool-radar": "AI TOOL RADAR (legacy)",
     dealroom: "DEALROOM (legacy)",
     afternoon: "POMERIGGIO (legacy)",
-    evening: "SERA (legacy)"
+    evening: "SERA (legacy)",
+    "en-evening-news": "EN AI NEWS SERA (20:00)",
+    "en-ai-research": "EN 2° EDITORIALE AI (21:30)",
+    "en-research": "EN RICERCHE (22:30)",
+    "en-research-late": "EN 3° RICERCHE (23:30)"
   };
   const slotLabel = SLOT_LABELS[slot] ?? slot;
   console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);
