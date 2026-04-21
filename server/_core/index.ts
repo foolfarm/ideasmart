@@ -527,7 +527,7 @@ async function startServer() {
         return res.status(404).send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>❌ Token non valido</h2><p>Il link di approvazione non è valido o è già scaduto.</p></body></html>`);
       }
       if (record.approvedAt) {
-        return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>✅ Già approvata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata approvata e verrà inviata alle 11:00.</p></body></html>`);
+        return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>✅ Già approvata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata approvata e verrà inviata alle 17:30 CET.</p></body></html>`);
       }
       if (record.status === 'sent') {
         return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>📧 Già inviata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata inviata.</p></body></html>`);
@@ -536,8 +536,8 @@ async function startServer() {
         .set({ approvedAt: new Date(), approvedBy: "ac@acinelli.com", status: "approved" })
         .where(eq(newsletterSends.id, record.id));
       console.log(`[Approval] ✅ Newsletter approvata: "${record.subject}" (id: ${record.id})`);
-      try { await notifyOwner({ title: "✅ Newsletter approvata", content: `"${record.subject}" approvata. Invio massivo alle 11:00 CET.` }); } catch {}
-      return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:80px auto;text-align:center;background:#f5f5f7;padding:40px;border-radius:18px;"><div style="font-size:48px;margin-bottom:16px;">✅</div><h2 style="font-size:22px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Newsletter approvata</h2><p style="color:#6e6e73;font-size:15px;margin:0 0 24px;">${record.subject}</p><div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e5ea;"><p style="margin:0;font-size:14px;color:#1d1d1f;">L'invio massivo partirà automaticamente alle <strong>11:00 CET</strong>.</p></div><p style="margin-top:24px;font-size:12px;color:#aeaeb2;">ProofPress Admin · ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}</p></body></html>`);
+      try { await notifyOwner({ title: "✅ Newsletter approvata", content: `"${record.subject}" approvata. Invio massivo alle 17:30 CET.` }); } catch {}
+      return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:80px auto;text-align:center;background:#f5f5f7;padding:40px;border-radius:18px;"><div style="font-size:48px;margin-bottom:16px;">✅</div><h2 style="font-size:22px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Newsletter approvata</h2><p style="color:#6e6e73;font-size:15px;margin:0 0 24px;">${record.subject}</p><div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e5ea;"><p style="margin:0;font-size:14px;color:#1d1d1f;">L'invio massivo partirà automaticamente alle <strong>17:30 CET</strong>.</p></div><p style="margin-top:24px;font-size:12px;color:#aeaeb2;">ProofPress Admin · ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}</p></body></html>`);
     } catch (err) {
       console.error("[Approval] Errore:", err);
       return res.status(500).send("Errore interno");
