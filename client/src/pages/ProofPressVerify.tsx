@@ -395,7 +395,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "I prezzi indicati sono definitivi?",
-    a: "No. I piani Verify Essential (€490/mese) e Verify Pro (€1.490/mese) sono prezzi indicativi in fase di validazione commerciale. Per redazioni con volumi elevati è disponibile un modello revenue sharing. Contattaci per un’offerta personalizzata basata su volumi, verticale editoriale e livello di integrazione richiesto.",
+    a: "ProofPress Verify è disponibile in 4 piani: Verify Essential (€490/mese, fino a 100 articoli, 2 licenze Portale Giornalista), Verify Premiere (€990/mese, fino a 300 articoli, 5 licenze), Verify Professional (€1.470/mese, fino a 500 articoli, 10 licenze) e Verify Custom (prezzo da concordare, volumi illimitati). Tutti i piani includono API REST, badge trust grade, certificato IPFS e dashboard report mensile. Per volumi enterprise o esigenze specifiche, contattaci per un'offerta su misura.",
   },
   {
     q: "Come funziona il certificato IPFS? Posso verificarlo indipendentemente?",
@@ -651,13 +651,16 @@ export default function ProofPressVerify() {
                 >
                   Verifica un articolo ↓
                 </button>
-                <a
-                  href="#pricing"
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('pricing');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
                   className="px-8 py-4 text-sm font-bold uppercase tracking-widest border transition-colors hover:bg-[#0a0a0a]/5 text-center"
                   style={{ borderColor: "#0a0a0a", color: "#0a0a0a", fontFamily: FONT }}
                 >
                   Piani e prezzi →
-                </a>
+                </button>
                 <button
                   className="px-8 py-4 text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-80 text-center flex items-center gap-2 cursor-default"
                   style={{ background: "#0a0a0a", color: "#00e5c8", fontFamily: FONT }}
@@ -1467,6 +1470,45 @@ export default function ProofPressVerify() {
                   </a>
                 </div>
               </div>
+            </div>
+
+            {/* ── Tabella comparativa feature-by-feature ── */}
+            <div className="mt-14 overflow-x-auto">
+              <p className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-5">Confronto piani</p>
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr>
+                    <th className="text-left py-3 pr-6 font-semibold text-[#0a0a0a]/50 w-1/3">Feature</th>
+                    <th className="text-center py-3 px-4 font-black" style={{ color: ORANGE }}>Essential<br/><span className="font-normal text-xs text-[#0a0a0a]/40">€490/mese</span></th>
+                    <th className="text-center py-3 px-4 font-black text-white bg-[#0a0a0a] rounded-t">Premiere<br/><span className="font-normal text-xs text-white/40">€990/mese</span></th>
+                    <th className="text-center py-3 px-4 font-black" style={{ color: "#1a3a6b" }}>Professional<br/><span className="font-normal text-xs text-[#0a0a0a]/40">€1.470/mese</span></th>
+                    <th className="text-center py-3 px-4 font-black text-[#0a0a0a]/60">Custom<br/><span className="font-normal text-xs text-[#0a0a0a]/40">su misura</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { feature: "Articoli/mese", vals: ["100", "300", "500", "Illimitati"] },
+                    { feature: "API REST integrazione redazionale", vals: ["✓", "✓", "✓", "✓"] },
+                    { feature: "Badge trust grade via widget embed", vals: ["✓", "✓", "✓", "✓"] },
+                    { feature: "Certificato IPFS su ogni articolo", vals: ["✓", "✓", "✓", "✓"] },
+                    { feature: "Dashboard report mensile", vals: ["✓", "✓", "✓", "✓"] },
+                    { feature: "SLA 99.5% uptime", vals: ["✓", "✓", "✓", "✓"] },
+                    { feature: "Licenze Portale Giornalista", vals: ["2", "5", "10", "Illimitate"] },
+                    { feature: "White-label badge", vals: ["—", "—", "—", "✓"] },
+                    { feature: "SLA dedicato", vals: ["—", "—", "—", "✓"] },
+                    { feature: "Account manager dedicato", vals: ["—", "—", "—", "✓"] },
+                  ].map((row, i) => (
+                    <tr key={row.feature} className={i % 2 === 0 ? "bg-[#f8f8f6]" : ""}>
+                      <td className="py-3 pr-6 font-medium text-[#0a0a0a]/70 border-t border-[#0a0a0a]/6">{row.feature}</td>
+                      {row.vals.map((v, j) => (
+                        <td key={j} className={`text-center py-3 px-4 border-t border-[#0a0a0a]/6 font-semibold ${
+                          j === 1 ? "bg-[#0a0a0a]/5" : ""
+                        } ${v === "✓" ? "text-green-600" : v === "—" ? "text-[#0a0a0a]/20" : "text-[#0a0a0a]/70"}`}>{v}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </Section>
           <Divider />
