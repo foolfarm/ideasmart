@@ -1386,6 +1386,88 @@ export default function Home() {
                     </div>
                   </div>
 
+                  {/* Widget Audio 2 — ProofPress Verify Podcast */}
+                  <div
+                    style={{
+                      background: "#f0f4ff",
+                      borderRadius: 12,
+                      padding: "14px 14px 12px",
+                      border: "1px solid #dde3f0",
+                      marginBottom: 16,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 38,
+                          height: 38,
+                          borderRadius: "50%",
+                          background: "#1a3a6b",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                          <line x1="12" y1="19" x2="12" y2="23"/>
+                          <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.12em",
+                            color: "#1a3a6b",
+                            margin: 0,
+                            lineHeight: 1.2,
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          }}
+                        >
+                          Scopri ProofPress Verify
+                        </p>
+                        <p
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: "#1a1a2e",
+                            margin: 0,
+                            lineHeight: 1.3,
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          }}
+                        >
+                          Scopri di Più in questo Podcast
+                        </p>
+                      </div>
+                    </div>
+                    <audio
+                      controls
+                      preload="none"
+                      style={{
+                        width: "100%",
+                        height: 36,
+                        borderRadius: 6,
+                        outline: "none",
+                        accentColor: "#1a3a6b",
+                      }}
+                    >
+                      <source src="/manus-storage/Il_sigillo_crittografico_di_ProofPress_Verify_c739af61.m4a" type="audio/mp4" />
+                      Il tuo browser non supporta la riproduzione audio.
+                    </audio>
+                  </div>
+
                   {/* Ultime Notizie — stream */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
