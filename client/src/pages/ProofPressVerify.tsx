@@ -694,6 +694,9 @@ export default function ProofPressVerify() {
                     <source src={AUDIO_SCOPRI_URL} type="audio/mp4" />
                     Il tuo browser non supporta la riproduzione audio.
                   </audio>
+                  <p className="mt-3 text-xs leading-relaxed" style={{ color: "#1a3a6b", opacity: 0.7, fontFamily: FONT }}>
+                    Ascolta come ProofPress Verify certifica ogni articolo in meno di 60 secondi — dall'estrazione dei claim al certificato crittografico IPFS.
+                  </p>
                 </div>
               )}
 
