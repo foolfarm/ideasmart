@@ -1521,24 +1521,22 @@ export async function sendUnifiedPreview(): Promise<{
     };
   }
 
-  // ── Guard DB-level (resiste ai riavvii del server) ───────────────────────
+  //  // ── Guard DB-level (resiste ai riavvii del server) ───────────────────
   // Controlla se esiste già un record pending/approved/sending/sent per oggi.
-  // Questo previene la creazione di record duplicati in caso di restart multipli.
+  // Usa SQL CURDATE() in CET per evitare race condition su restart multipli ravvicinati.
+  // NOTA: il guard usa DATE(createdAt) = CURDATE() lato DB (fuso orario server = UTC)
+  // ma poiché la preview viene schedulata alle 14:30 UTC (= 16:30 CET) questo è corretto.
   try {
     const dbGuard = await getDb();
     if (dbGuard) {
-      const todayGuard = new Date();
-      todayGuard.setHours(0, 0, 0, 0);
-      const existingToday = await dbGuard
-        .select({ id: newsletterSendsTable.id, status: newsletterSendsTable.status })
-        .from(newsletterSendsTable)
-        .where(
-          and(
-            gte(newsletterSendsTable.createdAt, todayGuard),
-            inArray(newsletterSendsTable.status, ["pending", "approved", "sending", "sent"])
-          )
-        )
-        .limit(1);
+      // Usa query SQL diretta per massima affidabilità (evita conversioni timezone JS)
+      const [existingRows] = await (dbGuard as any).execute(
+        `SELECT id, status FROM newsletter_sends 
+         WHERE DATE(createdAt) = CURDATE() 
+         AND status IN ('pending','approved','sending','sent') 
+         LIMIT 1`
+      );
+      const existingToday = Array.isArray(existingRows) ? existingRows : [];
       if (existingToday.length > 0) {
         console.log(
           `[UnifiedNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${existingToday[0].id}, status=${existingToday[0].status}) — skip`
