@@ -758,6 +758,128 @@ export default function ProofPressVerify() {
             </div>
           </section>
 
+          {/* ═══════════════════════════════════════════════════════════════════
+              BOX AUDIO PODCAST
+          ═══════════════════════════════════════════════════════════════════ */}
+          <section className="py-16 md:py-20" style={{ background: "#f8f8f6" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {/* BOX 1 — DeepDive */}
+                <div
+                  className="rounded-sm p-7"
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid rgba(10,10,10,0.08)",
+                    boxShadow: "0 2px 16px rgba(10,10,10,0.06)",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: "#0a0a0a" }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="23" />
+                        <line x1="8" y1="23" x2="16" y2="23" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div
+                        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-0.5"
+                        style={{ color: ORANGE, fontFamily: FONT }}
+                      >
+                        DEEPDIVE PODCAST
+                      </div>
+                      <div className="text-base font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>
+                        Scopri ProofPress Verify
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Episodio 1 */}
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-[#0a0a0a]/50 uppercase tracking-wide mb-1">Episodio 1</p>
+                    <p className="text-sm font-bold text-[#0a0a0a] mb-2">Il sigillo crittografico di ProofPress Verify</p>
+                    <audio
+                      controls
+                      preload="none"
+                      style={{ width: "100%", height: 36, accentColor: ORANGE }}
+                    >
+                      <source src="/manus-storage/Il_sigillo_crittografico_di_ProofPress_Verify_84dc7949.m4a" type="audio/mp4" />
+                    </audio>
+                  </div>
+
+                  {/* Episodio 2 */}
+                  <div>
+                    <p className="text-xs font-semibold text-[#0a0a0a]/50 uppercase tracking-wide mb-1">Episodio 2</p>
+                    <p className="text-sm font-bold text-[#0a0a0a] mb-2">Notizie blindate con crittografia e IA</p>
+                    <audio
+                      controls
+                      preload="none"
+                      style={{ width: "100%", height: 36, accentColor: ORANGE }}
+                    >
+                      <source src="/manus-storage/Notizie_blindate_con_crittografia_e_IA_9b951146.m4a" type="audio/mp4" />
+                    </audio>
+                  </div>
+                </div>
+
+                {/* BOX 2 — In poche parole */}
+                <div
+                  className="rounded-sm p-7"
+                  style={{
+                    background: "#0a0a0a",
+                    border: `1px solid ${ORANGE}33`,
+                    boxShadow: "0 2px 16px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: ORANGE }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div
+                        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-0.5"
+                        style={{ color: ORANGE, fontFamily: FONT }}
+                      >
+                        INTRO RAPIDA
+                      </div>
+                      <div className="text-base font-black text-white" style={{ fontFamily: FONT }}>
+                        ProofPress in poche parole
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-white/50 leading-relaxed mb-5">
+                    Non hai tempo per il DeepDive? Ascolta la versione essenziale: cos'è ProofPress Verify, come certifica ogni notizia e perché cambia le regole del giornalismo.
+                  </p>
+
+                  <audio
+                    controls
+                    preload="none"
+                    style={{ width: "100%", height: 36, accentColor: ORANGE }}
+                  >
+                    <source src="/manus-storage/ProofPress_Verify_certifica_notizie_98c184ee.m4a" type="audio/mp4" />
+                  </audio>
+
+                  <div className="mt-5 pt-5 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                    <p className="text-xs text-white/30 uppercase tracking-wide">
+                      Durata: ~2 min · Ideale per chi scopre ProofPress per la prima volta
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
           <Divider />
 
           {/* ═══════════════════════════════════════════════════════════════════
