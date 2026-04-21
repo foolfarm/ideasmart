@@ -94,6 +94,30 @@ let todayImageCacheDate = "";
 const todayTopicLock: Set<string> = new Set();
 let todayTopicLockDate = "";
 
+// ── In-memory ARTICLE LOCK: chiavi articolo sorgente già usate oggi ──────────
+// Previene che due slot diversi usino lo stesso articolo sorgente nella stessa giornata
+// Chiave = hash(title.toLowerCase().trim()) dell'articolo sorgente
+const todayArticleLock: Set<string> = new Set();
+let todayArticleLockDate = "";
+
+function isArticleUsedToday(title: string): boolean {
+  const today = getTodayCET();
+  if (todayArticleLockDate !== today) {
+    todayArticleLock.clear();
+    todayArticleLockDate = today;
+  }
+  return todayArticleLock.has(title.toLowerCase().trim());
+}
+
+function lockArticle(title: string): void {
+  const today = getTodayCET();
+  if (todayArticleLockDate !== today) {
+    todayArticleLock.clear();
+    todayArticleLockDate = today;
+  }
+  todayArticleLock.add(title.toLowerCase().trim());
+}
+
 /**
  * Registra un titolo come usato oggi nel topic lock in-memory.
  */
@@ -1519,21 +1543,48 @@ export async function publishLinkedInPost(
       : "Round di investimento e deal VC in Europa";
     contentImageUrl = selectedStartup.imageUrl ?? null;
   } else {
-    // Slot Morning: recupera l'editoriale
-    const editorial = await getLatestEditorial(section === "research" ? "ai" : section);
-    if (!editorial) {
-      console.warn(`[LinkedIn] ⚠️ Nessun editoriale trovato per sezione '${section}'. Pubblicazione saltata.`);
-      return {
-        published: 0,
-        errors: [`Nessun editoriale disponibile per sezione '${section}'`],
-        posts: []
-      };
+    // Slot Morning e slot EN: recupera l'editoriale
+    // Per gli slot EN, usa getResearchForLinkedIn per avere contenuto diverso dall'editoriale IT
+    const isEnSlot = slot === "en-evening-news" || slot === "en-ai-research" || slot === "en-research" || slot === "en-research-late";
+    if (isEnSlot) {
+      // Slot EN: priorità alle ricerche (diversi dall'editoriale IT del mattino)
+      const researchEN = await getResearchForLinkedIn(recentPostTitles);
+      if (researchEN && !isArticleUsedToday(researchEN.title)) {
+        contentTitle = researchEN.title;
+        contentBody = researchEN.body;
+        contentKeyTrend = researchEN.keyTrend;
+        contentImageUrl = researchEN.imageUrl;
+        console.log(`[LinkedIn] 🔬 Slot EN — Ricerca selezionata: "${contentTitle.slice(0, 60)}..."`);
+      } else {
+        // Fallback: editoriale AI (solo se non già usato oggi)
+        const editorial = await getLatestEditorial("ai");
+        if (!editorial || isArticleUsedToday(editorial.title)) {
+          console.warn(`[LinkedIn] ⚠️ Nessun contenuto disponibile (non duplicato) per slot ${slot}. Pubblicazione saltata.`);
+          return { published: 0, errors: [`Nessun contenuto unico disponibile per slot ${slot}`], posts: [] };
+        }
+        contentTitle = editorial.title;
+        contentBody = editorial.body;
+        contentKeyTrend = editorial.keyTrend ?? "AI Innovation";
+        contentImageUrl = editorial.imageUrl ?? null;
+        console.log(`[LinkedIn] 📝 Slot EN — Editoriale fallback: "${contentTitle.slice(0, 60)}..."`);
+      }
+    } else {
+      // Slot IT (morning, ecc.): recupera l'editoriale
+      const editorial = await getLatestEditorial(section === "research" ? "ai" : section);
+      if (!editorial) {
+        console.warn(`[LinkedIn] ⚠️ Nessun editoriale trovato per sezione '${section}'. Pubblicazione saltata.`);
+        return {
+          published: 0,
+          errors: [`Nessun editoriale disponibile per sezione '${section}'`],
+          posts: []
+        };
+      }
+      contentTitle = editorial.title;
+      contentBody = editorial.body;
+      contentKeyTrend = editorial.keyTrend ?? "";
+      contentImageUrl = editorial.imageUrl ?? null;
+      console.log(`[LinkedIn] 📝 Editoriale trovato: "${contentTitle.slice(0, 60)}..."`);
     }
-    contentTitle = editorial.title;
-    contentBody = editorial.body;
-    contentKeyTrend = editorial.keyTrend ?? "";
-    contentImageUrl = editorial.imageUrl ?? null;
-    console.log(`[LinkedIn] 📝 Editoriale trovato: "${contentTitle.slice(0, 60)}..."`);
   }
 
   // ── Market intelligence + immagine ──────────────────────────────────────────────────────────────────────────
@@ -1549,18 +1600,25 @@ export async function publishLinkedInPost(
   );
 
   // Determina l'immagine da usare
+  // REGOLA: Le immagini AI generate (URL cloudfront/generated) vengono SEMPRE scartate
+  // perché contengono testo generato con errori ortografici. Si usa sempre Pexels.
+  const isAIGeneratedImage = (url: string | null) =>
+    url ? (url.includes("/generated/") || url.includes("cloudfront.net") && url.includes("generated")) : false;
+
   let imageUrl: string | null = null;
   let imageSource = "";
 
-  if (contentImageUrl && !recentImageUrls.includes(contentImageUrl)) {
+  // Usa contentImageUrl solo se è una foto reale (Pexels, Reuters, AP, ecc.) — non AI-generated
+  if (contentImageUrl && !isAIGeneratedImage(contentImageUrl) && !recentImageUrls.includes(contentImageUrl)) {
     imageUrl = contentImageUrl;
-    imageSource = "contenuto originale";
-    console.log(`[LinkedIn] 🖼️ Immagine dal contenuto originale`);
-  } else if (marketImage && !recentImageUrls.includes(marketImage.imageUrl)) {
+    imageSource = "contenuto originale (foto reale)";
+    console.log(`[LinkedIn] 🖼️ Immagine dal contenuto originale (foto reale)`);
+  } else if (marketImage && !isAIGeneratedImage(marketImage.imageUrl) && !recentImageUrls.includes(marketImage.imageUrl)) {
     imageUrl = marketImage.imageUrl;
     imageSource = marketImage.source;
     console.log(`[LinkedIn] 🖼️ Immagine da fonte autorevole: ${imageSource}`);
   } else {
+    // Sempre Pexels come fonte primaria (zero errori di testo, costo zero)
     console.log("[LinkedIn] 🔍 Ricerca immagine tematica su Pexels...");
     const pexelsSectionArg: "ai" | "startup" = (section === "startup") ? "startup" : "ai";
     const pexelsImage = await findEditorialImage(
@@ -1572,9 +1630,14 @@ export async function publishLinkedInPost(
     if (pexelsImage) {
       imageUrl = pexelsImage;
       imageSource = "Pexels (tematica)";
-    } else if (contentImageUrl) {
+    } else if (contentImageUrl && !isAIGeneratedImage(contentImageUrl)) {
+      // Riuso contentImageUrl solo se non è AI-generated
       imageUrl = contentImageUrl;
-      imageSource = "contenuto (riuso)";
+      imageSource = "contenuto (riuso foto reale)";
+    }
+    // Se contentImageUrl è AI-generated, si pubblica senza immagine piuttosto che con testo errato
+    if (!imageUrl) {
+      console.warn(`[LinkedIn] ⚠️ Nessuna immagine Pexels trovata e contentImageUrl è AI-generated — post senza immagine`);
     }
   }
 
@@ -1725,7 +1788,9 @@ export async function publishLinkedInPost(
         console.log(`[LinkedIn] 💾 Post slot ${slotLabel} salvato nel DB (${dateLabel})`);
         // Blocca il titolo nel topic lock in-memory per prevenire duplicati negli slot successivi
         lockTopic(contentTitle);
-        console.log(`[LinkedIn TopicLock] 🔒 Titolo bloccato: "${contentTitle.slice(0, 60)}..."`);
+        // Blocca l'articolo sorgente per prevenire che altri slot usino lo stesso articolo oggi
+        lockArticle(contentTitle);
+        console.log(`[LinkedIn TopicLock] 🔒 Titolo + articolo bloccati: "${contentTitle.slice(0, 60)}..."`);
       }
     } catch (dbErr) {
       console.error('[LinkedIn] ⚠️ Errore salvataggio post nel DB:', dbErr);
