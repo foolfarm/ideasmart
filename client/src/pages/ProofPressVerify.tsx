@@ -1391,39 +1391,22 @@ export default function ProofPressVerify() {
               PRICING
           ═══════════════════════════════════════════════════════════════════ */}
           <Section bg="#fff" id="pricing">
-            <Label>Modello di accesso</Label>
+            <Label>Piani e prezzi</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
-              Incluso. O potenziato.
+              Scegli il piano giusto per la tua redazione.
             </h2>
             <p className="text-base text-[#0a0a0a]/55 max-w-2xl mb-12 leading-relaxed">
-              ProofPress Verify è già integrato nella piattaforma ProofPress. Chi pubblica con noi ottiene la corroborazione verificabile senza costi aggiuntivi. Per redazioni esterne, media company e brand publisher, è disponibile come add-on SaaS indipendente.
+              ProofPress Verify è disponibile come add-on SaaS per redazioni esterne, media company e brand publisher. Ogni piano include certificazione IPFS, badge trust grade e API REST.
             </p>
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              {/* Piano 1 — Incluso */}
-              <div className="p-8 border-2 border-[#0a0a0a]/8 bg-[#f8f8f6] flex flex-col">
-                <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-3">Per i publisher ProofPress</div>
-                <h3 className="text-2xl font-black mb-2" style={{ fontFamily: FONT }}>Incluso</h3>
-                <div className="text-4xl font-black mb-1" style={{ fontFamily: FONT, color: "#00e5c8" }}>€0</div>
-                <div className="text-sm text-[#0a0a0a]/40 mb-6">già nel piano ProofPress</div>
-                <ul className="space-y-3 text-sm text-[#0a0a0a]/65 flex-1">
-                  {["Verifica automatica su ogni articolo", "Badge trust grade A–F visibile ai lettori", "Certificato IPFS permanente", "Verification Report pubblico", "Fino a 500 articoli/mese"].map(f => (
-                    <li key={f} className="flex items-start gap-2"><span style={{ color: "#00e5c8" }} className="font-bold mt-0.5">✓</span>{f}</li>
-                  ))}
-                </ul>
-                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
-                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 border-2 border-[#0a0a0a]/20 hover:border-[#0a0a0a]/40 transition-colors">
-                    Diventa publisher
-                  </a>
-                </div>
-              </div>
-              {/* Piano 2 — Add-on SaaS Starter */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Piano 1 — Verify Essential */}
               <div className="p-8 border-2 flex flex-col" style={{ borderColor: ORANGE }}>
-                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE }}>Add-on SaaS — Starter</div>
-                <h3 className="text-2xl font-black mb-2" style={{ fontFamily: FONT }}>Verify Essential</h3>
-                <div className="text-4xl font-black mb-1" style={{ fontFamily: FONT, color: ORANGE }}>€490</div>
-                <div className="text-sm text-[#0a0a0a]/40 mb-6">/mese · fino a 1.000 articoli</div>
-                <ul className="space-y-3 text-sm text-[#0a0a0a]/65 flex-1">
-                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "Onboarding tecnico incluso"].map(f => (
+                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE }}>Starter</div>
+                <h3 className="text-xl font-black mb-2" style={{ fontFamily: FONT }}>Verify Essential</h3>
+                <div className="text-3xl font-black mb-1" style={{ fontFamily: FONT, color: ORANGE }}>€490</div>
+                <div className="text-sm text-[#0a0a0a]/40 mb-6">/mese · fino a 100 articoli/mese</div>
+                <ul className="space-y-2 text-sm text-[#0a0a0a]/65 flex-1">
+                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "2 Licenze Portale Giornalista"].map(f => (
                     <li key={f} className="flex items-start gap-2"><span style={{ color: ORANGE }} className="font-bold mt-0.5">✓</span>{f}</li>
                   ))}
                 </ul>
@@ -1433,14 +1416,14 @@ export default function ProofPressVerify() {
                   </a>
                 </div>
               </div>
-              {/* Piano 3 — Add-on SaaS Pro */}
+              {/* Piano 2 — Verify Premiere */}
               <div className="p-8 border-2 border-[#0a0a0a] bg-[#0a0a0a] flex flex-col">
-                <div className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Add-on SaaS — Pro</div>
-                <h3 className="text-2xl font-black mb-2 text-white" style={{ fontFamily: FONT }}>Verify Pro</h3>
-                <div className="text-4xl font-black mb-1 text-white" style={{ fontFamily: FONT }}>€1.490</div>
-                <div className="text-sm text-white/30 mb-6">/mese · articoli illimitati</div>
-                <ul className="space-y-3 text-sm text-white/60 flex-1">
-                  {["Tutto di Verify Essential", "White-label: badge con il tuo brand", "Verifica in tempo reale (< 60 sec)", "Export report in PDF/JSON", "Accesso prioritario a nuove feature", "Account manager dedicato"].map(f => (
+                <div className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Premiere</div>
+                <h3 className="text-xl font-black mb-2 text-white" style={{ fontFamily: FONT }}>Verify Premiere</h3>
+                <div className="text-3xl font-black mb-1 text-white" style={{ fontFamily: FONT }}>€990</div>
+                <div className="text-sm text-white/30 mb-6">/mese · fino a 300 articoli/mese</div>
+                <ul className="space-y-2 text-sm text-white/60 flex-1">
+                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "5 Licenze Portale Giornalista"].map(f => (
                     <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#00e5c8" }}>✓</span>{f}</li>
                   ))}
                 </ul>
@@ -1450,10 +1433,40 @@ export default function ProofPressVerify() {
                   </a>
                 </div>
               </div>
-            </div>
-            {/* Nota prezzi */}
-            <div className="p-5 border border-[#0a0a0a]/8 bg-[#f8f8f6] text-sm text-[#0a0a0a]/50 leading-relaxed">
-              <strong className="text-[#0a0a0a]/70">Prezzi indicativi.</strong> I piani SaaS sono in fase di definizione. Contattaci per un'offerta personalizzata basata su volumi, verticale editoriale e livello di integrazione richiesto. È disponibile anche un modello <strong className="text-[#0a0a0a]/70">revenue sharing</strong> per media company con volumi elevati.
+              {/* Piano 3 — Verify Professional */}
+              <div className="p-8 border-2 flex flex-col" style={{ borderColor: "#1a3a6b" }}>
+                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#1a3a6b" }}>Professional</div>
+                <h3 className="text-xl font-black mb-2" style={{ fontFamily: FONT, color: "#1a3a6b" }}>Verify Professional</h3>
+                <div className="text-3xl font-black mb-1" style={{ fontFamily: FONT, color: "#1a3a6b" }}>€1.470</div>
+                <div className="text-sm text-[#0a0a0a]/40 mb-6">/mese · fino a 500 articoli/mese</div>
+                <ul className="space-y-2 text-sm text-[#0a0a0a]/65 flex-1">
+                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "10 Licenze Portale Giornalista"].map(f => (
+                    <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#1a3a6b" }}>✓</span>{f}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
+                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 text-white transition-colors" style={{ background: "#1a3a6b" }}>
+                    Contattaci
+                  </a>
+                </div>
+              </div>
+              {/* Piano 4 — Verify Custom */}
+              <div className="p-8 border-2 border-dashed border-[#0a0a0a]/20 bg-[#f8f8f6] flex flex-col">
+                <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-3">Enterprise</div>
+                <h3 className="text-xl font-black mb-2" style={{ fontFamily: FONT }}>Verify Custom</h3>
+                <div className="text-3xl font-black mb-1" style={{ fontFamily: FONT, color: "#0a0a0a" }}>Su misura</div>
+                <div className="text-sm text-[#0a0a0a]/40 mb-6">prezzo da concordare</div>
+                <ul className="space-y-2 text-sm text-[#0a0a0a]/65 flex-1">
+                  {["Tutto di Verify Professional", "Volumi illimitati", "White-label completo", "SLA dedicato", "Account manager dedicato", "Licenze Portale Giornalista illimitate"].map(f => (
+                    <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#0a0a0a" }}>✓</span>{f}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
+                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 border-2 border-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white transition-colors">
+                    Parla con noi
+                  </a>
+                </div>
+              </div>
             </div>
           </Section>
           <Divider />
