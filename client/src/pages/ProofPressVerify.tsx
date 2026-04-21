@@ -557,8 +557,11 @@ function FullVerifyPanel() {
 /* ══════════════════════════════════════════════════════════════════════════════
    COMPONENTE PRINCIPALE
 ══════════════════════════════════════════════════════════════════════════════ */
+const AUDIO_SCOPRI_URL = "/api/storage-proxy/manus-storage/ProofPress_Verify_certifica_2_01eecccc.m4a";
+
 export default function ProofPressVerify() {
   const verifyFormRef = useRef<HTMLDivElement>(null);
+  const [showAudioPlayer, setShowAudioPlayer] = useState(false);
   const searchString = useSearch();
 
   // Legge il parametro ?hash= dall'URL
@@ -655,14 +658,45 @@ export default function ProofPressVerify() {
                 >
                   Piani e prezzi →
                 </a>
-                <a
-                  href="#contact"
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-80 text-center"
+                <button
+                  onClick={() => setShowAudioPlayer(prev => !prev)}
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-80 text-center flex items-center gap-2"
                   style={{ background: "#0a0a0a", color: "#00e5c8", fontFamily: FONT }}
                 >
-                  Richiedi demo
-                </a>
+                  🎙 Scopri ProofPress Verify
+                </button>
               </div>
+
+              {/* ── Audio player inline (appare al click del bottone) ── */}
+              {showAudioPlayer && (
+                <div
+                  className="mt-6 p-5 rounded-xl border"
+                  style={{ background: "#f0f4ff", borderColor: "#1a3a6b22" }}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: "#1a3a6b" }}
+                    >
+                      <span className="text-white text-lg">🎙</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1a3a6b", fontFamily: FONT }}>ProofPress Verify</p>
+                      <p className="text-sm font-semibold" style={{ color: "#0a0a0a", fontFamily: FONT }}>ProofPress Verify certifica l’autenticità delle notizie</p>
+                    </div>
+                  </div>
+                  <audio
+                    controls
+                    preload="none"
+                    className="w-full"
+                    style={{ accentColor: ORANGE }}
+                  >
+                    <source src={AUDIO_SCOPRI_URL} type="audio/mp4" />
+                    Il tuo browser non supporta la riproduzione audio.
+                  </audio>
+                </div>
+              )}
+
             </div>
           </section>
 
