@@ -1847,6 +1847,34 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
       };
     }
 
+    // ── Garantire che l'owner riceva sempre la newsletter ─────────────────────
+    // ac@acinelli.com viene iniettato come destinatario fisso indipendentemente
+    // dallo status nel DB (active/unsubscribed/etc.)
+    const OWNER_FORCED_EMAIL = "ac@acinelli.com";
+    const ownerAlreadyIn = subscribers.some(
+      (s) => s.email.toLowerCase() === OWNER_FORCED_EMAIL.toLowerCase()
+    );
+    if (!ownerAlreadyIn) {
+      subscribers.push({
+        id: 90001,
+        email: OWNER_FORCED_EMAIL,
+        name: "Andrea Cinelli",
+        status: "active",
+        source: "owner",
+        subscribedAt: new Date(),
+        unsubscribedAt: null,
+        unsubscribeToken: null,
+        totalSent: 0,
+        totalOpened: 0,
+        lastSentAt: null,
+        lastOpenedAt: null,
+        newsletter: "ai4business",
+        channels: null,
+      } as any);
+      console.log(`[UnifiedNewsletter] 🔒 Owner ${OWNER_FORCED_EMAIL} iniettato come destinatario fisso`);
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
     console.log(`[UnifiedNewsletter] ${subscribers.length} iscritti attivi`);
 
     const { html: baseHtml, subject, stats, sponsorIds } =
