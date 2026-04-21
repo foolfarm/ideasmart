@@ -52,6 +52,7 @@ export default function Navbar() {
     { label: "Piattaforma Agentica", href: "/piattaforma", desc: "La tecnologia AI Journalism certificato" },
     { label: "Tecnologia Verify", href: "/proofpress-verify", desc: "Verifica e certificazione degli articoli" },
     { label: "Trust Score A–F", href: "/trust-score", desc: "Come valutiamo ogni articolo" },
+    { label: "🎙 Ascolta il Podcast", href: "/proofpress-verify#podcast", desc: "DeepDive e intro rapida su ProofPress Verify" },
   ];
 
   const DropdownItem = ({

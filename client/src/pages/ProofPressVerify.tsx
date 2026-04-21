@@ -761,7 +761,7 @@ export default function ProofPressVerify() {
           {/* ═══════════════════════════════════════════════════════════════════
               BOX AUDIO PODCAST
           ═══════════════════════════════════════════════════════════════════ */}
-          <section className="py-16 md:py-20" style={{ background: "#f8f8f6" }}>
+          <section id="podcast" className="py-16 md:py-20" style={{ background: "#f8f8f6" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
