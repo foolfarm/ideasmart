@@ -91,7 +91,14 @@ export const newsletterSends = mysqlTable("newsletter_sends", {
   approvalToken: varchar("approvalToken", { length: 128 }).unique(),
   approvedAt: timestamp("approvedAt"),
   approvedBy: varchar("approvedBy", { length: 255 }),
-});
+  // Lock atomico: una sola preview per giorno (YYYY-MM-DD in CET)
+  // Unique index su send_date garantisce che INSERT IGNORE fallisca silenziosamente
+  // in caso di restart multipli ravvicinati — nessun duplicato possibile a livello DB.
+  sendDate: varchar("send_date", { length: 10 }),  // es. '2026-04-21'
+}, (t) => ({
+  // Unique index su (send_date, section): una sola preview per giorno per sezione
+  uniqSendDate: uniqueIndex("uq_newsletter_send_date_section").on(t.sendDate, t.section),
+}));
 
 export type NewsletterSend = typeof newsletterSends.$inferSelect;
 

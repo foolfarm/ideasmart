@@ -1558,20 +1558,38 @@ export async function sendUnifiedPreview(): Promise<{
     const { html, subject, stats } = await buildUnifiedNewsletter(true);
 
     // ── Genera token di approvazione e salva record pending nel DB ──────────
+    // USA INSERT IGNORE + send_date per garantire atomicità a livello DB:
+    // se esiste già un record con lo stesso (send_date, section), il DB rifiuta
+    // silenziosamente l'INSERT senza errori — nessun duplicato possibile.
     const { randomBytes } = await import("crypto");
     const approvalToken = randomBytes(32).toString("hex");
     const approvalUrl = `https://proofpress.ai/api/newsletter/approve/${approvalToken}`;
 
+    // Calcola send_date in CET (Europe/Rome) per coerenza con il fuso orario editoriale
+    const sendDateCET = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
+
     const db = await getDb();
     if (db) {
-      await db.insert(newsletterSendsTable).values({
-        subject,
-        htmlContent: html,
-        recipientCount: 0,
-        status: "pending",
-        approvalToken,
-      });
-      console.log(`[UnifiedNewsletter] 📝 Record pending salvato nel DB (token: ${approvalToken.slice(0, 8)}...)`);
+      // INSERT IGNORE: se (send_date, section) già esiste, la riga viene scartata dal DB
+      // senza lanciare eccezioni. Questo è il lock atomico definitivo contro i duplicati.
+      const [insertResult] = await (db as any).execute(
+        `INSERT IGNORE INTO newsletter_sends 
+         (subject, htmlContent, recipientCount, status, approvalToken, send_date, section, createdAt)
+         VALUES (?, ?, 0, 'pending', ?, ?, 'ai4business', NOW())`,
+        [subject, html, approvalToken, sendDateCET]
+      );
+      const inserted = insertResult?.affectedRows ?? 0;
+      if (inserted === 0) {
+        // Un altro processo ha già inserito il record per oggi — abort silenzioso
+        console.log(`[UnifiedNewsletter] 🔒 INSERT IGNORE: record per ${sendDateCET} già esistente — skip atomico`);
+        testSentDays.set(testKey, true);
+        return {
+          success: true,
+          subject: "",
+          stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+        };
+      }
+      console.log(`[UnifiedNewsletter] 📝 Record pending salvato nel DB (send_date: ${sendDateCET}, token: ${approvalToken.slice(0, 8)}...)`);
     }
 
     // ── Banner di approvazione nell'email preview ────────────────────────────
