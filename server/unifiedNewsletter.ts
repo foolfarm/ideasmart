@@ -1530,13 +1530,12 @@ export async function sendUnifiedPreview(): Promise<{
     const dbGuard = await getDb();
     if (dbGuard) {
       // Usa query SQL diretta per massima affidabilità (evita conversioni timezone JS)
-      const [existingRows] = await (dbGuard as any).execute(
-        `SELECT id, status FROM newsletter_sends 
+      const existingToday = await dbGuard.execute(
+        sql`SELECT id, status FROM newsletter_sends 
          WHERE DATE(createdAt) = CURDATE() 
          AND status IN ('pending','approved','sending','sent') 
          LIMIT 1`
-      );
-      const existingToday = Array.isArray(existingRows) ? existingRows : [];
+      ) as any[];
       if (existingToday.length > 0) {
         console.log(
           `[UnifiedNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${existingToday[0].id}, status=${existingToday[0].status}) — skip`
@@ -1572,13 +1571,12 @@ export async function sendUnifiedPreview(): Promise<{
     if (db) {
       // INSERT IGNORE: se (send_date, section) già esiste, la riga viene scartata dal DB
       // senza lanciare eccezioni. Questo è il lock atomico definitivo contro i duplicati.
-      const [insertResult] = await (db as any).execute(
-        `INSERT IGNORE INTO newsletter_sends 
+      const insertResult = await db.execute(
+        sql`INSERT IGNORE INTO newsletter_sends 
          (subject, htmlContent, recipientCount, status, approvalToken, send_date, section, createdAt)
-         VALUES (?, ?, 0, 'pending', ?, ?, 'ai4business', NOW())`,
-        [subject, html, approvalToken, sendDateCET]
-      );
-      const inserted = insertResult?.affectedRows ?? 0;
+         VALUES (${subject}, ${html}, 0, 'pending', ${approvalToken}, ${sendDateCET}, 'ai4business', NOW())`
+      ) as any;
+      const inserted = insertResult?.rowsAffected ?? insertResult?.affectedRows ?? (Array.isArray(insertResult) ? (insertResult[0] as any)?.affectedRows : 0) ?? 0;
       if (inserted === 0) {
         // Un altro processo ha già inserito il record per oggi — abort silenzioso
         console.log(`[UnifiedNewsletter] 🔒 INSERT IGNORE: record per ${sendDateCET} già esistente — skip atomico`);
