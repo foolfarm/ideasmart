@@ -22,8 +22,8 @@
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
   *  │  NEWSLETTER UNIFICATA — OGNI GIORNO (lun–ven)                              │
-  *  │  17:30 (lun–ven) — Preview/test "Le notizie della Sera" → ac@acinelli.com │
-  *  │  20:00 (lun–ven) — Newsletter unificata → tutti gli iscritti             │
+  *  │  19:30 (lun–ven) — Preview/test "AI4Business News" → ac@acinelli.com     │
+  *  │  22:00 (lun–ven+sab) — Newsletter AI4Business News → tutti gli iscritti  │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -449,9 +449,9 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA — 17:30 CET (lun–ven) ──────────────────────
-  cron.schedule("30 17 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 17:30 CET — Invio preview newsletter Le notizie della Sera di ProofPress...");
+  // ── PREVIEW NEWSLETTER UNIFICATA — 19:30 CET (lun–ven) ──────────────────────
+  cron.schedule("30 19 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 19:30 CET — Invio preview newsletter AI4Business News by ProofPress...");
     await withLock("newsletter-preview", async () => {
       try {
         const { sendUnifiedPreview } = await import("./unifiedNewsletter");
@@ -467,9 +467,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 20:00 CET (lun–ven) ────────────────
-  cron.schedule("0 20 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 20:00 CET — Invio massivo newsletter Le notizie della Sera di ProofPress...");
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 22:00 CET (lun–ven) ────────────────
+  cron.schedule("0 22 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 22:00 CET — Invio massivo newsletter AI4Business News by ProofPress...");
     await withLock("newsletter-massivo", async () => {
       try {
         const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
@@ -494,9 +494,9 @@ export function startAllSchedulers(): void {
   //   10:00 CET (sab) — Preview editoriale → ac@acinelli.com per approvazione
   //   12:00 CET (sab) — Invio massivo a tutti gli iscritti attivi
   // ══════════════════════════════════════════════════════════════════════════
-  // ⏰ 10:00 CET (sabato) — Preview editoriale del sabato
-  cron.schedule("0 10 * * 6", async () => {
-    console.log("[SchedulerManager] ⏰ 10:00 CET (sab) — Preview \"Il meglio di ProofPress\"...");
+  // ⏰ 19:00 CET (sabato) — Preview editoriale del sabato
+  cron.schedule("0 19 * * 6", async () => {
+    console.log("[SchedulerManager] ⏰ 19:00 CET (sab) — Preview \"AI4Business News by ProofPress\"...");
     await withLock("saturday-preview", async () => {
       try {
         const { sendSaturdayPreview } = await import("./saturdayEditorialNewsletter");
@@ -511,9 +511,9 @@ export function startAllSchedulers(): void {
       }
     });
   }, { timezone: TZ });
-  // ⏰ 12:30 CET (sabato) — Invio massivo newsletter del sabato
-  cron.schedule("30 12 * * 6", async () => {
-    console.log("[SchedulerManager] ⏰ 12:30 CET (sab) — Invio massivo \"Il meglio di ProofPress\"...");
+  // ⏰ 22:00 CET (sabato) — Invio massivo newsletter del sabato
+  cron.schedule("0 22 * * 6", async () => {
+    console.log("[SchedulerManager] ⏰ 22:00 CET (sab) — Invio massivo \"AI4Business News by ProofPress\"...");
     await withLock("saturday-massivo", async () => {
       try {
         const { sendSaturdayNewsletterToAll } = await import("./saturdayEditorialNewsletter");

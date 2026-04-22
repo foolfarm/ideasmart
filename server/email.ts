@@ -22,7 +22,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
   if (opts.sender === 'daily') {
     // Newsletter Daily: The ProofPress AI Business Digest
     fromEmail = "redazione@proofpress.ai";
-    fromName = "The ProofPress AI Business Digest";
+    fromName = "AI4Business News by ProofPress";
     replyTo = "noreply@proofpress.ai";
   } else if (opts.sender === 'promo') {
     // Newsletter promozionali: ProofPress Business
