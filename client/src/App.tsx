@@ -111,6 +111,9 @@ const Contatti = lazy(() => import("./pages/Contatti"));
 const ScriviPerNoi = lazy(() => import("./pages/ScriviPerNoi"));
 const JournalistPortal = lazy(() => import("./pages/JournalistPortal"));
 const Methodology = lazy(() => import("./pages/Methodology"));
+// ProofPress Verify SaaS
+const VerifyDashboard = lazy(() => import("./pages/verify/Dashboard"));
+const VerifyJoin = lazy(() => import("./pages/verify/Join"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -193,6 +196,9 @@ function Router() {
         <Route path="/scrivi-per-noi" component={ScriviPerNoi} />
         <Route path="/journalist-portal" component={JournalistPortal} />
         <Route path="/methodology/v1" component={Methodology} />
+        {/* ProofPress Verify SaaS — Dashboard e Onboarding */}
+        <Route path="/verify/dashboard" component={VerifyDashboard} />
+        <Route path="/verify/join" component={VerifyJoin} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />

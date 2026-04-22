@@ -3366,3 +3366,9 @@
 - [ ] Registrare router verify in server/routers.ts
 - [ ] Registrare endpoint REST pubblico in server/_core/index.ts
 - [ ] Verificare TypeScript 0 errori
+
+## Sprint 2 — Dashboard Cliente SaaS Verify
+- [x] verifyClientRouter con procedure myOrg, myApiKeys, createApiKey, revokeApiKey, registerTrial
+- [x] client/src/pages/verify/Dashboard.tsx — dashboard con piano, consumo, API key manager
+- [x] client/src/pages/verify/Join.tsx — onboarding self-service con trial 14 giorni
+- [x] Route /verify/dashboard e /verify/join registrate in App.tsx
