@@ -978,3 +978,78 @@ export const journalistArticles = mysqlTable("journalist_articles", {
 }));
 export type JournalistArticle = typeof journalistArticles.$inferSelect;
 export type InsertJournalistArticle = typeof journalistArticles.$inferInsert;
+
+// ── ProofPress Verify SaaS — B2B Layer ───────────────────────────────────────
+// Namespace isolato: verify_* — nessuna dipendenza circolare con il magazine.
+// Progettato per essere estratto in repo separato nella Fase 2.
+
+// Organizzazioni clienti (editori B2B che acquistano Verify come SaaS)
+export const verifyOrganizations = mysqlTable("verify_organizations", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 128 }).notNull().unique(),
+  name: varchar("name", { length: 255 }).notNull(),
+  domain: varchar("domain", { length: 255 }),
+  contactEmail: varchar("contactEmail", { length: 320 }).notNull(),
+  contactName: varchar("contactName", { length: 255 }),
+  plan: mysqlEnum("plan", ["essential", "premiere", "professional", "custom"]).default("essential").notNull(),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
+  status: mysqlEnum("status", ["trial", "active", "suspended", "cancelled"]).default("trial").notNull(),
+  notes: text("notes"),
+  trialEndsAt: timestamp("trialEndsAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  slugIdx: uniqueIndex("uq_verify_org_slug").on(t.slug),
+  statusIdx: index("idx_verify_org_status").on(t.status),
+}));
+export type VerifyOrganization = typeof verifyOrganizations.$inferSelect;
+export type InsertVerifyOrganization = typeof verifyOrganizations.$inferInsert;
+
+// Chiavi API per integrazione redazionale
+export const verifyApiKeys = mysqlTable("verify_api_keys", {
+  id: int("id").autoincrement().primaryKey(),
+  organizationId: int("organizationId").notNull().references(() => verifyOrganizations.id),
+  keyPrefix: varchar("keyPrefix", { length: 16 }).notNull(),
+  keyHash: varchar("keyHash", { length: 64 }).notNull().unique(),
+  label: varchar("label", { length: 128 }),
+  canVerify: boolean("canVerify").default(true).notNull(),
+  canReadReports: boolean("canReadReports").default(true).notNull(),
+  canManageOrg: boolean("canManageOrg").default(false).notNull(),
+  rateLimit: int("rateLimit").default(100).notNull(),
+  isActive: boolean("isActive").default(true).notNull(),
+  lastUsedAt: timestamp("lastUsedAt"),
+  expiresAt: timestamp("expiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  revokedAt: timestamp("revokedAt"),
+}, (t) => ({
+  orgIdx: index("idx_verify_apikey_org").on(t.organizationId),
+  hashIdx: uniqueIndex("uq_verify_apikey_hash").on(t.keyHash),
+}));
+export type VerifyApiKey = typeof verifyApiKeys.$inferSelect;
+export type InsertVerifyApiKey = typeof verifyApiKeys.$inferInsert;
+
+// Sottoscrizioni e consumo mensile per ogni organizzazione
+export const verifySubscriptions = mysqlTable("verify_subscriptions", {
+  id: int("id").autoincrement().primaryKey(),
+  organizationId: int("organizationId").notNull().references(() => verifyOrganizations.id),
+  plan: mysqlEnum("plan", ["essential", "premiere", "professional", "custom"]).notNull(),
+  articlesLimit: int("articlesLimit").notNull(),
+  journalistSeats: int("journalistSeats").default(2).notNull(),
+  articlesUsed: int("articlesUsed").default(0).notNull(),
+  periodStart: timestamp("periodStart").notNull(),
+  periodEnd: timestamp("periodEnd").notNull(),
+  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }),
+  stripeStatus: varchar("stripeStatus", { length: 64 }),
+  priceMonthly: int("priceMonthly").notNull(),
+  currency: varchar("currency", { length: 3 }).default("EUR").notNull(),
+  status: mysqlEnum("status", ["active", "past_due", "cancelled", "trial"]).default("trial").notNull(),
+  cancelledAt: timestamp("cancelledAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  orgIdx: index("idx_verify_sub_org").on(t.organizationId),
+  stripeIdx: index("idx_verify_sub_stripe").on(t.stripeSubscriptionId),
+  statusIdx: index("idx_verify_sub_status").on(t.status),
+}));
+export type VerifySubscription = typeof verifySubscriptions.$inferSelect;
+export type InsertVerifySubscription = typeof verifySubscriptions.$inferInsert;

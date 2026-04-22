@@ -3351,3 +3351,18 @@
 - [x] Hashtag internazionali EN: #AINews #ArtificialIntelligence #TechStartups #VentureCapital in tutti e 4 gli slot serali
 - [x] Prompt EN ottimizzati: struttura giornalistica internazionale, CTA in inglese, firma "Andrea Cinelli | ProofPress Magazine"
 - [x] db:push completato: migrazioni 0067-0074 applicate, schema in produzione
+
+## Sprint 1 — ProofPress Verify SaaS Fondamenta B2B (22 Apr 2026)
+
+- [ ] Aggiungere tabella verify_organizations allo schema Drizzle
+- [ ] Aggiungere tabella verify_api_keys allo schema Drizzle
+- [ ] Aggiungere tabella verify_subscriptions allo schema Drizzle
+- [ ] Applicare migration DB (pnpm db:push)
+- [ ] Creare server/verify/orgRouter.ts (CRUD organizzazioni)
+- [ ] Creare server/verify/apiKeyRouter.ts (generazione/revoca chiavi API)
+- [ ] Creare server/verify/usageRouter.ts (contatori consumo mensile)
+- [ ] Creare server/verify/billingRouter.ts (Stripe checkout + webhook)
+- [ ] Creare server/verify/publicApi.ts (endpoint REST pubblico /api/verify/v1/article)
+- [ ] Registrare router verify in server/routers.ts
+- [ ] Registrare endpoint REST pubblico in server/_core/index.ts
+- [ ] Verificare TypeScript 0 errori

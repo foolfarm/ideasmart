@@ -70,6 +70,9 @@ import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGener
 import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
 import { researchReports, techEvents, siteUsers, dealflowPicks, toolSubmissions as toolSubmissionsTable, newsletterFeedback as newsletterFeedbackTable, openSourceTools as openSourceToolsTable } from "../drizzle/schema";
 import { aggregateEvents } from "./eventsAggregator";
+import { verifyOrgRouter } from "./verify/orgRouter";
+import { verifyApiKeyRouter } from "./verify/apiKeyRouter";
+import { verifyUsageRouter } from "./verify/usageRouter";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -87,6 +90,10 @@ export const appRouter = router({
   siteAuth: siteAuthRouter,
   account: accountRouter,
   channels: channelsRouter,
+  // ── ProofPress Verify SaaS — B2B Layer (namespace isolato) ─────────────────
+  verifyOrg: verifyOrgRouter,
+  verifyApiKey: verifyApiKeyRouter,
+  verifyUsage: verifyUsageRouter,
   journalist: journalistRouter,
   journalistAdmin: journalistAdminRouter,
 
