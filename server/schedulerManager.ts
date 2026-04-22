@@ -22,8 +22,8 @@
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
   *  │  NEWSLETTER UNIFICATA — OGNI GIORNO (lun–ven)                              │
-  *  │  14:30 (lun–ven) — Preview/test unificata → ac@acinelli.com              │
-  *  │  17:30 (lun–ven) — Newsletter unificata → tutti gli iscritti             │
+  *  │  17:30 (lun–ven) — Preview/test "Le notizie della Sera" → ac@acinelli.com │
+  *  │  20:00 (lun–ven) — Newsletter unificata → tutti gli iscritti             │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -449,9 +449,9 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA — 14:30 CET (lun–ven) ──────────────────────
-  cron.schedule("30 14 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 14:30 CET — Invio preview newsletter Proof Press Daily...");
+  // ── PREVIEW NEWSLETTER UNIFICATA — 17:30 CET (lun–ven) ──────────────────────
+  cron.schedule("30 17 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 17:30 CET — Invio preview newsletter Le notizie della Sera di ProofPress...");
     await withLock("newsletter-preview", async () => {
       try {
         const { sendUnifiedPreview } = await import("./unifiedNewsletter");
@@ -467,9 +467,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 17:30 CET (lun–ven) ────────────────
-  cron.schedule("30 17 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 17:30 CET — Invio massivo newsletter Proof Press Daily...");
+  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 20:00 CET (lun–ven) ────────────────
+  cron.schedule("0 20 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 20:00 CET — Invio massivo newsletter Le notizie della Sera di ProofPress...");
     await withLock("newsletter-massivo", async () => {
       try {
         const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");

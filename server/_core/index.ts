@@ -527,7 +527,7 @@ async function startServer() {
         return res.status(404).send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>❌ Token non valido</h2><p>Il link di approvazione non è valido o è già scaduto.</p></body></html>`);
       }
       if (record.approvedAt) {
-        return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>✅ Già approvata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata approvata e verrà inviata alle 17:30 CET.</p></body></html>`);
+        return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>✅ Già approvata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata approvata e verrà inviata alle 20:00 CET.</p></body></html>`);
       }
       if (record.status === 'sent') {
         return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,sans-serif;max-width:500px;margin:80px auto;text-align:center;"><h2>📧 Già inviata</h2><p>La newsletter <strong>${record.subject}</strong> è già stata inviata.</p></body></html>`);
@@ -536,8 +536,8 @@ async function startServer() {
         .set({ approvedAt: new Date(), approvedBy: "ac@acinelli.com", status: "approved" })
         .where(eq(newsletterSends.id, record.id));
       console.log(`[Approval] ✅ Newsletter approvata: "${record.subject}" (id: ${record.id})`);
-      try { await notifyOwner({ title: "✅ Newsletter approvata", content: `"${record.subject}" approvata. Invio massivo alle 17:30 CET.` }); } catch {}
-      return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:80px auto;text-align:center;background:#f5f5f7;padding:40px;border-radius:18px;"><div style="font-size:48px;margin-bottom:16px;">✅</div><h2 style="font-size:22px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Newsletter approvata</h2><p style="color:#6e6e73;font-size:15px;margin:0 0 24px;">${record.subject}</p><div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e5ea;"><p style="margin:0;font-size:14px;color:#1d1d1f;">L'invio massivo partirà automaticamente alle <strong>17:30 CET</strong>.</p></div><p style="margin-top:24px;font-size:12px;color:#aeaeb2;">ProofPress Admin · ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}</p></body></html>`);
+      try { await notifyOwner({ title: "✅ Newsletter approvata", content: `"${record.subject}" approvata. Invio massivo alle 20:00 CET.` }); } catch {}
+      return res.send(`<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:80px auto;text-align:center;background:#f5f5f7;padding:40px;border-radius:18px;"><div style="font-size:48px;margin-bottom:16px;">✅</div><h2 style="font-size:22px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Newsletter approvata</h2><p style="color:#6e6e73;font-size:15px;margin:0 0 24px;">${record.subject}</p><div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e5ea;"><p style="margin:0;font-size:14px;color:#1d1d1f;">L'invio massivo partirà automaticamente alle <strong>20:00 CET</strong>.</p></div><p style="margin-top:24px;font-size:12px;color:#aeaeb2;">ProofPress Admin · ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}</p></body></html>`);
     } catch (err) {
       console.error("[Approval] Errore:", err);
       return res.status(500).send("Errore interno");
@@ -560,6 +560,70 @@ async function startServer() {
       return res.json(result);
     } catch (err: any) {
       console.error('[ManualTrigger] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // POST /api/newsletter/trigger-preview — forza la generazione della preview (crea record pending)
+  app.post("/api/newsletter/trigger-preview", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+      const { sendUnifiedPreview } = await import('../unifiedNewsletter');
+      console.log('[ManualPreview] Avvio generazione preview newsletter...');
+      const result = await sendUnifiedPreview();
+      console.log('[ManualPreview] Risultato:', JSON.stringify(result));
+      return res.json(result);
+    } catch (err: any) {
+      console.error('[ManualPreview] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // POST /api/newsletter/force-send — genera + approva + invia in un unico step
+  app.post("/api/newsletter/force-send", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+      const { sendUnifiedPreview, sendUnifiedNewsletterToAll } = await import('../unifiedNewsletter');
+      const { getDb } = await import('../db' as any);
+      const mysql = await import('../../node_modules/mysql2/promise.js' as any);
+      const conn = await mysql.createConnection(process.env.DATABASE_URL);
+
+      // Step 1: genera preview con force=true (bypassa guard in-memory e DB)
+      console.log('[ForceNewsletter] Step 1: generazione preview (force mode)...');
+      const previewResult = await sendUnifiedPreview(true);
+      console.log('[ForceNewsletter] Preview generata:', previewResult?.subject);
+
+      // Step 2: approva il record pending di oggi
+      const [rows] = await conn.execute(
+        "SELECT id FROM newsletter_sends WHERE DATE(createdAt) = CURDATE() AND status = 'pending' ORDER BY id DESC LIMIT 1"
+      ) as any;
+      if (rows.length === 0) {
+        await conn.end();
+        return res.status(400).json({ error: 'Nessun record pending trovato dopo la preview' });
+      }
+      const recordId = rows[0].id;
+      await conn.execute(
+        "UPDATE newsletter_sends SET status = 'approved', approvedAt = NOW() WHERE id = ?",
+        [recordId]
+      );
+      console.log(`[ForceNewsletter] Step 2: record ${recordId} approvato`);
+      await conn.end();
+
+      // Step 3: invia a tutti
+      console.log('[ForceNewsletter] Step 3: invio massivo...');
+      const sendResult = await sendUnifiedNewsletterToAll();
+      console.log('[ForceNewsletter] Invio completato:', JSON.stringify(sendResult));
+      return res.json({ preview: previewResult, send: sendResult, recordId });
+    } catch (err: any) {
+      console.error('[ForceNewsletter] Errore:', err);
       return res.status(500).json({ error: err.message });
     }
   });

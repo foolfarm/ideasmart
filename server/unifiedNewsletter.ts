@@ -1292,7 +1292,7 @@ function buildNewsletterHtmlV2(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proof Press Daily — ${dateLabel}</title>
+  <title>Le notizie della Sera di ProofPress — ${dateLabel}</title>
   <!--[if mso]><style>table{border-collapse:collapse;}td{font-family:Helvetica,Arial,sans-serif;}</style><![endif]-->
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${F_SANS};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
@@ -1411,7 +1411,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn("[Newsletter] Pexels fetch skipped:", e);
   }
 
-  const subject = `Proof Press Daily — ${dateLabel}`;
+  const subject = `Le notizie della Sera di ProofPress — ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
     dateLabel,
@@ -1494,7 +1494,7 @@ async function hasAlreadySentTodayDB(): Promise<boolean> {
 /**
  * Invia una preview (bozza) della newsletter a ac@acinelli.com
  */
-export async function sendUnifiedPreview(): Promise<{
+export async function sendUnifiedPreview(force = false): Promise<{
   success: boolean;
   subject: string;
   stats: {
@@ -1510,7 +1510,7 @@ export async function sendUnifiedPreview(): Promise<{
   const testKey = `unified-test-${dayKey}`;
 
   // ── Guard in-memory (resiste entro la stessa sessione) ───────────────────
-  if (testSentDays.get(testKey)) {
+  if (!force && testSentDays.get(testKey)) {
     console.log(
       `[UnifiedNewsletter] Preview già inviata oggi (${dayKey}), skip (guard in-memory)`
     );
@@ -1519,6 +1519,10 @@ export async function sendUnifiedPreview(): Promise<{
       subject: "",
       stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
     };
+  }
+  if (force) {
+    console.log(`[UnifiedNewsletter] ⚡ Force mode: bypass guard in-memory per ${dayKey}`);
+    testSentDays.delete(testKey); // reset guard
   }
 
   //  // ── Guard DB-level (resiste ai riavvii del server) ───────────────────
@@ -1536,7 +1540,7 @@ export async function sendUnifiedPreview(): Promise<{
          AND status IN ('pending','approved','sending','sent') 
          LIMIT 1`
       ) as any[];
-      if (existingToday.length > 0) {
+      if (!force && existingToday.length > 0) {
         console.log(
           `[UnifiedNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${existingToday[0].id}, status=${existingToday[0].status}) — skip`
         );
@@ -1546,6 +1550,9 @@ export async function sendUnifiedPreview(): Promise<{
           subject: "",
           stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
         };
+      }
+      if (force && existingToday.length > 0) {
+        console.log(`[UnifiedNewsletter] ⚡ Force mode: guard DB bypassato (record esistente id=${existingToday[0].id})`);
       }
     }
   } catch (guardErr) {
@@ -1594,9 +1601,9 @@ export async function sendUnifiedPreview(): Promise<{
     const approvalBanner = `
       <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:20px 24px;margin:0 0 0;text-align:center;">
         <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:700;color:#856404;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 10px;">⚠️ BOZZA — In attesa di approvazione</p>
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1d1d1f;margin:0 0 16px;">Clicca il pulsante per approvare l'invio massivo alle <strong>17:30 CET</strong> a tutti gli iscritti.</p>
+        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1d1d1f;margin:0 0 16px;">Clicca il pulsante per approvare l'invio massivo alle <strong>20:00 CET</strong> a tutti gli iscritti.</p>
         <a href="${approvalUrl}" style="display:inline-block;background:#1d1d1f;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:980px;">✅ Approva e Invia Newsletter</a>
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;color:#856404;margin:12px 0 0;">Senza approvazione, la newsletter <strong>NON</strong> verrà inviata alle 17:30.</p>
+        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;color:#856404;margin:12px 0 0;">Senza approvazione, la newsletter <strong>NON</strong> verrà inviata alle 20:00.</p>
       </div>
     `;
     // Inserisce il banner subito dopo il tag <body>
@@ -1619,7 +1626,7 @@ export async function sendUnifiedPreview(): Promise<{
         : "nessuno";
 
       await notifyOwner({
-        title: `👁️ Bozza Proof Press Daily — ${new Date().toLocaleDateString("it-IT")} — APPROVAZIONE RICHIESTA`,
+        title: `👁️ Bozza Le notizie della Sera di ProofPress — ${new Date().toLocaleDateString("it-IT")} — APPROVAZIONE RICHIESTA`,
         content: `Bozza newsletter inviata a ${TEST_EMAILS.join(", ")}.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.\nCanali: ${channelStats}\n\n🔗 Approva qui: ${approvalUrl}`,
       });
 
@@ -1754,7 +1761,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
         sender: 'daily',
           to: "ac@acinelli.com",
           subject: `🔒 [ProofPress] Newsletter NON inviata — approvazione mancante (${now})`,
-          html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:32px;"><h2 style="color:#1d1d1f;font-size:20px;margin:0 0 16px;">Newsletter bloccata</h2><p style="color:#3a3a3c;font-size:15px;margin:0 0 12px;">La newsletter <strong>Proof Press Daily</strong> delle 17:30 <strong>non è stata inviata</strong> perché non è stata ricevuta l'approvazione.</p><p style="color:#3a3a3c;font-size:15px;margin:0;">Controlla l'email di preview delle 14:30 e clicca il pulsante <strong>"Approva e Invia"</strong> per autorizzare l'invio.</p></div>`,
+          html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:32px;"><h2 style="color:#1d1d1f;font-size:20px;margin:0 0 16px;">Newsletter bloccata</h2><p style="color:#3a3a3c;font-size:15px;margin:0 0 12px;">La newsletter <strong>Le notizie della Sera di ProofPress</strong> delle 20:00 <strong>non è stata inviata</strong> perché non è stata ricevuta l'approvazione.</p><p style="color:#3a3a3c;font-size:15px;margin:0;">Controlla l'email di preview delle 17:30 e clicca il pulsante <strong>"Approva e Invia"</strong> per autorizzare l'invio.</p></div>`,
         });
       } catch {}
       return {
@@ -1808,7 +1815,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
               <strong style="font-size:16px;">ProofPress — Alert Anti-Duplicati</strong>
             </div>
             <div style="border:1px solid #e5e7eb;border-top:none;padding:20px;border-radius:0 0 8px 8px;">
-              <p style="margin:0 0 12px;font-size:15px;color:#1a1a1a;">Il sistema ha rilevato un tentativo di invio duplicato della newsletter <strong>Proof Press Daily</strong> ed ha bloccato automaticamente l'operazione.</p>
+              <p style="margin:0 0 12px;font-size:15px;color:#1a1a1a;">Il sistema ha rilevato un tentativo di invio duplicato della newsletter <strong>Le notizie della Sera di ProofPress</strong> ed ha bloccato automaticamente l'operazione.</p>
               <table style="width:100%;border-collapse:collapse;font-size:13px;">
                 <tr><td style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Data/Ora blocco</td><td style="padding:8px 12px;border:1px solid #e5e7eb;color:#1a1a1a;">${blockedAt}</td></tr>
                 <tr><td style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;color:#6b7280;">Motivo</td><td style="padding:8px 12px;border:1px solid #e5e7eb;color:#1a1a1a;">Trovato invio già completato oggi nel DB (status=sent, recipientCount&gt;0)</td></tr>
@@ -1831,7 +1838,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     };
   }
 
-  console.log(`[UnifiedNewsletter] 📧 Invio massivo Proof Press Daily v2...`);
+  console.log(`[UnifiedNewsletter] 📧 Invio massivo Le notizie della Sera di ProofPress v2...`);
 
   try {
     const subscribers = await getActiveSubscribers();
@@ -1928,7 +1935,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     }
 
      await notifyOwner({
-      title: `📧 Proof Press Daily inviata — ${new Date().toLocaleDateString("it-IT")}`,
+      title: `📧 Le notizie della Sera di ProofPress inviata — ${new Date().toLocaleDateString("it-IT")}`,
       content: `Newsletter v2 inviata a ${totalSent}/${subscribers.length} iscritti.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.`,
     });
     // ── Report post-invio a +1h ──────────────────────────────────────────────
@@ -1955,7 +1962,7 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
 
     try {
       await notifyOwner({
-        title: `❌ Errore Proof Press Daily — ${new Date().toLocaleDateString("it-IT")}`,
+        title: `❌ Errore Le notizie della Sera di ProofPress — ${new Date().toLocaleDateString("it-IT")}`,
         content: `Errore durante l'invio della newsletter v2: ${msg}`,
       });
     } catch {}
