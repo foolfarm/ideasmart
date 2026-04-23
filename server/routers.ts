@@ -1351,7 +1351,10 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           });
           processingMs = Date.now() - t0;
           const rawContent = llmRes?.choices?.[0]?.message?.content ?? '{"claims":[]}';
-          const parsed = JSON.parse(typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent));
+          // Rimuove eventuali blocchi markdown ```json ... ``` che il modello può restituire
+          const cleanContent = (typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent))
+            .replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+          const parsed = JSON.parse(cleanContent);
           claims = parsed.claims ?? [];
           // 3. TrustScore semplificato basato su criteri strutturali
           let score = 0;

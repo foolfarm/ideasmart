@@ -26,6 +26,11 @@ const EXAMPLE_TEXTS = [
     title: "FoolFarm chiude round Series A da 5 milioni di euro",
     text: `FoolFarm, il venture studio italiano specializzato in startup AI-native, ha chiuso un round Series A da 5 milioni di euro guidato da CDP Venture Capital con la partecipazione di Azimut Libera Impresa e tre family office milanesi. I fondi saranno utilizzati per accelerare lo sviluppo di tre nuove venture nel settore AI for Business, con un focus su compliance automatizzata, analisi predittiva per PMI e piattaforme di content verification. Il portfolio attuale di FoolFarm comprende 12 startup, di cui 2 con exit completata e 4 in fase di scale-up. Il round porta la valutazione pre-money di FoolFarm a 18 milioni di euro.`,
   },
+  {
+    label: "CSRD / Deloitte Audit",
+    title: "CSRD Compliance Report 2024 — Emissioni, Governance e Supply Chain",
+    text: `Il presente report è redatto in conformità alla Corporate Sustainability Reporting Directive (CSRD) e agli European Sustainability Reporting Standards (ESRS E1, S1, G1). Emissioni: Le emissioni di Scope 1 e Scope 2 dell'esercizio 2024 ammontano rispettivamente a 18.200 tCO₂e e 9.400 tCO₂e, con una riduzione complessiva del 22% rispetto al baseline 2021. Le emissioni di Scope 3 (categorie 1, 4 e 11) sono state calcolate secondo il GHG Protocol e ammontano a 142.000 tCO₂e. Il piano di transizione prevede il raggiungimento del Net Zero entro il 2040, con target intermedi validati da Science Based Targets initiative (SBTi) nel 2023. Governance: Il Consiglio di Amministrazione ha approvato nel 2024 una politica di remunerazione variabile per il top management con il 30% legato al raggiungimento di KPI ESG (riduzione emissioni, parità di genere, indice di engagement dipendenti). Il Comitato Sostenibilità si riunisce con cadenza trimestrale e riporta direttamente al CDA. Supply Chain: Il 78% dei fornitori strategici (Tier 1, fatturato >500k€) ha completato la self-assessment ESG tramite la piattaforma EcoVadis, con un punteggio medio di 62/100. Sono stati identificati 4 fornitori ad alto rischio climatico nelle regioni MENA e Asia meridionale; per questi è stato avviato un piano di engagement e audit on-site previsto per Q2 2025. Il 100% del packaging primario è certificato FSC o PEFC.`,
+  },
 ];
 
 // ─── Colori per TrustGrade ────────────────────────────────────────────────────

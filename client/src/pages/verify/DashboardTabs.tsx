@@ -491,6 +491,19 @@ export function TabEditor() {
           TrustGrade e link alla pagina pubblica del report. Usa questa area per capire come funziona la certificazione
           prima di integrarla nel tuo workflow editoriale.
         </p>
+        {/* Link Demo Live */}
+        <Link href="/verify/demo">
+          <div className="mt-3 flex items-center gap-3 p-3 rounded-xl border border-[#00897b] bg-[#f0fdf4] hover:bg-[#e6faf5] transition-colors cursor-pointer">
+            <div className="w-7 h-7 bg-[#00897b] rounded-lg flex items-center justify-center flex-shrink-0">
+              <Zap className="w-3.5 h-3.5 text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-[#00897b]">Vuoi una demo rapida senza salvare nulla?</p>
+              <p className="text-xs text-[#6e6e73]">Usa la Demo Live pubblica — nessun login, nessun dato salvato nel DB.</p>
+            </div>
+            <ExternalLink className="w-4 h-4 text-[#00897b] flex-shrink-0" />
+          </div>
+        </Link>
       </div>
 
       {result ? (
