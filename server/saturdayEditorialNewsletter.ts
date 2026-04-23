@@ -277,10 +277,11 @@ export function buildSaturdayNewsletterHtml(opts: {
         <tr>
           <td style="background:${WHITE};padding:32px 28px 16px;text-align:center;">
             <a href="${BASE_URL}" style="text-decoration:none;">
-              <div style="font-size:48px;font-weight:900;color:${BLACK};letter-spacing:-2px;line-height:1;font-family:${FONT};">ProofPress</div>
+              <div style="font-size:42px;font-weight:900;color:${BLACK};letter-spacing:-2px;line-height:1;font-family:${FONT};">AI4Business News</div>
             </a>
-            <div style="margin-top:10px;font-size:10px;color:${SLATE};letter-spacing:0.28em;text-transform:uppercase;font-family:${FONT};line-height:1.5;">Intelligence Quotidiana su AI, Startup e Venture Capital</div>
-            <div style="margin-top:4px;font-size:10px;color:${MUTED};font-family:${FONT};font-style:italic;">Ricerche verificate, alert e briefing per chi prende decisioni.</div>
+            <div style="margin-top:6px;font-size:13px;font-weight:400;color:${SLATE};font-family:${FONT};">by ProofPress</div>
+            <div style="margin-top:10px;font-size:10px;color:${SLATE};letter-spacing:0.18em;text-transform:uppercase;font-family:${FONT};line-height:1.5;">Notizie di Innovazione, Investimenti e Tecnologia Esclusive</div>
+            <div style="margin-top:4px;font-size:10px;color:${MUTED};font-family:${FONT};">100% Verificate con <a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=saturday_header" style="color:${RED};text-decoration:none;font-weight:600;">tecnologia ProofPress Verify</a></div>
           </td>
         </tr>
 

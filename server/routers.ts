@@ -74,6 +74,7 @@ import { verifyOrgRouter } from "./verify/orgRouter";
 import { verifyApiKeyRouter } from "./verify/apiKeyRouter";
 import { verifyUsageRouter } from "./verify/usageRouter";
 import { verifyClientRouter } from "./verify/clientRouter";
+import { verifyStripeRouter } from "./verify/stripeVerify";
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -96,6 +97,7 @@ export const appRouter = router({
   verifyApiKey: verifyApiKeyRouter,
   verifyUsage: verifyUsageRouter,
   verifyClient: verifyClientRouter,
+  verifyStripe: verifyStripeRouter,
   journalist: journalistRouter,
   journalistAdmin: journalistAdminRouter,
 

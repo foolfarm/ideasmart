@@ -9,3 +9,4 @@ export { verifyApiKeyRouter } from "./apiKeyRouter";
 export { verifyUsageRouter } from "./usageRouter";
 export { validateApiKey } from "./apiKeyRouter";
 export { incrementArticleUsage } from "./usageRouter";
+export { registerVerifyPublicApi } from "./publicApi";

@@ -168,12 +168,20 @@ export async function getActiveSubscribersByNewsletter(newsletter: 'ai4business'
   );
 }
 
+// Email protette dalla disiscrizione (owner e admin)
+const PROTECTED_EMAILS = ["ac@acinelli.com", "andrea@acinelli.com"];
+
 export async function unsubscribeEmail(email: string) {
+  const normalized = email.trim().toLowerCase();
+  if (PROTECTED_EMAILS.includes(normalized)) {
+    console.warn(`[Unsubscribe] ⛔ Tentativo di disiscrizione bloccato per email protetta: ${normalized}`);
+    return; // silenzioso: non lancia errore, non modifica il DB
+  }
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(subscribers)
     .set({ status: "unsubscribed", unsubscribedAt: new Date() })
-    .where(eq(subscribers.email, email));
+    .where(eq(subscribers.email, normalized));
 }
 
 // Disiscrivi tramite token (GDPR-compliant, nessun login richiesto)
@@ -192,6 +200,12 @@ export async function unsubscribeByToken(token: string): Promise<{ success: bool
   const subscriber = result[0];
   if (subscriber.status === "unsubscribed") {
     return { success: true, email: subscriber.email }; // già disiscritta
+  }
+
+  // Protezione owner: blocca silenziosamente la disiscrizione
+  if (PROTECTED_EMAILS.includes(subscriber.email.trim().toLowerCase())) {
+    console.warn(`[Unsubscribe] ⛔ Tentativo di disiscrizione via token bloccato per email protetta: ${subscriber.email}`);
+    return { success: true, email: subscriber.email }; // risponde OK ma non modifica il DB
   }
 
   await db.update(subscribers)

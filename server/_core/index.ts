@@ -77,6 +77,8 @@ process.on("unhandledRejection", (reason) => {
 
 import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
+import { registerVerifyPublicApi } from "../verify/publicApi";
+import { registerVerifyStripeWebhook } from "../verify/stripeVerify";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -199,6 +201,10 @@ async function startServer() {
   registerStorageProxy(app);
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+  // ProofPress Verify SaaS — REST API pubblica B2B
+  registerVerifyPublicApi(app);
+  // ProofPress Verify SaaS — Stripe webhook
+  registerVerifyStripeWebhook(app);
 
   // ── Auth endpoints dedicati — bypassano tRPC per impostare cookie correttamente ──
   // tRPC v11 serializza la risposta prima che Express possa aggiungere Set-Cookie.
