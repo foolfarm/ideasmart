@@ -7,13 +7,14 @@
  * Namespace isolato: nessuna dipendenza con il magazine.
  */
 import { z } from "zod";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, isNotNull, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure } from "../_core/trpc";
 import { getDb } from "../db";
 import {
   verifyOrganizations,
   verifySubscriptions,
+  newsItems,
   type InsertVerifyOrganization,
 } from "../../drizzle/schema";
 
@@ -211,6 +212,56 @@ export const verifyOrgRouter = router({
         .where(eq(verifyOrganizations.id, id));
 
       return { success: true };
+    }),
+
+  /**
+   * [ADMIN] Registro certificazioni IPFS — lista articoli verificati con CID Pinata
+   */
+  listCertifications: protectedProcedure
+    .input(z.object({
+      limit: z.number().min(1).max(200).default(100),
+      offset: z.number().min(0).default(0),
+    }).optional())
+    .query(async ({ ctx, input }) => {
+      requireAdmin(ctx.user.role);
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile." });
+
+      const limit = input?.limit ?? 100;
+      const offset = input?.offset ?? 0;
+
+      const rows = await db
+        .select({
+          id: newsItems.id,
+          title: newsItems.title,
+          verifyHash: newsItems.verifyHash,
+          trustScore: newsItems.trustScore,
+          trustGrade: newsItems.trustGrade,
+          ipfsCid: newsItems.ipfsCid,
+          ipfsUrl: newsItems.ipfsUrl,
+          ipfsPinnedAt: newsItems.ipfsPinnedAt,
+          publishedAt: newsItems.publishedAt,
+          section: newsItems.section,
+        })
+        .from(newsItems)
+        .where(isNotNull(newsItems.verifyReport))
+        .orderBy(desc(newsItems.ipfsPinnedAt))
+        .limit(limit)
+        .offset(offset);
+
+      const [[totalRow]] = await db.execute(
+        sql`SELECT COUNT(*) as total FROM news_items WHERE verifyReport IS NOT NULL`
+      ) as any;
+      const [[pinnedRow]] = await db.execute(
+        sql`SELECT COUNT(*) as pinned FROM news_items WHERE ipfsCid IS NOT NULL`
+      ) as any;
+
+      return {
+        rows,
+        total: Number(totalRow.total),
+        pinned: Number(pinnedRow.pinned),
+        pending: Number(totalRow.total) - Number(pinnedRow.pinned),
+      };
     }),
 
   /**

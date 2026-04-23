@@ -50,6 +50,10 @@ import {
   AlertTriangle,
   BarChart3,
   Users,
+  Database,
+  ExternalLink,
+  Link2,
+  Clock,
 } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -72,6 +76,149 @@ function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text).then(() => {
     toast.success("Copiato negli appunti");
   });
+}
+
+// ── Componente Registro Certificazioni IPFS ─────────────────────────────────
+function IpfsCertificationRegistry() {
+  const { data, isLoading, refetch } = trpc.verifyOrg.listCertifications.useQuery({ limit: 100, offset: 0 });
+
+  const gradeColor = (grade: string | null) => {
+    if (!grade) return "bg-gray-100 text-gray-500";
+    if (grade === "A") return "bg-green-100 text-green-700";
+    if (grade === "B") return "bg-blue-100 text-blue-700";
+    if (grade === "C") return "bg-amber-100 text-amber-700";
+    return "bg-red-100 text-red-700";
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-6">
+      <Card className="border-[#e5e5e5] shadow-none">
+        <CardHeader className="pb-3 border-b border-[#f0f0f0]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Database className="w-4 h-4 text-[#6e6e73]" />
+              <CardTitle className="text-sm font-bold">Registro Certificazioni IPFS</CardTitle>
+              {data && (
+                <div className="flex items-center gap-2 ml-2">
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
+                    {data.pinned} pinnati
+                  </span>
+                  {data.pending > 0 && (
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">
+                      {data.pending} in attesa
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+            <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs" onClick={() => refetch()}>
+              <RefreshCw className="w-3 h-3" />
+              Aggiorna
+            </Button>
+          </div>
+          <p className="text-xs text-[#6e6e73] mt-1">
+            Ogni verifica è sigillata con un hash crittografico e pinnata su IPFS via Pinata. Il CID è immutabile: garantisce che il report non sia stato alterato dopo la certificazione.
+          </p>
+        </CardHeader>
+        <CardContent className="p-0">
+          {isLoading ? (
+            <div className="p-6 text-sm text-[#6e6e73] text-center">Caricamento registro...</div>
+          ) : !data || data.rows.length === 0 ? (
+            <div className="p-6 text-sm text-[#6e6e73] text-center">Nessuna certificazione disponibile.</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-[#f0f0f0]">
+                    <TableHead className="text-xs text-[#6e6e73] font-medium w-8">#</TableHead>
+                    <TableHead className="text-xs text-[#6e6e73] font-medium">Titolo articolo</TableHead>
+                    <TableHead className="text-xs text-[#6e6e73] font-medium">Grade</TableHead>
+                    <TableHead className="text-xs text-[#6e6e73] font-medium">Verify Hash</TableHead>
+                    <TableHead className="text-xs text-[#6e6e73] font-medium">IPFS CID</TableHead>
+                    <TableHead className="text-xs text-[#6e6e73] font-medium">Pinnato il</TableHead>
+                    <TableHead className="text-xs text-[#6e6e73] font-medium">Link</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data.rows.map((row, i) => (
+                    <TableRow key={row.id} className="border-[#f0f0f0] hover:bg-[#fafafa]">
+                      <TableCell className="text-xs text-[#6e6e73]">{i + 1}</TableCell>
+                      <TableCell className="text-xs text-[#1d1d1f] max-w-xs">
+                        <span className="line-clamp-2">{row.title || "—"}</span>
+                      </TableCell>
+                      <TableCell>
+                        {row.trustGrade ? (
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${gradeColor(row.trustGrade)}`}>
+                            {row.trustGrade}
+                          </span>
+                        ) : <span className="text-xs text-[#6e6e73]">—</span>}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <code className="text-xs font-mono text-[#6e6e73] bg-[#f5f5f7] px-1.5 py-0.5 rounded">
+                            {row.verifyHash ? row.verifyHash.slice(0, 12) + "..." : "—"}
+                          </code>
+                          {row.verifyHash && (
+                            <button
+                              className="text-[#6e6e73] hover:text-[#1d1d1f] transition-colors"
+                              onClick={() => copyToClipboard(row.verifyHash!)}
+                              title="Copia hash completo"
+                            >
+                              <Copy className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {row.ipfsCid ? (
+                          <div className="flex items-center gap-1">
+                            <code className="text-xs font-mono text-green-700 bg-green-50 px-1.5 py-0.5 rounded">
+                              {row.ipfsCid.slice(0, 12) + "..."}
+                            </code>
+                            <button
+                              className="text-[#6e6e73] hover:text-[#1d1d1f] transition-colors"
+                              onClick={() => copyToClipboard(row.ipfsCid!)}
+                              title="Copia CID completo"
+                            >
+                              <Copy className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">In attesa</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {row.ipfsPinnedAt ? (
+                          <div className="flex items-center gap-1 text-xs text-[#6e6e73]">
+                            <Clock className="w-3 h-3" />
+                            {new Date(row.ipfsPinnedAt).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" })}
+                          </div>
+                        ) : <span className="text-xs text-[#6e6e73]">—</span>}
+                      </TableCell>
+                      <TableCell>
+                        {row.ipfsUrl ? (
+                          <a
+                            href={row.ipfsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
+                            title="Apri su IPFS Gateway"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            IPFS
+                          </a>
+                        ) : <span className="text-xs text-[#6e6e73]">—</span>}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 // ── Componente principale ─────────────────────────────────────────────────────
@@ -417,6 +564,9 @@ export default function AdminVerify() {
           </div>
         </div>
       </div>
+
+      {/* ── REGISTRO CERTIFICAZIONI IPFS ── */}
+      <IpfsCertificationRegistry />
 
       {/* ── Dialog: Crea organizzazione ── */}
       <Dialog open={showCreateOrg} onOpenChange={setShowCreateOrg}>
