@@ -552,6 +552,78 @@ export default function VerifyReport() {
                 )}
               </div>
 
+              {/* Export PDF / TXT */}
+              {trustGrade && (
+                <div className="rounded-2xl p-4 mb-4" style={{ background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
+                  <p className="text-[10px] font-black uppercase tracking-widest mb-3" style={{ color: "#166534", fontFamily: FONT }}>Esporta il Verification Report</p>
+                  <div className="flex gap-2 flex-wrap items-center">
+                    <button
+                      onClick={() => {
+                        const lines: string[] = [];
+                        lines.push("PROOFPRESS VERIFY — VERIFICATION REPORT");
+                        lines.push("========================================");
+                        lines.push("");
+                        lines.push(`Titolo: ${articleTitle}`);
+                        if (sourceName) lines.push(`Fonte: ${sourceName}`);
+                        if (sourceUrl) lines.push(`URL: ${sourceUrl}`);
+                        if (publishedDate) lines.push(`Data pubblicazione: ${publishedDate}`);
+                        lines.push("");
+                        lines.push("CERTIFICAZIONE CRITTOGRAFICA");
+                        lines.push("----------------------------");
+                        lines.push(`TrustGrade: ${trustGrade}`);
+                        if (trustScore !== null) lines.push(`TrustScore: ${Math.round(trustScore * 100)}/100`);
+                        lines.push(`Hash SHA-256: ${verifyHash}`);
+                        if (ipfsCid) lines.push(`CID IPFS: ${ipfsCid}`);
+                        lines.push(`Report URL: ${window.location.href}`);
+                        lines.push("");
+                        if (claims.length > 0) {
+                          lines.push("CLAIM ESTRATTI E CORROBORAZIONE");
+                          lines.push("--------------------------------");
+                          claims.forEach((claim, i) => {
+                            const corr = corroboration.find(c => c.claim_id === claim.claim_id);
+                            lines.push(`[${i + 1}] ${claim.text}`);
+                            lines.push(`    Tipo: ${claim.type} | Verificabile: ${claim.verifiable ? 'Sì' : 'No'}`);
+                            if (corr) {
+                              lines.push(`    Stato: ${corr.status} | Confidence: ${Math.round(corr.confidence * 100)}% | Fonti: ${corr.sources_checked}`);
+                            }
+                            lines.push("");
+                          });
+                        }
+                        lines.push("BREAKDOWN TRUST SCORE");
+                        lines.push("---------------------");
+                        lines.push(`Hash SHA-256: ${verifyHash ? '✓ +40 pt' : '✗ 0 pt'}`);
+                        lines.push(`CID IPFS: ${ipfsCid ? '✓ +25 pt' : '✗ 0 pt'}`);
+                        lines.push(`Fonte citata: ${sourceName ? '✓ +8 pt' : '✗ 0 pt'}`);
+                        lines.push(`URL fonte: ${sourceUrl ? '✓ +7 pt' : '✗ 0 pt'}`);
+                        lines.push(`Contenuto ricco: ${articleSummary && articleSummary.length > 800 ? '✓ +15 pt' : '✗ 0 pt'}`);
+                        lines.push(`Report AI: ${claims.length > 0 ? '✓ +5 pt' : '✗ 0 pt'}`);
+                        lines.push("");
+                        lines.push("NOTA LEGALE");
+                        lines.push("-----------");
+                        lines.push("Questo report è generato automaticamente da ProofPress Verify.");
+                        lines.push("La certificazione crittografica garantisce l'integrità del contenuto al momento della pubblicazione.");
+                        lines.push("Non costituisce parere legale o assurance professionale.");
+                        lines.push("");
+                        lines.push(`Generato il: ${new Date().toLocaleString('it-IT')}`);
+                        lines.push("ProofPress Verify — https://proofpress.ai/proofpress-verify");
+                        const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = `ProofPress-Verify-Report-${(verifyHash ?? cid ?? 'report').substring(0, 16)}.txt`;
+                        a.click();
+                        URL.revokeObjectURL(url);
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-opacity hover:opacity-80"
+                      style={{ background: "#16a34a", color: "#fff", fontFamily: FONT }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Scarica Report (.txt)
+                    </button>
+                    <p className="text-[10px]" style={{ color: "#166534", fontFamily: FONT }}>Contiene Grade, breakdown criteri, claims, hash SHA-256 e CID IPFS</p>
+                  </div>
+                </div>
+              )}
               {/* Social Share */}
               {trustGrade && (
                 <div className="rounded-2xl p-4 mb-4" style={{ background: "#f5f5f7", border: "1px solid rgba(10,10,10,0.08)" }}>
