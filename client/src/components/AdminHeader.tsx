@@ -24,6 +24,7 @@ const NAV_ITEMS = [
   { label: "Alert Log", path: "/admin/alert-log" },
   { label: "Amazon Deals", path: "/admin/amazon-deals" },
   { label: "Promo Newsletter", path: "/admin/promo-newsletter" },
+  { label: "Verify Clienti", path: "/admin/verify" },
 ];
 
 interface AdminHeaderProps {

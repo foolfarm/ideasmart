@@ -1051,6 +1051,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
             publishedAt: newsItemsTable.publishedAt,
             category: newsItemsTable.category,
             weekLabel: newsItemsTable.weekLabel,
+            verifyReport: newsItemsTable.verifyReport,
           })
           .from(newsItemsTable)
           .where(eq(newsItemsTable.verifyHash, input.hash))
@@ -1061,7 +1062,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         if (!article.verifyHash) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Hash non presente' });
 
         // Se già verificato, restituisce i dati salvati
-        if (article.trustScore !== null && article.trustGrade !== null) {
+        if (article.trustScore !== null && article.trustGrade !== null && article.verifyReport !== null) {
           const existing = await db
             .select({ verifyReport: newsItemsTable.verifyReport })
             .from(newsItemsTable)
