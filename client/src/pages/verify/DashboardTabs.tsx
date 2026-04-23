@@ -4,7 +4,7 @@
  * TabEasyStart     → Easy Start (onboarding guidato in 5 passi)
  * TabEditor        → Scrivi & Pubblica (editor giornalista con output certificato)
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -12,11 +12,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { Link } from "wouter";
 import {
   Shield, Hash, Database, CheckCircle, Copy, ExternalLink,
   FileText, Zap, Lock, Globe, BarChart3, Key, BookOpen,
   Sparkles, Clock, Search, Layers, Brain,
-  PenLine, Send, RefreshCw, Link2,
+  PenLine, Send, RefreshCw, Link2, Loader2,
 } from "lucide-react";
 
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif";
@@ -697,18 +698,28 @@ export function TabMyPosts() {
 
   const { data, isLoading, refetch } = trpc.verifyClient.myPosts.useQuery(
     { limit: PAGE, offset: page * PAGE },
-    { staleTime: 30_000 }
+    { staleTime: 15_000 }
   );
+
+  const rows = data?.rows ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.ceil(total / PAGE);
+
+  // Polling automatico ogni 15 secondi se ci sono articoli con TrustGrade null (pipeline in corso)
+  const hasPending = rows.some(r => !r.trustGrade);
+  useEffect(() => {
+    if (!hasPending) return;
+    const interval = setInterval(() => {
+      refetch();
+    }, 15_000);
+    return () => clearInterval(interval);
+  }, [hasPending, refetch]);
 
   function copyHash(hash: string) {
     navigator.clipboard.writeText(hash);
     setCopied(hash);
     setTimeout(() => setCopied(null), 2000);
   }
-
-  const rows = data?.rows ?? [];
-  const total = data?.total ?? 0;
-  const totalPages = Math.ceil(total / PAGE);
 
   return (
     <div className="space-y-6">
@@ -764,12 +775,25 @@ export function TabMyPosts() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <h4 className="text-sm font-semibold text-[#1d1d1f] leading-snug line-clamp-2">{row.title}</h4>
-                      <div className="flex gap-1 flex-shrink-0">
-                        <a href={verifyUrl} target="_blank" rel="noopener noreferrer"
-                          className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#f5f5f7] transition-colors"
-                          title="Apri report pubblico">
-                          <ExternalLink className="w-3.5 h-3.5 text-[#6e6e73]" />
-                        </a>
+                      <div className="flex gap-1.5 flex-shrink-0 items-center">
+                        {/* Indicatore pipeline in corso */}
+                        {!row.trustGrade && (
+                          <span className="flex items-center gap-1 text-[10px] text-[#f59e0b] font-medium">
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                            In elaborazione
+                          </span>
+                        )}
+                        {/* Link al report pubblico (solo se ha hash) */}
+                        {row.verifyHash && (
+                          <Link href={`/verify/${row.verifyHash}`}>
+                            <button
+                              className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-lg bg-[#f5f5f7] hover:bg-[#e5e5e5] transition-colors text-[#1d1d1f]"
+                              title="Vai al report completo">
+                              <ExternalLink className="w-3 h-3" />
+                              Report
+                            </button>
+                          </Link>
+                        )}
                       </div>
                     </div>
 
@@ -791,14 +815,14 @@ export function TabMyPosts() {
                           : <Copy className="w-3 h-3 opacity-50" />}
                       </button>
 
-                      {/* IPFS */}
+                      {/* IPFS — apre la pagina report /verify/:cid */}
                       {row.ipfsCid && (
-                        <a href={row.ipfsUrl ?? `https://ipfs.io/ipfs/${row.ipfsCid}`}
-                          target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-[11px] text-[#00897b] hover:underline">
-                          <Database className="w-3 h-3" />
-                          IPFS
-                        </a>
+                        <Link href={`/verify/${row.ipfsCid}`}>
+                          <span className="flex items-center gap-1 text-[11px] text-[#00897b] hover:underline cursor-pointer">
+                            <Database className="w-3 h-3" />
+                            IPFS
+                          </span>
+                        </Link>
                       )}
 
                       {/* TrustScore */}

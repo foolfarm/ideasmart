@@ -945,6 +945,56 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         };
       }),
 
+    // Cerca articolo per CID IPFS — usato dalla pagina /verify/:cid quando il parametro è un CID IPFS
+    lookupByCid: publicProcedure
+      .input(z.object({ cid: z.string().min(10).max(200) }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return null;
+        const rows = await db
+          .select({
+            id: newsItemsTable.id,
+            title: newsItemsTable.title,
+            summary: newsItemsTable.summary,
+            category: newsItemsTable.category,
+            weekLabel: newsItemsTable.weekLabel,
+            sourceName: newsItemsTable.sourceName,
+            sourceUrl: newsItemsTable.sourceUrl,
+            section: newsItemsTable.section,
+            publishedAt: newsItemsTable.publishedAt,
+            verifyHash: newsItemsTable.verifyHash,
+            ipfsCid: newsItemsTable.ipfsCid,
+            ipfsUrl: newsItemsTable.ipfsUrl,
+            ipfsPinnedAt: newsItemsTable.ipfsPinnedAt,
+            trustScore: newsItemsTable.trustScore,
+            trustGrade: newsItemsTable.trustGrade,
+            verifyReport: newsItemsTable.verifyReport,
+          })
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.ipfsCid, input.cid))
+          .limit(1);
+        if (!rows.length) return null;
+        const r = rows[0];
+        return {
+          id: r.id,
+          title: r.title,
+          summary: r.summary,
+          category: r.category,
+          weekLabel: r.weekLabel,
+          sourceName: r.sourceName,
+          sourceUrl: r.sourceUrl ?? null,
+          section: r.section,
+          publishedAt: r.publishedAt,
+          verifyHash: r.verifyHash ?? null,
+          ipfsCid: r.ipfsCid ?? null,
+          ipfsUrl: r.ipfsUrl ?? null,
+          ipfsPinnedAt: r.ipfsPinnedAt ?? null,
+          trustScore: r.trustScore ?? null,
+          trustGrade: r.trustGrade ?? null,
+          verifyReport: r.verifyReport ?? null,
+        };
+      }),
+
     // Ancora un articolo su IPFS via Pinata — restituisce CID e URL gateway
     pinToIPFS: publicProcedure
       .input(z.object({ hash: z.string().min(8).max(128) }))

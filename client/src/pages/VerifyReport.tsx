@@ -1,10 +1,10 @@
-import SharedPageHeader from "@/components/SharedPageHeader";
 /**
  * PROOFPRESS VERIFY REPORT — Pagina pubblica del Verification Report
  *
  * Route: /verify/:cid
  *
  * Mostra il report di certificazione con:
+ * - Header minimal Verify-only (senza header ProofPress Magazine)
  * - TrustGrade visuale con breakdown criteri
  * - Claims estratti con stato di corroborazione
  * - Hash SHA-256 e CID IPFS
@@ -287,21 +287,33 @@ export default function VerifyReport() {
 
   // Determina se il CID è un hash SHA-256 (64 char hex) o un CID IPFS (bafk…)
   const isHash = cid && /^[a-f0-9]{64}$/i.test(cid);
+  const isIpfsCid = cid && !isHash;
 
   // Cerca l'articolo nel DB per hash SHA-256
-  const { data: dbArticle } = trpc.news.lookupByHash.useQuery(
+  const { data: dbArticleByHash, isLoading: loadingHash } = trpc.news.lookupByHash.useQuery(
     { hash: cid! },
     { enabled: !!isHash, retry: 1, staleTime: 60_000 }
   );
 
-  // Carica il report IPFS (solo se è un CID IPFS, non un hash)
-  const { data: rawReport, isLoading: loading, error: queryError } = trpc.news.fetchIPFSReport.useQuery(
+  // Cerca l'articolo nel DB per CID IPFS (evita il fetch IPFS che richiede formato specifico)
+  const { data: dbArticleByCid, isLoading: loadingCid } = trpc.news.lookupByCid.useQuery(
     { cid: cid! },
-    { enabled: !!cid && !isHash, retry: 1 }
+    { enabled: !!isIpfsCid, retry: 1, staleTime: 60_000 }
   );
 
-  const report = rawReport as VerificationReport | undefined;
+  // Unifica i risultati: preferisce lookup per hash, poi per CID
+  const dbArticle = dbArticleByHash ?? dbArticleByCid ?? null;
+
+  // Carica il report IPFS solo come fallback se il DB non ha l'articolo
+  const needsIpfsFallback = !!(isIpfsCid && !loadingCid && !dbArticleByCid);
+  const { data: rawReport, isLoading: loadingIpfs, error: queryError } = trpc.news.fetchIPFSReport.useQuery(
+    { cid: cid! },
+    { enabled: needsIpfsFallback, retry: 1 }
+  );
+
+  const report = rawReport as unknown as VerificationReport | undefined;
   const error = queryError?.message ?? null;
+  const loading = loadingHash || loadingCid || loadingIpfs;
 
   // Estrae claims e corroboration dal verifyReport del DB (JSON string)
   const parsedVerifyReport: RawVerifyReport | null = (() => {
@@ -348,7 +360,24 @@ export default function VerifyReport() {
         description="Verification Report immutabile ancorato su IPFS tramite ProofPress Verify. Prova crittografica dell'autenticità dell'articolo."
       />
 
-      <SharedPageHeader />
+      {/* ── Header minimal Verify-only (no ProofPress Magazine header) ── */}
+      <header style={{ background: "#fff", borderBottom: "1px solid rgba(10,10,10,0.08)" }}>
+        <div className="max-w-3xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
+          <Link href="/proofpress-verify">
+            <span className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity">
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#2e7d32" }}>
+                <ShieldCheck size={16} color="#fff" strokeWidth={2.5} />
+              </div>
+              <span className="text-sm font-black" style={{ color: "#1a1a1a", fontFamily: FONT }}>ProofPress Verify</span>
+            </span>
+          </Link>
+          <a href="https://proofpress.ai" target="_blank" rel="noopener noreferrer"
+            className="text-[11px] font-medium hover:opacity-70 transition-opacity"
+            style={{ color: "rgba(10,10,10,0.4)", fontFamily: FONT }}>
+            proofpress.ai →
+          </a>
+        </div>
+      </header>
 
       <main className="min-h-screen" style={{ background: "#f5f5f7" }}>
         <div className="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
