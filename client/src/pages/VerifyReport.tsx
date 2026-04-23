@@ -552,6 +552,40 @@ export default function VerifyReport() {
                 )}
               </div>
 
+              {/* Social Share */}
+              {trustGrade && (
+                <div className="rounded-2xl p-4 mb-4" style={{ background: "#f5f5f7", border: "1px solid rgba(10,10,10,0.08)" }}>
+                  <p className="text-[10px] font-black uppercase tracking-widest mb-3" style={{ color: "rgba(10,10,10,0.4)", fontFamily: FONT }}>Condividi la certificazione</p>
+                  <div className="flex gap-2 flex-wrap">
+                    <a
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-opacity hover:opacity-80"
+                      style={{ background: "#0a66c2", color: "#fff", fontFamily: FONT }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                      LinkedIn
+                    </a>
+                    <a
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Questo articolo ha ottenuto Grade ${trustGrade} su ProofPress Verify — certificazione crittografica AI-powered. SHA-256: ${verifyHash?.substring(0, 16)}… `)}&url=${encodeURIComponent(window.location.href)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-opacity hover:opacity-80"
+                      style={{ background: "#000", color: "#fff", fontFamily: FONT }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      X / Twitter
+                    </a>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(window.location.href); }}
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-opacity hover:opacity-80"
+                      style={{ background: "rgba(10,10,10,0.08)", color: "#1a1a1a", fontFamily: FONT }}
+                    >
+                      <Copy size={12} />
+                      Copia link
+                    </button>
+                  </div>
+                </div>
+              )}
               {/* Nota tecnica */}
               <div className="rounded-xl p-4" style={{ background: "rgba(10,10,10,0.03)", border: "1px solid rgba(10,10,10,0.06)" }}>
                 <p className="text-[10px] leading-relaxed" style={{ color: "rgba(10,10,10,0.4)", fontFamily: FONT }}>

@@ -199,11 +199,65 @@ export function TabWhatIsVerify() {
             </div>
           ))}
         </div>
+       </div>
+
+      {/* Caso d'uso CSRD */}
+      <div className="rounded-2xl overflow-hidden" style={{ border: "1.5px solid #e5e5e5" }}>
+        <div className="px-6 py-4 flex items-center gap-3" style={{ background: "#f0fdf4", borderBottom: "1px solid #bbf7d0" }}>
+          <div className="w-8 h-8 rounded-xl bg-green-600 flex items-center justify-center flex-shrink-0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <p className="text-sm font-black text-green-800" style={{ fontFamily: SF }}>Caso d'uso: CSRD / Non-Financial Disclosure</p>
+            <p className="text-xs text-green-700">Come ProofPress Verify si applica alla verifica di claim ESG in un bilancio di sostenibilità</p>
+          </div>
+        </div>
+        <div className="p-6 bg-white">
+          <p className="text-sm text-[#3d3d3d] mb-5 leading-relaxed">
+            Con l'entrata in vigore della <strong>CSRD (Corporate Sustainability Reporting Directive)</strong> e degli standard ESRS, le aziende quotate devono produrre centinaia di claim non-finanziari verificabili — emissioni, supply chain, diversity, sicurezza. Ogni claim deve essere difendibile in caso di contestazione da parte di autorità di vigilanza o in sede di assurance.
+          </p>
+          <p className="text-xs font-black uppercase tracking-widest text-[#6e6e73] mb-3">Esempio di claim estratto da un bilancio di sostenibilità</p>
+          <div className="rounded-xl p-4 mb-5" style={{ background: "#f5f5f7", border: "1px solid #e5e5e5" }}>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-[#1d1d1f] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-[9px] font-black text-white">C1</span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-[#1d1d1f] mb-1">"L'azienda ha ridotto le emissioni di CO₂ del 30% rispetto al 2022, raggiungendo 42.000 tonnellate di CO₂eq nel 2024."</p>
+                <p className="text-[11px] text-[#6e6e73]">Tipo: statistica · Entità: emissioni CO₂, anno 2024 · Verificabile: sì</p>
+              </div>
+            </div>
+          </div>
+          <p className="text-xs font-black uppercase tracking-widest text-[#6e6e73] mb-3">Cosa produce ProofPress Verify su questo claim</p>
+          <div className="space-y-3 mb-5">
+            {[
+              { step: "1", label: "Hash SHA-256 al momento della pubblicazione", desc: "Prova crittografica che il claim, a quel timestamp, diceva esattamente questo — difendibile in caso di contestazione Consob o class action su comunicati price-sensitive.", ok: true },
+              { step: "2", label: "Corroborazione multi-fonte", desc: "Il sistema cerca fonti primarie (report istituzionali, database pubblici, comunicati ufficiali) che confermino o contraddicano il dato. Restituisce confidence score e lista delle fonti analizzate.", ok: true },
+              { step: "3", label: "Binding crittografico autore-contenuto", desc: "Il report sigilla autore, contenuto e timestamp in un unico hash immutabile archiviato su IPFS — audit trail regolatorio nativo, allineato AI Act e DSA.", ok: true },
+              { step: "4", label: "TrustGrade del documento", desc: "Il documento riceve un Grade (A–F) che sintetizza la qualità della certificazione crittografica. Grade A = tutti i criteri soddisfatti, adatto per disclosure regolatori.", ok: true },
+            ].map(({ step, label, desc, ok }) => (
+              <div key={step} className="flex gap-3 p-4 rounded-xl" style={{ background: ok ? "#f0fdf4" : "#fef2f2", border: `1px solid ${ok ? "#bbf7d0" : "#fecaca"}` }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: ok ? "#16a34a" : "#dc2626" }}>
+                  <span className="text-[9px] font-black text-white">{step}</span>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold mb-0.5" style={{ color: ok ? "#15803d" : "#b91c1c", fontFamily: SF }}>{label}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: ok ? "#166534" : "#991b1b" }}>{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-xl p-4" style={{ background: "#eff6ff", border: "1px solid #bfdbfe" }}>
+            <p className="text-xs font-black text-blue-800 mb-1" style={{ fontFamily: SF }}>Impatto operativo per un team di Audit & Assurance</p>
+            <p className="text-xs text-blue-700 leading-relaxed">
+              Un engagement CSRD su una FTSE MIB richiede la verifica manuale di 200–500 claim non-finanziari. Con ProofPress Verify, ogni claim viene processato in 4–8 secondi con audit trail crittografico nativo. Il revisore non viene sostituito — ottiene un motore per <strong>industrializzare l'assurance</strong> sui non-financial statement, riducendo il tempo di verifica e aumentando la difendibilità del report finale.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
 // ─── TAB: Easy Start ─────────────────────────────────────────────────────────
 export function TabEasyStart({ apiKeys }: { apiKeys: { keyPrefix: string }[] }) {
   const exampleKey = apiKeys?.[0]?.keyPrefix ?? "ppv_live_xxxx...";
