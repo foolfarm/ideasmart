@@ -429,11 +429,12 @@ export function TabEditor() {
       <div>
         <div className="flex items-center gap-2 mb-1">
           <PenLine className="w-5 h-5 text-[#1d1d1f]" />
-          <h3 className="text-lg font-bold text-[#1d1d1f]" style={{ fontFamily: SF }}>Scrivi &amp; Pubblica</h3>
+          <h3 className="text-lg font-bold text-[#1d1d1f]" style={{ fontFamily: SF }}>Scrivi &amp; Prova Verify</h3>
         </div>
         <p className="text-sm text-[#6e6e73]">
-          Scrivi il tuo articolo, invialo e ottieni immediatamente hash SHA-256, TrustGrade e certificato IPFS.
-          L'articolo viene inviato alla redazione ProofPress per approvazione editoriale.
+          Scrivi un testo, invialo e vedi in prima persona cosa produce la pipeline ProofPress Verify: hash SHA-256,
+          TrustGrade e link alla pagina pubblica del report. Usa questa area per capire come funziona la certificazione
+          prima di integrarla nel tuo workflow editoriale.
         </p>
       </div>
 
@@ -652,11 +653,196 @@ export function TabEditor() {
             ) : (
               <>
                 <Send className="w-4 h-4 mr-2" />
-                Invia e certifica con ProofPress Verify
+                Invia e prova ProofPress Verify
               </>
             )}
           </Button>
         </div>
+      )}
+    </div>
+  );
+}
+
+// ─── TAB: Post Pubblicati ─────────────────────────────────────────────────────
+const GRADE_COLORS_MAP: Record<string, { bg: string; text: string; bar: string }> = {
+  A: { bg: "#f0fdf4", text: "#16a34a", bar: "#22c55e" },
+  B: { bg: "#eff6ff", text: "#2563eb", bar: "#3b82f6" },
+  C: { bg: "#fefce8", text: "#ca8a04", bar: "#eab308" },
+  D: { bg: "#fff7ed", text: "#ea580c", bar: "#f97316" },
+  F: { bg: "#fef2f2", text: "#dc2626", bar: "#ef4444" },
+};
+
+function GradePill({ grade }: { grade: string | null }) {
+  if (!grade) {
+    return (
+      <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-[#f5f5f7] text-[#86868b] border border-[#e5e5e5]">
+        <div className="w-1.5 h-1.5 rounded-full bg-[#c7c7cc] animate-pulse" />
+        In elaborazione
+      </span>
+    );
+  }
+  const c = GRADE_COLORS_MAP[grade] ?? { bg: "#f5f5f7", text: "#1d1d1f", bar: "#1d1d1f" };
+  return (
+    <span className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold border"
+      style={{ backgroundColor: c.bg, color: c.text, borderColor: c.text + "30" }}>
+      {grade}
+    </span>
+  );
+}
+
+export function TabMyPosts() {
+  const [page, setPage] = useState(0);
+  const [copied, setCopied] = useState<string | null>(null);
+  const PAGE = 10;
+
+  const { data, isLoading, refetch } = trpc.verifyClient.myPosts.useQuery(
+    { limit: PAGE, offset: page * PAGE },
+    { staleTime: 30_000 }
+  );
+
+  function copyHash(hash: string) {
+    navigator.clipboard.writeText(hash);
+    setCopied(hash);
+    setTimeout(() => setCopied(null), 2000);
+  }
+
+  const rows = data?.rows ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.ceil(total / PAGE);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <FileText className="w-5 h-5 text-[#1d1d1f]" />
+            <h3 className="text-lg font-bold text-[#1d1d1f]" style={{ fontFamily: SF }}>Post Pubblicati</h3>
+          </div>
+          <p className="text-sm text-[#6e6e73]">
+            Tutti gli articoli inviati tramite "Scrivi &amp; Prova Verify". Per ogni articolo trovi hash SHA-256, TrustGrade e link al report pubblico.
+          </p>
+        </div>
+        <Button variant="outline" size="sm" className="border-[#e5e5e5] text-xs" onClick={() => refetch()}>
+          <RefreshCw className="w-3.5 h-3.5 mr-1.5" /> Aggiorna
+        </Button>
+      </div>
+
+      {isLoading ? (
+        <div className="space-y-3">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-20 bg-[#f5f5f7] rounded-xl animate-pulse" />
+          ))}
+        </div>
+      ) : rows.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="w-14 h-14 bg-[#f5f5f7] rounded-2xl flex items-center justify-center mb-4">
+            <PenLine className="w-6 h-6 text-[#c7c7cc]" />
+          </div>
+          <p className="text-sm font-semibold text-[#1d1d1f] mb-1">Nessun articolo ancora</p>
+          <p className="text-xs text-[#86868b] max-w-xs">
+            Usa la tab "Scrivi &amp; Prova Verify" per inviare il tuo primo articolo e vedere il TrustGrade assegnato dalla pipeline.
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="space-y-3">
+            {rows.map((row) => {
+              const verifyUrl = `https://proofpress.ai/verify/${row.verifyHash}`;
+              const shortHash = row.verifyHash ? row.verifyHash.slice(0, 12) + "…" : "—";
+              const dateStr = row.publishedAt
+                ? new Date(row.publishedAt).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" })
+                : "—";
+
+              return (
+                <div key={row.id} className="flex gap-4 p-4 rounded-xl border border-[#e5e5e5] bg-white hover:border-[#d0d0d0] transition-colors">
+                  {/* Grade */}
+                  <div className="flex-shrink-0 pt-0.5">
+                    <GradePill grade={row.trustGrade ?? null} />
+                  </div>
+
+                  {/* Contenuto */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <h4 className="text-sm font-semibold text-[#1d1d1f] leading-snug line-clamp-2">{row.title}</h4>
+                      <div className="flex gap-1 flex-shrink-0">
+                        <a href={verifyUrl} target="_blank" rel="noopener noreferrer"
+                          className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#f5f5f7] transition-colors"
+                          title="Apri report pubblico">
+                          <ExternalLink className="w-3.5 h-3.5 text-[#6e6e73]" />
+                        </a>
+                      </div>
+                    </div>
+
+                    {row.summary && (
+                      <p className="text-xs text-[#86868b] mt-1 line-clamp-1">{row.summary}</p>
+                    )}
+
+                    <div className="flex flex-wrap items-center gap-3 mt-2">
+                      {/* Hash */}
+                      <button
+                        onClick={() => copyHash(row.verifyHash ?? "")}
+                        className="flex items-center gap-1 text-[11px] font-mono text-[#6e6e73] hover:text-[#1d1d1f] transition-colors"
+                        title="Copia hash SHA-256 completo"
+                      >
+                        <Hash className="w-3 h-3" />
+                        {shortHash}
+                        {copied === row.verifyHash
+                          ? <CheckCircle className="w-3 h-3 text-green-600" />
+                          : <Copy className="w-3 h-3 opacity-50" />}
+                      </button>
+
+                      {/* IPFS */}
+                      {row.ipfsCid && (
+                        <a href={row.ipfsUrl ?? `https://ipfs.io/ipfs/${row.ipfsCid}`}
+                          target="_blank" rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-[11px] text-[#00897b] hover:underline">
+                          <Database className="w-3 h-3" />
+                          IPFS
+                        </a>
+                      )}
+
+                      {/* TrustScore */}
+                      {row.trustScore !== null && row.trustScore !== undefined && (
+                        <span className="text-[11px] text-[#6e6e73]">
+                          Score: <span className="font-semibold text-[#1d1d1f]">{row.trustScore}</span>/100
+                        </span>
+                      )}
+
+                      {/* Sezione */}
+                      {row.section && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#f5f5f7] text-[#6e6e73] uppercase tracking-wider">
+                          {row.section}
+                        </span>
+                      )}
+
+                      {/* Data */}
+                      <span className="text-[11px] text-[#c7c7cc] ml-auto">{dateStr}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Paginazione */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-[#86868b]">
+                {page * PAGE + 1}–{Math.min((page + 1) * PAGE, total)} di {total} articoli
+              </p>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" className="border-[#e5e5e5] text-xs"
+                  disabled={page === 0} onClick={() => setPage(p => p - 1)}>
+                  ← Precedente
+                </Button>
+                <Button variant="outline" size="sm" className="border-[#e5e5e5] text-xs"
+                  disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>
+                  Successivo →
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

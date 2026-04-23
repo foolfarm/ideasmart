@@ -442,6 +442,57 @@ export const verifyClientRouter = router({
     }),
 
   /**
+   * Storico articoli inviati dall'autore tramite la tab 'Scrivi & Prova Verify'.
+   * Filtra per sourceName = nome dell'utente loggato (o per email come fallback).
+   * Ordinato per data decrescente.
+   */
+  myPosts: protectedProcedure
+    .input(z.object({
+      limit: z.number().min(1).max(50).default(20),
+      offset: z.number().min(0).default(0),
+    }).optional())
+    .query(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const limit = input?.limit ?? 20;
+      const offset = input?.offset ?? 0;
+
+      // Filtra articoli inseriti con category = 'Articolo Giornalista' e sourceName = nome utente
+      const authorName = ctx.user.name ?? ctx.user.email ?? "";
+      const rows = await db
+        .select({
+          id: newsItems.id,
+          title: newsItems.title,
+          verifyHash: newsItems.verifyHash,
+          trustScore: newsItems.trustScore,
+          trustGrade: newsItems.trustGrade,
+          ipfsCid: newsItems.ipfsCid,
+          ipfsUrl: newsItems.ipfsUrl,
+          publishedAt: newsItems.publishedAt,
+          section: newsItems.section,
+          sourceName: newsItems.sourceName,
+          summary: newsItems.summary,
+        })
+        .from(newsItems)
+        .where(
+          and(
+            eq(newsItems.category, "Articolo Giornalista"),
+            eq(newsItems.sourceName, authorName)
+          )
+        )
+        .orderBy(desc(newsItems.publishedAt))
+        .limit(limit)
+        .offset(offset);
+
+      const [[countRow]] = await db.execute(
+        sql`SELECT COUNT(*) as total FROM news_items WHERE category = 'Articolo Giornalista' AND sourceName = ${authorName}`
+      ) as any;
+
+      return { rows, total: Number(countRow.total) };
+    }),
+
+  /**
    * Analytics dell'organizzazione — distribuzione TrustGrade, trend mensile,
    * totale certificazioni IPFS, articoli per sezione.
    */
