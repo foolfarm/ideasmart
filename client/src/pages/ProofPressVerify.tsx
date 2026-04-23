@@ -651,6 +651,13 @@ export default function ProofPressVerify() {
                 >
                   Verifica un articolo ↓
                 </button>
+                <a
+                  href="/verify/demo"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
+                  style={{ background: "#00897b", color: "#ffffff", fontFamily: FONT }}
+                >
+                  ⚡ Demo Live — Prova ora
+                </a>
                 <button
                   onClick={() => {
                     const el = document.getElementById('pricing');
@@ -660,12 +667,6 @@ export default function ProofPressVerify() {
                   style={{ borderColor: "#0a0a0a", color: "#0a0a0a", fontFamily: FONT }}
                 >
                   Piani e prezzi →
-                </button>
-                <button
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-80 text-center flex items-center gap-2 cursor-default"
-                  style={{ background: "#0a0a0a", color: "#00e5c8", fontFamily: FONT }}
-                >
-                  🎙 Scopri ProofPress Verify
                 </button>
               </div>
 

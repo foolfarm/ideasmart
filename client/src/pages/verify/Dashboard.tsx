@@ -915,7 +915,7 @@ const { trustScore, trustGrade, report } = await response.json();`;
 }
 
 // ── Componente principale ─────────────────────────────────────────────────────
-type Tab = "overview" | "verifiche" | "analytics" | "apikeys" | "docs" | "coseverify" | "easystart" | "editor" | "myposts";
+type Tab = "overview" | "verifiche" | "analytics" | "apikeys" | "docs" | "coseverify" | "easystart" | "editor" | "myposts" | "demo";
 
 export default function VerifyDashboard() {
   const { user, loading: authLoading, isAuthenticated } = useAuth();
@@ -989,6 +989,7 @@ export default function VerifyDashboard() {
 
   const TABS: { id: Tab; label: string; icon: any }[] = [
     { id: "overview", label: "Overview", icon: BarChart3 },
+    { id: "demo", label: "⚡ Demo Live", icon: Zap },
     { id: "coseverify", label: "Cos'è Verify", icon: Info },
     { id: "easystart", label: "Easy Start", icon: Zap },
     { id: "editor", label: "Scrivi & Prova Verify", icon: PenLine },
@@ -1055,6 +1056,29 @@ export default function VerifyDashboard() {
 
         {/* ── Tab content ──────────────────────────────────────────────────── */}
         {activeTab === "overview" && <TabOverview orgData={orgData} analytics={analytics} />}
+        {activeTab === "demo" && (
+          <div className="rounded-2xl overflow-hidden border-2 border-[#00897b] bg-white">
+            <div className="flex items-center gap-3 px-5 py-3 bg-[#f0fdf4] border-b border-[#00897b]/20">
+              <div className="w-7 h-7 bg-[#00897b] rounded-lg flex items-center justify-center flex-shrink-0">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-[#00897b]">Demo Live — Pipeline Verify</p>
+                <p className="text-xs text-[#6e6e73]">Pagina pubblica — nessun login richiesto, nessun dato salvato nel DB</p>
+              </div>
+              <a href="/verify/demo" target="_blank" rel="noopener noreferrer"
+                className="ml-auto text-xs font-semibold text-[#00897b] hover:underline flex items-center gap-1">
+                Apri in nuova tab <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+            <iframe
+              src="/verify/demo"
+              className="w-full"
+              style={{ height: '80vh', border: 'none' }}
+              title="Demo Live ProofPress Verify"
+            />
+          </div>
+        )}
         {activeTab === "coseverify" && <TabWhatIsVerify />}
         {activeTab === "easystart" && <TabEasyStart apiKeys={apiKeys ?? []} />}
         {activeTab === "editor" && <TabEditor />}
