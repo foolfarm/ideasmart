@@ -105,7 +105,7 @@ export function registerVerifyPublicApi(app: Express) {
       }
 
       // 4. Se già verificato, restituisce i dati salvati (cache)
-      if (article.trustScore !== null && article.trustGrade !== null) {
+      if (article.trustScore !== null && article.trustGrade !== null && article.verifyReport !== null) {
         return res.json({
           status: "verified",
           article: {

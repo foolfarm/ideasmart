@@ -1,30 +1,24 @@
 /**
  * ProofPress Verify — Pagina Prezzi
  *
- * Presenta i 4 piani Verify (Essential, Premiere, Professional, Custom)
- * con CTA di checkout Stripe per i piani a pagamento e form contatto per Custom.
+ * Presenta i 4 piani Verify (Essential, Premiere, Professional, Custom).
+ * I piani sono attivati manualmente dal team ProofPress.
+ * CTA: "Richiedi accesso" → mailto verify@proofpress.ai
  */
-import { useState } from "react";
-import { toast } from "sonner";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, Zap, Shield, Building2, Sparkles, ArrowRight, Lock } from "lucide-react";
+import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
+import { Check, Zap, Shield, Building2, Sparkles, ArrowRight, Mail } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
-// ── Dati piani (mirror di server/verify/stripeVerify.ts) ─────────────────────
+// ── Dati piani ────────────────────────────────────────────────────────────────
 const PLANS = [
   {
-    key: "essential" as const,
+    key: "essential",
     name: "Essential",
     price: "€490",
     period: "/mese",
     description: "Per testate piccole, blog e creator. Verifica fino a 100 articoli al mese con hash crittografico immutabile.",
-    articlesLimit: "100 articoli/mese",
-    seats: "2 account giornalista",
     icon: <Zap className="w-5 h-5" />,
     color: "from-blue-500 to-blue-600",
     borderColor: "border-blue-500/30",
@@ -40,13 +34,11 @@ const PLANS = [
     ],
   },
   {
-    key: "premiere" as const,
+    key: "premiere",
     name: "Premiere",
     price: "€990",
     period: "/mese",
     description: "Per redazioni medie e agenzie stampa. 300 articoli al mese con badge verificato sul tuo sito.",
-    articlesLimit: "300 articoli/mese",
-    seats: "5 account giornalista",
     icon: <Shield className="w-5 h-5" />,
     color: "from-cyan-500 to-cyan-600",
     borderColor: "border-cyan-500/50",
@@ -64,13 +56,11 @@ const PLANS = [
     ],
   },
   {
-    key: "professional" as const,
+    key: "professional",
     name: "Professional",
     price: "€1.470",
     period: "/mese",
     description: "Per grandi testate e gruppi editoriali. 500 articoli, white-label e SLA garantito.",
-    articlesLimit: "500 articoli/mese",
-    seats: "10 account giornalista",
     icon: <Building2 className="w-5 h-5" />,
     color: "from-violet-500 to-violet-600",
     borderColor: "border-violet-500/30",
@@ -90,13 +80,11 @@ const PLANS = [
     ],
   },
   {
-    key: "custom" as const,
+    key: "custom",
     name: "Custom",
     price: "Su preventivo",
     period: "",
     description: "Per grandi gruppi editoriali, agenzie di comunicazione e media company. Volume illimitato, integrazione dedicata.",
-    articlesLimit: "Articoli illimitati",
-    seats: "Seat illimitati",
     icon: <Sparkles className="w-5 h-5" />,
     color: "from-amber-500 to-orange-500",
     borderColor: "border-amber-500/30",
@@ -117,44 +105,16 @@ const PLANS = [
   },
 ];
 
+function buildMailto(planName: string) {
+  const subject = encodeURIComponent(`Richiesta accesso ProofPress Verify — Piano ${planName}`);
+  const body = encodeURIComponent(
+    `Salve,\n\nSono interessato al piano ${planName} di ProofPress Verify.\n\nOrganizzazione: \nNome contatto: \nEmail: \nSito web: \n\nGrazie.`
+  );
+  return `mailto:verify@proofpress.ai?subject=${subject}&body=${body}`;
+}
+
 // ── Componente principale ─────────────────────────────────────────────────────
 export default function VerifyPricing() {
-  const { user, isAuthenticated } = useAuth();
-  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
-
-  const createCheckout = trpc.verifyStripe.createCheckout.useMutation({
-    onSuccess: (data) => {
-      if (data.checkoutUrl) {
-        toast.success("Reindirizzamento al checkout", {
-          description: "Apertura della pagina di pagamento Stripe...",
-        });
-        window.open(data.checkoutUrl, "_blank");
-      }
-    },
-    onError: (err) => {
-      toast.error("Errore checkout", {
-        description: err.message,
-      });
-    },
-    onSettled: () => setLoadingPlan(null),
-  });
-
-  function handlePlanClick(planKey: "essential" | "premiere" | "professional") {
-    if (!isAuthenticated) {
-      window.location.href = getLoginUrl();
-      return;
-    }
-    setLoadingPlan(planKey);
-    createCheckout.mutate({
-      plan: planKey,
-      origin: window.location.origin,
-    });
-  }
-
-  function handleCustomClick() {
-    window.location.href = "mailto:verify@proofpress.ai?subject=Piano Custom ProofPress Verify&body=Salve, sono interessato al piano Custom di ProofPress Verify. Ecco i dettagli della mia testata: ...";
-  }
-
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white">
       <Navbar />
@@ -176,6 +136,10 @@ export default function VerifyPricing() {
           <p className="text-sm text-white/40 max-w-xl mx-auto">
             Ogni articolo genera un Verification Report con hash crittografico immutabile. Trasparenza totale, tracciabilità permanente.
           </p>
+          <div className="mt-6 inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-1.5">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-xs text-green-400 font-medium">Accesso pilota disponibile — attivazione manuale entro 24h</span>
+          </div>
         </div>
       </section>
 
@@ -218,40 +182,16 @@ export default function VerifyPricing() {
                 </CardHeader>
 
                 <CardContent className="pt-0">
-                  {/* CTA */}
-                  {plan.key === "custom" ? (
-                    <Button
-                      onClick={handleCustomClick}
-                      variant="outline"
-                      className="w-full mb-5 border-amber-500/40 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/60 font-semibold"
-                    >
-                      Contattaci
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => handlePlanClick(plan.key as "essential" | "premiere" | "professional")}
-                      disabled={loadingPlan === plan.key}
-                      className={`w-full mb-5 font-semibold bg-gradient-to-r ${plan.color} text-white border-0 hover:opacity-90`}
-                    >
-                      {loadingPlan === plan.key ? (
-                        <span className="flex items-center gap-2">
-                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Apertura checkout...
-                        </span>
-                      ) : !isAuthenticated ? (
-                        <span className="flex items-center gap-2">
-                          <Lock className="w-4 h-4" />
-                          Accedi per acquistare
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          Inizia con {plan.name}
-                          <ArrowRight className="w-4 h-4" />
-                        </span>
-                      )}
-                    </Button>
-                  )}
+                  {/* CTA — tutti i piani: mailto */}
+                  <Button
+                    asChild
+                    className={`w-full mb-5 font-semibold bg-gradient-to-r ${plan.color} text-white border-0 hover:opacity-90`}
+                  >
+                    <a href={buildMailto(plan.name)}>
+                      <Mail className="w-4 h-4 mr-2" />
+                      Richiedi accesso
+                    </a>
+                  </Button>
 
                   {/* Features */}
                   <ul className="space-y-2">
@@ -279,8 +219,8 @@ export default function VerifyPricing() {
             {[
               {
                 step: "01",
-                title: "Invia l'articolo",
-                desc: "Chiama l'API REST con la tua chiave ppv_live_... e l'hash SHA-256 o l'URL dell'articolo.",
+                title: "Richiedi accesso",
+                desc: "Scrivi a verify@proofpress.ai con il nome della tua testata. Il team attiva il tuo account entro 24 ore.",
               },
               {
                 step: "02",
@@ -310,8 +250,8 @@ export default function VerifyPricing() {
           <div className="space-y-4">
             {[
               {
-                q: "Posso provare prima di acquistare?",
-                a: "Sì. Registrando la tua organizzazione ottieni un trial gratuito di 14 giorni con 20 verifiche incluse.",
+                q: "Come viene attivato il mio account?",
+                a: "Scrivi a verify@proofpress.ai con il nome della tua organizzazione. Il team ProofPress ti contatta entro 24 ore, crea il tuo profilo e ti invia la chiave API ppv_live_... via email.",
               },
               {
                 q: "Come funziona il conteggio degli articoli?",
@@ -319,7 +259,7 @@ export default function VerifyPricing() {
               },
               {
                 q: "Posso cambiare piano in corso d'opera?",
-                a: "Sì. Puoi fare upgrade o downgrade in qualsiasi momento dalla dashboard. Il cambio è immediato e il credito residuo viene proporzionalmente applicato.",
+                a: "Sì. Scrivi a verify@proofpress.ai per richiedere upgrade o downgrade. Il cambio viene applicato entro 24 ore.",
               },
               {
                 q: "L'hash crittografico è davvero immutabile?",
@@ -345,7 +285,7 @@ export default function VerifyPricing() {
             </a>
           </p>
           <p className="text-white/25 text-xs">
-            I pagamenti sono gestiti in modo sicuro da Stripe. ProofPress non memorizza dati di pagamento.
+            I piani sono attivati manualmente dal team ProofPress entro 24 ore dalla richiesta.
           </p>
         </div>
       </section>

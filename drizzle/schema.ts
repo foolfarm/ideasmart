@@ -1009,7 +1009,7 @@ export type InsertVerifyOrganization = typeof verifyOrganizations.$inferInsert;
 export const verifyApiKeys = mysqlTable("verify_api_keys", {
   id: int("id").autoincrement().primaryKey(),
   organizationId: int("organizationId").notNull().references(() => verifyOrganizations.id),
-  keyPrefix: varchar("keyPrefix", { length: 16 }).notNull(),
+  keyPrefix: varchar("keyPrefix", { length: 24 }).notNull(),
   keyHash: varchar("keyHash", { length: 64 }).notNull().unique(),
   label: varchar("label", { length: 128 }),
   canVerify: boolean("canVerify").default(true).notNull(),

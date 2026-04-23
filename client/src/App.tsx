@@ -87,6 +87,7 @@ const AdminAmazonDeals = lazy(() => import("./pages/AdminAmazonDeals"));
 const AdminPubblicita = lazy(() => import("./pages/AdminPubblicita"));
 const AdminPromoNewsletter = lazy(() => import("./pages/AdminPromoNewsletter"));
 const AdminJournalists = lazy(() => import("./pages/AdminJournalists"));
+const AdminVerify = lazy(() => import("./pages/AdminVerify"));
 const EbookPrompt = lazy(() => import("./pages/EbookPrompt"));
 const NewsletterFeedback = lazy(() => import("./pages/NewsletterFeedback"));
 
@@ -138,6 +139,7 @@ function Router() {
         <Route path="/admin/pubblicita" component={AdminPubblicita} />
         <Route path="/admin/promo-newsletter" component={AdminPromoNewsletter} />
         <Route path="/admin/journalists" component={AdminJournalists} />
+        <Route path="/admin/verify" component={AdminVerify} />
         <Route path="/admin" component={Admin} />
         <Route path="/privacy" component={Privacy} />
         <Route path="/unsubscribe" component={Unsubscribe} />

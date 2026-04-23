@@ -540,6 +540,13 @@
       "when": 1776845663632,
       "tag": "0076_great_zzzax",
       "breakpoints": true
+    },
+    {
+      "idx": 77,
+      "version": "5",
+      "when": 1776942168865,
+      "tag": "0077_rich_silhouette",
+      "breakpoints": true
     }
   ]
 }

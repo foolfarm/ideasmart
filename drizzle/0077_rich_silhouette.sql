@@ -1,0 +1,1 @@
+ALTER TABLE `verify_api_keys` MODIFY COLUMN `keyPrefix` varchar(24) NOT NULL;
