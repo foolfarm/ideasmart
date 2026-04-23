@@ -1983,3 +1983,180 @@ export async function sendUnifiedNewsletterToAll(): Promise<{
     };
   }
 }
+
+/**
+ * Invia la newsletter mattutina "Le News delle 8.30 di ProofPress"
+ * a tutti gli iscritti attivi — SENZA approvazione richiesta.
+ * Schedulata alle 08:30 CET ogni giorno tranne sabato (cron: 30 8 * * 0-5).
+ */
+export async function sendMorningNewsletterToAll(): Promise<{
+  success: boolean;
+  recipientCount: number;
+  subject: string;
+  stats: {
+    ai: number;
+    startup: number;
+    dealroom: number;
+    breaking: number;
+    research: number;
+  };
+  error?: string;
+}> {
+  // Guard anti-duplicati DB-based: evita doppio invio in caso di riavvii
+  const alreadySent = await hasAlreadySentTodayDB();
+  if (alreadySent) {
+    const blockedAt = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
+    console.log(`[MorningNewsletter] ⚠️ Newsletter già inviata oggi — skip (${blockedAt})`);
+    return {
+      success: true,
+      recipientCount: 0,
+      subject: "",
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+    };
+  }
+
+  const now = new Date();
+  const dateLabel = getDateLabel(now);
+  const MORNING_SUBJECT = `Le News delle 8.30 di ProofPress — ${dateLabel}`;
+
+  console.log(`[MorningNewsletter] 📧 Avvio invio automatico "${MORNING_SUBJECT}"...`);
+
+  try {
+    const subscribers = await getActiveSubscribers();
+    if (subscribers.length === 0) {
+      return {
+        success: false,
+        recipientCount: 0,
+        subject: MORNING_SUBJECT,
+        stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+        error: "Nessun iscritto attivo",
+      };
+    }
+
+    // Garantisce che ac@acinelli.com riceva sempre la newsletter
+    const OWNER_FORCED_EMAIL = "ac@acinelli.com";
+    const ownerAlreadyIn = subscribers.some(
+      (s) => s.email.toLowerCase() === OWNER_FORCED_EMAIL.toLowerCase()
+    );
+    if (!ownerAlreadyIn) {
+      subscribers.push({
+        id: 90001,
+        email: OWNER_FORCED_EMAIL,
+        name: "Andrea Cinelli",
+        status: "active",
+        source: "owner",
+        subscribedAt: new Date(),
+        unsubscribedAt: null,
+        unsubscribeToken: null,
+        totalSent: 0,
+        totalOpened: 0,
+        lastSentAt: null,
+        lastOpenedAt: null,
+        newsletter: "ai4business",
+        channels: null,
+      } as any);
+      console.log(`[MorningNewsletter] 🔒 Owner ${OWNER_FORCED_EMAIL} iniettato come destinatario fisso`);
+    }
+
+    console.log(`[MorningNewsletter] ${subscribers.length} iscritti attivi`);
+
+    // Costruisce la newsletter con il titolo personalizzato
+    const { html: baseHtml, stats, sponsorIds } = await buildUnifiedNewsletter(false);
+
+    // Sovrascrive il subject con il titolo mattutino
+    const subject = MORNING_SUBJECT;
+
+    const newsletterId = await createNewsletterSend({
+      subject,
+      htmlContent: baseHtml,
+      recipientCount: 0,
+    });
+
+    // Aggiorna il link "Leggi nel browser" con l'ID reale
+    const finalBaseHtml = newsletterId
+      ? baseHtml.replace(
+          `${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`,
+          `${BASE_URL}/newsletter/${newsletterId}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`
+        )
+      : baseHtml;
+
+    let sendError: string | undefined;
+    const warmupResult = await sendWithWarmup(
+      subscribers,
+      async (sub) => {
+        const unsubUrl = sub.unsubscribeToken
+          ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
+          : `${BASE_URL}/unsubscribe`;
+        const prefsUrl = sub.unsubscribeToken
+          ? `${BASE_URL}/preferenze-newsletter?token=${sub.unsubscribeToken}`
+          : `${BASE_URL}/preferenze-newsletter`;
+        const personalizedHtml = finalBaseHtml
+          .replace(`${BASE_URL}/unsubscribe`, unsubUrl)
+          .replace(`${BASE_URL}/preferenze-newsletter`, prefsUrl);
+        const result = await sendEmail({
+          sender: 'daily',
+          to: sub.email,
+          subject,
+          html: personalizedHtml,
+          listUnsubscribeUrl: unsubUrl,
+        });
+        if (!result.success) sendError = result.error;
+        return result;
+      },
+      '[MorningNewsletter]'
+    );
+    const totalSent = warmupResult.totalSent;
+
+    await updateNewsletterSendRecipientCount(subject, totalSent);
+
+    for (const sid of sponsorIds) {
+      await markSponsorSent(sid);
+    }
+
+    await notifyOwner({
+      title: `📧 Le News delle 8.30 di ProofPress — ${new Date().toLocaleDateString("it-IT")}`,
+      content: `Newsletter mattutina inviata a ${totalSent}/${subscribers.length} iscritti.\n\nContenuti: ${stats.ai} AI + ${stats.startup} Startup + ${stats.dealroom} Dealroom + ${stats.breaking} Breaking + ${stats.research} Ricerche.`,
+    });
+
+    schedulePostSendReport({
+      subject,
+      recipientCount: totalSent,
+      sendDate: new Date(),
+      delayMs: 60 * 60 * 1000, // 1 ora
+    });
+
+    console.log(`[MorningNewsletter] ✅ ${totalSent}/${subscribers.length} inviati — "${subject}"`);
+
+    return {
+      success: !sendError,
+      recipientCount: totalSent,
+      subject,
+      stats: {
+        ai: stats.ai,
+        startup: stats.startup,
+        dealroom: stats.dealroom,
+        breaking: stats.breaking,
+        research: stats.research,
+      },
+      error: sendError,
+    };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[MorningNewsletter] ❌ Errore critico:`, msg);
+
+    try {
+      await notifyOwner({
+        title: `❌ Errore Le News delle 8.30 — ${new Date().toLocaleDateString("it-IT")}`,
+        content: `Errore durante l'invio della newsletter mattutina: ${msg}`,
+      });
+    } catch {}
+
+    return {
+      success: false,
+      recipientCount: 0,
+      subject: MORNING_SUBJECT,
+      stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+      error: msg,
+    };
+  }
+}

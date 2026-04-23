@@ -449,38 +449,22 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── PREVIEW NEWSLETTER UNIFICATA — 19:30 CET (lun–ven) ──────────────────────
-  cron.schedule("30 19 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 19:30 CET — Invio preview newsletter AI4Business News by ProofPress...");
-    await withLock("newsletter-preview", async () => {
+  // ── NEWSLETTER MATTINO "Le News delle 8.30" — 08:30 CET (dom–ven, escluso sabato) ─────────────
+  // Cron: 30 8 * * 0-5 = ogni giorno da domenica (0) a venerdì (5), sabato (6) escluso
+  // Nessuna approvazione richiesta — invio automatico diretto a tutti gli iscritti attivi
+  cron.schedule("30 8 * * 0-5", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio automatico \"Le News delle 8.30 di ProofPress\"...");
+    await withLock("newsletter-mattino", async () => {
       try {
-        const { sendUnifiedPreview } = await import("./unifiedNewsletter");
-        const result = await sendUnifiedPreview();
+        const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
+        const result = await sendMorningNewsletterToAll();
         if (result.success) {
-          console.log(`[SchedulerManager] ✅ Preview newsletter inviata: ${result.subject}`);
+          console.log(`[SchedulerManager] ✅ Newsletter mattino inviata: ${result.recipientCount} destinatari — ${result.subject}`);
         } else {
-          console.error("[SchedulerManager] ❌ Errore preview newsletter:", result.error);
+          console.error("[SchedulerManager] ❌ Errore newsletter mattino:", result.error);
         }
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico preview newsletter:", err);
-      }
-    });
-  }, { timezone: TZ });
-
-  // ── INVIO MASSIVO NEWSLETTER UNIFICATA — 22:00 CET (lun–ven) ────────────────
-  cron.schedule("0 22 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 22:00 CET — Invio massivo newsletter AI4Business News by ProofPress...");
-    await withLock("newsletter-massivo", async () => {
-      try {
-        const { sendUnifiedNewsletterToAll } = await import("./unifiedNewsletter");
-        const result = await sendUnifiedNewsletterToAll();
-        if (result.success) {
-          console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari`);
-        } else {
-          console.error("[SchedulerManager] ❌ Errore newsletter massiva:", result.error);
-        }
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico newsletter massiva:", err);
+        console.error("[SchedulerManager] ❌ Errore critico newsletter mattino:", err);
       }
     });
   }, { timezone: TZ });
@@ -1024,8 +1008,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → lun/mer/ven alle 01:35 CET");
   console.log("[SchedulerManager]   Audit notturno   -> ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   📧 Audit link NL     -> RIMOSSO (non necessario con nuovo template)");
-  console.log("[SchedulerManager]   📧 Preview newsletter -> lun–ven alle 08:30 CET → ac@acinelli.com");
-  console.log("[SchedulerManager]   📧 Newsletter UNIFICATA -> lun–ven alle 11:00 CET → tutti gli iscritti");
+  console.log("[SchedulerManager]   📧 Newsletter \"Le News delle 8.30\" -> dom\u2013ven alle 08:30 CET \u2192 tutti gli iscritti (NO approvazione)");
   console.log("[SchedulerManager]   📧 Newsletter Promozionali -> DISABILITATE (rimossa 2026-04-12)");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");

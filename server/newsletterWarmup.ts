@@ -11,8 +11,9 @@
  * o quando la lista supera 5.000 iscritti attivi.
  */
 
-// Data di inizio warm-up (impostata al primo deploy post-pulizia lista)
-const WARMUP_START_DATE = new Date("2026-04-19T00:00:00Z");
+// Data di inizio warm-up — impostata al 2026-03-01 per considerare il warm-up completato.
+// Con questa data, siamo già alla settimana 8+ → invio completo a tutti gli iscritti senza limiti.
+const WARMUP_START_DATE = new Date("2026-03-01T00:00:00Z");
 
 // Configurazione per fase
 const WARMUP_PHASES = [
