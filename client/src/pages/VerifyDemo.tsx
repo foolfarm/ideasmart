@@ -92,26 +92,15 @@ export default function VerifyDemo() {
   const [activeStep, setActiveStep] = useState<number>(-1);
   const [copied, setCopied] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
   const search = useSearch();
-
-  // Pre-seleziona l'esempio se ?example= è presente nell'URL
-  useEffect(() => {
-    const params = new URLSearchParams(search);
-    const slug = params.get("example")?.toLowerCase() ?? "";
-    if (!slug) return;
-    const idx = EXAMPLE_SLUG_MAP[slug];
-    if (idx !== undefined && EXAMPLE_TEXTS[idx]) {
-      setTitle(EXAMPLE_TEXTS[idx].title);
-      setText(EXAMPLE_TEXTS[idx].text);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const mutation = trpc.news.verifyDemo.useMutation({
     onMutate: () => {
       setActiveStep(0);
-      // Simula avanzamento step durante elaborazione
       setTimeout(() => setActiveStep(1), 400);
       setTimeout(() => setActiveStep(2), 900);
     },
@@ -123,6 +112,28 @@ export default function VerifyDemo() {
     },
     onError: () => setActiveStep(-1),
   });
+
+  // Pre-seleziona l'esempio e, se ?autorun=1, lancia l'analisi automaticamente
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const slug = params.get("example")?.toLowerCase() ?? "";
+    const autorun = params.get("autorun") === "1";
+
+    if (!slug) return;
+    const idx = EXAMPLE_SLUG_MAP[slug];
+    if (idx === undefined || !EXAMPLE_TEXTS[idx]) return;
+
+    const ex = EXAMPLE_TEXTS[idx];
+    setTitle(ex.title);
+    setText(ex.text);
+
+    if (autorun) {
+      setTimeout(() => {
+        mutation.mutate({ text: ex.text.trim(), title: ex.title.trim() });
+      }, 300);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,6 +172,31 @@ export default function VerifyDemo() {
     navigator.clipboard.writeText(getShareUrl());
     setCopiedShare(true);
     setTimeout(() => setCopiedShare(false), 2500);
+  };
+
+  const sendDemoMutation = trpc.news.sendDemoLink.useMutation({
+    onSuccess: () => {
+      setEmailSent(true);
+      setEmailError("");
+      setTimeout(() => setEmailSent(false), 4000);
+    },
+    onError: (err) => {
+      setEmailError(err.message ?? "Errore durante l'invio. Riprova.");
+    },
+  });
+
+  const handleSendEmail = () => {
+    if (!emailInput.trim() || !mutation.data) return;
+    setEmailError("");
+    sendDemoMutation.mutate({
+      recipientEmail: emailInput.trim(),
+      shareUrl: getShareUrl(),
+      sha256: mutation.data.sha256,
+      trustGrade: mutation.data.trustGrade,
+      trustScore: mutation.data.trustScore,
+      contentTitle: title || undefined,
+      origin: window.location.origin,
+    });
   };
 
   const charCount = text.length;
@@ -981,6 +1017,68 @@ export default function VerifyDemo() {
                   {copiedShare ? "✓ Link copiato!" : "📋 Copia link"}
                 </button>
               </div>
+            </div>
+
+            {/* Campo email — invia link demo */}
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 12,
+                padding: "1rem 1.2rem",
+                marginBottom: "1.2rem",
+              }}
+            >
+              <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "rgba(226,232,240,0.8)", marginBottom: 4 }}>
+                📧 Invia questa analisi via email
+              </p>
+              <p style={{ fontSize: "0.75rem", color: "rgba(226,232,240,0.4)", marginBottom: 12, lineHeight: 1.5 }}>
+                Il destinatario riceverà il link con TrustGrade, hash SHA-256 e accesso diretto alla demo.
+              </p>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <input
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => { setEmailInput(e.target.value); setEmailError(""); }}
+                  placeholder="email@destinatario.com"
+                  style={{
+                    flex: 1,
+                    minWidth: 200,
+                    padding: "9px 14px",
+                    background: "rgba(255,255,255,0.05)",
+                    border: `1px solid ${emailError ? "rgba(248,113,113,0.5)" : "rgba(255,255,255,0.15)"}`,
+                    borderRadius: 8,
+                    color: "#e2e8f0",
+                    fontSize: "0.88rem",
+                    fontFamily: "'DM Sans', sans-serif",
+                    outline: "none",
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendEmail()}
+                />
+                <button
+                  onClick={handleSendEmail}
+                  disabled={!emailInput.trim() || sendDemoMutation.isPending || emailSent}
+                  style={{
+                    background: emailSent ? "rgba(74,222,128,0.15)" : "rgba(255,255,255,0.08)",
+                    border: `1px solid ${emailSent ? "rgba(74,222,128,0.4)" : "rgba(255,255,255,0.2)"}`,
+                    borderRadius: 8,
+                    padding: "9px 18px",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    color: emailSent ? "#4ade80" : "rgba(226,232,240,0.8)",
+                    cursor: emailInput.trim() && !emailSent ? "pointer" : "default",
+                    fontFamily: "'DM Sans', sans-serif",
+                    transition: "all 0.2s",
+                    whiteSpace: "nowrap",
+                    opacity: !emailInput.trim() ? 0.45 : 1,
+                  }}
+                >
+                  {sendDemoMutation.isPending ? "Invio..." : emailSent ? "✓ Inviata!" : "Invia"}
+                </button>
+              </div>
+              {emailError && (
+                <p style={{ marginTop: 8, fontSize: "0.78rem", color: "#f87171" }}>{emailError}</p>
+              )}
             </div>
 
             {/* CTA certificazione */}

@@ -914,6 +914,78 @@ const { trustScore, trustGrade, report } = await response.json();`;
   );
 }
 
+// ── DemoLiveTab: tab Demo con link rapidi ────────────────────────────────────
+const QUICK_LINKS = [
+  { label: "🌱 CSRD / Deloitte", slug: "csrd", color: "#00897b", bg: "rgba(0,137,123,0.08)", border: "rgba(0,137,123,0.25)" },
+  { label: "📈 MiFID II / MAR", slug: "mifid", color: "#1565c0", bg: "rgba(21,101,192,0.08)", border: "rgba(21,101,192,0.25)" },
+  { label: "🌱 ESG Report", slug: "esg", color: "#2e7d32", bg: "rgba(46,125,50,0.08)", border: "rgba(46,125,50,0.25)" },
+  { label: "🤖 Tech / AI", slug: "tech", color: "#6a1b9a", bg: "rgba(106,27,154,0.08)", border: "rgba(106,27,154,0.25)" },
+  { label: "📊 Comunicato", slug: "comunicato", color: "#e65100", bg: "rgba(230,81,0,0.08)", border: "rgba(230,81,0,0.25)" },
+];
+
+function DemoLiveTab() {
+  const [iframeSrc, setIframeSrc] = useState("/verify/demo");
+  const [activeSlug, setActiveSlug] = useState("");
+
+  const loadExample = (slug: string) => {
+    setActiveSlug(slug);
+    setIframeSrc(`/verify/demo?example=${slug}&autorun=1`);
+  };
+
+  return (
+    <div className="rounded-2xl overflow-hidden border-2 border-[#00897b] bg-white">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-5 py-3 bg-[#f0fdf4] border-b border-[#00897b]/20">
+        <div className="w-7 h-7 bg-[#00897b] rounded-lg flex items-center justify-center flex-shrink-0">
+          <Zap className="w-4 h-4 text-white" />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-[#00897b]">Demo Live — Pipeline Verify</p>
+          <p className="text-xs text-[#6e6e73]">Pagina pubblica — nessun login richiesto, nessun dato salvato nel DB</p>
+        </div>
+        <a href={iframeSrc} target="_blank" rel="noopener noreferrer"
+          className="ml-auto text-xs font-semibold text-[#00897b] hover:underline flex items-center gap-1">
+          Apri in nuova tab <ExternalLink className="w-3 h-3" />
+        </a>
+      </div>
+
+      {/* Link rapidi */}
+      <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 flex-wrap bg-gray-50">
+        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide mr-1">Carica esempio:</span>
+        {QUICK_LINKS.map(ql => (
+          <button
+            key={ql.slug}
+            onClick={() => loadExample(ql.slug)}
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+            style={{
+              background: activeSlug === ql.slug ? ql.color : ql.bg,
+              border: `1px solid ${ql.border}`,
+              color: activeSlug === ql.slug ? "#fff" : ql.color,
+            }}
+          >
+            {ql.label}
+          </button>
+        ))}
+        <button
+          onClick={() => { setIframeSrc("/verify/demo"); setActiveSlug(""); }}
+          className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 text-gray-500 hover:bg-gray-100 transition-all ml-auto"
+        >
+          Reset
+        </button>
+      </div>
+
+      {/* Iframe */}
+      <iframe
+        key={iframeSrc}
+        src={iframeSrc}
+        className="w-full"
+        style={{ height: '80vh', border: 'none' }}
+        title="Demo Live ProofPress Verify"
+      />
+    </div>
+  );
+}
+
 // ── Componente principale ─────────────────────────────────────────────────────
 type Tab = "overview" | "verifiche" | "analytics" | "apikeys" | "docs" | "coseverify" | "easystart" | "editor" | "myposts" | "demo";
 
@@ -1057,27 +1129,7 @@ export default function VerifyDashboard() {
         {/* ── Tab content ──────────────────────────────────────────────────── */}
         {activeTab === "overview" && <TabOverview orgData={orgData} analytics={analytics} />}
         {activeTab === "demo" && (
-          <div className="rounded-2xl overflow-hidden border-2 border-[#00897b] bg-white">
-            <div className="flex items-center gap-3 px-5 py-3 bg-[#f0fdf4] border-b border-[#00897b]/20">
-              <div className="w-7 h-7 bg-[#00897b] rounded-lg flex items-center justify-center flex-shrink-0">
-                <Zap className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-[#00897b]">Demo Live — Pipeline Verify</p>
-                <p className="text-xs text-[#6e6e73]">Pagina pubblica — nessun login richiesto, nessun dato salvato nel DB</p>
-              </div>
-              <a href="/verify/demo" target="_blank" rel="noopener noreferrer"
-                className="ml-auto text-xs font-semibold text-[#00897b] hover:underline flex items-center gap-1">
-                Apri in nuova tab <ExternalLink className="w-3 h-3" />
-              </a>
-            </div>
-            <iframe
-              src="/verify/demo"
-              className="w-full"
-              style={{ height: '80vh', border: 'none' }}
-              title="Demo Live ProofPress Verify"
-            />
-          </div>
+          <DemoLiveTab />
         )}
         {activeTab === "coseverify" && <TabWhatIsVerify />}
         {activeTab === "easystart" && <TabEasyStart apiKeys={apiKeys ?? []} />}

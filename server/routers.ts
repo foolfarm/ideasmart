@@ -1396,6 +1396,34 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           },
         };
       }),
+
+    // ── Invia link demo via email ──────────────────────────────────────────
+    sendDemoLink: publicProcedure
+      .input(
+        z.object({
+          recipientEmail: z.string().email('Email non valida'),
+          shareUrl: z.string().url('URL non valido'),
+          sha256: z.string().optional(),
+          trustGrade: z.string().optional(),
+          trustScore: z.number().optional(),
+          contentTitle: z.string().optional(),
+          senderName: z.string().optional(),
+          origin: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const { sendDemoLinkEmail } = await import('./_core/mailer');
+        await sendDemoLinkEmail({
+          to: input.recipientEmail,
+          shareUrl: input.shareUrl,
+          sha256: input.sha256,
+          trustGrade: input.trustGrade,
+          trustScore: input.trustScore,
+          contentTitle: input.contentTitle,
+          senderName: input.senderName,
+        });
+        return { sent: true };
+      }),
   }),
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
