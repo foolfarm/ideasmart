@@ -87,7 +87,7 @@ const SECTION_LABELS: Record<string, string> = {
 };
 
 const GRADE_CONFIG: Record<string, { color: string; bg: string; border: string; label: string; desc: string }> = {
-  A: { color: "#16a34a", bg: "#f0fdf4", border: "#86efac", label: "Grade A", desc: "Certificazione Massima" },
+  A: { color: "#16a34a", bg: "#f0fdf4", border: "#86efac", label: "Grade A", desc: "Certificazione Crittografica" },
   B: { color: "#2563eb", bg: "#eff6ff", border: "#93c5fd", label: "Grade B", desc: "Alta Affidabilità" },
   C: { color: "#ca8a04", bg: "#fefce8", border: "#fde047", label: "Grade C", desc: "Affidabilità Standard" },
   D: { color: "#ea580c", bg: "#fff7ed", border: "#fdba74", label: "Grade D", desc: "Verifica Parziale" },
@@ -123,9 +123,11 @@ function CopyButton({ text, label }: { text: string; label: string }) {
 }
 
 /** Breakdown dei criteri Trust Score */
-function TrustBreakdown({ article, grade }: {
+function TrustBreakdown({ article, grade, claims, corroboration }: {
   article: { verifyHash?: string | null; ipfsCid?: string | null; sourceName?: string | null; sourceUrl?: string | null; summary?: string | null };
   grade: string;
+  claims?: Claim[];
+  corroboration?: CorroborationItem[];
 }) {
   const gc = GRADE_CONFIG[grade] ?? GRADE_CONFIG["F"];
   const criteria = [
@@ -136,6 +138,9 @@ function TrustBreakdown({ article, grade }: {
     { label: "Contenuto ricco (>150 char)", points: 15, ok: (article.summary?.trim().length ?? 0) >= 150 },
     { label: "Report AI Verify generato", points: 5, ok: true },
   ];
+  const totalClaims = claims?.length ?? 0;
+  const verifiedClaims = (corroboration ?? []).filter(c => c.status === "VERIFIED" || c.status === "PARTIAL").length;
+  const hasClaimsData = totalClaims > 0;
   const earned = criteria.reduce((s, c) => s + (c.ok ? c.points : 0), 0);
   return (
     <div className="rounded-2xl p-5 mb-4" style={{ background: gc.bg, border: `1.5px solid ${gc.border}` }}>
@@ -149,7 +154,7 @@ function TrustBreakdown({ article, grade }: {
         <div>
           <div className="text-base font-black" style={{ color: gc.color, fontFamily: FONT }}>{gc.label} — {gc.desc}</div>
           <div className="text-xs mt-0.5" style={{ color: "rgba(10,10,10,0.5)", fontFamily: FONT }}>
-            Punteggio certificazione: <span className="font-bold">{earned}/100</span>
+            Firma crittografica: <span className="font-bold">{earned}/100</span>
           </div>
         </div>
       </div>
@@ -168,9 +173,26 @@ function TrustBreakdown({ article, grade }: {
           </div>
         ))}
       </div>
-      <p className="text-[9px] mt-3 leading-relaxed" style={{ color: "rgba(10,10,10,0.35)", fontFamily: FONT }}>
-        Il Trust Score misura la qualità della certificazione crittografica, non la veridicità del contenuto.
-      </p>
+      {hasClaimsData && (
+        <div className="flex items-center justify-between gap-3 mt-2 pt-2" style={{ borderTop: "1px dashed rgba(10,10,10,0.1)" }}>
+          <div className="flex items-center gap-2 min-w-0">
+            <span className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[9px] font-bold ${
+              verifiedClaims > 0 ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-600"
+            }`}>{verifiedClaims > 0 ? "✓" : "!"}</span>
+            <span className="text-[11px] truncate font-semibold" style={{ color: verifiedClaims > 0 ? "#1a1a1a" : "#ea580c", fontFamily: FONT }}>
+              Claim verificati da fonti esterne
+            </span>
+          </div>
+          <span className="text-[11px] font-bold flex-shrink-0" style={{ color: verifiedClaims > 0 ? "#16a34a" : "#ea580c", fontFamily: FONT }}>
+            {verifiedClaims}/{totalClaims}
+          </span>
+        </div>
+      )}
+      <div className="mt-3 p-2.5 rounded-lg" style={{ background: "rgba(10,10,10,0.04)", border: "1px solid rgba(10,10,10,0.08)" }}>
+        <p className="text-[10px] leading-relaxed" style={{ color: "rgba(10,10,10,0.55)", fontFamily: FONT }}>
+          <strong>Nota:</strong> Questo score certifica la <strong>qualità della firma crittografica</strong> (hash, IPFS, fonte), non la veridicità dei claim. Per la verifica fattuale consulta la sezione "Claim estratti" qui sotto.
+        </p>
+      </div>
     </div>
   );
 }
@@ -502,6 +524,8 @@ export default function VerifyReport() {
                 <TrustBreakdown
                   grade={trustGrade}
                   article={{ verifyHash, ipfsCid, sourceName, sourceUrl, summary: articleSummary }}
+                  claims={claims}
+                  corroboration={corroboration}
                 />
               )}
 
@@ -510,6 +534,13 @@ export default function VerifyReport() {
                 <ClaimsSection claims={claims} corroboration={corroboration} />
               )}
 
+              {claims.length > 0 && (
+                <div className="flex items-center gap-3 my-2">
+                  <div className="flex-1 h-px" style={{ background: "rgba(10,10,10,0.08)" }} />
+                  <span className="text-[9px] font-black uppercase tracking-widest px-2" style={{ color: "rgba(10,10,10,0.35)", fontFamily: FONT }}>Content Trust Score</span>
+                  <div className="flex-1 h-px" style={{ background: "rgba(10,10,10,0.08)" }} />
+                </div>
+              )}
               {/* Score numerico */}
               {trustScore !== null && (
                 <div className="rounded-2xl p-4 mb-4 flex items-center gap-4"
