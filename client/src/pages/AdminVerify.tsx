@@ -196,7 +196,31 @@ function IpfsCertificationRegistry() {
                         ) : <span className="text-xs text-[#6e6e73]">—</span>}
                       </TableCell>
                       <TableCell>
-                        {row.ipfsUrl ? (
+                        {row.ipfsCid ? (
+                          <div className="flex flex-col gap-0.5">
+                            {/* Link principale: pagina verifica human-readable su ProofPress */}
+                            <a
+                              href={`/verify/${row.ipfsCid}`}
+                              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors font-medium"
+                              title={`Apri il Verification Report su ProofPress · CID: ${row.ipfsCid}`}
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              IPFS
+                            </a>
+                            {/* Link secondario: JSON raw su gateway Pinata */}
+                            {row.ipfsUrl && (
+                              <a
+                                href={row.ipfsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-[#86868b] hover:underline"
+                                title="JSON raw su IPFS Gateway"
+                              >
+                                raw JSON
+                              </a>
+                            )}
+                          </div>
+                        ) : row.ipfsUrl ? (
                           <a
                             href={row.ipfsUrl}
                             target="_blank"
