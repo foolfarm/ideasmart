@@ -109,6 +109,7 @@ const Investor = lazy(() => import("./pages/Investor"));
 const NewsletterView = lazy(() => import("./pages/NewsletterView"));
 const CosaFacciamo = lazy(() => import("./pages/CosaFacciamo"));
 const VerifyReport = lazy(() => import("./pages/VerifyReport"));
+const VerifyDemo = lazy(() => import("./pages/VerifyDemo"));
 const Contatti = lazy(() => import("./pages/Contatti"));
 const ScriviPerNoi = lazy(() => import("./pages/ScriviPerNoi"));
 const JournalistPortal = lazy(() => import("./pages/JournalistPortal"));
@@ -156,6 +157,7 @@ function Router() {
         <Route path="/verify/dashboard" component={VerifyDashboard} />
         <Route path="/verify/join" component={VerifyJoin} />
         <Route path="/verify/registry" component={VerifyRegistry} />
+        <Route path="/verify/demo" component={VerifyDemo} />
         {/* Route generica /verify/:cid — cattura hash/CID, DEVE stare DOPO le route specifiche */}
         <Route path="/verify/:cid" component={VerifyReport} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />

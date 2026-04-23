@@ -1297,6 +1297,102 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         TTL_SECTION_COUNT_MS // 5 minuti: badge nav
       );
     }),
+    // ── Demo pubblica: hash SHA-256 + claim extraction + TrustGrade (nessun salvataggio nel DB) ──
+    verifyDemo: publicProcedure
+      .input(z.object({
+        text: z.string().min(50, 'Testo troppo breve (min 50 caratteri)').max(10000, 'Testo troppo lungo (max 10.000 caratteri)'),
+        title: z.string().min(3).max(500).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const crypto = await import('crypto');
+        // 1. Hash SHA-256 del contenuto
+        const contentToHash = `${input.title ?? ''}\n${input.text}`.trim();
+        const sha256 = crypto.createHash('sha256').update(contentToHash, 'utf8').digest('hex');
+        // 2. Estrazione claim via LLM
+        let claims: Array<{ claim_id: string; text: string; type: string; verifiable: boolean }> = [];
+        let trustGrade = 'C';
+        let trustScore = 0.55;
+        let processingMs = 0;
+        try {
+          const t0 = Date.now();
+          const llmRes = await invokeLLM({
+            messages: [
+              { role: 'system', content: 'Sei un fact-checker AI. Estrai i claim fattuali verificabili dal testo. Rispondi SOLO con JSON valido, nessun testo aggiuntivo.' },
+              { role: 'user', content: `Testo da analizzare:\n\n${input.text.substring(0, 3000)}\n\nEstrai al massimo 5 claim fattuali verificabili. Formato JSON:\n{"claims":[{"claim_id":"c1","text":"...","type":"statistic|factual_event|quote|prediction","verifiable":true}]}` },
+            ],
+            response_format: {
+              type: 'json_schema',
+              json_schema: {
+                name: 'claims_extraction',
+                strict: true,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    claims: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          claim_id: { type: 'string' },
+                          text: { type: 'string' },
+                          type: { type: 'string' },
+                          verifiable: { type: 'boolean' },
+                        },
+                        required: ['claim_id', 'text', 'type', 'verifiable'],
+                        additionalProperties: false,
+                      },
+                    },
+                  },
+                  required: ['claims'],
+                  additionalProperties: false,
+                },
+              },
+            },
+          });
+          processingMs = Date.now() - t0;
+          const rawContent = llmRes?.choices?.[0]?.message?.content ?? '{"claims":[]}';
+          const parsed = JSON.parse(typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent));
+          claims = parsed.claims ?? [];
+          // 3. TrustScore semplificato basato su criteri strutturali
+          let score = 0;
+          if (sha256) score += 40;
+          if (input.title && input.title.length > 10) score += 8;
+          if (input.text.length > 800) score += 15;
+          if (claims.length > 0) score += 5;
+          if (claims.filter((c) => c.verifiable).length >= 2) score += 12;
+          // Normalizza 0-1
+          trustScore = Math.min(score, 100) / 100;
+          // Grade
+          if (trustScore >= 0.85) trustGrade = 'A';
+          else if (trustScore >= 0.70) trustGrade = 'B';
+          else if (trustScore >= 0.55) trustGrade = 'C';
+          else if (trustScore >= 0.35) trustGrade = 'D';
+          else trustGrade = 'F';
+        } catch (err) {
+          console.error('[verifyDemo] LLM error:', err);
+          // Fallback: solo hash, grade F
+          trustGrade = 'F';
+          trustScore = 0.15;
+        }
+        return {
+          sha256,
+          trustGrade,
+          trustScore: Math.round(trustScore * 100),
+          claims,
+          processingMs,
+          charCount: input.text.length,
+          wordCount: input.text.trim().split(/\s+/).length,
+          timestamp: new Date().toISOString(),
+          breakdown: {
+            hash: 40,
+            title: input.title && input.title.length > 10 ? 8 : 0,
+            richContent: input.text.length > 800 ? 15 : 0,
+            claimsExtracted: claims.length > 0 ? 5 : 0,
+            verifiableClaims: claims.filter((c) => c.verifiable).length >= 2 ? 12 : 0,
+            ipfs: 0, // non disponibile in demo
+          },
+        };
+      }),
   }),
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
