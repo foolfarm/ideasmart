@@ -14,6 +14,7 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
+import PostEnricoGiacomelli from "@/components/PostEnricoGiacomelli";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings, ShoppingCart, Star } from "lucide-react";
 import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
@@ -1614,6 +1615,9 @@ export default function Home() {
                       </a>
                     </div>
                   )}
+
+                  {/* ── POST ENRICO GIACOMELLI ── */}
+                  <PostEnricoGiacomelli />
 
                   {/* ── DEEP DIVE — sotto i post LinkedIn di Andrea ── */}
                   <div className="mt-8">
