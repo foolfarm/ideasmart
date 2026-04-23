@@ -4,10 +4,24 @@
  * in tempo reale SHA-256 hash, claim estratti e TrustGrade.
  * Nessun login richiesto. I risultati NON vengono salvati nel database.
  */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
-import { Link } from "wouter";
+import { Link, useSearch } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Mappa slug URL → indice in EXAMPLE_TEXTS
+const EXAMPLE_SLUG_MAP: Record<string, number> = {
+  esg: 0,
+  tech: 1,
+  ai: 1,
+  comunicato: 2,
+  mifid: 3,
+  mar: 3,
+  finance: 3,
+  csrd: 4,
+  deloitte: 4,
+  esg2: 4,
+};
 
 // ─── Testi di esempio per la demo ────────────────────────────────────────────
 const EXAMPLE_TEXTS = [
@@ -77,7 +91,22 @@ export default function VerifyDemo() {
   const [text, setText] = useState("");
   const [activeStep, setActiveStep] = useState<number>(-1);
   const [copied, setCopied] = useState(false);
+  const [copiedShare, setCopiedShare] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const search = useSearch();
+
+  // Pre-seleziona l'esempio se ?example= è presente nell'URL
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const slug = params.get("example")?.toLowerCase() ?? "";
+    if (!slug) return;
+    const idx = EXAMPLE_SLUG_MAP[slug];
+    if (idx !== undefined && EXAMPLE_TEXTS[idx]) {
+      setTitle(EXAMPLE_TEXTS[idx].title);
+      setText(EXAMPLE_TEXTS[idx].text);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const mutation = trpc.news.verifyDemo.useMutation({
     onMutate: () => {
@@ -112,6 +141,26 @@ export default function VerifyDemo() {
     navigator.clipboard.writeText(mutation.data.sha256);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Genera link condivisibile: /verify/demo?example=<slug> se riconoscibile, altrimenti con hash
+  const getShareUrl = () => {
+    const base = window.location.origin + "/verify/demo";
+    if (!mutation.data?.sha256) return base;
+    // Cerca se il testo corrente corrisponde a un esempio noto
+    const matchIdx = EXAMPLE_TEXTS.findIndex(ex => ex.title === title && ex.text === text);
+    if (matchIdx >= 0) {
+      const slug = Object.entries(EXAMPLE_SLUG_MAP).find(([, v]) => v === matchIdx)?.[0] ?? "";
+      if (slug) return `${base}?example=${slug}`;
+    }
+    // Fallback: link con hash SHA-256 pre-compilato nel form di verifica pubblica
+    return `${window.location.origin}/proofpress-verify?hash=${mutation.data.sha256}`;
+  };
+
+  const copyShareLink = () => {
+    navigator.clipboard.writeText(getShareUrl());
+    setCopiedShare(true);
+    setTimeout(() => setCopiedShare(false), 2500);
   };
 
   const charCount = text.length;
@@ -873,6 +922,66 @@ export default function VerifyDemo() {
                 </div>
               </div>
             )}
+
+            {/* Bottone Condividi questa demo */}
+            <div
+              style={{
+                background: "rgba(0,229,200,0.05)",
+                border: "1px solid rgba(0,229,200,0.2)",
+                borderRadius: 12,
+                padding: "1rem 1.2rem",
+                marginBottom: "1.2rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 16,
+                flexWrap: "wrap",
+              }}
+            >
+              <div>
+                <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "#00e5c8", marginBottom: 3 }}>
+                  🔗 Condividi questa demo
+                </p>
+                <p style={{ fontSize: "0.75rem", color: "rgba(226,232,240,0.45)", lineHeight: 1.5 }}>
+                  {EXAMPLE_TEXTS.findIndex(ex => ex.title === title && ex.text === text) >= 0
+                    ? "Link con esempio pre-selezionato — il destinatario vede subito il testo caricato"
+                    : "Link con hash SHA-256 — porta alla pagina di verifica pubblica con l'hash pre-compilato"}
+                </p>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, minWidth: 180 }}>
+                <code
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.68rem",
+                    color: "rgba(0,229,200,0.7)",
+                    wordBreak: "break-all",
+                    textAlign: "right",
+                    lineHeight: 1.4,
+                    maxWidth: 280,
+                  }}
+                >
+                  {getShareUrl()}
+                </code>
+                <button
+                  onClick={copyShareLink}
+                  style={{
+                    background: copiedShare ? "rgba(74,222,128,0.15)" : "rgba(0,229,200,0.12)",
+                    border: `1px solid ${copiedShare ? "rgba(74,222,128,0.4)" : "rgba(0,229,200,0.3)"}`,
+                    borderRadius: 8,
+                    padding: "7px 18px",
+                    fontSize: "0.82rem",
+                    fontWeight: 700,
+                    color: copiedShare ? "#4ade80" : "#00e5c8",
+                    cursor: "pointer",
+                    fontFamily: "'DM Sans', sans-serif",
+                    transition: "all 0.2s",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {copiedShare ? "✓ Link copiato!" : "📋 Copia link"}
+                </button>
+              </div>
+            </div>
 
             {/* CTA certificazione */}
             <div
