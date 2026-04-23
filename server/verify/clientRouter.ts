@@ -327,6 +327,74 @@ export const verifyClientRouter = router({
     }),
 
   /**
+   * Pubblica un articolo dall'editor giornalista: salva nel DB, calcola SHA-256,
+   * avvia la pipeline di verifica e restituisce hash + TrustGrade.
+   */
+  publishArticle: protectedProcedure
+    .input(z.object({
+      title: z.string().min(5).max(500),
+      body: z.string().min(50),
+      authorName: z.string().min(2).max(255),
+      sourceUrl: z.string().url().optional(),
+      section: z.enum(["ai", "music", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi", "dealroom"]).default("ai"),
+      tags: z.array(z.string()).optional(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const org = await getOrgForUser(ctx.user.email);
+      if (!org) throw new TRPCError({ code: "NOT_FOUND", message: "Organizzazione non trovata." });
+
+      // Calcola SHA-256 del contenuto
+      const content = `${input.title}\n\n${input.body}`;
+      const verifyHash = createHash("sha256").update(content, "utf8").digest("hex");
+
+      // Salva nel DB come news item
+      const now = new Date();
+      const weekLabel = `${now.getFullYear()}-W${String(Math.ceil((now.getDate() + new Date(now.getFullYear(), now.getMonth(), 1).getDay()) / 7)).padStart(2, "0")}`;
+
+      const [result] = await db.insert(newsItems).values({
+        title: input.title,
+        summary: input.body.slice(0, 500),
+        section: input.section,
+        category: "Articolo Giornalista",
+        weekLabel,
+        sourceName: input.authorName,
+        sourceUrl: input.sourceUrl ?? null,
+        publishedAt: now.toISOString(),
+        verifyHash,
+        position: 99,
+      }).$returningId();
+
+      // Avvia pipeline verify in background (non bloccante)
+      const articleId = result.id;
+      setImmediate(async () => {
+        try {
+          const { runVerifyPipeline } = await import("../verifyEngine.js");
+          const { corroborateClaims } = await import("../corroborator.js");
+          await runVerifyPipeline({
+            articleId,
+            title: input.title,
+            summary: input.body.slice(0, 500),
+            sourceUrl: input.sourceUrl ?? null,
+            verifyHash,
+            corroborationFn: corroborateClaims,
+          });
+        } catch (e) {
+          console.error("[publishArticle] verify pipeline error:", e);
+        }
+      });
+
+      return {
+        articleId,
+        verifyHash,
+        verifyUrl: `https://proofpress.ai/verify/${verifyHash}`,
+        message: "Articolo inviato. La certificazione ProofPress Verify è in elaborazione (30–60 secondi).",
+      };
+    }),
+
+  /**
    * Storico verifiche dell'organizzazione — articoli con verifyHash e report.
    * Paginato, ordinato per data decrescente.
    */

@@ -20,8 +20,9 @@ import {
   Key, Copy, Trash2, Plus, CheckCircle, AlertCircle, Clock, Zap, Shield,
   FileText, ExternalLink, ChevronRight, Eye, EyeOff, BarChart3, Hash,
   Globe, TrendingUp, Database, Search, ArrowUpRight, BookOpen, Code2,
-  RefreshCw, ChevronLeft, ChevronRight as ChevronR,
+  RefreshCw, ChevronLeft, ChevronRight as ChevronR, Info, PenLine,
 } from "lucide-react";
+import { TabWhatIsVerify, TabEasyStart, TabEditor } from "./DashboardTabs";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif";
@@ -762,7 +763,7 @@ const { trustScore, trustGrade, report } = await response.json();`;
 }
 
 // ── Componente principale ─────────────────────────────────────────────────────
-type Tab = "overview" | "verifiche" | "analytics" | "apikeys" | "docs";
+type Tab = "overview" | "verifiche" | "analytics" | "apikeys" | "docs" | "coseverify" | "easystart" | "editor";
 
 export default function VerifyDashboard() {
   const { user, loading: authLoading, isAuthenticated } = useAuth();
@@ -836,6 +837,9 @@ export default function VerifyDashboard() {
 
   const TABS: { id: Tab; label: string; icon: any }[] = [
     { id: "overview", label: "Overview", icon: BarChart3 },
+    { id: "coseverify", label: "Cos'è Verify", icon: Info },
+    { id: "easystart", label: "Easy Start", icon: Zap },
+    { id: "editor", label: "Scrivi & Pubblica", icon: PenLine },
     { id: "verifiche", label: "Verifiche", icon: CheckCircle },
     { id: "analytics", label: "Analytics", icon: TrendingUp },
     { id: "apikeys", label: "API Keys", icon: Key },
@@ -895,6 +899,9 @@ export default function VerifyDashboard() {
 
         {/* ── Tab content ──────────────────────────────────────────────────── */}
         {activeTab === "overview" && <TabOverview orgData={orgData} analytics={analytics} />}
+        {activeTab === "coseverify" && <TabWhatIsVerify />}
+        {activeTab === "easystart" && <TabEasyStart apiKeys={apiKeys ?? []} />}
+        {activeTab === "editor" && <TabEditor />}
         {activeTab === "verifiche" && <TabVerifications />}
         {activeTab === "analytics" && <TabAnalytics analytics={analytics} />}
         {activeTab === "apikeys" && <TabApiKeys apiKeys={apiKeys} keysLoading={keysLoading} refetchKeys={refetchKeys} orgData={orgData} />}
