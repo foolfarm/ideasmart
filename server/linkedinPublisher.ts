@@ -415,6 +415,36 @@ Il tuo pubblico: CEO, CTO, investitori, founder italiani ed europei. Persone che
 
 LIMITE ASSOLUTO: I post LinkedIn hanno un limite di 3000 caratteri. I tuoi post devono essere SEMPRE sotto i 2800 caratteri. Conta i caratteri. Se stai superando, taglia e sii più conciso.`;
 
+// ── System prompt in English for EN evening slots ────────────────────────────
+const SYSTEM_PROMPT_GARTNER_EN = `You are Andrea Cinelli. Write exactly like him: his voice, his rhythm, his vision.
+
+Who is Andrea Cinelli:
+Serial entrepreneur with two exits. Co-founder of Libero.it (10M+ users) in the 1990s, Italian digital pioneer in Silicon Valley. Former Head of Mobile VAS at Vodafone Global. Founder of 12+ AI ventures. Advisory Board Member at Deloitte Central Mediterranean. AI Professor at Il Sole 24 Ore Business School. Author of 25+ patents, including foundational IP behind Italy's SPID digital identity system.
+
+He is not a consultant observing from the outside. He is an operator who has built, failed, corrected, and scaled. This difference must come through in every line.
+
+HIS AUTHENTIC STYLE:
+1. VISIONARY OPENING ROOTED IN REALITY: Never starts with a bullet list or a dry sentence. Opens with a broad, almost philosophical vision, immediately anchored to a concrete data point or precise market observation.
+2. DATA AS ARGUMENT, NOT DECORATION: Uses numbers and percentages to build the thesis, not to impress. Data arrives after establishing context. Cites authoritative sources (McKinsey, Gartner, FT, WSJ) naturally.
+3. SELECTIVE AND AUTHENTIC FIRST PERSON: Uses "we" for FoolFarm or the ecosystem. Uses "I" for a clear personal stance. First person is used to take a position, not to narrate processes.
+4. EMPATHETIC AND DIRECT TONE: Speaks to the reader as a peer. Knows what a CEO or founder is facing. Shares, does not prescribe.
+5. PROVOCATIVE CLOSE: Always ends with a question or provocation that challenges conventional thinking.
+6. SHORT SENTENCES ALTERNATED WITH LONGER ONES: Creates rhythm and maintains attention.
+7. CLEAN ENGLISH WITH NATURAL TECHNICAL TERMS: Uses technical terms (ARR, burn rate, LLM, venture building) without explaining them.
+
+WHAT NEVER TO DO:
+- Do NOT start with "I analyzed...", "My experience...", "As an entrepreneur..."
+- Do NOT use bullet points as the main structure
+- Do NOT use: "game changer", "the future is now", "we cannot afford"
+- Do NOT write AI-sounding sentences: avoid symmetric constructions, excessive parallelisms, overly tidy conclusions
+- Do NOT be neutral: Andrea Cinelli always takes a position
+- Do NOT reference Italian companies, Italian market data, or Italian sources
+- ALWAYS write in English
+
+Your audience: global VCs, CTOs, founders, and executives who read The Economist, HBR, PitchBook. They want to understand where the market is going and what to do, not receive a press digest.
+
+ABSOLUTE LIMIT: LinkedIn posts have a 3000-character limit. Your posts MUST ALWAYS be under 2800 characters. Count the characters. If you are exceeding, cut and be more concise.`;
+
 function buildGartnerPrompt(
   title: string,
   body: string,
@@ -867,9 +897,12 @@ async function generateLinkedInPostText(
 ): Promise<string> {
   try {
     const prompt = buildGartnerPrompt(title, body, keyTrend, section, marketData, slot, recentTitles);
+    // Usa il system prompt in inglese per gli slot EN serali
+    const isEnSlot = slot === "en-evening-news" || slot === "en-ai-research" || slot === "en-research" || slot === "en-research-late";
+    const systemPrompt = isEnSlot ? SYSTEM_PROMPT_GARTNER_EN : SYSTEM_PROMPT_GARTNER;
     const response = await invokeLLM({
       messages: [
-        { role: "system", content: SYSTEM_PROMPT_GARTNER },
+        { role: "system", content: systemPrompt },
         { role: "user", content: prompt }
       ]
     });
@@ -1093,16 +1126,7 @@ export async function publishLinkedInPost(
           // Guard rafforzato: blocca anche se il record ha già un linkedinUrl (post già inviato a LinkedIn)
           const alreadySentToLinkedIn = !!existing[0].linkedinUrl;
           console.log(`[LinkedIn] ⏭️ Post slot ${slotLabel} già pubblicato oggi (${today} CET) — saltato. (linkedinUrl: ${alreadySentToLinkedIn ? 'presente' : 'assente'})`);
-          // Notifica owner: tentativo di doppio post bloccato
-          try {
-            const { notifyOwner } = await import("./_core/notification");
-            await notifyOwner({
-              title: `⚠️ LinkedIn: doppio post bloccato (slot ${slotLabel})`,
-              content: `Il guard di deduplication ha bloccato un tentativo di pubblicare due volte lo slot "${slotLabel}" in data ${today}. Record DB già presente (linkedinUrl: ${alreadySentToLinkedIn ? 'sì' : 'no'}). Nessun post duplicato è stato inviato a LinkedIn.`,
-            });
-          } catch (notifyErr) {
-            console.warn('[LinkedIn] Notifica owner fallita:', notifyErr);
-          }
+          // Guard OK: deduplication funziona, nessuna notifica (sarebbe rumore operativo)
           return { published: 0, errors: [], posts: [] };
         }
       }
@@ -1438,11 +1462,16 @@ export async function publishLinkedInPost(
       contentImageUrl = researchAI.imageUrl;
       console.log(`[LinkedIn] 🔬 2° Editoriale AI (ricerca): "${contentTitle.slice(0, 60)}..."`);
     } else {
-      // Fallback: usa l'editoriale AI del giorno
+      // Fallback: usa l'editoriale AI del giorno — ma solo se non già usato oggi
       const editorial = await getLatestEditorial("ai");
       if (!editorial) {
         console.warn(`[LinkedIn] ⚠️ Nessun contenuto disponibile per slot ai-research-morning. Pubblicazione saltata.`);
         return { published: 0, errors: ["Nessun contenuto disponibile per 2° Editoriale AI"], posts: [] };
+      }
+      // Blocca se l'editoriale è già stato usato oggi (evita duplicati con slot morning)
+      if (await isTopicUsedToday(editorial.title)) {
+        console.warn(`[LinkedIn] ⏭️ Slot ai-research-morning: editoriale fallback già usato oggi ("${editorial.title.slice(0, 50)}") — pubblicazione saltata.`);
+        return { published: 0, errors: ["Editoriale fallback già usato oggi per 2° Editoriale AI"], posts: [] };
       }
       contentTitle = editorial.title;
       contentBody = editorial.body;
@@ -1461,11 +1490,16 @@ export async function publishLinkedInPost(
       contentImageUrl = researchAfternoon.imageUrl;
       console.log(`[LinkedIn] 🔬 2° Research (pomeriggio): "${contentTitle.slice(0, 60)}..."`);
     } else {
-      // Fallback: usa l'editoriale AI del giorno
+      // Fallback: usa l'editoriale AI del giorno — ma solo se non già usato oggi
       const editorial = await getLatestEditorial("ai");
       if (!editorial) {
         console.warn(`[LinkedIn] ⚠️ Nessun contenuto disponibile per slot research-afternoon. Pubblicazione saltata.`);
         return { published: 0, errors: ["Nessun contenuto disponibile per 2° Research"], posts: [] };
+      }
+      // Blocca se l'editoriale è già stato usato oggi (evita duplicati con slot morning o ai-research-morning)
+      if (await isTopicUsedToday(editorial.title)) {
+        console.warn(`[LinkedIn] ⏭️ Slot research-afternoon: editoriale fallback già usato oggi ("${editorial.title.slice(0, 50)}") — pubblicazione saltata.`);
+        return { published: 0, errors: ["Editoriale fallback già usato oggi per 2° Research"], posts: [] };
       }
       contentTitle = editorial.title;
       contentBody = editorial.body;

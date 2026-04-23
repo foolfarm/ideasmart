@@ -1535,15 +1535,21 @@ export async function sendUnifiedPreview(force = false): Promise<{
     const dbGuard = await getDb();
     if (dbGuard) {
       // Usa query SQL diretta per massima affidabilità (evita conversioni timezone JS)
-      const existingToday = await dbGuard.execute(
+      const rawGuard = await dbGuard.execute(
         sql`SELECT id, status FROM newsletter_sends 
          WHERE DATE(createdAt) = CURDATE() 
          AND status IN ('pending','approved','sending','sent') 
          LIMIT 1`
-      ) as any[];
-      if (!force && existingToday.length > 0) {
+      ) as any;
+      // drizzle-orm con mysql2 restituisce [rows, fields] — estraiamo le righe correttamente
+      const existingToday: any[] = Array.isArray(rawGuard)
+        ? (Array.isArray(rawGuard[0]) ? rawGuard[0] : rawGuard)
+        : [];
+      // Filtra record corrotti (id undefined) che causerebbero falsi positivi
+      const validRecords = existingToday.filter((r: any) => r && r.id !== undefined && r.id !== null);
+      if (!force && validRecords.length > 0) {
         console.log(
-          `[UnifiedNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${existingToday[0].id}, status=${existingToday[0].status}) — skip`
+          `[UnifiedNewsletter] 🔒 Preview bloccata (guard DB): esiste già un record oggi (id=${validRecords[0].id}, status=${validRecords[0].status}) — skip`
         );
         testSentDays.set(testKey, true); // aggiorna anche il guard in-memory
         return {
@@ -1552,8 +1558,8 @@ export async function sendUnifiedPreview(force = false): Promise<{
           stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
         };
       }
-      if (force && existingToday.length > 0) {
-        console.log(`[UnifiedNewsletter] ⚡ Force mode: guard DB bypassato (record esistente id=${existingToday[0].id})`);
+      if (force && validRecords.length > 0) {
+        console.log(`[UnifiedNewsletter] ⚡ Force mode: guard DB bypassato (record esistente id=${validRecords[0].id})`);
       }
     }
   } catch (guardErr) {
