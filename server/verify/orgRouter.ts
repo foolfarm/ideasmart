@@ -242,6 +242,8 @@ export const verifyOrgRouter = router({
           ipfsPinnedAt: newsItems.ipfsPinnedAt,
           publishedAt: newsItems.publishedAt,
           section: newsItems.section,
+          sourceUrl: newsItems.sourceUrl,
+          sourceName: newsItems.sourceName,
         })
         .from(newsItems)
         .where(isNotNull(newsItems.verifyReport))

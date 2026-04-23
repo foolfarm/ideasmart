@@ -955,6 +955,8 @@ export interface HomeSectionItem {
   verifyHash: string | null;
   trustGrade: string | null;
   trustScore: number | null;
+  ipfsCid: string | null;
+  ipfsUrl: string | null;
   section: HomeSection;
 }
 
@@ -984,6 +986,8 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           verifyHash: item.verifyHash ?? null,
           trustGrade: (item as typeof item & { trustGrade?: string | null }).trustGrade ?? null,
           trustScore: (item as typeof item & { trustScore?: number | null }).trustScore ?? null,
+          ipfsCid: (item as typeof item & { ipfsCid?: string | null }).ipfsCid ?? null,
+          ipfsUrl: (item as typeof item & { ipfsUrl?: string | null }).ipfsUrl ?? null,
           section
         }))
       };
@@ -1126,6 +1130,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     verifyHash: newsItems.verifyHash,
     trustGrade: newsItems.trustGrade,
     trustScore: newsItems.trustScore,
+    ipfsCid: newsItems.ipfsCid,
+    ipfsUrl: newsItems.ipfsUrl,
     section: newsItems.section,
   })
     .from(newsItems)
@@ -1147,6 +1153,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
       verifyHash: item.verifyHash ?? null,
       trustGrade: item.trustGrade ?? null,
       trustScore: item.trustScore ?? null,
+      ipfsCid: item.ipfsCid ?? null,
+      ipfsUrl: item.ipfsUrl ?? null,
       section: (item.section ?? 'ai') as HomeSection,
     }));
   }
@@ -1164,6 +1172,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     verifyHash: newsItems.verifyHash,
     trustGrade: newsItems.trustGrade,
     trustScore: newsItems.trustScore,
+    ipfsCid: newsItems.ipfsCid,
+    ipfsUrl: newsItems.ipfsUrl,
     section: newsItems.section,
   })
     .from(newsItems)
@@ -1184,11 +1194,13 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     publishedAt: item.publishedAt ?? '',
     imageUrl: item.imageUrl ?? null,
     videoUrl: null,
-    verifyHash: item.verifyHash ?? null,
-    trustGrade: item.trustGrade ?? null,
-    trustScore: item.trustScore ?? null,
-    section: (item.section ?? 'ai') as HomeSection,
-  }));
+      verifyHash: item.verifyHash ?? null,
+      trustGrade: item.trustGrade ?? null,
+      trustScore: item.trustScore ?? null,
+      ipfsCid: item.ipfsCid ?? null,
+      ipfsUrl: item.ipfsUrl ?? null,
+      section: (item.section ?? 'ai') as HomeSection,
+    }));
 }
 
 // ─── Trust Score Distribution ─────────────────────────────────────────────────

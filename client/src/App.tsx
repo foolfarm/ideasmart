@@ -116,6 +116,7 @@ const Methodology = lazy(() => import("./pages/Methodology"));
 // ProofPress Verify SaaS
 const VerifyDashboard = lazy(() => import("./pages/verify/Dashboard"));
 const VerifyJoin = lazy(() => import("./pages/verify/Join"));
+const VerifyRegistry = lazy(() => import("./pages/VerifyRegistry"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -151,6 +152,11 @@ function Router() {
         <Route path="/verify">{() => <Redirect to="/proofpress-verify" />}</Route>
         <Route path="/proofpress-verify" component={ProofPressVerify} />
         <Route path="/verify-pricing" component={VerifyPricing} />
+        {/* Route specifiche /verify/* DEVONO stare PRIMA di /verify/:cid */}
+        <Route path="/verify/dashboard" component={VerifyDashboard} />
+        <Route path="/verify/join" component={VerifyJoin} />
+        <Route path="/verify/registry" component={VerifyRegistry} />
+        {/* Route generica /verify/:cid — cattura hash/CID, DEVE stare DOPO le route specifiche */}
         <Route path="/verify/:cid" component={VerifyReport} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />
         <Route path="/pianificazione" component={Pianificazione} />
@@ -200,9 +206,6 @@ function Router() {
         <Route path="/scrivi-per-noi" component={ScriviPerNoi} />
         <Route path="/journalist-portal" component={JournalistPortal} />
         <Route path="/methodology/v1" component={Methodology} />
-        {/* ProofPress Verify SaaS — Dashboard e Onboarding */}
-        <Route path="/verify/dashboard" component={VerifyDashboard} />
-        <Route path="/verify/join" component={VerifyJoin} />
         <Route path="/verifica-email" component={VerificaEmail} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />

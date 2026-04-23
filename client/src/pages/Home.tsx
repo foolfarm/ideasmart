@@ -339,6 +339,8 @@ type NewsItem = {
   verifyHash?: string | null;
   trustGrade?: string | null;
   trustScore?: number | null;
+  ipfsCid?: string | null;
+  ipfsUrl?: string | null;
 };
 
 // ─── Utility ─────────────────────────────────────────────────────────────────
@@ -436,8 +438,22 @@ function HeroArticle({ item, section, editorial }: {
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
         {item.verifyHash && (
-          <div className="mt-1.5">
+          <div className="mt-1.5 flex items-center gap-2 flex-wrap">
             <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
+            {item.ipfsCid && item.ipfsUrl && (
+              <a
+                href={item.ipfsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Certificato IPFS · CID: ${item.ipfsCid}`}
+                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border transition-colors"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", color: '#00897b', borderColor: '#00897b33', background: '#00897b0d' }}
+                onClick={e => e.stopPropagation()}
+              >
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                IPFS
+              </a>
+            )}
           </div>
         )}
         {(section === "ai" || section === "startup") && (
@@ -491,8 +507,22 @@ function SecondaryArticle({ item, section, showImage = false }: {
         {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
       </p>
       {item.verifyHash && (
-        <div className="mt-1">
+        <div className="mt-1 flex items-center gap-2 flex-wrap">
           <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
+          {item.ipfsCid && item.ipfsUrl && (
+            <a
+              href={item.ipfsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Certificato IPFS · CID: ${item.ipfsCid}`}
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border transition-colors"
+              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", color: '#00897b', borderColor: '#00897b33', background: '#00897b0d' }}
+              onClick={e => e.stopPropagation()}
+            >
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              IPFS
+            </a>
+          )}
         </div>
       )}
       {(section === "ai" || section === "startup") && (
