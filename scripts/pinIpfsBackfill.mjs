@@ -8,7 +8,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const PINATA_JWT = process.env.PINATA_JWT;
-const PINATA_GATEWAY = 'https://gateway.pinata.cloud/ipfs';
+const PINATA_GATEWAY_DOMAIN = process.env.PINATA_GATEWAY_DOMAIN || 'brown-characteristic-louse-309.mypinata.cloud';
+const PINATA_GATEWAY_KEY = process.env.PINATA_GATEWAY_KEY || '';
+const PINATA_GATEWAY = `https://${PINATA_GATEWAY_DOMAIN}/ipfs`;
 
 if (!PINATA_JWT) {
   console.error('❌ PINATA_JWT non trovato nelle variabili d\'ambiente');
@@ -47,7 +49,7 @@ async function pinToPinata(verifyReport, articleTitle, verifyHash) {
   const data = await res.json();
   return {
     cid: data.IpfsHash,
-    url: `${PINATA_GATEWAY}/${data.IpfsHash}`
+    url: `${PINATA_GATEWAY}/${data.IpfsHash}${PINATA_GATEWAY_KEY ? '?pinataGatewayToken=' + PINATA_GATEWAY_KEY : ''}`
   };
 }
 
