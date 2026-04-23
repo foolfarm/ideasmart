@@ -916,6 +916,9 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
             ipfsCid: newsItemsTable.ipfsCid,
             ipfsUrl: newsItemsTable.ipfsUrl,
             ipfsPinnedAt: newsItemsTable.ipfsPinnedAt,
+            trustScore: newsItemsTable.trustScore,
+            trustGrade: newsItemsTable.trustGrade,
+            verifyReport: newsItemsTable.verifyReport,
           })
           .from(newsItemsTable)
           .where(eq(newsItemsTable.verifyHash, input.hash))
@@ -936,6 +939,9 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           ipfsCid: r.ipfsCid ?? null,
           ipfsUrl: r.ipfsUrl ?? null,
           ipfsPinnedAt: r.ipfsPinnedAt ?? null,
+          trustScore: r.trustScore ?? null,
+          trustGrade: r.trustGrade ?? null,
+          verifyReport: r.verifyReport ?? null,
         };
       }),
 
@@ -977,13 +983,30 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           },
         });
 
-        // Salva CID e URL nel DB
+        // Ricalcola trustScore ora che IPFS è disponibile
+        const { upgradeTrustGradeAfterIpfs } = await import('./trustScore.js');
+        const upgraded = upgradeTrustGradeAfterIpfs({
+          verifyHash: article.verifyHash!,
+          ipfsCid: cid,
+          sourceName: article.sourceName,
+          sourceUrl: article.sourceUrl,
+          summary: article.summary,
+        });
+
+        // Salva CID, URL e trustScore aggiornato nel DB
         await db
           .update(newsItemsTable)
-          .set({ ipfsCid: cid, ipfsUrl: ipfsUrl, ipfsPinnedAt: new Date() })
+          .set({
+            ipfsCid: cid,
+            ipfsUrl: ipfsUrl,
+            ipfsPinnedAt: new Date(),
+            trustScore: upgraded.score / 100,
+            trustGrade: upgraded.grade,
+          })
           .where(eq(newsItemsTable.id, article.id));
 
-        return { cid, ipfsUrl, alreadyPinned: false };
+        console.log(`[pinToIPFS] ⛓ Trust upgraded →${upgraded.grade} (${upgraded.score}/100) post-IPFS: ${article.title.substring(0, 50)}`);
+        return { cid, ipfsUrl, alreadyPinned: false, trustGrade: upgraded.grade, trustScore: upgraded.score };
       }),
 
     // Proxy server-side per caricare un Verification Report da IPFS — bypassa il CORS
@@ -1123,10 +1146,26 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
                 weekLabel: article.weekLabel,
               },
             });
+            // Ricalcola trustScore ora che IPFS è disponibile
+            const { upgradeTrustGradeAfterIpfs } = await import('./trustScore.js');
+            const upgradedVE = upgradeTrustGradeAfterIpfs({
+              verifyHash: article.verifyHash,
+              ipfsCid: cid,
+              sourceName: article.sourceName ?? null,
+              sourceUrl: article.sourceUrl ?? null,
+              summary: article.summary,
+            });
             await db
               .update(newsItemsTable)
-              .set({ ipfsCid: cid, ipfsUrl: ipfsUrl, ipfsPinnedAt: new Date() })
+              .set({
+                ipfsCid: cid,
+                ipfsUrl: ipfsUrl,
+                ipfsPinnedAt: new Date(),
+                trustScore: upgradedVE.score / 100,
+                trustGrade: upgradedVE.grade,
+              })
               .where(eq(newsItemsTable.verifyHash, input.hash));
+            console.log(`[VerifyEngine] ⛓ Trust upgraded →${upgradedVE.grade} post-IPFS: ${article.title.substring(0, 50)}`);
           }
         } catch (ipfsErr) {
           console.warn('[VerifyEngine] IPFS pinning fallito (non bloccante):', ipfsErr);
