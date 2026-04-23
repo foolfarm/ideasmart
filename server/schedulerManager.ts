@@ -21,9 +21,9 @@
  *  │  06:45 — Audit link newsletter pre-invio                                │
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
-  *  │  NEWSLETTER UNIFICATA — OGNI GIORNO (lun–ven)                              │
-  *  │  19:30 (lun–ven) — Preview/test "AI4Business News" → ac@acinelli.com     │
-  *  │  22:00 (lun–ven+sab) — Newsletter AI4Business News → tutti gli iscritti  │
+  *  │  NEWSLETTER — OGNI GIORNO (dom–ven alle 08:30, sabato alle 08:00)          │
+  *  │  08:30 (dom–ven) — "Le News delle 8.30 di ProofPress" → tutti (NO approv.) │
+  *  │  08:00 (sab) — Editoriale del Sabato → tutti gli iscritti (NO approv.)    │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -474,41 +474,24 @@ export function startAllSchedulers(): void {
   // sono state cancellate. Restano attive solo: Daily Unificata (lun–ven) + Newsletter Sabato.
 
   // ══════════════════════════════════════════════════════════════════════════
-  // NEWSLETTER DEL SABATO — "Il meglio di ProofPress"
-  //   10:00 CET (sab) — Preview editoriale → ac@acinelli.com per approvazione
-  //   12:00 CET (sab) — Invio massivo a tutti gli iscritti attivi
+  // NEWSLETTER DEL SABATO — "Le News delle 8.30 di ProofPress" (Editoriale del Sabato)
+  //   08:00 CET (sab) — Invio automatico a tutti gli iscritti attivi (NO approvazione)
   // ══════════════════════════════════════════════════════════════════════════
-  // ⏰ 19:00 CET (sabato) — Preview editoriale del sabato
-  cron.schedule("0 19 * * 6", async () => {
-    console.log("[SchedulerManager] ⏰ 19:00 CET (sab) — Preview \"AI4Business News by ProofPress\"...");
-    await withLock("saturday-preview", async () => {
-      try {
-        const { sendSaturdayPreview } = await import("./saturdayEditorialNewsletter");
-        const result = await sendSaturdayPreview();
-        if (result.success) {
-          console.log(`[SchedulerManager] ✅ Preview sabato inviata: ${result.subject}`);
-        } else {
-          console.error("[SchedulerManager] ❌ Errore preview sabato:", result.error);
-        }
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico preview sabato:", err);
-      }
-    });
-  }, { timezone: TZ });
-  // ⏰ 22:00 CET (sabato) — Invio massivo newsletter del sabato
-  cron.schedule("0 22 * * 6", async () => {
-    console.log("[SchedulerManager] ⏰ 22:00 CET (sab) — Invio massivo \"AI4Business News by ProofPress\"...");
+  // ⏰ 08:00 CET (sabato) — Invio automatico \"Le News delle 8.30 di ProofPress\" (Editoriale del Sabato)
+  // Nessuna approvazione richiesta — invio diretto a tutti gli iscritti attivi
+  cron.schedule("0 8 * * 6", async () => {
+    console.log("[SchedulerManager] ⏰ 08:00 CET (sab) — Invio automatico \"Le News delle 8.30 di ProofPress\" (Editoriale del Sabato)...");
     await withLock("saturday-massivo", async () => {
       try {
         const { sendSaturdayNewsletterToAll } = await import("./saturdayEditorialNewsletter");
         const result = await sendSaturdayNewsletterToAll();
         if (result.success) {
-          console.log(`[SchedulerManager] ✅ Newsletter sabato inviata: ${result.recipientCount} destinatari`);
+          console.log(`[SchedulerManager] ✅ Newsletter sabato inviata: ${result.recipientCount} destinatari — ${result.subject}`);
         } else {
-          console.error("[SchedulerManager] ❌ Errore newsletter sabato massiva:", result.error);
+          console.error("[SchedulerManager] ❌ Errore newsletter sabato:", result.error);
         }
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico newsletter sabato massiva:", err);
+        console.error("[SchedulerManager] ❌ Errore critico newsletter sabato:", err);
       }
     });
   }, { timezone: TZ });
@@ -1009,6 +992,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   Audit notturno   -> ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   📧 Audit link NL     -> RIMOSSO (non necessario con nuovo template)");
   console.log("[SchedulerManager]   📧 Newsletter \"Le News delle 8.30\" -> dom\u2013ven alle 08:30 CET \u2192 tutti gli iscritti (NO approvazione)");
+  console.log("[SchedulerManager]   📧 Newsletter Sabato \"Le News delle 8.30\" -> sab alle 08:00 CET \u2192 tutti gli iscritti (NO approvazione)");
   console.log("[SchedulerManager]   📧 Newsletter Promozionali -> DISABILITATE (rimossa 2026-04-12)");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");

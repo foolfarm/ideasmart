@@ -250,7 +250,7 @@ export function buildSaturdayNewsletterHtml(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Il meglio di ProofPress — ${dateLabel}</title>
+  <title>Le News delle 8.30 di ProofPress — Editoriale del Sabato — ${dateLabel}</title>
 </head>
 <body style="margin:0;padding:0;background:${CREAM};font-family:${FONT};">
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};padding:24px 0 48px;">
@@ -277,9 +277,9 @@ export function buildSaturdayNewsletterHtml(opts: {
         <tr>
           <td style="background:${WHITE};padding:32px 28px 16px;text-align:center;">
             <a href="${BASE_URL}" style="text-decoration:none;">
-              <div style="font-size:42px;font-weight:900;color:${BLACK};letter-spacing:-2px;line-height:1;font-family:${FONT};">AI4Business News</div>
+              <div style="font-size:42px;font-weight:900;color:${BLACK};letter-spacing:-2px;line-height:1;font-family:${FONT};">Le News delle 8.30</div>
             </a>
-            <div style="margin-top:6px;font-size:13px;font-weight:400;color:${SLATE};font-family:${FONT};">by ProofPress</div>
+            <div style="margin-top:6px;font-size:13px;font-weight:600;color:${SLATE};font-family:${FONT};letter-spacing:0.04em;text-transform:uppercase;">di ProofPress</div>
             <div style="margin-top:10px;font-size:10px;color:${SLATE};letter-spacing:0.18em;text-transform:uppercase;font-family:${FONT};line-height:1.5;">Notizie di Innovazione, Investimenti e Tecnologia Esclusive</div>
             <div style="margin-top:4px;font-size:10px;color:${MUTED};font-family:${FONT};">100% Verificate con <a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=saturday_header" style="color:${RED};text-decoration:none;font-weight:600;">tecnologia ProofPress Verify</a></div>
           </td>
@@ -538,7 +538,7 @@ export async function sendSaturdayPreview(): Promise<{
 
   try {
     const editorial = await generateSaturdayEditorial();
-    const subject = `AI4Business News by ProofPress — ${editorial.title}`;
+    const subject = `Le News delle 8.30 di ProofPress — ${editorial.title}`;
 
     // Recupera le notizie recenti per la sezione CTA
     const [aiNewsForCta, startupNewsForCta] = await Promise.all([
@@ -560,7 +560,7 @@ export async function sendSaturdayPreview(): Promise<{
       previewSentWeeks.set(previewKey, true);
       console.log(`[SaturdayNewsletter] ✅ Preview inviata a ${TEST_EMAIL}: "${subject}"`);
       await notifyOwner({
-        title: `📖 Preview "AI4Business News by ProofPress" — ${dateLabel}`,
+        title: `📖 Preview "Le News delle 8.30 di ProofPress" — ${dateLabel}`,
         content: `Preview dell'editoriale del sabato inviata a ${TEST_EMAIL}.\n\nTema: ${editorial.topic}\nTitolo: ${editorial.title}\n\nL'invio massivo è previsto alle 22:00 CET.`,
       });
       return { success: true, subject };
@@ -602,7 +602,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
           gt(newsletterSendsTable.recipientCount, 0)
         ))
         .limit(5);
-      const saturdayAlreadySent = existing.some(r => r.subject.includes("AI4Business News by ProofPress"));
+      const saturdayAlreadySent = existing.some(r => r.subject.includes("Le News delle 8.30 di ProofPress"));
       if (saturdayAlreadySent) {
         console.log(`[SaturdayNewsletter] ⚠️ Newsletter del sabato già inviata oggi (trovata nel DB), skip per evitare duplicati`);
         return { success: true, recipientCount: 0, subject: "" };
@@ -613,7 +613,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
   }
 
   const dateLabel = getDateLabel();
-  console.log(`[SaturdayNewsletter] 📧 22:00 CET — Invio massivo "AI4Business News by ProofPress"...`);
+  console.log(`[SaturdayNewsletter] 📧 22:00 CET — Invio massivo "Le News delle 8.30 di ProofPress"...`);
 
   try {
     // 1. Recupera tutti gli iscritti attivi
@@ -625,7 +625,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
 
     // 2. Genera il contenuto editoriale
     const editorial = await generateSaturdayEditorial();
-    const subject = `AI4Business News by ProofPress — ${editorial.title}`;
+    const subject = `Le News delle 8.30 di ProofPress — ${editorial.title}`;
 
     // 2b. Recupera le notizie recenti per la sezione CTA (una volta sola, condivisa da tutti i batch)
     const [aiNewsForCta, startupNewsForCta] = await Promise.all([
@@ -687,7 +687,7 @@ export async function sendSaturdayNewsletterToAll(): Promise<{
   try { await (updateNewsletterSendRecipientCount as any)(sent); } catch { /* non bloccante */ }
 
     await notifyOwner({
-      title: `✅ "AI4Business News by ProofPress" inviata — ${dateLabel}`,
+      title: `✅ "Le News delle 8.30 di ProofPress" inviata — ${dateLabel}`,
       content: `Newsletter del sabato inviata con successo.\n\nTema: ${editorial.topic}\nTitolo: ${editorial.title}\nDestinatari: ${sent}/${allSubscribers.length}\nErrori: ${errors}`,
     });
 

@@ -696,8 +696,8 @@ function buildNewsletterHtmlV2(opts: {
         <div style="text-align:right;margin-bottom:16px;">
           <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
         </div>
-        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1;letter-spacing:-0.02em;margin-bottom:4px;">AI4Business News</div>
-        <div style="font-size:13px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">by ProofPress</div>
+        <div style="font-size:42px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.1;letter-spacing:-0.02em;margin-bottom:4px;">Le News delle 8.30</div>
+        <div style="font-size:13px;font-weight:600;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;letter-spacing:0.04em;text-transform:uppercase;">di ProofPress</div>
         <div style="width:40px;height:2px;background:${ACCENT};margin:0 auto 14px;"></div>
         <div style="font-size:12px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Notizie di Innovazione, Investimenti e Tecnologia Esclusive</div>
         <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">100% Verificate con &nbsp;<a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=header_payoff" style="color:${ACCENT};text-decoration:none;font-weight:600;">tecnologia ProofPress Verify</a></div>
@@ -1293,7 +1293,7 @@ function buildNewsletterHtmlV2(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI4Business News by ProofPress — ${dateLabel}</title>
+  <title>Le News delle 8.30 di ProofPress — ${dateLabel}</title>
   <!--[if mso]><style>table{border-collapse:collapse;}td{font-family:Helvetica,Arial,sans-serif;}</style><![endif]-->
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${F_SANS};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
