@@ -1233,6 +1233,62 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         };
       }),
 
+    // ── Re-verifica: riesegue solo la corroborazione Sonar senza cambiare hash/IPFS ──
+    reverify: publicProcedure
+      .input(z.object({ hash: z.string().length(64) }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'DB non disponibile' });
+
+        const rows = await db
+          .select({
+            id: newsItemsTable.id,
+            title: newsItemsTable.title,
+            summary: newsItemsTable.summary,
+            sourceUrl: newsItemsTable.sourceUrl,
+            verifyHash: newsItemsTable.verifyHash,
+            verifyReport: newsItemsTable.verifyReport,
+          })
+          .from(newsItemsTable)
+          .where(eq(newsItemsTable.verifyHash, input.hash))
+          .limit(1);
+
+        const article = rows[0];
+        if (!article) throw new TRPCError({ code: 'NOT_FOUND', message: 'Articolo non trovato' });
+        if (!article.verifyReport) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Nessun report esistente da aggiornare' });
+
+        // Estrai i claim dal report esistente
+        const existingReport = article.verifyReport as Record<string, unknown>;
+        const claims = (existingReport.claims as unknown[]) ?? [];
+        if (!claims.length) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Nessun claim da ri-verificare' });
+
+        // Riesegui solo la corroborazione Sonar
+        const { corroborateClaims } = await import('./corroborator.js');
+        const corroboration = await corroborateClaims(claims as Parameters<typeof corroborateClaims>[0], article.title ?? '');
+
+        // Aggiorna il report nel DB mantenendo tutto il resto invariato
+        const updatedReport = { ...existingReport, corroboration };
+        await db
+          .update(newsItemsTable)
+          .set({ verifyReport: updatedReport as unknown as Record<string, unknown> })
+          .where(eq(newsItemsTable.verifyHash, input.hash));
+
+        // corroboration può essere array (nuovo formato) o oggetto {results, factcheckHits} (vecchio formato)
+        const corrArray = Array.isArray(corroboration)
+          ? corroboration
+          : (corroboration as { results?: { status: string }[] }).results ?? [];
+        const verified = corrArray.filter((c: { status: string }) =>
+          c.status === 'VERIFIED' || c.status === 'PARTIAL'
+        ).length;
+
+        return {
+          status: 'updated' as const,
+          verifiedClaims: verified,
+          totalClaims: claims.length,
+          corroboration,
+        };
+      }),
+
     // Restituisce il Verification Report salvato per un articolo
     getVerifyReport: publicProcedure
       .input(z.object({ hash: z.string().length(64) }))

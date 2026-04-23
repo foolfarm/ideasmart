@@ -13,7 +13,7 @@
 import { useParams, Link } from "wouter";
 import {
   ShieldCheck, ShieldX, ExternalLink, Copy, Check, Loader2,
-  CheckCircle2, XCircle, AlertCircle, MinusCircle, ChevronDown, ChevronUp,
+  CheckCircle2, XCircle, AlertCircle, MinusCircle, ChevronDown, ChevronUp, RefreshCw,
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
@@ -239,6 +239,11 @@ function ClaimsSection({ claims, corroboration }: { claims: Claim[]; corroborati
                         {corr.sources_checked} fonti analizzate · {corr.sources_confirming} confermanti
                       </span>
                     )}
+                    {corr && corr.confidence > 0 && (
+                      <span className="text-[9px] px-1.5 py-0.5 rounded font-bold" style={{ background: "#e0f2fe", color: "#0369a1", fontFamily: FONT }}>
+                        Perplexity Sonar · {Math.round(corr.confidence * 100)}%
+                      </span>
+                    )}
                     {pct > 0 && (
                       <div className="flex items-center gap-1">
                         <div className="w-16 h-1 bg-gray-100 rounded-full overflow-hidden">
@@ -374,6 +379,20 @@ export default function VerifyReport() {
   // Mostra il contenuto se abbiamo dati dal DB (anche senza IPFS)
   const hasContent = !!dbArticle || (!loading && !error && !!report);
   const isLoading = loading && !dbArticle;
+  // ── Re-verifica Sonar ──
+  const utils = trpc.useUtils();
+  const [reverifyStatus, setReverifyStatus] = useState<'idle'|'running'|'done'|'error'>('idle');
+  const [reverifyResult, setReverifyResult] = useState<{verifiedClaims:number;totalClaims:number}|null>(null);
+  const reverifyMutation = trpc.news.reverify.useMutation({
+    onMutate: () => setReverifyStatus('running'),
+    onSuccess: (data) => {
+      setReverifyStatus('done');
+      setReverifyResult({ verifiedClaims: data.verifiedClaims, totalClaims: data.totalClaims });
+      utils.news.lookupByHash.invalidate();
+      utils.news.lookupByCid.invalidate();
+    },
+    onError: () => setReverifyStatus('error'),
+  });
 
   return (
     <>
@@ -583,6 +602,32 @@ export default function VerifyReport() {
                 )}
               </div>
 
+              {/* Re-verifica Sonar */}
+              {verifyHash && verifyHash.length === 64 && (
+                <div className="rounded-2xl p-4 mb-4" style={{ background: "#f0f9ff", border: "1px solid #bae6fd" }}>
+                  <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: "#0369a1", fontFamily: FONT }}>Aggiorna verifica claim</p>
+                  <p className="text-[10px] mb-3" style={{ color: "rgba(10,10,10,0.5)", fontFamily: FONT }}>Riesegue la corroborazione Sonar sui claim estratti. L'hash SHA-256 e il CID IPFS rimangono immutabili.</p>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <button
+                      onClick={() => reverifyMutation.mutate({ hash: verifyHash })}
+                      disabled={reverifyStatus === 'running'}
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-opacity hover:opacity-80 disabled:opacity-50"
+                      style={{ background: "#0284c7", color: "#fff", fontFamily: FONT }}
+                    >
+                      {reverifyStatus === 'running' ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
+                      {reverifyStatus === 'running' ? 'Verifica in corso…' : '↺ Re-verifica con Sonar'}
+                    </button>
+                    {reverifyStatus === 'done' && reverifyResult && (
+                      <span className="text-[10px] font-bold" style={{ color: "#16a34a", fontFamily: FONT }}>
+                        ✓ {reverifyResult.verifiedClaims}/{reverifyResult.totalClaims} claim verificati
+                      </span>
+                    )}
+                    {reverifyStatus === 'error' && (
+                      <span className="text-[10px] font-bold" style={{ color: "#dc2626", fontFamily: FONT }}>Errore durante la re-verifica</span>
+                    )}
+                  </div>
+                </div>
+              )}
               {/* Export PDF / TXT */}
               {trustGrade && (
                 <div className="rounded-2xl p-4 mb-4" style={{ background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
