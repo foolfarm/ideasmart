@@ -1152,6 +1152,10 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         // Esegui pipeline verify
         const { runVerifyPipeline } = await import('./verifyEngine.js');
         const { corroborateClaims } = await import('./corroborator.js');
+        // Wrapper closure: passa articleTitle a corroborateClaims per Perplexity Sonar
+        const _articleTitleForCorr = article.title ?? '';
+        const _corroborationFnWithTitle = (claims: Parameters<typeof corroborateClaims>[0]) =>
+          corroborateClaims(claims, _articleTitleForCorr);
 
         const report = await runVerifyPipeline({
           articleId: article.id,
@@ -1159,7 +1163,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           summary: article.summary,
           sourceUrl: article.sourceUrl,
           verifyHash: article.verifyHash,
-          corroborationFn: corroborateClaims,
+          corroborationFn: _corroborationFnWithTitle,
         });
 
         // Salva risultati nel DB

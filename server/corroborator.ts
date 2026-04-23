@@ -187,6 +187,115 @@ async function searchGoogleFactCheck(
   }
 }
 
+
+// ── Perplexity Sonar — Stance detection con web search ───────────────────────
+interface SonarVerificationResult {
+  stance: StanceType;
+  confidence: number;
+  sources: Array<{ url: string; title: string; snippet: string }>;
+  explanation: string;
+}
+
+async function verifyClaimWithSonar(
+  claimText: string,
+  articleTitle: string
+): Promise<SonarVerificationResult | null> {
+  const sonarApiKey = process.env.SONAR_API_KEY;
+  if (!sonarApiKey) return null;
+
+  const systemPrompt = `Sei un fact-checker esperto. Il tuo compito è verificare se un claim è supportato, contraddetto o non verificabile dalle fonti disponibili sul web.
+Rispondi SEMPRE con JSON valido, nessun testo aggiuntivo.`;
+
+  const userPrompt = `Verifica questo claim cercando fonti sul web:
+
+CLAIM: "${claimText}"
+CONTESTO ARTICOLO: "${articleTitle.substring(0, 150)}"
+
+Cerca evidenze che confermino o contraddicano il claim. Poi rispondi con questo JSON esatto:
+{
+  "verdict": "confirms" | "contradicts" | "neutral" | "unverified",
+  "confidence": 0.0-1.0,
+  "explanation": "Spiegazione in 1-2 frasi di cosa hai trovato",
+  "sources_found": true | false
+}
+
+REGOLE:
+- "confirms": hai trovato almeno 1 fonte credibile che supporta il claim
+- "contradicts": hai trovato almeno 1 fonte credibile che smentisce il claim  
+- "neutral": hai trovato fonti ma non confermano né smentiscono
+- "unverified": non hai trovato fonti rilevanti
+- confidence: 0.9 se hai fonti primarie (Reuters, AP, Bloomberg), 0.7 se secondarie, 0.4 se incerto`;
+
+  try {
+    const response = await fetch("https://api.perplexity.ai/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${sonarApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "sonar",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0,
+        max_tokens: 300,
+        return_citations: true,
+      }),
+      signal: AbortSignal.timeout(20_000),
+    });
+
+    if (!response.ok) {
+      console.warn(`[Corroborator] Perplexity Sonar error: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json() as {
+      choices: Array<{ message: { content: string } }>;
+      citations?: string[];
+    };
+
+    const rawContent = data?.choices?.[0]?.message?.content ?? "";
+    // Estrai JSON dalla risposta (potrebbe avere testo extra o markdown)
+    const jsonMatch = rawContent.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return null;
+
+    const parsed = JSON.parse(jsonMatch[0]) as {
+      verdict: string;
+      confidence: number;
+      explanation: string;
+      sources_found: boolean;
+    };
+
+    const stanceMap: Record<string, StanceType> = {
+      confirms: "confirms",
+      contradicts: "contradicts",
+      neutral: "neutral",
+      unverified: "unrelated",
+    };
+
+    const stance: StanceType = stanceMap[parsed.verdict] ?? "neutral";
+
+    // Costruisci sources dalle citations Perplexity
+    const sources = (data.citations ?? []).slice(0, 3).map((url, i) => ({
+      url,
+      title: `Fonte ${i + 1}`,
+      snippet: parsed.explanation,
+    }));
+
+    return {
+      stance,
+      confidence: Math.min(1.0, Math.max(0, parsed.confidence ?? 0.5)),
+      sources,
+      explanation: parsed.explanation ?? "",
+    };
+  } catch (err) {
+    console.warn(`[Corroborator] Perplexity Sonar exception:`, err);
+    return null;
+  }
+}
+
 // ── Stance detection via Claude Haiku ────────────────────────────────────────
 
 let _anthropicClient: Anthropic | null = null;
@@ -247,8 +356,15 @@ function determineStatus(
   if (ratio >= 0.3) return "PARTIALLY_CORROBORATED";
   return "UNVERIFIED";
 }
+// Mappa ClaimStatus → status UI (VERIFIED/PARTIAL/UNVERIFIED per la UI)
+export function mapClaimStatusToUI(status: import("./verifyEngine.js").ClaimStatus): "VERIFIED" | "PARTIAL" | "UNVERIFIED" | "CONTRADICTED" {
+  if (status === "CORROBORATED") return "VERIFIED";
+  if (status === "PARTIALLY_CORROBORATED") return "PARTIAL";
+  if (status === "CONTESTED") return "CONTRADICTED";
+  return "UNVERIFIED";
+}
 
-export async function corroborateClaims(claims: Claim[]): Promise<{
+export async function corroborateClaims(claims: Claim[], articleTitle = ""): Promise<{
   results: CorroborationResult[];
   factcheckHits: FactCheckHit[];
 }> {
