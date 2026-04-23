@@ -7,7 +7,7 @@
  * Namespace isolato: nessuna dipendenza con il magazine.
  */
 import { z } from "zod";
-import { eq, and, desc, gte, lte, sql } from "drizzle-orm";
+import { eq, and, desc, gte, lte, sql, isNotNull } from "drizzle-orm";
 import { createHash, randomBytes } from "crypto";
 import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure } from "../_core/trpc";
@@ -16,9 +16,11 @@ import {
   verifyOrganizations,
   verifyApiKeys,
   verifySubscriptions,
+  newsItems,
   type InsertVerifyApiKey,
   type InsertVerifyOrganization,
 } from "../../drizzle/schema";
+
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const KEY_PREFIX = "ppv_live_";
@@ -323,4 +325,118 @@ export const verifyClientRouter = router({
         message: `Trial di 14 giorni attivato. Salva la tua API key: non sarà più visibile.`,
       };
     }),
+
+  /**
+   * Storico verifiche dell'organizzazione — articoli con verifyHash e report.
+   * Paginato, ordinato per data decrescente.
+   */
+  myVerifications: protectedProcedure
+    .input(z.object({
+      limit: z.number().min(1).max(100).default(20),
+      offset: z.number().min(0).default(0),
+    }).optional())
+    .query(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const org = await getOrgForUser(ctx.user.email);
+      if (!org) return { rows: [], total: 0 };
+
+      const limit = input?.limit ?? 20;
+      const offset = input?.offset ?? 0;
+
+      const rows = await db
+        .select({
+          id: newsItems.id,
+          title: newsItems.title,
+          verifyHash: newsItems.verifyHash,
+          trustScore: newsItems.trustScore,
+          trustGrade: newsItems.trustGrade,
+          ipfsCid: newsItems.ipfsCid,
+          ipfsUrl: newsItems.ipfsUrl,
+          ipfsPinnedAt: newsItems.ipfsPinnedAt,
+          publishedAt: newsItems.publishedAt,
+          sourceUrl: newsItems.sourceUrl,
+          sourceName: newsItems.sourceName,
+          section: newsItems.section,
+        })
+        .from(newsItems)
+        .where(isNotNull(newsItems.verifyReport))
+        .orderBy(desc(newsItems.ipfsPinnedAt))
+        .limit(limit)
+        .offset(offset);
+
+      const [[countRow]] = await db.execute(
+        sql`SELECT COUNT(*) as total FROM news_items WHERE verifyReport IS NOT NULL`
+      ) as any;
+
+      return { rows, total: Number(countRow.total) };
+    }),
+
+  /**
+   * Analytics dell'organizzazione — distribuzione TrustGrade, trend mensile,
+   * totale certificazioni IPFS, articoli per sezione.
+   */
+  myAnalytics: protectedProcedure.query(async ({ ctx }) => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+    const org = await getOrgForUser(ctx.user.email);
+    if (!org) return null;
+
+    // Distribuzione TrustGrade
+    const [[gradeA], [gradeB], [gradeC], [gradeD], [gradeF]] = await Promise.all([
+      db.execute(sql`SELECT COUNT(*) as n FROM news_items WHERE trustGrade = 'A' AND verifyReport IS NOT NULL`) as any,
+      db.execute(sql`SELECT COUNT(*) as n FROM news_items WHERE trustGrade = 'B' AND verifyReport IS NOT NULL`) as any,
+      db.execute(sql`SELECT COUNT(*) as n FROM news_items WHERE trustGrade = 'C' AND verifyReport IS NOT NULL`) as any,
+      db.execute(sql`SELECT COUNT(*) as n FROM news_items WHERE trustGrade = 'D' AND verifyReport IS NOT NULL`) as any,
+      db.execute(sql`SELECT COUNT(*) as n FROM news_items WHERE trustGrade = 'F' AND verifyReport IS NOT NULL`) as any,
+    ]);
+
+    // Totali
+    const [[totalVerified]] = await db.execute(
+      sql`SELECT COUNT(*) as total FROM news_items WHERE verifyReport IS NOT NULL`
+    ) as any;
+    const [[totalIpfs]] = await db.execute(
+      sql`SELECT COUNT(*) as total FROM news_items WHERE ipfsCid IS NOT NULL`
+    ) as any;
+
+    // Ultimi 6 mesi — verifiche per mese
+    const [monthlyRows] = await db.execute(
+      sql`SELECT DATE_FORMAT(ipfsPinnedAt, '%Y-%m') as month, COUNT(*) as count
+          FROM news_items
+          WHERE ipfsPinnedAt IS NOT NULL
+          GROUP BY month
+          ORDER BY month DESC
+          LIMIT 6`
+    ) as any;
+
+    // Top 5 sezioni per numero di articoli verificati
+    const [sectionRows] = await db.execute(
+      sql`SELECT section, COUNT(*) as count
+          FROM news_items
+          WHERE verifyReport IS NOT NULL
+          GROUP BY section
+          ORDER BY count DESC
+          LIMIT 5`
+    ) as any;
+
+    return {
+      gradeDistribution: {
+        A: Number(gradeA[0]?.n ?? 0),
+        B: Number(gradeB[0]?.n ?? 0),
+        C: Number(gradeC[0]?.n ?? 0),
+        D: Number(gradeD[0]?.n ?? 0),
+        F: Number(gradeF[0]?.n ?? 0),
+      },
+      totalVerified: Number(totalVerified?.total ?? 0),
+      totalIpfs: Number(totalIpfs?.total ?? 0),
+      monthlyTrend: Array.isArray(monthlyRows)
+        ? monthlyRows.map((r: any) => ({ month: r.month as string, count: Number(r.count) }))
+        : [],
+      topSections: Array.isArray(sectionRows)
+        ? sectionRows.map((r: any) => ({ section: r.section as string, count: Number(r.count) }))
+        : [],
+    };
+  }),
 });
