@@ -83,14 +83,140 @@ function GradeBadge({ grade }: { grade: string | null }) {
 
 function ScoreBar({ score }: { score: number | null }) {
   if (score === null) return <span className="text-[#86868b] text-xs">—</span>;
-  const grade = score >= 85 ? "A" : score >= 70 ? "B" : score >= 55 ? "C" : score >= 40 ? "D" : "F";
+  // score è in scala 0-1 nel DB, convertiamo a 0-100 per la visualizzazione
+  const pct = score <= 1 ? Math.round(score * 100) : Math.round(score);
+  const grade = pct >= 90 ? "A" : pct >= 75 ? "B" : pct >= 55 ? "C" : pct >= 35 ? "D" : "F";
   const c = GRADE_COLORS[grade];
   return (
     <div className="flex items-center gap-2">
       <div className="flex-1 h-1.5 bg-[#f0f0f0] rounded-full overflow-hidden">
-        <div className="h-full rounded-full" style={{ width: `${score}%`, backgroundColor: c.bar }} />
+        <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: c.bar }} />
       </div>
-      <span className="text-xs font-semibold" style={{ color: c.text }}>{score}</span>
+      <span className="text-xs font-semibold" style={{ color: c.text }}>{pct}</span>
+    </div>
+  );
+}
+
+/** Calcola il breakdown dei criteri Trust Score dato un record articolo */
+function computeBreakdown(row: {
+  verifyHash?: string | null;
+  ipfsCid?: string | null;
+  sourceName?: string | null;
+  sourceUrl?: string | null;
+  summary?: string | null;
+}) {
+  const criteria: { label: string; points: number; earned: number; ok: boolean }[] = [
+    {
+      label: "Hash SHA-256 certificato",
+      points: 40,
+      earned: row.verifyHash && row.verifyHash.length === 64 ? 40 : 0,
+      ok: !!(row.verifyHash && row.verifyHash.length === 64),
+    },
+    {
+      label: "Archiviazione IPFS",
+      points: 25,
+      earned: row.ipfsCid && row.ipfsCid.length > 10 ? 25 : 0,
+      ok: !!(row.ipfsCid && row.ipfsCid.length > 10),
+    },
+    {
+      label: "Fonte citata (nome)",
+      points: 8,
+      earned: row.sourceName && row.sourceName.trim().length > 0 ? 8 : 0,
+      ok: !!(row.sourceName && row.sourceName.trim().length > 0),
+    },
+    {
+      label: "Fonte citata (URL)",
+      points: 7,
+      earned: row.sourceUrl && row.sourceUrl.trim().length > 0 ? 7 : 0,
+      ok: !!(row.sourceUrl && row.sourceUrl.trim().length > 0),
+    },
+    {
+      label: "Contenuto ricco (>800 char)",
+      points: 15,
+      earned: (row.summary?.trim().length ?? 0) >= 800 ? 15
+        : (row.summary?.trim().length ?? 0) >= 400 ? 10
+        : (row.summary?.trim().length ?? 0) >= 150 ? 6
+        : (row.summary?.trim().length ?? 0) >= 50 ? 3 : 0,
+      ok: (row.summary?.trim().length ?? 0) >= 150,
+    },
+    {
+      label: "Report AI Verify",
+      points: 5,
+      earned: 5, // se è in questa lista ha già il verifyReport
+      ok: true,
+    },
+  ];
+  const total = criteria.reduce((s, c) => s + c.earned, 0);
+  return { criteria, total };
+}
+
+function GradeBadgeWithBreakdown({ grade, row }: {
+  grade: string | null;
+  row: {
+    verifyHash?: string | null;
+    ipfsCid?: string | null;
+    sourceName?: string | null;
+    sourceUrl?: string | null;
+    summary?: string | null;
+  };
+}) {
+  const [open, setOpen] = useState(false);
+  if (!grade) return <span className="text-[#86868b] text-xs">—</span>;
+  const c = GRADE_COLORS[grade] ?? { bg: "#f5f5f7", text: "#1d1d1f", bar: "#1d1d1f" };
+  const { criteria, total } = computeBreakdown(row);
+  const GRADE_LABELS: Record<string, string> = {
+    A: "Certificazione Massima", B: "Alta Affidabilità",
+    C: "Affidabilità Standard", D: "Verifica Parziale", F: "Non Verificato",
+  };
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold cursor-pointer hover:opacity-80 transition-opacity"
+        style={{ backgroundColor: c.bg, color: c.text }}
+        title="Clicca per vedere il breakdown del Trust Score"
+      >
+        {grade}
+      </button>
+      {open && (
+        <div
+          className="absolute left-0 top-9 z-50 w-72 rounded-xl shadow-xl border border-[#e5e5e5] bg-white p-4"
+          style={{ fontFamily: SF }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#86868b]">Trust Score Breakdown</span>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-lg font-black" style={{ color: c.text }}>Grade {grade}</span>
+                <span className="text-xs text-[#86868b]">{GRADE_LABELS[grade]}</span>
+              </div>
+            </div>
+            <button onClick={() => setOpen(false)} className="text-[#86868b] hover:text-[#1d1d1f] text-lg leading-none">×</button>
+          </div>
+          <div className="space-y-2 mb-3">
+            {criteria.map(cr => (
+              <div key={cr.label} className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[9px] font-bold ${
+                    cr.ok ? 'bg-green-100 text-green-700' : 'bg-[#f5f5f7] text-[#86868b]'
+                  }`}>{cr.ok ? '✓' : '○'}</span>
+                  <span className="text-[11px] text-[#1d1d1f] truncate">{cr.label}</span>
+                </div>
+                <span className="text-[11px] font-semibold flex-shrink-0" style={{ color: cr.ok ? c.text : '#c7c7cc' }}>
+                  +{cr.earned}/{cr.points}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-[#f0f0f0] pt-2 flex items-center justify-between">
+            <span className="text-[11px] text-[#86868b]">Punteggio totale</span>
+            <span className="text-sm font-black" style={{ color: c.text }}>{total}/100</span>
+          </div>
+          <p className="text-[9px] text-[#86868b] mt-2 leading-relaxed">
+            Il Trust Score misura la qualità della certificazione, non la veridicità del contenuto.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -306,24 +432,37 @@ function TabVerifications() {
                 )}
                 {row.sourceName && <p className="text-[11px] text-[#86868b] mt-0.5">{row.sourceName}</p>}
               </div>
-              {/* Grade */}
-              <GradeBadge grade={row.trustGrade} />
+              {/* Grade — clicca per vedere il breakdown */}
+              <GradeBadgeWithBreakdown grade={row.trustGrade} row={row} />
               {/* Score */}
               <ScoreBar score={row.trustScore} />
               {/* IPFS / Hash */}
               <div className="min-w-0">
                 {row.ipfsCid ? (
-                  <a href={row.ipfsUrl ?? `https://ipfs.io/ipfs/${row.ipfsCid}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="text-[11px] font-mono text-[#00897b] hover:underline flex items-center gap-1 truncate">
-                    <Database className="w-3 h-3 flex-shrink-0" />
-                    {row.ipfsCid.slice(0, 12)}…
-                  </a>
+                  <div className="flex flex-col gap-0.5">
+                    {/* Link principale: pagina report human-readable */}
+                    <a href={`/verify/${row.ipfsCid}`}
+                      className="text-[11px] font-mono text-[#00897b] hover:underline flex items-center gap-1 truncate"
+                      title="Apri il Verification Report">
+                      <Database className="w-3 h-3 flex-shrink-0" />
+                      {row.ipfsCid.slice(0, 12)}…
+                    </a>
+                    {/* Link secondario: JSON raw su IPFS */}
+                    <a href={row.ipfsUrl ?? `https://ipfs.io/ipfs/${row.ipfsCid}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="text-[9px] text-[#86868b] hover:underline flex items-center gap-0.5"
+                      title="JSON raw su IPFS">
+                      <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
+                      JSON raw
+                    </a>
+                  </div>
                 ) : row.verifyHash ? (
-                  <span className="text-[11px] font-mono text-[#86868b] truncate flex items-center gap-1">
+                  <a href={`/verify/${row.verifyHash}`}
+                    className="text-[11px] font-mono text-[#86868b] hover:text-[#00897b] hover:underline truncate flex items-center gap-1"
+                    title="Apri il Verification Report">
                     <Hash className="w-3 h-3 flex-shrink-0" />
                     {row.verifyHash.slice(0, 12)}…
-                  </span>
+                  </a>
                 ) : (
                   <span className="text-[11px] text-[#c7c7cc]">—</span>
                 )}

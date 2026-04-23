@@ -427,6 +427,7 @@ export const verifyClientRouter = router({
           sourceUrl: newsItems.sourceUrl,
           sourceName: newsItems.sourceName,
           section: newsItems.section,
+          summary: newsItems.summary,
         })
         .from(newsItems)
         .where(isNotNull(newsItems.verifyReport))
