@@ -44,7 +44,7 @@ export function TabWhatIsVerify() {
     },
     {
       n: "04", icon: Search, color: "#f59e0b", title: "Corroborazione Multi-fonte",
-      what: "Ogni claim viene verificato su 4 livelli: (1) fact-checker certificati IFCN, (2) agenzie wire internazionali, (3) motori di ricerca semantici, (4) dataset pubblici e statistiche ufficiali.",
+      what: "Ogni claim viene verificato su più livelli: motori di ricerca semantici, fonti editoriali indicizzate, dataset pubblici e statistiche ufficiali. Il sistema assegna un peso alla qualità e alla coerenza delle fonti trovate.",
       output: "Score di corroborazione per claim [0–100] con fonti citate",
       guarantee: "Verificabilità indipendente: chiunque può ripercorrere le fonti usate",
     },
@@ -62,8 +62,8 @@ export function TabWhatIsVerify() {
     },
     {
       n: "07", icon: Database, color: "#00897b", title: "IPFS Anchoring",
-      what: "Il report sigillato viene caricato su IPFS tramite Pinata (pinning permanente). Il CID è deterministico: lo stesso contenuto produce sempre lo stesso CID.",
-      output: "CID IPFS (es. Qm... o bafy...) + URL gateway pubblico permanente",
+      what: "Il report sigillato viene caricato su IPFS tramite il servizio di pinning Pinata. Il CID (Content Identifier) è derivato dal contenuto: lo stesso report produce sempre lo stesso CID.",
+      output: "CID IPFS + URL gateway pubblico accessibile da qualsiasi browser",
       guarantee: "Persistenza e decentralizzazione: il certificato esiste indipendentemente da ProofPress",
     },
   ];
@@ -97,7 +97,7 @@ export function TabWhatIsVerify() {
     { icon: FileText, title: "Verification Report JSON", desc: "Report strutturato con lista claim, fonti usate, score per claim, metodologia applicata. Esportabile, integrabile in qualsiasi sistema." },
     { icon: Database, title: "Certificato IPFS", desc: "CID permanente su rete decentralizzata. Il certificato esiste indipendentemente da ProofPress e può essere verificato da chiunque." },
     { icon: Globe, title: "Pagina pubblica verificabile", desc: "URL pubblico su proofpress.ai/verify/<hash> accessibile a lettori, regolatori, revisori. Mostra il report in formato human-readable." },
-    { icon: Lock, title: "Audit trail regolatorio", desc: "Sequenza immutabile di eventi allineata con AI Act Art. 13, DSA Art. 17 e ESRS G1." },
+    { icon: Lock, title: "Audit trail regolatorio", desc: "Sequenza immutabile di eventi (submission, hash, verifica, report, IPFS) utile per audit interni, assurance ESG e compliance editoriale." },
   ];
 
   return (
@@ -238,10 +238,10 @@ export function TabEasyStart({ apiKeys }: { apiKeys: { keyPrefix: string }[] }) 
     },
     {
       n: 4, icon: Globe, color: "#10b981",
-      title: "Mostra il badge sul tuo sito",
-      desc: "Aggiungi il badge ProofPress Verify accanto all'articolo. I lettori possono cliccare per vedere il report completo.",
-      code: `<a href="https://proofpress.ai/verify/HASH" target="_blank">\n  <img src="https://proofpress.ai/badge/verify-A.svg"\n       alt="Verificato ProofPress" />\n</a>`,
-      tip: "Il badge è disponibile in 5 varianti (A–F) e si aggiorna automaticamente.",
+      title: "Linka il report pubblico",
+      desc: "Ogni articolo verificato ha una pagina pubblica accessibile tramite l'URL del report. Aggiungila come link 'Verificato con ProofPress' accanto all'articolo.",
+      code: `<a href="https://proofpress.ai/verify/HASH" target="_blank"\n   rel="noopener noreferrer">\n  Verificato con ProofPress Verify\n</a>`,
+      tip: "Sostituisci HASH con il verifyHash restituito dalla risposta API.",
     },
     {
       n: 5, icon: Database, color: "#00897b",
@@ -253,12 +253,10 @@ export function TabEasyStart({ apiKeys }: { apiKeys: { keyPrefix: string }[] }) 
   ];
 
   const INTEGRATIONS = [
-    { name: "WordPress", desc: "Plugin ufficiale — installa e configura in 2 minuti", status: "Disponibile", color: "#21759b" },
-    { name: "Ghost CMS", desc: "Webhook nativo — verifica automatica a ogni pubblicazione", status: "Disponibile", color: "#15171a" },
-    { name: "Contentful", desc: "App Contentful Marketplace con campo TrustGrade", status: "Beta", color: "#2478cc" },
-    { name: "Strapi", desc: "Plugin Strapi con lifecycle hook", status: "Coming soon", color: "#8e75ff" },
-    { name: "REST API", desc: "Integra in qualsiasi CMS o workflow con 3 righe di codice", status: "Disponibile", color: "#1d1d1f" },
-    { name: "Zapier / Make", desc: "Automazione no-code — trigger su nuova pubblicazione", status: "Beta", color: "#ff4a00" },
+    { name: "REST API", desc: "Integra ProofPress Verify in qualsiasi CMS o workflow editoriale tramite chiamate HTTP standard.", status: "Disponibile", color: "#1d1d1f" },
+    { name: "WordPress", desc: "Plugin in sviluppo — integrazione nativa con l'editor Gutenberg.", status: "In roadmap", color: "#21759b" },
+    { name: "Ghost CMS", desc: "Integrazione via webhook in roadmap — verifica automatica alla pubblicazione.", status: "In roadmap", color: "#15171a" },
+    { name: "Zapier / Make", desc: "Connettore no-code in roadmap — trigger su nuova pubblicazione.", status: "In roadmap", color: "#ff4a00" },
   ];
 
   return (
@@ -343,7 +341,7 @@ export function TabEasyStart({ apiKeys }: { apiKeys: { keyPrefix: string }[] }) 
             <div>
               <p className="text-sm font-semibold text-[#1d1d1f] mb-1">Hai bisogno di aiuto?</p>
               <p className="text-xs text-[#6e6e73] mb-3">
-                Consulta la documentazione completa e i tutorial video. Per supporto diretto scrivi a{" "}
+                Per supporto e documentazione tecnica scrivi a{" "}
                 <span className="font-mono">verify@proofpress.ai</span>.
               </p>
               <div className="flex gap-2">
