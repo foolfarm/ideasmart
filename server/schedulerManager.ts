@@ -21,8 +21,9 @@
  *  │  06:45 — Audit link newsletter pre-invio                                │
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
-  *  │  NEWSLETTER — OGNI GIORNO 7gg/7 alle 08:00 CET                              │
-  *  │  08:00 (ogni giorno) — "BUONGIORNO by PROOFPRESS" → tutti (NO approv.)    │
+  *  │  NEWSLETTER — OGNI GIORNO 7gg/7                                              │
+  *  │  07:30 — Preview a ac@acinelli.com (force, nessuna approvazione)          │
+  *  │  08:30 — Invio massivo "BUONGIORNO by PROOFPRESS" → tutti i subscriber    │
   *  │  Mittente: redazione@proofpress.ai — Unica newsletter unificata            │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
