@@ -21,9 +21,9 @@
  *  │  06:45 — Audit link newsletter pre-invio                                │
  *  │  (Canali rimossi: Music, Finance, Health, Sport, Luxury, Gossip, ecc.) │
  *  │                                                                          │
-  *  │  NEWSLETTER — OGNI GIORNO (dom–ven alle 08:30, sabato alle 08:00)          │
-  *  │  08:30 (dom–ven) — "Le News delle 8.30 di ProofPress" → tutti (NO approv.) │
-  *  │  08:00 (sab) — Editoriale del Sabato → tutti gli iscritti (NO approv.)    │
+  *  │  NEWSLETTER — OGNI GIORNO 7gg/7 alle 08:00 CET                              │
+  *  │  08:00 (ogni giorno) — "BUONGIORNO by PROOFPRESS" → tutti (NO approv.)    │
+  *  │  Mittente: redazione@proofpress.ai — Unica newsletter unificata            │
  *  │  Contenuto: AI News + Startup + DEALROOM + Breaking + Research          │
  *  │  + Sponsor a rotazione + Amazon Deal del giorno                         │
  *  │                                                                          │
@@ -449,52 +449,29 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── NEWSLETTER MATTINO "Le News delle 8.30" — 08:30 CET (dom–ven, escluso sabato) ─────────────
-  // Cron: 30 8 * * 0-5 = ogni giorno da domenica (0) a venerdì (5), sabato (6) escluso
+  // ── NEWSLETTER UNIFICATA "BUONGIORNO by PROOFPRESS" — 08:00 CET (7 giorni su 7) ────────────
+  // Cron: 0 8 * * * = ogni giorno alle 08:00 CET, domenica inclusa, sabato incluso
   // Nessuna approvazione richiesta — invio automatico diretto a tutti gli iscritti attivi
-  cron.schedule("30 8 * * 0-5", async () => {
-    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio automatico \"Le News delle 8.30 di ProofPress\"...");
+  // Newsletter del sabato: stessa newsletter unificata (nessuna newsletter separata del sabato)
+  cron.schedule("0 8 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 08:00 CET — Invio automatico \"BUONGIORNO by PROOFPRESS\" (7gg/7)...");
     await withLock("newsletter-mattino", async () => {
       try {
         const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
         const result = await sendMorningNewsletterToAll();
         if (result.success) {
-          console.log(`[SchedulerManager] ✅ Newsletter mattino inviata: ${result.recipientCount} destinatari — ${result.subject}`);
+          console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari — ${result.subject}`);
         } else {
-          console.error("[SchedulerManager] ❌ Errore newsletter mattino:", result.error);
+          console.error("[SchedulerManager] ❌ Errore newsletter:", result.error);
         }
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico newsletter mattino:", err);
+        console.error("[SchedulerManager] ❌ Errore critico newsletter:", err);
       }
     });
   }, { timezone: TZ });
 
   // NEWSLETTER PROMOZIONALE — DISABILITATA (rimossa 2026-04-12 per decisione editoriale)
-  // Tutte le newsletter promozionali (promo generica, business, prompt collection, pubblicità)
-  // sono state cancellate. Restano attive solo: Daily Unificata (lun–ven) + Newsletter Sabato.
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // NEWSLETTER DEL SABATO — "Le News delle 8.30 di ProofPress" (Editoriale del Sabato)
-  //   08:00 CET (sab) — Invio automatico a tutti gli iscritti attivi (NO approvazione)
-  // ══════════════════════════════════════════════════════════════════════════
-  // ⏰ 08:00 CET (sabato) — Invio automatico \"Le News delle 8.30 di ProofPress\" (Editoriale del Sabato)
-  // Nessuna approvazione richiesta — invio diretto a tutti gli iscritti attivi
-  cron.schedule("0 8 * * 6", async () => {
-    console.log("[SchedulerManager] ⏰ 08:00 CET (sab) — Invio automatico \"Le News delle 8.30 di ProofPress\" (Editoriale del Sabato)...");
-    await withLock("saturday-massivo", async () => {
-      try {
-        const { sendSaturdayNewsletterToAll } = await import("./saturdayEditorialNewsletter");
-        const result = await sendSaturdayNewsletterToAll();
-        if (result.success) {
-          console.log(`[SchedulerManager] ✅ Newsletter sabato inviata: ${result.recipientCount} destinatari — ${result.subject}`);
-        } else {
-          console.error("[SchedulerManager] ❌ Errore newsletter sabato:", result.error);
-        }
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico newsletter sabato:", err);
-      }
-    });
-  }, { timezone: TZ });
+  // NEWSLETTER SABATO SEPARATA — DISABILITATA (rimossa 2026-04-24: newsletter unificata 7gg/7)
   // ══════════════════════════════════════════════════════════════════════════
   // LINKEDIN AUTOPOST — 5 post giornalieri:
   //   10:00 CET — AI News (morning)
@@ -991,8 +968,8 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → lun/mer/ven alle 01:35 CET");
   console.log("[SchedulerManager]   Audit notturno   -> ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   📧 Audit link NL     -> RIMOSSO (non necessario con nuovo template)");
-  console.log("[SchedulerManager]   📧 Newsletter \"Le News delle 8.30\" -> dom\u2013ven alle 08:30 CET \u2192 tutti gli iscritti (NO approvazione)");
-  console.log("[SchedulerManager]   📧 Newsletter Sabato \"Le News delle 8.30\" -> sab alle 08:00 CET \u2192 tutti gli iscritti (NO approvazione)");
+  console.log("[SchedulerManager]   📧 Newsletter \"BUONGIORNO by PROOFPRESS\" -> 7gg/7 alle 08:00 CET \u2192 tutti gli iscritti (NO approvazione, mittente: redazione@proofpress.ai)");
+  console.log("[SchedulerManager]   📧 Newsletter Sabato Separata -> DISABILITATA (rimossa 2026-04-24, newsletter unificata 7gg/7)");
   console.log("[SchedulerManager]   📧 Newsletter Promozionali -> DISABILITATE (rimossa 2026-04-12)");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");

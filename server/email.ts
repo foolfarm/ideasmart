@@ -7,8 +7,9 @@ interface SendEmailOptions {
   text?: string;
   /** URL per il List-Unsubscribe header (RFC 2369) — usato nelle newsletter massicce */
   listUnsubscribeUrl?: string;
-  /** Override mittente: 'daily' = The ProofPress AI Business Digest (redazione@proofpress.ai),
+  /** Override mittente: 'daily' = BUONGIORNO by PROOFPRESS (redazione@proofpress.ai),
    *  'promo' = ProofPress Business (noreply@proofpress.biz),
+   *  'ai4business' = BUONGIORNO by PROOFPRESS (redazione@proofpress.ai),
    *  default = ProofPress.AI (info@proofpress.ai) */
   sender?: 'daily' | 'promo' | 'ai4business' | 'default';
 }
@@ -20,20 +21,20 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
   let fromName: string;
   let replyTo: string;
   if (opts.sender === 'daily') {
-    // Newsletter Daily: The ProofPress AI Business Digest
+    // Newsletter Daily: BUONGIORNO by PROOFPRESS
     fromEmail = "redazione@proofpress.ai";
-    fromName = "AI4Business News by ProofPress";
-    replyTo = "noreply@proofpress.ai";
+    fromName = "BUONGIORNO by PROOFPRESS, le tue news di innovazione ed investimenti quotidiane";
+    replyTo = "redazione@proofpress.ai";
   } else if (opts.sender === 'promo') {
     // Newsletter promozionali: ProofPress Business
-    fromEmail = "noreply@proofpress.biz";
-    fromName = "ProofPress Business";
-    replyTo = "noreply@proofpress.biz";
+    fromEmail = "redazione@proofpress.ai";
+    fromName = "BUONGIORNO by PROOFPRESS, le tue news di innovazione ed investimenti quotidiane";
+    replyTo = "redazione@proofpress.ai";
   } else if (opts.sender === 'ai4business') {
-    // Preview editoriale: usa ai4business.news (non bloccato da Apple Mail)
-    fromEmail = "adrian@ai4business.news";
-    fromName = "ProofPress Magazine";
-    replyTo = "adrian@ai4business.news";
+    // Preview/test newsletter: stesso mittente unificato
+    fromEmail = "redazione@proofpress.ai";
+    fromName = "BUONGIORNO by PROOFPRESS, le tue news di innovazione ed investimenti quotidiane";
+    replyTo = "redazione@proofpress.ai";
   } else {
     // Default: ProofPress.AI (transazionali, welcome, report)
     fromEmail = process.env.SENDGRID_FROM_EMAIL || "info@proofpress.ai";
@@ -68,7 +69,7 @@ export async function sendEmail(opts: SendEmailOptions): Promise<{ success: bool
     // Permette a Gmail, Outlook, Apple Mail di mostrare il pulsante "Annulla iscrizione"
     ...(opts.listUnsubscribeUrl ? {
       headers: {
-        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:noreply@proofpress.ai?subject=unsubscribe>`,
+        "List-Unsubscribe": `<${opts.listUnsubscribeUrl}>, <mailto:redazione@proofpress.ai?subject=unsubscribe>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
       }
     } : {})
