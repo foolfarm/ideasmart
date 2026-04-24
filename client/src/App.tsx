@@ -162,6 +162,8 @@ function Router() {
         <Route path="/verify/join" component={VerifyJoin} />
         <Route path="/verify/registry" component={VerifyRegistry} />
         <Route path="/verify/demo" component={VerifyDemo} />
+        {/* Redirect /verify/admin → /admin/verify per evitare cattura da /verify/:cid */}
+        <Route path="/verify/admin">{() => <Redirect to="/admin/verify" />}</Route>
         {/* Route generica /verify/:cid — cattura hash/CID, DEVE stare DOPO le route specifiche */}
         <Route path="/verify/:cid" component={VerifyReport} />
         <Route path="/andrea-cinelli" component={AndreaCinelli} />

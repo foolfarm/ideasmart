@@ -314,7 +314,10 @@ export default function VerifyReport() {
 
   // Determina se il CID è un hash SHA-256 (64 char hex) o un CID IPFS (bafk…)
   const isHash = cid && /^[a-f0-9]{64}$/i.test(cid);
-  const isIpfsCid = cid && !isHash;
+  // Un CID IPFS valido ha almeno 10 caratteri e non è una parola riservata come 'admin', 'demo', 'join', 'registry', 'dashboard'
+  const RESERVED_SEGMENTS = new Set(['admin', 'demo', 'join', 'registry', 'dashboard', 'business', 'pricing', 'verify']);
+  const isValidCidLength = !!(cid && cid.length >= 10);
+  const isIpfsCid = cid && !isHash && isValidCidLength && !RESERVED_SEGMENTS.has(cid.toLowerCase());
 
   // Cerca l'articolo nel DB per hash SHA-256
   const { data: dbArticleByHash, isLoading: loadingHash } = trpc.news.lookupByHash.useQuery(
@@ -325,7 +328,7 @@ export default function VerifyReport() {
   // Cerca l'articolo nel DB per CID IPFS (evita il fetch IPFS che richiede formato specifico)
   const { data: dbArticleByCid, isLoading: loadingCid } = trpc.news.lookupByCid.useQuery(
     { cid: cid! },
-    { enabled: !!isIpfsCid, retry: 1, staleTime: 60_000 }
+    { enabled: !!isIpfsCid && isValidCidLength, retry: 1, staleTime: 60_000 }
   );
 
   // Unifica i risultati: preferisce lookup per hash, poi per CID
@@ -335,7 +338,7 @@ export default function VerifyReport() {
   const needsIpfsFallback = !!(isIpfsCid && !loadingCid && !dbArticleByCid);
   const { data: rawReport, isLoading: loadingIpfs, error: queryError } = trpc.news.fetchIPFSReport.useQuery(
     { cid: cid! },
-    { enabled: needsIpfsFallback, retry: 1 }
+    { enabled: needsIpfsFallback && isValidCidLength, retry: 1 }
   );
 
   const report = rawReport as unknown as VerificationReport | undefined;
