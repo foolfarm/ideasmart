@@ -82,6 +82,9 @@ export default function PerGiornalisti() {
                   <button onClick={scrollToHow} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white" style={{ borderRadius: 0 }}>
                     Guarda come funziona ↓
                   </button>
+                  <a href="https://proofpress.ai/piattaforma" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] border-2 border-[#dc2626] transition-all duration-200 hover:bg-[#dc2626] hover:text-white inline-block" style={{ borderRadius: 0 }}>
+                    Scopri di più →
+                  </a>
                 </div>
                 <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
                   Setup in pochi giorni · Nessun vincolo a lungo termine · Da €500/mese
