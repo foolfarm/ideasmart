@@ -373,9 +373,23 @@ export default function OsservatorioTech() {
         {/* Main content */}
         <main className="flex-1 min-w-0 px-6 md:px-10 py-8 max-w-4xl">
 
+          {/* ── INTRO OSSERVATORIO ───────────────────────────────────────── */}
+          <section className="mb-10 pb-8" style={{ borderBottom: `2px solid ${RED}` }}>
+            <Label>Osservatorio Tech</Label>
+            <h1
+              className="text-3xl md:text-4xl font-black leading-tight tracking-tight mt-2 mb-4"
+              style={{ color: INK, fontFamily: "'SF Pro Display', 'Inter', sans-serif" }}
+            >
+              Il punto di vista di chi il digitale<br />
+              <span style={{ color: RED }}>lo ha costruito.</span>
+            </h1>
+            <p className="text-base leading-relaxed max-w-2xl" style={{ color: INK + "80" }}>
+              L'Osservatorio Tech è un'area editoriale curata da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale, AI pioneer e pioniere del digitale italiano. Ogni giorno, analisi e approfondimenti sui temi che contano: innovazione, intelligenza artificiale, startup, venture capital e trasformazione digitale. Un punto di vista qualificato, costruito su 30 anni di execution diretta, non su teoria.
+            </p>
+          </section>
+
           {/* ── HERO SECTION ─────────────────────────────────────────────── */}
           <section className="mb-10">
-            <Label>Osservatorio Tech</Label>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
               {/* Foto + profilo */}
               <div className="md:col-span-1">
@@ -421,37 +435,14 @@ export default function OsservatorioTech() {
                   Andrea Cinelli
                 </h1>
                 <p
-                  className="text-sm font-semibold tracking-widest uppercase mb-4"
+                  className="text-xs font-bold tracking-widest uppercase mb-3"
                   style={{ color: RED }}
                 >
-                  CEO FoolFarm · Tech Editor ProofPress · Serial Entrepreneur · AI Pioneer
-                </p>
-                <p className="text-sm leading-relaxed mb-3" style={{ color: INK + "80" }}>
-                  Imprenditore seriale con 30+ anni di esperienza nella costruzione di prodotti digitali, aziende AI-native e piattaforme tecnologiche su larga scala. Specializzato in disruption, trasformazione AI e reinvenzione strategica, opera all'intersezione tra strategia, tecnologia, execution e capitale.
-                </p>
-                <p className="text-sm leading-relaxed mb-3" style={{ color: INK + "80" }}>
-                  Co-fondatore di Libero.it (il più grande portale internet italiano, 10M+ utenti). Head of Mobile VAS GPM in Vodafone Global. Fondatore di 12+ venture AI. Autore di 25+ brevetti, tra cui IP fondamentale alla base del sistema SPID. Membro dell'Advisory Board Deloitte Central Mediterranean.
+                  CEO FoolFarm · Tech Editor ProofPress · AI Pioneer
                 </p>
                 <p className="text-sm leading-relaxed" style={{ color: INK + "80" }}>
-                  Professore di AI all'Università Il Sole 24 Ore Business School. Keynote speaker internazionale. Autore di 30+ pubblicazioni su AI e innovazione.
+                  Co-fondatore di Libero.it (10M+ utenti). 30+ anni di execution nel digitale. Fondatore di 12+ venture AI, 25+ brevetti, 2 exit. Professore di AI al Sole 24 Ore Business School. Keynote speaker internazionale.
                 </p>
-
-                {/* Credenziali */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6">
-                  {[
-                    { value: "30+", label: "Anni di esperienza" },
-                    { value: "12+", label: "Venture AI fondati" },
-                    { value: "25+", label: "Brevetti registrati" },
-                    { value: "2", label: "Exit di successo" },
-                    { value: "10M+", label: "Utenti Libero.it" },
-                    { value: "30+", label: "Pubblicazioni AI" },
-                  ].map(({ value, label }) => (
-                    <div key={label} className="border p-3" style={{ borderColor: INK + "15" }}>
-                      <p className="text-xl font-black" style={{ color: INK }}>{value}</p>
-                      <p className="text-[10px] tracking-wider uppercase mt-0.5" style={{ color: INK + "60" }}>{label}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </section>
