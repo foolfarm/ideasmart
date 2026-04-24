@@ -707,31 +707,24 @@ function buildNewsletterHtmlV2(opts: {
     <tr><td style="height:20px;background:${BG};"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK B: ANNUNCIO REBRAND (primi numeri)
+  // BLOCK B: PRESENTAZIONE FORMAT BUONGIORNO by ProofPress
+  // Sostituisce il vecchio banner rebrand — mostra sempre il manifesto editoriale
   // ═══════════════════════════════════════════════════════════════
-  const showRebrand = issueNumber <= 30; // mostra per i primi 30 numeri
-  const rebrandHtml = showRebrand ? `
+  const rebrandHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${BLACK};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
           <tr>
-            <td style="padding:20px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">NOVITÀ</div>
-              <div style="font-size:20px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:8px;">Ideasmart diventa Proof Press.</div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:16px;">La rivoluzione della notizia: certificata, automatizzata, vera. No fakes, more news vere per basare le vostre decisioni.</div>
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
-                    <a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=rebrand" style="font-size:12px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la ProofPress Verify Technology →</a>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:18px 24px;">
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">IL NOSTRO FORMAT</div>
+              <div style="font-size:17px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:6px;">BUONGIORNO by ProofPress — ogni giorno alle 8.30</div>
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;">Il primo giornale creato da una redazione 100% Agentica. Ogni mattina, notizie di innovazione, investimenti e tecnologia <strong>certificate con ProofPress Verify Technology</strong> — zero fake news, solo fatti verificati.</div>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
   // BLOCK C: HERO — Notizia di Apertura
@@ -1580,9 +1573,10 @@ export async function sendUnifiedPreview(force = false): Promise<{
     const sendDateCET = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
 
     const db = await getDb();
-    if (db) {
+    if (db && !force) {
       // INSERT IGNORE: se (send_date, section) già esiste, la riga viene scartata dal DB
       // senza lanciare eccezioni. Questo è il lock atomico definitivo contro i duplicati.
+      // In force mode (preview manuale) saltiamo questo blocco per inviare sempre la preview.
       const insertResult = await db.execute(
         sql`INSERT IGNORE INTO newsletter_sends 
          (subject, htmlContent, recipientCount, status, approvalToken, send_date, section, createdAt)
@@ -1600,6 +1594,8 @@ export async function sendUnifiedPreview(force = false): Promise<{
         };
       }
       console.log(`[UnifiedNewsletter] 📝 Record pending salvato nel DB (send_date: ${sendDateCET}, token: ${approvalToken.slice(0, 8)}...)`);
+    } else if (force) {
+      console.log(`[UnifiedNewsletter] ⚡ Force mode: INSERT IGNORE bypassato — invio preview diretto`);
     }
 
     // ── Preview pulita: nessun banner bozza/approvazione ──────────────────────────────────────────────
