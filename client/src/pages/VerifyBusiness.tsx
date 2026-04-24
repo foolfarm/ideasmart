@@ -365,7 +365,143 @@ export default function VerifyBusiness() {
 
           <Divider />
 
-          {/* ═══ SEZIONE 6 — BUSINESS CASE ═══ */}
+          {/* ═══ SEZIONE 6 — IL PROCESSO ═══ */}
+          <Section bg="#0a0a0a" id="il-processo">
+            <Label>Il Processo</Label>
+            <h2 className="text-3xl md:text-5xl font-black leading-tight text-white">
+              Dalla pubblicazione<br />
+              <span className="text-white/25">alla prova immutabile.</span>
+            </h2>
+            <p className="mt-6 text-lg md:text-xl leading-relaxed text-white/55 max-w-3xl" style={{ fontFamily: FONT }}>
+              Il protocollo ProofPress Verify si attiva in automatico su ogni contenuto. Nessuna azione manuale richiesta. Il risultato è un Verification Report strutturato, sigillato crittograficamente, allegabile a qualsiasi fascicolo di revisione o procedimento regolamentare.
+            </p>
+
+            {/* Step verticali con connettore */}
+            <div className="mt-16 space-y-0">
+              {[
+                {
+                  step: "01",
+                  icon: "📥",
+                  title: "Ingestione del Contenuto",
+                  what: "Il testo viene ricevuto via API, webhook o upload diretto. Supporta comunicati stampa, sezioni di bilancio, dichiarazioni IR, contenuti AI-generated, articoli.",
+                  guarantee: "Timestamp UTC immutabile registrato al momento dell'ingestione. Nessuna modifica possibile dopo questo punto.",
+                  output: "Content ID univoco + timestamp certificato",
+                },
+                {
+                  step: "02",
+                  icon: "🔐",
+                  title: "Hashing Crittografico SHA-256",
+                  what: "Il contenuto viene processato dall'algoritmo SHA-256. L'hash generato è deterministico: lo stesso testo produce sempre lo stesso hash. Qualsiasi modifica — anche un singolo carattere — produce un hash completamente diverso.",
+                  guarantee: "Prova tamper-evident matematicamente verificabile. Se l'hash corrisponde, il contenuto non è stato alterato. Se non corrisponde, la modifica è rilevabile con certezza assoluta.",
+                  output: "Hash SHA-256 + Verification Certificate",
+                },
+                {
+                  step: "03",
+                  icon: "🤖",
+                  title: "Estrazione e Classificazione delle Claim",
+                  what: "Il pipeline agentico identifica automaticamente le claim fattuali verificabili nel testo: numeri, percentuali, date, nomi di entità, dichiarazioni attribuibili. Ogni claim viene classificata per tipologia (quantitativa, qualitativa, attributiva) e priorità di verifica.",
+                  guarantee: "Copertura sistematica: nessuna claim sfugge al processo. Il sistema non campiona — processa ogni claim identificata nel documento.",
+                  output: "Lista strutturata di claim con metadati",
+                },
+                {
+                  step: "04",
+                  icon: "🔍",
+                  title: "Corroborazione Multi-Fonte",
+                  what: "Ogni claim viene confrontata su 4.000+ fonti certificate: fact-checker IFCN accreditati, wire agency internazionali (Reuters, AP, AFP), istituzioni ufficiali (BCE, Eurostat, ISTAT, OECD, Consob), dataset pubblici verificati. Il sistema applica stance detection per valutare se le fonti supportano, contraddicono o sono neutrali rispetto alla claim.",
+                  guarantee: "Nessuna fonte singola determina l'esito. Il Trust Score è pesato su un ensemble di fonti indipendenti. La metodologia è pubblica e auditabile.",
+                  output: "Trust Score 0–100 per claim + fonte di riferimento",
+                },
+                {
+                  step: "05",
+                  icon: "📋",
+                  title: "Generazione del Verification Report",
+                  what: "Il sistema produce un Verification Report JSON strutturato che include: hash del documento, timestamp, lista delle claim con Trust Score, fonti di corroborazione, TrustGrade aggregato (A–F), firma digitale del processo. Il report è machine-readable e human-readable.",
+                  guarantee: "Il report è allegabile come working paper digitale a fascicoli di revisione CSRD, procedimenti Consob/ESMA, audit AI Act. Formato JSON standard, integrabile in qualsiasi sistema di document management.",
+                  output: "Verification Report JSON + TrustGrade aggregato",
+                },
+                {
+                  step: "06",
+                  icon: "🔗",
+                  title: "Sigillo e Pubblicazione dell'Audit Trail",
+                  what: "L'hash del Verification Report viene sigillato insieme all'hash del contenuto originale. Il risultato è un audit trail immutabile che collega documento → processo di verifica → esito → timestamp. Ogni elemento è verificabile indipendentemente da qualsiasi terza parte.",
+                  guarantee: "L'audit trail è pubblicamente verificabile su proofpress.ai/verify/{hash}. Nessuna autorità centrale può alterarlo retroattivamente. Roadmap Q3 2026: anchoring su blockchain per garanzia ulteriore.",
+                  output: "Audit Trail pubblico + URL di verifica permanente",
+                },
+              ].map((s, i) => (
+                <div key={i} className="flex gap-0">
+                  {/* Connettore verticale */}
+                  <div className="flex flex-col items-center mr-8">
+                    <div
+                      className="w-12 h-12 flex items-center justify-center text-white text-sm font-black flex-shrink-0"
+                      style={{ background: "#dc2626" }}
+                    >
+                      {s.step}
+                    </div>
+                    {i < 5 && <div className="w-px flex-1 bg-white/10 my-0" style={{ minHeight: "40px" }} />}
+                  </div>
+                  {/* Contenuto */}
+                  <div className="pb-14 flex-1">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-2xl">{s.icon}</span>
+                      <h3 className="text-xl font-black text-white" style={{ fontFamily: FONT }}>{s.title}</h3>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-6">
+                      <div>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2">Cosa succede</p>
+                        <p className="text-[14px] leading-relaxed text-white/55" style={{ fontFamily: FONT }}>{s.what}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#dc2626] mb-2">Cosa garantisce</p>
+                        <p className="text-[14px] leading-relaxed text-white/55" style={{ fontFamily: FONT }}>{s.guarantee}</p>
+                      </div>
+                      <div className="flex flex-col justify-start">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2">Output</p>
+                        <div
+                          className="inline-block text-[13px] font-bold text-white px-4 py-2"
+                          style={{ background: "rgba(220,38,38,0.15)", border: "1px solid rgba(220,38,38,0.3)" }}
+                        >
+                          {s.output}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Demo */}
+            <div className="mt-4 border-t border-white/10 pt-12">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-6">Vedi il processo in azione</p>
+              <div className="grid md:grid-cols-2 gap-6">
+                <a
+                  href="/verify/demo"
+                  className="p-8 border border-white/10 hover:border-[#dc2626]/50 transition-colors block group"
+                >
+                  <div className="text-3xl mb-4">⚡</div>
+                  <h4 className="text-lg font-black text-white mb-2" style={{ fontFamily: FONT }}>Demo Interattiva — Verify Live</h4>
+                  <p className="text-[14px] leading-relaxed text-white/50 mb-4" style={{ fontFamily: FONT }}>
+                    Incolla qualsiasi testo — un comunicato stampa, una sezione di bilancio, una dichiarazione ESG — e vedi in tempo reale: hash SHA-256, claim estratte, Trust Score per claim, TrustGrade aggregato.
+                  </p>
+                  <span className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#dc2626] group-hover:underline">Prova subito →</span>
+                </a>
+                <a
+                  href="/demo/sandwichclub"
+                  className="p-8 border border-white/10 hover:border-[#dc2626]/50 transition-colors block group"
+                >
+                  <div className="text-3xl mb-4">📰</div>
+                  <h4 className="text-lg font-black text-white mb-2" style={{ fontFamily: FONT }}>Demo Editoriale — Sandwich Club</h4>
+                  <p className="text-[14px] leading-relaxed text-white/50 mb-4" style={{ fontFamily: FONT }}>
+                    Guarda come ProofPress Verify certifica articoli giornalistici reali: notizie estratte da sandwichclub.it presentate con Verification Report completo, hash immutabile e TrustGrade visibile.
+                  </p>
+                  <span className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#dc2626] group-hover:underline">Guarda la demo →</span>
+                </a>
+              </div>
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ═══ SEZIONE 7 — BUSINESS CASE ═══ */}
           <Section bg="#f5f5f7" id="business-case">
             <Label>Business Case</Label>
             <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
