@@ -61,29 +61,43 @@ export default function PerGiornalisti() {
         {/* ═══ SEZIONE 1 — HERO ═══ */}
         <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
           <div className="max-w-5xl mx-auto px-5 md:px-8">
-            <div className="max-w-3xl">
-              <Label accent>Per Freelancer, Giornalisti e Testate Online</Label>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
-                ProofPress Creator<br />
-                <span className="text-[#0a0a0a]/25">Il Giornale Che si Scrive da Solo.</span>
-              </h1>
-              <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-2xl">
-                Creiamo Redazioni Agentiche Tailor Made.
-              </p>
-              <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
-                Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <a href="https://proofpress.tech/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block" style={{ background: "#dc2626", borderRadius: 0 }}>
-                  Guarda una demo →
-                </a>
-                <button onClick={scrollToHow} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white" style={{ borderRadius: 0 }}>
-                  Guarda come funziona ↓
-                </button>
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+              {/* Testo hero */}
+              <div className="flex-1 min-w-0">
+                <Label accent>Per Freelancer, Giornalisti e Testate Online</Label>
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
+                  ProofPress Creator<br />
+                  <span className="text-[#0a0a0a]/25">Il Giornale Che si Scrive da Solo.</span>
+                </h1>
+                <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-2xl">
+                  Creiamo Redazioni Agentiche Tailor Made.
+                </p>
+                <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                  Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
+                </p>
+                <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                  <a href="https://proofpress.tech/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block" style={{ background: "#dc2626", borderRadius: 0 }}>
+                    Guarda una demo →
+                  </a>
+                  <button onClick={scrollToHow} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white" style={{ borderRadius: 0 }}>
+                    Guarda come funziona ↓
+                  </button>
+                </div>
+                <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
+                  Setup in pochi giorni · Nessun vincolo a lungo termine · Da €500/mese
+                </p>
               </div>
-              <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
-                Setup in pochi giorni · Nessun vincolo a lungo termine · Da €500/mese
-              </p>
+              {/* Banner laterale */}
+              <div className="hidden lg:block flex-shrink-0" style={{ width: 340 }}>
+                <a href="#contatto">
+                  <img
+                    src="/manus-storage/proofpress-creator-banner_940d4c64.png"
+                    alt="ProofPress Creator — Il Giornale che si Scrive da Solo"
+                    className="w-full h-auto shadow-lg"
+                    style={{ display: "block" }}
+                  />
+                </a>
+              </div>
             </div>
           </div>
         </section>
