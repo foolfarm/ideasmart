@@ -62,13 +62,16 @@ export default function PerGiornalisti() {
         <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
           <div className="max-w-5xl mx-auto px-5 md:px-8">
             <div className="max-w-3xl">
-              <Label accent>Per Giornalisti e Testate Online</Label>
+              <Label accent>Per Freelancer, Giornalisti e Testate Online</Label>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
-                La tua redazione AI.<br />
-                <span className="text-[#0a0a0a]/25">Pronta in una settimana.</span>
+                ProofPress Creator<br />
+                <span className="text-[#0a0a0a]/25">Il Giornale Che si Scrive da Solo.</span>
               </h1>
-              <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
-                Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale — senza assumere nessuno. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
+              <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-2xl">
+                Creiamo Redazioni Agentiche Tailor Made.
+              </p>
+              <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
                 <a href="https://proofpress.tech/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block" style={{ background: "#dc2626", borderRadius: 0 }}>
