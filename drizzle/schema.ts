@@ -1072,6 +1072,7 @@ export const osservatorioArticles = mysqlTable("osservatorio_articles", {
 }, (t) => ({
   dateLabelIdx: index("idx_osservatorio_date").on(t.dateLabel),
   sortIdx: index("idx_osservatorio_sort").on(t.sortOrder),
+  titleUniq: uniqueIndex("uq_osservatorio_title").on(t.title),
 }));
 export type OsservatorioArticle = typeof osservatorioArticles.$inferSelect;
 export type InsertOsservatorioArticle = typeof osservatorioArticles.$inferInsert;

@@ -394,8 +394,8 @@ const FAQ_ITEMS = [
     a: "Il Verification Report viene generato e salvato nel database ProofPress indipendentemente dallo stato di Pinata. Il pinning IPFS viene ritentato automaticamente. Il badge trust grade è sempre visibile anche senza CID IPFS attivo, perché il trust score è calcolato e persistito localmente.",
   },
   {
-    q: "I prezzi indicati sono definitivi?",
-    a: "ProofPress Verify è disponibile in 4 piani: Verify Essential (€490/mese, fino a 100 articoli, 2 licenze Portale Giornalista), Verify Premiere (€990/mese, fino a 300 articoli, 5 licenze), Verify Professional (€1.470/mese, fino a 500 articoli, 10 licenze) e Verify Custom (prezzo da concordare, volumi illimitati). Tutti i piani includono API REST, badge trust grade, certificato IPFS e dashboard report mensile. Per volumi enterprise o esigenze specifiche, contattaci per un'offerta su misura.",
+    q: "Come posso avere un preventivo per la mia redazione?",
+    a: "ProofPress Verify è disponibile con piani su misura in base al volume di articoli, al numero di utenti e alle esigenze di integrazione. Contattaci tramite il form nella pagina per ricevere un'offerta personalizzata. Il team risponde entro 24 ore.",
   },
   {
     q: "Come funziona il certificato IPFS? Posso verificarlo indipendentemente?",
@@ -658,17 +658,7 @@ export default function ProofPressVerify() {
                 >
                   ⚡ Demo Live — Prova ora
                 </a>
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('pricing');
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }}
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest border transition-colors hover:bg-[#0a0a0a]/5 text-center"
-                  style={{ borderColor: "#0a0a0a", color: "#0a0a0a", fontFamily: FONT }}
-                >
-                  Piani e prezzi →
-                </button>
-              </div>
+              </div>{/* fine flex CTA */}
 
               {/* ── Audio player inline — sempre visibile sotto i bottoni ── */}
               <div
@@ -1390,132 +1380,6 @@ export default function ProofPressVerify() {
               Esempi rappresentativi basati su contenuti reali della piattaforma. Il sistema di verifica è attivo su ogni articolo pubblicato. I grade variano in base al numero di claim fattuali e alla disponibilità di fonti indipendenti.
             </div>
           </Section>
-          <Divider />
-          {/* ═══════════════════════════════════════════════════════════════════
-              PRICING
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section bg="#fff" id="pricing">
-            <Label>Piani e prezzi</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
-              Scegli il piano giusto per la tua redazione.
-            </h2>
-            <p className="text-base text-[#0a0a0a]/55 max-w-2xl mb-12 leading-relaxed">
-              ProofPress Verify è disponibile come add-on SaaS per redazioni esterne, media company e brand publisher. Ogni piano include certificazione IPFS, badge trust grade e API REST.
-            </p>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Piano 1 — Verify Essential */}
-              <div className="p-8 border-2 flex flex-col" style={{ borderColor: ORANGE }}>
-                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE }}>Starter</div>
-                <h3 className="text-xl font-black mb-2" style={{ fontFamily: FONT }}>Verify Essential</h3>
-                <div className="text-3xl font-black mb-1" style={{ fontFamily: FONT, color: ORANGE }}>€490</div>
-                <div className="text-sm text-[#0a0a0a]/40 mb-6">/mese · fino a 100 articoli/mese</div>
-                <ul className="space-y-2 text-sm text-[#0a0a0a]/65 flex-1">
-                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "2 Licenze Portale Giornalista"].map(f => (
-                    <li key={f} className="flex items-start gap-2"><span style={{ color: ORANGE }} className="font-bold mt-0.5">✓</span>{f}</li>
-                  ))}
-                </ul>
-                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
-                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 text-white transition-colors" style={{ background: ORANGE }}>
-                    Richiedi demo
-                  </a>
-                </div>
-              </div>
-              {/* Piano 2 — Verify Premiere */}
-              <div className="p-8 border-2 border-[#0a0a0a] bg-[#0a0a0a] flex flex-col">
-                <div className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Premiere</div>
-                <h3 className="text-xl font-black mb-2 text-white" style={{ fontFamily: FONT }}>Verify Premiere</h3>
-                <div className="text-3xl font-black mb-1 text-white" style={{ fontFamily: FONT }}>€990</div>
-                <div className="text-sm text-white/30 mb-6">/mese · fino a 300 articoli/mese</div>
-                <ul className="space-y-2 text-sm text-white/60 flex-1">
-                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "5 Licenze Portale Giornalista"].map(f => (
-                    <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#00e5c8" }}>✓</span>{f}</li>
-                  ))}
-                </ul>
-                <div className="mt-8 pt-6 border-t border-white/10">
-                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 text-[#0a0a0a] transition-colors" style={{ background: "#00e5c8" }}>
-                    Contattaci
-                  </a>
-                </div>
-              </div>
-              {/* Piano 3 — Verify Professional */}
-              <div className="p-8 border-2 flex flex-col" style={{ borderColor: "#1a3a6b" }}>
-                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#1a3a6b" }}>Professional</div>
-                <h3 className="text-xl font-black mb-2" style={{ fontFamily: FONT, color: "#1a3a6b" }}>Verify Professional</h3>
-                <div className="text-3xl font-black mb-1" style={{ fontFamily: FONT, color: "#1a3a6b" }}>€1.470</div>
-                <div className="text-sm text-[#0a0a0a]/40 mb-6">/mese · fino a 500 articoli/mese</div>
-                <ul className="space-y-2 text-sm text-[#0a0a0a]/65 flex-1">
-                  {["API REST per integrazione redazionale", "Badge trust grade via widget embed", "Certificato IPFS su ogni articolo", "Dashboard report mensile", "SLA 99.5% uptime", "10 Licenze Portale Giornalista"].map(f => (
-                    <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#1a3a6b" }}>✓</span>{f}</li>
-                  ))}
-                </ul>
-                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
-                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 text-white transition-colors" style={{ background: "#1a3a6b" }}>
-                    Contattaci
-                  </a>
-                </div>
-              </div>
-              {/* Piano 4 — Verify Custom */}
-              <div className="p-8 border-2 border-dashed border-[#0a0a0a]/20 bg-[#f8f8f6] flex flex-col">
-                <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-3">Enterprise</div>
-                <h3 className="text-xl font-black mb-2" style={{ fontFamily: FONT }}>Verify Custom</h3>
-                <div className="text-3xl font-black mb-1" style={{ fontFamily: FONT, color: "#0a0a0a" }}>Su misura</div>
-                <div className="text-sm text-[#0a0a0a]/40 mb-6">prezzo da concordare</div>
-                <ul className="space-y-2 text-sm text-[#0a0a0a]/65 flex-1">
-                  {["Tutto di Verify Professional", "Volumi illimitati", "White-label completo", "SLA dedicato", "Account manager dedicato", "Licenze Portale Giornalista illimitate"].map(f => (
-                    <li key={f} className="flex items-start gap-2"><span className="font-bold mt-0.5" style={{ color: "#0a0a0a" }}>✓</span>{f}</li>
-                  ))}
-                </ul>
-                <div className="mt-8 pt-6 border-t border-[#0a0a0a]/8">
-                  <a href="/proofpress-verify#contact" className="block text-center text-sm font-bold py-3 px-6 border-2 border-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white transition-colors">
-                    Parla con noi
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Tabella comparativa feature-by-feature ── */}
-            <div className="mt-14 overflow-x-auto">
-              <p className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-5">Confronto piani</p>
-              <table className="w-full text-sm border-collapse">
-                <thead>
-                  <tr>
-                    <th className="text-left py-3 pr-6 font-semibold text-[#0a0a0a]/50 w-1/3">Feature</th>
-                    <th className="text-center py-3 px-4 font-black" style={{ color: ORANGE }}>Essential<br/><span className="font-normal text-xs text-[#0a0a0a]/40">€490/mese</span></th>
-                    <th className="text-center py-3 px-4 font-black text-white bg-[#0a0a0a] rounded-t">Premiere<br/><span className="font-normal text-xs text-white/40">€990/mese</span></th>
-                    <th className="text-center py-3 px-4 font-black" style={{ color: "#1a3a6b" }}>Professional<br/><span className="font-normal text-xs text-[#0a0a0a]/40">€1.470/mese</span></th>
-                    <th className="text-center py-3 px-4 font-black text-[#0a0a0a]/60">Custom<br/><span className="font-normal text-xs text-[#0a0a0a]/40">su misura</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { feature: "Articoli/mese", vals: ["100", "300", "500", "Illimitati"] },
-                    { feature: "API REST integrazione redazionale", vals: ["✓", "✓", "✓", "✓"] },
-                    { feature: "Badge trust grade via widget embed", vals: ["✓", "✓", "✓", "✓"] },
-                    { feature: "Certificato IPFS su ogni articolo", vals: ["✓", "✓", "✓", "✓"] },
-                    { feature: "Dashboard report mensile", vals: ["✓", "✓", "✓", "✓"] },
-                    { feature: "SLA 99.5% uptime", vals: ["✓", "✓", "✓", "✓"] },
-                    { feature: "Licenze Portale Giornalista", vals: ["2", "5", "10", "Illimitate"] },
-                    { feature: "White-label badge", vals: ["—", "—", "—", "✓"] },
-                    { feature: "SLA dedicato", vals: ["—", "—", "—", "✓"] },
-                    { feature: "Account manager dedicato", vals: ["—", "—", "—", "✓"] },
-                  ].map((row, i) => (
-                    <tr key={row.feature} className={i % 2 === 0 ? "bg-[#f8f8f6]" : ""}>
-                      <td className="py-3 pr-6 font-medium text-[#0a0a0a]/70 border-t border-[#0a0a0a]/6">{row.feature}</td>
-                      {row.vals.map((v, j) => (
-                        <td key={j} className={`text-center py-3 px-4 border-t border-[#0a0a0a]/6 font-semibold ${
-                          j === 1 ? "bg-[#0a0a0a]/5" : ""
-                        } ${v === "✓" ? "text-green-600" : v === "—" ? "text-[#0a0a0a]/20" : "text-[#0a0a0a]/70"}`}>{v}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Section>
-          <Divider />
-          {/* ═══════════════════════════════════════════════════════════════════
-              FAQ
-          ═══════════════════════════════════════════════════════════════════ */}
           {/* ═══════════════════════════════════════════════════════════════════
               RISORSE TECNICHE — WHITE PAPER + METHODOLOGY
           ═══════════════════════════════════════════════════════════════════ */}

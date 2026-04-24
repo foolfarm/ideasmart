@@ -1,0 +1,1 @@
+ALTER TABLE `osservatorio_articles` ADD CONSTRAINT `uq_osservatorio_title` UNIQUE(`title`);
