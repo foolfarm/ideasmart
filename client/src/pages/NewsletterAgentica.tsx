@@ -312,50 +312,6 @@ export default function NewsletterAgentica() {
             </div>
           </Section>
 
-          <Divider />
-
-          {/* ═══ SEZIONE 8 — PROOF: PROOFPRESS STESSA ═══ */}
-          <Section bg="#ffffff" id="prove">
-            <Label>Già in Produzione</Label>
-            <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-              Non è un prototipo.<br />
-              <span className="text-[#0a0a0a]/25">È quello che usiamo noi ogni mattina.</span>
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-              La newsletter di ProofPress — <strong className="text-[#0a0a0a]">BUONGIORNO by ProofPress</strong> — viene scritta ogni mattina dalla redazione agentica e inviata alle 8:30 a oltre 2.400 lettori attivi. Zero intervento umano nella scrittura. Stessa tecnologia che mettiamo a disposizione dei nostri clienti.
-            </p>
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-b border-[#0a0a0a]/10">
-              {[
-                { val: "2.400+", lab: "lettori attivi" },
-                { val: "7gg/7", lab: "invio automatico" },
-                { val: "08:30", lab: "orario fisso ogni mattina" },
-                { val: "0h", lab: "lavoro editoriale umano" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="py-8 text-center"
-                  style={{ borderRight: i < 3 ? "1px solid rgba(10,10,10,0.1)" : "none" }}
-                >
-                  <div className="text-3xl md:text-4xl font-black text-[#0a0a0a]">{s.val}</div>
-                  <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/35">{s.lab}</div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 text-center">
-              <a
-                href="https://proofpress.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline"
-                style={{ fontFamily: FONT }}
-              >
-                Iscriviti alla newsletter di ProofPress → proofpress.ai
-              </a>
-            </div>
-          </Section>
-
-          <Divider />
-
           {/* ═══ SEZIONE 9 — CONFRONTO COSTI ═══ */}
           <Section bg="#f5f5f7" id="confronto">
             <Label>Fai Due Conti</Label>
