@@ -449,12 +449,12 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── NEWSLETTER UNIFICATA "BUONGIORNO by PROOFPRESS" — 08:00 CET (7 giorni su 7) ────────────
-  // Cron: 0 8 * * * = ogni giorno alle 08:00 CET, domenica inclusa, sabato incluso
+  // ── NEWSLETTER UNIFICATA "BUONGIORNO by PROOFPRESS" — 08:05 CET (7 giorni su 7) ────────────
+  // Cron: 5 8 * * * = ogni giorno alle 08:05 CET (5 min dopo Morning Health Report delle 08:00)
   // Nessuna approvazione richiesta — invio automatico diretto a tutti gli iscritti attivi
   // Newsletter del sabato: stessa newsletter unificata (nessuna newsletter separata del sabato)
-  cron.schedule("0 8 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 08:00 CET — Invio automatico \"BUONGIORNO by PROOFPRESS\" (7gg/7)...");
+  cron.schedule("5 8 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 08:05 CET — Invio automatico \"BUONGIORNO by PROOFPRESS\" (7gg/7)...");
     await withLock("newsletter-mattino", async () => {
       try {
         const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
