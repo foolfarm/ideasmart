@@ -3472,6 +3472,27 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         }
         return { success: true };
       }),
+    // Punti del Giorno (editoriali quotidiani di Andrea Cinelli)
+    getPuntiDelGiorno: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(100).default(30) }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return [];
+        const rows = await db.select({
+          id: dailyEditorialTable.id,
+          dateLabel: dailyEditorialTable.dateLabel,
+          title: dailyEditorialTable.title,
+          subtitle: dailyEditorialTable.subtitle,
+          keyTrend: dailyEditorialTable.keyTrend,
+          section: dailyEditorialTable.section,
+          imageUrl: dailyEditorialTable.imageUrl,
+          authorNote: dailyEditorialTable.authorNote,
+          createdAt: dailyEditorialTable.createdAt,
+        }).from(dailyEditorialTable)
+          .orderBy(desc(dailyEditorialTable.createdAt))
+          .limit(input.limit);
+        return rows;
+      }),
     // Admin: inserisci articolo
     addArticle: adminProcedure
       .input(z.object({
