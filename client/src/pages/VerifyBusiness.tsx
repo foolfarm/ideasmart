@@ -66,38 +66,50 @@ export default function VerifyBusiness() {
           {/* ═══ SEZIONE 1 — HERO ═══ */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
-              <div className="max-w-3xl">
-                <Label accent>ProofPress Verify Business</Label>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
-                  Information Integrity<br />
-                  <span className="text-[#0a0a0a]/25">Assurance.</span>
-                </h1>
-                <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
-                  La prossima frontiera dell'assurance non-financial. CSRD, AI Act e DSA convergono nel trasformare il reporting qualitativo in un'obbligazione di certificazione paragonabile a quella del bilancio.
-                </p>
-                <p className="mt-3 text-lg leading-relaxed text-[#0a0a0a]/45 max-w-2xl" style={{ fontFamily: FONT }}>
-                  ProofPress Verify è l'infrastruttura tecnologica che industrializza quella certificazione — con hash crittografici immutabili, corroborazione multi-fonte AI e audit trail regolatorio nativo.
-                </p>
-                <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                  <a
-                    href="#contatto"
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block"
-                    style={{ background: "#dc2626", borderRadius: 0 }}
-                  >
-                    Richiedi un Briefing Esecutivo →
+              <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+                {/* Testo hero */}
+                <div className="flex-1 min-w-0">
+                  <Label accent>Information Integrity Assurance</Label>
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mt-2">
+                    Info Verify
+                  </h1>
+                  <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                    La nuova frontiera dell'assurance non-financial.
+                  </p>
+                  <p className="mt-3 text-lg leading-relaxed text-[#0a0a0a]/45 max-w-2xl" style={{ fontFamily: FONT }}>
+                    La soluzione tecnologica che industrializza la certificazione — con hash crittografici immutabili, corroborazione multi-fonte AI e audit trail regolatorio nativo.
+                  </p>
+                  <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                    <a
+                      href="#contatto"
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block"
+                      style={{ background: "#dc2626", borderRadius: 0 }}
+                    >
+                      Parla con un consulente →
+                    </a>
+                    <button
+                      onClick={scrollToHowItWorks}
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white"
+                      style={{ borderRadius: 0 }}
+                    >
+                      Come Funziona ↓
+                    </button>
+                  </div>
+                  <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
+                    Già in produzione · API-first · Conformità nativa AI Act / CSRD / DSA
+                  </p>
+                </div>{/* fine col testo */}
+                {/* Banner laterale */}
+                <div className="hidden lg:block flex-shrink-0 w-[340px]">
+                  <a href="#contatto" className="block cursor-pointer">
+                    <img
+                      src="/manus-storage/banner-verify-business_e41ae446.png"
+                      alt="Info Verify — Ogni Notizia Certificata. Immutabile."
+                      className="w-full rounded-xl shadow-lg"
+                    />
                   </a>
-                  <button
-                    onClick={scrollToHowItWorks}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white"
-                    style={{ borderRadius: 0 }}
-                  >
-                    Come Funziona ↓
-                  </button>
                 </div>
-                <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
-                  Già in produzione · API-first · Conformità nativa AI Act / CSRD / DSA
-                </p>
-              </div>
+              </div>{/* fine flex-row hero */}
             </div>
           </section>
 
