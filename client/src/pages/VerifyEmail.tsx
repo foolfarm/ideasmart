@@ -434,8 +434,7 @@ export default function VerifyEmail() {
                     ["Costo discovery legale email", "200K – 500K€ / contenzioso", "Verification Certificate allegato: -80%"],
                     ["Perdite da BEC", "Media 130K€ / incidente", "Alert real-time: prevenzione proattiva"],
                     ["Audit GDPR / AI Act", "2–4 settimane di lavoro manuale", "Dashboard pronto: -90% effort"],
-                    ["Reputational risk", "Non quantificabile", "Prova documentale immediata"],
-                    ["Costo ProofPress Verify Email", "—", "Da €49/mese (PMI) · €2K–10K/anno (Enterprise)"],
+                     ["Reputational risk", "Non quantificabile", "Prova documentale immediata"],
                   ].map(([dim, without, with_]) => (
                     <tr key={dim} className="border-b border-[#0a0a0a]/8">
                       <td className="py-3 pr-4 font-semibold text-[#0a0a0a]">{dim}</td>
