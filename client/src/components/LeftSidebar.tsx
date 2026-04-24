@@ -57,7 +57,7 @@ const NAV_STRUCTURE: NavItem[] = [
       { href: "/offertacommerciale", label: "Redazione Agentica" },
       { href: "/newsletter-agentica", label: "Newsletter Agentica" },
       { href: "/proofpress-verify", label: "Certificazione Notizie" },
-      { href: "/verify-business", label: "Certificazione Aziende" },
+      { href: "/verify-business", label: "Certificazione Informazioni" },
       {
         href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf",
         label: "Download Brochure",
