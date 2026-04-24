@@ -688,18 +688,16 @@ function buildNewsletterHtmlV2(opts: {
   // BLOCK A: HEADER
   // ═══════════════════════════════════════════════════════════════
   const headerHtml = `
-    ${isTest ? `<tr><td style="background:${ACCENT};padding:10px 20px;text-align:center;border-radius:8px 8px 0 0;">
-      <span style="font-size:11px;font-weight:700;color:#ffffff;font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.12em;">⚠️ BOZZA — In attesa di approvazione</span>
-    </td></tr>` : ""}
     <tr>
-      <td style="background:${WHITE};padding:32px 32px 24px;text-align:center;${isTest ? "" : "border-radius:8px 8px 0 0;"}border-bottom:2px solid ${BLACK};">
+      <td style="background:${WHITE};padding:32px 32px 24px;text-align:center;border-radius:8px 8px 0 0;border-bottom:2px solid ${BLACK};">
         <div style="text-align:right;margin-bottom:16px;">
           <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
         </div>
-        <div style="font-size:42px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.1;letter-spacing:-0.02em;margin-bottom:4px;">Le News delle 8.30</div>
-        <div style="font-size:13px;font-weight:600;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;letter-spacing:0.04em;text-transform:uppercase;">di ProofPress</div>
+        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.0;letter-spacing:-0.02em;margin-bottom:2px;">BUONGIORNO</div>
+        <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px;">Le News delle 8.30 di PROOFPRESS</div>
+        <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;line-height:1.5;">Il primo giornale creato da una redazione 100% Agentica e con notizie certificate</div>
         <div style="width:40px;height:2px;background:${ACCENT};margin:0 auto 14px;"></div>
-        <div style="font-size:12px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Notizie di Innovazione, Investimenti e Tecnologia Esclusive</div>
+        <div style="font-size:12px;font-weight:700;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Notizie di Innovazione, Investimenti e Tecnologia Esclusive</div>
         <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">100% Verificate con &nbsp;<a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=header_payoff" style="color:${ACCENT};text-decoration:none;font-weight:600;">tecnologia ProofPress Verify</a></div>
         <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};line-height:1.5;">
           ${dateLabel} &nbsp;·&nbsp; N° ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString("it-IT")} lettori</strong>
@@ -1604,20 +1602,10 @@ export async function sendUnifiedPreview(force = false): Promise<{
       console.log(`[UnifiedNewsletter] 📝 Record pending salvato nel DB (send_date: ${sendDateCET}, token: ${approvalToken.slice(0, 8)}...)`);
     }
 
-    // ── Banner di approvazione nell'email preview ────────────────────────────
-    const approvalBanner = `
-      <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:20px 24px;margin:0 0 0;text-align:center;">
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:700;color:#856404;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 10px;">⚠️ BOZZA — In attesa di approvazione</p>
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1d1d1f;margin:0 0 16px;">Clicca il pulsante per approvare l'invio massivo alle <strong>22:00 CET</strong> a tutti gli iscritti.</p>
-        <a href="${approvalUrl}" style="display:inline-block;background:#1d1d1f;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:980px;">✅ Approva e Invia Newsletter</a>
-        <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;color:#856404;margin:12px 0 0;">Senza approvazione, la newsletter <strong>NON</strong> verrà inviata alle 22:00.</p>
-      </div>
-    `;
-    // Inserisce il banner subito dopo il tag <body>
-    const htmlWithApproval = html.replace(/<body([^>]*)>/, `<body$1>${approvalBanner}`);
-
+    // ── Preview pulita: nessun banner bozza/approvazione ──────────────────────────────────────────────
+    // L'invio massivo avviene automaticamente alle 08:30 CET senza approvazione
     const sendResults = await Promise.all(
-      TEST_EMAILS.map(email => sendEmail({ sender: 'daily', to: email, subject: `[BOZZA - APPROVAZIONE RICHIESTA] ${subject}`, html: htmlWithApproval }))
+      TEST_EMAILS.map(email => sendEmail({ sender: 'daily', to: email, subject: `[☀️ PREVIEW] ${subject}`, html }))
     );
     const allSuccess = sendResults.every(r => r.success);
     const result = sendResults[0];
