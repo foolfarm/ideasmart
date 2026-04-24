@@ -67,8 +67,9 @@ export default function VerifyEmail() {
           {/* ═══ SEZIONE 1 — HERO ═══ */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
-              <div className="max-w-3xl">
-                <Label accent>ProofPress Verify Email</Label>
+              <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+              <div className="flex-1 min-w-0">
+                <Label accent>Per Aziende ed Istituzioni</Label>
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
                   Email Integrity<br />
                   <span className="text-[#0a0a0a]/25">Certification.</span>
@@ -98,8 +99,19 @@ export default function VerifyEmail() {
                 <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
                   API-first · Integrazione Microsoft 365 &amp; Google Workspace · Conformità nativa AI Act / GDPR
                 </p>
+              </div>{/* end flex-1 */}
+              <div className="hidden lg:block flex-shrink-0">
+                <a href="#contatto">
+                  <img
+                    src="/manus-storage/banner-suite-email-verify-v2_fb17031a.png"
+                    alt="Email Verify — ProofPress"
+                    width={340}
+                    className="rounded-sm shadow-lg"
+                  />
+                </a>
               </div>
-            </div>
+            </div>{/* end flex container */}
+            </div>{/* end max-w-5xl */}
           </section>
 
           {/* ═══ SEZIONE 2 — IL NUMERO CHE CONTA ═══ */}
@@ -600,42 +612,6 @@ export default function VerifyEmail() {
                   </a>
                 </div>
               ))}
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══ SEZIONE 9 — GIÀ IN PRODUZIONE ═══ */}
-          <Section bg="#ffffff" id="in-produzione">
-            <Label>La Tecnologia Alla Base</Label>
-            <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-              Non è un prototipo.<br />
-              <span className="text-[#0a0a0a]/25">È quello che usiamo noi ogni giorno.</span>
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-              ProofPress Verify Email si basa sulla stessa tecnologia che certifica ogni articolo pubblicato su ProofPress Magazine — oltre 40 notizie al giorno, 4 canali tematici, 6.900+ lettori. Il protocollo è in produzione continua da oltre un anno. Verify Email ne estende l'applicazione alle comunicazioni aziendali.
-            </p>
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-b border-[#0a0a0a]/10">
-              {[
-                { val: "v4.0", lab: "Versione protocollo" },
-                { val: "4.000+", lab: "Fonti certificate" },
-                { val: "99.5%", lab: "SLA uptime" },
-                { val: "Q3 2026", lab: "Blockchain Anchoring" },
-              ].map((s, i) => (
-                <div key={i} className="py-8 text-center" style={{ borderRight: i < 3 ? "1px solid rgba(10,10,10,0.1)" : "none" }}>
-                  <div className="text-3xl md:text-4xl font-black text-[#0a0a0a]">{s.val}</div>
-                  <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/35">{s.lab}</div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 text-center">
-              <a
-                href="https://proofpress.ai/verify-business"
-                className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline"
-                style={{ fontFamily: FONT }}
-              >
-                Scopri ProofPress Verify Business → proofpress.ai/verify-business
-              </a>
             </div>
           </Section>
 
