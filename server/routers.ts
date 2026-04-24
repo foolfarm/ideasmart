@@ -3408,6 +3408,89 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
   }),
+
+  // ── Osservatorio Tech — Articoli e post LinkedIn di Andrea Cinelli ──────────
+  osservatorio: router({
+    // Lista articoli pubblicati (ultimi N, ordinati per data desc)
+    getArticles: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(100).default(20) }))
+      .query(async ({ input }) => {
+        const { osservatorioArticles: osservatorioTable } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) return [];
+        const rows = await db.select().from(osservatorioTable)
+          .orderBy(desc(osservatorioTable.createdAt))
+          .limit(input.limit);
+        return rows;
+      }),
+    // Lista post LinkedIn di Andrea (ultimi N)
+    getLinkedinPosts: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(50).default(12) }))
+      .query(async ({ input }) => {
+        const { linkedinPosts: lpTable } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) return [];
+        const rows = await db.select().from(lpTable)
+          .orderBy(desc(lpTable.createdAt))
+          .limit(input.limit);
+        return rows;
+      }),
+    // Form contatto Andrea Cinelli → invia a ac@acinelli.com
+    contactAndrea: publicProcedure
+      .input(z.object({
+        nome: z.string().min(2, 'Nome obbligatorio'),
+        email: z.string().email('Email non valida'),
+        azienda: z.string().optional(),
+        ruolo: z.string().optional(),
+        messaggio: z.string().min(10, 'Messaggio troppo breve'),
+      }))
+      .mutation(async ({ input }) => {
+        const htmlAndrea = `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+            <h2 style="color:#0a0a0a;border-bottom:2px solid #0a0a0a;padding-bottom:12px">Nuovo contatto — Osservatorio Tech</h2>
+            <table style="width:100%;border-collapse:collapse">
+              <tr><td style="padding:8px;background:#f5f5f5;font-weight:bold;width:140px">Nome</td><td style="padding:8px">${input.nome}</td></tr>
+              <tr><td style="padding:8px;font-weight:bold">Email</td><td style="padding:8px"><a href="mailto:${input.email}">${input.email}</a></td></tr>
+              ${input.azienda ? `<tr><td style="padding:8px;background:#f5f5f5;font-weight:bold">Azienda</td><td style="padding:8px">${input.azienda}</td></tr>` : ''}
+              ${input.ruolo ? `<tr><td style="padding:8px;font-weight:bold">Ruolo</td><td style="padding:8px">${input.ruolo}</td></tr>` : ''}
+            </table>
+            <h3 style="margin-top:20px;color:#0a0a0a">Messaggio</h3>
+            <div style="background:#f9f9f9;border-left:4px solid #0a0a0a;padding:16px">${input.messaggio.replace(/\n/g, '<br>')}</div>
+          </div>`;
+        const htmlConfirm = `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+            <h2 style="color:#0a0a0a">Grazie per aver scritto ad Andrea, ${input.nome}.</h2>
+            <p style="color:#444">Andrea risponde personalmente ai messaggi dell'Osservatorio Tech. Ti ricontatterà entro 48 ore lavorative.</p>
+            <p style="color:#888;font-size:13px">— Osservatorio Tech · ProofPress</p>
+          </div>`;
+        try {
+          await sendEmail({ to: 'ac@acinelli.com', subject: `Osservatorio Tech — ${input.nome}${input.azienda ? ' · ' + input.azienda : ''}`, html: htmlAndrea });
+          await sendEmail({ to: input.email, subject: 'Messaggio ricevuto — Osservatorio Tech', html: htmlConfirm });
+        } catch (err) {
+          console.error('[osservatorio.contactAndrea] Errore invio email:', err);
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Errore invio. Riprova o scrivi a ac@acinelli.com' });
+        }
+        return { success: true };
+      }),
+    // Admin: inserisci articolo
+    addArticle: adminProcedure
+      .input(z.object({
+        dateLabel: z.string(),
+        title: z.string().min(3),
+        excerpt: z.string().optional(),
+        articleUrl: z.string().url(),
+        publication: z.string().default('ProofPress'),
+        imageUrl: z.string().optional(),
+        tags: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { osservatorioArticles: osservatorioTable } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+        await db.insert(osservatorioTable).values({ ...input, sortOrder: 0 });
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

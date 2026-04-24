@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
-  Info, Briefcase, Megaphone, PenLine, Mail,
+  Info, Briefcase, Megaphone, PenLine, Mail, User,
   ExternalLink, Download, ChevronRight,
   Newspaper, KeyRound, Building2, CheckCircle, Users,
 } from "lucide-react";
@@ -76,6 +76,7 @@ const NAV_STRUCTURE: NavItem[] = [
     ],
   },
   { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
+  { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech", Icon: User },
 ];
 
 /* ─── VOCE SEMPLICE ─────────────────────────────────────────────────── */

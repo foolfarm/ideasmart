@@ -1053,3 +1053,23 @@ export const verifySubscriptions = mysqlTable("verify_subscriptions", {
 }));
 export type VerifySubscription = typeof verifySubscriptions.$inferSelect;
 export type InsertVerifySubscription = typeof verifySubscriptions.$inferInsert;
+
+// ─── OSSERVATORIO TECH — Articoli pubblicati da Andrea Cinelli ───────────────
+export const osservatorioArticles = mysqlTable("osservatorio_articles", {
+  id: int("id").autoincrement().primaryKey(),
+  dateLabel: varchar("dateLabel", { length: 20 }).notNull(),
+  title: varchar("title", { length: 500 }).notNull(),
+  excerpt: text("excerpt"),
+  articleUrl: varchar("articleUrl", { length: 1000 }).notNull(),
+  publication: varchar("publication", { length: 255 }).default("ProofPress").notNull(),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  tags: varchar("tags", { length: 500 }),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  dateLabelIdx: index("idx_osservatorio_date").on(t.dateLabel),
+  sortIdx: index("idx_osservatorio_sort").on(t.sortOrder),
+}));
+export type OsservatorioArticle = typeof osservatorioArticles.$inferSelect;
+export type InsertOsservatorioArticle = typeof osservatorioArticles.$inferInsert;
