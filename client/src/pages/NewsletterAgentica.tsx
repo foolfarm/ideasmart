@@ -66,36 +66,53 @@ export default function NewsletterAgentica() {
           {/* ═══ SEZIONE 1 — HERO ═══ */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
-              <div className="max-w-3xl">
-                <Label accent>ProofPress Newsletter</Label>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
-                  La tua newsletter.<br />
-                  <span className="text-[#0a0a0a]/25">Scritta da una redazione AI.</span>
-                </h1>
-                <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
-                  Una newsletter professionale, personalizzata, autogenerata dalla redazione agentica ProofPress — con il tuo brand, le tue fonti, il tuo tono. Tu definisci la direzione. Gli Agent scrivono, verificano e inviano.
-                </p>
-                <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                  <a
-                    href="https://proofpress.tech/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block"
-                    style={{ background: "#dc2626", borderRadius: 0 }}
-                  >
-                    Guarda una demo →
-                  </a>
-                  <button
-                    onClick={scrollToContatti}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white"
-                    style={{ borderRadius: 0 }}
-                  >
-                    Parliamo del tuo progetto ↓
-                  </button>
+              <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+                {/* Testo hero */}
+                <div className="flex-1 min-w-0">
+                  <Label accent>Per Creators, Freelancer, Editor</Label>
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
+                    ProofPress Newsletter<br />
+                    <span className="text-[#0a0a0a]/25">La tua newsletter.</span>
+                  </h1>
+                  <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-2xl">
+                    Scritta da una redazione AI.
+                  </p>
+                  <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                    Una newsletter professionale, personalizzata, autogenerata ma che scrive come te, creata da una redazione agentica ProofPress — con il tuo brand, le tue fonti, il tuo tono. Tu definisci la direzione. Gli Agent scrivono, verificano e inviano.
+                  </p>
+                  <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                    <a
+                      href="https://proofpress.tech/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block"
+                      style={{ background: "#dc2626", borderRadius: 0 }}
+                    >
+                      Guarda una demo →
+                    </a>
+                    <button
+                      onClick={scrollToContatti}
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white"
+                      style={{ borderRadius: 0 }}
+                    >
+                      Parliamo del tuo progetto ↓
+                    </button>
+                  </div>
+                  <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
+                    Setup in 5 giorni · Frequenza personalizzabile · 100% white-label
+                  </p>
                 </div>
-                <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
-                  Setup in 5 giorni · Frequenza personalizzabile · 100% white-label
-                </p>
+                {/* Banner laterale */}
+                <div className="hidden lg:block flex-shrink-0" style={{ width: 340 }}>
+                  <a href="#contatti">
+                    <img
+                      src="/manus-storage/banner-newsletter-agentica_5bba0d40.png"
+                      alt="ProofPress Newsletter — La Tua Newsletter Agentica"
+                      className="w-full h-auto shadow-lg"
+                      style={{ display: "block" }}
+                    />
+                  </a>
+                </div>
               </div>
             </div>
           </section>
