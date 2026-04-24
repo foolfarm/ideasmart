@@ -1277,35 +1277,129 @@ function buildNewsletterHtmlV2(opts: {
     <tr><td style="height:32px;"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK L: BANNER PROMOZIONALE — ProofPress Agentic Newsroom
-  // Posizionato prima del footer: invito B2B a contattare ProofPress
-  // ═══════════════════════════════════════════════════════════════
+  // BLOCK L: BANNER FISSI — Business (in mezzo) + Verify (verso la fine)
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // Banner 1 — "Il Giornale che si Scrive da Solo" → /contatti
   const proofpressAgenticBannerHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#1d1d1f 0%,#2d2d30 100%);border-radius:12px;overflow:hidden;">
-          <tr>
-            <td style="padding:28px 28px 24px;">
-              <!-- Eyebrow -->
-              <div style="font-size:9px;font-weight:700;color:#d94f3d;letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">PROOFPRESS AGENTIC NEWSROOM</div>
-              <!-- Headline -->
-              <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:${F_SERIF};line-height:1.25;margin-bottom:10px;letter-spacing:-0.4px;">Vuoi un giornale creato da una<br>redazione 100% Agentica?</div>
-              <!-- Sub -->
-              <div style="font-size:14px;color:#a1a1a6;font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">
-                <strong style="color:#ffffff;">-80% di costi</strong> rispetto a una redazione tradizionale.<br>
-                Notizie certificate con <strong style="color:#d94f3d;">ProofPress Verify Technology</strong> — zero fake news, qualità garantita.
-              </div>
-              <!-- CTA -->
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:#d94f3d;border-radius:980px;padding:13px 26px;">
-                    <a href="https://proofpress.ai/contatti?utm_source=newsletter&utm_medium=email&utm_campaign=agentic_newsroom" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F_SANS};letter-spacing:0.02em;">Contattaci → Scopri come</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+        <a href="https://proofpress.ai/contatti?utm_source=newsletter&utm_medium=email&utm_campaign=agentic_business" style="display:block;text-decoration:none;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0e8;border-radius:12px;overflow:hidden;border:1px solid #e0d8cc;">
+            <tr>
+              <td style="padding:32px 28px 28px;position:relative;">
+                <!-- Eyebrow -->
+                <div style="font-size:9px;font-weight:800;color:#c0392b;letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;border-bottom:2px solid #c0392b;display:inline-block;padding-bottom:4px;">PROOFPRESS</div>
+                <!-- Headline -->
+                <div style="font-size:36px;font-weight:900;color:#1a1a1a;font-family:Georgia,'Times New Roman',serif;line-height:1.1;margin-bottom:14px;letter-spacing:-1px;">Il Giornale<br>che si Scrive<br>da Solo.</div>
+                <!-- Body -->
+                <div style="font-size:15px;color:#333333;font-family:${F_SANS};line-height:1.7;margin-bottom:16px;">Una redazione di Agenti AI genera, verifica<br>e pubblica le tue notizie ogni giorno.<br>Zero giornalisti, zero costi fissi, qualità certificata.</div>
+                <!-- Bullets -->
+                <div style="font-size:14px;color:#c0392b;font-family:${F_SANS};font-weight:600;margin-bottom:20px;line-height:1.8;">
+                  — Online in 24 ore dalla firma<br>
+                  — Notizie 100% verificate con AI
+                </div>
+                <!-- CTA row -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="background:#c0392b;border-radius:6px;padding:13px 24px;">
+                            <span style="font-size:14px;font-weight:700;color:#ffffff;font-family:${F_SANS};">Contattaci →</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td align="right" style="vertical-align:bottom;">
+                      <div style="font-size:12px;color:#888;font-family:${F_SANS};">proofpress.ai/contatti</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <!-- Barra rossa verticale destra -->
+              <td width="8" style="background:#c0392b;border-radius:0 12px 12px 0;"></td>
+            </tr>
+          </table>
+        </a>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+
+  // Banner 2 — "Le Tue Notizie Sono Vere?" → /proofpress-verify
+  const proofpressVerifyBannerHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <a href="https://proofpress.ai/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=verify_banner" style="display:block;text-decoration:none;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+            <tr>
+              <td style="padding:28px 28px 24px;">
+                <!-- Eyebrow -->
+                <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
+                  <tr>
+                    <td style="background:#fce8e8;border-radius:980px;padding:5px 14px;">
+                      <span style="font-size:10px;font-weight:800;color:#c0392b;letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};">PROOFPRESS VERIFY</span>
+                    </td>
+                  </tr>
+                </table>
+                <!-- Headline -->
+                <div style="font-size:30px;font-weight:900;color:#1a1a1a;font-family:Georgia,'Times New Roman',serif;line-height:1.15;margin-bottom:10px;text-align:center;">Le Tue Notizie<br>Sono Vere?</div>
+                <!-- Sub -->
+                <div style="font-size:14px;color:#555;font-family:${F_SANS};line-height:1.7;margin-bottom:18px;text-align:center;">ProofPress Verify certifica ogni informazione<br>con AI e hash crittografico immutabile.</div>
+                <!-- Divisore -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
+                  <tr><td style="height:2px;background:#c0392b;"></td></tr>
+                </table>
+                <!-- 4 feature cards 2x2 -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+                  <tr>
+                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
+                      <div style="font-size:18px;margin-bottom:6px;">🛡️</div>
+                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Hash Immutabile</div>
+                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Firma digitale unica per ogni contenuto</div>
+                    </td>
+                    <td width="4%"></td>
+                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
+                      <div style="font-size:18px;margin-bottom:6px;">✅</div>
+                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Verifica AI</div>
+                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Analisi da 4.000+ fonti in tempo reale</div>
+                    </td>
+                  </tr>
+                  <tr><td colspan="3" style="height:8px;"></td></tr>
+                  <tr>
+                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
+                      <div style="font-size:18px;margin-bottom:6px;">🔒</div>
+                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Score Affidabilità</div>
+                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Rating 0–100 per ogni notizia</div>
+                    </td>
+                    <td width="4%"></td>
+                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
+                      <div style="font-size:18px;margin-bottom:6px;">🔗</div>
+                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Audit Trail</div>
+                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Traccia permanente e verificabile</div>
+                    </td>
+                  </tr>
+                </table>
+                <!-- CTA -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center">
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="background:#c0392b;border-radius:8px;padding:14px 40px;">
+                            <span style="font-size:15px;font-weight:700;color:#ffffff;font-family:${F_SANS};">Verifica Ora Gratuitamente →</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <!-- Footer URL -->
+                <div style="text-align:center;margin-top:12px;font-size:12px;color:#aaa;font-family:${F_SANS};">proofpress.ai/proofpress-verify</div>
+              </td>
+            </tr>
+          </table>
+        </a>
       </td>
     </tr>
     <tr><td style="height:24px;background:${BG};"></td></tr>`;
@@ -1342,6 +1436,7 @@ function buildNewsletterHtmlV2(opts: {
         ${consigliatoHtml2}
         ${bannerHtml2}
         ${proofpressAgenticBannerHtml}
+        ${proofpressVerifyBannerHtml}
         ${footerHtml}
       </table>
     </td>
