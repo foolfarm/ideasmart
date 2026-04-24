@@ -240,39 +240,6 @@ export default function PerGiornalisti() {
           </div>
         </Section>
 
-        <Divider />
-
-        {/* ═══ SEZIONE 7 — PROVE ═══ */}
-        <Section bg="#f5f5f7" id="prove">
-          <Label>Già in Produzione</Label>
-          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Non è un prototipo.<br /><span className="text-[#0a0a0a]/25">È quello che usiamo noi ogni giorno.</span>
-          </h2>
-          <p className="mt-6 text-lg leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-            Proof Press stessa è la prova che il sistema funziona. Una testata con 4 canali tematici, oltre 6.900 lettori, 20+ ricerche originali al giorno, 40+ notizie, newsletter trisettimanale e post LinkedIn automatici. Tutto gestito dalla piattaforma, con un team editoriale di 1 persona.
-          </p>
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-b border-[#0a0a0a]/10">
-            {[
-              { val: "6.900+", lab: "lettori attivi" },
-              { val: "4", lab: "canali tematici" },
-              { val: "20+", lab: "ricerche al giorno" },
-              { val: "1", lab: "persona nel team" },
-            ].map((s, i) => (
-              <div key={i} className="py-8 text-center" style={{ borderRight: i < 3 ? "1px solid rgba(10,10,10,0.1)" : "none" }}>
-                <div className="text-3xl md:text-4xl font-black text-[#0a0a0a]">{s.val}</div>
-                <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/35">{s.lab}</div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 text-center">
-            <a href="https://proofpress.ai" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] hover:underline" style={{ fontFamily: FONT }}>
-              Guarda il risultato dal vivo → proofpress.ai
-            </a>
-          </div>
-        </Section>
-
-        <Divider />
-
         {/* ═══ SEZIONE 8 — AGENT GIORNALISTI (NUOVA) ═══ */}
         <Section bg="#ffffff" id="agent-giornalisti">
           <Label>La Tua Redazione</Label>
