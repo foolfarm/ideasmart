@@ -352,7 +352,7 @@ export const bannersRouter = router({
       const rows = await db
         .select({
           bannerId: bannerEvents.bannerId,
-          day: sql<string>`DATE(${bannerEvents.createdAt})`,
+          day: sql<string>`DATE_FORMAT(${bannerEvents.createdAt}, '%Y-%m-%d')`,
           clicks: sql<number>`COUNT(*)`,
         })
         .from(bannerEvents)
@@ -363,7 +363,7 @@ export const bannersRouter = router({
             eq(bannerEvents.source, "newsletter")
           )
         )
-        .groupBy(bannerEvents.bannerId, sql`DATE(${bannerEvents.createdAt})`);
+        .groupBy(bannerEvents.bannerId, sql`DATE_FORMAT(${bannerEvents.createdAt}, '%Y-%m-%d')`);
       const allBanners = await db
         .select({ id: banners.id, name: banners.name })
         .from(banners)
