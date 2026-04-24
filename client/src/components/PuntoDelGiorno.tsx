@@ -227,14 +227,24 @@ export default function PuntoDelGiorno() {
                   </a>
                 </div>
               )}
-              <Link href="/andrea-cinelli">
-                <span
-                  className="inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                  style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-                >
-                  Tutti gli editoriali di Andrea Cinelli →
-                </span>
-              </Link>
+              <div className="flex items-center gap-4 flex-wrap">
+                <Link href="/andrea-cinelli">
+                  <span
+                    className="inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                    style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                  >
+                    Tutti gli editoriali →
+                  </span>
+                </Link>
+                <Link href="/osservatorio-tech">
+                  <span
+                    className="inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                    style={{ color: "#dc2626", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                  >
+                    Osservatorio Tech →
+                  </span>
+                </Link>
+              </div>
             </div>
 
             {/* Commenti al Punto del Giorno */}

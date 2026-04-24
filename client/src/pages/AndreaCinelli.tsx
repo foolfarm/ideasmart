@@ -325,6 +325,20 @@ export default function AndreaCinelli() {
             >
               "AI is not a tool to adopt — it is a force that reshapes products, power and industries."
             </blockquote>
+
+            {/* Banner Osservatorio Tech */}
+            <a
+              href="/osservatorio-tech"
+              className="mt-6 flex items-center justify-between px-5 py-4 border-l-4 transition-all hover:opacity-80 block"
+              style={{ borderLeftColor: "#dc2626", backgroundColor: "#0a0a0a", textDecoration: "none" }}
+            >
+              <div>
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1" style={{ color: "#dc2626" }}>Nuovo</p>
+                <p className="text-sm font-bold" style={{ color: "#ffffff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" }}>Osservatorio Tech →</p>
+                <p className="text-[11px] mt-0.5" style={{ color: "#ffffff99" }}>Articoli, post LinkedIn e analisi aggiornati ogni giorno</p>
+              </div>
+              <span className="text-white text-lg ml-4">→</span>
+            </a>
           </div>
         </div>
       </div>

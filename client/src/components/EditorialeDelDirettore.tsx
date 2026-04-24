@@ -207,7 +207,15 @@ export default function EditorialeDelDirettore() {
             )}
 
             {/* Footer: link pagina completa */}
-            <div className="mt-6 pt-4 border-t flex items-center justify-end" style={{ borderColor: INK + "12" }}>
+            <div className="mt-6 pt-4 border-t flex items-center justify-between flex-wrap gap-3" style={{ borderColor: INK + "12" }}>
+              <Link href="/osservatorio-tech">
+                <span
+                  className="text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
+                  style={{ color: "#dc2626", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
+                >
+                  Osservatorio Tech →
+                </span>
+              </Link>
               {editorial.linkedinUrl && (
                 <a href={editorial.linkedinUrl} target="_blank" rel="noopener noreferrer">
                   <span
