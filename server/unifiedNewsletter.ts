@@ -1293,7 +1293,7 @@ function buildNewsletterHtmlV2(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le News delle 8.30 di ProofPress — ${dateLabel}</title>
+  <title>BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}</title>
   <!--[if mso]><style>table{border-collapse:collapse;}td{font-family:Helvetica,Arial,sans-serif;}</style><![endif]-->
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${F_SANS};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
@@ -1412,7 +1412,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn("[Newsletter] Pexels fetch skipped:", e);
   }
 
-  const subject = `AI4Business News by ProofPress — ${dateLabel}`;
+  const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
     dateLabel,
@@ -2017,7 +2017,7 @@ export async function sendMorningNewsletterToAll(): Promise<{
 
   const now = new Date();
   const dateLabel = getDateLabel(now);
-  const MORNING_SUBJECT = `Le News delle 8.30 di ProofPress — ${dateLabel}`;
+  const MORNING_SUBJECT = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   console.log(`[MorningNewsletter] 📧 Avvio invio automatico "${MORNING_SUBJECT}"...`);
 
