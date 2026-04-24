@@ -1,6 +1,6 @@
 /*
- * IDEASMART RESEARCH Navbar
- * Struttura menu: Chi Siamo (dropdown) | Cosa Facciamo (dropdown) | Pubblicizza | Contatti | Investi
+ * PROOFPRESS Navbar
+ * Struttura menu: Chi Siamo | Offerta (dropdown 5 voci) | Advertise | Scrivi per noi (dropdown) | Contatti
  */
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
@@ -10,9 +10,11 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [chiSiamoOpen, setChiSiamoOpen] = useState(false);
-  const [cosaFacciamoOpen, setCosaFacciamoOpen] = useState(false);
+  const [offertaOpen, setOffertaOpen] = useState(false);
+  const [scriviOpen, setScriviOpen] = useState(false);
   const [mobileChiSiamoOpen, setMobileChiSiamoOpen] = useState(false);
-  const [mobileCosaFacciamoOpen, setMobileCosaFacciamoOpen] = useState(false);
+  const [mobileOffertaOpen, setMobileOffertaOpen] = useState(false);
+  const [mobileScriviOpen, setMobileScriviOpen] = useState(false);
   const [location] = useLocation();
   const isHome = location === "/" || location === "";
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -27,12 +29,19 @@ export default function Navbar() {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setChiSiamoOpen(false);
-        setCosaFacciamoOpen(false);
+        setOffertaOpen(false);
+        setScriviOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const closeAll = () => {
+    setChiSiamoOpen(false);
+    setOffertaOpen(false);
+    setScriviOpen(false);
+  };
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -42,42 +51,69 @@ export default function Navbar() {
 
   const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 
+  // 1 — Chi Siamo (dropdown)
   const chiSiamoItems = [
-    { label: "Chi Siamo", href: "/chi-siamo", desc: "La nostra storia e il team" },
-    { label: "Storia", href: "/storia", desc: "Come è nata ProofPress" },
+    { label: "Chi Siamo", href: "/chi-siamo", desc: "La nostra missione e il team" },
+    { label: "Storia", href: "/chi-siamo-story", desc: "Come è nata ProofPress" },
   ];
 
-  const cosaFacciamoItems = [
-    { label: "Cosa Offriamo", href: "/cosa-facciamo", desc: "Prodotti e servizi per editori e aziende" },
-    { label: "Piattaforma Agentica", href: "/piattaforma", desc: "La tecnologia AI Journalism certificato" },
-    { label: "Tecnologia Verify", href: "/proofpress-verify", desc: "Verifica e certificazione degli articoli" },
-    { label: "Verify Business", href: "/verify-business", desc: "Information Integrity Assurance per l'enterprise — CSRD, AI Act, DSA" },
-    { label: "Trust Score A–F", href: "/trust-score", desc: "Come valutiamo ogni articolo" },
-    { label: "🎙 Ascolta il Podcast", href: "/proofpress-verify#podcast", desc: "DeepDive e intro rapida su ProofPress Verify" },
+  // 2 — Offerta (dropdown 5 voci)
+  const offertaItems = [
+    { label: "Redazione Agentica", href: "/offertacommerciale", desc: "Crea il tuo giornale con Agenti AI — online in 24 ore" },
+    { label: "Newsletter Agentica", href: "/newsletter-agentica", desc: "Newsletter quotidiana generata e certificata da AI" },
+    { label: "Certificazione Notizie", href: "/proofpress-verify", desc: "ProofPress Verify — verifica e hash crittografico per ogni articolo" },
+    { label: "Certificazione Informazioni Aziende", href: "/verify-business", desc: "Information Integrity Assurance — CSRD, AI Act, DSA" },
+    { label: "Download Brochure", href: "https://proofpress.ai/brochure", desc: "Scarica la presentazione completa di ProofPress", external: true },
+  ];
+
+  // 4 — Scrivi per noi (dropdown)
+  const scriviItems = [
+    { label: "Scrivi per noi", href: "/scrivi-per-noi", desc: "Diventa contributor di ProofPress" },
+    { label: "Portale Giornalisti", href: "/journalist-portal", desc: "Area riservata per giornalisti accreditati" },
   ];
 
   const DropdownItem = ({
     item,
     onClose,
   }: {
-    item: { label: string; href: string; desc: string };
+    item: { label: string; href: string; desc: string; external?: boolean };
     onClose: () => void;
   }) => (
-    <Link
-      href={item.href}
-      onClick={onClose}
-      className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
-    >
-      <div>
-        <div
-          className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors"
-          style={{ fontFamily: SF }}
-        >
-          {item.label}
+    item.external ? (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onClose}
+        className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
+      >
+        <div>
+          <div
+            className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors"
+            style={{ fontFamily: SF }}
+          >
+            {item.label} ↗
+          </div>
+          <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
         </div>
-        <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
-      </div>
-    </Link>
+      </a>
+    ) : (
+      <Link
+        href={item.href}
+        onClick={onClose}
+        className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
+      >
+        <div>
+          <div
+            className="text-[14px] font-bold text-[#1a1a1a] group-hover:text-[#c0392b] transition-colors"
+            style={{ fontFamily: SF }}
+          >
+            {item.label}
+          </div>
+          <div className="text-[12px] text-[#1a1a1a]/50 mt-0.5">{item.desc}</div>
+        </div>
+      </Link>
+    )
   );
 
   return (
@@ -101,20 +137,20 @@ export default function Navbar() {
           </Link>
 
           {/* Centro: menu desktop */}
-          <div className="hidden sm:flex items-center gap-1" ref={dropdownRef}>
+          <div className="hidden sm:flex items-center gap-0.5" ref={dropdownRef}>
 
-            {/* A) Chi Siamo dropdown */}
+            {/* 1 — Chi Siamo dropdown */}
             <div className="relative">
               <button
-                onClick={() => { setChiSiamoOpen(!chiSiamoOpen); setCosaFacciamoOpen(false); }}
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+                onClick={() => { setChiSiamoOpen(!chiSiamoOpen); setOffertaOpen(false); setScriviOpen(false); }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
                 style={{ color: "#1a1a1a", fontFamily: SF }}
               >
                 Chi Siamo
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${chiSiamoOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${chiSiamoOpen ? "rotate-180" : ""}`} />
               </button>
               {chiSiamoOpen && (
-                <div className="absolute top-10 left-0 w-[300px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+                <div className="absolute top-10 left-0 w-[280px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
                   <div className="p-2">
                     {chiSiamoItems.map((item) => (
                       <DropdownItem key={item.href} item={item} onClose={() => setChiSiamoOpen(false)} />
@@ -124,40 +160,61 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* B) Cosa Facciamo dropdown */}
+            {/* 2 — Offerta dropdown */}
             <div className="relative">
               <button
-                onClick={() => { setCosaFacciamoOpen(!cosaFacciamoOpen); setChiSiamoOpen(false); }}
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+                onClick={() => { setOffertaOpen(!offertaOpen); setChiSiamoOpen(false); setScriviOpen(false); }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
                 style={{ color: "#1a1a1a", fontFamily: SF }}
               >
-                Cosa Facciamo
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${cosaFacciamoOpen ? "rotate-180" : ""}`} />
+                Offerta
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${offertaOpen ? "rotate-180" : ""}`} />
               </button>
-              {cosaFacciamoOpen && (
-                <div className="absolute top-10 left-0 w-[340px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+              {offertaOpen && (
+                <div className="absolute top-10 left-0 w-[360px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
                   <div className="p-2">
-                    {cosaFacciamoItems.map((item) => (
-                      <DropdownItem key={item.href} item={item} onClose={() => setCosaFacciamoOpen(false)} />
+                    {offertaItems.map((item) => (
+                      <DropdownItem key={item.href} item={item} onClose={() => setOffertaOpen(false)} />
                     ))}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Pubblicizza */}
+            {/* 3 — Advertise */}
             <Link
               href="/pubblicita"
-              className="px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
-              Pubblicizza
+              Advertise
             </Link>
 
-            {/* Contatti */}
+            {/* 4 — Scrivi per noi dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => { setScriviOpen(!scriviOpen); setChiSiamoOpen(false); setOffertaOpen(false); }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                Scrivi per noi
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${scriviOpen ? "rotate-180" : ""}`} />
+              </button>
+              {scriviOpen && (
+                <div className="absolute top-10 left-0 w-[300px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+                  <div className="p-2">
+                    {scriviItems.map((item) => (
+                      <DropdownItem key={item.href} item={item} onClose={() => setScriviOpen(false)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 5 — Contatti */}
             <Link
               href="/contatti"
-              className="px-4 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
               Contatti
@@ -220,7 +277,7 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div
           className="md:hidden overflow-hidden transition-all duration-300"
-          style={{ maxHeight: menuOpen ? "800px" : "0px" }}
+          style={{ maxHeight: menuOpen ? "900px" : "0px" }}
         >
           <div className="border-t border-gray-100 py-3 bg-white">
 
@@ -235,7 +292,7 @@ export default function Navbar() {
               </p>
             </div>
 
-            {/* A) Chi Siamo dropdown mobile */}
+            {/* 1 — Chi Siamo dropdown mobile */}
             <div className="px-2 mb-1">
               <button
                 onClick={() => setMobileChiSiamoOpen(!mobileChiSiamoOpen)}
@@ -262,23 +319,76 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* B) Cosa Facciamo dropdown mobile */}
+            {/* 2 — Offerta dropdown mobile */}
             <div className="px-2 mb-1">
               <button
-                onClick={() => setMobileCosaFacciamoOpen(!mobileCosaFacciamoOpen)}
+                onClick={() => setMobileOffertaOpen(!mobileOffertaOpen)}
                 className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
                 style={{ color: "#1a1a1a", fontFamily: SF }}
               >
-                <span>Cosa Facciamo</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileCosaFacciamoOpen ? "rotate-180" : ""}`} />
+                <span>Offerta</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileOffertaOpen ? "rotate-180" : ""}`} />
               </button>
-              {mobileCosaFacciamoOpen && (
+              {mobileOffertaOpen && (
                 <div className="ml-4 mt-1 space-y-1">
-                  {cosaFacciamoItems.map((item) => (
+                  {offertaItems.map((item) => (
+                    item.external ? (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => { setMenuOpen(false); setMobileOffertaOpen(false); }}
+                        className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        <span className="font-semibold text-[#c0392b]">{item.label} ↗</span>
+                        <span className="text-[12px] text-[#1a1a1a]/50">{item.desc}</span>
+                      </a>
+                    ) : (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => { setMenuOpen(false); setMobileOffertaOpen(false); }}
+                        className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        <span className="font-semibold text-[#c0392b]">{item.label}</span>
+                        <span className="text-[12px] text-[#1a1a1a]/50">{item.desc}</span>
+                      </Link>
+                    )
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 3 — Advertise — voce diretta */}
+            <div className="px-2 mb-1">
+              <Link
+                href="/pubblicita"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                Advertise
+              </Link>
+            </div>
+
+            {/* 4 — Scrivi per noi dropdown mobile */}
+            <div className="px-2 mb-1">
+              <button
+                onClick={() => setMobileScriviOpen(!mobileScriviOpen)}
+                className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
+                style={{ color: "#1a1a1a", fontFamily: SF }}
+              >
+                <span>Scrivi per noi</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileScriviOpen ? "rotate-180" : ""}`} />
+              </button>
+              {mobileScriviOpen && (
+                <div className="ml-4 mt-1 space-y-1">
+                  {scriviItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => { setMenuOpen(false); setMobileCosaFacciamoOpen(false); }}
+                      onClick={() => { setMenuOpen(false); setMobileScriviOpen(false); }}
                       className="flex flex-col px-3 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <span className="font-semibold text-[#c0392b]">{item.label}</span>
@@ -289,19 +399,7 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* C) Pubblicizza — voce diretta */}
-            <div className="px-2 mb-1">
-              <Link
-                href="/pubblicita"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
-                style={{ color: "#1a1a1a", fontFamily: SF }}
-              >
-                Pubblicizza
-              </Link>
-            </div>
-
-            {/* D) Contatti — voce diretta */}
+            {/* 5 — Contatti — voce diretta */}
             <div className="px-2 mb-1">
               <Link
                 href="/contatti"
@@ -313,7 +411,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* E) Investi — badge arancio */}
+            {/* Investi — badge arancio */}
             <div className="px-2 mb-1">
               <Link
                 href="/investor"
