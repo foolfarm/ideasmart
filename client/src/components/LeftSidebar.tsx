@@ -2,8 +2,9 @@ import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
-  Monitor, CheckCircle, Newspaper, Megaphone, PenLine,
-  KeyRound, Info, Mail, CircleDollarSign, ExternalLink, Download,
+  Info, Briefcase, Megaphone, PenLine, Mail,
+  CircleDollarSign, ExternalLink, Download, ChevronRight,
+  Newspaper, KeyRound, Building2, CheckCircle, Users,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -11,7 +12,7 @@ const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 
 
 /* ─── DIMENSIONI ─────────────────────────────────────────────────────── */
 const COLLAPSED_W = 62;
-const EXPANDED_W  = 248;
+const EXPANDED_W  = 260;
 
 /* ─── ICONA MENU ─────────────────────────────────────────────────────── */
 function MenuIcon({ Icon, active, orange }: { Icon: React.ElementType; active: boolean; orange?: boolean }) {
@@ -33,20 +34,148 @@ function MenuIcon({ Icon, active, orange }: { Icon: React.ElementType; active: b
   );
 }
 
-/* ─── VOCI MENU ─────────────────────────────────────────────────────── */
-const NAV_ITEMS = [
-  { href: "/piattaforma",       label: "Platform",          Icon: Monitor,          external: false },
-  { href: "https://proofpress.tech/", label: "Demo Platform", Icon: ExternalLink,   external: true  },
-  { href: "/proofpress-verify", label: "Verify",            Icon: CheckCircle,      external: false },
-  { href: "/",                  label: "Magazine",          Icon: Newspaper,        external: false },
-  { href: "/pubblicita",        label: "Advertise",         Icon: Megaphone,        external: false },
-  { href: "/scrivi-per-noi",    label: "Contribute",        Icon: PenLine,          external: false },
-  { href: "/journalist-portal", label: "Journalists Portal",Icon: KeyRound,         external: false },
-  { href: "/cosa-facciamo",     label: "About",             Icon: Info,             external: false },
-  { href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf", label: "Download Brochure", Icon: Download, external: true  },
-  { href: "/contatti",          label: "Contact",           Icon: Mail,             external: false },
+/* ─── STRUTTURA MENU ─────────────────────────────────────────────────── */
+type NavItem =
+  | { type: "link"; href: string; label: string; Icon: React.ElementType; external?: boolean }
+  | { type: "group"; label: string; Icon: React.ElementType; children: { href: string; label: string; external?: boolean }[] };
+
+const NAV_STRUCTURE: NavItem[] = [
+  {
+    type: "group",
+    label: "Chi Siamo",
+    Icon: Info,
+    children: [
+      { href: "/cosa-facciamo", label: "Chi Siamo" },
+      { href: "/chi-siamo-story", label: "Storia" },
+    ],
+  },
+  {
+    type: "group",
+    label: "Offerta",
+    Icon: Briefcase,
+    children: [
+      { href: "/offertacommerciale", label: "Redazione Agentica" },
+      { href: "/newsletter-agentica", label: "Newsletter Agentica" },
+      { href: "/proofpress-verify", label: "Certificazione Notizie" },
+      { href: "/verify-business", label: "Certificazione Aziende" },
+      {
+        href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf",
+        label: "Download Brochure",
+        external: true,
+      },
+    ],
+  },
+  { type: "link", href: "/pubblicita", label: "Advertise", Icon: Megaphone },
+  {
+    type: "group",
+    label: "Scrivi per noi",
+    Icon: PenLine,
+    children: [
+      { href: "/scrivi-per-noi", label: "Scrivi per noi" },
+      { href: "/journalist-portal", label: "Portale Giornalisti" },
+    ],
+  },
+  { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
 ];
 
+/* ─── VOCE SEMPLICE ─────────────────────────────────────────────────── */
+function NavLink({
+  href, label, Icon, external, active, expanded, labelStyle,
+}: {
+  href: string; label: string; Icon: React.ElementType;
+  external?: boolean; active: boolean; expanded: boolean;
+  labelStyle: React.CSSProperties;
+}) {
+  const inner = (
+    <div
+      className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+      title={!expanded ? label : undefined}
+    >
+      <MenuIcon Icon={Icon} active={active} />
+      <span className="text-[13px] font-semibold text-[#1d1d1f] flex items-center gap-1" style={labelStyle}>
+        {label}
+        {external && <ExternalLink size={10} className="opacity-30 flex-shrink-0" />}
+      </span>
+    </div>
+  );
+  if (external) {
+    return <a href={href} target="_blank" rel="noopener noreferrer">{inner}</a>;
+  }
+  return <Link href={href}>{inner}</Link>;
+}
+
+/* ─── GRUPPO CON SOTTOMENU ───────────────────────────────────────────── */
+function NavGroup({
+  label, Icon, children, expanded, labelStyle, isAnyChildActive,
+}: {
+  label: string; Icon: React.ElementType;
+  children: { href: string; label: string; external?: boolean }[];
+  expanded: boolean; labelStyle: React.CSSProperties; isAnyChildActive: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div>
+      {/* Voce principale */}
+      <div
+        className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+        title={!expanded ? label : undefined}
+        onClick={() => expanded && setOpen(o => !o)}
+      >
+        <MenuIcon Icon={Icon} active={isAnyChildActive} />
+        <span className="text-[13px] font-semibold text-[#1d1d1f] flex-1" style={labelStyle}>{label}</span>
+        {expanded && (
+          <ChevronRight
+            size={13}
+            strokeWidth={2}
+            color="#8e8e93"
+            style={{
+              transform: open ? "rotate(90deg)" : "rotate(0deg)",
+              transition: "transform 180ms ease",
+              flexShrink: 0,
+            }}
+          />
+        )}
+      </div>
+
+      {/* Sottovoci */}
+      {expanded && open && (
+        <div className="ml-10 flex flex-col gap-0 mt-0.5 mb-1">
+          {children.map(({ href, label: childLabel, external }) => {
+            const inner = (
+              <div
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
+              >
+                <span
+                  style={{
+                    fontFamily: SF,
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    color: "#3a3a3c",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {childLabel}
+                </span>
+                {external && <ExternalLink size={9} className="opacity-30 flex-shrink-0" />}
+              </div>
+            );
+            if (external) {
+              return (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer">
+                  {inner}
+                </a>
+              );
+            }
+            return <Link key={href} href={href}>{inner}</Link>;
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── COMPONENTE PRINCIPALE ─────────────────────────────────────────── */
 export default function LeftSidebar() {
   const [location] = useLocation();
   const [hovered, setHovered] = useState(false);
@@ -124,38 +253,39 @@ export default function LeftSidebar() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════════
-          NAV PRINCIPALE — 9 voci flat + 1 Invest
+          NAV PRINCIPALE
       ══════════════════════════════════════════════════════════════ */}
       <nav className="flex flex-col gap-0.5 px-2 mb-3">
 
-        {NAV_ITEMS.map(({ href, label, Icon, external }) =>
-          external ? (
-            <a
-              key={href}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-              title={!expanded ? label : undefined}
-            >
-              <MenuIcon Icon={Icon} active={false} />
-              <span className="text-[13px] font-semibold text-[#1d1d1f] flex items-center gap-1" style={labelStyle}>
-                {label}
-                <ExternalLink size={10} className="opacity-30 flex-shrink-0" />
-              </span>
-            </a>
-          ) : (
-            <Link key={href} href={href}>
-              <div
-                className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#f5f5f7]"
-                title={!expanded ? label : undefined}
-              >
-                <MenuIcon Icon={Icon} active={isActive(href)} />
-                <span className="text-[13px] font-semibold text-[#1d1d1f]" style={labelStyle}>{label}</span>
-              </div>
-            </Link>
-          )
-        )}
+        {NAV_STRUCTURE.map((item, i) => {
+          if (item.type === "link") {
+            return (
+              <NavLink
+                key={i}
+                href={item.href}
+                label={item.label}
+                Icon={item.Icon}
+                external={item.external}
+                active={isActive(item.href)}
+                expanded={expanded}
+                labelStyle={labelStyle}
+              />
+            );
+          }
+          // group
+          const isAnyChildActive = item.children.some(c => !c.external && isActive(c.href));
+          return (
+            <NavGroup
+              key={i}
+              label={item.label}
+              Icon={item.Icon}
+              children={item.children}
+              expanded={expanded}
+              labelStyle={labelStyle}
+              isAnyChildActive={isAnyChildActive}
+            />
+          );
+        })}
 
         {/* INVEST — voce speciale arancio */}
         <Link href="/investor">
