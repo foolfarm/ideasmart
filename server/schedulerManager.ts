@@ -449,12 +449,30 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── NEWSLETTER UNIFICATA "BUONGIORNO by PROOFPRESS" — 08:05 CET (7 giorni su 7) ────────────
-  // Cron: 5 8 * * * = ogni giorno alle 08:05 CET (5 min dopo Morning Health Report delle 08:00)
-  // Nessuna approvazione richiesta — invio automatico diretto a tutti gli iscritti attivi
-  // Newsletter del sabato: stessa newsletter unificata (nessuna newsletter separata del sabato)
-  cron.schedule("5 8 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 08:05 CET — Invio automatico \"BUONGIORNO by PROOFPRESS\" (7gg/7)...");
+  // ── NEWSLETTER PREVIEW (07:00 CET) — invia bozza a ac@acinelli.com ogni giorno ────────────
+  // Cron: 0 7 * * * = ogni giorno alle 07:00 CET, 7 giorni su 7
+  // Invia la preview della newsletter del giorno a ac@acinelli.com per verifica visiva
+  cron.schedule("0 7 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 07:00 CET — Invio preview newsletter a ac@acinelli.com...");
+    try {
+      const { sendUnifiedPreview } = await import("./unifiedNewsletter");
+      const result = await sendUnifiedPreview(true); // force=true bypassa il guard giornaliero
+      if (result.success) {
+        console.log(`[SchedulerManager] ✅ Preview inviata a ac@acinelli.com — ${result.subject}`);
+      } else {
+        console.error("[SchedulerManager] ❌ Errore preview:", result.error);
+      }
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ Errore critico preview:", err);
+    }
+  }, { timezone: TZ });
+
+  // ── NEWSLETTER MASSIVA "BUONGIORNO by PROOFPRESS" — 08:30 CET (7 giorni su 7) ────────────
+  // Cron: 30 8 * * * = ogni giorno alle 08:30 CET, domenica e sabato inclusi
+  // Nessuna approvazione richiesta — invio automatico diretto a tutti i 2.454 subscriber attivi
+  // Gli unsubscribed (5.608) sono automaticamente esclusi dalla query getActiveSubscribers()
+  cron.schedule("30 8 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (7gg/7)...");
     await withLock("newsletter-mattino", async () => {
       try {
         const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
