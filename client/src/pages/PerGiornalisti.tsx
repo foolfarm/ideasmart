@@ -5,13 +5,12 @@
  * Revenue Share, Casi d'Uso, FAQ, CTA Finale
  * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f5f7), accento rosso (#dc2626)
  */
-import { useRef, useState } from "react";
-import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import LeftSidebar from "@/components/LeftSidebar";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import ContactForm from "@/components/ContactForm";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
@@ -37,83 +36,11 @@ function Divider() {
   return <div className="max-w-5xl mx-auto px-5 md:px-8"><div className="border-t border-[#0a0a0a]/8" /></div>;
 }
 
-/* ── FAQ Accordion ── */
-const FAQ_DATA = [
-  { q: "Come funziona la piattaforma Proof Press?", a: "Proof Press è una redazione digitale composta da Agent Giornalisti e agenti di supporto che lavorano come un team editoriale. Ogni Agent Giornalista monitora le fonti che gli hai assegnato, verifica le notizie con la tecnologia proprietaria ProofPress Verify™, scrive articoli nel tono che hai scelto e li pubblica sul tuo giornale. Tu interagisci con la redazione via chat, in linguaggio naturale: «scrivi un pezzo su questo tema», «estrai le news del giorno», «pubblica in prima pagina»." },
-  { q: "Cosa sono gli Agent Giornalisti?", a: "Ogni Agent Giornalista è un membro della tua redazione AI che configuri su un settore specifico. Gli assegni un beat (es. finanza, tech, sport, politica), le fonti da monitorare e il tono di scrittura. Lui ogni giorno monitora le sue fonti, scrive i suoi articoli e li pubblica sul canale che hai scelto.\n\nCon 4 Agent copri un singolo verticale in profondità. Con 8 Agent copri 3-6 canali tematici. Con 12 Agent hai una redazione completa senza limiti.\n\nPuoi riconfigurare ogni Agent in qualsiasi momento: cambio settore, fonti, tono. La tua redazione si adatta a te." },
-  { q: "Qual è la differenza tra Agent Giornalisti e agenti di supporto?", a: "Gli Agent Giornalisti sono quelli che TU configuri: scegli il settore, le fonti, il tono e la frequenza. Sono i «giornalisti» della tua redazione.\n\nGli agenti di supporto lavorano in automatico su tutti i contenuti prodotti dagli Agent Giornalisti:\n• Fact Checker — verifica ogni notizia su fonti multiple\n• Publisher — pubblica e impagina in automatico\n• Newsletter Curator — seleziona e invia le newsletter\n• Social Editor — genera i post per i social media\n\nTutti i piani includono i 4 agenti di supporto. La differenza tra i piani è nel numero di Agent Giornalisti." },
-  { q: "Cos'è la tecnologia ProofPress Verify™?", a: "ProofPress Verify è un protocollo di validazione agentica delle notizie. L'AI confronta ogni contenuto su fonti multiple, ne misura affidabilità e coerenza fattuale, e genera un Verification Report. Il report viene sigillato con un hash crittografico immutabile — tracciabile, trasparente e verificabile nel tempo." },
-  { q: "Quanto tempo serve per lanciare una testata?", a: "Il setup completo richiede 5-7 giorni lavorativi. Include la configurazione della piattaforma, la personalizzazione editoriale, il setup delle fonti e il training degli Agent Giornalisti sulla tua linea editoriale. Dopo il lancio, la redazione è operativa 24/7." },
-  { q: "Posso personalizzare lo stile editoriale?", a: "Sì, completamente. Definisci il tono (formale, informale, tecnico, divulgativo), il linguaggio, il posizionamento della testata. Puoi anche insegnare alla piattaforma a scrivere come te, fornendo esempi del tuo stile. Gli Agent Giornalisti si adattano alla tua linea editoriale." },
-  { q: "Cosa sono i token e come funzionano?", a: "I token sono l'unità di misura dell'AI generativa. Ogni articolo scritto, ogni analisi, ogni interazione con la chat redazionale consuma token. Ogni piano include un budget mensile (da 1M a 10M) più che sufficiente per l'uso previsto. Se hai bisogno di più, puoi acquistarli a €10 ogni 100.000 token. La maggior parte dei clienti non supera mai la soglia inclusa." },
-  { q: "Quanto produce la redazione AI rispetto a una tradizionale?", a: "Un giornalista produce in media 2-3 articoli al giorno. Il piano Single Vertical con 4 Agent Giornalisti produce 10-15 articoli/giorno (equivalente a 4-5 giornalisti), il Multi-Channel con 8 Agent produce 20-30 (equivalente a 8-10), il Full Newsroom con 12 Agent non ha limiti. 24/7, senza ferie, malattia o turnover." },
-  { q: "Serve un team per gestire la piattaforma?", a: "No. Il piano Single Vertical funziona con una sola persona. La piattaforma gestisce autonomamente l'intero flusso editoriale. Tu mantieni il controllo sulla linea editoriale e sulla strategia — il resto lo fanno gli Agent." },
-  { q: "Come funziona il revenue share?", a: "Al posto del canone mensile puoi scegliere il 20% sui ricavi generati dalla testata (abbonamenti, pubblicità, sponsorizzazioni). Paghi solo il setup e poi cresciamo insieme. Disponibile per Multi-Channel e Full Newsroom, con minimo garantito (€300/mese e €500/mese)." },
-  { q: "I contenuti sono miei?", a: "Sì, al 100%. Tutti i contenuti generati dalla piattaforma sono di tua proprietà. Puoi usarli, ripubblicarli, distribuirli come vuoi. La piattaforma è il tuo strumento, i contenuti sono tuoi." },
-  { q: "Posso cancellare quando voglio?", a: "Sì. Nessun vincolo a lungo termine. Il canone è mensile e puoi disdire con 30 giorni di preavviso. Il setup una tantum non è rimborsabile. I contenuti pubblicati restano tuoi." },
-  { q: "E se voglio migrare a un altro sistema?", a: "Tutti i contenuti sono esportabili in formati standard (HTML, Markdown, JSON). La piattaforma è tua finché la usi, i contenuti sono tuoi per sempre. Nessun lock-in." },
-];
-
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border-b border-[#0a0a0a]/8">
-      <button onClick={() => setOpen(!open)} className="w-full py-6 flex items-start justify-between text-left gap-4 group">
-        <span className="text-base md:text-lg font-bold text-[#0a0a0a] group-hover:text-[#dc2626] transition-colors" style={{ fontFamily: FONT }}>{q}</span>
-        <span className="text-2xl font-light text-[#0a0a0a]/30 shrink-0 mt-0.5">{open ? "\u2212" : "+"}</span>
-      </button>
-      {open && <p className="pb-6 text-[15px] leading-relaxed text-[#0a0a0a]/60 max-w-3xl whitespace-pre-line" style={{ fontFamily: FONT }}>{a}</p>}
-    </div>
-  );
-}
-
-/* ── Demo Form ── */
-function DemoForm({ formRef }: { formRef: React.RefObject<HTMLDivElement | null> }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [profileType, setProfileType] = useState<"giornalista_freelance" | "editore_digitale" | "creator_analista" | "media_company" | "altro">("giornalista_freelance");
-  const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
-  const mutation = trpc.demoRequest.submit.useMutation({ onSuccess: () => setSent(true) });
-
-  if (sent) {
-    return (
-      <div ref={formRef} id="demo" className="text-center py-12">
-        <div className="text-5xl mb-4">&#10003;</div>
-        <h3 className="text-2xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>Richiesta inviata</h3>
-        <p className="mt-3 text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>Ti contatteremo entro 24 ore per fissare la demo.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div ref={formRef} id="demo" className="max-w-xl mx-auto">
-      <div className="space-y-4">
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="Nome e cognome" className="w-full px-5 py-4 border-2 border-[#0a0a0a]/10 text-[15px] focus:border-[#0a0a0a] focus:outline-none transition-colors" style={{ fontFamily: FONT, borderRadius: 0, background: "#ffffff" }} />
-        <input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email professionale" className="w-full px-5 py-4 border-2 border-[#0a0a0a]/10 text-[15px] focus:border-[#0a0a0a] focus:outline-none transition-colors" style={{ fontFamily: FONT, borderRadius: 0, background: "#ffffff" }} />
-        <select value={profileType} onChange={e => setProfileType(e.target.value as typeof profileType)} className="w-full px-5 py-4 border-2 border-[#0a0a0a]/10 text-[15px] focus:border-[#0a0a0a] focus:outline-none transition-colors" style={{ fontFamily: FONT, borderRadius: 0, background: "#ffffff" }}>
-          <option value="giornalista_freelance">Giornalista / Freelancer</option>
-          <option value="editore_digitale">Editore digitale / Testata online</option>
-          <option value="creator_analista">Creator / Analista</option>
-          <option value="media_company">Media company</option>
-          <option value="altro">Altro</option>
-        </select>
-        <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Descrivi brevemente la tua testata o il tuo progetto editoriale..." rows={4} className="w-full px-5 py-4 border-2 border-[#0a0a0a]/10 text-[15px] focus:border-[#0a0a0a] focus:outline-none transition-colors resize-none" style={{ fontFamily: FONT, borderRadius: 0, background: "#ffffff" }} />
-        <button onClick={() => { if (name && email) mutation.mutate({ name, email, profileType, message }); }} disabled={mutation.isPending || !name || !email} className="w-full px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 disabled:opacity-40" style={{ background: "#dc2626", borderRadius: 0 }}>
-          {mutation.isPending ? "Invio in corso..." : "Prenota una demo gratuita →"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
 
 /* ════════════════════════════════════════════════════════════════════════
    MAIN PAGE
    ════════════════════════════════════════════════════════════════════════ */
 export default function PerGiornalisti() {
-  const demoRef = useRef<HTMLDivElement>(null);
-  const scrollToDemo = () => demoRef.current?.scrollIntoView({ behavior: "smooth" });
   const scrollToHow = () => document.getElementById("come-funziona")?.scrollIntoView({ behavior: "smooth" });
 
   return (
@@ -144,9 +71,9 @@ export default function PerGiornalisti() {
                 Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale — senza assumere nessuno. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <button onClick={scrollToDemo} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: "#dc2626", borderRadius: 0 }}>
-                  Prenota una demo →
-                </button>
+                <a href="https://proofpress.tech/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block" style={{ background: "#dc2626", borderRadius: 0 }}>
+                  Guarda una demo →
+                </a>
                 <button onClick={scrollToHow} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white" style={{ borderRadius: 0 }}>
                   Guarda come funziona ↓
                 </button>
@@ -233,11 +160,7 @@ export default function PerGiornalisti() {
               </div>
             ))}
           </div>
-          <div className="mt-12 text-center">
-            <button onClick={scrollToDemo} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: "#dc2626", borderRadius: 0 }}>
-              Prenota una demo e vedi la piattaforma in azione →
-            </button>
-          </div>
+
         </Section>
 
         <Divider />
@@ -592,225 +515,18 @@ export default function PerGiornalisti() {
           </div>
         </Section>
 
-        <Divider />
-
-        {/* ═══ SEZIONE 10 — PRICING ═══ */}
-        <Section bg="#ffffff" id="pricing">
-          <Label>I Piani</Label>
-          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            Scegli la tua redazione.<br />
-            <span className="text-[#dc2626]">Scala quando vuoi.</span>
-          </h2>
-          <p className="mt-4 text-lg text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>
-            Setup dedicato + canone mensile con token inclusi. Ogni testata è un'istanza propria, su dominio dedicato, configurata su misura per te.
-          </p>
-
-          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Single Vertical — setup €2.500 */}
-            <div className="bg-white p-8 border border-[#0a0a0a]/10">
-              <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40 mb-2" style={{ fontFamily: FONT }}>Single Vertical</h3>
-              <div className="text-2xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>€2.500 <span className="text-base font-medium text-[#0a0a0a]/40">una tantum</span></div>
-              <div className="text-lg font-bold text-[#dc2626]" style={{ fontFamily: FONT }}>+ €500/mese</div>
-              <ul className="mt-6 space-y-2 text-[13px] text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>
-                <li>→ 4 Agent Giornalisti configurabili per settore</li>
-                <li>→ + 4 agenti di supporto (Fact Checker, Publisher, Newsletter Curator, Social Editor)</li>
-                <li>→ 1 canale tematico</li>
-                <li>→ 10-15 articoli AI/giorno</li>
-                <li>→ 1M token/mese inclusi</li>
-                <li>→ Setup completo: fonti, tone of voice, regole editoriali</li>
-                <li>→ Training editoriale (come usare la chat redazionale)</li>
-                <li>→ Newsletter automatica settimanale</li>
-                <li>→ Dominio dedicato</li>
-                <li>→ Manutenzione e aggiornamento agenti mensile</li>
-                <li>→ Supporto email</li>
-              </ul>
-              <div className="mt-6 pt-4 border-t border-[#0a0a0a]/8">
-                <p className="text-[12px] font-bold text-[#0a0a0a]/40 uppercase tracking-[0.1em]">Anno 1: €8.500 · Anno 2+: €6.000/anno</p>
-                <p className="text-[12px] text-[#0a0a0a]/40 mt-1">Per vertical media, rubriche personali, testate monotematiche.</p>
-                <p className="text-[11px] text-[#0a0a0a]/30 mt-2 italic">Es. Una testata verticale sull'AI in Italia con 4 Agent: Agent AI Policy, Agent AI Business, Agent AI Research, Agent AI Startup.</p>
-              </div>
-            </div>
-
-            {/* Multi-Channel */}
-            <div className="bg-white p-8 border-2 border-[#dc2626] relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#dc2626] text-white text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1">Più scelto</div>
-              <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40 mb-2" style={{ fontFamily: FONT }}>Multi-Channel</h3>
-              <div className="text-2xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>€5.000 <span className="text-base font-medium text-[#0a0a0a]/40">una tantum</span></div>
-              <div className="text-lg font-bold text-[#dc2626]" style={{ fontFamily: FONT }}>+ €750/mese</div>
-              <ul className="mt-6 space-y-2 text-[13px] text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>
-                <li>→ 8 Agent Giornalisti configurabili per settore</li>
-                <li>→ + 4 agenti di supporto</li>
-                <li>→ Fino a 6 canali tematici</li>
-                <li>→ 20-30 articoli AI/giorno</li>
-                <li>→ 3M token/mese inclusi</li>
-                <li>→ Setup completo con sessione strategica (2h)</li>
-                <li>→ Training editoriale + 1 revisione mensile</li>
-                <li>→ Newsletter automatica multi-lista</li>
-                <li>→ Paywall integrato (se richiesto)</li>
-                <li>→ Dominio dedicato</li>
-                <li>→ Analytics base</li>
-                <li>→ Supporto prioritario</li>
-              </ul>
-              <div className="mt-6 pt-4 border-t border-[#0a0a0a]/8">
-                <p className="text-[12px] font-bold text-[#0a0a0a]/40 uppercase tracking-[0.1em]">Anno 1: €14.000 · Anno 2+: €9.000/anno</p>
-                <p className="text-[12px] text-[#0a0a0a]/40 mt-1">La configurazione completa per una testata multi-canale con distribuzione automatica.</p>
-                <p className="text-[11px] text-[#0a0a0a]/30 mt-2 italic">Es. Una testata con 3 canali (Tech, Startup, Finance) e 8 Agent: 2-3 Agent per canale, ciascuno specializzato su un sotto-tema.</p>
-              </div>
-            </div>
-
-            {/* Full Newsroom */}
-            <div className="bg-white p-8 border border-[#0a0a0a]/10">
-              <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40 mb-2" style={{ fontFamily: FONT }}>Full Newsroom</h3>
-              <div className="text-2xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>€7.500 <span className="text-base font-medium text-[#0a0a0a]/40">una tantum</span></div>
-              <div className="text-lg font-bold text-[#dc2626]" style={{ fontFamily: FONT }}>+ €1.000/mese</div>
-              <ul className="mt-6 space-y-2 text-[13px] text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>
-                <li>→ 12 Agent Giornalisti configurabili per settore</li>
-                <li>→ + 4 agenti di supporto</li>
-                <li>→ Canali illimitati</li>
-                <li>→ Articoli illimitati</li>
-                <li>→ 10M token/mese inclusi</li>
-                <li>→ Setup completo con sessione strategica (4h) + audit fonti + piano editoriale primo mese</li>
-                <li>→ Training editoriale + 2 revisioni mensili</li>
-                <li>→ Newsletter automatica multi-lista</li>
-                <li>→ Paywall + gestione abbonamenti</li>
-                <li>→ Dominio dedicato</li>
-                <li>→ Analytics avanzato</li>
-                <li>→ Distribuzione multi-canale (sito + social + newsletter)</li>
-                <li>→ Sessione mensile di ottimizzazione editoriale</li>
-                <li>→ Supporto dedicato con account manager</li>
-              </ul>
-              <div className="mt-6 pt-4 border-t border-[#0a0a0a]/8">
-                <p className="text-[12px] font-bold text-[#0a0a0a]/40 uppercase tracking-[0.1em]">Anno 1: €19.500 · Anno 2+: €12.000/anno</p>
-                <p className="text-[12px] text-[#0a0a0a]/40 mt-1">Per media company e redazioni che vogliono massima copertura, automazione completa e distribuzione multi-canale.</p>
-                <p className="text-[11px] text-[#0a0a0a]/30 mt-2 italic">Es. Un giornale con 6 canali e 12 Agent: 2 Agent per canale, copertura completa di ogni settore con profondità e frequenza massima.</p>
-              </div>
-            </div>
-
-            {/* Custom */}
-            <div className="bg-[#0a0a0a] p-8 text-white">
-              <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-white/40 mb-2" style={{ fontFamily: FONT }}>Custom</h3>
-              <div className="text-2xl font-black text-white" style={{ fontFamily: FONT }}>Parliamone</div>
-              <ul className="mt-6 space-y-2 text-[13px] text-white/60" style={{ fontFamily: FONT }}>
-                <li>→ Agent Giornalisti su misura (anche 20+)</li>
-                <li>→ Canali e fonti illimitate</li>
-                <li>→ Token budget personalizzato</li>
-                <li>→ Multi-testata (più giornali dalla stessa piattaforma)</li>
-                <li>→ Integrazioni personalizzate (CMS, CRM, ERP)</li>
-                <li>→ SLA e supporto dedicato</li>
-                <li>→ Team multi-editor</li>
-                <li>→ White-label completo</li>
-              </ul>
-              <div className="mt-8">
-                <button onClick={scrollToDemo} className="w-full px-6 py-3 text-sm font-bold uppercase tracking-[0.15em] bg-white text-[#0a0a0a] hover:bg-white/90 transition-colors" style={{ borderRadius: 0 }}>
-                  Contattaci →
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-8 text-center text-[13px] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>
-            Tutti i piani includono: istanza dedicata su dominio proprio, configurazione piattaforma, personalizzazione editoriale, setup fonti, training AI e tecnologia ProofPress Verify™. Token extra oltre la soglia inclusa: €10 ogni 100.000 token aggiuntivi. Ogni Agent Giornalista può essere riconfigurato in qualsiasi momento: cambio settore, cambio fonti, cambio tono.
-          </p>
-        </Section>
-
-        <Divider />
-
-        {/* ═══ SEZIONE 11 — REVENUE SHARE ═══ */}
-        <Section bg="#f5f5f7" id="revenue-share">
-          <div className="max-w-2xl mx-auto text-center">
-            <Label>Alternativa</Label>
-            <h3 className="text-2xl md:text-3xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-              Preferisci il revenue share?
-            </h3>
-            <p className="mt-4 text-base leading-relaxed text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>
-              Al posto del canone mensile, puoi scegliere il modello revenue share al 20% sui ricavi generati dalla testata. Paghi solo il setup una tantum e poi cresciamo insieme: noi guadagniamo solo quando guadagni tu.
-            </p>
-            <p className="mt-3 text-[14px] text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>
-              Disponibile per <strong>Multi-Channel</strong> e <strong>Full Newsroom</strong>.
-            </p>
-            <div className="mt-8 inline-block bg-[#0a0a0a] text-white px-8 py-4">
-              <div className="text-2xl font-black">20% Revenue Share</div>
-              <div className="text-[13px] text-white/60 mt-1">Solo setup + 20% sui ricavi effettivi</div>
-              <div className="text-[12px] text-white/40 mt-2">Minimo garantito: €300/mese (Multi-Channel), €500/mese (Full Newsroom)</div>
-            </div>
-          </div>
-        </Section>
-
-        <Divider />
-
-        {/* ═══ SEZIONE 12 — CASI D'USO ═══ */}
-        <Section bg="#ffffff" id="casi-duso">
-          <Label>Per Chi È</Label>
-          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
-            4 scenari. Un'unica piattaforma.
-          </h2>
-          <div className="mt-14 grid md:grid-cols-2 gap-8">
-            {[
-              { icon: "🚀", title: "«Voglio lanciare la mia testata»", text: "Sei un giornalista con 20 anni di esperienza in un settore e vuoi la tua voce indipendente. Non hai budget per una redazione, ma hai le idee chiare su cosa coprire e come.", plan: "SINGLE VERTICAL · €500/mese", quote: "«Ho lanciato un vertical sull'AI in Italia. In 3 mesi avevo 40 articoli/settimana e 2.000 lettori.»" },
-              { icon: "📊", title: "«Voglio verticalizzare la mia testata esistente»", text: "Hai già un giornale online generalista e vuoi lanciare spin-off su verticali specifici — fintech, healthtech, sport business — senza raddoppiare il team.", plan: "MULTI-CHANNEL · €750/mese", quote: "«Abbiamo aggiunto 3 verticali alla nostra testata. Stessa qualità, zero assunzioni.»" },
-              { icon: "🏢", title: "«Voglio una testata per la mia organizzazione»", text: "Sei un'associazione di categoria, un ordine professionale, un fondo di investimento. Vuoi un media proprietario per i tuoi stakeholder ma non hai una redazione interna.", plan: "MULTI-CHANNEL o FULL NEWSROOM", quote: "«L'associazione ora ha un giornale settoriale che i soci leggono ogni mattina.»" },
-              { icon: "📱", title: "«Voglio scalare la produzione senza assumere»", text: "Hai una media company e produci contenuti per più clienti o più testate. Ogni nuovo progetto richiede nuove assunzioni. Con Proof Press, ogni progetto è una nuova istanza.", plan: "FULL NEWSROOM o CUSTOM", quote: "«Gestiamo 3 testate con un team di 2 persone. Prima ne servivano 12.»" },
-            ].map((c, i) => (
-              <div key={i} className="bg-white p-8 border border-[#0a0a0a]/8">
-                <div className="text-3xl mb-4">{c.icon}</div>
-                <h3 className="text-lg font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>{c.title}</h3>
-                <p className="text-[14px] leading-relaxed text-[#0a0a0a]/55 mb-4" style={{ fontFamily: FONT }}>{c.text}</p>
-                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#dc2626] mb-3" style={{ fontFamily: FONT }}>{c.plan}</p>
-                <p className="text-[13px] italic text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>{c.quote}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Divider />
-
-        {/* ═══ SEZIONE 13 — FAQ ═══ */}
-        <Section bg="#f5f5f7" id="faq">
-          <Label>Domande Frequenti</Label>
-          <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a] mb-8">
-            Tutto quello che devi sapere.
-          </h2>
-          <div>
-            {FAQ_DATA.map((faq, i) => <FAQItem key={i} q={faq.q} a={faq.a} />)}
-          </div>
-        </Section>
-
-        {/* ═══ SEZIONE 14 — CTA FINALE ═══ */}
-        <section className="py-24 md:py-32" style={{ background: "#0a0a0a" }}>
-          <div className="max-w-3xl mx-auto px-5 md:px-8 text-center">
-            <h2 className="text-3xl md:text-5xl font-black leading-tight text-white">
-              Il giornalismo sta cambiando.<br />
-              <span className="text-white/30">Puoi guidarlo o subirlo.</span>
-            </h2>
-            <p className="mt-6 text-lg text-white/60" style={{ fontFamily: FONT }}>
-              Prenota una demo di 30 minuti. Ti mostriamo il sistema in azione — con le tue fonti, i tuoi temi, il tuo tono. Nessun impegno.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <button onClick={scrollToDemo} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90" style={{ background: "#dc2626", borderRadius: 0 }}>
-                Prenota una demo →
-              </button>
-              <a href="mailto:redazione@proofpress.ai?subject=Richiesta%20demo%20%E2%80%94%20dalla%20pagina%20offerta-commerciale" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white border-2 border-white/30 transition-all duration-200 hover:bg-white hover:text-[#0a0a0a] text-center" style={{ borderRadius: 0 }}>
-                Scrivici: redazione@proofpress.ai
-              </a>
-            </div>
-            <p className="mt-6 text-[13px] text-white/30" style={{ fontFamily: FONT }}>
-              Setup in pochi giorni · Da €500/mese · Revenue share disponibile
-            </p>
-          </div>
-        </section>
-
-        {/* ═══ DEMO FORM ═══ */}
-        <Section bg="#f5f5f7" id="demo-section">
+        {/* ═══ SEZIONE CONTATTI ═══ */}
+        <Section bg="#f5f5f7" id="contatti">
           <div className="text-center mb-10">
-            <Label accent>Prenota una Demo</Label>
+            <Label accent>Contattaci</Label>
             <h2 className="text-3xl md:text-4xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>
               Raccontaci il tuo progetto editoriale.
             </h2>
             <p className="mt-3 text-base text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>
-              Ti contatteremo entro 24 ore per fissare una demo personalizzata.
+              Ti risponderemo entro 24 ore.
             </p>
           </div>
-          <DemoForm formRef={demoRef} />
+          <ContactForm origine="Redazione Agentica — /offertacommerciale" />
         </Section>
 
         <SharedPageFooter />
