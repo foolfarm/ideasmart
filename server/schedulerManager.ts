@@ -68,6 +68,7 @@ import { runMorningHealthReport } from "./morningHealthReport";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
 import { sendEmail } from "./email";
 import { runSiteHealthCheck } from "./siteHealthCheck";
+import { syncOsservatorioArticles } from "./osservatorioScheduler";
 
 // ── Helper: invia alert email al team operativo ───────────────────────────────
 async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<void> {
@@ -1269,4 +1270,23 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
   console.log("[SchedulerManager]   🚨 Spam Monitor → ogni giorno alle 19:00 CET (alert se spam rate ≥ 0.1%)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // OSSERVATORIO TECH — ogni giorno alle 00:30 CET
+  //   Sincronizza i nuovi editoriali di Andrea Cinelli nella tabella
+  //   osservatorio_articles (upsert incrementale, nessun DELETE).
+  //   Finestra: ultimi 90 giorni.
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("30 0 * * *", async () => {
+    console.log("[OsservatorioScheduler] ⏰ 00:30 CET — Sincronizzazione Osservatorio Tech...");
+    await withLock("osservatorio-sync", async () => {
+      try {
+        const inserted = await syncOsservatorioArticles();
+        console.log(`[OsservatorioScheduler] ✅ Completato: ${inserted} nuovi articoli inseriti`);
+      } catch (err) {
+        console.error("[OsservatorioScheduler] ❌ Errore sincronizzazione:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   📰 Osservatorio Tech → ogni giorno alle 00:30 CET (sync incrementale editoriali Andrea Cinelli)");
 }
