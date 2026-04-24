@@ -3511,6 +3511,58 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         await db.insert(osservatorioTable).values({ ...input, sortOrder: 0 });
         return { success: true };
       }),
+
+    // ── Commenti lettori ────────────────────────────────────────────────────
+    // Ottieni commenti approvati per un articolo
+    getComments: publicProcedure
+      .input(z.object({ articleId: z.number() }))
+      .query(async ({ input }) => {
+        const { osservatorioComments } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) return [];
+        const rows = await db.select()
+          .from(osservatorioComments)
+          .where(and(eq(osservatorioComments.articleId, input.articleId), eq(osservatorioComments.status, 'approved')))
+          .orderBy(desc(osservatorioComments.createdAt))
+          .limit(50);
+        return rows;
+      }),
+
+    // Aggiungi commento (solo utenti autenticati via Manus OAuth)
+    addComment: protectedProcedure
+      .input(z.object({
+        articleId: z.number(),
+        body: z.string().min(3, 'Il commento è troppo breve').max(1000, 'Il commento è troppo lungo'),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { osservatorioComments } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+        await db.insert(osservatorioComments).values({
+          articleId: input.articleId,
+          userId: ctx.user.id,
+          authorName: ctx.user.name || 'Lettore',
+          body: input.body,
+          status: 'pending',
+        });
+        return { success: true, message: 'Commento inviato. Sarà pubblicato dopo la moderazione.' };
+      }),
+
+    // Moderazione commenti (solo admin)
+    moderateComment: adminProcedure
+      .input(z.object({
+        commentId: z.number(),
+        action: z.enum(['approved', 'rejected']),
+      }))
+      .mutation(async ({ input }) => {
+        const { osservatorioComments } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+        await db.update(osservatorioComments)
+          .set({ status: input.action })
+          .where(eq(osservatorioComments.id, input.commentId));
+        return { success: true };
+      }),
   }),
 });
 

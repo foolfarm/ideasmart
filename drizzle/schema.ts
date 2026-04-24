@@ -1065,6 +1065,8 @@ export const osservatorioArticles = mysqlTable("osservatorio_articles", {
   imageUrl: varchar("imageUrl", { length: 1000 }),
   tags: varchar("tags", { length: 500 }),
   sortOrder: int("sortOrder").default(0).notNull(),
+  // VERIFY: hash SHA-256 (titolo+url) — certifica il contenuto al momento dell'indicizzazione
+  verifyHash: varchar("verifyHash", { length: 64 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (t) => ({
@@ -1073,3 +1075,28 @@ export const osservatorioArticles = mysqlTable("osservatorio_articles", {
 }));
 export type OsservatorioArticle = typeof osservatorioArticles.$inferSelect;
 export type InsertOsservatorioArticle = typeof osservatorioArticles.$inferInsert;
+
+// ── Osservatorio Tech Comments ──────────────────────────────────────────────
+// Commenti dei lettori iscritti agli articoli dell'Osservatorio Tech
+export const osservatorioComments = mysqlTable("osservatorio_comments", {
+  id: int("id").autoincrement().primaryKey(),
+  // Riferimento all'articolo commentato (osservatorio_articles.id)
+  articleId: int("articleId").notNull(),
+  // Autore del commento: userId (Manus OAuth) o siteUserId (registrazione nativa)
+  userId: int("userId"),
+  siteUserId: int("siteUserId"),
+  // Nome visualizzato (denormalizzato per performance)
+  authorName: varchar("authorName", { length: 255 }).notNull(),
+  // Testo del commento
+  body: text("body").notNull(),
+  // Moderazione: pending → approved | rejected
+  status: mysqlEnum("status", ["pending", "approved", "rejected"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  articleIdx: index("idx_comments_article").on(t.articleId),
+  statusIdx: index("idx_comments_status").on(t.status),
+}));
+
+export type OsservatorioComment = typeof osservatorioComments.$inferSelect;
+export type InsertOsservatorioComment = typeof osservatorioComments.$inferInsert;

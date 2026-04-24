@@ -1,9 +1,11 @@
 /*
  * Osservatorio Tech — A cura di Andrea Cinelli
- * Layout ristrutturato: intro grande + profilo sidebar destra + Punti del Giorno
+ * Layout: vera area editoriale magazine
+ * Hero display enorme → Featured card oggi → Griglia 3 col editoriali → Grid articoli → LinkedIn feed
  * Palette: bianco #ffffff / nero #0a0a0a / rosso #dc2626
  */
 import { useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
@@ -11,6 +13,7 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import LeftSidebar from "@/components/LeftSidebar";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
+import VerifyBadge from "@/components/VerifyBadge";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const INK = "#0a0a0a";
@@ -30,140 +33,182 @@ function Label({ children, color = RED }: { children: React.ReactNode; color?: s
   );
 }
 
-function SectionDivider() {
-  return <div className="border-t my-10" style={{ borderColor: INK + "15" }} />;
-}
-
 function formatDateIT(dateLabel: string): string {
   try {
     const parts = dateLabel.split("-").map(Number);
     let year: number, month: number, day: number;
-    if (parts[0] > 31) {
-      [year, month, day] = parts;
-    } else {
-      [day, month, year] = parts;
-    }
+    if (parts[0] > 31) { [year, month, day] = parts; } else { [day, month, year] = parts; }
     const date = new Date(year, month - 1, day);
     return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-  } catch {
-    return dateLabel;
-  }
+  } catch { return dateLabel; }
 }
 
-// ─── Punto del Giorno Card ────────────────────────────────────────────────────
-function PuntoDelGiornoCard({ item, index }: {
+// ─── Featured Punto del Giorno (oggi) ────────────────────────────────────────
+function FeaturedPunto({ item }: {
   item: {
-    id: number;
-    dateLabel: string;
-    title: string;
-    subtitle: string | null;
-    keyTrend: string | null;
-    section: string | null;
-    imageUrl: string | null;
-    authorNote: string | null;
-    createdAt: Date;
-  };
-  index: number;
+    id: number; dateLabel: string; title: string; subtitle: string | null;
+    keyTrend: string | null; section: string | null; imageUrl: string | null; authorNote: string | null; createdAt: Date;
+  }
 }) {
-  const [expanded, setExpanded] = useState(index === 0);
-  const isToday = index === 0;
+  const [expanded, setExpanded] = useState(false);
+  const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
   return (
-    <article
-      className="border-t py-6 cursor-pointer group"
-      style={{ borderColor: INK + "15" }}
-      onClick={() => setExpanded(e => !e)}
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
-            {isToday && (
-              <span
-                className="text-[9px] font-black tracking-[0.2em] uppercase px-2 py-0.5"
-                style={{ backgroundColor: RED, color: PAPER }}
-              >
-                Oggi
-              </span>
-            )}
+    <article className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-0" style={{ borderBottom: `1px solid ${INK}15` }}>
+      {/* Immagine */}
+      <div className="relative overflow-hidden" style={{ minHeight: 320 }}>
+        <img
+          src={item.imageUrl || fallbackImg}
+          alt={item.title}
+          className="w-full h-full object-cover"
+          style={{ minHeight: 320 }}
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 60%, rgba(255,255,255,0.15))" }} />
+        <div className="absolute top-4 left-4">
+          <span className="text-[9px] font-black tracking-[0.2em] uppercase px-2.5 py-1" style={{ backgroundColor: RED, color: PAPER }}>
+            Oggi
+          </span>
+        </div>
+      </div>
+
+      {/* Contenuto */}
+      <div className="flex flex-col justify-between p-8 lg:p-10" style={{ backgroundColor: INK }}>
+        <div>
+          <div className="flex items-center gap-3 mb-4">
             {item.section && (
-              <span
-                className="text-[9px] font-bold tracking-[0.15em] uppercase"
-                style={{ color: RED }}
-              >
+              <span className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: RED }}>
                 {item.section}
               </span>
             )}
-            <span className="text-[10px]" style={{ color: INK + "45", fontFamily: FONT }}>
+            <span className="text-[10px]" style={{ color: PAPER + "50", fontFamily: FONT }}>
               {formatDateIT(item.dateLabel)}
             </span>
           </div>
-          <h3
-            className="text-lg md:text-xl font-black leading-snug tracking-tight group-hover:text-[#dc2626] transition-colors"
-            style={{ color: INK, fontFamily: FONT }}
+          <h2
+            className="text-2xl md:text-3xl lg:text-4xl font-black leading-[1.1] tracking-tight mb-4"
+            style={{ color: PAPER, fontFamily: FONT }}
           >
             {item.title}
-          </h3>
+          </h2>
           {item.subtitle && (
-            <p className="mt-1 text-sm leading-relaxed" style={{ color: INK + "65", fontFamily: FONT }}>
+            <p className="text-base leading-relaxed mb-5" style={{ color: PAPER + "75", fontFamily: FONT }}>
               {item.subtitle}
             </p>
           )}
-        </div>
-        {item.imageUrl && !expanded && (
-          <div className="flex-shrink-0 w-20 h-16 overflow-hidden hidden md:block">
-            <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
-          </div>
-        )}
-        <span
-          className="flex-shrink-0 text-[11px] font-bold tracking-wider uppercase mt-1 transition-transform"
-          style={{ color: INK + "40", transform: expanded ? "rotate(180deg)" : "none" }}
-        >
-          ▾
-        </span>
-      </div>
-
-      {expanded && (
-        <div className="mt-5 pt-5" style={{ borderTop: `1px solid ${INK}10` }}>
-          {item.imageUrl && (
-            <div className="mb-5 w-full max-h-64 overflow-hidden">
-              <img src={item.imageUrl} alt={item.title} className="w-full object-cover" style={{ maxHeight: 256 }} />
-            </div>
-          )}
           {item.keyTrend && (
-            <div
-              className="mb-4 p-4"
-              style={{ borderLeft: `3px solid ${RED}`, backgroundColor: INK + "04" }}
-            >
-              <p className="text-[10px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: RED }}>
-                Key Trend
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: INK + "80", fontFamily: FONT }}>
-                {item.keyTrend}
-              </p>
+            <div className="border-l-2 pl-4 mb-5" style={{ borderColor: RED }}>
+              <p className="text-[10px] font-bold tracking-wider uppercase mb-1" style={{ color: RED }}>Key Trend</p>
+              <p className="text-sm leading-relaxed" style={{ color: PAPER + "80", fontFamily: FONT }}>{item.keyTrend}</p>
             </div>
           )}
           {item.authorNote && (
-            <div className="mt-3">
-              <p className="text-[10px] font-bold tracking-[0.15em] uppercase mb-2" style={{ color: INK + "50" }}>
-                Il punto di Andrea
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: INK + "75", fontFamily: FONT }}>
-                {item.authorNote}
-              </p>
-            </div>
+            <>
+              {!expanded ? (
+                <button
+                  onClick={() => setExpanded(true)}
+                  className="text-[11px] font-bold tracking-wider uppercase"
+                  style={{ color: RED }}
+                >
+                  Il punto di Andrea ↓
+                </button>
+              ) : (
+                <div>
+                  <p className="text-[10px] font-bold tracking-wider uppercase mb-2" style={{ color: RED }}>Il punto di Andrea</p>
+                  <p className="text-sm leading-relaxed" style={{ color: PAPER + "70", fontFamily: FONT }}>{item.authorNote}</p>
+                  <button onClick={() => setExpanded(false)} className="mt-2 text-[11px] font-bold tracking-wider uppercase" style={{ color: PAPER + "40" }}>
+                    Chiudi ↑
+                  </button>
+                </div>
+              )}
+            </>
           )}
-          <div className="mt-4 flex items-center gap-3">
-            <Link
-              href={`/editorial/${item.id}`}
-              className="text-[11px] font-bold tracking-wider uppercase"
-              style={{ color: RED }}
-              onClick={e => e.stopPropagation()}
-            >
-              Leggi l'editoriale completo →
-            </Link>
-          </div>
         </div>
-      )}
+
+        {/* Firma */}
+        <div className="flex items-center gap-3 mt-6 pt-6" style={{ borderTop: `1px solid ${PAPER}15` }}>
+          <img src={PROFILE_IMG} alt="Andrea Cinelli" className="w-9 h-9 object-cover rounded-full" style={{ filter: "grayscale(20%)" }} />
+          <div>
+            <p className="text-xs font-black" style={{ color: PAPER }}>Andrea Cinelli</p>
+            <p className="text-[10px]" style={{ color: PAPER + "50" }}>Tech Editor · ProofPress</p>
+          </div>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="ml-auto text-[10px] font-bold tracking-wider uppercase" style={{ color: LINKEDIN_BLUE }}>
+            LinkedIn →
+          </a>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+// ─── Punto del Giorno Card (griglia) ─────────────────────────────────────────
+function PuntoCard({ item }: {
+  item: {
+    id: number; dateLabel: string; title: string; subtitle: string | null;
+    keyTrend: string | null; section: string | null; imageUrl: string | null; authorNote: string | null; createdAt: Date;
+  }
+}) {
+  const [open, setOpen] = useState(false);
+  const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
+
+  return (
+    <article
+      className="flex flex-col cursor-pointer group"
+      style={{ borderTop: `2px solid ${INK}12` }}
+      onClick={() => setOpen(o => !o)}
+    >
+      {/* Immagine */}
+      <div className="overflow-hidden" style={{ height: 160 }}>
+        <img
+          src={item.imageUrl || fallbackImg}
+          alt={item.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+
+      {/* Testo */}
+      <div className="flex-1 pt-4 pb-5">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          {item.section && (
+            <span className="text-[9px] font-bold tracking-[0.15em] uppercase" style={{ color: RED }}>{item.section}</span>
+          )}
+          <span className="text-[10px]" style={{ color: INK + "40", fontFamily: FONT }}>
+            {formatDateIT(item.dateLabel)}
+          </span>
+        </div>
+        <h3
+          className="text-base font-black leading-snug tracking-tight group-hover:text-[#dc2626] transition-colors"
+          style={{ color: INK, fontFamily: FONT }}
+        >
+          {item.title}
+        </h3>
+        {item.subtitle && (
+          <p className="mt-1.5 text-sm leading-relaxed line-clamp-2" style={{ color: INK + "60", fontFamily: FONT }}>
+            {item.subtitle}
+          </p>
+        )}
+
+        {/* Espanso */}
+        {open && (
+          <div className="mt-3 space-y-2">
+            {item.keyTrend && (
+              <div className="border-l-2 pl-3" style={{ borderColor: RED }}>
+                <p className="text-[9px] font-bold tracking-wider uppercase mb-0.5" style={{ color: RED }}>Key Trend</p>
+                <p className="text-xs leading-relaxed" style={{ color: INK + "70", fontFamily: FONT }}>{item.keyTrend}</p>
+              </div>
+            )}
+            {item.authorNote && (
+              <div>
+                <p className="text-[9px] font-bold tracking-wider uppercase mb-0.5" style={{ color: INK + "50" }}>Il punto di Andrea</p>
+                <p className="text-xs leading-relaxed" style={{ color: INK + "65", fontFamily: FONT }}>{item.authorNote}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <button className="mt-2 text-[10px] font-bold tracking-wider uppercase" style={{ color: INK + "35" }}>
+          {open ? "Chiudi ↑" : "Leggi ↓"}
+        </button>
+      </div>
     </article>
   );
 }
@@ -171,115 +216,89 @@ function PuntoDelGiornoCard({ item, index }: {
 // ─── Articolo Card ────────────────────────────────────────────────────────────
 function ArticleCard({ article }: {
   article: {
-    id: number;
-    dateLabel: string;
-    title: string;
-    excerpt: string | null;
-    articleUrl: string;
-    publication: string;
-    imageUrl: string | null;
-    tags: string | null;
+    id: number; title: string; excerpt: string | null; articleUrl: string;
+    publication: string; tags: string | null; imageUrl: string | null; dateLabel: string;
+    verifyHash?: string | null;
   }
 }) {
   const tags = article.tags ? article.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
+  const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
+
   return (
-    <article className="border-t py-5 grid grid-cols-1 md:grid-cols-4 gap-4 group" style={{ borderColor: INK + "15" }}>
-      {article.imageUrl && (
-        <div className="md:col-span-1 h-28 overflow-hidden">
-          <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all" />
-        </div>
-      )}
-      <div className={article.imageUrl ? "md:col-span-3" : "md:col-span-4"}>
-        <div className="flex items-center gap-2 mb-1 flex-wrap">
-          <span className="text-[9px] font-bold tracking-[0.15em] uppercase" style={{ color: RED }}>
-            {article.publication}
-          </span>
-          <span className="text-[10px]" style={{ color: INK + "40" }}>
-            {formatDateIT(article.dateLabel)}
-          </span>
-        </div>
-        <a href={article.articleUrl} target="_blank" rel="noopener noreferrer">
-          <h3 className="text-base font-black leading-snug tracking-tight hover:text-[#dc2626] transition-colors" style={{ color: INK, fontFamily: FONT }}>
-            {article.title}
-          </h3>
-        </a>
+    <a
+      href={article.articleUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col group"
+      style={{ borderTop: `1px solid ${INK}12` }}
+    >
+      <div className="overflow-hidden" style={{ height: 140 }}>
+        <img
+          src={article.imageUrl || fallbackImg}
+          alt={article.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+      <div className="pt-3 pb-4">
+        {article.publication && (
+          <p className="text-[9px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: RED }}>{article.publication}</p>
+        )}
+        <h3 className="text-sm font-black leading-snug group-hover:text-[#dc2626] transition-colors" style={{ color: INK, fontFamily: FONT }}>
+          {article.title}
+        </h3>
         {article.excerpt && (
-          <p className="mt-1 text-sm leading-relaxed line-clamp-2" style={{ color: INK + "65", fontFamily: FONT }}>
-            {article.excerpt}
-          </p>
+          <p className="mt-1 text-xs leading-relaxed line-clamp-2" style={{ color: INK + "60", fontFamily: FONT }}>{article.excerpt}</p>
         )}
         {tags.length > 0 && (
-          <div className="flex gap-2 mt-2 flex-wrap">
-            {tags.map(t => (
-              <span key={t} className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5" style={{ backgroundColor: INK + "08", color: INK + "60" }}>
-                {t}
-              </span>
+          <div className="flex gap-1.5 mt-2 flex-wrap">
+            {tags.slice(0, 2).map(t => (
+              <span key={t} className="text-[8px] font-bold tracking-wider uppercase px-1.5 py-0.5" style={{ backgroundColor: INK + "08", color: INK + "55" }}>{t}</span>
             ))}
           </div>
         )}
+        {article.verifyHash && (
+          <div className="mt-2">
+            <VerifyBadge hash={article.verifyHash} size="sm" />
+          </div>
+        )}
       </div>
-    </article>
+    </a>
   );
 }
 
 // ─── LinkedIn Post Card ───────────────────────────────────────────────────────
-function LinkedInPostCard({ post }: {
+function LinkedInCard({ post }: {
   post: {
-    id: number;
-    dateLabel: string;
-    title: string | null;
-    postText: string;
-    linkedinUrl: string | null;
-    section: string | null;
-    imageUrl: string | null;
-    hashtags: string | null;
-    createdAt: Date;
+    id: number; dateLabel: string; title: string | null; postText: string;
+    linkedinUrl: string | null; section: string | null; imageUrl: string | null; hashtags: string | null; createdAt: Date;
   }
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const preview = post.postText.slice(0, 220);
-  const hasMore = post.postText.length > 220;
+  const [exp, setExp] = useState(false);
+  const preview = post.postText.slice(0, 200);
+  const hasMore = post.postText.length > 200;
 
   return (
-    <article className="border-t py-5" style={{ borderColor: LINKEDIN_BLUE + "25" }}>
-      <div className="flex items-center gap-2 mb-2">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill={LINKEDIN_BLUE}><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-        <span className="text-[10px]" style={{ color: INK + "45", fontFamily: FONT }}>
-          {formatDateIT(post.dateLabel)}
-        </span>
-        {post.section && (
-          <span className="text-[9px] font-bold tracking-[0.15em] uppercase" style={{ color: LINKEDIN_BLUE }}>
-            {post.section}
-          </span>
-        )}
+    <article className="p-5" style={{ border: `1px solid ${LINKEDIN_BLUE}20`, backgroundColor: "#f8fbff" }}>
+      <div className="flex items-center gap-2 mb-3">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill={LINKEDIN_BLUE}><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
+        <span className="text-[10px] font-bold" style={{ color: LINKEDIN_BLUE }}>LinkedIn</span>
+        <span className="text-[10px]" style={{ color: INK + "40", fontFamily: FONT }}>{formatDateIT(post.dateLabel)}</span>
       </div>
       {post.title && (
-        <h3 className="text-base font-black mb-2 leading-snug" style={{ color: INK, fontFamily: FONT }}>
-          {post.title}
-        </h3>
+        <h3 className="text-sm font-black mb-2 leading-snug" style={{ color: INK, fontFamily: FONT }}>{post.title}</h3>
       )}
-      <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: INK + "75", fontFamily: FONT }}>
-        {expanded ? post.postText : preview}{hasMore && !expanded ? "…" : ""}
+      <p className="text-xs leading-relaxed whitespace-pre-line" style={{ color: INK + "70", fontFamily: FONT }}>
+        {exp ? post.postText : preview}{hasMore && !exp ? "…" : ""}
       </p>
       <div className="mt-3 flex items-center gap-4">
         {hasMore && (
-          <button
-            onClick={() => setExpanded(e => !e)}
-            className="text-[11px] font-bold tracking-wider uppercase"
-            style={{ color: INK + "50" }}
-          >
-            {expanded ? "Mostra meno ↑" : "Leggi tutto ↓"}
+          <button onClick={() => setExp(e => !e)} className="text-[10px] font-bold tracking-wider uppercase" style={{ color: INK + "45" }}>
+            {exp ? "Meno ↑" : "Tutto ↓"}
           </button>
         )}
         {post.linkedinUrl && (
-          <a
-            href={post.linkedinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] font-bold tracking-wider uppercase"
-            style={{ color: LINKEDIN_BLUE }}
-          >
-            Vedi su LinkedIn →
+          <a href={post.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold tracking-wider uppercase" style={{ color: LINKEDIN_BLUE }}>
+            Vedi →
           </a>
         )}
       </div>
@@ -303,23 +322,17 @@ function ContactAndreaForm() {
   }
 
   return (
-    <form
-      onSubmit={e => { e.preventDefault(); mutation.mutate(form); }}
-      className="space-y-4"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form onSubmit={e => { e.preventDefault(); mutation.mutate(form); }} className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
           { key: "nome", label: "Nome *", type: "text", required: true },
           { key: "email", label: "Email *", type: "email", required: true },
           { key: "azienda", label: "Azienda", type: "text", required: false },
         ].map(({ key, label, type, required }) => (
           <div key={key}>
-            <label className="block text-[10px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: INK + "60" }}>
-              {label}
-            </label>
+            <label className="block text-[10px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: INK + "60" }}>{label}</label>
             <input
-              type={type}
-              required={required}
+              type={type} required={required}
               value={(form as Record<string, string>)[key]}
               onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
               className="w-full px-3 py-2 text-sm border outline-none focus:border-[#0a0a0a] transition-colors"
@@ -329,33 +342,139 @@ function ContactAndreaForm() {
         ))}
       </div>
       <div>
-        <label className="block text-[10px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: INK + "60" }}>
-          Messaggio *
-        </label>
+        <label className="block text-[10px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: INK + "60" }}>Messaggio *</label>
         <textarea
-          required
-          rows={4}
+          required rows={4}
           value={form.messaggio}
           onChange={e => setForm(f => ({ ...f, messaggio: e.target.value }))}
           className="w-full px-3 py-2 text-sm border outline-none focus:border-[#0a0a0a] transition-colors resize-none"
           style={{ borderColor: INK + "25", backgroundColor: PAPER, color: INK, fontFamily: FONT, borderRadius: 0 }}
         />
       </div>
-      {mutation.error && (
-        <p className="text-sm" style={{ color: RED }}>{mutation.error.message}</p>
-      )}
       <button
-        type="submit"
-        disabled={mutation.isPending}
-        className="px-8 py-3 text-[11px] font-black tracking-[0.2em] uppercase transition-opacity hover:opacity-80"
-        style={{ backgroundColor: mutation.isPending ? INK + "60" : INK, color: PAPER, cursor: mutation.isPending ? "not-allowed" : "pointer", borderRadius: 0 }}
+        type="submit" disabled={mutation.isPending}
+        className="px-8 py-3 text-[11px] font-black tracking-[0.15em] uppercase transition-opacity hover:opacity-80"
+        style={{ backgroundColor: INK, color: PAPER }}
       >
-        {mutation.isPending ? "Invio in corso..." : "Invia messaggio →"}
+        {mutation.isPending ? "Invio in corso…" : "Invia messaggio →"}
       </button>
-      <p className="text-[11px]" style={{ color: INK + "50" }}>
-        Il messaggio arriverà direttamente ad Andrea Cinelli — ac@acinelli.com
-      </p>
     </form>
+  );
+}
+
+// ─── Sezione Commenti Lettori ────────────────────────────────────────────────
+function CommentsSection() {
+  const { user, isAuthenticated } = useAuth();
+  const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
+  const [commentBody, setCommentBody] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const { data: articles = [] } = trpc.osservatorio.getArticles.useQuery({ limit: 20 });
+  const { data: comments = [], refetch } = trpc.osservatorio.getComments.useQuery(
+    { articleId: selectedArticleId! },
+    { enabled: selectedArticleId !== null }
+  );
+
+  const addComment = trpc.osservatorio.addComment.useMutation({
+    onSuccess: () => { setSent(true); setCommentBody(""); refetch(); },
+  });
+
+  const selectedArticle = articles.find(a => a.id === selectedArticleId);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="py-8 px-6 text-center" style={{ border: `1px solid ${INK}10`, backgroundColor: INK + "03" }}>
+        <p className="text-sm font-black mb-2" style={{ color: INK }}>Accedi per commentare</p>
+        <p className="text-xs mb-4" style={{ color: INK + "55" }}>I commenti sono riservati agli utenti registrati. Accedi con il tuo account ProofPress.</p>
+        <a
+          href="/api/oauth/login"
+          className="inline-block px-6 py-2.5 text-[11px] font-black tracking-[0.15em] uppercase transition-opacity hover:opacity-80"
+          style={{ backgroundColor: INK, color: PAPER }}
+        >
+          Accedi →
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Seleziona articolo */}
+      <div>
+        <label className="block text-[10px] font-bold tracking-[0.15em] uppercase mb-2" style={{ color: INK + "60" }}>
+          Seleziona l'articolo su cui vuoi commentare
+        </label>
+        <select
+          value={selectedArticleId ?? ""}
+          onChange={e => { setSelectedArticleId(Number(e.target.value) || null); setSent(false); }}
+          className="w-full px-3 py-2 text-sm border outline-none focus:border-[#0a0a0a] transition-colors"
+          style={{ borderColor: INK + "25", backgroundColor: PAPER, color: INK, fontFamily: FONT, borderRadius: 0 }}
+        >
+          <option value="">— Scegli un articolo —</option>
+          {articles.map(a => (
+            <option key={a.id} value={a.id}>{a.title}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Commenti esistenti */}
+      {selectedArticleId && (
+        <div>
+          {selectedArticle && (
+            <p className="text-xs font-bold mb-4" style={{ color: RED }}>
+              Commenti su: {selectedArticle.title}
+            </p>
+          )}
+          {comments.length === 0 ? (
+            <p className="text-xs py-4" style={{ color: INK + "40" }}>Nessun commento ancora. Sii il primo.</p>
+          ) : (
+            <div className="space-y-4 mb-6">
+              {comments.map(c => (
+                <div key={c.id} className="p-4" style={{ border: `1px solid ${INK}10`, backgroundColor: INK + "02" }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-black" style={{ color: INK }}>{c.authorName}</span>
+                    <span className="text-[9px]" style={{ color: INK + "35" }}>
+                      {new Date(c.createdAt).toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: INK + "70" }}>{c.body}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Form commento */}
+          {sent ? (
+            <div className="py-4 px-4 text-center" style={{ border: `1px solid ${RED}30`, backgroundColor: RED + "05" }}>
+              <p className="text-sm font-black" style={{ color: INK }}>Commento inviato.</p>
+              <p className="text-xs mt-1" style={{ color: INK + "55" }}>Sarà pubblicato dopo moderazione. Grazie per il contributo.</p>
+              <button onClick={() => setSent(false)} className="mt-3 text-[10px] font-bold tracking-wider uppercase" style={{ color: RED }}>Scrivi un altro →</button>
+            </div>
+          ) : (
+            <form onSubmit={e => { e.preventDefault(); if (selectedArticleId) addComment.mutate({ articleId: selectedArticleId, body: commentBody }); }}>
+              <label className="block text-[10px] font-bold tracking-[0.15em] uppercase mb-2" style={{ color: INK + "60" }}>
+                Il tuo commento — {user?.name}
+              </label>
+              <textarea
+                required rows={4}
+                value={commentBody}
+                onChange={e => setCommentBody(e.target.value)}
+                placeholder="Scrivi il tuo commento..."
+                className="w-full px-3 py-2 text-sm border outline-none focus:border-[#0a0a0a] transition-colors resize-none"
+                style={{ borderColor: INK + "25", backgroundColor: PAPER, color: INK, fontFamily: FONT, borderRadius: 0 }}
+              />
+              <button
+                type="submit" disabled={addComment.isPending || !commentBody.trim()}
+                className="mt-3 px-8 py-3 text-[11px] font-black tracking-[0.15em] uppercase transition-opacity hover:opacity-80 disabled:opacity-40"
+                style={{ backgroundColor: INK, color: PAPER }}
+              >
+                {addComment.isPending ? "Invio…" : "Pubblica commento →"}
+              </button>
+            </form>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -364,6 +483,9 @@ export default function OsservatorioTech() {
   const { data: punti = [], isLoading: loadingPunti } = trpc.osservatorio.getPuntiDelGiorno.useQuery({ limit: 60 });
   const { data: articles = [], isLoading: loadingArticles } = trpc.osservatorio.getArticles.useQuery({ limit: 20 });
   const { data: linkedinPosts = [], isLoading: loadingPosts } = trpc.osservatorio.getLinkedinPosts.useQuery({ limit: 12 });
+
+  const featured = punti[0] ?? null;
+  const rest = punti.slice(1);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: PAPER, color: INK }}>
@@ -377,196 +499,252 @@ export default function OsservatorioTech() {
       <div className="flex min-h-screen">
         <LeftSidebar />
 
-        {/* Main content */}
-        <main className="flex-1 min-w-0 py-8" style={{ fontFamily: FONT }}>
+        <main className="flex-1 min-w-0" style={{ fontFamily: FONT }}>
 
-          {/* ── HERO: intro grande + profilo piccolo a destra ─────────────── */}
-          <div className="px-6 md:px-10 mb-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start pb-10" style={{ borderBottom: `2px solid ${RED}` }}>
+          {/* ══════════════════════════════════════════════════════════════════
+              HERO — display enorme + profilo sidebar
+          ══════════════════════════════════════════════════════════════════ */}
+          <div style={{ borderBottom: `3px solid ${INK}` }}>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
 
-              {/* Intro — occupa 2/3 */}
-              <div className="md:col-span-2">
+              {/* Titolo display — 3/4 */}
+              <div className="lg:col-span-3 px-8 md:px-12 py-12 md:py-16" style={{ borderRight: `1px solid ${INK}15` }}>
                 <Label>Osservatorio Tech</Label>
                 <h1
-                  className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight mt-3 mb-5"
-                  style={{ color: INK }}
+                  className="mt-4 font-black leading-[0.95] tracking-[-0.03em]"
+                  style={{
+                    color: INK,
+                    fontFamily: FONT,
+                    fontSize: "clamp(3.5rem, 8vw, 7.5rem)",
+                    lineHeight: 0.93,
+                  }}
                 >
                   Il punto di vista<br />
                   di chi il digitale<br />
                   <span style={{ color: RED }}>lo ha costruito.</span>
                 </h1>
-                <p className="text-base md:text-lg leading-relaxed max-w-xl" style={{ color: INK + "70" }}>
+                <p
+                  className="mt-8 leading-relaxed max-w-2xl"
+                  style={{ color: INK + "70", fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontFamily: FONT }}
+                >
                   Un'area editoriale curata da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale, AI pioneer e pioniere del digitale italiano. Ogni giorno, analisi e approfondimenti sui temi che contano: innovazione, intelligenza artificiale, startup, venture capital e trasformazione digitale. Un punto di vista qualificato, costruito su 30 anni di execution diretta, non su teoria.
                 </p>
+
+                {/* Temi */}
+                <div className="flex flex-wrap gap-2 mt-8">
+                  {["AI & Generative AI", "Startup & Venture", "Digital Transformation", "Leadership", "Innovation & IP", "Media & Giornalismo"].map(t => (
+                    <span key={t} className="text-[10px] font-bold tracking-wider uppercase px-3 py-1.5" style={{ border: `1px solid ${INK}20`, color: INK + "60" }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              {/* Profilo — 1/3, piccolo, a destra */}
-              <div className="md:col-span-1 flex flex-col items-start md:items-end gap-3 pt-2">
-                <div className="relative w-28 h-28 flex-shrink-0">
+              {/* Profilo — 1/4 */}
+              <div className="lg:col-span-1 flex flex-col items-center justify-center p-8 gap-5" style={{ backgroundColor: INK }}>
+                <div className="relative">
                   <img
                     src={PROFILE_IMG}
                     alt="Andrea Cinelli"
-                    className="w-28 h-28 object-cover"
+                    className="w-24 h-24 object-cover"
                     style={{ filter: "contrast(1.05) grayscale(10%)" }}
                   />
-                  <div
-                    className="absolute bottom-0 left-0 right-0 py-1 px-2"
-                    style={{ backgroundColor: INK }}
-                  >
-                    <p className="text-[8px] font-bold tracking-wider uppercase" style={{ color: PAPER }}>
-                      Tech Editor
-                    </p>
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center" style={{ backgroundColor: RED }}>
+                    <span className="text-[8px] font-black" style={{ color: PAPER }}>AC</span>
                   </div>
                 </div>
-                <div className="text-right md:text-right">
-                  <p className="text-sm font-black" style={{ color: INK }}>Andrea Cinelli</p>
-                  <p className="text-[10px] font-bold tracking-wider uppercase mt-0.5" style={{ color: RED }}>
+                <div className="text-center">
+                  <p className="text-sm font-black" style={{ color: PAPER }}>Andrea Cinelli</p>
+                  <p className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: RED }}>
                     CEO FoolFarm · AI Pioneer
                   </p>
-                  <p className="text-[11px] mt-1 leading-relaxed" style={{ color: INK + "65" }}>
-                    Co-fondatore Libero.it · 12+ venture AI<br />25+ brevetti · 2 exit · Prof. Sole 24 Ore
+                  <p className="text-[10px] mt-2 leading-relaxed" style={{ color: PAPER + "55" }}>
+                    Co-fondatore Libero.it<br />
+                    12+ venture AI · 25+ brevetti<br />
+                    Prof. Sole 24 Ore BS
                   </p>
                 </div>
                 <a
                   href={LINKEDIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase py-1.5 px-3 transition-opacity hover:opacity-70"
+                  className="w-full text-center text-[10px] font-bold tracking-wider uppercase py-2 transition-opacity hover:opacity-80"
                   style={{ backgroundColor: LINKEDIN_BLUE, color: PAPER }}
                 >
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
                   Segui su LinkedIn
                 </a>
+                <div className="w-full text-center pt-3" style={{ borderTop: `1px solid ${PAPER}15` }}>
+                  <p className="text-[9px]" style={{ color: PAPER + "35" }}>
+                    Aggiornato ogni giorno
+                  </p>
+                  <p className="text-lg font-black mt-0.5" style={{ color: PAPER }}>
+                    {punti.length > 0 ? `${punti.length}` : "—"}
+                  </p>
+                  <p className="text-[9px] font-bold tracking-wider uppercase" style={{ color: PAPER + "40" }}>
+                    editoriali in archivio
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* ── PUNTI DEL GIORNO ──────────────────────────────────────────── */}
-          <section className="px-6 md:px-10 mt-10 mb-10" id="punti-del-giorno">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <Label>Editoriale Quotidiano</Label>
-                <h2
-                  className="text-2xl md:text-3xl font-black mt-1 leading-none"
-                  style={{ color: INK }}
-                >
-                  Il Punto del Giorno
-                </h2>
+          {/* ══════════════════════════════════════════════════════════════════
+              PUNTO DEL GIORNO — Featured oggi + griglia precedenti
+          ══════════════════════════════════════════════════════════════════ */}
+          <section id="punti-del-giorno">
+            {/* Header sezione */}
+            <div className="px-8 md:px-12 py-6 flex items-center justify-between" style={{ borderBottom: `1px solid ${INK}10` }}>
+              <div className="flex items-center gap-4">
+                <div className="w-1 h-8" style={{ backgroundColor: RED }} />
+                <div>
+                  <Label>Editoriale Quotidiano</Label>
+                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
+                    Il Punto del Giorno
+                  </h2>
+                </div>
               </div>
-              <span className="text-[10px] font-bold tracking-wider uppercase" style={{ color: INK + "40" }}>
+              <span className="text-[10px] font-bold tracking-wider uppercase hidden md:block" style={{ color: INK + "35" }}>
                 {punti.length > 0 ? `${punti.length} editoriali` : ""}
               </span>
             </div>
 
             {loadingPunti ? (
-              <div className="space-y-4">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="border-t py-6 animate-pulse" style={{ borderColor: INK + "15" }}>
-                    <div className="h-3 w-24 mb-3 rounded" style={{ backgroundColor: INK + "12" }} />
-                    <div className="h-5 w-3/4 mb-2 rounded" style={{ backgroundColor: INK + "08" }} />
-                    <div className="h-3 w-full rounded" style={{ backgroundColor: INK + "06" }} />
-                  </div>
-                ))}
+              <div className="px-8 md:px-12 py-12 text-center">
+                <div className="animate-pulse space-y-4">
+                  <div className="h-8 w-2/3 rounded" style={{ backgroundColor: INK + "08" }} />
+                  <div className="h-4 w-full rounded" style={{ backgroundColor: INK + "06" }} />
+                </div>
               </div>
             ) : punti.length === 0 ? (
-              <div className="border-t py-12 text-center" style={{ borderColor: INK + "15" }}>
-                <p className="text-sm" style={{ color: INK + "50" }}>
-                  I Punti del Giorno verranno visualizzati qui non appena disponibili.
-                </p>
+              <div className="px-8 md:px-12 py-16 text-center">
+                <p className="text-sm" style={{ color: INK + "40" }}>I Punti del Giorno verranno pubblicati qui ogni mattina.</p>
               </div>
             ) : (
-              <div>
-                {punti.map((item, i) => (
-                  <PuntoDelGiornoCard key={item.id} item={item} index={i} />
-                ))}
-              </div>
+              <>
+                {/* Featured card — oggi */}
+                {featured && (
+                  <div className="px-8 md:px-12 py-8" style={{ borderBottom: `1px solid ${INK}10` }}>
+                    <FeaturedPunto item={featured} />
+                  </div>
+                )}
+
+                {/* Griglia 3 colonne — precedenti */}
+                {rest.length > 0 && (
+                  <div className="px-8 md:px-12 py-8">
+                    <p className="text-[10px] font-bold tracking-[0.18em] uppercase mb-6" style={{ color: INK + "40" }}>
+                      Archivio editoriali
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {rest.map(item => (
+                        <PuntoCard key={item.id} item={item} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </section>
 
-          <div className="px-6 md:px-10"><SectionDivider /></div>
-
-          {/* ── ARTICOLI PUBBLICATI ───────────────────────────────────────── */}
-          <section className="px-6 md:px-10 mb-10" id="articoli">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <Label>Archivio</Label>
-                <h2 className="text-2xl font-black mt-1 leading-none" style={{ color: INK }}>
-                  Articoli Pubblicati
-                </h2>
+          {/* ══════════════════════════════════════════════════════════════════
+              ARTICOLI PUBBLICATI — griglia 4 colonne
+          ══════════════════════════════════════════════════════════════════ */}
+          <section id="articoli" style={{ borderTop: `3px solid ${INK}` }}>
+            <div className="px-8 md:px-12 py-6 flex items-center justify-between" style={{ borderBottom: `1px solid ${INK}10` }}>
+              <div className="flex items-center gap-4">
+                <div className="w-1 h-8" style={{ backgroundColor: INK }} />
+                <div>
+                  <Label color={INK + "60"}>Archivio</Label>
+                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
+                    Articoli Pubblicati
+                  </h2>
+                </div>
               </div>
               <Link href="/" className="text-[11px] font-bold tracking-wider uppercase" style={{ color: RED }}>
-                Tutti gli articoli →
+                Tutti →
               </Link>
             </div>
 
-            {loadingArticles ? (
-              <div className="space-y-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="border-t py-5 animate-pulse" style={{ borderColor: INK + "15" }}>
-                    <div className="h-3 w-24 mb-2 rounded" style={{ backgroundColor: INK + "12" }} />
-                    <div className="h-5 w-3/4 mb-2 rounded" style={{ backgroundColor: INK + "08" }} />
-                  </div>
-                ))}
-              </div>
-            ) : articles.length === 0 ? (
-              <div className="border-t py-10 text-center" style={{ borderColor: INK + "15" }}>
-                <p className="text-sm" style={{ color: INK + "50" }}>
+            <div className="px-8 md:px-12 py-8">
+              {loadingArticles ? (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="animate-pulse">
+                      <div className="h-36 rounded mb-3" style={{ backgroundColor: INK + "08" }} />
+                      <div className="h-3 w-3/4 rounded mb-2" style={{ backgroundColor: INK + "06" }} />
+                      <div className="h-3 w-1/2 rounded" style={{ backgroundColor: INK + "04" }} />
+                    </div>
+                  ))}
+                </div>
+              ) : articles.length === 0 ? (
+                <p className="text-sm py-8 text-center" style={{ color: INK + "40" }}>
                   Gli articoli verranno pubblicati qui non appena disponibili.
                 </p>
-              </div>
-            ) : (
-              <div>{articles.map(a => <ArticleCard key={a.id} article={a} />)}</div>
-            )}
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {articles.map(a => <ArticleCard key={a.id} article={a} />)}
+                </div>
+              )}
+            </div>
           </section>
 
-          <div className="px-6 md:px-10"><SectionDivider /></div>
-
-          {/* ── POST LINKEDIN ─────────────────────────────────────────────── */}
-          <section className="px-6 md:px-10 mb-10" id="linkedin">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <Label color={LINKEDIN_BLUE}>LinkedIn</Label>
-                <h2 className="text-2xl font-black mt-1 leading-none" style={{ color: INK }}>
-                  Post LinkedIn
-                </h2>
+          {/* ══════════════════════════════════════════════════════════════════
+              POST LINKEDIN — griglia 3 colonne
+          ══════════════════════════════════════════════════════════════════ */}
+          <section id="linkedin" style={{ borderTop: `3px solid ${INK}` }}>
+            <div className="px-8 md:px-12 py-6 flex items-center justify-between" style={{ borderBottom: `1px solid ${INK}10` }}>
+              <div className="flex items-center gap-4">
+                <div className="w-1 h-8" style={{ backgroundColor: LINKEDIN_BLUE }} />
+                <div>
+                  <Label color={LINKEDIN_BLUE}>LinkedIn</Label>
+                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
+                    Post LinkedIn
+                  </h2>
+                </div>
               </div>
               <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold tracking-wider uppercase" style={{ color: LINKEDIN_BLUE }}>
-                Segui su LinkedIn →
+                Segui →
               </a>
             </div>
 
-            {loadingPosts ? (
-              <div className="space-y-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="border-t py-5 animate-pulse" style={{ borderColor: INK + "15" }}>
-                    <div className="h-3 w-20 mb-2 rounded" style={{ backgroundColor: LINKEDIN_BLUE + "25" }} />
-                    <div className="h-4 w-2/3 mb-2 rounded" style={{ backgroundColor: INK + "08" }} />
-                  </div>
-                ))}
-              </div>
-            ) : linkedinPosts.length === 0 ? (
-              <div className="border-t py-10 text-center" style={{ borderColor: INK + "15" }}>
-                <p className="text-sm" style={{ color: INK + "50" }}>
+            <div className="px-8 md:px-12 py-8">
+              {loadingPosts ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="animate-pulse p-5" style={{ border: `1px solid ${LINKEDIN_BLUE}20` }}>
+                      <div className="h-3 w-20 mb-3 rounded" style={{ backgroundColor: LINKEDIN_BLUE + "20" }} />
+                      <div className="h-4 w-3/4 mb-2 rounded" style={{ backgroundColor: INK + "08" }} />
+                    </div>
+                  ))}
+                </div>
+              ) : linkedinPosts.length === 0 ? (
+                <p className="text-sm py-8 text-center" style={{ color: INK + "40" }}>
                   I post LinkedIn verranno sincronizzati automaticamente ogni giorno.
                 </p>
-              </div>
-            ) : (
-              <div>{linkedinPosts.map(p => <LinkedInPostCard key={p.id} post={p} />)}</div>
-            )}
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {linkedinPosts.map(p => <LinkedInCard key={p.id} post={p} />)}
+                </div>
+              )}
+            </div>
           </section>
 
-          <div className="px-6 md:px-10"><SectionDivider /></div>
-
-          {/* ── TEMI TRATTATI ─────────────────────────────────────────────── */}
-          <section className="px-6 md:px-10 mb-10">
-            <Label>Focus tematici</Label>
-            <h2 className="text-2xl font-black mt-1 mb-6 leading-none" style={{ color: INK }}>
-              Di cosa scrive Andrea
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* ══════════════════════════════════════════════════════════════════
+              TEMI TRATTATI
+          ══════════════════════════════════════════════════════════════════ */}
+          <section style={{ borderTop: `3px solid ${INK}` }}>
+            <div className="px-8 md:px-12 py-6" style={{ borderBottom: `1px solid ${INK}10` }}>
+              <div className="flex items-center gap-4">
+                <div className="w-1 h-8" style={{ backgroundColor: INK + "30" }} />
+                <div>
+                  <Label color={INK + "50"}>Focus tematici</Label>
+                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
+                    Di cosa scrive Andrea
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div className="px-8 md:px-12 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
               {[
                 { tag: "AI & Generative AI", desc: "Impatto dell'intelligenza artificiale su prodotti, mercati e modelli di business. Dalle fondamenta tecnologiche alle implicazioni strategiche per il C-level." },
                 { tag: "Startup & Venture", desc: "Ecosistema startup italiano ed europeo, deal flow, metriche di crescita e strategie di fundraising. Con il punto di vista di chi ha fondato e ceduto più volte." },
@@ -574,27 +752,67 @@ export default function OsservatorioTech() {
                 { tag: "Giornalismo & Media", desc: "Il futuro dell'informazione nell'era agentica. Modelli editoriali sostenibili, qualità dei contenuti e il ruolo della verifica certificata." },
                 { tag: "Leadership & Strategy", desc: "Decisioni ad alto impatto, gestione dell'incertezza e costruzione di team in contesti di discontinuità. Per chi guida, non per chi osserva." },
                 { tag: "Innovation & IP", desc: "Brevetti, proprietà intellettuale e vantaggio competitivo nell'economia della conoscenza. 25+ brevetti depositati, inclusa IP fondamentale per SPID." },
-              ].map(({ tag, desc }) => (
-                <div key={tag} className="border p-4" style={{ borderColor: INK + "12" }}>
-                  <p className="text-[10px] font-bold tracking-[0.15em] uppercase mb-2" style={{ color: RED }}>{tag}</p>
-                  <p className="text-sm leading-relaxed" style={{ color: INK + "70" }}>{desc}</p>
+              ].map(({ tag, desc }, i) => (
+                <div
+                  key={tag}
+                  className="p-6"
+                  style={{
+                    borderTop: `1px solid ${INK}10`,
+                    borderRight: i % 3 !== 2 ? `1px solid ${INK}10` : "none",
+                  }}
+                >
+                  <p className="text-[10px] font-bold tracking-[0.15em] uppercase mb-3" style={{ color: RED }}>{tag}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: INK + "65" }}>{desc}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <div className="px-6 md:px-10"><SectionDivider /></div>
+          {/* ══════════════════════════════════════════════════════════════════
+              COMMENTI LETTORI
+          ══════════════════════════════════════════════════════════════════ */}
+          <section id="commenti" style={{ borderTop: `3px solid ${INK}` }}>
+            <div className="px-8 md:px-12 py-6" style={{ borderBottom: `1px solid ${INK}10` }}>
+              <div className="flex items-center gap-4">
+                <div className="w-1 h-8" style={{ backgroundColor: INK + "30" }} />
+                <div>
+                  <Label color={INK + "50"}>Community</Label>
+                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
+                    Commenti dei lettori
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div className="px-8 md:px-12 py-8">
+              <p className="text-sm mb-6" style={{ color: INK + "55" }}>
+                Hai un'opinione su uno degli articoli? Condividila con la community dell'Osservatorio.
+                I commenti sono riservati agli utenti registrati e vengono pubblicati dopo moderazione.
+              </p>
+              <CommentsSection />
+            </div>
+          </section>
 
-          {/* ── CONTATTA ANDREA ───────────────────────────────────────────── */}
-          <section className="px-6 md:px-10 mb-12" id="contatta">
-            <Label>Contatti</Label>
-            <h2 className="text-2xl font-black mt-1 mb-2 leading-none" style={{ color: INK }}>
-              Vuoi contattare Andrea?
-            </h2>
-            <p className="text-sm mb-6" style={{ color: INK + "65" }}>
-              Per collaborazioni editoriali, keynote, advisory, investimenti o semplicemente per scambiare idee. Andrea risponde personalmente.
-            </p>
-            <ContactAndreaForm />
+          {/* ══════════════════════════════════════════════════════════════════
+              CONTATTA ANDREA
+          ══════════════════════════════════════════════════════════════════ */}
+          <section id="contatta" style={{ borderTop: `3px solid ${INK}` }}>
+            <div className="px-8 md:px-12 py-6" style={{ borderBottom: `1px solid ${INK}10` }}>
+              <div className="flex items-center gap-4">
+                <div className="w-1 h-8" style={{ backgroundColor: RED }} />
+                <div>
+                  <Label>Contatti</Label>
+                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
+                    Vuoi contattare Andrea?
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div className="px-8 md:px-12 py-10">
+              <p className="text-sm mb-8 max-w-xl" style={{ color: INK + "60" }}>
+                Per collaborazioni editoriali, keynote, advisory, investimenti o semplicemente per scambiare idee. Andrea risponde personalmente entro 48h.
+              </p>
+              <ContactAndreaForm />
+            </div>
           </section>
 
         </main>

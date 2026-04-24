@@ -1,0 +1,1 @@
+ALTER TABLE `osservatorio_articles` ADD `verifyHash` varchar(64);
