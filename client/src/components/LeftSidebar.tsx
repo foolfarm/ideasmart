@@ -3,7 +3,7 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import {
   Info, Briefcase, Megaphone, PenLine, Mail,
-  CircleDollarSign, ExternalLink, Download, ChevronRight,
+  ExternalLink, Download, ChevronRight,
   Newspaper, KeyRound, Building2, CheckCircle, Users,
 } from "lucide-react";
 
@@ -286,23 +286,6 @@ export default function LeftSidebar() {
             />
           );
         })}
-
-        {/* INVEST — voce speciale arancio */}
-        <Link href="/investor">
-          <div
-            className="flex items-center gap-3 px-1 py-1.5 rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#fff3ee]"
-            title={!expanded ? "Invest" : undefined}
-          >
-            <MenuIcon Icon={CircleDollarSign} active={false} orange />
-            <div style={{ ...labelStyle, flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: "13px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                Invest
-              </div>
-              <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
-            </div>
-          </div>
-        </Link>
 
       </nav>
 
