@@ -114,6 +114,41 @@ export default function VerifyEmail() {
             </div>{/* end max-w-5xl */}
           </section>
 
+          {/* ═══ SEZIONE VIDEO ═══ */}
+          <section className="py-16 md:py-20" style={{ background: "#0a0a0a" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="mb-8 text-center">
+                <span
+                  className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-white/40"
+                  style={{ fontFamily: FONT }}
+                >
+                  ProofPress Email Verify · In 90 Secondi
+                </span>
+                <h2 className="mt-3 text-2xl md:text-3xl font-black text-white" style={{ fontFamily: FONT }}>
+                  L’Email nell’Era AI.
+                </h2>
+              </div>
+              <div
+                className="relative w-full overflow-hidden"
+                style={{ aspectRatio: "16/9", background: "#1a1a1a" }}
+              >
+                <video
+                  className="w-full h-full object-cover"
+                  controls
+                  preload="metadata"
+                  poster=""
+                  style={{ display: "block" }}
+                >
+                  <source src="/manus-storage/Certificazione_Email__La_Prova_Incontestabile_837ac8f5.mp4" type="video/mp4" />
+                  Il tuo browser non supporta la riproduzione video.
+                </video>
+              </div>
+              <p className="mt-4 text-center text-[13px] text-white/35" style={{ fontFamily: FONT }}>
+                ProofPress Verify Email — Certificazione crittografica del contenuto email nell’era dell’AI
+              </p>
+            </div>
+          </section>
+
           {/* ═══ SEZIONE 2 — IL NUMERO CHE CONTA ═══ */}
           <section className="py-20 md:py-24" style={{ background: "#0a0a0a" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8 text-center">
