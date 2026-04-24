@@ -365,7 +365,7 @@ export default function VerifyEmail() {
 
             {/* Integrazioni */}
             <div className="mt-12 p-8 border border-[#0a0a0a]/8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 mb-6">Integrazioni Disponibili</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40 mb-6">Integrazioni Possibili</p>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="text-base font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>Microsoft 365 / Exchange</h4>
