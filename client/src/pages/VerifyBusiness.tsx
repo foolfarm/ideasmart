@@ -67,7 +67,7 @@ export default function VerifyBusiness() {
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
               <div className="max-w-3xl">
-                <Label accent>ProofPress Verify Business · AxiomiX LLC · FoolFarm</Label>
+                <Label accent>ProofPress Verify Business</Label>
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
                   Information Integrity<br />
                   <span className="text-[#0a0a0a]/25">Assurance.</span>
