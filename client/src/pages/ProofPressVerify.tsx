@@ -609,7 +609,7 @@ export default function ProofPressVerify() {
                       className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
                       style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
                     >
-                      VERIFIABLE NEWS CORROBORATION PROTOCOL
+                      Per Testate Giornalistiche, Freelancer, Editori
                     </span>
                   </div>
                   <div className="mb-10">
