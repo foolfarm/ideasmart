@@ -1277,6 +1277,40 @@ function buildNewsletterHtmlV2(opts: {
     <tr><td style="height:32px;"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
+  // BLOCK L: BANNER PROMOZIONALE — ProofPress Agentic Newsroom
+  // Posizionato prima del footer: invito B2B a contattare ProofPress
+  // ═══════════════════════════════════════════════════════════════
+  const proofpressAgenticBannerHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#1d1d1f 0%,#2d2d30 100%);border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="padding:28px 28px 24px;">
+              <!-- Eyebrow -->
+              <div style="font-size:9px;font-weight:700;color:#d94f3d;letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">PROOFPRESS AGENTIC NEWSROOM</div>
+              <!-- Headline -->
+              <div style="font-size:22px;font-weight:900;color:#ffffff;font-family:${F_SERIF};line-height:1.25;margin-bottom:10px;letter-spacing:-0.4px;">Vuoi un giornale creato da una<br>redazione 100% Agentica?</div>
+              <!-- Sub -->
+              <div style="font-size:14px;color:#a1a1a6;font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">
+                <strong style="color:#ffffff;">-80% di costi</strong> rispetto a una redazione tradizionale.<br>
+                Notizie certificate con <strong style="color:#d94f3d;">ProofPress Verify Technology</strong> — zero fake news, qualità garantita.
+              </div>
+              <!-- CTA -->
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:#d94f3d;border-radius:980px;padding:13px 26px;">
+                    <a href="https://proofpress.ai/contatti?utm_source=newsletter&utm_medium=email&utm_campaign=agentic_newsroom" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F_SANS};letter-spacing:0.02em;">Contattaci → Scopri come</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+
+  // ═══════════════════════════════════════════════════════════════
   // ASSEMBLE
   // ═══════════════════════════════════════════════════════════════
   return `<!DOCTYPE html>
@@ -1307,6 +1341,7 @@ function buildNewsletterHtmlV2(opts: {
         ${ctaSectionHtml}
         ${consigliatoHtml2}
         ${bannerHtml2}
+        ${proofpressAgenticBannerHtml}
         ${footerHtml}
       </table>
     </td>

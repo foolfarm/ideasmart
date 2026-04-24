@@ -449,12 +449,12 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── NEWSLETTER PREVIEW (07:15 CET) — invia bozza a ac@acinelli.com ogni giorno ────────────
-  // Cron: 15 7 * * * = ogni giorno alle 07:15 CET, 7 giorni su 7
-  // Spostato da 07:00 a 07:15 per evitare conflitto con il cron di verifica notizie (07:00)
+  // ── NEWSLETTER PREVIEW (07:30 CET) — invia bozza a ac@acinelli.com ogni giorno ────────────
+  // Cron: 30 7 * * * = ogni giorno alle 07:30 CET, 7 giorni su 7
+  // Spostato a 07:30 per evitare conflitto con verifica notizie (07:00) e verifica research (07:15)
   // Invia la preview della newsletter del giorno a ac@acinelli.com per verifica visiva
-  cron.schedule("15 7 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 07:15 CET — Invio preview newsletter a ac@acinelli.com...");
+  cron.schedule("30 7 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 07:30 CET — Invio preview newsletter a ac@acinelli.com...");
     try {
       const { sendUnifiedPreview } = await import("./unifiedNewsletter");
       const result = await sendUnifiedPreview(true); // force=true bypassa il guard giornaliero
