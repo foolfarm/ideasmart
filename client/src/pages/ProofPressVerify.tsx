@@ -606,7 +606,7 @@ export default function ProofPressVerify() {
                   className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
                   style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
                 >
-                  PROOFPRESS VERIFY · VERIFIABLE CORROBORATION PROTOCOL
+                  VERIFIABLE NEWS CORROBORATION PROTOCOL
                 </span>
               </div>
 
@@ -615,31 +615,12 @@ export default function ProofPressVerify() {
                   className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-6"
                   style={{ fontFamily: FONT }}
                 >
-                  Non fidarti<br />
-                  della notizia.<br />
-                  <span style={{ color: ORANGE }}>Verificala.</span>
+                  News Verify<br />
+                  <span style={{ color: ORANGE }}>Offri notizie verificate e certificate.</span>
                 </h1>
                 <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl">
-                  ProofPress Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità.
+                  News Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità. I tuoi articoli e notizie vengono certificati e resi immutabili a prova di qualsiasi fake o deformazione.
                 </p>
-                <p className="text-base leading-relaxed text-[#0a0a0a]/50 max-w-2xl mt-4 font-semibold tracking-wide">
-                  Non promettiamo verità. Forniamo evidenza.
-                </p>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 py-8 border-t border-b border-[#0a0a0a]/8">
-                {[
-                  { val: "4.000+", label: "fonti classificate per credibilità" },
-                  { val: "14/16", label: "claim corroborati in media per articolo" },
-                  { val: "3,2", label: "fonti indipendenti per claim" },
-                  { val: "< 60 sec", label: "tempo medio di verifica end-to-end" },
-                ].map(({ val, label }) => (
-                  <div key={val}>
-                    <div className="text-3xl md:text-4xl font-black mb-1" style={{ color: ORANGE, fontFamily: FONT }}>{val}</div>
-                    <div className="text-xs text-[#0a0a0a]/50 uppercase tracking-wide leading-snug">{label}</div>
-                  </div>
-                ))}
               </div>
 
               {/* CTA */}
