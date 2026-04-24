@@ -424,7 +424,9 @@ export async function publishEditorialToLinkedIn(
       ``,
       editorial.authorNote ? `— ${editorial.authorNote}` : "",
       ``,
-      `Leggi l'analisi completa su Proof Press → https://proofpress.ai`,
+      `Andrea Cinelli | ProofPress Magazine
+📊 Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech`,
       ``,
       `#AI #IntelligenzaArtificiale #Business #Innovation #ProofPress`,
     ]

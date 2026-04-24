@@ -276,8 +276,9 @@ Link: URL diretto
 
 Trend: 1 frase su cosa emerge (max 2 righe)
 
-Segui \u2192 proofpress.ai
-#AI #AITools #Proof Press
+Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech
+#AI #AITools #ProofPress
 
 Andrea Cinelli | ProofPress Magazine
 
@@ -299,7 +300,7 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
     const cutPoint = text.lastIndexOf('\n', 2950);
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
     if (!text.includes('proofpress.ai')) {
-      text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
+      text += '\n\nAndrea Cinelli | ProofPress Magazine\n📊 Approfondisci su Proof Press → https://proofpress.ai\nIscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech';
     }
   }
   return text;

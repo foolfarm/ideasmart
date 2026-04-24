@@ -599,79 +599,90 @@ export default function ProofPressVerify() {
               HERO
           ═══════════════════════════════════════════════════════════════════ */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
-            <div className="max-w-5xl mx-auto px-5 md:px-8">
-              {/* Badge */}
-              <div className="mb-6">
-                <span
-                  className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
-                  style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
-                >
-                  VERIFIABLE NEWS CORROBORATION PROTOCOL
-                </span>
-              </div>
-
-              <div className="max-w-3xl mb-10">
-                <h1
-                  className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-6"
-                  style={{ fontFamily: FONT }}
-                >
-                  News Verify<br />
-                  <span style={{ color: ORANGE }}>Offri notizie verificate e certificate.</span>
-                </h1>
-                <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl">
-                  News Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità. I tuoi articoli e notizie vengono certificati e resi immutabili a prova di qualsiasi fake o deformazione.
-                </p>
-              </div>
-
-              {/* CTA */}
-              <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
-                <button
-                  onClick={scrollToForm}
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
-                  style={{ background: ORANGE, fontFamily: FONT }}
-                >
-                  Verifica un articolo ↓
-                </button>
-                <a
-                  href="/verify/demo"
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
-                  style={{ background: "#00897b", color: "#ffffff", fontFamily: FONT }}
-                >
-                  ⚡ Demo Live — Prova ora
-                </a>
-              </div>{/* fine flex CTA */}
-
-              {/* ── Audio player inline — sempre visibile sotto i bottoni ── */}
-              <div
-                className="mt-6 p-5 rounded-xl border"
-                style={{ background: "#f0f4ff", borderColor: "#1a3a6b22" }}
-              >
-                <div className="flex items-center gap-3 mb-3">
+             <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+                {/* Testo hero */}
+                <div className="flex-1 min-w-0">
+                  {/* Badge */}
+                  <div className="mb-6">
+                    <span
+                      className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
+                      style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
+                    >
+                      VERIFIABLE NEWS CORROBORATION PROTOCOL
+                    </span>
+                  </div>
+                  <div className="mb-10">
+                    <h1
+                      className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-6"
+                      style={{ fontFamily: FONT }}
+                    >
+                      News Verify<br />
+                      <span style={{ color: ORANGE }}>Offri notizie verificate e certificate.</span>
+                    </h1>
+                    <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl">
+                      News Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità. I tuoi articoli e notizie vengono certificati e resi immutabili a prova di qualsiasi fake o deformazione.
+                    </p>
+                   </div>
+                  {/* CTA */}
+                  <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
+                    <button
+                      onClick={scrollToForm}
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
+                      style={{ background: ORANGE, fontFamily: FONT }}
+                    >
+                      Verifica un articolo ↓
+                    </button>
+                    <a
+                      href="/verify/demo"
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
+                      style={{ background: "#00897b", color: "#ffffff", fontFamily: FONT }}
+                    >
+                      ⚡ Demo Live — Prova ora
+                    </a>
+                   </div>{/* fine flex CTA */}
+                  {/* ── Audio player inline — sempre visibile sotto i bottoni ── */}
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: "#1a3a6b" }}
+                    className="mt-6 p-5 rounded-xl border"
+                    style={{ background: "#f0f4ff", borderColor: "#1a3a6b22" }}
                   >
-                    <span className="text-white text-lg">🎙</span>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background: "#1a3a6b" }}
+                      >
+                        <span className="text-white text-lg">🎤</span>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1a3a6b", fontFamily: FONT }}>ProofPress Verify</p>
+                        <p className="text-sm font-semibold" style={{ color: "#0a0a0a", fontFamily: FONT }}>ProofPress Verify certifica l'autenticità delle notizie</p>
+                      </div>
+                    </div>
+                    <audio
+                      controls
+                      preload="none"
+                      className="w-full"
+                      style={{ accentColor: ORANGE }}
+                    >
+                      <source src={AUDIO_SCOPRI_URL} type="audio/mp4" />
+                      Il tuo browser non supporta la riproduzione audio.
+                    </audio>
+                    <p className="mt-3 text-xs leading-relaxed" style={{ color: "#1a3a6b", opacity: 0.7, fontFamily: FONT }}>
+                      Ascolta come ProofPress Verify certifica ogni articolo in meno di 60 secondi — dall'estrazione dei claim al certificato crittografico IPFS.
+                    </p>
                   </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1a3a6b", fontFamily: FONT }}>ProofPress Verify</p>
-                    <p className="text-sm font-semibold" style={{ color: "#0a0a0a", fontFamily: FONT }}>ProofPress Verify certifica l'autenticità delle notizie</p>
-                  </div>
+                </div>{/* fine col testo */}
+                {/* Banner laterale */}
+                <div className="hidden lg:block flex-shrink-0 w-[340px]">
+                  <a href="/verify-business" className="block cursor-pointer">
+                    <img
+                      src="/manus-storage/banner-verify-business_77cdaf7c.png"
+                      alt="ProofPress Verify — Ogni Notizia Certificata. Immutabile."
+                      className="w-full rounded-xl shadow-lg"
+                    />
+                  </a>
                 </div>
-                <audio
-                  controls
-                  preload="none"
-                  className="w-full"
-                  style={{ accentColor: ORANGE }}
-                >
-                  <source src={AUDIO_SCOPRI_URL} type="audio/mp4" />
-                  Il tuo browser non supporta la riproduzione audio.
-                </audio>
-                <p className="mt-3 text-xs leading-relaxed" style={{ color: "#1a3a6b", opacity: 0.7, fontFamily: FONT }}>
-                  Ascolta come ProofPress Verify certifica ogni articolo in meno di 60 secondi — dall'estrazione dei claim al certificato crittografico IPFS.
-                </p>
-              </div>
-
+              </div>{/* fine flex-row hero */}
             </div>
           </section>
 

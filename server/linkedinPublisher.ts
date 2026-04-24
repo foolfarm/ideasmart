@@ -478,30 +478,35 @@ ${marketData.keyFinding}`;
     slotNote = `Questo è il POST DEL MATTINO (10:00) — Sezione AI News.
 Tono: analitico e strategico. Il tuo pubblico apre LinkedIn a colazione e vuole una lettura che dia loro un vantaggio competitivo per la giornata.
 Focus: implicazioni strategiche dell'AI per CEO e CTO italiani. Dati di mercato, trend di adozione enterprise, impatto sui modelli di business.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"`;
   } else if (slot === "ai-research-morning") {
     slotNote = `Questo è il 2° EDITORIALE AI (12:30) — basato su ricerche di mercato di alto livello sull'AI.
 Tono: analitico e autorevole. Il tuo pubblico è a pranzo e vuole una lettura strategica profonda sull'AI.
 Focus: ricerche di mercato AI di alto livello, dati di adozione enterprise, impatto economico, trend emergenti. Cita fonti autorevoli (Gartner, McKinsey, IDC, Stanford HAI, MIT).
 Aggiungi sempre la tua lettura strategica personale: cosa significa per il mercato italiano ed europeo.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"`;
   } else if (slot === "startup-afternoon") {
     slotNote = `Questo è il POST DEL POMERIGGIO (14:30) — Sezione Startup News.
 Tono: energico e informato. Il tuo pubblico è in pausa pranzo e vuole capire cosa si muove nell'ecosistema startup.
 Focus: round di investimento, exit, nuove startup italiane ed europee, trend VC.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"`;
   } else if (slot === "research") {
     slotNote = `Questo è il 2° POST AI NEWS (14:30) — Seconda notizia AI della giornata.
 Tono: analitico e strategico. Il tuo pubblico nel primo pomeriggio vuole un secondo aggiornamento sull'AI con un angolo completamente diverso rispetto al post delle 10:00.
 Focus: scegli una notizia AI diversa da quella del mattino — nuovi prodotti AI, acquisizioni, regolamentazione AI, AI applicata a settori specifici (sanità, finanza, manifattura, retail, HR). Implicazioni concrete per il mercato italiano ed europeo.
 NON ripetere lo stesso argomento del post delle 10:00: scegli una notizia o un angolo completamente diverso.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"`;
   } else if (slot === "research-afternoon") {
     slotNote = `Questo è il 2° POST RICERCHE DI MERCATO (16:00) — Seconda analisi di mercato della giornata.
 Tono: autorevole e data-driven. Il tuo pubblico nel tardo pomeriggio vuole ricerche di alto livello con dati quantitativi concreti.
 Focus: ricerche di mercato AI/Tech di alto livello (Gartner, McKinsey, IDC, Stanford HAI, MIT, Forrester, BCG). Dati quantitativi, previsioni di mercato, benchmark di settore. Lettura strategica per il mercato italiano ed europeo.
 NON ripetere lo stesso argomento del post delle 12:30: scegli una ricerca o un tema di mercato completamente diverso.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"`;
   } else if (slot === "startup-evening") {
     slotNote = `Questo è il POST STARTUP NEWS SERA (18:00) — Deal, Round & Ecosistema Startup IT/EU.
 
@@ -523,14 +528,16 @@ STRUTTURA SPECIFICA PER QUESTO SLOT:
 
 LINGUAGGIO TECNICO OBBLIGATORIO: Usa terminologia VC precisa — pre-money/post-money valuation, lead investor, co-investor, runway, burn rate, ARR multiple, exit multiple, acqui-hire, strategic vs financial buyer, secondary, pro-rata rights.
 
-AGGIUNGI SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
+AGGIUNGI SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"
 
 HASHTAG DEDICATI SERA: #VentureCapital #StartupEurope #StartupItalia #Funding #PrivateEquity #Dealflow #ProofPress #VC`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
 Focus: analizza il deal/round di investimento, il contesto competitivo, le implicazioni per l'ecosistema.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"
 Sii specifico su cifre, investitori, valuation se disponibili.`;
   } else if (slot === "en-evening-news") {
     slotNote = `This is the ENGLISH EVENING AI NEWS POST (20:00 CET) — AI News section.
@@ -543,7 +550,8 @@ STRUCTURE:
 3. PERSONAL STANCE (1 paragraph): Take a clear, possibly contrarian position. Use "I" or "we" only here.
 4. PROVOCATIVE CLOSE (1-2 lines): A question or challenge to conventional thinking.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
-6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+6. CTA: Add EXACTLY this line: "📊 Learn more on ProofPress → https://proofpress.ai
+Subscribe to our Tech Observatory → https://proofpress.ai/osservatorio-tech"
 7. HASHTAGS: #AINews #ArtificialIntelligence #AIStrategy #DigitalTransformation #TechStartups #VentureCapital #EnterpriseAI #ProofPress
 LANGUAGE: English — clear, authoritative, no jargon for jargon's sake. Technical terms (LLM, RAG, ARR, burn rate) are fine without explanation.
 AVOID: Italian companies, Italian market references, "game changer", "the future is now", "I analyzed", bullet points as main structure, AI-sounding parallel phrases.
@@ -560,7 +568,8 @@ STRUCTURE:
 3. PERSONAL STANCE (1 paragraph): Take a clear position on what this data means for the next 12-24 months.
 4. PROVOCATIVE CLOSE (1-2 lines): A forward-looking question or challenge.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
-6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+6. CTA: Add EXACTLY this line: "📊 Learn more on ProofPress → https://proofpress.ai
+Subscribe to our Tech Observatory → https://proofpress.ai/osservatorio-tech"
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #MarketAnalysis #AIStrategy #Innovation #ProofPress
 LANGUAGE: English — precise, analytical, never academic or bureaucratic.
 AVOID: Italian companies, Italian market references, generic statements without data.
@@ -576,7 +585,8 @@ STRUCTURE:
 3. PERSONAL STANCE (1 paragraph): What does this mean for founders and investors right now?
 4. PROVOCATIVE CLOSE (1-2 lines): A sharp question or observation that stays with the reader.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
-6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+6. CTA: Add EXACTLY this line: "📊 Learn more on ProofPress → https://proofpress.ai
+Subscribe to our Tech Observatory → https://proofpress.ai/osservatorio-tech"
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #Research #TechTrends #Innovation #ProofPress
 LANGUAGE: English — clear, direct, no filler words.
 AVOID: Italian companies, Italian market references, generic statements without data.
@@ -592,7 +602,8 @@ STRUCTURE:
 3. PERSONAL STANCE (1 paragraph): One clear takeaway for founders and investors.
 4. PROVOCATIVE CLOSE (1-2 lines): A question that makes the reader think before they sleep.
 5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | ProofPress Magazine"
-6. CTA: Add EXACTLY this line: "📊 Read the full analysis on ProofPress → https://proofpress.ai"
+6. CTA: Add EXACTLY this line: "📊 Learn more on ProofPress → https://proofpress.ai
+Subscribe to our Tech Observatory → https://proofpress.ai/osservatorio-tech"
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #GlobalTech #Innovation #AIStrategy #ProofPress
 LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms, no Italian references.
 AVOID: Italian companies, Italian market data, generic statements without data, verbose openings.
@@ -601,7 +612,8 @@ LENGTH: MAXIMUM 2800 characters. Target 1200-1800 characters (shorter is better 
     // Legacy slots
     slotNote = `Post LinkedIn — Sezione variabile.
 Tono: analitico e approfondito.
-Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai"`;
+Inserisci SEMPRE in fondo al post: "Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"`;
   }
 
   const publishDate = new Date().toLocaleDateString("it-IT", {
@@ -635,7 +647,9 @@ STRUTTURA DEL POST (segui lo stile autentico di Andrea Cinelli):
 3. POSIZIONE PERSONALE (1 paragrafo): Prendi una posizione netta, anche controcorrente. Usa "io" o "noi" solo qui, per esprimere una convinzione, non per raccontare processi. Esempio: "La lettura è questa:" oppure "Chi ignora questo segnale..."
 4. CHIUSURA PROVOCATORIA (1-2 righe): Una domanda o una provocazione che sfida il pensiero convenzionale e stimola il dibattito. Deve essere memorabile.
 5. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | ProofPress Magazine"
-6. CTA: Aggiungi ESATTAMENTE questa riga: "📊 Approfondisci su Proof Press → https://proofpress.ai"
+6. CTA: Aggiungi ESATTAMENTE queste righe su righe separate:
+"📊 Approfondisci su Proof Press → https://proofpress.ai
+Iscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech"
 7. HASHTAG: ${effectiveHashtags.join(" ")}
 
 LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
@@ -932,7 +946,7 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `📊 Approfondisci su Proof Press → https://proofpress.ai`,
+      `📊 Approfondisci su Proof Press → https://proofpress.ai\nIscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech`,
       "",
       meta.hashtags.join(" ")
     ].join("\n");
