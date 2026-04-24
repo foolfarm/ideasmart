@@ -106,7 +106,7 @@ export default function NewsletterAgentica() {
                 <div className="hidden lg:block flex-shrink-0" style={{ width: 340 }}>
                   <a href="#contatti">
                     <img
-                      src="/manus-storage/banner-newsletter-agentica_5bba0d40.png"
+                      src="/manus-storage/banner-suite-newsletter-v2_47094ac9.png"
                       alt="ProofPress Newsletter — La Tua Newsletter Agentica"
                       className="w-full h-auto shadow-lg"
                       style={{ display: "block" }}

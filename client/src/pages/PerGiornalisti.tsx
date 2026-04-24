@@ -91,7 +91,7 @@ export default function PerGiornalisti() {
               <div className="hidden lg:block flex-shrink-0" style={{ width: 340 }}>
                 <a href="#contatto">
                   <img
-                    src="/manus-storage/proofpress-creator-banner_940d4c64.png"
+                    src="/manus-storage/banner-suite-creator-v2_293e905b.png"
                     alt="ProofPress Creator — Il Giornale che si Scrive da Solo"
                     className="w-full h-auto shadow-lg"
                     style={{ display: "block" }}
