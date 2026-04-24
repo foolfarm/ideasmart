@@ -225,27 +225,36 @@ function ArticleCard({ article }: {
   const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
   return (
-    <a
-      href={article.articleUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex flex-col group"
-      style={{ borderTop: `1px solid ${INK}12` }}
-    >
-      <div className="overflow-hidden" style={{ height: 140 }}>
+    <div className="flex flex-col" style={{ borderTop: `1px solid ${INK}12` }}>
+      {/* Immagine cliccabile */}
+      <a
+        href={article.articleUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block overflow-hidden group"
+        style={{ height: 140 }}
+      >
         <img
           src={article.imageUrl || fallbackImg}
           alt={article.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-      </div>
-      <div className="pt-3 pb-4">
+      </a>
+      {/* Contenuto card */}
+      <div className="pt-3 pb-3">
         {article.publication && (
           <p className="text-[9px] font-bold tracking-[0.15em] uppercase mb-1" style={{ color: RED }}>{article.publication}</p>
         )}
-        <h3 className="text-sm font-black leading-snug group-hover:text-[#dc2626] transition-colors" style={{ color: INK, fontFamily: FONT }}>
-          {article.title}
-        </h3>
+        <a
+          href={article.articleUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block hover:text-[#dc2626] transition-colors"
+        >
+          <h3 className="text-sm font-black leading-snug" style={{ color: INK, fontFamily: FONT }}>
+            {article.title}
+          </h3>
+        </a>
         {article.excerpt && (
           <p className="mt-1 text-xs leading-relaxed line-clamp-2" style={{ color: INK + "60", fontFamily: FONT }}>{article.excerpt}</p>
         )}
@@ -262,7 +271,9 @@ function ArticleCard({ article }: {
           </div>
         )}
       </div>
-    </a>
+      {/* Commenti inline */}
+      <InlineComments articleId={article.id} articleTitle={article.title} />
+    </div>
   );
 }
 
@@ -362,7 +373,100 @@ function ContactAndreaForm() {
   );
 }
 
-// ─── Sezione Commenti Lettori ────────────────────────────────────────────────
+// ─── Commenti inline per singolo articolo ───────────────────────────────────
+function InlineComments({ articleId, articleTitle }: { articleId: number; articleTitle: string }) {
+  const { user, isAuthenticated } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [commentBody, setCommentBody] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const { data: comments = [], refetch } = trpc.osservatorio.getComments.useQuery(
+    { articleId },
+    { enabled: open }
+  );
+
+  const addComment = trpc.osservatorio.addComment.useMutation({
+    onSuccess: () => { setSent(true); setCommentBody(""); refetch(); },
+  });
+
+  return (
+    <div style={{ borderTop: `1px solid ${INK}10` }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-black/3"
+        style={{ fontFamily: FONT }}
+      >
+        <span className="text-[10px] font-bold tracking-wider uppercase" style={{ color: INK + "50" }}>
+          {open ? "▲ Chiudi commenti" : `💬 Commenti${comments.length > 0 ? ` (${comments.length})` : ""}`}
+        </span>
+        {!open && !isAuthenticated && (
+          <span className="text-[9px]" style={{ color: INK + "30" }}>Accedi per commentare</span>
+        )}
+      </button>
+
+      {open && (
+        <div className="px-4 pb-5 space-y-4">
+          {/* Lista commenti approvati */}
+          {comments.length > 0 && (
+            <div className="space-y-3">
+              {comments.map(c => (
+                <div key={c.id} className="p-3" style={{ backgroundColor: INK + "03", borderLeft: `2px solid ${INK}15` }}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-black" style={{ color: INK }}>{c.authorName}</span>
+                    <span className="text-[9px]" style={{ color: INK + "35" }}>
+                      {new Date(c.createdAt).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}
+                    </span>
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{ color: INK + "65" }}>{c.body}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Form o login prompt */}
+          {!isAuthenticated ? (
+            <div className="py-3 text-center" style={{ border: `1px dashed ${INK}15` }}>
+              <p className="text-xs mb-2" style={{ color: INK + "50" }}>Accedi per lasciare un commento</p>
+              <a
+                href="/api/oauth/login"
+                className="text-[10px] font-bold tracking-wider uppercase"
+                style={{ color: RED }}
+              >
+                Accedi →
+              </a>
+            </div>
+          ) : sent ? (
+            <div className="py-3 text-center" style={{ border: `1px solid ${RED}20`, backgroundColor: RED + "04" }}>
+              <p className="text-xs font-black" style={{ color: INK }}>Commento inviato. Pubblicato dopo moderazione.</p>
+              <button onClick={() => setSent(false)} className="mt-1 text-[9px] font-bold uppercase" style={{ color: RED }}>Scrivi un altro →</button>
+            </div>
+          ) : (
+            <form onSubmit={e => { e.preventDefault(); addComment.mutate({ articleId, body: commentBody }); }}>
+              <p className="text-[9px] font-bold mb-1.5" style={{ color: INK + "50" }}>Commenta come {user?.name}</p>
+              <textarea
+                required rows={3}
+                value={commentBody}
+                onChange={e => setCommentBody(e.target.value)}
+                placeholder="Il tuo commento..."
+                className="w-full px-3 py-2 text-xs border outline-none focus:border-[#0a0a0a] transition-colors resize-none"
+                style={{ borderColor: INK + "20", backgroundColor: PAPER, color: INK, fontFamily: FONT, borderRadius: 0 }}
+              />
+              <button
+                type="submit" disabled={addComment.isPending || !commentBody.trim()}
+                className="mt-2 px-5 py-2 text-[10px] font-black tracking-[0.12em] uppercase transition-opacity hover:opacity-80 disabled:opacity-40"
+                style={{ backgroundColor: INK, color: PAPER }}
+              >
+                {addComment.isPending ? "Invio…" : "Pubblica →"}
+              </button>
+            </form>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Sezione Commenti Lettori (dropdown legacy — non usata) ─────────────────────
 function CommentsSection() {
   const { user, isAuthenticated } = useAuth();
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
@@ -680,7 +784,7 @@ export default function OsservatorioTech() {
                   Gli articoli verranno pubblicati qui non appena disponibili.
                 </p>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {articles.map(a => <ArticleCard key={a.id} article={a} />)}
                 </div>
               )}
@@ -768,29 +872,7 @@ export default function OsservatorioTech() {
             </div>
           </section>
 
-          {/* ══════════════════════════════════════════════════════════════════
-              COMMENTI LETTORI
-          ══════════════════════════════════════════════════════════════════ */}
-          <section id="commenti" style={{ borderTop: `3px solid ${INK}` }}>
-            <div className="px-8 md:px-12 py-6" style={{ borderBottom: `1px solid ${INK}10` }}>
-              <div className="flex items-center gap-4">
-                <div className="w-1 h-8" style={{ backgroundColor: INK + "30" }} />
-                <div>
-                  <Label color={INK + "50"}>Community</Label>
-                  <h2 className="text-2xl md:text-3xl font-black leading-none mt-0.5" style={{ color: INK }}>
-                    Commenti dei lettori
-                  </h2>
-                </div>
-              </div>
-            </div>
-            <div className="px-8 md:px-12 py-8">
-              <p className="text-sm mb-6" style={{ color: INK + "55" }}>
-                Hai un'opinione su uno degli articoli? Condividila con la community dell'Osservatorio.
-                I commenti sono riservati agli utenti registrati e vengono pubblicati dopo moderazione.
-              </p>
-              <CommentsSection />
-            </div>
-          </section>
+
 
           {/* ══════════════════════════════════════════════════════════════════
               CONTATTA ANDREA
