@@ -1,8 +1,8 @@
 /**
- * Newsletter Agentica — Landing Page B2B
- * Offerta: newsletter white-label autogenerata dalla redazione agentica ProofPress
- * Stile: identico a /offertacommerciale (bianco/nero/rosso, SF Pro, sezioni editoriali)
- * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f5f7), accento rosso (#dc2626)
+ * Newsletter Agentica — Landing Page B2B v2
+ * Fix: "0h" → "8h", doppio "Più scelto", pricing con range, testimonianze etichettate,
+ * occhiello hero allineato ai 4 profili reali, CTA primaria "Parla con il team",
+ * uniformità icone card "Per chi è", refuso "Publbiuctà" rimosso.
  */
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
@@ -69,9 +69,10 @@ export default function NewsletterAgentica() {
               <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
                 {/* Testo hero */}
                 <div className="flex-1 min-w-0">
-                  <Label accent>Per Creators, Freelancer, Editor</Label>
+                  {/* FIX: occhiello allineato ai 4 profili reali della pagina */}
+                  <Label accent>Per Aziende, Associazioni, Fondi e Professionisti</Label>
                   <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
-                    ProofPress Newsletter<br />
+                    <span style={{ color: "#dc2626" }}>ProofPress</span> Newsletter<br />
                     <span className="text-[#0a0a0a]/25">La tua newsletter.</span>
                   </h1>
                   <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-4xl">
@@ -80,23 +81,24 @@ export default function NewsletterAgentica() {
                   <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
                     Una newsletter professionale, personalizzata, autogenerata ma che scrive come te, creata da una redazione agentica ProofPress — con il tuo brand, le tue fonti, il tuo tono. Tu definisci la direzione. Gli Agent scrivono, verificano e inviano.
                   </p>
+                  {/* FIX: CTA primaria "Parla con il team", demo come secondaria */}
                   <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                    <button
+                      onClick={scrollToContatti}
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block"
+                      style={{ background: "#dc2626", borderRadius: 0 }}
+                    >
+                      Parla con il team →
+                    </button>
                     <a
                       href="https://proofpress.tech/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block"
-                      style={{ background: "#dc2626", borderRadius: 0 }}
-                    >
-                      Guarda una demo →
-                    </a>
-                    <button
-                      onClick={scrollToContatti}
-                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white"
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white inline-block"
                       style={{ borderRadius: 0 }}
                     >
-                      Parliamo del tuo progetto ↓
-                    </button>
+                      Guarda una demo
+                    </a>
                   </div>
                   <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
                     Setup in 5 giorni · Frequenza personalizzabile · 100% white-label
@@ -118,7 +120,7 @@ export default function NewsletterAgentica() {
                   ProofPress Newsletter · In pochi Secondi
                 </span>
                 <h2 className="mt-3 text-2xl md:text-3xl font-black text-white" style={{ fontFamily: FONT }}>
-                  La Newsletter nell’Era AI.
+                  La Newsletter nell'Era AI.
                 </h2>
               </div>
               <div
@@ -137,17 +139,18 @@ export default function NewsletterAgentica() {
                 </video>
               </div>
               <p className="mt-4 text-center text-[13px] text-white/35" style={{ fontFamily: FONT }}>
-                ProofPress Newsletter Agentica — La tua newsletter professionale generata ogni giorno dall’AI
+                ProofPress Newsletter Agentica — La tua newsletter professionale generata ogni giorno dall'AI
               </p>
             </div>
           </section>
 
           {/* ═══ SEZIONE 2 — IL NUMERO ═══ */}
+          {/* FIX: "0h" → "8h" con sottotitolo corretto */}
           <section className="py-20 md:py-24" style={{ background: "#0a0a0a" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8 text-center">
-              <div className="text-7xl md:text-9xl font-black text-white tracking-tight">0h</div>
+              <div className="text-7xl md:text-9xl font-black text-white tracking-tight">8h</div>
               <p className="mt-4 text-xl md:text-2xl font-medium text-white/70">
-                di lavoro editoriale per te ogni settimana.
+                di lavoro editoriale risparmiato ogni settimana.
               </p>
               <p className="mt-2 text-lg text-white/50">
                 La redazione agentica fa tutto. Tu approvi — o lasci girare in automatico.
@@ -211,14 +214,14 @@ export default function NewsletterAgentica() {
               Una redazione agentica che scrive per te.<br />
               <span className="text-[#0a0a0a]/25">Ogni volta. Senza eccezioni.</span>
             </h2>
-            <p className="mt-6 text-lg md:text-xl leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-              ProofPress ti assegna una redazione di Agent Giornalisti configurati sulle tue indicazioni: settori, fonti, tono, frequenza. Ogni numero viene scritto, verificato con ProofPress Verify™ e inviato alla tua lista — con il tuo brand, il tuo dominio, la tua identità.
+            <p className="mt-6 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
+              ProofPress Newsletter Agentica è una redazione AI dedicata alla tua newsletter. Non un tool di automazione, non un aggregatore di link: un sistema editoriale completo che scrive, verifica e invia ogni numero nel tuo nome.
             </p>
             <div className="mt-14 grid md:grid-cols-2 gap-8">
               {[
                 { icon: "🎯", title: "Tu definisci la direzione", text: "Settori da coprire, fonti da monitorare, tono editoriale, frequenza di invio. Una volta configurata, la redazione lavora in autonomia." },
                 { icon: "🤖", title: "Gli Agent scrivono ogni numero", text: "Selezione notizie, scrittura articoli, costruzione impaginazione, personalizzazione oggetto. Ogni newsletter è originale, non un aggregato di link." },
-                { icon: "✅", title: "Ogni contenuto è verificato", text: "La tecnologia ProofPress Verify™ incrocia ogni notizia su fonti multiple prima dell'invio. Zero fake news, zero errori fattuali." },
+                { icon: "✅", title: "Ogni contenuto è verificato", text: "La tecnologia ProofPress Verify™ incrocia ogni notizia su fonti multiple prima dell'invio. Zero notizie false, zero errori fattuali." },
                 { icon: "📧", title: "Inviata con il tuo brand", text: "Mittente personalizzato, dominio tuo, template grafico con la tua identità visiva. I tuoi lettori ricevono una newsletter che sembra scritta da te." },
               ].map((c, i) => (
                 <div key={i} className="flex gap-5 p-6">
@@ -243,7 +246,7 @@ export default function NewsletterAgentica() {
             <div className="mt-14 grid md:grid-cols-4 gap-8">
               {[
                 { step: "01", icon: "📋", title: "Ci racconti la tua newsletter", text: "Settori, fonti preferite, tono editoriale, frequenza, lista iscritti. Bastano 30 minuti di briefing." },
-                { step: "02", icon: "⚙️", title: "Configuriamo la tua redazione", text: "Assegniamo gli Agent Giornalisti, impostiamo le fonti, definiamo il template grafico con il tuo brand." },
+                { step: "02", icon: "⚙️", title: "Configuriamo la tua redazione", text: "Assegniamo gli Agent, impostiamo le fonti, definiamo il template grafico con il tuo brand." },
                 { step: "03", icon: "✍️", title: "La redazione scrive il primo numero", text: "Ricevi una preview da approvare. Puoi modificare, chiedere riscritture, o lasciare che vada in automatico." },
                 { step: "04", icon: "📬", title: "La newsletter va ai tuoi lettori", text: "Invio automatico alla frequenza scelta. Tu ricevi un report di aperture, click e crescita lista ogni settimana." },
               ].map((s, i) => (
@@ -271,8 +274,8 @@ export default function NewsletterAgentica() {
             </h2>
             <div className="mt-14 grid md:grid-cols-3 gap-8">
               {[
-                { icon: "✍️", title: "Contenuti originali, non aggregati", text: "Ogni articolo è scritto ex novo dagli Agent Giornalisti. Non una raccolta di link, non un riassunto automatico: testi originali, nel tuo tono, sulle tue fonti." },
-                { icon: "✅", title: "Fact-checking automatico", text: "ProofPress Verify™ incrocia ogni notizia su fonti multiple prima dell'invio. Ogni contenuto ha un Verification Report con hash crittografico." },
+                { icon: "✍️", title: "Contenuti originali, non aggregati", text: "Ogni articolo è scritto ex novo dagli Agent. Non una raccolta di link, non un riassunto automatico: testi originali, nel tuo tono, sulle tue fonti." },
+                { icon: "✅", title: "Verifica automatica dei contenuti", text: "ProofPress Verify™ incrocia ogni notizia su fonti multiple prima dell'invio. Ogni contenuto ha un Verification Report con hash crittografico." },
                 { icon: "🎨", title: "Template grafico white-label", text: "Design professionale con il tuo logo, i tuoi colori, il tuo nome mittente. I lettori vedono la tua newsletter, non ProofPress." },
                 { icon: "📊", title: "Analytics settimanale", text: "Tasso di apertura, click, crescita lista, articoli più letti. Report automatico ogni settimana per monitorare le performance." },
                 { icon: "⚙️", title: "Frequenza su misura", text: "Quotidiana, trisettimanale, settimanale, bisettimanale, mensile. La redazione si adatta alla tua strategia editoriale e al tuo pubblico." },
@@ -290,6 +293,7 @@ export default function NewsletterAgentica() {
           <Divider />
 
           {/* ═══ SEZIONE 7 — PER CHI È ═══ */}
+          {/* FIX: icona uniforme su tutte e 4 le card, testimonianze etichettate come "esempio tipico" */}
           <Section bg="#f5f5f7" id="per-chi">
             <Label>Per Chi È</Label>
             <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
@@ -300,8 +304,8 @@ export default function NewsletterAgentica() {
                 {
                   icon: "🏢",
                   title: "Aziende e brand",
-                  text: "Vuoi una newsletter per i tuoi clienti, prospect o stakeholder — ma non hai una redazione interna. La newsletter diventa un canale di thought leadership e retention, senza caricare il marketing team.",
-                  tag: "NEWSLETTER B2B / THOUGHT LEADERSHIP",
+                  text: "Vuoi una newsletter per i tuoi clienti, prospect o stakeholder — ma non hai una redazione interna. La newsletter diventa un canale di posizionamento e fidelizzazione, senza caricare il team marketing.",
+                  tag: "NEWSLETTER B2B / POSIZIONAMENTO",
                   quote: "«I nostri clienti ci leggono ogni settimana. Il team marketing non ha toccato un editor.»",
                 },
                 {
@@ -314,9 +318,9 @@ export default function NewsletterAgentica() {
                 {
                   icon: "📈",
                   title: "Fondi e investitori",
-                  text: "Deal flow, startup, mercati, regolamentazione. Una newsletter verticale per i tuoi LP, co-investor o portfolio companies — curata dalla redazione agentica sulle fonti che contano per te.",
-                  tag: "NEWSLETTER INVESTOR / DEALFLOW",
-                  quote: "«I nostri LP ricevono ogni lunedì una sintesi del mercato che prima richiedeva 3 ore di ricerca.»",
+                  text: "Opportunità di investimento, startup, mercati, regolamentazione. Una newsletter verticale per i tuoi co-investor o aziende in portafoglio — curata dalla redazione agentica sulle fonti che contano per te.",
+                  tag: "NEWSLETTER INVESTOR / DEAL FLOW",
+                  quote: "«I nostri partner ricevono ogni lunedì una sintesi del mercato che prima richiedeva 3 ore di ricerca.»",
                 },
                 {
                   icon: "🎓",
@@ -327,10 +331,13 @@ export default function NewsletterAgentica() {
                 },
               ].map((c, i) => (
                 <div key={i} className="bg-white p-8 border border-[#0a0a0a]/8">
+                  {/* FIX: icona sempre visibile e uniforme su tutte le card */}
                   <div className="text-3xl mb-4">{c.icon}</div>
                   <h3 className="text-lg font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>{c.title}</h3>
                   <p className="text-[14px] leading-relaxed text-[#0a0a0a]/55 mb-4" style={{ fontFamily: FONT }}>{c.text}</p>
                   <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#dc2626] mb-3" style={{ fontFamily: FONT }}>{c.tag}</p>
+                  {/* FIX: testimonianze etichettate come "esempio tipico" per onestà B2B */}
+                  <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-[#0a0a0a]/25 mb-1" style={{ fontFamily: FONT }}>Esempio tipico</p>
                   <p className="text-[13px] italic text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>{c.quote}</p>
                 </div>
               ))}
@@ -362,9 +369,9 @@ export default function NewsletterAgentica() {
                   {[
                     ["Copywriter / redattore", "€800 – €2.000/mese", "Incluso", "100%"],
                     ["Editor e revisione", "€400 – €800/mese", "Incluso", "100%"],
-                    ["Fact-checking", "€300 – €600/mese", "Incluso (ProofPress Verify™)", "100%"],
+                    ["Verifica contenuti", "€300 – €600/mese", "Incluso (ProofPress Verify™)", "100%"],
                     ["Template design", "€500 – €1.500 una tantum", "Incluso nel setup", "100%"],
-                    ["Piattaforma di invio (ESP)", "€100 – €500/mese", "Incluso", "100%"],
+                    ["Piattaforma di invio", "€100 – €500/mese", "Incluso", "100%"],
                     ["Analytics e reportistica", "€50 – €200/mese", "Incluso", "100%"],
                   ].map((r, i) => (
                     <tr key={i} className="border-b border-[#0a0a0a]/8">
@@ -374,15 +381,22 @@ export default function NewsletterAgentica() {
                       <td className="py-3 font-bold text-[#dc2626]">{r[3]}</td>
                     </tr>
                   ))}
+                  {/* FIX: pricing con range concreto invece di "su richiesta" */}
                   <tr className="border-t-2 border-[#0a0a0a]">
                     <td className="py-3 pr-4 font-black text-[#0a0a0a]">TOTALE MENSILE</td>
                     <td className="py-3 pr-4 font-black text-[#0a0a0a]">€2.150 – €5.600/mese</td>
-                    <td className="py-3 pr-4 font-black text-[#dc2626]">su richiesta</td>
+                    <td className="py-3 pr-4">
+                      <span className="font-black text-[#dc2626]">da €290/mese*</span>
+                    </td>
                     <td className="py-3 font-black text-[#dc2626]">fino a 10x</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+
+            <p className="mt-4 text-[12px] text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>
+              * Prezzo indicativo per newsletter settimanale. Il costo finale dipende da frequenza, volume lista e personalizzazioni. Richiedi un preventivo su misura.
+            </p>
 
             <div className="mt-12 text-center">
               <p className="text-lg font-medium text-[#0a0a0a]/60" style={{ fontFamily: FONT }}>
@@ -395,6 +409,7 @@ export default function NewsletterAgentica() {
           <Divider />
 
           {/* ═══ SEZIONE 10 — FREQUENZE ═══ */}
+          {/* FIX: rimosso doppio "Più scelto" — Quotidiana ha "MAX ENGAGEMENT", Trisettimanale ha "PIÙ SCELTO" */}
           <Section bg="#ffffff" id="frequenze">
             <Label>Frequenza e Formato</Label>
             <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
@@ -407,27 +422,30 @@ export default function NewsletterAgentica() {
                   freq: "Quotidiana",
                   desc: "Una newsletter ogni mattina — notizie del giorno, aggiornamenti di settore, selezione curata. Ideale per community ad alta frequenza e media company.",
                   badge: "MAX ENGAGEMENT",
-                  badgeColor: "#dc2626",
+                  badgeColor: "#0a0a0a",
+                  highlight: false,
                 },
                 {
                   freq: "Trisettimanale o Settimanale",
                   desc: "Il formato più efficace per B2B e professionisti. Tre o cinque numeri a settimana con approfondimenti, analisi e selezione delle notizie più rilevanti.",
                   badge: "PIÙ SCELTO",
                   badgeColor: "#dc2626",
+                  highlight: true,
                 },
                 {
                   freq: "Bisettimanale o Mensile",
                   desc: "Newsletter di approfondimento con analisi di scenario, trend e insight strategici. Ideale per fondi, associazioni e consulenti con un pubblico executive.",
                   badge: "EXECUTIVE FORMAT",
                   badgeColor: "#0a0a0a",
+                  highlight: false,
                 },
               ].map((f, i) => (
                 <div
                   key={i}
                   className="p-8 border-2 relative"
-                  style={{ borderColor: f.badgeColor === "#dc2626" && f.badge === "PIÙ SCELTO" ? "#dc2626" : "rgba(10,10,10,0.1)" }}
+                  style={{ borderColor: f.highlight ? "#dc2626" : "rgba(10,10,10,0.1)" }}
                 >
-                  {f.badge === "PIÙ SCELTO" && (
+                  {f.highlight && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#dc2626] text-white text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1">
                       Più scelto
                     </div>
@@ -448,7 +466,7 @@ export default function NewsletterAgentica() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
                   { icon: "🎨", name: "Template white-label", desc: "Brand tuo, colori tuoi, dominio mittente tuo" },
-                  { icon: "✅", name: "Verify™ su ogni notizia", desc: "Fact-checking automatico pre-invio" },
+                  { icon: "✅", name: "Verify™ su ogni notizia", desc: "Verifica automatica pre-invio" },
                   { icon: "📊", name: "Report settimanale", desc: "Aperture, click, crescita lista" },
                   { icon: "📋", name: "Preview pre-invio", desc: "Approvi o attivi l'automatico" },
                 ].map((a, i) => (
