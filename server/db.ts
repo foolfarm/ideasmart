@@ -961,6 +961,8 @@ export interface HomeSectionItem {
   id: number;
   title: string;
   summary: string;
+  titleEn: string | null;
+  summaryEn: string | null;
   category: string;
   sourceName: string;
   sourceUrl: string;
@@ -992,6 +994,8 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           id: item.id,
           title: item.title,
           summary: item.summary,
+          titleEn: (item as typeof item & { titleEn?: string | null }).titleEn ?? null,
+          summaryEn: (item as typeof item & { summaryEn?: string | null }).summaryEn ?? null,
           category: item.category,
           sourceName: item.sourceName ?? '',
           sourceUrl: item.sourceUrl ?? '#',
@@ -1137,6 +1141,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     id: newsItems.id,
     title: newsItems.title,
     summary: newsItems.summary,
+    titleEn: newsItems.titleEn,
+    summaryEn: newsItems.summaryEn,
     category: newsItems.category,
     sourceName: newsItems.sourceName,
     sourceUrl: newsItems.sourceUrl,
@@ -1159,6 +1165,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
       id: item.id,
       title: item.title,
       summary: item.summary ?? '',
+      titleEn: item.titleEn ?? null,
+      summaryEn: item.summaryEn ?? null,
       category: item.category ?? '',
       sourceName: item.sourceName ?? '',
       sourceUrl: item.sourceUrl ?? '#',
@@ -1179,6 +1187,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     id: newsItems.id,
     title: newsItems.title,
     summary: newsItems.summary,
+    titleEn: newsItems.titleEn,
+    summaryEn: newsItems.summaryEn,
     category: newsItems.category,
     sourceName: newsItems.sourceName,
     sourceUrl: newsItems.sourceUrl,
@@ -1203,6 +1213,8 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
     id: item.id,
     title: item.title,
     summary: item.summary ?? '',
+    titleEn: item.titleEn ?? null,
+    summaryEn: item.summaryEn ?? null,
     category: item.category ?? '',
     sourceName: item.sourceName ?? '',
     sourceUrl: item.sourceUrl ?? '#',

@@ -3397,3 +3397,6 @@
 - [x] Aggiornare footer IT post LinkedIn: firma Andrea Cinelli + ProofPress + Base Alpha
 - [x] Aggiornare footer EN post LinkedIn: firma Andrea Cinelli + ProofPress + Base Alpha
 - [x] Aggiornare knowledge base con nuovi footer (salvata in sistema)
+
+## Bug Toggle IT/EN (25 Apr 2026)
+- [x] Fix: il toggle IT/EN ora filtra titoli e sommari per lingua (LangContext + itemTitle/itemSummary + getHomeData lang param)

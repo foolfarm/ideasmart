@@ -5,7 +5,7 @@
  * Tipografia: SF Pro Display (titoli), SF Pro Text (corpo) — sistema Apple
  * Font size: body 15-16px, titoli secondari 20-22px, hero 32-38px
  */
-import { useMemo, useRef, useState, useEffect } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
@@ -27,6 +27,7 @@ import VerifyWidget from "@/components/VerifyWidget";
 import TrustScoreWidget from "@/components/TrustScoreWidget";
 import ChannelsBar from "@/components/ChannelsBar";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -330,6 +331,8 @@ type NewsItem = {
   id: number;
   title: string;
   summary: string;
+  titleEn?: string | null;
+  summaryEn?: string | null;
   category: string;
   sourceName: string;
   sourceUrl: string;
@@ -344,6 +347,19 @@ type NewsItem = {
   ipfsUrl?: string | null;
 };
 
+// ─── Language helpers ────────────────────────────────────────────────────────
+const LangContext = React.createContext<"it" | "en">("it");
+function useLang() { return React.useContext(LangContext); }
+/** Restituisce il titolo nella lingua corrente (fallback IT se EN non disponibile) */
+function itemTitle(item: NewsItem, lang: "it" | "en"): string {
+  if (lang === "en" && item.titleEn) return item.titleEn;
+  return item.title;
+}
+/** Restituisce il sommario nella lingua corrente (fallback IT se EN non disponibile) */
+function itemSummary(item: NewsItem, lang: "it" | "en"): string {
+  if (lang === "en" && item.summaryEn) return item.summaryEn;
+  return item.summary;
+}
 // ─── Utility ─────────────────────────────────────────────────────────────────
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -397,8 +413,9 @@ function HeroArticle({ item, section, editorial }: {
   const s = SECTION_COLORS[section];
   const href = editorial?.id ? `/${section}/editoriale/${editorial.id}` : NewsItemHref(item, section);
   const isExternal = false; // tutti i link sono interni — il paywall blocca i non registrati
-  const title = editorial?.title || item.title;
-  const body = editorial?.body || item.summary;
+  const lang = useLang();
+  const title = editorial?.title || itemTitle(item, lang);
+  const body = editorial?.body || itemSummary(item, lang);
   const img = item.imageUrl;
 
   const TitleEl = (
@@ -475,12 +492,13 @@ function SecondaryArticle({ item, section, showImage = false }: {
   section: SectionKey;
   showImage?: boolean;
 }) {
+  const lang = useLang();
   const href = NewsItemHref(item, section);
   return (
     <article className="py-4">
       {showImage && item.imageUrl && (
         <Link href={href}>
-          <img src={item.imageUrl} alt={item.title} loading="lazy"
+          <img src={item.imageUrl} alt={itemTitle(item, lang)} loading="lazy"
             className="w-full object-cover mb-3 cursor-pointer"
             style={{ height: "200px", borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)" }} />
         </Link>
@@ -496,12 +514,12 @@ function SecondaryArticle({ item, section, showImage = false }: {
             lineHeight: 1.3
           }}
         >
-          {item.title}
+          {itemTitle(item, lang)}
         </h3>
       </Link>
       <p className="mt-2 text-[16px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.65 }}>
-        {item.summary}
+        {itemSummary(item, lang)}
       </p>
       <p className="mt-1.5 text-[11px] text-[#1a1a1a]/35 uppercase tracking-widest"
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
@@ -541,6 +559,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
 function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKey }) {
   const s = SECTION_COLORS[section];
   // font aumentati per leggibilità
+  const lang = useLang();
   const href = NewsItemHref(item, section);
   return (
     <div className="py-3">
@@ -562,13 +581,13 @@ function SidebarNewsItem({ item, section }: { item: NewsItem; section: SectionKe
           className="text-[#1a1a1a] hover:underline leading-snug"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "18px", fontWeight: 700, lineHeight: 1.3, letterSpacing: "-0.01em" }}
         >
-          {item.title}
+          {itemTitle(item, lang)}
         </p>
       </Link>
       {item.summary && (
         <p className="mt-1 text-[15px] text-[#1a1a1a]/55 line-clamp-2"
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif", lineHeight: 1.5 }}>
-          {item.summary}
+          {itemSummary(item, lang)}
         </p>
       )}
     </div>
@@ -706,10 +725,12 @@ function SectionLabel({ label, accent }: { label: string; accent: string }) {
 // ─── HOME PRINCIPALE ─────────────────────────────────────────────────────────
 export default function Home() {
   const today = useMemo(() => new Date(), []);
+  const { i18n } = useTranslation();
+  const lang = (i18n.language?.startsWith("en") ? "en" : "it") as "it" | "en";
   const queryOpts = { staleTime: 10 * 60 * 1000, refetchOnWindowFocus: false };
   const criticalQueryOpts = { ...queryOpts, retry: 2, retryDelay: 1500 };
 
-  const { data: homeData, isLoading: homeLoadingRaw } = trpc.news.getHomeData.useQuery(undefined, criticalQueryOpts);
+  const { data: homeData, isLoading: homeLoadingRaw } = trpc.news.getHomeData.useQuery({ lang }, criticalQueryOpts);
   // Timeout di sicurezza: dopo 8 secondi forza il rendering anche se homeLoading è ancora true
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   useEffect(() => {
@@ -771,6 +792,7 @@ export default function Home() {
   }, [aiRest, startupRest, dealroomNews]);
 
   return (
+    <LangContext.Provider value={lang}>
     <>
       <SEOHead
         title="Proof Press — AI, Startup e Venture Capital"
@@ -1937,5 +1959,6 @@ export default function Home() {
         </div>{/* fine contenuto principale */}
       </div>
     </>
+    </LangContext.Provider>
   );
 }

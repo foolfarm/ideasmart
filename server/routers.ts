@@ -316,13 +316,16 @@ export const appRouter = router({
 
     // Recupera tutte le notizie per la homepage in una singola chiamata ottimizzata
     // Evita il problema di batch tRPC troppo grandi (>68KB) che causano errore 502
-    getHomeData: publicProcedure.query(async () => {
-      return cached(
-        CACHE_KEYS.HOME_DATA,
-        () => getHomeNewsData(),
-        DEFAULT_TTL_MS
-      );
-    }),
+    getHomeData: publicProcedure
+      .input(z.object({ lang: z.enum(["it", "en"]).default("it") }).optional())
+      .query(async ({ input }) => {
+        const lang = input?.lang ?? "it";
+        return cached(
+          CACHE_KEYS.HOME_DATA + ":" + lang,
+          () => getHomeNewsData(),
+          DEFAULT_TTL_MS
+        );
+      }),
 
     // Articoli con Trust Score Grade A (massima certificazione) — o i migliori Grade B come fallback
     getGradeA: publicProcedure
