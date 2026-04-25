@@ -249,6 +249,10 @@ export const appRouter = router({
             imageUrl: dailyEditorialTable.imageUrl,
             authorNote: dailyEditorialTable.authorNote,
             createdAt: dailyEditorialTable.createdAt,
+            // Campi traduzione EN
+            titleEn: dailyEditorialTable.titleEn,
+            subtitleEn: dailyEditorialTable.subtitleEn,
+            translatedAt: dailyEditorialTable.translatedAt,
           }).from(dailyEditorialTable)
             .orderBy(desc(dailyEditorialTable.createdAt))
             .limit(limit);
@@ -3488,6 +3492,10 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           imageUrl: dailyEditorialTable.imageUrl,
           authorNote: dailyEditorialTable.authorNote,
           createdAt: dailyEditorialTable.createdAt,
+          // Campi traduzione EN
+          titleEn: dailyEditorialTable.titleEn,
+          subtitleEn: dailyEditorialTable.subtitleEn,
+          translatedAt: dailyEditorialTable.translatedAt,
         }).from(dailyEditorialTable)
           .orderBy(desc(dailyEditorialTable.createdAt))
           .limit(input.limit);

@@ -203,6 +203,11 @@ export const dailyEditorial = mysqlTable("daily_editorial", {
   keyTrend: varchar("keyTrend", { length: 255 }),
   authorNote: text("authorNote"),
   imageUrl: varchar("imageUrl", { length: 1000 }),
+  // Traduzione EN (generata automaticamente da Claude)
+  titleEn: varchar("titleEn", { length: 500 }),
+  subtitleEn: varchar("subtitleEn", { length: 500 }),
+  bodyEn: mediumtext("bodyEn"),
+  translatedAt: timestamp("translatedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

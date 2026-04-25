@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
@@ -48,9 +49,14 @@ function FeaturedPunto({ item }: {
   item: {
     id: number; dateLabel: string; title: string; subtitle: string | null;
     keyTrend: string | null; section: string | null; imageUrl: string | null; authorNote: string | null; createdAt: Date;
+    titleEn?: string | null; subtitleEn?: string | null;
   }
 }) {
   const [expanded, setExpanded] = useState(false);
+  const { i18n } = useTranslation();
+  const isEN = i18n.language === 'en';
+  const displayTitle = isEN && item.titleEn ? item.titleEn : item.title;
+  const displaySubtitle = isEN && item.subtitleEn ? item.subtitleEn : item.subtitle;
   const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
   return (
@@ -59,7 +65,7 @@ function FeaturedPunto({ item }: {
       <div className="relative overflow-hidden" style={{ minHeight: 320 }}>
         <img
           src={item.imageUrl || fallbackImg}
-          alt={item.title}
+          alt={displayTitle}
           className="w-full h-full object-cover"
           style={{ minHeight: 320 }}
         />
@@ -88,11 +94,11 @@ function FeaturedPunto({ item }: {
             className="text-2xl md:text-3xl lg:text-4xl font-black leading-[1.1] tracking-tight mb-4"
             style={{ color: PAPER, fontFamily: FONT }}
           >
-            {item.title}
+            {displayTitle}
           </h2>
-          {item.subtitle && (
+          {displaySubtitle && (
             <p className="text-base leading-relaxed mb-5" style={{ color: PAPER + "75", fontFamily: FONT }}>
-              {item.subtitle}
+              {displaySubtitle}
             </p>
           )}
           {item.keyTrend && (
@@ -145,9 +151,14 @@ function PuntoCard({ item }: {
   item: {
     id: number; dateLabel: string; title: string; subtitle: string | null;
     keyTrend: string | null; section: string | null; imageUrl: string | null; authorNote: string | null; createdAt: Date;
+    titleEn?: string | null; subtitleEn?: string | null;
   }
 }) {
   const [open, setOpen] = useState(false);
+  const { i18n } = useTranslation();
+  const isEN = i18n.language === 'en';
+  const displayTitle = isEN && item.titleEn ? item.titleEn : item.title;
+  const displaySubtitle = isEN && item.subtitleEn ? item.subtitleEn : item.subtitle;
   const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
   return (
@@ -160,7 +171,7 @@ function PuntoCard({ item }: {
       <div className="overflow-hidden" style={{ height: 160 }}>
         <img
           src={item.imageUrl || fallbackImg}
-          alt={item.title}
+          alt={displayTitle}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
@@ -179,11 +190,11 @@ function PuntoCard({ item }: {
           className="text-base font-black leading-snug tracking-tight group-hover:text-[#dc2626] transition-colors"
           style={{ color: INK, fontFamily: FONT }}
         >
-          {item.title}
+          {displayTitle}
         </h3>
-        {item.subtitle && (
+        {displaySubtitle && (
           <p className="mt-1.5 text-sm leading-relaxed line-clamp-2" style={{ color: INK + "60", fontFamily: FONT }}>
-            {item.subtitle}
+            {displaySubtitle}
           </p>
         )}
 

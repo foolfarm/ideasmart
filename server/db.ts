@@ -375,7 +375,19 @@ export async function getTodayEditorial(dateLabel: string, section: string = 'ai
 export async function saveEditorial(data: InsertDailyEditorial) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.insert(dailyEditorial).values(data);
+  const result = await db.insert(dailyEditorial).values(data);
+  // Trigger traduzione EN in background (non blocca il flusso principale)
+  const insertedId = (result as any)[0]?.insertId;
+  if (insertedId) {
+    setImmediate(async () => {
+      try {
+        const { translateAndSaveArticle } = await import('./articleTranslator');
+        await translateAndSaveArticle(insertedId);
+      } catch (err) {
+        console.warn('[saveEditorial] Traduzione EN fallita (non critico):', err);
+      }
+    });
+  }
 }
 
 // ── Startup of the Day ──────────────────────────────────────────────────────────────────────────────
