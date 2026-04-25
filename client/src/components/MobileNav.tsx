@@ -43,18 +43,30 @@ const NAV_STRUCTURE: NavItem[] = [
     ],
   },
 
-  // Offerta
+  // Cosa Facciamo (Piattaforma)
+  {
+    type: "group",
+    label: "Cosa Facciamo",
+    icon: "🔧",
+    children: [
+      { href: "/cosa-facciamo",    label: "Panoramica" },
+      { href: "/piattaforma",      label: "Piattaforma Agentica" },
+      { href: "/proofpress-verify", label: "Tecnologia Verify" },
+    ],
+  },
+
+  // Offerta — specchio esatto di LeftSidebar
   {
     type: "group",
     label: "Offerta",
     icon: "💼",
     children: [
-      { href: "/offertacommerciale",    label: "ProofPress Creator" },
-      { href: "/newsletter-agentica",   label: "ProofPress Newsletter" },
-      { href: "/proofpress-verify",      label: "ProofPress Verify™" },
-      { href: "/proofpress-verify/news",   label: "  └ News Verify" },
-      { href: "/proofpress-verify/info",   label: "  └ Info Verify" },
-      { href: "/proofpress-verify/email",  label: "  └ Email Verify" },
+      { href: "/offertacommerciale",         label: "ProofPress Creator" },
+      { href: "/newsletter-agentica",        label: "  └ ProofPress Newsletter" },
+      { href: "/proofpress-verify",          label: "ProofPress Verify™" },
+      { href: "/proofpress-verify/news",     label: "  └ News Verify" },
+      { href: "/proofpress-verify/info",     label: "  └ Info Verify" },
+      { href: "/proofpress-verify/email",    label: "  └ Email Verify" },
       {
         href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf",
         label: "Download Brochure",
@@ -63,7 +75,7 @@ const NAV_STRUCTURE: NavItem[] = [
     ],
   },
 
-  { type: "link", href: "/pubblicita",       label: "Advertise",          icon: "📣" },
+  { type: "link", href: "/pubblicita",  label: "Advertise",  icon: "📣" },
 
   // Scrivi per noi
   {
