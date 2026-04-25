@@ -20,6 +20,19 @@ const NAV_STRUCTURE: NavItem[] = [
   { type: "link", href: "/",                  label: "Magazine",           icon: "📰" },
   { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech",  icon: "🔭" },
 
+  // Canali
+  {
+    type: "group",
+    label: "Canali",
+    icon: "📡",
+    children: [
+      { href: "/ai",        label: "AI" },
+      { href: "/startup",   label: "Startup" },
+      { href: "/dealroom",  label: "Dealroom" },
+      { href: "/sondaggi",  label: "Sondaggi" },
+    ],
+  },
+
   // Chi Siamo
   {
     type: "group",
@@ -234,22 +247,7 @@ export default function MobileNav() {
             );
           })}
 
-          {/* INVEST — voce speciale arancio */}
-          <Link href="/investor" onClick={close}>
-            <div
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 mt-1"
-              style={{ background: "rgba(255,85,0,0.07)" }}
-            >
-              <span className="text-[15px] w-5 text-center flex-shrink-0">💰</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: "14px", fontWeight: 700, color: "#ff5500", fontFamily: SF, lineHeight: 1.2 }}>
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#ff5500] animate-pulse mr-1.5 align-middle" />
-                  Invest
-                </div>
-                <div style={{ fontSize: "10px", color: "#ff5500", opacity: 0.7, fontFamily: SF, lineHeight: 1.2 }}>Pre-Seed Open</div>
-              </div>
-            </div>
-          </Link>
+
         </nav>
 
         {/* ── Selettore lingua IT/EN ── */}

@@ -221,6 +221,15 @@ export default function Navbar() {
               Contatti
             </Link>
 
+            {/* 6 — Osservatorio Tech */}
+            <Link
+              href="/osservatorio-tech"
+              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+              style={{ color: "#00b894", fontFamily: SF }}
+            >
+              🔭 Osservatorio
+            </Link>
+
           </div>
 
           {/* Destra: Language + Investi badge + Newsletter/Home + hamburger */}
@@ -229,15 +238,7 @@ export default function Navbar() {
             <div className="hidden md:flex">
               <LanguageSwitcher variant="navbar" />
             </div>
-            {/* Investi badge — desktop */}
-            <Link
-              href="/investor"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-200 hover:opacity-85"
-              style={{ background: "#ff5500", color: "#ffffff", fontFamily: SF, letterSpacing: "0.07em" }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse inline-block flex-shrink-0" />
-              Investi
-            </Link>
+
 
             {isHome ? (
               <button
@@ -416,18 +417,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Investi — badge arancio */}
-            <div className="px-2 mb-1">
-              <Link
-                href="/investor"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 px-3 py-2.5 text-sm font-bold rounded-lg transition-colors"
-                style={{ color: "#ff5500", fontFamily: SF }}
-              >
-                <span className="w-2 h-2 rounded-full bg-[#ff5500] animate-pulse inline-block flex-shrink-0" />
-                Investi — Pre-Seed Open
-              </Link>
-            </div>
+
 
             {/* Selettore lingua mobile */}
             <div className="px-2 mb-2">
