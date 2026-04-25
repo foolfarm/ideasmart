@@ -1,10 +1,12 @@
 import { Link, useLocation } from "wouter";
 import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import {
   Info, Briefcase, Megaphone, PenLine, Mail, User,
   ExternalLink, Download, ChevronRight,
   Newspaper, KeyRound, Building2, CheckCircle, Users,
+  ShieldCheck,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -177,11 +179,12 @@ function NavGroup({
   );
 }
 
-/* ─── COMPONENTE PRINCIPALE ─────────────────────────────────────────── */
+// --- COMPONENTE PRINCIPALE ---
 export default function LeftSidebar() {
   const [location] = useLocation();
   const [hovered, setHovered] = useState(false);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { user } = useAuth();
 
   const handleMouseEnter = () => {
     if (leaveTimer.current) clearTimeout(leaveTimer.current);
@@ -317,6 +320,24 @@ export default function LeftSidebar() {
           </div>
         </a>
       </div>
+
+      {/* ── Admin menu (solo per admin) ── */}
+      {user?.role === "admin" && (
+        <div className="px-2 mb-2 mt-1">
+          <div className="mx-1 mb-2 border-t border-[#e5e5ea]" style={fadeBlock} />
+          <NavGroup
+            label="Admin"
+            Icon={ShieldCheck}
+            children={[
+              { href: "/admin", label: "Admin Portale" },
+              { href: "/verify/admin", label: "Admin Verify" },
+            ]}
+            expanded={expanded}
+            labelStyle={labelStyle}
+            isAnyChildActive={location.startsWith("/admin") || location.startsWith("/verify/admin")}
+          />
+        </div>
+      )}
 
       {/* ── Readers counter ── */}
       <div style={fadeBlock}>

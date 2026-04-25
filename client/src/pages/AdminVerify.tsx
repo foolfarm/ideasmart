@@ -8,7 +8,7 @@
  *   - Revoca API key
  *   - Cambio piano / stato
  */
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
@@ -54,6 +54,7 @@ import {
   ExternalLink,
   Link2,
   Clock,
+  ChevronDown,
 } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -245,6 +246,93 @@ function IpfsCertificationRegistry() {
   );
 }
 
+// ─── Colori Apple ────────────────────────────────────────────────────────────
+const C = {
+  bg: "#f5f5f7",
+  white: "#ffffff",
+  black: "#1d1d1f",
+  dark: "#3a3a3c",
+  mid: "#6e6e73",
+  light: "#aeaeb2",
+  border: "#e5e5ea",
+  font: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+};
+
+// ─── Gruppi menu dropdown ────────────────────────────────────────────────────
+const VERIFY_NAV_GROUPS = [
+  {
+    label: "Admin Portale",
+    items: [
+      { label: "Dashboard Admin", path: "/admin" },
+      { label: "Newsletter", path: "/admin" },
+      { label: "Contenuti", path: "/admin" },
+      { label: "Sistema", path: "/admin" },
+    ],
+  },
+  {
+    label: "Verify",
+    items: [
+      { label: "Gestione Clienti", path: "/verify/admin" },
+      { label: "Certificazioni IPFS", path: "#ipfs" },
+    ],
+  },
+];
+
+// ─── Dropdown component ──────────────────────────────────────────────────────
+function VerifyNavDropdown({ group, navigate }: { group: typeof VERIFY_NAV_GROUPS[0]; navigate: (path: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg transition-all hover:bg-[#f5f5f7]"
+        style={{ color: open ? C.black : C.mid, fontFamily: C.font, fontWeight: open ? 600 : 500 }}
+      >
+        {group.label}
+        <ChevronDown
+          size={11}
+          strokeWidth={2}
+          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}
+        />
+      </button>
+      {open && (
+        <div
+          className="absolute top-full left-0 mt-1 py-1 rounded-xl shadow-xl z-50 min-w-[180px]"
+          style={{ background: C.white, border: `1px solid ${C.border}` }}
+        >
+          {group.items.map((item) => (
+            <button
+              key={item.path + item.label}
+              onClick={() => {
+                if (item.path.startsWith("#")) {
+                  document.querySelector(item.path)?.scrollIntoView({ behavior: "smooth" });
+                } else {
+                  navigate(item.path);
+                }
+                setOpen(false);
+              }}
+              className="w-full text-left px-3.5 py-2 text-xs transition-colors hover:bg-[#f5f5f7]"
+              style={{ color: C.dark, fontFamily: C.font, fontWeight: 500 }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Componente principale ─────────────────────────────────────────────────────
 export default function AdminVerify() {
   const { user } = useAuth();
@@ -336,21 +424,39 @@ export default function AdminVerify() {
   const selectedUsage = usageOverview?.find((u) => u.organizationId === selectedOrgId);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f]">
-      {/* Header */}
-      <div className="bg-white border-b border-[#e5e5e5] px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <a href="/admin" className="text-sm text-[#6e6e73] hover:text-[#1d1d1f]">← Admin</a>
-            <span className="text-[#d1d1d6]">/</span>
-            <h1 className="text-lg font-bold text-[#1d1d1f]">ProofPress Verify — Gestione Clienti</h1>
+    <div className="min-h-screen" style={{ background: C.bg, fontFamily: C.font }}>
+      {/* ── Navbar con dropdown ─────────────────────────────────────────────── */}
+      <div style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-1 flex-wrap">
+            <button
+              onClick={() => navigate("/")}
+              className="text-sm transition-colors px-2 py-1 rounded-md hover:bg-[#f5f5f7]"
+              style={{ color: C.mid, fontFamily: C.font }}
+            >
+              ← ProofPress
+            </button>
+            <span style={{ color: C.border }}>/</span>
+            <button
+              onClick={() => navigate("/admin")}
+              className="text-sm transition-colors px-2 py-1 rounded-md hover:bg-[#f5f5f7]"
+              style={{ color: C.mid, fontFamily: C.font }}
+            >
+              Admin
+            </button>
+            <span style={{ color: C.border }}>/</span>
+            <span className="text-sm font-bold px-2" style={{ color: C.black, fontFamily: C.font }}>Verify</span>
+            <span style={{ color: C.border, margin: "0 4px" }}>·</span>
+            {VERIFY_NAV_GROUPS.map((group) => (
+              <VerifyNavDropdown key={group.label} group={group} navigate={navigate} />
+            ))}
           </div>
           <Button
             onClick={() => setShowCreateOrg(true)}
             className="bg-[#1d1d1f] text-white hover:bg-[#333] text-sm"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nuovo cliente pilota
+            Nuovo cliente
           </Button>
         </div>
       </div>
@@ -590,7 +696,9 @@ export default function AdminVerify() {
       </div>
 
       {/* ── REGISTRO CERTIFICAZIONI IPFS ── */}
-      <IpfsCertificationRegistry />
+      <div id="ipfs">
+        <IpfsCertificationRegistry />
+      </div>
 
       {/* ── Dialog: Crea organizzazione ── */}
       <Dialog open={showCreateOrg} onOpenChange={setShowCreateOrg}>
