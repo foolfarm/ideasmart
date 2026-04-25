@@ -1,0 +1,145 @@
+{
+  "nav": {
+    "chiSiamo": "Chi Siamo",
+    "storia": "Storia",
+    "offerta": "Offerta",
+    "redazioneAgentica": "Redazione Agentica",
+    "newsletterAgentica": "Newsletter Agentica",
+    "certificazioneNotizie": "Certificazione Notizie",
+    "certificazioneAziende": "Certificazione Informazioni Aziende",
+    "emailVerify": "Email Verify",
+    "downloadBrochure": "Download Brochure",
+    "scriviPerNoi": "Scrivi per noi",
+    "portaleGiornalisti": "Portale Giornalisti",
+    "advertise": "Advertise",
+    "contatti": "Contatti",
+    "osservatorioTech": "Osservatorio Tech",
+    "admin": "Admin",
+    "adminPortale": "Admin Portale",
+    "adminVerify": "Admin Verify",
+    "menu": "Menu",
+    "chiudi": "Chiudi"
+  },
+  "home": {
+    "tagline": "IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE",
+    "description": "Analisi quotidiane verificate da 4.000+ fonti — insight esclusivi per decision maker, founder e investitori.",
+    "breaking": "BREAKING",
+    "live": "LIVE",
+    "leggi": "Leggi",
+    "leggiDi": "Leggi di più",
+    "scopri": "Scopri",
+    "primaPageTitle": "PRIMA PAGINA",
+    "articoliIpfs": "ARTICOLI SU IPFS",
+    "readersCount": "lettori in questo momento",
+    "pubblicita": "PUBBLICITÀ",
+    "aiNews": "AI NEWS",
+    "startupNews": "STARTUP NEWS",
+    "research": "RESEARCH",
+    "dealroom": "DEALROOM",
+    "caricaAltri": "Carica altri articoli",
+    "nessunArticolo": "Nessun articolo disponibile",
+    "certificatoIpfs": "Certificato IPFS"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "iscriviti": "Iscriviti",
+    "email": "La tua email",
+    "nome": "Il tuo nome",
+    "iscrivitiCta": "Iscriviti alla newsletter",
+    "successMessage": "Iscrizione completata! Controlla la tua email.",
+    "errorMessage": "Errore durante l'iscrizione. Riprova.",
+    "privacy": "Nessuno spam. Disiscrizione in un click.",
+    "frequenza": "Ogni mattina alle 8:30"
+  },
+  "verify": {
+    "title": "ProofPress Verify",
+    "subtitle": "Ogni notizia certificata.",
+    "trustGrade": "Trust Grade",
+    "certificato": "Certificato",
+    "verificato": "Verificato",
+    "nonVerificato": "Non verificato",
+    "fonti": "Fonti",
+    "data": "Data",
+    "hash": "Hash IPFS",
+    "scopriDiPiu": "Scopri di più",
+    "guardaDemoLabel": "Guarda una demo",
+    "comeFunziona": "Come funziona"
+  },
+  "footer": {
+    "copyright": "© 2025 ProofPress. Tutti i diritti riservati.",
+    "privacy": "Privacy Policy",
+    "termini": "Termini di Servizio",
+    "cookie": "Cookie Policy",
+    "contatti": "Contatti"
+  },
+  "common": {
+    "caricamento": "Caricamento...",
+    "errore": "Si è verificato un errore",
+    "riprova": "Riprova",
+    "chiudi": "Chiudi",
+    "salva": "Salva",
+    "annulla": "Annulla",
+    "conferma": "Conferma",
+    "elimina": "Elimina",
+    "modifica": "Modifica",
+    "aggiungi": "Aggiungi",
+    "cerca": "Cerca",
+    "filtra": "Filtra",
+    "esporta": "Esporta",
+    "importa": "Importa",
+    "accedi": "Accedi",
+    "esci": "Esci",
+    "profilo": "Profilo",
+    "impostazioni": "Impostazioni",
+    "lingua": "Lingua",
+    "italiano": "Italiano",
+    "inglese": "English"
+  },
+  "pages": {
+    "chiSiamo": {
+      "title": "Chi Siamo",
+      "subtitle": "La missione di ProofPress"
+    },
+    "offertaCommerciale": {
+      "title": "Offerta Commerciale",
+      "hero": "La tua redazione AI-native.",
+      "heroSub": "Crea un giornale digitale certificato — online in 24 ore.",
+      "guardaDemo": "Guarda una demo",
+      "comeFunziona": "Guarda come funziona",
+      "scopriDiPiu": "Scopri di più"
+    },
+    "newsletterAgentica": {
+      "title": "Newsletter Agentica",
+      "hero": "La newsletter che si scrive da sola.",
+      "heroSub": "Ogni mattina alle 8:30, automatica, certificata, pronta."
+    },
+    "proofpressVerify": {
+      "title": "ProofPress Verify",
+      "hero": "Ogni notizia certificata.",
+      "heroSub": "Hash crittografico su IPFS per ogni articolo pubblicato."
+    },
+    "verifyBusiness": {
+      "title": "Info Verify",
+      "hero": "L'integrità delle informazioni aziendali.",
+      "heroSub": "CSRD, AI Act, DSA — conformità documentata e verificabile."
+    },
+    "verifyEmail": {
+      "title": "Email Verify",
+      "hero": "L'email nell'era AI.",
+      "heroSub": "Certificazione crittografica del contenuto email."
+    },
+    "contatti": {
+      "title": "Contatti",
+      "nome": "Nome",
+      "email": "Email",
+      "messaggio": "Messaggio",
+      "invia": "Invia messaggio",
+      "successMessage": "Messaggio inviato con successo!",
+      "errorMessage": "Errore nell'invio. Riprova."
+    },
+    "osservatorio": {
+      "title": "Osservatorio Tech",
+      "subtitle": "Analisi e trend del settore tecnologico"
+    }
+  }
+}

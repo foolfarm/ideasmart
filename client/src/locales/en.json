@@ -1,0 +1,145 @@
+{
+  "nav": {
+    "chiSiamo": "About Us",
+    "storia": "Our Story",
+    "offerta": "Products",
+    "redazioneAgentica": "Agentic Newsroom",
+    "newsletterAgentica": "Agentic Newsletter",
+    "certificazioneNotizie": "News Certification",
+    "certificazioneAziende": "Business Info Certification",
+    "emailVerify": "Email Verify",
+    "downloadBrochure": "Download Brochure",
+    "scriviPerNoi": "Write for Us",
+    "portaleGiornalisti": "Journalist Portal",
+    "advertise": "Advertise",
+    "contatti": "Contact",
+    "osservatorioTech": "Tech Observatory",
+    "admin": "Admin",
+    "adminPortale": "Portal Admin",
+    "adminVerify": "Verify Admin",
+    "menu": "Menu",
+    "chiudi": "Close"
+  },
+  "home": {
+    "tagline": "YOUR REFERENCE POINT FOR INNOVATION, AI, STARTUPS, VENTURE",
+    "description": "Daily analysis verified from 4,000+ sources — exclusive insights for decision makers, founders and investors.",
+    "breaking": "BREAKING",
+    "live": "LIVE",
+    "leggi": "Read",
+    "leggiDi": "Read more",
+    "scopri": "Discover",
+    "primaPageTitle": "FRONT PAGE",
+    "articoliIpfs": "ARTICLES ON IPFS",
+    "readersCount": "readers right now",
+    "pubblicita": "ADVERTISEMENT",
+    "aiNews": "AI NEWS",
+    "startupNews": "STARTUP NEWS",
+    "research": "RESEARCH",
+    "dealroom": "DEALROOM",
+    "caricaAltri": "Load more articles",
+    "nessunArticolo": "No articles available",
+    "certificatoIpfs": "IPFS Certificate"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "iscriviti": "Subscribe",
+    "email": "Your email",
+    "nome": "Your name",
+    "iscrivitiCta": "Subscribe to the newsletter",
+    "successMessage": "Subscription confirmed! Check your email.",
+    "errorMessage": "Subscription error. Please try again.",
+    "privacy": "No spam. Unsubscribe in one click.",
+    "frequenza": "Every morning at 8:30 AM"
+  },
+  "verify": {
+    "title": "ProofPress Verify",
+    "subtitle": "Every article certified.",
+    "trustGrade": "Trust Grade",
+    "certificato": "Certified",
+    "verificato": "Verified",
+    "nonVerificato": "Not verified",
+    "fonti": "Sources",
+    "data": "Date",
+    "hash": "IPFS Hash",
+    "scopriDiPiu": "Learn more",
+    "guardaDemoLabel": "Watch a demo",
+    "comeFunziona": "How it works"
+  },
+  "footer": {
+    "copyright": "© 2025 ProofPress. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "termini": "Terms of Service",
+    "cookie": "Cookie Policy",
+    "contatti": "Contact"
+  },
+  "common": {
+    "caricamento": "Loading...",
+    "errore": "An error occurred",
+    "riprova": "Try again",
+    "chiudi": "Close",
+    "salva": "Save",
+    "annulla": "Cancel",
+    "conferma": "Confirm",
+    "elimina": "Delete",
+    "modifica": "Edit",
+    "aggiungi": "Add",
+    "cerca": "Search",
+    "filtra": "Filter",
+    "esporta": "Export",
+    "importa": "Import",
+    "accedi": "Sign in",
+    "esci": "Sign out",
+    "profilo": "Profile",
+    "impostazioni": "Settings",
+    "lingua": "Language",
+    "italiano": "Italiano",
+    "inglese": "English"
+  },
+  "pages": {
+    "chiSiamo": {
+      "title": "About Us",
+      "subtitle": "The ProofPress mission"
+    },
+    "offertaCommerciale": {
+      "title": "Commercial Offer",
+      "hero": "Your AI-native newsroom.",
+      "heroSub": "Launch a certified digital newspaper — live in 24 hours.",
+      "guardaDemo": "Watch a demo",
+      "comeFunziona": "See how it works",
+      "scopriDiPiu": "Learn more"
+    },
+    "newsletterAgentica": {
+      "title": "Agentic Newsletter",
+      "hero": "The newsletter that writes itself.",
+      "heroSub": "Every morning at 8:30 AM, automatic, certified, ready."
+    },
+    "proofpressVerify": {
+      "title": "ProofPress Verify",
+      "hero": "Every article certified.",
+      "heroSub": "Cryptographic hash on IPFS for every published article."
+    },
+    "verifyBusiness": {
+      "title": "Info Verify",
+      "hero": "Business information integrity.",
+      "heroSub": "CSRD, AI Act, DSA — documented and verifiable compliance."
+    },
+    "verifyEmail": {
+      "title": "Email Verify",
+      "hero": "Email in the AI era.",
+      "heroSub": "Cryptographic certification of email content."
+    },
+    "contatti": {
+      "title": "Contact",
+      "nome": "Name",
+      "email": "Email",
+      "messaggio": "Message",
+      "invia": "Send message",
+      "successMessage": "Message sent successfully!",
+      "errorMessage": "Send error. Please try again."
+    },
+    "osservatorio": {
+      "title": "Tech Observatory",
+      "subtitle": "Analysis and trends in the technology sector"
+    }
+  }
+}

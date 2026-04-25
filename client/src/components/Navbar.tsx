@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -222,8 +223,12 @@ export default function Navbar() {
 
           </div>
 
-          {/* Destra: Investi badge + Newsletter/Home + hamburger */}
+          {/* Destra: Language + Investi badge + Newsletter/Home + hamburger */}
           <div className="flex items-center gap-2">
+            {/* Language switcher — desktop */}
+            <div className="hidden md:flex">
+              <LanguageSwitcher variant="navbar" />
+            </div>
             {/* Investi badge — desktop */}
             <Link
               href="/investor"
