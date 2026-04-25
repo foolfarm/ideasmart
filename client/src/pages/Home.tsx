@@ -26,6 +26,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
 import TrustScoreWidget from "@/components/TrustScoreWidget";
 import ChannelsBar from "@/components/ChannelsBar";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 // ─── Amazon Deal Manchette (Home) ───────────────────────────────────────────────────
 // Manchette Home: usa solo deal con immagine reale. Se non disponibile, spazio vuoto trasparente.
@@ -804,6 +805,10 @@ export default function Home() {
               </span>
             </div>
             <div className="flex items-center gap-3">
+              {/* Selettore lingua IT/EN — visibile su desktop */}
+              <div className="hidden sm:flex">
+                <LanguageSwitcher variant="navbar" />
+              </div>
               <a href="https://www.linkedin.com/company/proofpress/" target="_blank" rel="noopener noreferrer"
                 className="hidden sm:inline flex items-center gap-1 text-[11px] text-[#1a1a1a]/50 hover:text-[#0077b5] transition-colors uppercase tracking-widest"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>

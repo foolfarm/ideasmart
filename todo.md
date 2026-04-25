@@ -3382,3 +3382,8 @@
 - [x] Applicata a tutti i percorsi: generateLinkedInPostText, AI Tool Radar, Startup Radar
 - [x] Rimossi vecchi footer duplicati dai prompt LLM
 - [x] TypeScript: 0 errori
+
+## DB + Selettore Lingua (25 Apr 2026)
+- [x] Verificato DB: colonne titleEn e summaryEn già presenti in news_items
+- [x] Selettore IT/EN aggiunto nella testata Home (riga data/auth, lato destro, desktop)
+- [x] TypeScript: 0 errori
