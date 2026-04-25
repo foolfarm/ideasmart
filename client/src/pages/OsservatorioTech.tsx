@@ -608,8 +608,8 @@ export default function OsservatorioTech() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: PAPER, color: INK }}>
       <SEOHead
-        title="Osservatorio Tech — Andrea Cinelli | ProofPress"
-        description="Analisi quotidiane di Andrea Cinelli su AI, startup, venture capital e trasformazione digitale. Aggiornato ogni giorno."
+        title="Base Alpha — Osservatorio Tech di Andrea Cinelli | ProofPress"
+        description="Base Alpha: il punto di vista di chi il digitale lo ha costruito. Analisi quotidiane di Andrea Cinelli su AI, startup, venture capital e trasformazione digitale."
       />
       <SharedPageHeader />
       <BreakingNewsTicker />
@@ -637,12 +637,17 @@ export default function OsservatorioTech() {
                     lineHeight: 0.93,
                   }}
                 >
-                  Il punto di vista<br />
-                  di chi il digitale<br />
-                  <span style={{ color: RED }}>lo ha costruito.</span>
+                  Base Alpha
                 </h1>
                 <p
-                  className="mt-8 leading-relaxed max-w-2xl"
+                  className="mt-6 font-bold leading-snug max-w-2xl"
+                  style={{ color: INK, fontSize: "clamp(1.15rem, 1.9vw, 1.45rem)", fontFamily: FONT }}
+                >
+                  Il punto di vista di chi il digitale<br />
+                  <span style={{ color: RED }}>lo ha costruito.</span>
+                </p>
+                <p
+                  className="mt-6 leading-relaxed max-w-2xl"
                   style={{ color: INK + "70", fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontFamily: FONT }}
                 >
                   Un'area editoriale curata da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale, AI pioneer e pioniere del digitale italiano. Ogni giorno, analisi e approfondimenti sui temi che contano: innovazione, intelligenza artificiale, startup, venture capital e trasformazione digitale. Un punto di vista qualificato, costruito su 30 anni di execution diretta, non su teoria.
