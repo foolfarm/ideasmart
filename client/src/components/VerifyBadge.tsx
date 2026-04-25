@@ -12,7 +12,7 @@
  */
 import { useState } from "react";
 import { ShieldCheck, Copy, Check } from "lucide-react";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 
 interface VerifyBadgeProps {
   hash?: string | null;
@@ -39,11 +39,24 @@ const GRADE_LABEL: Record<string, string> = {
 
 export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore }: VerifyBadgeProps) {
   const [copied, setCopied] = useState(false);
+  const [, navigate] = useLocation();
 
   if (!hash) return null;
 
   const displayHash = "#" + hash.substring(0, 16).toUpperCase();
   const verifyUrl = `/proofpress-verify?hash=${encodeURIComponent(hash)}`;
+
+  function handleGradeClick(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate("/trust-score");
+  }
+
+  function handleVerifyClick(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(verifyUrl);
+  }
   const gradeColor = trustGrade ? (GRADE_COLOR[trustGrade] ?? "#636e72") : null;
   const gradeLabel = trustGrade ? (GRADE_LABEL[trustGrade] ?? "") : "";
   const scoreText = trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—";
@@ -75,22 +88,24 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
       <span className="inline-flex items-center gap-1 select-none">
         {/* Trust grade badge — cliccabile → /trust-score */}
         {trustGrade && gradeColor && (
-          <Link href="/trust-score">
-            <span
-              title={gradeTooltip}
-              className="inline-flex items-center justify-center font-black text-white rounded cursor-pointer transition-opacity hover:opacity-75"
-              style={{
-                background: gradeColor,
-                fontSize: "8px",
-                width: "14px",
-                height: "14px",
-                flexShrink: 0,
-                letterSpacing: 0,
-              }}
-            >
-              {trustGrade}
-            </span>
-          </Link>
+          <span
+            role="link"
+            tabIndex={0}
+            onClick={handleGradeClick}
+            onKeyDown={(e) => e.key === "Enter" && handleGradeClick(e as unknown as React.MouseEvent)}
+            title={gradeTooltip}
+            className="inline-flex items-center justify-center font-black text-white rounded cursor-pointer transition-opacity hover:opacity-75"
+            style={{
+              background: gradeColor,
+              fontSize: "8px",
+              width: "14px",
+              height: "14px",
+              flexShrink: 0,
+              letterSpacing: 0,
+            }}
+          >
+            {trustGrade}
+          </span>
         )}
         {/* Copia hash — click principale */}
         <button
@@ -119,15 +134,17 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
           </span>
         </button>
         {/* Link verifica — icona separata */}
-        <Link href={verifyUrl}>
-          <span
-            title="Verifica su ProofPress"
-            className="cursor-pointer hover:opacity-60 transition-opacity"
-            style={{ display: "inline-flex" }}
-          >
-            <Copy size={8} strokeWidth={2} style={{ color: "#0066cc" }} />
-          </span>
-        </Link>
+        <span
+          role="link"
+          tabIndex={0}
+          onClick={handleVerifyClick}
+          onKeyDown={(e) => e.key === "Enter" && handleVerifyClick(e as unknown as React.MouseEvent)}
+          title="Verifica su ProofPress"
+          className="cursor-pointer hover:opacity-60 transition-opacity"
+          style={{ display: "inline-flex" }}
+        >
+          <Copy size={8} strokeWidth={2} style={{ color: "#0066cc" }} />
+        </span>
       </span>
     );
   }
@@ -136,21 +153,23 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
     <span className="inline-flex items-center gap-2 select-none">
       {/* Trust grade badge md — cliccabile → /trust-score */}
       {trustGrade && gradeColor && (
-        <Link href="/trust-score">
-          <span
-            title={gradeTooltip}
-            className="inline-flex items-center justify-center font-black text-white rounded cursor-pointer transition-opacity hover:opacity-75"
-            style={{
-              background: gradeColor,
-              fontSize: "10px",
-              width: "20px",
-              height: "20px",
-              flexShrink: 0,
-            }}
-          >
-            {trustGrade}
-          </span>
-        </Link>
+        <span
+          role="link"
+          tabIndex={0}
+          onClick={handleGradeClick}
+          onKeyDown={(e) => e.key === "Enter" && handleGradeClick(e as unknown as React.MouseEvent)}
+          title={gradeTooltip}
+          className="inline-flex items-center justify-center font-black text-white rounded cursor-pointer transition-opacity hover:opacity-75"
+          style={{
+            background: gradeColor,
+            fontSize: "10px",
+            width: "20px",
+            height: "20px",
+            flexShrink: 0,
+          }}
+        >
+          {trustGrade}
+        </span>
       )}
       {/* Copia hash */}
       <button
