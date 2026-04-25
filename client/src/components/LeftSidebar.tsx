@@ -72,7 +72,7 @@ const NAV_STRUCTURE: NavItem[] = [
     Icon: Briefcase,
     children: [
       { href: "/offertacommerciale", label: "ProofPress Creator" },
-      { href: "/newsletter-agentica", label: "ProofPress Newsletter" },
+      { href: "/newsletter-agentica", label: "  └ ProofPress Newsletter" },
       { href: "/proofpress-verify", label: "ProofPress Verify™" },
       { href: "/proofpress-verify/news", label: "  └ News Verify" },
       { href: "/proofpress-verify/info", label: "  └ Info Verify" },
