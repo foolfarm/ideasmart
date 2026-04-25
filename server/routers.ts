@@ -343,6 +343,44 @@ export const appRouter = router({
         DEFAULT_TTL_MS
       );
     }),
+    // Top news con immagine — per la sezione "In Evidenza" della Home
+    // Restituisce le 5 notizie più recenti che hanno imageUrl non null, da tutte le sezioni
+    getTopWithImages: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(10).default(5) }).optional())
+      .query(async ({ input }) => {
+        const limit = input?.limit ?? 5;
+        return cached(
+          `news:topWithImages:${limit}`,
+          async () => {
+            const db = await getDbInstance();
+            if (!db) return [];
+            const items = await db.select().from(newsItemsTable)
+              .where(isNotNull(newsItemsTable.imageUrl))
+              .orderBy(desc(newsItemsTable.createdAt))
+              .limit(limit * 3); // prende più notizie per deduplicare immagini
+            // Deduplicazione per imageUrl (evita immagini doppie)
+            const seen = new Set<string>();
+            const unique = items.filter(item => {
+              if (!item.imageUrl || seen.has(item.imageUrl)) return false;
+              seen.add(item.imageUrl);
+              return true;
+            }).slice(0, limit);
+            return unique.map(item => ({
+              id: item.id,
+              title: item.title,
+              summary: item.summary ?? '',
+              category: item.category ?? '',
+              section: item.section ?? 'ai',
+              sourceName: item.sourceName ?? '',
+              sourceUrl: item.sourceUrl ?? '#',
+              publishedAt: item.publishedAt ?? '',
+              imageUrl: item.imageUrl ?? null,
+              verifyHash: item.verifyHash ?? null,
+            }));
+          },
+          DEFAULT_TTL_MS
+        );
+      }),
     // Statistiche filtro audit per la dashboard admin
     getFilterStats: adminProcedure
       .input(z.object({ section: z.enum(['ai', 'startup', 'dealroom', 'research']).default('ai') }))

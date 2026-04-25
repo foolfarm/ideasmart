@@ -3387,3 +3387,8 @@
 - [x] Verificato DB: colonne titleEn e summaryEn già presenti in news_items
 - [x] Selettore IT/EN aggiunto nella testata Home (riga data/auth, lato destro, desktop)
 - [x] TypeScript: 0 errori
+
+## Dealflow + Top News Home (25 Apr 2026)
+- [x] Aggiungere endpoint /api/scheduled/dealflow per aggiornamento notturno esterno
+- [x] Aggiungere top news (3-5 notizie recenti con immagine) nella sezione Home — sezione "In Evidenza" 5 card con immagine
+- [ ] Schedulare task notturno esterno per aggiornare dealflow ogni notte

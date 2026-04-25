@@ -726,6 +726,7 @@ export default function Home() {
   const { data: ipfsCountData } = trpc.news.getIPFSCount.useQuery(undefined, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
   const ipfsCount = ipfsCountData?.count ?? 0;
   const { data: gradeAArticles } = trpc.news.getGradeA.useQuery({ limit: 6 }, queryOpts);
+  const { data: topNewsWithImages } = trpc.news.getTopWithImages.useQuery({ limit: 5 }, queryOpts);
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -939,6 +940,58 @@ export default function Home() {
         <div className="hidden sm:block">
           <BreakingNewsSection />
         </div>
+        {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
+        {topNewsWithImages && topNewsWithImages.length > 0 && (
+          <div className="max-w-[1280px] mx-auto px-4 py-3 hidden sm:block">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-[2px] w-4" style={{ background: "#1a1a1a" }} />
+              <span className="text-[9px] font-bold uppercase tracking-[0.22em]"
+                style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                In Evidenza
+              </span>
+              <div className="h-[2px] flex-1" style={{ background: "#1a1a1a", opacity: 0.15 }} />
+            </div>
+            <div className="grid grid-cols-5 gap-3">
+              {topNewsWithImages.slice(0, 5).map((item) => {
+                const sectionKey = (item.section || 'ai') as SectionKey;
+                const href = NewsItemHref(item as NewsItem, sectionKey);
+                return (
+                  <Link key={item.id} href={href}>
+                    <article className="group cursor-pointer">
+                      {item.imageUrl && (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full object-cover rounded-md group-hover:opacity-90 transition-opacity"
+                          style={{ height: "90px", border: "1px solid rgba(26,26,46,0.07)" }}
+                        />
+                      )}
+                      <div className="mt-1.5">
+                        <span
+                          className="inline-block text-[8px] font-bold uppercase tracking-widest px-1 py-0.5 mb-1"
+                          style={{ background: SECTION_COLORS[sectionKey]?.accent ?? "#1a1a1a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}
+                        >
+                          {item.category || sectionKey.toUpperCase()}
+                        </span>
+                        <h4
+                          className="text-[11px] font-bold leading-snug line-clamp-2 group-hover:underline"
+                          style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}
+                        >
+                          {item.title}
+                        </h4>
+                        <p className="text-[9px] mt-0.5" style={{ color: "#1a1a1a", opacity: 0.4, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>
+                          {item.sourceName}
+                        </p>
+                      </div>
+                    </article>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
         {/* ══ BARRA CANALI ORIZZONTALE ════════════════════════════════════════════════════════════ */}
         {/* <ChannelsBar /> — temporaneamente nascosta */}
         {/* ══ CORPO ═════════════════════════════════════════════════════════════════════════════════ */}

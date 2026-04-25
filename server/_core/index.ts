@@ -634,6 +634,28 @@ async function startServer() {
     }
   });
 
+  // ── Scheduled Dealflow endpoint (protetto da JWT_SECRET) ──────────────────────────────────
+  // POST /api/scheduled/dealflow — triggera la generazione dei pick dealflow
+  // Usato dal task schedulato notturno esterno di Manus per aggiornare /dealflow
+  app.post("/api/scheduled/dealflow", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+      const { generateStartupRadarPost_main } = await import('../startupRadar');
+      console.log('[ScheduledDealflow] Avvio generazione dealflow picks...');
+      const result = await generateStartupRadarPost_main();
+      console.log('[ScheduledDealflow] Risultato:', JSON.stringify({ success: result.success, startupCount: result.startupCount }));
+      return res.json({ success: result.success, startupCount: result.startupCount, error: result.error });
+    } catch (err: any) {
+      console.error('[ScheduledDealflow] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+
   // ── Cache Stats endpoint (solo admin, protetto da JWT_SECRET) ──────────────────
   // GET /api/cache-stats — restituisce hit/miss/size/TTL per ogni chiave in cache
   app.get("/api/cache-stats", (req, res) => {
