@@ -890,27 +890,35 @@ export async function publishToLinkedIn(
  * Aggiunge l'header con il link all'Osservatorio Tech e aggiorna il footer
  * con il link a ProofPress. Versione IT per slot italiani, EN per slot inglesi.
  */
+/**
+ * Aggiunge il footer con i link a ProofPress e Base Alpha prima degli hashtag.
+ * Versione IT per slot italiani, EN per slot inglesi.
+ * NON aggiunge header all'inizio del post.
+ */
 function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
   const OSSERVATORIO_URL = "https://lnkd.in/dDT9svDC";
   const PROOFPRESS_URL = "https://proofpress.ai";
 
-  // Rimuovi eventuali vecchi footer con link Osservatorio (per evitare duplicati)
-  // Usa replace con stringhe invece di regex per evitare problemi con caratteri speciali
+  // Rimuovi eventuali vecchi header/footer (per evitare duplicati)
   let cleaned = text
     .split("\n")
     .filter(line => {
       const l = line.trim();
       return !l.startsWith("Iscriviti al nostro Osservatorio Tech")
           && !l.startsWith("Subscribe to our Tech Observatory")
+          && !l.startsWith("Osservatorio Tech \u2192")
+          && !l.startsWith("Tech Observatory \u2192")
           && !l.startsWith("\u{1F4CA} Approfondisci su Proof Press")
           && !l.startsWith("\u{1F4CA} Learn more on ProofPress")
+          && !l.startsWith("\u{1F4CA} Follow us on")
+          && !l.startsWith("Seguici su Base Alpha")
+          && !l.startsWith("Follow us on Base Alpha")
           && !l.startsWith("Segui \u2192 proofpress.ai/");
     })
     .join("\n")
     .trim();
 
   // Separa il blocco hashtag dal corpo del testo
-  // Gli hashtag sono l'ultima riga che inizia con '#'
   const lines = cleaned.split("\n");
   let hashtagLineIndex = -1;
   for (let i = lines.length - 1; i >= 0; i--) {
@@ -919,32 +927,34 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
       hashtagLineIndex = i;
       break;
     }
-    // Se la riga non è vuota e non è hashtag, fermati
     if (l.length > 0 && !l.startsWith("#")) break;
   }
 
   if (isEnSlot) {
-    const header = "Tech Observatory \u2192 " + OSSERVATORIO_URL;
-    const footer = "\u{1F4CA} Learn more on ProofPress \u2192 " + PROOFPRESS_URL;
+    // Footer EN: due righe prima degli hashtag
+    const footerEN =
+      "\u{1F4CA} Learn more on ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
+      "Follow us on Base Alpha - The Next Tech Observatory by ProofPress \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
-      return header + "\n" + bodyPart + "\n" + footer + "\n" + hashtagPart;
+      return bodyPart + "\n" + footerEN + "\n" + hashtagPart;
     }
-    return header + "\n" + cleaned + "\n" + footer;
+    return cleaned + "\n" + footerEN;
   } else {
-    const header = "Osservatorio Tech \u2192 " + OSSERVATORIO_URL;
-    const footer = "\u{1F4CA} Approfondisci su Proof Press \u2192 " + PROOFPRESS_URL;
+    // Footer IT: due righe prima degli hashtag
+    const footerIT =
+      "\u{1F4CA} Approfondisci su Proof Press \u2192 " + PROOFPRESS_URL + "\n" +
+      "Seguici su Base Alpha - L\u2019 Osservatorio Tech di ProofPress \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
-      return header + "\n" + bodyPart + "\n" + footer + "\n" + hashtagPart;
+      return bodyPart + "\n" + footerIT + "\n" + hashtagPart;
     }
-    return header + "\n" + cleaned + "\n" + footer;
+    return cleaned + "\n" + footerIT;
   }
 }
 
-// ── Genera testo post con LLM in stile Gartner ──────────────────────────────
 async function generateLinkedInPostText(
   title: string,
   body: string,
@@ -993,7 +1003,8 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `📊 Approfondisci su Proof Press → https://proofpress.ai\nIscriviti al nostro Osservatorio Tech → https://proofpress.ai/osservatorio-tech`,
+      `📊 Approfondisci su Proof Press → https://proofpress.ai
+Seguici su Base Alpha - L’ Osservatorio Tech di ProofPress → https://lnkd.in/dDT9svDC`,
       "",
       meta.hashtags.join(" ")
     ].join("\n");
