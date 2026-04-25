@@ -69,7 +69,7 @@ const AGENTS = [
     layer: "Acquisizione",
     name: "Source Monitor",
     role: "Monitoraggio continuo",
-    desc: "Scansiona in tempo reale 4.000+ fonti certificate: RSS, API istituzionali, database accademici, social feed e siti di settore. Filtra il rumore e segnala solo i contenuti rilevanti per il verticale editoriale configurato.",
+    desc: "Scansiona in tempo reale 4.000+ fonti certificate*: RSS, API istituzionali, database accademici, social feed e siti di settore. Filtra il rumore e segnala solo i contenuti rilevanti per il verticale editoriale configurato.",
     useCase: "Usato per: alert in tempo reale su nuovi round VC, comunicati istituzionali, paper accademici.",
     metric: "Latenza media: < 90 sec dal publish alla coda di elaborazione.",
     color: "#6366f1",
@@ -111,9 +111,9 @@ const AGENTS = [
     layer: "Analisi",
     name: "Bias Detector",
     role: "Rilevamento bias editoriale",
-    desc: "Analizza il tono, il framing e la scelta lessicale per identificare bias politici, commerciali o culturali. Segnala al team editoriale le aree di potenziale parzialità prima della pubblicazione — senza modificare il testo autonomamente.",
+    desc: "Analizza tono, framing e scelta lessicale rispetto a una baseline neutra calibrata su corpus giornalistico multi-fonte. Non corregge automaticamente: segnala all'editor con score 0–100 e evidenzia i passaggi a rischio. La decisione finale resta umana. Il modello di baseline è auditabile e ricalibrato trimestralmente da un comitato editoriale esterno.",
     useCase: "Usato per: segnalare framing asimmetrico in notizie su M&A, elezioni, regolamentazione AI.",
-    metric: "Recall bias detection: > 0.85 su corpus annotato manualmente (dataset interno 2024).",
+    metric: "Recall bias detection: > 0.85 su corpus annotato manualmente (2024). Baseline ricalibrata ogni trimestre da comitato editoriale indipendente.",
     color: BLUE,
   },
   {
@@ -131,7 +131,7 @@ const AGENTS = [
     layer: "Produzione",
     name: "Article Generator",
     role: "Prima bozza supervisionata",
-    desc: "Produce una prima bozza completa — headline, occhiello, corpo testo, citazioni verificate — che l'editor umano rifinisce prima della pubblicazione. Il tono e lo stile si adattano al profilo editoriale configurato. L'AI è copilota, non sostituto.",
+    desc: "Genera la prima bozza completa dell'articolo (headline, occhiello, corpo, citazioni verificate, attribuzioni alle fonti). La bozza entra obbligatoriamente in revisione editoriale umana prima della certificazione: l'AI propone, l'editor decide e firma. Il tono e lo stile si adattano al profilo editoriale configurato.",
     useCase: "Usato per: accelerare la produzione di 3–5 articoli/giorno per verticale, con revisione editoriale obbligatoria.",
     metric: "Tasso di pubblicazione post-revisione: 78% delle bozze generate (22% richiede riscrittura significativa).",
     color: ORANGE,
@@ -309,22 +309,22 @@ export default function Piattaforma() {
               </div>
 
               <Label>B.2 — Piattaforma Agentica</Label>
-              {/* P1 — Heading senza concatenazione */}
+              {/* MODIFICA 1 — Headline su 3 righe distinte + sotto-headline aggiornato */}
               <h1
-                className="text-5xl md:text-7xl font-black leading-[0.95] tracking-tight mb-8"
+                className="text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-8"
                 style={{ fontFamily: FONT, color: "#0a0a0a" }}
               >
-                12 agenti AI.{" "}
-                <span style={{ color: BLUE }}>Un'unica pipeline.</span>{" "}
-                24/7.
+                <span style={{ display: "block" }}>12 agenti AI specializzati.</span>
+                <span style={{ display: "block", color: BLUE }}>Una pipeline unica.</span>
+                <span style={{ display: "block" }}>Operativa 24/7.</span>
               </h1>
               <p
                 className="text-xl md:text-2xl leading-relaxed max-w-3xl mb-12"
                 style={{ color: "#0a0a0a", opacity: 0.6 }}
               >
-                La piattaforma agentica ProofPress è un'infrastruttura editoriale end-to-end:
-                dall'acquisizione delle fonti alla pubblicazione certificata, 12 agenti AI
-                specializzati operano in parallelo senza interruzioni.
+                Dall'acquisizione delle fonti alla pubblicazione certificata: l'infrastruttura
+                editoriale che produce contenuti verificati in meno di 5 minuti, senza
+                interruzioni, senza compromessi sulla qualità.
               </p>
 
               {/* KPI bar */}
@@ -704,7 +704,7 @@ export default function Piattaforma() {
               ))}
             </div>
 
-            {/* P5 — Takeaway per il board con nota metodologica */}
+            {/* MODIFICA 4 — Takeaway board con 3 metriche specifiche */}
             <div
               className="border rounded-2xl p-8 md:p-10"
               style={{ background: "#fff3ee", borderColor: ORANGE + "30" }}
@@ -713,29 +713,50 @@ export default function Piattaforma() {
                 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3"
                 style={{ color: ORANGE, fontFamily: FONT }}
               >
-                Takeaway per il board
+                Per il Board
               </div>
               <p
-                className="text-base md:text-lg leading-relaxed mb-4"
-                style={{ color: "#0a0a0a", opacity: 0.75, fontFamily: FONT }}
+                className="text-base md:text-lg leading-relaxed mb-6"
+                style={{ color: "#0a0a0a", opacity: 0.85, fontFamily: FONT }}
               >
                 <span style={{ color: ORANGE, fontWeight: 700 }}>L'architettura modulare</span> permette
-                di adottare ProofPress per componenti: si può partire dalla sola pipeline di
-                monitoraggio e certificazione, aggiungendo progressivamente gli agenti di produzione.
-                Il ROI è misurabile dal primo mese —{" "}
-                <span style={{ fontWeight: 700 }}>riduzione del 60–80% dei costi di produzione editoriale</span>{" "}
-                a parità di qualità certificata.
+                adozione incrementale: si parte dalla sola pipeline di monitoraggio e certificazione,
+                aggiungendo progressivamente gli agenti di produzione e distribuzione.
               </p>
-              {/* P5 — Nota metodologica */}
+              {/* 3 metriche specifiche */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {[
+                  { kpi: "−65%", label: "costi unitari per articolo", note: "vs. redazione tradizionale (baseline: €80–120/art.)" },
+                  { kpi: "+4x", label: "throughput editoriale", note: "a parità di organico" },
+                  { kpi: "< 5 min", label: "dal segnale all'articolo certificato", note: "vs. 4–8 ore di workflow tradizionale" },
+                ].map((m) => (
+                  <div
+                    key={m.kpi}
+                    className="rounded-xl p-4"
+                    style={{ background: "rgba(255,85,0,0.06)", border: `1px solid ${ORANGE}20` }}
+                  >
+                    <div className="text-3xl font-black mb-1" style={{ color: ORANGE, fontFamily: FONT }}>{m.kpi}</div>
+                    <div className="text-sm font-bold mb-1" style={{ color: "#0a0a0a", fontFamily: FONT }}>{m.label}</div>
+                    <div className="text-[11px]" style={{ color: "rgba(10,10,10,0.5)", fontFamily: FONT }}>{m.note}</div>
+                  </div>
+                ))}
+              </div>
+              <p
+                className="text-sm leading-relaxed mb-4"
+                style={{ color: "rgba(10,10,10,0.65)", fontFamily: FONT }}
+              >
+                <span style={{ fontWeight: 700 }}>ROI misurabile dal primo mese.</span>{" "}
+                Metriche rilevate sui clienti early-adopter (3 testate pilota, Italia, 2024–2025).
+              </p>
+              {/* Nota metodologica */}
               <div
                 className="text-[12px] leading-relaxed border-t pt-4"
                 style={{ color: "rgba(10,10,10,0.45)", borderColor: ORANGE + "20", fontFamily: FONT }}
               >
-                <span style={{ fontWeight: 700 }}>Nota metodologica:</span> la stima 60–80% è calcolata su
-                3 testate pilota (media tier-2, Italia, 2024–2025) confrontando il costo per articolo pubblicato
-                pre-adozione (redazione tradizionale: 3–5 giornalisti, €80–120/articolo) vs. post-adozione
-                (1 editor + pipeline agentica: €15–35/articolo certificato). Baseline: 6 mesi pre-adozione.
-                Dati disponibili sotto NDA per prospect qualificati.
+                <span style={{ fontWeight: 700 }}>Nota metodologica:</span> la stima −65% è calcolata confrontando
+                il costo per articolo pubblicato pre-adozione (redazione tradizionale: €80–120/articolo) vs.
+                post-adozione (1 editor + pipeline agentica: €15–35/articolo certificato). Baseline: 6 mesi
+                pre-adozione. Metodologia di calcolo e benchmark dettagliati disponibili su richiesta sotto NDA.
               </div>
             </div>
           </Section>
@@ -843,6 +864,27 @@ export default function Piattaforma() {
               ))}
             </div>
 
+            {/* MODIFICA 2 — Box compliance officer */}
+            <div
+              className="border rounded-2xl p-8 mb-8"
+              style={{ background: "#fff3ee", borderColor: ORANGE + "30" }}
+            >
+              <div
+                className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3"
+                style={{ color: ORANGE, fontFamily: FONT }}
+              >
+                Per il Compliance Officer
+              </div>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: "#0a0a0a", opacity: 0.8, fontFamily: FONT }}
+              >
+                Forniamo{" "}
+                <span style={{ fontWeight: 700 }}>DPIA, scheda tecnica AI Act, DPA e modello di responsabilità</span>{" "}
+                in fase di onboarding. La piattaforma è già adottata da realtà soggette a
+                vigilanza Consob e supervisione editoriale ODG.
+              </p>
+            </div>
             {/* Security CTA */}
             <div
               className="border rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-6"
@@ -1019,13 +1061,24 @@ export default function Piattaforma() {
                   </span>
                 </Link>
               </div>
-              {/* P12 — Micro-copy rassicurante Demo live */}
-              <p
-                className="text-[12px]"
-                style={{ color: "rgba(255,255,255,0.35)", fontFamily: FONT }}
+              {/* MODIFICA 8 — Micro-copy rassicurante Demo live */}
+              <div
+                className="mt-4 border rounded-xl px-5 py-4"
+                style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)" }}
               >
-                La demo live apre un ambiente sandbox sicuro su proofpress.tech — nessuna registrazione richiesta, 5 minuti per esplorare la pipeline completa.
-              </p>
+                <p
+                  className="text-[13px] font-semibold mb-1"
+                  style={{ color: "rgba(255,255,255,0.7)", fontFamily: FONT }}
+                >
+                  Demo live ↗ — Ambiente sandbox, no signup richiesto.
+                </p>
+                <p
+                  className="text-[12px]"
+                  style={{ color: "rgba(255,255,255,0.4)", fontFamily: FONT }}
+                >
+                  5 minuti per esplorare un Verification Report reale e una pipeline in esecuzione su proofpress.tech.
+                </p>
+              </div>
             </div>
           </section>
 
