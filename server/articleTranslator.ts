@@ -139,7 +139,7 @@ export async function translateNewsTitle(itemId: number): Promise<boolean> {
     if (!db) throw new Error("DB not available");
 
     const [item] = await db
-      .select({ id: newsItems.id, title: newsItems.title, titleEn: newsItems.titleEn })
+      .select({ id: newsItems.id, title: newsItems.title, summary: newsItems.summary, titleEn: newsItems.titleEn })
       .from(newsItems)
       .where(eq(newsItems.id, itemId))
       .limit(1);
@@ -151,18 +151,24 @@ export async function translateNewsTitle(itemId: number): Promise<boolean> {
       messages: [
         {
           role: "user",
-          content: `Translate this Italian news headline to fluent English for a tech business magazine. Return ONLY a JSON object with key "titleEn".\n\nTitle: ${item.title}`,
+          content: `You are a professional Italian-to-English translator for a tech business magazine. Translate the following Italian news headline and summary to fluent English. Return ONLY a JSON object with keys "titleEn" and "summaryEn".
+
+Title: ${item.title}
+Summary: ${item.summary}`,
         },
       ],
       response_format: {
         type: "json_schema",
         json_schema: {
-          name: "title_translation",
+          name: "news_translation",
           strict: true,
           schema: {
             type: "object",
-            properties: { titleEn: { type: "string" } },
-            required: ["titleEn"],
+            properties: {
+              titleEn: { type: "string" },
+              summaryEn: { type: "string" },
+            },
+            required: ["titleEn", "summaryEn"],
             additionalProperties: false,
           },
         },
@@ -173,13 +179,13 @@ export async function translateNewsTitle(itemId: number): Promise<boolean> {
     const text = (typeof rawContent === "string" ? rawContent : JSON.stringify(rawContent)).trim();
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error("No JSON in response");
-    const { titleEn } = JSON.parse(jsonMatch[0]) as { titleEn: string };
+    const { titleEn, summaryEn } = JSON.parse(jsonMatch[0]) as { titleEn: string; summaryEn: string };
 
-    await db.update(newsItems).set({ titleEn }).where(eq(newsItems.id, itemId));
-    console.log(`[Translator] ✓ NewsItem ${itemId} title translated: "${titleEn.substring(0, 60)}..."`);
+    await db.update(newsItems).set({ titleEn, summaryEn }).where(eq(newsItems.id, itemId));
+    console.log(`[Translator] ✓ NewsItem ${itemId} translated: "${titleEn.substring(0, 60)}..."`);
     return true;
   } catch (err) {
-    console.error(`[Translator] ✗ Failed to translate news title ${itemId}:`, err);
+    console.error(`[Translator] ✗ Failed to translate news item ${itemId}:`, err);
     return false;
   }
 }

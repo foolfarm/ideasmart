@@ -137,8 +137,9 @@ export const newsItems = mysqlTable("news_items", {
   trustScore: float("trustScore"),
   // VERIFY ENGINE: grade (A/B/C/D/F)
   trustGrade: varchar("trustGrade", { length: 1 }),
-  // TRADUZIONE EN: titolo in inglese (generato automaticamente da Claude)
+  // TRADUZIONE EN: titolo e summary in inglese (generati automaticamente da Claude)
   titleEn: varchar("titleEn", { length: 500 }),
+  summaryEn: text("summaryEn"),
 }, (t) => ({
   // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)
   sectionIdx: index("idx_news_section").on(t.section),

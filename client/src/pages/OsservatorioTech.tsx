@@ -185,6 +185,9 @@ function PuntoCard({ item }: {
           <span className="text-[10px]" style={{ color: INK + "40", fontFamily: FONT }}>
             {formatDateIT(item.dateLabel)}
           </span>
+          {item.titleEn && (
+            <span className="text-[8px] font-bold tracking-widest uppercase px-1.5 py-0.5 rounded" style={{ backgroundColor: '#2563eb18', color: '#2563eb', border: '1px solid #2563eb30' }}>EN</span>
+          )}
         </div>
         <h3
           className="text-base font-black leading-snug tracking-tight group-hover:text-[#dc2626] transition-colors"
