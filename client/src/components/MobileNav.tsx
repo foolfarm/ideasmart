@@ -16,20 +16,19 @@ type NavItem =
   | { type: "group"; label: string; icon: string; children: { href: string; label: string; external?: boolean }[] };
 
 const NAV_STRUCTURE: NavItem[] = [
-  // Sezioni Magazine
-  { type: "link", href: "/",                  label: "Magazine",           icon: "📰" },
-  { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech",  icon: "🔭" },
-
-  // Canali
+  // Home con sottomenu canali (specchio LeftSidebar)
   {
     type: "group",
-    label: "Canali",
-    icon: "📡",
+    label: "Home",
+    icon: "🏠",
     children: [
-      { href: "/ai",        label: "AI" },
-      { href: "/startup",   label: "Startup" },
-      { href: "/dealroom",  label: "Dealroom" },
-      { href: "/sondaggi",  label: "Sondaggi" },
+      { href: "/",                  label: "Magazine" },
+      { href: "/ai",                label: "AI" },
+      { href: "/startup",           label: "Startup" },
+      { href: "/dealroom",          label: "Dealroom" },
+      { href: "/osservatorio-tech", label: "Osservatorio Tech" },
+      { href: "/research",          label: "Research" },
+      { href: "/dealflow",          label: "Dealflow" },
     ],
   },
 

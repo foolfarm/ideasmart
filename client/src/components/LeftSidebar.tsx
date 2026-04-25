@@ -3,10 +3,10 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import {
-  Info, Briefcase, Megaphone, PenLine, Mail, User,
+  Info, Briefcase, Megaphone, PenLine, Mail,
   ExternalLink, Download, ChevronRight,
   Newspaper, KeyRound, Building2, CheckCircle, Users,
-  ShieldCheck,
+  ShieldCheck, Home,
 } from "lucide-react";
 
 /* ─── FONT STACK ─────────────────────────────────────────────────────── */
@@ -42,6 +42,21 @@ type NavItem =
   | { type: "group"; label: string; Icon: React.ElementType; children: { href: string; label: string; external?: boolean }[] };
 
 const NAV_STRUCTURE: NavItem[] = [
+  // Home con sottomenu canali
+  {
+    type: "group",
+    label: "Home",
+    Icon: Home,
+    children: [
+      { href: "/",                   label: "Magazine" },
+      { href: "/ai",                 label: "AI" },
+      { href: "/startup",            label: "Startup" },
+      { href: "/dealroom",           label: "Dealroom" },
+      { href: "/osservatorio-tech",  label: "Osservatorio Tech" },
+      { href: "/research",           label: "Research" },
+      { href: "/dealflow",           label: "Dealflow" },
+    ],
+  },
   {
     type: "group",
     label: "Chi Siamo",
@@ -79,7 +94,6 @@ const NAV_STRUCTURE: NavItem[] = [
     ],
   },
   { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
-  { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech", Icon: User },
 ];
 
 /* ─── VOCE SEMPLICE ─────────────────────────────────────────────────── */
