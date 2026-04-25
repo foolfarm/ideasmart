@@ -1,8 +1,9 @@
 /*
  * INFO VERIFY — Estensione 02 di ProofPress Verify™
- * Pagina prodotto dedicata alla certificazione di contenuti informativi aziendali
+ * Landing B2B completa — 12 sezioni
+ * Target: Direzione Comunicazione, Investor Relations, Compliance & Legal, Brand, PA
  */
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
@@ -41,6 +42,27 @@ function Divider() {
   );
 }
 
+/* ─── FAQ ACCORDION ─────────────────────────────────────────────────────── */
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-[#0a0a0a]/8 last:border-0">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-start justify-between gap-4 py-5 text-left"
+      >
+        <span className="text-base font-bold text-[#0a0a0a]" style={{ fontFamily: FONT }}>{q}</span>
+        <span className="flex-shrink-0 text-xl font-light text-[#0a0a0a]/30 mt-0.5">{open ? "−" : "+"}</span>
+      </button>
+      {open && (
+        <div className="pb-5">
+          <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{a}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function InfoVerify() {
   const contactRef = useRef<HTMLDivElement>(null);
   const scrollToContact = () => contactRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -50,8 +72,8 @@ export default function InfoVerify() {
       <LeftSidebar />
       <div className="flex-1 min-w-0">
         <SEOHead
-          title="Info Verify — Certifica documenti e contenuti informativi con ProofPress Verify™"
-          description="Info Verify certifica comunicati stampa, report aziendali, white paper e post social con hash SHA-256 e archiviazione IPFS. Integrità crittografica per ogni documento."
+          title="Info Verify — Certifica documenti e contenuti informativi aziendali con ProofPress Verify™"
+          description="Info Verify certifica comunicati stampa, report aziendali, white paper e documenti corporate con hash SHA-256 e archiviazione IPFS. Compliance AI Act, MAR, eIDAS, GDPR."
           canonical="https://proofpress.ai/proofpress-verify/info"
           ogSiteName="Proof Press"
         />
@@ -68,7 +90,7 @@ export default function InfoVerify() {
             </nav>
           </div>
 
-          {/* HERO */}
+          {/* ─── 1. HERO ─────────────────────────────────────────────────────── */}
           <section className="pt-12 pb-20 md:pt-16 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
               <div className="mb-6 flex flex-wrap gap-2 items-center">
@@ -82,18 +104,24 @@ export default function InfoVerify() {
                   className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border border-[#0a0a0a]/15"
                   style={{ color: "#0a0a0a", opacity: 0.45, fontFamily: FONT }}
                 >
-                  Per Aziende · PR & Comms · Istituzioni
+                  Per Aziende · PR &amp; Comms · Istituzioni
                 </span>
               </div>
               <h1
-                className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-6"
+                className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-4"
                 style={{ fontFamily: FONT }}
               >
                 <span style={{ color: BLUE }}>Info</span> Verify<br />
                 <span className="text-[#0a0a0a]/25">Ogni documento. Certificato.</span>
               </h1>
-              <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-4xl mb-10">
-                Info Verify certifica qualsiasi contenuto informativo: comunicati stampa, report aziendali, white paper, post sui social. Ogni documento riceve un <strong className="text-[#0a0a0a]">certificato crittografico</strong> che prova l'integrità del contenuto nel tempo — immutabile, pubblico, verificabile da chiunque senza intermediari.
+              <p className="text-base font-bold mb-4 max-w-4xl" style={{ color: BLUE, fontFamily: FONT }}>
+                L&apos;estensione corporate del protocollo ProofPress Verify™.
+              </p>
+              <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-4xl mb-4">
+                Info Verify certifica qualsiasi contenuto informativo — comunicati stampa, report aziendali, white paper, post social — con un <strong className="text-[#0a0a0a]">certificato crittografico verificabile da chiunque</strong>, in qualsiasi momento, senza intermediari.
+              </p>
+              <p className="text-base italic text-[#0a0a0a]/45 max-w-3xl mb-10" style={{ fontFamily: FONT }}>
+                I tuoi documenti meritano una prova, non una promessa.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
                 <button
@@ -103,9 +131,16 @@ export default function InfoVerify() {
                 >
                   Richiedi una demo →
                 </button>
+                <button
+                  onClick={() => document.getElementById("destinatario")?.scrollIntoView({ behavior: "smooth" })}
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest border border-[#0a0a0a]/20 hover:border-[#0984e3] transition-colors text-center"
+                  style={{ fontFamily: FONT }}
+                >
+                  Vedi un comunicato certificato →
+                </button>
                 <Link
                   href="/proofpress-verify"
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-center border border-[#0a0a0a]/20 hover:border-[#0a0a0a]/50 transition-colors"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-center border border-[#0a0a0a]/10 hover:border-[#0a0a0a]/30 transition-colors text-[#0a0a0a]/50"
                   style={{ fontFamily: FONT }}
                 >
                   ← Tutte le estensioni
@@ -116,9 +151,41 @@ export default function InfoVerify() {
 
           <Divider />
 
-          {/* CASI D'USO */}
-          <Section id="use-case">
-            <Label>Casi d'uso</Label>
+          {/* ─── 2. IL PROBLEMA CORPORATE ────────────────────────────────────── */}
+          <Section id="problema">
+            <Label>Il problema</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
+              L&apos;informazione aziendale ha un problema di fiducia.<br />
+              <span className="text-[#0a0a0a]/30">E nessuno la sta risolvendo.</span>
+            </h2>
+            <div className="max-w-3xl mb-12">
+              <p className="text-lg leading-relaxed text-[#0a0a0a]/65 mb-6">
+                Solo il <strong className="text-[#0a0a0a]">51% dei consumatori si fida della comunicazione aziendale</strong> (Edelman Trust Barometer 2024). Per le PR, gli investor relations e la comunicazione istituzionale, il problema non è più <em>produrre</em> contenuti — è <em>dimostrarne l&apos;integrità</em> a chi li riceve.
+              </p>
+              <p className="text-lg leading-relaxed text-[#0a0a0a]/65 mb-6">
+                Un comunicato stampa, una volta inviato, può essere modificato, riformulato, decontestualizzato. Un report finanziario può circolare in versioni alterate. Un post social può essere attribuito a un brand che non l&apos;ha mai pubblicato. Oggi non esiste una <strong className="text-[#0a0a0a]">catena di custodia digitale</strong> per l&apos;informazione aziendale.
+              </p>
+              <p className="text-lg font-bold text-[#0a0a0a]">Info Verify è quella catena di custodia.</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                { label: "Comunicati stampa modificati post-invio", sub: "Nessuna prova dell'originale" },
+                { label: "Report distribuiti su canali non controllati", sub: "Nessuna catena di custodia" },
+                { label: "Contenuti AI-generated indistinguibili dagli umani", sub: "Nessun layer di accountability" },
+              ].map(({ label, sub }) => (
+                <div key={label} className="p-5 border border-[#0a0a0a]/8 bg-[#fafafa]">
+                  <p className="text-sm font-bold text-[#0a0a0a] mb-1">{label}</p>
+                  <p className="text-xs text-[#0a0a0a]/45">{sub}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 3. CASI D'USO ───────────────────────────────────────────────── */}
+          <Section id="use-case" bg="#f8f8f6">
+            <Label>Casi d&apos;uso</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
               Ogni documento ha un valore.<br />Info Verify lo rende dimostrabile.
             </h2>
@@ -127,7 +194,7 @@ export default function InfoVerify() {
                 {
                   icon: "📢",
                   title: "Comunicati stampa",
-                  text: "Un comunicato stampa certificato con Info Verify porta un hash crittografico che prova che il contenuto non è stato alterato dopo la pubblicazione. I giornalisti possono verificare l'integrità del documento in autonomia.",
+                  text: "Un comunicato certificato porta un hash crittografico che prova che il contenuto non è stato alterato dopo la pubblicazione. I giornalisti possono verificare l'integrità del documento in autonomia.",
                 },
                 {
                   icon: "📊",
@@ -140,12 +207,12 @@ export default function InfoVerify() {
                   text: "Certifica i contenuti social prima della pubblicazione. Il certificato Info Verify prova che il contenuto originale non è stato modificato — utile per brand che operano in settori regolamentati o ad alta visibilità.",
                 },
                 {
-                  icon: "⚖️",
-                  title: "Documenti legali e compliance",
-                  text: "Per aziende che operano in settori regolamentati, Info Verify fornisce un layer di accountability documentale: ogni documento certificato ha una prova crittografica di integrità che può essere presentata in contesti legali o di audit.",
+                  icon: "📄",
+                  title: "Atti amministrativi e comunicazioni ufficiali",
+                  text: "Per PA e istituzioni: bandi, comunicazioni ufficiali, atti distribuiti in formato digitale ricevono un layer di accountability pubblica che ogni cittadino può verificare in autonomia.",
                 },
               ].map(({ icon, title, text }) => (
-                <div key={title} className="p-6 border border-[#0a0a0a]/8">
+                <div key={title} className="p-6 border border-[#0a0a0a]/8 bg-white">
                   <div className="text-2xl mb-3">{icon}</div>
                   <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
                   <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
@@ -156,18 +223,115 @@ export default function InfoVerify() {
 
           <Divider />
 
-          {/* COME FUNZIONA */}
-          <Section bg="#f8f8f6" id="come-funziona">
+          {/* ─── 4. COMPLIANCE & REGULATORY ──────────────────────────────────── */}
+          <Section id="compliance">
+            <Label>Compliance &amp; Regulatory</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-6" style={{ fontFamily: FONT }}>
+              Quando l&apos;integrità documentale è un obbligo,<br />
+              <span className="text-[#0a0a0a]/30">non un&apos;opzione.</span>
+            </h2>
+            <p className="text-lg leading-relaxed text-[#0a0a0a]/65 max-w-3xl mb-12">
+              Nei settori regolamentati, dimostrare che un documento non è stato alterato dopo la pubblicazione non è una buona pratica — è un requisito normativo. Info Verify fornisce un layer di accountability crittografica compatibile con i principali quadri europei.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              {[
+                {
+                  icon: "🇪🇺",
+                  title: "AI Act (Regolamento UE 2024/1689)",
+                  text: "Per organizzazioni che usano AI nella produzione di contenuti, l'AI Act richiede tracciabilità e accountability. Info Verify documenta ogni claim, la fonte di corroborazione e la pipeline di verifica.",
+                },
+                {
+                  icon: "📈",
+                  title: "MAR — Market Abuse Regulation",
+                  text: "Per emittenti quotati e investor relations: ogni comunicato price-sensitive può essere certificato con timestamp crittografico immutabile, prova della versione ufficiale al momento della diffusione.",
+                },
+                {
+                  icon: "🔐",
+                  title: "eIDAS 2.0",
+                  text: "Allineato ai principi di firma elettronica e sigillo qualificato: il CID IPFS + hash SHA-256 fornisce evidenza dell'integrità documentale opponibile in contesti di audit.",
+                },
+                {
+                  icon: "📋",
+                  title: "GDPR — Catena di custodia",
+                  text: "Per comunicazioni che contengono dati personali, Info Verify documenta la versione esatta distribuita e a chi, senza esporre il contenuto: l'hash è pubblico, il documento resta privato.",
+                },
+              ].map(({ icon, title, text }) => (
+                <div key={title} className="p-6 border-l-4 border-[#0984e3] bg-[#f0f7ff]">
+                  <div className="text-2xl mb-3">{icon}</div>
+                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
+                  <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={scrollToContact}
+              className="px-8 py-3 text-sm font-bold uppercase tracking-widest border transition-colors"
+              style={{ borderColor: BLUE, color: BLUE, fontFamily: FONT }}
+            >
+              Parla con il nostro team compliance →
+            </button>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 5. PER CHI È ────────────────────────────────────────────────── */}
+          <Section id="per-chi" bg="#f8f8f6">
+            <Label>Per chi è</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
+              Per chi comunica, per chi rendiconta,<br />
+              <span className="text-[#0a0a0a]/30">per chi deve dimostrarlo.</span>
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: "🏢",
+                  title: "Direzione Comunicazione & PR",
+                  text: "Ogni comunicato stampa esce con un certificato crittografico. I giornalisti che lo ricevono possono verificare che la versione che hanno è quella ufficiale. Nessun rischio di citazioni decontestualizzate o versioni alterate in circolazione.",
+                },
+                {
+                  icon: "📊",
+                  title: "Investor Relations",
+                  text: "Comunicati price-sensitive, presentazioni agli analisti, report trimestrali: ogni documento finanziario riceve un timestamp immutabile. Per board, regolatori e stakeholder, c'è sempre una versione ufficiale verificabile.",
+                },
+                {
+                  icon: "⚖️",
+                  title: "Compliance & Legal",
+                  text: "Per audit interni, contenziosi, ispezioni regolatorie: una prova crittografica della versione esatta di un documento al momento della pubblicazione. Sostituisce procedure di archiviazione manuale costose e fragili.",
+                },
+                {
+                  icon: "🎯",
+                  title: "Brand & Marketing",
+                  text: "Ogni post social, white paper, contenuto editoriale prodotto dal brand viene certificato prima della pubblicazione. Se qualcuno attribuisce al brand contenuti non autentici, c'è una prova pubblica della vera produzione del brand.",
+                },
+                {
+                  icon: "🏛️",
+                  title: "Pubblica Amministrazione",
+                  text: "Comunicazioni ufficiali, bandi, atti amministrativi distribuiti in formato digitale: Info Verify aggiunge un layer di accountability pubblica che ogni cittadino può verificare in autonomia.",
+                },
+              ].map(({ icon, title, text }) => (
+                <div key={title} className="p-6 border border-[#0a0a0a]/8 bg-white">
+                  <div className="text-2xl mb-3">{icon}</div>
+                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
+                  <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 6. COME FUNZIONA ────────────────────────────────────────────── */}
+          <Section id="come-funziona">
             <Label>Come funziona</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
               Carica. Certifica. Condividi.
             </h2>
-            <div className="space-y-8">
+            <div className="space-y-8 mb-10">
               {[
                 {
                   step: "01",
                   title: "Carica il documento",
-                  text: "Carica il documento in formato testo, PDF o HTML. Il sistema accetta comunicati stampa, report, white paper, post social e qualsiasi contenuto informativo strutturato.",
+                  text: "Carica il documento in formato PDF, DOCX, HTML o Markdown. Il sistema accetta comunicati stampa, report, white paper, post social e qualsiasi contenuto informativo strutturato.",
                 },
                 {
                   step: "02",
@@ -196,11 +360,296 @@ export default function InfoVerify() {
                 </div>
               ))}
             </div>
+            <p className="text-sm text-[#0a0a0a]/40 border-t border-[#0a0a0a]/8 pt-6">
+              Questa è la pipeline applicata all&apos;informazione aziendale. Per la specifica completa del protocollo, vedi →{" "}
+              <Link href="/proofpress-verify" className="underline hover:text-[#0984e3] transition-colors">
+                ProofPress Verify™ — Il protocollo
+              </Link>
+            </p>
           </Section>
 
           <Divider />
 
-          {/* CTA FINALE */}
+          {/* ─── 7. INTEGRAZIONE E API ───────────────────────────────────────── */}
+          <Section id="integrazione" bg="#f8f8f6">
+            <Label>Integrazione</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-6" style={{ fontFamily: FONT }}>
+              Si integra con il modo in cui già lavori.
+            </h2>
+            <p className="text-lg leading-relaxed text-[#0a0a0a]/65 max-w-3xl mb-12">
+              Info Verify non chiede di cambiare i tuoi processi. Si innesta sul tuo flusso di approvazione esistente e certifica i documenti al momento della pubblicazione.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  icon: "🔌",
+                  title: "REST API",
+                  text: "Endpoint dedicati per certificazione singola, batch, recupero del Verification Report e verifica del CID. Documentazione OpenAPI completa.",
+                },
+                {
+                  icon: "⚡",
+                  title: "Webhook su pubblicazione",
+                  text: "Configura un webhook sul tuo CMS o DMS: ogni documento in stato \"publish\" viene automaticamente certificato senza intervento manuale.",
+                },
+                {
+                  icon: "🔗",
+                  title: "Connettori nativi",
+                  text: "Disponibili o in roadmap per SharePoint, Confluence, Google Drive, Box, WordPress, Drupal, Adobe Experience Manager.",
+                },
+                {
+                  icon: "🏷️",
+                  title: "SDK & Embedding",
+                  text: "Componente embeddabile per aggiungere il badge \"Verified by Info Verify\" su sito, comunicato, presentazione PDF o email.",
+                },
+              ].map(({ icon, title, text }) => (
+                <div key={title} className="p-6 border border-[#0a0a0a]/8 bg-white">
+                  <div className="text-2xl mb-3">{icon}</div>
+                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
+                  <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 8. COSA VEDE IL DESTINATARIO ────────────────────────────────── */}
+          <Section id="destinatario">
+            <Label>Verify in azione</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
+              Cosa vede chi riceve un tuo documento.
+            </h2>
+            <div className="border border-[#0a0a0a]/8 rounded-xl overflow-hidden mb-8">
+              {/* Mockup comunicato */}
+              <div className="bg-[#f0f7ff] border-b border-[#0984e3]/20 px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white rounded"
+                    style={{ background: BLUE, fontFamily: FONT }}
+                  >
+                    ✓ Verified by Info Verify · Grade A
+                  </div>
+                  <span className="text-xs text-[#0a0a0a]/50 font-mono">CID: bafkrei…a7f2</span>
+                </div>
+                <span className="text-xs text-[#0a0a0a]/40">Documento originale, immutabile dal 22/04/2026 14:30 CET</span>
+              </div>
+              <div className="px-6 py-6 bg-white">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/30 mb-2">Comunicato Stampa — Esempio</p>
+                    <h3 className="text-xl font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>
+                      Azienda XYZ annuncia partnership strategica con il Gruppo ABC
+                    </h3>
+                    <p className="text-sm text-[#0a0a0a]/55 leading-relaxed">
+                      Milano, 22 aprile 2026 — Azienda XYZ S.p.A. ha annunciato oggi la firma di un accordo di partnership strategica con il Gruppo ABC per lo sviluppo di soluzioni di intelligenza artificiale nel settore finanziario...
+                    </p>
+                  </div>
+                  <div className="md:w-64 border border-[#0984e3]/20 rounded-lg p-4 bg-[#f0f7ff] flex-shrink-0">
+                    <p className="text-xs font-bold text-[#0984e3] mb-3 uppercase tracking-widest">Verification Report</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#0a0a0a]/50">Claim verificati</span>
+                        <span className="font-bold text-[#0a0a0a]">12/12</span>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#0a0a0a]/50">Trust Score</span>
+                        <span className="font-bold" style={{ color: BLUE }}>94/100</span>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#0a0a0a]/50">Grade</span>
+                        <span className="font-bold text-green-600">A — Pubblica</span>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#0a0a0a]/50">Archiviato su</span>
+                        <span className="font-bold text-[#0a0a0a]">IPFS</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={scrollToContact}
+                      className="mt-4 w-full text-xs font-bold py-2 text-center border transition-colors"
+                      style={{ borderColor: BLUE, color: BLUE, fontFamily: FONT }}
+                    >
+                      Verifica indipendente →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="text-base italic text-[#0a0a0a]/55 max-w-2xl" style={{ fontFamily: FONT }}>
+              Il destinatario non deve fidarsi di te. Può verificare in autonomia. <strong className="text-[#0a0a0a]">È questo che cambia tutto.</strong>
+            </p>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 9. PRICING ──────────────────────────────────────────────────── */}
+          <Section id="pricing" bg="#f8f8f6">
+            <Label>Modelli di servizio</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
+              Tre modi per portare Info Verify in azienda.
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: "Pay-per-document",
+                  sub: "Per iniziare senza commitment",
+                  price: "A partire da € XX/documento",
+                  features: [
+                    "Certificazione singola",
+                    "Verification Report completo",
+                    "Badge embeddabile",
+                    "Archiviazione IPFS",
+                  ],
+                  cta: "Inizia subito",
+                  highlight: false,
+                },
+                {
+                  title: "Piano Business",
+                  sub: "Volume mensile, tariffa flat",
+                  price: "A partire da € XXX/mese",
+                  features: [
+                    "Volume mensile incluso",
+                    "Integrazione API",
+                    "Dashboard analytics",
+                    "Supporto dedicato",
+                  ],
+                  cta: "Richiedi demo",
+                  highlight: true,
+                },
+                {
+                  title: "Enterprise & White-label",
+                  sub: "Licenza completa del protocollo",
+                  price: "Su preventivo",
+                  features: [
+                    "SLA dedicato",
+                    "Deployment on-premise o cloud privato",
+                    "Branding personalizzato",
+                    "Integrazione DMS/ECM",
+                  ],
+                  cta: "Contattaci",
+                  highlight: false,
+                },
+              ].map(({ title, sub, price, features, cta, highlight }) => (
+                <div
+                  key={title}
+                  className="p-6 border flex flex-col"
+                  style={{
+                    borderColor: highlight ? BLUE : "rgba(10,10,10,0.1)",
+                    background: highlight ? `${BLUE}08` : "#ffffff",
+                  }}
+                >
+                  {highlight && (
+                    <div
+                      className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 mb-4 self-start"
+                      style={{ background: BLUE, color: "#fff", fontFamily: FONT }}
+                    >
+                      Più scelto
+                    </div>
+                  )}
+                  <h3 className="text-lg font-black text-[#0a0a0a] mb-1" style={{ fontFamily: FONT }}>{title}</h3>
+                  <p className="text-xs text-[#0a0a0a]/45 mb-4">{sub}</p>
+                  <p className="text-base font-bold mb-6" style={{ color: BLUE, fontFamily: FONT }}>{price}</p>
+                  <ul className="space-y-2 mb-8 flex-1">
+                    {features.map(f => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-[#0a0a0a]/65">
+                        <span style={{ color: BLUE }}>✓</span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={scrollToContact}
+                    className="w-full py-3 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
+                    style={{
+                      background: highlight ? BLUE : "transparent",
+                      color: highlight ? "#fff" : BLUE,
+                      border: highlight ? "none" : `1px solid ${BLUE}`,
+                      fontFamily: FONT,
+                    }}
+                  >
+                    {cta} →
+                  </button>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-[#0a0a0a]/35 mt-6">* I prezzi definitivi sono disponibili su richiesta. I range indicati sono orientativi e soggetti a variazione in base al volume e alla configurazione.</p>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 10. PROVA SOCIALE ───────────────────────────────────────────── */}
+          <Section id="social-proof">
+            <Label>Già attivi</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
+              Organizzazioni che hanno scelto<br />
+              <span className="text-[#0a0a0a]/30">la prova invece della promessa.</span>
+            </h2>
+            <div className="border border-[#0984e3]/20 bg-[#f0f7ff] p-8 rounded-xl mb-8">
+              <p className="text-sm font-bold uppercase tracking-widest text-[#0984e3] mb-4">Beta Program</p>
+              <p className="text-base leading-relaxed text-[#0a0a0a]/70 mb-4">
+                Info Verify è in beta program con un gruppo selezionato di organizzazioni nei settori PR, finance e Pubblica Amministrazione. Apertura general availability: <strong className="text-[#0a0a0a]">Q3 2026</strong>.
+              </p>
+              <p className="text-sm text-[#0a0a0a]/50">
+                Partecipare al beta program significa accedere al servizio prima del lancio pubblico, a condizioni preferenziali, con supporto diretto del team tecnico.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                { num: "37+", label: "Documenti già certificati e archiviati su IPFS" },
+                { num: "3", label: "Settori attivi: PR, Finance, Pubblica Amministrazione" },
+                { num: "100%", label: "Dei documenti certificati verificabili pubblicamente" },
+              ].map(({ num, label }) => (
+                <div key={label} className="p-5 border border-[#0a0a0a]/8 text-center">
+                  <div className="text-3xl font-black mb-2" style={{ color: BLUE, fontFamily: FONT }}>{num}</div>
+                  <p className="text-xs text-[#0a0a0a]/55">{label}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 11. FAQ CORPORATE ───────────────────────────────────────────── */}
+          <Section id="faq" bg="#f8f8f6">
+            <Label>Domande frequenti</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
+              Le domande del decisore corporate.
+            </h2>
+            <div className="max-w-3xl">
+              {[
+                {
+                  q: "Posso certificare un PDF già esistente nel mio sistema?",
+                  a: "Sì. Info Verify accetta upload di documenti in PDF, DOCX, HTML, Markdown e testo. Il sistema produce hash e Verification Report indipendentemente dal formato.",
+                },
+                {
+                  q: "Il documento originale resta privato?",
+                  a: "A scelta. Il CID IPFS è sempre pubblico (è la prova). Il documento può essere archiviato su IPFS pubblico, su IPFS privato, oppure può restare sui vostri sistemi mentre solo l'hash viene reso pubblico.",
+                },
+                {
+                  q: "Quanto tempo richiede la certificazione di un documento?",
+                  a: "Tipicamente meno di 3 minuti per un comunicato di lunghezza standard. La certificazione batch è disponibile via API per volumi superiori.",
+                },
+                {
+                  q: "Si integra con il nostro DMS/CMS?",
+                  a: "Disponibili connettori per SharePoint, Google Drive, Box, WordPress, Drupal. Per altre piattaforme: REST API documentata, webhook configurabili e supporto dedicato in fase di onboarding.",
+                },
+                {
+                  q: "Cosa succede se modifichiamo il documento dopo la certificazione?",
+                  a: "L'hash cambia. Una nuova certificazione produce un nuovo CID. La storia di tutte le versioni resta verificabile pubblicamente. Il documento originale non è alterabile.",
+                },
+                {
+                  q: "Info Verify ha valore probatorio in tribunale?",
+                  a: "Info Verify produce evidenze tecniche (hash crittografico SHA-256, CID IPFS, timestamp) compatibili con i principi di eIDAS 2.0 sulla firma elettronica e il sigillo qualificato. Il valore probatorio specifico va valutato caso per caso con il vostro consulente legale, ma l'evidenza tecnica è quella canonica.",
+                },
+              ].map(({ q, a }) => (
+                <FAQItem key={q} q={q} a={a} />
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ─── 12. FORM DI CONTATTO ────────────────────────────────────────── */}
           <section id="contact" className="py-24 md:py-32" style={{ background: "#f5f5f7" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8" ref={contactRef}>
               <div className="text-center mb-12">
@@ -216,13 +665,13 @@ export default function InfoVerify() {
                   Scrivici per integrare Info Verify nella tua organizzazione, per richiedere una demo personalizzata, o per esplorare partnership tecnologiche.
                 </p>
               </div>
-              <ContactForm origine="Info Verify" />
+              <ContactForm origine="Info Verify — /proofpress-verify/info" />
             </div>
           </section>
 
           <div className="py-12 text-center" style={{ background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
             <p className="text-sm text-white/30 italic max-w-2xl mx-auto px-5" style={{ fontFamily: FONT }}>
-              "Non promettiamo verità. Forniamo evidenza. La differenza è tutto."
+              &ldquo;Non promettiamo verità. Forniamo evidenza. La differenza è tutto.&rdquo;
             </p>
           </div>
           <SharedPageFooter />

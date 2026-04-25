@@ -51,9 +51,10 @@ const NAV_STRUCTURE: NavItem[] = [
     children: [
       { href: "/offertacommerciale",    label: "ProofPress Creator" },
       { href: "/newsletter-agentica",   label: "ProofPress Newsletter" },
-      { href: "/proofpress-verify",     label: "News Verify" },
-      { href: "/verify-business",       label: "Info Verify" },
-      { href: "/verify-email",          label: "Email Verify" },
+      { href: "/proofpress-verify",      label: "ProofPress Verify™" },
+      { href: "/proofpress-verify/news",   label: "  └ News Verify" },
+      { href: "/proofpress-verify/info",   label: "  └ Info Verify" },
+      { href: "/proofpress-verify/email",  label: "  └ Email Verify" },
       {
         href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf",
         label: "Download Brochure",

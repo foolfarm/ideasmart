@@ -62,8 +62,10 @@ export default function Navbar() {
   const offertaItems = [
     { label: "Redazione Agentica", href: "/offertacommerciale", desc: "Crea il tuo giornale con Agenti AI — online in 24 ore" },
     { label: "Newsletter Agentica", href: "/newsletter-agentica", desc: "Newsletter quotidiana generata e certificata da AI" },
-    { label: "Certificazione Notizie", href: "/proofpress-verify", desc: "ProofPress Verify — verifica e hash crittografico per ogni articolo" },
-    { label: "Certificazione Informazioni Aziende", href: "/verify-business", desc: "Information Integrity Assurance — CSRD, AI Act, DSA" },
+    { label: "ProofPress Verify™", href: "/proofpress-verify", desc: "Il protocollo universale di certificazione crittografica" },
+    { label: "  └ News Verify", href: "/proofpress-verify/news", desc: "Certificazione articoli e contenuti giornalistici" },
+    { label: "  └ Info Verify", href: "/proofpress-verify/info", desc: "Certificazione documenti aziendali — AI Act, MAR, eIDAS" },
+    { label: "  └ Email Verify", href: "/proofpress-verify/email", desc: "Certificazione email e comunicazioni digitali" },
     { label: "Download Brochure", href: "https://proofpress.ai/brochure", desc: "Scarica la presentazione completa di ProofPress", external: true },
   ];
 
