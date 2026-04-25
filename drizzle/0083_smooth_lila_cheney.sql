@@ -1,0 +1,1 @@
+ALTER TABLE `news_items` ADD `titleEn` varchar(500);

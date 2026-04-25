@@ -5,12 +5,14 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { useTranslation } from "react-i18next";
 
 type SectionKey = "ai" | "startup";
 
 interface TickerItem {
   id: number;
   title: string;
+  titleEn?: string | null;
   section: SectionKey;
 }
 
@@ -24,6 +26,8 @@ export default function BreakingNewsTicker() {
   const animRef = useRef<number | null>(null);
   const posRef = useRef(0);
   const pausedRef = useRef(false);
+  const { i18n } = useTranslation();
+  const isEN = i18n.language === "en";
 
   // Solo AI NEWS e STARTUP NEWS
   const { data: aiNews }      = trpc.news.getLatest.useQuery({ limit: 6, section: "ai" });
@@ -39,7 +43,7 @@ export default function BreakingNewsTicker() {
   for (let i = 0; i < maxLen; i++) {
     for (const [sec, data] of sources) {
       const item = (data || [])[i];
-      if (item) allItems.push({ id: item.id, title: item.title, section: sec });
+      if (item) allItems.push({ id: item.id, title: item.title, titleEn: (item as any).titleEn, section: sec });
     }
   }
 
@@ -117,7 +121,7 @@ export default function BreakingNewsTicker() {
                       className="text-xs text-[#1d1d1f]/70 hover:text-[#1d1d1f] transition-colors cursor-pointer"
                       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}
                     >
-                      {item.title}
+                      {isEN && item.titleEn ? item.titleEn : item.title}
                     </span>
                   </Link>
                   <span className="text-[#1d1d1f]/25 text-xs mx-1">·</span>

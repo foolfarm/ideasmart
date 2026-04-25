@@ -221,7 +221,7 @@ const normalizeResponseFormat = ({
 // ─── Provider: Anthropic Claude ──────────────────────────────────────────────
 
 const CLAUDE_MODEL = "claude-sonnet-4-5";
-const CLAUDE_HAIKU_MODEL = "claude-3-5-haiku-20241022"; // Modello veloce ed economico per classificazione/summarizzazione
+const CLAUDE_HAIKU_MODEL = "claude-haiku-4-5"; // Modello veloce ed economico per classificazione/summarizzazione
 const CLAUDE_MAX_TOKENS = 8192;
 
 /**
