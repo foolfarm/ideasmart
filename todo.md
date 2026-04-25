@@ -3372,3 +3372,13 @@
 - [x] client/src/pages/verify/Dashboard.tsx — dashboard con piano, consumo, API key manager
 - [x] client/src/pages/verify/Join.tsx — onboarding self-service con trial 14 giorni
 - [x] Route /verify/dashboard e /verify/join registrate in App.tsx
+
+## Modifiche Post LinkedIn (25 Apr 2026)
+- [x] Aggiunta funzione wrapPostWithHeader in linkedinPublisher.ts
+- [x] Header IT: "Osservatorio Tech → https://lnkd.in/dDT9svDC" in apertura di ogni post
+- [x] Footer IT: "📊 Approfondisci su Proof Press → https://proofpress.ai" in chiusura
+- [x] Header EN: "Tech Observatory → https://lnkd.in/dDT9svDC" in apertura slot EN
+- [x] Footer EN: "📊 Learn more on ProofPress → https://proofpress.ai" in chiusura slot EN
+- [x] Applicata a tutti i percorsi: generateLinkedInPostText, AI Tool Radar, Startup Radar
+- [x] Rimossi vecchi footer duplicati dai prompt LLM
+- [x] TypeScript: 0 errori

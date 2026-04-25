@@ -287,10 +287,9 @@ Link: URL diretto
 
 Trend: 1 insight su cosa emerge (max 2 righe)
 
-Segui \u2192 proofpress.ai/startup
-#Startup #AI #VentureCapital #Proof Press
+#Startup #AI #VentureCapital #ProofPress
 
-Andrea Cinelli | ProofPress Magazine | proofpress.ai
+Andrea Cinelli | ProofPress Magazine
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
 
@@ -312,7 +311,7 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
     // Aggiungi firma se mancante
     if (!text.includes('proofpress.ai')) {
-      text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
+      text += '\n\nAndrea Cinelli | ProofPress Magazine';
     }
   }
   return text;
