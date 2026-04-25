@@ -1,8 +1,9 @@
 /**
- * Per Giornalisti e Testate Online — Landing Page di vendita v2
- * 14 sezioni: Hero, Il Numero, Il Problema, La Soluzione, Come Funziona,
- * Cosa Ottieni, Prove, Agent Giornalisti (NUOVA), Fai Due Conti, Pricing,
- * Revenue Share, Casi d'Uso, FAQ, CTA Finale
+ * Per Giornalisti e Testate Online — Landing Page di vendita v3
+ * Modifiche v3: titolo hero con ProofPress in rosso, sottotitolo semplificato,
+ * 2 CTA (rimozione "Scopri di più"), tabella confronto 10x, pricing nella tabella piani,
+ * sezione social proof anonima, badge "5-7 giorni", Agent box semplificati + Custom box,
+ * microcopy aggiornato.
  * Palette: bianco (#ffffff), nero (#0a0a0a), crema (#f5f5f7), accento rosso (#dc2626)
  */
 import SEOHead from "@/components/SEOHead";
@@ -42,12 +43,13 @@ function Divider() {
    ════════════════════════════════════════════════════════════════════════ */
 export default function PerGiornalisti() {
   const scrollToHow = () => document.getElementById("come-funziona")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToVideo = () => document.getElementById("video-section")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <>
       <SEOHead
         title="Proof Press — La Redazione AI per Giornalisti e Testate Online | Da €500/mese"
-        description="Lancia la tua testata online con una redazione AI. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. 10-15 articoli/giorno da €500/mese. Risparmi fino a €560k/anno rispetto a una redazione tradizionale."
+        description="Lancia la tua testata online con una redazione AI. Agent Giornalisti (giornalisti AI specializzati per settore), le tue fonti, il tuo tono. 10-15 articoli/giorno da €500/mese. Risparmi fino a €560k/anno rispetto a una redazione tradizionale."
         canonical="https://proofpress.ai/offertacommerciale"
         ogSiteName="Proof Press"
       />
@@ -61,42 +63,47 @@ export default function PerGiornalisti() {
         {/* ═══ SEZIONE 1 — HERO ═══ */}
         <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
           <div className="max-w-5xl mx-auto px-5 md:px-8">
-            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-              {/* Testo hero */}
-              <div className="flex-1 min-w-0">
-                <Label accent>Per Freelancer, Giornalisti e Testate Online</Label>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
-                  ProofPress Creator<br />
-                  <span className="text-[#0a0a0a]/25">Il Giornale Che si Scrive da Solo.</span>
-                </h1>
-                <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-4xl">
-                  Creiamo Redazioni Agentiche Tailor Made.
-                </p>
-                <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
-                  Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
-                </p>
-                <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                  <a href="https://proofpress.tech/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block" style={{ background: "#dc2626", borderRadius: 0 }}>
-                    Guarda una demo →
-                  </a>
-                  <button onClick={scrollToHow} className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white" style={{ borderRadius: 0 }}>
-                    Guarda come funziona ↓
-                  </button>
-                  <a href="https://proofpress.ai/piattaforma" target="_blank" rel="noopener noreferrer" className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#dc2626] border-2 border-[#dc2626] transition-all duration-200 hover:bg-[#dc2626] hover:text-white inline-block" style={{ borderRadius: 0 }}>
-                    Scopri di più →
-                  </a>
-                </div>
-                <p className="mt-5 text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
-                  Setup in pochi giorni · Nessun vincolo a lungo termine · Da €500/mese
-                </p>
+            <div className="flex flex-col gap-8">
+              <Label accent>Per Freelancer, Giornalisti e Testate Online</Label>
+              {/* Titolo hero: ProofPress in rosso, poi a capo */}
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a]">
+                <span style={{ color: "#dc2626" }}>ProofPress</span> Creator<br />
+                <span className="text-[#0a0a0a]/25">Il Giornale<br />Che si Scrive da Solo.</span>
+              </h1>
+              {/* Sottotitolo semplificato — niente gerghi */}
+              <p className="text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-4xl">
+                Costruiamo redazioni AI su misura per la tua testata.<br />
+                Tu dirigi, gli agenti scrivono, verificano e pubblicano.
+              </p>
+              <p className="text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
+                Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale. Agent Giornalisti (giornalisti AI specializzati per settore), le tue fonti, il tuo tono — sotto la tua direzione.
+              </p>
+              {/* 2 CTA — rimossa "Scopri di più" */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="#contatti"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block text-center"
+                  style={{ background: "#dc2626", borderRadius: 0 }}
+                >
+                  Prenota una demo gratuita →
+                </a>
+                <button
+                  onClick={scrollToVideo}
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] border-2 border-[#0a0a0a] transition-all duration-200 hover:bg-[#0a0a0a] hover:text-white"
+                  style={{ borderRadius: 0 }}
+                >
+                  Guarda il video (90s) ↓
+                </button>
               </div>
-
+              <p className="text-[13px] text-[#0a0a0a]/35" style={{ fontFamily: FONT }}>
+                Setup in pochi giorni · Nessun vincolo a lungo termine · Da €500/mese
+              </p>
             </div>
           </div>
         </section>
 
         {/* ═══ SEZIONE VIDEO ═══ */}
-        <section className="py-16 md:py-20" style={{ background: "#0a0a0a" }}>
+        <section id="video-section" className="py-16 md:py-20" style={{ background: "#0a0a0a" }}>
           <div className="max-w-5xl mx-auto px-5 md:px-8">
             <div className="mb-8 text-center">
               <span
@@ -106,7 +113,7 @@ export default function PerGiornalisti() {
                 ProofPress Creator · In Pochi Secondi
               </span>
               <h2 className="mt-3 text-2xl md:text-3xl font-black text-white" style={{ fontFamily: FONT }}>
-                Crea un Giornale nell’Era AI.
+                Crea un Giornale nell'Era AI.
               </h2>
             </div>
             <div
@@ -130,7 +137,7 @@ export default function PerGiornalisti() {
           </div>
         </section>
 
-        {/* ═══ SEZIONE 2 — IL NUMERO CHE CONTA ═══ */}
+        {/* ═══ SEZIONE 2 — IL NUMERO CHE CONTA + TABELLA CONFRONTO ═══ */}
         <section className="py-20 md:py-24" style={{ background: "#0a0a0a" }}>
           <div className="max-w-5xl mx-auto px-5 md:px-8 text-center">
             <div className="text-7xl md:text-9xl font-black text-white tracking-tight">10x</div>
@@ -140,6 +147,30 @@ export default function PerGiornalisti() {
             <p className="mt-2 text-lg text-white/50">
               Stesso output. Stessa qualità. Nessun compromesso.
             </p>
+            {/* Tabella confronto */}
+            <div className="mt-12 max-w-2xl mx-auto overflow-x-auto">
+              <table className="w-full text-left text-[14px]" style={{ fontFamily: FONT }}>
+                <thead>
+                  <tr>
+                    <th className="py-3 pr-6 text-white/40 font-bold text-[11px] uppercase tracking-[0.15em]">Redazione tradizionale</th>
+                    <th className="py-3 font-bold text-[11px] uppercase tracking-[0.15em]" style={{ color: "#dc2626" }}>ProofPress Creator</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["€150–250k/anno", "Da €6k/anno"],
+                    ["4–6 persone", "1 direttore (tu)"],
+                    ["Ore per articolo", "Minuti per articolo"],
+                    ["Scala = nuove assunzioni", "Scala = nuovi Agent"],
+                  ].map(([left, right], i) => (
+                    <tr key={i} className="border-t border-white/10">
+                      <td className="py-3 pr-6 text-white/50">{left}</td>
+                      <td className="py-3 font-semibold text-white">{right}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <div className="mt-12 flex flex-wrap justify-center gap-x-10 gap-y-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white/35">
               <span>4.000+ fonti certificate</span>
               <span>·</span>
@@ -151,6 +182,37 @@ export default function PerGiornalisti() {
             </div>
           </div>
         </section>
+
+        {/* ═══ SEZIONE SOCIAL PROOF ═══ */}
+        <Section bg="#f5f5f7" id="social-proof">
+          <Label>Già in Produzione</Label>
+          <h2 className="text-3xl md:text-4xl font-black leading-tight text-[#0a0a0a]">
+            Testate attive. Ogni giorno.
+          </h2>
+          <div className="mt-10 grid md:grid-cols-3 gap-6 text-center">
+            {[
+              { num: "12+", label: "Testate attive" },
+              { num: "4.000+", label: "Articoli pubblicati" },
+              { num: "4.000+", label: "Fonti monitorate" },
+            ].map((s, i) => (
+              <div key={i} className="py-8 px-6 bg-white border border-[#0a0a0a]/8">
+                <div className="text-4xl md:text-5xl font-black text-[#0a0a0a]">{s.num}</div>
+                <div className="mt-2 text-[13px] font-bold uppercase tracking-[0.15em] text-[#0a0a0a]/40">{s.label}</div>
+              </div>
+            ))}
+          </div>
+          {/* Testimonianza anonima */}
+          <div className="mt-10 p-8 bg-white border-l-4 border-[#dc2626]">
+            <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/70 italic" style={{ fontFamily: FONT }}>
+              "In 7 giorni abbiamo lanciato la nostra verticale fintech. Oggi pubblichiamo 6 articoli al giorno con un solo editor. Il ROI è stato evidente dal primo mese."
+            </p>
+            <p className="mt-4 text-[13px] font-bold text-[#0a0a0a]/50 uppercase tracking-[0.15em]">
+              Direttore editoriale, testata fintech — Italia
+            </p>
+          </div>
+        </Section>
+
+        <Divider />
 
         {/* ═══ SEZIONE 3 — IL PROBLEMA ═══ */}
         <Section bg="#ffffff" id="problema">
@@ -187,16 +249,16 @@ export default function PerGiornalisti() {
             <span className="text-[#0a0a0a]/25">Solo che lavora 24 ore su 24 e costa 10 volte meno.</span>
           </h2>
           <p className="mt-6 text-lg md:text-xl leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-            Proof Press ti dà una redazione completa di Agent Giornalisti e agenti di supporto che fanno quello che fa un team editoriale: monitorano le fonti, verificano i dati, scrivono gli articoli, li pubblicano e li distribuiscono. Tu scegli la linea editoriale. Loro eseguono.
+            Proof Press ti dà una redazione completa di Agent Giornalisti (giornalisti AI specializzati per settore) e agenti di supporto che fanno quello che fa un team editoriale: monitorano le fonti, verificano i dati con la tecnologia ProofPress Verify™ — il sistema che incrocia ogni notizia su 4.000+ fonti certificate prima della pubblicazione — scrivono gli articoli, li pubblicano e li distribuiscono. Tu scegli la linea editoriale. Loro eseguono.
           </p>
           <div className="mt-14 grid md:grid-cols-2 gap-8">
             {[
-              { icon: "🎯", title: "Tu decidi cosa coprire", text: "Temi, fonti, tono, frequenza. La direzione è tua." },
+              { icon: "🎯", title: "Tu decidi cosa coprire", text: "Temi, fonti, tono, frequenza. La direzione è tua — sotto la tua direzione." },
               { icon: "🤖", title: "Gli Agent Giornalisti scrivono e pubblicano", text: "Articoli, analisi, newsletter — in automatico o su tuo comando." },
               { icon: "✅", title: "Ogni notizia è verificata", text: "La tecnologia ProofPress Verify™ incrocia ogni dato su fonti multiple." },
               { icon: "🚀", title: "Il giornale è online, su dominio tuo", text: "Una testata completa, pronta, con il tuo brand e la tua identità." },
             ].map((c, i) => (
-              <div key={i} className="flex gap-5 p-6">
+              <div key={i} className="flex gap-5 p-6 border border-[#0a0a0a]/8 hover:border-[#0a0a0a]/20 transition-colors">
                 <div className="text-2xl shrink-0">{c.icon}</div>
                 <div>
                   <h3 className="text-base font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>{c.title}</h3>
@@ -205,14 +267,22 @@ export default function PerGiornalisti() {
               </div>
             ))}
           </div>
-
         </Section>
 
         <Divider />
 
         {/* ═══ SEZIONE 5 — COME FUNZIONA ═══ */}
         <Section bg="#f5f5f7" id="come-funziona">
-          <Label>Come Funziona</Label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-2">
+            <Label>Come Funziona</Label>
+            {/* Badge "5-7 giorni" visibile in cima alla sezione */}
+            <span
+              className="inline-flex items-center gap-2 px-4 py-2 text-[12px] font-bold uppercase tracking-[0.15em] text-white mb-4"
+              style={{ background: "#dc2626", borderRadius: 0 }}
+            >
+              ⏱ Da zero a online in 5–7 giorni
+            </span>
+          </div>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
             Da zero a testata online in 4 step.
           </h2>
@@ -231,9 +301,6 @@ export default function PerGiornalisti() {
               </div>
             ))}
           </div>
-          <p className="mt-12 text-center text-base font-medium text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>
-            Tempo medio dal primo contatto al go-live: <strong className="text-[#0a0a0a]">5-7 giorni</strong>.
-          </p>
         </Section>
 
         <Divider />
@@ -247,9 +314,9 @@ export default function PerGiornalisti() {
           <div className="mt-14 grid md:grid-cols-3 gap-8">
             {[
               { icon: "📰", title: "Testata completa su dominio dedicato", text: "Homepage, canali tematici, singoli articoli, pagina chi siamo, ticker live, breaking news. Tutto sul tuo dominio, col tuo brand." },
-              { icon: "🤖", title: "Agent Giornalisti + agenti di supporto", text: "Fino a 12 Agent Giornalisti configurabili per settore, più 4 agenti di supporto (Fact Checker, Publisher, Newsletter Curator, Social Editor). Una redazione che non dorme mai." },
+              { icon: "🤖", title: "Agent Giornalisti + agenti di supporto", text: "Fino a 12 Agent Giornalisti (giornalisti AI specializzati per settore), più 4 agenti di supporto (Fact Checker, Publisher, Newsletter Curator, Social Editor). Una redazione che non dorme mai." },
               { icon: "💬", title: "Chat redazionale", text: "Parli con la piattaforma come parleresti con il tuo team. «Scrivi un pezzo su X», «Estrai le notizie di oggi», «Pubblica in prima pagina». Linguaggio naturale, zero tecnicismi." },
-              { icon: "✅", title: "Tecnologia ProofPress Verify™", text: "Ogni notizia viene incrociata su fonti multiple prima della pubblicazione. Report di verifica con hash crittografico. Fact-checking automatico, zero fake news." },
+              { icon: "✅", title: "Tecnologia ProofPress Verify™", text: "Il sistema che incrocia ogni notizia su 4.000+ fonti certificate prima della pubblicazione. Report di verifica con hash crittografico. Fact-checking automatico, zero fake news." },
               { icon: "📧", title: "Newsletter automatica", text: "Settimanale o giornaliera, costruita in automatico dai contenuti migliori. Distribuita ai tuoi lettori senza che tu faccia nulla." },
               { icon: "📱", title: "Distribuzione social", text: "Post LinkedIn, tweet, summary per Telegram — generati automaticamente dai tuoi articoli. Pubblica ovunque, gestisci da un posto." },
             ].map((c, i) => (
@@ -268,7 +335,7 @@ export default function PerGiornalisti() {
           </div>
         </Section>
 
-        {/* ═══ SEZIONE 8 — AGENT GIORNALISTI (NUOVA) ═══ */}
+        {/* ═══ SEZIONE 8 — AGENT GIORNALISTI ═══ */}
         <Section bg="#ffffff" id="agent-giornalisti">
           <Label>La Tua Redazione</Label>
           <h2 className="text-3xl md:text-5xl font-black leading-tight text-[#0a0a0a]">
@@ -276,44 +343,30 @@ export default function PerGiornalisti() {
             <span className="text-[#0a0a0a]/25">Tu decidi di cosa si occupa.</span>
           </h2>
           <p className="mt-6 text-lg md:text-xl leading-relaxed text-[#0a0a0a]/60 max-w-3xl" style={{ fontFamily: FONT }}>
-            Un Agent Giornalista è un membro della tua redazione AI: lo configuri su un settore, gli assegni le fonti, e lui ogni giorno monitora, scrive e pubblica. Come un giornalista vero — solo che lavora 24/7 e non va mai in ferie.
+            Un Agent Giornalista è un membro della tua redazione AI: lo configuri su un settore, gli assegni le fonti, e lui ogni giorno monitora, scrive e pubblica — sotto la tua direzione. Come un giornalista vero, solo che lavora 24/7 e non va mai in ferie.
           </p>
 
-          {/* 3 esempi concreti */}
-          <div className="mt-14 grid md:grid-cols-3 gap-8">
-            <div className="p-8 border border-[#0a0a0a]/8 hover:border-[#0a0a0a]/20 transition-colors">
-              <div className="text-3xl mb-4">🏦</div>
-              <h3 className="text-lg font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>Agent "Finanza"</h3>
-              <div className="space-y-2 text-[14px] leading-relaxed text-[#0a0a0a]/55" style={{ fontFamily: FONT }}>
-                <p><strong className="text-[#0a0a0a]/70">Segue:</strong> mercati, banche, fintech, regolamentazione</p>
-                <p><strong className="text-[#0a0a0a]/70">Fonti:</strong> Il Sole 24 Ore, FT, Reuters, BCE, Consob</p>
-                <p><strong className="text-[#0a0a0a]/70">Output:</strong> 3-5 articoli/giorno sul canale Finanza</p>
-                <p><strong className="text-[#0a0a0a]/70">Tone:</strong> formale, dati-driven, analisi tecnica</p>
+          {/* 4 box semplificati: 3 esempi + 1 Custom */}
+          <div className="mt-14 grid md:grid-cols-4 gap-6">
+            {[
+              { icon: "🏦", title: "Agent Finanza", line1: "Segue mercati, banche, fintech, regolamentazione", line2: "Pubblica 3–5 articoli/giorno sul canale Finanza" },
+              { icon: "🤖", title: "Agent Tech & AI", line1: "Segue intelligenza artificiale, startup tech, innovazione", line2: "Pubblica 4–6 articoli/giorno sul canale Tech" },
+              { icon: "⚽", title: "Agent Sport Business", line1: "Segue economia dello sport, deal, sponsorship, diritti TV", line2: "Pubblica 3–4 articoli/giorno sul canale Sport" },
+              { icon: "✏️", title: "+ Il tuo verticale", line1: "Configuri tu il settore, le fonti e il tono editoriale", line2: "Ogni Agent è completamente personalizzabile", custom: true },
+            ].map((a, i) => (
+              <div
+                key={i}
+                className={`p-6 border transition-colors ${a.custom ? "border-dashed border-[#dc2626]/40 bg-[#dc2626]/3" : "border-[#0a0a0a]/8 hover:border-[#0a0a0a]/20"}`}
+              >
+                <div className="text-3xl mb-3">{a.icon}</div>
+                <h3 className="text-base font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>{a.title}</h3>
+                <p className="text-[13px] leading-relaxed text-[#0a0a0a]/55 mb-1" style={{ fontFamily: FONT }}>{a.line1}</p>
+                <p className={`text-[13px] font-semibold leading-relaxed ${a.custom ? "text-[#dc2626]" : "text-[#0a0a0a]/70"}`} style={{ fontFamily: FONT }}>{a.line2}</p>
               </div>
-            </div>
-            <div className="p-8 border border-[#0a0a0a]/8 hover:border-[#0a0a0a]/20 transition-colors">
-              <div className="text-3xl mb-4">🤖</div>
-              <h3 className="text-lg font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>Agent "Tech & AI"</h3>
-              <div className="space-y-2 text-[14px] leading-relaxed text-[#0a0a0a]/55" style={{ fontFamily: FONT }}>
-                <p><strong className="text-[#0a0a0a]/70">Segue:</strong> intelligenza artificiale, startup tech, innovazione</p>
-                <p><strong className="text-[#0a0a0a]/70">Fonti:</strong> TechCrunch, Wired, Agenda Digitale, The Verge</p>
-                <p><strong className="text-[#0a0a0a]/70">Output:</strong> 4-6 articoli/giorno sul canale Tech</p>
-                <p><strong className="text-[#0a0a0a]/70">Tone:</strong> informale, accessibile, orientato al business</p>
-              </div>
-            </div>
-            <div className="p-8 border border-[#0a0a0a]/8 hover:border-[#0a0a0a]/20 transition-colors">
-              <div className="text-3xl mb-4">⚽</div>
-              <h3 className="text-lg font-black text-[#0a0a0a] mb-3" style={{ fontFamily: FONT }}>Agent "Sport Business"</h3>
-              <div className="space-y-2 text-[14px] leading-relaxed text-[#0a0a0a]/55" style={{ fontFamily: FONT }}>
-                <p><strong className="text-[#0a0a0a]/70">Segue:</strong> economia dello sport, deal, sponsorship, diritti TV</p>
-                <p><strong className="text-[#0a0a0a]/70">Fonti:</strong> SportEconomy, Calcio e Finanza, ESPN Business</p>
-                <p><strong className="text-[#0a0a0a]/70">Output:</strong> 3-4 articoli/giorno sul canale Sport</p>
-                <p><strong className="text-[#0a0a0a]/70">Tone:</strong> colloquiale, dati e numeri, analisi dei deal</p>
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Testo sotto la griglia */}
+          {/* Contatori Agent */}
           <div className="mt-14 text-center max-w-2xl mx-auto">
             <p className="text-lg md:text-xl font-medium text-[#0a0a0a]/70 leading-relaxed" style={{ fontFamily: FONT }}>
               Ogni Agent Giornalista lavora in autonomia sul suo settore.<br />
@@ -335,7 +388,7 @@ export default function PerGiornalisti() {
             </div>
           </div>
 
-          {/* Tabella agenti per piano */}
+          {/* Tabella piani CON PRICING */}
           <div className="mt-14 overflow-x-auto">
             <table className="w-full text-left text-[14px]" style={{ fontFamily: FONT }}>
               <thead>
@@ -359,14 +412,34 @@ export default function PerGiornalisti() {
                   <td className="py-3 pr-4 text-center text-[13px] text-[#0a0a0a]/50">fino a 6 canali</td>
                   <td className="py-3 text-center text-[13px] text-[#0a0a0a]/50">canali illimitati</td>
                 </tr>
-                <tr className="border-t-2 border-[#0a0a0a]">
-                  <td className="py-3 pr-4 font-black text-[#0a0a0a]">Totale agenti</td>
+                <tr className="border-b border-[#0a0a0a]/8">
+                  <td className="py-3 pr-4 font-bold text-[#0a0a0a]">Totale agenti</td>
                   <td className="py-3 pr-4 text-center font-black text-[#0a0a0a]">4+4 = 8</td>
                   <td className="py-3 pr-4 text-center font-black text-[#dc2626]">8+4 = 12</td>
                   <td className="py-3 text-center font-black text-[#0a0a0a]">12+4 = 16</td>
                 </tr>
+                {/* Riga pricing */}
+                <tr className="border-t-2 border-[#0a0a0a] bg-[#f5f5f7]">
+                  <td className="py-4 pr-4 font-black text-[#0a0a0a]">Prezzo</td>
+                  <td className="py-4 pr-4 text-center">
+                    <div className="font-black text-[#0a0a0a] text-base">a partire da</div>
+                    <div className="font-black text-[#0a0a0a] text-xl">€500/mese</div>
+                  </td>
+                  <td className="py-4 pr-4 text-center">
+                    <div className="font-black text-[#dc2626] text-base">a partire da</div>
+                    <div className="font-black text-[#dc2626] text-xl">€1.500/mese</div>
+                  </td>
+                  <td className="py-4 text-center">
+                    <div className="font-black text-[#0a0a0a] text-base">a partire da</div>
+                    <div className="font-black text-[#0a0a0a] text-xl">€3.000/mese</div>
+                    <div className="text-[12px] text-[#0a0a0a]/40 mt-1">o su preventivo</div>
+                  </td>
+                </tr>
               </tbody>
             </table>
+            <p className="mt-4 text-[13px] text-[#0a0a0a]/45 text-center" style={{ fontFamily: FONT }}>
+              Tutti i piani includono setup, dominio, hosting, aggiornamenti e supporto. Nessun vincolo a lungo termine.
+            </p>
           </div>
 
           {/* Agenti di supporto */}
@@ -397,7 +470,7 @@ export default function PerGiornalisti() {
         {/* ═══ SEZIONE CONTATTI ═══ */}
         <Section bg="#f5f5f7" id="contatti">
           <div className="text-center mb-10">
-            <Label accent>Contattaci</Label>
+            <Label accent>Prenota una Demo Gratuita</Label>
             <h2 className="text-3xl md:text-4xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>
               Raccontaci il tuo progetto editoriale.
             </h2>
