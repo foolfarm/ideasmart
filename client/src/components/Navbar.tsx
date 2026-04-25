@@ -429,6 +429,13 @@ export default function Navbar() {
               </Link>
             </div>
 
+            {/* Selettore lingua mobile */}
+            <div className="px-2 mb-2">
+              <div className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-gray-50">
+                <span className="text-xs font-semibold text-[#1a1a1a]/50 uppercase tracking-wider" style={{ fontFamily: SF }}>Lingua / Language</span>
+                <LanguageSwitcher variant="compact" />
+              </div>
+            </div>
             <div className="border-t border-gray-100 mt-3 pt-3 px-2">
               {isHome ? (
                 <button

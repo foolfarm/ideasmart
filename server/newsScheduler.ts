@@ -276,11 +276,20 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         if (auditResults.error > 0 || auditResults.warning > 2) {
           console.warn(`[NewsScheduler] ⚠ Audit alert: ${auditResults.error} notizie non coerenti, ${auditResults.warning} parziali. Verifica /admin/audit`);
         }
-      } catch (auditErr) {
+       } catch (auditErr) {
         console.warn('[NewsScheduler] Audit post-inserimento fallito (non critico):', auditErr);
       }
     });
-
+    // Traduzione automatica EN in background (non blocca il flusso principale)
+    setImmediate(async () => {
+      try {
+        const { translatePendingNewsTitles } = await import('./articleTranslator');
+        const result = await translatePendingNewsTitles(30);
+        console.log(`[NewsScheduler] 🇬🇧 Traduzione EN: ${result.success} titoli tradotti, ${result.failed} falliti`);
+      } catch (transErr) {
+        console.warn('[NewsScheduler] Traduzione EN fallita (non critica):', transErr);
+      }
+    });
   } catch (error) {
     console.error("[NewsScheduler] Error saving AI news to DB:", error);
 

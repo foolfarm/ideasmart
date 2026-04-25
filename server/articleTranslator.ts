@@ -6,7 +6,7 @@
 
 import { invokeLLM } from "./_core/llm";
 import { getDb } from "./db";
-import { dailyEditorial } from "../drizzle/schema";
+import { dailyEditorial, newsItems } from "../drizzle/schema";
 import { isNull, eq } from "drizzle-orm";
 
 interface TranslationResult {
@@ -128,6 +128,87 @@ export async function translateAndSaveArticle(articleId: number): Promise<boolea
     console.error(`[Translator] ✗ Failed to translate article ${articleId}:`, err);
     return false;
   }
+}
+
+/**
+ * Traduce il titolo di un singolo news_item IT→EN e salva nel DB.
+ */
+export async function translateNewsTitle(itemId: number): Promise<boolean> {
+  try {
+    const db = await getDb();
+    if (!db) throw new Error("DB not available");
+
+    const [item] = await db
+      .select({ id: newsItems.id, title: newsItems.title, titleEn: newsItems.titleEn })
+      .from(newsItems)
+      .where(eq(newsItems.id, itemId))
+      .limit(1);
+
+    if (!item) return false;
+    if (item.titleEn) return true; // già tradotto
+
+    const response = await invokeLLM({
+      messages: [
+        {
+          role: "user",
+          content: `Translate this Italian news headline to fluent English for a tech business magazine. Return ONLY a JSON object with key "titleEn".\n\nTitle: ${item.title}`,
+        },
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "title_translation",
+          strict: true,
+          schema: {
+            type: "object",
+            properties: { titleEn: { type: "string" } },
+            required: ["titleEn"],
+            additionalProperties: false,
+          },
+        },
+      },
+    });
+
+    const rawContent = response.choices?.[0]?.message?.content ?? "";
+    const text = (typeof rawContent === "string" ? rawContent : JSON.stringify(rawContent)).trim();
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error("No JSON in response");
+    const { titleEn } = JSON.parse(jsonMatch[0]) as { titleEn: string };
+
+    await db.update(newsItems).set({ titleEn }).where(eq(newsItems.id, itemId));
+    console.log(`[Translator] ✓ NewsItem ${itemId} title translated: "${titleEn.substring(0, 60)}..."`);
+    return true;
+  } catch (err) {
+    console.error(`[Translator] ✗ Failed to translate news title ${itemId}:`, err);
+    return false;
+  }
+}
+
+/**
+ * Traduce tutti i titoli news_items non ancora tradotti (titleEn IS NULL).
+ * Chiamato dallo scheduler dopo ogni refresh notizie.
+ */
+export async function translatePendingNewsTitles(limit = 30): Promise<{ success: number; failed: number }> {
+  const db = await getDb();
+  if (!db) return { success: 0, failed: 0 };
+
+  const pending = await db
+    .select({ id: newsItems.id })
+    .from(newsItems)
+    .where(isNull(newsItems.titleEn))
+    .limit(limit);
+
+  console.log(`[Translator] Found ${pending.length} news titles to translate`);
+  let success = 0, failed = 0;
+
+  for (const { id } of pending) {
+    const ok = await translateNewsTitle(id);
+    if (ok) success++; else failed++;
+    await new Promise(r => setTimeout(r, 200)); // 200ms rate limit
+  }
+
+  console.log(`[Translator] News titles batch: ${success} translated, ${failed} failed`);
+  return { success, failed };
 }
 
 /**
