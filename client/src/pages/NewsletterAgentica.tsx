@@ -74,10 +74,10 @@ export default function NewsletterAgentica() {
                     ProofPress Newsletter<br />
                     <span className="text-[#0a0a0a]/25">La tua newsletter.</span>
                   </h1>
-                  <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-2xl">
+                  <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-4xl">
                     Scritta da una redazione AI.
                   </p>
-                  <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                  <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
                     Una newsletter professionale, personalizzata, autogenerata ma che scrive come te, creata da una redazione agentica ProofPress — con il tuo brand, le tue fonti, il tuo tono. Tu definisci la direzione. Gli Agent scrivono, verificano e inviano.
                   </p>
                   <div className="mt-10 flex flex-col sm:flex-row gap-4">

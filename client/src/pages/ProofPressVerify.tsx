@@ -551,7 +551,7 @@ export default function ProofPressVerify() {
                       News Verify<br />
                       <span style={{ color: ORANGE }}>Offri notizie verificate e certificate.</span>
                     </h1>
-                    <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-2xl">
+                    <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-4xl">
                       News Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità. I tuoi articoli e notizie vengono certificati e resi immutabili a prova di qualsiasi fake o deformazione.
                     </p>
                    </div>

@@ -73,10 +73,10 @@ export default function VerifyBusiness() {
                   <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mt-2">
                     Info Verify
                   </h1>
-                  <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                  <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
                     La nuova frontiera dell'assurance non-financial.
                   </p>
-                  <p className="mt-3 text-lg leading-relaxed text-[#0a0a0a]/45 max-w-2xl" style={{ fontFamily: FONT }}>
+                  <p className="mt-3 text-lg leading-relaxed text-[#0a0a0a]/45 max-w-4xl" style={{ fontFamily: FONT }}>
                     La soluzione tecnologica che industrializza la certificazione — con hash crittografici immutabili, corroborazione multi-fonte AI e audit trail regolatorio nativo.
                   </p>
                   <div className="mt-10 flex flex-col sm:flex-row gap-4">

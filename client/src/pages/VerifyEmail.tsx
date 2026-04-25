@@ -74,10 +74,10 @@ export default function VerifyEmail() {
                   Email Integrity<br />
                   <span className="text-[#0a0a0a]/25">Certification.</span>
                 </h1>
-                <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                <p className="mt-6 text-xl md:text-2xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
                   Ogni email aziendale è un documento legale potenziale. BEC, phishing interno, repudiation e compliance AI Act convergono nel rendere la certificazione del contenuto email un'esigenza strutturale.
                 </p>
-                <p className="mt-3 text-lg leading-relaxed text-[#0a0a0a]/45 max-w-2xl" style={{ fontFamily: FONT }}>
+                <p className="mt-3 text-lg leading-relaxed text-[#0a0a0a]/45 max-w-4xl" style={{ fontFamily: FONT }}>
                   ProofPress Verify Email applica la stessa tecnologia crittografica che certifica le notizie — hash SHA-256 immutabile, anomaly detection AI e audit trail regolatorio nativo — alle comunicazioni email della tua organizzazione.
                 </p>
                 <div className="mt-10 flex flex-col sm:flex-row gap-4">

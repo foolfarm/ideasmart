@@ -69,10 +69,10 @@ export default function PerGiornalisti() {
                   ProofPress Creator<br />
                   <span className="text-[#0a0a0a]/25">Il Giornale Che si Scrive da Solo.</span>
                 </h1>
-                <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-2xl">
+                <p className="mt-4 text-xl md:text-2xl font-bold leading-tight text-[#0a0a0a] max-w-4xl">
                   Creiamo Redazioni Agentiche Tailor Made.
                 </p>
-                <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-2xl">
+                <p className="mt-4 text-lg md:text-xl font-medium leading-relaxed text-[#0a0a0a]/60 max-w-4xl">
                   Lancia una testata, verticalizza un giornale esistente o scala la produzione editoriale. Agent Giornalisti configurabili per settore, le tue fonti, il tuo tono. Tu fai il direttore.
                 </p>
                 <div className="mt-10 flex flex-col sm:flex-row gap-4">
