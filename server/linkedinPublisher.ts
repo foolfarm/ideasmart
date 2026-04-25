@@ -635,9 +635,8 @@ STRUTTURA DEL POST (segui lo stile autentico di Andrea Cinelli):
 3. POSIZIONE PERSONALE (1 paragrafo): Prendi una posizione netta, anche controcorrente. Usa "io" o "noi" solo qui, per esprimere una convinzione, non per raccontare processi. Esempio: "La lettura è questa:" oppure "Chi ignora questo segnale..."
 4. CHIUSURA PROVOCATORIA (1-2 righe): Una domanda o una provocazione che sfida il pensiero convenzionale e stimola il dibattito. Deve essere memorabile.
 5. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | ProofPress Magazine"
-6. CTA: Aggiungi ESATTAMENTE queste righe su righe separate:
-"[CTA inserita automaticamente dal sistema]"
-7. HASHTAG: ${effectiveHashtags.join(" ")}
+6. HASHTAG: Aggiungi ESATTAMENTE questa riga su una riga separata dopo la firma: ${effectiveHashtags.join(" ")}
+IMPORTANTE: Il post deve terminare con gli hashtag. NON aggiungere CTA, link o altro testo dopo gli hashtag — vengono inseriti automaticamente dal sistema.
 
 LUNGHEZZA: MASSIMO 2800 caratteri totali. LinkedIn ha un limite ASSOLUTO di 3000 caratteri — NON superarlo MAI. Punta a 1400-2000 caratteri. Se il post supera 2800 caratteri, accorcia drasticamente.
 LINGUA: Italiano pulito, non formale. Anglicismi tecnici (ARR, LLM, burn rate, venture building) sono accettati senza traduzione.
@@ -910,13 +909,37 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
     .join("\n")
     .trim();
 
+  // Separa il blocco hashtag dal corpo del testo
+  // Gli hashtag sono l'ultima riga che inizia con '#'
+  const lines = cleaned.split("\n");
+  let hashtagLineIndex = -1;
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const l = lines[i].trim();
+    if (l.length > 0 && l.split(" ").every(w => w.startsWith("#") || w === "")) {
+      hashtagLineIndex = i;
+      break;
+    }
+    // Se la riga non è vuota e non è hashtag, fermati
+    if (l.length > 0 && !l.startsWith("#")) break;
+  }
+
   if (isEnSlot) {
     const header = "Tech Observatory \u2192 " + OSSERVATORIO_URL;
     const footer = "\u{1F4CA} Learn more on ProofPress \u2192 " + PROOFPRESS_URL;
+    if (hashtagLineIndex >= 0) {
+      const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
+      const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
+      return header + "\n" + bodyPart + "\n" + footer + "\n" + hashtagPart;
+    }
     return header + "\n" + cleaned + "\n" + footer;
   } else {
     const header = "Osservatorio Tech \u2192 " + OSSERVATORIO_URL;
     const footer = "\u{1F4CA} Approfondisci su Proof Press \u2192 " + PROOFPRESS_URL;
+    if (hashtagLineIndex >= 0) {
+      const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
+      const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
+      return header + "\n" + bodyPart + "\n" + footer + "\n" + hashtagPart;
+    }
     return header + "\n" + cleaned + "\n" + footer;
   }
 }
