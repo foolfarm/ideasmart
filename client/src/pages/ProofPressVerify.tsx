@@ -534,13 +534,19 @@ export default function ProofPressVerify() {
               <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
                 {/* Testo hero */}
                 <div className="flex-1 min-w-0">
-                  {/* Badge */}
-                  <div className="mb-6">
+                  {/* Badge hub */}
+                  <div className="mb-6 flex flex-wrap gap-2 items-center">
                     <span
                       className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
                       style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
                     >
-                      Per Testate Giornalistiche, Freelancer, Editori
+                      Tecnologia ProofPress
+                    </span>
+                    <span
+                      className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border border-[#0a0a0a]/15"
+                      style={{ color: "#0a0a0a", opacity: 0.45, fontFamily: FONT }}
+                    >
+                      3 Estensioni
                     </span>
                   </div>
                   <div className="mb-10">
@@ -548,11 +554,11 @@ export default function ProofPressVerify() {
                       className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-[#0a0a0a] mb-6"
                       style={{ fontFamily: FONT }}
                     >
-                      News Verify<br />
-                      <span style={{ color: ORANGE }}>Offri notizie verificate e certificate.</span>
+                      <span style={{ color: ORANGE }}>ProofPress</span> Verify™<br />
+                      <span className="text-[#0a0a0a]/25">La verità ha una firma.</span>
                     </h1>
                     <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-4xl">
-                      News Verify è la prima piattaforma di corroborazione verificabile per il giornalismo agentico. Ogni articolo nasce con un Verification Report pubblico che documenta, claim per claim, quante fonti indipendenti lo confermano e con quale credibilità. I tuoi articoli e notizie vengono certificati e resi immutabili a prova di qualsiasi fake o deformazione.
+                      ProofPress Verify™ è il protocollo di corroborazione verificabile per il giornalismo nell'era AI. Ogni contenuto viene analizzato claim per claim, certificato con hash crittografico SHA-256 e archiviato su IPFS — immutabile, pubblico, verificabile da chiunque. Disponibile in 3 estensioni: <strong className="text-[#0a0a0a]">News Verify</strong>, <strong className="text-[#0a0a0a]">Info Verify</strong> ed <strong className="text-[#0a0a0a]">Email Verify</strong>.
                     </p>
                    </div>
                   {/* CTA */}
@@ -644,6 +650,114 @@ export default function ProofPressVerify() {
               </p>
             </div>
           </section>
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              LE 3 ESTENSIONI — hub navigazione prodotto
+          ═══════════════════════════════════════════════════════════════════ */}
+          <section className="py-20 md:py-28" style={{ background: "#f8f8f6" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <Label>Le 3 Estensioni</Label>
+              <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
+                Un protocollo.<br />Tre applicazioni.
+              </h2>
+              <p className="text-base text-[#0a0a0a]/55 mb-12 max-w-2xl leading-relaxed">
+                ProofPress Verify™ si declina in tre estensioni specializzate, ognuna progettata per un caso d'uso specifico. Stessa tecnologia di certificazione crittografica, contesti di applicazione diversi.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* News Verify */}
+                <a
+                  href="/proofpress-verify/news"
+                  className="group block p-8 border-2 border-[#0a0a0a]/10 bg-white hover:border-[#ff5500] transition-all duration-200 hover:shadow-lg"
+                >
+                  <div className="mb-5">
+                    <div
+                      className="w-12 h-12 flex items-center justify-center text-2xl mb-4"
+                      style={{ background: `${ORANGE}12` }}
+                    >
+                      📰
+                    </div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: ORANGE, fontFamily: FONT }}>Estensione 01</div>
+                    <h3 className="text-xl font-black text-[#0a0a0a] mb-3 group-hover:text-[#ff5500] transition-colors" style={{ fontFamily: FONT }}>
+                      News Verify
+                    </h3>
+                    <p className="text-sm leading-relaxed text-[#0a0a0a]/60">
+                      Certifica ogni articolo pubblicato dalla tua redazione. Ogni notizia esce con un Verification Report pubblico, claim per claim, sigillato con hash SHA-256 e archiviato su IPFS. Il badge trust grade è visibile al lettore.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {["Redazioni", "Freelance", "Brand Media"].map(t => (
+                      <span key={t} className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 bg-[#0a0a0a]/5 text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>{t}</span>
+                    ))}
+                  </div>
+                  <div className="text-sm font-bold uppercase tracking-widest group-hover:text-[#ff5500] transition-colors" style={{ color: "#0a0a0a", fontFamily: FONT }}>
+                    Scopri News Verify →
+                  </div>
+                </a>
+
+                {/* Info Verify */}
+                <a
+                  href="/proofpress-verify/info"
+                  className="group block p-8 border-2 border-[#0a0a0a]/10 bg-white hover:border-[#0984e3] transition-all duration-200 hover:shadow-lg"
+                >
+                  <div className="mb-5">
+                    <div
+                      className="w-12 h-12 flex items-center justify-center text-2xl mb-4"
+                      style={{ background: "#0984e312" }}
+                    >
+                      ℹ️
+                    </div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#0984e3", fontFamily: FONT }}>Estensione 02</div>
+                    <h3 className="text-xl font-black text-[#0a0a0a] mb-3 group-hover:text-[#0984e3] transition-colors" style={{ fontFamily: FONT }}>
+                      Info Verify
+                    </h3>
+                    <p className="text-sm leading-relaxed text-[#0a0a0a]/60">
+                      Verifica e certifica qualsiasi contenuto informativo: comunicati stampa, report aziendali, white paper, post sui social. Trasforma ogni documento in un asset certificato con prova crittografica di integrità.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {["Aziende", "PR & Comms", "Istituzioni"].map(t => (
+                      <span key={t} className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 bg-[#0a0a0a]/5 text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>{t}</span>
+                    ))}
+                  </div>
+                  <div className="text-sm font-bold uppercase tracking-widest group-hover:text-[#0984e3] transition-colors" style={{ color: "#0a0a0a", fontFamily: FONT }}>
+                    Scopri Info Verify →
+                  </div>
+                </a>
+
+                {/* Email Verify */}
+                <a
+                  href="/proofpress-verify/email"
+                  className="group block p-8 border-2 border-[#0a0a0a]/10 bg-white hover:border-[#00b894] transition-all duration-200 hover:shadow-lg"
+                >
+                  <div className="mb-5">
+                    <div
+                      className="w-12 h-12 flex items-center justify-center text-2xl mb-4"
+                      style={{ background: "#00b89412" }}
+                    >
+                      ✉️
+                    </div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#00b894", fontFamily: FONT }}>Estensione 03</div>
+                    <h3 className="text-xl font-black text-[#0a0a0a] mb-3 group-hover:text-[#00b894] transition-colors" style={{ fontFamily: FONT }}>
+                      Email Verify
+                    </h3>
+                    <p className="text-sm leading-relaxed text-[#0a0a0a]/60">
+                      Certifica newsletter e comunicazioni email prima dell'invio. Ogni messaggio riceve un hash crittografico che prova che il contenuto non è stato alterato dopo la certificazione. Ideale per newsletter editoriali e comunicazioni istituzionali.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {["Newsletter", "Email Marketing", "Comunicazioni"].map(t => (
+                      <span key={t} className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 bg-[#0a0a0a]/5 text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>{t}</span>
+                    ))}
+                  </div>
+                  <div className="text-sm font-bold uppercase tracking-widest group-hover:text-[#00b894] transition-colors" style={{ color: "#0a0a0a", fontFamily: FONT }}>
+                    Scopri Email Verify →
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <Divider />
 
           {/* ═══════════════════════════════════════════════════════════════════
               IL CONTESTO

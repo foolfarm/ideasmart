@@ -40,6 +40,9 @@ const ProofPressVerify = lazy(() => import("./pages/ProofPressVerify"));
 const VerifyPricing = lazy(() => import("./pages/VerifyPricing"));
 const VerifyBusiness = lazy(() => import("./pages/VerifyBusiness"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const NewsVerify = lazy(() => import("./pages/NewsVerify"));
+const InfoVerify = lazy(() => import("./pages/InfoVerify"));
+const EmailVerify = lazy(() => import("./pages/EmailVerify"));
 
 // ─── Pagine articolo (lazy) ───────────────────────────────────────────────────
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
@@ -158,6 +161,9 @@ function Router() {
         <Route path="/proofpress-verify" component={ProofPressVerify} />
         <Route path="/verify-pricing" component={VerifyPricing} />
         <Route path="/verify-business" component={VerifyBusiness} />
+        <Route path="/proofpress-verify/news" component={NewsVerify} />
+        <Route path="/proofpress-verify/info" component={InfoVerify} />
+        <Route path="/proofpress-verify/email" component={EmailVerify} />
         <Route path="/verify-email" component={VerifyEmail} />
         {/* Route specifiche /verify/* DEVONO stare PRIMA di /verify/:cid */}
         <Route path="/verify/dashboard" component={VerifyDashboard} />
