@@ -90,17 +90,7 @@ export default function PerGiornalisti() {
                   Setup in pochi giorni · Nessun vincolo a lungo termine · Da €500/mese
                 </p>
               </div>
-              {/* Banner laterale */}
-              <div className="hidden lg:block flex-shrink-0" style={{ width: 340 }}>
-                <a href="#contatto">
-                  <img
-                    src="/manus-storage/banner-suite-creator-v2_293e905b.png"
-                    alt="ProofPress Creator — Il Giornale che si Scrive da Solo"
-                    className="w-full h-auto shadow-lg"
-                    style={{ display: "block" }}
-                  />
-                </a>
-              </div>
+
             </div>
           </div>
         </section>

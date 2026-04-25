@@ -3400,3 +3400,10 @@
 
 ## Bug Toggle IT/EN (25 Apr 2026)
 - [x] Fix: il toggle IT/EN ora filtra titoli e sommari per lingua (LangContext + itemTitle/itemSummary + getHomeData lang param)
+
+## Rimozione banner destra nei titoli (25 Apr 2026)
+- [x] Rimuovere banner a destra nel titolo di /offertacommerciale
+- [x] Rimuovere banner a destra nel titolo di /newsletter-agentica
+- [x] Rimuovere banner a destra nel titolo di /proofpress-verify
+- [x] Rimuovere banner a destra nel titolo di /verify-business
+- [x] Rimuovere banner a destra nel titolo di /verify-email

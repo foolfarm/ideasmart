@@ -100,16 +100,7 @@ export default function VerifyEmail() {
                   API-first · Integrazione Microsoft 365 &amp; Google Workspace · Conformità nativa AI Act / GDPR
                 </p>
               </div>{/* end flex-1 */}
-              <div className="hidden lg:block flex-shrink-0">
-                <a href="#contatto">
-                  <img
-                    src="/manus-storage/banner-suite-email-verify-v2_fb17031a.png"
-                    alt="Email Verify — ProofPress"
-                    width={340}
-                    className="rounded-sm shadow-lg"
-                  />
-                </a>
-              </div>
+
             </div>{/* end flex container */}
             </div>{/* end max-w-5xl */}
           </section>

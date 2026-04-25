@@ -99,16 +99,7 @@ export default function VerifyBusiness() {
                     Già in produzione · API-first · Conformità nativa AI Act / CSRD / DSA
                   </p>
                 </div>{/* fine col testo */}
-                {/* Banner laterale */}
-                <div className="hidden lg:block flex-shrink-0 w-[340px]">
-                  <a href="#contatto" className="block cursor-pointer">
-                    <img
-                      src="/manus-storage/banner-suite-info-verify-v2_fb2b3dd6.png"
-                      alt="Info Verify — Ogni Notizia Certificata. Immutabile."
-                      className="w-full rounded-xl shadow-lg"
-                    />
-                  </a>
-                </div>
+
               </div>{/* fine flex-row hero */}
             </div>
           </section>

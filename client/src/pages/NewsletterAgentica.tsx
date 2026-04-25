@@ -102,17 +102,7 @@ export default function NewsletterAgentica() {
                     Setup in 5 giorni · Frequenza personalizzabile · 100% white-label
                   </p>
                 </div>
-                {/* Banner laterale */}
-                <div className="hidden lg:block flex-shrink-0" style={{ width: 340 }}>
-                  <a href="#contatti">
-                    <img
-                      src="/manus-storage/banner-suite-newsletter-v2_47094ac9.png"
-                      alt="ProofPress Newsletter — La Tua Newsletter Agentica"
-                      className="w-full h-auto shadow-lg"
-                      style={{ display: "block" }}
-                    />
-                  </a>
-                </div>
+
               </div>
             </div>
           </section>

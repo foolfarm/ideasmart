@@ -603,16 +603,7 @@ export default function ProofPressVerify() {
                     </p>
                   </div>
                 </div>{/* fine col testo */}
-                {/* Banner laterale */}
-                <div className="hidden lg:block flex-shrink-0 w-[340px]">
-                  <a href="/verify-business" className="block cursor-pointer">
-                    <img
-                      src="/manus-storage/banner-suite-news-verify-v2_af65994a.png"
-                      alt="ProofPress Verify — Ogni Notizia Certificata. Immutabile."
-                      className="w-full rounded-xl shadow-lg"
-                    />
-                  </a>
-                </div>
+
               </div>{/* fine flex-row hero */}
             </div>
           </section>
