@@ -1,7 +1,10 @@
 /*
- * PROOFPRESS VERIFY — Protocollo di certificazione giornalistica
- * Struttura: hero → contesto/problema → 3 livelli → form verifica hash →
- *            differenziazione → target → specs tecniche → CTA finale
+ * PROOFPRESS VERIFY™ — Pagina hub del protocollo universale di certificazione
+ * Logica: Verify come protocollo crittografico applicabile a qualsiasi contenuto
+ *         (giornalismo, informazione aziendale, email)
+ * Le 3 estensioni (News Verify, Info Verify, Email Verify) sono verticali applicative
+ * Struttura: hero protocollo → problema universale → come funziona il protocollo →
+ *            3 estensioni → specs tecniche → form verifica hash → CTA
  */
 import { useState, useRef, useEffect } from "react";
 import { Link, useSearch } from "wouter";
@@ -12,7 +15,7 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
-import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp, FileText, BookOpen, Lock } from "lucide-react";
+import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp, Lock, BookOpen, FileText } from "lucide-react";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const MONO = "JetBrains Mono, 'Courier New', monospace";
@@ -55,29 +58,30 @@ function TechSpecs() {
   const [open, setOpen] = useState(false);
   const specs = [
     { label: "Fonti certificate", value: "4.000+ fonti globali monitorate e aggiornate in continuo. Include agenzie stampa (Reuters, AP, ANSA), database istituzionali (SEC, BCE, Consob, ISTAT), pubblicazioni peer-reviewed, registri pubblici." },
-    { label: "Tempo di certificazione", value: "Media < 3 minuti per articolo, dipende dalla complessità e dal numero di claim." },
+    { label: "Tempo di certificazione", value: "Media < 3 minuti per contenuto, dipende dalla complessità e dal numero di claim." },
     { label: "Punteggio di affidabilità", value: "Scala 0-100 basata su: coerenza fattuale (40%), qualità delle fonti (30%), assenza di bias (20%), freschezza dei dati (10%)." },
     { label: "Hash crittografico", value: "SHA-256, generato sul payload completo: contenuto + report + metadata + timestamp." },
-    { label: "Immutabilità", value: "L'hash è registrato nel sistema ProofPress. Roadmap: pubblicazione su chain pubblica per verifica trustless completa." },
-    { label: "API", value: "Disponibile per i piani Enterprise. Consente l'integrazione di ProofPress Verify in CMS e piattaforme terze." },
-    { label: "Retention", value: "I Verification Report e gli hash sono conservati a tempo indefinito." },
+    { label: "Archiviazione", value: "IPFS tramite Pinata. CID pubblico e verificabile su qualsiasi gateway IPFS, indipendente da ProofPress." },
+    { label: "Codice di verifica", value: "PP-XXXXXXXXXXXXXXXX — 16 caratteri alfanumerici. Inseribile su proofpress.ai/proofpress-verify per accedere al Verification Report originale." },
+    { label: "AI engine", value: "Claude (Anthropic) per l'estrazione e classificazione dei claim. Pipeline proprietaria per il confronto multi-fonte e il calcolo del Trust Score." },
+    { label: "Compliance", value: "Conforme AI Act (EU) Titolo IV. Il Verification Report documenta il processo di verifica in modo trasparente e auditabile." },
   ];
   return (
-    <div className="border border-[#0a0a0a]/10">
+    <div className="border border-[#0a0a0a]/10 mt-10">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-[#0a0a0a]/3 transition-colors"
+        className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-[#0a0a0a]/3 transition-colors"
         style={{ fontFamily: FONT }}
       >
-        <span className="text-sm font-bold uppercase tracking-widest text-[#0a0a0a]">Specifiche tecniche</span>
-        {open ? <ChevronUp size={16} className="text-[#0a0a0a]/40" /> : <ChevronDown size={16} className="text-[#0a0a0a]/40" />}
+        <span className="text-sm font-bold uppercase tracking-widest text-[#0a0a0a]/60">Specifiche tecniche complete</span>
+        {open ? <ChevronUp className="w-4 h-4 text-[#0a0a0a]/40" /> : <ChevronDown className="w-4 h-4 text-[#0a0a0a]/40" />}
       </button>
       {open && (
-        <div className="border-t border-[#0a0a0a]/8 divide-y divide-[#0a0a0a]/6">
+        <div className="border-t border-[#0a0a0a]/8">
           {specs.map(({ label, value }) => (
-            <div key={label} className="px-6 py-4 grid md:grid-cols-3 gap-3">
-              <div className="text-xs font-bold text-[#0a0a0a]/50 uppercase tracking-wide">{label}</div>
-              <div className="md:col-span-2 text-sm text-[#0a0a0a]/70 leading-relaxed">{value}</div>
+            <div key={label} className="grid md:grid-cols-3 gap-4 px-6 py-4 border-b border-[#0a0a0a]/5 last:border-0">
+              <div className="text-xs font-bold uppercase tracking-wide text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>{label}</div>
+              <div className="md:col-span-2 text-sm leading-relaxed text-[#0a0a0a]/70" style={{ fontFamily: FONT }}>{value}</div>
             </div>
           ))}
         </div>
@@ -86,419 +90,118 @@ function TechSpecs() {
   );
 }
 
-/* ── Form di verifica hash ── */
-function VerifyForm({ initialHash = "" }: { initialHash?: string }) {
-  const [inputValue, setInputValue] = useState(initialHash || "");
+/* ── Form verifica hash ── */
+function VerifyHashForm({ formRef }: { formRef: React.RefObject<HTMLDivElement | null> }) {
+  const [inputHash, setInputHash] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [searchHash, setSearchHash] = useState("");
-  const resultRef = useRef<HTMLDivElement>(null);
 
-  // Auto-search quando viene passato un hash dall'URL
-  useEffect(() => {
-    if (initialHash && initialHash.trim().length >= 8) {
-      const normalized = normalizeHash(initialHash);
-      setInputValue(initialHash);
-      setSearchHash(normalized);
-      setSubmitted(true);
-      // Scroll al risultato dopo un breve delay
-      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 600);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialHash]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const verifyMutation = (trpc as any).verify?.verifyHash?.useMutation({
+    onSuccess: () => setSubmitted(true),
+  });
 
-  // Normalizza il codice: accetta sia "PP-XXXXXXXXXXXXXXXX" che l'hash completo SHA-256
-  const normalizeHash = (raw: string): string => {
-    const trimmed = raw.trim();
-    if (trimmed.toUpperCase().startsWith('PP-')) {
-      // Il badge mostra i primi 16 char dell'hash in maiuscolo
-      // Il DB salva l'hash completo SHA-256 in minuscolo
-      return trimmed.slice(3).toLowerCase();
-    }
-    return trimmed.toLowerCase();
-  };
-
-  // Usa news.lookupByHash — cerca per hash (o prefisso) nel DB
-  const verifyQuery = trpc.news.lookupByHash.useQuery(
-    { hash: searchHash },
-    { enabled: submitted && searchHash.length >= 8 }
-  );
-
-  const handleVerify = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
-    setSearchHash(normalizeHash(inputValue));
-    setSubmitted(true);
-    setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 300);
+    if (!inputHash.trim()) return;
+    verifyMutation.mutate({ hash: inputHash.trim() });
   };
 
-  const handleReset = () => {
-    setInputValue("");
-    setSearchHash("");
-    setSubmitted(false);
-  };
-
-  // news.lookupByHash restituisce l'oggetto notizia direttamente (non ha status)
-  const rawResult = verifyQuery?.data;
-  const isLoading = verifyQuery?.isLoading;
-  const isError = verifyQuery?.isError;
-
-  // Pinning su IPFS via Pinata
-  const pinMutation = trpc.news.pinToIPFS.useMutation();
-
-  // Adatta il risultato al formato atteso dalla UI
-  const result = rawResult
-    ? {
-        status: "verified" as const,
-        title: rawResult.title,
-        section: rawResult.section,
-        certifiedAt: rawResult.publishedAt
-          ? new Date(rawResult.publishedAt).toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' })
-          : "data non disponibile",
-        verifyHash: rawResult.verifyHash,
-        id: rawResult.id,
-        sourceName: rawResult.sourceName,
-        summary: rawResult.summary,
-        ipfsCid: rawResult.ipfsCid ?? null,
-        ipfsUrl: rawResult.ipfsUrl ?? null,
-        ipfsPinnedAt: rawResult.ipfsPinnedAt ?? null,
-      }
-    : submitted && !isLoading
-    ? { status: "not_found" as const }
-    : null;
+  const result = verifyMutation?.data;
 
   return (
-    <div>
-      <form onSubmit={handleVerify} className="flex flex-col sm:flex-row gap-3 mb-4">
+    <div ref={formRef} className="border-2 border-[#0a0a0a]/10 p-8 md:p-10" style={{ background: "#fafafa" }}>
+      <Label>Verifica un certificato</Label>
+      <h3 className="text-2xl font-black mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
+        Hai un codice PP-XXXXXXXXXXXXXXXX?
+      </h3>
+      <p className="text-sm text-[#0a0a0a]/55 mb-8 leading-relaxed">
+        Inserisci il codice di verifica ProofPress o l'hash SHA-256 del documento per accedere al Verification Report originale e verificarne l'integrità crittografica.
+      </p>
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
-          value={inputValue}
-          onChange={(e) => { setInputValue(e.target.value); setSubmitted(false); }}
-          placeholder="Inserisci il codice PP-XXXXXXXXXXXXXXXX o l'hash SHA-256 completo"
-          className="flex-1 px-5 py-4 text-sm border border-[#0a0a0a]/20 bg-white text-[#0a0a0a] placeholder-[#0a0a0a]/35 outline-none focus:border-[#0a0a0a]/50 transition-colors"
+          value={inputHash}
+          onChange={e => setInputHash(e.target.value)}
+          placeholder="PP-XXXXXXXXXXXXXXXX oppure hash SHA-256..."
+          className="flex-1 px-4 py-3 border border-[#0a0a0a]/15 text-sm focus:outline-none focus:border-[#0a0a0a]/40 bg-white"
           style={{ fontFamily: MONO }}
         />
         <button
           type="submit"
-          disabled={!inputValue.trim()}
-          className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
+          disabled={verifyMutation.isPending || !inputHash.trim()}
+          className="px-8 py-3 text-sm font-bold uppercase tracking-widest text-white disabled:opacity-40 transition-opacity hover:opacity-80"
           style={{ background: ORANGE, fontFamily: FONT }}
         >
-          Verifica →
+          {verifyMutation.isPending ? "Verifica..." : "Verifica →"}
         </button>
       </form>
 
-      <p className="text-xs text-[#0a0a0a]/45 mb-8 leading-relaxed">
-        Ogni hash è collegato al Verification Report originale. Se il contenuto dell'articolo è stato modificato dopo la certificazione, il sistema lo rileva automaticamente.
-      </p>
-
-      {/* Risultato */}
-      <div ref={resultRef}>
-        {submitted && isLoading && (
-          <div className="border border-[#0a0a0a]/10 p-6 flex items-center gap-3">
-            <div className="w-4 h-4 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin" />
-            <span className="text-sm text-[#0a0a0a]/60">Verifica in corso...</span>
+      {verifyMutation.isError && (
+        <div className="mt-6 p-5 border border-red-200 bg-red-50 flex items-start gap-3">
+          <ShieldX className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-bold text-red-700 mb-1">Certificato non trovato</p>
+            <p className="text-xs text-red-600">Il codice inserito non corrisponde a nessun certificato nel registro ProofPress. Verifica che il codice sia corretto.</p>
           </div>
-        )}
-
-        {submitted && isError && (
-          <div className="border border-red-200 bg-red-50 p-6">
-            <div className="flex items-start gap-3">
-              <ShieldX size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
-              <div>
-                <div className="font-bold text-sm text-red-700 mb-1">❌ Hash non trovato</div>
-                <p className="text-sm text-red-600/80">
-                  Questo hash non corrisponde a nessuna certificazione nel nostro sistema. Verifica di aver copiato correttamente il codice, oppure contattaci per assistenza.
-                </p>
-                <button onClick={handleReset} className="mt-3 text-xs text-red-500 underline hover:no-underline">Riprova</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {submitted && result && !isLoading && (
-          <div className={`border p-6 ${
-            result.status === "verified"
-              ? "border-green-200 bg-green-50"
-              : "border-red-200 bg-red-50"
-          }`}>
-            {result.status === "verified" && (
-              <div className="flex items-start gap-3">
-                <ShieldCheck size={20} className="text-green-600 flex-shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <div className="font-bold text-sm text-green-700 mb-2">✅ Verificato — Notizia certificata da ProofPress</div>
-                  <p className="text-sm text-green-700/80 mb-3">
-                    Questa notizia è stata certificata da ProofPress Verify il{" "}
-                    <strong>{result.certifiedAt}</strong>. Il contenuto corrisponde esattamente al Verification Report originale.
-                  </p>
-                  {result.title && (
-                    <div className="text-xs text-green-600/70 mb-1">
-                      <span className="font-bold">Titolo:</span> {result.title}
-                    </div>
-                  )}
-                  {result.section && (
-                    <div className="text-xs text-green-600/70 mb-1">
-                      <span className="font-bold">Sezione:</span> {result.section.toUpperCase()}
-                    </div>
-                  )}
-                  {result.sourceName && (
-                    <div className="text-xs text-green-600/70 mb-1">
-                      <span className="font-bold">Fonte:</span> {result.sourceName}
-                    </div>
-                  )}
-                  {result.verifyHash && (
-                    <div className="text-xs text-green-600/70 mt-2 font-mono break-all">
-                      <span className="font-bold not-italic" style={{ fontFamily: FONT }}>Hash SHA-256:</span>{" "}
-                      {result.verifyHash}
-                    </div>
-                  )}
-
-                  {/* ── Sezione IPFS / Blockchain ── */}
-                  <div className="mt-4 pt-4 border-t border-green-200">
-                    {'ipfsCid' in result && result.ipfsCid ? (
-                      // Già pinnato su IPFS
-                      <div
-                        className="rounded-lg px-4 py-3"
-                        style={{ background: "rgba(0,150,136,0.08)", border: "1px solid rgba(0,150,136,0.25)" }}
-                      >
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#00897b", fontFamily: FONT }}>⛓ Ancorato su IPFS</span>
-                          <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: "#00897b", color: "#fff", fontFamily: FONT }}>IMMUTABILE</span>
-                        </div>
-                        <p className="text-[10px] mb-2" style={{ color: "rgba(0,77,64,0.75)", fontFamily: FONT }}>
-                          Il Verification Report è ancorato permanentemente su IPFS tramite Pinata. Il CID garantisce l'immutabilità del contenuto certificato.
-                        </p>
-                        <div className="text-[9px] font-mono break-all mb-2" style={{ color: "#00695c" }}>
-                          <span className="font-bold not-italic" style={{ fontFamily: FONT }}>CID:</span>{" "}
-                          {result.ipfsCid}
-                        </div>
-                        {'ipfsUrl' in result && result.ipfsUrl && (
-                          <a
-                            href={result.ipfsUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[10px] font-bold hover:opacity-70 transition-opacity"
-                            style={{ color: "#00897b", fontFamily: FONT }}
-                          >
-                            Visualizza su IPFS Gateway →
-                          </a>
-                        )}
-                        {'ipfsPinnedAt' in result && result.ipfsPinnedAt && (
-                          <div className="text-[9px] mt-1" style={{ color: "rgba(0,77,64,0.5)", fontFamily: FONT }}>
-                            Pinnato il {new Date(result.ipfsPinnedAt).toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      // Non ancora pinnato — mostra pulsante
-                      <div
-                        className="rounded-lg px-4 py-3"
-                        style={{ background: "rgba(255,85,0,0.05)", border: "1px solid rgba(255,85,0,0.2)" }}
-                      >
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: ORANGE, fontFamily: FONT }}>⛓ Ancora su IPFS</span>
-                        </div>
-                        <p className="text-[10px] mb-3" style={{ color: "rgba(10,10,10,0.55)", fontFamily: FONT }}>
-                          Ancora questo Verification Report su IPFS per garantirne l'immutabilità permanente tramite blockchain.
-                        </p>
-                        {pinMutation.isSuccess ? (
-                          <div className="text-[10px]" style={{ color: "#2e7d32", fontFamily: FONT }}>
-                            <div className="font-bold mb-2">✅ Ancorato! CID: <span className="font-mono">{pinMutation.data?.cid?.substring(0, 20)}…</span></div>
-                            <div className="flex flex-wrap gap-2">
-                              {pinMutation.data?.ipfsUrl && (
-                                <a href={pinMutation.data.ipfsUrl} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
-                                  JSON su IPFS →
-                                </a>
-                              )}
-                              {pinMutation.data?.cid && (
-                                <a href={`/verify/${pinMutation.data.cid}`} target="_blank" rel="noopener noreferrer" className="font-bold underline hover:no-underline" style={{ color: "#00897b" }}>
-                                  📄 Pagina pubblica Verification Report →
-                                </a>
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => result.verifyHash && pinMutation.mutate({ hash: result.verifyHash })}
-                            disabled={pinMutation.isPending || !result.verifyHash}
-                            className="flex items-center gap-2 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
-                            style={{ background: ORANGE, fontFamily: FONT }}
-                          >
-                            {pinMutation.isPending ? (
-                              <><span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full" /> Pinning in corso…</>
-                            ) : (
-                              <>⛓ Ancora su IPFS</>
-                            )}
-                          </button>
-                        )}
-                        {pinMutation.isError && (
-                          <p className="text-[9px] mt-2" style={{ color: "#c62828", fontFamily: FONT }}>
-                            Errore: {pinMutation.error?.message}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {result.id && (
-                    <Link
-                      href={`/${result.section}/news/${result.id}`}
-                      className="mt-3 inline-block text-xs text-green-600 underline hover:no-underline"
-                    >
-                      Leggi l'articolo su ProofPress →
-                    </Link>
-                  )}
-                  <button onClick={handleReset} className="mt-3 ml-4 text-xs text-green-600/60 underline hover:no-underline">Nuova verifica</button>
-                </div>
-              </div>
-            )}
-
-            {result.status === "not_found" && (
-              <div className="flex items-start gap-3">
-                <ShieldX size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-bold text-sm text-red-700 mb-2">❌ Hash non trovato</div>
-                  <p className="text-sm text-red-600/80">
-                    Questo codice non corrisponde a nessuna certificazione nel nostro sistema. Verifica di aver copiato correttamente il codice PP-XXXXXXXXXXXXXXXX, oppure contattaci per assistenza.
-                  </p>
-                  <button onClick={handleReset} className="mt-3 text-xs text-red-500 underline hover:no-underline">Riprova</button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ── Pannello Esegui Verifica Completa ── */
-function FullVerifyPanel() {
-  const [hashInput, setHashInput] = useState("");
-  const [activeHash, setActiveHash] = useState("");
-  const runVerify = trpc.news.runFullVerify.useMutation();
-  const verifyStatus = trpc.news.getVerifyStatus.useQuery(
-    { hash: activeHash },
-    { enabled: activeHash.length === 64 }
-  );
-
-  const GRADE_COLOR: Record<string, string> = {
-    A: "#00b894", B: "#00cec9", C: "#fdcb6e", D: "#e17055", F: "#d63031",
-  };
-
-  const handleRun = (e: React.FormEvent) => {
-    e.preventDefault();
-    const h = hashInput.trim().toLowerCase();
-    if (h.length !== 64) return;
-    setActiveHash(h);
-    runVerify.mutate({ hash: h });
-  };
-
-  const grade = runVerify.data?.trustGrade ?? verifyStatus.data?.trustGrade ?? null;
-  const score = runVerify.data?.trustScore ?? verifyStatus.data?.trustScore ?? null;
-  const gradeColor = grade ? (GRADE_COLOR[grade] ?? "#636e72") : "#636e72";
-
-  return (
-    <div className="mt-16 pt-10 border-t border-[#0a0a0a]/8">
-      <div className="mb-6">
-        <span
-          className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
-          style={{ color: "#00b894", borderColor: "#00b89444", background: "#00b8940d", fontFamily: FONT }}
-        >
-          VERIFY ENGINE — ANALISI COMPLETA
-        </span>
-      </div>
-      <h3 className="text-2xl md:text-3xl font-black leading-tight mb-3" style={{ fontFamily: FONT }}>
-        Esegui la Verifica Completa
-      </h3>
-      <p className="text-sm text-[#0a0a0a]/55 mb-8 max-w-2xl leading-relaxed">
-        Inserisci l'hash SHA-256 completo (64 caratteri) per avviare il pipeline di analisi: claim extraction via AI, corroborazione multi-fonte (DuckDuckGo + Google Fact Check), trust scoring e ancoraggio IPFS automatico.
-      </p>
-
-      <form onSubmit={handleRun} className="flex flex-col sm:flex-row gap-3 mb-6">
-        <input
-          type="text"
-          value={hashInput}
-          onChange={(e) => setHashInput(e.target.value)}
-          placeholder="Hash SHA-256 completo (64 caratteri esadecimali)"
-          maxLength={64}
-          className="flex-1 px-5 py-4 text-sm border border-[#0a0a0a]/20 bg-white text-[#0a0a0a] placeholder-[#0a0a0a]/35 outline-none focus:border-[#00b894]/60 transition-colors"
-          style={{ fontFamily: MONO }}
-        />
-        <button
-          type="submit"
-          disabled={hashInput.trim().length !== 64 || runVerify.isPending}
-          className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80 disabled:opacity-40"
-          style={{ background: "#00b894", fontFamily: FONT }}
-        >
-          {runVerify.isPending ? (
-            <span className="flex items-center gap-2">
-              <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full" />
-              Analisi in corso…
-            </span>
-          ) : (
-            "Esegui Verifica →"
-          )}
-        </button>
-      </form>
-
-      {/* Risultato */}
-      {runVerify.isError && (
-        <div className="border border-red-200 bg-red-50 p-5 text-sm text-red-700">
-          ❌ Errore: {runVerify.error?.message}
         </div>
       )}
 
-      {(runVerify.isSuccess || (verifyStatus.data?.verified)) && grade !== null && (
-        <div
-          className="rounded-lg p-6 border"
-          style={{ background: `${gradeColor}0d`, borderColor: `${gradeColor}44` }}
-        >
-          <div className="flex items-start gap-6">
-            {/* Grade badge */}
-            <div
-              className="flex-shrink-0 w-20 h-20 rounded-xl flex flex-col items-center justify-center"
-              style={{ background: gradeColor }}
-            >
-              <span className="text-3xl font-black text-white leading-none">{grade}</span>
-              <span className="text-[9px] font-bold text-white/80 uppercase tracking-widest mt-1">Grade</span>
-            </div>
-            {/* Dettagli */}
-            <div className="flex-1">
-              <div className="font-black text-lg mb-1" style={{ color: gradeColor, fontFamily: FONT }}>
-                Trust Score: {score !== null ? Math.round(Number(score)) : "—"}/100
-              </div>
-              <div className="text-sm text-[#0a0a0a]/65 mb-3">
-                {runVerify.data?.status === "cached"
-                  ? "Risultato dalla cache — questo articolo è già stato verificato in precedenza."
-                  : "Verifica completata. Il Verification Report è stato salvato e ancorato su IPFS."}
-              </div>
-              {runVerify.data?.report && typeof runVerify.data.report === "object" && "claims" in (runVerify.data.report as Record<string, unknown>) && (
-                <div className="text-xs text-[#0a0a0a]/50 font-mono">
-                  {(runVerify.data.report as { claims?: unknown[] }).claims?.length ?? 0} claim analizzati
-                </div>
+      {result && submitted && (
+        <div className="mt-6 space-y-4">
+          <div className={`p-5 border flex items-start gap-3 ${result.verified ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}`}>
+            {result.verified
+              ? <ShieldCheck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+              : <ShieldX className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+            }
+            <div>
+              <p className={`text-sm font-bold mb-1 ${result.verified ? "text-green-700" : "text-red-700"}`}>
+                {result.verified ? "Certificato verificato — integrità confermata" : "Certificato non valido — integrità compromessa"}
+              </p>
+              {result.verified && (
+                <p className="text-xs text-green-600">Il contenuto non è stato modificato dopo la certificazione. Il CID IPFS è verificabile su qualsiasi gateway pubblico.</p>
               )}
             </div>
           </div>
+          {result.report && (
+            <div className="p-5 border border-[#0a0a0a]/10 bg-white space-y-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                {[
+                  { label: "Trust Score", value: `${result.report.trustScore}/100` },
+                  { label: "Grade", value: result.report.grade },
+                  { label: "Claim verificati", value: result.report.claimsVerified },
+                  { label: "Tipo", value: result.report.contentType ?? "—" },
+                ].map(({ label, value }) => (
+                  <div key={label}>
+                    <div className="text-xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>{value}</div>
+                    <div className="text-[10px] uppercase tracking-wide text-[#0a0a0a]/40 mt-1" style={{ fontFamily: FONT }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+              {result.report.ipfsCid && (
+                <div className="pt-3 border-t border-[#0a0a0a]/8">
+                  <p className="text-[10px] uppercase tracking-wide text-[#0a0a0a]/40 mb-1" style={{ fontFamily: FONT }}>CID IPFS</p>
+                  <p className="text-xs font-mono text-[#0a0a0a]/60 break-all">{result.report.ipfsCid}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 }
 
-/* ══════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════════════
    COMPONENTE PRINCIPALE
-══════════════════════════════════════════════════════════════════════════════ */
-const AUDIO_SCOPRI_URL = "/api/storage-proxy/manus-storage/ProofPress_Verify_certifica_2_01eecccc.m4a";
-
+═══════════════════════════════════════════════════════════════════════════ */
 export default function ProofPressVerify() {
   const verifyFormRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
+  const search = useSearch();
+  const urlHash = new URLSearchParams(search).get("hash") ?? "";
 
-  const searchString = useSearch();
+  const AUDIO_SCOPRI_URL = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Verify_scopri_di_piu_d4b2c0f5.mp4";
 
-  // Legge il parametro ?hash= dall'URL
-  const urlHash = new URLSearchParams(searchString).get("hash") || "";
-
-  // Scroll automatico al form quando c'è un hash nell'URL
   useEffect(() => {
     if (urlHash && urlHash.trim().length >= 8) {
       setTimeout(() => {
@@ -507,17 +210,16 @@ export default function ProofPressVerify() {
     }
   }, [urlHash]);
 
-  const scrollToForm = () => {
-    verifyFormRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollToForm = () => verifyFormRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToContact = () => contactRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="flex min-h-screen">
       <LeftSidebar />
       <div className="flex-1 min-w-0">
         <SEOHead
-          title="ProofPress Verify — Verifiable Corroboration per il giornalismo"
-          description="Ogni notizia nasce con un Verification Report pubblico, claim per claim, sigillato crittograficamente. Non promettiamo verità. Forniamo evidenza."
+          title="ProofPress Verify™ — Il protocollo di certificazione crittografica per qualsiasi contenuto"
+          description="ProofPress Verify™ è il protocollo universale di corroborazione verificabile. Certifica notizie, documenti aziendali e comunicazioni email con hash SHA-256 e IPFS. Tre estensioni: News Verify, Info Verify, Email Verify."
           canonical="https://proofpress.ai/proofpress-verify"
           ogSiteName="Proof Press"
         />
@@ -527,20 +229,19 @@ export default function ProofPressVerify() {
           <BreakingNewsTicker />
 
           {/* ═══════════════════════════════════════════════════════════════════
-              HERO
+              HERO — PROTOCOLLO UNIVERSALE
           ═══════════════════════════════════════════════════════════════════ */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
-             <div className="max-w-5xl mx-auto px-5 md:px-8">
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
               <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
                 {/* Testo hero */}
                 <div className="flex-1 min-w-0">
-                  {/* Badge hub */}
                   <div className="mb-6 flex flex-wrap gap-2 items-center">
                     <span
                       className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border"
                       style={{ color: ORANGE, borderColor: `${ORANGE}44`, background: `${ORANGE}0d`, fontFamily: FONT }}
                     >
-                      Tecnologia ProofPress
+                      Protocollo di Certificazione
                     </span>
                     <span
                       className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1 border border-[#0a0a0a]/15"
@@ -555,62 +256,52 @@ export default function ProofPressVerify() {
                       style={{ fontFamily: FONT }}
                     >
                       <span style={{ color: ORANGE }}>ProofPress</span> Verify™<br />
-                      <span className="text-[#0a0a0a]/25">La verità ha una firma.</span>
+                      <span className="text-[#0a0a0a]/25">Qualsiasi contenuto.<br />Certificato.</span>
                     </h1>
                     <p className="text-lg md:text-xl leading-relaxed text-[#0a0a0a]/65 max-w-4xl">
-                      ProofPress Verify™ è il protocollo di corroborazione verificabile per il giornalismo nell'era AI. Ogni contenuto viene analizzato claim per claim, certificato con hash crittografico SHA-256 e archiviato su IPFS — immutabile, pubblico, verificabile da chiunque. Disponibile in 3 estensioni: <strong className="text-[#0a0a0a]">News Verify</strong>, <strong className="text-[#0a0a0a]">Info Verify</strong> ed <strong className="text-[#0a0a0a]">Email Verify</strong>.
+                      ProofPress Verify™ è un <strong className="text-[#0a0a0a]">protocollo universale di corroborazione verificabile</strong>. Analizza qualsiasi contenuto — notizie, documenti aziendali, comunicazioni email — claim per claim, lo certifica con hash crittografico SHA-256 e lo archivia su IPFS. Immutabile, pubblico, verificabile da chiunque senza intermediari. Disponibile in 3 estensioni specializzate per settore.
                     </p>
-                   </div>
-                  {/* CTA */}
+                  </div>
                   <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
                     <button
-                      onClick={scrollToForm}
+                      onClick={scrollToContact}
                       className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-80"
                       style={{ background: ORANGE, fontFamily: FONT }}
                     >
-                      Verifica un articolo ↓
+                      Richiedi una demo →
                     </button>
-                    <a
-                      href="/verify/demo"
-                      className="px-8 py-4 text-sm font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
-                      style={{ background: "#00897b", color: "#ffffff", fontFamily: FONT }}
+                    <button
+                      onClick={scrollToForm}
+                      className="px-8 py-4 text-sm font-bold uppercase tracking-widest border border-[#0a0a0a]/20 hover:border-[#0a0a0a]/50 transition-colors"
+                      style={{ fontFamily: FONT }}
                     >
-                      ⚡ Demo Live — Prova ora
-                    </a>
-                   </div>{/* fine flex CTA */}
-                  {/* ── Audio player inline — sempre visibile sotto i bottoni ── */}
+                      Verifica un certificato ↓
+                    </button>
+                  </div>
+                  {/* Audio player */}
                   <div
-                    className="mt-6 p-5 rounded-xl border"
+                    className="mt-8 p-5 border"
                     style={{ background: "#f0f4ff", borderColor: "#1a3a6b22" }}
                   >
                     <div className="flex items-center gap-3 mb-3">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ background: "#1a3a6b" }}
-                      >
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "#1a3a6b" }}>
                         <span className="text-white text-lg">🎤</span>
                       </div>
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1a3a6b", fontFamily: FONT }}>ProofPress Verify</p>
-                        <p className="text-sm font-semibold" style={{ color: "#0a0a0a", fontFamily: FONT }}>ProofPress Verify certifica l'autenticità delle notizie</p>
+                        <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1a3a6b", fontFamily: FONT }}>ProofPress Verify™</p>
+                        <p className="text-sm font-semibold" style={{ color: "#0a0a0a", fontFamily: FONT }}>Il protocollo di certificazione universale</p>
                       </div>
                     </div>
-                    <audio
-                      controls
-                      preload="none"
-                      className="w-full"
-                      style={{ accentColor: ORANGE }}
-                    >
+                    <audio controls preload="none" className="w-full" style={{ accentColor: ORANGE }}>
                       <source src={AUDIO_SCOPRI_URL} type="audio/mp4" />
                       Il tuo browser non supporta la riproduzione audio.
                     </audio>
                     <p className="mt-3 text-xs leading-relaxed" style={{ color: "#1a3a6b", opacity: 0.7, fontFamily: FONT }}>
-                      Ascolta come ProofPress Verify certifica ogni articolo in meno di 60 secondi — dall'estrazione dei claim al certificato crittografico IPFS.
+                      Ascolta come ProofPress Verify™ certifica qualsiasi contenuto in meno di 3 minuti — dall'estrazione dei claim al certificato crittografico IPFS.
                     </p>
                   </div>
-                </div>{/* fine col testo */}
-
-              </div>{/* fine flex-row hero */}
+                </div>
+              </div>
             </div>
           </section>
 
@@ -620,48 +311,150 @@ export default function ProofPressVerify() {
           <section className="py-16 md:py-20" style={{ background: "#0a0a0a" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
               <div className="mb-8 text-center">
-                <span
-                  className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-white/40"
-                  style={{ fontFamily: FONT }}
-                >
-                  ProofPress Verify · In pochi Secondi
+                <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-white/40" style={{ fontFamily: FONT }}>
+                  ProofPress Verify™ · In pochi secondi
                 </span>
                 <h2 className="mt-3 text-2xl md:text-3xl font-black text-white" style={{ fontFamily: FONT }}>
-                  Le Notizie nell’Era AI.
+                  Il protocollo in azione.
                 </h2>
               </div>
-              <div
-                className="relative w-full overflow-hidden"
-                style={{ aspectRatio: "16/9", background: "#1a1a1a" }}
-              >
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  preload="metadata"
-                  poster=""
-                  style={{ display: "block" }}
-                >
+              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9", background: "#1a1a1a" }}>
+                <video className="w-full h-full object-cover" controls preload="metadata" style={{ display: "block" }}>
                   <source src="/manus-storage/ProofPress__Prova_nell_IA_37d6d1c7.mp4" type="video/mp4" />
                   Il tuo browser non supporta la riproduzione video.
                 </video>
               </div>
               <p className="mt-4 text-center text-[13px] text-white/35" style={{ fontFamily: FONT }}>
-                ProofPress Verify — Certificazione crittografica dell’informazione nell’era dell’AI
+                ProofPress Verify™ — Certificazione crittografica di qualsiasi contenuto nell'era dell'AI
               </p>
             </div>
           </section>
 
           {/* ═══════════════════════════════════════════════════════════════════
-              LE 3 ESTENSIONI — hub navigazione prodotto
+              IL PROBLEMA UNIVERSALE
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section bg="#f8f8f6" id="problema">
+            <Label>Il problema</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
+              L'informazione ha un problema di fiducia.<br />
+              Non solo il giornalismo.
+            </h2>
+            <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
+              <p>
+                Il problema non riguarda solo le notizie. Riguarda qualsiasi contenuto che circola nell'ecosistema digitale: comunicati stampa alterati dopo la pubblicazione, report aziendali modificati senza traccia, newsletter con dati cambiati in transito, white paper con claim non verificabili.
+              </p>
+              <p>
+                L'AI generativa ha abbassato il costo di produzione di contenuti plausibili a zero. Un articolo si genera in 30 secondi. Un comunicato stampa convincente in 2 minuti. Un report finanziario credibile in 5. La velocità di produzione supera qualsiasi capacità di verifica umana — in qualsiasi settore.
+              </p>
+              <p>
+                Il problema non è la velocità di produzione. Il problema è che non esiste un sistema scalabile per <strong className="text-[#0a0a0a]">dimostrare</strong> che un contenuto è integro, verificato e non alterato — indipendentemente dal settore in cui opera chi lo produce.
+              </p>
+              <p>
+                ProofPress Verify™ è quel sistema.
+              </p>
+            </div>
+
+            {/* 3 contesti del problema */}
+            <div className="grid md:grid-cols-3 gap-6 mt-12">
+              {[
+                {
+                  icon: "📰",
+                  context: "Giornalismo",
+                  text: "59% dei lettori non distingue notizie vere da false (Reuters Institute 2024). I fact-checker coprono meno del 3% dei contenuti pubblicati ogni giorno.",
+                },
+                {
+                  icon: "🏢",
+                  context: "Informazione aziendale",
+                  text: "Comunicati stampa, report e white paper vengono distribuiti su canali non controllati. Non esiste un modo standard per verificare che il documento ricevuto sia identico all'originale.",
+                },
+                {
+                  icon: "✉️",
+                  context: "Comunicazioni email",
+                  text: "Le email possono essere intercettate e modificate in transito. Per newsletter editoriali, comunicazioni finanziarie o aggiornamenti regolatori, l'integrità del contenuto è un requisito non negoziabile.",
+                },
+              ].map(({ icon, context, text }) => (
+                <div key={context} className="p-6 border border-[#0a0a0a]/8 bg-white">
+                  <div className="text-2xl mb-3">{icon}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wide text-[#0a0a0a]/40 mb-2" style={{ fontFamily: FONT }}>{context}</div>
+                  <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              COME FUNZIONA IL PROTOCOLLO
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section id="protocollo">
+            <Label>Il protocollo</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
+              Un protocollo, non un plugin.<br />Corroborazione verificabile, non un'opinione.
+            </h2>
+            <p className="text-base text-[#0a0a0a]/55 mb-12 max-w-2xl leading-relaxed">
+              ProofPress Verify™ funziona allo stesso modo per qualsiasi tipo di contenuto. La pipeline è identica — cambia solo il contesto applicativo.
+            </p>
+            <div className="space-y-10">
+              {[
+                {
+                  step: "01",
+                  title: "Acquisizione del contenuto",
+                  text: "Il protocollo accetta qualsiasi contenuto testuale: articoli, comunicati stampa, report, white paper, email, post social. L'input può avvenire via API, integrazione diretta con la piattaforma di produzione, o upload manuale.",
+                },
+                {
+                  step: "02",
+                  title: "Estrazione e classificazione dei claim",
+                  text: "Il sistema AI (Claude, Anthropic) analizza il testo e identifica tutti i claim fattuali verificabili: dati numerici, attribuzioni, eventi, dichiarazioni, proiezioni. Ogni claim viene isolato e classificato per tipologia e verificabilità.",
+                },
+                {
+                  step: "03",
+                  title: "Corroborazione multi-fonte",
+                  text: "Ogni claim viene confrontato con 4.000+ fonti classificate per credibilità: agenzie stampa, database istituzionali, pubblicazioni peer-reviewed, registri pubblici. Il sistema calcola un trust score per ogni claim e un punteggio aggregato per il contenuto.",
+                },
+                {
+                  step: "04",
+                  title: "Verification Report",
+                  text: "Il sistema genera un Verification Report strutturato con esito per ogni singolo claim: corroborato, non corroborato, parzialmente corroborato. Il report include le fonti usate per ogni verifica e il trust score complessivo (0–100, grade A–F).",
+                },
+                {
+                  step: "05",
+                  title: "Certificato crittografico SHA-256 + IPFS",
+                  text: "Il contenuto originale e il Verification Report vengono hashati con SHA-256 e archiviati su IPFS tramite Pinata. Il CID crittografico è la prova permanente che il contenuto non è stato alterato. La verifica è indipendente da ProofPress — il protocollo crittografico è la garanzia.",
+                },
+                {
+                  step: "06",
+                  title: "Codice di verifica pubblico",
+                  text: "Il contenuto riceve il codice PP-XXXXXXXXXXXXXXXX. Chiunque — lettori, investitori, regolatori, destinatari — può inserire il codice su proofpress.ai/proofpress-verify per accedere al Verification Report originale e verificare l'integrità del contenuto in autonomia.",
+                },
+              ].map(({ step, title, text }) => (
+                <div key={step} className="grid md:grid-cols-12 gap-6 items-start">
+                  <div className="md:col-span-1">
+                    <div className="text-4xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>{step}</div>
+                  </div>
+                  <div className="md:col-span-11 border-l-2 pl-6" style={{ borderColor: `${ORANGE}33` }}>
+                    <h3 className="text-lg font-black mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
+                    <p className="text-base leading-relaxed text-[#0a0a0a]/65">{text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <TechSpecs />
+          </Section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              LE 3 ESTENSIONI
           ═══════════════════════════════════════════════════════════════════ */}
           <section className="py-20 md:py-28" style={{ background: "#f8f8f6" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
               <Label>Le 3 Estensioni</Label>
               <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
-                Un protocollo.<br />Tre applicazioni.
+                Un protocollo.<br />Tre applicazioni verticali.
               </h2>
               <p className="text-base text-[#0a0a0a]/55 mb-12 max-w-2xl leading-relaxed">
-                ProofPress Verify™ si declina in tre estensioni specializzate, ognuna progettata per un caso d'uso specifico. Stessa tecnologia di certificazione crittografica, contesti di applicazione diversi.
+                ProofPress Verify™ si declina in tre estensioni specializzate per settore. La tecnologia crittografica è identica — cambia il contesto di applicazione, l'integrazione con le piattaforme di settore e il tipo di contenuto certificato.
               </p>
               <div className="grid md:grid-cols-3 gap-6">
                 {/* News Verify */}
@@ -670,13 +463,10 @@ export default function ProofPressVerify() {
                   className="group block p-8 border-2 border-[#0a0a0a]/10 bg-white hover:border-[#ff5500] transition-all duration-200 hover:shadow-lg"
                 >
                   <div className="mb-5">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center text-2xl mb-4"
-                      style={{ background: `${ORANGE}12` }}
-                    >
+                    <div className="w-12 h-12 flex items-center justify-center text-2xl mb-4" style={{ background: `${ORANGE}12` }}>
                       📰
                     </div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: ORANGE, fontFamily: FONT }}>Estensione 01</div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: ORANGE, fontFamily: FONT }}>Estensione 01 · Giornalismo</div>
                     <h3 className="text-xl font-black text-[#0a0a0a] mb-3 group-hover:text-[#ff5500] transition-colors" style={{ fontFamily: FONT }}>
                       News Verify
                     </h3>
@@ -700,13 +490,10 @@ export default function ProofPressVerify() {
                   className="group block p-8 border-2 border-[#0a0a0a]/10 bg-white hover:border-[#0984e3] transition-all duration-200 hover:shadow-lg"
                 >
                   <div className="mb-5">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center text-2xl mb-4"
-                      style={{ background: "#0984e312" }}
-                    >
+                    <div className="w-12 h-12 flex items-center justify-center text-2xl mb-4" style={{ background: "#0984e312" }}>
                       ℹ️
                     </div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#0984e3", fontFamily: FONT }}>Estensione 02</div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#0984e3", fontFamily: FONT }}>Estensione 02 · Informazione Aziendale</div>
                     <h3 className="text-xl font-black text-[#0a0a0a] mb-3 group-hover:text-[#0984e3] transition-colors" style={{ fontFamily: FONT }}>
                       Info Verify
                     </h3>
@@ -730,13 +517,10 @@ export default function ProofPressVerify() {
                   className="group block p-8 border-2 border-[#0a0a0a]/10 bg-white hover:border-[#00b894] transition-all duration-200 hover:shadow-lg"
                 >
                   <div className="mb-5">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center text-2xl mb-4"
-                      style={{ background: "#00b89412" }}
-                    >
+                    <div className="w-12 h-12 flex items-center justify-center text-2xl mb-4" style={{ background: "#00b89412" }}>
                       ✉️
                     </div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#00b894", fontFamily: FONT }}>Estensione 03</div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#00b894", fontFamily: FONT }}>Estensione 03 · Email & Newsletter</div>
                     <h3 className="text-xl font-black text-[#0a0a0a] mb-3 group-hover:text-[#00b894] transition-colors" style={{ fontFamily: FONT }}>
                       Email Verify
                     </h3>
@@ -760,493 +544,120 @@ export default function ProofPressVerify() {
           <Divider />
 
           {/* ═══════════════════════════════════════════════════════════════════
-              IL CONTESTO
+              TRUST GRADE — SISTEMA DI GRADING
           ═══════════════════════════════════════════════════════════════════ */}
-          <Section bg="#f8f8f6" id="contesto">
-            <Label>Il contesto</Label>
+          <Section id="grading">
+            <Label>Il sistema di grading</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
-              Il giornalismo ha un problema di fiducia.<br />
-              L'AI generativa lo sta amplificando.
+              Da A a F.<br />La credibilità diventa un numero.
             </h2>
-            <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
-              <p>
-                Secondo il Reuters Institute Digital News Report 2024, il 59% dei lettori ha difficoltà a distinguere notizie vere da false online. L'AI generativa ha abbassato il costo di produzione di disinformazione credibile a zero. Un articolo plausibile si genera in 30 secondi. Un deepfake video in 5 minuti. La velocità di diffusione supera qualsiasi capacità di verifica umana.
-              </p>
-              <p>
-                I fact-checker tradizionali coprono meno del 3% dei contenuti pubblicati ogni giorno. I disclaimer — "secondo fonti", "come riportato da" — non sono prove: sono formule retoriche che non reggono a nessuna verifica indipendente.
-              </p>
-              <p>
-                Il problema non è la velocità di pubblicazione. Il problema è che non esiste un sistema scalabile per <strong className="text-[#0a0a0a]">dimostrare</strong> che una notizia è affidabile.
-              </p>
-              <p>
-                ProofPress Verify è quel sistema.
-              </p>
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              COS'È PROOFPRESS VERIFY
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section id="cose">
-            <Label>Cos'è ProofPress Verify</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
-              Un protocollo, non un plugin.<br />Corroborazione verificabile, non un'opinione.
-            </h2>
-            <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
-              <p>
-                ProofPress Verify è un sistema di corroborazione verificabile per il giornalismo agentico. Non è un tool che “controlla i fatti” — è un protocollo strutturato che estrae i claim fattuali da ogni articolo, li confronta con fonti indipendenti classificate per credibilità, e produce un Verification Report pubblico con esito per ogni singolo claim.
-              </p>
-              <p>
-                Il report viene sigillato con hash crittografico SHA-256 e archiviato su IPFS tramite Pinata. Una volta pubblicato, nessuno può modificarlo senza che la modifica sia rilevabile: il CID IPFS è la prova permanente dell'integrità del contenuto.
-              </p>
-              <p>
-                Non è un filtro editoriale. Non decide cosa pubblicare.{" "}
-                <strong className="text-[#0a0a0a]">Certifica quello che viene pubblicato</strong> — e rende la certificazione verificabile da chiunque, in qualsiasi momento, senza intermediari.
-              </p>
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              3 LIVELLI DI VERIFICA
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section bg="#f8f8f6" id="livelli">
-            <Label>Come funziona</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-16" style={{ fontFamily: FONT }}>
-              Cinque passi. Un certificato immutabile.
-            </h2>
-
-            <div className="space-y-16">
-              {/* Step 1 */}
-              <div className="grid md:grid-cols-12 gap-8">
-                <div className="md:col-span-1">
-                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>01</div>
-                </div>
-                <div className="md:col-span-11">
-                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Claim extraction
-                  </h3>
-                  <p className="text-base leading-relaxed text-[#0a0a0a]/65">
-                    Il sistema legge l’articolo e identifica automaticamente ogni affermazione fattuale verificabile: numeri, date, attribuzioni, eventi, relazioni causali. Non opinioni, non retoriche — solo claim che possono essere confermati o smentiti da fonti esterne.
-                  </p>
-                </div>
-              </div>
-
-              <div className="border-t border-[#0a0a0a]/8" />
-
-              {/* Step 2 */}
-              <div className="grid md:grid-cols-12 gap-8">
-                <div className="md:col-span-1">
-                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>02</div>
-                </div>
-                <div className="md:col-span-11">
-                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Multi-source corroboration
-                  </h3>
-                  <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-6">
-                    Ogni claim viene confrontato con fonti indipendenti classificate per credibilità: database Google Fact Check Tools (200+ organizzazioni IFCN), Media Bias/Fact Check, Iffy Index (12.000+ domini classificati), agenzie stampa internazionali. Il sistema calcola quante fonti confermano, quante contraddicono, quante sono neutrali.
-                  </p>
-                  <div className="grid sm:grid-cols-3 gap-4">
-                    {[
-                      { label: "SUPPORTED", desc: "Claim confermato da fonti indipendenti", color: "#00b894" },
-                      { label: "REFUTED", desc: "Claim contraddetto da fonti verificate", color: "#d63031" },
-                      { label: "UNVERIFIED", desc: "Fonti insufficienti per un esito definitivo", color: "#fdcb6e" },
-                    ].map(({ label, desc, color }) => (
-                      <div key={label} className="p-4 border border-[#0a0a0a]/8 bg-white">
-                        <div className="text-xs font-black mb-1" style={{ color, fontFamily: FONT }}>{label}</div>
-                        <div className="text-xs text-[#0a0a0a]/50">{desc}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-[#0a0a0a]/8" />
-
-              {/* Step 3 */}
-              <div className="grid md:grid-cols-12 gap-8">
-                <div className="md:col-span-1">
-                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>03</div>
-                </div>
-                <div className="md:col-span-11">
-                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Trust Score e Verification Report
-                  </h3>
-                  <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-6">
-                    Il sistema aggrega gli esiti in un Trust Score (0–100) e assegna un grade (A–F). Il Verification Report documenta ogni claim con le fonti usate, l’esito, e il numero di corroborazioni. È pubblico, leggibile da chiunque, esportabile in JSON-LD compatibile con schema.org/ClaimReview.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    {[
-                      { grade: "A", range: "85–100", color: "#00b894" },
-                      { grade: "B", range: "70–84", color: "#0984e3" },
-                      { grade: "C", range: "55–69", color: "#fdcb6e" },
-                      { grade: "D", range: "40–54", color: "#e17055" },
-                      { grade: "F", range: "0–39", color: "#d63031" },
-                    ].map(({ grade, range, color }) => (
-                      <div key={grade} className="flex items-center gap-2 px-4 py-2 border" style={{ borderColor: `${color}44`, background: `${color}0d` }}>
-                        <span className="text-xl font-black" style={{ color, fontFamily: FONT }}>{grade}</span>
-                        <span className="text-xs text-[#0a0a0a]/50">{range}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-[#0a0a0a]/8" />
-
-              {/* Step 4 */}
-              <div className="grid md:grid-cols-12 gap-8">
-                <div className="md:col-span-1">
-                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>04</div>
-                </div>
-                <div className="md:col-span-11">
-                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Archiviazione immutabile su IPFS
-                  </h3>
-                  <p className="text-base leading-relaxed text-[#0a0a0a]/65">
-                    Il Verification Report viene archiviato su IPFS tramite Pinata. Il CID (Content Identifier) crittografico garantisce che il contenuto non possa essere alterato senza che il CID cambi. Chiunque può recuperare il report originale da qualsiasi gateway IPFS, indipendentemente da ProofPress.
-                  </p>
-                </div>
-              </div>
-
-              <div className="border-t border-[#0a0a0a]/8" />
-
-              {/* Step 5 */}
-              <div className="grid md:grid-cols-12 gap-8">
-                <div className="md:col-span-1">
-                  <div className="text-5xl font-black leading-none" style={{ color: `${ORANGE}33`, fontFamily: FONT }}>05</div>
-                </div>
-                <div className="md:col-span-11">
-                  <h3 className="text-xl font-black mb-4 text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-                    Certificato pubblico e verificabile
-                  </h3>
-                  <p className="text-base leading-relaxed text-[#0a0a0a]/65">
-                    Il Verification Report viene archiviato su IPFS tramite Pinata con un CID permanente. Chiunque può recuperarlo da qualsiasi gateway IPFS e confrontarlo con il contenuto originale: se il CID corrisponde, il contenuto non è stato alterato. La verifica è indipendente da ProofPress.
-                  </p>
-                  <div className="mt-5 p-5 border-l-2" style={{ borderColor: ORANGE, background: `${ORANGE}08` }}>
-                    <p className="text-sm leading-relaxed text-[#0a0a0a]/75 font-semibold">
-                      Il CID IPFS è la prova. Chiunque può verificare — senza chiedere permesso a nessuno.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              USE CASE COMPARATIVI
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section id="use-case">
-            <Label>Use case</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
-              Due redazioni. Due scelte.
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Senza ProofPress */}
-              <div className="border border-[#d63031]/20 bg-[#d63031]/3 p-8">
-                <div className="text-xs font-bold uppercase tracking-widest text-[#d63031] mb-6">Senza ProofPress Verify</div>
-                <div className="space-y-5">
-                  {[
-                    { persona: "Giulia, 34 anni, lettrice", text: "Legge un articolo su un nuovo farmaco. Non sa se le fonti citate esistono davvero. Non sa se il giornalista ha verificato i dati clinici. Condivide comunque, perché sembra credibile." },
-                    { persona: "Il direttore di una testata", text: "Pubblica 80 articoli al giorno. Il suo team verifica manualmente il 4% dei contenuti. Sa che qualcosa potrebbe essere sbagliato, ma non ha strumenti per sapere cosa e quando." },
-                  ].map(({ persona, text }) => (
-                    <div key={persona} className="border-l-2 border-[#d63031]/30 pl-4">
-                      <div className="text-xs font-bold text-[#d63031]/70 mb-2">{persona}</div>
-                      <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Con ProofPress */}
-              <div className="border border-[#00b894]/20 bg-[#00b894]/3 p-8">
-                <div className="text-xs font-bold uppercase tracking-widest text-[#00b894] mb-6">Con ProofPress Verify</div>
-                <div className="space-y-5">
-                  {[
-                    { persona: "Giulia, 34 anni, lettrice", text: "Vede il badge Grade A sull’articolo. Clicca. Legge che 14 dei 16 claim sono stati corroborati da fonti indipendenti. Condivide con fiducia, citando il report come fonte." },
-                    { persona: "Il direttore di una testata", text: "Ogni articolo esce con un Verification Report pubblico. I lettori possono controllare. La redazione può dimostrare il proprio rigore con dati, non con dichiarazioni. La credibilità diventa misurabile." },
-                  ].map(({ persona, text }) => (
-                    <div key={persona} className="border-l-2 border-[#00b894]/40 pl-4">
-                      <div className="text-xs font-bold text-[#00b894]/80 mb-2">{persona}</div>
-                      <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              FORM DI VERIFICA HASH
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section id="verifica" bg="#ffffff">
-            <div ref={verifyFormRef}>
-              <Label>Verifica pubblica</Label>
-              <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4" style={{ fontFamily: FONT }}>
-                Verifica tu stesso.<br />Inserisci l'hash.
-              </h2>
-              <p className="text-base text-[#0a0a0a]/55 mb-10 max-w-2xl">
-                Ogni articolo pubblicato su ProofPress porta un badge con un codice hash univoco. Inseriscilo qui per accedere al Verification Report originale e verificare che il contenuto non sia stato alterato.
-              </p>
-              <VerifyForm initialHash={urlHash} />
-
-              {/* ── Esegui Verifica Completa (Verify Engine) ── */}
-              <FullVerifyPanel />
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              PERCHÉ NON DICIAMO NON-AI
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section id="non-ai">
-            <Label>Una posizione chiara</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
-              Perché non diciamo “non-AI”.
-            </h2>
-            <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[#0a0a0a]/70">
-              <p>
-                Molti competitor si posizionano come “non-AI” per rassicurare i lettori. È una scelta di marketing che non regge a un’analisi seria.
-              </p>
-              <p>
-                L’AI non è il problema del giornalismo. Il problema è l’AI <strong className="text-[#0a0a0a]">senza accountability</strong>. Un articolo scritto da un umano senza fonti verificate è meno affidabile di un articolo generato da AI con un Verification Report pubblico. Il medium non determina la qualità. Il metodo sì.
-              </p>
-              <p>
-                ProofPress usa AI per fare ciò che nessun umano può fare a scala: estrarre ogni claim, confrontarlo con migliaia di fonti, produrre un report strutturato in meno di 60 secondi. Poi usa la crittografia per rendere quel report immutabile e verificabile.
-              </p>
-              <div className="p-5 border-l-2 mt-6" style={{ borderColor: ORANGE, background: `${ORANGE}08` }}>
-                <p className="text-sm leading-relaxed text-[#0a0a0a]/75 font-semibold">
-                  Non è “non-AI”. È AI con prova. La differenza è tutto.
-                </p>
-              </div>
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              DIFFERENZIAZIONE
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section bg="#f8f8f6" id="differenziazione">
-            <Label>Differenziazione</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
-              Non è un fact-checker.<br />È corroborazione verificabile.
-            </h2>
-            <div className="space-y-8">
-              {[
-                {
-                  title: "Fact-checker tradizionali vs. ProofPress Verify",
-                  text: "I fact-checker umani producono giudizi soggettivi (‘True’, ‘Mostly True’, ‘Misleading’). Sono lenti, non scalano, e il loro output non è verificabile né immutabile. ProofPress Verify produce un Verification Report strutturato, con esito per ogni singolo claim, ancorato crittograficamente. Non dice ‘è vero’ — mostra quante fonti indipendenti lo confermano e con quale credibilità.",
-                },
-                {
-                  title: "AI senza crittografia vs. ProofPress Verify",
-                  text: "Molti tool usano l'AI per 'analizzare' le notizie. Ma senza un layer crittografico, l'output può essere modificato o cancellato dopo la pubblicazione. ProofPress Verify aggiunge il sigillo IPFS che rende la certificazione permanente, pubblica e verificabile da chiunque.",
-                },
-                {
-                  title: "Blockchain senza AI vs. ProofPress Verify",
-                  text: "Registrare un contenuto su blockchain non serve se il contenuto non è stato prima verificato. Notarizzi spazzatura, hai spazzatura notarizzata. ProofPress Verify unisce corroborazione AI (che verifica claim per claim) e crittografia Web3 (che sigilla il risultato). Uno senza l’altro non produce accountability reale.",
-                },
-              ].map(({ title, text }) => (
-                <div key={title} className="border-l-2 pl-6" style={{ borderColor: ORANGE }}>
-                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
-                  <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
-                </div>
-              ))}
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              PER CHI
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section id="per-chi">
-            <Label>Per chi</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
-              Per chi pubblica, per chi legge,<br />per chi deve decidere.
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  icon: "📰",
-                  title: "Editori e redazioni",
-                  text: "Ogni articolo esce con un Verification Report pubblico. Il badge ProofPress Verify è visibile al lettore con grade e score. La credibilità della testata non è più un’affermazione — è un dato misurabile, verificabile da chiunque in qualsiasi momento.",
-                },
-                {
-                  icon: "✍️",
-                  title: "Giornalisti indipendenti e freelance",
-                  text: "Un freelance non ha una redazione di fact-checker alle spalle. Con ProofPress Verify, ogni suo contenuto è certificato con lo stesso rigore metodologico di una testata strutturata. Il Verification Report diventa il suo portfolio di credibilità.",
-                },
-                {
-                  icon: "🏢",
-                  title: "Aziende e brand media",
-                  text: "Le corporate newsroom soffrono di un deficit strutturale di credibilità: i lettori le percepiscono come PR mascherata. ProofPress Verify dà ai contenuti aziendali un layer di certificazione indipendente che nessun disclaimer può sostituire.",
-                },
-                {
-                  icon: "📊",
-                  title: "Investitori e decision-maker",
-                  text: "Investitori, board, analisti prendono decisioni basandosi su informazioni. Con ProofPress Verify possono verificare in autonomia che le notizie su cui basano le loro scelte siano state corroborate con un metodo trasparente, documentato e immutabile.",
-                },
-              ].map(({ icon, title, text }) => (
-                <div key={title} className="p-6 border border-[#0a0a0a]/8">
-                  <div className="text-2xl mb-3">{icon}</div>
-                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
-                  <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
-                </div>
-              ))}
-            </div>
-          </Section>
-
-          <Divider />
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              SPECIFICHE TECNICHE
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section bg="#f8f8f6" id="specs">
-            <Label>Come funziona sotto</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-6" style={{ fontFamily: FONT }}>
-              Tre principi. Zero compromessi.
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8 mb-10">
-              {[
-                {
-                  icon: "🔍",
-                  title: "AI multi-fonte",
-                  text: "Ogni claim viene estratto e confrontato con 200+ organizzazioni di fact-checking e migliaia di fonti classificate per credibilità. Il risultato è un trust score documentato, non un'opinione.",
-                },
-                {
-                  icon: "🔐",
-                  title: "Sigillo crittografico",
-                  text: "Il Verification Report viene hashato con SHA-256: un fingerprint unico che cambia se anche un solo carattere del contenuto viene alterato. L'integrità è matematicamente verificabile.",
-                },
-                {
-                  icon: "📦",
-                  title: "Archiviazione immutabile",
-                  text: "Il report viene archiviato su IPFS tramite Pinata con un CID permanente. Chiunque può recuperarlo da qualsiasi gateway IPFS e verificare che il contenuto non sia stato modificato.",
-                },
-              ].map(({ icon, title, text }) => (
-                <div key={title} className="p-6 border border-[#0a0a0a]/8 bg-white">
-                  <div className="text-3xl mb-4">{icon}</div>
-                  <h3 className="font-black text-base mb-3 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
-                  <p className="text-sm leading-relaxed text-[#0a0a0a]/60">{text}</p>
-                </div>
-              ))}
-            </div>
-            <TechSpecs />
-          </Section>
-
-          <Divider />
-          {/* ═══════════════════════════════════════════════════════════════════
-              ESEMPI VERIFICATI
-          ═══════════════════════════════════════════════════════════════════ */}
-          <Section bg="#0a0a0a" id="esempi">
-            <Label light>Verify in azione</Label>
-            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-4 text-white" style={{ fontFamily: FONT }}>
-              Cosa vede il lettore.
-            </h2>
-            <p className="text-base text-white/40 max-w-2xl mb-12 leading-relaxed">
-              Ogni articolo pubblicato su ProofPress nasce con un Verification Report. Ecco come appare il badge trust grade e il certificato IPFS su contenuti reali.
+            <p className="text-base text-[#0a0a0a]/55 mb-10 max-w-2xl leading-relaxed">
+              Il trust score (0–100) viene calcolato su 4 dimensioni, indipendentemente dal tipo di contenuto certificato. Il grade sintetizza il score in una lettera leggibile da chiunque.
             </p>
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+              {[
+                { grade: "A", range: "90–100", color: "#22c55e", desc: "Eccellente corroborazione" },
+                { grade: "B", range: "75–89", color: "#3b82f6", desc: "Buona corroborazione" },
+                { grade: "C", range: "55–74", color: "#eab308", desc: "Corroborazione parziale" },
+                { grade: "D", range: "40–54", color: "#f97316", desc: "Corroborazione debole" },
+                { grade: "F", range: "0–39", color: "#ef4444", desc: "Non corroborato" },
+              ].map(({ grade, range, color, desc }) => (
+                <div key={grade} className="p-5 border-2 text-center" style={{ borderColor: `${color}44`, background: `${color}08` }}>
+                  <div className="text-4xl font-black mb-1" style={{ color, fontFamily: FONT }}>{grade}</div>
+                  <div className="text-xs font-mono text-[#0a0a0a]/50 mb-2">{range}</div>
+                  <div className="text-xs text-[#0a0a0a]/60 leading-tight">{desc}</div>
+                </div>
+              ))}
+            </div>
+            <div className="grid md:grid-cols-4 gap-4">
+              {[
+                { dim: "Coerenza fattuale", pct: "40%", desc: "I claim sono supportati da fonti indipendenti classificate per credibilità." },
+                { dim: "Qualità delle fonti", pct: "30%", desc: "Peso delle fonti usate per la corroborazione: agenzie primarie, database istituzionali, peer-reviewed." },
+                { dim: "Assenza di bias", pct: "20%", desc: "Analisi del linguaggio e della struttura per identificare framing unilaterale o claim non verificabili." },
+                { dim: "Freschezza dei dati", pct: "10%", desc: "Le fonti usate per la corroborazione sono aggiornate e pertinenti al periodo di riferimento del contenuto." },
+              ].map(({ dim, pct, desc }) => (
+                <div key={dim} className="p-5 border border-[#0a0a0a]/8">
+                  <div className="text-2xl font-black mb-1" style={{ color: ORANGE, fontFamily: FONT }}>{pct}</div>
+                  <div className="text-xs font-bold uppercase tracking-wide text-[#0a0a0a]/60 mb-2" style={{ fontFamily: FONT }}>{dim}</div>
+                  <p className="text-xs leading-relaxed text-[#0a0a0a]/50">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              NON È AI — DIFFERENZIAZIONE
+          ═══════════════════════════════════════════════════════════════════ */}
+          <Section bg="#f8f8f6" id="non-ai">
+            <Label>Cosa non è</Label>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-12" style={{ fontFamily: FONT }}>
+              Non è un fact-checker.<br />Non è un filtro editoriale.<br />Non è un'opinione.
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
-                  grade: "A",
-                  score: "92%",
-                  title: "OpenAI lancia GPT-5: capacità multimodali avanzate e nuove API per sviluppatori",
-                  category: "AI",
-                  claims: 8,
-                  supported: 8,
+                  icon: "✗",
+                  color: "#ef4444",
+                  title: "Non decide cosa è vero",
+                  text: "ProofPress Verify™ non produce verdetti di verità. Documenta quante fonti indipendenti corroborano ogni claim e con quale credibilità. La valutazione finale rimane al lettore, all'investitore, al regolatore.",
+                },
+                {
+                  icon: "✗",
+                  color: "#ef4444",
+                  title: "Non è un filtro editoriale",
+                  text: "Il protocollo non decide cosa pubblicare o distribuire. Certifica quello che viene prodotto — e rende la certificazione verificabile da chiunque, in qualsiasi momento, senza intermediari.",
+                },
+                {
+                  icon: "✓",
                   color: "#22c55e",
-                  note: "8/8 claim corroborati da fonti IFCN e media tech tier-1",
+                  title: "È un protocollo di accountability",
+                  text: "ProofPress Verify™ crea un layer di accountability crittografica su qualsiasi contenuto. Chi produce il contenuto è responsabile di quello che certifica. Chi lo riceve può verificare l'integrità in autonomia.",
                 },
                 {
-                  grade: "B",
-                  score: "74%",
-                  title: "Startup italiana raccoglie 12M€ in Series A: focus su AI per la supply chain",
-                  category: "Startup",
-                  claims: 6,
-                  supported: 5,
-                  color: "#3b82f6",
-                  note: "5/6 claim verificati. 1 claim su valutazione non corroborato da fonti pubbliche",
+                  icon: "✓",
+                  color: "#22c55e",
+                  title: "È indipendente da ProofPress",
+                  text: "La verifica non richiede di fidarsi di ProofPress. Il CID IPFS è pubblico e verificabile su qualsiasi gateway IPFS. Il protocollo crittografico SHA-256 è uno standard aperto. L'indipendenza è strutturale.",
                 },
-                {
-                  grade: "C",
-                  score: "51%",
-                  title: "Il mercato VC europeo rallenta: investimenti in calo del 18% nel Q1 2026",
-                  category: "Venture Capital",
-                  claims: 5,
-                  supported: 3,
-                  color: "#eab308",
-                  note: "3/5 claim verificati. Dato percentuale non confermato da fonti primarie",
-                },
-              ].map(({ grade, score, title, category, claims, supported, color, note }) => (
-                <div key={title} className="bg-white/5 border border-white/8 p-6 flex flex-col gap-4">
-                  {/* Header badge */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-widest text-white/30">{category}</span>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-9 h-9 flex items-center justify-center font-black text-lg"
-                        style={{ background: color, color: grade === "C" ? "#0a0a0a" : "#fff", fontFamily: FONT }}
-                      >
-                        {grade}
-                      </div>
-                      <span className="text-sm font-bold text-white/60">{score}</span>
-                    </div>
-                  </div>
-                  {/* Titolo */}
-                  <p className="text-sm font-semibold text-white leading-snug">{title}</p>
-                  {/* Barra claim */}
+              ].map(({ icon, color, title, text }) => (
+                <div key={title} className="p-6 border border-[#0a0a0a]/8 bg-white flex gap-4">
+                  <div className="text-xl font-black shrink-0 mt-0.5" style={{ color, fontFamily: FONT }}>{icon}</div>
                   <div>
-                    <div className="flex justify-between text-xs text-white/40 mb-1">
-                      <span>Claim corroborati</span>
-                      <span>{supported}/{claims}</span>
-                    </div>
-                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all"
-                        style={{ width: `${(supported / claims) * 100}%`, background: color }}
-                      />
-                    </div>
-                  </div>
-                  {/* Nota */}
-                  <p className="text-xs text-white/35 leading-relaxed italic">{note}</p>
-                  {/* CID mock */}
-                  <div className="pt-3 border-t border-white/8">
-                    <span className="text-xs font-mono text-white/20">IPFS · CID: bafkrei… ✓ certificato</span>
+                    <h3 className="font-black text-base mb-2 text-[#0a0a0a]" style={{ fontFamily: FONT }}>{title}</h3>
+                    <p className="text-sm leading-relaxed text-[#0a0a0a]/65">{text}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="p-4 border border-white/8 text-xs text-white/25 leading-relaxed">
-              Esempi rappresentativi basati su contenuti reali della piattaforma. Il sistema di verifica è attivo su ogni articolo pubblicato. I grade variano in base al numero di claim fattuali e alla disponibilità di fonti indipendenti.
-            </div>
           </Section>
+
+          <Divider />
+
           {/* ═══════════════════════════════════════════════════════════════════
-              RISORSE TECNICHE — WHITE PAPER + METHODOLOGY
+              FORM VERIFICA HASH
           ═══════════════════════════════════════════════════════════════════ */}
-          <section className="py-16 md:py-20" style={{ background: "#f9f9f9", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+          <Section id="verifica">
+            <Label>Verifica un certificato</Label>
+            <VerifyHashForm formRef={verifyFormRef} />
+          </Section>
+
+          <Divider />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              RISORSE TECNICHE
+          ═══════════════════════════════════════════════════════════════════ */}
+          <section className="py-20 md:py-24" style={{ background: "#f8f8f6" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
-              <div className="text-center mb-10">
-                <Label>Documentazione Tecnica</Label>
-                <h2 className="text-2xl md:text-3xl font-black mb-3" style={{ fontFamily: FONT, color: "#0a0a0a" }}>
-                  Metodologia e Specifiche Tecniche
-                </h2>
-                <p className="text-sm max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.55 }}>
-                  La documentazione tecnica del protocollo ProofPress Verify è riservata. Accedi con le credenziali fornite da AxiomiX LLC.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+              <Label>Documentazione tecnica</Label>
+              <h2 className="text-3xl md:text-4xl font-black leading-tight mb-10" style={{ fontFamily: FONT }}>
+                Il protocollo è aperto.<br />La metodologia è pubblica.
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-white border border-gray-200 p-6 flex flex-col gap-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#0a0a0a] rounded-lg flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 flex items-center justify-center shrink-0" style={{ background: ORANGE }}>
                       <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -1259,21 +670,21 @@ export default function ProofPressVerify() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {["SHA-256", "Claude AI", "Trust Score", "Journalist Key", "AI Act"].map(tag => (
-                      <span key={tag} className="text-[10px] font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>
+                      <span key={tag} className="text-[10px] font-mono bg-gray-100 text-gray-600 px-2 py-0.5">{tag}</span>
                     ))}
                   </div>
                   <Link
                     href="/methodology/v1"
-                    className="mt-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white transition-colors hover:opacity-80"
+                    className="mt-auto inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:opacity-80"
                     style={{ background: "#0a0a0a" }}
                   >
                     <Lock className="w-4 h-4" />
                     Accedi e Scarica PDF →
                   </Link>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+                <div className="bg-white border border-gray-200 p-6 flex flex-col gap-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: ORANGE }}>
+                    <div className="w-10 h-10 flex items-center justify-center shrink-0" style={{ background: ORANGE }}>
                       <BookOpen className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -1286,12 +697,12 @@ export default function ProofPressVerify() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {["Formula", "Grading A–F", "JSON Schema", "Domain Registry", "TypeScript"].map(tag => (
-                      <span key={tag} className="text-[10px] font-mono bg-orange-50 text-orange-700 px-2 py-0.5 rounded">{tag}</span>
+                      <span key={tag} className="text-[10px] font-mono bg-orange-50 text-orange-700 px-2 py-0.5">{tag}</span>
                     ))}
                   </div>
                   <Link
                     href="/methodology/v1"
-                    className="mt-auto inline-flex items-center gap-2 border border-[#0a0a0a] text-[#0a0a0a] px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0a0a0a] hover:text-white transition-colors"
+                    className="mt-auto inline-flex items-center gap-2 border border-[#0a0a0a] text-[#0a0a0a] px-4 py-2.5 text-sm font-medium hover:bg-[#0a0a0a] hover:text-white transition-colors"
                   >
                     <Lock className="w-4 h-4" />
                     Accedi e Leggi la Metodologia
@@ -1300,13 +711,14 @@ export default function ProofPressVerify() {
               </div>
             </div>
           </section>
+
           {/* ═══════════════════════════════════════════════════════════════════
-              CTA FINALE — FORM DI CONTATTO
+              CTA FINALE
           ═══════════════════════════════════════════════════════════════════ */}
           <section id="contact" className="py-24 md:py-32" style={{ background: "#f5f5f7" }}>
-            <div className="max-w-5xl mx-auto px-5 md:px-8">
+            <div className="max-w-5xl mx-auto px-5 md:px-8" ref={contactRef}>
               <div className="text-center mb-12">
-                <Label>Incluso in tutti i piani</Label>
+                <Label>Inizia con ProofPress Verify™</Label>
                 <h2
                   className="text-3xl md:text-5xl font-black leading-tight mb-6"
                   style={{ fontFamily: FONT, color: "#0a0a0a" }}
@@ -1316,20 +728,18 @@ export default function ProofPressVerify() {
                   <span style={{ color: ORANGE }}>È il nuovo standard.</span>
                 </h2>
                 <p className="text-base mb-4 max-w-xl mx-auto" style={{ color: "#0a0a0a", opacity: 0.55 }}>
-                  Scrivici per integrare ProofPress Verify nella tua redazione, per richiedere una demo personalizzata, o per esplorare partnership tecnologiche.
+                  Scrivici per integrare ProofPress Verify™ nella tua organizzazione, per richiedere una demo personalizzata, o per esplorare partnership tecnologiche.
                 </p>
               </div>
               <ContactForm origine="ProofPress Verify" />
             </div>
           </section>
 
-          {/* Quote footer */}
           <div className="py-12 text-center" style={{ background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
             <p className="text-sm text-white/30 italic max-w-2xl mx-auto px-5" style={{ fontFamily: FONT }}>
-              “Non promettiamo verità. Forniamo evidenza. La differenza è tutto.”
+              "Non promettiamo verità. Forniamo evidenza. La differenza è tutto."
             </p>
           </div>
-
           <SharedPageFooter />
         </div>
       </div>
