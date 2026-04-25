@@ -3392,3 +3392,8 @@
 - [x] Aggiungere endpoint /api/scheduled/dealflow per aggiornamento notturno esterno
 - [x] Aggiungere top news (3-5 notizie recenti con immagine) nella sezione Home — sezione "In Evidenza" 5 card con immagine
 - [ ] Schedulare task notturno esterno per aggiornare dealflow ogni notte
+
+## Footer LinkedIn (25 Apr 2026)
+- [x] Aggiornare footer IT post LinkedIn: firma Andrea Cinelli + ProofPress + Base Alpha
+- [x] Aggiornare footer EN post LinkedIn: firma Andrea Cinelli + ProofPress + Base Alpha
+- [x] Aggiornare knowledge base con nuovi footer (salvata in sistema)

@@ -909,10 +909,17 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
           && !l.startsWith("Osservatorio Tech \u2192")
           && !l.startsWith("Tech Observatory \u2192")
           && !l.startsWith("\u{1F4CA} Approfondisci su Proof Press")
+          && !l.startsWith("\u{1F4CA} Scopri di pi\u00f9 su ProofPress")
           && !l.startsWith("\u{1F4CA} Learn more on ProofPress")
+          && !l.startsWith("\u{1F4CA} Explore ProofPress")
           && !l.startsWith("\u{1F4CA} Follow us on")
+          && !l.startsWith("\u{1F4CA} Join Base Alpha")
+          && !l.startsWith("\u{1F680} Segui Base Alpha")
+          && !l.startsWith("\u26a1 Join Base Alpha")
           && !l.startsWith("Seguici su Base Alpha")
           && !l.startsWith("Follow us on Base Alpha")
+          && !l.startsWith("Andrea Cinelli | Tech Editor")
+          && !l.startsWith("Andrea Cinelli | ProofPress")
           && !l.startsWith("Segui \u2192 proofpress.ai/");
     })
     .join("\n")
@@ -931,10 +938,11 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
   }
 
   if (isEnSlot) {
-    // Footer EN: due righe prima degli hashtag
+    // Footer EN: firma Andrea Cinelli + ProofPress + Base Alpha
     const footerEN =
-      "\u{1F4CA} Learn more on ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
-      "Follow us on Base Alpha - The Next Tech Observatory by ProofPress \u2192 " + OSSERVATORIO_URL;
+      "\nAndrea Cinelli | Tech Editor ProofPress Magazine\n" +
+      "\u{1F4CA} Explore ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
+      "\u26a1 Join Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
@@ -942,10 +950,11 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
     }
     return cleaned + "\n" + footerEN;
   } else {
-    // Footer IT: due righe prima degli hashtag
+    // Footer IT: firma Andrea Cinelli + ProofPress + Base Alpha
     const footerIT =
-      "\u{1F4CA} Approfondisci su Proof Press \u2192 " + PROOFPRESS_URL + "\n" +
-      "Seguici su Base Alpha - L\u2019 Osservatorio Tech di ProofPress \u2192 " + OSSERVATORIO_URL;
+      "\nAndrea Cinelli | Tech Editor ProofPress Magazine\n" +
+      "\u{1F4CA} Scopri di pi\u00f9 su ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
+      "\u{1F680} Segui Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
@@ -988,7 +997,7 @@ async function generateLinkedInPostText(
         const cutPoint = text.lastIndexOf('\n', 2950);
         text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
         if (!text.includes('proofpress.ai')) {
-          text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
+          text += '\n\nAndrea Cinelli | Tech Editor ProofPress Magazine\n📊 Scopri di più su ProofPress → https://proofpress.ai\n🚀 Segui Base Alpha — The Next Tech Observatory → https://lnkd.in/dDT9svDC';
         }
       }
       console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars, Markdown rimosso)`);
@@ -1003,8 +1012,7 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `📊 Approfondisci su Proof Press → https://proofpress.ai
-Seguici su Base Alpha - L’ Osservatorio Tech di ProofPress → https://lnkd.in/dDT9svDC`,
+      `\nAndrea Cinelli | Tech Editor ProofPress Magazine\n📊 Scopri di più su ProofPress → https://proofpress.ai\n🚀 Segui Base Alpha — The Next Tech Observatory → https://lnkd.in/dDT9svDC`,
       "",
       meta.hashtags.join(" ")
     ].join("\n");
