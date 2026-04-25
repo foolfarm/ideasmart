@@ -39,7 +39,7 @@ import {
   techEvents,
   banners as bannersTable,
 } from "../drizzle/schema";
-import { eq, desc, and, sql, gte, gt, lt, inArray } from "drizzle-orm";
+import { eq, desc, and, or, sql, gte, gt, lt, inArray } from "drizzle-orm";
 import { newsletterSends as newsletterSendsTable } from "../drizzle/schema";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -1595,15 +1595,22 @@ async function hasAlreadySentTodayDB(): Promise<boolean> {
     const todayLabel = nowCET.toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
     const todayStart = new Date(todayLabel + "T00:00:00+01:00");
     const todayEnd = new Date(todayLabel + "T23:59:59+01:00");
+    // Considera già inviata se: status='sent' con recipientCount>0 (completato)
+    // OPPURE status='sending' (invio in corso — blocca doppi invii concorrenti)
     const existing = await db
-      .select({ id: newsletterSendsTable.id, recipientCount: newsletterSendsTable.recipientCount })
+      .select({ id: newsletterSendsTable.id, recipientCount: newsletterSendsTable.recipientCount, status: newsletterSendsTable.status })
       .from(newsletterSendsTable)
       .where(
         and(
           gte(newsletterSendsTable.createdAt, todayStart),
           lt(newsletterSendsTable.createdAt, todayEnd),
-          eq(newsletterSendsTable.status, "sent"),
-          gt(newsletterSendsTable.recipientCount, 0)
+          or(
+            and(
+              eq(newsletterSendsTable.status, "sent"),
+              gt(newsletterSendsTable.recipientCount, 0)
+            ),
+            eq(newsletterSendsTable.status, "sending")
+          )
         )
       )
       .limit(1);

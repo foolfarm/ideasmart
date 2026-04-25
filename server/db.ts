@@ -253,7 +253,10 @@ export async function createNewsletterSend(data: { subject: string; htmlContent:
     subject: data.subject,
     htmlContent: data.htmlContent,
     recipientCount: data.recipientCount,
-    status: "sent",
+    // IMPORTANTE: status='sending' (non 'sent') — verrà aggiornato a 'sent' con recipientCount reale
+    // dopo il completamento dell'invio da updateNewsletterSendRecipientCount.
+    // Se rimane 'sending' significa che l'invio è fallito prima del completamento.
+    status: "sending",
     sentAt: new Date()
   });
   return (result as any).insertId ?? null;
