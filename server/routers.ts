@@ -2478,6 +2478,13 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
   // ── System Health & Trigger Manuale Scraping ──────────────────────────────────────────
   health: router({  // Restituisce lo stato di salute di tutte le sezioni: ultima notizia, count oggi, timestamp
+    // Endpoint pubblico per health check esterno (UptimeRobot, Manus scheduler, ecc.)
+    ping: publicProcedure.query(() => ({
+      status: "ok" as const,
+      ts: Date.now(),
+      uptime: Math.floor(process.uptime()),
+    })),
+
     getSystemHealth: adminProcedure.query(async () => {
       const db = await getDbInstance();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });

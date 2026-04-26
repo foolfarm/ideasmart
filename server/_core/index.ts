@@ -654,6 +654,35 @@ async function startServer() {
     }
   });
 
+  // ── Health Check pubblico (per UptimeRobot, Manus scheduler, monitoring esterno) ───────────
+  // GET /api/health — risponde {status:'ok', ts, uptime} senza autenticazione
+  app.get("/api/health", (_req, res) => {
+    return res.json({
+      status: "ok",
+      ts: Date.now(),
+      uptime: Math.floor(process.uptime()),
+      version: process.env.npm_package_version ?? "1.0.0",
+    });
+  });
+
+  // POST /api/health/restart — riavvio graceful del server (protetto da JWT_SECRET)
+  // Usato dal monitoring esterno per forzare il riavvio in caso di anomalie
+  app.post("/api/health/restart", (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    console.log('[HealthRestart] 🔄 Riavvio remoto richiesto dal monitoring esterno...');
+    res.json({ status: 'restarting', ts: Date.now() });
+    // Graceful restart: lascia 500ms per inviare la risposta, poi esce
+    // Il process manager (Cloud Run) rileva l'uscita e riavvia automaticamente
+    setTimeout(() => {
+      console.log('[HealthRestart] 🛑 Uscita processo per riavvio graceful...');
+      process.exit(0);
+    }, 500);
+  });
+
   // ── Scheduled Dealflow endpoint (protetto da JWT_SECRET) ──────────────────────────────────
   // POST /api/scheduled/dealflow — triggera la generazione dei pick dealflow
   // Usato dal task schedulato notturno esterno di Manus per aggiornare /dealflow
