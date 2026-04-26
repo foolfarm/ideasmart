@@ -3407,3 +3407,8 @@
 - [x] Rimuovere banner a destra nel titolo di /proofpress-verify
 - [x] Rimuovere banner a destra nel titolo di /verify-business
 - [x] Rimuovere banner a destra nel titolo di /verify-email
+
+## Fix Newsletter Automatica (26 Apr 2026)
+
+- [x] Reset record newsletter bloccato (id=1200001, status=sending→approved) e reinvio forzato
+- [x] Implementare catch-up scheduler: al riavvio del server, se sono le 08:30–11:00 CET e la newsletter non è stata inviata, inviarla subito

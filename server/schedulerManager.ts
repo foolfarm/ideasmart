@@ -777,44 +777,79 @@ export function startAllSchedulers(): void {
   }, 4 * 60 * 60 * 1000); // ogni 4 ore (ridotto da 12h per prevenire ibernazione sandbox)
 
   // ══════════════════════════════════════════════════════════════════════════
-  // CATCH-UP NEWSLETTER — DISABILITATO (richiede approvazione manuale da Admin)
-  // L'invio automatico catch-up è stato disabilitato per evitare invii senza approvazione.
-  // L'owner riceve la preview alle 07:00 CET e approva l'invio dalla dashboard Admin.
+  // CATCH-UP NEWSLETTER BUONGIORNO — ABILITATO (26 Apr 2026)
+  // Al riavvio del server: se sono le 08:30–12:00 CET e la newsletter
+  // non è stata inviata con successo oggi (recipientCount > 0), la invia subito.
+  // Garantisce l'invio automatico anche dopo riavvii del server (cloud run, deploy).
   // ══════════════════════════════════════════════════════════════════════════
-  /*
   setTimeout(async () => {
     try {
       const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
       const hourCET = nowCET.getHours();
       const minuteCET = nowCET.getMinutes();
       const currentMinutes = hourCET * 60 + minuteCET;
-      if (currentMinutes < 7 * 60 + 30) {
-        console.log("[SchedulerManager] ℹ️ CATCH-UP newsletter: prima delle 07:30 — nessun catch-up necessario");
+      // Finestra catch-up: 08:30 – 12:00 CET
+      const CATCHUP_START = 8 * 60 + 30;  // 08:30
+      const CATCHUP_END   = 12 * 60;       // 12:00
+      if (currentMinutes < CATCHUP_START) {
+        console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: sono le ${hourCET}:${String(minuteCET).padStart(2,'0')} CET, prima delle 08:30 — nessun catch-up necessario`);
         return;
       }
+      if (currentMinutes >= CATCHUP_END) {
+        console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: sono le ${hourCET}:${String(minuteCET).padStart(2,'0')} CET, dopo le 12:00 — finestra catch-up chiusa`);
+        return;
+      }
+      // Controlla se la newsletter è già stata inviata con successo oggi
       const catchUpDb = await getDb();
-      if (!catchUpDb) return;
+      if (!catchUpDb) {
+        console.warn('[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO: DB non disponibile');
+        return;
+      }
       const { newsletterSends: nlSendsTable } = await import("../drizzle/schema");
-      const { gte, and: andOp2, gt } = await import("drizzle-orm");
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
-      const successfulSend = await catchUpDb.select({ id: nlSendsTable.id, recipientCount: nlSendsTable.recipientCount })
+      const { gte: gteOp, and: andOp2, gt: gtOp, eq: eqOp2 } = await import("drizzle-orm");
+      const todayLabelCET = nowCET.toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD
+      const todayStartCET = new Date(todayLabelCET + 'T00:00:00+01:00');
+      // Considera già inviata se: status='sent' con recipientCount>0
+      const successfulSend = await catchUpDb
+        .select({ id: nlSendsTable.id, recipientCount: nlSendsTable.recipientCount, status: nlSendsTable.status })
         .from(nlSendsTable)
-        .where(andOp2(gte(nlSendsTable.createdAt, todayStart), gt(nlSendsTable.recipientCount, 0)))
+        .where(andOp2(
+          gteOp(nlSendsTable.createdAt, todayStartCET),
+          eqOp2(nlSendsTable.status, 'sent'),
+          gtOp(nlSendsTable.recipientCount, 0)
+        ))
         .limit(1);
       if (successfulSend.length > 0) {
-        console.log(`[SchedulerManager] ✅ CATCH-UP newsletter: già inviata oggi`);
+        console.log(`[SchedulerManager] ✅ CATCH-UP BUONGIORNO: già inviata oggi (id=${successfulSend[0].id}, ${successfulSend[0].recipientCount} destinatari) — skip`);
         return;
       }
-      console.log("[SchedulerManager] 🔄 CATCH-UP newsletter: nessun invio riuscito oggi — forzo l'invio ora...");
-      const { sendDailyChannelNewsletter: sendNL } = await import("./dailyChannelNewsletter");
-      const result = await sendNL();
-      console.log(`[SchedulerManager] CATCH-UP newsletter: ${result.channel} — ${result.recipientCount} iscritti`);
+      // Resetta eventuali record 'sending' bloccati da riavvii precedenti
+      try {
+        const { sql: sqlOp } = await import("drizzle-orm");
+        await catchUpDb.execute(
+          sqlOp`UPDATE newsletter_sends SET status = 'approved' WHERE status = 'sending' AND sentAt IS NULL AND DATE(createdAt) = CURDATE() LIMIT 1`
+        );
+      } catch { /* non critico */ }
+      console.log(`[SchedulerManager] 🔄 CATCH-UP BUONGIORNO: nessun invio riuscito oggi (${hourCET}:${String(minuteCET).padStart(2,'0')} CET) — avvio invio catch-up...`);
+      await withLock('newsletter-mattino', async () => {
+        try {
+          const { sendMorningNewsletterToAll } = await import('./unifiedNewsletter');
+          const result = await sendMorningNewsletterToAll();
+          if (result.success && result.recipientCount > 0) {
+            console.log(`[SchedulerManager] ✅ CATCH-UP BUONGIORNO: inviata a ${result.recipientCount} destinatari — "${result.subject}"`);
+          } else if (result.recipientCount === 0 && result.success) {
+            console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: guard ha bloccato (già inviata o in corso)`);
+          } else {
+            console.error(`[SchedulerManager] ❌ CATCH-UP BUONGIORNO: errore — ${result.error}`);
+          }
+        } catch (err) {
+          console.error('[SchedulerManager] ❌ CATCH-UP BUONGIORNO: errore critico:', err);
+        }
+      });
     } catch (err) {
-      console.error("[SchedulerManager] ⚠️ CATCH-UP newsletter fallito:", err);
+      console.error('[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO fallito (non critico):', err);
     }
-  }, 60_000);
-  */
+  }, 90_000); // 90 secondi dopo l'avvio (lascia tempo al server di stabilizzarsi)
 
   // ═══════════════════════════════════════════════════════════════════════════
   // BREAKING NEWS — ogni 3 ore alle :05 (risparmio crediti: da 24 a 8 chiamate/giorno)

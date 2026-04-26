@@ -570,6 +570,26 @@ async function startServer() {
     }
   });
 
+  // POST /api/newsletter/trigger-morning — forza l'invio della newsletter BUONGIORNO (senza approvazione)
+  // Usato dal catch-up scheduler e dal trigger manuale per garantire l'invio anche dopo riavvii del server
+  app.post("/api/newsletter/trigger-morning", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+      const { sendMorningNewsletterToAll } = await import('../unifiedNewsletter');
+      console.log('[MorningTrigger] Avvio invio manuale newsletter BUONGIORNO...');
+      const result = await sendMorningNewsletterToAll();
+      console.log('[MorningTrigger] Risultato:', JSON.stringify(result));
+      return res.json(result);
+    } catch (err: any) {
+      console.error('[MorningTrigger] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
   // POST /api/newsletter/trigger-preview — forza la generazione della preview (crea record pending)
   app.post("/api/newsletter/trigger-preview", async (req, res) => {
     const authHeader = req.headers.authorization || '';
