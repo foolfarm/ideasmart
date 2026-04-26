@@ -796,7 +796,7 @@ export default function Home() {
     <>
       <SEOHead
         title="Proof Press — AI, Startup e Venture Capital"
-        description="Il tuo punto di riferimento per Innovazione, AI, Startup, Venture. Analisi quotidiane verificate da 4.000+ fonti — insight esclusivi per decision maker, founder e investitori."
+        description="AI, Startup e Venture Capital verificati da 4.000+ fonti ogni giorno. Insight esclusivi per decision maker, founder e investitori. ProofPress Verify."
         canonical="https://proofpress.ai"
         ogSiteName="Proof Press"
       />
