@@ -3620,6 +3620,165 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
   }),
+
+  // ── Creator Quotes — Preventivi wizard /preventivo-creator ─────────────────
+  creatorQuotes: router({
+    // Invia un preventivo dal wizard multi-step
+    submit: publicProcedure
+      .input(z.object({
+        projectType: z.enum(["giornale_settoriale", "newsletter_aziendale", "blog_aziendale", "media_startup", "altro"]),
+        sectorType: z.enum(["mono", "multi"]),
+        sectors: z.array(z.string()).min(1),
+        sourcesCount: z.enum(["fino_a_10", "10_50", "50_100", "oltre_100"]),
+        includeVerify: z.boolean(),
+        llmType: z.enum(["incluso", "proprio"]),
+        llmQuality: z.enum(["base", "medio", "top"]),
+        publishFrequency: z.enum(["giornaliera", "settimanale", "mensile"]),
+        contactName: z.string().min(2).max(255),
+        contactEmail: z.string().email(),
+        contactCompany: z.string().max(255).optional(),
+        contactPhone: z.string().max(50).optional(),
+        notes: z.string().max(2000).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { creatorQuotes: creatorQuotesTable } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        // Salva nel DB (non bloccante se DB non disponibile)
+        if (db) {
+          try {
+            await db.insert(creatorQuotesTable).values({
+              projectType: input.projectType,
+              sectorType: input.sectorType,
+              sectors: input.sectors,
+              sourcesCount: input.sourcesCount,
+              includeVerify: input.includeVerify ? 1 : 0,
+              llmType: input.llmType,
+              llmQuality: input.llmQuality,
+              publishFrequency: input.publishFrequency,
+              contactName: input.contactName,
+              contactEmail: input.contactEmail,
+              contactCompany: input.contactCompany ?? null,
+              contactPhone: input.contactPhone ?? null,
+              notes: input.notes ?? null,
+              status: "new",
+            });
+          } catch (dbErr) {
+            console.error('[creatorQuotes.submit] Errore salvataggio DB:', dbErr);
+          }
+        }
+        // Labels leggibili
+        const projectTypeLabel: Record<string, string> = {
+          giornale_settoriale: "Giornale Settoriale",
+          newsletter_aziendale: "Newsletter Aziendale",
+          blog_aziendale: "Blog Aziendale",
+          media_startup: "Media Startup",
+          altro: "Altro",
+        };
+        const sourcesLabel: Record<string, string> = {
+          fino_a_10: "Fino a 10 fonti",
+          "10_50": "10–50 fonti",
+          "50_100": "50–100 fonti",
+          oltre_100: "Oltre 100 fonti",
+        };
+        const llmQualityLabel: Record<string, string> = { base: "Base", medio: "Medio", top: "Top" };
+        const freqLabel: Record<string, string> = { giornaliera: "Giornaliera", settimanale: "Settimanale", mensile: "Mensile" };
+        // Email admin
+        const adminHtml = `
+          <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
+            <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;text-align:center;">
+              <p style="color:#fff;font-size:22px;font-weight:900;margin:0;">ProofPress Creator</p>
+              <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">Nuovo Preventivo Wizard</p>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:32px;border:1px solid rgba(26,26,26,0.1);">
+              <h2 style="color:#1a1a1a;font-size:18px;margin:0 0 20px;">&#128203; Nuova richiesta preventivo</h2>
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;width:40%;">Contatto</td><td style="padding:8px 0;color:#1a1a1a;font-size:14px;font-weight:700;">${input.contactName} &lt;${input.contactEmail}&gt;</td></tr>
+                ${input.contactCompany ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Azienda</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.contactCompany}</td></tr>` : ''}
+                ${input.contactPhone ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Telefono</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.contactPhone}</td></tr>` : ''}
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Tipo progetto</td><td style="padding:8px 0;color:#374151;font-size:14px;">${projectTypeLabel[input.projectType] ?? input.projectType}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Settori</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.sectors.join(', ')}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Fonti</td><td style="padding:8px 0;color:#374151;font-size:14px;">${sourcesLabel[input.sourcesCount] ?? input.sourcesCount}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">ProofPress Verify</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.includeVerify ? '&#10003; Incluso' : 'Non incluso'}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">LLM</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.llmType === 'incluso' ? 'Incluso nel servizio' : 'LLM proprio'} — Qualit\u00e0 ${llmQualityLabel[input.llmQuality]}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Frequenza</td><td style="padding:8px 0;color:#374151;font-size:14px;">${freqLabel[input.publishFrequency]}</td></tr>
+                ${input.notes ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Note</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.notes.replace(/\n/g, '<br>')}</td></tr>` : ''}
+              </table>
+            </div>
+            <p style="color:#aaa;font-size:12px;text-align:center;margin-top:20px;">ProofPress &middot; info@proofpress.ai</p>
+          </div>
+        `;
+        try {
+          await sendEmail({
+            to: "info@proofpress.ai",
+            subject: `\uD83C\uDFAF Nuovo preventivo Creator: ${input.contactName} \u2014 ${input.contactEmail}`,
+            html: adminHtml,
+          });
+        } catch (emailErr) {
+          console.error('[creatorQuotes.submit] Errore invio email admin:', emailErr);
+        }
+        // Email conferma al richiedente
+        const confirmHtml = `
+          <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
+            <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;text-align:center;">
+              <p style="color:#fff;font-size:22px;font-weight:900;margin:0;">ProofPress</p>
+              <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">Creator Program</p>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:32px;border:1px solid rgba(26,26,26,0.1);text-align:center;">
+              <div style="font-size:40px;margin-bottom:16px;">&#10003;</div>
+              <h2 style="color:#1a1a1a;font-size:22px;margin:0 0 12px;font-weight:900;">Preventivo ricevuto!</h2>
+              <p style="color:#555;font-size:16px;line-height:1.7;margin:0 0 24px;">Ciao <strong>${input.contactName}</strong>, abbiamo ricevuto la tua richiesta di preventivo per <strong>${projectTypeLabel[input.projectType]}</strong>. Ti contatteremo entro <strong>24 ore</strong> all'indirizzo <strong>${input.contactEmail}</strong> con una proposta personalizzata.</p>
+              <a href="https://proofpress.ai" style="display:inline-block;background:#1a1a1a;color:#fff;padding:14px 28px;border-radius:4px;font-weight:700;text-decoration:none;font-size:14px;">Torna a ProofPress &#8594;</a>
+            </div>
+            <p style="color:#aaa;font-size:12px;text-align:center;margin-top:20px;">ProofPress &middot; <a href="https://proofpress.ai" style="color:#d94f3d;">proofpress.ai</a></p>
+          </div>
+        `;
+        try {
+          await sendEmail({
+            to: input.contactEmail,
+            subject: `Abbiamo ricevuto il tuo preventivo \u2014 ProofPress Creator`,
+            html: confirmHtml,
+          });
+        } catch (emailErr) {
+          console.error('[creatorQuotes.submit] Errore invio email conferma:', emailErr);
+        }
+        return { success: true };
+      }),
+
+    // Lista preventivi (admin only)
+    getQuotes: adminProcedure
+      .input(z.object({
+        status: z.enum(["new", "contacted", "qualified", "closed"]).optional(),
+        limit: z.number().min(1).max(500).default(100),
+        offset: z.number().min(0).default(0),
+      }).optional())
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { quotes: [], total: 0 };
+        const { creatorQuotes: creatorQuotesTable } = await import('../drizzle/schema');
+        const { desc: descOp, eq: eqOp, count: countOp } = await import('drizzle-orm');
+        const conditions: any[] = [];
+        if (input?.status) conditions.push(eqOp(creatorQuotesTable.status, input.status));
+        const whereClause = conditions.length > 0 ? conditions[0] : undefined;
+        const [countResult] = await db.select({ cnt: countOp() }).from(creatorQuotesTable).where(whereClause);
+        const quotes = await db.select().from(creatorQuotesTable).where(whereClause).orderBy(descOp(creatorQuotesTable.createdAt)).limit(input?.limit ?? 100).offset(input?.offset ?? 0);
+        return { quotes, total: countResult?.cnt ?? 0 };
+      }),
+
+    // Aggiorna status preventivo (admin only)
+    updateStatus: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        status: z.enum(["new", "contacted", "qualified", "closed"]),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+        const { creatorQuotes: creatorQuotesTable } = await import('../drizzle/schema');
+        const { eq: eqOp } = await import('drizzle-orm');
+        await db.update(creatorQuotesTable).set({ status: input.status }).where(eqOp(creatorQuotesTable.id, input.id));
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

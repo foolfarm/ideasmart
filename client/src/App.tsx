@@ -70,6 +70,7 @@ const ChannelPreferences = lazy(() => import("./pages/ChannelPreferences"));
 const Business = lazy(() => import("./pages/Business"));
 const Offerta = lazy(() => import("./pages/Offerta"));
 const OffertaCreator = lazy(() => import("./pages/OffertaCreator"));
+const PreventivoCreator = lazy(() => import("./pages/PreventivoCreator"));
 const OffertaEditori = lazy(() => import("./pages/OffertaEditori"));
 const OffertaAziende = lazy(() => import("./pages/OffertaAziende"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
@@ -188,6 +189,7 @@ function Router() {
         <Route path="/chi-siamo" component={ChiSiamo} />
         <Route path="/offerta" component={Offerta} />
         <Route path="/offerta/creator" component={OffertaCreator} />
+        <Route path="/preventivo-creator" component={PreventivoCreator} />
         <Route path="/offerta/editori" component={OffertaEditori} />
         <Route path="/offerta/aziende" component={OffertaAziende} />
         <Route path="/offertacommerciale" component={PerGiornalisti} />

@@ -3412,3 +3412,11 @@
 
 - [x] Reset record newsletter bloccato (id=1200001, status=sending→approved) e reinvio forzato
 - [x] Implementare catch-up scheduler: al riavvio del server, se sono le 08:30–11:00 CET e la newsletter non è stata inviata, inviarla subito
+
+## Firma, URL e Wizard Creator (26 Apr 2026)
+- [x] Aggiornare firma LLM system prompt: "Executive Advisor and Tech Editor ProofPress Magazine" (linkedinPublisher.ts riga 405, 545, 562, 578, 594, 637, 945, 1007, 1022)
+- [x] Allineare link Base Alpha a https://proofpress.ai/osservatorio-tech in tutti i punti (nessun lnkd.in residuo)
+- [x] Tabella DB creator_quotes: schema + migrazione applicata (drizzle/0085_lethal_alice.sql)
+- [x] Router tRPC creatorQuotes: procedure submit (public), getQuotes (admin), updateStatus (admin)
+- [x] Pagina wizard /preventivo-creator: form multi-step 5 step (progetto, settori, tecnologia, contatti, riepilogo)
+- [x] Route /preventivo-creator registrata in App.tsx

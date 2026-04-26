@@ -1,4 +1,4 @@
-import { boolean, float, index, uniqueIndex, int, json, mediumtext, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, float, index, uniqueIndex, int, json, mediumtext, mysqlEnum, mysqlTable, text, timestamp, tinyint, varchar } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
 
 export const users = mysqlTable("users", {
@@ -1109,3 +1109,48 @@ export const osservatorioComments = mysqlTable("osservatorio_comments", {
 
 export type OsservatorioComment = typeof osservatorioComments.$inferSelect;
 export type InsertOsservatorioComment = typeof osservatorioComments.$inferInsert;
+
+// ── Creator Quotes — Preventivi per ProofPress Creator ──────────────────────
+// Raccoglie le richieste di preventivo dal wizard /preventivo-creator
+export const creatorQuotes = mysqlTable("creator_quotes", {
+  id: int("id").autoincrement().primaryKey(),
+  // Tipo di progetto editoriale
+  projectType: mysqlEnum("projectType", [
+    "giornale_settoriale",
+    "newsletter_aziendale",
+    "blog_aziendale",
+    "media_startup",
+    "altro"
+  ]).notNull(),
+  // Mono o multi-settore
+  sectorType: mysqlEnum("sectorType", ["mono", "multi"]).notNull(),
+  // Settori di interesse (JSON array di stringhe)
+  sectors: json("sectors").$type<string[]>().notNull(),
+  // Numero di fonti desiderate
+  sourcesCount: mysqlEnum("sourcesCount", ["fino_a_10", "10_50", "50_100", "oltre_100"]).notNull(),
+  // Sistema Verify incluso
+  includeVerify: tinyint("includeVerify").default(0).notNull(),
+  // LLM: proprio o incluso nel servizio
+  llmType: mysqlEnum("llmType", ["incluso", "proprio"]).notNull(),
+  // Qualità LLM desiderata
+  llmQuality: mysqlEnum("llmQuality", ["base", "medio", "top"]).notNull(),
+  // Frequenza di pubblicazione
+  publishFrequency: mysqlEnum("publishFrequency", ["giornaliera", "settimanale", "mensile"]).notNull(),
+  // Dati di contatto
+  contactName: varchar("contactName", { length: 255 }).notNull(),
+  contactEmail: varchar("contactEmail", { length: 255 }).notNull(),
+  contactCompany: varchar("contactCompany", { length: 255 }),
+  contactPhone: varchar("contactPhone", { length: 50 }),
+  // Note aggiuntive
+  notes: text("notes"),
+  // Status del lead
+  status: mysqlEnum("status", ["new", "contacted", "qualified", "closed"]).default("new").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  statusIdx: index("idx_creator_quotes_status").on(t.status),
+  emailIdx: index("idx_creator_quotes_email").on(t.contactEmail),
+  createdIdx: index("idx_creator_quotes_created").on(t.createdAt),
+}));
+export type CreatorQuote = typeof creatorQuotes.$inferSelect;
+export type InsertCreatorQuote = typeof creatorQuotes.$inferInsert;
