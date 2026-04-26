@@ -71,6 +71,9 @@ const Business = lazy(() => import("./pages/Business"));
 const Offerta = lazy(() => import("./pages/Offerta"));
 const OffertaCreator = lazy(() => import("./pages/OffertaCreator"));
 const PreventivoCreator = lazy(() => import("./pages/PreventivoCreator"));
+const PreventivoNewsVerify = lazy(() => import("./pages/PreventivoNewsVerify"));
+const PreventivoInfoVerify = lazy(() => import("./pages/PreventivoInfoVerify"));
+const PreventivoEmailVerify = lazy(() => import("./pages/PreventivoEmailVerify"));
 const OffertaEditori = lazy(() => import("./pages/OffertaEditori"));
 const OffertaAziende = lazy(() => import("./pages/OffertaAziende"));
 const ChiSiamo = lazy(() => import("./pages/ChiSiamo"));
@@ -190,6 +193,9 @@ function Router() {
         <Route path="/offerta" component={Offerta} />
         <Route path="/offerta/creator" component={OffertaCreator} />
         <Route path="/preventivo-creator" component={PreventivoCreator} />
+        <Route path="/preventivo-news-verify" component={PreventivoNewsVerify} />
+        <Route path="/preventivo-info-verify" component={PreventivoInfoVerify} />
+        <Route path="/preventivo-email-verify" component={PreventivoEmailVerify} />
         <Route path="/offerta/editori" component={OffertaEditori} />
         <Route path="/offerta/aziende" component={OffertaAziende} />
         <Route path="/offertacommerciale" component={PerGiornalisti} />

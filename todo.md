@@ -3420,3 +3420,13 @@
 - [x] Router tRPC creatorQuotes: procedure submit (public), getQuotes (admin), updateStatus (admin)
 - [x] Pagina wizard /preventivo-creator: form multi-step 5 step (progetto, settori, tecnologia, contatti, riepilogo)
 - [x] Route /preventivo-creator registrata in App.tsx
+
+## Wizard Preventivi Verify (26 Apr 2026)
+- [x] CTA "Richiedi preventivo" in /offerta/creator che punta a /preventivo-creator
+- [x] Aggiornare destinatario email preventivi Creator a ac@acinelli.com
+- [x] Tabella DB verify_quotes per preventivi Verify (News, Info, Email)
+- [x] Router tRPC verifyQuotes: submit, getQuotes, updateStatus
+- [x] Wizard /preventivo-news-verify (News Verify)
+- [x] Wizard /preventivo-info-verify (Info Verify)
+- [x] Wizard /preventivo-email-verify (Email Verify)
+- [x] Route registrate in App.tsx

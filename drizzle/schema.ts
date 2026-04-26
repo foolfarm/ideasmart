@@ -1154,3 +1154,79 @@ export const creatorQuotes = mysqlTable("creator_quotes", {
 }));
 export type CreatorQuote = typeof creatorQuotes.$inferSelect;
 export type InsertCreatorQuote = typeof creatorQuotes.$inferInsert;
+
+// ── Verify Quotes — Preventivi wizard /preventivo-*-verify ──────────────────
+// Raccoglie le richieste di preventivo per i tre prodotti Verify
+export const verifyQuotes = mysqlTable("verify_quotes", {
+  id: int("id").autoincrement().primaryKey(),
+  // Tipo di prodotto Verify
+  productType: mysqlEnum("productType", [
+    "news_verify",
+    "info_verify",
+    "email_verify"
+  ]).notNull(),
+  // ── Campi comuni ──────────────────────────────────────────────────────────
+  // Numero di contenuti da verificare al mese
+  volumePerMonth: mysqlEnum("volumePerMonth", [
+    "fino_a_100",
+    "100_1000",
+    "1000_10000",
+    "oltre_10000"
+  ]).notNull(),
+  // Integrazione desiderata
+  integrationMode: mysqlEnum("integrationMode", [
+    "api",
+    "dashboard",
+    "entrambi"
+  ]).notNull(),
+  // Settori di applicazione (JSON array)
+  sectors: json("sectors").$type<string[]>().notNull(),
+  // ── Campi specifici News Verify ────────────────────────────────────────────
+  // Numero di fonti da monitorare (solo news_verify)
+  sourcesCount: mysqlEnum("sourcesCount", [
+    "fino_a_10", "10_50", "50_100", "oltre_100"
+  ]),
+  // Certificazione IPFS inclusa
+  includeIpfs: tinyint("includeIpfs").default(0).notNull(),
+  // ── Campi specifici Info Verify ────────────────────────────────────────────
+  // Tipo di contenuto da verificare (solo info_verify)
+  contentType: mysqlEnum("contentType", [
+    "documenti_aziendali",
+    "comunicati_stampa",
+    "report_analisi",
+    "contenuti_social",
+    "altro"
+  ]),
+  // ── Campi specifici Email Verify ───────────────────────────────────────────
+  // Piattaforma email (solo email_verify)
+  emailPlatform: mysqlEnum("emailPlatform", [
+    "sendgrid",
+    "mailchimp",
+    "hubspot",
+    "altro",
+    "non_so"
+  ]),
+  // Dimensione lista email
+  listSize: mysqlEnum("listSize", [
+    "fino_a_1000",
+    "1000_10000",
+    "10000_100000",
+    "oltre_100000"
+  ]),
+  // ── Dati di contatto ──────────────────────────────────────────────────────
+  contactName: varchar("contactName", { length: 255 }).notNull(),
+  contactEmail: varchar("contactEmail", { length: 255 }).notNull(),
+  contactCompany: varchar("contactCompany", { length: 255 }),
+  contactPhone: varchar("contactPhone", { length: 50 }),
+  notes: text("notes"),
+  // Status del lead
+  status: mysqlEnum("status", ["new", "contacted", "qualified", "closed"]).default("new").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  productIdx: index("idx_verify_quotes_product").on(t.productType),
+  statusIdx: index("idx_verify_quotes_status").on(t.status),
+  emailIdx: index("idx_verify_quotes_email").on(t.contactEmail),
+}));
+export type VerifyQuote = typeof verifyQuotes.$inferSelect;
+export type InsertVerifyQuote = typeof verifyQuotes.$inferInsert;

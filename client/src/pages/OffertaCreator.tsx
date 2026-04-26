@@ -5,7 +5,7 @@ import { CheckCircle, XCircle, ArrowRight, Mic, Newspaper, Mail, Users, Shield, 
 import OffertaLeadForm from "@/components/OffertaLeadForm";
 
 const DEMO_URL = "https://ideasmart.technology";
-const CONTACT_URL = "/contatti";
+const PREVENTIVO_URL = "/preventivo-creator";
 
 export default function OffertaCreator() {
   return (
@@ -53,16 +53,16 @@ export default function OffertaCreator() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer">
+            <Link href={PREVENTIVO_URL}>
               <Button className="bg-[#c0392b] hover:bg-[#a93226] text-white font-bold px-8 py-3 text-[14px] tracking-[0.05em]">
-                Guarda la demo live <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </a>
-            <Link href={CONTACT_URL}>
-              <Button variant="outline" className="border-[#1a1a1a]/20 font-bold px-8 py-3 text-[14px]">
-                Scrivici
+                Richiedi preventivo <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
+            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="border-[#1a1a1a]/20 font-bold px-8 py-3 text-[14px]">
+                Guarda la demo live
+              </Button>
+            </a>
           </div>
         </div>
       </section>
@@ -288,14 +288,14 @@ export default function OffertaCreator() {
         <h2 className="text-[32px] md:text-[42px] font-black mb-4 tracking-[-0.02em]">La tua testata può esistere domani. Non tra sei mesi.</h2>
         <p className="text-[16px] text-[#1a1a1a]/55 mb-8 max-w-xl mx-auto">Guarda la piattaforma in azione. Non è un video — è la demo live, con dati reali.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-          <a href={DEMO_URL} target="_blank" rel="noopener noreferrer">
+          <Link href={PREVENTIVO_URL}>
             <Button className="bg-[#c0392b] hover:bg-[#a93226] text-white font-bold px-10 py-3 text-[15px]">
-              Guarda la demo live <ArrowRight className="ml-2 w-4 h-4" />
+              Richiedi preventivo gratuito <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-          </a>
-          <a href="mailto:info@proofpress.ai">
+          </Link>
+          <a href={DEMO_URL} target="_blank" rel="noopener noreferrer">
             <Button variant="outline" className="border-[#1a1a1a]/20 font-bold px-10 py-3 text-[15px]">
-              Scrivici a info@proofpress.ai
+              Guarda la demo live
             </Button>
           </a>
         </div>

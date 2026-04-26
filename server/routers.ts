@@ -3709,7 +3709,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         `;
         try {
           await sendEmail({
-            to: "info@proofpress.ai",
+            to: "ac@acinelli.com",
             subject: `\uD83C\uDFAF Nuovo preventivo Creator: ${input.contactName} \u2014 ${input.contactEmail}`,
             html: adminHtml,
           });
@@ -3776,6 +3776,167 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         const { creatorQuotes: creatorQuotesTable } = await import('../drizzle/schema');
         const { eq: eqOp } = await import('drizzle-orm');
         await db.update(creatorQuotesTable).set({ status: input.status }).where(eqOp(creatorQuotesTable.id, input.id));
+        return { success: true };
+      }),
+  }),
+
+  // ── Verify Quotes — Preventivi wizard /preventivo-*-verify ──────────────
+  verifyQuotes: router({
+    submit: publicProcedure
+      .input(z.object({
+        productType: z.enum(["news_verify", "info_verify", "email_verify"]),
+        volumePerMonth: z.enum(["fino_a_100", "100_1000", "1000_10000", "oltre_10000"]),
+        integrationMode: z.enum(["api", "dashboard", "entrambi"]),
+        sectors: z.array(z.string()).min(1),
+        // News Verify
+        sourcesCount: z.enum(["fino_a_10", "10_50", "50_100", "oltre_100"]).optional(),
+        includeIpfs: z.boolean().optional(),
+        // Info Verify
+        contentType: z.enum(["documenti_aziendali", "comunicati_stampa", "report_analisi", "contenuti_social", "altro"]).optional(),
+        // Email Verify
+        emailPlatform: z.enum(["sendgrid", "mailchimp", "hubspot", "altro", "non_so"]).optional(),
+        listSize: z.enum(["fino_a_1000", "1000_10000", "10000_100000", "oltre_100000"]).optional(),
+        // Contatti
+        contactName: z.string().min(2).max(255),
+        contactEmail: z.string().email(),
+        contactCompany: z.string().max(255).optional(),
+        contactPhone: z.string().max(50).optional(),
+        notes: z.string().max(2000).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { verifyQuotes: verifyQuotesTable } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (db) {
+          try {
+            await db.insert(verifyQuotesTable).values({
+              productType: input.productType,
+              volumePerMonth: input.volumePerMonth,
+              integrationMode: input.integrationMode,
+              sectors: input.sectors,
+              sourcesCount: input.sourcesCount ?? null,
+              includeIpfs: input.includeIpfs ? 1 : 0,
+              contentType: input.contentType ?? null,
+              emailPlatform: input.emailPlatform ?? null,
+              listSize: input.listSize ?? null,
+              contactName: input.contactName,
+              contactEmail: input.contactEmail,
+              contactCompany: input.contactCompany ?? null,
+              contactPhone: input.contactPhone ?? null,
+              notes: input.notes ?? null,
+              status: "new",
+            });
+          } catch (dbErr) {
+            console.error('[verifyQuotes.submit] Errore DB:', dbErr);
+          }
+        }
+        const productLabels: Record<string, string> = {
+          news_verify: "News Verify",
+          info_verify: "Info Verify",
+          email_verify: "Email Verify",
+        };
+        const volumeLabels: Record<string, string> = {
+          fino_a_100: "Fino a 100/mese",
+          "100_1000": "100\u20131.000/mese",
+          "1000_10000": "1.000\u201310.000/mese",
+          oltre_10000: "Oltre 10.000/mese",
+        };
+        const integrationLabels: Record<string, string> = { api: "API", dashboard: "Dashboard", entrambi: "API + Dashboard" };
+        const productLabel = productLabels[input.productType] ?? input.productType;
+        const adminHtml = `
+          <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
+            <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;text-align:center;">
+              <p style="color:#fff;font-size:22px;font-weight:900;margin:0;">ProofPress ${productLabel}</p>
+              <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">Nuovo Preventivo Wizard</p>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:32px;border:1px solid rgba(26,26,26,0.1);">
+              <h2 style="color:#1a1a1a;font-size:18px;margin:0 0 20px;">&#128203; Nuova richiesta preventivo ${productLabel}</h2>
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;width:40%;">Contatto</td><td style="padding:8px 0;color:#1a1a1a;font-size:14px;font-weight:700;">${input.contactName} &lt;${input.contactEmail}&gt;</td></tr>
+                ${input.contactCompany ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Azienda</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.contactCompany}</td></tr>` : ''}
+                ${input.contactPhone ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Telefono</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.contactPhone}</td></tr>` : ''}
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Prodotto</td><td style="padding:8px 0;color:#374151;font-size:14px;">${productLabel}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Volume/mese</td><td style="padding:8px 0;color:#374151;font-size:14px;">${volumeLabels[input.volumePerMonth] ?? input.volumePerMonth}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Integrazione</td><td style="padding:8px 0;color:#374151;font-size:14px;">${integrationLabels[input.integrationMode] ?? input.integrationMode}</td></tr>
+                <tr><td style="padding:8px 0;color:#888;font-size:13px;">Settori</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.sectors.join(', ')}</td></tr>
+                ${input.sourcesCount ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Fonti monitorate</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.sourcesCount}</td></tr>` : ''}
+                ${input.includeIpfs ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Cert. IPFS</td><td style="padding:8px 0;color:#374151;font-size:14px;">&#10003; Inclusa</td></tr>` : ''}
+                ${input.contentType ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Tipo contenuto</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.contentType}</td></tr>` : ''}
+                ${input.emailPlatform ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Piattaforma email</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.emailPlatform}</td></tr>` : ''}
+                ${input.listSize ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Dimensione lista</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.listSize}</td></tr>` : ''}
+                ${input.notes ? `<tr><td style="padding:8px 0;color:#888;font-size:13px;">Note</td><td style="padding:8px 0;color:#374151;font-size:14px;">${input.notes.replace(/\n/g, '<br>')}</td></tr>` : ''}
+              </table>
+            </div>
+            <p style="color:#aaa;font-size:12px;text-align:center;margin-top:20px;">ProofPress &middot; info@proofpress.ai</p>
+          </div>
+        `;
+        try {
+          await sendEmail({
+            to: "ac@acinelli.com",
+            subject: `\uD83D\uDD12 Nuovo preventivo ${productLabel}: ${input.contactName} \u2014 ${input.contactEmail}`,
+            html: adminHtml,
+          });
+        } catch (e) {
+          console.error('[verifyQuotes.submit] Email admin error:', e);
+        }
+        const confirmHtml = `
+          <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:32px;">
+            <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px;margin-bottom:24px;text-align:center;">
+              <p style="color:#fff;font-size:22px;font-weight:900;margin:0;">ProofPress</p>
+              <p style="color:rgba(255,255,255,0.5);font-size:11px;margin:4px 0 0;letter-spacing:0.12em;text-transform:uppercase;">${productLabel}</p>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:32px;border:1px solid rgba(26,26,26,0.1);text-align:center;">
+              <div style="font-size:40px;margin-bottom:16px;">&#10003;</div>
+              <h2 style="color:#1a1a1a;font-size:22px;margin:0 0 12px;font-weight:900;">Preventivo ricevuto!</h2>
+              <p style="color:#555;font-size:16px;line-height:1.7;margin:0 0 24px;">Ciao <strong>${input.contactName}</strong>, abbiamo ricevuto la tua richiesta per <strong>${productLabel}</strong>. Ti contatteremo entro <strong>24 ore</strong> all'indirizzo <strong>${input.contactEmail}</strong>.</p>
+              <a href="https://proofpress.ai" style="display:inline-block;background:#1a1a1a;color:#fff;padding:14px 28px;border-radius:4px;font-weight:700;text-decoration:none;font-size:14px;">Torna a ProofPress &#8594;</a>
+            </div>
+            <p style="color:#aaa;font-size:12px;text-align:center;margin-top:20px;">ProofPress &middot; <a href="https://proofpress.ai" style="color:#d94f3d;">proofpress.ai</a></p>
+          </div>
+        `;
+        try {
+          await sendEmail({
+            to: input.contactEmail,
+            subject: `Abbiamo ricevuto il tuo preventivo ${productLabel} \u2014 ProofPress`,
+            html: confirmHtml,
+          });
+        } catch (e) {
+          console.error('[verifyQuotes.submit] Email confirm error:', e);
+        }
+        return { success: true };
+      }),
+
+    getQuotes: adminProcedure
+      .input(z.object({
+        productType: z.enum(["news_verify", "info_verify", "email_verify"]).optional(),
+        status: z.enum(["new", "contacted", "qualified", "closed"]).optional(),
+        limit: z.number().min(1).max(500).default(100),
+        offset: z.number().min(0).default(0),
+      }).optional())
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { quotes: [], total: 0 };
+        const { verifyQuotes: verifyQuotesTable } = await import('../drizzle/schema');
+        const { desc: descOp, eq: eqOp, and: andOp, count: countOp } = await import('drizzle-orm');
+        const conditions: any[] = [];
+        if (input?.productType) conditions.push(eqOp(verifyQuotesTable.productType, input.productType));
+        if (input?.status) conditions.push(eqOp(verifyQuotesTable.status, input.status));
+        const whereClause = conditions.length > 1 ? andOp(...conditions as [any, ...any[]]) : conditions[0];
+        const [countResult] = await db.select({ cnt: countOp() }).from(verifyQuotesTable).where(whereClause);
+        const quotes = await db.select().from(verifyQuotesTable).where(whereClause).orderBy(descOp(verifyQuotesTable.createdAt)).limit(input?.limit ?? 100).offset(input?.offset ?? 0);
+        return { quotes, total: countResult?.cnt ?? 0 };
+      }),
+
+    updateStatus: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        status: z.enum(["new", "contacted", "qualified", "closed"]),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+        const { verifyQuotes: verifyQuotesTable } = await import('../drizzle/schema');
+        const { eq: eqOp } = await import('drizzle-orm');
+        await db.update(verifyQuotesTable).set({ status: input.status }).where(eqOp(verifyQuotesTable.id, input.id));
         return { success: true };
       }),
   }),
