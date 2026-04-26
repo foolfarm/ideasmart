@@ -919,6 +919,7 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
           && !l.startsWith("Seguici su Base Alpha")
           && !l.startsWith("Follow us on Base Alpha")
           && !l.startsWith("Andrea Cinelli | Tech Editor")
+          && !l.startsWith("Andrea Cinelli | Executive Advisor")
           && !l.startsWith("Andrea Cinelli | ProofPress")
           && !l.startsWith("Segui \u2192 proofpress.ai/");
     })
@@ -940,9 +941,12 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
   if (isEnSlot) {
     // Footer EN: firma Andrea Cinelli + ProofPress + Base Alpha
     const footerEN =
-      "\nAndrea Cinelli | Tech Editor ProofPress Magazine\n" +
+      "\n" +
+      "Andrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n" +
+      "\n" +
       "\u{1F4CA} Explore ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
-      "\u26a1 Join Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
+      "\n" +
+      "\u26a1 Follow me on Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
@@ -952,9 +956,12 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
   } else {
     // Footer IT: firma Andrea Cinelli + ProofPress + Base Alpha
     const footerIT =
-      "\nAndrea Cinelli | Tech Editor ProofPress Magazine\n" +
+      "\n" +
+      "Andrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n" +
+      "\n" +
       "\u{1F4CA} Scopri di pi\u00f9 su ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
-      "\u{1F680} Segui Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
+      "\n" +
+      "\u{1F680} Seguimi su Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
@@ -997,7 +1004,7 @@ async function generateLinkedInPostText(
         const cutPoint = text.lastIndexOf('\n', 2950);
         text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
         if (!text.includes('proofpress.ai')) {
-          text += '\n\nAndrea Cinelli | Tech Editor ProofPress Magazine\n📊 Scopri di più su ProofPress → https://proofpress.ai\n🚀 Segui Base Alpha — The Next Tech Observatory → https://lnkd.in/dDT9svDC';
+          text += '\n\nAndrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n\n📊 Scopri di più su ProofPress → https://proofpress.ai\n\n🚀 Seguimi su Base Alpha — The Next Tech Observatory → https://lnkd.in/dDT9svDC';
         }
       }
       console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars, Markdown rimosso)`);
