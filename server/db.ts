@@ -246,20 +246,71 @@ export async function deleteSubscriber(id: number) {
 }
 
 // ── Newsletter Sends ─────────────────────────────────────────────────────────
+/**
+ * Crea o recupera il record newsletter per oggi (IDEMPOTENTE).
+ *
+ * Logica:
+ * 1. Cerca un record esistente per (send_date=oggi, section='ai4business').
+ * 2. Se esiste ed è 'sent' con recipientCount>0 → restituisce null (già completato, non reinviare).
+ * 3. Se esiste in qualsiasi altro stato → lo porta a 'sending' e restituisce il suo ID.
+ * 4. Se non esiste → INSERT IGNORE atomico + restituisce il nuovo ID.
+ *
+ * Questo garantisce un solo record per giorno e previene la moltiplicazione
+ * di record in caso di riavvii del server o retry concorrenti.
+ */
 export async function createNewsletterSend(data: { subject: string; htmlContent: string; recipientCount: number }): Promise<number | null> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const [result] = await db.insert(newsletterSends).values({
-    subject: data.subject,
-    htmlContent: data.htmlContent,
-    recipientCount: data.recipientCount,
-    // IMPORTANTE: status='sending' (non 'sent') — verrà aggiornato a 'sent' con recipientCount reale
-    // dopo il completamento dell'invio da updateNewsletterSendRecipientCount.
-    // Se rimane 'sending' significa che l'invio è fallito prima del completamento.
-    status: "sending",
-    sentAt: new Date()
-  });
-  return (result as any).insertId ?? null;
+
+  const sendDateCET = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
+
+  // 1. Cerca record esistente per oggi
+  const existing = await db.execute(
+    sql`SELECT id, status, recipientCount FROM newsletter_sends
+        WHERE send_date = ${sendDateCET} AND section = 'ai4business'
+        LIMIT 1`
+  ) as any;
+  const rows = Array.isArray(existing) ? existing[0] : (existing?.rows ?? []);
+
+  if (rows && rows.length > 0) {
+    const { id: existingId, status: existingStatus, recipientCount: existingCount } = rows[0];
+
+    // 2. Già completato con successo → segnala al chiamante di NON reinviare
+    if (existingStatus === 'sent' && existingCount > 0) {
+      console.log(`[DB] createNewsletterSend: già inviata oggi (id=${existingId}, ${existingCount} destinatari) — restituisce null per bloccare reinvio`);
+      return null;
+    }
+
+    // 3. Esiste ma non completato → riusa il record portandolo a 'sending'
+    console.log(`[DB] createNewsletterSend: record esistente per ${sendDateCET} (id=${existingId}, status=${existingStatus}) — riuso e porto a sending`);
+    await db.execute(
+      sql`UPDATE newsletter_sends
+          SET status = 'sending', sentAt = NOW(),
+              subject = ${data.subject}, htmlContent = ${data.htmlContent}
+          WHERE id = ${existingId}`
+    );
+    return existingId;
+  }
+
+  // 4. Nessun record per oggi: INSERT IGNORE (atomico, no race condition)
+  const [insertResult] = await db.execute(
+    sql`INSERT IGNORE INTO newsletter_sends
+        (subject, htmlContent, recipientCount, status, send_date, section, sentAt, createdAt)
+        VALUES (${data.subject}, ${data.htmlContent}, 0, 'sending', ${sendDateCET}, 'ai4business', NOW(), NOW())`
+  ) as any;
+
+  const insertId = (insertResult as any)?.insertId ?? null;
+  if (!insertId) {
+    // INSERT IGNORE ha scartato la riga (race condition): recupera l'ID esistente
+    const retry = await db.execute(
+      sql`SELECT id FROM newsletter_sends WHERE send_date = ${sendDateCET} AND section = 'ai4business' LIMIT 1`
+    ) as any;
+    const retryRows = Array.isArray(retry) ? retry[0] : (retry?.rows ?? []);
+    return retryRows?.[0]?.id ?? null;
+  }
+
+  console.log(`[DB] createNewsletterSend: nuovo record creato per ${sendDateCET} (id=${insertId})`);
+  return insertId;
 }
 
 export async function updateNewsletterSendRecipientCount(subject: string, recipientCount: number): Promise<void> {

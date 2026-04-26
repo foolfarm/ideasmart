@@ -1590,31 +1590,22 @@ async function hasAlreadySentTodayDB(): Promise<boolean> {
   try {
     const db = await getDb();
     if (!db) return false;
-    // Calcola inizio giornata in CET
-    const nowCET = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
-    const todayLabel = nowCET.toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
-    const todayStart = new Date(todayLabel + "T00:00:00+01:00");
-    const todayEnd = new Date(todayLabel + "T23:59:59+01:00");
-    // Considera già inviata se: status='sent' con recipientCount>0 (completato)
-    // OPPURE status='sending' (invio in corso — blocca doppi invii concorrenti)
-    const existing = await db
-      .select({ id: newsletterSendsTable.id, recipientCount: newsletterSendsTable.recipientCount, status: newsletterSendsTable.status })
-      .from(newsletterSendsTable)
-      .where(
-        and(
-          gte(newsletterSendsTable.createdAt, todayStart),
-          lt(newsletterSendsTable.createdAt, todayEnd),
-          or(
-            and(
-              eq(newsletterSendsTable.status, "sent"),
-              gt(newsletterSendsTable.recipientCount, 0)
-            ),
-            eq(newsletterSendsTable.status, "sending")
-          )
-        )
-      )
-      .limit(1);
-    return existing.length > 0;
+    // Considera già inviata SOLO se: status='sent' con recipientCount>0.
+    // NON blocca su status='sending' — gestito dall'idempotenza di createNewsletterSend.
+    // Usa send_date (CET) per coerenza con il lock atomico in db.ts.
+    const todayLabel = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Rome" }); // YYYY-MM-DD
+    const existing = await db.execute(
+      sql`SELECT id, recipientCount FROM newsletter_sends
+          WHERE send_date = ${todayLabel} AND section = 'ai4business'
+          AND status = 'sent' AND recipientCount > 0
+          LIMIT 1`
+    ) as any;
+    const rows = Array.isArray(existing) ? existing[0] : (existing?.rows ?? []);
+    if (rows && rows.length > 0) {
+      console.log(`[UnifiedNewsletter] ✅ hasAlreadySentTodayDB: già inviata oggi (id=${rows[0].id}, ${rows[0].recipientCount} destinatari)`);
+      return true;
+    }
+    return false;
   } catch {
     return false;
   }
@@ -2193,13 +2184,22 @@ export async function sendMorningNewsletterToAll(): Promise<{
       recipientCount: 0,
     });
 
+    // createNewsletterSend restituisce null se la newsletter è già stata inviata con successo oggi
+    if (newsletterId === null) {
+      console.log(`[MorningNewsletter] ✅ createNewsletterSend ha rilevato invio già completato oggi — skip`);
+      return {
+        success: true,
+        recipientCount: 0,
+        subject: MORNING_SUBJECT,
+        stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
+      };
+    }
+
     // Aggiorna il link "Leggi nel browser" con l'ID reale
-    const finalBaseHtml = newsletterId
-      ? baseHtml.replace(
-          `${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`,
-          `${BASE_URL}/newsletter/${newsletterId}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`
-        )
-      : baseHtml;
+    const finalBaseHtml = baseHtml.replace(
+      `${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`,
+      `${BASE_URL}/newsletter/${newsletterId}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser`
+    );
 
     let sendError: string | undefined;
     const warmupResult = await sendWithWarmup(

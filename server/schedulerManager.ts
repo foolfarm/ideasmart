@@ -800,36 +800,27 @@ export function startAllSchedulers(): void {
         return;
       }
       // Controlla se la newsletter è già stata inviata con successo oggi
+      // Usa send_date (CET) per coerenza con il lock atomico in db.ts
       const catchUpDb = await getDb();
       if (!catchUpDb) {
         console.warn('[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO: DB non disponibile');
         return;
       }
-      const { newsletterSends: nlSendsTable } = await import("../drizzle/schema");
-      const { gte: gteOp, and: andOp2, gt: gtOp, eq: eqOp2 } = await import("drizzle-orm");
+      const { sql: sqlOp } = await import("drizzle-orm");
       const todayLabelCET = nowCET.toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD
-      const todayStartCET = new Date(todayLabelCET + 'T00:00:00+01:00');
-      // Considera già inviata se: status='sent' con recipientCount>0
-      const successfulSend = await catchUpDb
-        .select({ id: nlSendsTable.id, recipientCount: nlSendsTable.recipientCount, status: nlSendsTable.status })
-        .from(nlSendsTable)
-        .where(andOp2(
-          gteOp(nlSendsTable.createdAt, todayStartCET),
-          eqOp2(nlSendsTable.status, 'sent'),
-          gtOp(nlSendsTable.recipientCount, 0)
-        ))
-        .limit(1);
-      if (successfulSend.length > 0) {
-        console.log(`[SchedulerManager] ✅ CATCH-UP BUONGIORNO: già inviata oggi (id=${successfulSend[0].id}, ${successfulSend[0].recipientCount} destinatari) — skip`);
+      const successfulSendResult = await catchUpDb.execute(
+        sqlOp`SELECT id, recipientCount FROM newsletter_sends
+              WHERE send_date = ${todayLabelCET} AND section = 'ai4business'
+              AND status = 'sent' AND recipientCount > 0
+              LIMIT 1`
+      ) as any;
+      const successRows = Array.isArray(successfulSendResult) ? successfulSendResult[0] : (successfulSendResult?.rows ?? []);
+      if (successRows && successRows.length > 0) {
+        console.log(`[SchedulerManager] ✅ CATCH-UP BUONGIORNO: già inviata oggi (id=${successRows[0].id}, ${successRows[0].recipientCount} destinatari) — skip`);
         return;
       }
-      // Resetta eventuali record 'sending' bloccati da riavvii precedenti
-      try {
-        const { sql: sqlOp } = await import("drizzle-orm");
-        await catchUpDb.execute(
-          sqlOp`UPDATE newsletter_sends SET status = 'approved' WHERE status = 'sending' AND sentAt IS NULL AND DATE(createdAt) = CURDATE() LIMIT 1`
-        );
-      } catch { /* non critico */ }
+      // NOTA: NON resettiamo i record 'sending' — createNewsletterSend è idempotente
+      // e gestisce autonomamente il riuso dei record esistenti.
       console.log(`[SchedulerManager] 🔄 CATCH-UP BUONGIORNO: nessun invio riuscito oggi (${hourCET}:${String(minuteCET).padStart(2,'0')} CET) — avvio invio catch-up...`);
       await withLock('newsletter-mattino', async () => {
         try {
