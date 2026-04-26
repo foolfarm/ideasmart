@@ -50,7 +50,6 @@ const NAV_STRUCTURE: NavItem[] = [
     icon: "🔧",
     children: [
       { href: "/cosa-facciamo",    label: "Panoramica" },
-      { href: "/piattaforma",      label: "Piattaforma Agentica" },
       { href: "/proofpress-verify", label: "Tecnologia Verify" },
     ],
   },
