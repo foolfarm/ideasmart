@@ -962,6 +962,38 @@ export default function Home() {
         <div className="hidden sm:block">
           <BreakingNewsSection />
         </div>
+        {/* ══ BANNER IL SOLE 24 ORE ══════════════════════════════════════════════════════════════════ */}
+        <div className="max-w-[1280px] mx-auto px-4 pt-2 pb-1">
+          <a
+            href="https://www.ilsole24ore.com/art/agenti-e-hash-crittografici-nasce-redazione-agentica-che-seleziona-notizie-AI9fgyXC"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3 sm:gap-4 px-4 py-3 rounded-lg border border-[#e8e0d0] hover:border-[#c8001a]/40 hover:shadow-sm transition-all"
+            style={{ background: "linear-gradient(90deg, #fdf6ee 0%, #fffdf9 100%)", textDecoration: "none" }}
+          >
+            {/* Logo Il Sole 24 Ore */}
+            <div className="flex-shrink-0 flex items-center justify-center rounded px-2 py-1" style={{ background: "#c8001a", minWidth: 48 }}>
+              <span className="font-black text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif", fontSize: "9px", letterSpacing: "0.03em", lineHeight: 1.3, textAlign: "center" }}>IL SOLE<br/>24 ORE</span>
+            </div>
+            {/* Testo */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                <span className="text-[8px] font-bold uppercase tracking-[0.18em] px-1.5 py-0.5 rounded" style={{ background: "#c8001a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>Oggi su Il Sole 24 Ore</span>
+                <span className="text-[9px] font-medium" style={{ color: "#999", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>27 aprile 2026</span>
+              </div>
+              <p className="font-bold leading-snug line-clamp-1 group-hover:underline" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(12px, 1.4vw, 15px)" }}>
+                Agenti AI e hash crittografici: nasce la redazione &ldquo;agentica&rdquo; che seleziona le notizie
+              </p>
+              <p className="mt-0.5 line-clamp-1 hidden sm:block" style={{ color: "#666", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", fontSize: "clamp(10px, 1vw, 12px)" }}>
+                ProofPress si presenta al mercato italiano come il primo modello di giornalismo agentico in grado di replicare e automatizzare l&rsquo;intero flusso di lavoro di una redazione grazie all&rsquo;AI.
+              </p>
+            </div>
+            {/* Freccia */}
+            <div className="flex-shrink-0 hidden sm:flex items-center" style={{ color: "#c8001a" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
         {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
         {topNewsWithImages && topNewsWithImages.length > 0 && (
           <div className="max-w-[1280px] mx-auto px-4 py-3 hidden sm:block">

@@ -3430,3 +3430,6 @@
 - [x] Wizard /preventivo-info-verify (Info Verify)
 - [x] Wizard /preventivo-email-verify (Email Verify)
 - [x] Route registrate in App.tsx
+
+## Banner Il Sole 24 Ore (27 Apr 2026)
+- [x] Aggiungere banner prominente "Come ci ha visto Il Sole 24 Ore" sulla Home con link all'articolo
