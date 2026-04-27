@@ -939,35 +939,59 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
   }
 
   if (isEnSlot) {
-    // Footer EN: firma Andrea Cinelli + ProofPress + Base Alpha
+    // Footer EN: doppio \n prima della firma, singolo tra le righe, doppio \n prima degli hashtag
+    // Formato:
+    // (testo)
+    // 
+    // Andrea Cinelli | ...
+    // 
+    // 📊 Explore ProofPress → ...
+    // 
+    // ⚡ Follow me on Base Alpha — ...
+    // 
+    // (hashtag)
     const footerEN =
+      "\n\n" +
+      "Andrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine" +
       "\n" +
-      "Andrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n" +
       "\n" +
-      "\u{1F4CA} Explore ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
+      "\u{1F4CA} Explore ProofPress \u2192 " + PROOFPRESS_URL +
+      "\n" +
       "\n" +
       "\u26a1 Follow me on Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
-      return bodyPart + "\n" + footerEN + "\n" + hashtagPart;
+      return bodyPart + footerEN + "\n\n" + hashtagPart;
     }
-    return cleaned + "\n" + footerEN;
+    return cleaned + footerEN;
   } else {
-    // Footer IT: firma Andrea Cinelli + ProofPress + Base Alpha
+    // Footer IT: doppio \n prima della firma, singolo tra le righe, doppio \n prima degli hashtag
+    // Formato:
+    // (testo)
+    // 
+    // Andrea Cinelli | ...
+    // 
+    // 📊 Scopri di più su ProofPress → ...
+    // 
+    // 🚀 Seguimi su Base Alpha — ...
+    // 
+    // (hashtag)
     const footerIT =
+      "\n\n" +
+      "Andrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine" +
       "\n" +
-      "Andrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n" +
       "\n" +
-      "\u{1F4CA} Scopri di pi\u00f9 su ProofPress \u2192 " + PROOFPRESS_URL + "\n" +
+      "\u{1F4CA} Scopri di pi\u00f9 su ProofPress \u2192 " + PROOFPRESS_URL +
+      "\n" +
       "\n" +
       "\u{1F680} Seguimi su Base Alpha \u2014 The Next Tech Observatory \u2192 " + OSSERVATORIO_URL;
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
-      return bodyPart + "\n" + footerIT + "\n" + hashtagPart;
+      return bodyPart + footerIT + "\n\n" + hashtagPart;
     }
-    return cleaned + "\n" + footerIT;
+    return cleaned + footerIT;
   }
 }
 
@@ -1004,7 +1028,7 @@ async function generateLinkedInPostText(
         const cutPoint = text.lastIndexOf('\n', 2950);
         text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
         if (!text.includes('proofpress.ai')) {
-          text += '\n\nAndrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n\n📊 Scopri di più su ProofPress → https://proofpress.ai\n\n🚀 Seguimi su Base Alpha — The Next Tech Observatory → https://proofpress.ai/osservatorio-tech';
+          text += '\n\nAndrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n\n📊 Scopri di più su ProofPress → https://proofpress.ai\n\n🚀 Seguimi su Base Alpha — The Next Tech Observatory → https://proofpress.ai/osservatorio-tech\n\n';
         }
       }
       console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars, Markdown rimosso)`);
@@ -1019,7 +1043,8 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `\nAndrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n📊 Scopri di più su ProofPress → https://proofpress.ai\n🚀 Seguimi su Base Alpha — The Next Tech Observatory → https://proofpress.ai/osservatorio-tech`,
+      `\n\nAndrea Cinelli | Executive Advisor and Tech Editor ProofPress Magazine\n\n📊 Scopri di più su ProofPress → https://proofpress.ai\n\n🚀 Seguimi su Base Alpha — The Next Tech Observatory → https://proofpress.ai/osservatorio-tech`,
+      "",
       "",
       meta.hashtags.join(" ")
     ].join("\n");

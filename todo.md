@@ -3433,3 +3433,6 @@
 
 ## Banner Il Sole 24 Ore (27 Apr 2026)
 - [x] Aggiungere banner prominente "Come ci ha visto Il Sole 24 Ore" sulla Home con link all'articolo
+
+## Firma LinkedIn (27 Apr 2026)
+- [x] Aggiornare formato firma post LinkedIn IT e EN con spaziatura esatta (doppio spazio prima firma, spazio singolo tra righe, doppio spazio prima hashtag)
