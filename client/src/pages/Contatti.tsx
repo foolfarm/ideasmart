@@ -47,7 +47,7 @@ const CARDS: ContactCard[] = [
     title: "Parla con un Sales",
     subtitle: "Per editori, aziende e testate",
     description: "Vuoi integrare ProofPress nella tua organizzazione? Un nostro account executive ti contatta entro 24 ore per una consulenza gratuita.",
-    cta: "Prenota una call",
+    cta: "Richiedi preventivo",
     color: "#0ea5e9",
     fields: [
       { name: "nome", label: "Nome e Cognome", type: "text", placeholder: "Andrea Cinelli", required: true },
@@ -97,8 +97,8 @@ const CARDS: ContactCard[] = [
     icon: "🚀",
     title: "Richiedi una Demo",
     subtitle: "Vedi ProofPress in azione",
-    description: "Prenota una demo live della piattaforma ProofPress: dalla generazione degli articoli alla certificazione IPFS, fino al trust score in tempo reale.",
-    cta: "Prenota la demo",
+    description: "Presentaci il tuo progetto: ti risponderemo entro 24 ore con una proposta personalizzata.",
+    cta: "Richiedi preventivo",
     color: "#8b5cf6",
     fields: [
       { name: "nome", label: "Nome e Cognome", type: "text", placeholder: "Andrea Cinelli", required: true },

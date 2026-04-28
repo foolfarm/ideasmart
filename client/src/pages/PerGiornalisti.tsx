@@ -85,7 +85,7 @@ export default function PerGiornalisti() {
                   className="px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white transition-all duration-200 hover:opacity-90 inline-block text-center"
                   style={{ background: "#dc2626", borderRadius: 0 }}
                 >
-                  Prenota una demo gratuita →
+                  Richiedi preventivo →
                 </a>
                 <button
                   onClick={scrollToVideo}
@@ -470,14 +470,26 @@ export default function PerGiornalisti() {
         {/* ═══ SEZIONE CONTATTI ═══ */}
         <Section bg="#f5f5f7" id="contatti">
           <div className="text-center mb-10">
-            <Label accent>Prenota una Demo Gratuita</Label>
+            <Label accent>Richiedi Preventivo</Label>
             <h2 className="text-3xl md:text-4xl font-black text-[#0a0a0a]" style={{ fontFamily: FONT }}>
-              Raccontaci il tuo progetto editoriale.
+              Presentaci il tuo progetto editoriale.
             </h2>
             <p className="mt-3 text-base text-[#0a0a0a]/50" style={{ fontFamily: FONT }}>
-              Ti risponderemo entro 24 ore.
+              Ti risponderemo entro 24 ore con una proposta personalizzata.
             </p>
           </div>
+          {/* CTA preventivo */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+            <a href="/preventivo-creator">
+              <button
+                className="inline-flex items-center justify-center text-white font-bold px-10 py-3 text-[15px] transition-opacity hover:opacity-90"
+                style={{ background: "#dc2626", borderRadius: 0 }}
+              >
+                Richiedi preventivo gratuito →
+              </button>
+            </a>
+          </div>
+          <p className="text-center text-[12px] text-[#0a0a0a]/35 tracking-[0.1em] uppercase mb-10" style={{ fontFamily: FONT }}>Nessun impegno · Risposta entro 24h · Setup in pochi giorni</p>
           <ContactForm origine="Redazione Agentica — /offertacommerciale" />
         </Section>
 
