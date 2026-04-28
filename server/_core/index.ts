@@ -705,6 +705,111 @@ async function startServer() {
   });
 
 
+  // ── Pulizia settimanale iscritti (suppressions SendGrid → DB) ──────────────────
+  // POST /api/scheduled/cleanup-subscribers
+  // Recupera spam/bounce/blocks/invalid da SendGrid e imposta status='unsubscribed'
+  // Auth: Authorization: Bearer <JWT_SECRET>
+  app.post("/api/scheduled/cleanup-subscribers", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY ?? '';
+    if (!SENDGRID_API_KEY) {
+      return res.status(500).json({ error: 'SENDGRID_API_KEY not configured' });
+    }
+
+    try {
+      console.log('[CleanupSubscribers] Avvio pulizia iscritti da suppressions SendGrid...');
+
+      // Recupera tutte le pagine di una categoria di suppressions
+      const fetchAllSuppressed = async (endpoint: string): Promise<Set<string>> => {
+        const emails = new Set<string>();
+        let offset = 0;
+        const limit = 500;
+        while (true) {
+          const url = `https://api.sendgrid.com/v3/${endpoint}?limit=${limit}&offset=${offset}`;
+          const r = await fetch(url, {
+            headers: { Authorization: `Bearer ${SENDGRID_API_KEY}`, 'Content-Type': 'application/json' },
+          });
+          if (!r.ok) break;
+          const data: any = await r.json();
+          const items: any[] = Array.isArray(data) ? data : (data.result ?? []);
+          if (items.length === 0) break;
+          for (const item of items) {
+            const email = (item.email ?? '').toLowerCase().trim();
+            if (email) emails.add(email);
+          }
+          if (items.length < limit) break;
+          offset += limit;
+        }
+        return emails;
+      }
+
+      const [spamSet, bounceSet, blockSet, invalidSet] = await Promise.all([
+        fetchAllSuppressed('suppression/spam_reports'),
+        fetchAllSuppressed('suppression/bounces'),
+        fetchAllSuppressed('suppression/blocks'),
+        fetchAllSuppressed('suppression/invalid_emails'),
+      ]);
+
+      const allSuppressed = new Set([...Array.from(spamSet), ...Array.from(bounceSet), ...Array.from(blockSet), ...Array.from(invalidSet)]);
+      const emailList = Array.from(allSuppressed);
+
+      console.log(`[CleanupSubscribers] Suppressions: spam=${spamSet.size} bounce=${bounceSet.size} blocks=${blockSet.size} invalid=${invalidSet.size} totale=${allSuppressed.size}`);
+
+      if (emailList.length === 0) {
+        return res.json({ success: true, suppressed: 0, removed: 0, activeAfter: 0 });
+      }
+
+      // Aggiorna in batch da 500
+      const cleanupDb = await getDb();
+      if (!cleanupDb) throw new Error('DB connection unavailable');
+      const BATCH = 500;
+      let totalRemoved = 0;
+      for (let i = 0; i < emailList.length; i += BATCH) {
+        const batch = emailList.slice(i, i + BATCH);
+        const placeholders = batch.map(() => '?').join(',');
+        const result: any = await cleanupDb.execute(
+          sql.raw(`UPDATE subscribers SET status = 'unsubscribed', unsubscribedAt = NOW() WHERE email IN (${placeholders}) AND status = 'active'`)
+        );
+        // mysql2 restituisce [ResultSetHeader, ...] — affectedRows è nel primo elemento
+        const affected = Array.isArray(result) ? (result[0]?.affectedRows ?? 0) : (result?.affectedRows ?? 0);
+        totalRemoved += affected;
+      }
+
+      // Conta attivi rimanenti via raw SQL
+      const activeCountRaw: any = await cleanupDb.execute(sql`SELECT COUNT(*) as cnt FROM subscribers WHERE status = 'active'`);
+      const activeAfter: number = Array.isArray(activeCountRaw)
+        ? (activeCountRaw[0]?.[0]?.cnt ?? activeCountRaw[0]?.cnt ?? 0)
+        : (activeCountRaw?.cnt ?? 0);
+
+      console.log(`[CleanupSubscribers] Completato: rimossi=${totalRemoved} attivi_rimanenti=${activeAfter}`);
+
+      // Notifica owner
+      try {
+        const { notifyOwner } = await import('./notification');
+        await notifyOwner({
+          title: '🧹 Pulizia iscritti completata',
+          content: `Suppressions SendGrid: spam=${spamSet.size}, bounce=${bounceSet.size}, blocks=${blockSet.size}, invalid=${invalidSet.size}\nIscritti disattivati: ${totalRemoved}\nIscritti attivi rimanenti: ${activeAfter}`,
+        });
+      } catch (_) { /* notifica opzionale */ }
+
+      return res.json({
+        success: true,
+        suppressed: allSuppressed.size,
+        removed: totalRemoved,
+        activeAfter,
+        breakdown: { spam: spamSet.size, bounce: bounceSet.size, blocks: blockSet.size, invalid: invalidSet.size },
+      });
+    } catch (err: any) {
+      console.error('[CleanupSubscribers] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
   // ── Cache Stats endpoint (solo admin, protetto da JWT_SECRET) ──────────────────
   // GET /api/cache-stats — restituisce hit/miss/size/TTL per ogni chiave in cache
   app.get("/api/cache-stats", (req, res) => {
