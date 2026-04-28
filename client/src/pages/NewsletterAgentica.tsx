@@ -493,6 +493,26 @@ export default function NewsletterAgentica() {
                 Ti risponderemo entro 24 ore con una proposta su misura.
               </p>
             </div>
+            {/* CTA preventivo */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+              <a href="/preventivo-creator">
+                <button
+                  className="inline-flex items-center justify-center text-white font-bold px-10 py-3 text-[15px] transition-opacity hover:opacity-90"
+                  style={{ background: "#dc2626", borderRadius: 0 }}
+                >
+                  Richiedi preventivo gratuito →
+                </button>
+              </a>
+              <a href="https://proofpress.tech/" target="_blank" rel="noopener noreferrer">
+                <button
+                  className="inline-flex items-center justify-center border-2 border-[#0a0a0a]/20 bg-transparent hover:bg-[#0a0a0a]/5 text-[#0a0a0a] font-bold px-10 py-3 text-[15px] transition-colors"
+                  style={{ borderRadius: 0 }}
+                >
+                  Guarda la demo live
+                </button>
+              </a>
+            </div>
+            <p className="text-center text-[12px] text-[#0a0a0a]/35 tracking-[0.1em] uppercase mb-10" style={{ fontFamily: FONT }}>Setup in 5 giorni · Gestibile da 1 persona · Disdici quando vuoi</p>
             <ContactForm origine="Newsletter Agentica — /newsletter-agentica" />
           </Section>
 

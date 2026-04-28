@@ -3436,3 +3436,10 @@
 
 ## Firma LinkedIn (27 Apr 2026)
 - [x] Aggiornare formato firma post LinkedIn IT e EN con spaziatura esatta (doppio spazio prima firma, spazio singolo tra righe, doppio spazio prima hashtag)
+
+## CTA Preventivo nelle pagine prodotto (28 Apr 2026)
+- [ ] CTA "Richiedi preventivo" nella sezione finale di OffertaCreator → /preventivo-creator
+- [ ] CTA "Richiedi preventivo" nella sezione finale di Newsletter → /preventivo-creator
+- [ ] CTA "Richiedi preventivo" nella sezione finale di InfoVerify → /preventivo-info-verify
+- [ ] CTA "Richiedi preventivo" nella sezione finale di NewsVerify → /preventivo-news-verify
+- [ ] CTA "Richiedi preventivo" nella sezione finale di EmailVerify → /preventivo-email-verify

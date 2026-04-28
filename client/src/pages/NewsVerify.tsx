@@ -545,6 +545,26 @@ export default function NewsVerify() {
                   o per esplorare partnership tecnologiche.
                 </p>
               </div>
+              {/* CTA preventivo */}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+                <a href="/preventivo-news-verify">
+                  <button
+                    className="inline-flex items-center justify-center text-white font-bold px-10 py-3 text-[15px] transition-opacity hover:opacity-90"
+                    style={{ background: ORANGE, borderRadius: 0 }}
+                  >
+                    Richiedi preventivo gratuito →
+                  </button>
+                </a>
+                <a href="/verify/demo">
+                  <button
+                    className="inline-flex items-center justify-center border-2 bg-transparent hover:bg-white/10 text-white font-bold px-10 py-3 text-[15px] transition-colors"
+                    style={{ borderColor: "rgba(255,255,255,0.2)", borderRadius: 0 }}
+                  >
+                    Guarda la demo
+                  </button>
+                </a>
+              </div>
+              <p className="text-center text-[12px] text-white/30 tracking-[0.1em] uppercase mb-10" style={{ fontFamily: FONT }}>Nessun impegno · Risposta entro 24h · Demo personalizzata</p>
               <ContactForm origine="News Verify" />
             </div>
           </section>

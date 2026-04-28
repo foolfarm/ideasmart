@@ -570,6 +570,26 @@ export default function InfoVerify() {
                   Scrivici per integrare Info Verify nella tua organizzazione, per richiedere una demo personalizzata, o per esplorare partnership tecnologiche.
                 </p>
               </div>
+              {/* CTA preventivo */}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+                <a href="/preventivo-info-verify">
+                  <button
+                    className="inline-flex items-center justify-center text-white font-bold px-10 py-3 text-[15px] transition-opacity hover:opacity-90"
+                    style={{ background: BLUE, borderRadius: 0 }}
+                  >
+                    Richiedi preventivo gratuito →
+                  </button>
+                </a>
+                <a href="/verify/demo">
+                  <button
+                    className="inline-flex items-center justify-center border-2 bg-transparent hover:bg-[#0a0a0a]/5 text-[#0a0a0a] font-bold px-10 py-3 text-[15px] transition-colors"
+                    style={{ borderColor: "rgba(10,10,10,0.2)", borderRadius: 0 }}
+                  >
+                    Guarda la demo
+                  </button>
+                </a>
+              </div>
+              <p className="text-center text-[12px] text-[#0a0a0a]/35 tracking-[0.1em] uppercase mb-10" style={{ fontFamily: FONT }}>Nessun impegno · Risposta entro 24h · Demo personalizzata</p>
               <ContactForm origine="Info Verify — /proofpress-verify/info" />
             </div>
           </section>
