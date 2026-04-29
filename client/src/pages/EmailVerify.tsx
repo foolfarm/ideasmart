@@ -148,10 +148,43 @@ export default function EmailVerify() {
               </div>
             </div>
           </section>
+          {/* ─── VIDEO EMAIL VERIFY ─────────────────────────────────────────────── */}
+          <section className="py-16 md:py-20" style={{ background: "#0a0a0a" }}>
+            <div className="max-w-5xl mx-auto px-5 md:px-8">
+              <div className="mb-8 text-center">
+                <span
+                  className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-white/40"
+                  style={{ fontFamily: FONT }}
+                >
+                  ProofPress Email Verify · In pochi Secondi
+                </span>
+                <h2 className="mt-3 text-2xl md:text-3xl font-black text-white" style={{ fontFamily: FONT }}>
+                  Certifica ogni email. Prova che non è stata alterata.
+                </h2>
+              </div>
+              <div
+                className="relative w-full overflow-hidden"
+                style={{ aspectRatio: "16/9", background: "#1a1a1a" }}
+              >
+                <video
+                  className="w-full h-full object-cover"
+                  controls
+                  preload="metadata"
+                  style={{ display: "block" }}
+                >
+                  <source src="/manus-storage/ProofPress_Verify_Email_b57516a3.mp4" type="video/mp4" />
+                  Il tuo browser non supporta la riproduzione video.
+                </video>
+              </div>
+              <p className="mt-4 text-center text-[13px] text-white/35" style={{ fontFamily: FONT }}>
+                ProofPress Email Verify — Hash crittografico immutabile per ogni email certificata
+              </p>
+            </div>
+          </section>
 
           <Divider />
 
-          {/* ─── 2. IL PROBLEMA — framing catena di custodia ─────────────────── */}
+          {/* ─── 2. IL PROBLEMA — framing catena di custodia ──────────────────── */}
           <Section id="problema">
             <Label>Il problema</Label>
             <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ fontFamily: FONT }}>
