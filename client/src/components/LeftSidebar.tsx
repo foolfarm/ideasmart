@@ -66,36 +66,12 @@ const NAV_STRUCTURE: NavItem[] = [
       { href: "/chi-siamo-story", label: "Storia" },
     ],
   },
-  {
-    type: "group",
-    label: "Offerta",
-    Icon: Briefcase,
-    children: [
-      { href: "/offertacommerciale", label: "ProofPress Creator" },
-      { href: "/newsletter-agentica", label: "  └ ProofPress Newsletter" },
-      { href: "/proofpress-verify", label: "ProofPress Verify™" },
-      { href: "/proofpress-verify/news", label: "  └ News Verify" },
-      { href: "/proofpress-verify/info", label: "  └ Info Verify" },
-      { href: "/proofpress-verify/email", label: "  └ Email Verify" },
-      {
-        href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf",
-        label: "Download Brochure",
-        external: true,
-      },
-    ],
-  },
-  { type: "link", href: "/pubblicita", label: "Advertise", Icon: Megaphone },
-  {
-    type: "group",
-    label: "Scrivi per noi",
-    Icon: PenLine,
-    children: [
-      { href: "/scrivi-per-noi", label: "Scrivi per noi" },
-      { href: "/journalist-portal", label: "Portale Giornalisti" },
-    ],
-  },
+  { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", Icon: Briefcase },
+  { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", Icon: Megaphone, external: true },
+  { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", Icon: Megaphone },
+  { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", Icon: PenLine },
   { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
-];
+]
 
 /* ─── VOCE SEMPLICE ─────────────────────────────────────────────────── */
 function NavLink({
@@ -268,7 +244,7 @@ export default function LeftSidebar() {
       {/* ── Tagline ── */}
       <div className="px-3 mb-5" style={{ ...fadeBlock, whiteSpace: "normal" }}>
         <p style={{ fontSize: "11.5px", color: "rgba(29,29,31,0.5)", lineHeight: 1.65, fontFamily: SF }}>
-          ProofPress Magazine nato in California come un bulletin board privato nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificata con hash crittografico SHA-256 e archiviata su IPFS. Vogliamo costruire un mondo con informazione certa e sicura.
+          ProofPress è la piattaforma di AI Journalism che ti permette di creare, verificare e monetizzare contenuti certificati. Costruiamo un'informazione affidabile, scalabile e verificabile.
         </p>
       </div>
 

@@ -16,7 +16,7 @@ type NavItem =
   | { type: "group"; label: string; icon: string; children: { href: string; label: string; external?: boolean }[] };
 
 const NAV_STRUCTURE: NavItem[] = [
-  // Home con sottomenu canali (specchio LeftSidebar)
+  // Home con sottomenu canali
   {
     type: "group",
     label: "Home",
@@ -31,8 +31,6 @@ const NAV_STRUCTURE: NavItem[] = [
       { href: "/dealflow",          label: "Dealflow" },
     ],
   },
-
-  // Chi Siamo
   {
     type: "group",
     label: "Chi Siamo",
@@ -42,53 +40,12 @@ const NAV_STRUCTURE: NavItem[] = [
       { href: "/chi-siamo-story",  label: "Storia" },
     ],
   },
-
-  // Cosa Facciamo (Piattaforma)
-  {
-    type: "group",
-    label: "Cosa Facciamo",
-    icon: "🔧",
-    children: [
-      { href: "/cosa-facciamo",    label: "Panoramica" },
-      { href: "/proofpress-verify", label: "Tecnologia Verify" },
-    ],
-  },
-
-  // Offerta — specchio esatto di LeftSidebar
-  {
-    type: "group",
-    label: "Offerta",
-    icon: "💼",
-    children: [
-      { href: "/offertacommerciale",         label: "ProofPress Creator" },
-      { href: "/newsletter-agentica",        label: "  └ ProofPress Newsletter" },
-      { href: "/proofpress-verify",          label: "ProofPress Verify™" },
-      { href: "/proofpress-verify/news",     label: "  └ News Verify" },
-      { href: "/proofpress-verify/info",     label: "  └ Info Verify" },
-      { href: "/proofpress-verify/email",    label: "  └ Email Verify" },
-      {
-        href: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ProofPress_Brochure_a9cc5247.pdf",
-        label: "Download Brochure",
-        external: true,
-      },
-    ],
-  },
-
-  { type: "link", href: "/pubblicita",  label: "Advertise",  icon: "📣" },
-
-  // Scrivi per noi
-  {
-    type: "group",
-    label: "Scrivi per noi",
-    icon: "✍️",
-    children: [
-      { href: "/scrivi-per-noi",     label: "Scrivi per noi" },
-      { href: "/journalist-portal",  label: "Portale Giornalisti" },
-    ],
-  },
-
+  { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", icon: "🚀" },
+  { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", icon: "🔐", external: true },
+  { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", icon: "💰" },
+  { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", icon: "✍️" },
   { type: "link", href: "/contatti", label: "Contatti", icon: "✉️" },
-];
+]
 
 /* ─── GRUPPO ESPANDIBILE ─────────────────────────────────────────────── */
 function NavGroup({
@@ -211,7 +168,7 @@ export default function MobileNav() {
         {/* Tagline */}
         <div className="px-5 py-4 border-b border-[#e5e5ea]">
           <p style={{ fontSize: "12.5px", color: "rgba(26,26,26,0.55)", lineHeight: 1.65, fontFamily: SF }}>
-            ProofPress Magazine nasce dalla piattaforma ProofPress, la prima tecnologia di AI Journalism certificato. Crea la tua testata AI-native: scopri l'offerta per creator, aziende ed editori.
+            ProofPress è la piattaforma di AI Journalism che ti permette di creare, verificare e monetizzare contenuti certificati. Costruiamo un'informazione affidabile, scalabile e verificabile.
           </p>
         </div>
 

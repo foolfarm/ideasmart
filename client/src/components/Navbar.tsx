@@ -1,6 +1,6 @@
 /*
  * PROOFPRESS Navbar
- * Struttura menu: Chi Siamo | Offerta (dropdown 5 voci) | Advertise | Scrivi per noi (dropdown) | Contatti
+ * Struttura menu: Home | Chi Siamo | Crea il tuo Giornale AI | Scopri Verify | Monetizza | Scrivi per noi | Contatti
  */
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
@@ -58,15 +58,11 @@ export default function Navbar() {
     { label: "Storia", href: "/chi-siamo-story", desc: "Come è nata ProofPress" },
   ];
 
-  // 2 — Offerta (dropdown 5 voci)
+  // 2 — Voci principali menu (flat, no dropdown)
   const offertaItems = [
-    { label: "Redazione Agentica", href: "/offertacommerciale", desc: "Crea il tuo giornale con Agenti AI — online in 24 ore" },
-    { label: "Newsletter Agentica", href: "/newsletter-agentica", desc: "Newsletter quotidiana generata e certificata da AI" },
-    { label: "ProofPress Verify™", href: "/proofpress-verify", desc: "Il protocollo universale di certificazione crittografica" },
-    { label: "  └ News Verify", href: "/proofpress-verify/news", desc: "Certificazione articoli e contenuti giornalistici" },
-    { label: "  └ Info Verify", href: "/proofpress-verify/info", desc: "Certificazione documenti aziendali — AI Act, MAR, eIDAS" },
-    { label: "  └ Email Verify", href: "/proofpress-verify/email", desc: "Certificazione email e comunicazioni digitali" },
-    { label: "Download Brochure", href: "https://proofpress.ai/brochure", desc: "Scarica la presentazione completa di ProofPress", external: true },
+    { label: "Crea il tuo Giornale AI →", href: "/offertacommerciale", desc: "Crea il tuo giornale con Agenti AI — online in 24 ore" },
+    { label: "Scopri la Tecnologia Verify →", href: "https://proofpressverify.com/", desc: "Il protocollo universale di certificazione crittografica", external: true },
+    { label: "Monetizza con ProofPress →", href: "/advertise", desc: "Soluzioni pubblicitarie e di monetizzazione per editori" },
   ];
 
   // 4 — Scrivi per noi (dropdown)
@@ -163,37 +159,36 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 2 — Offerta dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => { setOffertaOpen(!offertaOpen); setChiSiamoOpen(false); setScriviOpen(false); }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
-                style={{ color: "#1a1a1a", fontFamily: SF }}
-              >
-                Offerta
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${offertaOpen ? "rotate-180" : ""}`} />
-              </button>
-              {offertaOpen && (
-                <div className="absolute top-10 left-0 w-[360px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
-                  <div className="p-2">
-                    {offertaItems.map((item) => (
-                      <DropdownItem key={item.href} item={item} onClose={() => setOffertaOpen(false)} />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* 3 — Advertise */}
+            {/* 2 — Crea il tuo Giornale AI */}
             <Link
-              href="/pubblicita"
+              href="/offertacommerciale"
               className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
               style={{ color: "#1a1a1a", fontFamily: SF }}
             >
-              Advertise
+              Crea il tuo Giornale AI →
             </Link>
 
-            {/* 4 — Scrivi per noi dropdown */}
+            {/* 3 — Scopri la Tecnologia Verify */}
+            <a
+              href="https://proofpressverify.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+              style={{ color: "#1a1a1a", fontFamily: SF }}
+            >
+              ProofPress Verify™ ↗
+            </a>
+
+            {/* 4 — Monetizza con ProofPress */}
+            <Link
+              href="/advertise"
+              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
+              style={{ color: "#1a1a1a", fontFamily: SF }}
+            >
+              Monetizza →
+            </Link>
+
+            {/* 5 — Scrivi per noi dropdown */}
             <div className="relative">
               <button
                 onClick={() => { setScriviOpen(!scriviOpen); setChiSiamoOpen(false); setOffertaOpen(false); }}
@@ -214,7 +209,7 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 5 — Contatti */}
+            {/* 6 — Contatti */}
             <Link
               href="/contatti"
               className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
@@ -222,16 +217,6 @@ export default function Navbar() {
             >
               Contatti
             </Link>
-
-            {/* 6 — Osservatorio Tech */}
-            <Link
-              href="/osservatorio-tech"
-              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
-              style={{ color: "#00b894", fontFamily: SF }}
-            >
-              🔭 Osservatorio
-            </Link>
-
           </div>
 
           {/* Destra: Language + Investi badge + Newsletter/Home + hamburger */}
