@@ -37,6 +37,7 @@ const Research = lazy(() => import("./pages/Research"));
 const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
 const Verify = lazy(() => import("./pages/Verify"));
 const ProofPressVerify = lazy(() => import("./pages/ProofPressVerify"));
+const VerifyAgent = lazy(() => import("./pages/VerifyAgent"));
 const VerifyPricing = lazy(() => import("./pages/VerifyPricing"));
 const VerifyBusiness = lazy(() => import("./pages/VerifyBusiness"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
@@ -164,6 +165,7 @@ function Router() {
         <Route path="/research" component={Research} />
         <Route path="/verify">{() => <Redirect to="/proofpress-verify" />}</Route>
         <Route path="/proofpress-verify" component={ProofPressVerify} />
+        <Route path="/verify-agent" component={VerifyAgent} />
         <Route path="/verify-pricing" component={VerifyPricing} />
         <Route path="/verify-business" component={VerifyBusiness} />
         <Route path="/proofpress-verify/news" component={NewsVerify} />
