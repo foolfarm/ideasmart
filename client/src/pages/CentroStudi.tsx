@@ -1,7 +1,8 @@
 /**
  * /centro-studi — Base Alpha Centro Studi
- * Catalogo report per settore + form lead inline
- * Design: dark editorial (navy/nero) + rosso ProofPress + bianco
+ * Design: dark editorial premium — navy profondo + rosso ProofPress + accenti grafici
+ * Hero: split asimmetrico con pattern grid + numero display + badge animato
+ * Layout: editorial magazine con sezioni visivamente distinte
  */
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
@@ -13,7 +14,8 @@ import SharedPageFooter from "@/components/SharedPageFooter";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const RED = "#cc0000";
-const NAVY = "#0a0f1e";
+const NAVY = "#080c18";
+const NAVY2 = "#0d1221";
 const PAPER = "#f5f0e8";
 const FONT_DISPLAY = "'Space Grotesk', sans-serif";
 const FONT_BODY = "'DM Sans', sans-serif";
@@ -45,51 +47,49 @@ const REPORT_TYPES = [
     desc: "Report ricorrente su un settore verticale. Fonti verificate con ProofPress Verify™, curato dal Centro Studi.",
     badge: "ABBONAMENTO",
     badgeColor: RED,
-    cta: "abbonamento_report",
+    cta: "abbonamento_report" as const,
+    icon: "📊",
+    highlight: "Delivery settimanale",
   },
   {
     type: "Report Custom",
     desc: "Analisi su misura per una specifica domanda di business. Metodologia proprietaria, dati primari e secondari, consegna in 5-10 giorni.",
     badge: "SU COMMISSIONE",
-    badgeColor: "#1a5276",
-    cta: "report_custom",
+    badgeColor: "#1a3a5c",
+    cta: "report_custom" as const,
+    icon: "🎯",
+    highlight: "Consegna in 5-10 giorni",
   },
   {
     type: "Osservatorio Tematico",
     desc: "Ricerca approfondita su un tema trasversale (es. AI Act, CSRD, mercato M&A). Formato white paper, citabile e distribuibile.",
     badge: "PROGETTO",
-    badgeColor: "#1e8449",
-    cta: "osservatorio",
+    badgeColor: "#1a2a1a",
+    cta: "osservatorio" as const,
+    icon: "📋",
+    highlight: "White paper certificato",
   },
 ];
 
 // ─── Form lead ────────────────────────────────────────────────────────────────
 function LeadForm({ defaultInterest }: { defaultInterest?: string }) {
-  
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    company: "",
-    role: "",
-    sector: "",
-    interest: defaultInterest ?? "informazioni",
-    message: "",
+    name: "", email: "", company: "", role: "",
+    sector: "", interest: defaultInterest || "abbonamento_report", message: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
   const submitLead = trpc.centroStudi.submitLead.useMutation({
-    onSuccess: () => {
-      setSubmitted(true);
-      toast.success("Richiesta inviata — Ti risponderemo entro 24 ore lavorative.");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
+    onSuccess: () => { setSubmitted(true); toast.success("Richiesta inviata — Ti risponderemo entro 24 ore lavorative."); },
+    onError: (err) => { toast.error(err.message); },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) return;
+    if (!form.name.trim() || !form.email.trim()) {
+      toast.error("Compila nome e email");
+      return;
+    }
     submitLead.mutate({
       name: form.name,
       email: form.email,
@@ -104,12 +104,14 @@ function LeadForm({ defaultInterest }: { defaultInterest?: string }) {
 
   if (submitted) {
     return (
-      <div className="text-center py-12 px-6">
-        <div className="text-4xl mb-4">✓</div>
-        <h3 className="text-xl font-bold mb-2" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
+      <div className="text-center py-16 px-6">
+        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: RED + "20", border: `2px solid ${RED}` }}>
+          <span className="text-2xl">✓</span>
+        </div>
+        <h3 className="text-2xl font-black mb-3" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
           Richiesta ricevuta
         </h3>
-        <p className="text-sm" style={{ color: PAPER + "80", fontFamily: FONT_BODY }}>
+        <p className="text-sm max-w-sm mx-auto" style={{ color: PAPER + "70", fontFamily: FONT_BODY }}>
           Andrea Cinelli o un membro del Centro Studi ti risponderà entro 24 ore lavorative.
         </p>
       </div>
@@ -117,92 +119,50 @@ function LeadForm({ defaultInterest }: { defaultInterest?: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-            Nome e Cognome *
-          </label>
-          <input
-            type="text"
-            required
-            value={form.name}
-            onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors"
-            style={{ color: PAPER, fontFamily: FONT_BODY }}
-            placeholder="Mario Rossi"
-          />
+          <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Nome e Cognome *</label>
+          <input type="text" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+            className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors"
+            style={{ color: PAPER, fontFamily: FONT_BODY }} placeholder="Mario Rossi" />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-            Email *
-          </label>
-          <input
-            type="email"
-            required
-            value={form.email}
-            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors"
-            style={{ color: PAPER, fontFamily: FONT_BODY }}
-            placeholder="mario@azienda.it"
-          />
+          <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Email *</label>
+          <input type="email" required value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+            className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors"
+            style={{ color: PAPER, fontFamily: FONT_BODY }} placeholder="mario@azienda.it" />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-            Azienda
-          </label>
-          <input
-            type="text"
-            value={form.company}
-            onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors"
-            style={{ color: PAPER, fontFamily: FONT_BODY }}
-            placeholder="Nome Azienda"
-          />
+          <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Azienda</label>
+          <input type="text" value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
+            className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors"
+            style={{ color: PAPER, fontFamily: FONT_BODY }} placeholder="Nome Azienda" />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-            Ruolo
-          </label>
-          <input
-            type="text"
-            value={form.role}
-            onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors"
-            style={{ color: PAPER, fontFamily: FONT_BODY }}
-            placeholder="CEO, CMO, Head of Strategy..."
-          />
+          <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Ruolo</label>
+          <input type="text" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+            className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors"
+            style={{ color: PAPER, fontFamily: FONT_BODY }} placeholder="CEO, CMO, Head of Strategy..." />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-            Settore di interesse
-          </label>
-          <select
-            value={form.sector}
-            onChange={e => setForm(f => ({ ...f, sector: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors"
-            style={{ color: PAPER, fontFamily: FONT_BODY, backgroundColor: "#1a1f2e" }}
-          >
+          <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Settore di interesse</label>
+          <select value={form.sector} onChange={e => setForm(f => ({ ...f, sector: e.target.value }))}
+            className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors"
+            style={{ color: PAPER, fontFamily: FONT_BODY, backgroundColor: "#0d1221" }}>
             <option value="">Seleziona settore</option>
-            {SECTORS.map(s => (
-              <option key={s.key} value={s.key}>{s.label}</option>
-            ))}
+            {SECTORS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-            Tipo di interesse
-          </label>
-          <select
-            value={form.interest}
-            onChange={e => setForm(f => ({ ...f, interest: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors"
-            style={{ color: PAPER, fontFamily: FONT_BODY, backgroundColor: "#1a1f2e" }}
-          >
+          <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Tipo di interesse</label>
+          <select value={form.interest} onChange={e => setForm(f => ({ ...f, interest: e.target.value }))}
+            className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors"
+            style={{ color: PAPER, fontFamily: FONT_BODY, backgroundColor: "#0d1221" }}>
             <option value="abbonamento_report">Abbonamento Report Settimanali</option>
             <option value="report_custom">Report Custom su Commissione</option>
             <option value="osservatorio">Osservatorio Tematico</option>
@@ -211,41 +171,33 @@ function LeadForm({ defaultInterest }: { defaultInterest?: string }) {
         </div>
       </div>
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: PAPER + "60", fontFamily: FONT_DISPLAY }}>
-          Messaggio (opzionale)
-        </label>
-        <textarea
-          rows={3}
-          value={form.message}
-          onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-          className="w-full px-3 py-2 text-sm rounded bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none transition-colors resize-none"
-          style={{ color: PAPER, fontFamily: FONT_BODY }}
-          placeholder="Descrivi brevemente la tua esigenza..."
-        />
+        <label className="block text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: PAPER + "50", fontFamily: FONT_DISPLAY }}>Messaggio (opzionale)</label>
+        <textarea rows={3} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+          className="w-full px-4 py-3 text-sm rounded-none bg-white/5 border border-white/10 focus:border-red-600 focus:outline-none transition-colors resize-none"
+          style={{ color: PAPER, fontFamily: FONT_BODY }} placeholder="Descrivi brevemente la tua esigenza..." />
       </div>
-      <button
-        type="submit"
-        disabled={submitLead.isPending}
-        className="w-full py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-85 disabled:opacity-50"
-        style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT_DISPLAY }}
-      >
+      <button type="submit" disabled={submitLead.isPending}
+        className="w-full py-4 text-sm font-black tracking-widest uppercase transition-opacity hover:opacity-85 disabled:opacity-50"
+        style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT_DISPLAY }}>
         {submitLead.isPending ? "Invio in corso..." : "Invia Richiesta →"}
       </button>
-      <p className="text-[10px] text-center" style={{ color: PAPER + "40", fontFamily: FONT_BODY }}>
+      <p className="text-[10px] text-center" style={{ color: PAPER + "35", fontFamily: FONT_BODY }}>
         I tuoi dati non vengono condivisi con terze parti. Risposta garantita entro 24h lavorative.
       </p>
     </form>
   );
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// ─── Componente principale ────────────────────────────────────────────────────
 export default function CentroStudi() {
   const [activeSector, setActiveSector] = useState<string | null>(null);
-  const [formInterest, setFormInterest] = useState("informazioni");
+  const [formInterest, setFormInterest] = useState<string>("abbonamento_report");
 
-  const handleSectorCTA = (interest: string) => {
+  const scrollToForm = (interest: string) => {
     setFormInterest(interest);
-    document.getElementById("lead-form")?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      document.getElementById("lead-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
   };
 
   return (
@@ -255,149 +207,413 @@ export default function CentroStudi() {
       <MobileNav />
 
       <main className="pl-0 md:pl-12 pt-16">
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
-        <section className="px-6 md:px-12 lg:px-20 pt-16 pb-12 border-b border-white/8">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 text-[10px] font-black tracking-widest uppercase" style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT_DISPLAY }}>
+
+        {/* ══ HERO — split asimmetrico con pattern e numero display ══════════ */}
+        <section
+          className="relative overflow-hidden"
+          style={{ backgroundColor: NAVY, minHeight: "92vh" }}
+        >
+          {/* Pattern griglia di sfondo */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(204,0,0,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(204,0,0,0.04) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+            }}
+          />
+          {/* Linea verticale rossa decorativa */}
+          <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: RED }} />
+          {/* Numero display gigante in background */}
+          <div
+            className="absolute right-0 top-0 select-none pointer-events-none hidden lg:block"
+            style={{
+              fontSize: "clamp(200px, 28vw, 420px)",
+              fontFamily: FONT_DISPLAY,
+              fontWeight: 900,
+              color: "rgba(204,0,0,0.04)",
+              lineHeight: 1,
+              letterSpacing: "-0.05em",
+              userSelect: "none",
+            }}
+          >
+            BA
+          </div>
+
+          <div className="relative z-10 px-8 md:px-16 lg:px-24 pt-20 pb-16 max-w-7xl">
+            {/* Breadcrumb / tag */}
+            <div className="flex items-center gap-4 mb-10">
+              <span
+                className="px-3 py-1.5 text-[10px] font-black tracking-widest uppercase"
+                style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT_DISPLAY }}
+              >
                 CENTRO STUDI
               </span>
-              <span className="text-[10px] font-bold tracking-widest uppercase" style={{ color: PAPER + "40", fontFamily: FONT_DISPLAY }}>
-                BASE ALPHA RESEARCH
+              <span className="text-[10px] font-bold tracking-widest uppercase" style={{ color: PAPER + "35", fontFamily: FONT_DISPLAY }}>
+                BASE ALPHA RESEARCH · PROOFPRESS
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-black leading-none mb-6" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
-              Osservatori e Report<br />
-              <span style={{ color: RED }}>Verificati su Misura</span>
-            </h1>
-            <p className="text-base md:text-lg leading-relaxed max-w-2xl mb-8" style={{ color: PAPER + "80", fontFamily: FONT_BODY }}>
-              Base Alpha è l'Osservatorio e Centro Studi di ProofPress, guidato da <strong style={{ color: PAPER }}>Andrea Cinelli</strong>.
-              Sviluppiamo per oltre <strong style={{ color: RED }}>200 clienti</strong> report settoriali, osservatori tematici e analisi di mercato
-              certificati con tecnologia <strong style={{ color: PAPER }}>ProofPress Verify™</strong> — dati verificabili, fonti tracciabili,
-              insight azionabili per board e C-suite.
-            </p>
-            {/* KPI row */}
-            <div className="flex flex-wrap gap-8 mb-8">
-              {[
-                { n: "200+", label: "Clienti serviti" },
-                { n: "30+", label: "Anni di execution" },
-                { n: "16", label: "Settori verticali" },
-                { n: "100%", label: "Fonti verificate Verify™" },
-              ].map(kpi => (
-                <div key={kpi.label}>
-                  <p className="text-3xl font-black leading-none" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>{kpi.n}</p>
-                  <p className="text-[10px] font-bold tracking-wider uppercase mt-1" style={{ color: PAPER + "40", fontFamily: FONT_DISPLAY }}>{kpi.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* ── Tipi di report ───────────────────────────────────────────────── */}
-        <section className="px-6 md:px-12 lg:px-20 py-14 border-b border-white/8">
-          <div className="max-w-5xl mx-auto">
-            <p className="text-[10px] font-black tracking-widest uppercase mb-8" style={{ color: RED, fontFamily: FONT_DISPLAY }}>
-              COSA PRODUCIAMO
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {REPORT_TYPES.map(rt => (
-                <div key={rt.type} className="border border-white/8 p-6 hover:border-white/20 transition-colors">
-                  <span className="inline-block px-2 py-0.5 text-[9px] font-black tracking-widest uppercase mb-4" style={{ backgroundColor: rt.badgeColor, color: PAPER, fontFamily: FONT_DISPLAY }}>
-                    {rt.badge}
-                  </span>
-                  <h3 className="text-base font-black mb-3" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>{rt.type}</h3>
-                  <p className="text-sm leading-relaxed mb-5" style={{ color: PAPER + "70", fontFamily: FONT_BODY }}>{rt.desc}</p>
+            {/* Headline principale — tipografia display */}
+            <div className="mb-8">
+              <h1
+                className="font-black leading-none mb-2"
+                style={{
+                  fontFamily: FONT_DISPLAY,
+                  color: PAPER,
+                  fontSize: "clamp(48px, 8vw, 110px)",
+                  letterSpacing: "-0.03em",
+                  lineHeight: 0.92,
+                }}
+              >
+                Osservatori
+              </h1>
+              <h1
+                className="font-black leading-none mb-2"
+                style={{
+                  fontFamily: FONT_DISPLAY,
+                  color: RED,
+                  fontSize: "clamp(48px, 8vw, 110px)",
+                  letterSpacing: "-0.03em",
+                  lineHeight: 0.92,
+                }}
+              >
+                e Report
+              </h1>
+              <h1
+                className="font-black leading-none"
+                style={{
+                  fontFamily: FONT_DISPLAY,
+                  color: PAPER + "30",
+                  fontSize: "clamp(48px, 8vw, 110px)",
+                  letterSpacing: "-0.03em",
+                  lineHeight: 0.92,
+                }}
+              >
+                Verificati.
+              </h1>
+            </div>
+
+            {/* Sottotitolo + CTA in layout split */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-14">
+              <div>
+                <p
+                  className="text-lg leading-relaxed mb-8"
+                  style={{ color: PAPER + "75", fontFamily: FONT_BODY, maxWidth: "480px" }}
+                >
+                  Base Alpha è l'Osservatorio e Centro Studi di ProofPress, guidato da{" "}
+                  <strong style={{ color: PAPER }}>Andrea Cinelli</strong>.
+                  Sviluppiamo per oltre{" "}
+                  <strong style={{ color: RED }}>200 clienti</strong> report settoriali
+                  certificati con tecnologia{" "}
+                  <strong style={{ color: PAPER }}>ProofPress Verify™</strong> —
+                  dati verificabili, fonti tracciabili, insight per board e C-suite.
+                </p>
+                <div className="flex flex-wrap gap-3">
                   <button
-                    onClick={() => handleSectorCTA(rt.cta)}
-                    className="text-xs font-bold tracking-wide transition-opacity hover:opacity-70"
-                    style={{ color: RED, fontFamily: FONT_DISPLAY }}
+                    onClick={() => scrollToForm("abbonamento_report")}
+                    className="px-8 py-4 text-sm font-black tracking-widest uppercase transition-all hover:opacity-90 active:scale-95"
+                    style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT_DISPLAY }}
                   >
-                    Richiedi informazioni →
+                    Abbonati ai Report →
+                  </button>
+                  <button
+                    onClick={() => scrollToForm("report_custom")}
+                    className="px-8 py-4 text-sm font-black tracking-widest uppercase transition-all hover:bg-white/10"
+                    style={{ border: `1px solid ${PAPER}30`, color: PAPER, fontFamily: FONT_DISPLAY }}
+                  >
+                    Report Custom
                   </button>
                 </div>
+              </div>
+
+              {/* KPI block — design card con bordo rosso */}
+              <div className="grid grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+                {[
+                  { n: "200+", label: "Clienti serviti", sub: "C-suite e board" },
+                  { n: "30+", label: "Anni di execution", sub: "Esperienza diretta" },
+                  { n: "16", label: "Settori verticali", sub: "Copertura completa" },
+                  { n: "100%", label: "Fonti verificate", sub: "ProofPress Verify™" },
+                ].map((kpi, i) => (
+                  <div
+                    key={kpi.label}
+                    className="p-6 flex flex-col justify-between"
+                    style={{
+                      backgroundColor: i === 0 ? RED : NAVY2,
+                      borderTop: i === 0 ? "none" : `1px solid rgba(255,255,255,0.05)`,
+                    }}
+                  >
+                    <p
+                      className="text-4xl font-black leading-none mb-1"
+                      style={{ color: i === 0 ? PAPER : PAPER, fontFamily: FONT_DISPLAY }}
+                    >
+                      {kpi.n}
+                    </p>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-wider" style={{ color: i === 0 ? PAPER + "cc" : PAPER, fontFamily: FONT_DISPLAY }}>{kpi.label}</p>
+                      <p className="text-[10px] mt-0.5" style={{ color: i === 0 ? PAPER + "80" : PAPER + "40", fontFamily: FONT_BODY }}>{kpi.sub}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Ticker / proof bar */}
+            <div className="mt-16 pt-6 border-t flex flex-wrap gap-8 items-center" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              {["Agrifood", "Fintech", "Healthcare", "AI & Tech", "ESG", "Automotive", "Manifattura", "Startup"].map(tag => (
+                <span key={tag} className="text-[10px] font-bold tracking-widest uppercase" style={{ color: PAPER + "30", fontFamily: FONT_DISPLAY }}>
+                  {tag}
+                </span>
+              ))}
+              <span className="ml-auto text-[10px] font-bold" style={{ color: RED, fontFamily: FONT_DISPLAY }}>
+                ● REPORT SETTIMANALI ATTIVI
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* ══ COSA PRODUCIAMO — card orizzontali con numero editoriale ═══════ */}
+        <section style={{ backgroundColor: NAVY2 }} className="px-8 md:px-16 lg:px-24 py-20">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-end justify-between mb-12 border-b pb-6" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              <div>
+                <p className="text-[10px] font-black tracking-widest uppercase mb-2" style={{ color: RED, fontFamily: FONT_DISPLAY }}>COSA PRODUCIAMO</p>
+                <h2 className="text-3xl md:text-4xl font-black" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
+                  Tre formati.<br />Un solo standard.
+                </h2>
+              </div>
+              <span className="text-6xl font-black hidden md:block" style={{ color: "rgba(255,255,255,0.04)", fontFamily: FONT_DISPLAY }}>03</span>
+            </div>
+
+            <div className="space-y-px">
+              {REPORT_TYPES.map((rt, idx) => (
+                <div
+                  key={rt.type}
+                  className="group flex flex-col md:flex-row gap-0 transition-all hover:bg-white/3 cursor-pointer"
+                  style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+                  onClick={() => scrollToForm(rt.cta)}
+                >
+                  {/* Numero */}
+                  <div className="flex-none w-full md:w-20 flex items-center justify-start md:justify-center py-6 px-6 md:px-0">
+                    <span className="text-5xl font-black" style={{ color: "rgba(255,255,255,0.07)", fontFamily: FONT_DISPLAY }}>
+                      0{idx + 1}
+                    </span>
+                  </div>
+                  {/* Icona */}
+                  <div className="flex-none w-16 hidden md:flex items-center justify-center">
+                    <span className="text-2xl">{rt.icon}</span>
+                  </div>
+                  {/* Contenuto */}
+                  <div className="flex-1 py-6 px-6 md:px-8">
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <span
+                        className="px-2 py-0.5 text-[9px] font-black tracking-widest uppercase"
+                        style={{ backgroundColor: rt.badgeColor, color: PAPER, fontFamily: FONT_DISPLAY }}
+                      >
+                        {rt.badge}
+                      </span>
+                      <h3 className="text-lg font-black" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>{rt.type}</h3>
+                    </div>
+                    <p className="text-sm leading-relaxed" style={{ color: PAPER + "60", fontFamily: FONT_BODY, maxWidth: "560px" }}>{rt.desc}</p>
+                  </div>
+                  {/* CTA + highlight */}
+                  <div className="flex-none flex flex-col items-end justify-center py-6 px-6 gap-2">
+                    <span className="text-[10px] font-bold" style={{ color: RED, fontFamily: FONT_DISPLAY }}>{rt.highlight}</span>
+                    <span
+                      className="text-xs font-black tracking-wide opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ color: PAPER, fontFamily: FONT_DISPLAY }}
+                    >
+                      Richiedi →
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── Settori verticali ────────────────────────────────────────────── */}
-        <section className="px-6 md:px-12 lg:px-20 py-14 border-b border-white/8">
-          <div className="max-w-5xl mx-auto">
-            <p className="text-[10px] font-black tracking-widest uppercase mb-2" style={{ color: RED, fontFamily: FONT_DISPLAY }}>
-              SETTORI VERTICALI
-            </p>
-            <h2 className="text-2xl md:text-3xl font-black mb-8" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
-              16 Verticali. Un solo standard di qualità.
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* ══ SETTORI — griglia con hover espansivo ══════════════════════════ */}
+        <section className="px-8 md:px-16 lg:px-24 py-20" style={{ backgroundColor: NAVY }}>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-14">
+              <div>
+                <p className="text-[10px] font-black tracking-widest uppercase mb-3" style={{ color: RED, fontFamily: FONT_DISPLAY }}>SETTORI VERTICALI</p>
+                <h2 className="text-3xl md:text-5xl font-black leading-none" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
+                  16 verticali.<br />
+                  <span style={{ color: PAPER + "35" }}>Un solo standard</span><br />
+                  <span style={{ color: PAPER + "35" }}>di qualità.</span>
+                </h2>
+              </div>
+              <div className="flex items-end">
+                <p className="text-sm leading-relaxed" style={{ color: PAPER + "55", fontFamily: FONT_BODY }}>
+                  Ogni settore ha un team dedicato, un set di fonti verificate e una metodologia calibrata
+                  sulle specificità del mercato. Non trovi il tuo verticale? Operiamo anche su settori custom.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
               {SECTORS.map(s => (
                 <button
                   key={s.key}
-                  onClick={() => {
-                    setActiveSector(activeSector === s.key ? null : s.key);
-                  }}
-                  className="text-left p-4 border transition-all"
+                  onClick={() => setActiveSector(activeSector === s.key ? null : s.key)}
+                  className="text-left p-5 transition-all group"
                   style={{
-                    borderColor: activeSector === s.key ? RED : "rgba(255,255,255,0.08)",
-                    backgroundColor: activeSector === s.key ? RED + "15" : "transparent",
+                    backgroundColor: activeSector === s.key ? RED : NAVY2,
+                    minHeight: "100px",
                   }}
                 >
-                  <span className="text-xl mb-2 block">{s.icon}</span>
-                  <p className="text-xs font-bold leading-tight mb-1" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>{s.label}</p>
+                  <span className="text-2xl mb-3 block">{s.icon}</span>
+                  <p
+                    className="text-xs font-black leading-tight"
+                    style={{ color: activeSector === s.key ? PAPER : PAPER + "80", fontFamily: FONT_DISPLAY }}
+                  >
+                    {s.label}
+                  </p>
                   {activeSector === s.key && (
-                    <p className="text-[11px] leading-relaxed mt-2" style={{ color: PAPER + "70", fontFamily: FONT_BODY }}>{s.desc}</p>
+                    <p className="text-[10px] leading-relaxed mt-2" style={{ color: PAPER + "80", fontFamily: FONT_BODY }}>
+                      {s.desc}
+                    </p>
                   )}
                 </button>
               ))}
             </div>
-            <p className="mt-6 text-xs" style={{ color: PAPER + "40", fontFamily: FONT_BODY }}>
-              Clicca su un settore per vedere il dettaglio tematico. Non trovi il tuo settore? Contattaci — operiamo anche su verticali custom.
+            <p className="mt-5 text-[10px]" style={{ color: PAPER + "30", fontFamily: FONT_BODY }}>
+              Clicca su un settore per vedere il dettaglio tematico.
             </p>
           </div>
         </section>
 
-        {/* ── Metodologia ──────────────────────────────────────────────────── */}
-        <section className="px-6 md:px-12 lg:px-20 py-14 border-b border-white/8">
-          <div className="max-w-5xl mx-auto">
-            <p className="text-[10px] font-black tracking-widest uppercase mb-8" style={{ color: RED, fontFamily: FONT_DISPLAY }}>
-              METODOLOGIA
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* ══ METODOLOGIA — timeline orizzontale con accenti grafici ═════════ */}
+        <section style={{ backgroundColor: NAVY2 }} className="px-8 md:px-16 lg:px-24 py-20">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-end justify-between mb-14 border-b pb-6" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              <div>
+                <p className="text-[10px] font-black tracking-widest uppercase mb-2" style={{ color: RED, fontFamily: FONT_DISPLAY }}>METODOLOGIA</p>
+                <h2 className="text-3xl md:text-4xl font-black" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
+                  Come costruiamo<br />ogni report.
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-0">
               {[
-                { n: "01", title: "Raccolta fonti", desc: "Aggregazione da 200+ fonti verificate per settore — istituzionali, accademiche, industry" },
-                { n: "02", title: "Verifica Verify™", desc: "Ogni dato viene corroborato con ProofPress Verify™: Trust Score, source credibility, contradiction check" },
-                { n: "03", title: "Analisi Centro Studi", desc: "Il team guidato da Andrea Cinelli trasforma i dati in insight strategici per board e C-suite" },
-                { n: "04", title: "Certificazione IPFS", desc: "Il report viene hashato SHA-256 e archiviato su IPFS — immutabile, verificabile, citabile" },
-              ].map(step => (
-                <div key={step.n} className="border-t border-white/10 pt-4">
-                  <p className="text-3xl font-black mb-3" style={{ color: RED, fontFamily: FONT_DISPLAY }}>{step.n}</p>
-                  <p className="text-sm font-bold mb-2" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>{step.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: PAPER + "60", fontFamily: FONT_BODY }}>{step.desc}</p>
+                { n: "01", title: "Raccolta fonti", desc: "Aggregazione da 200+ fonti verificate per settore — istituzionali, accademiche, industry reports", icon: "📡" },
+                { n: "02", title: "Verifica Verify™", desc: "Ogni dato viene corroborato con ProofPress Verify™: Trust Score, source credibility, contradiction check", icon: "🔍" },
+                { n: "03", title: "Analisi Centro Studi", desc: "Il team guidato da Andrea Cinelli trasforma i dati in insight strategici per board e C-suite", icon: "🧠" },
+                { n: "04", title: "Certificazione IPFS", desc: "Il report viene hashato SHA-256 e archiviato su IPFS — immutabile, verificabile, citabile", icon: "🔐" },
+              ].map((step, idx) => (
+                <div
+                  key={step.n}
+                  className="relative p-8"
+                  style={{
+                    borderLeft: idx === 0 ? `3px solid ${RED}` : "1px solid rgba(255,255,255,0.06)",
+                    borderTop: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <p className="text-5xl font-black leading-none" style={{ color: RED, fontFamily: FONT_DISPLAY }}>{step.n}</p>
+                    <span className="text-2xl">{step.icon}</span>
+                  </div>
+                  <p className="text-sm font-black mb-3" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>{step.title}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: PAPER + "55", fontFamily: FONT_BODY }}>{step.desc}</p>
+                  {/* Connettore freccia */}
+                  {idx < 3 && (
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 hidden md:flex items-center justify-center z-10"
+                      style={{ color: RED, fontFamily: FONT_DISPLAY, fontSize: "10px" }}>
+                      →
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── Form lead ────────────────────────────────────────────────────── */}
-        <section id="lead-form" className="px-6 md:px-12 lg:px-20 py-16">
-          <div className="max-w-2xl mx-auto">
-            <p className="text-[10px] font-black tracking-widest uppercase mb-3" style={{ color: RED, fontFamily: FONT_DISPLAY }}>
-              CONTATTO DIRETTO
-            </p>
-            <h2 className="text-2xl md:text-3xl font-black mb-3" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
-              Parla con il Centro Studi
-            </h2>
-            <p className="text-sm mb-8" style={{ color: PAPER + "60", fontFamily: FONT_BODY }}>
-              Compila il form — Andrea Cinelli o un membro del team ti risponde entro 24 ore lavorative.
-            </p>
-            <div className="border border-white/10 p-6 md:p-8">
-              <LeadForm defaultInterest={formInterest} />
+        {/* ══ ANDREA CINELLI — credenziali del direttore ═════════════════════ */}
+        <section
+          className="px-8 md:px-16 lg:px-24 py-20 relative overflow-hidden"
+          style={{ backgroundColor: RED }}
+        >
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+              backgroundSize: "40px 40px",
+            }}
+          />
+          <div className="relative z-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+            <div className="md:col-span-2">
+              <p className="text-[10px] font-black tracking-widest uppercase mb-4" style={{ color: PAPER + "70", fontFamily: FONT_DISPLAY }}>DIRETTORE DEL CENTRO STUDI</p>
+              <h2 className="text-4xl md:text-5xl font-black leading-none mb-6" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
+                Andrea Cinelli
+              </h2>
+              <p className="text-base leading-relaxed mb-6" style={{ color: PAPER + "85", fontFamily: FONT_BODY, maxWidth: "520px" }}>
+                Serial entrepreneur con 30+ anni di execution. Co-fondatore di Libero.it (10M+ utenti),
+                ex Head of Mobile VAS Vodafone Global, fondatore di 12+ venture AI.
+                Membro Advisory Board Deloitte CM. Professore di AI a Il Sole 24 Ore Business School.
+                Autore di 25+ brevetti.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {["30+ anni", "12+ venture AI", "25+ brevetti", "Deloitte Advisory Board", "Il Sole 24 Ore"].map(tag => (
+                  <span key={tag} className="px-3 py-1 text-[10px] font-black tracking-wide uppercase" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: PAPER, fontFamily: FONT_DISPLAY }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <a href="/andrea-cinelli" className="block p-5 transition-all hover:bg-black/10" style={{ border: "1px solid rgba(255,255,255,0.2)" }}>
+                <p className="text-xs font-black uppercase tracking-wider mb-1" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>Profilo completo →</p>
+                <p className="text-[10px]" style={{ color: PAPER + "70", fontFamily: FONT_BODY }}>Bio, pubblicazioni, editoriali e keynote</p>
+              </a>
+              <a href="https://www.linkedin.com/in/andreacinelli" target="_blank" rel="noopener noreferrer" className="block p-5 transition-all hover:bg-black/10" style={{ border: "1px solid rgba(255,255,255,0.2)" }}>
+                <p className="text-xs font-black uppercase tracking-wider mb-1" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>LinkedIn →</p>
+                <p className="text-[10px]" style={{ color: PAPER + "70", fontFamily: FONT_BODY }}>Seguici per gli aggiornamenti settimanali</p>
+              </a>
             </div>
           </div>
         </section>
-      </main>
 
+        {/* ══ FORM LEAD — dark con accento editoriale ════════════════════════ */}
+        <section id="lead-form" className="px-8 md:px-16 lg:px-24 py-20" style={{ backgroundColor: NAVY }}>
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-16">
+            {/* Colonna sinistra — copy */}
+            <div className="lg:col-span-2">
+              <p className="text-[10px] font-black tracking-widest uppercase mb-4" style={{ color: RED, fontFamily: FONT_DISPLAY }}>CONTATTO DIRETTO</p>
+              <h2 className="text-3xl md:text-4xl font-black leading-none mb-6" style={{ color: PAPER, fontFamily: FONT_DISPLAY }}>
+                Parla con<br />il Centro Studi.
+              </h2>
+              <p className="text-sm leading-relaxed mb-8" style={{ color: PAPER + "55", fontFamily: FONT_BODY }}>
+                Andrea Cinelli o un membro del team ti risponde entro 24 ore lavorative.
+                Ogni richiesta viene letta personalmente.
+              </p>
+              {/* Garanzie */}
+              <div className="space-y-4">
+                {[
+                  { icon: "⚡", text: "Risposta in 24h lavorative" },
+                  { icon: "🔒", text: "Dati non condivisi con terze parti" },
+                  { icon: "🎯", text: "Preventivo personalizzato per settore" },
+                ].map(g => (
+                  <div key={g.text} className="flex items-center gap-3">
+                    <span className="text-base">{g.icon}</span>
+                    <span className="text-xs font-bold" style={{ color: PAPER + "60", fontFamily: FONT_BODY }}>{g.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Colonna destra — form */}
+            <div className="lg:col-span-3">
+              <div className="p-8 md:p-10" style={{ backgroundColor: NAVY2, border: "1px solid rgba(255,255,255,0.07)" }}>
+                <LeadForm defaultInterest={formInterest} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
       <SharedPageFooter />
     </div>
   );
