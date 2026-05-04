@@ -750,6 +750,13 @@ export default function OsservatorioTech() {
                     >
                       Abbonati ai Report Settimanali →
                     </a>
+                    <a
+                      href="mailto:andrea.cinelli@foolfarm.com?subject=Informazioni%20Servizi%20Base%20Alpha%20Centro%20Studi&body=Salve%2C%0A%0AVorrei%20ricevere%20informazioni%20sui%20servizi%20di%20Base%20Alpha%20Centro%20Studi.%0A%0ANome%3A%20%0AAzienda%2FRuolo%3A%20%0AServizio%20di%20interesse%3A%20%0A%0AGrazie"
+                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold transition-opacity hover:opacity-85"
+                      style={{ border: `1px solid ${PAPER}30`, color: PAPER, fontFamily: FONT }}
+                    >
+                      Contattaci per informazioni sui servizi
+                    </a>
                   </div>
                   <p className="mt-3 text-[11px] leading-relaxed" style={{ color: PAPER + "40", fontFamily: FONT }}>
                     Report ad hoc, costruiti su fonti verificate con tecnologia ProofPress Verify™ — personalizzati per settore e audience.
