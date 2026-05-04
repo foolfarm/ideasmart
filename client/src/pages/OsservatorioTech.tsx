@@ -5,6 +5,8 @@
  * Palette: bianco #ffffff / nero #0a0a0a / rosso #dc2626
  */
 import { useState } from "react";
+import { toast } from "sonner";
+import { trpc as trpcClient } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -597,6 +599,91 @@ function CommentsSection() {
 }
 
 // ─── Pagina principale ────────────────────────────────────────────────────────
+// ─── Centro Studi Mini Form (inline nella sezione) ────────────────────────────
+function CentroStudiMiniForm({ fontFamily, paperColor, redColor }: { fontFamily: string; paperColor: string; redColor: string }) {
+  
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [interest, setInterest] = useState("abbonamento_report");
+  const [submitted, setSubmitted] = useState(false);
+
+  const submitLead = trpcClient.centroStudi.submitLead.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      toast.success("Richiesta inviata ✓ — Ti risponderemo entro 24 ore lavorative.");
+    },
+    onError: (err: any) => {
+      toast.error(err.message);
+    },
+  });
+
+  if (submitted) {
+    return (
+      <div className="mt-6 p-4 border border-white/10 text-center">
+        <p className="text-sm font-bold" style={{ color: paperColor, fontFamily }}>✓ Richiesta ricevuta — risposta entro 24h</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 p-5 border border-white/10" style={{ backgroundColor: "rgba(255,255,255,0.03)" }}>
+      <p className="text-[10px] font-black tracking-widest uppercase mb-4" style={{ color: redColor, fontFamily }}>
+        CONTATTO DIRETTO
+      </p>
+      <div className="flex flex-col sm:flex-row gap-3 mb-3">
+        <input
+          type="text"
+          placeholder="Nome e Cognome *"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none"
+          style={{ color: paperColor, fontFamily }}
+        />
+        <input
+          type="email"
+          placeholder="Email *"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/10 focus:border-red-500 focus:outline-none"
+          style={{ color: paperColor, fontFamily }}
+        />
+      </div>
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <select
+          value={interest}
+          onChange={e => setInterest(e.target.value)}
+          className="flex-1 px-3 py-2 text-sm border border-white/10 focus:border-red-500 focus:outline-none"
+          style={{ color: paperColor, fontFamily, backgroundColor: "#1a1f2e" }}
+        >
+          <option value="abbonamento_report">Abbonamento Report Settimanali</option>
+          <option value="report_custom">Report Custom su Commissione</option>
+          <option value="osservatorio">Osservatorio Tematico</option>
+          <option value="informazioni">Informazioni Generali</option>
+        </select>
+        <button
+          onClick={() => {
+            if (!name.trim() || !email.trim()) {
+              toast.error("Compila nome e email");
+              return;
+            }
+            submitLead.mutate({ name, email, interest: interest as any, source: "osservatorio-tech" });
+          }}
+          disabled={submitLead.isPending}
+          className="px-6 py-2 text-sm font-bold transition-opacity hover:opacity-85 disabled:opacity-50 whitespace-nowrap"
+          style={{ backgroundColor: redColor, color: paperColor, fontFamily }}
+        >
+          {submitLead.isPending ? "Invio..." : "Invia →"}
+        </button>
+      </div>
+      <p className="text-[10px]" style={{ color: paperColor + "40", fontFamily }}>
+        Report ad hoc, costruiti su fonti verificate con ProofPress Verify™ — personalizzati per settore e audience.
+        <a href="/centro-studi" className="ml-2 underline" style={{ color: redColor }}>Scopri tutti i servizi →</a>
+      </p>
+    </div>
+  );
+}
+
+
 export default function OsservatorioTech() {
   const { data: punti = [], isLoading: loadingPunti } = trpc.osservatorio.getPuntiDelGiorno.useQuery({ limit: 60 });
   const { data: articles = [], isLoading: loadingArticles } = trpc.osservatorio.getArticles.useQuery({ limit: 20 });
@@ -742,25 +829,7 @@ export default function OsservatorioTech() {
                     di mercato certificati con tecnologia ProofPress Verify™ — dati verificabili, fonti tracciabili,
                     insight azionabili per board e C-suite.
                   </p>
-                  <div className="flex flex-wrap gap-3 mt-6">
-                    <a
-                      href="mailto:andrea.cinelli@foolfarm.com?subject=Abbonamento%20Report%20Base%20Alpha%20%E2%80%94%20Richiesta%20Informazioni&body=Salve%2C%0A%0ASono%20interessato%2Fa%20ricevere%20maggiori%20informazioni%20sui%20report%20settimanali%20di%20Base%20Alpha%20e%20sulle%20modalit%C3%A0%20di%20abbonamento.%0A%0ANome%3A%20%0AAzienda%2FRuolo%3A%20%0ASettore%20di%20interesse%3A%20%0A%0AGrazie"
-                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold transition-opacity hover:opacity-85"
-                      style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT }}
-                    >
-                      Abbonati ai Report Settimanali →
-                    </a>
-                    <a
-                      href="mailto:andrea.cinelli@foolfarm.com?subject=Informazioni%20Servizi%20Base%20Alpha%20Centro%20Studi&body=Salve%2C%0A%0AVorrei%20ricevere%20informazioni%20sui%20servizi%20di%20Base%20Alpha%20Centro%20Studi.%0A%0ANome%3A%20%0AAzienda%2FRuolo%3A%20%0AServizio%20di%20interesse%3A%20%0A%0AGrazie"
-                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold transition-opacity hover:opacity-85"
-                      style={{ border: `1px solid ${PAPER}30`, color: PAPER, fontFamily: FONT }}
-                    >
-                      Contattaci per informazioni sui servizi
-                    </a>
-                  </div>
-                  <p className="mt-3 text-[11px] leading-relaxed" style={{ color: PAPER + "40", fontFamily: FONT }}>
-                    Report ad hoc, costruiti su fonti verificate con tecnologia ProofPress Verify™ — personalizzati per settore e audience.
-                  </p>
+                  <CentroStudiMiniForm fontFamily={FONT} paperColor={PAPER} redColor={RED} />
                 </div>
                 {/* Right: numero clienti */}
                 <div className="flex flex-row lg:flex-col gap-6 lg:gap-4 lg:items-end">

@@ -1230,3 +1230,24 @@ export const verifyQuotes = mysqlTable("verify_quotes", {
 }));
 export type VerifyQuote = typeof verifyQuotes.$inferSelect;
 export type InsertVerifyQuote = typeof verifyQuotes.$inferInsert;
+
+// ── Centro Studi Leads ────────────────────────────────────────────────────────
+export const centroStudiLeads = mysqlTable("centro_studi_leads", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  company: varchar("company", { length: 255 }),
+  role: varchar("role", { length: 255 }),
+  sector: varchar("sector", { length: 128 }),
+  interest: mysqlEnum("interest", ["abbonamento_report", "report_custom", "osservatorio", "informazioni"]).default("informazioni").notNull(),
+  message: text("message"),
+  status: mysqlEnum("status", ["new", "contacted", "converted"]).default("new").notNull(),
+  source: varchar("source", { length: 64 }).default("osservatorio-tech").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (t) => ({
+  emailIdx: index("idx_centro_studi_email").on(t.email),
+  statusIdx: index("idx_centro_studi_status").on(t.status),
+}));
+
+export type CentroStudiLead = typeof centroStudiLeads.$inferSelect;
+export type InsertCentroStudiLead = typeof centroStudiLeads.$inferInsert;

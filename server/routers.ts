@@ -3940,6 +3940,61 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
   }),
+
+  // ── Centro Studi Leads ────────────────────────────────────────────────────
+  centroStudi: router({
+    submitLead: publicProcedure
+      .input(z.object({
+        name: z.string().min(2).max(255),
+        email: z.string().email().max(320),
+        company: z.string().max(255).optional(),
+        role: z.string().max(255).optional(),
+        sector: z.string().max(128).optional(),
+        interest: z.enum(["abbonamento_report", "report_custom", "osservatorio", "informazioni"]).default("informazioni"),
+        message: z.string().max(2000).optional(),
+        source: z.string().max(64).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+        const { centroStudiLeads } = await import('../drizzle/schema');
+        await db.insert(centroStudiLeads).values({
+          name: input.name,
+          email: input.email,
+          company: input.company,
+          role: input.role,
+          sector: input.sector,
+          interest: input.interest,
+          message: input.message,
+          source: input.source ?? "osservatorio-tech",
+        });
+        try {
+          const { notifyOwner } = await import('./_core/notification');
+          await notifyOwner({
+            title: `Nuovo lead Centro Studi: ${input.name}`,
+            content: `**Nome:** ${input.name}\n**Email:** ${input.email}\n**Azienda:** ${input.company ?? "—"}\n**Ruolo:** ${input.role ?? "—"}\n**Settore:** ${input.sector ?? "—"}\n**Interesse:** ${input.interest}\n**Messaggio:** ${input.message ?? "—"}`,
+          });
+        } catch (_) {}
+        return { success: true };
+      }),
+
+    getLeads: adminProcedure
+      .input(z.object({
+        status: z.enum(["new", "contacted", "converted"]).optional(),
+        limit: z.number().int().positive().max(200).default(100),
+        offset: z.number().int().min(0).default(0),
+      }).optional())
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) return { leads: [], total: 0 };
+        const { centroStudiLeads } = await import('../drizzle/schema');
+        const { desc: descOp, eq: eqOp, count: countOp } = await import('drizzle-orm');
+        const where = input?.status ? eqOp(centroStudiLeads.status, input.status) : undefined;
+        const [countResult] = await db.select({ cnt: countOp() }).from(centroStudiLeads).where(where);
+        const leads = await db.select().from(centroStudiLeads).where(where).orderBy(descOp(centroStudiLeads.createdAt)).limit(input?.limit ?? 100).offset(input?.offset ?? 0);
+        return { leads, total: countResult?.cnt ?? 0 };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
