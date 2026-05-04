@@ -744,20 +744,16 @@ export default function OsservatorioTech() {
                   </p>
                   <div className="flex flex-wrap gap-3 mt-6">
                     <a
-                      href="/contatti"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold transition-opacity hover:opacity-85"
+                      href="mailto:andrea.cinelli@foolfarm.com?subject=Abbonamento%20Report%20Base%20Alpha%20%E2%80%94%20Richiesta%20Informazioni&body=Salve%2C%0A%0ASono%20interessato%2Fa%20ricevere%20maggiori%20informazioni%20sui%20report%20settimanali%20di%20Base%20Alpha%20e%20sulle%20modalit%C3%A0%20di%20abbonamento.%0A%0ANome%3A%20%0AAzienda%2FRuolo%3A%20%0ASettore%20di%20interesse%3A%20%0A%0AGrazie"
+                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold transition-opacity hover:opacity-85"
                       style={{ backgroundColor: RED, color: PAPER, fontFamily: FONT }}
                     >
-                      Richiedi un Report →
-                    </a>
-                    <a
-                      href="/andrea-cinelli"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold transition-opacity hover:opacity-85"
-                      style={{ border: `1px solid ${PAPER}25`, color: PAPER + "80", fontFamily: FONT }}
-                    >
-                      Il Centro Studi
+                      Abbonati ai Report Settimanali →
                     </a>
                   </div>
+                  <p className="mt-3 text-[11px] leading-relaxed" style={{ color: PAPER + "40", fontFamily: FONT }}>
+                    Report ad hoc, costruiti su fonti verificate con tecnologia ProofPress Verify™ — personalizzati per settore e audience.
+                  </p>
                 </div>
                 {/* Right: numero clienti */}
                 <div className="flex flex-row lg:flex-col gap-6 lg:gap-4 lg:items-end">
