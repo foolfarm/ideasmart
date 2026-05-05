@@ -3484,3 +3484,9 @@
 - [x] B) AiHome.tsx: NewsCard e HeroNews aggiornati per mostrare VerifyBadge con dati PPV
 - [x] C) Router trpc.ppv.getUncertifiedCount e trpc.ppv.batchCertify aggiunti (admin)
 - [x] C) Endpoint POST /api/scheduled/ppv-certify aggiunto (auth: JWT_SECRET o cookie sessione)
+
+## Task 5 Maggio 2026 - Sera
+
+- [x] Task schedulato notturno PPV (max 40 articoli/giorno) — ogni notte alle 02:00
+- [x] Hero: rimosso testo sopra logo ProofPress e counter IPFS
+- [x] Hero: aggiornato sottotitolo e sotto-sottotitolo
