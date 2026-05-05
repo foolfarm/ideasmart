@@ -846,10 +846,7 @@ export default function Home() {
           {/* Header centrato */}
           <div className="py-1 sm:py-4">
 
-            {/* Ticker LIVE — sopra il tagline */}
-            <div className="hidden sm:block mb-2">
-              <BreakingNewsTicker />
-            </div>
+
 
 
 
@@ -945,9 +942,13 @@ export default function Home() {
             </div>
           </div>
         </header>
-            {/* ══ BREAKING NEWSS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
+            {/* ══ BREAKING NEWS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
         <div className="hidden sm:block">
           <BreakingNewsSection />
+        </div>
+        {/* ══ TICKER LIVE — sotto Breaking News ═══════════════════════════════════════════════════════════════════════ */}
+        <div className="hidden sm:block">
+          <BreakingNewsTicker />
         </div>
         {/* ══ BANNER IL SOLE 24 ORE ══════════════════════════════════════════════════════════════════ */}
         <div className="max-w-[1280px] mx-auto px-4 pt-2 pb-1">
