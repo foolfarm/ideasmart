@@ -795,6 +795,15 @@ export const channelContent = mysqlTable("channel_content", {
   status: mysqlEnum("status", ["draft", "published", "archived"]).default("published").notNull(),
   // Contatore visualizzazioni
   viewCount: int("viewCount").default(0).notNull(),
+  // ProofPress Verify — certificazione esterna (proofpressverify.com)
+  ppvHash: varchar("ppvHash", { length: 64 }),
+  ppvDocumentId: int("ppvDocumentId"),
+  ppvIpfsCid: varchar("ppvIpfsCid", { length: 128 }),
+  ppvIpfsUrl: varchar("ppvIpfsUrl", { length: 512 }),
+  ppvTrustScore: float("ppvTrustScore"),
+  ppvTrustGrade: varchar("ppvTrustGrade", { length: 1 }),
+  ppvCertifiedAt: timestamp("ppvCertifiedAt"),
+  ppvReport: json("ppvReport"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (t) => ({

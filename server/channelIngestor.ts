@@ -13,6 +13,7 @@ import { channelContent, rssFeedSources, rssIngestLog } from "../drizzle/schema"
 import { eq, and, desc, sql } from "drizzle-orm";
 import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
 import { findStockImage } from "./stockImages";
+import { certifyWithPpv } from "./proofpressVerifyClient";
 
 // ── RSS Parser (lightweight, no external dep) ──────────────────────────────
 async function fetchRssFeed(url: string): Promise<Array<{ title: string; link: string; description: string; pubDate?: string }>> {
@@ -316,7 +317,7 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
           console.warn(`[ChannelIngestor] Image search failed for item ${i}: ${imgErr.message}`);
         }
 
-        await db.insert(channelContent).values({
+        const [insertedItem] = await db.insert(channelContent).values({
           channel: channel as any,
           title: item.title || "Senza titolo",
           subtitle: item.subtitle || null,
@@ -331,8 +332,35 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
           publishDate: today,
           position: i,
           status: "published",
-        });
+        }).$returningId();
         generated++;
+
+        // Certificazione ProofPress Verify — asincrona, non blocca il flusso
+        setImmediate(async () => {
+          try {
+            const ppvResult = await certifyWithPpv({
+              title: item.title || "Senza titolo",
+              content: item.body || item.subtitle || "",
+              sourceUrl: item.sourceUrl || item.externalUrl || null,
+              productType: 'news_verify',
+            });
+            if (ppvResult && insertedItem?.id) {
+              await db.update(channelContent).set({
+                ppvHash: ppvResult.hash,
+                ppvDocumentId: ppvResult.document_id,
+                ppvIpfsCid: ppvResult.ipfs_cid,
+                ppvIpfsUrl: ppvResult.ipfs_url,
+                ppvTrustScore: ppvResult.trust_score,
+                ppvTrustGrade: ppvResult.trust_grade,
+                ppvCertifiedAt: new Date(),
+                ppvReport: ppvResult.report as unknown as Record<string, unknown>,
+              }).where(eq(channelContent.id, insertedItem.id));
+              console.log(`[ChannelIngestor] ✅ PPV certificato: grade=${ppvResult.trust_grade} | ${(item.title || "").substring(0, 50)}`);
+            }
+          } catch (ppvErr) {
+            console.warn(`[ChannelIngestor] ⚠️ PPV certificazione fallita (non critico):`, ppvErr);
+          }
+        });
       } catch (err: any) {
         console.error(`[ChannelIngestor] Error saving item ${i}: ${err.message}`);
         errors++;

@@ -12,6 +12,7 @@ import { findNewsImage } from "./stockImages";
 import { runBatchAudit } from "./auditContent";
 import { generateVerifyHash } from "./verify";
 import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
+import { certifyWithPpv } from "./proofpressVerifyClient";
 
 // Intervallo: 24 ore in millisecondi
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -215,45 +216,71 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         trustGrade: trustResult.grade,
       }).$returningId();
 
-      // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso
+      // Certificazione ProofPress Verify (API esterna) + Pinning IPFS — asincrono, non blocca il flusso
       setImmediate(async () => {
         try {
-          const { pinVerificationReport } = await import('./pinata.js');
-          const { cid, ipfsUrl } = await pinVerificationReport({
-            verifyHash,
-            article: {
-              id: insertedAI.id,
-              title: item.title,
-              summary: item.summary,
-              section: 'ai',
+          // Step A: Certificazione con ProofPress Verify API esterna
+          const ppvResult = await certifyWithPpv({
+            title: item.title,
+            content: item.summary,
+            sourceUrl: item.sourceUrl,
+            productType: 'news_verify',
+          });
+
+          if (ppvResult) {
+            // Aggiorna subito con i dati PPV (hash, IPFS, trust score)
+            await db
+              .update(newsItems)
+              .set({
+                verifyHash: ppvResult.hash,
+                ipfsCid: ppvResult.ipfs_cid,
+                ipfsUrl: ppvResult.ipfs_url,
+                ipfsPinnedAt: new Date(),
+                trustScore: ppvResult.trust_score,
+                trustGrade: ppvResult.trust_grade,
+                verifyReport: ppvResult.report as unknown as Record<string, unknown>,
+              })
+              .where(eq(newsItems.id, insertedAI.id));
+            console.log(`[NewsScheduler] ✅ PPV certificato: grade=${ppvResult.trust_grade} score=${ppvResult.trust_score.toFixed(2)} | ${item.title.substring(0, 50)}`);
+          } else {
+            // Fallback: usa il vecchio sistema Pinata se PPV non risponde
+            console.warn(`[NewsScheduler] ⚠️ PPV non disponibile, fallback su Pinata per: ${item.title.substring(0, 50)}`);
+            const { pinVerificationReport } = await import('./pinata.js');
+            const { cid, ipfsUrl } = await pinVerificationReport({
+              verifyHash,
+              article: {
+                id: insertedAI.id,
+                title: item.title,
+                summary: item.summary,
+                section: 'ai',
+                sourceName: item.sourceName,
+                sourceUrl: item.sourceUrl,
+                publishedAt: item.publishedAt,
+                category: item.category,
+                weekLabel: dayLabel,
+              },
+            });
+            const upgraded = upgradeTrustGradeAfterIpfs({
+              verifyHash,
+              ipfsCid: cid,
               sourceName: item.sourceName,
               sourceUrl: item.sourceUrl,
-              publishedAt: item.publishedAt,
-              category: item.category,
-              weekLabel: dayLabel,
-            },
-          });
-          // Upgrade Trust Score: ora che IPFS è disponibile, ricalcola (B → A se tutti i criteri soddisfatti)
-          const upgraded = upgradeTrustGradeAfterIpfs({
-            verifyHash,
-            ipfsCid: cid,
-            sourceName: item.sourceName,
-            sourceUrl: item.sourceUrl,
-            summary: item.summary,
-          });
-          await db
-            .update(newsItems)
-            .set({
-              ipfsCid: cid,
-              ipfsUrl,
-              ipfsPinnedAt: new Date(),
-              trustScore: upgraded.score / 100,
-              trustGrade: upgraded.grade,
-            })
-            .where(eq(newsItems.id, insertedAI.id));
-          console.log(`[NewsScheduler] ⛓ IPFS pinned + Trust upgraded ${trustResult.grade}→${upgraded.grade}: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
-        } catch (pinErr) {
-          console.warn(`[NewsScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
+              summary: item.summary,
+            });
+            await db
+              .update(newsItems)
+              .set({
+                ipfsCid: cid,
+                ipfsUrl,
+                ipfsPinnedAt: new Date(),
+                trustScore: upgraded.score / 100,
+                trustGrade: upgraded.grade,
+              })
+              .where(eq(newsItems.id, insertedAI.id));
+            console.log(`[NewsScheduler] ⛓ Pinata fallback: ${trustResult.grade}→${upgraded.grade}: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+          }
+        } catch (certErr) {
+          console.warn(`[NewsScheduler] ⚠️ Certificazione fallita (non critico):`, certErr);
         }
       });
     }

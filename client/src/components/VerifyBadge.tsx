@@ -9,6 +9,9 @@
  *
  * trustGrade: se valorizzato, mostra il badge A/B/C/D/F accanto all'hash.
  * Il badge grade è cliccabile e porta alla pagina /trust-score.
+ *
+ * ppvHash/ppvIpfsUrl: se valorizzati, usa i dati dell'API esterna ProofPress Verify™
+ * e il link porta direttamente al report IPFS pubblico.
  */
 import { useState } from "react";
 import { ShieldCheck, Copy, Check } from "lucide-react";
@@ -19,6 +22,12 @@ interface VerifyBadgeProps {
   size?: "sm" | "md";
   trustGrade?: string | null;
   trustScore?: number | null;
+  // ProofPress Verify API esterna (proofpressverify.com)
+  ppvHash?: string | null;
+  ppvIpfsUrl?: string | null;
+  ppvDocumentId?: number | null;
+  ppvTrustGrade?: string | null;
+  ppvTrustScore?: number | null;
 }
 
 const GRADE_COLOR: Record<string, string> = {
@@ -37,14 +46,32 @@ const GRADE_LABEL: Record<string, string> = {
   F: "Non Verificato",
 };
 
-export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore }: VerifyBadgeProps) {
+export default function VerifyBadge({
+  hash,
+  size = "sm",
+  trustGrade,
+  trustScore,
+  ppvHash,
+  ppvIpfsUrl,
+  ppvDocumentId: _ppvDocumentId,
+  ppvTrustGrade,
+  ppvTrustScore,
+}: VerifyBadgeProps) {
   const [copied, setCopied] = useState(false);
   const [, navigate] = useLocation();
 
-  if (!hash) return null;
+  // Usa i dati PPV se disponibili, altrimenti fallback ai dati locali
+  const effectiveHash = ppvHash || hash;
+  const effectiveGrade = ppvTrustGrade || trustGrade;
+  const effectiveScore =
+    ppvTrustScore !== null && ppvTrustScore !== undefined
+      ? ppvTrustScore * 100
+      : trustScore;
+  const isPpvCertified = !!ppvHash;
 
-  const displayHash = "#" + hash.substring(0, 16).toUpperCase();
-  const verifyUrl = `/proofpress-verify?hash=${encodeURIComponent(hash)}`;
+  if (!effectiveHash) return null;
+
+  const displayHash = "#" + effectiveHash.substring(0, 16).toUpperCase();
 
   function handleGradeClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -55,23 +82,33 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
   function handleVerifyClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    navigate(verifyUrl);
+    if (ppvIpfsUrl) {
+      window.open(ppvIpfsUrl, "_blank", "noopener,noreferrer");
+    } else {
+      navigate(`/proofpress-verify?hash=${encodeURIComponent(effectiveHash!)}`);
+    }
   }
-  const gradeColor = trustGrade ? (GRADE_COLOR[trustGrade] ?? "#636e72") : null;
-  const gradeLabel = trustGrade ? (GRADE_LABEL[trustGrade] ?? "") : "";
-  const scoreText = trustScore !== null && trustScore !== undefined ? Math.round(Number(trustScore)) : "—";
-  const gradeTooltip = `Trust Score: ${scoreText}/100 — Grade ${trustGrade} (${gradeLabel}) · Clicca per scoprire come funziona il sistema di valutazione`;
+
+  const gradeColor = effectiveGrade ? (GRADE_COLOR[effectiveGrade] ?? "#636e72") : null;
+  const gradeLabel = effectiveGrade ? (GRADE_LABEL[effectiveGrade] ?? "") : "";
+  const scoreText =
+    effectiveScore !== null && effectiveScore !== undefined
+      ? Math.round(Number(effectiveScore))
+      : "—";
+  const gradeTooltip = `Trust Score: ${scoreText}/100 — Grade ${effectiveGrade} (${gradeLabel})${
+    isPpvCertified ? " · Certificato ProofPress Verify™" : ""
+  } · Clicca per scoprire come funziona il sistema di valutazione`;
 
   async function handleCopy(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
     try {
-      await navigator.clipboard.writeText(hash!);
+      await navigator.clipboard.writeText(effectiveHash!);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       const el = document.createElement("textarea");
-      el.value = hash!;
+      el.value = effectiveHash!;
       el.style.position = "fixed";
       el.style.opacity = "0";
       document.body.appendChild(el);
@@ -87,7 +124,7 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
     return (
       <span className="inline-flex items-center gap-1 select-none">
         {/* Trust grade badge — cliccabile → /trust-score */}
-        {trustGrade && gradeColor && (
+        {effectiveGrade && gradeColor && (
           <span
             role="link"
             tabIndex={0}
@@ -104,14 +141,19 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
               letterSpacing: 0,
             }}
           >
-            {trustGrade}
+            {effectiveGrade}
           </span>
         )}
         {/* Copia hash — click principale */}
         <button
           onClick={handleCopy}
           className="inline-flex items-center gap-1 cursor-pointer hover:opacity-75 transition-opacity"
-          title={copied ? "Hash copiato!" : "Clicca per copiare l'hash — " + hash}
+          title={
+            copied
+              ? "Hash copiato!"
+              : `Clicca per copiare l'hash${isPpvCertified ? " (Certificato PPV™)" : ""} — ` +
+                effectiveHash
+          }
           style={{ background: "none", border: "none", padding: 0 }}
         >
           {copied ? (
@@ -130,7 +172,7 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
               transition: "color 0.2s ease",
             }}
           >
-            {copied ? "COPIATO!" : `PROOFPRESS VERIFY ${displayHash}`}
+            {copied ? "COPIATO!" : `PROOFPRESS VERIFY${isPpvCertified ? "™" : ""} ${displayHash}`}
           </span>
         </button>
         {/* Link verifica — icona separata */}
@@ -139,7 +181,7 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
           tabIndex={0}
           onClick={handleVerifyClick}
           onKeyDown={(e) => e.key === "Enter" && handleVerifyClick(e as unknown as React.MouseEvent)}
-          title="Verifica su ProofPress"
+          title={isPpvCertified ? "Apri Report IPFS su ProofPress Verify™" : "Verifica su ProofPress"}
           className="cursor-pointer hover:opacity-60 transition-opacity"
           style={{ display: "inline-flex" }}
         >
@@ -152,7 +194,7 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
   return (
     <span className="inline-flex items-center gap-2 select-none">
       {/* Trust grade badge md — cliccabile → /trust-score */}
-      {trustGrade && gradeColor && (
+      {effectiveGrade && gradeColor && (
         <span
           role="link"
           tabIndex={0}
@@ -168,7 +210,7 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
             flexShrink: 0,
           }}
         >
-          {trustGrade}
+          {effectiveGrade}
         </span>
       )}
       {/* Copia hash */}
@@ -181,7 +223,12 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
           border: "none",
           padding: 0,
         }}
-        title={copied ? "Hash copiato!" : "Clicca per copiare l'hash — " + hash}
+        title={
+          copied
+            ? "Hash copiato!"
+            : `Clicca per copiare l'hash${isPpvCertified ? " (Certificato PPV™)" : ""} — ` +
+              effectiveHash
+        }
       >
         <div
           className="inline-flex items-center gap-1.5 px-2 py-1 rounded border transition-all"
@@ -206,7 +253,7 @@ export default function VerifyBadge({ hash, size = "sm", trustGrade, trustScore 
               transition: "color 0.2s ease",
             }}
           >
-            {copied ? "COPIATO!" : `PROOFPRESS VERIFY ${displayHash}`}
+            {copied ? "COPIATO!" : `PROOFPRESS VERIFY${isPpvCertified ? "™" : ""} ${displayHash}`}
           </span>
         </div>
       </button>

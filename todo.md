@@ -3455,3 +3455,16 @@
 - [x] Eseguire dedup-db.ts: rimossi 16 duplicati da daily_editorial, 0 da osservatorio_articles
 - [x] pnpm db:push: migrazioni applicate con successo (constraint uq_daily_editorial_title gia presente)
 - [x] Immagine Adrian Lenice: gia su CDN CloudFront (URL corretto in OsservatorioTech.tsx)
+
+## Integrazione ProofPress Verify API Esterna (5 Mag 2026)
+
+- [x] Test API proofpressverify.com con chiave ppv_9aabe475925174e346d4ed1ad548085e
+- [x] Creato server/proofpressVerifyClient.ts con certifyWithPpv() e checkPpvStatus()
+- [x] PPV_API_KEY aggiunta come secret nel progetto
+- [x] Test vitest proofpressVerifyClient.test.ts — 2/2 PASS
+- [x] Integrazione in newsScheduler.ts: PPV certifica ogni notizia AI (con fallback Pinata)
+- [x] Aggiunto campi ppv* alla tabella channel_content nello schema
+- [x] pnpm db:push applicato con successo (migrazione 0089)
+- [x] Integrazione in channelIngestor.ts: PPV certifica ogni contenuto canale
+- [x] VerifyBadge.tsx aggiornato: supporta ppvHash, ppvIpfsUrl, ppvTrustGrade, ppvTrustScore
+- [x] Fix errore isPpvCertified not defined (file scritto correttamente)
