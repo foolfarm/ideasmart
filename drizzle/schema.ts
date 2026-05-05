@@ -212,7 +212,10 @@ export const dailyEditorial = mysqlTable("daily_editorial", {
   bodyEn: mediumtext("bodyEn"),
   translatedAt: timestamp("translatedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (t) => ({
+  // Unique index su titolo: previene inserimento di editoriali duplicati
+  titleUniq: uniqueIndex("uq_daily_editorial_title").on(t.title),
+}));
 
 export type DailyEditorial = typeof dailyEditorial.$inferSelect;
 export type InsertDailyEditorial = typeof dailyEditorial.$inferInsert;

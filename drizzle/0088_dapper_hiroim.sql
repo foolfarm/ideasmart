@@ -1,0 +1,1 @@
+ALTER TABLE `daily_editorial` ADD CONSTRAINT `uq_daily_editorial_title` UNIQUE(`title`);

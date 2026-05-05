@@ -3443,3 +3443,15 @@
 - [ ] CTA "Richiedi preventivo" nella sezione finale di InfoVerify → /preventivo-info-verify
 - [ ] CTA "Richiedi preventivo" nella sezione finale di NewsVerify → /preventivo-news-verify
 - [ ] CTA "Richiedi preventivo" nella sezione finale di EmailVerify → /preventivo-email-verify
+
+## Manutenzione DB e CDN (5 Mag 2026)
+- [x] Correggere import in dedup-db.ts (getDb invece di getDbInstance)
+- [x] Eseguire dedup-db.ts: rimossi 16 duplicati da daily_editorial, 0 da osservatorio_articles
+- [x] pnpm db:push: migrazioni applicate con successo (constraint uq_daily_editorial_title già presente)
+- [x] Immagine Adrian Lenice: già su CDN CloudFront (URL corretto in OsservatorioTech.tsx)
+
+## Manutenzione DB e CDN (5 Mag 2026)
+- [x] Correggere import in dedup-db.ts (getDb invece di getDbInstance)
+- [x] Eseguire dedup-db.ts: rimossi 16 duplicati da daily_editorial, 0 da osservatorio_articles
+- [x] pnpm db:push: migrazioni applicate con successo (constraint uq_daily_editorial_title gia presente)
+- [x] Immagine Adrian Lenice: gia su CDN CloudFront (URL corretto in OsservatorioTech.tsx)
