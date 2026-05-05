@@ -889,7 +889,7 @@ export default function Home() {
                 <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
                   <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
-                    Il primo magazine con redazione agentica e informazioni last-minute 100% certificate
+                    Il primo magazine con redazione agentica e informazioni 100% certificate
                   </div>
                   <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
                     Tecnologia · Investimenti · Startup · Venture Capital
@@ -933,7 +933,7 @@ export default function Home() {
               <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
                 <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
-                  Il primo magazine con redazione agentica e informazioni last-minute 100% certificate
+                  Il primo magazine con redazione agentica e informazioni 100% certificate
                 </div>
                 <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
                   Tecnologia · Investimenti · Startup · Venture Capital
