@@ -1,5 +1,5 @@
 /*
- * Osservatorio Tech — A cura di Andrea Cinelli
+ * Osservatorio Tech — Base Alpha Research | Coordinato da Andrea Cinelli | Direttore: Adrian Lenice
  * Layout: vera area editoriale magazine
  * Hero display enorme → Featured card oggi → Griglia 3 col editoriali → Grid articoli → LinkedIn feed
  * Palette: bianco #ffffff / nero #0a0a0a / rosso #dc2626
@@ -695,8 +695,8 @@ export default function OsservatorioTech() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: PAPER, color: INK }}>
       <SEOHead
-        title="Base Alpha — Osservatorio Tech di Andrea Cinelli | ProofPress"
-        description="Base Alpha: il punto di vista di chi il digitale lo ha costruito. Analisi quotidiane di Andrea Cinelli su AI, startup, venture capital e trasformazione digitale."
+        title="Base Alpha — Osservatorio & Centro Studi | ProofPress"
+        description="Base Alpha è l'Osservatorio e Centro Studi di ProofPress. Coordinato da Andrea Cinelli, diretto da Adrian Lenice. Report verticali verificati su commissione per 200+ clienti."
       />
       <SharedPageHeader />
       <BreakingNewsTicker />
@@ -737,7 +737,7 @@ export default function OsservatorioTech() {
                   className="mt-6 leading-relaxed max-w-2xl"
                   style={{ color: INK + "70", fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontFamily: FONT }}
                 >
-                  Un'area editoriale curata da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale, AI pioneer e pioniere del digitale italiano. Ogni giorno, analisi e approfondimenti sui temi che contano: innovazione, intelligenza artificiale, startup, venture capital e trasformazione digitale. Un punto di vista qualificato, costruito su 30 anni di execution diretta, non su teoria.
+                  Un Osservatorio coordinato da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale, AI pioneer e pioniere del digitale italiano. Analisi e approfondimenti verificati sui temi che contano: innovazione, intelligenza artificiale, startup, venture capital e trasformazione digitale. Un punto di vista qualificato, costruito su 30 anni di execution diretta, non su teoria. Report e osservatori verticali su commissione per board e C-suite.
                 </p>
 
                 {/* Temi */}
@@ -750,49 +750,83 @@ export default function OsservatorioTech() {
                 </div>
               </div>
 
-              {/* Profilo — 1/4 */}
-              <div className="lg:col-span-1 flex flex-col items-center justify-center p-8 gap-5" style={{ backgroundColor: INK }}>
-                <div className="relative">
-                  <img
-                    src={PROFILE_IMG}
-                    alt="Andrea Cinelli"
-                    className="w-24 h-24 object-cover"
-                    style={{ filter: "contrast(1.05) grayscale(10%)" }}
-                  />
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center" style={{ backgroundColor: RED }}>
-                    <span className="text-[8px] font-black" style={{ color: PAPER }}>AC</span>
+              {/* Team — 1/4: Andrea Cinelli + Adrian Lenice */}
+              <div className="lg:col-span-1 flex flex-col" style={{ backgroundColor: INK }}>
+                {/* Andrea Cinelli */}
+                <div className="flex flex-col items-center justify-center p-6 gap-4" style={{ borderBottom: `1px solid rgba(255,255,255,0.08)` }}>
+                  <div className="relative">
+                    <img
+                      src={PROFILE_IMG}
+                      alt="Andrea Cinelli"
+                      className="w-20 h-20 object-cover"
+                      style={{ filter: "contrast(1.05) grayscale(10%)" }}
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center" style={{ backgroundColor: RED }}>
+                      <span className="text-[8px] font-black" style={{ color: PAPER }}>AC</span>
+                    </div>
                   </div>
+                  <div className="text-center">
+                    <p className="text-sm font-black" style={{ color: PAPER }}>Andrea Cinelli</p>
+                    <p className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: RED }}>
+                      Coordinatore · CEO FoolFarm
+                    </p>
+                    <p className="text-[10px] mt-2 leading-relaxed" style={{ color: PAPER + "55" }}>
+                      Co-fondatore Libero.it<br />
+                      12+ venture AI · 25+ brevetti<br />
+                      Prof. Sole 24 Ore BS
+                    </p>
+                  </div>
+                  <a
+                    href={LINKEDIN_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full text-center text-[10px] font-bold tracking-wider uppercase py-2 transition-opacity hover:opacity-80"
+                    style={{ backgroundColor: LINKEDIN_BLUE, color: PAPER }}
+                  >
+                    Segui su LinkedIn
+                  </a>
                 </div>
-                <div className="text-center">
-                  <p className="text-sm font-black" style={{ color: PAPER }}>Andrea Cinelli</p>
-                  <p className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: RED }}>
-                    CEO FoolFarm · AI Pioneer
-                  </p>
-                  <p className="text-[10px] mt-2 leading-relaxed" style={{ color: PAPER + "55" }}>
-                    Co-fondatore Libero.it<br />
-                    12+ venture AI · 25+ brevetti<br />
-                    Prof. Sole 24 Ore BS
-                  </p>
-                </div>
-                <a
-                  href={LINKEDIN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center text-[10px] font-bold tracking-wider uppercase py-2 transition-opacity hover:opacity-80"
-                  style={{ backgroundColor: LINKEDIN_BLUE, color: PAPER }}
-                >
-                  Segui su LinkedIn
-                </a>
-                <div className="w-full text-center pt-3" style={{ borderTop: `1px solid ${PAPER}15` }}>
-                  <p className="text-[9px]" style={{ color: PAPER + "35" }}>
-                    Aggiornato ogni giorno
-                  </p>
-                  <p className="text-lg font-black mt-0.5" style={{ color: PAPER }}>
-                    {punti.length > 0 ? `${punti.length}` : "—"}
-                  </p>
-                  <p className="text-[9px] font-bold tracking-wider uppercase" style={{ color: PAPER + "40" }}>
-                    editoriali in archivio
-                  </p>
+                {/* Adrian Lenice */}
+                <div className="flex flex-col items-center justify-center p-6 gap-4">
+                  <div className="relative">
+                    <img
+                      src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/adrian_lenice_portrait-HBM94kj3QyQX8VWJxXjg6j.webp"
+                      alt="Adrian Lenice"
+                      className="w-20 h-20 object-cover"
+                      style={{ filter: "contrast(1.05) grayscale(10%)" }}
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center" style={{ backgroundColor: RED }}>
+                      <span className="text-[8px] font-black" style={{ color: PAPER }}>AL</span>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-black" style={{ color: PAPER }}>Adrian Lenice</p>
+                    <p className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: RED }}>
+                      Direttore · ProofPress.ai
+                    </p>
+                    <p className="text-[10px] mt-2 leading-relaxed" style={{ color: PAPER + "55" }}>
+                      Osservatorio & Centro Studi<br />
+                      Report verificati su commissione
+                    </p>
+                  </div>
+                  <a
+                    href="mailto:adrian@proofpress.ai"
+                    className="w-full text-center text-[10px] font-bold tracking-wider uppercase py-2 transition-opacity hover:opacity-80"
+                    style={{ backgroundColor: RED, color: PAPER }}
+                  >
+                    adrian@proofpress.ai
+                  </a>
+                  <div className="w-full text-center pt-3" style={{ borderTop: `1px solid rgba(255,255,255,0.08)` }}>
+                    <p className="text-[9px]" style={{ color: PAPER + "35" }}>
+                      Aggiornato ogni giorno
+                    </p>
+                    <p className="text-lg font-black mt-0.5" style={{ color: PAPER }}>
+                      {punti.length > 0 ? `${punti.length}` : "—"}
+                    </p>
+                    <p className="text-[9px] font-bold tracking-wider uppercase" style={{ color: PAPER + "40" }}>
+                      editoriali in archivio
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
