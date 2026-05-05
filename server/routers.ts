@@ -307,6 +307,12 @@ export const appRouter = router({
           verifyHash: item.verifyHash ?? null,
           trustGrade: (item as Record<string, unknown>).trustGrade as string | null ?? null,
           trustScore: (item as Record<string, unknown>).trustScore as number | null ?? null,
+          // ProofPress Verify API esterna
+          ppvHash: (item as Record<string, unknown>).ppvHash as string | null ?? null,
+          ppvIpfsUrl: (item as Record<string, unknown>).ppvIpfsUrl as string | null ?? null,
+          ppvTrustGrade: (item as Record<string, unknown>).ppvTrustGrade as string | null ?? null,
+          ppvTrustScore: (item as Record<string, unknown>).ppvTrustScore as number | null ?? null,
+          ppvDocumentId: (item as Record<string, unknown>).ppvDocumentId as number | null ?? null,
         }));
       }),
 
@@ -429,6 +435,12 @@ export const appRouter = router({
               verifyReport: item.verifyReport ?? null,
               ipfsCid: item.ipfsCid ?? null,
               ipfsUrl: item.ipfsUrl ?? null,
+              // ProofPress Verify API esterna
+              ppvHash: item.ppvHash ?? null,
+              ppvIpfsUrl: item.ppvIpfsUrl ?? null,
+              ppvTrustGrade: item.ppvTrustGrade ?? null,
+              ppvTrustScore: item.ppvTrustScore ?? null,
+              ppvDocumentId: item.ppvDocumentId ?? null,
             };
           },
           TTL_EDITORIAL_MS // 20 min: articolo stabile
@@ -3978,7 +3990,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { success: true };
       }),
 
-    getLeads: adminProcedure
+     getLeads: adminProcedure
       .input(z.object({
         status: z.enum(["new", "contacted", "converted"]).optional(),
         limit: z.number().int().positive().max(200).default(100),
@@ -3995,6 +4007,130 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         return { leads, total: countResult?.cnt ?? 0 };
       }),
   }),
-});
 
+  // ── ProofPress Verify — Batch Re-Certificazione ──────────────────────────────
+  ppv: router({
+    // Conta gli articoli non ancora certificati da PPV
+    getUncertifiedCount: adminProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) return { newsItems: 0, channelContent: 0, total: 0 };
+      const { channelContent: channelContentTable } = await import('../drizzle/schema');
+      const [newsCount] = await db.select({ cnt: count() }).from(newsItemsTable).where(isNull(newsItemsTable.ppvHash));
+      const [channelCount] = await db.select({ cnt: count() }).from(channelContentTable).where(isNull(channelContentTable.ppvHash));
+      const newsItems = newsCount?.cnt ?? 0;
+      const channelContentItems = channelCount?.cnt ?? 0;
+      return { newsItems, channelContent: channelContentItems, total: newsItems + channelContentItems };
+    }),
+
+    // Certifica in batch gli articoli non ancora certificati da PPV
+    batchCertify: adminProcedure
+      .input(z.object({
+        type: z.enum(["newsItems", "channelContent", "all"]).default("all"),
+        limit: z.number().int().min(1).max(50).default(10),
+      }))
+      .mutation(async ({ input }) => {
+        const { certifyWithPpv } = await import('./proofpressVerifyClient');
+        const { channelContent: channelContentTable } = await import('../drizzle/schema');
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
+
+        const results: { type: string; id: number; title: string; grade: string; score: number }[] = [];
+        const errors: { type: string; id: number; title: string; error: string }[] = [];
+
+        // Certifica news_items
+        if (input.type === "newsItems" || input.type === "all") {
+          const items = await db.select({
+            id: newsItemsTable.id,
+            title: newsItemsTable.title,
+            summary: newsItemsTable.summary,
+            sourceUrl: newsItemsTable.sourceUrl,
+          }).from(newsItemsTable)
+            .where(isNull(newsItemsTable.ppvHash))
+            .orderBy(desc(newsItemsTable.createdAt))
+            .limit(input.limit);
+
+          for (const item of items) {
+            try {
+              const ppv = await certifyWithPpv({
+                title: item.title,
+                content: item.summary,
+                sourceUrl: item.sourceUrl,
+              });
+              if (ppv) {
+                await db.update(newsItemsTable).set({
+                  ppvHash: ppv.hash,
+                  ppvDocumentId: ppv.document_id,
+                  ppvIpfsCid: ppv.ipfs_cid,
+                  ppvIpfsUrl: ppv.ipfs_url,
+                  ppvTrustScore: ppv.trust_score,
+                  ppvTrustGrade: ppv.trust_grade,
+                  ppvCertifiedAt: new Date(),
+                  ppvReport: ppv.report as any,
+                }).where(eq(newsItemsTable.id, item.id));
+                results.push({ type: "newsItem", id: item.id, title: item.title, grade: ppv.trust_grade, score: Math.round(ppv.trust_score * 100) });
+              } else {
+                errors.push({ type: "newsItem", id: item.id, title: item.title, error: "PPV returned null" });
+              }
+            } catch (e: unknown) {
+              errors.push({ type: "newsItem", id: item.id, title: item.title, error: e instanceof Error ? e.message : String(e) });
+            }
+            // Pausa 1s tra le chiamate per non sovraccaricare l'API
+            await new Promise(r => setTimeout(r, 1000));
+          }
+        }
+
+        // Certifica channel_content
+        if (input.type === "channelContent" || input.type === "all") {
+          const limitPerType = input.type === "all" ? Math.floor(input.limit / 2) : input.limit;
+          const items = await db.select({
+            id: channelContentTable.id,
+            title: channelContentTable.title,
+            body: channelContentTable.body,
+            sourceUrl: channelContentTable.sourceUrl,
+          }).from(channelContentTable)
+            .where(isNull(channelContentTable.ppvHash))
+            .orderBy(desc(channelContentTable.createdAt))
+            .limit(limitPerType);
+
+          for (const item of items) {
+            try {
+              const ppv = await certifyWithPpv({
+                title: item.title,
+                content: (item as any).body ?? (item as any).summary ?? item.title,
+                sourceUrl: item.sourceUrl,
+              });
+              if (ppv) {
+                await db.update(channelContentTable).set({
+                  ppvHash: ppv.hash,
+                  ppvDocumentId: ppv.document_id,
+                  ppvIpfsCid: ppv.ipfs_cid,
+                  ppvIpfsUrl: ppv.ipfs_url,
+                  ppvTrustScore: ppv.trust_score,
+                  ppvTrustGrade: ppv.trust_grade,
+                  ppvCertifiedAt: new Date(),
+                  ppvReport: ppv.report as any,
+                }).where(eq(channelContentTable.id, item.id));
+                results.push({ type: "channelContent", id: item.id, title: item.title, grade: ppv.trust_grade, score: Math.round(ppv.trust_score * 100) });
+              } else {
+                errors.push({ type: "channelContent", id: item.id, title: item.title, error: "PPV returned null" });
+              }
+            } catch (e: unknown) {
+              errors.push({ type: "channelContent", id: item.id, title: item.title, error: e instanceof Error ? e.message : String(e) });
+            }
+            await new Promise(r => setTimeout(r, 1000));
+          }
+        }
+
+        // Invalida la cache delle news dopo la certificazione
+        invalidateAll();
+
+        return {
+          certified: results.length,
+          errorsCount: errors.length,
+          results,
+          errors,
+        };
+      }),
+  }),
+});
 export type AppRouter = typeof appRouter;

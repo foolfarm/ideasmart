@@ -810,6 +810,132 @@ async function startServer() {
     }
   });
 
+  // ── ProofPress Verify — Batch Re-Certificazione Schedulata ──────────────────────
+  // POST /api/scheduled/ppv-certify — certifica in batch gli articoli non ancora certificati da PPV
+  // Usato dal task schedulato di Manus per certificare gli articoli esistenti
+  // Auth: Cookie app_session_id (utente autenticato) oppure Authorization: Bearer <JWT_SECRET>
+  app.post("/api/scheduled/ppv-certify", async (req, res) => {
+    // Accetta sia JWT_SECRET (task schedulato) che cookie di sessione (admin)
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    const isJwtAuth = token && token === process.env.JWT_SECRET;
+
+    // Se non è JWT, verifica che sia un utente autenticato (via cookie)
+    if (!isJwtAuth) {
+      // Permetti anche utenti con ruolo 'user' o 'admin' (task schedulato usa cookie)
+      const sessionCookie = req.cookies?.app_session_id;
+      if (!sessionCookie) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+    }
+
+    const { type = 'all', limit = 10 } = req.body || {};
+
+    try {
+      const { certifyWithPpv } = await import('../proofpressVerifyClient');
+      const { getDb } = await import('../db');
+      const { newsItems: newsItemsTable, channelContent: channelContentTable } = await import('../../drizzle/schema');
+      const { isNull, desc, eq } = await import('drizzle-orm');
+      const { invalidateAll } = await import('../cache');
+
+      const db = await getDb();
+      if (!db) return res.status(500).json({ error: 'DB non disponibile' });
+
+      const results: { type: string; id: number; title: string; grade: string; score: number }[] = [];
+      const errors: { type: string; id: number; title: string; error: string }[] = [];
+
+      // Certifica news_items
+      if (type === 'newsItems' || type === 'all') {
+        const items = await db.select({
+          id: newsItemsTable.id,
+          title: newsItemsTable.title,
+          summary: newsItemsTable.summary,
+          sourceUrl: newsItemsTable.sourceUrl,
+        }).from(newsItemsTable)
+          .where(isNull(newsItemsTable.ppvHash))
+          .orderBy(desc(newsItemsTable.createdAt))
+          .limit(Number(limit));
+
+        for (const item of items) {
+          try {
+            const ppv = await certifyWithPpv({
+              title: item.title,
+              content: item.summary,
+              sourceUrl: item.sourceUrl,
+            });
+            if (ppv) {
+              await db.update(newsItemsTable).set({
+                ppvHash: ppv.hash,
+                ppvDocumentId: ppv.document_id,
+                ppvIpfsCid: ppv.ipfs_cid,
+                ppvIpfsUrl: ppv.ipfs_url,
+                ppvTrustScore: ppv.trust_score,
+                ppvTrustGrade: ppv.trust_grade,
+                ppvCertifiedAt: new Date(),
+                ppvReport: ppv.report as any,
+              }).where(eq(newsItemsTable.id, item.id));
+              results.push({ type: 'newsItem', id: item.id, title: item.title, grade: ppv.trust_grade, score: Math.round(ppv.trust_score * 100) });
+            } else {
+              errors.push({ type: 'newsItem', id: item.id, title: item.title, error: 'PPV returned null' });
+            }
+          } catch (e: any) {
+            errors.push({ type: 'newsItem', id: item.id, title: item.title, error: e.message });
+          }
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      // Certifica channel_content
+      if (type === 'channelContent' || type === 'all') {
+        const limitPerType = type === 'all' ? Math.floor(Number(limit) / 2) : Number(limit);
+        const items = await db.select({
+          id: channelContentTable.id,
+          title: channelContentTable.title,
+          body: channelContentTable.body,
+          sourceUrl: channelContentTable.sourceUrl,
+        }).from(channelContentTable)
+          .where(isNull(channelContentTable.ppvHash))
+          .orderBy(desc(channelContentTable.createdAt))
+          .limit(limitPerType);
+
+        for (const item of items) {
+          try {
+            const ppv = await certifyWithPpv({
+              title: item.title,
+              content: item.body ?? item.title,
+              sourceUrl: item.sourceUrl,
+            });
+            if (ppv) {
+              await db.update(channelContentTable).set({
+                ppvHash: ppv.hash,
+                ppvDocumentId: ppv.document_id,
+                ppvIpfsCid: ppv.ipfs_cid,
+                ppvIpfsUrl: ppv.ipfs_url,
+                ppvTrustScore: ppv.trust_score,
+                ppvTrustGrade: ppv.trust_grade,
+                ppvCertifiedAt: new Date(),
+                ppvReport: ppv.report as any,
+              }).where(eq(channelContentTable.id, item.id));
+              results.push({ type: 'channelContent', id: item.id, title: item.title, grade: ppv.trust_grade, score: Math.round(ppv.trust_score * 100) });
+            } else {
+              errors.push({ type: 'channelContent', id: item.id, title: item.title, error: 'PPV returned null' });
+            }
+          } catch (e: any) {
+            errors.push({ type: 'channelContent', id: item.id, title: item.title, error: e.message });
+          }
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      invalidateAll();
+      console.log(`[PPV Batch] Certificati: ${results.length}, Errori: ${errors.length}`);
+      return res.json({ success: true, certified: results.length, errorsCount: errors.length, results, errors });
+    } catch (err: any) {
+      console.error('[PPV Batch] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
   // ── Cache Stats endpoint (solo admin, protetto da JWT_SECRET) ──────────────────
   // GET /api/cache-stats — restituisce hit/miss/size/TTL per ogni chiave in cache
   app.get("/api/cache-stats", (req, res) => {

@@ -3468,3 +3468,19 @@
 - [x] Integrazione in channelIngestor.ts: PPV certifica ogni contenuto canale
 - [x] VerifyBadge.tsx aggiornato: supporta ppvHash, ppvIpfsUrl, ppvTrustGrade, ppvTrustScore
 - [x] Fix errore isPpvCertified not defined (file scritto correttamente)
+
+## Task PPV Fase 2 (5 Mag 2026)
+
+- [ ] A) Test live certificazione PPV: genera 1 notizia per settore e verifica end-to-end
+- [ ] B) Esporre badge PPV nelle card notizie su /ai e /channels/*
+- [ ] C) Endpoint /api/scheduled/ppv-certify per batch re-certificazione articoli non certificati
+- [ ] C) Pulsante "Certifica Non Certificati" nell'admin panel
+
+## Task PPV Fase 2 completati (5 Mag 2026)
+
+- [x] A) Test live: 3 notizie certificate (AI/Startup/Ricerca) — Trust Grade C, score ~55 (baseline per contenuti sintetici)
+- [x] B) Campi ppv* aggiunti alla tabella news_items nello schema (migrazione 0090)
+- [x] B) Router news.getLatest e news.getById espongono ppvHash, ppvIpfsUrl, ppvTrustGrade, ppvTrustScore, ppvDocumentId
+- [x] B) AiHome.tsx: NewsCard e HeroNews aggiornati per mostrare VerifyBadge con dati PPV
+- [x] C) Router trpc.ppv.getUncertifiedCount e trpc.ppv.batchCertify aggiunti (admin)
+- [x] C) Endpoint POST /api/scheduled/ppv-certify aggiunto (auth: JWT_SECRET o cookie sessione)

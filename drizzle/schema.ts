@@ -140,6 +140,15 @@ export const newsItems = mysqlTable("news_items", {
   // TRADUZIONE EN: titolo e summary in inglese (generati automaticamente da Claude)
   titleEn: varchar("titleEn", { length: 500 }),
   summaryEn: text("summaryEn"),
+  // PROOFPRESS VERIFY API ESTERNA (proofpressverify.com)
+  ppvHash: varchar("ppvHash", { length: 64 }),
+  ppvDocumentId: int("ppvDocumentId"),
+  ppvIpfsCid: varchar("ppvIpfsCid", { length: 128 }),
+  ppvIpfsUrl: varchar("ppvIpfsUrl", { length: 512 }),
+  ppvTrustScore: float("ppvTrustScore"),
+  ppvTrustGrade: varchar("ppvTrustGrade", { length: 1 }),
+  ppvCertifiedAt: timestamp("ppvCertifiedAt"),
+  ppvReport: json("ppvReport"),
 }, (t) => ({
   // Indice su section: tutte le query filtrano per sezione (getLatest, getAll, ecc.)
   sectionIdx: index("idx_news_section").on(t.section),
