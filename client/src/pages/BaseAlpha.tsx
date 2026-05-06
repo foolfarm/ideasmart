@@ -13,16 +13,24 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
 const SECTORS = [
-  { icon: "🤖", label: "Intelligenza Artificiale & LLM", desc: "Modelli fondazionali, infrastruttura AI, adozione enterprise, EU AI Act" },
-  { icon: "💼", label: "Venture Capital & Private Equity", desc: "Deal flow, round, trend LP, emerging markets, co-investment" },
-  { icon: "🚀", label: "Startup & Ecosistemi", desc: "Early stage, scale-up, exit, M&A, ecosistemi EU/US/APAC" },
-  { icon: "⚙️", label: "Tecnologia & Infrastruttura", desc: "Cloud, quantum, cybersecurity, semiconduttori, supply chain" },
-  { icon: "🏦", label: "Fintech & Digital Finance", desc: "Open banking, DeFi istituzionale, CBDC, embedded finance" },
-  { icon: "🧬", label: "HealthTech & BioTech", desc: "Digital health, genomica, AI diagnostica, MedTech" },
-  { icon: "⚡", label: "Energy & CleanTech", desc: "Transizione energetica, storage, hydrogen, carbon markets" },
-  { icon: "📰", label: "Media & Informazione", desc: "Giornalismo agentico, AI content, advertising tech, fact-checking" },
-  { icon: "🏛️", label: "Policy & Regolamentazione", desc: "AI Act, GDPR, Digital Markets Act, compliance" },
-  { icon: "🛰️", label: "Space Economy", desc: "New Space, satellite tech, launch market, dual-use" },
+  { icon: "🤖", label: "Intelligenza Artificiale & LLM", desc: "Modelli fondazionali, infrastruttura AI, adozione enterprise, EU AI Act, agentic AI" },
+  { icon: "💼", label: "Venture Capital & Private Equity", desc: "Deal flow, round, trend LP, emerging markets, co-investment, fund strategy" },
+  { icon: "🚀", label: "Startup & Ecosistemi", desc: "Early stage, scale-up, exit, M&A, ecosistemi EU/US/APAC, acceleratori" },
+  { icon: "⚙️", label: "Tecnologia & Infrastruttura", desc: "Cloud, edge computing, semiconduttori, supply chain tech, piattaforme enterprise" },
+  { icon: "🔐", label: "Cybersecurity", desc: "Threat intelligence, zero-trust, AI security, compliance, data protection, SOC" },
+  { icon: "⚛️", label: "Quantum Computing", desc: "Hardware quantistico, algoritmi, crittografia post-quantum, applicazioni industriali" },
+  { icon: "🏦", label: "Fintech & Digital Finance", desc: "Open banking, DeFi istituzionale, CBDC, embedded finance, payment tech" },
+  { icon: "🧬", label: "HealthTech & BioTech", desc: "Digital health, genomica, AI diagnostica, MedTech, longevity, drug discovery" },
+  { icon: "⚡", label: "Energy & CleanTech", desc: "Transizione energetica, storage, hydrogen, carbon markets, smart grid" },
+  { icon: "🌾", label: "AgriTech & AgriFood", desc: "Precision farming, food tech, supply chain agro, biotech alimentare, sostenibilità" },
+  { icon: "🏭", label: "Industry & Manufacturing", desc: "Industria 4.0, automazione, robotica avanzata, digital twin, smart factory" },
+  { icon: "🚗", label: "Automotive & Mobility", desc: "EV, guida autonoma, connected car, mobilità urbana, infrastruttura di ricarica" },
+  { icon: "📰", label: "Media & Informazione", desc: "Giornalismo agentico, AI content, advertising tech, fact-checking, creator economy" },
+  { icon: "🏛️", label: "Policy & Regolamentazione", desc: "AI Act, GDPR, Digital Markets Act, compliance, governance tecnologica" },
+  { icon: "🛰️", label: "Space Economy", desc: "New Space, satellite tech, launch market, dual-use, osservazione terrestre" },
+  { icon: "🏙️", label: "Smart Cities & PropTech", desc: "Città intelligenti, real estate tech, infrastrutture digitali, urban mobility" },
+  { icon: "🎓", label: "EdTech & Future of Work", desc: "Formazione AI-native, reskilling, piattaforme learning, workforce transformation" },
+  { icon: "🛡️", label: "GovTech & Defence Tech", desc: "Digitalizzazione PA, identità digitale, dual-use, sicurezza nazionale, procurement" },
 ];
 
 const PLANS = [
@@ -136,8 +144,11 @@ export default function BaseAlpha() {
                   Intelligence Premium
                 </span>
               </div>
-              <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-none mb-6 text-[#111]">
-                BASE ALPHA
+              <h1
+                className="font-black leading-none mb-6 text-[#111]"
+                style={{ fontSize: "clamp(3.5rem, 8vw, 7.5rem)", lineHeight: 0.93, letterSpacing: "-0.03em" }}
+              >
+                BASE ALPHA +
               </h1>
               <p className="text-xl md:text-2xl font-medium text-zinc-600 leading-relaxed max-w-2xl mb-8">
                 Il primo osservatorio con redazione agentica che analizza oltre{" "}
@@ -178,7 +189,7 @@ export default function BaseAlpha() {
             <div className="grid grid-cols-3 divide-x divide-zinc-200">
               {[
                 { num: "4.000+", label: "Fonti monitorate", sub: "incluse fonti pre-pubbliche" },
-                { num: "10", label: "Settori verticali", sub: "con copertura dedicata" },
+                { num: "18", label: "Settori verticali", sub: "con copertura dedicata" },
                 { num: "100%", label: "Certificato PPV", sub: "hash SHA-256 + IPFS" },
               ].map((s) => (
                 <div key={s.num} className="px-6 md:px-10 py-8 text-center">
@@ -234,7 +245,7 @@ export default function BaseAlpha() {
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Settori coperti</p>
               <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
-                10 verticali strategici con copertura pre-pubblica
+                18 verticali strategici con copertura pre-pubblica
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {SECTORS.map((s) => (
@@ -325,51 +336,61 @@ export default function BaseAlpha() {
             </div>
           </section>
 
-          {/* ══ LEADERSHIP — Adrian Lenice ══════════════════════════════════════ */}
-          <section className="bg-zinc-50 px-6 md:px-12 py-14 border-b border-zinc-200">
+          {/* ══ LEADERSHIP — Adrian Lenice — sfondo bianco, immagine grande ══════ */}
+          <section className="bg-white px-6 md:px-12 py-14 border-b border-zinc-100">
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Il team</p>
-              <h2 className="text-2xl md:text-3xl font-black text-zinc-900 mb-10">Chi guida Base Alpha</h2>
-              <div className="flex flex-col md:flex-row gap-8 items-start">
-                {/* Foto e nome */}
-                <div className="flex flex-col items-center md:items-start gap-4 md:w-64 flex-shrink-0">
+              <h2 className="text-2xl md:text-3xl font-black text-zinc-900 mb-10">Chi guida Base Alpha +</h2>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10 items-start">
+                {/* Colonna foto — grande */}
+                <div className="md:col-span-2 flex flex-col gap-4">
                   <div className="relative">
                     <img
                       src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/adrian_lenice_portrait-HBM94kj3QyQX8VWJxXjg6j.webp"
                       alt="Adrian Lenice"
-                      className="w-28 h-28 object-cover"
-                      style={{ filter: "contrast(1.05) grayscale(10%)" }}
+                      className="w-full object-cover object-top"
+                      style={{ aspectRatio: "3/4", maxHeight: "340px" }}
                     />
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 flex items-center justify-center bg-[#c9a227]">
-                      <span className="text-[9px] font-black text-white">AL</span>
+                    <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-[#0a0a0a]">
+                      <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#c9a227]">Direttore</p>
                     </div>
                   </div>
-                  <div className="text-center md:text-left">
-                    <p className="text-xl font-black text-zinc-900">Adrian Lenice</p>
-                    <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#c9a227] mt-1">
-                      Direttore · ProofPress.ai
-                    </p>
+                  {/* Info sotto foto */}
+                  <div className="flex flex-col gap-3 border border-zinc-100 px-5 py-5">
+                    <div>
+                      <p className="text-base font-black text-zinc-900">Adrian Lenice</p>
+                      <p className="text-[9px] font-bold tracking-[0.18em] uppercase mt-1 text-[#c9a227]">
+                        Direttore · ProofPress.ai
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">Team globale di analisti</p>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">200+ clienti istituzionali</p>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">4.000+ fonti monitorate</p>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">100% contenuti certificati PPV™</p>
+                    </div>
+                    <a
+                      href="mailto:adrian@proofpress.ai"
+                      className="w-full text-center text-[10px] font-black tracking-wider uppercase py-3 transition-opacity hover:opacity-90 bg-zinc-900 text-white"
+                    >
+                      adrian@proofpress.ai
+                    </a>
                   </div>
-                  <a
-                    href="mailto:adrian@proofpress.ai"
-                    className="w-full text-center text-[11px] font-black tracking-wider uppercase py-3 px-6 transition-opacity hover:opacity-80 bg-zinc-900 text-white"
-                  >
-                    adrian@proofpress.ai
-                  </a>
                 </div>
-                {/* Bio */}
-                <div className="flex-1">
-                  <p className="text-base text-zinc-700 leading-relaxed mb-4">
-                    Adrian Lenice guida Base Alpha come Direttore dell'Osservatorio e del Centro Studi di ProofPress.ai.
+                {/* Colonna bio */}
+                <div className="md:col-span-3 flex flex-col gap-5 pt-1">
+                  <p className="text-base text-zinc-700 leading-relaxed">
+                    Adrian Lenice guida Base Alpha + come Direttore dell'Osservatorio e del Centro Studi di ProofPress.ai.
                     Coordina un team globale di analisti specializzati in tecnologia, venture capital e innovazione,
                     con focus su intelligence pre-pubblica e report verticali verificati su commissione per board e C-suite.
                   </p>
-                  <p className="text-base text-zinc-700 leading-relaxed mb-6">
-                    Ogni report prodotto da Base Alpha viene certificato con tecnologia ProofPress Verify™ —
+                  <p className="text-base text-zinc-700 leading-relaxed">
+                    Ogni report prodotto da Base Alpha + viene certificato con tecnologia ProofPress Verify™ —
                     hash crittografico SHA-256 e notarizzazione IPFS — garantendo tracciabilità e verificabilità
                     nel tempo per i clienti istituzionali.
                   </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {/* Statistiche */}
+                  <div className="grid grid-cols-3 gap-4 pt-2">
                     {[
                       { label: "200+", desc: "Clienti serviti" },
                       { label: "4.000+", desc: "Fonti monitorate" },
@@ -381,6 +402,12 @@ export default function BaseAlpha() {
                       </div>
                     ))}
                   </div>
+                  {/* Quote */}
+                  <blockquote className="border-l-4 border-[#c9a227] pl-5 py-1 mt-2">
+                    <p className="text-base font-medium italic text-zinc-500 leading-relaxed">
+                      "Intelligence that arrives before the market — verified, actionable, institutional-grade."
+                    </p>
+                  </blockquote>
                 </div>
               </div>
             </div>
