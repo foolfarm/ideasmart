@@ -1,5 +1,5 @@
 /*
- * Osservatorio Tech — Base Alpha Research | Coordinato da Andrea Cinelli | Direttore: Adrian Lenice
+ * Osservatorio Tech — Base Alpha + Research | Coordinato da Andrea Cinelli | Direttore: Adrian Lenice
  * Layout: vera area editoriale magazine
  * Hero display enorme → Featured card oggi → Griglia 3 col editoriali → Grid articoli → LinkedIn feed
  * Palette: bianco #ffffff / nero #0a0a0a / rosso #dc2626
@@ -709,8 +709,8 @@ export default function OsservatorioTech() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: PAPER, color: INK }}>
       <SEOHead
-        title="Base Alpha — Osservatorio & Centro Studi | ProofPress"
-        description="Base Alpha è l'Osservatorio e Centro Studi di ProofPress. Coordinato da Andrea Cinelli, diretto da Adrian Lenice. Report verticali verificati su commissione per 200+ clienti."
+        title="Base Alpha + — Osservatorio & Centro Studi | ProofPress"
+        description="Base Alpha + è l'Osservatorio e Centro Studi di ProofPress. Coordinato da Andrea Cinelli, diretto da Adrian Lenice. Report verticali verificati su commissione per 200+ clienti."
       />
       <SharedPageHeader />
       <BreakingNewsTicker />
@@ -723,12 +723,12 @@ export default function OsservatorioTech() {
               NUOVO
             </span>
             <p className="text-[12px] font-semibold" style={{ color: "rgba(250,250,248,0.75)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif" }}>
-              <strong style={{ color: "#c9a227" }}>Base Alpha</strong> — Osservatorio Intelligence Premium: report pre-pubblici certificati PPV su 10 settori verticali
+              <strong style={{ color: "#c9a227" }}>Base Alpha +</strong> — Osservatorio Intelligence Premium: report pre-pubblici certificati PPV su 10 settori verticali
             </p>
           </div>
           <Link href="/base-alpha">
             <span className="text-[10px] font-black tracking-[0.15em] uppercase px-4 py-1.5 cursor-pointer transition-all hover:opacity-90 whitespace-nowrap" style={{ background: "#c9a227", color: "#0a0a0a" }}>
-              Scopri Base Alpha →
+              Scopri Base Alpha + →
             </span>
           </Link>
         </div>
@@ -756,7 +756,7 @@ export default function OsservatorioTech() {
                     lineHeight: 0.93,
                   }}
                 >
-                  Base Alpha
+                  Base Alpha +
                 </h1>
                 <p
                   className="mt-6 font-bold leading-snug max-w-2xl"
@@ -769,13 +769,13 @@ export default function OsservatorioTech() {
                   className="mt-6 leading-relaxed max-w-2xl"
                   style={{ color: INK + "70", fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontFamily: FONT }}
                 >
-                  Base Alpha è l’osservatorio dedicato a tecnologia, venture capital, investimenti e innovazione, curato da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale e tra i pionieri del digitale in Italia.
+                  Base Alpha + è l’osservatorio dedicato a tecnologia, venture capital, investimenti e innovazione, curato da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale e tra i pionieri del digitale in Italia.
                   <br /><br />
                   Ogni giorno pubblica analisi e approfondimenti verificati sui temi che contano: intelligenza artificiale, startup, venture capital e trasformazione digitale, condivisi anche attraverso il suo profilo LinkedIn.
                   <br /><br />
                   Un punto di vista qualificato, costruito su oltre 30 anni di execution diretta — non teoria.
                   <br /><br />
-                  Andrea contribuisce inoltre a Base Alpha, un osservatorio tecnologico internazionale guidato da <strong style={{ color: INK }}>Adrian Lenice</strong> e supportato da un team globale di analisti.
+                  Andrea contribuisce inoltre a Base Alpha +, un osservatorio tecnologico internazionale guidato da <strong style={{ color: INK }}>Adrian Lenice</strong> e supportato da un team globale di analisti.
                 </p>
 
                 {/* Temi */}
@@ -837,7 +837,7 @@ export default function OsservatorioTech() {
           <section className="mx-6 md:mx-8 my-6 border-l-4 border-[#c9a227] bg-amber-50 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-[9px] font-black tracking-[0.2em] uppercase px-2 py-0.5 bg-[#c9a227] text-black">BASE ALPHA</span>
+                <span className="text-[9px] font-black tracking-[0.2em] uppercase px-2 py-0.5 bg-[#c9a227] text-black">BASE ALPHA +</span>
                 <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Osservatorio Intelligence Premium</span>
               </div>
               <p className="text-sm font-bold text-[#111] leading-snug">
@@ -848,7 +848,7 @@ export default function OsservatorioTech() {
               href="/base-alpha"
               className="flex-shrink-0 bg-[#111] text-white text-xs font-black tracking-wider uppercase px-5 py-3 hover:bg-zinc-800 transition-colors whitespace-nowrap"
             >
-              SCOPRI BASE ALPHA →
+              SCOPRI BASE ALPHA + →
             </Link>
           </section>
           <section id="punti-del-giorno">
