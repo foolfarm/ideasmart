@@ -26,7 +26,7 @@ export default function AmazonDealBanner({
     { limit: 12 },
     { staleTime: 1000 * 60 * 60 }
   );
-  const trackClick = trpc.amazonDeals.trackClick.useMutation();
+  const trackClick = trpc.amazonDeals.trackClick.useMutation({ retry: false, onError: () => {} });
 
   // Solo deal con immagine valida per manchette e sidebar
   const deals = allDeals?.filter(d => d.imageUrl && d.imageUrl.startsWith('http')) ?? [];

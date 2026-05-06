@@ -54,8 +54,14 @@ export default function BannerRotator({
     refetchOnWindowFocus: false,
   });
 
-  const trackImpression = trpc.banners.trackImpression.useMutation();
-  const trackClick = trpc.banners.trackClick.useMutation();
+  const trackImpression = trpc.banners.trackImpression.useMutation({
+    retry: false,
+    onError: () => {}, // Errori di tracking non devono bloccare l'UX
+  });
+  const trackClick = trpc.banners.trackClick.useMutation({
+    retry: false,
+    onError: () => {}, // Errori di tracking non devono bloccare l'UX
+  });
 
   const [currentBanner, setCurrentBanner] = useState<BannerItem | null>(null);
   const [visible, setVisible] = useState(true);

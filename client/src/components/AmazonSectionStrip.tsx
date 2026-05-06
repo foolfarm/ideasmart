@@ -8,7 +8,7 @@ export default function AmazonSectionStrip() {
     { limit: 6 },
     { staleTime: 1000 * 60 * 30 }
   );
-  const trackClick = trpc.amazonDeals.trackClick.useMutation();
+  const trackClick = trpc.amazonDeals.trackClick.useMutation({ retry: false, onError: () => {} });
 
   if (!deals || deals.length === 0) return null;
   const validDeals = deals.filter(d => d.imageUrl && d.imageUrl.startsWith("http"));

@@ -23,7 +23,7 @@ export default function TopArticoli({ limit = 10 }: TopArticoliProps) {
     { limit },
     { staleTime: 1000 * 60 * 10 }
   );
-  const trackView = trpc.news.trackView.useMutation();
+  const trackView = trpc.news.trackView.useMutation({ retry: false, onError: () => {} });
 
   const handleArticleClick = useCallback(
     (id: number, url: string) => {
