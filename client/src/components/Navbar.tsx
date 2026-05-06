@@ -188,14 +188,7 @@ export default function Navbar() {
               Monetizza →
             </Link>
 
-            {/* 5 — Osservatorio & Centro Studi */}
-            <Link
-              href="/osservatorio-tech"
-              className="px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 hover:bg-gray-50"
-              style={{ color: "#1a1a1a", fontFamily: SF }}
-            >
-              Osservatorio & Centro Studi
-            </Link>
+
 
             {/* 6 — Scrivi per noi dropdown */}
             <div className="relative">
@@ -373,17 +366,7 @@ export default function Navbar() {
                 Advertise
               </Link>
             </div>
-            {/* 3b — Osservatorio & Centro Studi — voce diretta */}
-            <div className="px-2 mb-1">
-              <Link
-                href="/osservatorio-tech"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center px-3 py-2.5 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors"
-                style={{ color: "#1a1a1a", fontFamily: SF }}
-              >
-                Osservatorio & Centro Studi
-              </Link>
-            </div>
+
             {/* 4 — Scrivi per noi dropdown mobile */}
             <div className="px-2 mb-1">
               <button

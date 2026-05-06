@@ -1,5 +1,5 @@
 /**
- * BASE ALPHA — Osservatorio Intelligence Premium
+ * BASE ALPHA + TOP TECH OBSERVATORY
  * Redesign: sfondo bianco/grigio chiaro, alta leggibilità, CTA forti
  */
 import { useState } from "react";
@@ -121,7 +121,7 @@ export default function BaseAlpha() {
   return (
     <div className="min-h-screen bg-white">
       <SEOHead
-        title="Base Alpha — Osservatorio Intelligence Premium | ProofPress"
+        title="Base Alpha + Top Tech Observatory | ProofPress"
         description="Il primo osservatorio con redazione agentica che analizza oltre 4.000 fonti pre-pubbliche. Report certificati ProofPress Verify™ su 10 settori verticali."
         canonical="https://proofpress.ai/base-alpha"
         ogSiteName="ProofPress"
@@ -149,6 +149,7 @@ export default function BaseAlpha() {
                 style={{ fontSize: "clamp(3.5rem, 8vw, 7.5rem)", lineHeight: 0.93, letterSpacing: "-0.03em" }}
               >
                 BASE ALPHA +
+                TOP TECH OBSERVATORY
               </h1>
               <p className="text-xl md:text-2xl font-medium text-zinc-600 leading-relaxed max-w-2xl mb-8">
                 Il primo osservatorio con redazione agentica che analizza oltre{" "}

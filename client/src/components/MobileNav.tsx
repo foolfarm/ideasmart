@@ -42,7 +42,7 @@ const NAV_STRUCTURE: NavItem[] = [
   { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", icon: "🚀" },
   { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", icon: "🔐", external: true },
   { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", icon: "💰" },
-  { type: "link", href: "/osservatorio-tech", label: "Osservatorio & Centro Studi", icon: "🔍" },
+  { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech", icon: "🔍" },
   { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", icon: "✍️" },
   { type: "link", href: "/contatti", label: "Contatti", icon: "✉️" },
 ]
