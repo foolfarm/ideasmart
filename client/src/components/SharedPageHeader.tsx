@@ -184,27 +184,7 @@ export default function SharedPageHeader() {
       {/* Logo centrale con manchette ai lati — identico alla Home */}
       <div className="py-2 sm:py-4">
 
-        {/* Riga tagline + badge IPFS */}
-        <div className="hidden sm:flex items-center justify-center gap-3 mb-3">
-          <p
-            className="text-center uppercase tracking-[0.18em] text-[#1a1a1a]/40 font-medium whitespace-nowrap overflow-hidden text-ellipsis"
-            style={{ fontFamily: SF, fontSize: "10px" }}
-          >
-            Il Magazine che analizza e verifica ogni giorno 4.000+ fonti per trasformare l'informazione in insight esclusivi e affidabili.
-          </p>
-          {ipfsCount > 0 && (
-            <a
-              href="/proofpress-verify"
-              className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#1a1a1a]/15 hover:border-[#1a1a1a]/30 transition-colors no-underline flex-shrink-0"
-              style={{ fontFamily: SF, fontSize: "9px", textDecoration: "none" }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00897b] inline-block flex-shrink-0" />
-              <span className="font-bold text-[#00897b] uppercase tracking-widest">
-                {ipfsCount.toLocaleString("it-IT")} articoli su IPFS
-              </span>
-            </a>
-          )}
-        </div>
+        {/* Tagline e badge IPFS rimossi */}
 
         {/* Desktop XL: manchette sinistra | logo | manchette destra */}
         <div className="hidden xl:grid xl:grid-cols-[170px_1fr_170px] items-center gap-4">

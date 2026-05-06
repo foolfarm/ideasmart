@@ -69,6 +69,7 @@ const NAV_STRUCTURE: NavItem[] = [
   { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", Icon: Megaphone, external: true },
   { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", Icon: Megaphone },
   { type: "link", href: "/osservatorio-tech", label: "Osservatorio & Centro Studi", Icon: Briefcase },
+  { type: "link", href: "/base-alpha", label: "Base Alpha — Intelligence Premium", Icon: Briefcase },
   { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", Icon: PenLine },
   { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
 ]

@@ -715,7 +715,25 @@ export default function OsservatorioTech() {
       <SharedPageHeader />
       <BreakingNewsTicker />
 
-      <div className="flex min-h-screen">
+      {/* ── BANNER BASE ALPHA ─────────────────────────────────────────────── */}
+      <div style={{ background: "#0a0a0a", borderBottom: "1px solid rgba(201,162,39,0.3)" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-[9px] font-black tracking-[0.2em] uppercase px-2 py-0.5" style={{ background: "#c9a227", color: "#0a0a0a" }}>
+              NUOVO
+            </span>
+            <p className="text-[12px] font-semibold" style={{ color: "rgba(250,250,248,0.75)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif" }}>
+              <strong style={{ color: "#c9a227" }}>Base Alpha</strong> — Osservatorio Intelligence Premium: report pre-pubblici certificati PPV su 10 settori verticali
+            </p>
+          </div>
+          <Link href="/base-alpha">
+            <span className="text-[10px] font-black tracking-[0.15em] uppercase px-4 py-1.5 cursor-pointer transition-all hover:opacity-90 whitespace-nowrap" style={{ background: "#c9a227", color: "#0a0a0a" }}>
+              Scopri Base Alpha →
+            </span>
+          </Link>
+        </div>
+      </div>
+            <div className="flex min-h-screen">
         <LeftSidebar />
 
         <main className="flex-1 min-w-0" style={{ fontFamily: FONT }}>
