@@ -345,6 +345,11 @@ type NewsItem = {
   trustScore?: number | null;
   ipfsCid?: string | null;
   ipfsUrl?: string | null;
+  ppvHash?: string | null;
+  ppvIpfsUrl?: string | null;
+  ppvTrustGrade?: string | null;
+  ppvTrustScore?: number | null;
+  ppvDocumentId?: number | null;
 };
 
 // ─── Language helpers ────────────────────────────────────────────────────────
@@ -455,9 +460,18 @@ function HeroArticle({ item, section, editorial }: {
           style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
-        {item.verifyHash && (
+        {(item.verifyHash || item.ppvHash) && (
           <div className="mt-1.5 flex items-center gap-2 flex-wrap">
-            <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
+            <VerifyBadge
+              hash={item.ppvHash || item.verifyHash}
+              size="sm"
+              trustGrade={item.ppvTrustGrade || item.trustGrade}
+              trustScore={item.ppvTrustScore ?? item.trustScore}
+              ppvHash={item.ppvHash}
+              ppvIpfsUrl={item.ppvIpfsUrl}
+              ppvTrustGrade={item.ppvTrustGrade}
+              ppvDocumentId={item.ppvDocumentId}
+            />
             {item.ipfsCid && item.ipfsUrl && (
               <a
                 href={item.ipfsUrl}
@@ -525,9 +539,18 @@ function SecondaryArticle({ item, section, showImage = false }: {
         style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
         {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
       </p>
-      {item.verifyHash && (
+      {(item.verifyHash || item.ppvHash) && (
         <div className="mt-1 flex items-center gap-2 flex-wrap">
-          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
+          <VerifyBadge
+            hash={item.ppvHash || item.verifyHash}
+            size="sm"
+            trustGrade={item.ppvTrustGrade || item.trustGrade}
+            trustScore={item.ppvTrustScore ?? item.trustScore}
+            ppvHash={item.ppvHash}
+            ppvIpfsUrl={item.ppvIpfsUrl}
+            ppvTrustGrade={item.ppvTrustGrade}
+            ppvDocumentId={item.ppvDocumentId}
+          />
           {item.ipfsCid && item.ipfsUrl && (
             <a
               href={item.ipfsUrl}

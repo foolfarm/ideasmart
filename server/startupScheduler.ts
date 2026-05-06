@@ -9,7 +9,7 @@ import { newsItems, dailyEditorial, startupOfDay, weeklyReportage, marketAnalysi
 import { eq } from "drizzle-orm";
 import { findNewsImage, findEditorialImage, findStartupImage, findReportageImage, findMarketAnalysisImage } from "./stockImages";
 import { generateVerifyHash } from "./verify";
-import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
+import { certifyWithPpv } from "./proofpressVerifyClient";
 
 // ─── Genera 20 news startup ───────────────────────────────────────────────────
 export async function generateStartupNews(): Promise<void> {
@@ -86,7 +86,6 @@ Restituisci un JSON con questa struttura:
       const item = content.news[i];
       const imageUrl = await findNewsImage(item.title, item.category);
       const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
-      const trustResult = computeTrustGrade({ verifyHash, ipfsCid: null, sourceName: item.sourceName, sourceUrl: item.sourceUrl, summary: item.summary });
       const [insertedSU] = await db.insert(newsItems).values({
         title: item.title,
         summary: item.summary,
@@ -99,49 +98,42 @@ Restituisci un JSON con questa struttura:
         position: i + 1,
         publishedAt: new Date().toISOString(),
         verifyHash,
-        trustScore: trustResult.score / 100,
-        trustGrade: trustResult.grade,
+        trustScore: null,
+        trustGrade: null,
       }).$returningId();
 
-      // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso
+      // Certificazione ProofPress Verify API esterna — unico sistema autorizzato
       setImmediate(async () => {
         try {
-          const { pinVerificationReport } = await import('./pinata.js');
-          const { cid, ipfsUrl } = await pinVerificationReport({
-            verifyHash,
-            article: {
-              id: insertedSU.id,
-              title: item.title,
-              summary: item.summary,
-              section: 'startup',
-              sourceName: item.sourceName,
-              sourceUrl: item.sourceUrl,
-              publishedAt: new Date().toISOString(),
-              category: item.category,
-              weekLabel,
-            },
-          });
-          // Upgrade Trust Score: ora che IPFS è disponibile, ricalcola (B → A se tutti i criteri soddisfatti)
-          const upgraded = upgradeTrustGradeAfterIpfs({
-            verifyHash,
-            ipfsCid: cid,
-            sourceName: item.sourceName,
+          const ppvResult = await certifyWithPpv({
+            title: item.title,
+            content: item.summary,
             sourceUrl: item.sourceUrl,
-            summary: item.summary,
+            productType: 'news_verify',
           });
-          await db
-            .update(newsItems)
-            .set({
-              ipfsCid: cid,
-              ipfsUrl,
-              ipfsPinnedAt: new Date(),
-              trustScore: upgraded.score / 100,
-              trustGrade: upgraded.grade,
-            })
-            .where(eq(newsItems.id, insertedSU.id));
-          console.log(`[StartupScheduler] ⛓ IPFS pinned + Trust upgraded →${upgraded.grade}: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
-        } catch (pinErr) {
-          console.warn(`[StartupScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
+          if (ppvResult) {
+            await db
+              .update(newsItems)
+              .set({
+                verifyHash: ppvResult.hash,
+                ipfsCid: ppvResult.ipfs_cid,
+                ipfsUrl: ppvResult.ipfs_url,
+                ipfsPinnedAt: new Date(),
+                trustScore: ppvResult.trust_score,
+                trustGrade: ppvResult.trust_grade,
+                ppvDocumentId: ppvResult.document_id,
+                ppvHash: ppvResult.hash,
+                ppvIpfsUrl: ppvResult.ipfs_url,
+                ppvTrustScore: ppvResult.trust_score,
+                ppvTrustGrade: ppvResult.trust_grade,
+                ppvCertifiedAt: new Date(),
+                verifyReport: ppvResult.report as unknown as Record<string, unknown>,
+              })
+              .where(eq(newsItems.id, insertedSU.id));
+            console.log(`[StartupScheduler] ✅ PPV certificato: grade=${ppvResult.trust_grade} doc=${ppvResult.document_id} | ${item.title.substring(0, 50)}`);
+          }
+        } catch (certErr) {
+          console.warn(`[StartupScheduler] ⚠️ Certificazione PPV fallita (non critico):`, certErr);
         }
       });
     }

@@ -22,7 +22,7 @@ import { scrapeAINews, scrapeStartupNews, scrapeDealroomNews, verifyUrl, sanitiz
 import { SECTION_FALLBACKS } from "./rssSources";
 import { auditRecentNews } from "./urlAuditFix";
 import { generateVerifyHash } from "./verify";
-import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
+import { certifyWithPpv } from "./proofpressVerifyClient";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -132,7 +132,6 @@ async function saveScrapedNews(
     }
 
     const verifyHash = generateVerifyHash(article.title, article.summary, finalSourceUrl, new Date());
-    const trustResult = computeTrustGrade({ verifyHash, ipfsCid: null, sourceName: article.sourceName, sourceUrl: finalSourceUrl, summary: article.summary });
     const [inserted] = await db.insert(newsItems).values({
       section,
       title: article.title,
@@ -146,50 +145,43 @@ async function saveScrapedNews(
       imageUrl,
       videoUrl: article.videoUrl ?? null,
       verifyHash,
-      trustScore: trustResult.score / 100,
-      trustGrade: trustResult.grade,
+      trustScore: null,
+      trustGrade: null,
     }).$returningId();
     saved++;
 
-    // Pinning automatico su IPFS via Pinata — asincrono, non blocca il flusso
+    // Certificazione ProofPress Verify API esterna — unico sistema autorizzato
     setImmediate(async () => {
       try {
-        const { pinVerificationReport } = await import('./pinata.js');
-        const { cid, ipfsUrl } = await pinVerificationReport({
-          verifyHash,
-          article: {
-            id: inserted.id,
-            title: article.title,
-            summary: article.summary,
-            section,
-            sourceName: article.sourceName,
-            sourceUrl: finalSourceUrl,
-            publishedAt: article.publishedAt,
-            category: article.category,
-            weekLabel,
-          },
-        });
-        // Upgrade Trust Score: ora che IPFS è disponibile, ricalcola (B → A se tutti i criteri soddisfatti)
-        const upgraded = upgradeTrustGradeAfterIpfs({
-          verifyHash,
-          ipfsCid: cid,
-          sourceName: article.sourceName,
+        const ppvResult = await certifyWithPpv({
+          title: article.title,
+          content: article.summary,
           sourceUrl: finalSourceUrl,
-          summary: article.summary,
+          productType: 'news_verify',
         });
-        await db
-          .update(newsItems)
-          .set({
-            ipfsCid: cid,
-            ipfsUrl,
-            ipfsPinnedAt: new Date(),
-            trustScore: upgraded.score / 100,
-            trustGrade: upgraded.grade,
-          })
-          .where(eq(newsItems.id, inserted.id));
-        console.log(`[RssNewsScheduler] ⛓ IPFS pinned + Trust upgraded →${upgraded.grade}: ${article.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
-      } catch (pinErr) {
-        console.warn(`[RssNewsScheduler] ⚠️ IPFS pin fallito (non critico):`, pinErr);
+        if (ppvResult) {
+          await db
+            .update(newsItems)
+            .set({
+              verifyHash: ppvResult.hash,
+              ipfsCid: ppvResult.ipfs_cid,
+              ipfsUrl: ppvResult.ipfs_url,
+              ipfsPinnedAt: new Date(),
+              trustScore: ppvResult.trust_score,
+              trustGrade: ppvResult.trust_grade,
+              ppvDocumentId: ppvResult.document_id,
+              ppvHash: ppvResult.hash,
+              ppvIpfsUrl: ppvResult.ipfs_url,
+              ppvTrustScore: ppvResult.trust_score,
+              ppvTrustGrade: ppvResult.trust_grade,
+              ppvCertifiedAt: new Date(),
+              verifyReport: ppvResult.report as unknown as Record<string, unknown>,
+            })
+            .where(eq(newsItems.id, inserted.id));
+          console.log(`[RssNewsScheduler] ✅ PPV certificato: grade=${ppvResult.trust_grade} doc=${ppvResult.document_id} | ${article.title.substring(0, 50)}`);
+        }
+      } catch (certErr) {
+        console.warn(`[RssNewsScheduler] ⚠️ Certificazione PPV fallita (non critico):`, certErr);
       }
     });
   }

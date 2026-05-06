@@ -1073,47 +1073,38 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           return { cid: article.ipfsCid, ipfsUrl: article.ipfsUrl, alreadyPinned: true };
         }
 
-        // Pinna su IPFS via Pinata
-        const { pinVerificationReport } = await import('./pinata.js');
-        const { cid, ipfsUrl } = await pinVerificationReport({
-          verifyHash: article.verifyHash!,
-          article: {
-            id: article.id,
-            title: article.title,
-            summary: article.summary,
-            section: article.section,
-            sourceName: article.sourceName,
-            sourceUrl: article.sourceUrl,
-            publishedAt: article.publishedAt,
-            category: article.category,
-            weekLabel: article.weekLabel,
-          },
+        // Certifica con ProofPress Verify API esterna — unico sistema autorizzato
+        const { certifyWithPpv } = await import('./proofpressVerifyClient.js');
+        const ppvResult = await certifyWithPpv({
+          title: article.title,
+          content: article.summary,
+          sourceUrl: article.sourceUrl ?? '',
+          productType: 'news_verify',
         });
+        if (!ppvResult) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Certificazione PPV fallita' });
 
-        // Ricalcola trustScore ora che IPFS è disponibile
-        const { upgradeTrustGradeAfterIpfs } = await import('./trustScore.js');
-        const upgraded = upgradeTrustGradeAfterIpfs({
-          verifyHash: article.verifyHash!,
-          ipfsCid: cid,
-          sourceName: article.sourceName,
-          sourceUrl: article.sourceUrl,
-          summary: article.summary,
-        });
-
-        // Salva CID, URL e trustScore aggiornato nel DB
+        // Salva risultati PPV nel DB
         await db
           .update(newsItemsTable)
           .set({
-            ipfsCid: cid,
-            ipfsUrl: ipfsUrl,
+            verifyHash: ppvResult.hash,
+            ipfsCid: ppvResult.ipfs_cid,
+            ipfsUrl: ppvResult.ipfs_url,
             ipfsPinnedAt: new Date(),
-            trustScore: upgraded.score / 100,
-            trustGrade: upgraded.grade,
+            trustScore: ppvResult.trust_score,
+            trustGrade: ppvResult.trust_grade,
+            ppvDocumentId: ppvResult.document_id,
+            ppvHash: ppvResult.hash,
+            ppvIpfsUrl: ppvResult.ipfs_url,
+            ppvTrustScore: ppvResult.trust_score,
+            ppvTrustGrade: ppvResult.trust_grade,
+            ppvCertifiedAt: new Date(),
+            verifyReport: ppvResult.report as unknown as Record<string, unknown>,
           })
           .where(eq(newsItemsTable.id, article.id));
 
-        console.log(`[pinToIPFS] ⛓ Trust upgraded →${upgraded.grade} (${upgraded.score}/100) post-IPFS: ${article.title.substring(0, 50)}`);
-        return { cid, ipfsUrl, alreadyPinned: false, trustGrade: upgraded.grade, trustScore: upgraded.score };
+        console.log(`[pinToIPFS→PPV] ✅ grade=${ppvResult.trust_grade} doc=${ppvResult.document_id}: ${article.title.substring(0, 50)}`);
+        return { cid: ppvResult.ipfs_cid, ipfsUrl: ppvResult.ipfs_url, alreadyPinned: false, trustGrade: ppvResult.trust_grade, trustScore: ppvResult.trust_score };
       }),
 
     // Proxy server-side per caricare un Verification Report da IPFS — bypassa il CORS
@@ -1206,87 +1197,42 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           };
         }
 
-        // Esegui pipeline verify
-        const { runVerifyPipeline } = await import('./verifyEngine.js');
-        const { corroborateClaims } = await import('./corroborator.js');
-        // Wrapper closure: passa articleTitle a corroborateClaims per Perplexity Sonar
-        const _articleTitleForCorr = article.title ?? '';
-        const _corroborationFnWithTitle = (claims: Parameters<typeof corroborateClaims>[0]) =>
-          corroborateClaims(claims, _articleTitleForCorr);
-
-        const report = await runVerifyPipeline({
-          articleId: article.id,
+        // Certifica con ProofPress Verify API esterna — unico sistema autorizzato
+        const { certifyWithPpv: certifyFull } = await import('./proofpressVerifyClient.js');
+        const ppvFull = await certifyFull({
           title: article.title,
-          summary: article.summary,
-          sourceUrl: article.sourceUrl,
-          verifyHash: article.verifyHash,
-          corroborationFn: _corroborationFnWithTitle,
+          content: article.summary,
+          sourceUrl: article.sourceUrl ?? '',
+          productType: 'news_verify',
         });
+        if (!ppvFull) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Certificazione PPV fallita' });
 
-        // Salva risultati nel DB
+        // Salva risultati PPV nel DB
         await db
           .update(newsItemsTable)
           .set({
-            verifyReport: report as unknown as Record<string, unknown>,
-            trustScore: report.trust_score.overall,
-            trustGrade: report.trust_score.grade,
+            verifyHash: ppvFull.hash,
+            ipfsCid: ppvFull.ipfs_cid,
+            ipfsUrl: ppvFull.ipfs_url,
+            ipfsPinnedAt: new Date(),
+            trustScore: ppvFull.trust_score,
+            trustGrade: ppvFull.trust_grade,
+            ppvDocumentId: ppvFull.document_id,
+            ppvHash: ppvFull.hash,
+            ppvIpfsUrl: ppvFull.ipfs_url,
+            ppvTrustScore: ppvFull.trust_score,
+            ppvTrustGrade: ppvFull.trust_grade,
+            ppvCertifiedAt: new Date(),
+            verifyReport: ppvFull.report as unknown as Record<string, unknown>,
           })
           .where(eq(newsItemsTable.verifyHash, input.hash));
 
-        // Aggiorna IPFS con il report arricchito (se già pinnato, skippa)
-        try {
-          const ipfsRows = await db
-            .select({ ipfsCid: newsItemsTable.ipfsCid })
-            .from(newsItemsTable)
-            .where(eq(newsItemsTable.verifyHash, input.hash))
-            .limit(1);
-
-          if (!ipfsRows[0]?.ipfsCid) {
-            const { pinVerificationReport } = await import('./pinata.js');
-            const { cid, ipfsUrl } = await pinVerificationReport({
-              verifyHash: article.verifyHash,
-              article: {
-                id: article.id,
-                title: article.title,
-                summary: article.summary,
-                section: article.section,
-                sourceName: article.sourceName ?? null,
-                sourceUrl: article.sourceUrl ?? null,
-                publishedAt: article.publishedAt ?? null,
-                category: article.category,
-                weekLabel: article.weekLabel,
-              },
-            });
-            // Ricalcola trustScore ora che IPFS è disponibile
-            const { upgradeTrustGradeAfterIpfs } = await import('./trustScore.js');
-            const upgradedVE = upgradeTrustGradeAfterIpfs({
-              verifyHash: article.verifyHash,
-              ipfsCid: cid,
-              sourceName: article.sourceName ?? null,
-              sourceUrl: article.sourceUrl ?? null,
-              summary: article.summary,
-            });
-            await db
-              .update(newsItemsTable)
-              .set({
-                ipfsCid: cid,
-                ipfsUrl: ipfsUrl,
-                ipfsPinnedAt: new Date(),
-                trustScore: upgradedVE.score / 100,
-                trustGrade: upgradedVE.grade,
-              })
-              .where(eq(newsItemsTable.verifyHash, input.hash));
-            console.log(`[VerifyEngine] ⛓ Trust upgraded →${upgradedVE.grade} post-IPFS: ${article.title.substring(0, 50)}`);
-          }
-        } catch (ipfsErr) {
-          console.warn('[VerifyEngine] IPFS pinning fallito (non bloccante):', ipfsErr);
-        }
-
+        console.log(`[runFullVerify→PPV] ✅ grade=${ppvFull.trust_grade} doc=${ppvFull.document_id}: ${article.title.substring(0, 50)}`);
         return {
           status: 'completed' as const,
-          trustScore: report.trust_score.overall,
-          trustGrade: report.trust_score.grade,
-          report,
+          trustScore: ppvFull.trust_score,
+          trustGrade: ppvFull.trust_grade,
+          report: ppvFull.report,
         };
       }),
 

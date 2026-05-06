@@ -235,6 +235,11 @@ function ArticleCard({ article }: {
     id: number; title: string; excerpt: string | null; articleUrl: string;
     publication: string; tags: string | null; imageUrl: string | null; dateLabel: string;
     verifyHash?: string | null;
+    ppvHash?: string | null;
+    ppvIpfsUrl?: string | null;
+    ppvTrustGrade?: string | null;
+    ppvTrustScore?: number | null;
+    ppvDocumentId?: number | null;
   }
 }) {
   const tags = article.tags ? article.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
@@ -281,9 +286,18 @@ function ArticleCard({ article }: {
             ))}
           </div>
         )}
-        {article.verifyHash && (
+        {(article.verifyHash || article.ppvHash) && (
           <div className="mt-2">
-            <VerifyBadge hash={article.verifyHash} size="sm" />
+            <VerifyBadge
+              hash={article.ppvHash || article.verifyHash}
+              size="sm"
+              trustGrade={article.ppvTrustGrade}
+              trustScore={article.ppvTrustScore}
+              ppvHash={article.ppvHash}
+              ppvIpfsUrl={article.ppvIpfsUrl}
+              ppvTrustGrade={article.ppvTrustGrade}
+              ppvDocumentId={article.ppvDocumentId}
+            />
           </div>
         )}
       </div>

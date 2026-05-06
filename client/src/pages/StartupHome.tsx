@@ -43,7 +43,7 @@ function SectionBadge({ label }: { label: string }) {
 }
 
 function NewsCard({ item, showImage = false }: {
-  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null; trustGrade?: string | null; trustScore?: number | null };
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null; trustGrade?: string | null; trustScore?: number | null; ppvHash?: string | null; ppvIpfsUrl?: string | null; ppvTrustGrade?: string | null; ppvTrustScore?: number | null; ppvDocumentId?: number | null };
   showImage?: boolean;
 }) {
   const href = `/startup/news/${item.id}`;
@@ -72,9 +72,18 @@ function NewsCard({ item, showImage = false }: {
           {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
         </p>
       )}
-      {item.verifyHash && (
+      {(item.verifyHash || item.ppvHash) && (
         <div className="mt-1">
-          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
+          <VerifyBadge
+            hash={item.ppvHash || item.verifyHash}
+            size="sm"
+            trustGrade={item.ppvTrustGrade || item.trustGrade}
+            trustScore={item.ppvTrustScore ?? item.trustScore}
+            ppvHash={item.ppvHash}
+            ppvIpfsUrl={item.ppvIpfsUrl}
+            ppvTrustGrade={item.ppvTrustGrade}
+            ppvDocumentId={item.ppvDocumentId}
+          />
         </div>
       )}
     </div>
@@ -194,9 +203,11 @@ export default function StartupHome() {
                         Fonte: {heroNews.sourceName}{heroNews.publishedAt ? ` · ${formatShortDate(heroNews.publishedAt)}` : ""}
                       </p>
                     )}
-                    {heroNews.verifyHash && (
+                    {(heroNews.verifyHash || (heroNews as any).ppvHash) && (
                       <div className="mt-1.5">
-                        <VerifyBadge hash={heroNews.verifyHash} size="sm" trustGrade={heroNews.trustGrade} trustScore={heroNews.trustScore} />
+                        <VerifyBadge
+                          hash={(heroNews as any).ppvHash || heroNews.verifyHash}
+                          size="sm" trustGrade={heroNews.trustGrade} trustScore={heroNews.trustScore} />
                       </div>
                     )}
                   </div>

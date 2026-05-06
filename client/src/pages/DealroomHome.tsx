@@ -63,6 +63,11 @@ function NewsCard({
     verifyHash?: string | null;
     trustGrade?: string | null;
     trustScore?: number | null;
+    ppvHash?: string | null;
+    ppvIpfsUrl?: string | null;
+    ppvTrustGrade?: string | null;
+    ppvTrustScore?: number | null;
+    ppvDocumentId?: number | null;
   };
   showImage?: boolean;
 }) {
@@ -99,9 +104,18 @@ function NewsCard({
           {item.publishedAt ? ` \u00b7 ${formatShortDate(item.publishedAt)}` : ""}
         </p>
       )}
-      {item.verifyHash && (
+      {(item.verifyHash || item.ppvHash) && (
         <div className="mt-1">
-          <VerifyBadge hash={item.verifyHash} size="sm" trustGrade={item.trustGrade} trustScore={item.trustScore} />
+          <VerifyBadge
+            hash={item.ppvHash || item.verifyHash}
+            size="sm"
+            trustGrade={item.ppvTrustGrade || item.trustGrade}
+            trustScore={item.ppvTrustScore ?? item.trustScore}
+            ppvHash={item.ppvHash}
+            ppvIpfsUrl={item.ppvIpfsUrl}
+            ppvTrustGrade={item.ppvTrustGrade}
+            ppvDocumentId={item.ppvDocumentId}
+          />
         </div>
       )}
     </div>

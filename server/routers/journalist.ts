@@ -12,7 +12,7 @@ import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { journalists, journalistArticles, newsItems } from "../../drizzle/schema";
 import { sendArticleApprovedEmail, sendArticleRejectedEmail } from "../_core/mailer";
-import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "../trustScore";
+import { certifyWithPpv } from "../proofpressVerifyClient";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -750,17 +750,7 @@ export const journalistAdminRouter = router({
       );
       const weekLabel = `${now.getFullYear()}-W${String(weekNum).padStart(2, "0")}`;
 
-      // Calcola Trust Score per l'articolo certificato del giornalista
-      const trustResult = computeTrustGrade({
-        verifyHash,
-        ipfsCid: null,
-        sourceName: `${journalist.displayName} — ProofPress Certified`,
-        sourceUrl: null,
-        body: article.body,
-        summary,
-      });
-
-      // Inserisce in news_items
+      // Inserisce in news_items (senza trust score iniziale, PPV lo aggiornerà in asincrono)
       const [newsResult] = await db.insert(newsItems).values({
         section: "news",
         title: article.title,
@@ -773,14 +763,14 @@ export const journalistAdminRouter = router({
         position: 0,
         imageUrl: article.imageUrl ?? null,
         verifyHash,
-        trustScore: trustResult.score / 100,
-        trustGrade: trustResult.grade,
+        trustScore: null,
+        trustGrade: null,
         createdAt: now,
       });
 
       const newsItemId = (newsResult as any).insertId;
 
-      // Aggiorna articolo (incluso trustScore e trustGrade)
+      // Aggiorna articolo
       await db
         .update(journalistArticles)
         .set({
@@ -791,8 +781,8 @@ export const journalistAdminRouter = router({
           newsItemId,
           reviewedAt: now,
           reviewNotes: null,
-          trustScore: trustResult.score / 100,
-          trustGrade: trustResult.grade,
+          trustScore: null,
+          trustGrade: null,
         })
         .where(eq(journalistArticles.id, article.id));
 
@@ -813,7 +803,7 @@ export const journalistAdminRouter = router({
         }).catch((err) => console.error("[Mailer] Errore invio email approvazione:", err));
       }
 
-      // Pinning IPFS asincrono — non blocca la risposta all'admin
+      // Certificazione ProofPress Verify API esterna — unico sistema autorizzato, asincrono
       const _articleId = article.id;
       const _newsItemId = newsItemId;
       const _title = article.title;
@@ -823,52 +813,45 @@ export const journalistAdminRouter = router({
         try {
           const dbInner = await (await import('../db')).getDb();
           if (!dbInner) return;
-          const { pinVerificationReport } = await import('../pinata.js');
-          const { cid, ipfsUrl } = await pinVerificationReport({
-            verifyHash,
-            article: {
-              id: _newsItemId,
-              title: _title,
-              summary: _summary,
-              section: 'news',
-              sourceName: _sourceName,
-              sourceUrl: null,
-              publishedAt: now.toISOString(),
-              category: article.category,
-              weekLabel,
-            },
+          const ppvResult = await certifyWithPpv({
+            title: _title,
+            content: _summary,
+            sourceUrl: '',
+            productType: 'news_verify',
           });
-          // Upgrade Trust Score con ipfsCid ora disponibile
-          const upgraded = upgradeTrustGradeAfterIpfs({
-            verifyHash,
-            ipfsCid: cid,
-            sourceName: _sourceName,
-            sourceUrl: null,
-            body: article.body,
-            summary: _summary,
-          });
-          // Aggiorna news_items con IPFS + nuovo grade
+          if (!ppvResult) return;
+          const { newsItems: niSchema, journalistArticles: jaSchema } = await import('../../drizzle/schema');
+          const { eq: eqInner } = await import('drizzle-orm');
+          // Aggiorna news_items con dati PPV
           await dbInner
-            .update((await import('../../drizzle/schema')).newsItems)
+            .update(niSchema)
             .set({
-              ipfsCid: cid,
-              ipfsUrl,
+              verifyHash: ppvResult.hash,
+              ipfsCid: ppvResult.ipfs_cid,
+              ipfsUrl: ppvResult.ipfs_url,
               ipfsPinnedAt: now,
-              trustScore: upgraded.score / 100,
-              trustGrade: upgraded.grade,
+              trustScore: ppvResult.trust_score,
+              trustGrade: ppvResult.trust_grade,
+              ppvDocumentId: ppvResult.document_id,
+              ppvHash: ppvResult.hash,
+              ppvIpfsUrl: ppvResult.ipfs_url,
+              ppvTrustScore: ppvResult.trust_score,
+              ppvTrustGrade: ppvResult.trust_grade,
+              ppvCertifiedAt: now,
+              verifyReport: ppvResult.report as unknown as Record<string, unknown>,
             })
-            .where((await import('drizzle-orm')).eq((await import('../../drizzle/schema')).newsItems.id, _newsItemId));
-          // Aggiorna anche journalist_articles con il nuovo grade
+            .where(eqInner(niSchema.id, _newsItemId));
+          // Aggiorna journalist_articles con il grade PPV
           await dbInner
-            .update((await import('../../drizzle/schema')).journalistArticles)
+            .update(jaSchema)
             .set({
-              trustScore: upgraded.score / 100,
-              trustGrade: upgraded.grade,
+              trustScore: ppvResult.trust_score,
+              trustGrade: ppvResult.trust_grade,
             })
-            .where((await import('drizzle-orm')).eq((await import('../../drizzle/schema')).journalistArticles.id, _articleId));
-          console.log(`[JournalistRouter] ⛓ IPFS pinned + Trust upgraded →${upgraded.grade}: ${_title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
-        } catch (pinErr) {
-          console.warn('[JournalistRouter] ⚠️ IPFS pin fallito (non critico):', pinErr);
+            .where(eqInner(jaSchema.id, _articleId));
+          console.log(`[JournalistRouter] ✅ PPV certificato: grade=${ppvResult.trust_grade} doc=${ppvResult.document_id} | ${_title.substring(0, 50)}`);
+        } catch (certErr) {
+          console.warn('[JournalistRouter] ⚠️ Certificazione PPV fallita (non critico):', certErr);
         }
       });
 
