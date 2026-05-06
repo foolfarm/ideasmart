@@ -1,571 +1,447 @@
 /**
  * BASE ALPHA — Osservatorio Intelligence Premium
- * Pagina dedicata al servizio di reporting su tematiche specifiche
- * Palette: nero inchiostro (#0a0a0a) + oro (#c9a227) + carta (#fafaf8)
- * Stile: editorial intelligence, premium B2B
+ * Redesign: sfondo bianco/grigio chiaro, alta leggibilità, CTA forti
  */
 import { useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import LeftSidebar from "@/components/LeftSidebar";
+import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-const INK = "#0a0a0a";
-const GOLD = "#c9a227";
-const GOLD_LIGHT = "#f9f3e3";
-const PAPER = "#fafaf8";
-const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif";
-
-// ─── Settori coperti dall'Osservatorio ───────────────────────────────────────
 const SECTORS = [
-  { id: "ai", label: "Intelligenza Artificiale & LLM", icon: "🤖", desc: "Modelli fondazionali, infrastruttura AI, adozione enterprise, regolamentazione EU AI Act" },
-  { id: "vc", label: "Venture Capital & Private Equity", icon: "💼", desc: "Deal flow, round di finanziamento, trend LP, emerging markets, co-investment" },
-  { id: "startup", label: "Startup & Ecosistemi", icon: "🚀", desc: "Early stage, scale-up, exit, M&A, ecosistemi nazionali e comparativi EU/US/APAC" },
-  { id: "tech", label: "Tecnologia & Infrastruttura", icon: "⚙️", desc: "Cloud, edge computing, quantum, cybersecurity, semiconduttori, supply chain tech" },
-  { id: "fintech", label: "Fintech & Digital Finance", icon: "🏦", desc: "Open banking, DeFi istituzionale, CBDC, embedded finance, regtech" },
-  { id: "health", label: "HealthTech & BioTech", icon: "🧬", desc: "Digital health, genomica, AI diagnostica, farmaceutica digitale, MedTech" },
-  { id: "energy", label: "Energy & CleanTech", icon: "⚡", desc: "Transizione energetica, storage, hydrogen, carbon markets, smart grid" },
-  { id: "media", label: "Media & Informazione", icon: "📰", desc: "Giornalismo agentico, AI content, piattaforme, advertising tech, fact-checking" },
-  { id: "policy", label: "Policy & Regolamentazione", icon: "🏛️", desc: "AI Act, GDPR evolution, Digital Markets Act, policy tech, compliance" },
-  { id: "space", label: "Space Economy", icon: "🛰️", desc: "New Space, satellite tech, launch market, downstream applications, dual-use" },
+  { icon: "🤖", label: "Intelligenza Artificiale & LLM", desc: "Modelli fondazionali, infrastruttura AI, adozione enterprise, EU AI Act" },
+  { icon: "💼", label: "Venture Capital & Private Equity", desc: "Deal flow, round, trend LP, emerging markets, co-investment" },
+  { icon: "🚀", label: "Startup & Ecosistemi", desc: "Early stage, scale-up, exit, M&A, ecosistemi EU/US/APAC" },
+  { icon: "⚙️", label: "Tecnologia & Infrastruttura", desc: "Cloud, quantum, cybersecurity, semiconduttori, supply chain" },
+  { icon: "🏦", label: "Fintech & Digital Finance", desc: "Open banking, DeFi istituzionale, CBDC, embedded finance" },
+  { icon: "🧬", label: "HealthTech & BioTech", desc: "Digital health, genomica, AI diagnostica, MedTech" },
+  { icon: "⚡", label: "Energy & CleanTech", desc: "Transizione energetica, storage, hydrogen, carbon markets" },
+  { icon: "📰", label: "Media & Informazione", desc: "Giornalismo agentico, AI content, advertising tech, fact-checking" },
+  { icon: "🏛️", label: "Policy & Regolamentazione", desc: "AI Act, GDPR, Digital Markets Act, compliance" },
+  { icon: "🛰️", label: "Space Economy", desc: "New Space, satellite tech, launch market, dual-use" },
 ];
 
-// ─── Piani abbonamento ────────────────────────────────────────────────────────
 const PLANS = [
   {
     id: "weekly",
-    label: "WEEKLY BRIEF",
+    badge: "ENTRY",
+    label: "Weekly Brief",
     freq: "Settimanale",
-    icon: "📋",
-    desc: "Report settimanale su 1 settore verticale. Sintesi delle notizie pre-pubbliche più rilevanti della settimana, analisi trend e segnali deboli.",
+    desc: "Report settimanale su 1 settore verticale. Segnali pre-pubblici, trend e key takeaway.",
     features: [
-      "1 settore verticale a scelta",
+      "1 settore verticale",
       "Report settimanale certificato PPV",
       "Top 10 segnali pre-pubblici",
       "Trend analysis + Key takeaway",
-      "Accesso archivio 3 mesi",
+      "Archivio 3 mesi",
     ],
-    cta: "Richiedi informazioni",
     highlight: false,
   },
   {
     id: "monthly",
-    label: "MONTHLY INTELLIGENCE",
+    badge: "MOST POPULAR",
+    label: "Monthly Intelligence",
     freq: "Mensile",
-    icon: "📊",
-    desc: "Report mensile approfondito su 2 settori verticali. Include analisi comparativa, mappa degli attori chiave e outlook strategico.",
+    desc: "Report mensile su 2 settori. Analisi comparativa, mappa attori chiave, outlook strategico 90 giorni.",
     features: [
-      "2 settori verticali a scelta",
+      "2 settori verticali",
       "Report mensile certificato PPV",
-      "Analisi pre-pubblica da 4.000+ fonti",
+      "Analisi pre-pubblica 4.000+ fonti",
       "Mappa attori & deal flow",
       "Outlook strategico 90 giorni",
-      "Accesso archivio 12 mesi",
+      "Archivio 12 mesi",
       "1 call di briefing mensile",
     ],
-    cta: "Richiedi informazioni",
     highlight: true,
   },
   {
     id: "quarterly",
-    label: "QUARTERLY DEEP DIVE",
+    badge: "PREMIUM",
+    label: "Quarterly Deep Dive",
     freq: "Trimestrale",
-    icon: "🔬",
-    desc: "Report trimestrale con focus verticale personalizzato. Analisi approfondita con ricerche su dati pre-pubblici, benchmark di mercato e scenari competitivi.",
+    desc: "Report trimestrale personalizzato. Ricerca su dati pre-pubblici, benchmark di mercato, scenari competitivi.",
     features: [
       "Settori verticali illimitati",
       "Report trimestrale certificato PPV",
       "Ricerca pre-pubblica dedicata",
       "Benchmark competitivo personalizzato",
       "Scenari strategici + raccomandazioni",
-      "Accesso archivio completo",
+      "Archivio completo",
       "Sessioni di briefing dedicate",
       "Accesso diretto al team di analisti",
     ],
-    cta: "Richiedi informazioni",
     highlight: false,
   },
 ];
 
-// ─── Componente Piano ─────────────────────────────────────────────────────────
-function PlanCard({ plan, onContact }: { plan: typeof PLANS[0]; onContact: (plan: string) => void }) {
-  return (
-    <div
-      className="flex flex-col rounded-none border p-6 transition-all duration-200 hover:shadow-lg"
-      style={{
-        borderColor: plan.highlight ? GOLD : `${INK}20`,
-        background: plan.highlight ? INK : PAPER,
-        color: plan.highlight ? PAPER : INK,
-        boxShadow: plan.highlight ? `0 0 0 1px ${GOLD}` : undefined,
-      }}
-    >
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-2xl">{plan.icon}</span>
-        <div>
-          <p className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: plan.highlight ? GOLD : `${INK}50` }}>
-            {plan.freq}
-          </p>
-          <h3 className="text-base font-black tracking-tight" style={{ fontFamily: FONT }}>
-            {plan.label}
-          </h3>
-        </div>
-      </div>
-      <p className="text-sm leading-relaxed mb-5" style={{ color: plan.highlight ? `${PAPER}80` : `${INK}65`, fontFamily: FONT }}>
-        {plan.desc}
-      </p>
-      <ul className="flex-1 space-y-2 mb-6">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2 text-[13px]" style={{ color: plan.highlight ? `${PAPER}90` : `${INK}80`, fontFamily: FONT }}>
-            <span style={{ color: GOLD, marginTop: "2px", flexShrink: 0 }}>✓</span>
-            {f}
-          </li>
-        ))}
-      </ul>
-      <button
-        onClick={() => onContact(plan.label)}
-        className="w-full py-2.5 text-[11px] font-black tracking-[0.15em] uppercase transition-all duration-200 hover:opacity-90"
-        style={{
-          background: plan.highlight ? GOLD : INK,
-          color: plan.highlight ? INK : PAPER,
-          fontFamily: FONT,
-        }}
-      >
-        {plan.cta} →
-      </button>
-    </div>
-  );
-}
-
-// ─── Componente Settore ───────────────────────────────────────────────────────
-function SectorCard({ sector }: { sector: typeof SECTORS[0] }) {
-  return (
-    <div
-      className="p-4 border transition-all duration-200 hover:border-[#c9a227] hover:shadow-sm group"
-      style={{ borderColor: `${INK}12`, background: PAPER }}
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-lg">{sector.icon}</span>
-        <h4 className="text-[13px] font-black" style={{ color: INK, fontFamily: FONT }}>
-          {sector.label}
-        </h4>
-      </div>
-      <p className="text-[12px] leading-relaxed" style={{ color: `${INK}55`, fontFamily: FONT }}>
-        {sector.desc}
-      </p>
-    </div>
-  );
-}
-
-// ─── Pagina principale ────────────────────────────────────────────────────────
 export default function BaseAlpha() {
-  const [contactForm, setContactForm] = useState({ name: "", email: "", company: "", plan: "", sector: "", message: "" });
-  const [showForm, setShowForm] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", company: "", plan: "", sector: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
 
   const submitLead = trpc.centroStudi.submitLead.useMutation({
     onSuccess: () => {
-      toast.success("Richiesta inviata — il nostro team ti contatterà entro 24 ore.");
-      setShowForm(false);
-      setContactForm({ name: "", email: "", company: "", plan: "", sector: "", message: "" });
-      setSubmitting(false);
+      setSubmitted(true);
+      toast.success("Richiesta inviata! Ti risponderemo entro 24 ore.");
     },
-    onError: () => {
-      toast.error("Errore nell'invio. Riprova o scrivici a info@proofpress.ai");
-      setSubmitting(false);
-    },
+    onError: () => toast.error("Errore nell'invio. Riprova o scrivi a info@proofpress.ai"),
   });
 
-  // Mostra il form quando si clicca su un piano
-  const _ = showForm;
-
-  function handleContact(planLabel: string) {
-    setContactForm(f => ({ ...f, plan: planLabel }));
-    setShowForm(true);
-    setTimeout(() => document.getElementById("ba-contact-form")?.scrollIntoView({ behavior: "smooth" }), 100);
-  }
-
-  function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
+    if (!form.name || !form.email) return toast.error("Nome e email sono obbligatori");
     submitLead.mutate({
-      name: contactForm.name,
-      email: contactForm.email,
-      company: contactForm.company || undefined,
-      sector: contactForm.sector || undefined,
+      name: form.name,
+      email: form.email,
+      company: form.company || undefined,
+      sector: form.sector || undefined,
       interest: "osservatorio",
-      message: `Piano: ${contactForm.plan}${contactForm.message ? ` | ${contactForm.message}` : ""}`,
+      message: `Piano: ${form.plan}${form.message ? ` | ${form.message}` : ""}`,
       source: "base-alpha",
     });
-  }
+  };
+
+  const scrollToContact = () =>
+    document.getElementById("ba-contact")?.scrollIntoView({ behavior: "smooth" });
+
+  const scrollToPlans = () =>
+    document.getElementById("ba-plans")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <SEOHead
         title="Base Alpha — Osservatorio Intelligence Premium | ProofPress"
-        description="Reporting su tematiche specifiche basato su notizie pre-pubbliche, analisi AI multi-fonte e certificazione ProofPress Verify. Abbonamenti settimanali, mensili e trimestrali."
+        description="Il primo osservatorio con redazione agentica che analizza oltre 4.000 fonti pre-pubbliche. Report certificati ProofPress Verify™ su 10 settori verticali."
         canonical="https://proofpress.ai/base-alpha"
         ogSiteName="ProofPress"
       />
+      <SharedPageHeader />
+      <BreakingNewsTicker />
 
-      <div className="flex min-h-screen" style={{ background: PAPER, color: INK }}>
+      <div className="flex min-h-screen">
         <LeftSidebar />
-        <div className="flex-1 min-w-0 overflow-x-hidden">
-          <SharedPageHeader />
+        <main className="flex-1 min-w-0 overflow-x-hidden">
 
-          {/* ── HERO ─────────────────────────────────────────────────────── */}
-          <div style={{ background: INK, color: PAPER }}>
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
-              {/* Eyebrow */}
+            {/* ══ HERO — sfondo bianco, alta leggibilità ════════════════════ */}
+          <section className="bg-white border-b border-zinc-200 px-6 md:px-12 py-14 md:py-20">
+            <div className="max-w-4xl">
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-[9px] font-black tracking-[0.25em] uppercase px-2.5 py-1" style={{ background: GOLD, color: INK }}>
+                <span className="text-[10px] font-black tracking-[0.25em] uppercase px-3 py-1.5 bg-[#c9a227] text-black">
                   OSSERVATORIO
                 </span>
-                <span className="text-[10px] font-bold tracking-[0.15em] uppercase" style={{ color: `${PAPER}40` }}>
+                <span className="text-[11px] font-semibold tracking-[0.15em] uppercase text-zinc-500">
                   Intelligence Premium
                 </span>
               </div>
-
-              {/* Titolo */}
-              <h1
-                className="text-4xl sm:text-5xl lg:text-6xl font-black leading-none tracking-tight mb-6"
-                style={{ fontFamily: FONT, letterSpacing: "-0.02em" }}
-              >
+              <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-none mb-6 text-[#111]">
                 BASE ALPHA
               </h1>
-
-              {/* Sottotitolo */}
-              <p
-                className="text-lg sm:text-xl leading-relaxed mb-8 max-w-2xl"
-                style={{ color: `${PAPER}75`, fontFamily: FONT }}
-              >
+              <p className="text-xl md:text-2xl font-medium text-zinc-600 leading-relaxed max-w-2xl mb-8">
                 Il primo osservatorio con redazione agentica che analizza oltre{" "}
-                <strong style={{ color: GOLD }}>4.000 fonti</strong> — incluse informazioni{" "}
-                <strong style={{ color: GOLD }}>pre-pubbliche</strong> — per trasformare i segnali
-                deboli in intelligence strategica certificata.
+                <strong className="text-[#c9a227]">4.000 fonti</strong> — incluse informazioni{" "}
+                <strong className="text-[#c9a227]">pre-pubbliche</strong> — per trasformare i segnali deboli in intelligence strategica certificata.
               </p>
-
-              {/* Badge PPV */}
-              <div className="flex flex-wrap items-center gap-4 mb-8">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-none border" style={{ borderColor: `${GOLD}40`, background: `${GOLD}10` }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  <span className="text-[10px] font-black tracking-wider uppercase" style={{ color: GOLD }}>
-                    Certificato ProofPress Verify™
+              <div className="flex flex-wrap gap-3 mb-10">
+                {[
+                  { dot: "bg-[#c9a227]", text: "Certificato ProofPress Verify™" },
+                  { dot: "bg-green-400", text: "Notarizzato su IPFS" },
+                  { dot: "bg-blue-400", text: "Aggiornato ogni 24h" },
+                ].map((b) => (
+                  <span key={b.text} className="flex items-center gap-2 text-sm font-semibold text-zinc-600 border border-zinc-300 px-4 py-2 rounded-full">
+                    <span className={`w-2 h-2 rounded-full ${b.dot} inline-block`} />
+                    {b.text}
                   </span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-none border" style={{ borderColor: `${PAPER}20` }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={`${PAPER}60`} strokeWidth="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                  <span className="text-[10px] font-bold tracking-wider uppercase" style={{ color: `${PAPER}50` }}>
-                    Notarizzato su IPFS
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-none border" style={{ borderColor: `${PAPER}20` }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={`${PAPER}60`} strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                  <span className="text-[10px] font-bold tracking-wider uppercase" style={{ color: `${PAPER}50` }}>
-                    Aggiornato ogni 24h
-                  </span>
-                </div>
+                ))}
               </div>
-
-              {/* CTA */}
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-4">
                 <button
-                  onClick={() => handleContact("MONTHLY INTELLIGENCE")}
-                  className="px-6 py-3 text-[11px] font-black tracking-[0.15em] uppercase transition-all hover:opacity-90"
-                  style={{ background: GOLD, color: INK, fontFamily: FONT }}
+                  onClick={scrollToContact}
+                  className="bg-[#c9a227] text-black font-black text-sm tracking-wider uppercase px-8 py-4 hover:bg-[#b8911f] transition-colors"
                 >
-                  Richiedi informazioni →
+                  RICHIEDI INFORMAZIONI →
                 </button>
-                <a
-                  href="#piani"
-                  className="px-6 py-3 text-[11px] font-black tracking-[0.15em] uppercase border transition-all hover:bg-white/5"
-                  style={{ borderColor: `${PAPER}30`, color: `${PAPER}80`, fontFamily: FONT }}
+                <button
+                  onClick={scrollToPlans}
+                  className="border-2 border-zinc-300 text-[#111] font-bold text-sm tracking-wider uppercase px-8 py-4 hover:border-zinc-600 transition-colors"
                 >
-                  Scopri i piani
-                </a>
+                  SCOPRI I PIANI
+                </button>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* ── COME FUNZIONA ─────────────────────────────────────────────── */}
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-            <div className="border-t-4 border-[#0a0a0a] mb-8">
-              <h2 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: FONT }}>
-                Come funziona l'Osservatorio
-              </h2>
-              <p className="mt-2 text-sm" style={{ color: `${INK}50`, fontFamily: FONT }}>
-                Un processo agentico in 4 fasi che trasforma il rumore informativo in intelligence azionabile
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border border-[#0a0a0a]/10">
+          {/* ══ NUMERI — sfondo grigio chiaro ══════════════════════════════════ */}
+          <section className="bg-zinc-50 border-b border-zinc-200">
+            <div className="grid grid-cols-3 divide-x divide-zinc-200">
               {[
-                {
-                  step: "01",
-                  title: "Acquisizione pre-pubblica",
-                  desc: "I nostri agenti AI monitorano continuamente oltre 4.000 fonti — database tecnici, brevetti, preprint scientifici, regulatory filings, forum specializzati — estraendo segnali prima che diventino notizie mainstream.",
-                  icon: "🔍",
-                },
-                {
-                  step: "02",
-                  title: "Analisi multi-fonte",
-                  desc: "Ogni segnale viene incrociato con dati di mercato, analisi competitive e ricerche approfondite. Gli analisti AI identificano pattern, correlazioni e implicazioni strategiche non visibili nelle singole fonti.",
-                  icon: "🧠",
-                },
-                {
-                  step: "03",
-                  title: "Elaborazione report",
-                  desc: "I dati vengono sintetizzati in report strutturati con executive summary, analisi di dettaglio, mappa degli attori chiave e outlook strategico. Ogni report è calibrato sul settore verticale del cliente.",
-                  icon: "📝",
-                },
-                {
-                  step: "04",
-                  title: "Certificazione PPV",
-                  desc: "Ogni report viene certificato attraverso la tecnologia ProofPress Verify™: hash crittografico SHA-256, notarizzazione su IPFS e Trust Score basato su confronto multi-fonte. Ogni informazione è tracciabile e verificabile.",
-                  icon: "🔐",
-                },
-              ].map((step, i) => (
-                <div
-                  key={step.step}
-                  className="p-6 border-r last:border-r-0"
-                  style={{ borderColor: `${INK}10`, borderRightColor: i < 3 ? `${INK}10` : "transparent" }}
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] font-black tracking-[0.2em] uppercase px-2 py-0.5" style={{ background: INK, color: PAPER }}>
-                      {step.step}
-                    </span>
-                    <span className="text-lg">{step.icon}</span>
-                  </div>
-                  <h3 className="text-sm font-black mb-2" style={{ fontFamily: FONT, color: INK }}>
-                    {step.title}
-                  </h3>
-                  <p className="text-[12px] leading-relaxed" style={{ color: `${INK}55`, fontFamily: FONT }}>
-                    {step.desc}
-                  </p>
+                { num: "4.000+", label: "Fonti monitorate", sub: "incluse fonti pre-pubbliche" },
+                { num: "10", label: "Settori verticali", sub: "con copertura dedicata" },
+                { num: "100%", label: "Certificato PPV", sub: "hash SHA-256 + IPFS" },
+              ].map((s) => (
+                <div key={s.num} className="px-6 md:px-10 py-8 text-center">
+                  <p className="text-4xl md:text-5xl font-black text-[#111] leading-none">{s.num}</p>
+                  <p className="text-xs font-black text-[#111] mt-2 uppercase tracking-widest">{s.label}</p>
+                  <p className="text-xs text-zinc-500 mt-1">{s.sub}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
-          {/* ── SETTORI ───────────────────────────────────────────────────── */}
-          <div style={{ background: `${INK}04` }}>
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-              <div className="border-t-4 border-[#0a0a0a] mb-8">
-                <h2 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: FONT }}>
-                  Settori coperti
-                </h2>
-                <p className="mt-2 text-sm" style={{ color: `${INK}50`, fontFamily: FONT }}>
-                  10 verticali strategici con copertura pre-pubblica e analisi approfondita
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {SECTORS.map(s => <SectorCard key={s.id} sector={s} />)}
-              </div>
-            </div>
-          </div>
-
-          {/* ── PIANI ABBONAMENTO ─────────────────────────────────────────── */}
-          <div id="piani" className="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-            <div className="border-t-4 border-[#0a0a0a] mb-8">
-              <h2 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: FONT }}>
-                Piani di abbonamento
+          {/* ══ COME FUNZIONA — sfondo bianco ══════════════════════════════════ */}
+          <section className="bg-white px-6 md:px-12 py-14 border-b border-zinc-100">
+            <div className="max-w-4xl">
+              <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Come funziona</p>
+              <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
+                Un processo agentico in 4 fasi
               </h2>
-              <p className="mt-2 text-sm" style={{ color: `${INK}50`, fontFamily: FONT }}>
-                Tre livelli di approfondimento per ogni esigenza strategica
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {PLANS.map(plan => (
-                <PlanCard key={plan.id} plan={plan} onContact={handleContact} />
-              ))}
-            </div>
-          </div>
-
-          {/* ── PERCHÉ BASE ALPHA ─────────────────────────────────────────── */}
-          <div style={{ background: INK, color: PAPER }}>
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-              <div className="border-t-4 mb-8" style={{ borderColor: GOLD }}>
-                <h2 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: FONT }}>
-                  Perché Base Alpha
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {[
                   {
-                    stat: "4.000+",
-                    label: "Fonti monitorate",
-                    desc: "Database tecnici, brevetti, preprint, regulatory filings, forum specializzati — incluse fonti pre-pubbliche non accessibili con ricerche standard.",
+                    n: "01", icon: "🔍", title: "Acquisizione pre-pubblica",
+                    desc: "I nostri agenti AI monitorano continuamente oltre 4.000 fonti — database tecnici, brevetti, preprint scientifici, regulatory filings, forum specializzati — estraendo segnali prima che diventino notizie mainstream.",
                   },
                   {
-                    stat: "24h",
-                    label: "Ciclo di aggiornamento",
-                    desc: "I nostri agenti AI lavorano continuamente. Ogni report riflette lo stato dell'arte aggiornato nelle ultime 24 ore, non la settimana scorsa.",
+                    n: "02", icon: "🧠", title: "Analisi multi-fonte",
+                    desc: "Ogni segnale viene incrociato con dati di mercato, analisi competitive e ricerche approfondite. Gli analisti AI identificano pattern, correlazioni e implicazioni strategiche non visibili nelle singole fonti.",
                   },
                   {
-                    stat: "100%",
-                    label: "Certificato PPV",
-                    desc: "Ogni informazione è certificata con hash crittografico e notarizzata su IPFS. Tracciabilità e verificabilità garantite nel tempo.",
+                    n: "03", icon: "📝", title: "Elaborazione report",
+                    desc: "I dati vengono sintetizzati in report strutturati con executive summary, analisi di dettaglio, mappa degli attori chiave e outlook strategico calibrato sul settore verticale del cliente.",
                   },
-                ].map(item => (
-                  <div key={item.stat}>
-                    <p className="text-4xl font-black mb-1" style={{ color: GOLD, fontFamily: FONT }}>{item.stat}</p>
-                    <p className="text-[11px] font-black tracking-[0.15em] uppercase mb-3" style={{ color: `${PAPER}50` }}>{item.label}</p>
-                    <p className="text-sm leading-relaxed" style={{ color: `${PAPER}65`, fontFamily: FONT }}>{item.desc}</p>
+                  {
+                    n: "04", icon: "🔐", title: "Certificazione PPV",
+                    desc: "Ogni report viene certificato attraverso ProofPress Verify™: hash crittografico SHA-256, notarizzazione su IPFS e Trust Score basato su confronto multi-fonte. Ogni informazione è tracciabile e verificabile.",
+                  },
+                ].map((s) => (
+                  <div key={s.n} className="bg-zinc-50 border border-zinc-100 p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-[11px] font-black tracking-widest text-[#c9a227]">{s.n}</span>
+                      <span className="text-2xl">{s.icon}</span>
+                    </div>
+                    <h3 className="text-lg font-black text-[#111] mb-2">{s.title}</h3>
+                    <p className="text-sm text-zinc-600 leading-relaxed">{s.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* ── FORM CONTATTO ─────────────────────────────────────────────── */}
-          <div id="ba-contact-form" className="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-            <div className="border-t-4 border-[#0a0a0a] mb-8">
-              <h2 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: FONT }}>
-                Sei interessato?
+          {/* ══ SETTORI — sfondo grigio chiaro ═════════════════════════════════ */}
+          <section className="bg-zinc-50 px-6 md:px-12 py-14 border-b border-zinc-200">
+            <div className="max-w-4xl">
+              <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Settori coperti</p>
+              <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
+                10 verticali strategici con copertura pre-pubblica
               </h2>
-              <p className="mt-2 text-sm" style={{ color: `${INK}50`, fontFamily: FONT }}>
-                Contattaci per ricevere una proposta personalizzata. Il nostro team ti risponderà entro 24 ore.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              {/* Info contatto */}
-              <div>
-                <div className="space-y-4 mb-8">
-                  {[
-                    { icon: "📧", label: "Email", value: "info@proofpress.ai" },
-                    { icon: "🌐", label: "Web", value: "proofpress.ai" },
-                    { icon: "🏢", label: "Sede", value: "Milano, Italia" },
-                  ].map(c => (
-                    <div key={c.label} className="flex items-center gap-3">
-                      <span className="text-lg">{c.icon}</span>
-                      <div>
-                        <p className="text-[10px] font-black tracking-wider uppercase" style={{ color: `${INK}40` }}>{c.label}</p>
-                        <p className="text-sm font-semibold" style={{ color: INK, fontFamily: FONT }}>{c.value}</p>
-                      </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {SECTORS.map((s) => (
+                  <div key={s.label} className="bg-white border border-zinc-200 p-4 flex gap-4 items-start hover:border-[#c9a227] transition-colors">
+                    <span className="text-2xl flex-shrink-0 mt-0.5">{s.icon}</span>
+                    <div>
+                      <p className="text-sm font-black text-[#111]">{s.label}</p>
+                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{s.desc}</p>
                     </div>
-                  ))}
-                </div>
-                <div className="p-5 border" style={{ borderColor: `${GOLD}30`, background: GOLD_LIGHT }}>
-                  <p className="text-[11px] font-black tracking-wider uppercase mb-2" style={{ color: GOLD }}>
-                    Nota
-                  </p>
-                  <p className="text-[13px] leading-relaxed" style={{ color: `${INK}70`, fontFamily: FONT }}>
-                    Base Alpha è un servizio B2B rivolto a team strategici, fondi di investimento, corporate innovation e C-suite che necessitano di intelligence pre-pubblica certificata per decisioni ad alto impatto.
-                  </p>
-                </div>
+                  </div>
+                ))}
               </div>
-
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-black tracking-wider uppercase mb-1" style={{ color: `${INK}50` }}>Nome *</label>
-                    <input
-                      required
-                      value={contactForm.name}
-                      onChange={e => setContactForm(f => ({ ...f, name: e.target.value }))}
-                      className="w-full px-3 py-2 text-sm border outline-none focus:border-[#c9a227] transition-colors"
-                      style={{ borderColor: `${INK}20`, background: PAPER, color: INK, fontFamily: FONT }}
-                      placeholder="Andrea Cinelli"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-black tracking-wider uppercase mb-1" style={{ color: `${INK}50` }}>Email *</label>
-                    <input
-                      required
-                      type="email"
-                      value={contactForm.email}
-                      onChange={e => setContactForm(f => ({ ...f, email: e.target.value }))}
-                      className="w-full px-3 py-2 text-sm border outline-none focus:border-[#c9a227] transition-colors"
-                      style={{ borderColor: `${INK}20`, background: PAPER, color: INK, fontFamily: FONT }}
-                      placeholder="andrea@azienda.com"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black tracking-wider uppercase mb-1" style={{ color: `${INK}50` }}>Azienda</label>
-                  <input
-                    value={contactForm.company}
-                    onChange={e => setContactForm(f => ({ ...f, company: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border outline-none focus:border-[#c9a227] transition-colors"
-                    style={{ borderColor: `${INK}20`, background: PAPER, color: INK, fontFamily: FONT }}
-                    placeholder="Nome azienda / fondo"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-black tracking-wider uppercase mb-1" style={{ color: `${INK}50` }}>Piano di interesse</label>
-                    <select
-                      value={contactForm.plan}
-                      onChange={e => setContactForm(f => ({ ...f, plan: e.target.value }))}
-                      className="w-full px-3 py-2 text-sm border outline-none focus:border-[#c9a227] transition-colors"
-                      style={{ borderColor: `${INK}20`, background: PAPER, color: INK, fontFamily: FONT }}
-                    >
-                      <option value="">Seleziona piano</option>
-                      {PLANS.map(p => <option key={p.id} value={p.label}>{p.label}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-black tracking-wider uppercase mb-1" style={{ color: `${INK}50` }}>Settore di interesse</label>
-                    <select
-                      value={contactForm.sector}
-                      onChange={e => setContactForm(f => ({ ...f, sector: e.target.value }))}
-                      className="w-full px-3 py-2 text-sm border outline-none focus:border-[#c9a227] transition-colors"
-                      style={{ borderColor: `${INK}20`, background: PAPER, color: INK, fontFamily: FONT }}
-                    >
-                      <option value="">Seleziona settore</option>
-                      {SECTORS.map(s => <option key={s.id} value={s.label}>{s.label}</option>)}
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black tracking-wider uppercase mb-1" style={{ color: `${INK}50` }}>Messaggio</label>
-                  <textarea
-                    rows={4}
-                    value={contactForm.message}
-                    onChange={e => setContactForm(f => ({ ...f, message: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border outline-none focus:border-[#c9a227] transition-colors resize-none"
-                    style={{ borderColor: `${INK}20`, background: PAPER, color: INK, fontFamily: FONT }}
-                    placeholder="Descrivi brevemente le tue esigenze di intelligence..."
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full py-3 text-[11px] font-black tracking-[0.15em] uppercase transition-all hover:opacity-90 disabled:opacity-50"
-                  style={{ background: INK, color: PAPER, fontFamily: FONT }}
-                >
-                  {submitting ? "Invio in corso..." : "Invia richiesta →"}
-                </button>
-              </form>
             </div>
-          </div>
+          </section>
 
-          {/* ── FOOTER LINK ───────────────────────────────────────────────── */}
-          <div className="border-t" style={{ borderColor: `${INK}10` }}>
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-4">
-              <p className="text-[11px]" style={{ color: `${INK}40`, fontFamily: FONT }}>
-                © 2026 ProofPress · Base Alpha Osservatorio Intelligence
+          {/* ══ PIANI — sfondo bianco ═══════════════════════════════════════════ */}
+          <section id="ba-plans" className="bg-white px-6 md:px-12 py-14 border-b border-zinc-100">
+            <div className="max-w-4xl">
+              <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Piani di abbonamento</p>
+              <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
+                Tre livelli di approfondimento
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {PLANS.map((p) => (
+                  <div
+                    key={p.id}
+                    className={`flex flex-col border-2 p-6 ${p.highlight ? "border-[#c9a227] bg-amber-50" : "border-zinc-200 bg-white"}`}
+                  >
+                    <div className="mb-4">
+                      <span className={`text-[9px] font-black tracking-[0.2em] uppercase px-2 py-1 ${p.highlight ? "bg-[#c9a227] text-black" : "bg-[#111] text-white"}`}>
+                        {p.badge}
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-1">{p.freq}</p>
+                    <h3 className="text-xl font-black text-[#111] mb-3">{p.label}</h3>
+                    <p className="text-sm text-zinc-600 leading-relaxed mb-5">{p.desc}</p>
+                    <ul className="space-y-2 mb-6 flex-1">
+                      {p.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2 text-sm text-zinc-700">
+                          <span className="text-[#c9a227] font-black flex-shrink-0 mt-0.5">✓</span>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => {
+                        setForm((prev) => ({ ...prev, plan: p.label }));
+                        scrollToContact();
+                      }}
+                      className={`w-full py-3 text-sm font-black tracking-wider uppercase transition-colors ${p.highlight ? "bg-[#c9a227] text-black hover:bg-[#b8911f]" : "bg-[#111] text-white hover:bg-zinc-800"}`}
+                    >
+                      RICHIEDI INFORMAZIONI →
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ══ PERCHÉ BASE ALPHA — sfondo scuro ═══════════════════════════════ */}
+          <section className="bg-[#111] text-white px-6 md:px-12 py-14">
+            <div className="max-w-4xl">
+              <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Perché Base Alpha</p>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-10">
+                Intelligence che arriva prima del mercato
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  {
+                    title: "Pre-pubblica",
+                    desc: "Monitoriamo database tecnici, brevetti, preprint scientifici e regulatory filings. Ricevi segnali prima che diventino notizie mainstream — con un vantaggio informativo di 24-72 ore sul mercato.",
+                  },
+                  {
+                    title: "Verificata",
+                    desc: "Ogni informazione è certificata con hash crittografico SHA-256 e notarizzata su IPFS. Tracciabilità e verificabilità garantite nel tempo. Nessuna fonte non verificabile.",
+                  },
+                  {
+                    title: "Azionabile",
+                    desc: "Non solo dati: ogni report include executive summary, mappa degli attori chiave, outlook strategico e raccomandazioni operative calibrate sul tuo settore e obiettivi.",
+                  },
+                ].map((s) => (
+                  <div key={s.title} className="border-l-2 border-[#c9a227] pl-5">
+                    <h3 className="text-lg font-black text-white mb-2">{s.title}</h3>
+                    <p className="text-sm text-white/60 leading-relaxed">{s.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ══ FORM CONTATTO — sfondo bianco, massima leggibilità ═════════════ */}
+          <section id="ba-contact" className="bg-white px-6 md:px-12 py-14 border-t border-zinc-100">
+            <div className="max-w-2xl">
+              <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Sei interessato?</p>
+              <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-3">
+                Richiedi una proposta personalizzata
+              </h2>
+              <p className="text-base text-zinc-500 mb-8 leading-relaxed">
+                Il nostro team ti risponderà entro 24 ore con una proposta calibrata sulle tue esigenze di intelligence strategica.
               </p>
-              <div className="flex gap-4">
-                <Link href="/osservatorio-tech">
-                  <span className="text-[11px] font-bold hover:underline cursor-pointer" style={{ color: `${INK}50`, fontFamily: FONT }}>
-                    ← Articoli di Andrea Cinelli
-                  </span>
-                </Link>
-                <a href="https://proofpressverify.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold hover:underline" style={{ color: GOLD, fontFamily: FONT }}>
-                  ProofPress Verify™ →
-                </a>
-              </div>
+
+              {submitted ? (
+                <div className="bg-green-50 border-2 border-green-500 p-8 text-center">
+                  <p className="text-2xl font-black text-green-700 mb-2">✓ Richiesta inviata</p>
+                  <p className="text-zinc-600">Ti risponderemo entro 24 ore a <strong>{form.email}</strong></p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-black text-[#111] uppercase tracking-wider mb-1.5">Nome *</label>
+                      <input
+                        type="text"
+                        placeholder="Andrea Cinelli"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium transition-colors bg-white text-[#111]"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black text-[#111] uppercase tracking-wider mb-1.5">Email *</label>
+                      <input
+                        type="email"
+                        placeholder="andrea@azienda.com"
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium transition-colors bg-white text-[#111]"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black text-[#111] uppercase tracking-wider mb-1.5">Azienda / Fondo</label>
+                    <input
+                      type="text"
+                      placeholder="Nome azienda o fondo"
+                      value={form.company}
+                      onChange={(e) => setForm({ ...form, company: e.target.value })}
+                      className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium transition-colors bg-white text-[#111]"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-black text-[#111] uppercase tracking-wider mb-1.5">Piano di interesse</label>
+                      <select
+                        value={form.plan}
+                        onChange={(e) => setForm({ ...form, plan: e.target.value })}
+                        className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium bg-white text-[#111] transition-colors"
+                      >
+                        <option value="">Seleziona piano</option>
+                        <option value="Weekly Brief">Weekly Brief</option>
+                        <option value="Monthly Intelligence">Monthly Intelligence</option>
+                        <option value="Quarterly Deep Dive">Quarterly Deep Dive</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black text-[#111] uppercase tracking-wider mb-1.5">Settore di interesse</label>
+                      <select
+                        value={form.sector}
+                        onChange={(e) => setForm({ ...form, sector: e.target.value })}
+                        className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium bg-white text-[#111] transition-colors"
+                      >
+                        <option value="">Seleziona settore</option>
+                        {SECTORS.map((s) => (
+                          <option key={s.label} value={s.label}>{s.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black text-[#111] uppercase tracking-wider mb-1.5">Messaggio</label>
+                    <textarea
+                      rows={4}
+                      placeholder="Descrivi brevemente le tue esigenze di intelligence..."
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium transition-colors resize-none bg-white text-[#111]"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={submitLead.isPending}
+                    className="w-full bg-[#111] text-white font-black text-sm tracking-wider uppercase py-4 hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                  >
+                    {submitLead.isPending ? "INVIO IN CORSO..." : "INVIA RICHIESTA →"}
+                  </button>
+                  <p className="text-xs text-zinc-400 text-center">
+                    Base Alpha è un servizio B2B rivolto a team strategici, fondi di investimento, corporate innovation e C-suite.
+                  </p>
+                </form>
+              )}
+            </div>
+          </section>
+
+          {/* ══ FOOTER MINI ════════════════════════════════════════════════════ */}
+          <div className="bg-zinc-50 border-t border-zinc-200 px-6 md:px-12 py-6 flex flex-wrap items-center justify-between gap-4">
+            <p className="text-xs text-zinc-500">© 2026 ProofPress · Base Alpha Osservatorio Intelligence</p>
+            <div className="flex gap-4">
+              <Link href="/osservatorio-tech" className="text-xs text-zinc-500 hover:text-[#111] transition-colors">← Articoli di Andrea Cinelli</Link>
+              <a href="https://proofpressverify.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-[#c9a227] font-bold hover:underline">ProofPress Verify™ →</a>
             </div>
           </div>
 
-          <SharedPageFooter />
-        </div>
+        </main>
       </div>
-    </>
+      <SharedPageFooter />
+    </div>
   );
 }

@@ -864,100 +864,24 @@ export default function OsservatorioTech() {
             </div>
           </div>
 
-          {/* ══════════════════════════════════════════════════════════════════
-              BASE ALPHA — CENTRO STUDI
-          ══════════════════════════════════════════════════════════════════ */}
-          <section style={{ borderBottom: `3px solid ${INK}`, backgroundColor: INK }}>
-            {/* Header */}
-            <div className="px-8 md:px-12 py-10 md:py-14">
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 max-w-6xl">
-                {/* Left: titolo + descrizione */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[9px] font-black tracking-[0.22em] uppercase px-2.5 py-1" style={{ backgroundColor: RED, color: PAPER }}>
-                      Centro Studi
-                    </span>
-                    <span className="text-[10px] font-bold tracking-[0.15em] uppercase" style={{ color: PAPER + "40" }}>
-                      Base Alpha Research
-                    </span>
-                  </div>
-                  <h2
-                    className="font-black leading-[0.95] tracking-tight mb-5"
-                    style={{ color: PAPER, fontFamily: FONT, fontSize: "clamp(2rem, 4vw, 3.5rem)" }}
-                  >
-                    Osservatori e Report<br />
-                    <span style={{ color: RED }}>Verificati su Misura</span>
-                  </h2>
-                  <p className="leading-relaxed max-w-2xl" style={{ color: PAPER + "70", fontSize: "clamp(0.95rem, 1.4vw, 1.1rem)", fontFamily: FONT }}>
-                    Base Alpha è l'Osservatorio e Centro Studi di ProofPress, guidato da{" "}
-                    <strong style={{ color: PAPER }}>Andrea Cinelli</strong>. Sviluppiamo per oltre{" "}
-                    <strong style={{ color: RED }}>200 clienti</strong> report settoriali, osservatori tematici e analisi
-                    di mercato certificati con tecnologia ProofPress Verify™ — dati verificabili, fonti tracciabili,
-                    insight azionabili per board e C-suite.
-                  </p>
-                  <CentroStudiMiniForm fontFamily={FONT} paperColor={PAPER} redColor={RED} />
-                </div>
-                {/* Right: numero clienti */}
-                <div className="flex flex-row lg:flex-col gap-6 lg:gap-4 lg:items-end">
-                  <div className="text-right">
-                    <p className="text-5xl font-black leading-none" style={{ color: PAPER }}>200+</p>
-                    <p className="text-[10px] font-bold tracking-wider uppercase mt-1" style={{ color: PAPER + "40" }}>Clienti serviti</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-5xl font-black leading-none" style={{ color: RED }}>30+</p>
-                    <p className="text-[10px] font-bold tracking-wider uppercase mt-1" style={{ color: PAPER + "40" }}>Anni di execution</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-5xl font-black leading-none" style={{ color: PAPER }}>100%</p>
-                    <p className="text-[10px] font-bold tracking-wider uppercase mt-1" style={{ color: PAPER + "40" }}>Contenuti verificati</p>
-                  </div>
-                </div>
+          {/* ══ BANNER BASE ALPHA — compatto promozionale ══════════════════ */}
+          <section className="mx-6 md:mx-8 my-6 border-l-4 border-[#c9a227] bg-amber-50 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-[9px] font-black tracking-[0.2em] uppercase px-2 py-0.5 bg-[#c9a227] text-black">BASE ALPHA</span>
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Osservatorio Intelligence Premium</span>
               </div>
+              <p className="text-sm font-bold text-[#111] leading-snug">
+                Report su misura certificati PPV™ — analisi pre-pubblica da 4.000+ fonti su AI, VC, Startup, Fintech e altri 6 settori verticali.
+              </p>
             </div>
-            {/* Settori verticali */}
-            <div style={{ borderTop: `1px solid ${PAPER}12` }}>
-              <div className="px-8 md:px-12 py-6">
-                <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-5" style={{ color: PAPER + "35" }}>
-                  Settori di Ricerca
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-3">
-                  {[
-                    { icon: "🌾", label: "Agrifood" },
-                    { icon: "💻", label: "Tecnologia" },
-                    { icon: "🏭", label: "Manifattura" },
-                    { icon: "💳", label: "Fintech" },
-                    { icon: "⚙️", label: "Industria" },
-                    { icon: "🚗", label: "Automotive" },
-                    { icon: "🏥", label: "Healthcare" },
-                    { icon: "🌿", label: "ESG & Green" },
-                    { icon: "🏗️", label: "Real Estate" },
-                    { icon: "🎓", label: "Education" },
-                    { icon: "🛒", label: "Retail" },
-                    { icon: "✈️", label: "Travel & Tourism" },
-                    { icon: "⚡", label: "Energy" },
-                    { icon: "🔐", label: "Cybersecurity" },
-                    { icon: "📡", label: "Telco & Media" },
-                    { icon: "🤖", label: "AI & Robotica" },
-                  ].map(({ icon, label }) => (
-                    <div
-                      key={label}
-                      className="flex flex-col items-center gap-2 px-3 py-4 text-center transition-all duration-200 hover:opacity-80 cursor-default"
-                      style={{ border: `1px solid ${PAPER}12`, backgroundColor: PAPER + "04" }}
-                    >
-                      <span className="text-xl">{icon}</span>
-                      <span className="text-[10px] font-bold tracking-wide leading-tight" style={{ color: PAPER + "70", fontFamily: FONT }}>
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <Link
+              href="/base-alpha"
+              className="flex-shrink-0 bg-[#111] text-white text-xs font-black tracking-wider uppercase px-5 py-3 hover:bg-zinc-800 transition-colors whitespace-nowrap"
+            >
+              SCOPRI BASE ALPHA →
+            </Link>
           </section>
-
-          {/* ══════════════════════════════════════════════════════════════════
-              PUNTO DEL GIORNO — Featured oggi + griglia precedenti
-          ══════════════════════════════════════════════════════════════════ */}
           <section id="punti-del-giorno">
             {/* Header sezione */}
             <div className="px-8 md:px-12 py-6 flex items-center justify-between" style={{ borderBottom: `1px solid ${INK}10` }}>
