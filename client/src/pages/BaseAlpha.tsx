@@ -325,6 +325,67 @@ export default function BaseAlpha() {
             </div>
           </section>
 
+          {/* ══ LEADERSHIP — Adrian Lenice ══════════════════════════════════════ */}
+          <section className="bg-zinc-50 px-6 md:px-12 py-14 border-b border-zinc-200">
+            <div className="max-w-4xl">
+              <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Il team</p>
+              <h2 className="text-2xl md:text-3xl font-black text-zinc-900 mb-10">Chi guida Base Alpha</h2>
+              <div className="flex flex-col md:flex-row gap-8 items-start">
+                {/* Foto e nome */}
+                <div className="flex flex-col items-center md:items-start gap-4 md:w-64 flex-shrink-0">
+                  <div className="relative">
+                    <img
+                      src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/adrian_lenice_portrait-HBM94kj3QyQX8VWJxXjg6j.webp"
+                      alt="Adrian Lenice"
+                      className="w-28 h-28 object-cover"
+                      style={{ filter: "contrast(1.05) grayscale(10%)" }}
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 flex items-center justify-center bg-[#c9a227]">
+                      <span className="text-[9px] font-black text-white">AL</span>
+                    </div>
+                  </div>
+                  <div className="text-center md:text-left">
+                    <p className="text-xl font-black text-zinc-900">Adrian Lenice</p>
+                    <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#c9a227] mt-1">
+                      Direttore · ProofPress.ai
+                    </p>
+                  </div>
+                  <a
+                    href="mailto:adrian@proofpress.ai"
+                    className="w-full text-center text-[11px] font-black tracking-wider uppercase py-3 px-6 transition-opacity hover:opacity-80 bg-zinc-900 text-white"
+                  >
+                    adrian@proofpress.ai
+                  </a>
+                </div>
+                {/* Bio */}
+                <div className="flex-1">
+                  <p className="text-base text-zinc-700 leading-relaxed mb-4">
+                    Adrian Lenice guida Base Alpha come Direttore dell'Osservatorio e del Centro Studi di ProofPress.ai.
+                    Coordina un team globale di analisti specializzati in tecnologia, venture capital e innovazione,
+                    con focus su intelligence pre-pubblica e report verticali verificati su commissione per board e C-suite.
+                  </p>
+                  <p className="text-base text-zinc-700 leading-relaxed mb-6">
+                    Ogni report prodotto da Base Alpha viene certificato con tecnologia ProofPress Verify™ —
+                    hash crittografico SHA-256 e notarizzazione IPFS — garantendo tracciabilità e verificabilità
+                    nel tempo per i clienti istituzionali.
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {[
+                      { label: "200+", desc: "Clienti serviti" },
+                      { label: "4.000+", desc: "Fonti monitorate" },
+                      { label: "100%", desc: "Contenuti verificati" },
+                    ].map((s) => (
+                      <div key={s.label} className="border-l-2 border-[#c9a227] pl-3">
+                        <p className="text-2xl font-black text-zinc-900">{s.label}</p>
+                        <p className="text-[10px] font-bold tracking-wider uppercase text-zinc-500">{s.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* ══ FORM CONTATTO — sfondo bianco, massima leggibilità ═════════════ */}
           <section id="ba-contact" className="bg-white px-6 md:px-12 py-14 border-t border-zinc-100">
             <div className="max-w-2xl">

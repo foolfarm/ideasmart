@@ -824,48 +824,7 @@ export default function OsservatorioTech() {
                     Segui su LinkedIn
                   </a>
                 </div>
-                {/* Adrian Lenice */}
-                <div className="flex flex-col items-center justify-center p-6 gap-4">
-                  <div className="relative">
-                    <img
-                      src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/adrian_lenice_portrait-HBM94kj3QyQX8VWJxXjg6j.webp"
-                      alt="Adrian Lenice"
-                      className="w-20 h-20 object-cover"
-                      style={{ filter: "contrast(1.05) grayscale(10%)" }}
-                    />
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center" style={{ backgroundColor: RED }}>
-                      <span className="text-[8px] font-black" style={{ color: PAPER }}>AL</span>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm font-black" style={{ color: PAPER }}>Adrian Lenice</p>
-                    <p className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: RED }}>
-                      Direttore · ProofPress.ai
-                    </p>
-                    <p className="text-[10px] mt-2 leading-relaxed" style={{ color: PAPER + "55" }}>
-                      Osservatorio & Centro Studi<br />
-                      Report verificati su commissione
-                    </p>
-                  </div>
-                  <a
-                    href="mailto:adrian@proofpress.ai"
-                    className="w-full text-center text-[10px] font-bold tracking-wider uppercase py-2 transition-opacity hover:opacity-80"
-                    style={{ backgroundColor: RED, color: PAPER }}
-                  >
-                    adrian@proofpress.ai
-                  </a>
-                  <div className="w-full text-center pt-3" style={{ borderTop: `1px solid rgba(255,255,255,0.08)` }}>
-                    <p className="text-[9px]" style={{ color: PAPER + "35" }}>
-                      Aggiornato ogni giorno
-                    </p>
-                    <p className="text-lg font-black mt-0.5" style={{ color: PAPER }}>
-                      {punti.length > 0 ? `${punti.length}` : "—"}
-                    </p>
-                    <p className="text-[9px] font-bold tracking-wider uppercase" style={{ color: PAPER + "40" }}>
-                      editoriali in archivio
-                    </p>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>
