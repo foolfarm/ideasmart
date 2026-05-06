@@ -788,43 +788,47 @@ export default function OsservatorioTech() {
                 </div>
               </div>
 
-              {/* Team — 1/4: Andrea Cinelli + Adrian Lenice */}
-              <div className="lg:col-span-1 flex flex-col" style={{ backgroundColor: INK }}>
+              {/* Team — 1/4: Andrea Cinelli — sfondo bianco, immagine grande */}
+              <div className="lg:col-span-1 flex flex-col bg-white border-l border-zinc-100">
                 {/* Andrea Cinelli */}
-                <div className="flex flex-col items-center justify-center p-6 gap-4" style={{ borderBottom: `1px solid rgba(255,255,255,0.08)` }}>
+                <div className="flex flex-col">
+                  {/* Immagine grande a tutta larghezza */}
                   <div className="relative">
                     <img
                       src={PROFILE_IMG}
                       alt="Andrea Cinelli"
-                      className="w-20 h-20 object-cover"
-                      style={{ filter: "contrast(1.05) grayscale(10%)" }}
+                      className="w-full object-cover object-top"
+                      style={{ aspectRatio: "3/4", maxHeight: "320px" }}
                     />
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 flex items-center justify-center" style={{ backgroundColor: RED }}>
-                      <span className="text-[8px] font-black" style={{ color: PAPER }}>AC</span>
+                    <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-[#0a0a0a]">
+                      <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#dc2626]">Autore</p>
                     </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm font-black" style={{ color: PAPER }}>Andrea Cinelli</p>
-                    <p className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: RED }}>
-                      Coordinatore · CEO FoolFarm
-                    </p>
-                    <p className="text-[10px] mt-2 leading-relaxed" style={{ color: PAPER + "55" }}>
-                      Co-fondatore Libero.it<br />
-                      12+ venture AI · 25+ brevetti<br />
-                      Prof. Sole 24 Ore BS
-                    </p>
+                  {/* Info */}
+                  <div className="px-5 py-5 flex flex-col gap-3 border-b border-zinc-100">
+                    <div>
+                      <p className="text-base font-black text-[#0a0a0a]">Andrea Cinelli</p>
+                      <p className="text-[9px] font-bold tracking-[0.18em] uppercase mt-1 text-[#dc2626]">
+                        Senior Tech Editor
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">Co-fondatore Libero.it</p>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">12+ venture AI · 25+ brevetti</p>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">Prof. Sole 24 Ore BS</p>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">Membro Advisory Board Deloitte CM</p>
+                    </div>
+                    <a
+                      href={LINKEDIN_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full text-center text-[10px] font-black tracking-wider uppercase py-3 transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: LINKEDIN_BLUE, color: PAPER }}
+                    >
+                      SEGUI SU LINKEDIN
+                    </a>
                   </div>
-                  <a
-                    href={LINKEDIN_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full text-center text-[10px] font-bold tracking-wider uppercase py-2 transition-opacity hover:opacity-80"
-                    style={{ backgroundColor: LINKEDIN_BLUE, color: PAPER }}
-                  >
-                    Segui su LinkedIn
-                  </a>
                 </div>
-
               </div>
             </div>
           </div>
