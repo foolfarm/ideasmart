@@ -11,7 +11,6 @@ import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import { toast } from "sonner";
 
 const SECTORS = [
@@ -98,17 +97,19 @@ const PLANS = [
 ];
 
 export default function BaseAlpha() {
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", company: "", plan: "", sector: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
 
   const createCheckout = trpc.baseAlpha.createCheckout.useMutation({
+    retry: false,
     onSuccess: (data: { checkoutUrl: string | null }) => {
       setCheckoutLoading(null);
       if (data.checkoutUrl) {
-        window.open(data.checkoutUrl, '_blank');
-        toast.success("Reindirizzamento al checkout Stripe...");
+        window.location.href = data.checkoutUrl;
+      } else {
+        toast.error("Impossibile avviare il checkout. Riprova.");
       }
     },
     onError: (err: { message?: string }) => {
@@ -117,13 +118,14 @@ export default function BaseAlpha() {
     },
   });
 
-  const handleCheckout = (planId: string, priceId: string) => {
-    if (!isAuthenticated) {
-      window.location.href = getLoginUrl();
-      return;
-    }
+  const handleCheckout = (planId: string) => {
     setCheckoutLoading(planId);
-    createCheckout.mutate({ planId: planId as "weekly" | "monthly" | "quarterly", origin: window.location.origin });
+    createCheckout.mutate({
+      planId: planId as "weekly" | "monthly" | "quarterly",
+      origin: window.location.origin,
+      customerEmail: user?.email ?? undefined,
+      customerName: user?.name ?? undefined,
+    });
   };
 
   const submitLead = trpc.centroStudi.submitLead.useMutation({
@@ -333,7 +335,7 @@ export default function BaseAlpha() {
                         <span className="text-xs text-zinc-500 ml-1">/ {p.interval}</span>
                       </div>
                       <button
-                        onClick={() => handleCheckout(p.id, p.priceId)}
+                        onClick={() => handleCheckout(p.id)}
                         disabled={checkoutLoading === p.id}
                         className={`w-full py-3 text-sm font-black tracking-wider uppercase transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${p.highlight ? "bg-[#c9a227] text-black hover:bg-[#b8911f]" : "bg-[#111] text-white hover:bg-zinc-800"}`}
                       >

@@ -1,6 +1,6 @@
 /**
  * Base Alpha + — Prodotti e Prezzi Stripe
- * Creati il 07/05/2026 via MCP Stripe
+ * Creati il 07/05/2026 nell'account Stripe del server (acct_1THUSk8CvMSliYUF)
  */
 
 export const BASE_ALPHA_PLANS = {
@@ -12,8 +12,8 @@ export const BASE_ALPHA_PLANS = {
     priceLabel: "€199",
     priceSubLabel: "/mese",
     priceMonthly: 19900, // centesimi
-    stripePriceId: "price_1TUM9eQQVoHT3i87NHxq9nPg",
-    stripeProductId: "prod_UTIkZPX7V5iWuq",
+    stripePriceId: "price_1TUMRU8CvMSliYUFLHE18MpI",
+    stripeProductId: "prod_UTJ3r1yoErZAfU",
     highlight: false,
     features: [
       "1 settore verticale",
@@ -31,8 +31,8 @@ export const BASE_ALPHA_PLANS = {
     priceLabel: "€299",
     priceSubLabel: "/mese",
     priceMonthly: 29900,
-    stripePriceId: "price_1TUM9lQQVoHT3i87LGdZ9Fms",
-    stripeProductId: "prod_UTIkcgE6rBwyRG",
+    stripePriceId: "price_1TUMRX8CvMSliYUFzO6KbSt8",
+    stripeProductId: "prod_UTJ337B8MMjPN0",
     highlight: true,
     features: [
       "2 settori verticali",
@@ -52,8 +52,8 @@ export const BASE_ALPHA_PLANS = {
     priceLabel: "€499",
     priceSubLabel: "/mese",
     priceMonthly: 49900,
-    stripePriceId: "price_1TUM9rQQVoHT3i87DgTbN3vP",
-    stripeProductId: "prod_UTIlGU7WREADmx",
+    stripePriceId: "price_1TUMRa8CvMSliYUFk7jWZjpg",
+    stripeProductId: "prod_UTJ3kfxhdKwCZB",
     highlight: false,
     features: [
       "Settori verticali illimitati",
