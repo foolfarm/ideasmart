@@ -381,6 +381,44 @@ async function getTodayStartup(): Promise<StartupOfDayItem | null> {
   };
 }
 
+/** Restituisce 2 startup diverse per oggi (rotazione giornaliera) */
+async function getTodayStartups(): Promise<StartupOfDayItem[]> {
+  const db = await getDb();
+  if (!db) return [];
+  const today = new Date().toISOString().split("T")[0];
+  let items = await db
+    .select()
+    .from(startupOfDay)
+    .where(eq(startupOfDay.dateLabel, today))
+    .limit(2);
+  if (items.length < 2) {
+    const existingIds = items.map((i) => i.id);
+    const extras = await db
+      .select()
+      .from(startupOfDay)
+      .orderBy(desc(startupOfDay.createdAt))
+      .limit(10);
+    for (const e of extras) {
+      if (!existingIds.includes(e.id)) {
+        items.push(e);
+        existingIds.push(e.id);
+        if (items.length >= 2) break;
+      }
+    }
+  }
+  return items.slice(0, 2).map((s) => ({
+    id: s.id,
+    name: s.name,
+    tagline: s.tagline,
+    description: s.description,
+    category: s.category,
+    country: s.country,
+    funding: s.funding,
+    aiScore: s.aiScore,
+    websiteUrl: s.websiteUrl,
+    imageUrl: s.imageUrl,
+  }));
+}
 async function getUpcomingEvents(limit: number = 4): Promise<EventItem[]> {
   const db = await getDb();
   if (!db) return [];
@@ -581,6 +619,7 @@ function buildNewsletterHtmlV2(opts: {
   amazonDeals: AmazonDealData[];
   channelContents: Record<string, ChannelItem[]>;
   startupOfDay: StartupOfDayItem | null;
+  startupsOfDay?: StartupOfDayItem[];
   events: EventItem[];
   unsubscribeUrl: string;
   isTest: boolean;
@@ -604,6 +643,7 @@ function buildNewsletterHtmlV2(opts: {
     heroImageUrl,
     channelImages,
     newsletterBanners,
+    startupsOfDay,
   } = opts;
 
   // ── Design Tokens v4 (Apple Style — SF Francisco) ──
@@ -799,33 +839,16 @@ function buildNewsletterHtmlV2(opts: {
     <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK D: CONSIGLIATO #1 (Amazon, posizione premium)
+  // BLOCK D: BANNER ROTANTE #3 (sostituisce Amazon posizione premium — rimosso 2026-05-06)
   // ═══════════════════════════════════════════════════════════════
-  const deal1 = amazonDeals[0];
-  const consigliatoHtml1 = deal1 ? `
+  const deal1 = amazonDeals[0]; // mantenuto per compatibilità ma non usato
+  // Banner rotante #3 — al posto dell'Amazon fisso
+  const consigliatoHtml1 = newsletterBanners && newsletterBanners[2] ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${AMAZON_ORANGE};">
-          <tr>
-            <td style="padding:18px 22px;">
-              <div style="font-size:10px;font-weight:700;color:${AMAZON_ORANGE};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">CONSIGLIATO</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  ${deal1.imageUrl ? `<td width="90" style="vertical-align:top;padding-right:16px;">
-                    <a href="${deal1.affiliateUrl}" style="text-decoration:none;"><img src="${deal1.imageUrl}" width="90" height="90" style="border-radius:6px;display:block;object-fit:cover;" alt="${deal1.title}"></a>
-                  </td>` : ""}
-                  <td style="vertical-align:top;">
-                    <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SANS};line-height:1.35;margin-bottom:5px;">
-                      <a href="${deal1.affiliateUrl}" style="color:${BLACK};text-decoration:none;">${deal1.title}</a>
-                    </div>
-                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-bottom:8px;">${deal1.description.slice(0, 130)}</div>
-                    <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};">Amazon.it${deal1.price ? ` · <strong style="color:${BLACK};">${deal1.price}</strong>` : ""}</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+        <a href="${BASE_URL}/api/nl/b/${newsletterBanners[2].id}" style="display:block;text-decoration:none;">
+          <img src="${newsletterBanners[2].imageUrl}" alt="${newsletterBanners[2].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
+        </a>
       </td>
     </tr>
     <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
@@ -873,43 +896,46 @@ function buildNewsletterHtmlV2(opts: {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK F: STARTUP DEL GIORNO
+  // BLOCK F: STARTUP DEL GIORNO (2 startup con rotazione giornaliera)
   // ═══════════════════════════════════════════════════════════════
   const startup = opts.startupOfDay;
-  const startupHtml = startup ? `
+  const startupsList = startupsOfDay && startupsOfDay.length > 0 ? startupsOfDay : (startup ? [startup] : []);
+  function renderStartupCard(s: StartupOfDayItem, idx: number): string {
+    const countryTd = s.country
+      ? `<td style="padding-right:20px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Paese</span><br><span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.country}</span></td>`
+      : "";
+    const fundingTd = s.funding
+      ? `<td style="padding-right:20px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Funding</span><br><span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.funding}</span></td>`
+      : "";
+    const aiScoreTd = s.aiScore
+      ? `<td><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">AI Score</span><br><span style="font-size:16px;font-weight:800;color:${ACCENT};font-family:${F_SANS};">${s.aiScore}/100</span></td>`
+      : "";
+    const label = idx > 0 ? ` #${idx + 1}` : "";
+    return `
     <tr>
       <td style="padding:0 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
             <td style="padding:22px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">🚀 STARTUP DEL GIORNO</div>
-              <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:4px;">${startup.name}</div>
-              <div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:10px;">${startup.tagline}</div>
-              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${startup.description.slice(0, 220)}${startup.description.length > 220 ? "..." : ""}</div>
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">🚀 STARTUP DEL GIORNO${label}</div>
+              <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:4px;">${s.name}</div>
+              <div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:10px;">${s.tagline}</div>
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${s.description.slice(0, 220)}${s.description.length > 220 ? "..." : ""}</div>
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
                 <tr>
                   <td style="padding-right:20px;">
                     <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Categoria</span><br>
-                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.category}</span>
+                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.category}</span>
                   </td>
-                  ${startup.country ? `<td style="padding-right:20px;">
-                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Paese</span><br>
-                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.country}</span>
-                  </td>` : ""}
-                  ${startup.funding ? `<td style="padding-right:20px;">
-                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Funding</span><br>
-                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.funding}</span>
-                  </td>` : ""}
-                  ${startup.aiScore ? `<td>
-                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">AI Score</span><br>
-                    <span style="font-size:16px;font-weight:800;color:${ACCENT};font-family:${F_SANS};">${startup.aiScore}/100</span>
-                  </td>` : ""}
+                  ${countryTd}
+                  ${fundingTd}
+                  ${aiScoreTd}
                 </tr>
               </table>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
-                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la startup →</a>
+                    <a href="${BASE_URL}/ai/spotlight/${s.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la startup →</a>
                   </td>
                 </tr>
               </table>
@@ -918,37 +944,14 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:12px;background:${BG};"></td></tr>`;
+  }
+  const startupHtml = startupsList.length > 0
+    ? startupsList.map((s, i) => renderStartupCard(s, i)).join("") + `<tr><td style="height:8px;background:${BG};"></td></tr>`
+    : "";
 
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK G: PROMO PROMPT COLLECTION — Blocco fisso
-  // ═══════════════════════════════════════════════════════════════
-  const promptPromoHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
-          <tr>
-            <td style="padding:24px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">📋 COLLEZIONE PROOF PRESS</div>
-              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">La collezione Proof Press di prompt da usare davvero nel lavoro quotidiano.</div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:6px;">Un funnel semplice e concreto: arrivi dalla newsletter, acquisti a <strong style="color:${BLACK};">39€</strong> e ottieni accesso alla libreria ricercabile con il PDF completo incluso.</div>
-              <div style="font-size:13px;color:${MUTED};font-family:${F_SANS};line-height:1.6;margin-bottom:20px;">
-                ✓ 99 prompt selezionati &nbsp;·&nbsp; ✓ Libreria ricercabile &nbsp;·&nbsp; ✓ PDF incluso<br>
-                Carriera · Produttività · Business · Ricerca · Benessere
-              </div>
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:${ACCENT};border-radius:980px;padding:12px 26px;">
-                    <a href="${FORUM_URL}/?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_collection" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la Collezione →</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
+  // BLOCK G: PROMO PROMPT COLLECTION — RIMOSSO (richiesta Andrea Cinelli 2026-05-06)
+  const promptPromoHtml = ""; // blocco disabilitato
 
     // ═════════════════════════════════════════════════════════════
   // BLOCK G2: BANNER PUBBLICITARI — Rotazione giornaliera (2 banner)
@@ -1209,33 +1212,7 @@ function buildNewsletterHtmlV2(opts: {
   // BLOCK K: CONSIGLIATO #2 + FOOTER
   // ═══════════════════════════════════════════════════════════════
   const deal2 = amazonDeals[1];
-  const consigliatoHtml2 = deal2 ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${AMAZON_ORANGE};">
-          <tr>
-            <td style="padding:18px 22px;">
-              <div style="font-size:10px;font-weight:700;color:${AMAZON_ORANGE};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">CONSIGLIATO</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  ${deal2.imageUrl ? `<td width="90" style="vertical-align:top;padding-right:16px;">
-                    <a href="${deal2.affiliateUrl}" style="text-decoration:none;"><img src="${deal2.imageUrl}" width="90" height="90" style="border-radius:6px;display:block;object-fit:cover;" alt="${deal2.title}"></a>
-                  </td>` : ""}
-                  <td style="vertical-align:top;">
-                    <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SANS};line-height:1.35;margin-bottom:5px;">
-                      <a href="${deal2.affiliateUrl}" style="color:${BLACK};text-decoration:none;">${deal2.title}</a>
-                    </div>
-                    <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-bottom:8px;">${deal2.description.slice(0, 130)}</div>
-                    <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};">Amazon.it${deal2.price ? ` · <strong style="color:${BLACK};">${deal2.price}</strong>` : ""}</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+  const consigliatoHtml2 = ""; // Amazon rimosso (2026-05-06)
 
   const footerHtml = `
     <tr>
@@ -1407,6 +1384,186 @@ function buildNewsletterHtmlV2(opts: {
   // ═══════════════════════════════════════════════════════════════
   // ASSEMBLE
   // ═══════════════════════════════════════════════════════════════
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK NEW-A: RESEARCH HERO — Prima notizia Research (apertura newsletter)
+  // ═══════════════════════════════════════════════════════════════
+  const researchHero = researches[0] ?? null;
+  const researchHeroUrl = researchHero?.id
+    ? `${BASE_URL}/research/${researchHero.id}?utm_source=newsletter&utm_medium=email&utm_campaign=research_hero`
+    : `${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_hero`;
+  const researchHeroHtml = researchHero ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid #0066cc;">
+          <tr>
+            <td style="padding:22px 26px;">
+              <div style="font-size:10px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">🔬 RESEARCH — APERTURA DEL GIORNO</div>
+              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.35;margin-bottom:10px;">
+                <a href="${researchHeroUrl}" style="color:${BLACK};text-decoration:none;">${researchHero.title}</a>
+              </div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:16px;">${researchHero.summary ? researchHero.summary.slice(0, 240) + (researchHero.summary.length > 240 ? "..." : "") : ""}</div>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background:#0066cc;border-radius:980px;padding:11px 22px;">
+                          <a href="${researchHeroUrl}" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Leggi la ricerca →</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="text-align:right;vertical-align:middle;">
+                    <span style="font-size:10px;color:${MUTED};font-weight:600;font-family:${F_SANS};letter-spacing:0.04em;">✓ PROOFPRESS VERIFY</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK NEW-B: 4 STARTUP NEWS
+  // ═══════════════════════════════════════════════════════════════
+  function renderNewsRow(n: NewsItem, section: string, labelColor: string, labelText: string): string {
+    const url = n.id ? `${BASE_URL}/${section}/news/${n.id}?utm_source=newsletter&utm_medium=email&utm_campaign=${section}_grid` : `${BASE_URL}/${section}`;
+    return `
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
+          <a href="${url}" style="text-decoration:none;display:block;">
+            <span style="font-size:10px;font-weight:700;color:${labelColor};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">${labelText}</span>
+            <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.4;margin-top:3px;">${n.title}</div>
+            <div style="font-size:12px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-top:3px;">${n.summary ? n.summary.slice(0, 110) + "..." : ""}</div>
+          </a>
+        </td>
+      </tr>`;
+  }
+  const top4Startup = startupNews.filter(n => n.id).slice(0, 4);
+  const startupNewsGridHtml = top4Startup.length > 0 ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:20px 26px;">
+              <div style="font-size:10px;font-weight:700;color:#7c3aed;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🚀 STARTUP NEWS</div>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${top4Startup.map(n => renderNewsRow(n, "startup", "#7c3aed", n.category || "STARTUP")).join("")}
+              </table>
+              <div style="margin-top:14px;">
+                <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=startup_all" style="font-size:11px;font-weight:700;color:#7c3aed;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTE LE NOTIZIE STARTUP →</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK NEW-C: 4 AI NEWS
+  // ═══════════════════════════════════════════════════════════════
+  const top4AI = aiNews.filter(n => n.id).slice(0, 4);
+  const aiNewsGridHtml = top4AI.length > 0 ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:20px 26px;">
+              <div style="font-size:10px;font-weight:700;color:#dc2626;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🤖 AI NEWS</div>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${top4AI.map(n => renderNewsRow(n, "ai", "#dc2626", n.category || "AI")).join("")}
+              </table>
+              <div style="margin-top:14px;">
+                <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=ai_all" style="font-size:11px;font-weight:700;color:#dc2626;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTE LE NOTIZIE AI →</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK NEW-D: PUNTO DEL GIORNO DI ANDREA CINELLI
+  // ═══════════════════════════════════════════════════════════════
+  // Usa il primo editoriale disponibile come "Punto del Giorno"
+  const editorialeAI = channelContents["ai"] && channelContents["ai"][0] ? channelContents["ai"][0] : null;
+  const puntoDelGiornoHtml = editorialeAI ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
+          <tr>
+            <td style="padding:22px 26px;">
+              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">✍️ IL PUNTO DEL GIORNO — Andrea Cinelli</div>
+              <div style="font-size:20px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.35;margin-bottom:8px;">${editorialeAI.title}</div>
+              ${editorialeAI.subtitle ? `<div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:8px;">${editorialeAI.subtitle}</div>` : ""}
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:16px;">${editorialeAI.body ? editorialeAI.body.slice(0, 260) + (editorialeAI.body.length > 260 ? "..." : "") : ""}</div>
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
+                    <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=punto_giorno" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Leggi il punto del giorno →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK NEW-E: 4 VENTURE CAPITAL NEWS
+  // ═══════════════════════════════════════════════════════════════
+  const top4VC = dealroomNews.filter(n => n.id && (n.category?.toLowerCase().includes("venture") || n.category?.toLowerCase().includes("vc") || n.category?.toLowerCase().includes("fund") || n.category?.toLowerCase().includes("invest"))).slice(0, 4);
+  const ventureCapitalHtml = top4VC.length > 0 ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:20px 26px;">
+              <div style="font-size:10px;font-weight:700;color:#059669;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">💼 VENTURE CAPITAL</div>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${top4VC.map(n => renderNewsRow(n, "dealroom", "#059669", n.category || "VC")).join("")}
+              </table>
+              <div style="margin-top:14px;">
+                <a href="${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=vc_all" style="font-size:11px;font-weight:700;color:#059669;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTI I DEAL VC →</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK NEW-F: 4 DEALROOM NEWS
+  // ═══════════════════════════════════════════════════════════════
+  const top4Dealroom = dealroomNews.filter(n => n.id && !top4VC.includes(n)).slice(0, 4);
+  const dealroomNewsGridHtml = top4Dealroom.length > 0 ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:20px 26px;">
+              <div style="font-size:10px;font-weight:700;color:#0f0f0f;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🏢 DEALROOM — Round, Funding & M&A</div>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${top4Dealroom.map(n => renderNewsRow(n, "dealroom", "#0f0f0f", n.category || "DEALROOM")).join("")}
+              </table>
+              <div style="margin-top:14px;">
+                <a href="${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=dealroom_all" style="font-size:11px;font-weight:700;color:#0f0f0f;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTI I DEAL ROOM →</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+
   return `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -1422,7 +1579,12 @@ function buildNewsletterHtmlV2(opts: {
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
         ${rebrandHtml}
-        ${heroHtml}
+        ${researchHeroHtml}
+        ${startupNewsGridHtml}
+        ${aiNewsGridHtml}
+        ${puntoDelGiornoHtml}
+        ${ventureCapitalHtml}
+        ${dealroomNewsGridHtml}
         ${consigliatoHtml1}
         ${channelBlocksHtml}
         ${startupHtml}
@@ -1475,11 +1637,12 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   const dateLabel = getDateLabel(now);
   const content = await collectAllContent();
 
-  const [primarySponsor, spotlightSponsor, amazonDeals, startupDay, events, newsletterBanners] = await Promise.all([
+  const [primarySponsor, spotlightSponsor, amazonDeals, startupDay, startupsDay, events, newsletterBanners] = await Promise.all([
     getActiveSponsor("primary"),
     getActiveSponsor("spotlight"),
     getTodayAmazonDeals(),
     getTodayStartup(),
+    getTodayStartups(),
     getUpcomingEvents(4),
     getNewsletterBanners(),
   ]);
@@ -1496,7 +1659,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   console.log(`  Breaking: ${content.breakingItems.length}`);
   console.log(`  Ricerche: ${content.researches.length}`);
   console.log(`  Amazon Deals: ${amazonDeals.length}`);
-  console.log(`  Startup del Giorno: ${startupDay ? startupDay.name : "nessuna"}`);
+  console.log(`  Startup del Giorno: ${startupDay ? startupDay.name : "nessuna"} (${startupsDay.length} totali)`);
   console.log(`  Eventi prossimi: ${events.length}`);
   for (const ch of NEWSLETTER_CHANNELS) {
     console.log(`  ${ch.label}: ${content.channelContents[ch.key]?.length ?? 0}`);
@@ -1547,6 +1710,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     amazonDeals,
     channelContents: content.channelContents,
     startupOfDay: startupDay,
+    startupsOfDay: startupsDay,
     events,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
     isTest,
