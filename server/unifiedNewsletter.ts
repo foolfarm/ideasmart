@@ -733,12 +733,12 @@ function buildNewsletterHtmlV2(opts: {
         <div style="text-align:right;margin-bottom:16px;">
           <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
         </div>
-        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.0;letter-spacing:-0.02em;margin-bottom:2px;">BUONGIORNO</div>
-        <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px;">Le News delle 8.30 di PROOFPRESS</div>
-        <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;line-height:1.5;">Il primo giornale creato da una redazione 100% Agentica e con notizie certificate</div>
+        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.0;letter-spacing:-0.02em;margin-bottom:6px;">PROOFPRESS</div>
+        <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px;">BUONGIORNO NEWS</div>
+        <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;line-height:1.5;text-transform:uppercase;letter-spacing:0.08em;">IL PRIMO MAGAZINE CON REDAZIONE AGENTICA E INFORMAZIONI 100% VERIFICATE</div>
         <div style="width:40px;height:2px;background:${ACCENT};margin:0 auto 14px;"></div>
-        <div style="font-size:12px;font-weight:700;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Notizie di Innovazione, Investimenti e Tecnologia Esclusive</div>
-        <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;">100% Verificate con &nbsp;<a href="${BASE_URL}/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=header_payoff" style="color:${ACCENT};text-decoration:none;font-weight:600;">tecnologia ProofPress Verify</a></div>
+        <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${F_SANS};letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">INNOVAZIONE, INVESTIMENTI E TECNOLOGIA</div>
+
         <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};line-height:1.5;">
           ${dateLabel} &nbsp;·&nbsp; N° ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString("it-IT")} lettori</strong>
         </div>
@@ -758,7 +758,7 @@ function buildNewsletterHtmlV2(opts: {
             <td style="padding:18px 24px;">
               <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">IL NOSTRO FORMAT</div>
               <div style="font-size:17px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:6px;">BUONGIORNO by ProofPress — ogni giorno alle 8.30</div>
-              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;">Il primo giornale creato da una redazione 100% Agentica. Ogni mattina, notizie di innovazione, investimenti e tecnologia <strong>certificate con ProofPress Verify Technology</strong> — zero fake news, solo fatti verificati.</div>
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;">La newsletter giornaliera creata dalla redazione di ProofPress. Ogni mattina, notizie di innovazione, investimenti e tecnologia <strong>certificate con ProofPress Verify Technology</strong> — zero fake news, solo fatti verificati.</div>
             </td>
           </tr>
         </table>
@@ -1579,6 +1579,7 @@ function buildNewsletterHtmlV2(opts: {
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
         ${rebrandHtml}
+        ${bannerHtml1}
         ${researchHeroHtml}
         ${startupNewsGridHtml}
         ${aiNewsGridHtml}
@@ -1589,7 +1590,6 @@ function buildNewsletterHtmlV2(opts: {
         ${channelBlocksHtml}
         ${startupHtml}
         ${promptPromoHtml}
-        ${bannerHtml1}
         ${iscrizioneHtml}
         ${eventsHtml}
         ${quickLinksHtml}

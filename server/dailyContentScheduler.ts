@@ -18,7 +18,7 @@ import { findEditorialImage, findStartupImage } from "./stockImages";
 import { generateDailyResearch } from "./researchGenerator";
 import { publishToLinkedIn } from "./linkedinPublisher";
 import { getDb } from "./db";
-import { dailyEditorial, linkedinPosts, systemSettings } from "../drizzle/schema";
+import { dailyEditorial, linkedinPosts, startupOfDay, systemSettings } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 
@@ -266,20 +266,45 @@ async function runDailyContentRefresh() {
       console.log("[DailyContent] Editorial already exists for today, skipping.");
     }
 
-    // 2. Startup del Giorno
-    const existingStartup = await getTodayStartup(today);
-    if (!existingStartup) {
-      console.log("[DailyContent] Generating startup of the day...");
-      const startup = await generateStartupOfDay();
-      // Cerca immagine stock Pexels coerente (zero costi)
-      const startupImageUrl = await findStartupImage(startup.name, startup.category, startup.tagline);
-      if (startupImageUrl) {
-        console.log(`[DailyContent] Startup stock image found: ${startup.name}`);
+    // 2. Startup del Giorno (genera 2 startup diverse ogni giorno)
+    const db2 = await getDb();
+    const existingStartupsToday = db2 ? await db2
+      .select({ id: startupOfDay.id })
+      .from(startupOfDay)
+      .where(eq(startupOfDay.dateLabel, today))
+      .limit(2) : [];
+    const startupsNeeded = 2 - existingStartupsToday.length;
+    if (startupsNeeded > 0) {
+      console.log(`[DailyContent] Generating ${startupsNeeded} startup(s) of the day...`);
+      // Raccoglie nomi già generati oggi per evitare duplicati
+      const existingNames = new Set<string>();
+      if (db2) {
+        const todayStartups = await db2.select({ name: startupOfDay.name }).from(startupOfDay).where(eq(startupOfDay.dateLabel, today));
+        todayStartups.forEach(s => existingNames.add(s.name.toLowerCase()));
       }
-      await saveStartupOfDay({ ...startup, imageUrl: startupImageUrl ?? undefined });
-      console.log(`[DailyContent] Startup saved: "${startup.name}"`);
+      for (let i = 0; i < startupsNeeded; i++) {
+        try {
+          let startup = await generateStartupOfDay();
+          // Retry se la startup è già presente oggi
+          let retries = 0;
+          while (existingNames.has(startup.name.toLowerCase()) && retries < 3) {
+            console.log(`[DailyContent] Startup "${startup.name}" già generata oggi, riprovo...`);
+            startup = await generateStartupOfDay();
+            retries++;
+          }
+          existingNames.add(startup.name.toLowerCase());
+          const startupImageUrl = await findStartupImage(startup.name, startup.category, startup.tagline);
+          if (startupImageUrl) {
+            console.log(`[DailyContent] Startup stock image found: ${startup.name}`);
+          }
+          await saveStartupOfDay({ ...startup, imageUrl: startupImageUrl ?? undefined });
+          console.log(`[DailyContent] Startup #${i + 1} saved: "${startup.name}"`);
+        } catch (startupErr) {
+          console.error(`[DailyContent] Errore generazione startup #${i + 1}:`, startupErr);
+        }
+      }
     } else {
-      console.log("[DailyContent] Startup of the day already exists for today, skipping.");
+      console.log("[DailyContent] 2 startup del giorno già presenti per oggi, skip.");
     }
     // 3. Ricerche Proof Press Research (20 ricerche giornaliere)
     console.log("[DailyContent] Generating daily research reports...");
