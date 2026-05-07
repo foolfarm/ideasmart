@@ -10,6 +10,8 @@ import LeftSidebar from "@/components/LeftSidebar";
 import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
 import { toast } from "sonner";
 
 const SECTORS = [
@@ -48,6 +50,9 @@ const PLANS = [
       "Archivio 3 mesi",
     ],
     highlight: false,
+    price: "€199/mese",
+    priceId: "price_1RR7Zy8CvMSliYUFdmPBxgqR",
+    interval: "mensile",
   },
   {
     id: "monthly",
@@ -65,6 +70,9 @@ const PLANS = [
       "1 call di briefing mensile",
     ],
     highlight: true,
+    price: "€299/mese",
+    priceId: "price_1RR7a18CvMSliYUFrTJLxSAH",
+    interval: "mensile",
   },
   {
     id: "quarterly",
@@ -83,12 +91,40 @@ const PLANS = [
       "Accesso diretto al team di analisti",
     ],
     highlight: false,
+    price: "\u20ac499/mese",
+    priceId: "price_1RR7a28CvMSliYUFkLvwGkbF",
+    interval: "trimestrale",
   },
 ];
 
 export default function BaseAlpha() {
+  const { isAuthenticated } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", company: "", plan: "", sector: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+
+  const createCheckout = trpc.baseAlpha.createCheckout.useMutation({
+    onSuccess: (data: { checkoutUrl: string | null }) => {
+      setCheckoutLoading(null);
+      if (data.checkoutUrl) {
+        window.open(data.checkoutUrl, '_blank');
+        toast.success("Reindirizzamento al checkout Stripe...");
+      }
+    },
+    onError: (err: { message?: string }) => {
+      setCheckoutLoading(null);
+      toast.error(err.message || "Errore nel checkout. Riprova.");
+    },
+  });
+
+  const handleCheckout = (planId: string, priceId: string) => {
+    if (!isAuthenticated) {
+      window.location.href = getLoginUrl();
+      return;
+    }
+    setCheckoutLoading(planId);
+    createCheckout.mutate({ planId: planId as "weekly" | "monthly" | "quarterly", origin: window.location.origin });
+  };
 
   const submitLead = trpc.centroStudi.submitLead.useMutation({
     onSuccess: () => {
@@ -291,15 +327,28 @@ export default function BaseAlpha() {
                         </li>
                       ))}
                     </ul>
-                    <button
-                      onClick={() => {
-                        setForm((prev) => ({ ...prev, plan: p.label }));
-                        scrollToContact();
-                      }}
-                      className={`w-full py-3 text-sm font-black tracking-wider uppercase transition-colors ${p.highlight ? "bg-[#c9a227] text-black hover:bg-[#b8911f]" : "bg-[#111] text-white hover:bg-zinc-800"}`}
-                    >
-                      RICHIEDI INFORMAZIONI →
-                    </button>
+                    <div className="mt-auto">
+                      <div className={`text-center py-3 mb-3 ${p.highlight ? "bg-amber-50" : "bg-zinc-50"}`}>
+                        <span className="text-2xl font-black text-[#111]">{p.price}</span>
+                        <span className="text-xs text-zinc-500 ml-1">/ {p.interval}</span>
+                      </div>
+                      <button
+                        onClick={() => handleCheckout(p.id, p.priceId)}
+                        disabled={checkoutLoading === p.id}
+                        className={`w-full py-3 text-sm font-black tracking-wider uppercase transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${p.highlight ? "bg-[#c9a227] text-black hover:bg-[#b8911f]" : "bg-[#111] text-white hover:bg-zinc-800"}`}
+                      >
+                        {checkoutLoading === p.id ? "CARICAMENTO..." : "ABBONATI ORA →"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setForm((prev) => ({ ...prev, plan: p.label }));
+                          scrollToContact();
+                        }}
+                        className="w-full py-2 text-xs font-bold tracking-wider uppercase text-zinc-500 hover:text-zinc-800 transition-colors mt-1"
+                      >
+                        Richiedi informazioni
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

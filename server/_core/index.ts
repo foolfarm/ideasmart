@@ -79,6 +79,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { registerVerifyPublicApi } from "../verify/publicApi";
 import { registerVerifyStripeWebhook } from "../verify/stripeVerify";
+import { registerBaseAlphaWebhook } from "../routers/baseAlphaWebhook";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -205,6 +206,8 @@ async function startServer() {
   registerVerifyPublicApi(app);
   // ProofPress Verify SaaS — Stripe webhook
   registerVerifyStripeWebhook(app);
+  // Base Alpha + — Stripe webhook
+  registerBaseAlphaWebhook(app);
 
   // ── Auth endpoints dedicati — bypassano tRPC per impostare cookie correttamente ──
   // tRPC v11 serializza la risposta prima che Express possa aggiungere Set-Cookie.

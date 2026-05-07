@@ -75,6 +75,7 @@ import { verifyApiKeyRouter } from "./verify/apiKeyRouter";
 import { verifyUsageRouter } from "./verify/usageRouter";
 import { verifyClientRouter } from "./verify/clientRouter";
 import { verifyStripeRouter } from "./verify/stripeVerify";
+import { baseAlphaRouter } from './routers/baseAlpha';
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -98,6 +99,7 @@ export const appRouter = router({
   verifyUsage: verifyUsageRouter,
   verifyClient: verifyClientRouter,
   verifyStripe: verifyStripeRouter,
+  baseAlpha: baseAlphaRouter,
   journalist: journalistRouter,
   journalistAdmin: journalistAdminRouter,
 
@@ -1757,7 +1759,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
         // [LEGACY RIMOSSO] Il vecchio template IDEASMART/buildWeeklyNewsletterHtml è stato eliminato.
         // Usa sendUnifiedPreview dalla newsletter unificata ProofPress.
         const { sendUnifiedPreview } = await import("./unifiedNewsletter");
-        const result = await sendUnifiedPreview();
+        const result = await sendUnifiedPreview(true); // force=true per bypass guard
         if (!result.success) {
           throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: result.error ?? "Errore invio email di test" });
         }

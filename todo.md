@@ -3490,3 +3490,12 @@
 - [x] Task schedulato notturno PPV (max 40 articoli/giorno) — ogni notte alle 02:00
 - [x] Hero: rimosso testo sopra logo ProofPress e counter IPFS
 - [x] Hero: aggiornato sottotitolo e sotto-sottotitolo
+
+## Task (07 Mag 2026 — Base Alpha+ Stripe + Newsletter)
+
+- [ ] Inviare preview newsletter a ac@acinelli.com
+- [ ] Aggiungere secondo banner Admin (Base Alpha +) per slot rotante
+- [ ] Aggiornare prezzi /base-alpha: Weekly 199€/mese, Monthly 299€/mese, Quarterly 499€/mese
+- [ ] Creare prodotti Stripe per i 3 piani Base Alpha+
+- [ ] Configurare webhook Stripe per gestire abbonamenti
+- [ ] Testare flusso pagamento con carta test 4242
