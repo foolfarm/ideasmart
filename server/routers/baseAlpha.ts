@@ -84,7 +84,7 @@ export const baseAlphaRouter = router({
             : {}),
         line_items: [{ price: plan.stripePriceId, quantity: 1 }],
         allow_promotion_codes: true,
-        success_url: `${input.origin}/base-alpha?checkout=success&plan=${plan.id}`,
+        success_url: `${input.origin}/abbonamenti?checkout=success&plan=${plan.id}`,
         cancel_url: `${input.origin}/base-alpha?checkout=cancelled`,
         metadata: {
           plan_id: plan.id,

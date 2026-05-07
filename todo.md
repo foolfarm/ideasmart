@@ -3514,3 +3514,9 @@
 - [x] Pagina Abbonamenti.tsx: lookup email per utenti non loggati
 - [x] Pagina Abbonamenti.tsx: pulsante "Gestisci Abbonamento" → Stripe Customer Portal
 - [x] Route /abbonamenti registrata in App.tsx
+
+## Miglioramenti /abbonamenti (07 Mag 2026)
+
+- [x] Link /abbonamenti nella navbar per utenti loggati
+- [x] Banner benvenuto post-checkout in /abbonamenti (?checkout=success)
+- [x] Sezione upgrade/downgrade piano in /abbonamenti

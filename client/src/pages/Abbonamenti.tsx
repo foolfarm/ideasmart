@@ -1,16 +1,71 @@
 /**
  * Pagina /abbonamenti — Base Alpha+
- * Mostra: stato abbonamento attivo, dettagli piano, prossimo rinnovo, storico fatture.
+ * Mostra: banner benvenuto post-checkout, stato abbonamento attivo,
+ *         dettagli piano, prossimo rinnovo, storico fatture, sezione upgrade/downgrade.
  * Design: coerente con il magazine ProofPress (bianco/nero/oro #c9a227)
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
 import LeftSidebar from "@/components/LeftSidebar";
+
+// ─── Piani disponibili (mirror di baseAlphaProducts.ts) ──────────────────────
+const PLANS = [
+  {
+    id: "weekly",
+    name: "Weekly Brief",
+    badge: "ENTRY",
+    priceLabel: "€199",
+    priceMonthly: 19900,
+    highlight: false,
+    features: [
+      "1 settore verticale",
+      "Report settimanale certificato PPV",
+      "Top 10 segnali pre-pubblici",
+      "Trend analysis + Key takeaway",
+      "Archivio 3 mesi",
+    ],
+  },
+  {
+    id: "monthly",
+    name: "Monthly Intelligence",
+    badge: "MOST POPULAR",
+    priceLabel: "€299",
+    priceMonthly: 29900,
+    highlight: true,
+    features: [
+      "2 settori verticali",
+      "Report mensile certificato PPV",
+      "Analisi pre-pubblica 4.000+ fonti",
+      "Mappa attori & deal flow",
+      "Outlook strategico 90 giorni",
+      "Archivio 12 mesi",
+      "1 call di briefing mensile",
+    ],
+  },
+  {
+    id: "quarterly",
+    name: "Quarterly Deep Dive",
+    badge: "PREMIUM",
+    priceLabel: "€499",
+    priceMonthly: 49900,
+    highlight: false,
+    features: [
+      "Settori verticali illimitati",
+      "Report trimestrale certificato PPV",
+      "Ricerca pre-pubblica dedicata",
+      "Benchmark competitivo personalizzato",
+      "Scenari strategici + raccomandazioni",
+      "Archivio completo",
+      "Sessioni di briefing dedicate",
+      "Accesso diretto al team di analisti",
+    ],
+  },
+];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function formatDate(date: Date | string | null | undefined): string {
@@ -47,6 +102,56 @@ function StatusBadge({ status }: { status: string }) {
     <span className={`text-[9px] font-black tracking-[0.2em] uppercase px-2 py-0.5 border rounded ${cfg.cls}`}>
       {cfg.label}
     </span>
+  );
+}
+
+// ─── Banner benvenuto post-checkout ──────────────────────────────────────────
+function WelcomeBanner({ planName, onDismiss }: { planName: string; onDismiss: () => void }) {
+  return (
+    <div className="relative mb-8 border-2 border-[#c9a227] bg-[#fdf8ec] p-6 overflow-hidden">
+      {/* Decorazione angolo */}
+      <div className="absolute top-0 right-0 w-24 h-24 bg-[#c9a227]/10 rounded-bl-full" />
+      <div className="relative">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-1">
+              Benvenuto in Base Alpha+
+            </p>
+            <h2 className="text-xl font-black text-[#111] mb-2">
+              Abbonamento attivato con successo
+            </h2>
+            <p className="text-sm text-zinc-600 max-w-lg">
+              Il tuo piano <strong className="text-[#111]">{planName}</strong> è ora attivo.
+              Riceverai una email di conferma con tutti i dettagli. Puoi gestire il tuo abbonamento
+              in qualsiasi momento da questa pagina.
+            </p>
+          </div>
+          <button
+            onClick={onDismiss}
+            className="flex-shrink-0 text-zinc-400 hover:text-zinc-600 transition-colors p-1"
+            aria-label="Chiudi"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-4 mt-4">
+          <div className="flex items-center gap-2 text-sm text-zinc-600">
+            <span className="text-[#c9a227] font-black">✓</span>
+            Pagamento confermato
+          </div>
+          <div className="flex items-center gap-2 text-sm text-zinc-600">
+            <span className="text-[#c9a227] font-black">✓</span>
+            Accesso immediato
+          </div>
+          <div className="flex items-center gap-2 text-sm text-zinc-600">
+            <span className="text-[#c9a227] font-black">✓</span>
+            Email di conferma in arrivo
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -101,12 +206,6 @@ function SubscriptionCard({
   portalLoading: boolean;
 }) {
   const isActive = sub.status === "active" || sub.status === "trialing";
-  const planColorMap: Record<string, string> = {
-    weekly: "bg-zinc-900 text-white",
-    monthly: "bg-[#c9a227] text-black",
-    quarterly: "bg-zinc-900 text-white",
-  };
-  const planBgClass = planColorMap[sub.planId] ?? "bg-zinc-900 text-white";
 
   return (
     <div className={`border-2 ${isActive ? "border-[#c9a227]" : "border-zinc-300"} p-6 mb-8`}>
@@ -183,9 +282,99 @@ function SubscriptionCard({
           href="/base-alpha"
           className="border border-zinc-300 text-zinc-700 px-5 py-2.5 text-xs font-black tracking-wider uppercase hover:border-zinc-600 transition-colors"
         >
-          CAMBIA PIANO
+          SCOPRI I PIANI
         </Link>
       </div>
+    </div>
+  );
+}
+
+// ─── Sezione Upgrade / Downgrade ─────────────────────────────────────────────
+function UpgradeSection({
+  currentPlanId,
+  onPortal,
+  portalLoading,
+}: {
+  currentPlanId: string;
+  onPortal: () => void;
+  portalLoading: boolean;
+}) {
+  const otherPlans = PLANS.filter((p) => p.id !== currentPlanId);
+  const currentPlanIndex = PLANS.findIndex((p) => p.id === currentPlanId);
+
+  return (
+    <div className="mt-10">
+      <div className="mb-5">
+        <p className="text-[10px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-0.5">
+          Cambia piano
+        </p>
+        <h3 className="text-xl font-black text-[#111]">Upgrade o Downgrade</h3>
+        <p className="text-sm text-zinc-500 mt-1">
+          Passa a un piano diverso in qualsiasi momento. Il cambio è immediato e il costo viene
+          calcolato proporzionalmente al periodo rimanente.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {otherPlans.map((plan) => {
+          const planIndex = PLANS.findIndex((p) => p.id === plan.id);
+          const isUpgrade = planIndex > currentPlanIndex;
+          return (
+            <div
+              key={plan.id}
+              className={`border p-5 relative ${plan.highlight ? "border-[#c9a227]" : "border-zinc-200"} hover:border-zinc-400 transition-colors`}
+            >
+              {plan.highlight && (
+                <div className="absolute -top-3 left-4">
+                  <span className="bg-[#c9a227] text-black text-[9px] font-black tracking-widest uppercase px-2 py-0.5">
+                    {plan.badge}
+                  </span>
+                </div>
+              )}
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-[9px] font-black tracking-widest uppercase px-1.5 py-0.5 ${isUpgrade ? "bg-emerald-100 text-emerald-700" : "bg-zinc-100 text-zinc-500"}`}>
+                      {isUpgrade ? "UPGRADE" : "DOWNGRADE"}
+                    </span>
+                  </div>
+                  <h4 className="text-base font-black text-[#111]">{plan.name}</h4>
+                  <p className="text-lg font-black text-[#111] mt-0.5">
+                    {plan.priceLabel}
+                    <span className="text-xs font-normal text-zinc-400">/mese</span>
+                  </p>
+                </div>
+              </div>
+              <ul className="space-y-1 mb-4">
+                {plan.features.slice(0, 4).map((f) => (
+                  <li key={f} className="flex items-start gap-1.5 text-xs text-zinc-600">
+                    <span className="text-[#c9a227] font-black flex-shrink-0">✓</span>
+                    {f}
+                  </li>
+                ))}
+                {plan.features.length > 4 && (
+                  <li className="text-xs text-zinc-400 pl-4">+{plan.features.length - 4} altri benefici</li>
+                )}
+              </ul>
+              <button
+                onClick={onPortal}
+                disabled={portalLoading}
+                className={`w-full py-2 text-xs font-black tracking-wider uppercase transition-colors disabled:opacity-60 ${
+                  isUpgrade
+                    ? "bg-[#c9a227] text-black hover:bg-[#b8911f]"
+                    : "border border-zinc-300 text-zinc-600 hover:border-zinc-500"
+                }`}
+              >
+                {portalLoading ? "CARICAMENTO..." : isUpgrade ? `PASSA A ${plan.name.toUpperCase()}` : `CAMBIA A ${plan.name.toUpperCase()}`}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="text-xs text-zinc-400 mt-4">
+        Il cambio piano avviene tramite il portale Stripe. Potrai confermare o annullare prima di procedere.
+      </p>
     </div>
   );
 }
@@ -205,24 +394,12 @@ function InvoicesTable({ invoices }: { invoices: InvoiceItem[] }) {
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-zinc-50 border-b border-zinc-200">
-            <th className="text-left px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">
-              Fattura
-            </th>
-            <th className="text-left px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">
-              Data
-            </th>
-            <th className="text-left px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">
-              Periodo
-            </th>
-            <th className="text-right px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">
-              Importo
-            </th>
-            <th className="text-center px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">
-              Stato
-            </th>
-            <th className="text-center px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">
-              PDF
-            </th>
+            <th className="text-left px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">Fattura</th>
+            <th className="text-left px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">Data</th>
+            <th className="text-left px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">Periodo</th>
+            <th className="text-right px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">Importo</th>
+            <th className="text-center px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">Stato</th>
+            <th className="text-center px-4 py-3 text-[9px] font-black tracking-[0.2em] uppercase text-zinc-500">PDF</th>
           </tr>
         </thead>
         <tbody>
@@ -302,8 +479,24 @@ function useInvoices(email?: string) {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Abbonamenti() {
   const { user, isAuthenticated } = useAuth();
+  const [location] = useLocation();
   const [lookupEmail, setLookupEmail] = useState<string | undefined>(undefined);
   const [portalLoading, setPortalLoading] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [welcomePlanName, setWelcomePlanName] = useState("");
+
+  // Rileva ?checkout=success dal query string
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("checkout") === "success") {
+      const planId = params.get("plan") ?? "";
+      const plan = PLANS.find((p) => p.id === planId);
+      setWelcomePlanName(plan?.name ?? "Base Alpha+");
+      setShowWelcome(true);
+      // Pulisci l'URL senza ricaricare la pagina
+      window.history.replaceState({}, "", "/abbonamenti");
+    }
+  }, [location]);
 
   const searchEmail = isAuthenticated ? undefined : lookupEmail;
 
@@ -362,6 +555,14 @@ export default function Abbonamenti() {
               )}
             </div>
 
+            {/* Banner benvenuto post-checkout */}
+            {showWelcome && (
+              <WelcomeBanner
+                planName={welcomePlanName}
+                onDismiss={() => setShowWelcome(false)}
+              />
+            )}
+
             {/* Lookup email (non loggati) */}
             {showLookup && <EmailLookup onSearch={setLookupEmail} />}
 
@@ -411,8 +612,17 @@ export default function Abbonamenti() {
               <>
                 <SubscriptionCard sub={sub} onPortal={handlePortal} portalLoading={portalLoading} />
 
+                {/* Sezione Upgrade / Downgrade */}
+                {(sub.status === "active" || sub.status === "trialing") && (
+                  <UpgradeSection
+                    currentPlanId={sub.planId}
+                    onPortal={handlePortal}
+                    portalLoading={portalLoading}
+                  />
+                )}
+
                 {/* Storico fatture */}
-                <div>
+                <div className="mt-10">
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <p className="text-[10px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-0.5">

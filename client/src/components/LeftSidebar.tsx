@@ -3,7 +3,7 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import {
-  Info, Briefcase, Megaphone, PenLine, Mail,
+  Info, Briefcase, Megaphone, PenLine, Mail, Star,
   ExternalLink, Download, ChevronRight,
   Newspaper, KeyRound, Building2, CheckCircle, Users,
   ShieldCheck, Home,
@@ -70,6 +70,7 @@ const NAV_STRUCTURE: NavItem[] = [
   { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", Icon: Megaphone, external: true },
   { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", Icon: Megaphone },
   { type: "link", href: "/base-alpha", label: "Base Alpha + Top Tech Observatory", Icon: Briefcase },
+  { type: "link", href: "/abbonamenti", label: "I miei abbonamenti", Icon: Star },
   { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", Icon: PenLine },
   { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
 ]

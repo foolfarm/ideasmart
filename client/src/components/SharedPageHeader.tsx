@@ -76,6 +76,16 @@ function UserProfileDropdown({ user, logout }: { user: { username?: string | nul
             Account
           </span>
         </Link>
+        <Link href="/abbonamenti">
+          <span
+            className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-semibold hover:bg-[#fdf8ec] transition-colors cursor-pointer"
+            style={{ fontFamily: SF, color: "#c9a227" }}
+            onClick={() => setOpen(false)}
+          >
+            <Star size={14} strokeWidth={2} />
+            I miei abbonamenti
+          </span>
+        </Link>
         <button
           onClick={() => { setOpen(false); logout(); }}
           className="flex items-center gap-2 px-3 py-2.5 text-[11px] font-medium text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors w-full text-left"
