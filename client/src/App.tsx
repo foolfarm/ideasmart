@@ -86,6 +86,7 @@ const AndreaCinelli = lazy(() => import("./pages/AndreaCinelli"));
 const OsservatorioTech = lazy(() => import("./pages/OsservatorioTech"));
 const BaseAlpha = lazy(() => import("./pages/BaseAlpha"));
 const CentroStudi = lazy(() => import("./pages/CentroStudi"));
+const Abbonamenti = lazy(() => import("./pages/Abbonamenti"));
 const Registrati = lazy(() => import("./pages/Registrati"));
 const Accedi = lazy(() => import("./pages/Accedi"));
 const VerificaEmail = lazy(() => import("./pages/VerificaEmail"));
@@ -186,6 +187,7 @@ function Router() {
         <Route path="/osservatorio-tech" component={OsservatorioTech} />
         <Route path="/base-alpha" component={BaseAlpha} />
         <Route path="/centro-studi" component={CentroStudi} />
+        <Route path="/abbonamenti" component={Abbonamenti} />
         <Route path="/pianificazione" component={Pianificazione} />
         <Route path="/ai/news/:id" component={NewsArticle} />
         <Route path="/startup/news/:id" component={StartupNewsArticle} />

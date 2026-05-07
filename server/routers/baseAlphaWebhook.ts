@@ -1,11 +1,13 @@
 /**
  * Base Alpha + — Stripe Webhook Handler
  * Route: POST /api/stripe/base-alpha/webhook
- * Gestisce: checkout.session.completed, customer.subscription.deleted, invoice.payment_failed
+ * Gestisce: checkout.session.completed, customer.subscription.updated,
+ *           customer.subscription.deleted, invoice.payment_failed
  */
 import type { Express, Request, Response } from "express";
 import express from "express";
 import Stripe from "stripe";
+import { eq } from "drizzle-orm";
 
 function getStripe(): Stripe {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -53,12 +55,59 @@ export function registerBaseAlphaWebhook(app: Express): void {
         switch (event.type) {
           case "checkout.session.completed": {
             const session = event.data.object as Stripe.Checkout.Session;
-            const userId = session.metadata?.user_id;
-            const planId = session.metadata?.plan_id;
-            const customerEmail = session.metadata?.customer_email;
+            const userId = session.metadata?.user_id ? parseInt(session.metadata.user_id, 10) : null;
+            const planId = session.metadata?.plan_id as "weekly" | "monthly" | "quarterly" | undefined;
+            const customerEmail = session.metadata?.customer_email ?? (session.customer_details?.email ?? "");
+            const customerName = session.metadata?.customer_name ?? (session.customer_details?.name ?? "");
             const subscriptionId = session.subscription as string | null;
+            const customerId = session.customer as string | null;
 
             console.log(`[BaseAlpha Webhook] New subscription: user=${userId}, plan=${planId}, email=${customerEmail}, sub=${subscriptionId}`);
+
+            // Salva nel DB
+            if (planId && customerEmail) {
+              try {
+                const { getDb } = await import("../db");
+                const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+                const { BASE_ALPHA_PLANS } = await import("../baseAlphaProducts");
+                const db = await getDb();
+                if (db) {
+                  const plan = BASE_ALPHA_PLANS[planId];
+
+                  // Recupera dati subscription Stripe per period start/end
+                  let periodStart: Date | null = null;
+                  let periodEnd: Date | null = null;
+                  if (subscriptionId) {
+                    try {
+                      const stripe = getStripe();
+                      const stripeSub = await stripe.subscriptions.retrieve(subscriptionId);
+                      const rawSub = stripeSub as unknown as Record<string, unknown>;
+                      periodStart = rawSub.current_period_start ? new Date((rawSub.current_period_start as number) * 1000) : null;
+                      periodEnd = rawSub.current_period_end ? new Date((rawSub.current_period_end as number) * 1000) : null;
+                    } catch (_) {}
+                  }
+
+                  await db.insert(baseAlphaSubscriptions).values({
+                    userId: userId ?? null,
+                    customerEmail,
+                    customerName: customerName || null,
+                    stripeCustomerId: customerId,
+                    stripeSubscriptionId: subscriptionId,
+                    stripeSessionId: session.id,
+                    planId,
+                    planName: plan?.name ?? planId,
+                    priceMonthly: plan?.priceMonthly ?? 0,
+                    currency: "EUR",
+                    status: "active",
+                    currentPeriodStart: periodStart,
+                    currentPeriodEnd: periodEnd,
+                  });
+                  console.log(`[BaseAlpha Webhook] Subscription saved to DB: plan=${planId}, email=${customerEmail}`);
+                }
+              } catch (dbErr) {
+                console.error("[BaseAlpha Webhook] DB save error:", dbErr);
+              }
+            }
 
             // Notifica owner
             try {
@@ -71,11 +120,54 @@ export function registerBaseAlphaWebhook(app: Express): void {
             break;
           }
 
+          case "customer.subscription.updated": {
+            const sub = event.data.object as Stripe.Subscription;
+            const rawSub = sub as unknown as Record<string, unknown>;
+            const periodEnd = rawSub.current_period_end ? new Date((rawSub.current_period_end as number) * 1000) : null;
+            const periodStart = rawSub.current_period_start ? new Date((rawSub.current_period_start as number) * 1000) : null;
+
+            try {
+              const { getDb } = await import("../db");
+              const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+              const db = await getDb();
+              if (db && sub.id) {
+                await db
+                  .update(baseAlphaSubscriptions)
+                  .set({
+                    status: sub.status as "active" | "past_due" | "cancelled" | "incomplete" | "trialing",
+                    currentPeriodStart: periodStart,
+                    currentPeriodEnd: periodEnd,
+                  })
+                  .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, sub.id));
+                console.log(`[BaseAlpha Webhook] Subscription updated in DB: sub=${sub.id}, status=${sub.status}`);
+              }
+            } catch (dbErr) {
+              console.error("[BaseAlpha Webhook] DB update error:", dbErr);
+            }
+            break;
+          }
+
           case "customer.subscription.deleted": {
             const sub = event.data.object as Stripe.Subscription;
             const userId = sub.metadata?.user_id;
             const planId = sub.metadata?.plan_id;
             console.log(`[BaseAlpha Webhook] Subscription cancelled: user=${userId}, plan=${planId}`);
+
+            // Aggiorna stato nel DB
+            try {
+              const { getDb } = await import("../db");
+              const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+              const db = await getDb();
+              if (db && sub.id) {
+                await db
+                  .update(baseAlphaSubscriptions)
+                  .set({ status: "cancelled", cancelledAt: new Date() })
+                  .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, sub.id));
+                console.log(`[BaseAlpha Webhook] Subscription cancelled in DB: sub=${sub.id}`);
+              }
+            } catch (dbErr) {
+              console.error("[BaseAlpha Webhook] DB cancel error:", dbErr);
+            }
 
             try {
               const { notifyOwner } = await import("../_core/notification");
@@ -91,6 +183,23 @@ export function registerBaseAlphaWebhook(app: Express): void {
             const invoice = event.data.object as Stripe.Invoice;
             const invoiceSub = (invoice as unknown as Record<string, unknown>).subscription as string | undefined;
             console.log(`[BaseAlpha Webhook] Payment failed: customer=${invoice.customer}, sub=${invoiceSub}`);
+
+            // Aggiorna stato nel DB
+            if (invoiceSub) {
+              try {
+                const { getDb } = await import("../db");
+                const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+                const db = await getDb();
+                if (db) {
+                  await db
+                    .update(baseAlphaSubscriptions)
+                    .set({ status: "past_due" })
+                    .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, invoiceSub));
+                }
+              } catch (dbErr) {
+                console.error("[BaseAlpha Webhook] DB past_due error:", dbErr);
+              }
+            }
 
             try {
               const { notifyOwner } = await import("../_core/notification");

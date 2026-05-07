@@ -1272,3 +1272,32 @@ export const centroStudiLeads = mysqlTable("centro_studi_leads", {
 
 export type CentroStudiLead = typeof centroStudiLeads.$inferSelect;
 export type InsertCentroStudiLead = typeof centroStudiLeads.$inferInsert;
+
+// ── Base Alpha + Subscriptions ────────────────────────────────────────────────
+// Traccia gli abbonamenti Base Alpha+ attivati via Stripe Checkout
+export const baseAlphaSubscriptions = mysqlTable("base_alpha_subscriptions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  customerEmail: varchar("customerEmail", { length: 320 }).notNull(),
+  customerName: varchar("customerName", { length: 255 }),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
+  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }).unique(),
+  stripeSessionId: varchar("stripeSessionId", { length: 255 }).unique(),
+  planId: mysqlEnum("planId", ["weekly", "monthly", "quarterly"]).notNull(),
+  planName: varchar("planName", { length: 128 }).notNull(),
+  priceMonthly: int("priceMonthly").notNull(),
+  currency: varchar("currency", { length: 3 }).default("EUR").notNull(),
+  status: mysqlEnum("status", ["active", "past_due", "cancelled", "incomplete", "trialing"]).default("active").notNull(),
+  currentPeriodStart: timestamp("currentPeriodStart"),
+  currentPeriodEnd: timestamp("currentPeriodEnd"),
+  cancelledAt: timestamp("cancelledAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  emailIdx: index("idx_ba_sub_email").on(t.customerEmail),
+  userIdx: index("idx_ba_sub_user").on(t.userId),
+  stripeSubIdx: index("idx_ba_sub_stripe").on(t.stripeSubscriptionId),
+  statusIdx: index("idx_ba_sub_status").on(t.status),
+}));
+export type BaseAlphaSubscription = typeof baseAlphaSubscriptions.$inferSelect;
+export type InsertBaseAlphaSubscription = typeof baseAlphaSubscriptions.$inferInsert;

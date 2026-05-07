@@ -3499,3 +3499,18 @@
 - [ ] Creare prodotti Stripe per i 3 piani Base Alpha+
 - [ ] Configurare webhook Stripe per gestire abbonamenti
 - [ ] Testare flusso pagamento con carta test 4242
+
+## Pagina /abbonamenti (07 Mag 2026)
+
+- [x] Schema DB: tabella base_alpha_subscriptions (userId, email, piano, stato, period, stripeIds)
+- [x] Router tRPC: subscriptions.getMySubscription (utente loggato + lookup email)
+- [x] Router tRPC: subscriptions.getMyInvoices (storico fatture da Stripe)
+- [x] Router tRPC: subscriptions.createPortalSession (Stripe Customer Portal)
+- [x] Webhook aggiornato: salva abbonamento nel DB a checkout.session.completed
+- [x] Webhook aggiornato: aggiorna stato su subscription.updated e subscription.deleted
+- [x] Pagina Abbonamenti.tsx: stato abbonamento, dettagli piano, features incluse
+- [x] Pagina Abbonamenti.tsx: prossimo rinnovo / data scadenza
+- [x] Pagina Abbonamenti.tsx: storico fatture con download PDF
+- [x] Pagina Abbonamenti.tsx: lookup email per utenti non loggati
+- [x] Pagina Abbonamenti.tsx: pulsante "Gestisci Abbonamento" → Stripe Customer Portal
+- [x] Route /abbonamenti registrata in App.tsx
