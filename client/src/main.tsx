@@ -22,6 +22,28 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
   window.location.href = getLoginUrl();
 };
 
+// Prefissi di path tRPC per mutation non critiche (tracking, analytics)
+// che possono fallire con 502/DNS transitorio senza impattare l'UX
+const SILENT_MUTATION_PREFIXES = [
+  ["banners", "trackImpression"],
+  ["banners", "trackClick"],
+  ["analytics", "track"],
+  ["readers", "ping"],
+];
+
+/**
+ * Controlla se il mutationKey tRPC corrisponde a una mutation silenziosa.
+ * tRPC imposta mutationKey come [["namespace", "method"]] (array annidato).
+ */
+function isSilentMutation(mutationKey: unknown): boolean {
+  if (!Array.isArray(mutationKey) || mutationKey.length === 0) return false;
+  const pathParts = mutationKey[0];
+  if (!Array.isArray(pathParts)) return false;
+  return SILENT_MUTATION_PREFIXES.some(
+    prefix => prefix.every((part, i) => pathParts[i] === part)
+  );
+}
+
 queryClient.getQueryCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.query.state.error;
@@ -34,7 +56,11 @@ queryClient.getMutationCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.mutation.state.error;
     redirectToLoginIfUnauthorized(error);
-    console.error("[API Mutation Error]", error);
+
+    // Non logga errori transitori di mutation di tracking (502 DNS sandbox, ecc.)
+    if (!isSilentMutation(event.mutation.options.mutationKey)) {
+      console.error("[API Mutation Error]", error);
+    }
   }
 });
 

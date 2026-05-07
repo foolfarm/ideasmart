@@ -77,6 +77,7 @@ import { verifyClientRouter } from "./verify/clientRouter";
 import { verifyStripeRouter } from "./verify/stripeVerify";
 import { baseAlphaRouter } from './routers/baseAlpha';
 import { subscriptionsRouter } from './routers/subscriptions';
+import { creatorRouter } from './routers/creator';
 
 // Admin guard
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -102,6 +103,7 @@ export const appRouter = router({
   verifyStripe: verifyStripeRouter,
   baseAlpha: baseAlphaRouter,
   subscriptions: subscriptionsRouter,
+  creator: creatorRouter,
   journalist: journalistRouter,
   journalistAdmin: journalistAdminRouter,
 

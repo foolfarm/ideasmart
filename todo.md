@@ -3520,3 +3520,10 @@
 - [x] Link /abbonamenti nella navbar per utenti loggati
 - [x] Banner benvenuto post-checkout in /abbonamenti (?checkout=success)
 - [x] Sezione upgrade/downgrade piano in /abbonamenti
+
+## Offerta Commerciale ProofPress Creator (07 Mag 2026)
+
+- [ ] Creare prodotti Stripe: ProofPress Creator Basic €199, Plus €299, Gold €399
+- [ ] Riscrivere pagina /offertacommerciale con 3 piani e checkout Stripe integrato
+- [ ] Aggiungere link a ProofPress Verify (https://proofpressverify.com)
+- [ ] Integrare con sistema abbonamenti esistente
