@@ -15,6 +15,10 @@ function getStripe(): Stripe {
   return new Stripe(key, { apiVersion: "2026-03-25.dahlia" });
 }
 
+function isCreatorPlan(planId: string): boolean {
+  return planId.startsWith("creator_");
+}
+
 export function registerBaseAlphaWebhook(app: Express): void {
   app.post(
     "/api/stripe/base-alpha/webhook",
@@ -56,67 +60,108 @@ export function registerBaseAlphaWebhook(app: Express): void {
           case "checkout.session.completed": {
             const session = event.data.object as Stripe.Checkout.Session;
             const userId = session.metadata?.user_id ? parseInt(session.metadata.user_id, 10) : null;
-            const planId = session.metadata?.plan_id as "weekly" | "monthly" | "quarterly" | undefined;
+            const planId = session.metadata?.plan_id ?? "";
             const customerEmail = session.metadata?.customer_email ?? (session.customer_details?.email ?? "");
             const customerName = session.metadata?.customer_name ?? (session.customer_details?.name ?? "");
             const subscriptionId = session.subscription as string | null;
             const customerId = session.customer as string | null;
 
-            console.log(`[BaseAlpha Webhook] New subscription: user=${userId}, plan=${planId}, email=${customerEmail}, sub=${subscriptionId}`);
+            console.log(`[Webhook] New subscription: user=${userId}, plan=${planId}, email=${customerEmail}, sub=${subscriptionId}`);
 
-            // Salva nel DB
             if (planId && customerEmail) {
-              try {
-                const { getDb } = await import("../db");
-                const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
-                const { BASE_ALPHA_PLANS } = await import("../baseAlphaProducts");
-                const db = await getDb();
-                if (db) {
-                  const plan = BASE_ALPHA_PLANS[planId];
+              // Recupera dati subscription Stripe per period start/end
+              let periodStart: Date | null = null;
+              let periodEnd: Date | null = null;
+              if (subscriptionId) {
+                try {
+                  const stripe = getStripe();
+                  const stripeSub = await stripe.subscriptions.retrieve(subscriptionId);
+                  const rawSub = stripeSub as unknown as Record<string, unknown>;
+                  periodStart = rawSub.current_period_start ? new Date((rawSub.current_period_start as number) * 1000) : null;
+                  periodEnd = rawSub.current_period_end ? new Date((rawSub.current_period_end as number) * 1000) : null;
+                } catch (_) {}
+              }
 
-                  // Recupera dati subscription Stripe per period start/end
-                  let periodStart: Date | null = null;
-                  let periodEnd: Date | null = null;
-                  if (subscriptionId) {
-                    try {
-                      const stripe = getStripe();
-                      const stripeSub = await stripe.subscriptions.retrieve(subscriptionId);
-                      const rawSub = stripeSub as unknown as Record<string, unknown>;
-                      periodStart = rawSub.current_period_start ? new Date((rawSub.current_period_start as number) * 1000) : null;
-                      periodEnd = rawSub.current_period_end ? new Date((rawSub.current_period_end as number) * 1000) : null;
-                    } catch (_) {}
+              const { getDb } = await import("../db");
+              const db = await getDb();
+
+              if (isCreatorPlan(planId)) {
+                // ── ProofPress Creator ─────────────────────────────────────
+                try {
+                  const { creatorSubscriptions } = await import("../../drizzle/schema");
+                  const { CREATOR_PLANS } = await import("../creatorProducts");
+                  if (db) {
+                    const planKey = planId.replace("creator_", "") as keyof typeof CREATOR_PLANS;
+                    const plan = CREATOR_PLANS[planKey];
+                    const existing = await db.select({ id: creatorSubscriptions.id })
+                      .from(creatorSubscriptions)
+                      .where(eq(creatorSubscriptions.stripeSessionId, session.id))
+                      .limit(1);
+                    if (existing.length === 0) {
+                      await db.insert(creatorSubscriptions).values({
+                        userId: userId ?? null,
+                        customerEmail,
+                        customerName: customerName || null,
+                        stripeCustomerId: customerId,
+                        stripeSubscriptionId: subscriptionId,
+                        stripeSessionId: session.id,
+                        planId: planId as "creator_basic" | "creator_plus" | "creator_gold",
+                        planName: plan?.name ?? planId,
+                        priceMonthly: plan?.priceMonthly ?? 0,
+                        currency: "EUR",
+                        status: "active",
+                        currentPeriodStart: periodStart,
+                        currentPeriodEnd: periodEnd,
+                      });
+                      console.log(`[Webhook] Creator subscription saved: plan=${planId}, email=${customerEmail}`);
+                    }
                   }
-
-                  await db.insert(baseAlphaSubscriptions).values({
-                    userId: userId ?? null,
-                    customerEmail,
-                    customerName: customerName || null,
-                    stripeCustomerId: customerId,
-                    stripeSubscriptionId: subscriptionId,
-                    stripeSessionId: session.id,
-                    planId,
-                    planName: plan?.name ?? planId,
-                    priceMonthly: plan?.priceMonthly ?? 0,
-                    currency: "EUR",
-                    status: "active",
-                    currentPeriodStart: periodStart,
-                    currentPeriodEnd: periodEnd,
-                  });
-                  console.log(`[BaseAlpha Webhook] Subscription saved to DB: plan=${planId}, email=${customerEmail}`);
+                } catch (dbErr) {
+                  console.error("[Webhook] Creator DB save error:", dbErr);
                 }
-              } catch (dbErr) {
-                console.error("[BaseAlpha Webhook] DB save error:", dbErr);
+                try {
+                  const { notifyOwner } = await import("../_core/notification");
+                  await notifyOwner({ title: `🎉 Nuovo abbonamento Creator: ${planId}`, content: `Email: ${customerEmail} | Sub: ${subscriptionId}` });
+                } catch (_) {}
+              } else {
+                // ── Base Alpha+ ────────────────────────────────────────────
+                try {
+                  const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+                  const { BASE_ALPHA_PLANS } = await import("../baseAlphaProducts");
+                  if (db) {
+                    const plan = BASE_ALPHA_PLANS[planId as keyof typeof BASE_ALPHA_PLANS];
+                    const existing = await db.select({ id: baseAlphaSubscriptions.id })
+                      .from(baseAlphaSubscriptions)
+                      .where(eq(baseAlphaSubscriptions.stripeSessionId, session.id))
+                      .limit(1);
+                    if (existing.length === 0) {
+                      await db.insert(baseAlphaSubscriptions).values({
+                        userId: userId ?? null,
+                        customerEmail,
+                        customerName: customerName || null,
+                        stripeCustomerId: customerId,
+                        stripeSubscriptionId: subscriptionId,
+                        stripeSessionId: session.id,
+                        planId: planId as "weekly" | "monthly" | "quarterly",
+                        planName: plan?.name ?? planId,
+                        priceMonthly: plan?.priceMonthly ?? 0,
+                        currency: "EUR",
+                        status: "active",
+                        currentPeriodStart: periodStart,
+                        currentPeriodEnd: periodEnd,
+                      });
+                      console.log(`[Webhook] Base Alpha subscription saved: plan=${planId}, email=${customerEmail}`);
+                    }
+                  }
+                } catch (dbErr) {
+                  console.error("[Webhook] Base Alpha DB save error:", dbErr);
+                }
+                try {
+                  const { notifyOwner } = await import("../_core/notification");
+                  await notifyOwner({ title: `🎉 Nuovo abbonamento Base Alpha+: ${planId}`, content: `Email: ${customerEmail} | Sub: ${subscriptionId}` });
+                } catch (_) {}
               }
             }
-
-            // Notifica owner
-            try {
-              const { notifyOwner } = await import("../_core/notification");
-              await notifyOwner({
-                title: `🎉 Nuovo abbonamento Base Alpha+: ${planId}`,
-                content: `**Piano:** ${planId}\n**Email:** ${customerEmail}\n**User ID:** ${userId}\n**Subscription ID:** ${subscriptionId}\n**Importo:** ${session.amount_total ? `€${(session.amount_total / 100).toFixed(2)}` : "N/D"}`,
-              });
-            } catch (_) {}
             break;
           }
 
@@ -125,24 +170,28 @@ export function registerBaseAlphaWebhook(app: Express): void {
             const rawSub = sub as unknown as Record<string, unknown>;
             const periodEnd = rawSub.current_period_end ? new Date((rawSub.current_period_end as number) * 1000) : null;
             const periodStart = rawSub.current_period_start ? new Date((rawSub.current_period_start as number) * 1000) : null;
+            const planId = sub.metadata?.plan_id ?? "";
+            const newStatus = sub.status as "active" | "past_due" | "cancelled" | "incomplete" | "trialing";
 
             try {
               const { getDb } = await import("../db");
-              const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
               const db = await getDb();
               if (db && sub.id) {
-                await db
-                  .update(baseAlphaSubscriptions)
-                  .set({
-                    status: sub.status as "active" | "past_due" | "cancelled" | "incomplete" | "trialing",
-                    currentPeriodStart: periodStart,
-                    currentPeriodEnd: periodEnd,
-                  })
-                  .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, sub.id));
-                console.log(`[BaseAlpha Webhook] Subscription updated in DB: sub=${sub.id}, status=${sub.status}`);
+                if (isCreatorPlan(planId)) {
+                  const { creatorSubscriptions } = await import("../../drizzle/schema");
+                  await db.update(creatorSubscriptions)
+                    .set({ status: newStatus, currentPeriodStart: periodStart, currentPeriodEnd: periodEnd })
+                    .where(eq(creatorSubscriptions.stripeSubscriptionId, sub.id));
+                } else {
+                  const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+                  await db.update(baseAlphaSubscriptions)
+                    .set({ status: newStatus, currentPeriodStart: periodStart, currentPeriodEnd: periodEnd })
+                    .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, sub.id));
+                }
+                console.log(`[Webhook] Subscription updated in DB: sub=${sub.id}, status=${sub.status}`);
               }
             } catch (dbErr) {
-              console.error("[BaseAlpha Webhook] DB update error:", dbErr);
+              console.error("[Webhook] DB update error:", dbErr);
             }
             break;
           }
@@ -150,29 +199,34 @@ export function registerBaseAlphaWebhook(app: Express): void {
           case "customer.subscription.deleted": {
             const sub = event.data.object as Stripe.Subscription;
             const userId = sub.metadata?.user_id;
-            const planId = sub.metadata?.plan_id;
-            console.log(`[BaseAlpha Webhook] Subscription cancelled: user=${userId}, plan=${planId}`);
+            const planId = sub.metadata?.plan_id ?? "";
+            console.log(`[Webhook] Subscription cancelled: user=${userId}, plan=${planId}`);
 
-            // Aggiorna stato nel DB
             try {
               const { getDb } = await import("../db");
-              const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
               const db = await getDb();
               if (db && sub.id) {
-                await db
-                  .update(baseAlphaSubscriptions)
-                  .set({ status: "cancelled", cancelledAt: new Date() })
-                  .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, sub.id));
-                console.log(`[BaseAlpha Webhook] Subscription cancelled in DB: sub=${sub.id}`);
+                if (isCreatorPlan(planId)) {
+                  const { creatorSubscriptions } = await import("../../drizzle/schema");
+                  await db.update(creatorSubscriptions)
+                    .set({ status: "cancelled", cancelledAt: new Date() })
+                    .where(eq(creatorSubscriptions.stripeSubscriptionId, sub.id));
+                } else {
+                  const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+                  await db.update(baseAlphaSubscriptions)
+                    .set({ status: "cancelled", cancelledAt: new Date() })
+                    .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, sub.id));
+                }
+                console.log(`[Webhook] Subscription cancelled in DB: sub=${sub.id}`);
               }
             } catch (dbErr) {
-              console.error("[BaseAlpha Webhook] DB cancel error:", dbErr);
+              console.error("[Webhook] DB cancel error:", dbErr);
             }
 
             try {
               const { notifyOwner } = await import("../_core/notification");
               await notifyOwner({
-                title: `❌ Abbonamento Base Alpha+ cancellato: ${planId}`,
+                title: `❌ Abbonamento cancellato: ${planId || sub.id}`,
                 content: `**Piano:** ${planId}\n**User ID:** ${userId}\n**Sub ID:** ${sub.id}`,
               });
             } catch (_) {}
@@ -182,29 +236,29 @@ export function registerBaseAlphaWebhook(app: Express): void {
           case "invoice.payment_failed": {
             const invoice = event.data.object as Stripe.Invoice;
             const invoiceSub = (invoice as unknown as Record<string, unknown>).subscription as string | undefined;
-            console.log(`[BaseAlpha Webhook] Payment failed: customer=${invoice.customer}, sub=${invoiceSub}`);
+            console.log(`[Webhook] Payment failed: customer=${invoice.customer}, sub=${invoiceSub}`);
 
-            // Aggiorna stato nel DB
             if (invoiceSub) {
               try {
                 const { getDb } = await import("../db");
-                const { baseAlphaSubscriptions } = await import("../../drizzle/schema");
+                const { baseAlphaSubscriptions, creatorSubscriptions } = await import("../../drizzle/schema");
                 const db = await getDb();
                 if (db) {
-                  await db
-                    .update(baseAlphaSubscriptions)
-                    .set({ status: "past_due" })
+                  // Aggiorna entrambe le tabelle (non sappiamo a quale appartiene)
+                  await db.update(baseAlphaSubscriptions).set({ status: "past_due" })
                     .where(eq(baseAlphaSubscriptions.stripeSubscriptionId, invoiceSub));
+                  await db.update(creatorSubscriptions).set({ status: "past_due" })
+                    .where(eq(creatorSubscriptions.stripeSubscriptionId, invoiceSub));
                 }
               } catch (dbErr) {
-                console.error("[BaseAlpha Webhook] DB past_due error:", dbErr);
+                console.error("[Webhook] DB past_due error:", dbErr);
               }
             }
 
             try {
               const { notifyOwner } = await import("../_core/notification");
               await notifyOwner({
-                title: `⚠️ Pagamento fallito Base Alpha+`,
+                title: `⚠️ Pagamento fallito`,
                 content: `**Customer:** ${invoice.customer}\n**Subscription:** ${invoiceSub ?? 'N/D'}\n**Importo:** €${((invoice.amount_due ?? 0) / 100).toFixed(2)}`,
               });
             } catch (_) {}

@@ -1301,3 +1301,31 @@ export const baseAlphaSubscriptions = mysqlTable("base_alpha_subscriptions", {
 }));
 export type BaseAlphaSubscription = typeof baseAlphaSubscriptions.$inferSelect;
 export type InsertBaseAlphaSubscription = typeof baseAlphaSubscriptions.$inferInsert;
+
+// ─── ProofPress Creator Subscriptions ─────────────────────────────────────────
+export const creatorSubscriptions = mysqlTable("creator_subscriptions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  customerEmail: varchar("customerEmail", { length: 320 }).notNull(),
+  customerName: varchar("customerName", { length: 255 }),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
+  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }).unique(),
+  stripeSessionId: varchar("stripeSessionId", { length: 255 }).unique(),
+  planId: mysqlEnum("creatorPlanId", ["creator_basic", "creator_plus", "creator_gold"]).notNull(),
+  planName: varchar("planName", { length: 128 }).notNull(),
+  priceMonthly: int("priceMonthly").notNull(),
+  currency: varchar("currency", { length: 3 }).default("EUR").notNull(),
+  status: mysqlEnum("creatorStatus", ["active", "past_due", "cancelled", "incomplete", "trialing"]).default("active").notNull(),
+  currentPeriodStart: timestamp("currentPeriodStart"),
+  currentPeriodEnd: timestamp("currentPeriodEnd"),
+  cancelledAt: timestamp("cancelledAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (t) => ({
+  emailIdx: index("idx_cr_sub_email").on(t.customerEmail),
+  userIdx: index("idx_cr_sub_user").on(t.userId),
+  stripeSubIdx: index("idx_cr_sub_stripe").on(t.stripeSubscriptionId),
+  statusIdx: index("idx_cr_sub_status").on(t.status),
+}));
+export type CreatorSubscription = typeof creatorSubscriptions.$inferSelect;
+export type InsertCreatorSubscription = typeof creatorSubscriptions.$inferInsert;

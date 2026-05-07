@@ -3527,3 +3527,13 @@
 - [ ] Riscrivere pagina /offertacommerciale con 3 piani e checkout Stripe integrato
 - [ ] Aggiungere link a ProofPress Verify (https://proofpressverify.com)
 - [ ] Integrare con sistema abbonamenti esistente
+
+## Integrazione abbonamenti unificata (07 Mag 2026)
+- [ ] Webhook Stripe unificato per Base Alpha + Creator (checkout.session.completed, customer.subscription.*)
+- [ ] DB: tabella creator_subscriptions
+- [ ] Router subscriptions: getMySubscription unificato (Base Alpha + Creator)
+- [ ] Router subscriptions: cancelSubscription con Stripe (cancellazione a fine periodo)
+- [ ] Router subscriptions: getMyInvoices per entrambi i prodotti
+- [ ] Pagina /abbonamenti: mostra tutti gli abbonamenti attivi (Base Alpha + Creator)
+- [ ] Pagina /abbonamenti: pulsante cancellazione con conferma modale
+- [ ] Test end-to-end checkout + webhook + cancellazione

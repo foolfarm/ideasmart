@@ -42,21 +42,23 @@ type NavItem =
   | { type: "group"; label: string; Icon: React.ElementType; children: { href: string; label: string; external?: boolean }[] };
 
 const NAV_STRUCTURE: NavItem[] = [
-  // Home con sottomenu canali
+  // Home con sottomenu canali + voci di secondo livello
   {
     type: "group",
     label: "Home",
     Icon: Home,
     children: [
-      { href: "/",                   label: "Magazine" },
-      { href: "/ai",                 label: "AI" },
-      { href: "/startup",            label: "Startup" },
-      { href: "/dealroom",           label: "Dealroom" },
-      { href: "/research",           label: "Research" },
-      { href: "/dealflow",           label: "Dealflow" },
+      { href: "/",                  label: "Magazine" },
+      { href: "/ai",                label: "AI" },
+      { href: "/startup",           label: "Startup" },
+      { href: "/dealroom",          label: "Dealroom" },
+      { href: "/research",          label: "Research" },
+      { href: "/dealflow",          label: "Dealflow" },
+      { href: "/osservatorio-tech", label: "Osservatorio Tech" },
+      { href: "/base-alpha",        label: "Base Alpha+" },
+      { href: "/abbonamenti",       label: "I miei abbonamenti" },
     ],
   },
-  { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech", Icon: Megaphone },
   {
     type: "group",
     label: "Chi Siamo",
@@ -67,10 +69,7 @@ const NAV_STRUCTURE: NavItem[] = [
     ],
   },
   { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", Icon: Briefcase },
-  { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", Icon: Megaphone, external: true },
   { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", Icon: Megaphone },
-  { type: "link", href: "/base-alpha", label: "Base Alpha + Top Tech Observatory", Icon: Briefcase },
-  { type: "link", href: "/abbonamenti", label: "I miei abbonamenti", Icon: Star },
   { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", Icon: PenLine },
   { type: "link", href: "/contatti", label: "Contatti", Icon: Mail },
 ]
@@ -290,6 +289,36 @@ export default function LeftSidebar() {
       {/* Spazio flessibile */}
       <div className="flex-1" />
 
+      {/* ── Banner ProofPress Verify (separato da ProofPress AI) ── */}
+      <div className="px-2 mb-2 mt-2" style={fadeBlock}>
+        <a
+          href="https://proofpressverify.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col gap-1 px-3 py-3 rounded-xl transition-all cursor-pointer"
+          style={{
+            background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)",
+            border: "1px solid rgba(220,38,38,0.3)",
+            textDecoration: "none",
+          }}
+          title={!expanded ? "ProofPress Verify™" : undefined}
+        >
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: "16px" }}>🔐</span>
+            <span style={{ fontSize: "11px", fontWeight: 800, color: "#ffffff", fontFamily: SF, letterSpacing: "0.02em", ...fadeBlock }}>
+              ProofPress Verify™
+            </span>
+          </div>
+          <div style={{ ...fadeBlock }}>
+            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.55)", fontFamily: SF, lineHeight: 1.4, margin: 0 }}>
+              Certifica le notizie con hash crittografico immutabile
+            </p>
+            <span style={{ fontSize: "10px", fontWeight: 700, color: "#dc2626", fontFamily: SF }}>
+              Scopri →
+            </span>
+          </div>
+        </a>
+      </div>
       {/* ── LinkedIn ── */}
       <div className="px-2 mb-3 mt-3">
         <a
