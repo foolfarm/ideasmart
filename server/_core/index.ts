@@ -686,6 +686,39 @@ async function startServer() {
     }, 500);
   });
 
+  // ── Newsletter BUONGIORNO — task schedulato esterno Manus (08:30 CET) ──────────────────────
+  // POST /api/scheduled/morning-newsletter
+  // Invio massivo newsletter BUONGIORNO a tutti gli iscritti attivi.
+  // Indipendente dal ciclo di vita CloudRun: risolve il problema del cron mancato su riavvio server.
+  // Auth: Authorization: Bearer <JWT_SECRET>
+  app.post("/api/scheduled/morning-newsletter", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+      const { sendMorningNewsletterToAll } = await import('../unifiedNewsletter');
+      console.log('[ScheduledMorningNL] ⏰ Avvio invio newsletter BUONGIORNO (task schedulato esterno Manus)...');
+      const result = await sendMorningNewsletterToAll();
+      console.log('[ScheduledMorningNL] ✅ Risultato:', JSON.stringify({
+        success: result.success,
+        recipientCount: result.recipientCount,
+        subject: result.subject,
+      }));
+      return res.json({
+        success: result.success,
+        recipientCount: result.recipientCount,
+        subject: result.subject,
+        stats: result.stats,
+        error: result.error,
+      });
+    } catch (err: any) {
+      console.error('[ScheduledMorningNL] ❌ Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
   // ── Scheduled Dealflow endpoint (protetto da JWT_SECRET) ──────────────────────────────────
   // POST /api/scheduled/dealflow — triggera la generazione dei pick dealflow
   // Usato dal task schedulato notturno esterno di Manus per aggiornare /dealflow
