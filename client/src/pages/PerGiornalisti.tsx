@@ -1,6 +1,6 @@
 /**
  * ProofPress Creator — Offerta Commerciale
- * 3 piani: Basic €199 | Plus €299 | Gold €399
+ * 3 piani: Starter €199 | Publisher €449 | Gold €899
  * Design: bianco (#ffffff), nero (#0a0a0a), rosso (#dc2626)
  */
 import { useState } from "react";
@@ -168,39 +168,43 @@ export default function PerGiornalisti() {
 
   const plans = [
     {
-      id: "creator_basic",
-      name: "ProofPress Creator Basic",
+      id: "creator_starter",
+      name: "ProofPress Creator Starter",
       badge: "STARTER",
-      tagline: "Lancia il tuo primo verticale",
+      tagline: "Valida il tuo primo verticale",
       priceLabel: "€199",
       priceSubLabel: "/mese",
       verticali: 1,
       highlight: false,
       features: [
-        "1 Verticale Tematico",
-        "Articoli giornalieri certificati ProofPress Verify™",
+        "1 verticale tematico",
+        "Setup editoriale (fonti + redazione agentica)",
+        "Setup sul tuo dominio",
         "Pubblicazione automatica",
-        "Newsletter settimanale",
         "Dashboard analytics",
         "Supporto onboarding",
+        "Fino a 300 articoli/mese",
       ],
     },
     {
-      id: "creator_plus",
-      name: "ProofPress Creator Plus",
+      id: "creator_publisher",
+      name: "ProofPress Creator Publisher",
       badge: "MOST POPULAR",
-      tagline: "Scala su 3 settori chiave",
-      priceLabel: "€299",
+      tagline: "Costruisci un giornale AI multi-verticale",
+      priceLabel: "€449",
       priceSubLabel: "/mese",
       verticali: 3,
       highlight: true,
       features: [
-        "3 Verticali Tematici",
-        "Articoli giornalieri certificati ProofPress Verify™",
-        "Pubblicazione automatica multi-verticale",
-        "Newsletter settimanale per verticale",
+        "Tutto Starter, più:",
+        "3 verticali tematici",
+        "Cross-linking automatico tra verticali (SEO topical authority)",
+        "SEO Engine avanzato (keyword clustering, schema markup)",
+        "Scheduling editoriale (pubblicazione per fascia oraria)",
+        "A/B testing su headline e meta description",
         "Dashboard analytics avanzata",
-        "Post social generati automaticamente",
+        "Sistema di rotazione banner integrato (monetizzazione diretta)",
+        "Fino a 1.200 articoli/mese",
         "Supporto prioritario",
       ],
     },
@@ -209,18 +213,15 @@ export default function PerGiornalisti() {
       name: "ProofPress Creator Gold",
       badge: "PREMIUM",
       tagline: "La redazione AI completa",
-      priceLabel: "€399",
+      priceLabel: "€899",
       priceSubLabel: "/mese",
       verticali: 6,
       highlight: false,
       features: [
-        "6 Verticali Tematici",
-        "Articoli giornalieri certificati ProofPress Verify™",
-        "Pubblicazione automatica multi-verticale",
-        "Newsletter settimanale per verticale",
-        "Dashboard analytics enterprise",
-        "Post social generati automaticamente",
-        "Report mensile di performance editoriale",
+        "Tutto Publisher, più:",
+        "6 verticali tematici",
+        "Newsletter automation (digest per verticale, segmentazione)",
+        "Fino a 3.000 articoli/mese",
         "Account manager dedicato",
         "Accesso API ProofPress",
       ],
@@ -230,8 +231,8 @@ export default function PerGiornalisti() {
   return (
     <>
       <SEOHead
-        title="ProofPress Creator — La Redazione AI per Giornalisti e Testate Online"
-        description="Lancia la tua testata online con una redazione AI. 1, 3 o 6 verticali tematici. Articoli giornalieri certificati ProofPress Verify™. Da €199/mese."
+        title="ProofPress Creator — Starter €199 · Publisher €449 · Gold €899/mese"
+        description="Lancia la tua testata online con una redazione AI. Starter €199, Publisher €449, Gold €899/mese. Setup in 7 giorni, pubblicazione automatica, certificazione ProofPress Verify™."
         canonical="https://proofpress.ai/offertacommerciale"
         ogSiteName="ProofPress"
       />
@@ -319,7 +320,7 @@ export default function PerGiornalisti() {
                 <div className="flex flex-col gap-6">
                   <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#dc2626]">La soluzione</span>
                   <h2 className="text-3xl md:text-4xl font-black leading-tight text-[#0a0a0a]">
-                    ProofPress Creator:<br />da €199/mese.
+                    ProofPress Creator:<br />da €199/mese. Fino a 3.000 articoli/mese.
                   </h2>
                   <p className="text-lg text-[#0a0a0a]/60 leading-relaxed">
                     Una redazione AI completa che produce, verifica e pubblica per te. Stessa qualità editoriale, costi ridotti del 95%, certificazione crittografica su ogni articolo.
@@ -367,133 +368,6 @@ export default function PerGiornalisti() {
           </section>
 
           <Divider />
-
-          {/* ═══ PROOFPRESS VERIFY ═══ */}
-          <section className="py-20 md:py-28" style={{ background: "#0a0a0a" }}>
-            <div className="max-w-6xl mx-auto px-5 md:px-8">
-              <div className="flex flex-col md:flex-row gap-12 items-center">
-                <div className="flex flex-col gap-6 flex-1">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#dc2626]">Tecnologia esclusiva</span>
-                  <h2 className="text-3xl md:text-4xl font-black leading-tight text-white">
-                    🔐 ProofPress Verify™<br />
-                    <span className="text-white/40">La certificazione che cambia tutto.</span>
-                  </h2>
-                  <p className="text-lg text-white/60 leading-relaxed">
-                    Ogni articolo prodotto da ProofPress Creator viene analizzato su fonti multiple, validato per affidabilità e coerenza fattuale, e sigillato con un hash crittografico immutabile. Ispirato alla notarizzazione Web3.
-                  </p>
-                  <ul className="flex flex-col gap-2.5">
-                    {[
-                      "Confronto multi-fonte automatico",
-                      "Verification Report strutturato per ogni articolo",
-                      "Hash crittografico immutabile e verificabile",
-                      "Trasparenza totale su ogni notizia pubblicata",
-                    ].map((t) => (
-                      <li key={t} className="flex items-start gap-2.5 text-[15px] text-white/70">
-                        <span className="text-[#4ade80] font-bold mt-0.5">✓</span>
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href="https://proofpressverify.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[14px] font-black uppercase tracking-[0.1em] text-white no-underline transition-all hover:opacity-80 w-fit"
-                    style={{ background: "#dc2626" }}
-                  >
-                    Scopri ProofPress Verify™ →
-                  </a>
-                </div>
-                <div className="flex-1">
-                  <div
-                    className="rounded-2xl p-6 flex flex-col gap-3"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">📄</span>
-                      <div>
-                        <p className="text-white font-bold text-sm">Verification Report</p>
-                        <p className="text-white/40 text-xs">Generato automaticamente per ogni articolo</p>
-                      </div>
-                    </div>
-                    <div className="border-t border-white/10 pt-3 flex flex-col gap-2">
-                      {[
-                        { label: "Affidabilità fonti", value: "98%", color: "#4ade80" },
-                        { label: "Coerenza fattuale", value: "✓ Verificata", color: "#4ade80" },
-                        { label: "Obiettività", value: "Alto", color: "#4ade80" },
-                        { label: "Hash crittografico", value: "0x7f3a…c9e2", color: "#60a5fa" },
-                      ].map(({ label, value, color }) => (
-                        <div key={label} className="flex justify-between items-center text-sm">
-                          <span className="text-white/50">{label}</span>
-                          <span className="font-bold" style={{ color }}>{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ═══ PIANI ═══ */}
-          <section id="piani" className="py-20 md:py-28" style={{ background: "#ffffff" }}>
-            <div className="max-w-6xl mx-auto px-5 md:px-8">
-              <div className="flex flex-col gap-4 mb-14 text-center">
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40">Piani e prezzi</span>
-                <h2 className="text-3xl md:text-5xl font-black text-[#0a0a0a]">Scegli il tuo piano Creator</h2>
-                <p className="text-lg text-[#0a0a0a]/55 max-w-2xl mx-auto">
-                  Tutti i piani includono certificazione ProofPress Verify™, pubblicazione automatica e supporto. Nessun vincolo — disdici quando vuoi.
-                </p>
-              </div>
-              <div className="grid md:grid-cols-3 gap-6 items-stretch">
-                {plans.map((plan) => (
-                  <PlanCard
-                    key={plan.id}
-                    {...plan}
-                    onCheckout={handleCheckout}
-                    loading={loadingPlan === plan.id}
-                  />
-                ))}
-              </div>
-              <div className="mt-12 text-center flex flex-col gap-2">
-                <p className="text-[13px] text-[#0a0a0a]/40 font-medium">
-                  🔒 Pagamento sicuro via Stripe · Nessun addebito nascosto · Disdici in qualsiasi momento
-                </p>
-                <p className="text-[13px] text-[#0a0a0a]/40">
-                  Hai domande?{" "}
-                  <a href="mailto:info@proofpress.ai" className="underline hover:text-[#0a0a0a]/70 transition-colors">
-                    Scrivici a info@proofpress.ai
-                  </a>
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <Divider />
-
-          {/* ═══ FAQ ═══ */}
-          <section className="py-20 md:py-28" style={{ background: "#f5f5f7" }}>
-            <div className="max-w-3xl mx-auto px-5 md:px-8">
-              <div className="flex flex-col gap-4 mb-12">
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40">Domande frequenti</span>
-                <h2 className="text-3xl font-black text-[#0a0a0a]">Tutto quello che devi sapere</h2>
-              </div>
-              <div className="flex flex-col gap-6">
-                {[
-                  { q: "Cos'è un Verticale Tematico?", a: "Un verticale tematico è un canale editoriale dedicato a un singolo settore (es. AI, startup, finanza, salute). Ogni verticale ha le sue fonti, il suo tono e la sua newsletter." },
-                  { q: "Come funziona la certificazione ProofPress Verify™?", a: "Ogni articolo viene analizzato su fonti multiple, misurato per affidabilità e coerenza fattuale, e sigillato con un hash crittografico immutabile. Il Verification Report è pubblico e verificabile su proofpressverify.com." },
-                  { q: "Posso cambiare piano in qualsiasi momento?", a: "Sì. Puoi passare a un piano superiore o inferiore in qualsiasi momento dalla pagina Abbonamenti. Il cambio è immediato e il credito residuo viene applicato automaticamente." },
-                  { q: "Quanto tempo ci vuole per il setup?", a: "Il setup standard richiede 5–7 giorni lavorativi. Includiamo onboarding guidato, configurazione delle fonti e test di produzione." },
-                  { q: "Posso disdire quando voglio?", a: "Sì, senza penali. Puoi disdire in qualsiasi momento dalla pagina Abbonamenti o contattando il supporto. L'accesso rimane attivo fino alla fine del periodo pagato." },
-                ].map(({ q, a }) => (
-                  <div key={q} className="flex flex-col gap-2 p-6 rounded-2xl bg-white">
-                    <h3 className="text-[16px] font-black text-[#0a0a0a]">{q}</h3>
-                    <p className="text-[15px] text-[#0a0a0a]/60 leading-relaxed">{a}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
 
           {/* ═══ CTA FINALE ═══ */}
           <section className="py-20 md:py-28" style={{ background: "#0a0a0a" }}>

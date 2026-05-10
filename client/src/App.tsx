@@ -201,7 +201,7 @@ function Router() {
         <Route path="/:section/spotlight/:id" component={StartupOfDayDetail} />
         <Route path="/chi-siamo" component={ChiSiamo} />
         <Route path="/offerta" component={Offerta} />
-        <Route path="/offerta/creator" component={OffertaCreator} />
+        <Route path="/offerta/creator">{() => { window.location.replace('/offertacommerciale'); return null; }}</Route>
         <Route path="/preventivo-creator" component={PreventivoCreator} />
         <Route path="/preventivo-news-verify" component={PreventivoNewsVerify} />
         <Route path="/preventivo-info-verify" component={PreventivoInfoVerify} />
