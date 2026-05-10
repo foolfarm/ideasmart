@@ -194,8 +194,21 @@ async function startServer() {
 
   // Body parser — 14MB per gestire upload immagini banner in base64
   // (base64 aumenta la dimensione del 33%: immagine 10MB → ~13.3MB base64)
-  app.use(express.json({ limit: "14mb" }));
-  app.use(express.urlencoded({ limit: "14mb", extended: true }));
+  // IMPORTANTE: le route webhook Stripe richiedono il raw body per la verifica della firma.
+  // express.json() globale parserebbe il payload prima che express.raw() inline possa intercettarlo,
+  // rendendo impossibile la verifica. Per questo escludiamo esplicitamente i path webhook.
+  const STRIPE_WEBHOOK_PATHS = [
+    '/api/stripe/base-alpha/webhook',
+    '/api/stripe/verify/webhook',
+  ];
+  app.use((req, _res, next) => {
+    if (STRIPE_WEBHOOK_PATHS.includes(req.path)) return next();
+    express.json({ limit: '14mb' })(req, _res, next);
+  });
+  app.use((req, _res, next) => {
+    if (STRIPE_WEBHOOK_PATHS.includes(req.path)) return next();
+    express.urlencoded({ limit: '14mb', extended: true })(req, _res, next);
+  });
   // Cookie parser — necessario per leggere req.cookies nelle procedure tRPC
   app.use(cookieParser());
   // Storage proxy — serve /manus-storage/* files via signed URLs
