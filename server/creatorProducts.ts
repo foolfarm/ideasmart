@@ -7,10 +7,10 @@
  *  - Publisher → prod_UUe8wmELhNaDAL  price_1TVeqh8CvMSliYUF91KzTI5K  (€449/mese)
  *  - Gold      → prod_UUe9uWTGK4VR1U  price_1TVeqi8CvMSliYUFoQ7IZXVQ  (€899/mese)
  *
- * LIVE (sk_org_live_... — account proofpress):
- *  - Starter   → prod_UUdmDVofzqrKdN  price_1TVeUYKyMu3K72gZaPCXOh6u  (€199/mese)
- *  - Publisher → prod_UUdmqJJtsNO5MB  price_1TVeUhKyMu3K72gZXVJSIhyC  (€449/mese)
- *  - Gold      → prod_UUdm1fz2lGAedz  price_1TVeUpKyMu3K72gZ4AAOXFwg  (€899/mese)
+ * LIVE (sk_live_51P2GAEQ... — account FoolFarm live):
+ *  - Starter   → prod_UUclVWL9kq962f  price_1TVdVcQQVoHT3i87dulfL8wG  (€199/mese)
+ *  - Publisher → prod_UUclBVy9uyAuOB  price_1TVdVmQQVoHT3i87ZCgPW0zC  (€449/mese)
+ *  - Gold      → prod_UUcl7VD2FkDgxp  price_1TVdVyQQVoHT3i87tVsDAhpK  (€899/mese)
  */
 
 const isLive = (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_live") ||
@@ -18,16 +18,16 @@ const isLive = (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_live") ||
 
 const PRICES = {
   starter: {
-    priceId: isLive ? "price_1TVeUYKyMu3K72gZaPCXOh6u" : "price_1TVeqf8CvMSliYUFZVTZDl9R",
-    productId: isLive ? "prod_UUdmDVofzqrKdN" : "prod_UUe8q99rq4Phpq",
+    priceId: isLive ? "price_1TVdVcQQVoHT3i87dulfL8wG" : "price_1TVeqf8CvMSliYUFZVTZDl9R",
+    productId: isLive ? "prod_UUclVWL9kq962f" : "prod_UUe8q99rq4Phpq",
   },
   publisher: {
-    priceId: isLive ? "price_1TVeUhKyMu3K72gZXVJSIhyC" : "price_1TVeqh8CvMSliYUF91KzTI5K",
-    productId: isLive ? "prod_UUdmqJJtsNO5MB" : "prod_UUe8wmELhNaDAL",
+    priceId: isLive ? "price_1TVdVmQQVoHT3i87ZCgPW0zC" : "price_1TVeqh8CvMSliYUF91KzTI5K",
+    productId: isLive ? "prod_UUclBVy9uyAuOB" : "prod_UUe8wmELhNaDAL",
   },
   gold: {
-    priceId: isLive ? "price_1TVeUpKyMu3K72gZ4AAOXFwg" : "price_1TVeqi8CvMSliYUFoQ7IZXVQ",
-    productId: isLive ? "prod_UUdm1fz2lGAedz" : "prod_UUe9uWTGK4VR1U",
+    priceId: isLive ? "price_1TVdVyQQVoHT3i87tVsDAhpK" : "price_1TVeqi8CvMSliYUFoQ7IZXVQ",
+    productId: isLive ? "prod_UUcl7VD2FkDgxp" : "prod_UUe9uWTGK4VR1U",
   },
 };
 
