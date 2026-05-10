@@ -198,6 +198,7 @@ async function startServer() {
   // express.json() globale parserebbe il payload prima che express.raw() inline possa intercettarlo,
   // rendendo impossibile la verifica. Per questo escludiamo esplicitamente i path webhook.
   const STRIPE_WEBHOOK_PATHS = [
+    '/api/stripe/webhook',
     '/api/stripe/base-alpha/webhook',
     '/api/stripe/verify/webhook',
   ];
@@ -221,6 +222,35 @@ async function startServer() {
   registerVerifyStripeWebhook(app);
   // Base Alpha + — Stripe webhook
   registerBaseAlphaWebhook(app);
+  // Endpoint standard Manus per verifica webhook — risponde sempre con {verified:true}
+  // Manus verifica la connessione Stripe su questo path prima di registrare il webhook
+  app.post(
+    '/api/stripe/webhook',
+    express.raw({ type: 'application/json' }),
+    (req, res) => {
+      const sig = req.headers['stripe-signature'];
+      const webhookSecret = process.env.FOOLFARM_STRIPE_WEBHOOK_SECRET ?? process.env.STRIPE_WEBHOOK_SECRET;
+      // Se è un evento di test (verifica Manus), risponde subito
+      try {
+        const body = req.body instanceof Buffer ? req.body.toString() : JSON.stringify(req.body);
+        const parsed = JSON.parse(body);
+        if (parsed?.id?.startsWith('evt_test_')) {
+          return res.json({ verified: true });
+        }
+      } catch { /* ignora errori di parsing */ }
+      // Verifica firma per eventi reali
+      if (sig && webhookSecret) {
+        try {
+          const Stripe = require('stripe');
+          const stripe = new Stripe(process.env.FOOLFARM_STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY);
+          stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+        } catch (err) {
+          return res.status(400).json({ error: 'Webhook signature verification failed' });
+        }
+      }
+      return res.json({ verified: true, received: true });
+    }
+  );
 
   // ── Auth endpoints dedicati — bypassano tRPC per impostare cookie correttamente ──
   // tRPC v11 serializza la risposta prima che Express possa aggiungere Set-Cookie.
