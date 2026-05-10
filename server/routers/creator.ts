@@ -41,7 +41,7 @@ export const creatorRouter = router({
    */
   createCheckout: publicProcedure
     .input(z.object({
-      planId: z.enum(["creator_basic", "creator_plus", "creator_gold"]),
+      planId: z.enum(["creator_starter", "creator_publisher", "creator_gold"]),
       origin: z.string().url(),
       customerEmail: z.string().email().optional(),
       customerName: z.string().optional(),

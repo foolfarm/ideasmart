@@ -151,7 +151,7 @@ export default function PerGiornalisti() {
     setLoadingPlan(planId);
     try {
       const result = await createCheckout.mutateAsync({
-        planId: planId as "creator_basic" | "creator_plus" | "creator_gold",
+        planId: planId as "creator_starter" | "creator_publisher" | "creator_gold",
         origin: window.location.origin,
         customerEmail: user?.email ?? undefined,
         customerName: user?.name ?? undefined,

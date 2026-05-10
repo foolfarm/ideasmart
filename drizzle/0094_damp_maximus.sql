@@ -1,0 +1,1 @@
+ALTER TABLE `creator_subscriptions` MODIFY COLUMN `creatorPlanId` enum('creator_starter','creator_publisher','creator_gold') NOT NULL;

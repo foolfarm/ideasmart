@@ -1311,7 +1311,7 @@ export const creatorSubscriptions = mysqlTable("creator_subscriptions", {
   stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
   stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }).unique(),
   stripeSessionId: varchar("stripeSessionId", { length: 255 }).unique(),
-  planId: mysqlEnum("creatorPlanId", ["creator_basic", "creator_plus", "creator_gold"]).notNull(),
+  planId: mysqlEnum("creatorPlanId", ["creator_starter", "creator_publisher", "creator_gold"]).notNull(),
   planName: varchar("planName", { length: 128 }).notNull(),
   priceMonthly: int("priceMonthly").notNull(),
   currency: varchar("currency", { length: 3 }).default("EUR").notNull(),

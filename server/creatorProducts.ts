@@ -1,49 +1,62 @@
 /**
- * ProofPress Creator — Prodotti e Prezzi Stripe
- * Creati il 07/05/2026 nell'account Stripe del server (acct_1THUSk8CvMSliYUF)
- * Basic €199/mese | Plus €299/mese | Gold €399/mese
+ * ProofPress Creator — Prodotti e Prezzi Stripe LIVE
+ * Aggiornato il 10/05/2026 — 3 tier: Starter / Publisher / Gold
+ * Account Stripe: live (livemode: true)
+ *
+ * Prodotti Stripe live:
+ *  - Starter   → prod_UUclVWL9kq962f  price_1TVdVcQQVoHT3i87dulfL8wG  (€199/mese)
+ *  - Publisher → prod_UUclBVy9uyAuOB  price_1TVdVmQQVoHT3i87ZCgPW0zC  (€449/mese)
+ *  - Gold      → prod_UUcl7VD2FkDgxp  price_1TVdVyQQVoHT3i87tVsDAhpK  (€899/mese)
  */
 export const CREATOR_PLANS = {
-  basic: {
-    id: "creator_basic",
-    name: "ProofPress Creator Basic",
+  starter: {
+    id: "creator_starter",
+    name: "ProofPress Creator Starter",
     badge: "STARTER",
-    tagline: "Lancia il tuo primo verticale",
+    tagline: "Valida il tuo primo verticale",
+    target: "Creator, consulenti, PMI che vogliono testare il modello editoriale AI.",
     priceLabel: "€199",
     priceSubLabel: "/mese",
-    priceMonthly: 19900, // centesimi
-    stripePriceId: "price_1TUN288CvMSliYUFOzcoi4Pd",
-    stripeProductId: "prod_UTJf8OJdoAqnMS",
+    priceMonthly: 19900,
+    stripePriceId: "price_1TVdVcQQVoHT3i87dulfL8wG",
+    stripeProductId: "prod_UUclVWL9kq962f",
     highlight: false,
     verticali: 1,
+    articoliMese: 30,
     features: [
-      "1 Verticale Tematico",
-      "Articoli giornalieri certificati ProofPress Verify™",
+      "1 verticale tematico",
+      "Setup editoriale (fonti + redazione agentica)",
+      "Setup sul tuo dominio",
       "Pubblicazione automatica",
-      "Newsletter settimanale",
       "Dashboard analytics",
       "Supporto onboarding",
+      "Fino a 30 articoli/mese",
     ],
   },
-  plus: {
-    id: "creator_plus",
-    name: "ProofPress Creator Plus",
+  publisher: {
+    id: "creator_publisher",
+    name: "ProofPress Creator Publisher",
     badge: "MOST POPULAR",
-    tagline: "Scala su 3 settori chiave",
-    priceLabel: "€299",
+    tagline: "Costruisci un giornale AI multi-verticale",
+    target: "Brand, agenzie, editori indipendenti che vogliono presidiare più temi correlati.",
+    priceLabel: "€449",
     priceSubLabel: "/mese",
-    priceMonthly: 29900,
-    stripePriceId: "price_1TUN2E8CvMSliYUFx8m7YMyI",
-    stripeProductId: "prod_UTJfYXz2FnNrDT",
+    priceMonthly: 44900,
+    stripePriceId: "price_1TVdVmQQVoHT3i87ZCgPW0zC",
+    stripeProductId: "prod_UUclBVy9uyAuOB",
     highlight: true,
     verticali: 3,
+    articoliMese: 120,
     features: [
-      "3 Verticali Tematici",
-      "Articoli giornalieri certificati ProofPress Verify™",
-      "Pubblicazione automatica multi-verticale",
-      "Newsletter settimanale per verticale",
+      "Tutto Starter, più:",
+      "3 verticali tematici",
+      "Cross-linking automatico tra verticali (SEO topical authority)",
+      "SEO Engine avanzato (keyword clustering, schema markup)",
+      "Scheduling editoriale (pubblicazione per fascia oraria)",
+      "A/B testing su headline e meta description",
       "Dashboard analytics avanzata",
-      "Post social generati automaticamente",
+      "Sistema di rotazione banner integrato (monetizzazione diretta)",
+      "Fino a 120 articoli/mese",
       "Supporto prioritario",
     ],
   },
@@ -52,25 +65,21 @@ export const CREATOR_PLANS = {
     name: "ProofPress Creator Gold",
     badge: "PREMIUM",
     tagline: "La redazione AI completa",
-    priceLabel: "€399",
+    target: "Editori verticali, corporate communication, performance marketing.",
+    priceLabel: "€899",
     priceSubLabel: "/mese",
-    priceMonthly: 39900,
-    stripePriceId: "price_1TUN2J8CvMSliYUFgPcPfsgw",
-    stripeProductId: "prod_UTJf2kr0zGT2op",
+    priceMonthly: 89900,
+    stripePriceId: "price_1TVdVyQQVoHT3i87tVsDAhpK",
+    stripeProductId: "prod_UUcl7VD2FkDgxp",
     highlight: false,
     verticali: 6,
+    articoliMese: 1200,
     features: [
-      "6 Verticali Tematici",
-      "Articoli giornalieri certificati ProofPress Verify™",
-      "Pubblicazione automatica multi-verticale",
-      "Newsletter settimanale per verticale",
-      "Dashboard analytics enterprise",
-      "Post social generati automaticamente",
-      "Report mensile di performance editoriale",
-      "Account manager dedicato",
-      "Accesso API ProofPress",
+      "Tutto Publisher, più:",
+      "6 verticali tematici",
+      "Newsletter automation (digest per verticale, segmentazione)",
+      "Fino a 1.200 articoli/mese",
     ],
   },
 } as const;
-
 export type CreatorPlanId = keyof typeof CREATOR_PLANS;

@@ -41,7 +41,7 @@ export default function OffertaCreator() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 max-w-2xl mx-auto">
             {[
               { value: "4.000+", label: "fonti monitorate 24/7" },
-              { value: "15", label: "articoli/giorno con SOLO" },
+              { value: "1.200", label: "articoli/mese con Gold" },
               { value: "100%", label: "contenuti certificati" },
               { value: "1", label: "persona per gestire tutto" },
             ].map((s) => (
@@ -136,66 +136,121 @@ export default function OffertaCreator() {
 
       <div className="border-t border-[#1a1a1a]/8" />
 
-      {/* PIANO */}
-      <section className="max-w-5xl mx-auto px-6 py-14">
-        <h2 className="text-[28px] md:text-[36px] font-black mb-2 tracking-[-0.01em]">Un piano. Tutto incluso. Pensato per chi lavora da solo.</h2>
-        <p className="text-[15px] text-[#1a1a1a]/50 mb-10">Alternativa revenue share disponibile: €1.500 setup + 25% dei ricavi (minimo €200/mese)</p>
+      <div className="border-t border-[#1a1a1a]/8" />
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Piano SOLO */}
-          <div className="bg-white border-2 border-[#c0392b] rounded-2xl p-8 relative">
-            <div className="absolute -top-3 left-6">
-              <span className="bg-[#c0392b] text-white text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full">Piano principale</span>
+      {/* PIANI CREATOR */}
+      <section className="max-w-5xl mx-auto px-6 py-14">
+        <h2 className="text-[28px] md:text-[36px] font-black mb-2 tracking-[-0.01em]">Tre piani. Scegli il tuo ritmo di crescita.</h2>
+        <p className="text-[15px] text-[#1a1a1a]/50 mb-10">Nessun vincolo contrattuale. Disdici quando vuoi.</p>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Starter */}
+          <div className="bg-white border border-[#1a1a1a]/10 rounded-2xl p-7 flex flex-col">
+            <div className="mb-4">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#1a1a1a]/40">STARTER</span>
+              <h3 className="text-[22px] font-black mt-1 mb-1">Valida il tuo primo verticale</h3>
+              <p className="text-[12px] text-[#1a1a1a]/50 leading-relaxed">Creator, consulenti, PMI che vogliono testare il modello editoriale AI.</p>
             </div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[20px]">✍️</span>
-              <span className="text-[18px] font-black">SOLO</span>
+            <div className="mb-6">
+              <span className="text-[40px] font-black text-[#1a1a1a] leading-none">€199</span>
+              <span className="text-[14px] text-[#1a1a1a]/50">/mese</span>
             </div>
-            <div className="text-[36px] font-black text-[#c0392b] leading-none mb-1">€690<span className="text-[16px] font-normal text-[#1a1a1a]/50">/mese</span></div>
-            <div className="text-[13px] text-[#1a1a1a]/50 mb-6">Setup: €3.500 una tantum</div>
-            <p className="text-[13px] font-semibold text-[#1a1a1a]/70 mb-5">La tua redazione personale. Un verticale, pubblicazione quotidiana, certificazione inclusa.</p>
-            <div className="space-y-2 mb-6">
-              {["4 Agent Giornalisti + 4 agenti di supporto", "1 canale tematico (espandibile)", "Fino a 15 articoli/giorno", "Newsletter settimanale inclusa", "ProofPress Verify su ogni contenuto", "Distribuzione: sito web + email", "Dashboard base con analytics", "Gestibile da 1 persona", "Onboarding guidato"].map(f => (
+            <div className="space-y-2 mb-8 flex-1">
+              {[
+                "1 verticale tematico",
+                "Setup editoriale (fonti + redazione agentica)",
+                "Setup sul tuo dominio",
+                "Pubblicazione automatica",
+                "Dashboard analytics",
+                "Supporto onboarding",
+                "Fino a 30 articoli/mese",
+              ].map(f => (
                 <div key={f} className="flex items-start gap-2 text-[13px] text-[#1a1a1a]/70">
-                  <CheckCircle className="w-4 h-4 text-[#c0392b] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="w-4 h-4 text-[#1a1a1a]/40 flex-shrink-0 mt-0.5" />
                   {f}
                 </div>
               ))}
             </div>
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="block">
-              <Button className="w-full bg-[#c0392b] hover:bg-[#a93226] text-white font-bold">
-                Guarda la demo <ArrowRight className="ml-2 w-4 h-4" />
+            <a href="/offerta/creator?plan=creator_starter" className="block">
+              <Button className="w-full bg-[#1a1a1a] hover:bg-[#333] text-white font-bold">
+                Inizia ora <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </a>
+            <p className="text-[11px] text-[#1a1a1a]/35 text-center mt-3">Nessun vincolo · Disdici quando vuoi</p>
           </div>
-
-          {/* Add-on */}
-          <div className="space-y-4">
-            <h3 className="text-[14px] font-bold tracking-[0.1em] uppercase text-[#1a1a1a]/40 mb-4">Add-on disponibili</h3>
-            {[
-              { icon: "🎙️", name: "ProofPress Radio", price: "€390/mese", desc: "Trasforma i tuoi articoli in podcast e bollettini audio. Voci AI broadcast-quality, feed RSS per Spotify e Apple Podcast." },
-              { icon: "📰", name: "Canale aggiuntivo", price: "€290/mese per canale", desc: "Vuoi coprire un secondo verticale? Aggiungi un canale con agenti dedicati senza cambiare piano." },
-              { icon: "📧", name: "Newsletter quotidiana", price: "€190/mese", desc: "Passa dalla newsletter settimanale a quella quotidiana con selezione e invio automatico." },
-            ].map(a => (
-              <div key={a.name} className="bg-white border border-[#1a1a1a]/8 rounded-xl p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span>{a.icon}</span>
-                      <span className="text-[14px] font-bold">{a.name}</span>
-                    </div>
-                    <p className="text-[13px] text-[#1a1a1a]/55 leading-relaxed">{a.desc}</p>
-                  </div>
-                  <div className="text-[13px] font-bold text-[#c0392b] whitespace-nowrap">{a.price}</div>
+          {/* Publisher */}
+          <div className="bg-[#1a1a1a] text-white rounded-2xl p-7 flex flex-col relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span className="bg-[#c0392b] text-white text-[10px] font-bold tracking-[0.15em] uppercase px-4 py-1.5 rounded-full whitespace-nowrap">★ Più scelto ★</span>
+            </div>
+            <div className="mb-4">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40">PUBLISHER</span>
+              <h3 className="text-[22px] font-black mt-1 mb-1 text-white">Costruisci un giornale AI multi-verticale</h3>
+              <p className="text-[12px] text-white/50 leading-relaxed">Brand, agenzie, editori indipendenti che vogliono presidiare più temi correlati.</p>
+            </div>
+            <div className="mb-6">
+              <span className="text-[40px] font-black text-white leading-none">€449</span>
+              <span className="text-[14px] text-white/50">/mese</span>
+            </div>
+            <div className="space-y-2 mb-8 flex-1">
+              {[
+                "Tutto Starter, più:",
+                "3 verticali tematici",
+                "Cross-linking automatico tra verticali (SEO topical authority)",
+                "SEO Engine avanzato (keyword clustering, schema markup)",
+                "Scheduling editoriale (pubblicazione per fascia oraria)",
+                "A/B testing su headline e meta description",
+                "Dashboard analytics avanzata",
+                "Sistema di rotazione banner integrato (monetizzazione diretta)",
+                "Fino a 120 articoli/mese",
+                "Supporto prioritario",
+              ].map(f => (
+                <div key={f} className={`flex items-start gap-2 text-[13px] ${f === "Tutto Starter, più:" ? "text-white/40 font-semibold" : "text-white/75"}`}>
+                  {f !== "Tutto Starter, più:" && <CheckCircle className="w-4 h-4 text-[#c0392b] flex-shrink-0 mt-0.5" />}
+                  {f}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <a href="/offerta/creator?plan=creator_publisher" className="block">
+              <Button className="w-full bg-[#c0392b] hover:bg-[#a93226] text-white font-bold">
+                Inizia ora <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </a>
+            <p className="text-[11px] text-white/30 text-center mt-3">Nessun vincolo · Disdici quando vuoi</p>
+          </div>
+          {/* Gold */}
+          <div className="bg-white border border-[#1a1a1a]/10 rounded-2xl p-7 flex flex-col">
+            <div className="mb-4">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#c0392b]">GOLD</span>
+              <h3 className="text-[22px] font-black mt-1 mb-1">La redazione AI completa</h3>
+              <p className="text-[12px] text-[#1a1a1a]/50 leading-relaxed">Editori verticali, corporate communication, performance marketing.</p>
+            </div>
+            <div className="mb-6">
+              <span className="text-[40px] font-black text-[#1a1a1a] leading-none">€899</span>
+              <span className="text-[14px] text-[#1a1a1a]/50">/mese</span>
+            </div>
+            <div className="space-y-2 mb-8 flex-1">
+              {[
+                "Tutto Publisher, più:",
+                "6 verticali tematici",
+                "Newsletter automation (digest per verticale, segmentazione)",
+                "Fino a 1.200 articoli/mese",
+              ].map(f => (
+                <div key={f} className={`flex items-start gap-2 text-[13px] ${f === "Tutto Publisher, più:" ? "text-[#1a1a1a]/40 font-semibold" : "text-[#1a1a1a]/70"}`}>
+                  {f !== "Tutto Publisher, più:" && <CheckCircle className="w-4 h-4 text-[#c0392b] flex-shrink-0 mt-0.5" />}
+                  {f}
+                </div>
+              ))}
+            </div>
+            <a href="/offerta/creator?plan=creator_gold" className="block">
+              <Button className="w-full bg-[#1a1a1a] hover:bg-[#333] text-white font-bold">
+                Inizia ora <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </a>
+            <p className="text-[11px] text-[#1a1a1a]/35 text-center mt-3">Nessun vincolo · Disdici quando vuoi</p>
           </div>
         </div>
       </section>
-
-      <div className="border-t border-[#1a1a1a]/8" />
-
       {/* ROI */}
       <section className="max-w-5xl mx-auto px-6 py-14">
         <h2 className="text-[28px] md:text-[36px] font-black mb-8 tracking-[-0.01em]">Quanto ti costa oggi fare quello che ProofPress fa in automatico?</h2>
@@ -212,9 +267,9 @@ export default function OffertaCreator() {
             </div>
           </div>
           <div className="bg-[#c0392b]/5 border border-[#c0392b]/15 rounded-2xl p-6">
-            <h3 className="text-[14px] font-bold tracking-[0.1em] uppercase text-[#c0392b] mb-4">Con ProofPress SOLO</h3>
+            <h3 className="text-[14px] font-bold tracking-[0.1em] uppercase text-[#c0392b] mb-4">Con ProofPress Creator</h3>
             <div className="space-y-2">
-              {["30 minuti/giorno per review e approvazione (opzionale)", "Fino a 15 articoli/giorno pubblicati e certificati", "Newsletter automatica", "Costo: €690/mese = €23/giorno = meno di un pranzo di lavoro"].map(i => (
+              {["30 minuti/giorno per review e approvazione (opzionale)", "Fino a 1.200 articoli/mese pubblicati e certificati", "Newsletter automatica", "Costo da €199/mese = meno di €7/giorno"].map(i => (
                 <div key={i} className="flex items-start gap-2 text-[13px] text-[#1a1a1a]/70">
                   <CheckCircle className="w-4 h-4 text-[#c0392b] flex-shrink-0 mt-0.5" />
                   {i}

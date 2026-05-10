@@ -105,7 +105,7 @@ export function registerBaseAlphaWebhook(app: Express): void {
                         stripeCustomerId: customerId,
                         stripeSubscriptionId: subscriptionId,
                         stripeSessionId: session.id,
-                        planId: planId as "creator_basic" | "creator_plus" | "creator_gold",
+                        planId: planId as "creator_starter" | "creator_publisher" | "creator_gold",
                         planName: plan?.name ?? planId,
                         priceMonthly: plan?.priceMonthly ?? 0,
                         currency: "EUR",
