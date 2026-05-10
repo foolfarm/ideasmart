@@ -3537,3 +3537,11 @@
 - [ ] Pagina /abbonamenti: mostra tutti gli abbonamenti attivi (Base Alpha + Creator)
 - [ ] Pagina /abbonamenti: pulsante cancellazione con conferma modale
 - [ ] Test end-to-end checkout + webhook + cancellazione
+
+## Allineamento sistema certificazione PPV (10 Mag 2026)
+- [x] newsScheduler.ts: rimosso generateVerifyHash() interno — articoli inseriti senza hash locale
+- [x] newsScheduler.ts: rimosso computeTrustGrade() iniziale — trust grade solo da PPV
+- [x] newsScheduler.ts: rimosso fallback Pinata — se PPV non risponde, articolo resta senza certificazione
+- [x] VerifyBadge.tsx: displayHash mostra hash completo 64 char (non troncato a 16)
+- [x] VerifyBadge.tsx: link badge punta a https://proofpressverify.com/api/public/certificate/<hash>
+- [x] App.tsx: /verify e /proofpress-verify (e sub-route) reindirizzano a https://proofpressverify.com

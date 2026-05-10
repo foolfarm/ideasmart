@@ -165,14 +165,15 @@ function Router() {
         <Route path="/advertise" component={Advertise} />
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
-        <Route path="/verify">{() => <Redirect to="/proofpress-verify" />}</Route>
-        <Route path="/proofpress-verify" component={ProofPressVerify} />
+        {/* /verify e /proofpress-verify reindirizzano al sito ufficiale proofpressverify.com */}
+        <Route path="/verify">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>
+        <Route path="/proofpress-verify">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>
+        <Route path="/proofpress-verify/news">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>
+        <Route path="/proofpress-verify/info">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>
+        <Route path="/proofpress-verify/email">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>
         <Route path="/verify-agent" component={VerifyAgent} />
         <Route path="/verify-pricing" component={VerifyPricing} />
         <Route path="/verify-business" component={VerifyBusiness} />
-        <Route path="/proofpress-verify/news" component={NewsVerify} />
-        <Route path="/proofpress-verify/info" component={InfoVerify} />
-        <Route path="/proofpress-verify/email" component={EmailVerify} />
         <Route path="/verify-email" component={VerifyEmail} />
         {/* Route specifiche /verify/* DEVONO stare PRIMA di /verify/:cid */}
         <Route path="/verify/dashboard" component={VerifyDashboard} />

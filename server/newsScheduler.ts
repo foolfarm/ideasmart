@@ -10,8 +10,7 @@ import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 import { findNewsImage } from "./stockImages";
 import { runBatchAudit } from "./auditContent";
-import { generateVerifyHash } from "./verify";
-import { computeTrustGrade, upgradeTrustGradeAfterIpfs } from "./trustScore";
+// generateVerifyHash e computeTrustGrade rimossi: la certificazione avviene solo via API PPV esterna
 import { certifyWithPpv } from "./proofpressVerifyClient";
 
 // Intervallo: 24 ore in millisecondi
@@ -197,9 +196,8 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
       if (imageUrl) {
         console.log(`[NewsScheduler] Stock image found for AI news ${i + 1}: ${item.title.slice(0, 40)}...`);
       }
-      const verifyHash = generateVerifyHash(item.title, item.summary, item.sourceUrl, new Date());
-      // Trust Score calcolato al momento dell'insert (ipfsCid non ancora disponibile → aggiornato dopo IPFS pin)
-      const trustResult = computeTrustGrade({ verifyHash, ipfsCid: null, sourceName: item.sourceName, sourceUrl: item.sourceUrl, summary: item.summary });
+      // Nessun hash interno: l'articolo viene inserito senza hash/trust grade.
+      // La certificazione avviene in modo asincrono tramite API PPV esterna (proofpressverify.com).
       const [insertedAI] = await db.insert(newsItems).values({
         section: 'ai',
         title: item.title,
@@ -211,9 +209,9 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
         weekLabel: dayLabel,
         position: i + 1,
         imageUrl: imageUrl ?? null,
-        verifyHash,
-        trustScore: trustResult.score / 100,
-        trustGrade: trustResult.grade,
+        verifyHash: null,
+        trustScore: null,
+        trustGrade: null,
       }).$returningId();
 
       // Certificazione ProofPress Verify (API esterna) + Pinning IPFS — asincrono, non blocca il flusso
@@ -243,41 +241,9 @@ export async function saveNewsToDb(items: NewsItemData[]): Promise<void> {
               .where(eq(newsItems.id, insertedAI.id));
             console.log(`[NewsScheduler] ✅ PPV certificato: grade=${ppvResult.trust_grade} score=${ppvResult.trust_score.toFixed(2)} | ${item.title.substring(0, 50)}`);
           } else {
-            // Fallback: usa il vecchio sistema Pinata se PPV non risponde
-            console.warn(`[NewsScheduler] ⚠️ PPV non disponibile, fallback su Pinata per: ${item.title.substring(0, 50)}`);
-            const { pinVerificationReport } = await import('./pinata.js');
-            const { cid, ipfsUrl } = await pinVerificationReport({
-              verifyHash,
-              article: {
-                id: insertedAI.id,
-                title: item.title,
-                summary: item.summary,
-                section: 'ai',
-                sourceName: item.sourceName,
-                sourceUrl: item.sourceUrl,
-                publishedAt: item.publishedAt,
-                category: item.category,
-                weekLabel: dayLabel,
-              },
-            });
-            const upgraded = upgradeTrustGradeAfterIpfs({
-              verifyHash,
-              ipfsCid: cid,
-              sourceName: item.sourceName,
-              sourceUrl: item.sourceUrl,
-              summary: item.summary,
-            });
-            await db
-              .update(newsItems)
-              .set({
-                ipfsCid: cid,
-                ipfsUrl,
-                ipfsPinnedAt: new Date(),
-                trustScore: upgraded.score / 100,
-                trustGrade: upgraded.grade,
-              })
-              .where(eq(newsItems.id, insertedAI.id));
-            console.log(`[NewsScheduler] ⛓ Pinata fallback: ${trustResult.grade}→${upgraded.grade}: ${item.title.substring(0, 50)} → ${cid.substring(0, 20)}…`);
+            // PPV non disponibile: l'articolo resta senza hash/certificazione.
+            // Nessun fallback interno — solo PPV è autorizzata a certificare.
+            console.warn(`[NewsScheduler] ⚠️ PPV non disponibile, articolo senza certificazione: ${item.title.substring(0, 50)}`);
           }
         } catch (certErr) {
           console.warn(`[NewsScheduler] ⚠️ Certificazione fallita (non critico):`, certErr);

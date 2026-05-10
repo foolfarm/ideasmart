@@ -2,7 +2,7 @@
  * VerifyBadge — Badge ProofPress Verify con hash SHA-256 univoco per ogni articolo
  *
  * Click sinistro: copia l'hash completo negli appunti (con feedback visivo "Copiato!")
- * Click destro / Ctrl+click: apre la pagina /proofpress-verify?hash=...
+ * Click sull'icona: apre https://proofpressverify.com/api/public/certificate/<hash> (sito ufficiale PPV)
  *
  * L'hash certifica il contenuto dell'articolo al momento della pubblicazione,
  * garantendo tracciabilità e verificabilità nel tempo.
@@ -71,7 +71,8 @@ export default function VerifyBadge({
 
   if (!effectiveHash) return null;
 
-  const displayHash = "#" + effectiveHash.substring(0, 16).toUpperCase();
+  // Mostra l'hash completo a 64 caratteri (standard PPV SHA-256)
+  const displayHash = effectiveHash.toUpperCase();
 
   function handleGradeClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -83,9 +84,16 @@ export default function VerifyBadge({
     e.preventDefault();
     e.stopPropagation();
     if (ppvIpfsUrl) {
+      // Articolo certificato PPV™: apre il report IPFS direttamente
       window.open(ppvIpfsUrl, "_blank", "noopener,noreferrer");
     } else {
-      navigate(`/proofpress-verify?hash=${encodeURIComponent(effectiveHash!)}`);
+      // Fallback: apre proofpressverify.com con l'hash per verifica esterna
+      // La pagina interna /proofpress-verify è dismessa
+      window.open(
+        `https://proofpressverify.com/api/public/certificate/${encodeURIComponent(effectiveHash!)}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
     }
   }
 
