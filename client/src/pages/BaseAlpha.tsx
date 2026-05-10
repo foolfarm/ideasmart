@@ -159,8 +159,8 @@ export default function BaseAlpha() {
   return (
     <div className="min-h-screen bg-white">
       <SEOHead
-        title="Base Alpha + Top Tech Observatory | ProofPress"
-        description="Il primo osservatorio con redazione agentica che analizza oltre 4.000 fonti pre-pubbliche. Report certificati ProofPress Verify™ su 10 settori verticali."
+        title="Base Alpha+ Osservatorio Tech Advisory | ProofPress"
+        description="Il primo osservatorio a disposizione delle aziende con informazioni e ricerche certificate in tecnologia, investimenti, startup e venture capital."
         canonical="https://proofpress.ai/base-alpha"
         ogSiteName="ProofPress"
       />
@@ -171,54 +171,90 @@ export default function BaseAlpha() {
         <LeftSidebar />
         <main className="flex-1 min-w-0 overflow-x-hidden">
 
-            {/* ══ HERO — sfondo bianco, alta leggibilità ════════════════════ */}
-          <section className="bg-white border-b border-zinc-200 px-6 md:px-12 py-14 md:py-20">
-            <div className="max-w-4xl">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-[10px] font-black tracking-[0.25em] uppercase px-3 py-1.5 bg-[#c9a227] text-black">
-                  OSSERVATORIO
-                </span>
-                <span className="text-[11px] font-semibold tracking-[0.15em] uppercase text-zinc-500">
-                  Intelligence Premium
-                </span>
-              </div>
-              <h1
-                className="font-black leading-none mb-6 text-[#111]"
-                style={{ fontSize: "clamp(3.5rem, 8vw, 7.5rem)", lineHeight: 0.93, letterSpacing: "-0.03em" }}
-              >
-                BASE ALPHA +
-                TOP TECH OBSERVATORY
-              </h1>
-              <p className="text-xl md:text-2xl font-medium text-zinc-600 leading-relaxed max-w-2xl mb-8">
-                Il primo osservatorio con redazione agentica che analizza oltre{" "}
-                <strong className="text-[#c9a227]">4.000 fonti</strong> — incluse informazioni{" "}
-                <strong className="text-[#c9a227]">pre-pubbliche</strong> — per trasformare i segnali deboli in intelligence strategica certificata.
-              </p>
-              <div className="flex flex-wrap gap-3 mb-10">
-                {[
-                  { dot: "bg-[#c9a227]", text: "Certificato ProofPress Verify™" },
-                  { dot: "bg-green-400", text: "Notarizzato su IPFS" },
-                  { dot: "bg-blue-400", text: "Aggiornato ogni 24h" },
-                ].map((b) => (
-                  <span key={b.text} className="flex items-center gap-2 text-sm font-semibold text-zinc-600 border border-zinc-300 px-4 py-2 rounded-full">
-                    <span className={`w-2 h-2 rounded-full ${b.dot} inline-block`} />
-                    {b.text}
-                  </span>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={scrollToContact}
-                  className="bg-[#c9a227] text-black font-black text-sm tracking-wider uppercase px-8 py-4 hover:bg-[#b8911f] transition-colors"
-                >
-                  RICHIEDI INFORMAZIONI →
-                </button>
-                <button
-                  onClick={scrollToPlans}
-                  className="border-2 border-zinc-300 text-[#111] font-bold text-sm tracking-wider uppercase px-8 py-4 hover:border-zinc-600 transition-colors"
-                >
-                  SCOPRI I PIANI
-                </button>
+            {/* ══ HERO — layout 3/4 + 1/4 con profilo Adrian Lenice ════════════════════ */}
+          <section className="bg-white border-b border-zinc-200">
+            <div style={{ borderBottom: "3px solid #111" }}>
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
+                {/* Titolo display — 3/4 */}
+                <div className="lg:col-span-3 px-8 md:px-12 py-12 md:py-16" style={{ borderRight: "1px solid #11111115" }}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-[10px] font-black tracking-[0.25em] uppercase px-3 py-1.5 bg-[#c9a227] text-black">
+                      OSSERVATORIO
+                    </span>
+                    <span className="text-[11px] font-semibold tracking-[0.15em] uppercase text-zinc-500">
+                      Tech Advisory
+                    </span>
+                  </div>
+                  <h1
+                    className="font-black leading-none mb-6 text-[#111]"
+                    style={{ fontSize: "clamp(3.5rem, 8vw, 7.5rem)", lineHeight: 0.93, letterSpacing: "-0.03em" }}
+                  >
+                    Base Alpha+
+                  </h1>
+                  <p
+                    className="mt-6 font-bold leading-snug max-w-2xl"
+                    style={{ color: "#111", fontSize: "clamp(1.15rem, 1.9vw, 1.45rem)", fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    Il primo osservatorio a disposizione delle aziende<br />
+                    <span style={{ color: "#dc2626" }}>con informazioni e ricerche certificate.</span>
+                  </p>
+                  <p
+                    className="mt-6 leading-relaxed max-w-2xl"
+                    style={{ color: "#11111170", fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    Tecnologia, investimenti, startup, venture capital. Conosci prima del mercato e su cosa investire.
+                  </p>
+                  <div className="flex flex-wrap gap-4 mt-8">
+                    <button
+                      onClick={scrollToContact}
+                      className="bg-[#c9a227] text-black font-black text-sm tracking-wider uppercase px-8 py-4 hover:bg-[#b8911f] transition-colors"
+                    >
+                      RICHIEDI INFORMAZIONI →
+                    </button>
+                    <button
+                      onClick={scrollToPlans}
+                      className="border-2 border-zinc-300 text-[#111] font-bold text-sm tracking-wider uppercase px-8 py-4 hover:border-zinc-600 transition-colors"
+                    >
+                      SCOPRI I PIANI
+                    </button>
+                  </div>
+                </div>
+                {/* Profilo Adrian Lenice — 1/4 */}
+                <div className="lg:col-span-1 flex flex-col bg-white border-l border-zinc-100">
+                  <div className="flex flex-col">
+                    <div className="relative">
+                      <img
+                        src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/adrian_lenice_portrait-HBM94kj3QyQX8VWJxXjg6j.webp"
+                        alt="Adrian Lenice"
+                        className="w-full object-cover object-top"
+                        style={{ aspectRatio: "3/4", maxHeight: "320px" }}
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-[#0a0a0a]">
+                        <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#c9a227]">Direttore</p>
+                      </div>
+                    </div>
+                    <div className="px-5 py-5 flex flex-col gap-3 border-b border-zinc-100">
+                      <div>
+                        <p className="text-base font-black text-[#0a0a0a]">Adrian Lenice</p>
+                        <p className="text-[9px] font-bold tracking-[0.18em] uppercase mt-1 text-[#c9a227]">
+                          Direttore · Base Alpha+
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[11px] text-zinc-500 leading-relaxed">Team globale di analisti</p>
+                        <p className="text-[11px] text-zinc-500 leading-relaxed">200+ clienti istituzionali</p>
+                        <p className="text-[11px] text-zinc-500 leading-relaxed">4.000+ fonti monitorate</p>
+                        <p className="text-[11px] text-zinc-500 leading-relaxed">100% contenuti certificati PPV™</p>
+                      </div>
+                      <a
+                        href="mailto:adrian@proofpress.ai"
+                        className="w-full text-center text-[10px] font-black tracking-wider uppercase py-3 transition-opacity hover:opacity-90 bg-zinc-900 text-white"
+                      >
+                        CONTATTA ADRIAN
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>

@@ -746,6 +746,7 @@ export default function OsservatorioTech() {
 
               {/* Titolo display — 3/4 */}
               <div className="lg:col-span-3 px-8 md:px-12 py-12 md:py-16" style={{ borderRight: `1px solid ${INK}15` }}>
+                <p className="text-base font-black tracking-[-0.02em] mb-1" style={{ color: INK, fontFamily: FONT }}>Base Alpha</p>
                 <Label>Osservatorio Tech</Label>
                 <h1
                   className="mt-4 font-black leading-[0.95] tracking-[-0.03em]"
