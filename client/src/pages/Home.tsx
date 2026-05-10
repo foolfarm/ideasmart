@@ -1428,100 +1428,119 @@ export default function Home() {
                   </div>
 
 
-                  {/* ── Banner Base Alpha+ ── */}
-                  <div className="mb-5">
-                    <a
-                      href="/base-alpha"
-                      className="group block"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <div
-                        style={{
-                          background: "linear-gradient(135deg, #0a0f1e 0%, #1a2540 100%)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          borderRadius: 10,
-                          overflow: "hidden",
-                          transition: "box-shadow 0.2s, transform 0.2s",
-                        }}
-                        className="hover:shadow-lg hover:scale-[1.01]"
+                  {/* ── Banner Base Alpha+ — design editoriale chiaro ── */}
+                  <div className="mb-6">
+                    <a href="/base-alpha" style={{ textDecoration: "none" }}>
+                      <div style={{
+                        background: "#ffffff",
+                        border: "1.5px solid #e8e0d0",
+                        borderRadius: 10,
+                        overflow: "hidden",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+                        transition: "box-shadow 0.2s, transform 0.2s",
+                      }}
+                      className="hover:shadow-xl hover:scale-[1.01]"
                       >
-                        {/* Header */}
-                        <div style={{ padding: "10px 14px 8px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        {/* Header dorato */}
+                        <div style={{
+                          background: "linear-gradient(135deg, #f5f0e8 0%, #ede5d0 100%)",
+                          borderBottom: "1px solid #ddd5bc",
+                          padding: "10px 14px 8px",
+                        }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <span style={{
-                              background: "#c8a84b",
-                              color: "#0a0f1e",
-                              fontSize: 8,
+                              background: "#1a1a1a",
+                              color: "#c8a84b",
+                              fontSize: 7,
                               fontWeight: 900,
-                              letterSpacing: "0.18em",
+                              letterSpacing: "0.2em",
                               textTransform: "uppercase",
                               padding: "2px 7px",
                               borderRadius: 3,
                               fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
                             }}>Osservatorio</span>
                             <span style={{
-                              color: "rgba(255,255,255,0.5)",
-                              fontSize: 9,
-                              fontWeight: 600,
+                              color: "#666",
+                              fontSize: 8,
+                              fontWeight: 700,
                               letterSpacing: "0.12em",
                               textTransform: "uppercase",
                               fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
                             }}>Tech Advisory</span>
                           </div>
-                          <p style={{
-                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                            fontSize: 20,
-                            fontWeight: 900,
-                            color: "#ffffff",
-                            lineHeight: 1.1,
-                            margin: 0,
-                            letterSpacing: "-0.02em",
-                          }}>Base Alpha+</p>
                         </div>
-                        {/* Body */}
-                        <div style={{ padding: "10px 14px 14px" }}>
-                          <p style={{
-                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                            fontSize: 11,
-                            color: "rgba(255,255,255,0.65)",
-                            lineHeight: 1.5,
-                            margin: "0 0 10px",
-                          }}>
-                            Intelligence certificata su tecnologia, investimenti e startup. Conosci prima del mercato.
-                          </p>
-                          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
-                            {["Report settimanale certificato PPV", "Top 10 segnali pre-pubblici", "Trend analysis + Key takeaway"].map((item) => (
-                              <div key={item} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                <span style={{ color: "#c8a84b", fontSize: 9, fontWeight: 700 }}>✓</span>
-                                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 10, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>{item}</span>
-                              </div>
-                            ))}
+                        {/* Corpo: foto + testo */}
+                        <div style={{ display: "flex", gap: 0 }}>
+                          {/* Foto Adrian Lenice */}
+                          <div style={{ flexShrink: 0, width: 80 }}>
+                            <img
+                              src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/adrian_lenice_portrait-HBM94kj3QyQX8VWJxXjg6j.webp"
+                              alt="Adrian Lenice"
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                display: "block",
+                                minHeight: 120,
+                              }}
+                            />
                           </div>
-                          <div style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            paddingTop: 10,
-                            borderTop: "1px solid rgba(255,255,255,0.08)",
-                          }}>
-                            <span style={{
-                              color: "#c8a84b",
-                              fontSize: 16,
+                          {/* Testo */}
+                          <div style={{ flex: 1, padding: "12px 12px 10px" }}>
+                            <p style={{
+                              fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif",
+                              fontSize: 17,
                               fontWeight: 900,
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
-                            }}>da €199/mese</span>
-                            <span style={{
-                              background: "#c8a84b",
-                              color: "#0a0f1e",
-                              fontSize: 9,
-                              fontWeight: 900,
-                              letterSpacing: "0.1em",
-                              textTransform: "uppercase",
-                              padding: "5px 10px",
-                              borderRadius: 5,
+                              color: "#0a0a0a",
+                              lineHeight: 1.1,
+                              margin: "0 0 4px",
+                              letterSpacing: "-0.03em",
+                            }}>Scopri Base Alpha+</p>
+                            <p style={{
                               fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                            }}>Scopri →</span>
+                              fontSize: 10,
+                              color: "#444",
+                              lineHeight: 1.5,
+                              margin: "0 0 8px",
+                            }}>
+                              Il primo osservatorio a disposizione delle aziende con informazioni e ricerche certificate.
+                            </p>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 8 }}>
+                              {["Report settimanale certificato PPV", "Top 10 segnali pre-pubblici", "Trend analysis + Key takeaway"].map((item) => (
+                                <div key={item} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                                  <span style={{ color: "#c8a84b", fontSize: 8, fontWeight: 900 }}>✓</span>
+                                  <span style={{ color: "#555", fontSize: 9, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>{item}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
+                        </div>
+                        {/* Footer */}
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          padding: "8px 14px",
+                          borderTop: "1px solid #e8e0d0",
+                          background: "#faf8f4",
+                        }}>
+                          <span style={{
+                            color: "#1a1a1a",
+                            fontSize: 14,
+                            fontWeight: 900,
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+                          }}>da €199/mese</span>
+                          <span style={{
+                            background: "#1a1a1a",
+                            color: "#c8a84b",
+                            fontSize: 8,
+                            fontWeight: 900,
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
+                            padding: "5px 12px",
+                            borderRadius: 5,
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                          }}>Scopri →</span>
                         </div>
                       </div>
                     </a>
