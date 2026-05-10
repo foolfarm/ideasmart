@@ -1,13 +1,35 @@
 /**
  * Base Alpha + — Prodotti e Prezzi Stripe
- * Aggiornato il 10/05/2026 — 3 tier Weekly (Brief / Intelligence / Deep Dive)
- * Account Stripe: acct_1THUSk8CvMSliYUF
+ * Dual-mode: seleziona automaticamente test o live in base alla STRIPE_SECRET_KEY
  *
- * Prodotti Stripe riutilizzati (stessi priceId, nomi aggiornati via API):
- *  - Weekly Brief        → prod_UTJ3r1yoErZAfU  (€199/mese)
- *  - Weekly Intelligence → prod_UTJ337B8MMjPN0  (€299/mese, ex Monthly Intelligence)
- *  - Weekly Deep Dive    → prod_UTJ3kfxhdKwCZB  (€499/mese, ex Quarterly Deep Dive)
+ * TEST (sk_test_51THUSk... — account FoolFarm sandbox):
+ *  - Weekly Brief        → prod_UTJ3r1yoErZAfU  price_1TUMRU8CvMSliYUFLHE18MpI  (€199/mese)
+ *  - Weekly Intelligence → prod_UTJ337B8MMjPN0  price_1TUMRX8CvMSliYUFzO6KbSt8  (€299/mese)
+ *  - Weekly Deep Dive    → prod_UTJ3kfxhdKwCZB  price_1TUMRa8CvMSliYUFk7jWZjpg  (€499/mese)
+ *
+ * LIVE (sk_live_51P2GAEQ... — account FoolFarm live):
+ *  - Weekly Brief        → prod_UTIkZPX7V5iWuq  price_1TUM9eQQVoHT3i87NHxq9nPg  (€199/mese)
+ *  - Weekly Intelligence → prod_UTIkcgE6rBwyRG  price_1TUM9lQQVoHT3i87LGdZ9Fms  (€299/mese)
+ *  - Weekly Deep Dive    → prod_UTIlGU7WREADmx  price_1TUM9rQQVoHT3i87DgTbN3vP  (€499/mese)
  */
+
+const isLive = (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_live") ||
+               (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_org_live");
+
+const PRICES = {
+  brief: {
+    priceId: isLive ? "price_1TUM9eQQVoHT3i87NHxq9nPg" : "price_1TUMRU8CvMSliYUFLHE18MpI",
+    productId: isLive ? "prod_UTIkZPX7V5iWuq" : "prod_UTJ3r1yoErZAfU",
+  },
+  intelligence: {
+    priceId: isLive ? "price_1TUM9lQQVoHT3i87LGdZ9Fms" : "price_1TUMRX8CvMSliYUFzO6KbSt8",
+    productId: isLive ? "prod_UTIkcgE6rBwyRG" : "prod_UTJ337B8MMjPN0",
+  },
+  deepdive: {
+    priceId: isLive ? "price_1TUM9rQQVoHT3i87DgTbN3vP" : "price_1TUMRa8CvMSliYUFk7jWZjpg",
+    productId: isLive ? "prod_UTIlGU7WREADmx" : "prod_UTJ3kfxhdKwCZB",
+  },
+};
 
 export const BASE_ALPHA_PLANS = {
   "weekly-brief": {
@@ -17,9 +39,9 @@ export const BASE_ALPHA_PLANS = {
     freq: "Settimanale · 1 settore",
     priceLabel: "€199",
     priceSubLabel: "/mese",
-    priceMonthly: 19900, // centesimi
-    stripePriceId: "price_1TUMRU8CvMSliYUFLHE18MpI",
-    stripeProductId: "prod_UTJ3r1yoErZAfU",
+    priceMonthly: 19900,
+    stripePriceId: PRICES.brief.priceId,
+    stripeProductId: PRICES.brief.productId,
     highlight: false,
     features: [
       "1 settore verticale a scelta",
@@ -38,8 +60,8 @@ export const BASE_ALPHA_PLANS = {
     priceLabel: "€299",
     priceSubLabel: "/mese",
     priceMonthly: 29900,
-    stripePriceId: "price_1TUMRX8CvMSliYUFzO6KbSt8",
-    stripeProductId: "prod_UTJ337B8MMjPN0",
+    stripePriceId: PRICES.intelligence.priceId,
+    stripeProductId: PRICES.intelligence.productId,
     highlight: true,
     features: [
       "2 settori verticali a scelta",
@@ -59,8 +81,8 @@ export const BASE_ALPHA_PLANS = {
     priceLabel: "€499",
     priceSubLabel: "/mese",
     priceMonthly: 49900,
-    stripePriceId: "price_1TUMRa8CvMSliYUFk7jWZjpg",
-    stripeProductId: "prod_UTJ3kfxhdKwCZB",
+    stripePriceId: PRICES.deepdive.priceId,
+    stripeProductId: PRICES.deepdive.productId,
     highlight: false,
     features: [
       "3 settori verticali a scelta",
