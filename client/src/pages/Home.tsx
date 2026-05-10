@@ -973,39 +973,7 @@ export default function Home() {
         <div className="hidden sm:block">
           <BreakingNewsTicker />
         </div>
-        {/* ══ BANNER IL SOLE 24 ORE ══════════════════════════════════════════════════════════════════ */}
-        <div className="max-w-[1280px] mx-auto px-4 pt-2 pb-1">
-          <a
-            href="https://www.ilsole24ore.com/art/agenti-e-hash-crittografici-nasce-redazione-agentica-che-seleziona-notizie-AI9fgyXC"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3 sm:gap-4 px-4 py-3 rounded-lg border border-[#e8e0d0] hover:border-[#c8001a]/40 hover:shadow-sm transition-all"
-            style={{ background: "linear-gradient(90deg, #fdf6ee 0%, #fffdf9 100%)", textDecoration: "none" }}
-          >
-            {/* Logo Il Sole 24 Ore */}
-            <div className="flex-shrink-0 flex items-center justify-center rounded px-2 py-1" style={{ background: "#c8001a", minWidth: 48 }}>
-              <span className="font-black text-white" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif", fontSize: "9px", letterSpacing: "0.03em", lineHeight: 1.3, textAlign: "center" }}>IL SOLE<br/>24 ORE</span>
-            </div>
-            {/* Testo */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                <span className="text-[8px] font-bold uppercase tracking-[0.18em] px-1.5 py-0.5 rounded" style={{ background: "#c8001a", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>Oggi su Il Sole 24 Ore</span>
-                <span className="text-[9px] font-medium" style={{ color: "#999", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>27 aprile 2026</span>
-              </div>
-              <p className="font-bold leading-snug line-clamp-1 group-hover:underline" style={{ color: "#1a1a1a", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(12px, 1.4vw, 15px)" }}>
-                Agenti AI e hash crittografici: nasce la redazione &ldquo;agentica&rdquo; che seleziona le notizie
-              </p>
-              <p className="mt-0.5 line-clamp-1 hidden sm:block" style={{ color: "#666", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", fontSize: "clamp(10px, 1vw, 12px)" }}>
-                ProofPress si presenta al mercato italiano come il primo modello di giornalismo agentico in grado di replicare e automatizzare l&rsquo;intero flusso di lavoro di una redazione grazie all&rsquo;AI.
-              </p>
-            </div>
-            {/* Freccia */}
-            <div className="flex-shrink-0 hidden sm:flex items-center" style={{ color: "#c8001a" }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-          </a>
-        </div>
-        {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
+                {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
         {topNewsWithImages && topNewsWithImages.length > 0 && (
           <div className="max-w-[1280px] mx-auto px-4 py-3 hidden sm:block">
             <div className="flex items-center gap-2 mb-2">
@@ -1466,163 +1434,125 @@ export default function Home() {
                   </div>
 
 
-                  {/* ── Widget Audio: Scopri ProofPress ── */}
+                  {/* ── Articolo quadrato: ProofPress su Il Sole 24 Ore ── */}
                   <div className="mb-5">
-                    <div
-                      style={{
-                        background: "#f8f9fa",
-                        border: "1px solid #e5e7eb",
-                        borderRadius: "10px",
-                        padding: "16px 18px",
-                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-                      }}
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <div
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: "50%",
-                            background: "#1a1a2e",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <p
-                            style={{
-                              fontSize: 11,
-                              fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: "0.12em",
-                              color: "#6b7280",
-                              margin: 0,
-                              lineHeight: 1.2,
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                            }}
-                          >
-                            Scopri ProofPress
-                          </p>
-                          <p
-                            style={{
-                              fontSize: 12,
-                              fontWeight: 600,
-                              color: "#1a1a2e",
-                              margin: 0,
-                              lineHeight: 1.3,
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                            }}
-                          >
-                            Il fact-checking crittografico
-                          </p>
-                        </div>
-                      </div>
-                      <audio
-                        controls
-                        preload="none"
-                        style={{
-                          width: "100%",
-                          height: 36,
-                          borderRadius: 6,
-                          outline: "none",
-                          accentColor: "#1a1a2e",
-                        }}
-                      >
-                        <source src="/manus-storage/ProofPress_e_il_fact-checking_crittografico_1783b572.m4a" type="audio/mp4" />
-                        Il tuo browser non supporta la riproduzione audio.
-                      </audio>
-                    </div>
-                  </div>
-
-                  {/* Widget Audio 2 — ProofPress Verify Podcast */}
-                  <div
-                    style={{
-                      background: "#f0f4ff",
-                      borderRadius: 12,
-                      padding: "14px 14px 12px",
-                      border: "1px solid #dde3f0",
-                      marginBottom: 16,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        marginBottom: 10,
-                      }}
+                    <a
+                      href="https://www.ilsole24ore.com/art/agenti-e-hash-crittografici-nasce-redazione-agentica-che-seleziona-notizie-AI9fgyXC"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group block"
+                      style={{ textDecoration: "none" }}
                     >
                       <div
                         style={{
-                          width: 38,
-                          height: 38,
-                          borderRadius: "50%",
-                          background: "#1a3a6b",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
+                          background: "#fdf6ee",
+                          border: "1px solid #e8e0d0",
+                          borderRadius: 10,
+                          overflow: "hidden",
+                          transition: "box-shadow 0.2s",
                         }}
+                        className="hover:shadow-md"
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                          <line x1="12" y1="19" x2="12" y2="23"/>
-                          <line x1="8" y1="23" x2="16" y2="23"/>
-                        </svg>
-                      </div>
-                      <div>
-                        <p
+                        {/* Header badge */}
+                        <div
                           style={{
-                            fontSize: 11,
-                            fontWeight: 700,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.12em",
-                            color: "#1a3a6b",
-                            margin: 0,
-                            lineHeight: 1.2,
-                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                            background: "#c8001a",
+                            padding: "8px 14px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
                           }}
                         >
-                          Scopri ProofPress Verify
-                        </p>
-                        <p
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 600,
-                            color: "#1a1a2e",
-                            margin: 0,
-                            lineHeight: 1.3,
-                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                          }}
-                        >
-                          Scopri di Più in questo Podcast
-                        </p>
+                          <span
+                            style={{
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+                              fontSize: 9,
+                              fontWeight: 900,
+                              letterSpacing: "0.12em",
+                              color: "#fff",
+                              textTransform: "uppercase",
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            IL SOLE 24 ORE
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                              fontSize: 9,
+                              fontWeight: 600,
+                              color: "rgba(255,255,255,0.75)",
+                              letterSpacing: "0.08em",
+                            }}
+                          >
+                            27 apr 2026
+                          </span>
+                        </div>
+                        {/* Corpo articolo */}
+                        <div style={{ padding: "14px 14px 16px" }}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              background: "#c8001a",
+                              color: "#fff",
+                              fontSize: 8,
+                              fontWeight: 700,
+                              letterSpacing: "0.18em",
+                              textTransform: "uppercase",
+                              padding: "2px 7px",
+                              borderRadius: 3,
+                              marginBottom: 8,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            }}
+                          >
+                            Oggi su Il Sole 24 Ore
+                          </span>
+                          <p
+                            style={{
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                              fontSize: 14,
+                              fontWeight: 700,
+                              color: "#1a1a1a",
+                              lineHeight: 1.4,
+                              margin: "0 0 8px",
+                            }}
+                            className="group-hover:underline"
+                          >
+                            Agenti AI e hash crittografici: nasce la redazione &ldquo;agentica&rdquo; che seleziona le notizie
+                          </p>
+                          <p
+                            style={{
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                              fontSize: 12,
+                              color: "#666",
+                              lineHeight: 1.5,
+                              margin: 0,
+                            }}
+                          >
+                            ProofPress si presenta al mercato italiano come il primo modello di giornalismo agentico in grado di replicare e automatizzare l&rsquo;intero flusso di lavoro di una redazione grazie all&rsquo;AI.
+                          </p>
+                          <div
+                            style={{
+                              marginTop: 12,
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4,
+                              color: "#c8001a",
+                              fontSize: 11,
+                              fontWeight: 700,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                              letterSpacing: "0.08em",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Leggi l&rsquo;articolo
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <audio
-                      controls
-                      preload="none"
-                      style={{
-                        width: "100%",
-                        height: 36,
-                        borderRadius: 6,
-                        outline: "none",
-                        accentColor: "#1a3a6b",
-                      }}
-                    >
-                      <source src="/manus-storage/Il_sigillo_crittografico_di_ProofPress_Verify_c739af61.m4a" type="audio/mp4" />
-                      Il tuo browser non supporta la riproduzione audio.
-                    </audio>
+                    </a>
                   </div>
-
-                  {/* Ultime Notizie — stream */}
+                                    {/* Ultime Notizie — stream */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
