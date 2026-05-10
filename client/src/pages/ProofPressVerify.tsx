@@ -11,7 +11,6 @@ import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
@@ -226,8 +225,6 @@ export default function ProofPressVerify() {
 
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* ═══════════════════════════════════════════════════════════════════
               HERO — PROTOCOLLO UNIVERSALE
           ═══════════════════════════════════════════════════════════════════ */}

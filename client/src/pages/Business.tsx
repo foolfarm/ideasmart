@@ -8,7 +8,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import LeftSidebar from "@/components/LeftSidebar";
 
@@ -325,9 +324,6 @@ export default function Business() {
 
         {/* ── NAVBAR STANDARD ── */}
         <SharedPageHeader />
-
-        <BreakingNewsTicker />
-
         {/* ── HERO ── */}
         <section className="max-w-6xl mx-auto px-4 pt-20 pb-0">
           <div className="text-center py-8">

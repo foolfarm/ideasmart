@@ -9,7 +9,6 @@ import { useSiteAuth } from "@/hooks/useSiteAuth";
 import { User, LogOut, Settings, Star } from "lucide-react";
 import MobileNav from "@/components/MobileNav";
 import BannerRotator from "@/components/BannerRotator";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import { trpc } from "@/lib/trpc";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -147,12 +146,10 @@ export default function SharedPageHeader() {
   const ipfsCount = ipfsCountData?.count ?? 0;
 
   return (
-    <>
-      <BreakingNewsTicker />
-      <header
-        className="max-w-[1280px] mx-auto px-4 pt-5 pb-0"
-        style={{ fontFamily: SF }}
-      >
+    <header
+      className="max-w-[1280px] mx-auto px-4 pt-5 pb-0"
+      style={{ fontFamily: SF }}
+    >
       {/* Riga data + tagline + auth */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
@@ -222,7 +219,6 @@ export default function SharedPageHeader() {
       </div>
 
       <Divider thick />
-        </header>
-    </>
+    </header>
   );
 }

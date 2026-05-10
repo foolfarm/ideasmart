@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { Eye, EyeOff, Download, Lock } from "lucide-react";
 import SharedPageHeader from "@/components/SharedPageHeader";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import SharedPageFooter from "@/components/SharedPageFooter";
 
@@ -66,8 +65,6 @@ function LoginGate({ onSuccess }: { onSuccess: () => void }) {
       <div className="flex-1 min-w-0">
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a" }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* Hero login */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">
@@ -161,8 +158,6 @@ function MethodologyContent() {
       <div className="flex-1 min-w-0">
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a" }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* ── HERO ── */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">

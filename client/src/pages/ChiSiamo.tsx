@@ -6,7 +6,6 @@
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -120,8 +119,6 @@ export default function ChiSiamo() {
 
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* ── HERO ── */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto px-5 md:px-8">

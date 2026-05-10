@@ -7,7 +7,6 @@ import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import LeftSidebar from "@/components/LeftSidebar";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -165,8 +164,6 @@ export default function BaseAlpha() {
         ogSiteName="ProofPress"
       />
       <SharedPageHeader />
-      <BreakingNewsTicker />
-
       <div className="flex min-h-screen">
         <LeftSidebar />
         <main className="flex-1 min-w-0 overflow-x-hidden">

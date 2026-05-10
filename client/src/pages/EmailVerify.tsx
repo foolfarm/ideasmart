@@ -8,7 +8,6 @@ import { useState, useRef } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
@@ -79,8 +78,6 @@ export default function EmailVerify() {
         />
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* BREADCRUMB */}
           <div className="max-w-5xl mx-auto px-5 md:px-8 pt-8">
             <nav className="flex items-center gap-2 text-xs text-[#0a0a0a]/40" style={{ fontFamily: FONT }}>

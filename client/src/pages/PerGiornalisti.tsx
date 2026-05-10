@@ -10,7 +10,6 @@ import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import LeftSidebar from "@/components/LeftSidebar";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import { toast } from "sonner";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -240,8 +239,6 @@ export default function PerGiornalisti() {
         <LeftSidebar />
         <div className="flex-1 min-w-0">
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* ═══ HERO ═══ */}
           <section className="pt-24 pb-20 md:pt-32 md:pb-28" style={{ background: "#ffffff" }}>
             <div className="max-w-6xl mx-auto px-5 md:px-8">

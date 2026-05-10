@@ -8,7 +8,6 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 
 const ACCENT = "#1a1a1a";
@@ -312,9 +311,6 @@ export default function Tecnologia() {
 
         {/* ── TESTATA ── */}
         <SharedPageHeader />
-
-        <BreakingNewsTicker />
-
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-16">
 

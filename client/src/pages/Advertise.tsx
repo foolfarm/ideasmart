@@ -10,7 +10,6 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import SEOHead from "@/components/SEOHead";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 
 const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#e6f4f1";
@@ -236,9 +235,6 @@ export default function Advertise() {
 
         {/* ── TESTATA ── */}
         <SharedPageHeader />
-
-        <BreakingNewsTicker />
-
         {/* ── CORPO ── */}
         <main className="max-w-6xl mx-auto px-4 pb-16">
 

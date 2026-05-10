@@ -9,7 +9,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -351,8 +350,6 @@ export default function TrustScore() {
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           <main className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
 
             {/* ── TESTATA ──────────────────────────────────────────────── */}

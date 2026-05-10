@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -286,8 +285,6 @@ export default function Contatti() {
         />
         <div style={{ background: "#ffffff", minHeight: "100vh", fontFamily: SF }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* Hero */}
           <section className="pt-16 pb-12 px-4 md:px-8" style={{ background: "#ffffff" }}>
             <div className="max-w-5xl mx-auto">

@@ -17,7 +17,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 
 const FONT =
@@ -288,8 +287,6 @@ export default function Piattaforma() {
           style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}
         >
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* ═══════════════════════════════════════════════════════
               HERO — P1 fix heading + P11 breadcrumb B.x completo
           ═══════════════════════════════════════════════════════ */}

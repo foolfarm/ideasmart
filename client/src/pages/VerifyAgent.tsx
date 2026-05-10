@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import SEOHead from "@/components/SEOHead";
 import { ChevronDown, ChevronUp, Shield, CheckCircle, Code, Globe, FileCheck, Zap, Lock, AlertTriangle } from "lucide-react";
@@ -186,8 +185,6 @@ export default function VerifyAgent() {
 
       <div className="ml-0 md:ml-14">
         <SharedPageHeader />
-        <BreakingNewsTicker />
-
         {/* ── HERO ── */}
         <section className="relative overflow-hidden" style={{ background: "#0a0f1e", minHeight: "92vh" }}>
           {/* Grid pattern */}

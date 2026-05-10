@@ -10,7 +10,6 @@ import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import SEOHead from "@/components/SEOHead";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
@@ -971,7 +970,6 @@ export default function Home() {
         </div>
         {/* ══ TICKER LIVE — sotto Breaking News ═══════════════════════════════════════════════════════════════════════ */}
         <div className="hidden sm:block">
-          <BreakingNewsTicker />
         </div>
                 {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
         {topNewsWithImages && topNewsWithImages.length > 0 && (

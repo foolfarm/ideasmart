@@ -10,7 +10,6 @@ import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 import AmazonSectionStrip from "@/components/AmazonSectionStrip";
@@ -197,7 +196,6 @@ export default function DealroomHome() {
         <LeftSidebar />
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
-        <BreakingNewsTicker />
         <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
           {/* SEZIONE 1: Deal del Giorno */}
           <div>

@@ -23,7 +23,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 
 const FONT =
@@ -86,8 +85,6 @@ export default function CosaFacciamo() {
           style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}
         >
           <SharedPageHeader />
-          <BreakingNewsTicker />
-
           {/* ═══════════════════════════════════════════════════════
               HERO — #2 fix heading, #3 sottotitolo, #4 CTA unica, #14 missione
           ═══════════════════════════════════════════════════════ */}

@@ -15,7 +15,6 @@ import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import LeftSidebar from "@/components/LeftSidebar";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import VerifyBadge from "@/components/VerifyBadge";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
@@ -713,8 +712,6 @@ export default function OsservatorioTech() {
         description="Base Alpha + è l'Osservatorio e Centro Studi di ProofPress. Coordinato da Andrea Cinelli, diretto da Adrian Lenice. Report verticali verificati su commissione per 200+ clienti."
       />
       <SharedPageHeader />
-      <BreakingNewsTicker />
-
       {/* ── BANNER BASE ALPHA ─────────────────────────────────────────────── */}
       <div style={{ background: "#0a0a0a", borderBottom: "1px solid rgba(201,162,39,0.3)" }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">

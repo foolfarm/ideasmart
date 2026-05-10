@@ -9,7 +9,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import BreakingNewsTicker from "@/components/BreakingNewsTicker";
 import LeftSidebar from "@/components/LeftSidebar";
 import {
   PenLine, LogOut, Plus, FileText, CheckCircle2, Clock, XCircle,
@@ -106,7 +105,6 @@ function PageWrapper({ children, title, description, canonical }: {
         />
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a" }}>
           <SharedPageHeader />
-          <BreakingNewsTicker />
           {children}
           <Divider />
           <SharedPageFooter />
@@ -1011,7 +1009,6 @@ export default function JournalistPortal() {
         <LeftSidebar />
         <div className="flex-1 min-w-0">
           <SharedPageHeader />
-          <BreakingNewsTicker />
           <div className="flex items-center justify-center py-32">
             <div className="text-center">
               <div className="w-6 h-6 border-2 border-[#0a0a0a]/20 border-t-[#0a0a0a]/60 rounded-full animate-spin mx-auto mb-3" />
