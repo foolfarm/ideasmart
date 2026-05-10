@@ -968,14 +968,7 @@ export default function Home() {
         <div className="hidden sm:block">
           <BreakingNewsSection />
         </div>
-<<<<<<< Updated upstream
-        {/* ══ TICKER LIVE — sotto Breaking News ═══════════════════════════════════════════════════════════════════════ */}
-        <div className="hidden sm:block">
-        </div>
-                {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
-=======
         {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
->>>>>>> Stashed changes
         {topNewsWithImages && topNewsWithImages.length > 0 && (
           <div className="max-w-[1280px] mx-auto px-4 py-3 hidden sm:block">
             <div className="flex items-center gap-2 mb-2">
