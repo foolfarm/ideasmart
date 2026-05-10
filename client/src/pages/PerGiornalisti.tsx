@@ -305,7 +305,7 @@ export default function PerGiornalisti() {
                     Una redazione agentica completa che produce, verifica e pubblica contenuti ogni giorno — sotto la tua direzione editoriale.
                   </p>
                   <p className="text-base leading-relaxed text-[#0a0a0a]/55 max-w-lg">
-                    Tu scegli i verticali tematici e il tono. Noi configuriamo le fonti, addestriamo la redazione AI e pubblichiamo automaticamente sul tuo dominio. Ogni articolo è certificato{" "}
+                    Tu scegli i verticali tematici e il tono. Noi configuriamo le fonti, addestriamo la redazione AI e pubblichiamo automaticamente sul tuo dominio. Inoltre, se vuoi, ogni articolo potrà essere anche certificato{" "}
                     <a
                       href="https://proofpressverify.com"
                       target="_blank"
@@ -315,7 +315,16 @@ export default function PerGiornalisti() {
                     >
                       ProofPress Verify™
                     </a>
-                    {" "}— hash crittografico immutabile, tracciabilità garantita.
+                    {" "}— hash crittografico immutabile, tracciabilità garantita.{" "}
+                    <a
+                      href="https://proofpressverify.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold underline decoration-[#0a0a0a]/30 hover:decoration-[#0a0a0a] transition-all"
+                      style={{ color: "rgba(10,10,10,0.55)" }}
+                    >
+                      Scopri come.
+                    </a>
                   </p>
                   {/* KPI bar */}
                   <div className="grid grid-cols-3 gap-4 pt-2">
@@ -474,63 +483,7 @@ export default function PerGiornalisti() {
             </div>
           </section>
 
-          <Divider />
 
-          {/* ═══════════════════════════════════════════════════════
-              PROBLEMA / SOLUZIONE
-          ═══════════════════════════════════════════════════════ */}
-          <section className="py-20 md:py-28" style={{ background: "#ffffff" }}>
-            <div className="max-w-6xl mx-auto px-5 md:px-8">
-              <div className="grid md:grid-cols-2 gap-12 items-start">
-                {/* Problema */}
-                <div className="flex flex-col gap-6 p-8 rounded-2xl" style={{ background: "#f5f5f7", border: "1px solid #e5e7eb" }}>
-                  <SectionLabel color="#6b7280">Il problema</SectionLabel>
-                  <h2 className="text-2xl md:text-3xl font-black leading-tight text-[#0a0a0a]">
-                    Una redazione tradizionale costa €150–250k/anno.
-                  </h2>
-                  <p className="text-base text-[#0a0a0a]/58 leading-relaxed">
-                    Giornalisti, editor, fact-checker, social media manager, strumenti editoriali, hosting. Anche una piccola testata con 2–3 persone supera facilmente i €100k annui. Per un freelance, una PMI o un editore indipendente è insostenibile.
-                  </p>
-                  <ul className="flex flex-col gap-2.5">
-                    {[
-                      "Costi fissi elevati anche in assenza di traffico",
-                      "Difficoltà a scalare la produzione in tempi brevi",
-                      "Nessuna certificazione automatica dell'affidabilità",
-                      "SEO lento senza volume e frequenza di pubblicazione",
-                    ].map((t) => (
-                      <li key={t} className="flex items-start gap-2.5 text-[14px] text-[#0a0a0a]/60 leading-snug">
-                        <span className="mt-0.5 shrink-0 text-[#dc2626] font-bold">✕</span>
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                {/* Soluzione */}
-                <div className="flex flex-col gap-6 p-8 rounded-2xl" style={{ background: "#0a0a0a", border: "2px solid #dc2626" }}>
-                  <SectionLabel color="#dc2626">La soluzione</SectionLabel>
-                  <h2 className="text-2xl md:text-3xl font-black leading-tight text-white">
-                    ProofPress Creator: da €199/mese. Fino a 3.000 articoli/mese.
-                  </h2>
-                  <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
-                    Una redazione AI completa che produce, verifica e pubblica per te. Stessa qualità editoriale, costi ridotti del 95%, certificazione crittografica su ogni articolo.
-                  </p>
-                  <ul className="flex flex-col gap-2.5">
-                    {[
-                      "Risparmio fino a €240k/anno vs redazione tradizionale",
-                      "Setup completo in 5–7 giorni lavorativi",
-                      "Pubblicazione automatica sul tuo dominio",
-                      "Certificazione ProofPress Verify™ su ogni articolo",
-                      "Nessun vincolo contrattuale a lungo termine",
-                    ].map((t) => (
-                      <CheckItem key={t} dark>{t}</CheckItem>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <Divider />
 
           {/* ═══════════════════════════════════════════════════════
               COME FUNZIONA — 4 step
@@ -670,22 +623,27 @@ export default function PerGiornalisti() {
           <Divider />
 
           {/* ═══════════════════════════════════════════════════════
-              PROOFPRESS VERIFY — Add-on
+              PROOFPRESS VERIFY — Add-on opzionale
           ═══════════════════════════════════════════════════════ */}
           <section className="py-20 md:py-28" style={{ background: "#ffffff" }}>
             <div className="max-w-6xl mx-auto px-5 md:px-8">
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <SectionLabel color="#dc2626">Incluso in tutti i piani</SectionLabel>
+                    <SectionLabel color="#6b7280">Add-on opzionale</SectionLabel>
                     <h2 className="text-3xl md:text-4xl font-black text-[#0a0a0a] leading-tight">
                       🔐 ProofPress Verify™<br />
                       <span className="text-[#0a0a0a]/35">La certificazione che<br />nessun concorrente ha.</span>
                     </h2>
                   </div>
                   <p className="text-lg text-[#0a0a0a]/60 leading-relaxed">
-                    Ogni articolo pubblicato con ProofPress Creator viene automaticamente analizzato e certificato con un hash crittografico immutabile. Il lettore può verificare l'autenticità di ogni notizia in tempo reale.
+                    ProofPress Verify™ è un add-on opzionale che puoi attivare su qualsiasi piano Creator. Ogni articolo viene analizzato e certificato con un hash crittografico immutabile: il lettore può verificare l'autenticità di ogni notizia in tempo reale.
                   </p>
+                  <div className="rounded-xl px-5 py-4 border-l-4" style={{ background: "rgba(10,10,10,0.03)", borderLeftColor: "#dc2626" }}>
+                    <p className="text-[14px] font-semibold text-[#0a0a0a]/65 leading-relaxed">
+                      Non è incluso nei piani base — è una scelta consapevole che puoi aggiungere quando sei pronto a posizionare la tua testata come fonte certificata e verificabile.
+                    </p>
+                  </div>
                   <ul className="flex flex-col gap-3">
                     {[
                       "Analisi multi-fonte automatica per ogni articolo",
