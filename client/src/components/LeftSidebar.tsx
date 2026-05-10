@@ -289,33 +289,38 @@ export default function LeftSidebar() {
       {/* Spazio flessibile */}
       <div className="flex-1" />
 
-      {/* ── Banner ProofPress Verify (separato da ProofPress AI) ── */}
+      {/* ── Banner ProofPress Verify — stile chiaro ── */}
       <div className="px-2 mb-2 mt-2" style={fadeBlock}>
         <a
           href="https://proofpressverify.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col gap-1 px-3 py-3 rounded-xl transition-all cursor-pointer"
+          className="flex flex-col gap-1 rounded-xl transition-all cursor-pointer"
           style={{
-            background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)",
-            border: "1px solid rgba(220,38,38,0.3)",
+            background: "linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff0f0 100%)",
+            border: "1.5px solid rgba(220,38,38,0.15)",
             textDecoration: "none",
+            overflow: "hidden",
           }}
           title={!expanded ? "ProofPress Verify™" : undefined}
         >
-          <div className="flex items-center gap-2">
-            <span style={{ fontSize: "16px" }}>🔐</span>
-            <span style={{ fontSize: "11px", fontWeight: 800, color: "#ffffff", fontFamily: SF, letterSpacing: "0.02em", ...fadeBlock }}>
-              ProofPress Verify™
-            </span>
-          </div>
-          <div style={{ ...fadeBlock }}>
-            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.55)", fontFamily: SF, lineHeight: 1.4, margin: 0 }}>
-              Certifica le notizie con hash crittografico immutabile
-            </p>
-            <span style={{ fontSize: "10px", fontWeight: 700, color: "#dc2626", fontFamily: SF }}>
-              Scopri →
-            </span>
+          {/* Accent line top */}
+          <div style={{ height: 2, background: "linear-gradient(90deg, #dc2626 0%, #f97316 100%)", flexShrink: 0 }} />
+          <div className="flex flex-col gap-1 px-3 py-2">
+            <div className="flex items-center gap-1.5">
+              <span style={{ fontSize: "12px" }}>🔐</span>
+              <span style={{ fontSize: "10px", fontWeight: 800, color: "#dc2626", fontFamily: SF, letterSpacing: "0.04em", textTransform: "uppercase", ...fadeBlock }}>
+                ProofPress Verify™
+              </span>
+            </div>
+            <div style={{ ...fadeBlock }}>
+              <p style={{ fontSize: "9.5px", color: "#6e6e73", fontFamily: SF, lineHeight: 1.4, margin: "0 0 4px" }}>
+                Certifica i contenuti con hash crittografico immutabile
+              </p>
+              <span style={{ fontSize: "9px", fontWeight: 700, color: "#dc2626", fontFamily: SF }}>
+                Scopri →
+              </span>
+            </div>
           </div>
         </a>
       </div>
