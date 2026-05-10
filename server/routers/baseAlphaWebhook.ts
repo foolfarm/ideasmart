@@ -10,7 +10,7 @@ import Stripe from "stripe";
 import { eq } from "drizzle-orm";
 
 function getStripe(): Stripe {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = process.env.FOOLFARM_STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY non configurata");
   return new Stripe(key, { apiVersion: "2026-03-25.dahlia" });
 }
@@ -25,7 +25,7 @@ export function registerBaseAlphaWebhook(app: Express): void {
     express.raw({ type: "application/json" }),
     async (req: Request, res: Response) => {
       const sig = req.headers["stripe-signature"];
-      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+      const webhookSecret = process.env.FOOLFARM_STRIPE_WEBHOOK_SECRET ?? process.env.STRIPE_WEBHOOK_SECRET;
 
       let event: Stripe.Event;
 

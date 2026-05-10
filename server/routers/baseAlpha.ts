@@ -11,7 +11,7 @@ import { BASE_ALPHA_PLANS, type BaseAlphaPlanId } from "../baseAlphaProducts";
 
 // ── Stripe client ─────────────────────────────────────────────────────────────
 function getStripe(): Stripe {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = process.env.FOOLFARM_STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY non configurata");
   return new Stripe(key, { apiVersion: "2026-03-25.dahlia" });
 }

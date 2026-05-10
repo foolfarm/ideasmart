@@ -27,7 +27,7 @@ import {
 
 // ── Stripe client ─────────────────────────────────────────────────────────────
 function getStripe(): Stripe {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = process.env.FOOLFARM_STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY non configurata");
   return new Stripe(key, { apiVersion: "2026-03-25.dahlia" });
 }
@@ -282,7 +282,7 @@ export function registerVerifyStripeWebhook(app: Express) {
     async (req: Request, res: Response) => {
       const stripe = getStripe();
       const sig = req.headers["stripe-signature"] as string;
-      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+      const webhookSecret = process.env.FOOLFARM_STRIPE_WEBHOOK_SECRET ?? process.env.STRIPE_WEBHOOK_SECRET;
 
       let event: Stripe.Event;
       try {

@@ -13,8 +13,8 @@
  *  - Gold      → prod_UUcl7VD2FkDgxp  price_1TVdVyQQVoHT3i87tVsDAhpK  (€899/mese)
  */
 
-const isLive = (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_live") ||
-               (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_org_live");
+const isLive = (process.env.FOOLFARM_STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_live") ||
+               (process.env.FOOLFARM_STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_org_live");
 
 const PRICES = {
   starter: {
