@@ -1,13 +1,36 @@
 /**
- * ProofPress Creator — Prodotti e Prezzi Stripe LIVE
- * Aggiornato il 10/05/2026 — 3 tier: Starter / Publisher / Gold
- * Account Stripe: proofpress (livemode: true)
+ * ProofPress Creator — Prodotti e Prezzi Stripe
+ * Dual-mode: seleziona automaticamente test o live in base alla STRIPE_SECRET_KEY
  *
- * Prodotti Stripe live (account proofpress):
+ * TEST (sk_test_51THUSk... — account FoolFarm sandbox):
+ *  - Starter   → prod_UUe8q99rq4Phpq  price_1TVeqf8CvMSliYUFZVTZDl9R  (€199/mese)
+ *  - Publisher → prod_UUe8wmELhNaDAL  price_1TVeqh8CvMSliYUF91KzTI5K  (€449/mese)
+ *  - Gold      → prod_UUe9uWTGK4VR1U  price_1TVeqi8CvMSliYUFoQ7IZXVQ  (€899/mese)
+ *
+ * LIVE (sk_org_live_... — account proofpress):
  *  - Starter   → prod_UUdmDVofzqrKdN  price_1TVeUYKyMu3K72gZaPCXOh6u  (€199/mese)
  *  - Publisher → prod_UUdmqJJtsNO5MB  price_1TVeUhKyMu3K72gZXVJSIhyC  (€449/mese)
  *  - Gold      → prod_UUdm1fz2lGAedz  price_1TVeUpKyMu3K72gZ4AAOXFwg  (€899/mese)
  */
+
+const isLive = (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_live") ||
+               (process.env.STRIPE_SECRET_KEY ?? "").startsWith("sk_org_live");
+
+const PRICES = {
+  starter: {
+    priceId: isLive ? "price_1TVeUYKyMu3K72gZaPCXOh6u" : "price_1TVeqf8CvMSliYUFZVTZDl9R",
+    productId: isLive ? "prod_UUdmDVofzqrKdN" : "prod_UUe8q99rq4Phpq",
+  },
+  publisher: {
+    priceId: isLive ? "price_1TVeUhKyMu3K72gZXVJSIhyC" : "price_1TVeqh8CvMSliYUF91KzTI5K",
+    productId: isLive ? "prod_UUdmqJJtsNO5MB" : "prod_UUe8wmELhNaDAL",
+  },
+  gold: {
+    priceId: isLive ? "price_1TVeUpKyMu3K72gZ4AAOXFwg" : "price_1TVeqi8CvMSliYUFoQ7IZXVQ",
+    productId: isLive ? "prod_UUdm1fz2lGAedz" : "prod_UUe9uWTGK4VR1U",
+  },
+};
+
 export const CREATOR_PLANS = {
   starter: {
     id: "creator_starter",
@@ -18,8 +41,8 @@ export const CREATOR_PLANS = {
     priceLabel: "€199",
     priceSubLabel: "/mese",
     priceMonthly: 19900,
-    stripePriceId: "price_1TVeUYKyMu3K72gZaPCXOh6u",
-    stripeProductId: "prod_UUdmDVofzqrKdN",
+    stripePriceId: PRICES.starter.priceId,
+    stripeProductId: PRICES.starter.productId,
     highlight: false,
     verticali: 1,
     articoliMese: 30,
@@ -42,8 +65,8 @@ export const CREATOR_PLANS = {
     priceLabel: "€449",
     priceSubLabel: "/mese",
     priceMonthly: 44900,
-    stripePriceId: "price_1TVeUhKyMu3K72gZXVJSIhyC",
-    stripeProductId: "prod_UUdmqJJtsNO5MB",
+    stripePriceId: PRICES.publisher.priceId,
+    stripeProductId: PRICES.publisher.productId,
     highlight: true,
     verticali: 3,
     articoliMese: 120,
@@ -69,8 +92,8 @@ export const CREATOR_PLANS = {
     priceLabel: "€899",
     priceSubLabel: "/mese",
     priceMonthly: 89900,
-    stripePriceId: "price_1TVeUpKyMu3K72gZ4AAOXFwg",
-    stripeProductId: "prod_UUdm1fz2lGAedz",
+    stripePriceId: PRICES.gold.priceId,
+    stripeProductId: PRICES.gold.productId,
     highlight: false,
     verticali: 6,
     articoliMese: 1200,
@@ -82,4 +105,5 @@ export const CREATOR_PLANS = {
     ],
   },
 } as const;
+
 export type CreatorPlanId = keyof typeof CREATOR_PLANS;
