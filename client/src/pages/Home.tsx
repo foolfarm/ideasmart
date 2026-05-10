@@ -23,7 +23,6 @@ import BannerRotator from "@/components/BannerRotator";
 import CollaboratoriBanner from "@/components/CollaboratoriBanner";
 import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
-import TrustScoreWidget from "@/components/TrustScoreWidget";
 import ChannelsBar from "@/components/ChannelsBar";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
@@ -1429,125 +1428,104 @@ export default function Home() {
                   </div>
 
 
-                  {/* ── Articolo quadrato: ProofPress su Il Sole 24 Ore ── */}
+                  {/* ── Banner Base Alpha+ ── */}
                   <div className="mb-5">
                     <a
-                      href="https://www.ilsole24ore.com/art/agenti-e-hash-crittografici-nasce-redazione-agentica-che-seleziona-notizie-AI9fgyXC"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/base-alpha"
                       className="group block"
                       style={{ textDecoration: "none" }}
                     >
                       <div
                         style={{
-                          background: "#fdf6ee",
-                          border: "1px solid #e8e0d0",
+                          background: "linear-gradient(135deg, #0a0f1e 0%, #1a2540 100%)",
+                          border: "1px solid rgba(255,255,255,0.1)",
                           borderRadius: 10,
                           overflow: "hidden",
-                          transition: "box-shadow 0.2s",
+                          transition: "box-shadow 0.2s, transform 0.2s",
                         }}
-                        className="hover:shadow-md"
+                        className="hover:shadow-lg hover:scale-[1.01]"
                       >
-                        {/* Header badge */}
-                        <div
-                          style={{
-                            background: "#c8001a",
-                            padding: "8px 14px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
-                              fontSize: 9,
-                              fontWeight: 900,
-                              letterSpacing: "0.12em",
-                              color: "#fff",
-                              textTransform: "uppercase",
-                              lineHeight: 1.3,
-                            }}
-                          >
-                            IL SOLE 24 ORE
-                          </span>
-                          <span
-                            style={{
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                              fontSize: 9,
-                              fontWeight: 600,
-                              color: "rgba(255,255,255,0.75)",
-                              letterSpacing: "0.08em",
-                            }}
-                          >
-                            27 apr 2026
-                          </span>
-                        </div>
-                        {/* Corpo articolo */}
-                        <div style={{ padding: "14px 14px 16px" }}>
-                          <span
-                            style={{
-                              display: "inline-block",
-                              background: "#c8001a",
-                              color: "#fff",
+                        {/* Header */}
+                        <div style={{ padding: "10px 14px 8px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                            <span style={{
+                              background: "#c8a84b",
+                              color: "#0a0f1e",
                               fontSize: 8,
-                              fontWeight: 700,
+                              fontWeight: 900,
                               letterSpacing: "0.18em",
                               textTransform: "uppercase",
                               padding: "2px 7px",
                               borderRadius: 3,
-                              marginBottom: 8,
                               fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                            }}
-                          >
-                            Oggi su Il Sole 24 Ore
-                          </span>
-                          <p
-                            style={{
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-                              fontSize: 14,
-                              fontWeight: 700,
-                              color: "#1a1a1a",
-                              lineHeight: 1.4,
-                              margin: "0 0 8px",
-                            }}
-                            className="group-hover:underline"
-                          >
-                            Agenti AI e hash crittografici: nasce la redazione &ldquo;agentica&rdquo; che seleziona le notizie
-                          </p>
-                          <p
-                            style={{
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                              fontSize: 12,
-                              color: "#666",
-                              lineHeight: 1.5,
-                              margin: 0,
-                            }}
-                          >
-                            ProofPress si presenta al mercato italiano come il primo modello di giornalismo agentico in grado di replicare e automatizzare l&rsquo;intero flusso di lavoro di una redazione grazie all&rsquo;AI.
-                          </p>
-                          <div
-                            style={{
-                              marginTop: 12,
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 4,
-                              color: "#c8001a",
-                              fontSize: 11,
-                              fontWeight: 700,
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                              letterSpacing: "0.08em",
+                            }}>Osservatorio</span>
+                            <span style={{
+                              color: "rgba(255,255,255,0.5)",
+                              fontSize: 9,
+                              fontWeight: 600,
+                              letterSpacing: "0.12em",
                               textTransform: "uppercase",
-                            }}
-                          >
-                            Leggi l&rsquo;articolo
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            }}>Tech Advisory</span>
+                          </div>
+                          <p style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                            fontSize: 20,
+                            fontWeight: 900,
+                            color: "#ffffff",
+                            lineHeight: 1.1,
+                            margin: 0,
+                            letterSpacing: "-0.02em",
+                          }}>Base Alpha+</p>
+                        </div>
+                        {/* Body */}
+                        <div style={{ padding: "10px 14px 14px" }}>
+                          <p style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            fontSize: 11,
+                            color: "rgba(255,255,255,0.65)",
+                            lineHeight: 1.5,
+                            margin: "0 0 10px",
+                          }}>
+                            Intelligence certificata su tecnologia, investimenti e startup. Conosci prima del mercato.
+                          </p>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
+                            {["Report settimanale certificato PPV", "Top 10 segnali pre-pubblici", "Trend analysis + Key takeaway"].map((item) => (
+                              <div key={item} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                <span style={{ color: "#c8a84b", fontSize: 9, fontWeight: 700 }}>✓</span>
+                                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 10, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            paddingTop: 10,
+                            borderTop: "1px solid rgba(255,255,255,0.08)",
+                          }}>
+                            <span style={{
+                              color: "#c8a84b",
+                              fontSize: 16,
+                              fontWeight: 900,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+                            }}>da €199/mese</span>
+                            <span style={{
+                              background: "#c8a84b",
+                              color: "#0a0f1e",
+                              fontSize: 9,
+                              fontWeight: 900,
+                              letterSpacing: "0.1em",
+                              textTransform: "uppercase",
+                              padding: "5px 10px",
+                              borderRadius: 5,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            }}>Scopri →</span>
                           </div>
                         </div>
                       </div>
                     </a>
                   </div>
-                                    {/* Ultime Notizie — stream */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <div className="h-[3px] flex-1" style={{ background: "#1a1a1a" }} />
@@ -1629,8 +1607,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ── Trust Score Widget ── */}
-                  <TrustScoreWidget />
 
                   {/* Post di Andrea Cinelli */}
                   {authorPosts && authorPosts.length > 0 && (

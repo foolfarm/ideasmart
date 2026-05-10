@@ -1,6 +1,6 @@
 /**
  * Base Alpha + — Router tRPC
- * Gestisce checkout Stripe per i 3 piani: Weekly (€199), Monthly (€299), Quarterly (€499)
+ * Gestisce checkout Stripe per i 3 piani: Weekly Brief (€199), Weekly Intelligence (€299), Weekly Deep Dive (€499)
  * Webhook: /api/stripe/base-alpha-webhook
  */
 import Stripe from "stripe";
@@ -41,7 +41,7 @@ export const baseAlphaRouter = router({
    */
   createCheckout: publicProcedure
     .input(z.object({
-      planId: z.enum(["weekly", "monthly", "quarterly"]),
+      planId: z.enum(["weekly-brief", "weekly-intelligence", "weekly-deep-dive"]),
       origin: z.string().url(),
       customerEmail: z.string().email().optional(),
       customerName: z.string().optional(),

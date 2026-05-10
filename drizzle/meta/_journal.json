@@ -652,6 +652,13 @@
       "when": 1778142977869,
       "tag": "0092_minor_crystal",
       "breakpoints": true
+    },
+    {
+      "idx": 93,
+      "version": "5",
+      "when": 1778438887289,
+      "tag": "0093_charming_stingray",
+      "breakpoints": true
     }
   ]
 }

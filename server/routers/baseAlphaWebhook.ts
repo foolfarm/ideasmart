@@ -142,7 +142,7 @@ export function registerBaseAlphaWebhook(app: Express): void {
                         stripeCustomerId: customerId,
                         stripeSubscriptionId: subscriptionId,
                         stripeSessionId: session.id,
-                        planId: planId as "weekly" | "monthly" | "quarterly",
+                        planId: planId as "weekly-brief" | "weekly-intelligence" | "weekly-deep-dive",
                         planName: plan?.name ?? planId,
                         priceMonthly: plan?.priceMonthly ?? 0,
                         currency: "EUR",

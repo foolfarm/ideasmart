@@ -1283,7 +1283,7 @@ export const baseAlphaSubscriptions = mysqlTable("base_alpha_subscriptions", {
   stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
   stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }).unique(),
   stripeSessionId: varchar("stripeSessionId", { length: 255 }).unique(),
-  planId: mysqlEnum("planId", ["weekly", "monthly", "quarterly"]).notNull(),
+  planId: mysqlEnum("planId", ["weekly-brief", "weekly-intelligence", "weekly-deep-dive"]).notNull(),
   planName: varchar("planName", { length: 128 }).notNull(),
   priceMonthly: int("priceMonthly").notNull(),
   currency: varchar("currency", { length: 3 }).default("EUR").notNull(),

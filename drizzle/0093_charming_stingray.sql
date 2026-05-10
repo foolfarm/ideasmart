@@ -1,0 +1,1 @@
+ALTER TABLE `base_alpha_subscriptions` MODIFY COLUMN `planId` enum('weekly-brief','weekly-intelligence','weekly-deep-dive') NOT NULL;

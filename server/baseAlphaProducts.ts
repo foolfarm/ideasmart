@@ -1,14 +1,20 @@
 /**
  * Base Alpha + — Prodotti e Prezzi Stripe
- * Creati il 07/05/2026 nell'account Stripe del server (acct_1THUSk8CvMSliYUF)
+ * Aggiornato il 10/05/2026 — 3 tier Weekly (Brief / Intelligence / Deep Dive)
+ * Account Stripe: acct_1THUSk8CvMSliYUF
+ *
+ * Prodotti Stripe riutilizzati (stessi priceId, nomi aggiornati via API):
+ *  - Weekly Brief        → prod_UTJ3r1yoErZAfU  (€199/mese)
+ *  - Weekly Intelligence → prod_UTJ337B8MMjPN0  (€299/mese, ex Monthly Intelligence)
+ *  - Weekly Deep Dive    → prod_UTJ3kfxhdKwCZB  (€499/mese, ex Quarterly Deep Dive)
  */
 
 export const BASE_ALPHA_PLANS = {
-  weekly: {
-    id: "weekly",
+  "weekly-brief": {
+    id: "weekly-brief",
     name: "Weekly Brief",
     badge: "ENTRY",
-    freq: "Settimanale",
+    freq: "Settimanale · 1 settore",
     priceLabel: "€199",
     priceSubLabel: "/mese",
     priceMonthly: 19900, // centesimi
@@ -16,18 +22,19 @@ export const BASE_ALPHA_PLANS = {
     stripeProductId: "prod_UTJ3r1yoErZAfU",
     highlight: false,
     features: [
-      "1 settore verticale",
+      "1 settore verticale a scelta",
       "Report settimanale certificato PPV",
       "Top 10 segnali pre-pubblici",
       "Trend analysis + Key takeaway",
+      "Analisi pre-pubblica 4.000+ fonti",
       "Archivio 3 mesi",
     ],
   },
-  monthly: {
-    id: "monthly",
-    name: "Monthly Intelligence",
+  "weekly-intelligence": {
+    id: "weekly-intelligence",
+    name: "Weekly Intelligence",
     badge: "MOST POPULAR",
-    freq: "Mensile",
+    freq: "Settimanale · 2 settori",
     priceLabel: "€299",
     priceSubLabel: "/mese",
     priceMonthly: 29900,
@@ -35,20 +42,20 @@ export const BASE_ALPHA_PLANS = {
     stripeProductId: "prod_UTJ337B8MMjPN0",
     highlight: true,
     features: [
-      "2 settori verticali",
-      "Report mensile certificato PPV",
+      "2 settori verticali a scelta",
+      "Report settimanale certificato PPV",
+      "Top 10 segnali pre-pubblici per settore",
+      "Trend analysis + Key takeaway",
       "Analisi pre-pubblica 4.000+ fonti",
       "Mappa attori & deal flow",
-      "Outlook strategico 90 giorni",
-      "Archivio 12 mesi",
-      "1 call di briefing mensile",
+      "Archivio 6 mesi",
     ],
   },
-  quarterly: {
-    id: "quarterly",
-    name: "Quarterly Deep Dive",
+  "weekly-deep-dive": {
+    id: "weekly-deep-dive",
+    name: "Weekly Deep Dive",
     badge: "PREMIUM",
-    freq: "Trimestrale",
+    freq: "Settimanale · 3 settori",
     priceLabel: "€499",
     priceSubLabel: "/mese",
     priceMonthly: 49900,
@@ -56,14 +63,16 @@ export const BASE_ALPHA_PLANS = {
     stripeProductId: "prod_UTJ3kfxhdKwCZB",
     highlight: false,
     features: [
-      "Settori verticali illimitati",
-      "Report trimestrale certificato PPV",
-      "Ricerca pre-pubblica dedicata",
+      "3 settori verticali a scelta",
+      "Report settimanale certificato PPV",
+      "Top 10 segnali pre-pubblici per settore",
+      "Trend analysis + Key takeaway",
+      "Analisi pre-pubblica 4.000+ fonti",
+      "Mappa attori & deal flow",
+      "Outlook strategico 90 giorni",
       "Benchmark competitivo personalizzato",
-      "Scenari strategici + raccomandazioni",
       "Archivio completo",
-      "Sessioni di briefing dedicate",
-      "Accesso diretto al team di analisti",
+      "1 call di briefing mensile",
     ],
   },
 } as const;

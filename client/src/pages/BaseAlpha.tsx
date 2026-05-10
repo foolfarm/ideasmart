@@ -35,63 +35,66 @@ const SECTORS = [
 
 const PLANS = [
   {
-    id: "weekly",
+    id: "weekly-brief",
     badge: "ENTRY",
     label: "Weekly Brief",
-    freq: "Settimanale",
-    desc: "Report settimanale su 1 settore verticale. Segnali pre-pubblici, trend e key takeaway.",
+    freq: "Settimanale · 1 settore",
+    desc: "Report settimanale su 1 settore verticale a scelta. Segnali pre-pubblici, trend e key takeaway certificati PPV.",
     features: [
-      "1 settore verticale",
+      "1 settore verticale a scelta",
       "Report settimanale certificato PPV",
       "Top 10 segnali pre-pubblici",
       "Trend analysis + Key takeaway",
+      "Analisi pre-pubblica 4.000+ fonti",
       "Archivio 3 mesi",
     ],
     highlight: false,
     price: "€199/mese",
-    priceId: "price_1RR7Zy8CvMSliYUFdmPBxgqR",
+    priceId: "price_1TUMRU8CvMSliYUFLHE18MpI",
     interval: "mensile",
   },
   {
-    id: "monthly",
+    id: "weekly-intelligence",
     badge: "MOST POPULAR",
-    label: "Monthly Intelligence",
-    freq: "Mensile",
-    desc: "Report mensile su 2 settori. Analisi comparativa, mappa attori chiave, outlook strategico 90 giorni.",
+    label: "Weekly Intelligence",
+    freq: "Settimanale · 2 settori",
+    desc: "Report settimanale su 2 settori verticali a scelta. Analisi comparativa, mappa attori chiave e segnali pre-pubblici avanzati.",
     features: [
-      "2 settori verticali",
-      "Report mensile certificato PPV",
+      "2 settori verticali a scelta",
+      "Report settimanale certificato PPV",
+      "Top 10 segnali pre-pubblici per settore",
+      "Trend analysis + Key takeaway",
       "Analisi pre-pubblica 4.000+ fonti",
       "Mappa attori & deal flow",
-      "Outlook strategico 90 giorni",
-      "Archivio 12 mesi",
-      "1 call di briefing mensile",
+      "Archivio 6 mesi",
     ],
     highlight: true,
     price: "€299/mese",
-    priceId: "price_1RR7a18CvMSliYUFrTJLxSAH",
+    priceId: "price_1TUMRX8CvMSliYUFzO6KbSt8",
     interval: "mensile",
   },
   {
-    id: "quarterly",
+    id: "weekly-deep-dive",
     badge: "PREMIUM",
-    label: "Quarterly Deep Dive",
-    freq: "Trimestrale",
-    desc: "Report trimestrale personalizzato. Ricerca su dati pre-pubblici, benchmark di mercato, scenari competitivi.",
+    label: "Weekly Deep Dive",
+    freq: "Settimanale · 3 settori",
+    desc: "Report settimanale su 3 settori verticali a scelta. Copertura completa con scenari strategici, benchmark competitivo e outlook 90 giorni.",
     features: [
-      "Settori verticali illimitati",
-      "Report trimestrale certificato PPV",
-      "Ricerca pre-pubblica dedicata",
+      "3 settori verticali a scelta",
+      "Report settimanale certificato PPV",
+      "Top 10 segnali pre-pubblici per settore",
+      "Trend analysis + Key takeaway",
+      "Analisi pre-pubblica 4.000+ fonti",
+      "Mappa attori & deal flow",
+      "Outlook strategico 90 giorni",
       "Benchmark competitivo personalizzato",
-      "Scenari strategici + raccomandazioni",
       "Archivio completo",
-      "Sessioni di briefing dedicate",
-      "Accesso diretto al team di analisti",
+      "1 call di briefing mensile",
     ],
     highlight: false,
-    price: "\u20ac499/mese",
-    priceId: "price_1RR7a28CvMSliYUFkLvwGkbF",
-    interval: "trimestrale",
+    price: "€499/mese",
+    priceId: "price_1TUMRa8CvMSliYUFk7jWZjpg",
+    interval: "mensile",
   },
 ];
 
@@ -120,7 +123,7 @@ export default function BaseAlpha() {
   const handleCheckout = (planId: string) => {
     setCheckoutLoading(planId);
     createCheckout.mutate({
-      planId: planId as "weekly" | "monthly" | "quarterly",
+      planId: planId as "weekly-brief" | "weekly-intelligence" | "weekly-deep-dive",
       origin: window.location.origin,
       customerEmail: user?.email ?? undefined,
       customerName: user?.name ?? undefined,
@@ -559,9 +562,9 @@ export default function BaseAlpha() {
                         className="w-full border-2 border-zinc-200 focus:border-[#111] outline-none px-4 py-3 text-sm font-medium bg-white text-[#111] transition-colors"
                       >
                         <option value="">Seleziona piano</option>
-                        <option value="Weekly Brief">Weekly Brief</option>
-                        <option value="Monthly Intelligence">Monthly Intelligence</option>
-                        <option value="Quarterly Deep Dive">Quarterly Deep Dive</option>
+                        <option value="Weekly Brief">Weekly Brief — €199/mese (1 settore)</option>
+                        <option value="Weekly Intelligence">Weekly Intelligence — €299/mese (2 settori)</option>
+                        <option value="Weekly Deep Dive">Weekly Deep Dive — €499/mese (3 settori)</option>
                       </select>
                     </div>
                     <div>
