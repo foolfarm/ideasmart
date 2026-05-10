@@ -1545,97 +1545,178 @@ export default function Home() {
                       </div>
                     </a>
                   </div>
-                  {/* ── Banner ProofPress Creator ── */}
-                  <div className="mb-6">
+                  {/* ── Banner ProofPress Creator — chiaro ── */}
+                  <div className="mb-4">
                     <a href="/offertacommerciale" style={{ textDecoration: "none" }}>
-                      <div style={{
-                        background: "linear-gradient(135deg, #0a0f1e 0%, #111827 60%, #1a1f35 100%)",
-                        border: "1.5px solid rgba(0,229,200,0.25)",
-                        borderRadius: 10,
-                        overflow: "hidden",
-                        boxShadow: "0 2px 16px rgba(0,229,200,0.08)",
-                        transition: "box-shadow 0.2s, transform 0.2s",
-                        position: "relative",
-                      }}
-                      className="hover:shadow-xl hover:scale-[1.01]"
+                      <div
+                        style={{
+                          background: "linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 50%, #f5f0ff 100%)",
+                          border: "1.5px solid rgba(37,99,235,0.15)",
+                          borderRadius: 10,
+                          overflow: "hidden",
+                          transition: "box-shadow 0.2s, border-color 0.2s",
+                        }}
+                        onMouseEnter={e => {
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(37,99,235,0.12)";
+                          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(37,99,235,0.30)";
+                        }}
+                        onMouseLeave={e => {
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(37,99,235,0.15)";
+                        }}
                       >
                         {/* Accent line top */}
-                        <div style={{
-                          height: 3,
-                          background: "linear-gradient(90deg, #00e5c8 0%, #00b8a0 100%)",
-                        }} />
+                        <div style={{ height: 3, background: "linear-gradient(90deg, #2563eb 0%, #7c3aed 100%)" }} />
                         {/* Content */}
-                        <div style={{ padding: "14px 16px 12px" }}>
+                        <div style={{ padding: "12px 14px 10px" }}>
                           {/* Badge */}
-                          <div style={{ marginBottom: 8 }}>
-                            <span style={{
-                              background: "rgba(0,229,200,0.12)",
-                              color: "#00e5c8",
-                              fontSize: 7,
-                              fontWeight: 900,
-                              letterSpacing: "0.2em",
-                              textTransform: "uppercase",
-                              padding: "3px 8px",
-                              borderRadius: 3,
-                              border: "1px solid rgba(0,229,200,0.25)",
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                            }}>ProofPress Creator</span>
-                          </div>
+                          <span style={{
+                            display: "inline-block",
+                            background: "rgba(37,99,235,0.10)",
+                            color: "#2563eb",
+                            fontSize: 7,
+                            fontWeight: 900,
+                            letterSpacing: "0.18em",
+                            textTransform: "uppercase",
+                            padding: "3px 8px",
+                            borderRadius: 3,
+                            border: "1px solid rgba(37,99,235,0.20)",
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            marginBottom: 7,
+                          }}>ProofPress Creator</span>
                           {/* Titolo */}
                           <p style={{
-                            fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif",
-                            fontSize: 19,
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            fontSize: 17,
                             fontWeight: 900,
-                            color: "#ffffff",
-                            lineHeight: 1.1,
-                            margin: "0 0 6px",
-                            letterSpacing: "-0.03em",
+                            color: "#1a1a2e",
+                            lineHeight: 1.15,
+                            margin: "0 0 5px",
+                            letterSpacing: "-0.02em",
                           }}>
-                            Crea il tuo<br />
-                            <span style={{ color: "#00e5c8" }}>Giornale AI</span>
+                            Crea il tuo{" "}
+                            <span style={{ color: "#2563eb" }}>Giornale AI</span>
                           </p>
                           {/* Sottotitolo */}
                           <p style={{
                             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
                             fontSize: 10,
-                            color: "rgba(255,255,255,0.6)",
+                            color: "#6e6e73",
                             lineHeight: 1.5,
-                            margin: "0 0 12px",
+                            margin: "0 0 10px",
                           }}>
-                            Lancia il tuo magazine con redazione agentica e informazioni 100% certificate.
+                            Redazione agentica · Pubblicazione automatica · Online in 7 giorni
                           </p>
-                          {/* Features */}
-                          <div style={{ display: "flex", flexDirection: "column", gap: 3, marginBottom: 12 }}>
-                            {[
-                              "Redazione agentica automatizzata",
-                              "Certificazione PPV su ogni articolo",
-                              "Pronto in 24 ore",
-                            ].map((item) => (
-                              <div key={item} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                <span style={{ color: "#00e5c8", fontSize: 8, fontWeight: 900 }}>✓</span>
-                                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 9, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}>{item}</span>
-                              </div>
-                            ))}
-                          </div>
                           {/* CTA */}
                           <div style={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            paddingTop: 10,
-                            borderTop: "1px solid rgba(255,255,255,0.08)",
+                            paddingTop: 8,
+                            borderTop: "1px solid rgba(37,99,235,0.10)",
                           }}>
                             <span style={{
-                              color: "rgba(255,255,255,0.45)",
+                              color: "#8e8e93",
                               fontSize: 9,
                               fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                            }}>proofpress.ai/offertacommerciale</span>
+                            }}>da €199/mese · Nessun vincolo</span>
                             <span style={{
-                              background: "#00e5c8",
-                              color: "#0a0f1e",
+                              background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)",
+                              color: "#fff",
                               fontSize: 8,
                               fontWeight: 900,
-                              letterSpacing: "0.1em",
+                              letterSpacing: "0.10em",
+                              textTransform: "uppercase",
+                              padding: "5px 12px",
+                              borderRadius: 5,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            }}>Scopri →</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  {/* ── Banner ProofPress Verify ── */}
+                  <div className="mb-6">
+                    <a href="https://proofpressverify.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                      <div
+                        style={{
+                          background: "linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff0f0 100%)",
+                          border: "1.5px solid rgba(220,38,38,0.15)",
+                          borderRadius: 10,
+                          overflow: "hidden",
+                          transition: "box-shadow 0.2s, border-color 0.2s",
+                        }}
+                        onMouseEnter={e => {
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(220,38,38,0.10)";
+                          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(220,38,38,0.30)";
+                        }}
+                        onMouseLeave={e => {
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(220,38,38,0.15)";
+                        }}
+                      >
+                        {/* Accent line top */}
+                        <div style={{ height: 3, background: "linear-gradient(90deg, #dc2626 0%, #f97316 100%)" }} />
+                        {/* Content */}
+                        <div style={{ padding: "12px 14px 10px" }}>
+                          {/* Badge */}
+                          <span style={{
+                            display: "inline-block",
+                            background: "rgba(220,38,38,0.08)",
+                            color: "#dc2626",
+                            fontSize: 7,
+                            fontWeight: 900,
+                            letterSpacing: "0.18em",
+                            textTransform: "uppercase",
+                            padding: "3px 8px",
+                            borderRadius: 3,
+                            border: "1px solid rgba(220,38,38,0.18)",
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            marginBottom: 7,
+                          }}>ProofPress Verify™</span>
+                          {/* Titolo */}
+                          <p style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            fontSize: 17,
+                            fontWeight: 900,
+                            color: "#1a1a2e",
+                            lineHeight: 1.15,
+                            margin: "0 0 5px",
+                            letterSpacing: "-0.02em",
+                          }}>
+                            Certifica i tuoi{" "}
+                            <span style={{ color: "#dc2626" }}>Contenuti</span>
+                          </p>
+                          {/* Sottotitolo */}
+                          <p style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            fontSize: 10,
+                            color: "#6e6e73",
+                            lineHeight: 1.5,
+                            margin: "0 0 10px",
+                          }}>
+                            Hash crittografico immutabile · Trust Score · Verifica pubblica
+                          </p>
+                          {/* CTA */}
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            paddingTop: 8,
+                            borderTop: "1px solid rgba(220,38,38,0.10)",
+                          }}>
+                            <span style={{
+                              color: "#8e8e93",
+                              fontSize: 9,
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                            }}>proofpressverify.com</span>
+                            <span style={{
+                              background: "linear-gradient(135deg, #dc2626 0%, #f97316 100%)",
+                              color: "#fff",
+                              fontSize: 8,
+                              fontWeight: 900,
+                              letterSpacing: "0.10em",
                               textTransform: "uppercase",
                               padding: "5px 12px",
                               borderRadius: 5,
