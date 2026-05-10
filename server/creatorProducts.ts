@@ -1,12 +1,12 @@
 /**
  * ProofPress Creator — Prodotti e Prezzi Stripe LIVE
  * Aggiornato il 10/05/2026 — 3 tier: Starter / Publisher / Gold
- * Account Stripe: live (livemode: true)
+ * Account Stripe: proofpress (livemode: true)
  *
- * Prodotti Stripe live:
- *  - Starter   → prod_UUclVWL9kq962f  price_1TVdVcQQVoHT3i87dulfL8wG  (€199/mese)
- *  - Publisher → prod_UUclBVy9uyAuOB  price_1TVdVmQQVoHT3i87ZCgPW0zC  (€449/mese)
- *  - Gold      → prod_UUcl7VD2FkDgxp  price_1TVdVyQQVoHT3i87tVsDAhpK  (€899/mese)
+ * Prodotti Stripe live (account proofpress):
+ *  - Starter   → prod_UUdmDVofzqrKdN  price_1TVeUYKyMu3K72gZaPCXOh6u  (€199/mese)
+ *  - Publisher → prod_UUdmqJJtsNO5MB  price_1TVeUhKyMu3K72gZXVJSIhyC  (€449/mese)
+ *  - Gold      → prod_UUdm1fz2lGAedz  price_1TVeUpKyMu3K72gZ4AAOXFwg  (€899/mese)
  */
 export const CREATOR_PLANS = {
   starter: {
@@ -18,8 +18,8 @@ export const CREATOR_PLANS = {
     priceLabel: "€199",
     priceSubLabel: "/mese",
     priceMonthly: 19900,
-    stripePriceId: "price_1TVdVcQQVoHT3i87dulfL8wG",
-    stripeProductId: "prod_UUclVWL9kq962f",
+    stripePriceId: "price_1TVeUYKyMu3K72gZaPCXOh6u",
+    stripeProductId: "prod_UUdmDVofzqrKdN",
     highlight: false,
     verticali: 1,
     articoliMese: 30,
@@ -42,8 +42,8 @@ export const CREATOR_PLANS = {
     priceLabel: "€449",
     priceSubLabel: "/mese",
     priceMonthly: 44900,
-    stripePriceId: "price_1TVdVmQQVoHT3i87ZCgPW0zC",
-    stripeProductId: "prod_UUclBVy9uyAuOB",
+    stripePriceId: "price_1TVeUhKyMu3K72gZXVJSIhyC",
+    stripeProductId: "prod_UUdmqJJtsNO5MB",
     highlight: true,
     verticali: 3,
     articoliMese: 120,
@@ -69,8 +69,8 @@ export const CREATOR_PLANS = {
     priceLabel: "€899",
     priceSubLabel: "/mese",
     priceMonthly: 89900,
-    stripePriceId: "price_1TVdVyQQVoHT3i87tVsDAhpK",
-    stripeProductId: "prod_UUcl7VD2FkDgxp",
+    stripePriceId: "price_1TVeUpKyMu3K72gZ4AAOXFwg",
+    stripeProductId: "prod_UUdm1fz2lGAedz",
     highlight: false,
     verticali: 6,
     articoliMese: 1200,
