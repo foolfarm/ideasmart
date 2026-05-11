@@ -3,7 +3,7 @@ import ReadersCounter from "@/components/ReadersCounter";
 import { useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import {
-  Info, Briefcase, Megaphone, PenLine, Mail, Star, Zap,
+  Info, Briefcase, Megaphone, PenLine, Mail, Star, Zap, Sun,
   ExternalLink, Download, ChevronRight,
   Newspaper, KeyRound, Building2, CheckCircle, Users,
   ShieldCheck, Home,
@@ -68,6 +68,7 @@ const NAV_STRUCTURE: NavItem[] = [
     ],
   },
   { type: "link", href: "/base-alpha", label: "Base Alpha+", Icon: Zap },
+  { type: "link", href: "/buongiorno", label: "Buongiorno ProofPress ☀️", Icon: Sun },
   { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", Icon: Briefcase },
   { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", Icon: Megaphone },
   { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", Icon: PenLine },
