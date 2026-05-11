@@ -1020,23 +1020,100 @@ export default function Home() {
           </div>
         )}
         {/* ══ PROOFPRESS VERIFY WIDGET ══════════════════════════════════════════════════════════ */}
-        <div className="max-w-[1280px] mx-auto px-4 py-2 hidden sm:block">
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="h-[2px] w-4" style={{ background: "#0066cc" }} />
-            <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "#0066cc", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
-              🔐 Verifica ProofPress
-            </span>
-            <div className="h-[2px] flex-1" style={{ background: "#0066cc", opacity: 0.15 }} />
+        <div className="max-w-[1280px] mx-auto px-4 py-3 hidden sm:block">
+          {/* Header editoriale */}
+          <div
+            className="rounded-xl px-5 py-4 mb-0"
+            style={{
+              background: "linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 60%, #f5f0ff 100%)",
+              border: "1px solid #0066cc18",
+            }}
+          >
+            <div className="flex items-start gap-4">
+              {/* Icona */}
+              <div
+                className="flex-shrink-0 flex items-center justify-center rounded-lg"
+                style={{ width: 40, height: 40, background: "#0066cc", boxShadow: "0 2px 8px #0066cc30" }}
+              >
+                <span style={{ fontSize: 20 }}>🔐</span>
+              </div>
+              {/* Testo */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span
+                    className="text-[11px] font-black uppercase tracking-[0.18em]"
+                    style={{ color: "#0066cc", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}
+                  >
+                    Verifica ProofPress
+                  </span>
+                  <span
+                    className="text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded"
+                    style={{ background: "#0066cc", color: "#fff", letterSpacing: "0.15em" }}
+                  >
+                    CERTIFICATO
+                  </span>
+                </div>
+                <p
+                  className="text-[11px] leading-snug mb-2"
+                  style={{ color: "#1a1a2e", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", maxWidth: 680 }}
+                >
+                  Ogni notizia pubblicata su ProofPress è verificata nella sua genesi, nel factchecking e nella veridicità.
+                  Inserisci il <strong>codice PP</strong> riportato sotto ogni articolo per controllare tu stesso l’analisi completa:
+                  fonti incrociate, esito del factchecking e grado di affidabilità calcolato su{" "}
+                  <a
+                    href="https://proofpressverify.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold hover:underline"
+                    style={{ color: "#0066cc" }}
+                  >
+                    ProofPressVerify.com
+                  </a>
+                  {" "}— il protocollo che analizza ogni notizia su oltre <strong>4.000 fonti globali</strong> e tutti i principali database di factchecking internazionali.
+                </p>
+                {/* Pillole statistiche */}
+                <div className="flex items-center gap-4 flex-wrap">
+                  {[
+                    { icon: "🌐", label: "4.000+ fonti monitorate" },
+                    { icon: "✅", label: "Factchecking multi-fonte" },
+                    { icon: "🔒", label: "Hash crittografico immutabile" },
+                    { icon: "⚡", label: "Verifica in tempo reale" },
+                  ].map((pill) => (
+                    <span
+                      key={pill.label}
+                      className="inline-flex items-center gap-1 text-[9px] font-semibold"
+                      style={{ color: "#0066cc", opacity: 0.85, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" }}
+                    >
+                      <span>{pill.icon}</span>
+                      <span>{pill.label}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              {/* CTA */}
+              <a
+                href="https://proofpressverify.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all hover:opacity-90"
+                style={{ background: "#0066cc", color: "#fff", letterSpacing: "0.12em", boxShadow: "0 2px 8px #0066cc30", whiteSpace: "nowrap" }}
+              >
+                🔍 Scopri il protocollo
+              </a>
+            </div>
+            {/* Widget iframe */}
+            <div className="mt-3">
+              <iframe
+                src="https://proofpressverify.com/widget/news-verify"
+                width="100%"
+                height="100"
+                frameBorder="0"
+                style={{ border: "none", borderRadius: "8px", display: "block" }}
+                title="Verifica con ProofPress"
+                loading="lazy"
+              />
+            </div>
           </div>
-          <iframe
-            src="https://proofpressverify.com/widget/news-verify"
-            width="100%"
-            height="120"
-            frameBorder="0"
-            style={{ border: "none", borderRadius: "8px", display: "block" }}
-            title="Verifica con ProofPress"
-            loading="lazy"
-          />
         </div>
         {/* ══ BARRA CANALI ORIZZONTALE ════════════════════════════════════════════════════════════ */}
         {/* <ChannelsBar /> — temporaneamente nascosta */}
