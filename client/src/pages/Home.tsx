@@ -1406,6 +1406,28 @@ export default function Home() {
                   </div>
 
 
+                  {/* ── Banner Buongiorno ProofPress — newsletter 8:30 ── */}
+                  <div className="mb-6">
+                    <a href="/buongiorno" style={{ textDecoration: "none" }}>
+                      <div
+                        style={{
+                          borderRadius: 10,
+                          overflow: "hidden",
+                          boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
+                          transition: "box-shadow 0.2s, transform 0.2s",
+                          cursor: "pointer",
+                        }}
+                        className="hover:shadow-xl hover:scale-[1.01]"
+                      >
+                        <img
+                          src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banner-buongiorno-proofpress-o5yF8EwRCXLYHaxjCcjDgS.webp"
+                          alt="Buongiorno ProofPress — Iscriviti alla newsletter delle 8:30"
+                          style={{ width: "100%", display: "block" }}
+                        />
+                      </div>
+                    </a>
+                  </div>
+
                   {/* ── Banner Base Alpha+ — design editoriale chiaro ── */}
                   <div className="mb-6">
                     <a href="/base-alpha" style={{ textDecoration: "none" }}>
