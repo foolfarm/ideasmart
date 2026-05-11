@@ -3552,3 +3552,9 @@
 - [x] Badge IPFS rotto rimosso dalla Home (URL /api/ipfs non disponibile come route Express)
 - [x] Widget VerifyStatsWidget: URL iframe aggiornato da sandbox a https://proofpressverify.com/widget/news-verify?theme=light
 - [x] Batch PPV: 17 articoli certificati (32/36 totali nel DB), script scripts/batch-ppv-certify.mjs
+
+## Task 11 Mag 2026 (sessione pomeriggio)
+
+- [x] Pubblicare articolo editoriale PPV su LinkedIn (ora, manuale)
+- [x] Aggiornare orario cron editoriale PPV da 16:30 a 12:50
+- [x] Fix bug: badge PPV non visibile nella Home (articoli certificati mostrano "CERTIFICAZIONE IN CORSO" invece del badge A-F)

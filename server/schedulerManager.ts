@@ -1318,20 +1318,20 @@ export function startAllSchedulers(): void {
 
   // ══════════════════════════════════════════════════════════════════════════
   // PPV EDITORIAL CAMPAIGN — 11–15 maggio 2026
-  //   14:30 CET — Preview newsletter ProofPressVerify a ac@acinelli.com
-  //   16:30 CET — Articolo editoriale firmato Andrea Cinelli su ProofPressVerify
+  //   12:30 CET — Preview newsletter ProofPressVerify a ac@acinelli.com
+  //   12:50 CET — Articolo editoriale firmato Andrea Cinelli su ProofPressVerify + post LinkedIn
   //   17:30 CET — Newsletter promozionale ProofPressVerify agli iscritti attivi
   // ══════════════════════════════════════════════════════════════════════════
-  cron.schedule("30 14 * * 1-5", async () => {
-    console.log("[PPV Campaign] ⏰ 14:30 CET — Invio preview newsletter ProofPressVerify...");
+  cron.schedule("30 12 * * 1-5", async () => {
+    console.log("[PPV Campaign] ⏰ 12:30 CET — Invio preview newsletter ProofPressVerify...");
     try {
       const { sendPpvNewsletterPreview } = await import("./ppvEditorialScheduler");
       await sendPpvNewsletterPreview();
     } catch (err) { console.error("[PPV Campaign] ❌ Preview newsletter:", err); }
   }, { timezone: TZ });
 
-  cron.schedule("30 16 * * 1-5", async () => {
-    console.log("[PPV Campaign] ⏰ 16:30 CET — Generazione articolo editoriale ProofPressVerify...");
+  cron.schedule("50 12 * * 1-5", async () => {
+    console.log("[PPV Campaign] ⏰ 12:50 CET — Generazione articolo editoriale ProofPressVerify...");
     try {
       const { generatePpvEditorial } = await import("./ppvEditorialScheduler");
       const result = await generatePpvEditorial();
@@ -1348,5 +1348,5 @@ export function startAllSchedulers(): void {
     } catch (err) { console.error("[PPV Campaign] ❌ Newsletter iscritti:", err); }
   }, { timezone: TZ });
 
-  console.log("[SchedulerManager]   🔐 PPV Campaign → 14:30 preview, 16:30 articolo, 17:30 newsletter (lun-ven, 11-15 mag 2026)");
+  console.log("[SchedulerManager]   🔐 PPV Campaign → 12:30 preview, 12:50 articolo+LinkedIn, 17:30 newsletter (lun-ven, 11-15 mag 2026)");
 }

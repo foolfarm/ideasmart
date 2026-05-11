@@ -1025,6 +1025,12 @@ export interface HomeSectionItem {
   trustScore: number | null;
   ipfsCid: string | null;
   ipfsUrl: string | null;
+  // ProofPress Verify™ fields
+  ppvHash: string | null;
+  ppvTrustGrade: string | null;
+  ppvTrustScore: number | null;
+  ppvDocumentId: number | null;
+  ppvIpfsUrl: string | null;
   section: HomeSection;
 }
 
@@ -1058,6 +1064,12 @@ export async function getHomeNewsData(): Promise<Record<HomeSection, HomeSection
           trustScore: (item as typeof item & { trustScore?: number | null }).trustScore ?? null,
           ipfsCid: (item as typeof item & { ipfsCid?: string | null }).ipfsCid ?? null,
           ipfsUrl: (item as typeof item & { ipfsUrl?: string | null }).ipfsUrl ?? null,
+          // ProofPress Verify™ fields
+          ppvHash: (item as typeof item & { ppvHash?: string | null }).ppvHash ?? null,
+          ppvTrustGrade: (item as typeof item & { ppvTrustGrade?: string | null }).ppvTrustGrade ?? null,
+          ppvTrustScore: (item as typeof item & { ppvTrustScore?: number | null }).ppvTrustScore ?? null,
+          ppvDocumentId: (item as typeof item & { ppvDocumentId?: number | null }).ppvDocumentId ?? null,
+          ppvIpfsUrl: (item as typeof item & { ppvIpfsUrl?: string | null }).ppvIpfsUrl ?? null,
           section
         }))
       };
@@ -1229,6 +1241,11 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
       trustScore: item.trustScore ?? null,
       ipfsCid: item.ipfsCid ?? null,
       ipfsUrl: item.ipfsUrl ?? null,
+      ppvHash: null,
+      ppvTrustGrade: null,
+      ppvTrustScore: null,
+      ppvDocumentId: null,
+      ppvIpfsUrl: null,
       section: (item.section ?? 'ai') as HomeSection,
     }));
   }
@@ -1277,6 +1294,11 @@ export async function getGradeAArticles(limit = 6): Promise<HomeSectionItem[]> {
       trustScore: item.trustScore ?? null,
       ipfsCid: item.ipfsCid ?? null,
       ipfsUrl: item.ipfsUrl ?? null,
+      ppvHash: null,
+      ppvTrustGrade: null,
+      ppvTrustScore: null,
+      ppvDocumentId: null,
+      ppvIpfsUrl: null,
       section: (item.section ?? 'ai') as HomeSection,
     }));
 }
