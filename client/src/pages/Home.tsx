@@ -1004,11 +1004,11 @@ export default function Home() {
             </p>
             {/* Widget iframe */}
             <iframe
-              src="https://proofpressverify.com/widget/news-verify"
+              src="https://3000-ipiepxfs4r5bhofezmhex-92dc304a.us2.manus.computer/widget/news-verify?theme=light"
               width="100%"
-              height="96"
+              height="120"
               frameBorder="0"
-              style={{ border: "none", borderRadius: "6px", display: "block" }}
+              style={{ border: "none", borderRadius: "8px", display: "block" }}
               title="Verifica con ProofPress"
               loading="lazy"
             />
