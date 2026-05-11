@@ -767,13 +767,13 @@ export default function OsservatorioTech() {
                   className="mt-6 leading-relaxed max-w-2xl"
                   style={{ color: INK + "70", fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontFamily: FONT }}
                 >
-                  Base Alpha + è l’osservatorio dedicato a tecnologia, venture capital, investimenti e innovazione, curato da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale e tra i pionieri del digitale in Italia.
+                  Base Alpha è l’osservatorio dedicato a tecnologia, venture capital, investimenti e innovazione, curato da <strong style={{ color: INK }}>Andrea Cinelli</strong> — imprenditore seriale e tra i pionieri del digitale in Italia.
                   <br /><br />
                   Ogni giorno pubblica analisi e approfondimenti verificati sui temi che contano: intelligenza artificiale, startup, venture capital e trasformazione digitale, condivisi anche attraverso il suo profilo LinkedIn.
                   <br /><br />
                   Un punto di vista qualificato, costruito su oltre 30 anni di execution diretta — non teoria.
                   <br /><br />
-                  Andrea contribuisce inoltre a Base Alpha +, un osservatorio tecnologico internazionale guidato da <strong style={{ color: INK }}>Adrian Lenice</strong> e supportato da un team globale di analisti.
+                  Andrea contribuisce inoltre a Base Alpha +, l'osservatorio tecnologico Premium internazionale guidato da <strong style={{ color: INK }}>Adrian Lenice</strong> e supportato da un team globale di analisti.
                 </p>
 
                 {/* Temi */}
