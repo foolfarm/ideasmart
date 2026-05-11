@@ -1052,6 +1052,41 @@ async function startServer() {
     }
   });
 
+  // ── SendGrid Event Webhook — pulizia automatica bounce/spam/unsubscribe ────────────────────
+  // POST /api/sendgrid/webhook
+  // Riceve eventi real-time da SendGrid e aggiorna immediatamente il DB.
+  // Configurare in SendGrid: Settings → Mail Settings → Event Webhook → URL: https://proofpress.ai/api/sendgrid/webhook
+  // Eventi gestiti: bounce, blocked, spam_report, unsubscribe, group_unsubscribe
+  app.post("/api/sendgrid/webhook", async (req, res) => {
+    try {
+      const events: Array<{ event: string; email: string; timestamp?: number; reason?: string }> = req.body;
+      if (!Array.isArray(events)) {
+        return res.status(400).json({ error: 'Invalid payload — expected array of events' });
+      }
+      const { unsubscribeEmail } = await import('../db');
+      const CLEANUP_EVENTS = new Set(['bounce', 'blocked', 'spam_report', 'unsubscribe', 'group_unsubscribe']);
+      let processed = 0;
+      for (const evt of events) {
+        if (!evt.email || !CLEANUP_EVENTS.has(evt.event)) continue;
+        const email = evt.email.trim().toLowerCase();
+        try {
+          await unsubscribeEmail(email);
+          processed++;
+          console.log(`[SendGridWebhook] ${evt.event} → rimossa: ${email}`);
+        } catch (e) {
+          console.warn(`[SendGridWebhook] Errore per ${email}:`, e);
+        }
+      }
+      if (processed > 0) {
+        console.log(`[SendGridWebhook] ✅ ${processed} iscritti rimossi dalla lista (${events.length} eventi totali)`);
+      }
+      return res.status(200).json({ received: events.length, processed });
+    } catch (err: any) {
+      console.error('[SendGridWebhook] ❌ Errore:', err);
+      return res.status(500).json({ error: err.message || 'Errore interno' });
+    }
+  });
+
   // ── Cache-Control headers per le risposte tRPC pubbliche ────────────────────
   // Le procedure pubbliche (news, editorial, ecc.) sono cachate in-memory lato server.
   // Aggiungiamo anche un header HTTP per il CDN/browser: max-age=60s (1 minuto).

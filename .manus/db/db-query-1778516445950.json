@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, email, status FROM subscribers WHERE email = 'm.sentimenti@database.it';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, email, status FROM subscribers WHERE email = 'm.sentimenti@database.it';",
+  "rows": [
+    {
+      "id": "1021683",
+      "email": "m.sentimenti@database.it",
+      "status": "active"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tstatus\n1021683\tm.sentimenti@database.it\tactive\n",
+  "stderr": "",
+  "execution_time_ms": 267
+}

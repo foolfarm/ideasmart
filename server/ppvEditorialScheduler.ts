@@ -618,7 +618,12 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
         <a href="https://proofpress.ai" style="color:#00e5c8;text-decoration:none;">proofpress.ai</a> ·
         <a href="https://proofpressverify.com" style="color:#00e5c8;text-decoration:none;">proofpressverify.com</a>
       </p>
-      <p style="margin:0;color:#bbb;font-size:11px;">Hai ricevuto questa email perché sei iscritto alla newsletter di ProofPress.</p>
+      <p style="margin:0 0 6px;color:#bbb;font-size:11px;">Hai ricevuto questa email perché sei iscritto alla newsletter di ProofPress.</p>
+      <p style="margin:0;font-size:11px;">
+        <a href="https://proofpress.ai/unsubscribe?token=UNSUB_TOKEN" style="color:#bbb;text-decoration:underline;">Disiscriviti</a>
+        &nbsp;·&nbsp;
+        <a href="https://proofpress.ai/preferenze-newsletter?token=UNSUB_TOKEN" style="color:#bbb;text-decoration:underline;">Gestisci preferenze</a>
+      </p>
     </td>
   </tr>
 
@@ -673,18 +678,31 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
     console.log(`[PPV Newsletter] Invio a ${subs.length} iscritti attivi...`);
     let sent = 0;
     let errors = 0;
-    // Invio in batch da 50
-    const BATCH = 50;
-    for (let i = 0; i < subs.length; i += BATCH) {
-      const batch = subs.slice(i, i + BATCH).map(s => s.email);
+    // Invio individuale con link unsubscribe personalizzato per ogni iscritto (GDPR)
+    const BASE_URL = 'https://proofpress.ai';
+    for (const sub of subs) {
+      const unsubUrl = sub.unsubscribeToken
+        ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
+        : `${BASE_URL}/unsubscribe`;
+      const prefsUrl = sub.unsubscribeToken
+        ? `${BASE_URL}/preferenze-newsletter?token=${sub.unsubscribeToken}`
+        : `${BASE_URL}/preferenze-newsletter`;
+      // Sostituisce il placeholder UNSUB_TOKEN con il token reale dell'iscritto
+      const personalizedHtml = html
+        .replace(/https:\/\/proofpress\.ai\/unsubscribe\?token=UNSUB_TOKEN/g, unsubUrl)
+        .replace(/https:\/\/proofpress\.ai\/preferenze-newsletter\?token=UNSUB_TOKEN/g, prefsUrl);
       const result = await sendEmail({
-        to: batch,
+        to: sub.email,
         subject,
-        html,
+        html: personalizedHtml,
         sender: "promo"
       });
-      if (result.success) sent += batch.length;
-      else errors += batch.length;
+      if (result.success) sent++;
+      else errors++;
+      // Piccola pausa ogni 100 invii per evitare rate limiting SendGrid
+      if ((sent + errors) % 100 === 0) {
+        await new Promise(r => setTimeout(r, 200));
+      }
     }
     console.log(`[PPV Newsletter] ✅ Inviata a ${sent} iscritti, ${errors} errori`);
   } catch (err) {

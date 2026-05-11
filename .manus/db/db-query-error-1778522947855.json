@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT \n  COUNT(DISTINCT s.id) AS iscritti_con_apertura,\n  (SELECT COUNT(*) FROM subscribers WHERE status = 'active') AS totale_attivi,\n  ROUND(COUNT(DISTINCT s.id) * 100.0 / (SELECT COUNT(*) FROM subscribers WHERE status = 'active'), 1) AS percentuale_open_rate\nFROM subscribers s\nINNER JOIN newsletter_sends ns ON ns.subscriber_id = s.id\nWHERE ns.opened_at IS NOT NULL\n   OR ns.open_count > 0;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  COUNT(DISTINCT s.id) AS iscritti_con_apertura,\n  (SELECT COUNT(*) FROM subscribers WHERE status = 'active') AS totale_attivi,\n  ROUND(COUNT(DISTINCT s.id) * 100.0 / (SELECT COUNT(*) FROM subscribers WHERE status = 'active'), 1) AS percentuale_open_rate\nFROM subscribers s\nINNER JOIN newsletter_sends ns ON ns.subscriber_id = s.id\nWHERE ns.opened_at IS NOT NULL\n   OR ns.open_count > 0;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 2: Unknown column 'ns.subscriber_id' in 'on clause'"
+  ]
+}

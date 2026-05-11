@@ -1,0 +1,15 @@
+{
+  "query": "\nSELECT \n  COUNT(DISTINCT eo.subscriberEmail) AS iscritti_con_apertura,\n  (SELECT COUNT(*) FROM subscribers WHERE status = 'active') AS totale_attivi,\n  ROUND(\n    COUNT(DISTINCT eo.subscriberEmail) * 100.0 / \n    (SELECT COUNT(*) FROM subscribers WHERE status = 'active'), \n    1\n  ) AS percentuale_open_rate\nFROM email_opens eo\nINNER JOIN subscribers s ON s.email = eo.subscriberEmail\nWHERE s.status = 'active';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  COUNT(DISTINCT eo.subscriberEmail) AS iscritti_con_apertura,\n  (SELECT COUNT(*) FROM subscribers WHERE status = 'active') AS totale_attivi,\n  ROUND(\n    COUNT(DISTINCT eo.subscriberEmail) * 100.0 / \n    (SELECT COUNT(*) FROM subscribers WHERE status = 'active'), \n    1\n  ) AS percentuale_open_rate\nFROM email_opens eo\nINNER JOIN subscribers s ON s.email = eo.subscriberEmail\nWHERE s.status = 'active';\n",
+  "rows": [
+    {
+      "iscritti_con_apertura": "0",
+      "totale_attivi": "5924",
+      "percentuale_open_rate": "0.0"
+    }
+  ],
+  "messages": [],
+  "stdout": "iscritti_con_apertura\ttotale_attivi\tpercentuale_open_rate\n0\t5924\t0.0\n",
+  "stderr": "",
+  "execution_time_ms": 294
+}
