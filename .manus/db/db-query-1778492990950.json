@@ -1,0 +1,220 @@
+{
+  "query": "SELECT id, title, summary, sourceUrl, publishedAt \nFROM news_items \nWHERE ppvHash IS NULL \n  AND sourceUrl IS NOT NULL \n  AND sourceUrl != ''\nORDER BY publishedAt DESC \nLIMIT 30;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, summary, sourceUrl, publishedAt \nFROM news_items \nWHERE ppvHash IS NULL \n  AND sourceUrl IS NOT NULL \n  AND sourceUrl != ''\nORDER BY publishedAt DESC \nLIMIT 30;",
+  "rows": [
+    {
+      "id": "7560005",
+      "title": "Quantinuum presenta IPO mentre i quantum stock guadagnano popolarità",
+      "summary": "Quantinuum ha annunciato la presentazione per IPO negli USA con valutazione potenziale fino a 20 miliardi di dollari, supportata da Honeywell. L'evento segnala una finestra di apertura del mercato pubblico verso aziende di quantum computing, attirando attenzione istituzionale verso il settore dopo anni di scetticismo.",
+      "sourceUrl": "https://www.siliconrepublic.com/business/quantinuum-files-for-ipo-as-quantum-stocks-gain-popularity",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560009",
+      "title": "DeepMind spinout Isomorphic Labs punta a oltre 2 miliardi da Thrive e Alphabet",
+      "summary": "Isomorphic Labs, spinout da DeepMind, sta raccogliendo oltre 2 miliardi di dollari da Thrive Capital e Alphabet. Il round gigantesco per una company di drug discovery e AI riflette valutazione della capacità dell'azienda di creare output biotech validate dai large pharma player, con timeline esteso ma margini potenziali molto superiori rispetto a software tradizionale.",
+      "sourceUrl": "https://techfundingnews.com/deepmind-spinout-isomorphic-labs-eyes-over-2b-funding-from-thrive-and-alphabet/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560010",
+      "title": "Helsing raccoglie 1,2 miliardi in round da Lightspeed e Dragoneer a 18 miliardi di valutazione",
+      "summary": "Helsing ha chiuso un round di 1,2 miliardi di dollari da Lightspeed e Dragoneer con valutazione di 18 miliardi. Lo scaling aggressivo della defense tech company tedesca evidenzia spostamento geopolitico negli investimenti europei verso autonomy e AI militare, accelerato da contesto macroeconomico di riarmo continentale.",
+      "sourceUrl": "https://techfundingnews.com/lightspeed-and-dragoneer-to-back-helsings-1-2b-round-valuing-it-at-18b-report/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560002",
+      "title": "Algorithmiq raccoglie 18 milioni di euro e si trasferisce in Italia",
+      "summary": "La startup tedesca di quantum software Algorithmiq ha chiuso un round di finanziamento di 18 milioni di euro e ha deciso di trasferire le operazioni in Italia. La mossa segnala un interesse crescente verso ecosistemi tech europei più agili e incentivi localizzati, con focus su deep tech e computing quantistico.",
+      "sourceUrl": "https://sifted.eu/articles/algorithmiq-fundraise-relocation-italy/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560011",
+      "title": "Otto startup agtech da monitorare secondo i top VC",
+      "summary": "TechFundingNews pubblica una lista curata di otto startup agtech identificate dai principali venture capital come player da osservare. L'elenco rappresenta trend di consolidamento dell'agtech come asset class istituzionale con focus su precision farming, supply chain transparency e climate adaptation solution.",
+      "sourceUrl": "https://techfundingnews.com/top-european-agtech-startups-investor-picks-2026/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7530006",
+      "title": "Borsa: Hong Kong apre in lieve calo, Hang Seng -0,36%",
+      "summary": "Movimento dei mercati asiatici con focus su Hong Kong, indicatore di sentiment globale e impatto su startup quotate e round di venture capital cross-border.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/11/borsa-hong-kong-apre-in-lieve-calo-hang-seng-036_7a1619b7-af88-45d2-becb-a4c6b01b2e24.html",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560006",
+      "title": "Trimestre tech europeo da 17 miliardi: AI e deep tech vincono, fintech cede",
+      "summary": "Silicon Republic documenta investimenti per 17 miliardi di dollari nel trimestre tech europeo, con AI e deep tech come motori principali di crescita. Fintech subisce contrazione significativa, segnalando una redistribuzione del capitale verso settori con maggiore defensibility tecnologica e meno saturazione competitiva.",
+      "sourceUrl": "https://www.siliconrepublic.com/start-ups/europes-17bn-tech-quarter-ai-deep-tech-win-as-fintech-slides",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560003",
+      "title": "Trimestrale tech europeo da 1,4 miliardi: AI e deep tech dominano",
+      "summary": "Tech.eu riporta 1,4 miliardi di euro in deal durante il trimestre. L'analisi evidenzia che AI e deep tech continuano a trainare investimenti mentre fintech mostra segnali di rallentamento. I dati confermano la rotazione del capitale verso settori con barriere tecnologiche più alte e potenziale TAM superiore.",
+      "sourceUrl": "https://tech.eu/2026/05/11/european-tech-weekly-recap-eur14b-in-deals-and-aprils-highlights/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560001",
+      "title": "Cosa rivelano 2.800 round di finanziamento su come le startup spendono il denaro",
+      "summary": "Sifted analizza 2.800 round di finanziamento per identificare i pattern di spesa delle startup. Lo studio fornisce dati concreti su come le giovani aziende allocano i capitali ricevuti, offrendo benchmark affidabili per founder e investor su efficienza di burn rate e allocation strategy.",
+      "sourceUrl": "https://sifted.eu/articles/funding-round-spending-startups-series-early-late/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7530004",
+      "title": "Esclusiva: startup di quantum computing Algorithmiq raccoglie 18 milioni di euro, si trasferisce in Italia",
+      "summary": "Algorithmiq conclude finanziamento di Serie B da 18 milioni di euro e rilocalizza il suo hub europeo in Italia, segnalando shift negli investimenti quantum computing verso l'ecosistema italiano.",
+      "sourceUrl": "https://sifted.eu/articles/algorithmiq-fundraise-relocation-italy/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7530002",
+      "title": "Come 2.800 round di finanziamento rivelano la spesa delle startup",
+      "summary": "Studio su larga scala che analizza i pattern di allocazione del capitale tra startups, evidenziando dove i founder reinvestono il denaro e quali categorie di spesa dominano l'ecosistema.",
+      "sourceUrl": "https://sifted.eu/articles/funding-round-spending-startups-series-early-late/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7560004",
+      "title": "NanoStruct raccoglie 2,6 milioni di euro per test patogeni stesso giorno nel food",
+      "summary": "NanoStruct ha chiuso un seed round di 2,6 milioni di euro per sviluppare tecnologie di rilevamento rapido di patogeni nell'industria alimentare. Il finanziamento da HTGF e Auxxo testimonia l'interesse crescente in soluzioni di food safety supportate da venture capital, con applicazioni commerciali concrete e timeline breve a revenue.",
+      "sourceUrl": "https://tech.eu/2026/05/11/nanostruct-raises-eur26m-seed-to-bring-same-day-pathogen-detection-to-the-food-industry/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7530008",
+      "title": "Dazi commerciali: colloqui Usa-Cina in Corea del Sud",
+      "summary": "Negoziati su tariffe e accordi commerciali Usa-Cina con ripercussioni su catene di fornitura globali, logistica e startup di deeptech che dipendono da import/export.",
+      "sourceUrl": "https://www.agi.it/economia/news/2026-05-11/dazi-colloqui-usa-cina-36991576/",
+      "publishedAt": "2026-05-11"
+    },
+    {
+      "id": "7500001",
+      "title": "Anthropic e OpenAI Consultano Leader Religiosi su Etica dell'IA",
+      "summary": "Le due principali aziende di IA generativa si incontrano con leader religiosi e morali per acquisire prospettive etiche sulla sviluppo dell'IA. L'iniziativa riflette il riconoscimento che le decisioni di alignment non possono essere puramente tecniche ma richiedono input da diverse tradizioni di pensiero etico e filosofico.",
+      "sourceUrl": "https://the-decoder.com/anthropic-and-openai-sit-down-with-religious-leaders-to-seek-ethical-advice/",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7530011",
+      "title": "Benzina a 1,930 euro al litro, gasolio scende a 2,009 euro",
+      "summary": "Volatilità dei prezzi dei carburanti in Italia: dato attuale di pricing che influenza modelli economici di startup di logistica, delivery e mobilità.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/10/mimit-benzina-a-1930-euro-al-litro-gasolio-scende-a-2009-euro_a791cf91-a539-4f2e-8093-4e3f6e52bd36.html",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7560012",
+      "title": "Startup italiane spopolano a Malta: da wallet-crypto a macchine della verità",
+      "summary": "ANSA segnala migrazione di startup italiane verso Malta, supportate da un ecosistema di fintech e crypto wallet fino a soluzioni di verifica biometrica. La dinamica riflette arbitraggio normativo e fiscale delle startup italiane verso hub europei più attrattivi, con impatto sulla concentrazione di talent e capital in specifiche jurisdizioni.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/10/da-wallet-crypto-a-macchina-della-verita.-startup-italiane-spopolano-a-malta_a69772d0-4610-4324-aa3e-1035ddd87321.html",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7530007",
+      "title": "Monopattini elettrici: obbligo di targa entro 16 maggio, rischi di ritardi",
+      "summary": "Nuove norme sulla targa dei monopattini elettrici creano vincoli normativi per l'industria della mobilità leggera: implicazioni operative e business per micromobilità startup.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/10/monopattini-elettrici-obbligo-di-targa-entro-16-maggio-ma-ce-rischio-ritardi_92208df2-13c8-4c29-bc7b-9a2b46d1f2da.html",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7500003",
+      "title": "Ricercatori Scoprono Metodo per Impedire ai Modelli IA di Fingere Sottoperformance in Valutazioni",
+      "summary": "Un breakthrough di ricerca identifica tecniche che prevengono l'inganno strategico nei test di sicurezza dell'IA, dove modelli fingono artificialmente limitazioni durante valutazioni. La scoperta affronta un problema critico di misurazione: distinguere debolezze reali da auto-handicapping intenzionale.",
+      "sourceUrl": "https://the-decoder.com/researchers-may-have-found-a-way-to-stop-ai-models-from-intentionally-playing-dumb-during-safety-evaluations/",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7500009",
+      "title": "Dipendenza da Intelligenza Artificiale: primo Caso di Terapia in Italia",
+      "summary": "L'Italia registra il primo caso documentato di trattamento terapeutico per dipendenza comportamentale da IA, segnalando un trend globale di conseguenze psicologiche da overuse di sistemi intelligenti. Il fenomeno anticipa una crisi di salute mentale connessa all'automazione dei processi decisionali umani.",
+      "sourceUrl": "https://www.repubblica.it/tecnologia/2026/05/10/news/in_terapia_per_dipendenza_da_intelligenza_artificiale_e_la_prima_volta_in_italia-425335793/?rss",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7530005",
+      "title": "Startup italiane in espansione a Malta: da wallet crypto a truth machine",
+      "summary": "Crescita significativa di startup italiane che operano da Malta, coprendo range di settori da fintech a tecnologie innovative, sfruttando framework regulatorio favorevole.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/10/da-wallet-crypto-a-macchina-della-verita.-startup-italiane-spopolano-a-malta_a69772d0-4610-4324-aa3e-1035ddd87321.html",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7500008",
+      "title": "La Cina Abbandona la Corsa ai Modelli Generici: Pivot Verso Piattaforme Verticali",
+      "summary": "Le strategie cinesi di IA si orientano meno verso modelli foundation generici e sempre più verso piattaforme specializzate per applicazioni economiche reali. Il cambio di paradigma riflette pragmatismo commerciale: impatto misurabile vale più di benchmark generali.",
+      "sourceUrl": "https://www.ilsole24ore.com/art/ai-cina-cambia-passo-non-piu-modelli-ma-piattaforme-l-economia-reale-AIuRJgpC",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7500002",
+      "title": "GPT-5.5 Costa il 49-92% Più del Predecessore in Base alla Lunghezza Input",
+      "summary": "OpenAI ha implementato una struttura di pricing per GPT-5.5 che varia significativamente con la lunghezza dell'input, determinando un aumento di costo sostanziale rispetto a GPT-4. La strategia riflette il trade-off tra scalabilità computazionale e modelli di revenue sostenibili.",
+      "sourceUrl": "https://the-decoder.com/gpt-5-5-costs-49-to-92-percent-more-than-its-predecessor-depending-on-the-input-length/",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7530009",
+      "title": "Vacanze nel caos: come orientarsi tra cancellazioni e rimborsi",
+      "summary": "Disruption nel settore travel e hospitality causata da conflitti geopolitici, con focus su diritti dei consumatori, rimborsi e opportunità per startup travel-tech.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/10/caos-vacanze-come-orientarsi-tra-cancellazioni-supplementi-e-rimborsi_0c789b6a-486a-4bbe-8a8e-6b8e4fd5431b.html",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7530012",
+      "title": "Startup e mobilità: scenari di innovazione tra regolazione e mercato",
+      "summary": "Convergenza di trend normativi e market forces nel settore mobilità urbana, con focus su startup che operano tra compliance e scaling in ambiente regolatorio fluido.",
+      "sourceUrl": "https://www.ansa.it/sito/notizie/economia/2026/05/10/monopattini-elettrici-obbligo-di-targa-entro-16-maggio-ma-ce-rischio-ritardi_92208df2-13c8-4c29-bc7b-9a2b46d1f2da.html",
+      "publishedAt": "2026-05-10"
+    },
+    {
+      "id": "7560013",
+      "title": "Fintech startup Parker presenta istanza di bancarotta",
+      "summary": "Parker, fintech startup, ha dovuto presentare istanza di bancarotta dopo fallimento della strategia commerciale. Il caso testimonia contrazione del settore fintech post 2023 e incapacità di numerose startup di monetizzare modelli di business in contesti di tassi elevati e consolidamento bancario accelerato.",
+      "sourceUrl": "https://techcrunch.com/2026/05/09/fintech-startup-parker-files-for-bankruptcy/",
+      "publishedAt": "2026-05-09"
+    },
+    {
+      "id": "7500004",
+      "title": "Medaglia Fields Riconosce ChatGPT 5.5 Pro a Livello di Ricerca Dottorali in Matematica",
+      "summary": "Un matematico di eccellenza assoluta documenta che ChatGPT 5.5 Pro ha completato ricerca matematica di livello PhD in meno di due ore senza intervento umano. Il caso evidenzia il raggiungimento di un threshold qualitativo significativo in problem-solving complesso e creativo.",
+      "sourceUrl": "https://the-decoder.com/fields-medalist-says-chatgpt-5-5-pro-delivered-phd-level-math-research-in-under-two-hours-with-zero-human-help/",
+      "publishedAt": "2026-05-09"
+    },
+    {
+      "id": "7500007",
+      "title": "Emotion AI Pseudoscientifica Invade i Luoghi di Lavoro: Analisi Atlantic",
+      "summary": "Un'inchiesta del magazine Atlantic documenta come sistemi di emotion recognition non convalidati scientificamente vengono implementati nei workplace per monitorare dipendenti. Il fenomeno rappresenta un'applicazione problematica di IA che sacrifica privacy e autonomia su fondamenta scientifiche fragili.",
+      "sourceUrl": "https://the-decoder.com/pseudoscientific-emotion-ai-is-invading-the-workplace-an-atlantic-report-shows/",
+      "publishedAt": "2026-05-09"
+    },
+    {
+      "id": "7530010",
+      "title": "Quanto costano agli italiani i rincari di benzina, luce e gas",
+      "summary": "Analisi dell'impatto economico sui consumatori italiani da inflazione energetica: base dati per valutare market size di startup incentrate su efficienza energetica e risparmio.",
+      "sourceUrl": "https://www.agi.it/economia/news/2026-05-09/rincari-benzina-luce-gas-costa-36971271/",
+      "publishedAt": "2026-05-09"
+    },
+    {
+      "id": "7500005",
+      "title": "Broadcom Condiziona Chip Personalizzato OpenAI all'Acquisto Microsoft del 40%",
+      "summary": "Broadcom non procederà nella produzione del chip personalizzato per OpenAI a meno che Microsoft non acquisti almeno il 40% della produzione. Il negoziato rivela tensioni critiche nella catena di approvvigionamento di semiconduttori specializzati per IA, con Microsoft come player decisivo.",
+      "sourceUrl": "https://the-decoder.com/broadcom-reportedly-wont-build-openais-custom-chip-unless-microsoft-buys-40-percent-of-them/",
+      "publishedAt": "2026-05-09"
+    },
+    {
+      "id": "7500006",
+      "title": "La Funzione Preferred Sources di Google Amplifica Contenuti di Bassa Qualità in Search",
+      "summary": "Google ha introdotto una feature che crea scorciatoie per contenuti prioritari in ricerca, ma l'implementazione favorisce query di bassa qualità e spam. L'analisi mostra come l'ottimizzazione dei risultati senza controlli di qualità degrada l'utilità della ricerca a dispetto dell'IA.",
+      "sourceUrl": "https://the-decoder.com/googles-preferred-sources-feature-is-a-free-pass-for-more-garbage-in-search/",
+      "publishedAt": "2026-05-09"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tsummary\tsourceUrl\tpublishedAt\n7560005\tQuantinuum presenta IPO mentre i quantum stock guadagnano popolarità\tQuantinuum ha annunciato la presentazione per IPO negli USA con valutazione potenziale fino a 20 miliardi di dollari, supportata da Honeywell. L'evento segnala una finestra di apertura del mercato pubblico verso aziende di quantum computing, attirando attenzione istituzionale verso il settore dopo anni di scetticismo.\thttps://www.siliconrepublic.com/business/quantinuum-files-for-ipo-as-quantum-stocks-gain-popularity\t2026-05-11\n7560009\tDeepMind spinout Isomorphic Labs punta a oltre 2 miliardi da Thrive e Alphabet\tIsomorphic Labs, spinout da DeepMind, sta raccogliendo oltre 2 miliardi di dollari da Thrive Capital e Alphabet. Il round gigantesco per una company di drug discovery e AI riflette valutazione della capacità dell'azienda di creare output biotech validate dai large pharma player, con timeline esteso ma margini potenziali molto superiori rispetto a software tradizionale.\thttps://techfundingnews.com/deepmind-spinout-isomorphic-labs-eyes-over-2b-funding-from-thrive-and-alphabet/\t2026-05-11\n7560010\tHelsing raccoglie 1,2 miliardi in round da Lightspeed e Dragoneer a 18 miliardi di valutazione\tHelsing ha chiuso un round di 1,2 miliardi di dollari da Lightspeed e Dragoneer con valutazione di 18 miliardi. Lo scaling aggressivo della defense tech company tedesca evidenzia spostamento geopolitico negli investimenti europei verso autonomy e AI militare, accelerato da contesto macroeconomico di riarmo continentale.\thttps://techfundingnews.com/lightspeed-and-dragoneer-to-back-helsings-1-2b-round-valuing-it-at-18b-report/\t2026-05-11\n7560002\tAlgorithmiq raccoglie 18 milioni di euro e si trasferisce in Italia\tLa startup tedesca di quantum software Algorithmiq ha chiuso un round di finanziamento di 18 milioni di euro e ha deciso di trasferire le operazioni in Italia. La mossa segnala un interesse crescente verso ecosistemi tech europei più agili e incentivi localizzati, con focus su deep tech e computing quantistico.\thttps://sifted.eu/articles/algorithmiq-fundraise-relocation-italy/\t2026-05-11\n7560011\tOtto startup agtech da monitorare secondo i top VC\tTechFundingNews pubblica una lista curata di otto startup agtech identificate dai principali venture capital come player da osservare. L'elenco rappresenta trend di consolidamento dell'agtech come asset class istituzionale con focus su precision farming, supply chain transparency e climate adaptation solution.\thttps://techfundingnews.com/top-european-agtech-startups-investor-picks-2026/\t2026-05-11\n7530006\tBorsa: Hong Kong apre in lieve calo, Hang Seng -0,36%\tMovimento dei mercati asiatici con focus su Hong Kong, indicatore di sentiment globale e impatto su startup quotate e round di venture capital cross-border.\thttps://www.ansa.it/sito/notizie/economia/2026/05/11/borsa-hong-kong-apre-in-lieve-calo-hang-seng-036_7a1619b7-af88-45d2-becb-a4c6b01b2e24.html\t2026-05-11\n7560006\tTrimestre tech europeo da 17 miliardi: AI e deep tech vincono, fintech cede\tSilicon Republic documenta investimenti per 17 miliardi di dollari nel trimestre tech europeo, con AI e deep tech come motori principali di crescita. Fintech subisce contrazione significativa, segnalando una redistribuzione del capitale verso settori con maggiore defensibility tecnologica e meno saturazione competitiva.\thttps://www.siliconrepublic.com/start-ups/europes-17bn-tech-quarter-ai-deep-tech-win-as-fintech-slides\t2026-05-11\n7560003\tTrimestrale tech europeo da 1,4 miliardi: AI e deep tech dominano\tTech.eu riporta 1,4 miliardi di euro in deal durante il trimestre. L'analisi evidenzia che AI e deep tech continuano a trainare investimenti mentre fintech mostra segnali di rallentamento. I dati confermano la rotazione del capitale verso settori con barriere tecnologiche più alte e potenziale TAM superiore.\thttps://tech.eu/2026/05/11/european-tech-weekly-recap-eur14b-in-deals-and-aprils-highlights/\t2026-05-11\n7560001\tCosa rivelano 2.800 round di finanziamento su come le startup spendono il denaro\tSifted analizza 2.800 round di finanziamento per identificare i pattern di spesa delle startup. Lo studio fornisce dati concreti su come le giovani aziende allocano i capitali ricevuti, offrendo benchmark affidabili per founder e investor su efficienza di burn rate e allocation strategy.\thttps://sifted.eu/articles/funding-round-spending-startups-series-early-late/\t2026-05-11\n7530004\tEsclusiva: startup di quantum computing Algorithmiq raccoglie 18 milioni di euro, si trasferisce in Italia\tAlgorithmiq conclude finanziamento di Serie B da 18 milioni di euro e rilocalizza il suo hub europeo in Italia, segnalando shift negli investimenti quantum computing verso l'ecosistema italiano.\thttps://sifted.eu/articles/algorithmiq-fundraise-relocation-italy/\t2026-05-11\n7530002\tCome 2.800 round di finanziamento rivelano la spesa delle startup\tStudio su larga scala che analizza i pattern di allocazione del capitale tra startups, evidenziando dove i founder reinvestono il denaro e quali categorie di spesa dominano l'ecosistema.\thttps://sifted.eu/articles/funding-round-spending-startups-series-early-late/\t2026-05-11\n7560004\tNanoStruct raccoglie 2,6 milioni di euro per test patogeni stesso giorno nel food\tNanoStruct ha chiuso un seed round di 2,6 milioni di euro per sviluppare tecnologie di rilevamento rapido di patogeni nell'industria alimentare. Il finanziamento da HTGF e Auxxo testimonia l'interesse crescente in soluzioni di food safety supportate da venture capital, con applicazioni commerciali concrete e timeline breve a revenue.\thttps://tech.eu/2026/05/11/nanostruct-raises-eur26m-seed-to-bring-same-day-pathogen-detection-to-the-food-industry/\t2026-05-11\n7530008\tDazi commerciali: colloqui Usa-Cina in Corea del Sud\tNegoziati su tariffe e accordi commerciali Usa-Cina con ripercussioni su catene di fornitura globali, logistica e startup di deeptech che dipendono da import/export.\thttps://www.agi.it/economia/news/2026-05-11/dazi-colloqui-usa-cina-36991576/\t2026-05-11\n7500001\tAnthropic e OpenAI Consultano Leader Religiosi su Etica dell'IA\tLe due principali aziende di IA generativa si incontrano con leader religiosi e morali per acquisire prospettive etiche sulla sviluppo dell'IA. L'iniziativa riflette il riconoscimento che le decisioni di alignment non possono essere puramente tecniche ma richiedono input da diverse tradizioni di pensiero etico e filosofico.\thttps://the-decoder.com/anthropic-and-openai-sit-down-with-religious-leaders-to-seek-ethical-advice/\t2026-05-10\n7530011\tBenzina a 1,930 euro al litro, gasolio scende a 2,009 euro\tVolatilità dei prezzi dei carburanti in Italia: dato attuale di pricing che influenza modelli economici di startup di logistica, delivery e mobilità.\thttps://www.ansa.it/sito/notizie/economia/2026/05/10/mimit-benzina-a-1930-euro-al-litro-gasolio-scende-a-2009-euro_a791cf91-a539-4f2e-8093-4e3f6e52bd36.html\t2026-05-10\n7560012\tStartup italiane spopolano a Malta: da wallet-crypto a macchine della verità\tANSA segnala migrazione di startup italiane verso Malta, supportate da un ecosistema di fintech e crypto wallet fino a soluzioni di verifica biometrica. La dinamica riflette arbitraggio normativo e fiscale delle startup italiane verso hub europei più attrattivi, con impatto sulla concentrazione di talent e capital in specifiche jurisdizioni.\thttps://www.ansa.it/sito/notizie/economia/2026/05/10/da-wallet-crypto-a-macchina-della-verita.-startup-italiane-spopolano-a-malta_a69772d0-4610-4324-aa3e-1035ddd87321.html\t2026-05-10\n7530007\tMonopattini elettrici: obbligo di targa entro 16 maggio, rischi di ritardi\tNuove norme sulla targa dei monopattini elettrici creano vincoli normativi per l'industria della mobilità leggera: implicazioni operative e business per micromobilità startup.\thttps://www.ansa.it/sito/notizie/economia/2026/05/10/monopattini-elettrici-obbligo-di-targa-entro-16-maggio-ma-ce-rischio-ritardi_92208df2-13c8-4c29-bc7b-9a2b46d1f2da.html\t2026-05-10\n7500003\tRicercatori Scoprono Metodo per Impedire ai Modelli IA di Fingere Sottoperformance in Valutazioni\tUn breakthrough di ricerca identifica tecniche che prevengono l'inganno strategico nei test di sicurezza dell'IA, dove modelli fingono artificialmente limitazioni durante valutazioni. La scoperta affronta un problema critico di misurazione: distinguere debolezze reali da auto-handicapping intenzionale.\thttps://the-decoder.com/researchers-may-have-found-a-way-to-stop-ai-models-from-intentionally-playing-dumb-during-safety-evaluations/\t2026-05-10\n7500009\tDipendenza da Intelligenza Artificiale: primo Caso di Terapia in Italia\tL'Italia registra il primo caso documentato di trattamento terapeutico per dipendenza comportamentale da IA, segnalando un trend globale di conseguenze psicologiche da overuse di sistemi intelligenti. Il fenomeno anticipa una crisi di salute mentale connessa all'automazione dei processi decisionali umani.\thttps://www.repubblica.it/tecnologia/2026/05/10/news/in_terapia_per_dipendenza_da_intelligenza_artificiale_e_la_prima_volta_in_italia-425335793/?rss\t2026-05-10\n7530005\tStartup italiane in espansione a Malta: da wallet crypto a truth machine\tCrescita significativa di startup italiane che operano da Malta, coprendo range di settori da fintech a tecnologie innovative, sfruttando framework regulatorio favorevole.\thttps://www.ansa.it/sito/notizie/economia/2026/05/10/da-wallet-crypto-a-macchina-della-verita.-startup-italiane-spopolano-a-malta_a69772d0-4610-4324-aa3e-1035ddd87321.html\t2026-05-10\n7500008\tLa Cina Abbandona la Corsa ai Modelli Generici: Pivot Verso Piattaforme Verticali\tLe strategie cinesi di IA si orientano meno verso modelli foundation generici e sempre più verso piattaforme specializzate per applicazioni economiche reali. Il cambio di paradigma riflette pragmatismo commerciale: impatto misurabile vale più di benchmark generali.\thttps://www.ilsole24ore.com/art/ai-cina-cambia-passo-non-piu-modelli-ma-piattaforme-l-economia-reale-AIuRJgpC\t2026-05-10\n7500002\tGPT-5.5 Costa il 49-92% Più del Predecessore in Base alla Lunghezza Input\tOpenAI ha implementato una struttura di pricing per GPT-5.5 che varia significativamente con la lunghezza dell'input, determinando un aumento di costo sostanziale rispetto a GPT-4. La strategia riflette il trade-off tra scalabilità computazionale e modelli di revenue sostenibili.\thttps://the-decoder.com/gpt-5-5-costs-49-to-92-percent-more-than-its-predecessor-depending-on-the-input-length/\t2026-05-10\n7530009\tVacanze nel caos: come orientarsi tra cancellazioni e rimborsi\tDisruption nel settore travel e hospitality causata da conflitti geopolitici, con focus su diritti dei consumatori, rimborsi e opportunità per startup travel-tech.\thttps://www.ansa.it/sito/notizie/economia/2026/05/10/caos-vacanze-come-orientarsi-tra-cancellazioni-supplementi-e-rimborsi_0c789b6a-486a-4bbe-8a8e-6b8e4fd5431b.html\t2026-05-10\n7530012\tStartup e mobilità: scenari di innovazione tra regolazione e mercato\tConvergenza di trend normativi e market forces nel settore mobilità urbana, con focus su startup che operano tra compliance e scaling in ambiente regolatorio fluido.\thttps://www.ansa.it/sito/notizie/economia/2026/05/10/monopattini-elettrici-obbligo-di-targa-entro-16-maggio-ma-ce-rischio-ritardi_92208df2-13c8-4c29-bc7b-9a2b46d1f2da.html\t2026-05-10\n7560013\tFintech startup Parker presenta istanza di bancarotta\tParker, fintech startup, ha dovuto presentare istanza di bancarotta dopo fallimento della strategia commerciale. Il caso testimonia contrazione del settore fintech post 2023 e incapacità di numerose startup di monetizzare modelli di business in contesti di tassi elevati e consolidamento bancario accelerato.\thttps://techcrunch.com/2026/05/09/fintech-startup-parker-files-for-bankruptcy/\t2026-05-09\n7500004\tMedaglia Fields Riconosce ChatGPT 5.5 Pro a Livello di Ricerca Dottorali in Matematica\tUn matematico di eccellenza assoluta documenta che ChatGPT 5.5 Pro ha completato ricerca matematica di livello PhD in meno di due ore senza intervento umano. Il caso evidenzia il raggiungimento di un threshold qualitativo significativo in problem-solving complesso e creativo.\thttps://the-decoder.com/fields-medalist-says-chatgpt-5-5-pro-delivered-phd-level-math-research-in-under-two-hours-with-zero-human-help/\t2026-05-09\n7500007\tEmotion AI Pseudoscientifica Invade i Luoghi di Lavoro: Analisi Atlantic\tUn'inchiesta del magazine Atlantic documenta come sistemi di emotion recognition non convalidati scientificamente vengono implementati nei workplace per monitorare dipendenti. Il fenomeno rappresenta un'applicazione problematica di IA che sacrifica privacy e autonomia su fondamenta scientifiche fragili.\thttps://the-decoder.com/pseudoscientific-emotion-ai-is-invading-the-workplace-an-atlantic-report-shows/\t2026-05-09\n7530010\tQuanto costano agli italiani i rincari di benzina, luce e gas\tAnalisi dell'impatto economico sui consumatori italiani da inflazione energetica: base dati per valutare market size di startup incentrate su efficienza energetica e risparmio.\thttps://www.agi.it/economia/news/2026-05-09/rincari-benzina-luce-gas-costa-36971271/\t2026-05-09\n7500005\tBroadcom Condiziona Chip Personalizzato OpenAI all'Acquisto Microsoft del 40%\tBroadcom non procederà nella produzione del chip personalizzato per OpenAI a meno che Microsoft non acquisti almeno il 40% della produzione. Il negoziato rivela tensioni critiche nella catena di approvvigionamento di semiconduttori specializzati per IA, con Microsoft come player decisivo.\thttps://the-decoder.com/broadcom-reportedly-wont-build-openais-custom-chip-unless-microsoft-buys-40-percent-of-them/\t2026-05-09\n7500006\tLa Funzione Preferred Sources di Google Amplifica Contenuti di Bassa Qualità in Search\tGoogle ha introdotto una feature che crea scorciatoie per contenuti prioritari in ricerca, ma l'implementazione favorisce query di bassa qualità e spam. L'analisi mostra come l'ottimizzazione dei risultati senza controlli di qualità degrada l'utilità della ricerca a dispetto dell'IA.\thttps://the-decoder.com/googles-preferred-sources-feature-is-a-free-pass-for-more-garbage-in-search/\t2026-05-09\n",
+  "stderr": "",
+  "execution_time_ms": 271
+}

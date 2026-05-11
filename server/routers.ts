@@ -3962,6 +3962,23 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
 
   // ── ProofPress Verify — Batch Re-Certificazione ──────────────────────────────
   ppv: router({
+    // Statistiche pubbliche PPV: notizie certificate oggi e totale
+    getStats: publicProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) return { certifiedToday: 0, certifiedTotal: 0, totalNews: 0 };
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const [totalRow] = await db.select({ cnt: count() }).from(newsItemsTable);
+      const [certifiedTotalRow] = await db.select({ cnt: count() }).from(newsItemsTable).where(isNotNull(newsItemsTable.ppvHash));
+      const [certifiedTodayRow] = await db.select({ cnt: count() }).from(newsItemsTable)
+        .where(and(isNotNull(newsItemsTable.ppvHash), gte(newsItemsTable.ppvCertifiedAt, today)));
+      return {
+        certifiedToday: Number(certifiedTodayRow?.cnt ?? 0),
+        certifiedTotal: Number(certifiedTotalRow?.cnt ?? 0),
+        totalNews: Number(totalRow?.cnt ?? 0),
+      };
+    }),
+
     // Conta gli articoli non ancora certificati da PPV
     getUncertifiedCount: adminProcedure.query(async () => {
       const db = await getDbInstance();
