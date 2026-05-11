@@ -220,7 +220,7 @@ export default function PerGiornalisti() {
         "Setup editoriale (fonti + redazione agentica)",
         "Pubblicazione automatica sul tuo dominio",
         "Dashboard analytics base",
-        "Certificazione ProofPress Verify™ su ogni articolo",
+        "Compatibile con ProofPress Verify™ (add-on opzionale)",
         "Supporto onboarding dedicato",
         "Fino a 300 articoli/mese",
       ],
@@ -552,7 +552,7 @@ export default function PerGiornalisti() {
                   Scegli il tuo piano Creator
                 </h2>
                 <p className="text-lg text-[#0a0a0a]/55 max-w-2xl mx-auto leading-relaxed">
-                  Tutti i piani includono setup editoriale, pubblicazione automatica, certificazione ProofPress Verify™ e dashboard analytics. Nessun costo nascosto.
+                  Tutti i piani includono setup editoriale, pubblicazione automatica e dashboard analytics. ProofPress Verify™ è disponibile come add-on opzionale su qualsiasi piano. Nessun costo nascosto.
                 </p>
               </div>
               <div className="grid md:grid-cols-3 gap-6 items-start">
@@ -597,7 +597,7 @@ export default function PerGiornalisti() {
                       { feature: "Articoli/mese", s: "300", p: "1.200", g: "3.000" },
                       { feature: "Setup editoriale", s: "✓", p: "✓", g: "✓" },
                       { feature: "Pubblicazione automatica", s: "✓", p: "✓", g: "✓" },
-                      { feature: "Certificazione Verify™", s: "✓", p: "✓", g: "✓" },
+                      { feature: "Verify™ (add-on opzionale)", s: "+ add-on", p: "+ add-on", g: "+ add-on" },
                       { feature: "Dashboard analytics", s: "Base", p: "Avanzata", g: "Avanzata" },
                       { feature: "SEO Engine avanzato", s: "—", p: "✓", g: "✓" },
                       { feature: "A/B testing headline", s: "—", p: "✓", g: "✓" },
@@ -832,7 +832,7 @@ export default function PerGiornalisti() {
                   <span style={{ color: "#dc2626" }}>è pronta in 7 giorni.</span>
                 </h2>
                 <p className="text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                  Scegli il piano, configura i tuoi verticali, e inizia a pubblicare contenuti certificati ProofPress Verify™ da domani. Nessun vincolo, disdici quando vuoi.
+                  Scegli il piano, configura i tuoi verticali, e inizia a pubblicare. Aggiungi ProofPress Verify™ quando sei pronto a certificare ogni notizia. Nessun vincolo, disdici quando vuoi.
                 </p>
               </div>
               <div className="flex flex-wrap gap-4 justify-center">
@@ -858,7 +858,7 @@ export default function PerGiornalisti() {
                   "Setup in 5–7 giorni",
                   "Nessun vincolo contrattuale",
                   "Disdici quando vuoi",
-                  "Certificazione inclusa",
+                  "Verify™ disponibile come add-on",
                 ].map((t) => (
                   <span key={t} className="text-[13px] font-semibold" style={{ color: "rgba(255,255,255,0.35)" }}>
                     ✓ {t}

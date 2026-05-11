@@ -1,0 +1,18 @@
+{
+  "query": "SELECT id, subject, recipientCount, status, sentAt, send_date FROM newsletter_sends WHERE send_date = '2026-05-11' ORDER BY sentAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, subject, recipientCount, status, sentAt, send_date FROM newsletter_sends WHERE send_date = '2026-05-11' ORDER BY sentAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "1650001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Lunedì 11 maggio 2026",
+      "recipientCount": "0",
+      "status": "sending",
+      "sentAt": "2026-05-11 08:17:04",
+      "send_date": "2026-05-11"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsubject\trecipientCount\tstatus\tsentAt\tsend_date\n1650001\tBUONGIORNO — Le news di oggi da ProofPress, Lunedì 11 maggio 2026\t0\tsending\t2026-05-11 08:17:04\t2026-05-11\n",
+  "stderr": "",
+  "execution_time_ms": 268
+}

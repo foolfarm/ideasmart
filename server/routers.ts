@@ -2912,7 +2912,7 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
               <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 24px;">Ciao <strong>${input.name}</strong>, abbiamo ricevuto la tua richiesta di demo. Ti contatteremo entro <strong>24 ore</strong> per mostrarti come lanciare il tuo giornale con Proof Press.</p>
               <a href="https://proofpress.ai/offertacommerciale" style="display: inline-block; background: #dc2626; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">Scopri di pi\u00f9 \u2192</a>
             </div>
-            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press \u00B7 info@proofpress.ai \u00B7 <a href=\"https://proofpress.ai\" style=\"color: #dc2626;\">ideasmart.biz</a></p>
+            <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">Proof Press \u00B7 info@proofpress.ai \u00B7 <a href=\"https://proofpress.ai\" style=\"color: #dc2626;\">proofpress.ai</a></p>
           </div>
         `;
         await sendEmail({ to: input.email, subject: `La tua demo Proof Press \u00E8 confermata \u2014 ti ricontatteremo presto`, html: htmlConfirm });

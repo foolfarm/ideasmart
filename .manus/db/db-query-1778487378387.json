@@ -1,0 +1,50 @@
+{
+  "query": "SELECT id, subject, recipientCount, status, sentAt, send_date FROM newsletter_sends ORDER BY sentAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, subject, recipientCount, status, sentAt, send_date FROM newsletter_sends ORDER BY sentAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "1620001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Domenica 10 maggio 2026",
+      "recipientCount": "2198",
+      "status": "sent",
+      "sentAt": "2026-05-10 06:56:01",
+      "send_date": "2026-05-10"
+    },
+    {
+      "id": "1590001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Sabato 9 maggio 2026",
+      "recipientCount": "2211",
+      "status": "sent",
+      "sentAt": "2026-05-09 06:54:52",
+      "send_date": "2026-05-09"
+    },
+    {
+      "id": "1560001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Venerdì 8 maggio 2026",
+      "recipientCount": "2221",
+      "status": "sent",
+      "sentAt": "2026-05-08 07:37:50",
+      "send_date": "2026-05-08"
+    },
+    {
+      "id": "1530001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Giovedì 7 maggio 2026",
+      "recipientCount": "2242",
+      "status": "sent",
+      "sentAt": "2026-05-07 06:48:49",
+      "send_date": "2026-05-07"
+    },
+    {
+      "id": "1500001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Mercoledì 6 maggio 2026",
+      "recipientCount": "2253",
+      "status": "sent",
+      "sentAt": "2026-05-06 06:40:39",
+      "send_date": "2026-05-06"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsubject\trecipientCount\tstatus\tsentAt\tsend_date\n1620001\tBUONGIORNO — Le news di oggi da ProofPress, Domenica 10 maggio 2026\t2198\tsent\t2026-05-10 06:56:01\t2026-05-10\n1590001\tBUONGIORNO — Le news di oggi da ProofPress, Sabato 9 maggio 2026\t2211\tsent\t2026-05-09 06:54:52\t2026-05-09\n1560001\tBUONGIORNO — Le news di oggi da ProofPress, Venerdì 8 maggio 2026\t2221\tsent\t2026-05-08 07:37:50\t2026-05-08\n1530001\tBUONGIORNO — Le news di oggi da ProofPress, Giovedì 7 maggio 2026\t2242\tsent\t2026-05-07 06:48:49\t2026-05-07\n1500001\tBUONGIORNO — Le news di oggi da ProofPress, Mercoledì 6 maggio 2026\t2253\tsent\t2026-05-06 06:40:39\t2026-05-06\n",
+  "stderr": "",
+  "execution_time_ms": 397
+}

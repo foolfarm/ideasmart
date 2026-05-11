@@ -22,7 +22,7 @@ import { notifyOwner } from "./_core/notification";
 import { findNewsImage } from "./stockImages";
 
 const FETCH_TIMEOUT_MS = 8_000;
-const USER_AGENT = "Mozilla/5.0 (compatible; Proof Press-AuditBot/1.0; +https://www.ideasmart.biz)";
+const USER_AGENT = "Mozilla/5.0 (compatible; Proof Press-AuditBot/1.0; +https://proofpress.ai)";
 
 // ─── Verifica raggiungibilità URL ─────────────────────────────────────────────
 
