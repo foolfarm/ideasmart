@@ -1,17 +1,13 @@
 /**
- * VerifyBadge — Badge ProofPress Verify con hash SHA-256 univoco per ogni articolo
+ * VerifyBadge — Badge ProofPress Verify con hash SHA-256 nascosto
  *
- * Click sinistro: copia l'hash completo negli appunti (con feedback visivo "Copiato!")
- * Click sull'icona: apre https://proofpressverify.com/api/public/certificate/<hash> (sito ufficiale PPV)
+ * Mostra: "Verifica Articolo" + tasto copy (icona) + feedback "Copiato!"
+ * L'hash completo NON viene mostrato nel testo — è nascosto nel tooltip e copiato al click.
  *
- * L'hash certifica il contenuto dell'articolo al momento della pubblicazione,
- * garantendo tracciabilità e verificabilità nel tempo.
+ * Click icona shield: apre https://proofpressverify.com/api/public/certificate/<hash>
+ * Click tasto copy: copia l'hash negli appunti con feedback visivo
  *
- * trustGrade: se valorizzato, mostra il badge A/B/C/D/F accanto all'hash.
- * Il badge grade è cliccabile e porta alla pagina /trust-score.
- *
- * ppvHash/ppvIpfsUrl: se valorizzati, usa i dati dell'API esterna ProofPress Verify™
- * e il link porta direttamente al report IPFS pubblico.
+ * trustGrade: se valorizzato, mostra il badge A/B/C/D/F accanto al label.
  */
 import { useState } from "react";
 import { ShieldCheck, Copy, Check } from "lucide-react";
@@ -71,8 +67,15 @@ export default function VerifyBadge({
 
   if (!effectiveHash) return null;
 
-  // Mostra l'hash completo a 64 caratteri (standard PPV SHA-256)
-  const displayHash = effectiveHash.toUpperCase();
+  const gradeColor = effectiveGrade ? (GRADE_COLOR[effectiveGrade] ?? "#636e72") : null;
+  const gradeLabel = effectiveGrade ? (GRADE_LABEL[effectiveGrade] ?? "") : "";
+  const scoreText =
+    effectiveScore !== null && effectiveScore !== undefined
+      ? Math.round(Number(effectiveScore))
+      : "—";
+  const gradeTooltip = `Trust Score: ${scoreText}/100 — Grade ${effectiveGrade} (${gradeLabel})${
+    isPpvCertified ? " · Certificato ProofPress Verify™" : ""
+  } · Clicca per scoprire come funziona il sistema di valutazione`;
 
   function handleGradeClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -84,11 +87,8 @@ export default function VerifyBadge({
     e.preventDefault();
     e.stopPropagation();
     if (ppvIpfsUrl) {
-      // Articolo certificato PPV™: apre il report IPFS direttamente
       window.open(ppvIpfsUrl, "_blank", "noopener,noreferrer");
     } else {
-      // Fallback: apre proofpressverify.com con l'hash per verifica esterna
-      // La pagina interna /proofpress-verify è dismessa
       window.open(
         `https://proofpressverify.com/api/public/certificate/${encodeURIComponent(effectiveHash!)}`,
         "_blank",
@@ -96,16 +96,6 @@ export default function VerifyBadge({
       );
     }
   }
-
-  const gradeColor = effectiveGrade ? (GRADE_COLOR[effectiveGrade] ?? "#636e72") : null;
-  const gradeLabel = effectiveGrade ? (GRADE_LABEL[effectiveGrade] ?? "") : "";
-  const scoreText =
-    effectiveScore !== null && effectiveScore !== undefined
-      ? Math.round(Number(effectiveScore))
-      : "—";
-  const gradeTooltip = `Trust Score: ${scoreText}/100 — Grade ${effectiveGrade} (${gradeLabel})${
-    isPpvCertified ? " · Certificato ProofPress Verify™" : ""
-  } · Clicca per scoprire come funziona il sistema di valutazione`;
 
   async function handleCopy(e: React.MouseEvent) {
     e.preventDefault();
@@ -152,53 +142,56 @@ export default function VerifyBadge({
             {effectiveGrade}
           </span>
         )}
-        {/* Copia hash — click principale */}
-        <button
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1 cursor-pointer hover:opacity-75 transition-opacity"
-          title={
-            copied
-              ? "Hash copiato!"
-              : `Clicca per copiare l'hash${isPpvCertified ? " (Certificato PPV™)" : ""} — ` +
-                effectiveHash
-          }
-          style={{ background: "none", border: "none", padding: 0 }}
-        >
-          {copied ? (
-            <Check size={10} strokeWidth={2.5} style={{ color: "#2e7d32", flexShrink: 0 }} />
-          ) : (
-            <ShieldCheck size={10} strokeWidth={2.5} style={{ color: "#0066cc", flexShrink: 0 }} />
-          )}
-          <span
-            style={{
-              fontFamily: "JetBrains Mono, 'Courier New', monospace",
-              fontSize: "9px",
-              fontWeight: 600,
-              letterSpacing: "0.05em",
-              color: copied ? "#2e7d32" : "#0066cc",
-              lineHeight: 1,
-              transition: "color 0.2s ease",
-            }}
-          >
-            {copied ? "COPIATO!" : `PROOFPRESS VERIFY${isPpvCertified ? "™" : ""} ${displayHash}`}
-          </span>
-        </button>
-        {/* Link verifica — icona separata */}
+
+        {/* Icona shield — apre il certificato */}
         <span
           role="link"
           tabIndex={0}
           onClick={handleVerifyClick}
           onKeyDown={(e) => e.key === "Enter" && handleVerifyClick(e as unknown as React.MouseEvent)}
-          title={isPpvCertified ? "Apri Report IPFS su ProofPress Verify™" : "Verifica su ProofPress"}
-          className="cursor-pointer hover:opacity-60 transition-opacity"
-          style={{ display: "inline-flex" }}
+          title={`Verifica certificato ProofPress${isPpvCertified ? "™" : ""} · Hash: ${effectiveHash}`}
+          className="cursor-pointer hover:opacity-75 transition-opacity inline-flex items-center"
         >
-          <Copy size={8} strokeWidth={2} style={{ color: "#0066cc" }} />
+          <ShieldCheck size={10} strokeWidth={2.5} style={{ color: "#0066cc", flexShrink: 0 }} />
         </span>
+
+        {/* Label "Verifica Articolo" */}
+        <span
+          style={{
+            fontFamily: "JetBrains Mono, 'Courier New', monospace",
+            fontSize: "9px",
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            color: "#0066cc",
+            lineHeight: 1,
+          }}
+        >
+          {isPpvCertified ? "PROOFPRESS VERIFY™" : "VERIFICA ARTICOLO"}
+        </span>
+
+        {/* Tasto copy */}
+        <button
+          onClick={handleCopy}
+          title={copied ? "Hash copiato!" : `Copia codice di verifica · ${effectiveHash}`}
+          className="inline-flex items-center gap-0.5 cursor-pointer hover:opacity-75 transition-opacity"
+          style={{ background: "none", border: "none", padding: "0 2px" }}
+        >
+          {copied ? (
+            <>
+              <Check size={9} strokeWidth={2.5} style={{ color: "#2e7d32", flexShrink: 0 }} />
+              <span style={{ fontFamily: "JetBrains Mono, 'Courier New', monospace", fontSize: "8px", fontWeight: 600, color: "#2e7d32", letterSpacing: "0.04em" }}>
+                COPIATO!
+              </span>
+            </>
+          ) : (
+            <Copy size={9} strokeWidth={2} style={{ color: "#0066cc", flexShrink: 0 }} />
+          )}
+        </button>
       </span>
     );
   }
 
+  // size === "md"
   return (
     <span className="inline-flex items-center gap-2 select-none">
       {/* Trust grade badge md — cliccabile → /trust-score */}
@@ -221,50 +214,56 @@ export default function VerifyBadge({
           {effectiveGrade}
         </span>
       )}
-      {/* Copia hash */}
-      <button
-        onClick={handleCopy}
-        className="inline-flex items-center gap-1.5 px-2 py-1 rounded border cursor-pointer hover:opacity-80 transition-all"
+
+      {/* Blocco "Verifica Articolo" + copy */}
+      <div
+        className="inline-flex items-center gap-1.5 px-2 py-1 rounded border transition-all"
         style={{
-          borderColor: copied ? "#2e7d3220" : "#0066cc20",
+          borderColor: copied ? "#2e7d3230" : "#0066cc20",
           background: copied ? "#f0faf4" : "#f0f7ff",
-          border: "none",
-          padding: 0,
         }}
-        title={
-          copied
-            ? "Hash copiato!"
-            : `Clicca per copiare l'hash${isPpvCertified ? " (Certificato PPV™)" : ""} — ` +
-              effectiveHash
-        }
       >
-        <div
-          className="inline-flex items-center gap-1.5 px-2 py-1 rounded border transition-all"
+        {/* Icona shield — apre il certificato */}
+        <span
+          role="link"
+          tabIndex={0}
+          onClick={handleVerifyClick}
+          onKeyDown={(e) => e.key === "Enter" && handleVerifyClick(e as unknown as React.MouseEvent)}
+          title={`Verifica certificato ProofPress${isPpvCertified ? "™" : ""} · Hash: ${effectiveHash}`}
+          className="cursor-pointer hover:opacity-75 transition-opacity inline-flex items-center"
+        >
+          <ShieldCheck size={12} strokeWidth={2.5} style={{ color: copied ? "#2e7d32" : "#0066cc", flexShrink: 0 }} />
+        </span>
+
+        {/* Label */}
+        <span
           style={{
-            borderColor: copied ? "#2e7d3220" : "#0066cc20",
-            background: copied ? "#f0faf4" : "#f0f7ff",
+            fontFamily: "JetBrains Mono, 'Courier New', monospace",
+            fontSize: "10px",
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            color: copied ? "#2e7d32" : "#0066cc",
+            lineHeight: 1,
+            transition: "color 0.2s ease",
           }}
         >
+          {copied ? "COPIATO!" : isPpvCertified ? "PROOFPRESS VERIFY™" : "VERIFICA ARTICOLO"}
+        </span>
+
+        {/* Tasto copy */}
+        <button
+          onClick={handleCopy}
+          title={copied ? "Hash copiato!" : `Copia codice di verifica · ${effectiveHash}`}
+          className="inline-flex items-center cursor-pointer hover:opacity-75 transition-opacity"
+          style={{ background: "none", border: "none", padding: 0 }}
+        >
           {copied ? (
-            <Check size={12} strokeWidth={2.5} style={{ color: "#2e7d32", flexShrink: 0 }} />
+            <Check size={11} strokeWidth={2.5} style={{ color: "#2e7d32", flexShrink: 0 }} />
           ) : (
-            <ShieldCheck size={12} strokeWidth={2.5} style={{ color: "#0066cc", flexShrink: 0 }} />
+            <Copy size={11} strokeWidth={2} style={{ color: "#0066cc", flexShrink: 0 }} />
           )}
-          <span
-            style={{
-              fontFamily: "JetBrains Mono, 'Courier New', monospace",
-              fontSize: "10px",
-              fontWeight: 700,
-              letterSpacing: "0.06em",
-              color: copied ? "#2e7d32" : "#0066cc",
-              lineHeight: 1,
-              transition: "color 0.2s ease",
-            }}
-          >
-            {copied ? "COPIATO!" : `PROOFPRESS VERIFY${isPpvCertified ? "™" : ""} ${displayHash}`}
-          </span>
-        </div>
-      </button>
+        </button>
+      </div>
     </span>
   );
 }

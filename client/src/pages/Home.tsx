@@ -1019,6 +1019,25 @@ export default function Home() {
             </div>
           </div>
         )}
+        {/* ══ PROOFPRESS VERIFY WIDGET ══════════════════════════════════════════════════════════ */}
+        <div className="max-w-[1280px] mx-auto px-4 py-2 hidden sm:block">
+          <div className="flex items-center gap-2 mb-1.5">
+            <div className="h-[2px] w-4" style={{ background: "#0066cc" }} />
+            <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "#0066cc", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+              🔐 Verifica ProofPress
+            </span>
+            <div className="h-[2px] flex-1" style={{ background: "#0066cc", opacity: 0.15 }} />
+          </div>
+          <iframe
+            src="https://proofpressverify.com/widget/news-verify"
+            width="100%"
+            height="120"
+            frameBorder="0"
+            style={{ border: "none", borderRadius: "8px", display: "block" }}
+            title="Verifica con ProofPress"
+            loading="lazy"
+          />
+        </div>
         {/* ══ BARRA CANALI ORIZZONTALE ════════════════════════════════════════════════════════════ */}
         {/* <ChannelsBar /> — temporaneamente nascosta */}
         {/* ══ CORPO ═════════════════════════════════════════════════════════════════════════════════ */}

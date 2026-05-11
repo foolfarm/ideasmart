@@ -1,0 +1,6592 @@
+{
+  "query": "SELECT email FROM subscribers WHERE status = 'active' ORDER BY email;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT email FROM subscribers WHERE status = 'active' ORDER BY email;",
+  "rows": [
+    {
+      "email": "0605tpj@msn.com"
+    },
+    {
+      "email": "11234@234gmail.com"
+    },
+    {
+      "email": "126076_cb8218d3-49e3-44ef-987f-09fca16846d7@reply.linkedin.com"
+    },
+    {
+      "email": "1323990414@qq.com"
+    },
+    {
+      "email": "654@1234gmail.com"
+    },
+    {
+      "email": "690744981@qq.com"
+    },
+    {
+      "email": "a_polverino@yahoo.it"
+    },
+    {
+      "email": "a_rizzo73@hotmail.com"
+    },
+    {
+      "email": "a-massoudi@hotmail.fr"
+    },
+    {
+      "email": "a.amati@meta-group.com"
+    },
+    {
+      "email": "a.arienti@3dnextech.com"
+    },
+    {
+      "email": "a.buda@samsung.com"
+    },
+    {
+      "email": "a.canclini@costanzoeassociati.it"
+    },
+    {
+      "email": "a.castino@fratellimartini.it"
+    },
+    {
+      "email": "a.ciampalini@lazioinnova.it"
+    },
+    {
+      "email": "a.cortellazzo@si-ged.it"
+    },
+    {
+      "email": "a.ferhati@engineer.com"
+    },
+    {
+      "email": "a.loporchio@nexths.it"
+    },
+    {
+      "email": "a.pasqual@finnat.it"
+    },
+    {
+      "email": "a.polo@voxgentium.it"
+    },
+    {
+      "email": "a.ranchino@reply.it"
+    },
+    {
+      "email": "a.recchi@morrowsodali.com"
+    },
+    {
+      "email": "a.rinaldi@sgrconsulting.ch"
+    },
+    {
+      "email": "a.rocchi@iicapitaladvisors.com"
+    },
+    {
+      "email": "a.ruggeri@innovest.it"
+    },
+    {
+      "email": "a.spinelli@samsung.com"
+    },
+    {
+      "email": "a.squeo@network-contacts.it"
+    },
+    {
+      "email": "a.stuflesser@iassp.org"
+    },
+    {
+      "email": "a.tomeo@lazioinnova.it"
+    },
+    {
+      "email": "a.tonoli@yahoo.it"
+    },
+    {
+      "email": "a.turco@sicuritalia.it"
+    },
+    {
+      "email": "a.volpintesta@findomestic.com"
+    },
+    {
+      "email": "abyss88@hotmail.it"
+    },
+    {
+      "email": "ac@acinelli.com"
+    },
+    {
+      "email": "accountspayable@aiglobalmedialtd.com"
+    },
+    {
+      "email": "acecchetti@kpmg.it"
+    },
+    {
+      "email": "achille.parabiaghi@parabiaghi.it"
+    },
+    {
+      "email": "acm@stjadvisors.com"
+    },
+    {
+      "email": "acme@dyne.org"
+    },
+    {
+      "email": "acolucci@hotmail.it"
+    },
+    {
+      "email": "acolumella@yahoo.it"
+    },
+    {
+      "email": "acortiana@libero.it"
+    },
+    {
+      "email": "adamogentile@hotmail.it"
+    },
+    {
+      "email": "adcentered@yahoo.com"
+    },
+    {
+      "email": "adm@dufercoenergia.com"
+    },
+    {
+      "email": "adriano.brunelli@unicredit.eu"
+    },
+    {
+      "email": "adriano.valente@dromedian.com"
+    },
+    {
+      "email": "affarisocietari@iblbanca.it"
+    },
+    {
+      "email": "afrixa@jaguarlandrover.com"
+    },
+    {
+      "email": "agrenci@ilprisma.com"
+    },
+    {
+      "email": "ajm@nu-venture.com"
+    },
+    {
+      "email": "alamanna@hotmail.com"
+    },
+    {
+      "email": "alberta.cortese@fabersystem.it"
+    },
+    {
+      "email": "alberto.antonietti@accenture.com"
+    },
+    {
+      "email": "alberto.chalon@gianocapital.com"
+    },
+    {
+      "email": "alberto.fioravanti@digitalmagics.com"
+    },
+    {
+      "email": "alberto.manzonetto@fourpartners.it"
+    },
+    {
+      "email": "alberto.planta@bnpparibas.com"
+    },
+    {
+      "email": "alberto.pozzi@accenture.com"
+    },
+    {
+      "email": "alberto.rieppi@libero.it"
+    },
+    {
+      "email": "alberto.ripepi@vodafone.com"
+    },
+    {
+      "email": "alberto.sanna@ing.com"
+    },
+    {
+      "email": "alberto.scaglione@accenture.com"
+    },
+    {
+      "email": "alberto.sernia@accenture.com"
+    },
+    {
+      "email": "alberto@gazzotti-spa.com"
+    },
+    {
+      "email": "albertofezzi@phoenixcapital.it"
+    },
+    {
+      "email": "alda.derose@yahoo.com"
+    },
+    {
+      "email": "aldogranelli@hotmail.it"
+    },
+    {
+      "email": "aldopm@hotmail.it"
+    },
+    {
+      "email": "aldorossetto@msn.com"
+    },
+    {
+      "email": "aldosilvestroni@hotmail.it"
+    },
+    {
+      "email": "alefiumara@hotmail.com"
+    },
+    {
+      "email": "aleflo14@yahoo.it"
+    },
+    {
+      "email": "alefrigerio@libero.it"
+    },
+    {
+      "email": "alena.tsishchanka@sas.com"
+    },
+    {
+      "email": "alessandra_monti@libero.it"
+    },
+    {
+      "email": "alessandra_scotton@iama.it"
+    },
+    {
+      "email": "alessandra.campana@radicigroup.com"
+    },
+    {
+      "email": "alessandra.maritano@bellproduction.co.uk"
+    },
+    {
+      "email": "alessandra.tomasoni@datlasgroup.com"
+    },
+    {
+      "email": "alessandramantegazza@hotmail.com"
+    },
+    {
+      "email": "alessandro_colosi@hotmail.com"
+    },
+    {
+      "email": "alessandro_venturini@hotmail.com"
+    },
+    {
+      "email": "alessandro.asaro@polihub.it"
+    },
+    {
+      "email": "alessandro.azzolini@finetaste.it"
+    },
+    {
+      "email": "alessandro.brighenti@icloud.com"
+    },
+    {
+      "email": "alessandro.brusaferri@sella.it"
+    },
+    {
+      "email": "alessandro.capuzzello@mediaset.it"
+    },
+    {
+      "email": "alessandro.defranciscis@telecomitalia.it"
+    },
+    {
+      "email": "alessandro.diana@accenture.com"
+    },
+    {
+      "email": "alessandro.dulbecco@enigaseluce.com"
+    },
+    {
+      "email": "alessandro.frulio@athlos.biz"
+    },
+    {
+      "email": "alessandro.leonardi@posteitaliane.it"
+    },
+    {
+      "email": "alessandro.lucarelli@bnlmail.com"
+    },
+    {
+      "email": "alessandro.madaffari@scmsim.it"
+    },
+    {
+      "email": "alessandro.maggio@jakala.com"
+    },
+    {
+      "email": "alessandro.magna@ing.com"
+    },
+    {
+      "email": "alessandro.orefice@bancacambiano.it"
+    },
+    {
+      "email": "alessandro.pirinu@vodafone.com"
+    },
+    {
+      "email": "alessandro.puccio@accenture.com"
+    },
+    {
+      "email": "alessandro.salberini@timeware.it"
+    },
+    {
+      "email": "alessandro.sandionigicorcione@hotmail.it"
+    },
+    {
+      "email": "alessandro.seghi@alpitourworld.it"
+    },
+    {
+      "email": "alessandro.thanopoulos@studenti.unimi.it"
+    },
+    {
+      "email": "alessandro.turco@hotmail.it"
+    },
+    {
+      "email": "alessandro.venturini@tiscalinet.it"
+    },
+    {
+      "email": "alessandro.zanotti@accenture.com"
+    },
+    {
+      "email": "alessandro.zimotti@ceilingwall.it"
+    },
+    {
+      "email": "alessandro@digitalcoci.com"
+    },
+    {
+      "email": "alessandro@tastyribbon.com"
+    },
+    {
+      "email": "alessandrodimaria@live.com"
+    },
+    {
+      "email": "alessandrorenzi@hotmail.com"
+    },
+    {
+      "email": "alessandrosangiovanni@hotmail.com"
+    },
+    {
+      "email": "alessandrosbicego@hotmail.com"
+    },
+    {
+      "email": "alessia.carnevale@nexi.it"
+    },
+    {
+      "email": "alessia.recalcati@arethusa.it"
+    },
+    {
+      "email": "alessia.zecca@olivetti.com"
+    },
+    {
+      "email": "alessio_botta@mckinsey.com"
+    },
+    {
+      "email": "alessio_manuel.cavalli@sella.it"
+    },
+    {
+      "email": "alessio.barbazza@magazzinibrianza.it"
+    },
+    {
+      "email": "alessio.damonti@sella.it"
+    },
+    {
+      "email": "alessio.giavara@staff.aruba.it"
+    },
+    {
+      "email": "alessio.oriolo@accenture.com"
+    },
+    {
+      "email": "alessio.tola@smeraldaconsulting.it"
+    },
+    {
+      "email": "alessio@alchimiainvestments.com"
+    },
+    {
+      "email": "alessioabbate@virgilio.it"
+    },
+    {
+      "email": "alex.b70@libero.it"
+    },
+    {
+      "email": "alex.speroni@seling.it"
+    },
+    {
+      "email": "alex@alongo.it"
+    },
+    {
+      "email": "alexander@prestop.nl"
+    },
+    {
+      "email": "alexis.dedietrich@aurum-srl.it"
+    },
+    {
+      "email": "alexnikolof@hotmail.com"
+    },
+    {
+      "email": "alfogentile@libero.it"
+    },
+    {
+      "email": "alfonso.gambardella@unibocconi.it"
+    },
+    {
+      "email": "alfonsolotito@hotmail.com"
+    },
+    {
+      "email": "alfredo.leonelli@bancaifis.it"
+    },
+    {
+      "email": "alfredo.richelmi@accenture.com"
+    },
+    {
+      "email": "am555@rice.edu"
+    },
+    {
+      "email": "amarangelo@fanatics.com"
+    },
+    {
+      "email": "ambrogio.terrizzano@accenture.com"
+    },
+    {
+      "email": "amelia.spagnolo@unicredit.eu"
+    },
+    {
+      "email": "amgomes93@msn.com"
+    },
+    {
+      "email": "amospiran@didit.biz"
+    },
+    {
+      "email": "anasta89@posteitaliane.it"
+    },
+    {
+      "email": "ancotelli@bresciaonline.it"
+    },
+    {
+      "email": "andrea_marinoni@hotmail.com"
+    },
+    {
+      "email": "andrea_persegati@yahoo.it"
+    },
+    {
+      "email": "andrea_rota@hotmail.com"
+    },
+    {
+      "email": "andrea_taglia@hotmail.it"
+    },
+    {
+      "email": "andrea.baldanzi@bancaprofilo.it"
+    },
+    {
+      "email": "andrea.barchiesi@reputationmanager.it"
+    },
+    {
+      "email": "andrea.berardi@ent4bank.it"
+    },
+    {
+      "email": "andrea.bobbiese@este.it"
+    },
+    {
+      "email": "andrea.bombardi@rina.org"
+    },
+    {
+      "email": "andrea.calisti@mastercard.com"
+    },
+    {
+      "email": "andrea.casarotti@deagostini.com"
+    },
+    {
+      "email": "andrea.ciampalini@lazioinnova.it"
+    },
+    {
+      "email": "andrea.cocchi@nidogroup.it"
+    },
+    {
+      "email": "andrea.compaire@hotmail.it"
+    },
+    {
+      "email": "andrea.costa@improova.it"
+    },
+    {
+      "email": "andrea.crivellaro@dsgroup.it"
+    },
+    {
+      "email": "andrea.farina@itway.com"
+    },
+    {
+      "email": "andrea.formica@intesasanpaolo.com"
+    },
+    {
+      "email": "andrea.fosfuri@unibocconi.it"
+    },
+    {
+      "email": "andrea.giorgi@giorgiengineering.com"
+    },
+    {
+      "email": "andrea.goldoni@adcgroup.com"
+    },
+    {
+      "email": "andrea.marchi.1@allianzbankprivate.it"
+    },
+    {
+      "email": "andrea.mordenti@laifgroup.com"
+    },
+    {
+      "email": "andrea.niutta@telecomitalia.it"
+    },
+    {
+      "email": "andrea.paone@bnpparibas.com"
+    },
+    {
+      "email": "andrea.parma@bnlmail.com"
+    },
+    {
+      "email": "andrea.parma@bnpparibas.com"
+    },
+    {
+      "email": "andrea.parma@hotmail.com"
+    },
+    {
+      "email": "andrea.pinto@bocconialumni.it"
+    },
+    {
+      "email": "andrea.pozzi@sella.it"
+    },
+    {
+      "email": "andrea.rangone@digital360.it"
+    },
+    {
+      "email": "andrea.riva@credit-agricole.it"
+    },
+    {
+      "email": "andrea.romiti@yahoo.it"
+    },
+    {
+      "email": "andrea.rosa@trade.gov"
+    },
+    {
+      "email": "andrea.rossotti@redfish.capital"
+    },
+    {
+      "email": "andrea.santagata@mondadori.it"
+    },
+    {
+      "email": "andrea.scognamiglio@enel.com"
+    },
+    {
+      "email": "andrea.taverna@fiditalia.it"
+    },
+    {
+      "email": "andrea.tomasella@bmw.it"
+    },
+    {
+      "email": "andrea.tosonotti@ifminfomaster.com"
+    },
+    {
+      "email": "andrea.zilio@yahoo.it"
+    },
+    {
+      "email": "andrea@aginnovation.co.uk"
+    },
+    {
+      "email": "andreadusi@icloud.com"
+    },
+    {
+      "email": "andreagsm77@yahoo.it"
+    },
+    {
+      "email": "andreaguzzon@outlook.com"
+    },
+    {
+      "email": "andreamarianicola.costa@telecomitalia.it"
+    },
+    {
+      "email": "andreamassimo.fino@telecomitalia.it"
+    },
+    {
+      "email": "andrej.carli@gmail.com"
+    },
+    {
+      "email": "andrewlogi@hotmail.com"
+    },
+    {
+      "email": "andrezap.guedes@hotmail.com"
+    },
+    {
+      "email": "andytiz1975@yahoo.it"
+    },
+    {
+      "email": "anerdid@hotmail.com"
+    },
+    {
+      "email": "ang.viti@live.com"
+    },
+    {
+      "email": "angela.gemma@me.com"
+    },
+    {
+      "email": "angelaceletti@hotmail.it"
+    },
+    {
+      "email": "angelo_toma@libero.it"
+    },
+    {
+      "email": "angelo.cortese@cdp.it"
+    },
+    {
+      "email": "angelo.cortese@libero.it"
+    },
+    {
+      "email": "angelo.leone@studioleone.milano.it"
+    },
+    {
+      "email": "angelo.segreto@enel.com"
+    },
+    {
+      "email": "angelo.tafuro@sella.it"
+    },
+    {
+      "email": "angelocasero@tiscali.it"
+    },
+    {
+      "email": "angilerin@extrabanca.eu"
+    },
+    {
+      "email": "anl@stjadvisors.com"
+    },
+    {
+      "email": "ann.vanmele@imec.be"
+    },
+    {
+      "email": "anna_rielli@hotmail.com"
+    },
+    {
+      "email": "anna.lambiase@cdpventurecapital.it"
+    },
+    {
+      "email": "anna.moro@sella.it"
+    },
+    {
+      "email": "anna.rocca@iblbanca.it"
+    },
+    {
+      "email": "anna.rolando@enigaseluce.com"
+    },
+    {
+      "email": "annalisa.bodecchi@bper.it"
+    },
+    {
+      "email": "annalisa.buffo@nexi.it"
+    },
+    {
+      "email": "annalisa.buffo@nexigroup.com"
+    },
+    {
+      "email": "annamaria.colucci@occambee.com"
+    },
+    {
+      "email": "annamaria.tartaglia@gmail.com"
+    },
+    {
+      "email": "annamaria@sforzabandola.com"
+    },
+    {
+      "email": "annamariaaltamura@yahoo.it"
+    },
+    {
+      "email": "antoine.karam@itway.com"
+    },
+    {
+      "email": "antonella.buccolieri@outlook.com"
+    },
+    {
+      "email": "antonella.grassigli@doorwayplatform.com"
+    },
+    {
+      "email": "antonella.sugliano@demont.it"
+    },
+    {
+      "email": "antonello.sanna@scmsim.it"
+    },
+    {
+      "email": "antonia_nicoletti@libero.it"
+    },
+    {
+      "email": "antonino.caffo@hotmail.it"
+    },
+    {
+      "email": "antonio.bassi@startupmarathon.it"
+    },
+    {
+      "email": "antonio.buccino1974@libero.it"
+    },
+    {
+      "email": "antonio.coppolecchia@accenture.com"
+    },
+    {
+      "email": "antonio.cortina@libero.it"
+    },
+    {
+      "email": "antonio.crinieri@befor.it"
+    },
+    {
+      "email": "antonio.dantoni@studbocconi.it"
+    },
+    {
+      "email": "antonio.gallo@cordusio.it"
+    },
+    {
+      "email": "antonio.gatti@microsoft.com"
+    },
+    {
+      "email": "antonio.gralluzzo@gmail.com"
+    },
+    {
+      "email": "antonio.lazzari@finantix.com"
+    },
+    {
+      "email": "antonio.maulucci@hotmail.it"
+    },
+    {
+      "email": "antonio.messenipetruzzelli@poliba.it"
+    },
+    {
+      "email": "antonio.morabito@telecomitalia.it"
+    },
+    {
+      "email": "antonio@conatibarbaro.com"
+    },
+    {
+      "email": "antonio@leonefamily.it"
+    },
+    {
+      "email": "antonioandrea.bisanti@unicredit.eu"
+    },
+    {
+      "email": "antonioandrea.vaccarelli@telecomitalia.it"
+    },
+    {
+      "email": "antoniobaldassarra@yahoo.it"
+    },
+    {
+      "email": "antoniodigiovanni@yahoo.com"
+    },
+    {
+      "email": "antoniolupinu@hotmail.it"
+    },
+    {
+      "email": "antoniomontenegro@libero.it"
+    },
+    {
+      "email": "antoniovaracalli@hotmail.it"
+    },
+    {
+      "email": "aorsini@hotmail.com"
+    },
+    {
+      "email": "aortenzi@hotmail.it"
+    },
+    {
+      "email": "apaola.mis@hotmail.it"
+    },
+    {
+      "email": "apirinu@yahoo.it"
+    },
+    {
+      "email": "aragona.emanuela@hsr.it"
+    },
+    {
+      "email": "aram@realcolibri.com"
+    },
+    {
+      "email": "arcadio.pasqual@outlook.com"
+    },
+    {
+      "email": "arcier@amazon.it"
+    },
+    {
+      "email": "arciulif@yahoo.com"
+    },
+    {
+      "email": "arianna.crippa@ikn.it"
+    },
+    {
+      "email": "aricotti@expert.ai"
+    },
+    {
+      "email": "arina.pozzoli@studiomottolabon.it"
+    },
+    {
+      "email": "arischoi218@hotmail.com"
+    },
+    {
+      "email": "armandogaratti@libero.it"
+    },
+    {
+      "email": "arnejuergensen@yahoo.de"
+    },
+    {
+      "email": "arosenthal@emergeamericas.com"
+    },
+    {
+      "email": "arr.spadaro@hotmail.it"
+    },
+    {
+      "email": "arrigo.ventimiglia@sp-af.it"
+    },
+    {
+      "email": "arturo.calandrino@sas.com"
+    },
+    {
+      "email": "arturo.cuoco@bnlmail.com"
+    },
+    {
+      "email": "asalvagno@call2net.it"
+    },
+    {
+      "email": "ashok_shah1091@yahoo.co.in"
+    },
+    {
+      "email": "aspagno@yahoo.it"
+    },
+    {
+      "email": "assessore.abba@comune.monza.it"
+    },
+    {
+      "email": "assistente.direzione@istciechimilano.it"
+    },
+    {
+      "email": "astra190cv@hotmail.it"
+    },
+    {
+      "email": "atmosfera@atm.it"
+    },
+    {
+      "email": "attilio.somma@telecomitalia.it"
+    },
+    {
+      "email": "austin@primaryinsight.com"
+    },
+    {
+      "email": "avittoria@orrick.com"
+    },
+    {
+      "email": "avv.bertozzi@studiolegalebertozzi.it"
+    },
+    {
+      "email": "ayusha_mukabuku@outlook.com"
+    },
+    {
+      "email": "azienda.brega@hotmail.it"
+    },
+    {
+      "email": "b.bianchi@sydema.it"
+    },
+    {
+      "email": "baldissara.mariano@grimaldi.napoli.it"
+    },
+    {
+      "email": "baltiero@growthcapital.vc"
+    },
+    {
+      "email": "banfi-elisabetta@hotmail.it"
+    },
+    {
+      "email": "barbara_rivolta@yahoo.it"
+    },
+    {
+      "email": "barbara.avalle@yahoo.it"
+    },
+    {
+      "email": "barbara.dibello@bnlmail.com"
+    },
+    {
+      "email": "barbara.pacolini@hotmail.it"
+    },
+    {
+      "email": "barbara@h14.it"
+    },
+    {
+      "email": "barbarafalcomer@yahoo.it"
+    },
+    {
+      "email": "barnaby@brandaloud.com"
+    },
+    {
+      "email": "barolibusiness@hotmail.com"
+    },
+    {
+      "email": "bbellucci@gruppobellucci.it"
+    },
+    {
+      "email": "bbuzzoni@armandotesta.it"
+    },
+    {
+      "email": "bcarleton@yahoo.com"
+    },
+    {
+      "email": "bdonelli@expert-italia.it"
+    },
+    {
+      "email": "beatriceroesel@hotmail.it"
+    },
+    {
+      "email": "bela_sk8er@hotmail.com"
+    },
+    {
+      "email": "belluccisessamarco@hotmail.com"
+    },
+    {
+      "email": "benedetta.onori@zestgroup.vc"
+    },
+    {
+      "email": "beniamino.bongiovanni@unicredit.eu"
+    },
+    {
+      "email": "benjamin.mayr@suedtirolbank.eu"
+    },
+    {
+      "email": "benny.forte@hotmail.com"
+    },
+    {
+      "email": "berkant.koelem@hotmail.com"
+    },
+    {
+      "email": "bernandriani@libero.it"
+    },
+    {
+      "email": "berra@euro-bank.it"
+    },
+    {
+      "email": "biagio_santoro@hotmail.com"
+    },
+    {
+      "email": "biagio.santoro@telecomitalia.it"
+    },
+    {
+      "email": "biagiobarluet@hotmail.com"
+    },
+    {
+      "email": "bianca.mi@live.com"
+    },
+    {
+      "email": "biju@alnadeem.com"
+    },
+    {
+      "email": "bill@safran.org"
+    },
+    {
+      "email": "binash_16@hotmail.com"
+    },
+    {
+      "email": "blobbster@yahoo.it"
+    },
+    {
+      "email": "boccanera@iacc-miami.com"
+    },
+    {
+      "email": "bottaniilaria@icloud.com"
+    },
+    {
+      "email": "bpoggiali@alum.mit.edu"
+    },
+    {
+      "email": "brainstorm.arena@e-novia.it"
+    },
+    {
+      "email": "bridget_kelsey@hotmail.com"
+    },
+    {
+      "email": "brugnoli.giacomo@yahoo.it"
+    },
+    {
+      "email": "brunetti@notaiobrunetti.it"
+    },
+    {
+      "email": "bruni@artvalley.org"
+    },
+    {
+      "email": "bruno.conte@social4social.org"
+    },
+    {
+      "email": "busdevit@showroomprive.com"
+    },
+    {
+      "email": "butti@abgroup.it"
+    },
+    {
+      "email": "c.bergna@ied.it"
+    },
+    {
+      "email": "c.cenci@taskforceitalia.com"
+    },
+    {
+      "email": "c.dytham@aiglobalmedialtd.com"
+    },
+    {
+      "email": "c.lautizi@webuildgroup.com"
+    },
+    {
+      "email": "c.mereu@openlogs.ch"
+    },
+    {
+      "email": "c.mussinelli@360publishing.it"
+    },
+    {
+      "email": "c.nisio@olivetti.com"
+    },
+    {
+      "email": "c.pittatore@finnat.it"
+    },
+    {
+      "email": "c.tonti@websolute.it"
+    },
+    {
+      "email": "c.voltan@andforward.com"
+    },
+    {
+      "email": "cainelli@cmalegal.it"
+    },
+    {
+      "email": "cakyosti@yahoo.com"
+    },
+    {
+      "email": "cam@cam-quadrielettrici.it"
+    },
+    {
+      "email": "candelagloria@yahoo.it"
+    },
+    {
+      "email": "canottaggio@olona1894.it"
+    },
+    {
+      "email": "canyoufindme86@yahoo.it"
+    },
+    {
+      "email": "caporedattore@bancaforte.it"
+    },
+    {
+      "email": "cardana@iaccse.com"
+    },
+    {
+      "email": "carla.caruso@hotmail.it"
+    },
+    {
+      "email": "carla.ponti@yahoo.it"
+    },
+    {
+      "email": "carliev67@hotmail.com"
+    },
+    {
+      "email": "carlo-castoldi@hotmail.com"
+    },
+    {
+      "email": "carlo.cortesi@postemobile.it"
+    },
+    {
+      "email": "carlo.festa@ilsole24ore.com"
+    },
+    {
+      "email": "carlo.giugovaz@supernovaegroup.com"
+    },
+    {
+      "email": "carlo.giugovaz@supernovaelabs.com"
+    },
+    {
+      "email": "carlo.magni@cmmventures.com"
+    },
+    {
+      "email": "carlo.pontorieri@ericsson.com"
+    },
+    {
+      "email": "carlo.prelli@cpsenergia.it"
+    },
+    {
+      "email": "carlo.robiglio@gruppoebano.com"
+    },
+    {
+      "email": "carloalberto.marchi@fieldfisher.com"
+    },
+    {
+      "email": "carlobrevini@hotmail.com"
+    },
+    {
+      "email": "carlos.breton@gft.com"
+    },
+    {
+      "email": "carlosrodsilverio@hotmail.com"
+    },
+    {
+      "email": "carmine.laltrelli@italiaonline.it"
+    },
+    {
+      "email": "carminemaffei@meditech4.com"
+    },
+    {
+      "email": "carola@carolasalvato.com"
+    },
+    {
+      "email": "carolasalvato@yahoo.it"
+    },
+    {
+      "email": "caromald@hotmail.com"
+    },
+    {
+      "email": "cataclisse@hotmail.com"
+    },
+    {
+      "email": "cathy@speakerex.com"
+    },
+    {
+      "email": "catu24@hotmail.com"
+    },
+    {
+      "email": "cboero@innovability.it"
+    },
+    {
+      "email": "cclementi@spencerstuart.com"
+    },
+    {
+      "email": "cecilia.mottola@studiomottolabon.it"
+    },
+    {
+      "email": "celinechen@hotmail.it"
+    },
+    {
+      "email": "centrale.mi@cittadinidellordine.com"
+    },
+    {
+      "email": "centralino.icss@grupposandonato.it"
+    },
+    {
+      "email": "ceo@etisalcom.com"
+    },
+    {
+      "email": "ceo@whatsyourcarrier.com"
+    },
+    {
+      "email": "cesare.graziosi@studbocconi.it"
+    },
+    {
+      "email": "cesare.valenti@itway.com"
+    },
+    {
+      "email": "cgagliardi@fastwebnet.it"
+    },
+    {
+      "email": "chantal_peronace@hotmail.com"
+    },
+    {
+      "email": "checkup.segreteria@hsr.it"
+    },
+    {
+      "email": "checkup.ssg@multimedica.it"
+    },
+    {
+      "email": "chiara_rouge@yahoo.it"
+    },
+    {
+      "email": "chiara.bima@bnpparibas.com"
+    },
+    {
+      "email": "chiara.corona@mail.polimi.it"
+    },
+    {
+      "email": "chiara.lupi@este.it"
+    },
+    {
+      "email": "chiara.rotta@lupatotinagas.it"
+    },
+    {
+      "email": "chiaragianti@msn.com"
+    },
+    {
+      "email": "chiccadna@hotmail.com"
+    },
+    {
+      "email": "chischibio@hotmail.it"
+    },
+    {
+      "email": "chrisskynet@yahoo.com"
+    },
+    {
+      "email": "christian.carai@adcgroupspa.com"
+    },
+    {
+      "email": "christian.lucarelli@it.ey.com"
+    },
+    {
+      "email": "christophe@singularity.mc"
+    },
+    {
+      "email": "cieloscuro@hotmail.com"
+    },
+    {
+      "email": "cies-2005@libero.it"
+    },
+    {
+      "email": "cinzia.verga@unicredit.eu"
+    },
+    {
+      "email": "cippaola@yahoo.it"
+    },
+    {
+      "email": "ciro.pagliara@telecomitalia.it"
+    },
+    {
+      "email": "ciroattilionocerino@yahoo.it"
+    },
+    {
+      "email": "claudegc@hotmail.com"
+    },
+    {
+      "email": "claudia.pascazio@enel.com"
+    },
+    {
+      "email": "claudia.pingue@cdpventurecapital.it"
+    },
+    {
+      "email": "claudiamelagrana@yahoo.com"
+    },
+    {
+      "email": "claudio.bernardi@elioticinese.it"
+    },
+    {
+      "email": "claudio.catania@fondoitaliano.it"
+    },
+    {
+      "email": "claudio.dealbera@sella.it"
+    },
+    {
+      "email": "claudio.defeo@virgilio.it"
+    },
+    {
+      "email": "claudio.garitta@polimi.it"
+    },
+    {
+      "email": "claudio.gregorio@sella.it"
+    },
+    {
+      "email": "claudio.lamberti@hotmail.com"
+    },
+    {
+      "email": "claudio.moscardini@sorgenia.it"
+    },
+    {
+      "email": "claudio.rorato@polimi.it"
+    },
+    {
+      "email": "claudio@claudiocastellaro.com"
+    },
+    {
+      "email": "claudionascentes@hotmail.com"
+    },
+    {
+      "email": "clelia.tosi@fintechdistrict.com"
+    },
+    {
+      "email": "club@ambrosetti.eu"
+    },
+    {
+      "email": "clupo@spencerstuart.com"
+    },
+    {
+      "email": "cnp@studioplacco.it"
+    },
+    {
+      "email": "cnq@sadler.it"
+    },
+    {
+      "email": "coffeecapp@n-anditalia.com"
+    },
+    {
+      "email": "colpoditacco@hotmail.com"
+    },
+    {
+      "email": "comm@loro.it"
+    },
+    {
+      "email": "companysecretary@cambria.uk.com"
+    },
+    {
+      "email": "contratti@edelweiss-energia.it"
+    },
+    {
+      "email": "corina_anghiel@yahoo.it"
+    },
+    {
+      "email": "corrado.creston@addvalue.it"
+    },
+    {
+      "email": "corrodin@hotmail.com"
+    },
+    {
+      "email": "cosentino@ordineavvocatimilano.it"
+    },
+    {
+      "email": "cosimo.calcagno@indacosgr.com"
+    },
+    {
+      "email": "cosma_r@hotmail.com"
+    },
+    {
+      "email": "cpontorieri@yahoo.com"
+    },
+    {
+      "email": "crafa@focusmgmt.it"
+    },
+    {
+      "email": "crespi1guido@outlook.it"
+    },
+    {
+      "email": "criscuoli@criscuoli.it"
+    },
+    {
+      "email": "cristian_hnatiuc@yahoo.com"
+    },
+    {
+      "email": "cristian.barba@lafeltrinelli.it"
+    },
+    {
+      "email": "cristian.brovelli@bnpparibas.com"
+    },
+    {
+      "email": "cristian.veller@exetera.com"
+    },
+    {
+      "email": "cristiana.frumenti@telecomitalia.it"
+    },
+    {
+      "email": "cristiano.frasson@sanbenedetto.it"
+    },
+    {
+      "email": "cristina.dalo@havas.com"
+    },
+    {
+      "email": "cristina.gianotti@intoo.it"
+    },
+    {
+      "email": "cristina.oltean@pitchbook.com"
+    },
+    {
+      "email": "cristina.reduzzi@gigroup.com"
+    },
+    {
+      "email": "cristina.sara@unicredit.eu"
+    },
+    {
+      "email": "cristinasarnacchiaro772@hotmail.com"
+    },
+    {
+      "email": "cte@startcupcalabria.it"
+    },
+    {
+      "email": "curcio@uniud.it"
+    },
+    {
+      "email": "cvaldetara@rheavendors.com"
+    },
+    {
+      "email": "cvirginia74@yahoo.fr"
+    },
+    {
+      "email": "d_pecorelli@vittoriaassicurazioni.it"
+    },
+    {
+      "email": "d.bettinetti@bitforfun.com"
+    },
+    {
+      "email": "d.ceccucci@namirial.com"
+    },
+    {
+      "email": "d.cerra@logotel.it"
+    },
+    {
+      "email": "d.coletto@namirial.com"
+    },
+    {
+      "email": "d.gentile@irtop.com"
+    },
+    {
+      "email": "d.maestripieri@reginaisabella.it"
+    },
+    {
+      "email": "d.piccolo@finnat.it"
+    },
+    {
+      "email": "d.summa@hotmail.it"
+    },
+    {
+      "email": "d.taglioni@gigabytedistribuzione.it"
+    },
+    {
+      "email": "daisywebx@gmail.com"
+    },
+    {
+      "email": "dalia.hassan@mediolanum.it"
+    },
+    {
+      "email": "dalila.berardo@unicredit.eu"
+    },
+    {
+      "email": "dallavalleb@safilo.com"
+    },
+    {
+      "email": "dalverme@yahoo.com"
+    },
+    {
+      "email": "damand@hotmail.com"
+    },
+    {
+      "email": "damiano@sietimpiantisrl.it"
+    },
+    {
+      "email": "dan.hodos@yahoo.com"
+    },
+    {
+      "email": "dan@envient.com"
+    },
+    {
+      "email": "dandrea_carlo@yahoo.it"
+    },
+    {
+      "email": "daniel.pexidr@epcommodities.cz"
+    },
+    {
+      "email": "daniela.attuale@libero.it"
+    },
+    {
+      "email": "daniela.bettosini@hotmail.com"
+    },
+    {
+      "email": "daniela.mancin@fastweb.it"
+    },
+    {
+      "email": "daniela.manuello@postevita.it"
+    },
+    {
+      "email": "daniele_pirola@virgilio.it"
+    },
+    {
+      "email": "daniele.benedetti@pirelli.com"
+    },
+    {
+      "email": "daniele.deho@fiditalia.it"
+    },
+    {
+      "email": "daniele.derosa@extris.eu"
+    },
+    {
+      "email": "daniele.di.paolo@hotmail.com"
+    },
+    {
+      "email": "daniele.gabbai@nexi.it"
+    },
+    {
+      "email": "daniele.grechi@accenture.com"
+    },
+    {
+      "email": "daniele.moreschi@bip-group.com"
+    },
+    {
+      "email": "daniele.moreschi@mail-bip.com"
+    },
+    {
+      "email": "daniele@fanzutto.com"
+    },
+    {
+      "email": "danielefazio@artistinct.com"
+    },
+    {
+      "email": "danielemorisco@hotmail.com"
+    },
+    {
+      "email": "danigeno@hotmail.com"
+    },
+    {
+      "email": "danilo.baciocco@hotmail.it"
+    },
+    {
+      "email": "danilo.dago@accenture.com"
+    },
+    {
+      "email": "danilo.marini@hotmail.it"
+    },
+    {
+      "email": "danilo.mazzara@skillforequity.com"
+    },
+    {
+      "email": "danilo.petrelli@tiesrl.it"
+    },
+    {
+      "email": "danilo.rivalta@mad4mobile.ch"
+    },
+    {
+      "email": "danilo.vivarelli@technesy.it"
+    },
+    {
+      "email": "daniloschipani@hotmail.com"
+    },
+    {
+      "email": "dannybruognolo@hotmail.com"
+    },
+    {
+      "email": "dante.laudisa@assintel.it"
+    },
+    {
+      "email": "dantelau@libero.it"
+    },
+    {
+      "email": "dany11383@yahoo.it"
+    },
+    {
+      "email": "dariopianese@icloud.com"
+    },
+    {
+      "email": "davallan@hotmail.com"
+    },
+    {
+      "email": "david_lock@vuzix.co.uk"
+    },
+    {
+      "email": "david_sanders@consultant.com"
+    },
+    {
+      "email": "david.bartolini@bancacambiano.it"
+    },
+    {
+      "email": "david.menasci@pharmacheck.it"
+    },
+    {
+      "email": "david@david-a-hunt.com"
+    },
+    {
+      "email": "david@pirnazar.com"
+    },
+    {
+      "email": "davide.angotta@engauge.it"
+    },
+    {
+      "email": "davide.barbavara@db.com"
+    },
+    {
+      "email": "davide.bonini@belron.it"
+    },
+    {
+      "email": "davide.bonini@carglass.it"
+    },
+    {
+      "email": "davide.bossi@strategicmp.it"
+    },
+    {
+      "email": "davide.cavalieri@cavalieri-retailing.com"
+    },
+    {
+      "email": "davide.colzani@a2a.eu"
+    },
+    {
+      "email": "davide.romano713@gmail.com"
+    },
+    {
+      "email": "davide.rossetti@gruppoesperia.com"
+    },
+    {
+      "email": "davide.silvestri@staff.aruba.it"
+    },
+    {
+      "email": "davide.spriano@sheratonlakecomo.com"
+    },
+    {
+      "email": "davide.tacchino@vodafone.com"
+    },
+    {
+      "email": "davide.tonolini@hotmail.it"
+    },
+    {
+      "email": "davide@buddybank.com"
+    },
+    {
+      "email": "davide@tesoro-tess.com"
+    },
+    {
+      "email": "davidebarenghi@hotmail.it"
+    },
+    {
+      "email": "davidepinna@yahoo.it"
+    },
+    {
+      "email": "davidsuccu@aol.com"
+    },
+    {
+      "email": "dboleso@hotmail.com"
+    },
+    {
+      "email": "dcastellani@t8pconsulting.com"
+    },
+    {
+      "email": "dcuadrado@orekainteractive.com"
+    },
+    {
+      "email": "dealflow@dlventures.it"
+    },
+    {
+      "email": "deborah.argese@hotmail.it"
+    },
+    {
+      "email": "deborah.dagostino@mediolanum.it"
+    },
+    {
+      "email": "decaro@volanogroup.com"
+    },
+    {
+      "email": "declan.brady@pitchbook.com"
+    },
+    {
+      "email": "degraziafrancesco@outlook.it"
+    },
+    {
+      "email": "deltostos@yahoo.com"
+    },
+    {
+      "email": "demetrio.migliorati@outlook.it"
+    },
+    {
+      "email": "demetriodigennaro@yahoo.com"
+    },
+    {
+      "email": "denicola@pibn.it"
+    },
+    {
+      "email": "derosa@ordineavvocatimilano.it"
+    },
+    {
+      "email": "design@firm.gs"
+    },
+    {
+      "email": "dettoriivan@hotmail.com"
+    },
+    {
+      "email": "dherrera@emergeamericas.com"
+    },
+    {
+      "email": "didola74@yahoo.it"
+    },
+    {
+      "email": "diego.1311@yahoo.it"
+    },
+    {
+      "email": "diego.dalessandro@mail-bip.com"
+    },
+    {
+      "email": "diego.rossi@bper.it"
+    },
+    {
+      "email": "diego.tonini@telecomitalia.it"
+    },
+    {
+      "email": "diletta.dicarmine@clubdeglinvestitori.it"
+    },
+    {
+      "email": "diletta@alchimiainvestments.com"
+    },
+    {
+      "email": "dimartino@volanogroup.com"
+    },
+    {
+      "email": "dinazcom@yahoo.com"
+    },
+    {
+      "email": "diporomi@yahoo.it"
+    },
+    {
+      "email": "dlozovsky@hotmail.com"
+    },
+    {
+      "email": "dmegli@hotmail.com"
+    },
+    {
+      "email": "dome@dlventures.it"
+    },
+    {
+      "email": "domenico.deangelis@mitsim.it"
+    },
+    {
+      "email": "domenico.nesci@deepoceancapital.it"
+    },
+    {
+      "email": "domenico.palmisani@goldenservice.it"
+    },
+    {
+      "email": "domenicolaudonia@hotmail.com"
+    },
+    {
+      "email": "domenicoscotto@hotmail.com"
+    },
+    {
+      "email": "domi71@yahoo.com"
+    },
+    {
+      "email": "dominicw@dealcloud.com"
+    },
+    {
+      "email": "don.hesham@live.com"
+    },
+    {
+      "email": "donscara@hotmail.com"
+    },
+    {
+      "email": "dpezzolla@data3.it"
+    },
+    {
+      "email": "dpistalu@yahoo.com"
+    },
+    {
+      "email": "dr.lorenzopace@yahoo.com"
+    },
+    {
+      "email": "drabini@arroweurope.com"
+    },
+    {
+      "email": "drossi@salesforce.com"
+    },
+    {
+      "email": "dscolozzi@kpmg.it"
+    },
+    {
+      "email": "dstecchi@luxuryretailpartners.com"
+    },
+    {
+      "email": "ducciostefano.gazzei@bnlmail.com"
+    },
+    {
+      "email": "dvantares@me.com"
+    },
+    {
+      "email": "dvidoni@emergeamericas.com"
+    },
+    {
+      "email": "e.giacomelli@namirial.com"
+    },
+    {
+      "email": "e.grisanti@xtvproductions.it"
+    },
+    {
+      "email": "e.montanari@i-profile.it"
+    },
+    {
+      "email": "e.perrucci@outlook.com"
+    },
+    {
+      "email": "e.riccelli@opstart.it"
+    },
+    {
+      "email": "e.tosetti@pragmawm.com"
+    },
+    {
+      "email": "eangelon@amazon.it"
+    },
+    {
+      "email": "eborello@bio4dreams.com"
+    },
+    {
+      "email": "ecabukusta@hotmail.com"
+    },
+    {
+      "email": "edi.magini@vodafone.com"
+    },
+    {
+      "email": "edmondo.sparano@digitalmagics.com"
+    },
+    {
+      "email": "edo.orfanini@energiaigroup.com"
+    },
+    {
+      "email": "edoardo.marsullo@bnpparibas.com"
+    },
+    {
+      "email": "edoardo.riccobono@camperiosim.com"
+    },
+    {
+      "email": "edorfanini@icloud.com"
+    },
+    {
+      "email": "edu.orfanini@yahoo.com"
+    },
+    {
+      "email": "efincati@sind.it"
+    },
+    {
+      "email": "egarito@quantumleap-ip.com"
+    },
+    {
+      "email": "egle.rochira@cdpventurecapital.it"
+    },
+    {
+      "email": "egrillo777@hotmail.com"
+    },
+    {
+      "email": "ejidio@yahoo.com"
+    },
+    {
+      "email": "elda_dushi@yahoo.com"
+    },
+    {
+      "email": "eldokorita@ucea.pt"
+    },
+    {
+      "email": "elena.catani@bt.com"
+    },
+    {
+      "email": "elena.greco@unicredit.eu"
+    },
+    {
+      "email": "elena.rendola@mastercard.com"
+    },
+    {
+      "email": "elena.voli@bper.it"
+    },
+    {
+      "email": "eleonora.berardi@palazzodivarignana.com"
+    },
+    {
+      "email": "eleonora.rizzo25@outlook.it"
+    },
+    {
+      "email": "eletrudi81@yahoo.it"
+    },
+    {
+      "email": "elisa.ficarella@poliba.it"
+    },
+    {
+      "email": "elisa.marta@eni.com"
+    },
+    {
+      "email": "elisa.randelli@unicredit.eu"
+    },
+    {
+      "email": "elisabeth.rizzotti@newcleo.com"
+    },
+    {
+      "email": "elisabetta_abate@outlook.com"
+    },
+    {
+      "email": "elisabetta.ghiglione@accenture.com"
+    },
+    {
+      "email": "elisabetta.ottone@icento.it"
+    },
+    {
+      "email": "elisabettagiazzi1@hotmail.it"
+    },
+    {
+      "email": "elisabettami@libero.it"
+    },
+    {
+      "email": "elisapoliti@hotmail.com"
+    },
+    {
+      "email": "elleemme2014@hotmail.com"
+    },
+    {
+      "email": "elollo@kpmg.it"
+    },
+    {
+      "email": "emacalvi@libero.it"
+    },
+    {
+      "email": "emafioretti@hotmail.com"
+    },
+    {
+      "email": "emanuela.aragona@hotmail.com"
+    },
+    {
+      "email": "emanuela.bevilacqua@bnlmail.com"
+    },
+    {
+      "email": "emanuela.cancogni@egonzehnder.com"
+    },
+    {
+      "email": "emanuela.falduto@bip-group.com"
+    },
+    {
+      "email": "emanuela.ghini@yahoo.com"
+    },
+    {
+      "email": "emanuela.pignataro@cegos.it"
+    },
+    {
+      "email": "emanuele.bolzoni@virgilio.it"
+    },
+    {
+      "email": "emanuele.bonetti@cardif.it"
+    },
+    {
+      "email": "emanuele.bosio@embedcapital.it"
+    },
+    {
+      "email": "emanuele.licciardi@morrirossetti.it"
+    },
+    {
+      "email": "emanuele.malaspina@unicredit.eu"
+    },
+    {
+      "email": "emanuele.pollastri@avstore.tv"
+    },
+    {
+      "email": "emanuele.streppetti@libero.it"
+    },
+    {
+      "email": "emanuele.tragella@havas.com"
+    },
+    {
+      "email": "emilia.garito@deepoceancapital.it"
+    },
+    {
+      "email": "emiliamassaro@hotmail.it"
+    },
+    {
+      "email": "emilio.manca@unicredit.eu"
+    },
+    {
+      "email": "emma.lonardi@polimi.it"
+    },
+    {
+      "email": "emma.pisati@gmail.com"
+    },
+    {
+      "email": "emma@community.emporiaresearch.com"
+    },
+    {
+      "email": "endriu13@icloud.com"
+    },
+    {
+      "email": "energia@convergenze.it"
+    },
+    {
+      "email": "enih_tr@hotmail.com"
+    },
+    {
+      "email": "enrico.abbati@yahoo.com"
+    },
+    {
+      "email": "enrico.angeloni@eni.com"
+    },
+    {
+      "email": "enrico.cascioli@telemar.it"
+    },
+    {
+      "email": "enrico.castellano@palazzorighini.it"
+    },
+    {
+      "email": "enrico.chiara@mondadori.it"
+    },
+    {
+      "email": "enrico.deluchi@polihub.it"
+    },
+    {
+      "email": "enrico.denich@foodpharm.it"
+    },
+    {
+      "email": "enrico.maini@me.com"
+    },
+    {
+      "email": "enrico.netti@ilsole24ore.com"
+    },
+    {
+      "email": "enrico@zanichelliventure.it"
+    },
+    {
+      "email": "enricomassetti@msn.com"
+    },
+    {
+      "email": "enricopagliuca@outlook.com"
+    },
+    {
+      "email": "entrepreneurship.club@sdabocconi.it"
+    },
+    {
+      "email": "enza.viviano@alpitourworld.it"
+    },
+    {
+      "email": "eoinsullivan44@hotmail.com"
+    },
+    {
+      "email": "epaland@libero.it"
+    },
+    {
+      "email": "erika.suriano@levillagebyca.com"
+    },
+    {
+      "email": "erivas782003@yahoo.ca"
+    },
+    {
+      "email": "ernesto.digiacomo@enel.com"
+    },
+    {
+      "email": "ersiliat@hotmail.com"
+    },
+    {
+      "email": "espinosajuanpablo@outlook.com"
+    },
+    {
+      "email": "ettoreiannella@hotmail.com"
+    },
+    {
+      "email": "eugenia.disomma@snam.it"
+    },
+    {
+      "email": "eugenio_nicotra@yahoo.com"
+    },
+    {
+      "email": "eugenio.sciortino@yahoo.it"
+    },
+    {
+      "email": "evarela@emergeamericas.com"
+    },
+    {
+      "email": "evergani@ascopompe.com"
+    },
+    {
+      "email": "evertongava@mabalus.com"
+    },
+    {
+      "email": "evhaendler@hotmail.com"
+    },
+    {
+      "email": "exhibitorservices@maritz.com"
+    },
+    {
+      "email": "ezanotti@hotmail.it"
+    },
+    {
+      "email": "ezio.beretta@rodacciai.com"
+    },
+    {
+      "email": "ezio.rizzini@mis.mediobanca.com"
+    },
+    {
+      "email": "f.arpe@arpegroup.it"
+    },
+    {
+      "email": "f.berardi@area38.it"
+    },
+    {
+      "email": "f.bonino@nctm.it"
+    },
+    {
+      "email": "f.favale@sace.it"
+    },
+    {
+      "email": "f.finocchi@lslex.com"
+    },
+    {
+      "email": "f.frigo@samsung.com"
+    },
+    {
+      "email": "f.gabossi@andforward.com"
+    },
+    {
+      "email": "f.gallante@e12.it"
+    },
+    {
+      "email": "f.grassi@computergross.it"
+    },
+    {
+      "email": "f.grassi@computernessos.it"
+    },
+    {
+      "email": "f.polato@samsung.com"
+    },
+    {
+      "email": "f.rizzante@reply.com"
+    },
+    {
+      "email": "f.santorum@openlogs.ch"
+    },
+    {
+      "email": "f.terranova@ied.it"
+    },
+    {
+      "email": "f.vercellino@barabino.it"
+    },
+    {
+      "email": "fabiana.malatesta@egovaleo.it"
+    },
+    {
+      "email": "fabianlomsan@hotmail.com"
+    },
+    {
+      "email": "fabiano.causo@senioraccount-ti.it"
+    },
+    {
+      "email": "fabio.biondi@vodafone.com"
+    },
+    {
+      "email": "fabio.carimati@samer.com"
+    },
+    {
+      "email": "fabio.corso@fastweb.it"
+    },
+    {
+      "email": "fabio.ferrara@polimi.it"
+    },
+    {
+      "email": "fabio.fumagalli@live.com"
+    },
+    {
+      "email": "fabio.lampasona@iblbanca.it"
+    },
+    {
+      "email": "fabio.momola@eng.it"
+    },
+    {
+      "email": "fabio.nalucci@gellify.com"
+    },
+    {
+      "email": "fabio.obertotarena@prelios.com"
+    },
+    {
+      "email": "fabio.oggioni@generali.com"
+    },
+    {
+      "email": "fabio.rosati@telecomitalia.it"
+    },
+    {
+      "email": "fabio.tessera@algosec.com"
+    },
+    {
+      "email": "fabio.troiani@bieffeinvest.net"
+    },
+    {
+      "email": "fabiocoppo@hotmail.com"
+    },
+    {
+      "email": "fabiojr_88@hotmail.it"
+    },
+    {
+      "email": "fabiomaria.pastorini@eni.com"
+    },
+    {
+      "email": "fabiozini@libero.it"
+    },
+    {
+      "email": "fabri72@hotmail.it"
+    },
+    {
+      "email": "fabrifa@hotmail.com"
+    },
+    {
+      "email": "fabrizio.caiani@nextre.it"
+    },
+    {
+      "email": "fabrizio.corti@azimut.it"
+    },
+    {
+      "email": "fabrizio.cristina@db.com"
+    },
+    {
+      "email": "fabrizio.pistolesi@telecomitalia.it"
+    },
+    {
+      "email": "fabrizio.s@fluentis.com"
+    },
+    {
+      "email": "fabrizio.vettore@cifarelli.it"
+    },
+    {
+      "email": "fabrizio@link2america.us"
+    },
+    {
+      "email": "fabriziocolangeli@hotmail.com"
+    },
+    {
+      "email": "fabriziovillani@hotmail.it"
+    },
+    {
+      "email": "faredo.bench.it@libero.it"
+    },
+    {
+      "email": "farena@salesforce.com"
+    },
+    {
+      "email": "fausto.ciarcia@waldorfastoria.com"
+    },
+    {
+      "email": "fausto.sblandi@unicredit.eu"
+    },
+    {
+      "email": "fbadetti@fastwebnet.it"
+    },
+    {
+      "email": "fbalacco@sigmaspa.com"
+    },
+    {
+      "email": "fcaruso@spencerstuart.com"
+    },
+    {
+      "email": "fcomi@invitalia.it"
+    },
+    {
+      "email": "fedefermi@hotmail.com"
+    },
+    {
+      "email": "fedeprem82@hotmail.it"
+    },
+    {
+      "email": "federica.carra@unicredit.eu"
+    },
+    {
+      "email": "federica.scandolara@esselunga.it"
+    },
+    {
+      "email": "federicabianchi46@live.it"
+    },
+    {
+      "email": "federico_angelucci@hotmail.it"
+    },
+    {
+      "email": "federico.aguggini@intesasanpaolo.com"
+    },
+    {
+      "email": "federico.dalberti@enel.com"
+    },
+    {
+      "email": "federico.merola@arpinge.it"
+    },
+    {
+      "email": "federico.rittatore@realtylab.it"
+    },
+    {
+      "email": "federico.rulfi@eni.com"
+    },
+    {
+      "email": "federico@mongelli2000.com"
+    },
+    {
+      "email": "federicoma.caligaris@cdiglobal.com"
+    },
+    {
+      "email": "fedesforza@yahoo.com"
+    },
+    {
+      "email": "felice.biancardi@fragmentalis.com"
+    },
+    {
+      "email": "felix.porter@kmhmediagroup.com"
+    },
+    {
+      "email": "fernando.borgani@outlook.com"
+    },
+    {
+      "email": "fernandopalaciosp@yahoo.es"
+    },
+    {
+      "email": "ferrario@mcfcapital.it"
+    },
+    {
+      "email": "ffinamore@microsoft.com"
+    },
+    {
+      "email": "fgagliardi@kpmg.it"
+    },
+    {
+      "email": "fgatti@globalblue.com"
+    },
+    {
+      "email": "fgiusti@hotmail.com"
+    },
+    {
+      "email": "filippo_visconti@hotmail.com"
+    },
+    {
+      "email": "filippo.decaterina@loreal.com"
+    },
+    {
+      "email": "filippo.giannelli@exprivia.com"
+    },
+    {
+      "email": "filippo.mainardicantoni@bip-group.com"
+    },
+    {
+      "email": "filippo.melazzini@studenti.unimi.it"
+    },
+    {
+      "email": "filippo.mignani@hotmail.it"
+    },
+    {
+      "email": "filippo.ridolfo@unicredit.eu"
+    },
+    {
+      "email": "filippo@calzeroni.com"
+    },
+    {
+      "email": "fiordiloto2009@hotmail.it"
+    },
+    {
+      "email": "fiorella.cappelletti@ibs.it"
+    },
+    {
+      "email": "fiume@iamb.it"
+    },
+    {
+      "email": "flaminia.angeletti@hotmail.com"
+    },
+    {
+      "email": "flavio.mutti@polimi.it"
+    },
+    {
+      "email": "flavioriva@eurostands.it"
+    },
+    {
+      "email": "flocati@hotmail.com"
+    },
+    {
+      "email": "flora.geerts@iit.it"
+    },
+    {
+      "email": "fmontaruli@kitra-advisory.com"
+    },
+    {
+      "email": "folino@mypoolservice.it"
+    },
+    {
+      "email": "fornitori@gruppopoli.it"
+    },
+    {
+      "email": "fouadhalawi007@hotmail.com"
+    },
+    {
+      "email": "fpagani@nextbit.it"
+    },
+    {
+      "email": "fpanciatici.salesrep@classpi.it"
+    },
+    {
+      "email": "fra_bruno@yahoo.it"
+    },
+    {
+      "email": "fradele@hotmail.it"
+    },
+    {
+      "email": "framigtende@hotmail.com"
+    },
+    {
+      "email": "francesca_reich@yahoo.com"
+    },
+    {
+      "email": "francesca_virgili@yahoo.it"
+    },
+    {
+      "email": "francesca.boschiroli@accenture.com"
+    },
+    {
+      "email": "francesca.carabellese@hotmail.it"
+    },
+    {
+      "email": "francesca.chieti@jakala.com"
+    },
+    {
+      "email": "francesca.perrone@unicredit.eu"
+    },
+    {
+      "email": "francesca.porzio@pwc.com"
+    },
+    {
+      "email": "francesca.repossi@gruppovege.it"
+    },
+    {
+      "email": "francescadf@msn.com"
+    },
+    {
+      "email": "francesco.battaglia@mediolanum.it"
+    },
+    {
+      "email": "francesco.bonfiglio@diagrammatica.it"
+    },
+    {
+      "email": "francesco.borroni@scmsim.it"
+    },
+    {
+      "email": "francesco.busdraghi@publitalia.it"
+    },
+    {
+      "email": "francesco.caso@compass.it"
+    },
+    {
+      "email": "francesco.ciuccarelli@alpitourworld.it"
+    },
+    {
+      "email": "francesco.dellaglio@imaginary.institute"
+    },
+    {
+      "email": "francesco.dipierro@astraincubator.com"
+    },
+    {
+      "email": "francesco.diprimio@badenochandclark.it"
+    },
+    {
+      "email": "francesco.firpo@outlook.it"
+    },
+    {
+      "email": "francesco.fontana@hotmail.it"
+    },
+    {
+      "email": "francesco.foschi@studbocconi.it"
+    },
+    {
+      "email": "francesco.graziano@mail.wind.it"
+    },
+    {
+      "email": "francesco.ortone@unicredit.eu"
+    },
+    {
+      "email": "francesco.pavan@accenture.com"
+    },
+    {
+      "email": "francesco.possati@marposs.com"
+    },
+    {
+      "email": "francesco.pugliese@msccruises.com"
+    },
+    {
+      "email": "francesco.rubino@cordusiofiduciaria.it"
+    },
+    {
+      "email": "francesco@francescofederico.net"
+    },
+    {
+      "email": "francesco@leonefamily.it"
+    },
+    {
+      "email": "francescoamato2022@hotmail.com"
+    },
+    {
+      "email": "francescobonfiglio@hotmail.com"
+    },
+    {
+      "email": "francescochinaglia@yahoo.com"
+    },
+    {
+      "email": "francescocicetti@hotmail.com"
+    },
+    {
+      "email": "francescoghizzi@phoenixcapital.it"
+    },
+    {
+      "email": "francescorighetti@phoenixcapital.it"
+    },
+    {
+      "email": "francisednak@yahoo.com"
+    },
+    {
+      "email": "franco.lisi@istciechimilano.it"
+    },
+    {
+      "email": "franco.masera@iblbanca.it"
+    },
+    {
+      "email": "franco.peduto@intesasanpaoloassicura.com"
+    },
+    {
+      "email": "franco.ponzio@telecomitalia.it"
+    },
+    {
+      "email": "franco@parkviaggi.it"
+    },
+    {
+      "email": "francocornacchia@dgpa.it"
+    },
+    {
+      "email": "francois-xavier.dedde@omnescapital.com"
+    },
+    {
+      "email": "francois.fayad@de-simone.com"
+    },
+    {
+      "email": "francosumberaz@msn.com"
+    },
+    {
+      "email": "frankovitali@aol.com"
+    },
+    {
+      "email": "franky@humandataincome.com"
+    },
+    {
+      "email": "frasergm@aol.com"
+    },
+    {
+      "email": "free.energysrl@virgilio.it"
+    },
+    {
+      "email": "frieder.hansen@pyramid.de"
+    },
+    {
+      "email": "frizzotto@idc.com"
+    },
+    {
+      "email": "fsimonetti@extra.it"
+    },
+    {
+      "email": "fspaggiari@expert.ai"
+    },
+    {
+      "email": "fulvia.caliceti@pittarosso.com"
+    },
+    {
+      "email": "fulvio.sbroiavacca@projectfarm.it"
+    },
+    {
+      "email": "g_traverso@vittoriaassicurazioni.it"
+    },
+    {
+      "email": "g.alotta@algecopower.it"
+    },
+    {
+      "email": "g.barzazi@fantoni.it"
+    },
+    {
+      "email": "g.bini@samsung.com"
+    },
+    {
+      "email": "g.brambati@starclex.it"
+    },
+    {
+      "email": "g.camaccioli@decainformatica.net"
+    },
+    {
+      "email": "g.ch@hotmail.it"
+    },
+    {
+      "email": "g.cuppini@cuboconsulenza.com"
+    },
+    {
+      "email": "g.didonato@tdhitaly.org"
+    },
+    {
+      "email": "g.diponzio@genotoxic.it"
+    },
+    {
+      "email": "g.falcone@rafarm.uk"
+    },
+    {
+      "email": "g.favini@logotel.it"
+    },
+    {
+      "email": "g.ferloni@olivetti.com"
+    },
+    {
+      "email": "g.gattari@42lf.it"
+    },
+    {
+      "email": "g.genua@auditbc.it"
+    },
+    {
+      "email": "g.greco@atrigna.com"
+    },
+    {
+      "email": "g.luca@sydema.it"
+    },
+    {
+      "email": "g.monteleone@younitestars.com"
+    },
+    {
+      "email": "g.pasi@hotmail.com"
+    },
+    {
+      "email": "g.piccirillo@teda-advisors.com"
+    },
+    {
+      "email": "g.polidori@a11venture.it"
+    },
+    {
+      "email": "g.ramenghi@yahoo.com"
+    },
+    {
+      "email": "g.sica@grafoventures.com"
+    },
+    {
+      "email": "g.tonelli@colloquia.it"
+    },
+    {
+      "email": "g.tonti@area38.it"
+    },
+    {
+      "email": "g.vaciago@42lf.it"
+    },
+    {
+      "email": "gaas@dlventures.it"
+    },
+    {
+      "email": "gabor.olah@outlook.com"
+    },
+    {
+      "email": "gabriela.condis@gaia-x.eu"
+    },
+    {
+      "email": "gabriele.bastianelli@leonardo.com"
+    },
+    {
+      "email": "gabriele.elia@telecomitalia.it"
+    },
+    {
+      "email": "gabriele.farina@chimera.eu"
+    },
+    {
+      "email": "gabriele.gallucci@mba.sdabocconi.it"
+    },
+    {
+      "email": "gabriele.ronchini@digitalmagics.com"
+    },
+    {
+      "email": "gabriele@hercle.financial"
+    },
+    {
+      "email": "gabrielecori@hotmail.com"
+    },
+    {
+      "email": "gabrieleferrante@yahoo.com"
+    },
+    {
+      "email": "gabrielefinzi@yahoo.com"
+    },
+    {
+      "email": "gabrielepellizzari@hotmail.com"
+    },
+    {
+      "email": "gabriella.putignano@mastercard.com"
+    },
+    {
+      "email": "gabry_rodriguez@hotmail.com"
+    },
+    {
+      "email": "gaetano.coletta@enea.it"
+    },
+    {
+      "email": "gaetano.ditondo@telecomitalia.it"
+    },
+    {
+      "email": "gaetano.evangelisti@enel.com"
+    },
+    {
+      "email": "gaetano.liggieri@ekho.it"
+    },
+    {
+      "email": "gaetanoadolfomaria.ditondo@olivetti.com"
+    },
+    {
+      "email": "gagliardelli@bugnion.it"
+    },
+    {
+      "email": "gallas83@hotmail.it"
+    },
+    {
+      "email": "garialice@alice.it"
+    },
+    {
+      "email": "garnone68@yahoo.it"
+    },
+    {
+      "email": "gas.operations@erg.it"
+    },
+    {
+      "email": "gastonberenstein84@hotmail.com"
+    },
+    {
+      "email": "gavin_kingsford@hotmail.com"
+    },
+    {
+      "email": "gazzaniga@nibbiotec.com"
+    },
+    {
+      "email": "gbetti@live.it"
+    },
+    {
+      "email": "gcalace@steam.it"
+    },
+    {
+      "email": "gcapurso@expert-italia.it"
+    },
+    {
+      "email": "gcarone@ilprisma.com"
+    },
+    {
+      "email": "gdammassa@hotmail.com"
+    },
+    {
+      "email": "gdcbari@gmail.com"
+    },
+    {
+      "email": "gdellarosa@aliosinvestimenti.com"
+    },
+    {
+      "email": "gemmaysergio@yahoo.es"
+    },
+    {
+      "email": "genart@iol.it"
+    },
+    {
+      "email": "geoenergie@geogreen.it"
+    },
+    {
+      "email": "gestione_personale_holding@gruppoiren.it"
+    },
+    {
+      "email": "gfalconio@yahoo.it"
+    },
+    {
+      "email": "gfantasia2002@yahoo.com"
+    },
+    {
+      "email": "gferri@innovability.it"
+    },
+    {
+      "email": "ggbmm_2415_13@hotmail.com"
+    },
+    {
+      "email": "ghassenmansouri@mail.com"
+    },
+    {
+      "email": "giacomo.asaro@libero.it"
+    },
+    {
+      "email": "giacomo.giurazza@vertis.it"
+    },
+    {
+      "email": "giacomo.manzoni@a2a.eu"
+    },
+    {
+      "email": "giacomo.marazzi@outlook.com"
+    },
+    {
+      "email": "giacomo.silvestri@eni.com"
+    },
+    {
+      "email": "giacomo.solbiati@xylem.com"
+    },
+    {
+      "email": "giada.canale@casa.it"
+    },
+    {
+      "email": "giada.garon@hotmail.it"
+    },
+    {
+      "email": "giammarco@binetti.it"
+    },
+    {
+      "email": "giampaolo.cesana@bobst.com"
+    },
+    {
+      "email": "giampiero.tidu@virgilio.it"
+    },
+    {
+      "email": "giampiero@restaino.it"
+    },
+    {
+      "email": "giancarlo.dibernardo@ericsson.com"
+    },
+    {
+      "email": "giancarlo.ingenito@tiscali.it"
+    },
+    {
+      "email": "giancarlo.sfolcini@sia.eu"
+    },
+    {
+      "email": "giancarloillica@gei-srl.com"
+    },
+    {
+      "email": "giancriant@hotmail.com"
+    },
+    {
+      "email": "giandomenico.biondaro@addvalue.it"
+    },
+    {
+      "email": "gianfranco.albergamo@unicreditgroup.eu"
+    },
+    {
+      "email": "gianfranco.ritucci@hotmail.com"
+    },
+    {
+      "email": "gianluca_ali@yahoo.it"
+    },
+    {
+      "email": "gianluca_gallo@hotmail.com"
+    },
+    {
+      "email": "gianluca-conte@hotmail.it"
+    },
+    {
+      "email": "gianluca.amistani@embawe.sdabocconi.it"
+    },
+    {
+      "email": "gianluca.battista@iblbanca.it"
+    },
+    {
+      "email": "gianluca.consonni@ambrosetti.eu"
+    },
+    {
+      "email": "gianluca.desiderato@italiaonline.it"
+    },
+    {
+      "email": "gianluca.gala@merck.com"
+    },
+    {
+      "email": "gianluca.galgano@it.ey.com"
+    },
+    {
+      "email": "gianluca.oldani@unicredit.eu"
+    },
+    {
+      "email": "gianluca.scola@isybank.com"
+    },
+    {
+      "email": "gianluca.tovo@telecomitalia.it"
+    },
+    {
+      "email": "gianluca@altieri.eu"
+    },
+    {
+      "email": "gianlucaconte82@yahoo.it"
+    },
+    {
+      "email": "gianluigi.martina@gellify.com"
+    },
+    {
+      "email": "gianluigi.pesce@unicredit.eu"
+    },
+    {
+      "email": "gianluiorio@hotmail.it"
+    },
+    {
+      "email": "gianmarco.gnemmi@cordusio.it"
+    },
+    {
+      "email": "gianmarco.gnemmi@unicredit.eu"
+    },
+    {
+      "email": "gianna.martinengo@didaelkts.it"
+    },
+    {
+      "email": "gianni.cicogna@smartpeg.eu"
+    },
+    {
+      "email": "gianni@medoro.it"
+    },
+    {
+      "email": "gianniluca@gmail.com"
+    },
+    {
+      "email": "giannunzio.fettarappa@telecomitalia.it"
+    },
+    {
+      "email": "gianpm62@hotmail.it"
+    },
+    {
+      "email": "gianvittorio.abate@innovery.net"
+    },
+    {
+      "email": "gigivanore@hotmail.com"
+    },
+    {
+      "email": "gilagina@hotmail.it"
+    },
+    {
+      "email": "gio_firry@yahoo.com"
+    },
+    {
+      "email": "giopuci@hotmail.it"
+    },
+    {
+      "email": "giorgia.taravella@avanade.com"
+    },
+    {
+      "email": "giorgio_costantino7@hotmail.com"
+    },
+    {
+      "email": "giorgio.angiolini@italtel.com"
+    },
+    {
+      "email": "giorgio.cecconi@staff.aruba.it"
+    },
+    {
+      "email": "giorgio.ciron@assolombarda.it"
+    },
+    {
+      "email": "giorgio.manfredi@occambee.com"
+    },
+    {
+      "email": "giorgio.metta@iit.it"
+    },
+    {
+      "email": "giorgio.natale@qualitygroup.it"
+    },
+    {
+      "email": "giorgio.saronni@fastwebnet.it"
+    },
+    {
+      "email": "giorgio.uricchio@telecomitalia.it"
+    },
+    {
+      "email": "giorgio.ventre@unina.it"
+    },
+    {
+      "email": "giorgio@unina.it"
+    },
+    {
+      "email": "giorgiobruno.angiolini@italtel.it"
+    },
+    {
+      "email": "giorgioporta@alice.it"
+    },
+    {
+      "email": "giovan.sasso@studbocconi.it"
+    },
+    {
+      "email": "giovani.imprenditori@unione.milano.it"
+    },
+    {
+      "email": "giovanna.lacquaniti@fastwebnet.it"
+    },
+    {
+      "email": "giovanna.petrillo@accenture.com"
+    },
+    {
+      "email": "giovanni_signoriello@yahoo.it"
+    },
+    {
+      "email": "giovanni_toffolutti@hotmail.com"
+    },
+    {
+      "email": "giovanni_vedovato@hotmail.com"
+    },
+    {
+      "email": "giovanni.annarumma@bper.it"
+    },
+    {
+      "email": "giovanni.debenedictis@unicredit.eu"
+    },
+    {
+      "email": "giovanni.decaro@gmail.com"
+    },
+    {
+      "email": "giovanni.dibenedetto@morellistudio.it"
+    },
+    {
+      "email": "giovanni.garlisi@destinationitalia.com"
+    },
+    {
+      "email": "giovanni.iozzia@economyup.it"
+    },
+    {
+      "email": "giovanni.landi@finix-ts.com"
+    },
+    {
+      "email": "giovanni.mocchi@zucchetti.it"
+    },
+    {
+      "email": "giovanni.nieto@accenture.com"
+    },
+    {
+      "email": "giovanni.razzino@cordusiofiduciaria.it"
+    },
+    {
+      "email": "giovanni.rossi@ing.it"
+    },
+    {
+      "email": "giovanni.russo@lutech.it"
+    },
+    {
+      "email": "giovanni.sartorio@telecomitalia.it"
+    },
+    {
+      "email": "giovanni.tesoriere@liftt.com"
+    },
+    {
+      "email": "giovanni.verzi@hotmail.it"
+    },
+    {
+      "email": "giovannini_luca@lilly.com"
+    },
+    {
+      "email": "giozac83@libero.it"
+    },
+    {
+      "email": "girlsrestart@outlook.com"
+    },
+    {
+      "email": "giudice.francesca@fastwebnet.it"
+    },
+    {
+      "email": "giulia.cerquetti@it.zurich.com"
+    },
+    {
+      "email": "giulia.digiovanni@posteitaliane.it"
+    },
+    {
+      "email": "giulia.fracassi@a2a.eu"
+    },
+    {
+      "email": "giulia.fracassi@a2a.it"
+    },
+    {
+      "email": "giulia.gaggero@mail.polimi.it"
+    },
+    {
+      "email": "giulia.perfetti@esprinet.com"
+    },
+    {
+      "email": "giulia.sala@dgrs.it"
+    },
+    {
+      "email": "giulia.santarelli@zestgroup.vc"
+    },
+    {
+      "email": "giulia.silvioli@posteitaliane.it"
+    },
+    {
+      "email": "giulia@sangallitecnologie.com"
+    },
+    {
+      "email": "giulia@tastyribbon.com"
+    },
+    {
+      "email": "giuliana.tramagli@hotmail.it"
+    },
+    {
+      "email": "giulio.ambrosi@hotmail.com"
+    },
+    {
+      "email": "giulio.cosentino@gmail.com"
+    },
+    {
+      "email": "giulio.ferretti@fastwebnet.it"
+    },
+    {
+      "email": "giulio.palmieri812@libero.it"
+    },
+    {
+      "email": "giuliofezzi@phoenixcapital.it"
+    },
+    {
+      "email": "giuliogangemi@hotmail.com"
+    },
+    {
+      "email": "giunta_m@yahoo.com"
+    },
+    {
+      "email": "giurazza@vertis.it"
+    },
+    {
+      "email": "giusedonato@hotmail.it"
+    },
+    {
+      "email": "giusep.russo@libero.it"
+    },
+    {
+      "email": "giuseppe.bisogno@telecomitalia.it"
+    },
+    {
+      "email": "giuseppe.carluccio@studbocconi.it"
+    },
+    {
+      "email": "giuseppe.digiuda@polimi.it"
+    },
+    {
+      "email": "giuseppe.fumagalli@bcs.it"
+    },
+    {
+      "email": "giuseppe.galati@mis.mediobanca.com"
+    },
+    {
+      "email": "giuseppe.paleari@bancaconsulia.it"
+    },
+    {
+      "email": "giuseppe.pepe02@outlook.com"
+    },
+    {
+      "email": "giuseppe.santonato@it.ey.com"
+    },
+    {
+      "email": "giuseppe.sola@tids.telecomitalia.it"
+    },
+    {
+      "email": "giuseppe.tiralosi@i-betyou.com"
+    },
+    {
+      "email": "giuseppe.tonini@outlook.com"
+    },
+    {
+      "email": "giuseppe.venezia@e-gva.it"
+    },
+    {
+      "email": "giuseppe.zurlo@accenture.com"
+    },
+    {
+      "email": "giuseppe@visentini.it"
+    },
+    {
+      "email": "giuseppe@wing-capital.com"
+    },
+    {
+      "email": "giuseppe0987@hotmail.it"
+    },
+    {
+      "email": "giuseppedant@libero.it"
+    },
+    {
+      "email": "giuseppesacco@hotmail.com"
+    },
+    {
+      "email": "giusy.stanziola@unicredit.eu"
+    },
+    {
+      "email": "glorenzoni@bitbang.com"
+    },
+    {
+      "email": "gluca.84@hotmail.it"
+    },
+    {
+      "email": "gm@mrgoodidea.com"
+    },
+    {
+      "email": "gmanfrini@sicomputer.it"
+    },
+    {
+      "email": "gmicci72@gmail.com"
+    },
+    {
+      "email": "gp56@fastwebnet.it"
+    },
+    {
+      "email": "gpagnini@yahoo.it"
+    },
+    {
+      "email": "gpancrazi@kpmg.it"
+    },
+    {
+      "email": "gpcamanzi@sicomputer.it"
+    },
+    {
+      "email": "gr82@hotmail.co.uk"
+    },
+    {
+      "email": "grandesc@hotmail.com"
+    },
+    {
+      "email": "grant.ross@yandex.ru"
+    },
+    {
+      "email": "grazia.montera@iit.it"
+    },
+    {
+      "email": "grazianig@yahoo.com"
+    },
+    {
+      "email": "graziano.tosi@unicredit.eu"
+    },
+    {
+      "email": "graziatullia.zanni@italtel.com"
+    },
+    {
+      "email": "gregorio.papadia@telecomitalia.it"
+    },
+    {
+      "email": "gregory.cupillari@master.sdabocconi.it"
+    },
+    {
+      "email": "grf@hub2data.com"
+    },
+    {
+      "email": "guglielmo.auricchio@auricchio.it"
+    },
+    {
+      "email": "guido.cannito@embawe.sdabocconi.it"
+    },
+    {
+      "email": "guido.corti@engauge.it"
+    },
+    {
+      "email": "guido.ferloni@olivetti.com"
+    },
+    {
+      "email": "guido.lecce@doorwayplatform.com"
+    },
+    {
+      "email": "guidocir@hotmail.com"
+    },
+    {
+      "email": "guidowilliams@yahoo.com"
+    },
+    {
+      "email": "gwuopl@yahoo.com"
+    },
+    {
+      "email": "h.hofer@noi.bz.it"
+    },
+    {
+      "email": "h.rosch@virgilio.it"
+    },
+    {
+      "email": "hadia.amjad@ucea.pt"
+    },
+    {
+      "email": "hanyangtaiyan@meituan.com"
+    },
+    {
+      "email": "harvey@theaedge.com"
+    },
+    {
+      "email": "heimann@italianbusinessconsulting.com"
+    },
+    {
+      "email": "i.critelli@noi.bz.it"
+    },
+    {
+      "email": "iacopo.destri@c-lex.it"
+    },
+    {
+      "email": "iamtxf@hotmail.com"
+    },
+    {
+      "email": "icarratu@hotmail.com"
+    },
+    {
+      "email": "icerea@hotmail.it"
+    },
+    {
+      "email": "ida-parisi@hotmail.com"
+    },
+    {
+      "email": "ilaria.fava@favalegal.com"
+    },
+    {
+      "email": "immobili@ca-re.it"
+    },
+    {
+      "email": "infantemarcello@libero.it"
+    },
+    {
+      "email": "innovation@wemakefuture.it"
+    },
+    {
+      "email": "innside.fuerteventura@melia.com"
+    },
+    {
+      "email": "io@cosimobaldini.com"
+    },
+    {
+      "email": "ionut.tata@iceberg.plus"
+    },
+    {
+      "email": "irene.giannini@hotmail.it"
+    },
+    {
+      "email": "irina.cavallini@mediolanum.it"
+    },
+    {
+      "email": "irreranazzareno@libero.it"
+    },
+    {
+      "email": "isabella_d@hotmail.it"
+    },
+    {
+      "email": "isabella.caggiati@mediobancapremier.com"
+    },
+    {
+      "email": "isidoro.albergucci@bancadiasti.it"
+    },
+    {
+      "email": "it@farmalabor.it"
+    },
+    {
+      "email": "italicaenergiasrl@virgilio.it"
+    },
+    {
+      "email": "italo.milanese@telecomitalia.it"
+    },
+    {
+      "email": "ivan_colecchia@hotmail.com"
+    },
+    {
+      "email": "ivan.ongaro@gecalspa.it"
+    },
+    {
+      "email": "ivo.boniolo@e-novia.it"
+    },
+    {
+      "email": "ivoevaristo.petrella@unicredit.eu"
+    },
+    {
+      "email": "j_marsili@hotmail.com"
+    },
+    {
+      "email": "j_valentine@dealflowfunds.com"
+    },
+    {
+      "email": "j.capelli@area38.it"
+    },
+    {
+      "email": "j.farris@startex.ai"
+    },
+    {
+      "email": "j.riddiford@dynamosoftware.com"
+    },
+    {
+      "email": "j.vender@joveinvest.com"
+    },
+    {
+      "email": "jacopo.benucci@unicredit.eu"
+    },
+    {
+      "email": "jacopo.benucci@unicreditgroup.eu"
+    },
+    {
+      "email": "jacopo.benucci@unicreditleasing.eu"
+    },
+    {
+      "email": "jacopo.cst@hotmail.it"
+    },
+    {
+      "email": "jacopo@innovitsf.com"
+    },
+    {
+      "email": "jad.jubaili@teg.co.ae"
+    },
+    {
+      "email": "james_gould74@yahoo.co.uk"
+    },
+    {
+      "email": "james@seatunique.com"
+    },
+    {
+      "email": "janetschek@hotmail.com"
+    },
+    {
+      "email": "jarellg@yahoo.com"
+    },
+    {
+      "email": "javagyan@hotmail.com"
+    },
+    {
+      "email": "jcross@emergeamericas.com"
+    },
+    {
+      "email": "jeffenzo@alice.it"
+    },
+    {
+      "email": "jemma81@hotmail.co.uk"
+    },
+    {
+      "email": "jeshi_raj@yahoo.com"
+    },
+    {
+      "email": "jessica.leo@libero.it"
+    },
+    {
+      "email": "jessica.pauciulo@azimutdirect.com"
+    },
+    {
+      "email": "jfmcone@hotmail.com"
+    },
+    {
+      "email": "jhxzwm@outlook.com"
+    },
+    {
+      "email": "jig2nesh@yahoo.com"
+    },
+    {
+      "email": "joao.manuel.teixeira@ucea.pt"
+    },
+    {
+      "email": "jordankuang168@hotmail.com"
+    },
+    {
+      "email": "jose@valcarce.biz"
+    },
+    {
+      "email": "josel@outlook.com"
+    },
+    {
+      "email": "joseph.davis@pitchbook.com"
+    },
+    {
+      "email": "josepuccini@hotmail.com"
+    },
+    {
+      "email": "jpaezw@hotmail.com"
+    },
+    {
+      "email": "jparker@electronicsearch.com"
+    },
+    {
+      "email": "jpm.design@seznam.cz"
+    },
+    {
+      "email": "jsppi27@hotmail.com"
+    },
+    {
+      "email": "jt@jollytenda.com"
+    },
+    {
+      "email": "jtortice@fintech.global"
+    },
+    {
+      "email": "juan.lopez@designfusion.it"
+    },
+    {
+      "email": "judealexis89@yahoo.com"
+    },
+    {
+      "email": "julien.buratto@subitosms.it"
+    },
+    {
+      "email": "k.dadah@outlook.com"
+    },
+    {
+      "email": "kannanthanika@yahoo.ca"
+    },
+    {
+      "email": "karthick_sh53@hotmail.com"
+    },
+    {
+      "email": "katia.daros@irinox.com"
+    },
+    {
+      "email": "kerbriand@hotmail.fr"
+    },
+    {
+      "email": "khaled_ennaceur@hotmail.fr"
+    },
+    {
+      "email": "kikkokiesura85@libero.it"
+    },
+    {
+      "email": "kleitakapaj@hotmail.com"
+    },
+    {
+      "email": "koen.cassenaer@telenet.be"
+    },
+    {
+      "email": "kolarobi@hotmail.it"
+    },
+    {
+      "email": "kozelkin@yahoo.com"
+    },
+    {
+      "email": "ksenia.alexeeva@accenture.com"
+    },
+    {
+      "email": "l_chillemi@vittoriaassicurazioni.it"
+    },
+    {
+      "email": "l_quara@seleiama.it"
+    },
+    {
+      "email": "l.david@live.it"
+    },
+    {
+      "email": "l.gelsomino@hotmail.it"
+    },
+    {
+      "email": "l.marangon@noi.bz.it"
+    },
+    {
+      "email": "l.negri@samsung.com"
+    },
+    {
+      "email": "l.oliva@avanade.com"
+    },
+    {
+      "email": "l.romagnoli@namirial.com"
+    },
+    {
+      "email": "l.tomasini@namirial.com"
+    },
+    {
+      "email": "l.torelli@wehunt.eu"
+    },
+    {
+      "email": "labliness19@yahoo.com"
+    },
+    {
+      "email": "labottegaperlufficio@fastwebnet.it"
+    },
+    {
+      "email": "lailsonpcardoso@hotmail.com"
+    },
+    {
+      "email": "lastorri@libero.it"
+    },
+    {
+      "email": "laura.benatti@bugnion.eu"
+    },
+    {
+      "email": "laura.fineo@sella.it"
+    },
+    {
+      "email": "laura.muro@istciechimilano.it"
+    },
+    {
+      "email": "laura.polinari@gtech.com"
+    },
+    {
+      "email": "laura.savini@finlombarda.it"
+    },
+    {
+      "email": "lauragiordan@yahoo.com"
+    },
+    {
+      "email": "lauragrecia@libero.it"
+    },
+    {
+      "email": "laurapasini17@virgilio.it"
+    },
+    {
+      "email": "laurasarotto@yahoo.it"
+    },
+    {
+      "email": "lavoroigienstudio@gmail.com"
+    },
+    {
+      "email": "lawrence_cu@yahoo.com"
+    },
+    {
+      "email": "layla.pavone@comune.milano.it"
+    },
+    {
+      "email": "lbeltrametti@abgroup.it"
+    },
+    {
+      "email": "lboselli@kpmg.it"
+    },
+    {
+      "email": "ldoni@outlook.it"
+    },
+    {
+      "email": "lemaldi@sicomputer.it"
+    },
+    {
+      "email": "leogal3@gmail.com"
+    },
+    {
+      "email": "leonardo.agazzi@yahoo.it"
+    },
+    {
+      "email": "leonardo.mangia@linksmt.it"
+    },
+    {
+      "email": "leonardo.massa@mitotech.eu"
+    },
+    {
+      "email": "leonardo.rubattu@aurum-srl.it"
+    },
+    {
+      "email": "leonardo.vallone@libero.it"
+    },
+    {
+      "email": "leonardo.vecchi@computeklocazioni.it"
+    },
+    {
+      "email": "leonardo@mangiavacchistudio.com"
+    },
+    {
+      "email": "lestifler@hotmail.com"
+    },
+    {
+      "email": "let_ventu@live.it"
+    },
+    {
+      "email": "leverano@yahoo.com"
+    },
+    {
+      "email": "lferrari@libero.it"
+    },
+    {
+      "email": "lfranchini@angelventure.it"
+    },
+    {
+      "email": "libero55@hotmail.com"
+    },
+    {
+      "email": "liliana.cosentino@posteitaliane.it"
+    },
+    {
+      "email": "linda.davies123@outlook.com"
+    },
+    {
+      "email": "linkepost@outlook.it"
+    },
+    {
+      "email": "lisa@insafari.it"
+    },
+    {
+      "email": "livio.palomba@unicatt.it"
+    },
+    {
+      "email": "livio.palomba@yahoo.com"
+    },
+    {
+      "email": "livio.pogliano@vodafone.com"
+    },
+    {
+      "email": "lizzettesantacruz@yahoo.com"
+    },
+    {
+      "email": "logistica.pneumatici@brasiello.it"
+    },
+    {
+      "email": "logistica@hbtrading.it"
+    },
+    {
+      "email": "lombardo.dav@sicurezzaedambiente.com"
+    },
+    {
+      "email": "lonardigiulia@libero.it"
+    },
+    {
+      "email": "lorecongiu@hotmail.it"
+    },
+    {
+      "email": "loredana.sibilla@mediolanum.it"
+    },
+    {
+      "email": "lorena.corinaldesi@vodafone.com"
+    },
+    {
+      "email": "lorena.corinaldesi@yahoo.com"
+    },
+    {
+      "email": "lorena.taibbi@hotmail.it"
+    },
+    {
+      "email": "lorenzo.anghinoni@outlook.it"
+    },
+    {
+      "email": "lorenzo.castelli@bizmatica.com"
+    },
+    {
+      "email": "lorenzo.degrandi@choralia.com"
+    },
+    {
+      "email": "lorenzo.giordano@praesidiumsgr.com"
+    },
+    {
+      "email": "lorenzo.langella@bnpparibas.com"
+    },
+    {
+      "email": "lorenzo.lippi@fastweb.it"
+    },
+    {
+      "email": "lorenzo74@msn.com"
+    },
+    {
+      "email": "lorenzobuzzetti@libero.it"
+    },
+    {
+      "email": "loriniro@libero.it"
+    },
+    {
+      "email": "loris.chiaberge@msccruises.com"
+    },
+    {
+      "email": "lrubattu@lbsadvisory.com"
+    },
+    {
+      "email": "luana.bosio@sababasecurity.com"
+    },
+    {
+      "email": "luca_ferrari64@hotmail.com"
+    },
+    {
+      "email": "luca_gianella@yahoo.it"
+    },
+    {
+      "email": "luca_vignaga@marzottogroup.it"
+    },
+    {
+      "email": "luca.abbadini.agente@bancacfplus.it"
+    },
+    {
+      "email": "luca.aloi@accenture.com"
+    },
+    {
+      "email": "luca.badessi@accenture.com"
+    },
+    {
+      "email": "luca.barrile@cdpventurecapital.it"
+    },
+    {
+      "email": "luca.bassetto@gruppofma.it"
+    },
+    {
+      "email": "luca.bertoletti@ireth.net"
+    },
+    {
+      "email": "luca.binetti@multitime.it"
+    },
+    {
+      "email": "luca.carrai@polimi.it"
+    },
+    {
+      "email": "luca.caseri@unicredit.eu"
+    },
+    {
+      "email": "luca.casini@esprinet.com"
+    },
+    {
+      "email": "luca.castello@staff.aruba.it"
+    },
+    {
+      "email": "luca.cattaneo@mypoolservice.it"
+    },
+    {
+      "email": "luca.colombo@hotmail.com"
+    },
+    {
+      "email": "luca.corti@mastercard.com"
+    },
+    {
+      "email": "luca.crepaldi@comapp.it"
+    },
+    {
+      "email": "luca.domeniconi@ibs.it"
+    },
+    {
+      "email": "luca.gambardella@artificialy.com"
+    },
+    {
+      "email": "luca.iacomelli@fastweb.it"
+    },
+    {
+      "email": "luca.leopizzi@numeroblu.it"
+    },
+    {
+      "email": "luca.lucente@mediobanca.com"
+    },
+    {
+      "email": "luca.maccarini@libero.it"
+    },
+    {
+      "email": "luca.maccarini@lifonti.it"
+    },
+    {
+      "email": "luca.pronzati@msccruises.com"
+    },
+    {
+      "email": "luca.siciliano@addvalue.it"
+    },
+    {
+      "email": "luca.tremolada@ilsole24ore.com"
+    },
+    {
+      "email": "luca.vincelli@yahoo.it"
+    },
+    {
+      "email": "luca@opificio137.com"
+    },
+    {
+      "email": "luca@valerio.cc"
+    },
+    {
+      "email": "lucaarchitetto@hotmail.it"
+    },
+    {
+      "email": "lucafallica@hotmail.com"
+    },
+    {
+      "email": "lucagigliotti@virgilio.it"
+    },
+    {
+      "email": "lucanovelli@tncitalia.it"
+    },
+    {
+      "email": "lucia.occhinegro@it.ey.com"
+    },
+    {
+      "email": "luciana.maci@economyup.it"
+    },
+    {
+      "email": "luciana.rossi-02@vodafone.com"
+    },
+    {
+      "email": "luciano.albanese@telecomitalia.it"
+    },
+    {
+      "email": "luciano.fusco@azimutdirect.com"
+    },
+    {
+      "email": "lucio.chiocci@ntsproject.it"
+    },
+    {
+      "email": "lucio.legrenzi@cardif.it"
+    },
+    {
+      "email": "ludovica.cilli@lutech.it"
+    },
+    {
+      "email": "ludovico.jommi@outlook.com"
+    },
+    {
+      "email": "ludovico.marioli@outlook.com"
+    },
+    {
+      "email": "luigi.dipiazza@adrventures.it"
+    },
+    {
+      "email": "luigi.maddalena@yahoo.it"
+    },
+    {
+      "email": "luigi.martines@ondapiu.it"
+    },
+    {
+      "email": "luigi.midolo@hotmail.it"
+    },
+    {
+      "email": "luigi.sm94@libero.it"
+    },
+    {
+      "email": "luigidellamonica@hotmail.it"
+    },
+    {
+      "email": "luigilampi@gmail.com"
+    },
+    {
+      "email": "luisa.bagnoli@beyondinternational.it"
+    },
+    {
+      "email": "luzzattobertollo@hotmail.com"
+    },
+    {
+      "email": "m.armando@neitec.eu"
+    },
+    {
+      "email": "m.banfo@libero.it"
+    },
+    {
+      "email": "m.benzoni@costanzoeassociati.it"
+    },
+    {
+      "email": "m.berselli@libero.it"
+    },
+    {
+      "email": "m.bertaccini@cryptolab.us"
+    },
+    {
+      "email": "m.bianchi@sydema.it"
+    },
+    {
+      "email": "m.cagnetta@hotmail.com"
+    },
+    {
+      "email": "m.ceola@mcube.it"
+    },
+    {
+      "email": "m.ceravolo@pigrecofinance.com"
+    },
+    {
+      "email": "m.colangelo@accenture.com"
+    },
+    {
+      "email": "m.conte@publimediagroup.it"
+    },
+    {
+      "email": "m.didonna@sace.it"
+    },
+    {
+      "email": "m.favaro@hfinvest.eu"
+    },
+    {
+      "email": "m.fior@virgilio.it"
+    },
+    {
+      "email": "m.gambaro@finnat.it"
+    },
+    {
+      "email": "m.gelmini@andforward.com"
+    },
+    {
+      "email": "m.giorgetti@vrelations.it"
+    },
+    {
+      "email": "m.innocenti@hotmail.it"
+    },
+    {
+      "email": "m.monti@techbricks.io"
+    },
+    {
+      "email": "m.pessina@adp-tec.com"
+    },
+    {
+      "email": "m.privitera@yahoo.it"
+    },
+    {
+      "email": "m.zan@sefeaimpact.it"
+    },
+    {
+      "email": "m1m1m@163.com"
+    },
+    {
+      "email": "mabri71@libero.it"
+    },
+    {
+      "email": "macinante@netconsultingcube.com"
+    },
+    {
+      "email": "maestriluca@hotmail.com"
+    },
+    {
+      "email": "magli@oaservice.it"
+    },
+    {
+      "email": "magmflower@yahoo.com"
+    },
+    {
+      "email": "magnus.wingmark@outlook.com"
+    },
+    {
+      "email": "magori1981@hotmail.com"
+    },
+    {
+      "email": "mail@bruno.cipriano.name"
+    },
+    {
+      "email": "mail@matteodegaetano.it"
+    },
+    {
+      "email": "maki84@hotmail.it"
+    },
+    {
+      "email": "malibugraphics@yahoo.com"
+    },
+    {
+      "email": "malik_amir@hotmail.com"
+    },
+    {
+      "email": "maltom@fastwebnet.it"
+    },
+    {
+      "email": "management@alfatherm.it"
+    },
+    {
+      "email": "manager@hotelcavour.it"
+    },
+    {
+      "email": "manfredi.bernardi01@icatt.it"
+    },
+    {
+      "email": "manlio.scavo@telecomitalia.it"
+    },
+    {
+      "email": "manopriyaravi@yahoo.com"
+    },
+    {
+      "email": "manuela.bucciarelli@enel.com"
+    },
+    {
+      "email": "manuela.mango@neperiagroup.com"
+    },
+    {
+      "email": "manuela.nava@multimedica.it"
+    },
+    {
+      "email": "manuela.tortorici@libero.it"
+    },
+    {
+      "email": "manuelc_@hotmail.com"
+    },
+    {
+      "email": "manueortizp@hotmail.com"
+    },
+    {
+      "email": "manumzz@hotmail.com"
+    },
+    {
+      "email": "manzoli@hotmail.com"
+    },
+    {
+      "email": "marce.riva@libero.it"
+    },
+    {
+      "email": "marcela.my@hotmail.it"
+    },
+    {
+      "email": "marcella.migliorini@reiser.it"
+    },
+    {
+      "email": "marcello.alberio@hotmail.com"
+    },
+    {
+      "email": "marcello.lamperti@masserdotti.it"
+    },
+    {
+      "email": "marcello.lolli2@studio.unibo.it"
+    },
+    {
+      "email": "marcello.puddu@outlook.it"
+    },
+    {
+      "email": "marcello.satulli@iblbanca.it"
+    },
+    {
+      "email": "marcellodevincenti@yahoo.it"
+    },
+    {
+      "email": "marco_diluzio@hotmail.com"
+    },
+    {
+      "email": "marco_salvetti@yahoo.it"
+    },
+    {
+      "email": "marco.alberio@seregnosoccorso.org"
+    },
+    {
+      "email": "marco.alvisi@cetma.it"
+    },
+    {
+      "email": "marco.andreoli@telecomitalia.it"
+    },
+    {
+      "email": "marco.avetta@solidusgold.eu"
+    },
+    {
+      "email": "marco.becca@me.com"
+    },
+    {
+      "email": "marco.bennici@hotmail.it"
+    },
+    {
+      "email": "marco.cavoletti@telecomitalia.it"
+    },
+    {
+      "email": "marco.chiancone@cordusiofiduciaria.it"
+    },
+    {
+      "email": "marco.costa@safenet-inc.com"
+    },
+    {
+      "email": "marco.cutuli@aileenspharma.com"
+    },
+    {
+      "email": "marco.dandrea@hotmail.com"
+    },
+    {
+      "email": "marco.didio@valuelab.it"
+    },
+    {
+      "email": "marco.ditta@intesasanpaolo.com"
+    },
+    {
+      "email": "marco.foglizzo@brancainternational.com"
+    },
+    {
+      "email": "marco.landi@institut-europia.eu"
+    },
+    {
+      "email": "marco.landi@orange.fr"
+    },
+    {
+      "email": "marco.leonelli@sella.it"
+    },
+    {
+      "email": "marco.leopardi@mediolanum.it"
+    },
+    {
+      "email": "marco.lomuscio@rina.org"
+    },
+    {
+      "email": "marco.mangiulli@staff.aruba.it"
+    },
+    {
+      "email": "marco.marchesi@olivetti.com"
+    },
+    {
+      "email": "marco.michelini@aimg.it"
+    },
+    {
+      "email": "marco.mometto@accenture.com"
+    },
+    {
+      "email": "marco.noseda@cariplofactory.it"
+    },
+    {
+      "email": "marco.ottaviani@msccruises.com"
+    },
+    {
+      "email": "marco.pandi@hotmail.com"
+    },
+    {
+      "email": "marco.pennarola@fastweb.it"
+    },
+    {
+      "email": "marco.pusterla@unicredit.eu"
+    },
+    {
+      "email": "marco.redaelli@armstampi.it"
+    },
+    {
+      "email": "marco.rizzelli@seedmoney.it"
+    },
+    {
+      "email": "marco.romei@consulenti.sella.it"
+    },
+    {
+      "email": "marco.ronchi@rocketmail.com"
+    },
+    {
+      "email": "marco.rossi@telecomitalia.it"
+    },
+    {
+      "email": "marco.sala@brightstarlottery.com"
+    },
+    {
+      "email": "marco.venturini@violatech.it"
+    },
+    {
+      "email": "marco.vita@laifgroup.com"
+    },
+    {
+      "email": "marco.zaffalon@artificialy.com"
+    },
+    {
+      "email": "marco.zaffaroni@mediobancapremier.com"
+    },
+    {
+      "email": "marco@graziani-ventures.com"
+    },
+    {
+      "email": "marco@melai.org"
+    },
+    {
+      "email": "marco@mvismara.it"
+    },
+    {
+      "email": "marco@tinteunite.it"
+    },
+    {
+      "email": "marco@zuffanelli.eu"
+    },
+    {
+      "email": "marco22661@yahoo.it"
+    },
+    {
+      "email": "marcod97@live.it"
+    },
+    {
+      "email": "marcom74@hotmail.com"
+    },
+    {
+      "email": "marcomarchese71@libero.it"
+    },
+    {
+      "email": "marcomuthing@hotmail.com"
+    },
+    {
+      "email": "marcopeconi@hotmail.it"
+    },
+    {
+      "email": "marcopeg@hotmail.com"
+    },
+    {
+      "email": "marcotrt@inwind.it"
+    },
+    {
+      "email": "marenza.douglas@kony.com"
+    },
+    {
+      "email": "margherita.corini@mondadori.it"
+    },
+    {
+      "email": "mari_mo@hotmail.it"
+    },
+    {
+      "email": "maria_amelio@libero.it"
+    },
+    {
+      "email": "maria.ameli@bancagenerali.it"
+    },
+    {
+      "email": "maria.bancale@cdpventurecapital.it"
+    },
+    {
+      "email": "maria.coclite@mail-bip.com"
+    },
+    {
+      "email": "maria.dmitrievskaya@live.it"
+    },
+    {
+      "email": "maria.farroukou@ucea.pt"
+    },
+    {
+      "email": "mariagrazia_berardi@yahoo.com"
+    },
+    {
+      "email": "mariagrazia.cipelletti@snam.it"
+    },
+    {
+      "email": "marialanotte@hotmail.com"
+    },
+    {
+      "email": "mariangela.vistocco@honeywell.com"
+    },
+    {
+      "email": "mariani@unitedventures.it"
+    },
+    {
+      "email": "marianna.dantona@comune.milano.it"
+    },
+    {
+      "email": "mariannapierucci@libero.it"
+    },
+    {
+      "email": "mariapia.croce@telecomitalia.it"
+    },
+    {
+      "email": "mariarosariai@hotmail.com"
+    },
+    {
+      "email": "mariascarioni@ulidesign.it"
+    },
+    {
+      "email": "mariateresa.fusco@unicredit.eu"
+    },
+    {
+      "email": "mariavittoria.destefanis@enel.com"
+    },
+    {
+      "email": "marika.scroccaro@dhl.com"
+    },
+    {
+      "email": "marilena.manzoni@unicredit.eu"
+    },
+    {
+      "email": "marin.alessandro@hotmail.com"
+    },
+    {
+      "email": "marina.adamo@athlos.biz"
+    },
+    {
+      "email": "marina.gatti@proclesis.it"
+    },
+    {
+      "email": "marina.vergani53@icloud.com"
+    },
+    {
+      "email": "marinamelidou@hotmail.com"
+    },
+    {
+      "email": "mario_alloro@yahoo.it"
+    },
+    {
+      "email": "mario_daja@hotmail.com"
+    },
+    {
+      "email": "mario.cinguino@virgilio.it"
+    },
+    {
+      "email": "mario.cortese@st.com"
+    },
+    {
+      "email": "mario.garau@geasar.it"
+    },
+    {
+      "email": "mario.riciputi@sirsviluppo.it"
+    },
+    {
+      "email": "mario.varriale@alkemy.com"
+    },
+    {
+      "email": "marionunziata@hotmail.it"
+    },
+    {
+      "email": "marioperini@yahoo.com"
+    },
+    {
+      "email": "mariorimini2007@libero.it"
+    },
+    {
+      "email": "markallen9@outlook.com"
+    },
+    {
+      "email": "markcom@maurofanfoni.com"
+    },
+    {
+      "email": "marta.carboni@ifabfoundation.org"
+    },
+    {
+      "email": "marta.feltrin@bnlmail.com"
+    },
+    {
+      "email": "martina.cernigoi@gruppofinservice.com"
+    },
+    {
+      "email": "martina.scr@hotmail.com"
+    },
+    {
+      "email": "martina.tomassi@hotmail.it"
+    },
+    {
+      "email": "martinenghi.sabina@hsr.it"
+    },
+    {
+      "email": "marzia.pecce@mastercard.com"
+    },
+    {
+      "email": "marzia.treves@enel.com"
+    },
+    {
+      "email": "mascia.betti@live.com"
+    },
+    {
+      "email": "masoni@melaivivaldimasoni.it"
+    },
+    {
+      "email": "massi.orfanini@energiaigroup.com"
+    },
+    {
+      "email": "massimcc@hotmail.com"
+    },
+    {
+      "email": "massimiliano.cordini@avioninternational.com"
+    },
+    {
+      "email": "massimiliano.guerini@it.rhenus.com"
+    },
+    {
+      "email": "massimiliano.laporta@openjob.it"
+    },
+    {
+      "email": "massimiliano.perletti@roedl.com"
+    },
+    {
+      "email": "massimilianolucarelli@yahoo.it"
+    },
+    {
+      "email": "massimilianotedeschi@libero.it"
+    },
+    {
+      "email": "massimo.addesa@telecomitalia.it"
+    },
+    {
+      "email": "massimo.castelli@yahoo.it"
+    },
+    {
+      "email": "massimo.cravino@vodafone.com"
+    },
+    {
+      "email": "massimo.defazio@comapp.it"
+    },
+    {
+      "email": "massimo.detoffoli@iconsoftware.it"
+    },
+    {
+      "email": "massimo.iberti@finix-ts.com"
+    },
+    {
+      "email": "massimo.melis@melismelis.it"
+    },
+    {
+      "email": "massimo.morielli@accenture.com"
+    },
+    {
+      "email": "massimo.pastorino@toplocations.it"
+    },
+    {
+      "email": "massimo.piro@unicredit.eu"
+    },
+    {
+      "email": "massimo.tonelli@fastweb.it"
+    },
+    {
+      "email": "massimo.zischka@digisoft-multimedia.it"
+    },
+    {
+      "email": "massimocurcio@kpmg.it"
+    },
+    {
+      "email": "massimopalermo@hotmail.com"
+    },
+    {
+      "email": "massimotonelli1@virgilio.it"
+    },
+    {
+      "email": "mat.confa@hotmail.it"
+    },
+    {
+      "email": "matalza@hotmail.com"
+    },
+    {
+      "email": "mathias.lerum@unicredit.eu"
+    },
+    {
+      "email": "matt_rossanigo@hotmail.com"
+    },
+    {
+      "email": "matteo_paradisi@yahoo.it"
+    },
+    {
+      "email": "matteo.atleta@hotmail.it"
+    },
+    {
+      "email": "matteo.barcella@brumbrum.it"
+    },
+    {
+      "email": "matteo.bertela@acboilers.com"
+    },
+    {
+      "email": "matteo.brioschi@unicredit.eu"
+    },
+    {
+      "email": "matteo.cattadori@hotmail.com"
+    },
+    {
+      "email": "matteo.cellini@alkemy.com"
+    },
+    {
+      "email": "matteo.cocciolo@hotmail.it"
+    },
+    {
+      "email": "matteo.dibiagi@levillagebyca.com"
+    },
+    {
+      "email": "matteo.fiammetta@hotmail.it"
+    },
+    {
+      "email": "matteo.maciottarolandin@italtel.com"
+    },
+    {
+      "email": "matteo.ottavi@bnlmail.com"
+    },
+    {
+      "email": "matteo.ottavi@bnpparibas.com"
+    },
+    {
+      "email": "matteo.rossi@fabersystem.it"
+    },
+    {
+      "email": "matteo.scarabelli@cariplofactory.it"
+    },
+    {
+      "email": "matteo.tavecchio@yahoo.it"
+    },
+    {
+      "email": "matteo.valcarenghi@studiopirola.com"
+    },
+    {
+      "email": "matteo@co-wellness.com"
+    },
+    {
+      "email": "matteo@heritageholdings.co"
+    },
+    {
+      "email": "matteo1.moscatelli@polimi.it"
+    },
+    {
+      "email": "matteobay@yahoo.com"
+    },
+    {
+      "email": "matteobertolucci@libero.it"
+    },
+    {
+      "email": "matteomeago@cariparma.it"
+    },
+    {
+      "email": "matteomilione@rocketmail.com"
+    },
+    {
+      "email": "matteosantoro@yahoo.it"
+    },
+    {
+      "email": "mattia.lazzari@enel.com"
+    },
+    {
+      "email": "mattia@mountainmaps.it"
+    },
+    {
+      "email": "mattialeone93@msn.com"
+    },
+    {
+      "email": "maule@magex.it"
+    },
+    {
+      "email": "mauricatapano@hotmail.com"
+    },
+    {
+      "email": "maurizio.barberio@poliba.it"
+    },
+    {
+      "email": "maurizio.bernazzani@italtel.com"
+    },
+    {
+      "email": "maurizio.bonfiglio@prelios.com"
+    },
+    {
+      "email": "maurizio.cuzari@sirmi.it"
+    },
+    {
+      "email": "maurizio.davini@unipi.it"
+    },
+    {
+      "email": "maurizio.fiumi@gruppohera.it"
+    },
+    {
+      "email": "maurizio.gallina@mediolanum.it"
+    },
+    {
+      "email": "maurizio.intropido@italtel.com"
+    },
+    {
+      "email": "maurizio.marcelli@miprons.com"
+    },
+    {
+      "email": "maurizio.pagliarani@seling.it"
+    },
+    {
+      "email": "maurizio.riboni@hotmail.it"
+    },
+    {
+      "email": "maurizio.zaz@hotmail.it"
+    },
+    {
+      "email": "maurizio.zuppechin@sella.it"
+    },
+    {
+      "email": "mauriziocannizzaro@me.com"
+    },
+    {
+      "email": "mauro.califano@rodacciai.com"
+    },
+    {
+      "email": "mauro.carraro@unicredit.eu"
+    },
+    {
+      "email": "mauro.dario@consulenti.sella.it"
+    },
+    {
+      "email": "mauro.manetti@staff.aruba.it"
+    },
+    {
+      "email": "mauro.martinez@telecomitalia.it"
+    },
+    {
+      "email": "mauro.pretolani@fondoitaliano.it"
+    },
+    {
+      "email": "max_decimomeridio@yahoo.it"
+    },
+    {
+      "email": "max_tseng2003@yahoo.com.tw"
+    },
+    {
+      "email": "max.bulling@bizmatica.com"
+    },
+    {
+      "email": "max.minetola@yahoo.it"
+    },
+    {
+      "email": "max.per@hotmail.it"
+    },
+    {
+      "email": "max@ciccio.it"
+    },
+    {
+      "email": "max@maxcastelli.it"
+    },
+    {
+      "email": "maxbotta@hotmail.com"
+    },
+    {
+      "email": "mbm@mbmadventure.com"
+    },
+    {
+      "email": "mbonetti@mazzolaebignardi.it"
+    },
+    {
+      "email": "mbossi@talentia-software.com"
+    },
+    {
+      "email": "mburlini@hotmail.com"
+    },
+    {
+      "email": "mcanarelli@unitedventures.com"
+    },
+    {
+      "email": "mcaporel@jaguarlandrover.com"
+    },
+    {
+      "email": "mcinti@gemm.it"
+    },
+    {
+      "email": "mckaran2003@yahoo.com"
+    },
+    {
+      "email": "mdc@metanodotti.net"
+    },
+    {
+      "email": "mdecarolis1@hotmail.com"
+    },
+    {
+      "email": "mdesiato@redecam.com"
+    },
+    {
+      "email": "melissima8@hotmail.com"
+    },
+    {
+      "email": "membership@iacc-miami.com"
+    },
+    {
+      "email": "mentor_ita@hotmail.com"
+    },
+    {
+      "email": "merlin_millu@yahoo.co.in"
+    },
+    {
+      "email": "mg_donzelli@seleiama.it"
+    },
+    {
+      "email": "mgmattei@meetcenter.it"
+    },
+    {
+      "email": "mgrimaldii@yahoo.it"
+    },
+    {
+      "email": "michael_yesterday@hotmail.com"
+    },
+    {
+      "email": "michael@alpskiosks.com"
+    },
+    {
+      "email": "michela.altieri@accenture.com"
+    },
+    {
+      "email": "michela.berra@winch.it"
+    },
+    {
+      "email": "michela.giusti@cardif.com"
+    },
+    {
+      "email": "michela.rocca@rina.org"
+    },
+    {
+      "email": "michele.cinguino@sella.it"
+    },
+    {
+      "email": "michele.colio@yahoo.it"
+    },
+    {
+      "email": "michele.corcione@telecomitalia.it"
+    },
+    {
+      "email": "michele.crestani@sics.sport"
+    },
+    {
+      "email": "michele.cusenza@hele.it"
+    },
+    {
+      "email": "michele.damiani@outlook.com"
+    },
+    {
+      "email": "michele.ficara@assodigitale.it"
+    },
+    {
+      "email": "michele.fiorini@leonardo.com"
+    },
+    {
+      "email": "michele.maddalo@mosae.it"
+    },
+    {
+      "email": "michele.palermo@telecomitalia.it"
+    },
+    {
+      "email": "michele.possamai@icento.it"
+    },
+    {
+      "email": "michele.zunino@netalia.it"
+    },
+    {
+      "email": "michele@ameventures.it"
+    },
+    {
+      "email": "michele@ficara.org"
+    },
+    {
+      "email": "michele@sealand.it"
+    },
+    {
+      "email": "michelebardin@hotmail.com"
+    },
+    {
+      "email": "michelemongiello@hotmail.com"
+    },
+    {
+      "email": "michyjoly@libero.it"
+    },
+    {
+      "email": "micsc@tecnocasa.it"
+    },
+    {
+      "email": "mieke@solution4u.com"
+    },
+    {
+      "email": "mika_dide@yahoo.com"
+    },
+    {
+      "email": "milan_tous@mzv.cz"
+    },
+    {
+      "email": "milani.maura@virgilio.it"
+    },
+    {
+      "email": "milenacu@hotmail.com"
+    },
+    {
+      "email": "milo.morsiani@bonfiglioli.com"
+    },
+    {
+      "email": "miracoli@techfin.it"
+    },
+    {
+      "email": "mirco.casteller@ordinepsicologiveneto.it"
+    },
+    {
+      "email": "mirco.fabrucci@unicredit.eu"
+    },
+    {
+      "email": "miriam.frigerio@sorgenia.it"
+    },
+    {
+      "email": "mirka.bertani@unicredit.eu"
+    },
+    {
+      "email": "mirko.florindo@bt.com"
+    },
+    {
+      "email": "mirko.poggi@ymail.com"
+    },
+    {
+      "email": "ml@assuteurope.com"
+    },
+    {
+      "email": "ml@interstellardigital.io"
+    },
+    {
+      "email": "mlamperti1@fastwebnet.it"
+    },
+    {
+      "email": "mlauria@unirc.it"
+    },
+    {
+      "email": "mmagrini@unitedventures.it"
+    },
+    {
+      "email": "mmauri@cambria.uk.com"
+    },
+    {
+      "email": "mmencarini@expert.ai"
+    },
+    {
+      "email": "mocavallini@icloud.com"
+    },
+    {
+      "email": "modifiche@deghisupport.it"
+    },
+    {
+      "email": "molino_paola@hotmail.com"
+    },
+    {
+      "email": "monica.frigerio@accenture.com"
+    },
+    {
+      "email": "monica.muraro@mediobanca.com"
+    },
+    {
+      "email": "monica.salvestrin@nau.it"
+    },
+    {
+      "email": "monroefarmer@yahoo.com"
+    },
+    {
+      "email": "monseranita@yahoo.com"
+    },
+    {
+      "email": "morellosimone@hotmail.it"
+    },
+    {
+      "email": "moreno.gambirasi@msccrociere.it"
+    },
+    {
+      "email": "mparisatto@kpmg.it"
+    },
+    {
+      "email": "mpg1311@hotmail.com"
+    },
+    {
+      "email": "mpitassi@technologyestate.com"
+    },
+    {
+      "email": "mpitassi@technologyestate.eu"
+    },
+    {
+      "email": "mpmondino@libero.it"
+    },
+    {
+      "email": "mr.gierre@hotmail.it"
+    },
+    {
+      "email": "mr@maurorovelli.it"
+    },
+    {
+      "email": "mredionigi@rheavendors.com"
+    },
+    {
+      "email": "mrosso@rheavendors.com"
+    },
+    {
+      "email": "msideek@hotmail.com"
+    },
+    {
+      "email": "mtavorath05@gsb.columbia.edu"
+    },
+    {
+      "email": "mter@hotmail.it"
+    },
+    {
+      "email": "mtesta@armandotesta.it"
+    },
+    {
+      "email": "mz28fz2tbh@privaterelay.appleid.com"
+    },
+    {
+      "email": "n.aguiari@virgilio.it"
+    },
+    {
+      "email": "n.bonoli@iconsulting.biz"
+    },
+    {
+      "email": "n.deblasio@metoda.it"
+    },
+    {
+      "email": "n.fazzini@citel.it"
+    },
+    {
+      "email": "n.rossi@urkell.it"
+    },
+    {
+      "email": "n.stangolini@studiolegaleleone.com"
+    },
+    {
+      "email": "nadia.benabdallah@vodafone.com"
+    },
+    {
+      "email": "nadia.dellafiore@accenture.com"
+    },
+    {
+      "email": "nadiagrim@yahoo.it"
+    },
+    {
+      "email": "nantonio.gralluzzo@daleconsulting.it"
+    },
+    {
+      "email": "natascia.noveri@intesasanpaolo.com"
+    },
+    {
+      "email": "nazzareno_franze@yahoo.it"
+    },
+    {
+      "email": "nberat5@outlook.com"
+    },
+    {
+      "email": "ncavalli@intesigroup.com"
+    },
+    {
+      "email": "nck12278@aol.com"
+    },
+    {
+      "email": "ndellafiore@libero.it"
+    },
+    {
+      "email": "ngalloro@hotmail.it"
+    },
+    {
+      "email": "nico.franceschi@hotmail.it"
+    },
+    {
+      "email": "nicola_naccari@yahoo.it"
+    },
+    {
+      "email": "nicola.chiaranda@hotmail.co.uk"
+    },
+    {
+      "email": "nicola.giovinazzi@hotmail.com"
+    },
+    {
+      "email": "nicola.meneghello@thron.com"
+    },
+    {
+      "email": "nicola.pirozzi@billd.it"
+    },
+    {
+      "email": "nicola.sicilia@dhitech.it"
+    },
+    {
+      "email": "nicola.tufo@rsmitaly.com"
+    },
+    {
+      "email": "nicola.ungaro@softsel.it"
+    },
+    {
+      "email": "nicola@gimaitaly.com"
+    },
+    {
+      "email": "nicoletta.salis@telecomitalia.it"
+    },
+    {
+      "email": "nicolettaveronelli@hotmail.com"
+    },
+    {
+      "email": "nicolo@digitalcoci.com"
+    },
+    {
+      "email": "nicolosistefano@virgilio.it"
+    },
+    {
+      "email": "nikarie@msn.com"
+    },
+    {
+      "email": "nizar@ife.com.sa"
+    },
+    {
+      "email": "nlorusso@visionsys.it"
+    },
+    {
+      "email": "noris.amidani@hotmail.it"
+    },
+    {
+      "email": "noumeno78@yahoo.com"
+    },
+    {
+      "email": "novica_mrdovic@hotmail.com"
+    },
+    {
+      "email": "novica.mrdovic@add-value.it"
+    },
+    {
+      "email": "ntlink@ntlink.org"
+    },
+    {
+      "email": "o.croci@ctconline.it"
+    },
+    {
+      "email": "oculistica@hsr.it"
+    },
+    {
+      "email": "onlyone.mrl1979@yahoo.co.uk"
+    },
+    {
+      "email": "onola1@libero.it"
+    },
+    {
+      "email": "operativo@sirio1982.eu"
+    },
+    {
+      "email": "ornella.patricolo@comune.milano.it"
+    },
+    {
+      "email": "ottavia.barboni@novartis.com"
+    },
+    {
+      "email": "overmyer.heather@yahoo.com"
+    },
+    {
+      "email": "p_o1975@hotmail.com"
+    },
+    {
+      "email": "p_visintini@yahoo.it"
+    },
+    {
+      "email": "p.ciampi@mailciampi.com"
+    },
+    {
+      "email": "p.ferrara@tdhitaly.org"
+    },
+    {
+      "email": "p.graziani@bernabe.it"
+    },
+    {
+      "email": "p.pultrone@bluewin.ch"
+    },
+    {
+      "email": "p.taticchi@imperial.ac.uk"
+    },
+    {
+      "email": "p.trevisan@pininfarina.us"
+    },
+    {
+      "email": "p.vitiello@colloquia.it"
+    },
+    {
+      "email": "p.zottl@noi.bz.it"
+    },
+    {
+      "email": "pallino.gennaro@outlook.it"
+    },
+    {
+      "email": "pandistelle87@hotmail.it"
+    },
+    {
+      "email": "paocavallero@hotmail.it"
+    },
+    {
+      "email": "paola_zappulla@yahoo.it"
+    },
+    {
+      "email": "paola.bertona@accenture.com"
+    },
+    {
+      "email": "paola.colombo@cherrypick.it"
+    },
+    {
+      "email": "paola.dallasta@fastweb.it"
+    },
+    {
+      "email": "paola.garbelli@mediolanum.it"
+    },
+    {
+      "email": "paola.villa@biboitalia.com"
+    },
+    {
+      "email": "paolami@hotmail.com"
+    },
+    {
+      "email": "paolo_fiume@libero.it"
+    },
+    {
+      "email": "paolo_panza@fastwebnet.it"
+    },
+    {
+      "email": "paolo_zanni@hotmail.com"
+    },
+    {
+      "email": "paolo.abiuso@db.com"
+    },
+    {
+      "email": "paolo.amantia@enigaseluce.com"
+    },
+    {
+      "email": "paolo.andrigo@accenture.com"
+    },
+    {
+      "email": "paolo.baile@accenture.com"
+    },
+    {
+      "email": "paolo.barone@intelleraconsulting.com"
+    },
+    {
+      "email": "paolo.bianchini@metajsolution.it"
+    },
+    {
+      "email": "paolo.borsatti@icloud.com"
+    },
+    {
+      "email": "paolo.caroli@bancaprivataleasing.it"
+    },
+    {
+      "email": "paolo.cento@unicredit.eu"
+    },
+    {
+      "email": "paolo.colella@btinternet.com"
+    },
+    {
+      "email": "paolo.colpani@snam.it"
+    },
+    {
+      "email": "paolo.cordero@enigen.eu"
+    },
+    {
+      "email": "paolo.dandrea@telecomitalia.it"
+    },
+    {
+      "email": "paolo.mariani1@intesasanpaolo.com"
+    },
+    {
+      "email": "paolo.marzetti@forinnovation.it"
+    },
+    {
+      "email": "paolo.murri@telecomitalia.it"
+    },
+    {
+      "email": "paolo.pagano@cnit.it"
+    },
+    {
+      "email": "paolo.papini@intesasanpaolo.com"
+    },
+    {
+      "email": "paolo.premi@bancasistema.it"
+    },
+    {
+      "email": "paolo.primiero@assomonitor.org"
+    },
+    {
+      "email": "paolo.quaini@edison.it"
+    },
+    {
+      "email": "paolo.romano@numeroblu.it"
+    },
+    {
+      "email": "paolo.sisti@fastwebnet.it"
+    },
+    {
+      "email": "paolo.tonelli@nolorent.it"
+    },
+    {
+      "email": "paolo@alchimiainvestments.com"
+    },
+    {
+      "email": "paolo@paolokind.com"
+    },
+    {
+      "email": "paolobavassano@yahoo.it"
+    },
+    {
+      "email": "paolobobos@hotmail.it"
+    },
+    {
+      "email": "paolocom@comy.it"
+    },
+    {
+      "email": "paolodr7@hotmail.com"
+    },
+    {
+      "email": "paologian@hotmail.com"
+    },
+    {
+      "email": "paolom1981@yahoo.it"
+    },
+    {
+      "email": "paoloprimiero@farminerva.com"
+    },
+    {
+      "email": "paolouzo@yahoo.com"
+    },
+    {
+      "email": "papamoretti@hotmail.com"
+    },
+    {
+      "email": "papic_maja@yahoo.com"
+    },
+    {
+      "email": "pardurigao@hotmail.com"
+    },
+    {
+      "email": "pasquale.lambardi@relatech.com"
+    },
+    {
+      "email": "pasquale.mezzacapo@ent4bank.it"
+    },
+    {
+      "email": "pasquale.patricelli@innovery.net"
+    },
+    {
+      "email": "pasquali.chiara@studbocconi.it"
+    },
+    {
+      "email": "pathfinder.marcelli@yahoo.com"
+    },
+    {
+      "email": "patrizia.totaro@moffulabs.com"
+    },
+    {
+      "email": "patrucco.er@gmail.com"
+    },
+    {
+      "email": "paulothiagoramos@hotmail.com"
+    },
+    {
+      "email": "pazienti.covid19@hsr.it"
+    },
+    {
+      "email": "pbenintende@yahoo.it"
+    },
+    {
+      "email": "pesentimirko96@live.it"
+    },
+    {
+      "email": "peter.depoorter@idealsystems.be"
+    },
+    {
+      "email": "peter.robson@isenzo.com"
+    },
+    {
+      "email": "peter.scholtz@isenzo.com"
+    },
+    {
+      "email": "petraventura@hotmail.com"
+    },
+    {
+      "email": "pgautier@business2any.com"
+    },
+    {
+      "email": "phil.brian@seatunique.com"
+    },
+    {
+      "email": "piazzalibertybusiness@apple.com"
+    },
+    {
+      "email": "picardifederico@outlook.it"
+    },
+    {
+      "email": "piccininicelestica@fastwebnet.it"
+    },
+    {
+      "email": "pier_mariano@yahoo.it"
+    },
+    {
+      "email": "pierangelofissore@unifarma.it"
+    },
+    {
+      "email": "pierluigi.gardini@telecomitalia.it"
+    },
+    {
+      "email": "pierluigi.pace@tin.it"
+    },
+    {
+      "email": "pierluigi.rossi@unicredit.eu"
+    },
+    {
+      "email": "pierpaolo.rizzo@iblbanca.it"
+    },
+    {
+      "email": "pierrepolonelli@yahoo.it"
+    },
+    {
+      "email": "pietro.beimer@gellify.com"
+    },
+    {
+      "email": "pietro.guindani@vodafone.com"
+    },
+    {
+      "email": "pietro.labriola@telecomitalia.it"
+    },
+    {
+      "email": "pietro.lessi@strategyinsights.eu"
+    },
+    {
+      "email": "pietro.marini@deltatre.com"
+    },
+    {
+      "email": "pietro@alchimiainvestments.com"
+    },
+    {
+      "email": "pietrogmb@hotmail.com"
+    },
+    {
+      "email": "pietroparmeggiani@cavoursp.it"
+    },
+    {
+      "email": "pinna@sfirs.it"
+    },
+    {
+      "email": "pinonino01@libero.it"
+    },
+    {
+      "email": "piscitellimarco@icloud.com"
+    },
+    {
+      "email": "plans@tripit.com"
+    },
+    {
+      "email": "pneumatici.milano@brasiello.it"
+    },
+    {
+      "email": "poliziametropolitana@cittametropolitana.milano.it"
+    },
+    {
+      "email": "poppinsmarry82@yahoo.com"
+    },
+    {
+      "email": "powerhouse151@yahoo.com"
+    },
+    {
+      "email": "pperelli@fideuram.it"
+    },
+    {
+      "email": "prandoni@glfspa.it"
+    },
+    {
+      "email": "psjovane@hotmail.com"
+    },
+    {
+      "email": "puneetgiri@hotmail.com"
+    },
+    {
+      "email": "punzoluigi@hotmail.com"
+    },
+    {
+      "email": "pvcaroli@bancaprivataleasing.it"
+    },
+    {
+      "email": "qdr.ahmd@yahoo.com"
+    },
+    {
+      "email": "quang.ngodinh@telecomitalia.it"
+    },
+    {
+      "email": "r.albini@olivetti.com"
+    },
+    {
+      "email": "r.cassarino@intellisystem.it"
+    },
+    {
+      "email": "r.delgrosso@libero.it"
+    },
+    {
+      "email": "r.gattini@diplomatia.it"
+    },
+    {
+      "email": "r.leggi@hotmail.it"
+    },
+    {
+      "email": "r.stasi@abilab.it"
+    },
+    {
+      "email": "r.stefanini@yahoo.it"
+    },
+    {
+      "email": "ra@investmind.com.br"
+    },
+    {
+      "email": "rach.kent@hotmail.co.uk"
+    },
+    {
+      "email": "rachele.mugnaini@mediaset.it"
+    },
+    {
+      "email": "raffaele.arena@bnlmail.com"
+    },
+    {
+      "email": "raffaele.dalessio@rsmrevisione.it"
+    },
+    {
+      "email": "raffaele.ferraro@sella.it"
+    },
+    {
+      "email": "raffaele.zingone@bancaifis.it"
+    },
+    {
+      "email": "raffaeledaniele2002@hotmail.com"
+    },
+    {
+      "email": "raffaella.brumana@polimi.it"
+    },
+    {
+      "email": "raffaella.capelli@ricoh.it"
+    },
+    {
+      "email": "raffaella.pozzo@unicredit.eu"
+    },
+    {
+      "email": "raffi.galante@digitalbros.com"
+    },
+    {
+      "email": "rafforoberto@yahoo.com"
+    },
+    {
+      "email": "rahat301@yahoo.com"
+    },
+    {
+      "email": "rai_marino@hotmail.com"
+    },
+    {
+      "email": "raimondo.anello@outlook.it"
+    },
+    {
+      "email": "raimondo.piras@live.it"
+    },
+    {
+      "email": "rainbow_945@hotmail.it"
+    },
+    {
+      "email": "rameez.net@live.com"
+    },
+    {
+      "email": "rami.hachem@dirad.com"
+    },
+    {
+      "email": "randieri@intellisystem.it"
+    },
+    {
+      "email": "ranim@qutek.co"
+    },
+    {
+      "email": "rapparinimarco@hotmail.com"
+    },
+    {
+      "email": "razvan_bc@yahoo.com"
+    },
+    {
+      "email": "rbigliani@idc.com"
+    },
+    {
+      "email": "rblagahit@yahoo.com"
+    },
+    {
+      "email": "rboldori@yahoo.com"
+    },
+    {
+      "email": "rbramato@libero.it"
+    },
+    {
+      "email": "rcarrain@libero.it"
+    },
+    {
+      "email": "rcimino1@ford.com"
+    },
+    {
+      "email": "rcjeng@vip.163.com"
+    },
+    {
+      "email": "rdaniel@celltick.com"
+    },
+    {
+      "email": "rdonadon@mac.com"
+    },
+    {
+      "email": "realstevecook@btinternet.com"
+    },
+    {
+      "email": "rega_crescenzo@hotmail.com"
+    },
+    {
+      "email": "renata.vitiello@enel.com"
+    },
+    {
+      "email": "renato.marchi@marchiclan.it"
+    },
+    {
+      "email": "renato.miraglia@unicredit.eu"
+    },
+    {
+      "email": "renato@renatocifarelli.it"
+    },
+    {
+      "email": "renatomarchi@kpmg.it"
+    },
+    {
+      "email": "reneefk@yahoo.com"
+    },
+    {
+      "email": "reservations-vabbinfaru@banyantree.com"
+    },
+    {
+      "email": "reservations@amazonico.ae"
+    },
+    {
+      "email": "revellop@sba.bcc.it"
+    },
+    {
+      "email": "rgaliberti@inwind.it"
+    },
+    {
+      "email": "rgeorge4u@yahoo.com"
+    },
+    {
+      "email": "rgricinella@yahoo.com"
+    },
+    {
+      "email": "rhacker@fiu.edu"
+    },
+    {
+      "email": "riccardo.cattaneo@amplifon.com"
+    },
+    {
+      "email": "riccardo.fasson@telecomitalia.it"
+    },
+    {
+      "email": "riccardo.negro@futurenergyonline.it"
+    },
+    {
+      "email": "riccardo.orfanini@hotmail.com"
+    },
+    {
+      "email": "riccardo.renna@bancagenerali.it"
+    },
+    {
+      "email": "riccardo.torriani@hotmail.it"
+    },
+    {
+      "email": "ricci.e@adr.it"
+    },
+    {
+      "email": "richardjord@outlook.com"
+    },
+    {
+      "email": "riepilogo@ca-re.it"
+    },
+    {
+      "email": "rita.manuli@bper.it"
+    },
+    {
+      "email": "ritarob@hotmail.it"
+    },
+    {
+      "email": "rivelliadvisory@yahoo.com"
+    },
+    {
+      "email": "roberta.boffa@cogne.com"
+    },
+    {
+      "email": "roberta.dallosto@unicredit.eu"
+    },
+    {
+      "email": "roberta.merlo@edison.it"
+    },
+    {
+      "email": "robertdaspit@hotmail.com"
+    },
+    {
+      "email": "roberto_quarantiello@yahoo.it"
+    },
+    {
+      "email": "roberto_ruggeri@hotmail.com"
+    },
+    {
+      "email": "roberto.bernabo@outlook.it"
+    },
+    {
+      "email": "roberto.casavola@telecomitalia.it"
+    },
+    {
+      "email": "roberto.cassina@civibank.it"
+    },
+    {
+      "email": "roberto.dincau@langpartners.it"
+    },
+    {
+      "email": "roberto.fiorello@colani.com"
+    },
+    {
+      "email": "roberto.gambarato@avstore.tv"
+    },
+    {
+      "email": "roberto.guidetti@bper.it"
+    },
+    {
+      "email": "roberto.leonardi@geminea.com"
+    },
+    {
+      "email": "roberto.marrani@unicredit.eu"
+    },
+    {
+      "email": "roberto.meazza@hotmail.com"
+    },
+    {
+      "email": "roberto.milani@fastweb.it"
+    },
+    {
+      "email": "roberto.mosca@hdia.it"
+    },
+    {
+      "email": "roberto.pagliara@our-group.it"
+    },
+    {
+      "email": "roberto.pillon@areasciencepark.it"
+    },
+    {
+      "email": "roberto.polio@iwbank.it"
+    },
+    {
+      "email": "roberto.polio@iwprivateinvestments.it"
+    },
+    {
+      "email": "roberto.privitera@staff.aruba.it"
+    },
+    {
+      "email": "roberto.rio@lmclex.it"
+    },
+    {
+      "email": "roberto.vardisio@entropykn.net"
+    },
+    {
+      "email": "roberto@rnkitalia.eu"
+    },
+    {
+      "email": "roberto@robertorace.it"
+    },
+    {
+      "email": "roberto@zoorate.com"
+    },
+    {
+      "email": "robertoquagliuolo@hotmail.com"
+    },
+    {
+      "email": "robertoregosini@hotmail.com"
+    },
+    {
+      "email": "robin.slakhorst@symbid.com"
+    },
+    {
+      "email": "robmir77@hotmail.it"
+    },
+    {
+      "email": "robygrafico@libero.it"
+    },
+    {
+      "email": "robyzando@hotmail.com"
+    },
+    {
+      "email": "rocco.gilio@merck.com"
+    },
+    {
+      "email": "rocolorina@hotmail.com"
+    },
+    {
+      "email": "rodda.monica@pitagoraspa.it"
+    },
+    {
+      "email": "rodrigo@maze-impact.com"
+    },
+    {
+      "email": "rofonso1958@yahoo.it"
+    },
+    {
+      "email": "rolandomadonna@hotmail.com"
+    },
+    {
+      "email": "romain_bouvier@hotmail.com"
+    },
+    {
+      "email": "ron@greenstonemarketing.com"
+    },
+    {
+      "email": "roommedia@hotmail.com"
+    },
+    {
+      "email": "rosaelachi@hsbc.com"
+    },
+    {
+      "email": "rosanna.lafauci@nidogroup.it"
+    },
+    {
+      "email": "rosannalafauci@hotmail.com"
+    },
+    {
+      "email": "rosario.ferrauto@spafidfamilyoffice.com"
+    },
+    {
+      "email": "rosen.f@damicoship.com"
+    },
+    {
+      "email": "roshan_yaheya@yahoo.com"
+    },
+    {
+      "email": "rossellabaldini@yahoo.it"
+    },
+    {
+      "email": "rossellaponente@yahoo.it"
+    },
+    {
+      "email": "rossysedini@hotmail.com"
+    },
+    {
+      "email": "roy.buncome@collabignite.com"
+    },
+    {
+      "email": "rpb@hotmail.it"
+    },
+    {
+      "email": "rpolizzycarbonelli@yahoo.com"
+    },
+    {
+      "email": "rrastelli@outlook.it"
+    },
+    {
+      "email": "rs.piaggi@yahoo.it"
+    },
+    {
+      "email": "rsnovelli@gmx.net"
+    },
+    {
+      "email": "rupertino@hotmail.it"
+    },
+    {
+      "email": "s__rossi@hotmail.com"
+    },
+    {
+      "email": "s_trabucchi@libero.it"
+    },
+    {
+      "email": "s.amendola@lazioinnova.it"
+    },
+    {
+      "email": "s.dellorto@ied.it"
+    },
+    {
+      "email": "s.falconetti@samsung.com"
+    },
+    {
+      "email": "s.marchesini@outlook.it"
+    },
+    {
+      "email": "s.montagna@hotmail.it"
+    },
+    {
+      "email": "s.peroncini@eurekaventure.it"
+    },
+    {
+      "email": "s.pugliese@thefool.it"
+    },
+    {
+      "email": "s.zangari@reply.com"
+    },
+    {
+      "email": "sabina.taldo@edison.it"
+    },
+    {
+      "email": "sabrina.donaglia@giacomini.com"
+    },
+    {
+      "email": "sagna85@hotmail.it"
+    },
+    {
+      "email": "sajidgallant@hotmail.com"
+    },
+    {
+      "email": "salberinialessandro@gmail.com"
+    },
+    {
+      "email": "salim_fet07@yahoo.com"
+    },
+    {
+      "email": "salvatore.giallombardo@suedtirolbank.eu"
+    },
+    {
+      "email": "salvatore.iavarone@brasiello.it"
+    },
+    {
+      "email": "salvatore.verdicchia@mps.it"
+    },
+    {
+      "email": "salvatorelupia@hotmail.it"
+    },
+    {
+      "email": "salvatrice.interdonato@hotmail.it"
+    },
+    {
+      "email": "salvo.zangari@libero.it"
+    },
+    {
+      "email": "salvografica2012@yahoo.it"
+    },
+    {
+      "email": "salzant@hotmail.com"
+    },
+    {
+      "email": "sam.arcanda@hotmail.it"
+    },
+    {
+      "email": "samanta.bonin@libero.it"
+    },
+    {
+      "email": "samuele.ferrara@carclinic.it"
+    },
+    {
+      "email": "samuelegurrieri@yahoo.com.au"
+    },
+    {
+      "email": "sandra.aitala@telecomitalia.it"
+    },
+    {
+      "email": "sandra.catte@sas.com"
+    },
+    {
+      "email": "sandro.santi@2golive.it"
+    },
+    {
+      "email": "sansoneangela@hotmail.com"
+    },
+    {
+      "email": "sara_pula@hotmail.com"
+    },
+    {
+      "email": "sara.bergamo@fcagroup.com"
+    },
+    {
+      "email": "sara.kraus@olivetti.com"
+    },
+    {
+      "email": "sara.scialanga@it.ey.com"
+    },
+    {
+      "email": "sara.tavaglione@accenture.com"
+    },
+    {
+      "email": "sara@techlabcenter.com"
+    },
+    {
+      "email": "sasha.komarevych@unibocconi.it"
+    },
+    {
+      "email": "sasho_k3s@yahoo.com"
+    },
+    {
+      "email": "saveriotondi@hotmail.it"
+    },
+    {
+      "email": "sbaroncini@weinvest.international"
+    },
+    {
+      "email": "scarabosio@libero.it"
+    },
+    {
+      "email": "scatena@celerya.com"
+    },
+    {
+      "email": "schiano.giuseppe@hotmail.it"
+    },
+    {
+      "email": "schorel.dirk@outlook.de"
+    },
+    {
+      "email": "sclarke@emergeamericas.com"
+    },
+    {
+      "email": "scorrechaprice@emergeamericas.com"
+    },
+    {
+      "email": "screening@doorwayplatform.com"
+    },
+    {
+      "email": "sdepaoli@investhk.com.hk"
+    },
+    {
+      "email": "sean.tevel@hklaw.com"
+    },
+    {
+      "email": "sebastiano.rocca@valuepartners.com"
+    },
+    {
+      "email": "serena_pieroni@hotmail.com"
+    },
+    {
+      "email": "serena.digiovine@levillagebyca.com"
+    },
+    {
+      "email": "sergio_cassinelli@hotmail.com"
+    },
+    {
+      "email": "sergio.fontana@farmalabor.it"
+    },
+    {
+      "email": "sergio.silvestri@unicreditgroup.eu"
+    },
+    {
+      "email": "servizio.donatori@avismi.it"
+    },
+    {
+      "email": "servsped@dmail.it"
+    },
+    {
+      "email": "setuplasertv@hisenseitalia.it"
+    },
+    {
+      "email": "sfaralli@gruppobellucci.it"
+    },
+    {
+      "email": "sgiugliano@kpmg.it"
+    },
+    {
+      "email": "shadyfrancis@yahoo.com"
+    },
+    {
+      "email": "shopenhauer-wisdom@hotmail.com"
+    },
+    {
+      "email": "sidharth@almoayyedcomputers.com"
+    },
+    {
+      "email": "silvana.lucca@covatechpilates.com"
+    },
+    {
+      "email": "silvano.colombo@microsoft.com"
+    },
+    {
+      "email": "silvanomantegazza@yahoo.it"
+    },
+    {
+      "email": "silvia_chiaravalli@hotmail.com"
+    },
+    {
+      "email": "silvia_lodi@hotmail.com"
+    },
+    {
+      "email": "silvia.bosani@alkemy.com"
+    },
+    {
+      "email": "silvia.candiani@hotmail.it"
+    },
+    {
+      "email": "silvia.grattieri@om-still.it"
+    },
+    {
+      "email": "silvia.lelli@libero.it"
+    },
+    {
+      "email": "silvia.maffioletti@enel.com"
+    },
+    {
+      "email": "silvia.pagani@univa.va.it"
+    },
+    {
+      "email": "silvia.pugi@manageritalia.it"
+    },
+    {
+      "email": "silvia@changeup.it"
+    },
+    {
+      "email": "silvio.cosoleto@relatech.com"
+    },
+    {
+      "email": "silvio.mazzaro@leonardo.com"
+    },
+    {
+      "email": "silviopatrevita@yahoo.com"
+    },
+    {
+      "email": "silvygatt79@yahoo.com"
+    },
+    {
+      "email": "simogr@hotmail.it"
+    },
+    {
+      "email": "simol73@hotmail.com"
+    },
+    {
+      "email": "simon.84@hotmail.it"
+    },
+    {
+      "email": "simona.aluzzi@multitime.it"
+    },
+    {
+      "email": "simona.bottini@hotmail.it"
+    },
+    {
+      "email": "simona.corno@cdpventurecapital.it"
+    },
+    {
+      "email": "simona.fantechi@numeroblu.it"
+    },
+    {
+      "email": "simona.garotta@eptarefrigeration.com"
+    },
+    {
+      "email": "simona.maccioni@eni.com"
+    },
+    {
+      "email": "simona@olona1894.it"
+    },
+    {
+      "email": "simonariv@yahoo.com"
+    },
+    {
+      "email": "simone.campo@bip-group.com"
+    },
+    {
+      "email": "simone.carrer@selmabipiemme.it"
+    },
+    {
+      "email": "simone.checcoli@neurally.it"
+    },
+    {
+      "email": "simone.friggi@telecomitalia.it"
+    },
+    {
+      "email": "simone.lancioni@iblbanca.it"
+    },
+    {
+      "email": "simone.materazzi@betakeoff.com"
+    },
+    {
+      "email": "simone.montani@accenture.com"
+    },
+    {
+      "email": "simonecav@yahoo.it"
+    },
+    {
+      "email": "simonegrana@hotmail.com"
+    },
+    {
+      "email": "simonepugli@virgilio.it"
+    },
+    {
+      "email": "simonepugliatti@hotmail.it"
+    },
+    {
+      "email": "sinapian@posteitaliane.it"
+    },
+    {
+      "email": "sluconi@iris-group.it"
+    },
+    {
+      "email": "smartying@yahoo.com"
+    },
+    {
+      "email": "sodanolinda@yahoo.it"
+    },
+    {
+      "email": "sofia.motta@accenture.com"
+    },
+    {
+      "email": "sofiamizane@yahoo.it"
+    },
+    {
+      "email": "soleda.bora@namirial.com"
+    },
+    {
+      "email": "solitano@it.ibm.com"
+    },
+    {
+      "email": "solix@solix.pl"
+    },
+    {
+      "email": "sonia.sifo@tisparkle.com"
+    },
+    {
+      "email": "sonialombardi@live.com"
+    },
+    {
+      "email": "sonoqui1@live.it"
+    },
+    {
+      "email": "sorinalexandru.stoian@unicredit.eu"
+    },
+    {
+      "email": "sostroman@yahoo.it"
+    },
+    {
+      "email": "sponsor@wemakefuture.it"
+    },
+    {
+      "email": "sponsormytalent@yahoo.com"
+    },
+    {
+      "email": "sr-replica@hotmail.it"
+    },
+    {
+      "email": "ssgaravatti@class.it"
+    },
+    {
+      "email": "ssquaglia@hotmail.com"
+    },
+    {
+      "email": "staiani@bestunion.it"
+    },
+    {
+      "email": "stefania.deltosto@mastercard.com"
+    },
+    {
+      "email": "stefano_napoletano@mckinsey.com"
+    },
+    {
+      "email": "stefano.baroncini@atenait.it"
+    },
+    {
+      "email": "stefano.bonato@outlook.it"
+    },
+    {
+      "email": "stefano.capanna@yahoo.it"
+    },
+    {
+      "email": "stefano.cavalleri@hotmail.com"
+    },
+    {
+      "email": "stefano.cravero@e-consel.it"
+    },
+    {
+      "email": "stefano.damnotti@eptarefrigeration.com"
+    },
+    {
+      "email": "stefano.gallo@unicredit.eu"
+    },
+    {
+      "email": "stefano.maini@mis.mediobanca.com"
+    },
+    {
+      "email": "stefano.mander@accenture.com"
+    },
+    {
+      "email": "stefano.monti@lab-go.com"
+    },
+    {
+      "email": "stefano.orgolesu@seling.it"
+    },
+    {
+      "email": "stefano.ostroman@gaviasystems.it"
+    },
+    {
+      "email": "stefano.pampaloni@seacom.it"
+    },
+    {
+      "email": "stefano.pedron@jakala.com"
+    },
+    {
+      "email": "stefano.piovesan@yahoo.com"
+    },
+    {
+      "email": "stefano.priola@centrico.tech"
+    },
+    {
+      "email": "stefano.quaglioni@vodafone.com"
+    },
+    {
+      "email": "stefano.quartullo@hotmail.it"
+    },
+    {
+      "email": "stefano.risole@hotelchateaumonfort.com"
+    },
+    {
+      "email": "stefano.sarasso@ubiquicom.com"
+    },
+    {
+      "email": "stefano.variano@bdo.it"
+    },
+    {
+      "email": "stefano.vecchi@archimedesandco.com"
+    },
+    {
+      "email": "stefano@geoinference.com"
+    },
+    {
+      "email": "stefano@softmining.it"
+    },
+    {
+      "email": "stefanobriccola1994@gmail.com"
+    },
+    {
+      "email": "stefanocarluccio@live.it"
+    },
+    {
+      "email": "stefanogalassi@hotmail.com"
+    },
+    {
+      "email": "stefpambianchi@yahoo.it"
+    },
+    {
+      "email": "stegalli@yahoo.com"
+    },
+    {
+      "email": "stelio.orabona@levillagebyca.com"
+    },
+    {
+      "email": "stephane@klecha-co.com"
+    },
+    {
+      "email": "stephanie.vachon@hotmail.fr"
+    },
+    {
+      "email": "steve1113@hotmail.it"
+    },
+    {
+      "email": "stich1987@hotmail.it"
+    },
+    {
+      "email": "susanna.panto@publitalia.it"
+    },
+    {
+      "email": "svinella@hotmail.com"
+    },
+    {
+      "email": "swatur396@hotmail.com"
+    },
+    {
+      "email": "t.mansutti@mansutti.it"
+    },
+    {
+      "email": "t.toniutti@repubblica.it"
+    },
+    {
+      "email": "talpaper@hotmail.com"
+    },
+    {
+      "email": "taomax@hotmail.it"
+    },
+    {
+      "email": "tartagni@gmail.com"
+    },
+    {
+      "email": "tecla-maria.tunin@roedl.com"
+    },
+    {
+      "email": "ted.lederer@outlook.com"
+    },
+    {
+      "email": "teresa.alberti@albaleasing.eu"
+    },
+    {
+      "email": "tgendron@valisinternational.com"
+    },
+    {
+      "email": "the_tufa@hotmail.com"
+    },
+    {
+      "email": "thingstodo@hotmail.se"
+    },
+    {
+      "email": "thomas.hilling@pitchbook.com"
+    },
+    {
+      "email": "thomasferraioli@outlook.it"
+    },
+    {
+      "email": "tiara84_80@hotmail.com"
+    },
+    {
+      "email": "tibilicah@yahoo.com"
+    },
+    {
+      "email": "ticharwag@yahoo.co.uk"
+    },
+    {
+      "email": "tindaris@yahoo.it"
+    },
+    {
+      "email": "tirolo1963@gmail.com"
+    },
+    {
+      "email": "tiziana_lana@hotmail.com"
+    },
+    {
+      "email": "tiziana.belardi@telecomitalia.it"
+    },
+    {
+      "email": "tiziana.valerio@dhitech.it"
+    },
+    {
+      "email": "tizianomaffei@riwal.it"
+    },
+    {
+      "email": "tkondi@labvantage.com"
+    },
+    {
+      "email": "tmariarosa@hotmail.com"
+    },
+    {
+      "email": "todd.ostrander@cdiglobal.com"
+    },
+    {
+      "email": "tommaso.binotti@outlook.it"
+    },
+    {
+      "email": "tommaso.boralevi@lendlease.com"
+    },
+    {
+      "email": "tommaso.bordogna@studbocconi.it"
+    },
+    {
+      "email": "tommaso.cresti@hotmail.it"
+    },
+    {
+      "email": "tommaso.massaglia@alkemy.com"
+    },
+    {
+      "email": "tommasobucci@yahoo.it"
+    },
+    {
+      "email": "tony@medinavc.com"
+    },
+    {
+      "email": "topoestivo@hotmail.com"
+    },
+    {
+      "email": "torino@locautodue.it"
+    },
+    {
+      "email": "traffico@festatrasporti.it"
+    },
+    {
+      "email": "tricia.edward@pitchbook.com"
+    },
+    {
+      "email": "trimausa@yahoo.com"
+    },
+    {
+      "email": "tscepanovic@kpmg.it"
+    },
+    {
+      "email": "ttonti@hotmail.com"
+    },
+    {
+      "email": "tudor.sava@fintechdistrict.com"
+    },
+    {
+      "email": "tulliaredaelli@hotmail.com"
+    },
+    {
+      "email": "turnerbr@hotmail.com"
+    },
+    {
+      "email": "u_luciani@yahoo.com"
+    },
+    {
+      "email": "u.veronese@acciaivender.it"
+    },
+    {
+      "email": "ugo_bolla@yahoo.it"
+    },
+    {
+      "email": "ugo.montefiori@fastwebnet.it"
+    },
+    {
+      "email": "umairakhtar@ymail.com"
+    },
+    {
+      "email": "umberto_pelliccia@yahoo.it"
+    },
+    {
+      "email": "umile@wellbe.bio"
+    },
+    {
+      "email": "unottimista@hotmail.it"
+    },
+    {
+      "email": "uroos@microsoft.com"
+    },
+    {
+      "email": "ursino@jogroup.eu"
+    },
+    {
+      "email": "usagas88@libero.it"
+    },
+    {
+      "email": "v.astrologo@avatrade.com"
+    },
+    {
+      "email": "v.bloise@almaviva.it"
+    },
+    {
+      "email": "v.dangelo@citelgroup.it"
+    },
+    {
+      "email": "v.degaetano@admiralinteractive.it"
+    },
+    {
+      "email": "v.derosa@studiograficopage.it"
+    },
+    {
+      "email": "valecoda@hotmail.com"
+    },
+    {
+      "email": "valeg.80@hotmail.it"
+    },
+    {
+      "email": "valentina.amoruso@telecomitalia.it"
+    },
+    {
+      "email": "valentina.cardazzi@fratellipagani.it"
+    },
+    {
+      "email": "valentina.cassano@accenture.com"
+    },
+    {
+      "email": "valeria.fascione@regione.campania.it"
+    },
+    {
+      "email": "valeria.pasetti@unicreditgroup.eu"
+    },
+    {
+      "email": "valerio.apolloni@iblbanca.it"
+    },
+    {
+      "email": "valerio.fallucca@ing.com"
+    },
+    {
+      "email": "valeriorossi83@hotmail.com"
+    },
+    {
+      "email": "valla@abserv.it"
+    },
+    {
+      "email": "vanessa.sabina.farruggio@bd.com"
+    },
+    {
+      "email": "vania.bertolla@eon.com"
+    },
+    {
+      "email": "vania.bordin@grupposandonato.it"
+    },
+    {
+      "email": "vannibaldassarre@hotmail.com"
+    },
+    {
+      "email": "vera.scuderi@polihub.it"
+    },
+    {
+      "email": "veronikamax@msn.com"
+    },
+    {
+      "email": "veutroroberto@libero.it"
+    },
+    {
+      "email": "vg@vittoriogiusti.com"
+    },
+    {
+      "email": "vicdangerfield@hotmail.com"
+    },
+    {
+      "email": "victorlorusso@hotmail.com"
+    },
+    {
+      "email": "vimat1990@live.it"
+    },
+    {
+      "email": "vincenzo_dellaratta@secservizi.it"
+    },
+    {
+      "email": "vincenzo_passaro@hotmail.it"
+    },
+    {
+      "email": "vincenzo.chiaromonte@bperservices.it"
+    },
+    {
+      "email": "vincenzo.fiengo@dgsspa.com"
+    },
+    {
+      "email": "vincenzo.mura@gellify.com"
+    },
+    {
+      "email": "vincenzo.paglia@telecomitalia.it"
+    },
+    {
+      "email": "vincenzo.palomba@mis.mediobanca.com"
+    },
+    {
+      "email": "vincenzo.tartuferi@strategicmp.it"
+    },
+    {
+      "email": "vincenzo.vigano@enigaseluce.com"
+    },
+    {
+      "email": "vincenzogalizia@yahoo.it"
+    },
+    {
+      "email": "vincifrance@tiscali.it"
+    },
+    {
+      "email": "viola.angelo@hotmail.it"
+    },
+    {
+      "email": "viren@techlabcenter.com"
+    },
+    {
+      "email": "virgabriele@hotmail.com"
+    },
+    {
+      "email": "virginia.bassano@eightroads.com"
+    },
+    {
+      "email": "virginia.gerosa@soiel.it"
+    },
+    {
+      "email": "visite@camospa.it"
+    },
+    {
+      "email": "vito.carcea@esprinet.com"
+    },
+    {
+      "email": "vito.martino@a2a.eu"
+    },
+    {
+      "email": "vitodigioia@yahoo.com"
+    },
+    {
+      "email": "vitta73@hotmail.com"
+    },
+    {
+      "email": "vittorio_bonzi@yahoo.com"
+    },
+    {
+      "email": "vittorio.alessandrosantaniello@creditsafe.it"
+    },
+    {
+      "email": "vittorio.allegranza@vodafone.com"
+    },
+    {
+      "email": "vittorio.delmonte@hotmail.it"
+    },
+    {
+      "email": "vittorio.salvadori@klgates.com"
+    },
+    {
+      "email": "vittorio.sommadossi@msccrociere.it"
+    },
+    {
+      "email": "vittorio@vocalime.com"
+    },
+    {
+      "email": "viviana.gola@intesasanpaoloassicura.com"
+    },
+    {
+      "email": "vivianiroberta@ymail.com"
+    },
+    {
+      "email": "vjedryan@hotmail.it"
+    },
+    {
+      "email": "vlad.mihalca@libero.it"
+    },
+    {
+      "email": "vman60130@yahoo.com"
+    },
+    {
+      "email": "vmilanesi@spencerstuart.com"
+    },
+    {
+      "email": "volture@ayvens.com"
+    },
+    {
+      "email": "vravasi@kpmg.it"
+    },
+    {
+      "email": "vromer@londonandpartners.com"
+    },
+    {
+      "email": "vsozcan@yahoo.com"
+    },
+    {
+      "email": "w.canzi@yahoo.it"
+    },
+    {
+      "email": "waid@inwind.it"
+    },
+    {
+      "email": "walter_ruffinoni@yahoo.it"
+    },
+    {
+      "email": "walter.caresio@bellproduction.co.uk"
+    },
+    {
+      "email": "walter.monini@manpower.it"
+    },
+    {
+      "email": "walter.pucci@reti.it"
+    },
+    {
+      "email": "walter.zoeschg@dynamikamanagement.com"
+    },
+    {
+      "email": "walterbucelli@tiscali.it"
+    },
+    {
+      "email": "william.giribaldi@mediolanum.it"
+    },
+    {
+      "email": "wind1967@hotmail.com"
+    },
+    {
+      "email": "wmolle@verizon.net"
+    },
+    {
+      "email": "wolmer.bigi@staff.aruba.it"
+    },
+    {
+      "email": "xatom32@protonmail.com"
+    },
+    {
+      "email": "yarosit@yahoo.it"
+    },
+    {
+      "email": "zaira20@hotmail.it"
+    },
+    {
+      "email": "zeno.kastelic@clubdeglinvestitori.it"
+    },
+    {
+      "email": "zermani.pietro@fastwebnet.it"
+    },
+    {
+      "email": "zivittoria@hotmail.it"
+    },
+    {
+      "email": "zmmanley@outlook.com"
+    },
+    {
+      "email": "zviash@yahoo.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "email\n0605tpj@msn.com\n11234@234gmail.com\n126076_cb8218d3-49e3-44ef-987f-09fca16846d7@reply.linkedin.com\n1323990414@qq.com\n654@1234gmail.com\n690744981@qq.com\na_polverino@yahoo.it\na_rizzo73@hotmail.com\na-massoudi@hotmail.fr\na.amati@meta-group.com\na.arienti@3dnextech.com\na.buda@samsung.com\na.canclini@costanzoeassociati.it\na.castino@fratellimartini.it\na.ciampalini@lazioinnova.it\na.cortellazzo@si-ged.it\na.ferhati@engineer.com\na.loporchio@nexths.it\na.pasqual@finnat.it\na.polo@voxgentium.it\na.ranchino@reply.it\na.recchi@morrowsodali.com\na.rinaldi@sgrconsulting.ch\na.rocchi@iicapitaladvisors.com\na.ruggeri@innovest.it\na.spinelli@samsung.com\na.squeo@network-contacts.it\na.stuflesser@iassp.org\na.tomeo@lazioinnova.it\na.tonoli@yahoo.it\na.turco@sicuritalia.it\na.volpintesta@findomestic.com\nabyss88@hotmail.it\nac@acinelli.com\naccountspayable@aiglobalmedialtd.com\nacecchetti@kpmg.it\nachille.parabiaghi@parabiaghi.it\nacm@stjadvisors.com\nacme@dyne.org\nacolucci@hotmail.it\nacolumella@yahoo.it\nacortiana@libero.it\nadamogentile@hotmail.it\nadcentered@yahoo.com\nadm@dufercoenergia.com\nadriano.brunelli@unicredit.eu\nadriano.valente@dromedian.com\naffarisocietari@iblbanca.it\nafrixa@jaguarlandrover.com\nagrenci@ilprisma.com\najm@nu-venture.com\nalamanna@hotmail.com\nalberta.cortese@fabersystem.it\nalberto.antonietti@accenture.com\nalberto.chalon@gianocapital.com\nalberto.fioravanti@digitalmagics.com\nalberto.manzonetto@fourpartners.it\nalberto.planta@bnpparibas.com\nalberto.pozzi@accenture.com\nalberto.rieppi@libero.it\nalberto.ripepi@vodafone.com\nalberto.sanna@ing.com\nalberto.scaglione@accenture.com\nalberto.sernia@accenture.com\nalberto@gazzotti-spa.com\nalbertofezzi@phoenixcapital.it\nalda.derose@yahoo.com\naldogranelli@hotmail.it\naldopm@hotmail.it\naldorossetto@msn.com\naldosilvestroni@hotmail.it\nalefiumara@hotmail.com\naleflo14@yahoo.it\nalefrigerio@libero.it\nalena.tsishchanka@sas.com\nalessandra_monti@libero.it\nalessandra_scotton@iama.it\nalessandra.campana@radicigroup.com\nalessandra.maritano@bellproduction.co.uk\nalessandra.tomasoni@datlasgroup.com\nalessandramantegazza@hotmail.com\nalessandro_colosi@hotmail.com\nalessandro_venturini@hotmail.com\nalessandro.asaro@polihub.it\nalessandro.azzolini@finetaste.it\nalessandro.brighenti@icloud.com\nalessandro.brusaferri@sella.it\nalessandro.capuzzello@mediaset.it\nalessandro.defranciscis@telecomitalia.it\nalessandro.diana@accenture.com\nalessandro.dulbecco@enigaseluce.com\nalessandro.frulio@athlos.biz\nalessandro.leonardi@posteitaliane.it\nalessandro.lucarelli@bnlmail.com\nalessandro.madaffari@scmsim.it\nalessandro.maggio@jakala.com\nalessandro.magna@ing.com\nalessandro.orefice@bancacambiano.it\nalessandro.pirinu@vodafone.com\nalessandro.puccio@accenture.com\nalessandro.salberini@timeware.it\nalessandro.sandionigicorcione@hotmail.it\nalessandro.seghi@alpitourworld.it\nalessandro.thanopoulos@studenti.unimi.it\nalessandro.turco@hotmail.it\nalessandro.venturini@tiscalinet.it\nalessandro.zanotti@accenture.com\nalessandro.zimotti@ceilingwall.it\nalessandro@digitalcoci.com\nalessandro@tastyribbon.com\nalessandrodimaria@live.com\nalessandrorenzi@hotmail.com\nalessandrosangiovanni@hotmail.com\nalessandrosbicego@hotmail.com\nalessia.carnevale@nexi.it\nalessia.recalcati@arethusa.it\nalessia.zecca@olivetti.com\nalessio_botta@mckinsey.com\nalessio_manuel.cavalli@sella.it\nalessio.barbazza@magazzinibrianza.it\nalessio.damonti@sella.it\nalessio.giavara@staff.aruba.it\nalessio.oriolo@accenture.com\nalessio.tola@smeraldaconsulting.it\nalessio@alchimiainvestments.com\nalessioabbate@virgilio.it\nalex.b70@libero.it\nalex.speroni@seling.it\nalex@alongo.it\nalexander@prestop.nl\nalexis.dedietrich@aurum-srl.it\nalexnikolof@hotmail.com\nalfogentile@libero.it\nalfonso.gambardella@unibocconi.it\nalfonsolotito@hotmail.com\nalfredo.leonelli@bancaifis.it\nalfredo.richelmi@accenture.com\nam555@rice.edu\namarangelo@fanatics.com\nambrogio.terrizzano@accenture.com\namelia.spagnolo@unicredit.eu\namgomes93@msn.com\namospiran@didit.biz\nanasta89@posteitaliane.it\nancotelli@bresciaonline.it\nandrea_marinoni@hotmail.com\nandrea_persegati@yahoo.it\nandrea_rota@hotmail.com\nandrea_taglia@hotmail.it\nandrea.baldanzi@bancaprofilo.it\nandrea.barchiesi@reputationmanager.it\nandrea.berardi@ent4bank.it\nandrea.bobbiese@este.it\nandrea.bombardi@rina.org\nandrea.calisti@mastercard.com\nandrea.casarotti@deagostini.com\nandrea.ciampalini@lazioinnova.it\nandrea.cocchi@nidogroup.it\nandrea.compaire@hotmail.it\nandrea.costa@improova.it\nandrea.crivellaro@dsgroup.it\nandrea.farina@itway.com\nandrea.formica@intesasanpaolo.com\nandrea.fosfuri@unibocconi.it\nandrea.giorgi@giorgiengineering.com\nandrea.goldoni@adcgroup.com\nandrea.marchi.1@allianzbankprivate.it\nandrea.mordenti@laifgroup.com\nandrea.niutta@telecomitalia.it\nandrea.paone@bnpparibas.com\nandrea.parma@bnlmail.com\nandrea.parma@bnpparibas.com\nandrea.parma@hotmail.com\nandrea.pinto@bocconialumni.it\nandrea.pozzi@sella.it\nandrea.rangone@digital360.it\nandrea.riva@credit-agricole.it\nandrea.romiti@yahoo.it\nandrea.rosa@trade.gov\nandrea.rossotti@redfish.capital\nandrea.santagata@mondadori.it\nandrea.scognamiglio@enel.com\nandrea.taverna@fiditalia.it\nandrea.tomasella@bmw.it\nandrea.tosonotti@ifminfomaster.com\nandrea.zilio@yahoo.it\nandrea@aginnovation.co.uk\nandreadusi@icloud.com\nandreagsm77@yahoo.it\nandreaguzzon@outlook.com\nandreamarianicola.costa@telecomitalia.it\nandreamassimo.fino@telecomitalia.it\nandrej.carli@gmail.com\nandrewlogi@hotmail.com\nandrezap.guedes@hotmail.com\nandytiz1975@yahoo.it\nanerdid@hotmail.com\nang.viti@live.com\nangela.gemma@me.com\nangelaceletti@hotmail.it\nangelo_toma@libero.it\nangelo.cortese@cdp.it\nangelo.cortese@libero.it\nangelo.leone@studioleone.milano.it\nangelo.segreto@enel.com\nangelo.tafuro@sella.it\nangelocasero@tiscali.it\nangilerin@extrabanca.eu\nanl@stjadvisors.com\nann.vanmele@imec.be\nanna_rielli@hotmail.com\nanna.lambiase@cdpventurecapital.it\nanna.moro@sella.it\nanna.rocca@iblbanca.it\nanna.rolando@enigaseluce.com\nannalisa.bodecchi@bper.it\nannalisa.buffo@nexi.it\nannalisa.buffo@nexigroup.com\nannamaria.colucci@occambee.com\nannamaria.tartaglia@gmail.com\nannamaria@sforzabandola.com\nannamariaaltamura@yahoo.it\nantoine.karam@itway.com\nantonella.buccolieri@outlook.com\nantonella.grassigli@doorwayplatform.com\nantonella.sugliano@demont.it\nantonello.sanna@scmsim.it\nantonia_nicoletti@libero.it\nantonino.caffo@hotmail.it\nantonio.bassi@startupmarathon.it\nantonio.buccino1974@libero.it\nantonio.coppolecchia@accenture.com\nantonio.cortina@libero.it\nantonio.crinieri@befor.it\nantonio.dantoni@studbocconi.it\nantonio.gallo@cordusio.it\nantonio.gatti@microsoft.com\nantonio.gralluzzo@gmail.com\nantonio.lazzari@finantix.com\nantonio.maulucci@hotmail.it\nantonio.messenipetruzzelli@poliba.it\nantonio.morabito@telecomitalia.it\nantonio@conatibarbaro.com\nantonio@leonefamily.it\nantonioandrea.bisanti@unicredit.eu\nantonioandrea.vaccarelli@telecomitalia.it\nantoniobaldassarra@yahoo.it\nantoniodigiovanni@yahoo.com\nantoniolupinu@hotmail.it\nantoniomontenegro@libero.it\nantoniovaracalli@hotmail.it\naorsini@hotmail.com\naortenzi@hotmail.it\napaola.mis@hotmail.it\napirinu@yahoo.it\naragona.emanuela@hsr.it\naram@realcolibri.com\narcadio.pasqual@outlook.com\narcier@amazon.it\narciulif@yahoo.com\narianna.crippa@ikn.it\naricotti@expert.ai\narina.pozzoli@studiomottolabon.it\narischoi218@hotmail.com\narmandogaratti@libero.it\narnejuergensen@yahoo.de\narosenthal@emergeamericas.com\narr.spadaro@hotmail.it\narrigo.ventimiglia@sp-af.it\narturo.calandrino@sas.com\narturo.cuoco@bnlmail.com\nasalvagno@call2net.it\nashok_shah1091@yahoo.co.in\naspagno@yahoo.it\nassessore.abba@comune.monza.it\nassistente.direzione@istciechimilano.it\nastra190cv@hotmail.it\natmosfera@atm.it\nattilio.somma@telecomitalia.it\naustin@primaryinsight.com\navittoria@orrick.com\navv.bertozzi@studiolegalebertozzi.it\nayusha_mukabuku@outlook.com\nazienda.brega@hotmail.it\nb.bianchi@sydema.it\nbaldissara.mariano@grimaldi.napoli.it\nbaltiero@growthcapital.vc\nbanfi-elisabetta@hotmail.it\nbarbara_rivolta@yahoo.it\nbarbara.avalle@yahoo.it\nbarbara.dibello@bnlmail.com\nbarbara.pacolini@hotmail.it\nbarbara@h14.it\nbarbarafalcomer@yahoo.it\nbarnaby@brandaloud.com\nbarolibusiness@hotmail.com\nbbellucci@gruppobellucci.it\nbbuzzoni@armandotesta.it\nbcarleton@yahoo.com\nbdonelli@expert-italia.it\nbeatriceroesel@hotmail.it\nbela_sk8er@hotmail.com\nbelluccisessamarco@hotmail.com\nbenedetta.onori@zestgroup.vc\nbeniamino.bongiovanni@unicredit.eu\nbenjamin.mayr@suedtirolbank.eu\nbenny.forte@hotmail.com\nberkant.koelem@hotmail.com\nbernandriani@libero.it\nberra@euro-bank.it\nbiagio_santoro@hotmail.com\nbiagio.santoro@telecomitalia.it\nbiagiobarluet@hotmail.com\nbianca.mi@live.com\nbiju@alnadeem.com\nbill@safran.org\nbinash_16@hotmail.com\nblobbster@yahoo.it\nboccanera@iacc-miami.com\nbottaniilaria@icloud.com\nbpoggiali@alum.mit.edu\nbrainstorm.arena@e-novia.it\nbridget_kelsey@hotmail.com\nbrugnoli.giacomo@yahoo.it\nbrunetti@notaiobrunetti.it\nbruni@artvalley.org\nbruno.conte@social4social.org\nbusdevit@showroomprive.com\nbutti@abgroup.it\nc.bergna@ied.it\nc.cenci@taskforceitalia.com\nc.dytham@aiglobalmedialtd.com\nc.lautizi@webuildgroup.com\nc.mereu@openlogs.ch\nc.mussinelli@360publishing.it\nc.nisio@olivetti.com\nc.pittatore@finnat.it\nc.tonti@websolute.it\nc.voltan@andforward.com\ncainelli@cmalegal.it\ncakyosti@yahoo.com\ncam@cam-quadrielettrici.it\ncandelagloria@yahoo.it\ncanottaggio@olona1894.it\ncanyoufindme86@yahoo.it\ncaporedattore@bancaforte.it\ncardana@iaccse.com\ncarla.caruso@hotmail.it\ncarla.ponti@yahoo.it\ncarliev67@hotmail.com\ncarlo-castoldi@hotmail.com\ncarlo.cortesi@postemobile.it\ncarlo.festa@ilsole24ore.com\ncarlo.giugovaz@supernovaegroup.com\ncarlo.giugovaz@supernovaelabs.com\ncarlo.magni@cmmventures.com\ncarlo.pontorieri@ericsson.com\ncarlo.prelli@cpsenergia.it\ncarlo.robiglio@gruppoebano.com\ncarloalberto.marchi@fieldfisher.com\ncarlobrevini@hotmail.com\ncarlos.breton@gft.com\ncarlosrodsilverio@hotmail.com\ncarmine.laltrelli@italiaonline.it\ncarminemaffei@meditech4.com\ncarola@carolasalvato.com\ncarolasalvato@yahoo.it\ncaromald@hotmail.com\ncataclisse@hotmail.com\ncathy@speakerex.com\ncatu24@hotmail.com\ncboero@innovability.it\ncclementi@spencerstuart.com\ncecilia.mottola@studiomottolabon.it\ncelinechen@hotmail.it\ncentrale.mi@cittadinidellordine.com\ncentralino.icss@grupposandonato.it\nceo@etisalcom.com\nceo@whatsyourcarrier.com\ncesare.graziosi@studbocconi.it\ncesare.valenti@itway.com\ncgagliardi@fastwebnet.it\nchantal_peronace@hotmail.com\ncheckup.segreteria@hsr.it\ncheckup.ssg@multimedica.it\nchiara_rouge@yahoo.it\nchiara.bima@bnpparibas.com\nchiara.corona@mail.polimi.it\nchiara.lupi@este.it\nchiara.rotta@lupatotinagas.it\nchiaragianti@msn.com\nchiccadna@hotmail.com\nchischibio@hotmail.it\nchrisskynet@yahoo.com\nchristian.carai@adcgroupspa.com\nchristian.lucarelli@it.ey.com\nchristophe@singularity.mc\ncieloscuro@hotmail.com\ncies-2005@libero.it\ncinzia.verga@unicredit.eu\ncippaola@yahoo.it\nciro.pagliara@telecomitalia.it\nciroattilionocerino@yahoo.it\nclaudegc@hotmail.com\nclaudia.pascazio@enel.com\nclaudia.pingue@cdpventurecapital.it\nclaudiamelagrana@yahoo.com\nclaudio.bernardi@elioticinese.it\nclaudio.catania@fondoitaliano.it\nclaudio.dealbera@sella.it\nclaudio.defeo@virgilio.it\nclaudio.garitta@polimi.it\nclaudio.gregorio@sella.it\nclaudio.lamberti@hotmail.com\nclaudio.moscardini@sorgenia.it\nclaudio.rorato@polimi.it\nclaudio@claudiocastellaro.com\nclaudionascentes@hotmail.com\nclelia.tosi@fintechdistrict.com\nclub@ambrosetti.eu\nclupo@spencerstuart.com\ncnp@studioplacco.it\ncnq@sadler.it\ncoffeecapp@n-anditalia.com\ncolpoditacco@hotmail.com\ncomm@loro.it\ncompanysecretary@cambria.uk.com\ncontratti@edelweiss-energia.it\ncorina_anghiel@yahoo.it\ncorrado.creston@addvalue.it\ncorrodin@hotmail.com\ncosentino@ordineavvocatimilano.it\ncosimo.calcagno@indacosgr.com\ncosma_r@hotmail.com\ncpontorieri@yahoo.com\ncrafa@focusmgmt.it\ncrespi1guido@outlook.it\ncriscuoli@criscuoli.it\ncristian_hnatiuc@yahoo.com\ncristian.barba@lafeltrinelli.it\ncristian.brovelli@bnpparibas.com\ncristian.veller@exetera.com\ncristiana.frumenti@telecomitalia.it\ncristiano.frasson@sanbenedetto.it\ncristina.dalo@havas.com\ncristina.gianotti@intoo.it\ncristina.oltean@pitchbook.com\ncristina.reduzzi@gigroup.com\ncristina.sara@unicredit.eu\ncristinasarnacchiaro772@hotmail.com\ncte@startcupcalabria.it\ncurcio@uniud.it\ncvaldetara@rheavendors.com\ncvirginia74@yahoo.fr\nd_pecorelli@vittoriaassicurazioni.it\nd.bettinetti@bitforfun.com\nd.ceccucci@namirial.com\nd.cerra@logotel.it\nd.coletto@namirial.com\nd.gentile@irtop.com\nd.maestripieri@reginaisabella.it\nd.piccolo@finnat.it\nd.summa@hotmail.it\nd.taglioni@gigabytedistribuzione.it\ndaisywebx@gmail.com\ndalia.hassan@mediolanum.it\ndalila.berardo@unicredit.eu\ndallavalleb@safilo.com\ndalverme@yahoo.com\ndamand@hotmail.com\ndamiano@sietimpiantisrl.it\ndan.hodos@yahoo.com\ndan@envient.com\ndandrea_carlo@yahoo.it\ndaniel.pexidr@epcommodities.cz\ndaniela.attuale@libero.it\ndaniela.bettosini@hotmail.com\ndaniela.mancin@fastweb.it\ndaniela.manuello@postevita.it\ndaniele_pirola@virgilio.it\ndaniele.benedetti@pirelli.com\ndaniele.deho@fiditalia.it\ndaniele.derosa@extris.eu\ndaniele.di.paolo@hotmail.com\ndaniele.gabbai@nexi.it\ndaniele.grechi@accenture.com\ndaniele.moreschi@bip-group.com\ndaniele.moreschi@mail-bip.com\ndaniele@fanzutto.com\ndanielefazio@artistinct.com\ndanielemorisco@hotmail.com\ndanigeno@hotmail.com\ndanilo.baciocco@hotmail.it\ndanilo.dago@accenture.com\ndanilo.marini@hotmail.it\ndanilo.mazzara@skillforequity.com\ndanilo.petrelli@tiesrl.it\ndanilo.rivalta@mad4mobile.ch\ndanilo.vivarelli@technesy.it\ndaniloschipani@hotmail.com\ndannybruognolo@hotmail.com\ndante.laudisa@assintel.it\ndantelau@libero.it\ndany11383@yahoo.it\ndariopianese@icloud.com\ndavallan@hotmail.com\ndavid_lock@vuzix.co.uk\ndavid_sanders@consultant.com\ndavid.bartolini@bancacambiano.it\ndavid.menasci@pharmacheck.it\ndavid@david-a-hunt.com\ndavid@pirnazar.com\ndavide.angotta@engauge.it\ndavide.barbavara@db.com\ndavide.bonini@belron.it\ndavide.bonini@carglass.it\ndavide.bossi@strategicmp.it\ndavide.cavalieri@cavalieri-retailing.com\ndavide.colzani@a2a.eu\ndavide.romano713@gmail.com\ndavide.rossetti@gruppoesperia.com\ndavide.silvestri@staff.aruba.it\ndavide.spriano@sheratonlakecomo.com\ndavide.tacchino@vodafone.com\ndavide.tonolini@hotmail.it\ndavide@buddybank.com\ndavide@tesoro-tess.com\ndavidebarenghi@hotmail.it\ndavidepinna@yahoo.it\ndavidsuccu@aol.com\ndboleso@hotmail.com\ndcastellani@t8pconsulting.com\ndcuadrado@orekainteractive.com\ndealflow@dlventures.it\ndeborah.argese@hotmail.it\ndeborah.dagostino@mediolanum.it\ndecaro@volanogroup.com\ndeclan.brady@pitchbook.com\ndegraziafrancesco@outlook.it\ndeltostos@yahoo.com\ndemetrio.migliorati@outlook.it\ndemetriodigennaro@yahoo.com\ndenicola@pibn.it\nderosa@ordineavvocatimilano.it\ndesign@firm.gs\ndettoriivan@hotmail.com\ndherrera@emergeamericas.com\ndidola74@yahoo.it\ndiego.1311@yahoo.it\ndiego.dalessandro@mail-bip.com\ndiego.rossi@bper.it\ndiego.tonini@telecomitalia.it\ndiletta.dicarmine@clubdeglinvestitori.it\ndiletta@alchimiainvestments.com\ndimartino@volanogroup.com\ndinazcom@yahoo.com\ndiporomi@yahoo.it\ndlozovsky@hotmail.com\ndmegli@hotmail.com\ndome@dlventures.it\ndomenico.deangelis@mitsim.it\ndomenico.nesci@deepoceancapital.it\ndomenico.palmisani@goldenservice.it\ndomenicolaudonia@hotmail.com\ndomenicoscotto@hotmail.com\ndomi71@yahoo.com\ndominicw@dealcloud.com\ndon.hesham@live.com\ndonscara@hotmail.com\ndpezzolla@data3.it\ndpistalu@yahoo.com\ndr.lorenzopace@yahoo.com\ndrabini@arroweurope.com\ndrossi@salesforce.com\ndscolozzi@kpmg.it\ndstecchi@luxuryretailpartners.com\nducciostefano.gazzei@bnlmail.com\ndvantares@me.com\ndvidoni@emergeamericas.com\ne.giacomelli@namirial.com\ne.grisanti@xtvproductions.it\ne.montanari@i-profile.it\ne.perrucci@outlook.com\ne.riccelli@opstart.it\ne.tosetti@pragmawm.com\neangelon@amazon.it\neborello@bio4dreams.com\necabukusta@hotmail.com\nedi.magini@vodafone.com\nedmondo.sparano@digitalmagics.com\nedo.orfanini@energiaigroup.com\nedoardo.marsullo@bnpparibas.com\nedoardo.riccobono@camperiosim.com\nedorfanini@icloud.com\nedu.orfanini@yahoo.com\nefincati@sind.it\negarito@quantumleap-ip.com\negle.rochira@cdpventurecapital.it\negrillo777@hotmail.com\nejidio@yahoo.com\nelda_dushi@yahoo.com\neldokorita@ucea.pt\nelena.catani@bt.com\nelena.greco@unicredit.eu\nelena.rendola@mastercard.com\nelena.voli@bper.it\neleonora.berardi@palazzodivarignana.com\neleonora.rizzo25@outlook.it\neletrudi81@yahoo.it\nelisa.ficarella@poliba.it\nelisa.marta@eni.com\nelisa.randelli@unicredit.eu\nelisabeth.rizzotti@newcleo.com\nelisabetta_abate@outlook.com\nelisabetta.ghiglione@accenture.com\nelisabetta.ottone@icento.it\nelisabettagiazzi1@hotmail.it\nelisabettami@libero.it\nelisapoliti@hotmail.com\nelleemme2014@hotmail.com\nelollo@kpmg.it\nemacalvi@libero.it\nemafioretti@hotmail.com\nemanuela.aragona@hotmail.com\nemanuela.bevilacqua@bnlmail.com\nemanuela.cancogni@egonzehnder.com\nemanuela.falduto@bip-group.com\nemanuela.ghini@yahoo.com\nemanuela.pignataro@cegos.it\nemanuele.bolzoni@virgilio.it\nemanuele.bonetti@cardif.it\nemanuele.bosio@embedcapital.it\nemanuele.licciardi@morrirossetti.it\nemanuele.malaspina@unicredit.eu\nemanuele.pollastri@avstore.tv\nemanuele.streppetti@libero.it\nemanuele.tragella@havas.com\nemilia.garito@deepoceancapital.it\nemiliamassaro@hotmail.it\nemilio.manca@unicredit.eu\nemma.lonardi@polimi.it\nemma.pisati@gmail.com\nemma@community.emporiaresearch.com\nendriu13@icloud.com\nenergia@convergenze.it\nenih_tr@hotmail.com\nenrico.abbati@yahoo.com\nenrico.angeloni@eni.com\nenrico.cascioli@telemar.it\nenrico.castellano@palazzorighini.it\nenrico.chiara@mondadori.it\nenrico.deluchi@polihub.it\nenrico.denich@foodpharm.it\nenrico.maini@me.com\nenrico.netti@ilsole24ore.com\nenrico@zanichelliventure.it\nenricomassetti@msn.com\nenricopagliuca@outlook.com\nentrepreneurship.club@sdabocconi.it\nenza.viviano@alpitourworld.it\neoinsullivan44@hotmail.com\nepaland@libero.it\nerika.suriano@levillagebyca.com\nerivas782003@yahoo.ca\nernesto.digiacomo@enel.com\nersiliat@hotmail.com\nespinosajuanpablo@outlook.com\nettoreiannella@hotmail.com\neugenia.disomma@snam.it\neugenio_nicotra@yahoo.com\neugenio.sciortino@yahoo.it\nevarela@emergeamericas.com\nevergani@ascopompe.com\nevertongava@mabalus.com\nevhaendler@hotmail.com\nexhibitorservices@maritz.com\nezanotti@hotmail.it\nezio.beretta@rodacciai.com\nezio.rizzini@mis.mediobanca.com\nf.arpe@arpegroup.it\nf.berardi@area38.it\nf.bonino@nctm.it\nf.favale@sace.it\nf.finocchi@lslex.com\nf.frigo@samsung.com\nf.gabossi@andforward.com\nf.gallante@e12.it\nf.grassi@computergross.it\nf.grassi@computernessos.it\nf.polato@samsung.com\nf.rizzante@reply.com\nf.santorum@openlogs.ch\nf.terranova@ied.it\nf.vercellino@barabino.it\nfabiana.malatesta@egovaleo.it\nfabianlomsan@hotmail.com\nfabiano.causo@senioraccount-ti.it\nfabio.biondi@vodafone.com\nfabio.carimati@samer.com\nfabio.corso@fastweb.it\nfabio.ferrara@polimi.it\nfabio.fumagalli@live.com\nfabio.lampasona@iblbanca.it\nfabio.momola@eng.it\nfabio.nalucci@gellify.com\nfabio.obertotarena@prelios.com\nfabio.oggioni@generali.com\nfabio.rosati@telecomitalia.it\nfabio.tessera@algosec.com\nfabio.troiani@bieffeinvest.net\nfabiocoppo@hotmail.com\nfabiojr_88@hotmail.it\nfabiomaria.pastorini@eni.com\nfabiozini@libero.it\nfabri72@hotmail.it\nfabrifa@hotmail.com\nfabrizio.caiani@nextre.it\nfabrizio.corti@azimut.it\nfabrizio.cristina@db.com\nfabrizio.pistolesi@telecomitalia.it\nfabrizio.s@fluentis.com\nfabrizio.vettore@cifarelli.it\nfabrizio@link2america.us\nfabriziocolangeli@hotmail.com\nfabriziovillani@hotmail.it\nfaredo.bench.it@libero.it\nfarena@salesforce.com\nfausto.ciarcia@waldorfastoria.com\nfausto.sblandi@unicredit.eu\nfbadetti@fastwebnet.it\nfbalacco@sigmaspa.com\nfcaruso@spencerstuart.com\nfcomi@invitalia.it\nfedefermi@hotmail.com\nfedeprem82@hotmail.it\nfederica.carra@unicredit.eu\nfederica.scandolara@esselunga.it\nfedericabianchi46@live.it\nfederico_angelucci@hotmail.it\nfederico.aguggini@intesasanpaolo.com\nfederico.dalberti@enel.com\nfederico.merola@arpinge.it\nfederico.rittatore@realtylab.it\nfederico.rulfi@eni.com\nfederico@mongelli2000.com\nfedericoma.caligaris@cdiglobal.com\nfedesforza@yahoo.com\nfelice.biancardi@fragmentalis.com\nfelix.porter@kmhmediagroup.com\nfernando.borgani@outlook.com\nfernandopalaciosp@yahoo.es\nferrario@mcfcapital.it\nffinamore@microsoft.com\nfgagliardi@kpmg.it\nfgatti@globalblue.com\nfgiusti@hotmail.com\nfilippo_visconti@hotmail.com\nfilippo.decaterina@loreal.com\nfilippo.giannelli@exprivia.com\nfilippo.mainardicantoni@bip-group.com\nfilippo.melazzini@studenti.unimi.it\nfilippo.mignani@hotmail.it\nfilippo.ridolfo@unicredit.eu\nfilippo@calzeroni.com\nfiordiloto2009@hotmail.it\nfiorella.cappelletti@ibs.it\nfiume@iamb.it\nflaminia.angeletti@hotmail.com\nflavio.mutti@polimi.it\nflavioriva@eurostands.it\nflocati@hotmail.com\nflora.geerts@iit.it\nfmontaruli@kitra-advisory.com\nfolino@mypoolservice.it\nfornitori@gruppopoli.it\nfouadhalawi007@hotmail.com\nfpagani@nextbit.it\nfpanciatici.salesrep@classpi.it\nfra_bruno@yahoo.it\nfradele@hotmail.it\nframigtende@hotmail.com\nfrancesca_reich@yahoo.com\nfrancesca_virgili@yahoo.it\nfrancesca.boschiroli@accenture.com\nfrancesca.carabellese@hotmail.it\nfrancesca.chieti@jakala.com\nfrancesca.perrone@unicredit.eu\nfrancesca.porzio@pwc.com\nfrancesca.repossi@gruppovege.it\nfrancescadf@msn.com\nfrancesco.battaglia@mediolanum.it\nfrancesco.bonfiglio@diagrammatica.it\nfrancesco.borroni@scmsim.it\nfrancesco.busdraghi@publitalia.it\nfrancesco.caso@compass.it\nfrancesco.ciuccarelli@alpitourworld.it\nfrancesco.dellaglio@imaginary.institute\nfrancesco.dipierro@astraincubator.com\nfrancesco.diprimio@badenochandclark.it\nfrancesco.firpo@outlook.it\nfrancesco.fontana@hotmail.it\nfrancesco.foschi@studbocconi.it\nfrancesco.graziano@mail.wind.it\nfrancesco.ortone@unicredit.eu\nfrancesco.pavan@accenture.com\nfrancesco.possati@marposs.com\nfrancesco.pugliese@msccruises.com\nfrancesco.rubino@cordusiofiduciaria.it\nfrancesco@francescofederico.net\nfrancesco@leonefamily.it\nfrancescoamato2022@hotmail.com\nfrancescobonfiglio@hotmail.com\nfrancescochinaglia@yahoo.com\nfrancescocicetti@hotmail.com\nfrancescoghizzi@phoenixcapital.it\nfrancescorighetti@phoenixcapital.it\nfrancisednak@yahoo.com\nfranco.lisi@istciechimilano.it\nfranco.masera@iblbanca.it\nfranco.peduto@intesasanpaoloassicura.com\nfranco.ponzio@telecomitalia.it\nfranco@parkviaggi.it\nfrancocornacchia@dgpa.it\nfrancois-xavier.dedde@omnescapital.com\nfrancois.fayad@de-simone.com\nfrancosumberaz@msn.com\nfrankovitali@aol.com\nfranky@humandataincome.com\nfrasergm@aol.com\nfree.energysrl@virgilio.it\nfrieder.hansen@pyramid.de\nfrizzotto@idc.com\nfsimonetti@extra.it\nfspaggiari@expert.ai\nfulvia.caliceti@pittarosso.com\nfulvio.sbroiavacca@projectfarm.it\ng_traverso@vittoriaassicurazioni.it\ng.alotta@algecopower.it\ng.barzazi@fantoni.it\ng.bini@samsung.com\ng.brambati@starclex.it\ng.camaccioli@decainformatica.net\ng.ch@hotmail.it\ng.cuppini@cuboconsulenza.com\ng.didonato@tdhitaly.org\ng.diponzio@genotoxic.it\ng.falcone@rafarm.uk\ng.favini@logotel.it\ng.ferloni@olivetti.com\ng.gattari@42lf.it\ng.genua@auditbc.it\ng.greco@atrigna.com\ng.luca@sydema.it\ng.monteleone@younitestars.com\ng.pasi@hotmail.com\ng.piccirillo@teda-advisors.com\ng.polidori@a11venture.it\ng.ramenghi@yahoo.com\ng.sica@grafoventures.com\ng.tonelli@colloquia.it\ng.tonti@area38.it\ng.vaciago@42lf.it\ngaas@dlventures.it\ngabor.olah@outlook.com\ngabriela.condis@gaia-x.eu\ngabriele.bastianelli@leonardo.com\ngabriele.elia@telecomitalia.it\ngabriele.farina@chimera.eu\ngabriele.gallucci@mba.sdabocconi.it\ngabriele.ronchini@digitalmagics.com\ngabriele@hercle.financial\ngabrielecori@hotmail.com\ngabrieleferrante@yahoo.com\ngabrielefinzi@yahoo.com\ngabrielepellizzari@hotmail.com\ngabriella.putignano@mastercard.com\ngabry_rodriguez@hotmail.com\ngaetano.coletta@enea.it\ngaetano.ditondo@telecomitalia.it\ngaetano.evangelisti@enel.com\ngaetano.liggieri@ekho.it\ngaetanoadolfomaria.ditondo@olivetti.com\ngagliardelli@bugnion.it\ngallas83@hotmail.it\ngarialice@alice.it\ngarnone68@yahoo.it\ngas.operations@erg.it\ngastonberenstein84@hotmail.com\ngavin_kingsford@hotmail.com\ngazzaniga@nibbiotec.com\ngbetti@live.it\ngcalace@steam.it\ngcapurso@expert-italia.it\ngcarone@ilprisma.com\ngdammassa@hotmail.com\ngdcbari@gmail.com\ngdellarosa@aliosinvestimenti.com\ngemmaysergio@yahoo.es\ngenart@iol.it\ngeoenergie@geogreen.it\ngestione_personale_holding@gruppoiren.it\ngfalconio@yahoo.it\ngfantasia2002@yahoo.com\ngferri@innovability.it\nggbmm_2415_13@hotmail.com\nghassenmansouri@mail.com\ngiacomo.asaro@libero.it\ngiacomo.giurazza@vertis.it\ngiacomo.manzoni@a2a.eu\ngiacomo.marazzi@outlook.com\ngiacomo.silvestri@eni.com\ngiacomo.solbiati@xylem.com\ngiada.canale@casa.it\ngiada.garon@hotmail.it\ngiammarco@binetti.it\ngiampaolo.cesana@bobst.com\ngiampiero.tidu@virgilio.it\ngiampiero@restaino.it\ngiancarlo.dibernardo@ericsson.com\ngiancarlo.ingenito@tiscali.it\ngiancarlo.sfolcini@sia.eu\ngiancarloillica@gei-srl.com\ngiancriant@hotmail.com\ngiandomenico.biondaro@addvalue.it\ngianfranco.albergamo@unicreditgroup.eu\ngianfranco.ritucci@hotmail.com\ngianluca_ali@yahoo.it\ngianluca_gallo@hotmail.com\ngianluca-conte@hotmail.it\ngianluca.amistani@embawe.sdabocconi.it\ngianluca.battista@iblbanca.it\ngianluca.consonni@ambrosetti.eu\ngianluca.desiderato@italiaonline.it\ngianluca.gala@merck.com\ngianluca.galgano@it.ey.com\ngianluca.oldani@unicredit.eu\ngianluca.scola@isybank.com\ngianluca.tovo@telecomitalia.it\ngianluca@altieri.eu\ngianlucaconte82@yahoo.it\ngianluigi.martina@gellify.com\ngianluigi.pesce@unicredit.eu\ngianluiorio@hotmail.it\ngianmarco.gnemmi@cordusio.it\ngianmarco.gnemmi@unicredit.eu\ngianna.martinengo@didaelkts.it\ngianni.cicogna@smartpeg.eu\ngianni@medoro.it\ngianniluca@gmail.com\ngiannunzio.fettarappa@telecomitalia.it\ngianpm62@hotmail.it\ngianvittorio.abate@innovery.net\ngigivanore@hotmail.com\ngilagina@hotmail.it\ngio_firry@yahoo.com\ngiopuci@hotmail.it\ngiorgia.taravella@avanade.com\ngiorgio_costantino7@hotmail.com\ngiorgio.angiolini@italtel.com\ngiorgio.cecconi@staff.aruba.it\ngiorgio.ciron@assolombarda.it\ngiorgio.manfredi@occambee.com\ngiorgio.metta@iit.it\ngiorgio.natale@qualitygroup.it\ngiorgio.saronni@fastwebnet.it\ngiorgio.uricchio@telecomitalia.it\ngiorgio.ventre@unina.it\ngiorgio@unina.it\ngiorgiobruno.angiolini@italtel.it\ngiorgioporta@alice.it\ngiovan.sasso@studbocconi.it\ngiovani.imprenditori@unione.milano.it\ngiovanna.lacquaniti@fastwebnet.it\ngiovanna.petrillo@accenture.com\ngiovanni_signoriello@yahoo.it\ngiovanni_toffolutti@hotmail.com\ngiovanni_vedovato@hotmail.com\ngiovanni.annarumma@bper.it\ngiovanni.debenedictis@unicredit.eu\ngiovanni.decaro@gmail.com\ngiovanni.dibenedetto@morellistudio.it\ngiovanni.garlisi@destinationitalia.com\ngiovanni.iozzia@economyup.it\ngiovanni.landi@finix-ts.com\ngiovanni.mocchi@zucchetti.it\ngiovanni.nieto@accenture.com\ngiovanni.razzino@cordusiofiduciaria.it\ngiovanni.rossi@ing.it\ngiovanni.russo@lutech.it\ngiovanni.sartorio@telecomitalia.it\ngiovanni.tesoriere@liftt.com\ngiovanni.verzi@hotmail.it\ngiovannini_luca@lilly.com\ngiozac83@libero.it\ngirlsrestart@outlook.com\ngiudice.francesca@fastwebnet.it\ngiulia.cerquetti@it.zurich.com\ngiulia.digiovanni@posteitaliane.it\ngiulia.fracassi@a2a.eu\ngiulia.fracassi@a2a.it\ngiulia.gaggero@mail.polimi.it\ngiulia.perfetti@esprinet.com\ngiulia.sala@dgrs.it\ngiulia.santarelli@zestgroup.vc\ngiulia.silvioli@posteitaliane.it\ngiulia@sangallitecnologie.com\ngiulia@tastyribbon.com\ngiuliana.tramagli@hotmail.it\ngiulio.ambrosi@hotmail.com\ngiulio.cosentino@gmail.com\ngiulio.ferretti@fastwebnet.it\ngiulio.palmieri812@libero.it\ngiuliofezzi@phoenixcapital.it\ngiuliogangemi@hotmail.com\ngiunta_m@yahoo.com\ngiurazza@vertis.it\ngiusedonato@hotmail.it\ngiusep.russo@libero.it\ngiuseppe.bisogno@telecomitalia.it\ngiuseppe.carluccio@studbocconi.it\ngiuseppe.digiuda@polimi.it\ngiuseppe.fumagalli@bcs.it\ngiuseppe.galati@mis.mediobanca.com\ngiuseppe.paleari@bancaconsulia.it\ngiuseppe.pepe02@outlook.com\ngiuseppe.santonato@it.ey.com\ngiuseppe.sola@tids.telecomitalia.it\ngiuseppe.tiralosi@i-betyou.com\ngiuseppe.tonini@outlook.com\ngiuseppe.venezia@e-gva.it\ngiuseppe.zurlo@accenture.com\ngiuseppe@visentini.it\ngiuseppe@wing-capital.com\ngiuseppe0987@hotmail.it\ngiuseppedant@libero.it\ngiuseppesacco@hotmail.com\ngiusy.stanziola@unicredit.eu\nglorenzoni@bitbang.com\ngluca.84@hotmail.it\ngm@mrgoodidea.com\ngmanfrini@sicomputer.it\ngmicci72@gmail.com\ngp56@fastwebnet.it\ngpagnini@yahoo.it\ngpancrazi@kpmg.it\ngpcamanzi@sicomputer.it\ngr82@hotmail.co.uk\ngrandesc@hotmail.com\ngrant.ross@yandex.ru\ngrazia.montera@iit.it\ngrazianig@yahoo.com\ngraziano.tosi@unicredit.eu\ngraziatullia.zanni@italtel.com\ngregorio.papadia@telecomitalia.it\ngregory.cupillari@master.sdabocconi.it\ngrf@hub2data.com\nguglielmo.auricchio@auricchio.it\nguido.cannito@embawe.sdabocconi.it\nguido.corti@engauge.it\nguido.ferloni@olivetti.com\nguido.lecce@doorwayplatform.com\nguidocir@hotmail.com\nguidowilliams@yahoo.com\ngwuopl@yahoo.com\nh.hofer@noi.bz.it\nh.rosch@virgilio.it\nhadia.amjad@ucea.pt\nhanyangtaiyan@meituan.com\nharvey@theaedge.com\nheimann@italianbusinessconsulting.com\ni.critelli@noi.bz.it\niacopo.destri@c-lex.it\niamtxf@hotmail.com\nicarratu@hotmail.com\nicerea@hotmail.it\nida-parisi@hotmail.com\nilaria.fava@favalegal.com\nimmobili@ca-re.it\ninfantemarcello@libero.it\ninnovation@wemakefuture.it\ninnside.fuerteventura@melia.com\nio@cosimobaldini.com\nionut.tata@iceberg.plus\nirene.giannini@hotmail.it\nirina.cavallini@mediolanum.it\nirreranazzareno@libero.it\nisabella_d@hotmail.it\nisabella.caggiati@mediobancapremier.com\nisidoro.albergucci@bancadiasti.it\nit@farmalabor.it\nitalicaenergiasrl@virgilio.it\nitalo.milanese@telecomitalia.it\nivan_colecchia@hotmail.com\nivan.ongaro@gecalspa.it\nivo.boniolo@e-novia.it\nivoevaristo.petrella@unicredit.eu\nj_marsili@hotmail.com\nj_valentine@dealflowfunds.com\nj.capelli@area38.it\nj.farris@startex.ai\nj.riddiford@dynamosoftware.com\nj.vender@joveinvest.com\njacopo.benucci@unicredit.eu\njacopo.benucci@unicreditgroup.eu\njacopo.benucci@unicreditleasing.eu\njacopo.cst@hotmail.it\njacopo@innovitsf.com\njad.jubaili@teg.co.ae\njames_gould74@yahoo.co.uk\njames@seatunique.com\njanetschek@hotmail.com\njarellg@yahoo.com\njavagyan@hotmail.com\njcross@emergeamericas.com\njeffenzo@alice.it\njemma81@hotmail.co.uk\njeshi_raj@yahoo.com\njessica.leo@libero.it\njessica.pauciulo@azimutdirect.com\njfmcone@hotmail.com\njhxzwm@outlook.com\njig2nesh@yahoo.com\njoao.manuel.teixeira@ucea.pt\njordankuang168@hotmail.com\njose@valcarce.biz\njosel@outlook.com\njoseph.davis@pitchbook.com\njosepuccini@hotmail.com\njpaezw@hotmail.com\njparker@electronicsearch.com\njpm.design@seznam.cz\njsppi27@hotmail.com\njt@jollytenda.com\njtortice@fintech.global\njuan.lopez@designfusion.it\njudealexis89@yahoo.com\njulien.buratto@subitosms.it\nk.dadah@outlook.com\nkannanthanika@yahoo.ca\nkarthick_sh53@hotmail.com\nkatia.daros@irinox.com\nkerbriand@hotmail.fr\nkhaled_ennaceur@hotmail.fr\nkikkokiesura85@libero.it\nkleitakapaj@hotmail.com\nkoen.cassenaer@telenet.be\nkolarobi@hotmail.it\nkozelkin@yahoo.com\nksenia.alexeeva@accenture.com\nl_chillemi@vittoriaassicurazioni.it\nl_quara@seleiama.it\nl.david@live.it\nl.gelsomino@hotmail.it\nl.marangon@noi.bz.it\nl.negri@samsung.com\nl.oliva@avanade.com\nl.romagnoli@namirial.com\nl.tomasini@namirial.com\nl.torelli@wehunt.eu\nlabliness19@yahoo.com\nlabottegaperlufficio@fastwebnet.it\nlailsonpcardoso@hotmail.com\nlastorri@libero.it\nlaura.benatti@bugnion.eu\nlaura.fineo@sella.it\nlaura.muro@istciechimilano.it\nlaura.polinari@gtech.com\nlaura.savini@finlombarda.it\nlauragiordan@yahoo.com\nlauragrecia@libero.it\nlaurapasini17@virgilio.it\nlaurasarotto@yahoo.it\nlavoroigienstudio@gmail.com\nlawrence_cu@yahoo.com\nlayla.pavone@comune.milano.it\nlbeltrametti@abgroup.it\nlboselli@kpmg.it\nldoni@outlook.it\nlemaldi@sicomputer.it\nleogal3@gmail.com\nleonardo.agazzi@yahoo.it\nleonardo.mangia@linksmt.it\nleonardo.massa@mitotech.eu\nleonardo.rubattu@aurum-srl.it\nleonardo.vallone@libero.it\nleonardo.vecchi@computeklocazioni.it\nleonardo@mangiavacchistudio.com\nlestifler@hotmail.com\nlet_ventu@live.it\nleverano@yahoo.com\nlferrari@libero.it\nlfranchini@angelventure.it\nlibero55@hotmail.com\nliliana.cosentino@posteitaliane.it\nlinda.davies123@outlook.com\nlinkepost@outlook.it\nlisa@insafari.it\nlivio.palomba@unicatt.it\nlivio.palomba@yahoo.com\nlivio.pogliano@vodafone.com\nlizzettesantacruz@yahoo.com\nlogistica.pneumatici@brasiello.it\nlogistica@hbtrading.it\nlombardo.dav@sicurezzaedambiente.com\nlonardigiulia@libero.it\nlorecongiu@hotmail.it\nloredana.sibilla@mediolanum.it\nlorena.corinaldesi@vodafone.com\nlorena.corinaldesi@yahoo.com\nlorena.taibbi@hotmail.it\nlorenzo.anghinoni@outlook.it\nlorenzo.castelli@bizmatica.com\nlorenzo.degrandi@choralia.com\nlorenzo.giordano@praesidiumsgr.com\nlorenzo.langella@bnpparibas.com\nlorenzo.lippi@fastweb.it\nlorenzo74@msn.com\nlorenzobuzzetti@libero.it\nloriniro@libero.it\nloris.chiaberge@msccruises.com\nlrubattu@lbsadvisory.com\nluana.bosio@sababasecurity.com\nluca_ferrari64@hotmail.com\nluca_gianella@yahoo.it\nluca_vignaga@marzottogroup.it\nluca.abbadini.agente@bancacfplus.it\nluca.aloi@accenture.com\nluca.badessi@accenture.com\nluca.barrile@cdpventurecapital.it\nluca.bassetto@gruppofma.it\nluca.bertoletti@ireth.net\nluca.binetti@multitime.it\nluca.carrai@polimi.it\nluca.caseri@unicredit.eu\nluca.casini@esprinet.com\nluca.castello@staff.aruba.it\nluca.cattaneo@mypoolservice.it\nluca.colombo@hotmail.com\nluca.corti@mastercard.com\nluca.crepaldi@comapp.it\nluca.domeniconi@ibs.it\nluca.gambardella@artificialy.com\nluca.iacomelli@fastweb.it\nluca.leopizzi@numeroblu.it\nluca.lucente@mediobanca.com\nluca.maccarini@libero.it\nluca.maccarini@lifonti.it\nluca.pronzati@msccruises.com\nluca.siciliano@addvalue.it\nluca.tremolada@ilsole24ore.com\nluca.vincelli@yahoo.it\nluca@opificio137.com\nluca@valerio.cc\nlucaarchitetto@hotmail.it\nlucafallica@hotmail.com\nlucagigliotti@virgilio.it\nlucanovelli@tncitalia.it\nlucia.occhinegro@it.ey.com\nluciana.maci@economyup.it\nluciana.rossi-02@vodafone.com\nluciano.albanese@telecomitalia.it\nluciano.fusco@azimutdirect.com\nlucio.chiocci@ntsproject.it\nlucio.legrenzi@cardif.it\nludovica.cilli@lutech.it\nludovico.jommi@outlook.com\nludovico.marioli@outlook.com\nluigi.dipiazza@adrventures.it\nluigi.maddalena@yahoo.it\nluigi.martines@ondapiu.it\nluigi.midolo@hotmail.it\nluigi.sm94@libero.it\nluigidellamonica@hotmail.it\nluigilampi@gmail.com\nluisa.bagnoli@beyondinternational.it\nluzzattobertollo@hotmail.com\nm.armando@neitec.eu\nm.banfo@libero.it\nm.benzoni@costanzoeassociati.it\nm.berselli@libero.it\nm.bertaccini@cryptolab.us\nm.bianchi@sydema.it\nm.cagnetta@hotmail.com\nm.ceola@mcube.it\nm.ceravolo@pigrecofinance.com\nm.colangelo@accenture.com\nm.conte@publimediagroup.it\nm.didonna@sace.it\nm.favaro@hfinvest.eu\nm.fior@virgilio.it\nm.gambaro@finnat.it\nm.gelmini@andforward.com\nm.giorgetti@vrelations.it\nm.innocenti@hotmail.it\nm.monti@techbricks.io\nm.pessina@adp-tec.com\nm.privitera@yahoo.it\nm.zan@sefeaimpact.it\nm1m1m@163.com\nmabri71@libero.it\nmacinante@netconsultingcube.com\nmaestriluca@hotmail.com\nmagli@oaservice.it\nmagmflower@yahoo.com\nmagnus.wingmark@outlook.com\nmagori1981@hotmail.com\nmail@bruno.cipriano.name\nmail@matteodegaetano.it\nmaki84@hotmail.it\nmalibugraphics@yahoo.com\nmalik_amir@hotmail.com\nmaltom@fastwebnet.it\nmanagement@alfatherm.it\nmanager@hotelcavour.it\nmanfredi.bernardi01@icatt.it\nmanlio.scavo@telecomitalia.it\nmanopriyaravi@yahoo.com\nmanuela.bucciarelli@enel.com\nmanuela.mango@neperiagroup.com\nmanuela.nava@multimedica.it\nmanuela.tortorici@libero.it\nmanuelc_@hotmail.com\nmanueortizp@hotmail.com\nmanumzz@hotmail.com\nmanzoli@hotmail.com\nmarce.riva@libero.it\nmarcela.my@hotmail.it\nmarcella.migliorini@reiser.it\nmarcello.alberio@hotmail.com\nmarcello.lamperti@masserdotti.it\nmarcello.lolli2@studio.unibo.it\nmarcello.puddu@outlook.it\nmarcello.satulli@iblbanca.it\nmarcellodevincenti@yahoo.it\nmarco_diluzio@hotmail.com\nmarco_salvetti@yahoo.it\nmarco.alberio@seregnosoccorso.org\nmarco.alvisi@cetma.it\nmarco.andreoli@telecomitalia.it\nmarco.avetta@solidusgold.eu\nmarco.becca@me.com\nmarco.bennici@hotmail.it\nmarco.cavoletti@telecomitalia.it\nmarco.chiancone@cordusiofiduciaria.it\nmarco.costa@safenet-inc.com\nmarco.cutuli@aileenspharma.com\nmarco.dandrea@hotmail.com\nmarco.didio@valuelab.it\nmarco.ditta@intesasanpaolo.com\nmarco.foglizzo@brancainternational.com\nmarco.landi@institut-europia.eu\nmarco.landi@orange.fr\nmarco.leonelli@sella.it\nmarco.leopardi@mediolanum.it\nmarco.lomuscio@rina.org\nmarco.mangiulli@staff.aruba.it\nmarco.marchesi@olivetti.com\nmarco.michelini@aimg.it\nmarco.mometto@accenture.com\nmarco.noseda@cariplofactory.it\nmarco.ottaviani@msccruises.com\nmarco.pandi@hotmail.com\nmarco.pennarola@fastweb.it\nmarco.pusterla@unicredit.eu\nmarco.redaelli@armstampi.it\nmarco.rizzelli@seedmoney.it\nmarco.romei@consulenti.sella.it\nmarco.ronchi@rocketmail.com\nmarco.rossi@telecomitalia.it\nmarco.sala@brightstarlottery.com\nmarco.venturini@violatech.it\nmarco.vita@laifgroup.com\nmarco.zaffalon@artificialy.com\nmarco.zaffaroni@mediobancapremier.com\nmarco@graziani-ventures.com\nmarco@melai.org\nmarco@mvismara.it\nmarco@tinteunite.it\nmarco@zuffanelli.eu\nmarco22661@yahoo.it\nmarcod97@live.it\nmarcom74@hotmail.com\nmarcomarchese71@libero.it\nmarcomuthing@hotmail.com\nmarcopeconi@hotmail.it\nmarcopeg@hotmail.com\nmarcotrt@inwind.it\nmarenza.douglas@kony.com\nmargherita.corini@mondadori.it\nmari_mo@hotmail.it\nmaria_amelio@libero.it\nmaria.ameli@bancagenerali.it\nmaria.bancale@cdpventurecapital.it\nmaria.coclite@mail-bip.com\nmaria.dmitrievskaya@live.it\nmaria.farroukou@ucea.pt\nmariagrazia_berardi@yahoo.com\nmariagrazia.cipelletti@snam.it\nmarialanotte@hotmail.com\nmariangela.vistocco@honeywell.com\nmariani@unitedventures.it\nmarianna.dantona@comune.milano.it\nmariannapierucci@libero.it\nmariapia.croce@telecomitalia.it\nmariarosariai@hotmail.com\nmariascarioni@ulidesign.it\nmariateresa.fusco@unicredit.eu\nmariavittoria.destefanis@enel.com\nmarika.scroccaro@dhl.com\nmarilena.manzoni@unicredit.eu\nmarin.alessandro@hotmail.com\nmarina.adamo@athlos.biz\nmarina.gatti@proclesis.it\nmarina.vergani53@icloud.com\nmarinamelidou@hotmail.com\nmario_alloro@yahoo.it\nmario_daja@hotmail.com\nmario.cinguino@virgilio.it\nmario.cortese@st.com\nmario.garau@geasar.it\nmario.riciputi@sirsviluppo.it\nmario.varriale@alkemy.com\nmarionunziata@hotmail.it\nmarioperini@yahoo.com\nmariorimini2007@libero.it\nmarkallen9@outlook.com\nmarkcom@maurofanfoni.com\nmarta.carboni@ifabfoundation.org\nmarta.feltrin@bnlmail.com\nmartina.cernigoi@gruppofinservice.com\nmartina.scr@hotmail.com\nmartina.tomassi@hotmail.it\nmartinenghi.sabina@hsr.it\nmarzia.pecce@mastercard.com\nmarzia.treves@enel.com\nmascia.betti@live.com\nmasoni@melaivivaldimasoni.it\nmassi.orfanini@energiaigroup.com\nmassimcc@hotmail.com\nmassimiliano.cordini@avioninternational.com\nmassimiliano.guerini@it.rhenus.com\nmassimiliano.laporta@openjob.it\nmassimiliano.perletti@roedl.com\nmassimilianolucarelli@yahoo.it\nmassimilianotedeschi@libero.it\nmassimo.addesa@telecomitalia.it\nmassimo.castelli@yahoo.it\nmassimo.cravino@vodafone.com\nmassimo.defazio@comapp.it\nmassimo.detoffoli@iconsoftware.it\nmassimo.iberti@finix-ts.com\nmassimo.melis@melismelis.it\nmassimo.morielli@accenture.com\nmassimo.pastorino@toplocations.it\nmassimo.piro@unicredit.eu\nmassimo.tonelli@fastweb.it\nmassimo.zischka@digisoft-multimedia.it\nmassimocurcio@kpmg.it\nmassimopalermo@hotmail.com\nmassimotonelli1@virgilio.it\nmat.confa@hotmail.it\nmatalza@hotmail.com\nmathias.lerum@unicredit.eu\nmatt_rossanigo@hotmail.com\nmatteo_paradisi@yahoo.it\nmatteo.atleta@hotmail.it\nmatteo.barcella@brumbrum.it\nmatteo.bertela@acboilers.com\nmatteo.brioschi@unicredit.eu\nmatteo.cattadori@hotmail.com\nmatteo.cellini@alkemy.com\nmatteo.cocciolo@hotmail.it\nmatteo.dibiagi@levillagebyca.com\nmatteo.fiammetta@hotmail.it\nmatteo.maciottarolandin@italtel.com\nmatteo.ottavi@bnlmail.com\nmatteo.ottavi@bnpparibas.com\nmatteo.rossi@fabersystem.it\nmatteo.scarabelli@cariplofactory.it\nmatteo.tavecchio@yahoo.it\nmatteo.valcarenghi@studiopirola.com\nmatteo@co-wellness.com\nmatteo@heritageholdings.co\nmatteo1.moscatelli@polimi.it\nmatteobay@yahoo.com\nmatteobertolucci@libero.it\nmatteomeago@cariparma.it\nmatteomilione@rocketmail.com\nmatteosantoro@yahoo.it\nmattia.lazzari@enel.com\nmattia@mountainmaps.it\nmattialeone93@msn.com\nmaule@magex.it\nmauricatapano@hotmail.com\nmaurizio.barberio@poliba.it\nmaurizio.bernazzani@italtel.com\nmaurizio.bonfiglio@prelios.com\nmaurizio.cuzari@sirmi.it\nmaurizio.davini@unipi.it\nmaurizio.fiumi@gruppohera.it\nmaurizio.gallina@mediolanum.it\nmaurizio.intropido@italtel.com\nmaurizio.marcelli@miprons.com\nmaurizio.pagliarani@seling.it\nmaurizio.riboni@hotmail.it\nmaurizio.zaz@hotmail.it\nmaurizio.zuppechin@sella.it\nmauriziocannizzaro@me.com\nmauro.califano@rodacciai.com\nmauro.carraro@unicredit.eu\nmauro.dario@consulenti.sella.it\nmauro.manetti@staff.aruba.it\nmauro.martinez@telecomitalia.it\nmauro.pretolani@fondoitaliano.it\nmax_decimomeridio@yahoo.it\nmax_tseng2003@yahoo.com.tw\nmax.bulling@bizmatica.com\nmax.minetola@yahoo.it\nmax.per@hotmail.it\nmax@ciccio.it\nmax@maxcastelli.it\nmaxbotta@hotmail.com\nmbm@mbmadventure.com\nmbonetti@mazzolaebignardi.it\nmbossi@talentia-software.com\nmburlini@hotmail.com\nmcanarelli@unitedventures.com\nmcaporel@jaguarlandrover.com\nmcinti@gemm.it\nmckaran2003@yahoo.com\nmdc@metanodotti.net\nmdecarolis1@hotmail.com\nmdesiato@redecam.com\nmelissima8@hotmail.com\nmembership@iacc-miami.com\nmentor_ita@hotmail.com\nmerlin_millu@yahoo.co.in\nmg_donzelli@seleiama.it\nmgmattei@meetcenter.it\nmgrimaldii@yahoo.it\nmichael_yesterday@hotmail.com\nmichael@alpskiosks.com\nmichela.altieri@accenture.com\nmichela.berra@winch.it\nmichela.giusti@cardif.com\nmichela.rocca@rina.org\nmichele.cinguino@sella.it\nmichele.colio@yahoo.it\nmichele.corcione@telecomitalia.it\nmichele.crestani@sics.sport\nmichele.cusenza@hele.it\nmichele.damiani@outlook.com\nmichele.ficara@assodigitale.it\nmichele.fiorini@leonardo.com\nmichele.maddalo@mosae.it\nmichele.palermo@telecomitalia.it\nmichele.possamai@icento.it\nmichele.zunino@netalia.it\nmichele@ameventures.it\nmichele@ficara.org\nmichele@sealand.it\nmichelebardin@hotmail.com\nmichelemongiello@hotmail.com\nmichyjoly@libero.it\nmicsc@tecnocasa.it\nmieke@solution4u.com\nmika_dide@yahoo.com\nmilan_tous@mzv.cz\nmilani.maura@virgilio.it\nmilenacu@hotmail.com\nmilo.morsiani@bonfiglioli.com\nmiracoli@techfin.it\nmirco.casteller@ordinepsicologiveneto.it\nmirco.fabrucci@unicredit.eu\nmiriam.frigerio@sorgenia.it\nmirka.bertani@unicredit.eu\nmirko.florindo@bt.com\nmirko.poggi@ymail.com\nml@assuteurope.com\nml@interstellardigital.io\nmlamperti1@fastwebnet.it\nmlauria@unirc.it\nmmagrini@unitedventures.it\nmmauri@cambria.uk.com\nmmencarini@expert.ai\nmocavallini@icloud.com\nmodifiche@deghisupport.it\nmolino_paola@hotmail.com\nmonica.frigerio@accenture.com\nmonica.muraro@mediobanca.com\nmonica.salvestrin@nau.it\nmonroefarmer@yahoo.com\nmonseranita@yahoo.com\nmorellosimone@hotmail.it\nmoreno.gambirasi@msccrociere.it\nmparisatto@kpmg.it\nmpg1311@hotmail.com\nmpitassi@technologyestate.com\nmpitassi@technologyestate.eu\nmpmondino@libero.it\nmr.gierre@hotmail.it\nmr@maurorovelli.it\nmredionigi@rheavendors.com\nmrosso@rheavendors.com\nmsideek@hotmail.com\nmtavorath05@gsb.columbia.edu\nmter@hotmail.it\nmtesta@armandotesta.it\nmz28fz2tbh@privaterelay.appleid.com\nn.aguiari@virgilio.it\nn.bonoli@iconsulting.biz\nn.deblasio@metoda.it\nn.fazzini@citel.it\nn.rossi@urkell.it\nn.stangolini@studiolegaleleone.com\nnadia.benabdallah@vodafone.com\nnadia.dellafiore@accenture.com\nnadiagrim@yahoo.it\nnantonio.gralluzzo@daleconsulting.it\nnatascia.noveri@intesasanpaolo.com\nnazzareno_franze@yahoo.it\nnberat5@outlook.com\nncavalli@intesigroup.com\nnck12278@aol.com\nndellafiore@libero.it\nngalloro@hotmail.it\nnico.franceschi@hotmail.it\nnicola_naccari@yahoo.it\nnicola.chiaranda@hotmail.co.uk\nnicola.giovinazzi@hotmail.com\nnicola.meneghello@thron.com\nnicola.pirozzi@billd.it\nnicola.sicilia@dhitech.it\nnicola.tufo@rsmitaly.com\nnicola.ungaro@softsel.it\nnicola@gimaitaly.com\nnicoletta.salis@telecomitalia.it\nnicolettaveronelli@hotmail.com\nnicolo@digitalcoci.com\nnicolosistefano@virgilio.it\nnikarie@msn.com\nnizar@ife.com.sa\nnlorusso@visionsys.it\nnoris.amidani@hotmail.it\nnoumeno78@yahoo.com\nnovica_mrdovic@hotmail.com\nnovica.mrdovic@add-value.it\nntlink@ntlink.org\no.croci@ctconline.it\noculistica@hsr.it\nonlyone.mrl1979@yahoo.co.uk\nonola1@libero.it\noperativo@sirio1982.eu\nornella.patricolo@comune.milano.it\nottavia.barboni@novartis.com\novermyer.heather@yahoo.com\np_o1975@hotmail.com\np_visintini@yahoo.it\np.ciampi@mailciampi.com\np.ferrara@tdhitaly.org\np.graziani@bernabe.it\np.pultrone@bluewin.ch\np.taticchi@imperial.ac.uk\np.trevisan@pininfarina.us\np.vitiello@colloquia.it\np.zottl@noi.bz.it\npallino.gennaro@outlook.it\npandistelle87@hotmail.it\npaocavallero@hotmail.it\npaola_zappulla@yahoo.it\npaola.bertona@accenture.com\npaola.colombo@cherrypick.it\npaola.dallasta@fastweb.it\npaola.garbelli@mediolanum.it\npaola.villa@biboitalia.com\npaolami@hotmail.com\npaolo_fiume@libero.it\npaolo_panza@fastwebnet.it\npaolo_zanni@hotmail.com\npaolo.abiuso@db.com\npaolo.amantia@enigaseluce.com\npaolo.andrigo@accenture.com\npaolo.baile@accenture.com\npaolo.barone@intelleraconsulting.com\npaolo.bianchini@metajsolution.it\npaolo.borsatti@icloud.com\npaolo.caroli@bancaprivataleasing.it\npaolo.cento@unicredit.eu\npaolo.colella@btinternet.com\npaolo.colpani@snam.it\npaolo.cordero@enigen.eu\npaolo.dandrea@telecomitalia.it\npaolo.mariani1@intesasanpaolo.com\npaolo.marzetti@forinnovation.it\npaolo.murri@telecomitalia.it\npaolo.pagano@cnit.it\npaolo.papini@intesasanpaolo.com\npaolo.premi@bancasistema.it\npaolo.primiero@assomonitor.org\npaolo.quaini@edison.it\npaolo.romano@numeroblu.it\npaolo.sisti@fastwebnet.it\npaolo.tonelli@nolorent.it\npaolo@alchimiainvestments.com\npaolo@paolokind.com\npaolobavassano@yahoo.it\npaolobobos@hotmail.it\npaolocom@comy.it\npaolodr7@hotmail.com\npaologian@hotmail.com\npaolom1981@yahoo.it\npaoloprimiero@farminerva.com\npaolouzo@yahoo.com\npapamoretti@hotmail.com\npapic_maja@yahoo.com\npardurigao@hotmail.com\npasquale.lambardi@relatech.com\npasquale.mezzacapo@ent4bank.it\npasquale.patricelli@innovery.net\npasquali.chiara@studbocconi.it\npathfinder.marcelli@yahoo.com\npatrizia.totaro@moffulabs.com\npatrucco.er@gmail.com\npaulothiagoramos@hotmail.com\npazienti.covid19@hsr.it\npbenintende@yahoo.it\npesentimirko96@live.it\npeter.depoorter@idealsystems.be\npeter.robson@isenzo.com\npeter.scholtz@isenzo.com\npetraventura@hotmail.com\npgautier@business2any.com\nphil.brian@seatunique.com\npiazzalibertybusiness@apple.com\npicardifederico@outlook.it\npiccininicelestica@fastwebnet.it\npier_mariano@yahoo.it\npierangelofissore@unifarma.it\npierluigi.gardini@telecomitalia.it\npierluigi.pace@tin.it\npierluigi.rossi@unicredit.eu\npierpaolo.rizzo@iblbanca.it\npierrepolonelli@yahoo.it\npietro.beimer@gellify.com\npietro.guindani@vodafone.com\npietro.labriola@telecomitalia.it\npietro.lessi@strategyinsights.eu\npietro.marini@deltatre.com\npietro@alchimiainvestments.com\npietrogmb@hotmail.com\npietroparmeggiani@cavoursp.it\npinna@sfirs.it\npinonino01@libero.it\npiscitellimarco@icloud.com\nplans@tripit.com\npneumatici.milano@brasiello.it\npoliziametropolitana@cittametropolitana.milano.it\npoppinsmarry82@yahoo.com\npowerhouse151@yahoo.com\npperelli@fideuram.it\nprandoni@glfspa.it\npsjovane@hotmail.com\npuneetgiri@hotmail.com\npunzoluigi@hotmail.com\npvcaroli@bancaprivataleasing.it\nqdr.ahmd@yahoo.com\nquang.ngodinh@telecomitalia.it\nr.albini@olivetti.com\nr.cassarino@intellisystem.it\nr.delgrosso@libero.it\nr.gattini@diplomatia.it\nr.leggi@hotmail.it\nr.stasi@abilab.it\nr.stefanini@yahoo.it\nra@investmind.com.br\nrach.kent@hotmail.co.uk\nrachele.mugnaini@mediaset.it\nraffaele.arena@bnlmail.com\nraffaele.dalessio@rsmrevisione.it\nraffaele.ferraro@sella.it\nraffaele.zingone@bancaifis.it\nraffaeledaniele2002@hotmail.com\nraffaella.brumana@polimi.it\nraffaella.capelli@ricoh.it\nraffaella.pozzo@unicredit.eu\nraffi.galante@digitalbros.com\nrafforoberto@yahoo.com\nrahat301@yahoo.com\nrai_marino@hotmail.com\nraimondo.anello@outlook.it\nraimondo.piras@live.it\nrainbow_945@hotmail.it\nrameez.net@live.com\nrami.hachem@dirad.com\nrandieri@intellisystem.it\nranim@qutek.co\nrapparinimarco@hotmail.com\nrazvan_bc@yahoo.com\nrbigliani@idc.com\nrblagahit@yahoo.com\nrboldori@yahoo.com\nrbramato@libero.it\nrcarrain@libero.it\nrcimino1@ford.com\nrcjeng@vip.163.com\nrdaniel@celltick.com\nrdonadon@mac.com\nrealstevecook@btinternet.com\nrega_crescenzo@hotmail.com\nrenata.vitiello@enel.com\nrenato.marchi@marchiclan.it\nrenato.miraglia@unicredit.eu\nrenato@renatocifarelli.it\nrenatomarchi@kpmg.it\nreneefk@yahoo.com\nreservations-vabbinfaru@banyantree.com\nreservations@amazonico.ae\nrevellop@sba.bcc.it\nrgaliberti@inwind.it\nrgeorge4u@yahoo.com\nrgricinella@yahoo.com\nrhacker@fiu.edu\nriccardo.cattaneo@amplifon.com\nriccardo.fasson@telecomitalia.it\nriccardo.negro@futurenergyonline.it\nriccardo.orfanini@hotmail.com\nriccardo.renna@bancagenerali.it\nriccardo.torriani@hotmail.it\nricci.e@adr.it\nrichardjord@outlook.com\nriepilogo@ca-re.it\nrita.manuli@bper.it\nritarob@hotmail.it\nrivelliadvisory@yahoo.com\nroberta.boffa@cogne.com\nroberta.dallosto@unicredit.eu\nroberta.merlo@edison.it\nrobertdaspit@hotmail.com\nroberto_quarantiello@yahoo.it\nroberto_ruggeri@hotmail.com\nroberto.bernabo@outlook.it\nroberto.casavola@telecomitalia.it\nroberto.cassina@civibank.it\nroberto.dincau@langpartners.it\nroberto.fiorello@colani.com\nroberto.gambarato@avstore.tv\nroberto.guidetti@bper.it\nroberto.leonardi@geminea.com\nroberto.marrani@unicredit.eu\nroberto.meazza@hotmail.com\nroberto.milani@fastweb.it\nroberto.mosca@hdia.it\nroberto.pagliara@our-group.it\nroberto.pillon@areasciencepark.it\nroberto.polio@iwbank.it\nroberto.polio@iwprivateinvestments.it\nroberto.privitera@staff.aruba.it\nroberto.rio@lmclex.it\nroberto.vardisio@entropykn.net\nroberto@rnkitalia.eu\nroberto@robertorace.it\nroberto@zoorate.com\nrobertoquagliuolo@hotmail.com\nrobertoregosini@hotmail.com\nrobin.slakhorst@symbid.com\nrobmir77@hotmail.it\nrobygrafico@libero.it\nrobyzando@hotmail.com\nrocco.gilio@merck.com\nrocolorina@hotmail.com\nrodda.monica@pitagoraspa.it\nrodrigo@maze-impact.com\nrofonso1958@yahoo.it\nrolandomadonna@hotmail.com\nromain_bouvier@hotmail.com\nron@greenstonemarketing.com\nroommedia@hotmail.com\nrosaelachi@hsbc.com\nrosanna.lafauci@nidogroup.it\nrosannalafauci@hotmail.com\nrosario.ferrauto@spafidfamilyoffice.com\nrosen.f@damicoship.com\nroshan_yaheya@yahoo.com\nrossellabaldini@yahoo.it\nrossellaponente@yahoo.it\nrossysedini@hotmail.com\nroy.buncome@collabignite.com\nrpb@hotmail.it\nrpolizzycarbonelli@yahoo.com\nrrastelli@outlook.it\nrs.piaggi@yahoo.it\nrsnovelli@gmx.net\nrupertino@hotmail.it\ns__rossi@hotmail.com\ns_trabucchi@libero.it\ns.amendola@lazioinnova.it\ns.dellorto@ied.it\ns.falconetti@samsung.com\ns.marchesini@outlook.it\ns.montagna@hotmail.it\ns.peroncini@eurekaventure.it\ns.pugliese@thefool.it\ns.zangari@reply.com\nsabina.taldo@edison.it\nsabrina.donaglia@giacomini.com\nsagna85@hotmail.it\nsajidgallant@hotmail.com\nsalberinialessandro@gmail.com\nsalim_fet07@yahoo.com\nsalvatore.giallombardo@suedtirolbank.eu\nsalvatore.iavarone@brasiello.it\nsalvatore.verdicchia@mps.it\nsalvatorelupia@hotmail.it\nsalvatrice.interdonato@hotmail.it\nsalvo.zangari@libero.it\nsalvografica2012@yahoo.it\nsalzant@hotmail.com\nsam.arcanda@hotmail.it\nsamanta.bonin@libero.it\nsamuele.ferrara@carclinic.it\nsamuelegurrieri@yahoo.com.au\nsandra.aitala@telecomitalia.it\nsandra.catte@sas.com\nsandro.santi@2golive.it\nsansoneangela@hotmail.com\nsara_pula@hotmail.com\nsara.bergamo@fcagroup.com\nsara.kraus@olivetti.com\nsara.scialanga@it.ey.com\nsara.tavaglione@accenture.com\nsara@techlabcenter.com\nsasha.komarevych@unibocconi.it\nsasho_k3s@yahoo.com\nsaveriotondi@hotmail.it\nsbaroncini@weinvest.international\nscarabosio@libero.it\nscatena@celerya.com\nschiano.giuseppe@hotmail.it\nschorel.dirk@outlook.de\nsclarke@emergeamericas.com\nscorrechaprice@emergeamericas.com\nscreening@doorwayplatform.com\nsdepaoli@investhk.com.hk\nsean.tevel@hklaw.com\nsebastiano.rocca@valuepartners.com\nserena_pieroni@hotmail.com\nserena.digiovine@levillagebyca.com\nsergio_cassinelli@hotmail.com\nsergio.fontana@farmalabor.it\nsergio.silvestri@unicreditgroup.eu\nservizio.donatori@avismi.it\nservsped@dmail.it\nsetuplasertv@hisenseitalia.it\nsfaralli@gruppobellucci.it\nsgiugliano@kpmg.it\nshadyfrancis@yahoo.com\nshopenhauer-wisdom@hotmail.com\nsidharth@almoayyedcomputers.com\nsilvana.lucca@covatechpilates.com\nsilvano.colombo@microsoft.com\nsilvanomantegazza@yahoo.it\nsilvia_chiaravalli@hotmail.com\nsilvia_lodi@hotmail.com\nsilvia.bosani@alkemy.com\nsilvia.candiani@hotmail.it\nsilvia.grattieri@om-still.it\nsilvia.lelli@libero.it\nsilvia.maffioletti@enel.com\nsilvia.pagani@univa.va.it\nsilvia.pugi@manageritalia.it\nsilvia@changeup.it\nsilvio.cosoleto@relatech.com\nsilvio.mazzaro@leonardo.com\nsilviopatrevita@yahoo.com\nsilvygatt79@yahoo.com\nsimogr@hotmail.it\nsimol73@hotmail.com\nsimon.84@hotmail.it\nsimona.aluzzi@multitime.it\nsimona.bottini@hotmail.it\nsimona.corno@cdpventurecapital.it\nsimona.fantechi@numeroblu.it\nsimona.garotta@eptarefrigeration.com\nsimona.maccioni@eni.com\nsimona@olona1894.it\nsimonariv@yahoo.com\nsimone.campo@bip-group.com\nsimone.carrer@selmabipiemme.it\nsimone.checcoli@neurally.it\nsimone.friggi@telecomitalia.it\nsimone.lancioni@iblbanca.it\nsimone.materazzi@betakeoff.com\nsimone.montani@accenture.com\nsimonecav@yahoo.it\nsimonegrana@hotmail.com\nsimonepugli@virgilio.it\nsimonepugliatti@hotmail.it\nsinapian@posteitaliane.it\nsluconi@iris-group.it\nsmartying@yahoo.com\nsodanolinda@yahoo.it\nsofia.motta@accenture.com\nsofiamizane@yahoo.it\nsoleda.bora@namirial.com\nsolitano@it.ibm.com\nsolix@solix.pl\nsonia.sifo@tisparkle.com\nsonialombardi@live.com\nsonoqui1@live.it\nsorinalexandru.stoian@unicredit.eu\nsostroman@yahoo.it\nsponsor@wemakefuture.it\nsponsormytalent@yahoo.com\nsr-replica@hotmail.it\nssgaravatti@class.it\nssquaglia@hotmail.com\nstaiani@bestunion.it\nstefania.deltosto@mastercard.com\nstefano_napoletano@mckinsey.com\nstefano.baroncini@atenait.it\nstefano.bonato@outlook.it\nstefano.capanna@yahoo.it\nstefano.cavalleri@hotmail.com\nstefano.cravero@e-consel.it\nstefano.damnotti@eptarefrigeration.com\nstefano.gallo@unicredit.eu\nstefano.maini@mis.mediobanca.com\nstefano.mander@accenture.com\nstefano.monti@lab-go.com\nstefano.orgolesu@seling.it\nstefano.ostroman@gaviasystems.it\nstefano.pampaloni@seacom.it\nstefano.pedron@jakala.com\nstefano.piovesan@yahoo.com\nstefano.priola@centrico.tech\nstefano.quaglioni@vodafone.com\nstefano.quartullo@hotmail.it\nstefano.risole@hotelchateaumonfort.com\nstefano.sarasso@ubiquicom.com\nstefano.variano@bdo.it\nstefano.vecchi@archimedesandco.com\nstefano@geoinference.com\nstefano@softmining.it\nstefanobriccola1994@gmail.com\nstefanocarluccio@live.it\nstefanogalassi@hotmail.com\nstefpambianchi@yahoo.it\nstegalli@yahoo.com\nstelio.orabona@levillagebyca.com\nstephane@klecha-co.com\nstephanie.vachon@hotmail.fr\nsteve1113@hotmail.it\nstich1987@hotmail.it\nsusanna.panto@publitalia.it\nsvinella@hotmail.com\nswatur396@hotmail.com\nt.mansutti@mansutti.it\nt.toniutti@repubblica.it\ntalpaper@hotmail.com\ntaomax@hotmail.it\ntartagni@gmail.com\ntecla-maria.tunin@roedl.com\nted.lederer@outlook.com\nteresa.alberti@albaleasing.eu\ntgendron@valisinternational.com\nthe_tufa@hotmail.com\nthingstodo@hotmail.se\nthomas.hilling@pitchbook.com\nthomasferraioli@outlook.it\ntiara84_80@hotmail.com\ntibilicah@yahoo.com\nticharwag@yahoo.co.uk\ntindaris@yahoo.it\ntirolo1963@gmail.com\ntiziana_lana@hotmail.com\ntiziana.belardi@telecomitalia.it\ntiziana.valerio@dhitech.it\ntizianomaffei@riwal.it\ntkondi@labvantage.com\ntmariarosa@hotmail.com\ntodd.ostrander@cdiglobal.com\ntommaso.binotti@outlook.it\ntommaso.boralevi@lendlease.com\ntommaso.bordogna@studbocconi.it\ntommaso.cresti@hotmail.it\ntommaso.massaglia@alkemy.com\ntommasobucci@yahoo.it\ntony@medinavc.com\ntopoestivo@hotmail.com\ntorino@locautodue.it\ntraffico@festatrasporti.it\ntricia.edward@pitchbook.com\ntrimausa@yahoo.com\ntscepanovic@kpmg.it\nttonti@hotmail.com\ntudor.sava@fintechdistrict.com\ntulliaredaelli@hotmail.com\nturnerbr@hotmail.com\nu_luciani@yahoo.com\nu.veronese@acciaivender.it\nugo_bolla@yahoo.it\nugo.montefiori@fastwebnet.it\numairakhtar@ymail.com\numberto_pelliccia@yahoo.it\numile@wellbe.bio\nunottimista@hotmail.it\nuroos@microsoft.com\nursino@jogroup.eu\nusagas88@libero.it\nv.astrologo@avatrade.com\nv.bloise@almaviva.it\nv.dangelo@citelgroup.it\nv.degaetano@admiralinteractive.it\nv.derosa@studiograficopage.it\nvalecoda@hotmail.com\nvaleg.80@hotmail.it\nvalentina.amoruso@telecomitalia.it\nvalentina.cardazzi@fratellipagani.it\nvalentina.cassano@accenture.com\nvaleria.fascione@regione.campania.it\nvaleria.pasetti@unicreditgroup.eu\nvalerio.apolloni@iblbanca.it\nvalerio.fallucca@ing.com\nvaleriorossi83@hotmail.com\nvalla@abserv.it\nvanessa.sabina.farruggio@bd.com\nvania.bertolla@eon.com\nvania.bordin@grupposandonato.it\nvannibaldassarre@hotmail.com\nvera.scuderi@polihub.it\nveronikamax@msn.com\nveutroroberto@libero.it\nvg@vittoriogiusti.com\nvicdangerfield@hotmail.com\nvictorlorusso@hotmail.com\nvimat1990@live.it\nvincenzo_dellaratta@secservizi.it\nvincenzo_passaro@hotmail.it\nvincenzo.chiaromonte@bperservices.it\nvincenzo.fiengo@dgsspa.com\nvincenzo.mura@gellify.com\nvincenzo.paglia@telecomitalia.it\nvincenzo.palomba@mis.mediobanca.com\nvincenzo.tartuferi@strategicmp.it\nvincenzo.vigano@enigaseluce.com\nvincenzogalizia@yahoo.it\nvincifrance@tiscali.it\nviola.angelo@hotmail.it\nviren@techlabcenter.com\nvirgabriele@hotmail.com\nvirginia.bassano@eightroads.com\nvirginia.gerosa@soiel.it\nvisite@camospa.it\nvito.carcea@esprinet.com\nvito.martino@a2a.eu\nvitodigioia@yahoo.com\nvitta73@hotmail.com\nvittorio_bonzi@yahoo.com\nvittorio.alessandrosantaniello@creditsafe.it\nvittorio.allegranza@vodafone.com\nvittorio.delmonte@hotmail.it\nvittorio.salvadori@klgates.com\nvittorio.sommadossi@msccrociere.it\nvittorio@vocalime.com\nviviana.gola@intesasanpaoloassicura.com\nvivianiroberta@ymail.com\nvjedryan@hotmail.it\nvlad.mihalca@libero.it\nvman60130@yahoo.com\nvmilanesi@spencerstuart.com\nvolture@ayvens.com\nvravasi@kpmg.it\nvromer@londonandpartners.com\nvsozcan@yahoo.com\nw.canzi@yahoo.it\nwaid@inwind.it\nwalter_ruffinoni@yahoo.it\nwalter.caresio@bellproduction.co.uk\nwalter.monini@manpower.it\nwalter.pucci@reti.it\nwalter.zoeschg@dynamikamanagement.com\nwalterbucelli@tiscali.it\nwilliam.giribaldi@mediolanum.it\nwind1967@hotmail.com\nwmolle@verizon.net\nwolmer.bigi@staff.aruba.it\nxatom32@protonmail.com\nyarosit@yahoo.it\nzaira20@hotmail.it\nzeno.kastelic@clubdeglinvestitori.it\nzermani.pietro@fastwebnet.it\nzivittoria@hotmail.it\nzmmanley@outlook.com\nzviash@yahoo.com\n",
+  "stderr": "",
+  "execution_time_ms": 288
+}
