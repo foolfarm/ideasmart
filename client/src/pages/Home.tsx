@@ -471,20 +471,7 @@ function HeroArticle({ item, section, editorial }: {
               ppvTrustGrade={item.ppvTrustGrade}
               ppvDocumentId={item.ppvDocumentId}
             />
-            {item.ipfsCid && item.ipfsUrl && (
-              <a
-                href={item.ipfsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Certificato IPFS · CID: ${item.ipfsCid}`}
-                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border transition-colors"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", color: '#00897b', borderColor: '#00897b33', background: '#00897b0d' }}
-                onClick={e => e.stopPropagation()}
-              >
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                IPFS
-              </a>
-            )}
+            {/* Badge IPFS rimosso: URL /api/ipfs non disponibile */}
           </div>
         )}
         {(section === "ai" || section === "startup") && (
@@ -550,20 +537,7 @@ function SecondaryArticle({ item, section, showImage = false }: {
             ppvTrustGrade={item.ppvTrustGrade}
             ppvDocumentId={item.ppvDocumentId}
           />
-          {item.ipfsCid && item.ipfsUrl && (
-            <a
-              href={item.ipfsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={`Certificato IPFS · CID: ${item.ipfsCid}`}
-              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border transition-colors"
-              style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", color: '#00897b', borderColor: '#00897b33', background: '#00897b0d' }}
-              onClick={e => e.stopPropagation()}
-            >
-              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              IPFS
-            </a>
-          )}
+          {/* Badge IPFS rimosso: URL /api/ipfs non disponibile */}
         </div>
       )}
       {(section === "ai" || section === "startup") && (

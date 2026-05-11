@@ -3545,3 +3545,10 @@
 - [x] VerifyBadge.tsx: displayHash mostra hash completo 64 char (non troncato a 16)
 - [x] VerifyBadge.tsx: link badge punta a https://proofpressverify.com/api/public/certificate/<hash>
 - [x] App.tsx: /verify e /proofpress-verify (e sub-route) reindirizzano a https://proofpressverify.com
+
+## Fix critici (11 Mag 2026)
+
+- [x] Newsletter PPV riscritta: intestazione "BUON POMERIGGIO / La redazione di ProofPress consiglia", contenuti reali con tagline e bullets per ogni prodotto PPV
+- [x] Badge IPFS rotto rimosso dalla Home (URL /api/ipfs non disponibile come route Express)
+- [x] Widget VerifyStatsWidget: URL iframe aggiornato da sandbox a https://proofpressverify.com/widget/news-verify?theme=light
+- [x] Batch PPV: 17 articoli certificati (32/36 totali nel DB), script scripts/batch-ppv-certify.mjs

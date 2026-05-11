@@ -87,7 +87,7 @@ export default function VerifyStatsWidget() {
 
         {/* Widget iframe */}
         <iframe
-          src="https://3000-ipiepxfs4r5bhofezmhex-92dc304a.us2.manus.computer/widget/news-verify?theme=light"
+          src="https://proofpressverify.com/widget/news-verify?theme=light"
           width="100%"
           height="120"
           frameBorder="0"

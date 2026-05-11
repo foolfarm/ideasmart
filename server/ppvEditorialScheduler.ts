@@ -188,70 +188,212 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
     weekday: "long", day: "numeric", month: "long", year: "numeric"
   });
 
-  const productDescriptions: Record<string, { tagline: string; bullets: string[]; cta: string }> = {
+  // Contenuti dettagliati per ogni pagina PPV — basati sui contenuti reali del sito
+  interface ProductContent {
+    tagline: string;
+    intro: string;
+    stats: Array<{ value: string; label: string }>;
+    howItWorks: Array<{ step: string; title: string; desc: string }>;
+    features: Array<{ icon: string; title: string; desc: string }>;
+    targets: Array<{ icon: string; title: string; desc: string }>;
+    testimonial?: { initials: string; name: string; role: string; text: string };
+    pricing?: string;
+    cta: string;
+    ctaUrl: string;
+  }
+
+  const productContents: Record<string, ProductContent> = {
     "ProofPress Verify™": {
       tagline: "Il protocollo che certifica ogni contenuto digitale con hash SHA-256 su IPFS.",
-      bullets: [
-        "669 certificati live — verificabili da chiunque, per sempre",
-        "Trust Score A–F calcolato su 4.000+ fonti globali e 4 motori AI",
-        "Zero fake: ogni claim fattuale è corroborato e ancorato su blockchain",
-        "Funziona per email, notizie, documenti, prodotti e curriculum"
+      intro: "In un'epoca in cui il 59% delle persone non distingue notizie vere da false e l'AI genera contenuti in secondi, ProofPress Verify™ è il protocollo che risponde con crittografia. Ogni contenuto — email, notizie, documenti, prodotti, curriculum — riceve un numero PP univoco ancorato su IPFS tramite hash SHA-256. Immutabile. Verificabile da chiunque. Per sempre.",
+      stats: [
+        { value: "669", label: "Certificati live" },
+        { value: "4.000+", label: "Fonti globali" },
+        { value: "4", label: "Motori AI" },
+        { value: "A–F", label: "Trust Score" }
       ],
-      cta: "INIZIA GRATIS →"
+      howItWorks: [
+        { step: "01", title: "Carica il contenuto", desc: "Testo, PDF, email o URL. Il sistema parte immediatamente." },
+        { step: "02", title: "Analisi AI multi-fonte", desc: "4 motori AI incrociano 4.000+ fonti globali in tempo reale." },
+        { step: "03", title: "Trust Score A–F", desc: "Score 0–100 con breakdown per ogni dimensione di verifica." },
+        { step: "04", title: "Certificato IPFS", desc: "Hash SHA-256 + CID IPFS. Verificabile indipendentemente da ProofPress." }
+      ],
+      features: [
+        { icon: "🔐", title: "Hash SHA-256 + IPFS", desc: "Impronta digitale immutabile archiviata su IPFS. Verificabile da chiunque, per sempre." },
+        { icon: "🤖", title: "4 Motori AI", desc: "Analisi multi-fonte con Claude AI, Perplexity, DuckDuckGo e SerpAPI." },
+        { icon: "📊", title: "Trust Score A–F", desc: "Score 0–100 con breakdown per dimensione: Integrity, Evidence, Credibility, Materiality." },
+        { icon: "🏷️", title: "Badge Embeddabile", desc: "Badge di certificazione per sito, newsletter, email e packaging." }
+      ],
+      targets: [
+        { icon: "📰", title: "Redazioni e giornalisti", desc: "Certifica ogni articolo e distinguiti dalla disinformazione." },
+        { icon: "🏢", title: "Aziende e PR", desc: "Certifica comunicati, report ESG e documenti IR." },
+        { icon: "💼", title: "Professionisti", desc: "Certifica CV, email e documenti con prova crittografica." }
+      ],
+      cta: "INIZIA GRATIS — 10 CERTIFICAZIONI",
+      ctaUrl: "https://proofpressverify.com"
     },
     "News Verify": {
-      tagline: "Certifica ogni articolo claim per claim. Badge trust grade A–F visibile ai lettori.",
-      bullets: [
-        "Prova IPFS immutabile per ogni articolo pubblicato",
-        "Badge embeddabile su sito e newsletter",
-        "Differenziati dalla disinformazione con credibilità misurabile",
-        "Pensato per redazioni, freelance e brand media"
+      tagline: "Ogni notizia. Certificata. Con hash SHA-256 + IECM 3-Layer.",
+      intro: "Il 59% delle persone non distingue notizie vere da false. Le redazioni che non certificano i propri contenuti rischiano di essere indistinguibili dalla disinformazione. News Verify è la risposta: certifica ogni articolo claim per claim con un badge trust grade A–F visibile ai lettori e una prova IPFS immutabile. Non è un fact-checker — è una prova crittografica che il contenuto è identico all'originale.",
+      stats: [
+        { value: "669", label: "Certificati live" },
+        { value: "4.000+", label: "Fonti globali" },
+        { value: "A–F", label: "Trust Grade" },
+        { value: "IPFS", label: "Prova immutabile" }
       ],
-      cta: "SCOPRI NEWS VERIFY →"
+      howItWorks: [
+        { step: "01", title: "Upload articolo", desc: "Testo o URL. Batch fino a 50 articoli via API." },
+        { step: "02", title: "IECM 3-Layer", desc: "Integrity · Evidence · Credibility · Materiality: 4 dimensioni per ogni articolo." },
+        { step: "03", title: "Trust Score", desc: "Score 0–100 con breakdown per dimensione e grade A–F." },
+        { step: "04", title: "Certificato IPFS", desc: "Hash SHA-256 + CID IPFS + watermark PDF. Verificabile indipendentemente." }
+      ],
+      features: [
+        { icon: "🛡️", title: "IECM 3-Layer Analysis", desc: "Integrity, Evidence, Credibility, Materiality: 4 dimensioni per ogni contenuto." },
+        { icon: "📄", title: "Watermark PDF", desc: "Documento restituito con watermark che include hash e QR code di verifica." },
+        { icon: "⚡", title: "Batch Upload", desc: "Fino a 50 articoli in una sola chiamata API. Ideale per redazioni ad alto volume." },
+        { icon: "🔗", title: "Badge Embeddabile", desc: "Badge di certificazione per sito, newsletter e social. Visibile ai lettori." }
+      ],
+      targets: [
+        { icon: "📰", title: "Redazioni e testate", desc: "Certifica ogni articolo e differenziati dalla disinformazione con credibilità misurabile." },
+        { icon: "✍️", title: "Freelance e blogger", desc: "Il badge trust grade è il tuo biglietto da visita professionale." },
+        { icon: "📣", title: "Agenzie PR e brand media", desc: "Certifica comunicati e contenuti branded prima della distribuzione." }
+      ],
+      cta: "INIZIA GRATIS — 10 CERTIFICAZIONI",
+      ctaUrl: "https://proofpressverify.com/news"
     },
     "Info Verify": {
-      tagline: "Certifica comunicati stampa, report ESG e documenti IR con prova crittografica.",
-      bullets: [
-        "Prova che il documento non è stato alterato dopo la firma",
-        "Compliance-ready per Investor Relations e ESG reporting",
-        "Hash SHA-256 + IPFS: verificabile senza ProofPress",
-        "Pensato per PR & Comms, Compliance e IR"
+      tagline: "Ogni documento aziendale. Certificato. Con prova crittografica di integrità.",
+      intro: "Meno dell'1% dei documenti aziendali ha una verifica di integrità crittografica. Zero standard esistono per certificare che un comunicato stampa non è stato alterato. Il costo reputazionale di un report finanziario modificato è incalcolabile. Info Verify risolve questo problema: certifica comunicati stampa, report ESG e documenti IR con hash SHA-256 su IPFS e analisi IECM a 3 layer. Prova crittografica che il documento è identico all'originale.",
+      stats: [
+        { value: "<1%", label: "Documenti con verifica crittografica" },
+        { value: "0", label: "Standard per certificare comunicati" },
+        { value: "50", label: "Documenti per batch API" },
+        { value: "IPFS", label: "Archiviazione immutabile" }
       ],
-      cta: "SCOPRI INFO VERIFY →"
+      howItWorks: [
+        { step: "01", title: "Upload documento", desc: "PDF, DOCX o testo. Batch fino a 50 via API." },
+        { step: "02", title: "IECM 3-Layer", desc: "Integrity · Evidence · Credibility · Materiality per ogni documento." },
+        { step: "03", title: "Trust Score", desc: "Score 0–100 con breakdown per dimensione." },
+        { step: "04", title: "Certificato IPFS", desc: "Hash SHA-256 + CID IPFS + watermark PDF con QR code di verifica." }
+      ],
+      features: [
+        { icon: "📄", title: "Watermark PDF", desc: "Documento restituito con watermark che include hash e QR code di verifica." },
+        { icon: "⚡", title: "Batch Upload", desc: "Fino a 50 documenti in una sola chiamata API. Ideale per report periodici." },
+        { icon: "🔗", title: "IPFS Anchoring", desc: "Report JSON su IPFS. CID verificabile indipendentemente da ProofPress." },
+        { icon: "🔔", title: "Webhook Notifiche", desc: "Notifica POST al tuo endpoint ad ogni certificato emesso o verificato." }
+      ],
+      targets: [
+        { icon: "📊", title: "Investor Relations", desc: "Certifica report finanziari ed earnings release. Prova di integrità per analisti e investitori." },
+        { icon: "🏛️", title: "PR & Comunicazione", desc: "Certifica comunicati prima della distribuzione. Prova che il contenuto non è stato alterato." },
+        { icon: "✅", title: "Compliance & Legal", desc: "Certifica documenti ESG e policy aziendali. Audit trail crittografico per ogni versione." }
+      ],
+      cta: "INIZIA GRATIS — 10 CERTIFICAZIONI",
+      ctaUrl: "https://proofpressverify.com/info"
     },
     "Email Verify": {
-      tagline: "Certifica newsletter e comunicazioni finanziarie via BCC. Zero integrazione tecnica.",
-      bullets: [
-        "Funziona con qualsiasi client email — nessuna modifica tecnica",
-        "Certificazione automatica via BCC in ogni invio",
-        "Prova crittografica di autenticità per comunicazioni regolatorio",
-        "Pensato per newsletter, finanza e compliance email"
+      tagline: "Ogni email. Certificata. Con un semplice BCC automatico.",
+      intro: "Il 100% delle email può essere alterata in transito senza che nessuno se ne accorga. Zero standard verificabili esistono per garantire l'integrità di un'email ricevuta. Email Verify risolve questo problema con un approccio radicale nella sua semplicità: aggiungi un BCC dedicato a ogni invio e il sistema certifica automaticamente ogni email con hash SHA-256 su IPFS. Zero integrazione tecnica. Funziona con Gmail, Outlook, Mailchimp, HubSpot, Salesforce.",
+      stats: [
+        { value: "0", label: "Standard per integrità email" },
+        { value: "100%", label: "Email alterabili in transito" },
+        { value: "BCC", label: "Zero integrazione tecnica" },
+        { value: "IPFS", label: "Prova permanente" }
       ],
-      cta: "SCOPRI EMAIL VERIFY →"
+      howItWorks: [
+        { step: "01", title: "Provisioning BCC", desc: "Ricevi il tuo indirizzo BCC dedicato: certify-{slug}@mail.proofpressverify.com" },
+        { step: "02", title: "Invia con BCC", desc: "Aggiungi il BCC a ogni invio. Zero modifiche al workflow esistente." },
+        { step: "03", title: "Certificazione auto", desc: "Il sistema riceve la copia, la certifica SHA-256 e la archivia su IPFS." },
+        { step: "04", title: "Codice PP-", desc: "Ricevi email di conferma con hash e link al certificato verificabile." }
+      ],
+      features: [
+        { icon: "✉️", title: "BCC Automatico", desc: "Funziona con Gmail, Outlook, Mailchimp, HubSpot, Salesforce. Nessuna modifica al workflow." },
+        { icon: "🔐", title: "Hash SHA-256 + IPFS", desc: "Impronta digitale immutabile archiviata su IPFS. Verificabile da chiunque, per sempre." },
+        { icon: "🏷️", title: "Badge Embeddabile", desc: "Badge di certificazione per firma email o landing page newsletter." },
+        { icon: "📊", title: "Inbox BCC Dashboard", desc: "Tutte le email certificate in un unico posto. Filtri per data, mittente, status." }
+      ],
+      targets: [
+        { icon: "📧", title: "Newsletter & Creator", desc: "I tuoi iscritti verificano che il contenuto ricevuto è autentico e non alterato." },
+        { icon: "💼", title: "Comunicazioni Finanziarie", desc: "Certifica earnings release e comunicazioni agli azionisti. Prova di integrità per regolatori." },
+        { icon: "⚖️", title: "Comunicazioni Legali", desc: "Certifica notifiche di compliance e documenti contrattuali inviati via email." }
+      ],
+      cta: "INIZIA GRATIS — 10 CERTIFICAZIONI",
+      ctaUrl: "https://proofpressverify.com/email"
     },
     "CV Verify": {
-      tagline: "Certifica il tuo curriculum con hash SHA-256 e notarizzazione IPFS.",
-      bullets: [
-        "Il numero PP-XXXXXXXX è la tua prova di autenticità verso i recruiter",
-        "Verificabile su LinkedIn e da qualsiasi HR",
-        "Immutabile: nessuno può alterare il tuo CV certificato",
-        "Pensato per candidati, recruiter e HR manager"
+      tagline: "Il tuo CV. Certificato. Indiscutibile. Il numero PP sul CV è la garanzia.",
+      intro: "L'85% dei recruiter ha ricevuto CV con informazioni false o esagerate. Con l'AI, bastano 6 minuti per creare un CV credibile con esperienze inventate. Zero strumenti esistono per verificare in modo indipendente che un CV non sia stato alterato. CV Verify risolve questo problema: certifica ogni claim del curriculum con Claude AI, Perplexity e SerpAPI su 24+ fonti, e rilascia un numero PP-XXXXXXXX ancorato su IPFS. Permanente. Verificabile da qualsiasi recruiter.",
+      stats: [
+        { value: "85%", label: "Recruiter con CV falsi ricevuti" },
+        { value: "6 min", label: "Per creare CV falso con AI" },
+        { value: "24", label: "Fonti consultate per certificato" },
+        { value: "€29", label: "Pagamento unico, permanente" }
       ],
-      cta: "CERTIFICA IL TUO CV →"
+      howItWorks: [
+        { step: "01", title: "Inserisci il CV", desc: "Incolla il testo. La pipeline parte immediatamente." },
+        { step: "02", title: "AI Claim Extraction", desc: "Claude AI estrae ruoli, aziende, titoli, certificazioni e achievement." },
+        { step: "03", title: "Fact-check multi-fonte", desc: "Perplexity, DuckDuckGo e SerpAPI verificano ogni claim su fonti reali." },
+        { step: "04", title: "Certificato PP + IPFS", desc: "Report notarizzato su IPFS. Ricevi il numero PP-XXXXXXXX da inserire nel CV." }
+      ],
+      features: [
+        { icon: "💼", title: "Verifica esperienze", desc: "Ruoli, aziende, anni di esperienza verificati su fonti pubbliche." },
+        { icon: "🎓", title: "Titoli di studio", desc: "Università, lauree, master verificati su database accademici." },
+        { icon: "📜", title: "Certificazioni", desc: "AWS, Google, PMP, CFA e altre certificazioni verificate alla fonte." },
+        { icon: "🔗", title: "Profilo LinkedIn", desc: "Consistenza tra CV e profilo LinkedIn verificata automaticamente." }
+      ],
+      targets: [
+        { icon: "👔", title: "Candidati senior", desc: "Il numero PP-XXXXXXXX è la tua prova di autenticità verso recruiter e HR." },
+        { icon: "🔍", title: "Recruiter e HR", desc: "Quando vedi un numero PP, sai già che puoi passare alla fase successiva." },
+        { icon: "🏆", title: "Profili C-level", desc: "Per i ruoli C-level, la certificazione ProofPress è quasi uno standard." }
+      ],
+      testimonial: {
+        initials: "SR",
+        name: "Sara R.",
+        role: "Head of Talent · Scale-up Tech",
+        text: "Quando vedo un numero PP, so già che posso passare alla fase successiva. È diventato un segnale di serietà professionale."
+      },
+      pricing: "€29 · Pagamento unico · Certificato permanente su IPFS · Non scade mai",
+      cta: "CERTIFICA IL TUO CV — €29",
+      ctaUrl: "https://proofpressverify.com/cv-verify"
     },
     "Product Verify": {
-      tagline: "Certifica claim di prodotto: ingredienti, sostenibilità, certificazioni.",
-      bullets: [
-        "Prova crittografica che i claim non sono stati alterati",
-        "ESG e sostenibilità: compliance verificabile dai consumatori",
-        "Pensato per FMCG, sostenibilità e compliance",
-        "Badge verificabile su packaging e sito"
+      tagline: "Il tuo prodotto. Certificato. AI verifica ogni claim marketing su 5 fonti indipendenti.",
+      intro: "Le multe AGCM per greenwashing e claim non supportati superano i €10M in media. Il 67% dei consumatori smette di acquistare un brand dopo claim falsi. Ma i brand con badge di verifica terza parte registrano un conversion rate 3 volte superiore. Product Verify certifica ogni claim marketing — ingredienti, sostenibilità, certificazioni — con Claude AI su 5 fonti indipendenti (Open Food Facts, EFSA, Perplexity, DuckDuckGo, SerpAPI) e rilascia un certificato crittografico immutabile su IPFS con badge embeddabile su sito e packaging.",
+      stats: [
+        { value: "€10M+", label: "Multa media AGCM greenwashing" },
+        { value: "67%", label: "Consumatori che abbandonano brand con claim falsi" },
+        { value: "3×", label: "Conversion rate con badge verifica" },
+        { value: "€29", label: "Pagamento unico, badge incluso" }
       ],
-      cta: "SCOPRI PRODUCT VERIFY →"
+      howItWorks: [
+        { step: "01", title: "Inserisci il prodotto", desc: "Nome, categoria, claim marketing e lista ingredienti." },
+        { step: "02", title: "AI Claim Extraction", desc: "Claude AI estrae ingredienti, certificazioni, claim di efficacia e ambientali." },
+        { step: "03", title: "Verifica multi-fonte", desc: "Open Food Facts, EFSA, Perplexity, DuckDuckGo e SerpAPI verificano ogni claim." },
+        { step: "04", title: "Certificato PP + IPFS", desc: "Report su IPFS. Numero PP + badge HTML embeddabile su sito e packaging." }
+      ],
+      features: [
+        { icon: "🛒", title: "E-commerce & Retail", desc: "Conversion rate più alto con claim verificati da terze parti." },
+        { icon: "🌿", title: "Food & Beverage", desc: "Verifica 'biologico', 'senza glutine', 'vegan'. Open Food Facts + EFSA." },
+        { icon: "💄", title: "Cosmetici & Beauty", desc: "Certifica INCI, 'cruelty-free', 'ipoallergenico'. Database EWG." },
+        { icon: "🌱", title: "Sostenibilità & ESG", desc: "Certifica carbon neutral, packaging riciclabile, filiera sostenibile." }
+      ],
+      targets: [
+        { icon: "🏭", title: "Brand FMCG", desc: "Ogni nuovo prodotto certificato prima del lancio. Costo irrisorio vs rischio multa AGCM." },
+        { icon: "💻", title: "E-commerce", desc: "Il badge ProofPress aumenta il conversion rate. +23% in 3 mesi per un beauty brand." },
+        { icon: "🌍", title: "Brand ESG", desc: "Certifica carbon neutral e packaging riciclabile. Compliance EU Green Claims Directive." }
+      ],
+      testimonial: {
+        initials: "CS",
+        name: "Chiara S.",
+        role: "Head of Compliance · Beauty Brand",
+        text: "Il badge ProofPress sul nostro e-commerce ha aumentato il conversion rate del 23% in 3 mesi."
+      },
+      pricing: "€29 · Pagamento unico · Certificato permanente su IPFS · Badge embeddabile incluso",
+      cta: "CERTIFICA IL TUO PRODOTTO — €29",
+      ctaUrl: "https://proofpressverify.com/product-verify"
     }
   };
 
-  const desc = productDescriptions[page.product] ?? productDescriptions["ProofPress Verify™"];
+  const desc = productContents[page.product] ?? productContents["ProofPress Verify™"];
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -260,16 +402,31 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ProofPress Verify™ — ${page.product}</title>
 </head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">
+<body style="margin:0;padding:0;background:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f2f5;padding:24px 0;">
 <tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
 
-  <!-- HEADER -->
+  <!-- HEADER PROOFPRESS -->
   <tr>
-    <td style="background:#0a0f1e;padding:24px 32px;text-align:center;">
-      <p style="margin:0;color:#00e5c8;font-size:11px;letter-spacing:2px;text-transform:uppercase;">ProofPress Magazine · ${dateFormatted}</p>
-      <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;">Oggi su ProofPress Verify™</h1>
+    <td style="background:#0a0f1e;padding:20px 32px;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td><p style="margin:0;color:#00e5c8;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">ProofPress Magazine · ${dateFormatted}</p></td>
+          <td align="right"><a href="https://proofpress.ai" style="color:#888;font-size:11px;text-decoration:none;">proofpress.ai</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- SALUTO PRINCIPALE -->
+  <tr>
+    <td style="background:linear-gradient(135deg,#0a0f1e 0%,#1a2540 100%);padding:40px 32px 32px;text-align:center;">
+      <h1 style="margin:0 0 8px;color:#ffffff;font-size:36px;font-weight:900;letter-spacing:-1px;line-height:1;">BUON POMERIGGIO</h1>
+      <p style="margin:0 0 24px;color:#00e5c8;font-size:18px;font-weight:600;letter-spacing:1px;">La redazione di ProofPress consiglia</p>
+      <div style="display:inline-block;background:rgba(255,85,0,0.15);border:1px solid #ff5500;border-radius:20px;padding:6px 16px;">
+        <p style="margin:0;color:#ff5500;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">OGGI: ${page.product}</p>
+      </div>
     </td>
   </tr>
 
@@ -280,45 +437,131 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
     </td>
   </tr>
 
-  <!-- PRODOTTO -->
+  <!-- INTRO -->
   <tr>
-    <td style="padding:32px 32px 16px;">
-      <p style="margin:0 0 4px;color:#ff5500;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">PROOFPRESS VERIFY™ · PRODOTTO DEL GIORNO</p>
-      <h2 style="margin:0 0 12px;color:#0a0f1e;font-size:28px;font-weight:800;line-height:1.2;">${page.product}</h2>
-      <p style="margin:0 0 24px;color:#444;font-size:16px;line-height:1.6;">${desc.tagline}</p>
+    <td style="padding:32px 32px 24px;">
+      <p style="margin:0 0 8px;color:#ff5500;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">PROOFPRESS VERIFY™ · PRODOTTO DEL GIORNO</p>
+      <h2 style="margin:0 0 16px;color:#0a0f1e;font-size:28px;font-weight:800;line-height:1.2;">${page.product}</h2>
+      <p style="margin:0 0 8px;color:#333;font-size:15px;font-weight:600;line-height:1.5;">${desc.tagline}</p>
+      <p style="margin:0;color:#555;font-size:14px;line-height:1.7;">${desc.intro}</p>
+    </td>
+  </tr>
 
-      <!-- BULLETS -->
-      <table cellpadding="0" cellspacing="0" width="100%">
-        ${desc.bullets.map(b => `
+  <!-- STATS -->
+  <tr>
+    <td style="padding:0 32px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fa;border-radius:8px;overflow:hidden;">
         <tr>
-          <td style="padding:6px 0;vertical-align:top;">
-            <span style="color:#00e5c8;font-size:16px;font-weight:700;margin-right:8px;">✓</span>
-            <span style="color:#333;font-size:14px;">${b}</span>
+          ${desc.stats.map(s => `
+          <td style="padding:16px;text-align:center;border-right:1px solid #e9ecef;">
+            <p style="margin:0 0 4px;color:#ff5500;font-size:20px;font-weight:900;">${s.value}</p>
+            <p style="margin:0;color:#666;font-size:11px;line-height:1.3;">${s.label}</p>
+          </td>`).join("")}
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- COME FUNZIONA -->
+  <tr>
+    <td style="padding:0 32px 24px;">
+      <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">COME FUNZIONA</p>
+      <table width="100%" cellpadding="0" cellspacing="8">
+        ${desc.howItWorks.map(h => `
+        <tr>
+          <td style="padding:10px;vertical-align:top;width:36px;">
+            <div style="background:#0a0f1e;color:#00e5c8;font-size:11px;font-weight:900;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;">${h.step}</div>
+          </td>
+          <td style="padding:10px 10px 10px 4px;vertical-align:top;">
+            <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${h.title}</p>
+            <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${h.desc}</p>
           </td>
         </tr>`).join("")}
       </table>
     </td>
   </tr>
 
+  <!-- FEATURES -->
+  <tr>
+    <td style="padding:0 32px 24px;">
+      <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">FUNZIONALITÀ CHIAVE</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${desc.features.map(f => `
+        <tr>
+          <td style="padding:8px 0;vertical-align:top;width:32px;font-size:18px;">${f.icon}</td>
+          <td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #f0f0f0;">
+            <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${f.title}</p>
+            <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${f.desc}</p>
+          </td>
+        </tr>`).join("")}
+      </table>
+    </td>
+  </tr>
+
+  <!-- PER CHI -->
+  <tr>
+    <td style="padding:0 32px 24px;">
+      <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">PER CHI È</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${desc.targets.map(t => `
+        <tr>
+          <td style="padding:8px 0;vertical-align:top;width:32px;font-size:18px;">${t.icon}</td>
+          <td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #f0f0f0;">
+            <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${t.title}</p>
+            <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${t.desc}</p>
+          </td>
+        </tr>`).join("")}
+      </table>
+    </td>
+  </tr>
+
+  ${desc.testimonial ? `
+  <!-- TESTIMONIANZA -->
+  <tr>
+    <td style="padding:0 32px 24px;">
+      <div style="background:#f8f9fa;border-left:4px solid #00e5c8;border-radius:0 8px 8px 0;padding:16px 20px;">
+        <p style="margin:0 0 12px;color:#333;font-size:14px;font-style:italic;line-height:1.6;">"${desc.testimonial.text}"</p>
+        <div style="display:flex;align-items:center;">
+          <div style="background:#0a0f1e;color:#00e5c8;font-size:12px;font-weight:700;width:32px;height:32px;border-radius:50%;text-align:center;line-height:32px;margin-right:10px;">${desc.testimonial.initials}</div>
+          <div>
+            <p style="margin:0;color:#0a0f1e;font-size:12px;font-weight:700;">${desc.testimonial.name}</p>
+            <p style="margin:0;color:#888;font-size:11px;">${desc.testimonial.role}</p>
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>` : ""}
+
+  ${desc.pricing ? `
+  <!-- PRICING -->
+  <tr>
+    <td style="padding:0 32px 24px;">
+      <div style="background:linear-gradient(135deg,#0a0f1e,#1a2540);border-radius:8px;padding:16px 20px;text-align:center;">
+        <p style="margin:0;color:#ffffff;font-size:14px;font-weight:600;">${desc.pricing}</p>
+      </div>
+    </td>
+  </tr>` : ""}
+
   <!-- CTA -->
   <tr>
-    <td style="padding:24px 32px 32px;text-align:center;">
-      <a href="${page.url}" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:6px;text-decoration:none;letter-spacing:1px;">${desc.cta}</a>
-      <p style="margin:16px 0 0;color:#888;font-size:12px;">Certificazione gratuita · Nessuna carta di credito</p>
+    <td style="padding:8px 32px 32px;text-align:center;">
+      <a href="${desc.ctaUrl}" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:15px;font-weight:800;padding:16px 36px;border-radius:8px;text-decoration:none;letter-spacing:1px;">${desc.cta}</a>
+      ${!desc.pricing ? `<p style="margin:12px 0 0;color:#888;font-size:12px;">10 certificazioni gratuite · Nessuna carta di credito</p>` : ""}
     </td>
   </tr>
 
   <!-- SEPARATOR -->
   <tr><td style="padding:0 32px;"><hr style="border:none;border-top:1px solid #eee;" /></td></tr>
 
-  <!-- FOOTER PROOFPRESS -->
+  <!-- FOOTER -->
   <tr>
     <td style="padding:20px 32px;text-align:center;">
-      <p style="margin:0 0 4px;color:#888;font-size:12px;">Questo messaggio è stato inviato da <strong>ProofPress Magazine</strong></p>
-      <p style="margin:0;color:#888;font-size:12px;">
+      <p style="margin:0 0 6px;color:#888;font-size:12px;">Questo messaggio è stato inviato da <strong>ProofPress Magazine</strong></p>
+      <p style="margin:0 0 6px;color:#888;font-size:12px;">
         <a href="https://proofpress.ai" style="color:#00e5c8;text-decoration:none;">proofpress.ai</a> ·
         <a href="https://proofpressverify.com" style="color:#00e5c8;text-decoration:none;">proofpressverify.com</a>
       </p>
+      <p style="margin:0;color:#bbb;font-size:11px;">Hai ricevuto questa email perché sei iscritto alla newsletter di ProofPress.</p>
     </td>
   </tr>
 
