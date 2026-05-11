@@ -71,10 +71,10 @@ const PPV_CALENDAR: PpvPage[] = [
   // ── Settimana 18-22 maggio 2026 ──────────────────────────────────────────────
   {
     date: "2026-05-18",
-    url: "https://proofpressverify.com/",
-    product: "ProofPress Verify™",
+    url: "https://proofpressverify.com/product",
+    product: "Product Verify",
     heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
-    context: `ProofPress Verify™ è il protocollo di certificazione crittografica che assegna a ogni contenuto digitale un numero PP univoco ancorato su IPFS tramite hash SHA-256. Analizza ogni claim fattuale con 4 motori AI paralleli, incrocia oltre 4.000 fonti globali e assegna un Trust Score da 0 a 100 con grade A–F. In un'epoca in cui il 59% delle persone non distingue notizie vere da false, ProofPress Verify™ risponde con crittografia. URL: https://proofpressverify.com/`,
+    context: `Product Verify è il prodotto di ProofPress Verify™ per certificare i claim marketing di prodotti fisici e digitali. Verifica ingredienti, certificazioni di sostenibilità e claim di efficacia con Claude AI su 5 fonti indipendenti (Open Food Facts, EFSA, Perplexity, DuckDuckGo, SerpAPI) e rilascia un certificato crittografico immutabile su IPFS con badge embeddabile su sito e packaging. Le multe AGCM per greenwashing superano €10M in media. I brand con badge di verifica terza parte registrano conversion rate 3× superiore. URL: https://proofpressverify.com/product`,
   },
   {
     date: "2026-05-19",
@@ -145,10 +145,10 @@ const PPV_CALENDAR: PpvPage[] = [
   // ── Settimana 1-5 giugno 2026 ────────────────────────────────────────────────
   {
     date: "2026-06-01",
-    url: "https://proofpressverify.com/",
-    product: "ProofPress Verify™",
+    url: "https://proofpressverify.com/product",
+    product: "Product Verify",
     heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
-    context: `ProofPress Verify™ è il protocollo che trasforma ogni contenuto digitale in un asset verificabile. In un ecosistema dove la disinformazione costa alle aziende miliardi in reputazione e contenziosi, ProofPress Verify™ offre la prova crittografica che un contenuto è autentico, integro e non alterato. Ogni certificato è immutabile su IPFS e verificabile pubblicamente. URL: https://proofpressverify.com/`,
+    context: `Product Verify è la risposta alla crescente pressione regolamentare sui claim marketing. Con la EU Green Claims Directive in vigore e le sanzioni AGCM in aumento, certificare ogni claim prima del lancio è diventato un imperativo. Product Verify analizza ingredienti, certificazioni ambientali e claim di efficacia con Claude AI su 5 fonti indipendenti e rilascia un certificato IPFS immutabile con badge embeddabile su sito e packaging. Costo: €29 per prodotto — irrisorio rispetto al rischio multa. URL: https://proofpressverify.com/product`,
   },
   {
     date: "2026-06-02",
@@ -573,7 +573,7 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
       },
       pricing: "€29 · Pagamento unico · Certificato permanente su IPFS · Badge embeddabile incluso",
       cta: "CERTIFICA IL TUO PRODOTTO — €29",
-      ctaUrl: "https://proofpressverify.com/product-verify"
+      ctaUrl: "https://proofpressverify.com/product"
     }
   };
 
