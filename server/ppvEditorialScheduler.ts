@@ -67,6 +67,80 @@ const PPV_CALENDAR: PpvPage[] = [
     heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
     context: `CV Verify è il prodotto di ProofPress Verify™ per certificare il curriculum con hash SHA-256 e notarizzazione IPFS. Il numero PP-XXXXXXXX è la prova di autenticità verso recruiter e HR. Pensato per candidati, recruiter, HR e profili LinkedIn. URL: https://proofpressverify.com/cv-verify`,
   },
+
+  // ── Settimana 18-22 maggio 2026 ──────────────────────────────────────────────
+  {
+    date: "2026-05-18",
+    url: "https://proofpressverify.com/",
+    product: "ProofPress Verify™",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `ProofPress Verify™ è il protocollo di certificazione crittografica che assegna a ogni contenuto digitale un numero PP univoco ancorato su IPFS tramite hash SHA-256. Analizza ogni claim fattuale con 4 motori AI paralleli, incrocia oltre 4.000 fonti globali e assegna un Trust Score da 0 a 100 con grade A–F. In un'epoca in cui il 59% delle persone non distingue notizie vere da false, ProofPress Verify™ risponde con crittografia. URL: https://proofpressverify.com/`,
+  },
+  {
+    date: "2026-05-19",
+    url: "https://proofpressverify.com/news",
+    product: "News Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `News Verify certifica ogni articolo claim per claim con badge trust grade A–F visibile ai lettori e prova IPFS immutabile. Le redazioni che adottano News Verify differenziano il proprio brand con informazioni verificabili pubblicamente. Il badge è embeddabile su sito e newsletter. URL: https://proofpressverify.com/news`,
+  },
+  {
+    date: "2026-05-20",
+    url: "https://proofpressverify.com/info",
+    product: "Info Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `Info Verify fornisce prova crittografica che comunicati stampa, report ESG e documenti IR non sono stati alterati dopo la certificazione. Rivolto a PR & Comms, Compliance e Investor Relations che devono dimostrare integrità documentale. URL: https://proofpressverify.com/info`,
+  },
+  {
+    date: "2026-05-21",
+    url: "https://proofpressverify.com/email",
+    product: "Email Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `Email Verify certifica newsletter e comunicazioni finanziarie via BCC senza alcuna integrazione tecnica. Funziona con qualsiasi client email. Ogni messaggio riceve un numero PP che il destinatario può verificare su proofpressverify.com. URL: https://proofpressverify.com/email`,
+  },
+  {
+    date: "2026-05-22",
+    url: "https://proofpressverify.com/cv-verify",
+    product: "CV Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `CV Verify certifica il curriculum con hash SHA-256 e notarizzazione IPFS. Il numero PP-XXXXXXXX è la prova di autenticità verso recruiter e HR. In un mercato del lavoro dove le falsificazioni del CV sono in aumento, CV Verify è la risposta crittografica. URL: https://proofpressverify.com/cv-verify`,
+  },
+
+  // ── Settimana 25-29 maggio 2026 ──────────────────────────────────────────────
+  {
+    date: "2026-05-25",
+    url: "https://proofpressverify.com/",
+    product: "ProofPress Verify™",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `ProofPress Verify™ è l'infrastruttura di fiducia per contenuti digitali. Ogni certificato è pubblicamente verificabile, immutabile su IPFS e difendibile in sede legale. Con 669+ certificati attivi e un open rate del 38% sulla newsletter, ProofPress Verify™ è già il riferimento per chi produce contenuti che devono essere credibili. URL: https://proofpressverify.com/`,
+  },
+  {
+    date: "2026-05-26",
+    url: "https://proofpressverify.com/news",
+    product: "News Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `News Verify è la risposta dell'editoria alla crisi di fiducia nell'informazione. Ogni articolo certificato riceve un badge A–F visibile ai lettori, con prova crittografica su IPFS. Redazioni, freelance e brand media che adottano News Verify comunicano un vantaggio competitivo misurabile: informazioni verificabili. URL: https://proofpressverify.com/news`,
+  },
+  {
+    date: "2026-05-27",
+    url: "https://proofpressverify.com/info",
+    product: "Info Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `Info Verify è lo strumento di compliance documentale per chi non può permettersi ambiguità. Comunicati stampa, report ESG, documenti IR: ogni file riceve una prova crittografica che nessuno ha alterato il contenuto dopo la certificazione. URL: https://proofpressverify.com/info`,
+  },
+  {
+    date: "2026-05-28",
+    url: "https://proofpressverify.com/email",
+    product: "Email Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `Email Verify trasforma ogni newsletter in un documento certificato. Zero integrazione tecnica: basta aggiungere l'indirizzo BCC di ProofPress Verify™ a ogni invio. Il destinatario può verificare l'autenticità del messaggio in qualsiasi momento su proofpressverify.com. URL: https://proofpressverify.com/email`,
+  },
+  {
+    date: "2026-05-29",
+    url: "https://proofpressverify.com/cv-verify",
+    product: "CV Verify",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `CV Verify è il sigillo di autenticità per il curriculum professionale. In un mercato dove le falsificazioni sono documentate nel 30% dei CV, il numero PP di CV Verify è la risposta crittografica che ogni recruiter può verificare in 3 secondi. URL: https://proofpressverify.com/cv-verify`,
+  },
 ];
 
 // ─── Utility: pagina del giorno ───────────────────────────────────────────────
