@@ -1,0 +1,15 @@
+{
+  "query": "SELECT \n  COUNT(*) as totale,\n  SUM(CASE WHEN ppvHash IS NOT NULL THEN 1 ELSE 0 END) as con_ppv_hash,\n  SUM(CASE WHEN ppvHash IS NULL THEN 1 ELSE 0 END) as senza_ppv_hash\nFROM news_items;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  COUNT(*) as totale,\n  SUM(CASE WHEN ppvHash IS NOT NULL THEN 1 ELSE 0 END) as con_ppv_hash,\n  SUM(CASE WHEN ppvHash IS NULL THEN 1 ELSE 0 END) as senza_ppv_hash\nFROM news_items;",
+  "rows": [
+    {
+      "totale": "35",
+      "con_ppv_hash": "5",
+      "senza_ppv_hash": "30"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale\tcon_ppv_hash\tsenza_ppv_hash\n35\t5\t30\n",
+  "stderr": "",
+  "execution_time_ms": 273
+}

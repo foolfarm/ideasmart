@@ -16,7 +16,7 @@ type NavItem =
   | { type: "group"; label: string; icon: string; children: { href: string; label: string; external?: boolean }[] };
 
 const NAV_STRUCTURE: NavItem[] = [
-  // Home con sottomenu canali
+  // Home con sottomenu canali (specchio esatto di LeftSidebar.tsx)
   {
     type: "group",
     label: "Home",
@@ -28,6 +28,8 @@ const NAV_STRUCTURE: NavItem[] = [
       { href: "/dealroom",          label: "Dealroom" },
       { href: "/research",          label: "Research" },
       { href: "/dealflow",          label: "Dealflow" },
+      { href: "/osservatorio-tech", label: "Osservatorio Tech" },
+      { href: "/abbonamenti",       label: "I miei abbonamenti" },
     ],
   },
   {
@@ -39,10 +41,9 @@ const NAV_STRUCTURE: NavItem[] = [
       { href: "/chi-siamo-story",  label: "Storia" },
     ],
   },
-  { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", icon: "🚀" },
-  { type: "link", href: "https://proofpressverify.com/", label: "Scopri la Tecnologia Verify →", icon: "🔐", external: true },
-  { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", icon: "💰" },
-  { type: "link", href: "/osservatorio-tech", label: "Osservatorio Tech", icon: "🔍" },
+  { type: "link", href: "/base-alpha", label: "Base Alpha+", icon: "⚡" },
+  { type: "link", href: "/offertacommerciale", label: "Crea il tuo Giornale AI →", icon: "💼" },
+  { type: "link", href: "/advertise", label: "Monetizza con ProofPress →", icon: "📢" },
   { type: "link", href: "/scrivi-per-noi", label: "Scrivi per noi", icon: "✍️" },
   { type: "link", href: "/contatti", label: "Contatti", icon: "✉️" },
 ]

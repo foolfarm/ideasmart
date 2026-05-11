@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, ppvHash, ppvDocumentId, ppvTrustGrade FROM news_items WHERE ppvHash IS NOT NULL LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, ppvHash, ppvDocumentId, ppvTrustGrade FROM news_items WHERE ppvHash IS NOT NULL LIMIT 5;",
+  "rows": [
+    {
+      "id": "7530001",
+      "ppvHash": "0bd4f38ff6d3a24f14e31067120030005796d33a757dd42fe317ded06fdc4662",
+      "ppvDocumentId": "1020001",
+      "ppvTrustGrade": "C"
+    },
+    {
+      "id": "7530003",
+      "ppvHash": "8298b6fe22435bb137244c486941dcc89891d64762b8f5af1435a61c76cea1d3",
+      "ppvDocumentId": "1020003",
+      "ppvTrustGrade": "C"
+    },
+    {
+      "id": "7560007",
+      "ppvHash": "a4a92bfa6982d0b62429c524a3d304c994d573817b4ca0f80ca61b6b70e26940",
+      "ppvDocumentId": "1050007",
+      "ppvTrustGrade": "D"
+    },
+    {
+      "id": "7560008",
+      "ppvHash": "62a8b4313472c1757521e5566f036b8f37404a1acd711634dffd370edd6d1fe8",
+      "ppvDocumentId": "1050008",
+      "ppvTrustGrade": "A"
+    },
+    {
+      "id": "7560014",
+      "ppvHash": "74252aaccf990748a65aa2f8829f1cb40a3ad9de0ca6b2c16970ed0f74bb3787",
+      "ppvDocumentId": "1050014",
+      "ppvTrustGrade": "D"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tppvHash\tppvDocumentId\tppvTrustGrade\n7530001\t0bd4f38ff6d3a24f14e31067120030005796d33a757dd42fe317ded06fdc4662\t1020001\tC\n7530003\t8298b6fe22435bb137244c486941dcc89891d64762b8f5af1435a61c76cea1d3\t1020003\tC\n7560007\ta4a92bfa6982d0b62429c524a3d304c994d573817b4ca0f80ca61b6b70e26940\t1050007\tD\n7560008\t62a8b4313472c1757521e5566f036b8f37404a1acd711634dffd370edd6d1fe8\t1050008\tA\n7560014\t74252aaccf990748a65aa2f8829f1cb40a3ad9de0ca6b2c16970ed0f74bb3787\t1050014\tD\n",
+  "stderr": "",
+  "execution_time_ms": 316
+}
