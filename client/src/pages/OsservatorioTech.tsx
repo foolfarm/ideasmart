@@ -743,10 +743,9 @@ export default function OsservatorioTech() {
 
               {/* Titolo display — 3/4 */}
               <div className="lg:col-span-3 px-8 md:px-12 py-12 md:py-16" style={{ borderRight: `1px solid ${INK}15` }}>
-                <p className="text-base font-black tracking-[-0.02em] mb-1" style={{ color: INK, fontFamily: FONT }}>Base Alpha</p>
-                <Label>Osservatorio Tech</Label>
+                <p className="text-sm font-black tracking-[0.12em] uppercase mb-2" style={{ color: "#c9a227", fontFamily: FONT }}>a cura di Andrea Cinelli</p>
                 <h1
-                  className="mt-4 font-black leading-[0.95] tracking-[-0.03em]"
+                  className="mt-2 font-black leading-[0.95] tracking-[-0.03em]"
                   style={{
                     color: INK,
                     fontFamily: FONT,
@@ -754,10 +753,16 @@ export default function OsservatorioTech() {
                     lineHeight: 0.93,
                   }}
                 >
-                  Base Alpha +
+                  Base Alpha
                 </h1>
                 <p
-                  className="mt-6 font-bold leading-snug max-w-2xl"
+                  className="mt-4 font-bold leading-snug max-w-2xl"
+                  style={{ color: INK, fontSize: "clamp(1.15rem, 1.9vw, 1.45rem)", fontFamily: FONT }}
+                >
+                  Osservatorio Tech
+                </p>
+                <p
+                  className="mt-4 font-bold leading-snug max-w-2xl"
                   style={{ color: INK, fontSize: "clamp(1.15rem, 1.9vw, 1.45rem)", fontFamily: FONT }}
                 >
                   Il punto di vista di chi il digitale<br />
