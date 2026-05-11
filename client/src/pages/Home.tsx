@@ -1781,9 +1781,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* ── POST ENRICO GIACOMELLI ── */}
-                  <PostEnricoGiacomelli />
-
                   {/* ── DEEP DIVE — sotto i post LinkedIn di Andrea ── */}
                   <div className="mt-8">
                     <EditorialeDelDirettore />
