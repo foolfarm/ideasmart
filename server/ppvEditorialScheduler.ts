@@ -188,6 +188,42 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
     weekday: "long", day: "numeric", month: "long", year: "numeric"
   });
 
+  // Immagini Pexels per ogni prodotto (URL stabili, no scadenza)
+  const productImages: Record<string, { hero: string; mid: string; bottom: string }> = {
+    "ProofPress Verify™": {
+      hero: "https://images.pexels.com/photos/9588213/pexels-photo-9588213.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/4160060/pexels-photo-4160060.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/7887800/pexels-photo-7887800.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "News Verify": {
+      hero: "https://images.pexels.com/photos/4160060/pexels-photo-4160060.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/3989901/pexels-photo-3989901.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/9577224/pexels-photo-9577224.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "Info Verify": {
+      hero: "https://images.pexels.com/photos/29614944/pexels-photo-29614944.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/7947854/pexels-photo-7947854.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/9588213/pexels-photo-9588213.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "Email Verify": {
+      hero: "https://images.pexels.com/photos/7821764/pexels-photo-7821764.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/2882555/pexels-photo-2882555.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/30885916/pexels-photo-30885916.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "CV Verify": {
+      hero: "https://images.pexels.com/photos/590044/pexels-photo-590044.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/5989931/pexels-photo-5989931.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/5989943/pexels-photo-5989943.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "Product Verify": {
+      hero: "https://images.pexels.com/photos/37466061/pexels-photo-37466061.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/5953835/pexels-photo-5953835.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/36522029/pexels-photo-36522029.jpeg?auto=compress&cs=tinysrgb&w=600"
+    }
+  };
+
+  const imgs = productImages[page.product] ?? productImages["ProofPress Verify™"];
+
   // Contenuti dettagliati per ogni pagina PPV — basati sui contenuti reali del sito
   interface ProductContent {
     tagline: string;
@@ -430,26 +466,26 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
     </td>
   </tr>
 
-  <!-- HERO IMAGE -->
+  <!-- HERO IMAGE (Pexels) -->
   <tr>
     <td style="padding:0;">
-      <img src="${page.heroImageUrl}" alt="${page.product}" width="600" style="display:block;width:100%;max-width:600px;" />
+      <img src="${imgs.hero}" alt="${page.product}" width="600" style="display:block;width:100%;max-width:600px;height:280px;object-fit:cover;" />
     </td>
   </tr>
 
   <!-- INTRO -->
   <tr>
-    <td style="padding:32px 32px 24px;">
+    <td style="padding:32px 32px 16px;">
       <p style="margin:0 0 8px;color:#ff5500;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">PROOFPRESS VERIFY™ · PRODOTTO DEL GIORNO</p>
-      <h2 style="margin:0 0 16px;color:#0a0f1e;font-size:28px;font-weight:800;line-height:1.2;">${page.product}</h2>
-      <p style="margin:0 0 8px;color:#333;font-size:15px;font-weight:600;line-height:1.5;">${desc.tagline}</p>
+      <h2 style="margin:0 0 12px;color:#0a0f1e;font-size:28px;font-weight:800;line-height:1.2;">${page.product}</h2>
+      <p style="margin:0 0 12px;color:#333;font-size:15px;font-weight:600;line-height:1.5;">${desc.tagline}</p>
       <p style="margin:0;color:#555;font-size:14px;line-height:1.7;">${desc.intro}</p>
     </td>
   </tr>
 
   <!-- STATS -->
   <tr>
-    <td style="padding:0 32px 24px;">
+    <td style="padding:16px 32px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fa;border-radius:8px;overflow:hidden;">
         <tr>
           ${desc.stats.map(s => `
@@ -462,45 +498,63 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
     </td>
   </tr>
 
-  <!-- COME FUNZIONA -->
+  <!-- SEZIONE 1: COME FUNZIONA (testo sinistra + immagine destra) -->
   <tr>
     <td style="padding:0 32px 24px;">
       <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">COME FUNZIONA</p>
-      <table width="100%" cellpadding="0" cellspacing="8">
-        ${desc.howItWorks.map(h => `
+      <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
-          <td style="padding:10px;vertical-align:top;width:36px;">
-            <div style="background:#0a0f1e;color:#00e5c8;font-size:11px;font-weight:900;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;">${h.step}</div>
+          <td style="vertical-align:top;width:300px;padding-right:16px;">
+            ${desc.howItWorks.map(h => `
+            <table cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+              <tr>
+                <td style="vertical-align:top;width:32px;">
+                  <div style="background:#0a0f1e;color:#00e5c8;font-size:10px;font-weight:900;width:26px;height:26px;border-radius:50%;text-align:center;line-height:26px;">${h.step}</div>
+                </td>
+                <td style="padding-left:8px;vertical-align:top;">
+                  <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${h.title}</p>
+                  <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${h.desc}</p>
+                </td>
+              </tr>
+            </table>`).join("")}
           </td>
-          <td style="padding:10px 10px 10px 4px;vertical-align:top;">
-            <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${h.title}</p>
-            <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${h.desc}</p>
+          <td style="vertical-align:top;width:268px;">
+            <img src="${imgs.mid}" alt="Come funziona ${page.product}" width="268" style="display:block;width:100%;border-radius:8px;object-fit:cover;height:220px;" />
           </td>
-        </tr>`).join("")}
+        </tr>
       </table>
     </td>
   </tr>
 
-  <!-- FEATURES -->
+  <!-- SEZIONE 2: FUNZIONALITÀ (immagine sinistra + testo destra) -->
   <tr>
-    <td style="padding:0 32px 24px;">
+    <td style="padding:0 32px 24px;background:#fafafa;">
       <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">FUNZIONALITÀ CHIAVE</p>
       <table width="100%" cellpadding="0" cellspacing="0">
-        ${desc.features.map(f => `
         <tr>
-          <td style="padding:8px 0;vertical-align:top;width:32px;font-size:18px;">${f.icon}</td>
-          <td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #f0f0f0;">
-            <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${f.title}</p>
-            <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${f.desc}</p>
+          <td style="vertical-align:top;width:200px;padding-right:16px;">
+            <img src="${imgs.bottom}" alt="Funzionalità ${page.product}" width="200" style="display:block;width:100%;border-radius:8px;object-fit:cover;height:200px;" />
           </td>
-        </tr>`).join("")}
+          <td style="vertical-align:top;">
+            ${desc.features.map(f => `
+            <table cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+              <tr>
+                <td style="vertical-align:top;font-size:16px;width:24px;">${f.icon}</td>
+                <td style="padding-left:6px;vertical-align:top;">
+                  <p style="margin:0 0 2px;color:#0a0f1e;font-size:12px;font-weight:700;">${f.title}</p>
+                  <p style="margin:0;color:#666;font-size:11px;line-height:1.4;">${f.desc}</p>
+                </td>
+              </tr>
+            </table>`).join("")}
+          </td>
+        </tr>
       </table>
     </td>
   </tr>
 
   <!-- PER CHI -->
   <tr>
-    <td style="padding:0 32px 24px;">
+    <td style="padding:16px 32px 24px;">
       <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">PER CHI È</p>
       <table width="100%" cellpadding="0" cellspacing="0">
         ${desc.targets.map(t => `
@@ -519,15 +573,9 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
   <!-- TESTIMONIANZA -->
   <tr>
     <td style="padding:0 32px 24px;">
-      <div style="background:#f8f9fa;border-left:4px solid #00e5c8;border-radius:0 8px 8px 0;padding:16px 20px;">
-        <p style="margin:0 0 12px;color:#333;font-size:14px;font-style:italic;line-height:1.6;">"${desc.testimonial.text}"</p>
-        <div style="display:flex;align-items:center;">
-          <div style="background:#0a0f1e;color:#00e5c8;font-size:12px;font-weight:700;width:32px;height:32px;border-radius:50%;text-align:center;line-height:32px;margin-right:10px;">${desc.testimonial.initials}</div>
-          <div>
-            <p style="margin:0;color:#0a0f1e;font-size:12px;font-weight:700;">${desc.testimonial.name}</p>
-            <p style="margin:0;color:#888;font-size:11px;">${desc.testimonial.role}</p>
-          </div>
-        </div>
+      <div style="background:#f0f9ff;border-left:4px solid #00e5c8;border-radius:0 8px 8px 0;padding:16px 20px;">
+        <p style="margin:0 0 12px;color:#333;font-size:14px;font-style:italic;line-height:1.6;">&ldquo;${desc.testimonial.text}&rdquo;</p>
+        <p style="margin:0;color:#0a0f1e;font-size:12px;font-weight:700;">${desc.testimonial.name} <span style="color:#888;font-weight:400;">— ${desc.testimonial.role}</span></p>
       </div>
     </td>
   </tr>` : ""}
@@ -542,11 +590,20 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
     </td>
   </tr>` : ""}
 
-  <!-- CTA -->
+  <!-- CTA FINALE -->
   <tr>
-    <td style="padding:8px 32px 32px;text-align:center;">
-      <a href="${desc.ctaUrl}" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:15px;font-weight:800;padding:16px 36px;border-radius:8px;text-decoration:none;letter-spacing:1px;">${desc.cta}</a>
-      ${!desc.pricing ? `<p style="margin:12px 0 0;color:#888;font-size:12px;">10 certificazioni gratuite · Nessuna carta di credito</p>` : ""}
+    <td style="padding:8px 32px 0;background:linear-gradient(135deg,#0a0f1e 0%,#1a2540 100%);">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:32px;text-align:center;">
+            <p style="margin:0 0 8px;color:#00e5c8;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">PROVA GRATIS OGGI</p>
+            <h3 style="margin:0 0 16px;color:#ffffff;font-size:22px;font-weight:800;line-height:1.3;">Certifica il tuo primo contenuto<br/>in meno di 60 secondi</h3>
+            <p style="margin:0 0 24px;color:#aab;font-size:13px;line-height:1.6;">10 certificazioni gratuite · Nessuna carta di credito · Risultato immediato</p>
+            <a href="${desc.ctaUrl}" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:16px;font-weight:800;padding:18px 40px;border-radius:8px;text-decoration:none;letter-spacing:1px;">${desc.cta} →</a>
+            <p style="margin:16px 0 0;color:#666;font-size:11px;">Vai su <a href="${desc.ctaUrl}" style="color:#00e5c8;text-decoration:none;">${desc.ctaUrl.replace('https://', '')}</a></p>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
