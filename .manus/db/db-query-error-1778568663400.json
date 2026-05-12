@@ -1,0 +1,8 @@
+{
+  "query": "SELECT id, send_date, section, status, recipientCount, successCount, failCount, sentAt, createdAt FROM newsletter_sends WHERE send_date = '2026-05-12' ORDER BY id DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, send_date, section, status, recipientCount, successCount, failCount, sentAt, createdAt FROM newsletter_sends WHERE send_date = '2026-05-12' ORDER BY id DESC;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'successcount' in 'field list'"
+  ]
+}

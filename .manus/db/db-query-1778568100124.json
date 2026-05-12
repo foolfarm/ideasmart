@@ -1,0 +1,19 @@
+{
+  "query": "SHOW TABLES LIKE '%newsletter%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SHOW TABLES LIKE '%newsletter%';",
+  "rows": [
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%newsletter%)": "newsletter_feedback"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%newsletter%)": "newsletter_sends"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%newsletter%)": "newsletter_sponsors"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%newsletter%)\nnewsletter_feedback\nnewsletter_sends\nnewsletter_sponsors\n",
+  "stderr": "",
+  "execution_time_ms": 259
+}

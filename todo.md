@@ -3558,3 +3558,9 @@
 - [x] Pubblicare articolo editoriale PPV su LinkedIn (ora, manuale)
 - [x] Aggiornare orario cron editoriale PPV da 16:30 a 12:50
 - [x] Fix bug: badge PPV non visibile nella Home (articoli certificati mostrano "CERTIFICAZIONE IN CORSO" invece del badge A-F)
+## Fix newsletter (12 maggio 2026)
+
+- [x] Diagnostica restart server notturno: il server si iberna dopo ~12h di inattività, il catch-up automatico (08:30-12:00 CET) gestisce il recupero automatico
+- [x] Lista pulita 4.376 iscritti attivi già operativa nel DB (filtro status='active')
+- [x] Fix bug doppio invio newsletter: aggiunto lock in-process (_nlLocks) agli endpoint trigger-morning e trigger-send per prevenire chiamate concorrenti (HTTP 409 Conflict)
+- [x] Product Verify aggiunto al ciclo PPV nei lunedì alternati (18 mag e 1 giu 2026) con URL corretta a /product

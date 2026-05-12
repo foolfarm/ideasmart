@@ -597,6 +597,9 @@ async function startServer() {
   });
 
   // ── Newsletter Trigger manuale (solo admin, protetto da JWT_SECRET) ──────────────
+  // Lock in-process per prevenire invii doppi in caso di chiamate concorrenti
+  const _nlLocks: Record<string, boolean> = {};
+
   // POST /api/newsletter/trigger-send — forza l'invio della newsletter se approvata
   app.post("/api/newsletter/trigger-send", async (req, res) => {
     const authHeader = req.headers.authorization || '';
@@ -604,6 +607,11 @@ async function startServer() {
     if (!token || token !== process.env.JWT_SECRET) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+    if (_nlLocks['send']) {
+      console.warn('[ManualTrigger] ⚠️ Invio già in corso — richiesta ignorata (lock attivo)');
+      return res.status(409).json({ error: 'Invio già in corso', locked: true });
+    }
+    _nlLocks['send'] = true;
     try {
       const { sendUnifiedNewsletterToAll } = await import('../unifiedNewsletter');
       console.log('[ManualTrigger] Avvio invio manuale newsletter...');
@@ -613,6 +621,8 @@ async function startServer() {
     } catch (err: any) {
       console.error('[ManualTrigger] Errore:', err);
       return res.status(500).json({ error: err.message });
+    } finally {
+      _nlLocks['send'] = false;
     }
   });
 
@@ -624,6 +634,12 @@ async function startServer() {
     if (!token || token !== process.env.JWT_SECRET) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+    // Lock in-process: blocca chiamate concorrenti per prevenire doppi invii
+    if (_nlLocks['morning']) {
+      console.warn('[MorningTrigger] ⚠️ Invio già in corso — richiesta ignorata (lock attivo)');
+      return res.status(409).json({ error: 'Invio già in corso', locked: true });
+    }
+    _nlLocks['morning'] = true;
     try {
       const { sendMorningNewsletterToAll } = await import('../unifiedNewsletter');
       console.log('[MorningTrigger] Avvio invio manuale newsletter BUONGIORNO...');
@@ -633,6 +649,8 @@ async function startServer() {
     } catch (err: any) {
       console.error('[MorningTrigger] Errore:', err);
       return res.status(500).json({ error: err.message });
+    } finally {
+      _nlLocks['morning'] = false;
     }
   });
 

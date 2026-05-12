@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, send_date, section, status, recipientCount, sentAt, createdAt FROM newsletter_sends WHERE send_date = '2026-05-12' ORDER BY id DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, send_date, section, status, recipientCount, sentAt, createdAt FROM newsletter_sends WHERE send_date = '2026-05-12' ORDER BY id DESC;",
+  "rows": [
+    {
+      "id": "1680001",
+      "send_date": "2026-05-12",
+      "section": "ai4business",
+      "status": "sending",
+      "recipientCount": "0",
+      "sentAt": "2026-05-12 06:47:52",
+      "createdAt": "2026-05-12 06:47:23"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsend_date\tsection\tstatus\trecipientCount\tsentAt\tcreatedAt\n1680001\t2026-05-12\tai4business\tsending\t0\t2026-05-12 06:47:52\t2026-05-12 06:47:23\n",
+  "stderr": "",
+  "execution_time_ms": 265
+}
