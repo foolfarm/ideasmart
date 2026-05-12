@@ -1,0 +1,8 @@
+{
+  "query": "SELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) as nuovi_7gg,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as nuovi_30gg,\n  SUM(CASE WHEN source = 'import' THEN 1 ELSE 0 END) as da_import,\n  SUM(CASE WHEN source != 'import' OR source IS NULL THEN 1 ELSE 0 END) as organici\nFROM newsletter_subscribers \nWHERE status = 'active';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) as nuovi_7gg,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as nuovi_30gg,\n  SUM(CASE WHEN source = 'import' THEN 1 ELSE 0 END) as da_import,\n  SUM(CASE WHEN source != 'import' OR source IS NULL THEN 1 ELSE 0 END) as organici\nFROM newsletter_subscribers \nWHERE status = 'active';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 1: Table 'uypaon6i3ec4nvfpz6kufg.newsletter_subscribers' doesn't exist"
+  ]
+}

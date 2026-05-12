@@ -1,0 +1,70 @@
+{
+  "query": "SELECT send_date, status, recipientCount, sentAt FROM newsletter_sends ORDER BY send_date DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT send_date, status, recipientCount, sentAt FROM newsletter_sends ORDER BY send_date DESC LIMIT 10;",
+  "rows": [
+    {
+      "send_date": "2026-05-12",
+      "status": "failed",
+      "recipientCount": "0",
+      "sentAt": "2026-05-12 07:48:42"
+    },
+    {
+      "send_date": "2026-05-11",
+      "status": "sent",
+      "recipientCount": "2188",
+      "sentAt": "2026-05-11 09:00:51"
+    },
+    {
+      "send_date": "2026-05-10",
+      "status": "sent",
+      "recipientCount": "2198",
+      "sentAt": "2026-05-10 06:56:01"
+    },
+    {
+      "send_date": "2026-05-09",
+      "status": "sent",
+      "recipientCount": "2211",
+      "sentAt": "2026-05-09 06:54:52"
+    },
+    {
+      "send_date": "2026-05-08",
+      "status": "sent",
+      "recipientCount": "2221",
+      "sentAt": "2026-05-08 07:37:50"
+    },
+    {
+      "send_date": "2026-05-07",
+      "status": "sent",
+      "recipientCount": "2242",
+      "sentAt": "2026-05-07 06:48:49"
+    },
+    {
+      "send_date": "2026-05-06",
+      "status": "sent",
+      "recipientCount": "2253",
+      "sentAt": "2026-05-06 06:40:39"
+    },
+    {
+      "send_date": "2026-05-05",
+      "status": "sent",
+      "recipientCount": "2270",
+      "sentAt": "2026-05-05 06:52:14"
+    },
+    {
+      "send_date": "2026-05-04",
+      "status": "sent",
+      "recipientCount": "2293",
+      "sentAt": "2026-05-04 06:35:17"
+    },
+    {
+      "send_date": "2026-05-03",
+      "status": "sent",
+      "recipientCount": "2304",
+      "sentAt": "2026-05-03 06:33:04"
+    }
+  ],
+  "messages": [],
+  "stdout": "send_date\tstatus\trecipientCount\tsentAt\n2026-05-12\tfailed\t0\t2026-05-12 07:48:42\n2026-05-11\tsent\t2188\t2026-05-11 09:00:51\n2026-05-10\tsent\t2198\t2026-05-10 06:56:01\n2026-05-09\tsent\t2211\t2026-05-09 06:54:52\n2026-05-08\tsent\t2221\t2026-05-08 07:37:50\n2026-05-07\tsent\t2242\t2026-05-07 06:48:49\n2026-05-06\tsent\t2253\t2026-05-06 06:40:39\n2026-05-05\tsent\t2270\t2026-05-05 06:52:14\n2026-05-04\tsent\t2293\t2026-05-04 06:35:17\n2026-05-03\tsent\t2304\t2026-05-03 06:33:04\n",
+  "stderr": "",
+  "execution_time_ms": 281
+}

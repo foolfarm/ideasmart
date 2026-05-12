@@ -777,10 +777,13 @@ export function startAllSchedulers(): void {
   }, 4 * 60 * 60 * 1000); // ogni 4 ore (ridotto da 12h per prevenire ibernazione sandbox)
 
   // ══════════════════════════════════════════════════════════════════════════
-  // CATCH-UP NEWSLETTER BUONGIORNO — ABILITATO (26 Apr 2026)
-  // Al riavvio del server: se sono le 08:30–12:00 CET e la newsletter
-  // non è stata inviata con successo oggi (recipientCount > 0), la invia subito.
-  // Garantisce l'invio automatico anche dopo riavvii del server (cloud run, deploy).
+  // CATCH-UP NEWSLETTER BUONGIORNO — CONSERVATIVO (12 Mag 2026)
+  // Al riavvio del server: avvia l'invio SOLO se non esiste NESSUN record
+  // newsletter_sends per oggi (qualunque status: sent/sending/failed/pending).
+  // Logica: se un record esiste già, significa che un invio è stato tentato
+  // (completato, in corso, fallito o interrotto) — NON riprovare automaticamente.
+  // Questo previene doppi invii dopo riavvii multipli o invii parziali interrotti.
+  // Per forzare un nuovo invio dopo un fallimento: usare l'endpoint manuale admin.
   // ══════════════════════════════════════════════════════════════════════════
   setTimeout(async () => {
     try {
@@ -799,8 +802,7 @@ export function startAllSchedulers(): void {
         console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: sono le ${hourCET}:${String(minuteCET).padStart(2,'0')} CET, dopo le 12:00 — finestra catch-up chiusa`);
         return;
       }
-      // Controlla se la newsletter è già stata inviata con successo oggi
-      // Usa send_date (CET) per coerenza con il lock atomico in db.ts
+      // ── GUARD CONSERVATIVO: blocca su qualsiasi record esistente oggi ──────────────────────────
       const catchUpDb = await getDb();
       if (!catchUpDb) {
         console.warn('[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO: DB non disponibile');
@@ -808,20 +810,32 @@ export function startAllSchedulers(): void {
       }
       const { sql: sqlOp } = await import("drizzle-orm");
       const todayLabelCET = nowCET.toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD
-      const successfulSendResult = await catchUpDb.execute(
-        sqlOp`SELECT id, recipientCount FROM newsletter_sends
+
+      // Cerca QUALSIASI record di oggi, indipendentemente dallo status
+      const anyRecordResult = await catchUpDb.execute(
+        sqlOp`SELECT id, status, recipientCount FROM newsletter_sends
               WHERE send_date = ${todayLabelCET} AND section = 'ai4business'
-              AND status = 'sent' AND recipientCount > 0
               LIMIT 1`
       ) as any;
-      const successRows = Array.isArray(successfulSendResult) ? successfulSendResult[0] : (successfulSendResult?.rows ?? []);
-      if (successRows && successRows.length > 0) {
-        console.log(`[SchedulerManager] ✅ CATCH-UP BUONGIORNO: già inviata oggi (id=${successRows[0].id}, ${successRows[0].recipientCount} destinatari) — skip`);
-        return;
+      const anyRows = Array.isArray(anyRecordResult) ? anyRecordResult[0] : (anyRecordResult?.rows ?? []);
+
+      if (anyRows && anyRows.length > 0) {
+        const rec = anyRows[0];
+        // Qualunque status: non avviare il catch-up automatico
+        if (rec.status === 'sent' && Number(rec.recipientCount) > 0) {
+          console.log(`[SchedulerManager] ✅ CATCH-UP BUONGIORNO: già inviata oggi (id=${rec.id}, ${rec.recipientCount} destinatari) — skip`);
+        } else if (rec.status === 'sending') {
+          console.warn(`[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO: invio già in corso (id=${rec.id}) — skip per sicurezza`);
+        } else if (rec.status === 'failed') {
+          console.warn(`[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO: invio di oggi risulta 'failed' (id=${rec.id}) — skip automatico, richiede intervento manuale dall'Admin`);
+        } else {
+          console.warn(`[SchedulerManager] ⚠️ CATCH-UP BUONGIORNO: record esistente oggi (id=${rec.id}, status=${rec.status}) — skip per sicurezza`);
+        }
+        return; // In tutti i casi: esiste un record oggi → NON avviare il catch-up
       }
-      // NOTA: NON resettiamo i record 'sending' — createNewsletterSend è idempotente
-      // e gestisce autonomamente il riuso dei record esistenti.
-      console.log(`[SchedulerManager] 🔄 CATCH-UP BUONGIORNO: nessun invio riuscito oggi (${hourCET}:${String(minuteCET).padStart(2,'0')} CET) — avvio invio catch-up...`);
+
+      // Nessun record oggi: avvia il catch-up
+      console.log(`[SchedulerManager] 🔄 CATCH-UP BUONGIORNO: nessun record oggi (${hourCET}:${String(minuteCET).padStart(2,'0')} CET) — avvio invio catch-up...`);
       await withLock('newsletter-mattino', async () => {
         try {
           const { sendMorningNewsletterToAll } = await import('./unifiedNewsletter');

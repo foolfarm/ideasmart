@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE newsletter_sends SET status = 'failed' WHERE send_date = '2026-05-12' AND status = 'sending';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute UPDATE newsletter_sends SET status = 'failed' WHERE send_date = '2026-05-12' AND status = 'sending';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 271
+}

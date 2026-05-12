@@ -1,0 +1,17 @@
+{
+  "query": "SELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) as nuovi_7gg,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as nuovi_30gg,\n  SUM(CASE WHEN source = 'import' THEN 1 ELSE 0 END) as da_import,\n  SUM(CASE WHEN source != 'import' THEN 1 ELSE 0 END) as organici\nFROM subscribers \nWHERE status = 'active';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) as nuovi_7gg,\n  SUM(CASE WHEN DATE(subscribedAt) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as nuovi_30gg,\n  SUM(CASE WHEN source = 'import' THEN 1 ELSE 0 END) as da_import,\n  SUM(CASE WHEN source != 'import' THEN 1 ELSE 0 END) as organici\nFROM subscribers \nWHERE status = 'active';",
+  "rows": [
+    {
+      "totale_attivi": "3667",
+      "nuovi_7gg": "1514",
+      "nuovi_30gg": "1691",
+      "da_import": "0",
+      "organici": "3667"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale_attivi\tnuovi_7gg\tnuovi_30gg\tda_import\torganici\n3667\t1514\t1691\t0\t3667\n",
+  "stderr": "",
+  "execution_time_ms": 272
+}
