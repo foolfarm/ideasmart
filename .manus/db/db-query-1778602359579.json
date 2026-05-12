@@ -1,0 +1,70 @@
+{
+  "query": "SELECT \n  DATE(subscribedAt) as giorno,\n  COUNT(*) as nuovi_quel_giorno\nFROM subscribers \nWHERE status = 'active'\nGROUP BY DATE(subscribedAt)\nORDER BY giorno DESC\nLIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  DATE(subscribedAt) as giorno,\n  COUNT(*) as nuovi_quel_giorno\nFROM subscribers \nWHERE status = 'active'\nGROUP BY DATE(subscribedAt)\nORDER BY giorno DESC\nLIMIT 15;",
+  "rows": [
+    {
+      "giorno": "2026-05-12",
+      "nuovi_quel_giorno": "2"
+    },
+    {
+      "giorno": "2026-05-11",
+      "nuovi_quel_giorno": "1414"
+    },
+    {
+      "giorno": "2026-05-04",
+      "nuovi_quel_giorno": "1"
+    },
+    {
+      "giorno": "2026-05-01",
+      "nuovi_quel_giorno": "1"
+    },
+    {
+      "giorno": "2026-04-30",
+      "nuovi_quel_giorno": "2"
+    },
+    {
+      "giorno": "2026-04-29",
+      "nuovi_quel_giorno": "7"
+    },
+    {
+      "giorno": "2026-04-27",
+      "nuovi_quel_giorno": "4"
+    },
+    {
+      "giorno": "2026-04-26",
+      "nuovi_quel_giorno": "6"
+    },
+    {
+      "giorno": "2026-04-25",
+      "nuovi_quel_giorno": "1"
+    },
+    {
+      "giorno": "2026-04-24",
+      "nuovi_quel_giorno": "1"
+    },
+    {
+      "giorno": "2026-04-15",
+      "nuovi_quel_giorno": "152"
+    },
+    {
+      "giorno": "2026-03-30",
+      "nuovi_quel_giorno": "8"
+    },
+    {
+      "giorno": "2026-03-18",
+      "nuovi_quel_giorno": "405"
+    },
+    {
+      "giorno": "2026-03-16",
+      "nuovi_quel_giorno": "1"
+    },
+    {
+      "giorno": "2026-03-14",
+      "nuovi_quel_giorno": "178"
+    }
+  ],
+  "messages": [],
+  "stdout": "giorno\tnuovi_quel_giorno\n2026-05-12\t2\n2026-05-11\t1414\n2026-05-04\t1\n2026-05-01\t1\n2026-04-30\t2\n2026-04-29\t7\n2026-04-27\t4\n2026-04-26\t6\n2026-04-25\t1\n2026-04-24\t1\n2026-04-15\t152\n2026-03-30\t8\n2026-03-18\t405\n2026-03-16\t1\n2026-03-14\t178\n",
+  "stderr": "",
+  "execution_time_ms": 320
+}

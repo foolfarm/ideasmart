@@ -1,4 +1,4 @@
-import { eq, desc, count, and, or, inArray, gte, sql } from "drizzle-orm";
+import { eq, desc, count, and, or, inArray, gte, lt, sql } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
@@ -136,9 +136,23 @@ export async function getAllSubscribers() {
   return db.select().from(subscribers).orderBy(subscribers.subscribedAt);
 }
 
+// ─── Filtro lista originale pre-integrazione (10 maggio 2026) ────────────────
+// Gli invii newsletter sono temporaneamente limitati agli iscritti
+// presenti PRIMA dell'integrazione del 10 maggio 2026 (1.414 nuovi importati).
+// Rimuovere questa costante (o impostarla a null) per tornare alla lista completa.
+const NEWSLETTER_CUTOFF_DATE: Date | null = new Date('2026-05-10T00:00:00.000Z');
+
 export async function getActiveSubscribers() {
   const db = await getDb();
   if (!db) return [];
+  if (NEWSLETTER_CUTOFF_DATE) {
+    return db.select().from(subscribers).where(
+      and(
+        eq(subscribers.status, "active"),
+        lt(subscribers.subscribedAt, NEWSLETTER_CUTOFF_DATE)
+      )
+    );
+  }
   return db.select().from(subscribers).where(eq(subscribers.status, "active"));
 }
 
@@ -157,15 +171,19 @@ export async function getActiveSubscriberCount(): Promise<number> {
 export async function getActiveSubscribersByNewsletter(newsletter: 'ai4business') {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(subscribers).where(
-    and(
-      eq(subscribers.status, "active"),
-      or(
-        eq(subscribers.newsletter, newsletter),
-        eq(subscribers.newsletter, "both")
-      )
+  const baseConditions = and(
+    eq(subscribers.status, "active"),
+    or(
+      eq(subscribers.newsletter, newsletter),
+      eq(subscribers.newsletter, "both")
     )
   );
+  if (NEWSLETTER_CUTOFF_DATE) {
+    return db.select().from(subscribers).where(
+      and(baseConditions, lt(subscribers.subscribedAt, NEWSLETTER_CUTOFF_DATE))
+    );
+  }
+  return db.select().from(subscribers).where(baseConditions);
 }
 
 // Email protette dalla disiscrizione (owner e admin)
@@ -935,7 +953,10 @@ export async function updateSubscriberChannelsByEmail(email: string, channels: C
 export async function getActiveSubscribersByChannel(channel: ChannelKey) {
   const db = await getDb();
   if (!db) return [];
-  const allActive = await db.select().from(subscribers).where(eq(subscribers.status, 'active'));
+  const whereClause = NEWSLETTER_CUTOFF_DATE
+    ? and(eq(subscribers.status, 'active'), lt(subscribers.subscribedAt, NEWSLETTER_CUTOFF_DATE))
+    : eq(subscribers.status, 'active');
+  const allActive = await db.select().from(subscribers).where(whereClause);
   return allActive.filter(sub => {
     const channels = parseChannels(sub.channels ?? null);
     return channels.includes(channel);

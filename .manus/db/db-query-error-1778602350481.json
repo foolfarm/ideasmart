@@ -1,0 +1,8 @@
+{
+  "query": "SELECT \n  DATE(subscribedAt) as giorno,\n  COUNT(*) as nuovi,\n  SUM(COUNT(*)) OVER (ORDER BY DATE(subscribedAt)) as cumulativo\nFROM subscribers \nWHERE status = 'active'\nGROUP BY DATE(subscribedAt)\nORDER BY giorno DESC\nLIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  DATE(subscribedAt) as giorno,\n  COUNT(*) as nuovi,\n  SUM(COUNT(*)) OVER (ORDER BY DATE(subscribedAt)) as cumulativo\nFROM subscribers \nWHERE status = 'active'\nGROUP BY DATE(subscribedAt)\nORDER BY giorno DESC\nLIMIT 15;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1055 (42000) at line 1: Expression #3 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'UyPaon6i3Ec4nvfPz6kUfg.subscribers.subscribedAt' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by"
+  ]
+}

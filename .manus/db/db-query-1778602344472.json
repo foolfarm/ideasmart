@@ -1,0 +1,18 @@
+{
+  "query": "SELECT \n  COUNT(*) as totale,\n  MIN(subscribedAt) as primo_iscritto,\n  MAX(subscribedAt) as ultimo_iscritto,\n  SUM(CASE WHEN DATE(subscribedAt) < '2026-05-10' THEN 1 ELSE 0 END) as pre_integrazione,\n  SUM(CASE WHEN DATE(subscribedAt) >= '2026-05-10' THEN 1 ELSE 0 END) as post_integrazione,\n  SUM(CASE WHEN DATE(subscribedAt) >= '2026-05-11' THEN 1 ELSE 0 END) as ultimi_2gg\nFROM subscribers \nWHERE status = 'active';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  COUNT(*) as totale,\n  MIN(subscribedAt) as primo_iscritto,\n  MAX(subscribedAt) as ultimo_iscritto,\n  SUM(CASE WHEN DATE(subscribedAt) < '2026-05-10' THEN 1 ELSE 0 END) as pre_integrazione,\n  SUM(CASE WHEN DATE(subscribedAt) >= '2026-05-10' THEN 1 ELSE 0 END) as post_integrazione,\n  SUM(CASE WHEN DATE(subscribedAt) >= '2026-05-11' THEN 1 ELSE 0 END) as ultimi_2gg\nFROM subscribers \nWHERE status = 'active';",
+  "rows": [
+    {
+      "totale": "3555",
+      "primo_iscritto": "2026-03-04 17:49:04",
+      "ultimo_iscritto": "2026-05-12 12:50:30",
+      "pre_integrazione": "2139",
+      "post_integrazione": "1416",
+      "ultimi_2gg": "1416"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale\tprimo_iscritto\tultimo_iscritto\tpre_integrazione\tpost_integrazione\tultimi_2gg\n3555\t2026-03-04 17:49:04\t2026-05-12 12:50:30\t2139\t1416\t1416\n",
+  "stderr": "",
+  "execution_time_ms": 1123
+}
