@@ -77,11 +77,15 @@ export type EmailOpen = typeof emailOpens.$inferSelect;
 // ── Newsletter Send Log ─────────────────────────────────────────────────────
 export const newsletterSends = mysqlTable("newsletter_sends", {
   id: int("id").autoincrement().primaryKey(),
+  // Tipo newsletter: 'morning' = BUONGIORNO 08:30, 'ppv' = BUONPOMERIGGIO PPV 17:30
+  newsletterType: mysqlEnum("newsletter_type", ["morning", "ppv"]).default("morning").notNull(),
   // Sezione newsletter: 'ai4business' o 'itsmusic'
   section: mysqlEnum("section", ["ai4business", "itsmusic", "startup", "finance", "health", "sport", "luxury", "news", "motori", "tennis", "basket", "gossip", "cybersecurity", "sondaggi", "dealroom"]).default("ai4business").notNull(),
   subject: varchar("subject", { length: 500 }).notNull(),
   htmlContent: mediumtext("htmlContent").notNull(),
   recipientCount: int("recipientCount").default(0).notNull(),
+  sentCount: int("sent_count").default(0).notNull(),
+  failedCount: int("failed_count").default(0).notNull(),
   openedCount: int("openedCount").default(0).notNull(),
   status: mysqlEnum("status", ["pending", "sending", "sent", "failed", "approved"]).default("pending").notNull(),
   scheduledAt: timestamp("scheduledAt"),
@@ -91,13 +95,12 @@ export const newsletterSends = mysqlTable("newsletter_sends", {
   approvalToken: varchar("approvalToken", { length: 128 }).unique(),
   approvedAt: timestamp("approvedAt"),
   approvedBy: varchar("approvedBy", { length: 255 }),
-  // Lock atomico: una sola preview per giorno (YYYY-MM-DD in CET)
-  // Unique index su send_date garantisce che INSERT IGNORE fallisca silenziosamente
-  // in caso di restart multipli ravvicinati — nessun duplicato possibile a livello DB.
+  // Lock atomico: una sola preview per giorno per tipo (YYYY-MM-DD in CET)
+  // Unique index su (send_date, newsletter_type) garantisce nessun duplicato a livello DB.
   sendDate: varchar("send_date", { length: 10 }),  // es. '2026-04-21'
 }, (t) => ({
-  // Unique index su (send_date, section): una sola preview per giorno per sezione
-  uniqSendDate: uniqueIndex("uq_newsletter_send_date_section").on(t.sendDate, t.section),
+  // Unique index su (send_date, newsletter_type): un solo invio per giorno per tipo
+  uniqSendDateType: uniqueIndex("uq_newsletter_send_date_type").on(t.sendDate, t.newsletterType),
 }));
 
 export type NewsletterSend = typeof newsletterSends.$inferSelect;

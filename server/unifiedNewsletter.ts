@@ -1871,8 +1871,8 @@ export async function sendUnifiedPreview(force = false): Promise<{
       // In force mode (preview manuale) saltiamo questo blocco per inviare sempre la preview.
       const insertResult = await db.execute(
         sql`INSERT IGNORE INTO newsletter_sends 
-         (subject, htmlContent, recipientCount, status, approvalToken, send_date, section, createdAt)
-         VALUES (${subject}, ${html}, 0, 'pending', ${approvalToken}, ${sendDateCET}, 'ai4business', NOW())`
+         (subject, htmlContent, recipientCount, status, approvalToken, send_date, section, newsletter_type, createdAt)
+         VALUES (${subject}, ${html}, 0, 'pending', ${approvalToken}, ${sendDateCET}, 'ai4business', 'morning', NOW())`
       ) as any;
       const inserted = insertResult?.rowsAffected ?? insertResult?.affectedRows ?? (Array.isArray(insertResult) ? (insertResult[0] as any)?.affectedRows : 0) ?? 0;
       if (inserted === 0) {

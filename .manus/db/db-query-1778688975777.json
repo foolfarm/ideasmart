@@ -1,0 +1,130 @@
+{
+  "query": "SELECT id, subject, status, recipientCount, openedCount, section, scheduledAt, sentAt, createdAt, send_date FROM newsletter_sends ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, subject, status, recipientCount, openedCount, section, scheduledAt, sentAt, createdAt, send_date FROM newsletter_sends ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "1710001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Mercoledì 13 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2136",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-13 07:17:51",
+      "createdAt": "2026-05-13 06:45:03",
+      "send_date": "2026-05-13"
+    },
+    {
+      "id": "1680001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Martedì 12 maggio 2026",
+      "status": "failed",
+      "recipientCount": "0",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-12 07:48:42",
+      "createdAt": "2026-05-12 06:47:23",
+      "send_date": "2026-05-12"
+    },
+    {
+      "id": "1650001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Lunedì 11 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2188",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-11 09:00:51",
+      "createdAt": "2026-05-11 08:17:04",
+      "send_date": "2026-05-11"
+    },
+    {
+      "id": "1620001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Domenica 10 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2198",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-10 06:56:01",
+      "createdAt": "2026-05-10 06:31:21",
+      "send_date": "2026-05-10"
+    },
+    {
+      "id": "1590001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Sabato 9 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2211",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-09 06:54:52",
+      "createdAt": "2026-05-09 06:30:55",
+      "send_date": "2026-05-09"
+    },
+    {
+      "id": "1560001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Venerdì 8 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2221",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-08 07:37:50",
+      "createdAt": "2026-05-08 06:50:51",
+      "send_date": "2026-05-08"
+    },
+    {
+      "id": "1530001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Giovedì 7 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2242",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-07 06:48:49",
+      "createdAt": "2026-05-07 06:30:06",
+      "send_date": "2026-05-07"
+    },
+    {
+      "id": "1500001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Mercoledì 6 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2253",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-06 06:40:39",
+      "createdAt": "2026-05-06 06:30:31",
+      "send_date": "2026-05-06"
+    },
+    {
+      "id": "1470001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Martedì 5 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2270",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-05 06:52:14",
+      "createdAt": "2026-05-05 06:30:31",
+      "send_date": "2026-05-05"
+    },
+    {
+      "id": "1440001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Lunedì 4 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2293",
+      "openedCount": "0",
+      "section": "ai4business",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-04 06:35:17",
+      "createdAt": "2026-05-04 06:31:22",
+      "send_date": "2026-05-04"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsubject\tstatus\trecipientCount\topenedCount\tsection\tscheduledAt\tsentAt\tcreatedAt\tsend_date\n1710001\tBUONGIORNO — Le news di oggi da ProofPress, Mercoledì 13 maggio 2026\tsent\t2136\t0\tai4business\tNULL\t2026-05-13 07:17:51\t2026-05-13 06:45:03\t2026-05-13\n1680001\tBUONGIORNO — Le news di oggi da ProofPress, Martedì 12 maggio 2026\tfailed\t0\t0\tai4business\tNULL\t2026-05-12 07:48:42\t2026-05-12 06:47:23\t2026-05-12\n1650001\tBUONGIORNO — Le news di oggi da ProofPress, Lunedì 11 maggio 2026\tsent\t2188\t0\tai4business\tNULL\t2026-05-11 09:00:51\t2026-05-11 08:17:04\t2026-05-11\n1620001\tBUONGIORNO — Le news di oggi da ProofPress, Domenica 10 maggio 2026\tsent\t2198\t0\tai4business\tNULL\t2026-05-10 06:56:01\t2026-05-10 06:31:21\t2026-05-10\n1590001\tBUONGIORNO — Le news di oggi da ProofPress, Sabato 9 maggio 2026\tsent\t2211\t0\tai4business\tNULL\t2026-05-09 06:54:52\t2026-05-09 06:30:55\t2026-05-09\n1560001\tBUONGIORNO — Le news di oggi da ProofPress, Venerdì 8 maggio 2026\tsent\t2221\t0\tai4business\tNULL\t2026-05-08 07:37:50\t2026-05-08 06:50:51\t2026-05-08\n1530001\tBUONGIORNO — Le news di oggi da ProofPress, Giovedì 7 maggio 2026\tsent\t2242\t0\tai4business\tNULL\t2026-05-07 06:48:49\t2026-05-07 06:30:06\t2026-05-07\n1500001\tBUONGIORNO — Le news di oggi da ProofPress, Mercoledì 6 maggio 2026\tsent\t2253\t0\tai4business\tNULL\t2026-05-06 06:40:39\t2026-05-06 06:30:31\t2026-05-06\n1470001\tBUONGIORNO — Le news di oggi da ProofPress, Martedì 5 maggio 2026\tsent\t2270\t0\tai4business\tNULL\t2026-05-05 06:52:14\t2026-05-05 06:30:31\t2026-05-05\n1440001\tBUONGIORNO — Le news di oggi da ProofPress, Lunedì 4 maggio 2026\tsent\t2293\t0\tai4business\tNULL\t2026-05-04 06:35:17\t2026-05-04 06:31:22\t2026-05-04\n",
+  "stderr": "",
+  "execution_time_ms": 268
+}

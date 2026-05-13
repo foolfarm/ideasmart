@@ -16,10 +16,11 @@
 
 import { invokeLLM } from "./_core/llm";
 import { getDb } from "./db";
-import { newsItems } from "../drizzle/schema";
+import { newsItems, newsletterSends } from "../drizzle/schema";
 import { sendEmail } from "./email";
 import { getActiveSubscribersLista2 } from "./db";
 import crypto from "crypto";
+import { eq, and } from "drizzle-orm";
 
 // ─── Calendario PPV ──────────────────────────────────────────────────────────
 
@@ -809,6 +810,7 @@ export async function sendPpvNewsletterPreview(): Promise<void> {
 }
 
 // ─── Invio newsletter agli iscritti (17:30) ───────────────────────────────────
+// Traccia ogni invio PPV in newsletter_sends (newsletter_type='ppv')
 
 export async function sendPpvNewsletterToAll(): Promise<void> {
   const page = getTodayPpvPage();
@@ -821,12 +823,52 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
   const html = buildPpvNewsletterHtml(page);
   const subject = `☀️ Buonpomeriggio — ProofPress Verify™ · ${page.product}`;
 
+  // Data CET per il lock giornaliero (YYYY-MM-DD)
+  const sendDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+  const db = await getDb();
+  if (!db) {
+    console.error('[PPV Newsletter] ❌ DB non disponibile — skip invio.');
+    return;
+  }
+
+  // Protezione doppio invio: blocca se esiste già un record sent/sending per oggi
+  const existing = await db.select({ id: newsletterSends.id, status: newsletterSends.status })
+    .from(newsletterSends)
+    .where(and(eq(newsletterSends.sendDate, sendDate), eq(newsletterSends.newsletterType, 'ppv')))
+    .limit(1);
+
+  if (existing.length > 0 && (existing[0].status === 'sent' || existing[0].status === 'sending')) {
+    console.log(`[PPV Newsletter] ⚠️ Record PPV già presente per oggi (${sendDate}) status='${existing[0].status}' — skip.`);
+    return;
+  }
+
+  let sendRecordId: number | null = null;
   try {
     const subs = await getActiveSubscribersLista2(); // LISTA 2: iscritti post-integrazione 10 maggio 2026
-    console.log(`[PPV Newsletter] Invio a ${subs.length} iscritti attivi...`);
+    const recipientCount = subs.length;
+
+    // Crea o aggiorna il record come 'sending'
+    if (existing.length > 0) {
+      await db.update(newsletterSends)
+        .set({ status: 'sending', recipientCount, sentAt: null })
+        .where(eq(newsletterSends.id, existing[0].id));
+      sendRecordId = existing[0].id;
+    } else {
+      const [inserted] = await db.insert(newsletterSends).values({
+        newsletterType: 'ppv',
+        section: 'ai4business',
+        subject,
+        htmlContent: html.substring(0, 65535),
+        recipientCount,
+        status: 'sending',
+        sendDate,
+      });
+      sendRecordId = (inserted as any).insertId ?? null;
+    }
+    console.log(`[PPV Newsletter] 💾 Record DB id=${sendRecordId} — Invio a ${recipientCount} iscritti attivi...`);
+
     let sent = 0;
     let errors = 0;
-    // Invio individuale con link unsubscribe personalizzato per ogni iscritto (GDPR)
     const BASE_URL = 'https://proofpress.ai';
     for (const sub of subs) {
       const unsubUrl = sub.unsubscribeToken
@@ -835,7 +877,6 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
       const prefsUrl = sub.unsubscribeToken
         ? `${BASE_URL}/preferenze-newsletter?token=${sub.unsubscribeToken}`
         : `${BASE_URL}/preferenze-newsletter`;
-      // Sostituisce il placeholder UNSUB_TOKEN con il token reale dell'iscritto
       const personalizedHtml = html
         .replace(/https:\/\/proofpress\.ai\/unsubscribe\?token=UNSUB_TOKEN/g, unsubUrl)
         .replace(/https:\/\/proofpress\.ai\/preferenze-newsletter\?token=UNSUB_TOKEN/g, prefsUrl);
@@ -844,17 +885,33 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
         subject,
         html: personalizedHtml,
         sender: "promo",
-        listUnsubscribeUrl: unsubUrl  // Header RFC 2369 per pulsante nativo Gmail/Outlook
+        listUnsubscribeUrl: unsubUrl
       });
       if (result.success) sent++;
       else errors++;
-      // Piccola pausa ogni 100 invii per evitare rate limiting SendGrid
       if ((sent + errors) % 100 === 0) {
         await new Promise(r => setTimeout(r, 200));
       }
     }
+
+    // Aggiorna il record con i risultati finali
+    if (sendRecordId) {
+      await db.update(newsletterSends)
+        .set({
+          status: errors === recipientCount ? 'failed' : 'sent',
+          sentCount: sent,
+          failedCount: errors,
+          sentAt: new Date(),
+        })
+        .where(eq(newsletterSends.id, sendRecordId));
+    }
     console.log(`[PPV Newsletter] ✅ Inviata a ${sent} iscritti, ${errors} errori`);
   } catch (err) {
     console.error("[PPV Newsletter] ❌ Errore newsletter:", err);
+    if (sendRecordId) {
+      try {
+        await db.update(newsletterSends).set({ status: 'failed' }).where(eq(newsletterSends.id, sendRecordId));
+      } catch (_) { /* ignore */ }
+    }
   }
 }

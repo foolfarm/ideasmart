@@ -1,0 +1,38 @@
+{
+  "query": "SELECT id, subject, status, recipientCount, openedCount, scheduledAt, sentAt, createdAt, send_date, TIMESTAMPDIFF(MINUTE, createdAt, sentAt) AS minuti_preparazione FROM newsletter_sends WHERE id = 1710001; SELECT send_date, recipientCount, status FROM newsletter_sends WHERE status IN ('sent','failed') ORDER BY send_date DESC LIMIT 14;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, subject, status, recipientCount, openedCount, scheduledAt, sentAt, createdAt, send_date, TIMESTAMPDIFF(MINUTE, createdAt, sentAt) AS minuti_preparazione FROM newsletter_sends WHERE id = 1710001; SELECT send_date, recipientCount, status FROM newsletter_sends WHERE status IN ('sent','failed') ORDER BY send_date DESC LIMIT 14;",
+  "rows": [
+    {
+      "id": "1710001",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Mercoledì 13 maggio 2026",
+      "status": "sent",
+      "recipientCount": "2136",
+      "openedCount": "0",
+      "scheduledAt": "NULL",
+      "sentAt": "2026-05-13 07:17:51",
+      "createdAt": "2026-05-13 06:45:03",
+      "send_date": "2026-05-13",
+      "minuti_preparazione": "32"
+    }
+  ],
+  "messages": [
+    "send_date\trecipientCount\tstatus",
+    "2026-05-13\t2136\tsent",
+    "2026-05-12\t0\tfailed",
+    "2026-05-11\t2188\tsent",
+    "2026-05-10\t2198\tsent",
+    "2026-05-09\t2211\tsent",
+    "2026-05-08\t2221\tsent",
+    "2026-05-07\t2242\tsent",
+    "2026-05-06\t2253\tsent",
+    "2026-05-05\t2270\tsent",
+    "2026-05-04\t2293\tsent",
+    "2026-05-03\t2304\tsent",
+    "2026-05-02\t2316\tsent",
+    "2026-05-01\t2320\tsent",
+    "2026-04-30\t2331\tsent"
+  ],
+  "stdout": "id\tsubject\tstatus\trecipientCount\topenedCount\tscheduledAt\tsentAt\tcreatedAt\tsend_date\tminuti_preparazione\n1710001\tBUONGIORNO — Le news di oggi da ProofPress, Mercoledì 13 maggio 2026\tsent\t2136\t0\tNULL\t2026-05-13 07:17:51\t2026-05-13 06:45:03\t2026-05-13\t32\nsend_date\trecipientCount\tstatus\n2026-05-13\t2136\tsent\n2026-05-12\t0\tfailed\n2026-05-11\t2188\tsent\n2026-05-10\t2198\tsent\n2026-05-09\t2211\tsent\n2026-05-08\t2221\tsent\n2026-05-07\t2242\tsent\n2026-05-06\t2253\tsent\n2026-05-05\t2270\tsent\n2026-05-04\t2293\tsent\n2026-05-03\t2304\tsent\n2026-05-02\t2316\tsent\n2026-05-01\t2320\tsent\n2026-04-30\t2331\tsent\n",
+  "stderr": "",
+  "execution_time_ms": 265
+}
