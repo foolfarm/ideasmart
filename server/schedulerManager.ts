@@ -1361,7 +1361,6 @@ export function startAllSchedulers(): void {
       await sendPpvNewsletterToAll();
     } catch (err) { console.error("[PPV Campaign] ❌ Newsletter iscritti:", err); }
   }, { timezone: TZ });
-
   console.log("[SchedulerManager]   🔐 PPV Campaign → 12:30 preview, 12:50 articolo+LinkedIn, 17:30 newsletter (lun-ven, 11-15 mag 2026)");
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -1635,7 +1634,7 @@ export function startAllSchedulers(): void {
   cron.schedule("0 7 * * *", () => checkNewsletterSent("buongiorno", "08:30"), { timezone: TZ });
   console.log("[SchedulerManager]   ⚠️  Alert BUONGIORNO → controllo alle 09:00 CET se newsletter 08:30 è partita");
 
-  // Controllo BUONPOMERIGGIO PPV: alle 18:30 CET (16:30 UTC)
-  cron.schedule("30 16 * * *", () => checkNewsletterSent("ppv", "17:30"), { timezone: TZ });
+  // Controllo BUONPOMERIGGIO PPV: alle 18:30 CET
+  cron.schedule("30 18 * * 1-5", () => checkNewsletterSent("ppv", "17:30"), { timezone: TZ });
   console.log("[SchedulerManager]   ⚠️  Alert BUONPOMERIGGIO → controllo alle 18:30 CET se newsletter 17:30 è partita");
 }

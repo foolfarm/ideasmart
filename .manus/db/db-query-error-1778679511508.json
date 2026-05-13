@@ -1,0 +1,23 @@
+{
+  "query": "SHOW COLUMNS FROM newsletter_sends; SELECT id, subject, status, recipient_count FROM newsletter_sends ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SHOW COLUMNS FROM newsletter_sends; SELECT id, subject, status, recipient_count FROM newsletter_sends ORDER BY id DESC LIMIT 10;",
+  "returncode": 1,
+  "logs": [
+    "Field\tType\tNull\tKey\tDefault\tExtra",
+    "id\tint\tNO\tPRI\tNULL\tauto_increment",
+    "subject\tvarchar(500)\tNO\t\tNULL\t",
+    "htmlContent\tmediumtext\tNO\t\tNULL\t",
+    "recipientCount\tint\tNO\t\t0\t",
+    "status\tenum('pending','sending','sent','failed','approved')\tNO\t\tpending\t",
+    "scheduledAt\ttimestamp\tYES\t\tNULL\t",
+    "sentAt\ttimestamp\tYES\t\tNULL\t",
+    "createdAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\t",
+    "openedCount\tint\tNO\t\t0\t",
+    "section\tenum('ai4business','itsmusic','startup','finance','health','sport','luxury','news','motori','tennis','basket','gossip','cybersecurity','sondaggi','dealroom')\tNO\t\tai4business\t",
+    "approvalToken\tvarchar(128)\tYES\tUNI\tNULL\t",
+    "approvedAt\ttimestamp\tYES\t\tNULL\t",
+    "approvedBy\tvarchar(255)\tYES\t\tNULL\t",
+    "send_date\tvarchar(10)\tYES\tMUL\tNULL",
+    "ERROR 1054 (42S22) at line 1: Unknown column 'recipient_count' in 'field list'"
+  ]
+}
