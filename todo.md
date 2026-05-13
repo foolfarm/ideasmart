@@ -3564,3 +3564,14 @@
 - [x] Lista pulita 4.376 iscritti attivi già operativa nel DB (filtro status='active')
 - [x] Fix bug doppio invio newsletter: aggiunto lock in-process (_nlLocks) agli endpoint trigger-morning e trigger-send per prevenire chiamate concorrenti (HTTP 409 Conflict)
 - [x] Product Verify aggiunto al ciclo PPV nei lunedì alternati (18 mag e 1 giu 2026) con URL corretta a /product
+
+## Pulizia liste newsletter (13 maggio 2026)
+
+- [ ] Escludere 30 email gialle da lista 1 (08:30) nel DB — marcare come unsubscribed
+- [ ] Escludere 89 email non-rosse da lista 2 (17:30) nel DB — marcare come unsubscribed
+- [ ] Escludere tutte le email Andrea Cinelli (tranne ac@acinelli.com) da entrambe le liste
+- [ ] Separare getActiveSubscribers: lista1 (pre-10-mag, 08:30) e lista2 (post-10-mag, 17:30)
+- [ ] Newsletter PPV 17:30 usa lista 2 (nuovi iscritti post-integrazione)
+- [ ] Newsletter 08:30 usa lista 1 (iscritti originali pre-integrazione)
+- [ ] Rinominare "Buongiorno" in "Buonpomeriggio" nell'oggetto e nel corpo della newsletter 17:30
+- [ ] Aggiungere List-Unsubscribe header alla newsletter PPV 17:30

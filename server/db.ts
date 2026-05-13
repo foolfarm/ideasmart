@@ -136,10 +136,10 @@ export async function getAllSubscribers() {
   return db.select().from(subscribers).orderBy(subscribers.subscribedAt);
 }
 
-// ─── Filtro lista originale pre-integrazione (10 maggio 2026) ────────────────
-// Gli invii newsletter sono temporaneamente limitati agli iscritti
-// presenti PRIMA dell'integrazione del 10 maggio 2026 (1.414 nuovi importati).
-// Rimuovere questa costante (o impostarla a null) per tornare alla lista completa.
+// ─── Gestione due liste newsletter ──────────────────────────────────────────
+// LISTA 1 — Newsletter 08:30 BUONGIORNO: iscritti originali PRE-10 maggio 2026 (~2.103 attivi)
+// LISTA 2 — Newsletter 17:30 BUONPOMERIGGIO PPV: iscritti POST-10 maggio 2026 (~1.312 attivi)
+// Per tornare alla lista unica completa, impostare NEWSLETTER_CUTOFF_DATE = null
 const NEWSLETTER_CUTOFF_DATE: Date | null = new Date('2026-05-10T00:00:00.000Z');
 
 export async function getActiveSubscribers() {
@@ -154,6 +154,26 @@ export async function getActiveSubscribers() {
     );
   }
   return db.select().from(subscribers).where(eq(subscribers.status, "active"));
+}
+
+/**
+ * LISTA 2 — Newsletter 17:30 BUONPOMERIGGIO PPV
+ * Restituisce gli iscritti attivi POST-integrazione del 10 maggio 2026
+ * (i nuovi iscritti che ricevono solo la newsletter PPV pomeridiana)
+ */
+export async function getActiveSubscribersLista2() {
+  const db = await getDb();
+  if (!db) return [];
+  if (NEWSLETTER_CUTOFF_DATE) {
+    return db.select().from(subscribers).where(
+      and(
+        eq(subscribers.status, "active"),
+        gte(subscribers.subscribedAt, NEWSLETTER_CUTOFF_DATE)
+      )
+    );
+  }
+  // Se NEWSLETTER_CUTOFF_DATE è null, lista 2 è vuota (lista unica attiva)
+  return [];
 }
 
 export async function getActiveSubscriberCount(): Promise<number> {

@@ -1,0 +1,15 @@
+{
+  "query": "SELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN subscribedAt < '2026-05-10' THEN 1 ELSE 0 END) as lista1_originali,\n  SUM(CASE WHEN subscribedAt >= '2026-05-10' THEN 1 ELSE 0 END) as lista2_nuovi\nFROM subscribers \nWHERE status = 'active'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN subscribedAt < '2026-05-10' THEN 1 ELSE 0 END) as lista1_originali,\n  SUM(CASE WHEN subscribedAt >= '2026-05-10' THEN 1 ELSE 0 END) as lista2_nuovi\nFROM subscribers \nWHERE status = 'active'",
+  "rows": [
+    {
+      "totale_attivi": "3415",
+      "lista1_originali": "2103",
+      "lista2_nuovi": "1312"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale_attivi\tlista1_originali\tlista2_nuovi\n3415\t2103\t1312\n",
+  "stderr": "",
+  "execution_time_ms": 282
+}

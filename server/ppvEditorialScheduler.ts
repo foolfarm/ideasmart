@@ -18,7 +18,7 @@ import { invokeLLM } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems } from "../drizzle/schema";
 import { sendEmail } from "./email";
-import { getActiveSubscribers } from "./db";
+import { getActiveSubscribersLista2 } from "./db";
 import crypto from "crypto";
 
 // ─── Calendario PPV ──────────────────────────────────────────────────────────
@@ -819,10 +819,10 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
 
   console.log(`[PPV Newsletter] Invio newsletter a tutti gli iscritti per ${page.product}...`);
   const html = buildPpvNewsletterHtml(page);
-  const subject = `ProofPress Verify™ — ${page.product}: come funziona e perché conta`;
+  const subject = `☀️ Buonpomeriggio — ProofPress Verify™ · ${page.product}`;
 
   try {
-    const subs = await getActiveSubscribers();
+    const subs = await getActiveSubscribersLista2(); // LISTA 2: iscritti post-integrazione 10 maggio 2026
     console.log(`[PPV Newsletter] Invio a ${subs.length} iscritti attivi...`);
     let sent = 0;
     let errors = 0;
@@ -843,7 +843,8 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
         to: sub.email,
         subject,
         html: personalizedHtml,
-        sender: "promo"
+        sender: "promo",
+        listUnsubscribeUrl: unsubUrl  // Header RFC 2369 per pulsante nativo Gmail/Outlook
       });
       if (result.success) sent++;
       else errors++;
