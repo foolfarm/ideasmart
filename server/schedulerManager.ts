@@ -1557,4 +1557,85 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
   console.log("[SchedulerManager]   🧹 Pulizia Settimanale Liste → ogni domenica alle 03:00 CET (sync SendGrid + formato invalido + domini fake + report)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // ALERT MANCATO INVIO NEWSLETTER
+  //   • 09:00 CET → verifica che la newsletter BUONGIORNO (08:30) sia partita
+  //   • 18:30 CET → verifica che la newsletter BUONPOMERIGGIO PPV (17:30) sia partita
+  //   Se non risulta 'sent' o 'sending' nel DB → notifica push immediata a owner
+  // ══════════════════════════════════════════════════════════════════════════
+
+  async function checkNewsletterSent(type: "buongiorno" | "ppv", expectedHour: string): Promise<void> {
+    try {
+      const db = await getDb();
+      if (!db) return;
+      const { newsletterSends } = await import("../drizzle/schema");
+      const { and, gte, lte, eq } = await import("drizzle-orm");
+
+      const now = new Date();
+      const todayStart = new Date(now);
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date(now);
+      todayEnd.setHours(23, 59, 59, 999);
+
+      // Cerca un invio di oggi con status sent o sending
+      const sends = await db
+        .select()
+        .from(newsletterSends)
+        .where(
+          and(
+            gte(newsletterSends.createdAt, todayStart),
+            lte(newsletterSends.createdAt, todayEnd)
+          )
+        );
+
+      // Filtra per tipo newsletter
+      const relevantSends = sends.filter((s: any) => {
+        const subject = (s.subject || "").toLowerCase();
+        if (type === "buongiorno") return subject.includes("buongiorno") || subject.includes("news delle");
+        if (type === "ppv") return subject.includes("buonpomeriggio") || subject.includes("proofpress verify");
+        return false;
+      });
+
+      const hasSent = relevantSends.some((s: any) => s.status === "sent" || s.status === "sending");
+
+      if (!hasSent) {
+        const { notifyOwner } = await import("./_core/notification");
+        const label = type === "buongiorno" ? "BUONGIORNO (08:30)" : "BUONPOMERIGGIO PPV (17:30)";
+        const dateStr = now.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+        console.warn(`[NewsletterAlert] ⚠️ Newsletter ${label} NON risulta inviata oggi (${dateStr}) — invio notifica owner`);
+        await notifyOwner({
+          title: `⚠️ ALERT: Newsletter ${label} non inviata — ${dateStr}`,
+          content: [
+            `La newsletter ${label} non risulta inviata oggi (${dateStr}).`,
+            ``,
+            `Orario attuale: ${now.toLocaleTimeString("it-IT", { timeZone: "Europe/Rome" })} CET`,
+            `Orario previsto: ${expectedHour} CET`,
+            ``,
+            `🔍 Possibili cause:`,
+            `• Il server era offline all'orario di invio`,
+            `• Il cron non ha scattato (processo bloccato)`,
+            `• Errore DB durante la generazione della newsletter`,
+            ``,
+            `✅ Azione richiesta: accedi all'Admin e forza l'invio manuale, oppure verifica i log del server.`,
+            `🔗 Admin: https://proofpress.ai/admin`,
+          ].join("\n"),
+        });
+      } else {
+        const sent = relevantSends.find((s: any) => s.status === "sent" || s.status === "sending");
+        const label = type === "buongiorno" ? "BUONGIORNO" : "BUONPOMERIGGIO PPV";
+        console.log(`[NewsletterAlert] ✅ Newsletter ${label} regolarmente inviata oggi — ${sent?.recipientCount ?? "?"} destinatari, status: ${sent?.status}`);
+      }
+    } catch (err) {
+      console.error(`[NewsletterAlert] Errore controllo newsletter ${type}:`, err);
+    }
+  }
+
+  // Controllo BUONGIORNO: alle 09:00 CET (07:00 UTC)
+  cron.schedule("0 7 * * *", () => checkNewsletterSent("buongiorno", "08:30"), { timezone: TZ });
+  console.log("[SchedulerManager]   ⚠️  Alert BUONGIORNO → controllo alle 09:00 CET se newsletter 08:30 è partita");
+
+  // Controllo BUONPOMERIGGIO PPV: alle 18:30 CET (16:30 UTC)
+  cron.schedule("30 16 * * *", () => checkNewsletterSent("ppv", "17:30"), { timezone: TZ });
+  console.log("[SchedulerManager]   ⚠️  Alert BUONPOMERIGGIO → controllo alle 18:30 CET se newsletter 17:30 è partita");
 }
