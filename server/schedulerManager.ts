@@ -104,7 +104,7 @@ async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<vo
 import { sendDailyChannelPreview, sendDailyChannelNewsletter } from "./dailyChannelNewsletter";
 import { runNewsletterLinkAudit, isNewsletterBlockedByAudit, setNewsletterBlockedByAudit } from "./newsletterLinkAudit";
 import { invalidateAll, invalidateBySection, invalidateSection, invalidateCache, CACHE_KEYS } from "./cache";
-import { getDb } from "./db";
+import { getDb, unsubscribeEmail } from "./db";
 import { eq } from "drizzle-orm";
 import { aggregateEvents } from "./eventsAggregator";
 import { ingestAllChannels, seedRssSources } from "./channelIngestor";
@@ -1363,4 +1363,94 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   console.log("[SchedulerManager]   🔐 PPV Campaign → 12:30 preview, 12:50 articolo+LinkedIn, 17:30 newsletter (lun-ven, 11-15 mag 2026)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SENDGRID SUPPRESSION SYNC — ogni 12 ore (06:00 e 18:00 CET)
+  //   Recupera da SendGrid: bounce, spam_report, invalid_emails, unsubscribes globali
+  //   Marca automaticamente come 'unsubscribed' nel DB tutti gli indirizzi trovati
+  //   Protegge le email in PROTECTED_EMAILS (ac@acinelli.com, andrea@acinelli.com)
+  // ══════════════════════════════════════════════════════════════════════════
+  const syncSendgridSuppressions = async () => {
+    console.log("[SendgridSync] ⏰ Avvio sincronizzazione soppressioni SendGrid...");
+    await withLock("sendgrid-suppression-sync", async () => {
+      try {
+        const SGKEY = process.env.SENDGRID_API_KEY;
+        if (!SGKEY) {
+          console.warn("[SendgridSync] ⚠️ SENDGRID_API_KEY non configurata, skip.");
+          return;
+        }
+
+        // Funzione helper per fetch paginato SendGrid
+        const fetchAllSuppressed = async (endpoint: string): Promise<string[]> => {
+          const emails: string[] = [];
+          let offset = 0;
+          const limit = 500;
+          while (true) {
+            const res = await fetch(
+              `https://api.sendgrid.com/v3${endpoint}?limit=${limit}&offset=${offset}`,
+              { headers: { Authorization: `Bearer ${SGKEY}` } }
+            );
+            if (!res.ok) break;
+            const data = await res.json() as Array<{ email: string }>;
+            if (!Array.isArray(data) || data.length === 0) break;
+            data.forEach(r => { if (r.email) emails.push(r.email.trim().toLowerCase()); });
+            if (data.length < limit) break;
+            offset += limit;
+          }
+          return emails;
+        };
+
+        // Recupera tutte le categorie di soppressione
+        const [bounces, spamReports, invalidEmails, globalUnsubs] = await Promise.all([
+          fetchAllSuppressed("/suppression/bounces"),
+          fetchAllSuppressed("/suppression/spam_reports"),
+          fetchAllSuppressed("/suppression/invalid_emails"),
+          fetchAllSuppressed("/suppression/unsubscribes"),
+        ]);
+
+        // Deduplicazione
+        const allSuppressed = Array.from(new Set([
+          ...bounces,
+          ...spamReports,
+          ...invalidEmails,
+          ...globalUnsubs,
+        ]));
+
+        console.log(`[SendgridSync] 📊 Trovati: ${bounces.length} bounce, ${spamReports.length} spam, ${invalidEmails.length} invalid, ${globalUnsubs.length} unsub globali → ${allSuppressed.length} unici`);
+
+        // Aggiorna il DB: marca come unsubscribed tutti gli indirizzi soppressi
+        let updated = 0;
+        let skipped = 0;
+        for (const email of allSuppressed) {
+          try {
+            await unsubscribeEmail(email); // già protegge PROTECTED_EMAILS
+            updated++;
+          } catch (err) {
+            skipped++;
+          }
+        }
+
+        console.log(`[SendgridSync] ✅ Completato: ${updated} indirizzi marcati unsubscribed, ${skipped} errori/protetti`);
+
+        // Notifica owner se ci sono nuove soppressioni significative
+        if (bounces.length > 0 || spamReports.length > 0) {
+          const { notifyOwner } = await import("./_core/notification");
+          await notifyOwner({
+            title: `📧 SendGrid Sync: ${updated} soppressioni rimosse dalle liste`,
+            content: `Bounce: ${bounces.length} | Spam: ${spamReports.length} | Invalid: ${invalidEmails.length} | Unsub globali: ${globalUnsubs.length}\nTotale rimossi: ${updated} indirizzi marcati unsubscribed su entrambe le liste.`,
+          });
+        }
+      } catch (err) {
+        console.error("[SendgridSync] ❌ Errore sincronizzazione:", err);
+      }
+    });
+  };
+
+  // Esegui subito all'avvio del server (per recuperare soppressioni accumulate)
+  setTimeout(() => syncSendgridSuppressions(), 30_000); // 30 secondi dopo l'avvio
+
+  // Cron ogni 12 ore: 06:00 CET e 18:00 CET
+  cron.schedule("0 4 * * *", syncSendgridSuppressions, { timezone: TZ });  // 06:00 CET
+  cron.schedule("0 16 * * *", syncSendgridSuppressions, { timezone: TZ }); // 18:00 CET
+  console.log("[SchedulerManager]   📧 SendGrid Suppression Sync → all'avvio + ogni 12h (06:00 e 18:00 CET) — bounce/spam/invalid/unsub");
 }
