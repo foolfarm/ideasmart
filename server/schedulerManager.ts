@@ -1572,12 +1572,22 @@ export function startAllSchedulers(): void {
       const { and, gte, lte, eq } = await import("drizzle-orm");
 
       const now = new Date();
+
+      // Protezione anti-boot: non eseguire se il server è partito da meno di 5 minuti
+      // (evita falsi positivi causati da riavvii durante la finestra di controllo)
+      const serverUptime = process.uptime(); // secondi
+      if (serverUptime < 300) {
+        console.log(`[NewsletterAlert] ⏭️ Skip controllo ${type} — server avviato da ${Math.round(serverUptime)}s (< 5 min), possibile riavvio recente`);
+        return;
+      }
+
       const todayStart = new Date(now);
       todayStart.setHours(0, 0, 0, 0);
       const todayEnd = new Date(now);
       todayEnd.setHours(23, 59, 59, 999);
 
-      // Cerca un invio di oggi con status sent o sending
+      // Cerca un invio di oggi per tipo (newsletter_type) con status sent o sending
+      // Usa newsletter_type se disponibile (più affidabile del subject)
       const sends = await db
         .select()
         .from(newsletterSends)
@@ -1588,8 +1598,13 @@ export function startAllSchedulers(): void {
           )
         );
 
-      // Filtra per tipo newsletter
+      // Filtra per tipo newsletter: preferisce newsletter_type, fallback su subject
       const relevantSends = sends.filter((s: any) => {
+        // Usa newsletter_type se presente (campo aggiunto il 13 maggio 2026)
+        if (s.newsletterType) {
+          return s.newsletterType === type || (type === 'buongiorno' && s.newsletterType === 'morning');
+        }
+        // Fallback su subject per record storici
         const subject = (s.subject || "").toLowerCase();
         if (type === "buongiorno") return subject.includes("buongiorno") || subject.includes("news delle");
         if (type === "ppv") return subject.includes("buonpomeriggio") || subject.includes("proofpress verify");

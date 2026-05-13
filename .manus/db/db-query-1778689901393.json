@@ -1,0 +1,19 @@
+{
+  "query": "\nSELECT COUNT(*) as lista2_count \nFROM subscribers \nWHERE status = 'active' \nAND subscribedAt >= '2026-05-10 00:00:00';\n\nSELECT COUNT(*) as lista1_count\nFROM subscribers \nWHERE status = 'active' \nAND subscribedAt < '2026-05-10 00:00:00';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT COUNT(*) as lista2_count \nFROM subscribers \nWHERE status = 'active' \nAND subscribedAt >= '2026-05-10 00:00:00';\n\nSELECT COUNT(*) as lista1_count\nFROM subscribers \nWHERE status = 'active' \nAND subscribedAt < '2026-05-10 00:00:00';\n",
+  "rows": [
+    {
+      "lista2_count": "1291"
+    },
+    {
+      "lista2_count": "lista1_count"
+    },
+    {
+      "lista2_count": "2098"
+    }
+  ],
+  "messages": [],
+  "stdout": "lista2_count\n1291\nlista1_count\n2098\n",
+  "stderr": "",
+  "execution_time_ms": 289
+}

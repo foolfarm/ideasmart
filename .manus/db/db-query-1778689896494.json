@@ -1,0 +1,15 @@
+{
+  "query": "\nSELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN source = 'lista2' OR source = 'import_lista2' THEN 1 ELSE 0 END) as lista2,\n  SUM(CASE WHEN source != 'lista2' AND source != 'import_lista2' THEN 1 ELSE 0 END) as lista1\nFROM subscribers \nWHERE status = 'active';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN source = 'lista2' OR source = 'import_lista2' THEN 1 ELSE 0 END) as lista2,\n  SUM(CASE WHEN source != 'lista2' AND source != 'import_lista2' THEN 1 ELSE 0 END) as lista1\nFROM subscribers \nWHERE status = 'active';\n",
+  "rows": [
+    {
+      "totale_attivi": "3389",
+      "lista2": "0",
+      "lista1": "3389"
+    }
+  ],
+  "messages": [],
+  "stdout": "totale_attivi\tlista2\tlista1\n3389\t0\t3389\n",
+  "stderr": "",
+  "execution_time_ms": 269
+}

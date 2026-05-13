@@ -1,0 +1,20 @@
+{
+  "query": "\nSELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN subscribedAt >= '2026-05-10 00:00:00' THEN 1 ELSE 0 END) as lista2,\n  SUM(CASE WHEN subscribedAt < '2026-05-10 00:00:00' THEN 1 ELSE 0 END) as lista1\nFROM subscribers \nWHERE status = 'active';\n\nSELECT COUNT(*) as unsubscribed FROM subscribers WHERE status = 'unsubscribed';\nSELECT COUNT(*) as bounced FROM subscribers WHERE status = 'bounced';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  COUNT(*) as totale_attivi,\n  SUM(CASE WHEN subscribedAt >= '2026-05-10 00:00:00' THEN 1 ELSE 0 END) as lista2,\n  SUM(CASE WHEN subscribedAt < '2026-05-10 00:00:00' THEN 1 ELSE 0 END) as lista1\nFROM subscribers \nWHERE status = 'active';\n\nSELECT COUNT(*) as unsubscribed FROM subscribers WHERE status = 'unsubscribed';\nSELECT COUNT(*) as bounced FROM subscribers WHERE status = 'bounced';\n",
+  "rows": [
+    {
+      "totale_attivi": "3388",
+      "lista2": "1290",
+      "lista1": "2098"
+    }
+  ],
+  "messages": [
+    "unsubscribed",
+    "6871",
+    "bounced",
+    "0"
+  ],
+  "stdout": "totale_attivi\tlista2\tlista1\n3388\t1290\t2098\nunsubscribed\n6871\nbounced\n0\n",
+  "stderr": "",
+  "execution_time_ms": 293
+}
