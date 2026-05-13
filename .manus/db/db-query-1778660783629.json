@@ -1,0 +1,22 @@
+{
+  "query": "\nSELECT \n  status,\n  COUNT(*) as totale,\n  SUM(CASE WHEN subscribedAt < '2026-05-10' THEN 1 ELSE 0 END) as lista1_originali,\n  SUM(CASE WHEN subscribedAt >= '2026-05-10' THEN 1 ELSE 0 END) as lista2_nuovi\nFROM subscribers\nGROUP BY status\nORDER BY totale DESC;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nSELECT \n  status,\n  COUNT(*) as totale,\n  SUM(CASE WHEN subscribedAt < '2026-05-10' THEN 1 ELSE 0 END) as lista1_originali,\n  SUM(CASE WHEN subscribedAt >= '2026-05-10' THEN 1 ELSE 0 END) as lista2_nuovi\nFROM subscribers\nGROUP BY status\nORDER BY totale DESC;\n",
+  "rows": [
+    {
+      "status": "unsubscribed",
+      "totale": "6853",
+      "lista1_originali": "5959",
+      "lista2_nuovi": "894"
+    },
+    {
+      "status": "active",
+      "totale": "3412",
+      "lista1_originali": "2101",
+      "lista2_nuovi": "1311"
+    }
+  ],
+  "messages": [],
+  "stdout": "status\ttotale\tlista1_originali\tlista2_nuovi\nunsubscribed\t6853\t5959\t894\nactive\t3412\t2101\t1311\n",
+  "stderr": "",
+  "execution_time_ms": 315
+}

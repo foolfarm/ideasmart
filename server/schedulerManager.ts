@@ -1453,4 +1453,108 @@ export function startAllSchedulers(): void {
   cron.schedule("0 4 * * *", syncSendgridSuppressions, { timezone: TZ });  // 06:00 CET
   cron.schedule("0 16 * * *", syncSendgridSuppressions, { timezone: TZ }); // 18:00 CET
   console.log("[SchedulerManager]   📧 SendGrid Suppression Sync → all'avvio + ogni 12h (06:00 e 18:00 CET) — bounce/spam/invalid/unsub");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // PULIZIA SETTIMANALE LISTE — ogni domenica alle 03:00 CET
+  //   1. Sync completa SendGrid (bounce + spam + invalid + unsub globali)
+  //   2. Rimozione email con formato invalido (no @, no dominio)
+  //   3. Rimozione email con domini noti come temporanei/fake
+  //   4. Report finale via notifica owner con statistiche dettagliate
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 1 * * 0", async () => { // 03:00 CET domenica (01:00 UTC)
+    console.log("[WeeklyCleanup] 🧹 Avvio pulizia settimanale liste newsletter...");
+    await withLock("weekly-list-cleanup", async () => {
+      try {
+        const db = await getDb();
+        if (!db) throw new Error("DB non disponibile");
+        const { subscribers } = await import("../drizzle/schema");
+        const { and } = await import("drizzle-orm");
+
+        // ── Step 1: Sync SendGrid completa ────────────────────────────────
+        console.log("[WeeklyCleanup] Step 1/3: Sync SendGrid completa...");
+        await syncSendgridSuppressions();
+
+        // ── Step 2: Rimozione email con formato invalido ──────────────────
+        console.log("[WeeklyCleanup] Step 2/3: Verifica formato email...");
+        const PROTECTED = ["ac@acinelli.com", "andrea@acinelli.com", "andrea.cinelli@andreacinelli.com"];
+        
+        // Email senza @ o senza dominio valido
+        const allActive = await db
+          .select({ id: subscribers.id, email: subscribers.email })
+          .from(subscribers)
+          .where(eq(subscribers.status, "active"));
+
+        const FAKE_DOMAINS = [
+          "mailinator.com", "guerrillamail.com", "tempmail.com", "throwam.com",
+          "yopmail.com", "trashmail.com", "sharklasers.com", "guerrillamailblock.com",
+          "grr.la", "guerrillamail.info", "spam4.me", "dispostable.com",
+          "maildrop.cc", "discard.email", "fakeinbox.com", "mailnull.com",
+          "example.com", "test.com", "fake.com",
+        ];
+
+        let invalidCount = 0;
+        let fakeCount = 0;
+
+        for (const sub of allActive) {
+          if (PROTECTED.includes(sub.email.toLowerCase())) continue;
+
+          // Formato invalido: manca @ o dominio
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(sub.email)) {
+            await unsubscribeEmail(sub.email);
+            invalidCount++;
+            continue;
+          }
+
+          // Dominio fake/temporaneo
+          const domain = sub.email.split("@")[1]?.toLowerCase() || "";
+          if (FAKE_DOMAINS.some(fd => domain === fd || domain.endsWith("." + fd))) {
+            await unsubscribeEmail(sub.email);
+            fakeCount++;
+          }
+        }
+
+        console.log(`[WeeklyCleanup] Step 2 completato: ${invalidCount} formato invalido, ${fakeCount} domini fake rimossi`);
+
+        // ── Step 3: Conteggio finale e report ─────────────────────────────
+        console.log("[WeeklyCleanup] Step 3/3: Generazione report...");
+        const countResult = await db
+          .select({ status: subscribers.status })
+          .from(subscribers);
+
+        const activeCount = (countResult as Array<{status: string}>).filter(r => r.status === "active").length;
+        const unsubCount = (countResult as Array<{status: string}>).filter(r => r.status === "unsubscribed").length;
+
+        // Report via notifica owner
+        const { notifyOwner } = await import("./_core/notification");
+        const reportDate = new Date().toLocaleDateString("it-IT", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+        await notifyOwner({
+          title: `🧹 Pulizia settimanale completata — ${reportDate}`,
+          content: [
+            `📊 STATO LISTE DOPO PULIZIA`,
+            `• Iscritti attivi totali: ${activeCount.toLocaleString("it-IT")}`,
+            `• Iscritti rimossi totali: ${unsubCount.toLocaleString("it-IT")}`,
+            ``,
+            `🔍 QUESTA SETTIMANA RIMOSSI:`,
+            `• Bounce SendGrid: già processati dalla sync 12h`,
+            `• Spam reports: già processati dalla sync 12h`,
+            `• Email formato invalido: ${invalidCount}`,
+            `• Domini fake/temporanei: ${fakeCount}`,
+            ``,
+            `✅ Liste pronte per gli invii della prossima settimana.`,
+          ].join("\n"),
+        });
+
+        console.log(`[WeeklyCleanup] ✅ Pulizia settimanale completata. Attivi: ${activeCount}, Rimossi: ${unsubCount}`);
+      } catch (err) {
+        console.error("[WeeklyCleanup] ❌ Errore pulizia settimanale:", err);
+        const { notifyOwner } = await import("./_core/notification");
+        await notifyOwner({
+          title: "❌ Errore pulizia settimanale liste newsletter",
+          content: `Errore: ${err instanceof Error ? err.message : String(err)}`,
+        });
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   🧹 Pulizia Settimanale Liste → ogni domenica alle 03:00 CET (sync SendGrid + formato invalido + domini fake + report)");
 }
