@@ -3575,3 +3575,10 @@
 - [ ] Newsletter 08:30 usa lista 1 (iscritti originali pre-integrazione)
 - [ ] Rinominare "Buongiorno" in "Buonpomeriggio" nell'oggetto e nel corpo della newsletter 17:30
 - [ ] Aggiungere List-Unsubscribe header alla newsletter PPV 17:30
+
+## Task completati (14 maggio 2026 — Report giornaliero newsletter)
+
+- [x] Creato server/dailyNewsletterReport.ts: report giornaliero con dati SendGrid API (/v3/stats) + DB locale (newsletter_sends), separazione BUONGIORNO vs PPV per peso lista, email HTML professionale con KPI, benchmark B2B, status per newsletter
+- [x] Aggiunto cron 18:35 CET ogni giorno in schedulerManager.ts: chiama sendDailyNewsletterReport() con withLock per prevenire sovrapposizioni
+- [x] Test invio confermato: report inviato a ac@acinelli.com con subject "📊 ProofPress · Report Newsletter giovedì 14 maggio 2026"
+- [x] Zero errori TypeScript

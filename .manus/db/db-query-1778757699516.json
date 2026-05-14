@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE news_items SET imageUrl = 'https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp' WHERE imageUrl = 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute UPDATE news_items SET imageUrl = 'https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp' WHERE imageUrl = 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 273
+}

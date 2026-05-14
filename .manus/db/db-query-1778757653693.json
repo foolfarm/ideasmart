@@ -1,0 +1,25 @@
+{
+  "query": "SELECT id, title, imageUrl FROM news_items WHERE title LIKE '%Email Verify%' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, imageUrl FROM news_items WHERE title LIKE '%Email Verify%' LIMIT 5;",
+  "rows": [
+    {
+      "id": "7980001",
+      "title": "Email Verify: certificazione legale per newsletter senza integrazioni tecniche",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp"
+    },
+    {
+      "id": "7980002",
+      "title": "Email Verify: certificazione legale delle newsletter senza toccare l'infrastruttura IT",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp"
+    },
+    {
+      "id": "7980003",
+      "title": "Email Verify: certificazione blockchain per newsletter senza integrazione tecnica",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timageUrl\n7980001\tEmail Verify: certificazione legale per newsletter senza integrazioni tecniche\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp\n7980002\tEmail Verify: certificazione legale delle newsletter senza toccare l'infrastruttura IT\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp\n7980003\tEmail Verify: certificazione blockchain per newsletter senza integrazione tecnica\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp\n",
+  "stderr": "",
+  "execution_time_ms": 266
+}

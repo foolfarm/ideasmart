@@ -1,0 +1,25 @@
+{
+  "query": "SELECT section, COUNT(*) as totale, SUM(CASE WHEN imageUrl LIKE '%d2xsxph8kpxj0f.cloudfront.net%' THEN 1 ELSE 0 END) as cloudfront_privati FROM news_items GROUP BY section ORDER BY cloudfront_privati DESC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT section, COUNT(*) as totale, SUM(CASE WHEN imageUrl LIKE '%d2xsxph8kpxj0f.cloudfront.net%' THEN 1 ELSE 0 END) as cloudfront_privati FROM news_items GROUP BY section ORDER BY cloudfront_privati DESC LIMIT 20;",
+  "rows": [
+    {
+      "section": "dealroom",
+      "totale": "13",
+      "cloudfront_privati": "0"
+    },
+    {
+      "section": "ai",
+      "totale": "17",
+      "cloudfront_privati": "0"
+    },
+    {
+      "section": "startup",
+      "totale": "14",
+      "cloudfront_privati": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "section\ttotale\tcloudfront_privati\ndealroom\t13\t0\nai\t17\t0\nstartup\t14\t0\n",
+  "stderr": "",
+  "execution_time_ms": 273
+}

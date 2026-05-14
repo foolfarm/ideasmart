@@ -1,0 +1,9 @@
+{
+  "query": "SELECT id, title, imageUrl FROM news_items WHERE imageUrl LIKE '%d2xsxph8kpxj0f.cloudfront.net%' LIMIT 10; SELECT id, title, imageUrl FROM news_items WHERE imageUrl IS NOT NULL AND imageUrl != '' AND imageUrl NOT LIKE 'http%' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, imageUrl FROM news_items WHERE imageUrl LIKE '%d2xsxph8kpxj0f.cloudfront.net%' LIMIT 10; SELECT id, title, imageUrl FROM news_items WHERE imageUrl IS NOT NULL AND imageUrl != '' AND imageUrl NOT LIKE 'http%' LIMIT 5;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 275
+}

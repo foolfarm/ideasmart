@@ -1,0 +1,166 @@
+{
+  "query": "SHOW TABLES;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SHOW TABLES;",
+  "rows": [
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "alert_logs"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "amazon_daily_deals"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "amazon_deals"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "article_comments"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "banner_events"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "banner_settings"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "banners"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "barometro_snapshots"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "base_alpha_subscriptions"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "breaking_news"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "centro_studi_leads"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "channel_content"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "content_audit"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "creator_quotes"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "creator_subscriptions"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "daily_editorial"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "dealflow_picks"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "demo_requests"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "email_opens"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "health_check_logs"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "journalist_articles"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "journalists"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "linkedin_posts"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "market_analysis"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "news_items"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "news_refresh_log"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "newsletter_feedback"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "newsletter_sends"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "newsletter_sponsors"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "notification_preferences"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "offerta_leads"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "open_source_tools"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "osservatorio_articles"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "osservatorio_comments"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "research_reports"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "rss_feed_sources"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "rss_ingest_log"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "saved_articles"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "site_users"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "source_reports"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "startup_of_day"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "subscribers"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "system_settings"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "tech_events"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "tool_submissions"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "users"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "verify_api_keys"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "verify_organizations"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "verify_quotes"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "verify_subscriptions"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg": "weekly_reportage"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_UyPaon6i3Ec4nvfPz6kUfg\n__drizzle_migrations\nalert_logs\namazon_daily_deals\namazon_deals\narticle_comments\nbanner_events\nbanner_settings\nbanners\nbarometro_snapshots\nbase_alpha_subscriptions\nbreaking_news\ncentro_studi_leads\nchannel_content\ncontent_audit\ncreator_quotes\ncreator_subscriptions\ndaily_editorial\ndealflow_picks\ndemo_requests\nemail_opens\nhealth_check_logs\njournalist_articles\njournalists\nlinkedin_posts\nmarket_analysis\nnews_items\nnews_refresh_log\nnewsletter_feedback\nnewsletter_sends\nnewsletter_sponsors\nnotification_preferences\nofferta_leads\nopen_source_tools\nosservatorio_articles\nosservatorio_comments\nresearch_reports\nrss_feed_sources\nrss_ingest_log\nsaved_articles\nsite_users\nsource_reports\nstartup_of_day\nsubscribers\nsystem_settings\ntech_events\ntool_submissions\nusers\nverify_api_keys\nverify_organizations\nverify_quotes\nverify_subscriptions\nweekly_reportage\n",
+  "stderr": "",
+  "execution_time_ms": 273
+}

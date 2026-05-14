@@ -109,6 +109,7 @@ import { eq } from "drizzle-orm";
 import { aggregateEvents } from "./eventsAggregator";
 import { ingestAllChannels, seedRssSources } from "./channelIngestor";
 import { sendDailyMetricsReport } from "./dailyMetricsReport";
+import { sendDailyNewsletterReport } from "./dailyNewsletterReport";
 
 const TZ = "Europe/Rome";
 
@@ -1652,4 +1653,22 @@ export function startAllSchedulers(): void {
   // Controllo BUONPOMERIGGIO PPV: alle 18:30 CET
   cron.schedule("30 18 * * 1-5", () => checkNewsletterSent("ppv", "17:30"), { timezone: TZ });
   console.log("[SchedulerManager]   ⚠️  Alert BUONPOMERIGGIO → controllo alle 18:30 CET se newsletter 17:30 è partita");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // REPORT GIORNALIERO NEWSLETTER — 18:30 CET ogni giorno
+  //   Estrae dati da SendGrid API + DB locale e invia report a ac@acinelli.com
+  //   con performance di BUONGIORNO (08:30) e BUONPOMERIGGIO PPV (17:30)
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("35 18 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 18:35 CET — Report giornaliero newsletter...");
+    await withLock("daily-newsletter-report", async () => {
+      try {
+        await sendDailyNewsletterReport();
+        console.log("[SchedulerManager] ✅ Report giornaliero newsletter inviato a ac@acinelli.com");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Report giornaliero newsletter:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   📊 Report Giornaliero Newsletter → ogni giorno alle 18:35 CET (SendGrid API + DB → ac@acinelli.com)");
 }

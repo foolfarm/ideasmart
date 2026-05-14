@@ -1,0 +1,25 @@
+{
+  "query": "SELECT id, title, imageUrl FROM news_items WHERE title LIKE '%Email Verify%' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, imageUrl FROM news_items WHERE title LIKE '%Email Verify%' LIMIT 5;",
+  "rows": [
+    {
+      "id": "7980001",
+      "title": "Email Verify: certificazione legale per newsletter senza integrazioni tecniche",
+      "imageUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp"
+    },
+    {
+      "id": "7980002",
+      "title": "Email Verify: certificazione legale delle newsletter senza toccare l'infrastruttura IT",
+      "imageUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp"
+    },
+    {
+      "id": "7980003",
+      "title": "Email Verify: certificazione blockchain per newsletter senza integrazione tecnica",
+      "imageUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timageUrl\n7980001\tEmail Verify: certificazione legale per newsletter senza integrazioni tecniche\thttps://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp\n7980002\tEmail Verify: certificazione legale delle newsletter senza toccare l'infrastruttura IT\thttps://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp\n7980003\tEmail Verify: certificazione blockchain per newsletter senza integrazione tecnica\thttps://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujnkYDvKXp.webp\n",
+  "stderr": "",
+  "execution_time_ms": 274
+}

@@ -1,0 +1,100 @@
+{
+  "query": "SELECT id, title, LEFT(imageUrl, 80) as imageUrl_preview, section FROM news_items ORDER BY id DESC LIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, LEFT(imageUrl, 80) as imageUrl_preview, section FROM news_items ORDER BY id DESC LIMIT 15;",
+  "rows": [
+    {
+      "id": "7980003",
+      "title": "Email Verify: certificazione blockchain per newsletter senza integrazione tecnica",
+      "imageUrl_preview": "https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujn",
+      "section": "ai"
+    },
+    {
+      "id": "7980002",
+      "title": "Email Verify: certificazione legale delle newsletter senza toccare l'infrastruttura IT",
+      "imageUrl_preview": "https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujn",
+      "section": "ai"
+    },
+    {
+      "id": "7980001",
+      "title": "Email Verify: certificazione legale per newsletter senza integrazioni tecniche",
+      "imageUrl_preview": "https://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujn",
+      "section": "ai"
+    },
+    {
+      "id": "7950027",
+      "title": "Crescono le vendite di Md e la marginalità raggiunge il 6,43%",
+      "imageUrl_preview": "https://images.pexels.com/photos/9783835/pexels-photo-9783835.jpeg?auto=compress",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950026",
+      "title": "DeepMind spinout Isomorphic Labs raises $2.1bn",
+      "imageUrl_preview": "https://images.pexels.com/photos/6754850/pexels-photo-6754850.jpeg?auto=compress",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950025",
+      "title": "The talent profile Europe's top AI scaleups are chasing",
+      "imageUrl_preview": "https://images.pexels.com/photos/9301461/pexels-photo-9301461.jpeg?auto=compress",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950024",
+      "title": "Inside Legora's hunt for legal tech acquisitions",
+      "imageUrl_preview": "https://images.pexels.com/photos/34817073/pexels-photo-34817073.jpeg?auto=compre",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950023",
+      "title": "25 European YC startups due to raise a Series A",
+      "imageUrl_preview": "https://images.pexels.com/photos/18999471/pexels-photo-18999471.jpeg?auto=compre",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950022",
+      "title": "Nvidia startup head: 'Germany is not late' on AI boom",
+      "imageUrl_preview": "https://images.pexels.com/photos/4573596/pexels-photo-4573596.jpeg?auto=compress",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950021",
+      "title": "Accel and Thiel's Founders Fund back Fractile in $220m raise",
+      "imageUrl_preview": "https://images.pexels.com/photos/7752851/pexels-photo-7752851.jpeg?auto=compress",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950020",
+      "title": "OGR Startup Booster: quali sono le 4 startup selezionate per la seconda edizione",
+      "imageUrl_preview": "https://images.pexels.com/photos/373892/pexels-photo-373892.jpeg?auto=compress&c",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950019",
+      "title": "Pillar: 12 milioni alla startup del sistema operativo per il settore edile",
+      "imageUrl_preview": "https://images.pexels.com/photos/18999183/pexels-photo-18999183.jpeg?auto=compre",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950018",
+      "title": "BMW, quando il corporate venture capital è un segnale al mercato",
+      "imageUrl_preview": "https://images.pexels.com/photos/3861957/pexels-photo-3861957.jpeg?auto=compress",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950017",
+      "title": "Trasferimento tecnologico, l'Italia ha una chance: fare sistema adesso, senza sprecarla",
+      "imageUrl_preview": "https://images.pexels.com/photos/36169774/pexels-photo-36169774.jpeg?auto=compre",
+      "section": "dealroom"
+    },
+    {
+      "id": "7950016",
+      "title": "Zanichelli Venture investe su Gyver, startup degli elettricisti",
+      "imageUrl_preview": "https://images.pexels.com/photos/34774341/pexels-photo-34774341.jpeg?auto=compre",
+      "section": "dealroom"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timageUrl_preview\tsection\n7980003\tEmail Verify: certificazione blockchain per newsletter senza integrazione tecnica\thttps://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujn\tai\n7980002\tEmail Verify: certificazione legale delle newsletter senza toccare l'infrastruttura IT\thttps://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujn\tai\n7980001\tEmail Verify: certificazione legale per newsletter senza integrazioni tecniche\thttps://files.manuscdn.com/user_upload_by_module/session_file/99304667/pcbMsPujn\tai\n7950027\tCrescono le vendite di Md e la marginalità raggiunge il 6,43%\thttps://images.pexels.com/photos/9783835/pexels-photo-9783835.jpeg?auto=compress\tdealroom\n7950026\tDeepMind spinout Isomorphic Labs raises $2.1bn\thttps://images.pexels.com/photos/6754850/pexels-photo-6754850.jpeg?auto=compress\tdealroom\n7950025\tThe talent profile Europe's top AI scaleups are chasing\thttps://images.pexels.com/photos/9301461/pexels-photo-9301461.jpeg?auto=compress\tdealroom\n7950024\tInside Legora's hunt for legal tech acquisitions\thttps://images.pexels.com/photos/34817073/pexels-photo-34817073.jpeg?auto=compre\tdealroom\n7950023\t25 European YC startups due to raise a Series A\thttps://images.pexels.com/photos/18999471/pexels-photo-18999471.jpeg?auto=compre\tdealroom\n7950022\tNvidia startup head: 'Germany is not late' on AI boom\thttps://images.pexels.com/photos/4573596/pexels-photo-4573596.jpeg?auto=compress\tdealroom\n7950021\tAccel and Thiel's Founders Fund back Fractile in $220m raise\thttps://images.pexels.com/photos/7752851/pexels-photo-7752851.jpeg?auto=compress\tdealroom\n7950020\tOGR Startup Booster: quali sono le 4 startup selezionate per la seconda edizione\thttps://images.pexels.com/photos/373892/pexels-photo-373892.jpeg?auto=compress&c\tdealroom\n7950019\tPillar: 12 milioni alla startup del sistema operativo per il settore edile\thttps://images.pexels.com/photos/18999183/pexels-photo-18999183.jpeg?auto=compre\tdealroom\n7950018\tBMW, quando il corporate venture capital è un segnale al mercato\thttps://images.pexels.com/photos/3861957/pexels-photo-3861957.jpeg?auto=compress\tdealroom\n7950017\tTrasferimento tecnologico, l'Italia ha una chance: fare sistema adesso, senza sprecarla\thttps://images.pexels.com/photos/36169774/pexels-photo-36169774.jpeg?auto=compre\tdealroom\n7950016\tZanichelli Venture investe su Gyver, startup degli elettricisti\thttps://images.pexels.com/photos/34774341/pexels-photo-34774341.jpeg?auto=compre\tdealroom\n",
+  "stderr": "",
+  "execution_time_ms": 265
+}
