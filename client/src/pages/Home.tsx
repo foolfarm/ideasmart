@@ -1432,7 +1432,7 @@ export default function Home() {
                   <div className="mb-6">
                     <a href="https://decisionsciencesummit.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
                       <img
-                        src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/decision-science-summit_f6acdc8c.png"
+                        src="https://files.manuscdn.com/user_upload_by_module/session_file/99304667/sAdkcQDyqbWLNslZ.png"
                         alt="Decision Science Summit — June 18-19, 2026 Madrid"
                         style={{
                           width: "100%",
