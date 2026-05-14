@@ -1431,15 +1431,9 @@ export function startAllSchedulers(): void {
         }
 
         console.log(`[SendgridSync] ✅ Completato: ${updated} indirizzi marcati unsubscribed, ${skipped} errori/protetti`);
-
-        // Notifica owner se ci sono nuove soppressioni significative
-        if (bounces.length > 0 || spamReports.length > 0) {
-          const { notifyOwner } = await import("./_core/notification");
-          await notifyOwner({
-            title: `📧 SendGrid Sync: ${updated} soppressioni rimosse dalle liste`,
-            content: `Bounce: ${bounces.length} | Spam: ${spamReports.length} | Invalid: ${invalidEmails.length} | Unsub globali: ${globalUnsubs.length}\nTotale rimossi: ${updated} indirizzi marcati unsubscribed su entrambe le liste.`,
-          });
-        }
+        // Notifica owner rimossa: la sync recupera sempre bounce/spam storici da SendGrid
+        // (non solo nuovi), quindi la notifica scattava ad ogni esecuzione (4-6x/giorno).
+        // Le soppressioni sono visibili nel report giornaliero delle 18:35 CET.
       } catch (err) {
         console.error("[SendgridSync] ❌ Errore sincronizzazione:", err);
       }
