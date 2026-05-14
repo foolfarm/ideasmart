@@ -1,0 +1,21 @@
+{
+  "query": "SELECT id, name, tagline, category, country, funding, aiScore, dateLabel, createdAt FROM startup_of_day WHERE dateLabel = '2026-05-14' ORDER BY createdAt DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, name, tagline, category, country, funding, aiScore, dateLabel, createdAt FROM startup_of_day WHERE dateLabel = '2026-05-14' ORDER BY createdAt DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "4230001",
+      "name": "Dust",
+      "tagline": "Piattaforma AI per costruire assistenti personalizzati che si integrano con i dati aziendali",
+      "category": "AI per Productivity",
+      "country": "Francia",
+      "funding": "Series A — $16M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-14",
+      "createdAt": "2026-05-14 06:03:12"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\ttagline\tcategory\tcountry\tfunding\taiScore\tdateLabel\tcreatedAt\n4230001\tDust\tPiattaforma AI per costruire assistenti personalizzati che si integrano con i dati aziendali\tAI per Productivity\tFrancia\tSeries A — $16M\t87\t2026-05-14\t2026-05-14 06:03:12\n",
+  "stderr": "",
+  "execution_time_ms": 360
+}

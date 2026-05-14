@@ -1,0 +1,157 @@
+{
+  "query": "SELECT id, name, tagline, dateLabel, createdAt FROM startup_of_day WHERE name LIKE '%Hebbia%' OR name LIKE '%hebbia%' ORDER BY createdAt DESC LIMIT 10;\n\nSELECT id, name, tagline, dateLabel, createdAt FROM startup_of_day ORDER BY createdAt DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, name, tagline, dateLabel, createdAt FROM startup_of_day WHERE name LIKE '%Hebbia%' OR name LIKE '%hebbia%' ORDER BY createdAt DESC LIMIT 10;\n\nSELECT id, name, tagline, dateLabel, createdAt FROM startup_of_day ORDER BY createdAt DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "4200002",
+      "name": "Hebbia",
+      "tagline": "AI per analisi documentale enterprise: cerca, interroga e sintetizza milioni di file in secondi",
+      "dateLabel": "2026-05-13",
+      "createdAt": "2026-05-13 00:57:29"
+    },
+    {
+      "id": "4200001",
+      "name": "Hebbia",
+      "tagline": "AI per analisi di documenti complessi e ricerca enterprise",
+      "dateLabel": "2026-05-13",
+      "createdAt": "2026-05-13 00:55:39"
+    },
+    {
+      "id": "4110001",
+      "name": "Hebbia",
+      "tagline": "AI per analisi documentale e ricerca enterprise-grade",
+      "dateLabel": "2026-05-11",
+      "createdAt": "2026-05-11 06:12:57"
+    },
+    {
+      "id": "4020001",
+      "name": "Hebbia",
+      "tagline": "AI che legge documenti complessi come un analista esperto",
+      "dateLabel": "2026-05-10",
+      "createdAt": "2026-05-10 06:01:25"
+    },
+    {
+      "id": "3960001",
+      "name": "Hebbia",
+      "tagline": "AI che legge e analizza milioni di documenti per decisioni strategiche enterprise",
+      "dateLabel": "2026-05-09",
+      "createdAt": "2026-05-09 06:02:07"
+    },
+    {
+      "id": "3900001",
+      "name": "Hebbia",
+      "tagline": "AI che legge e analizza migliaia di documenti come farebbe un analista senior",
+      "dateLabel": "2026-05-08",
+      "createdAt": "2026-05-08 06:14:23"
+    },
+    {
+      "id": "3810001",
+      "name": "Hebbia",
+      "tagline": "AI per analizzare documenti complessi e prendere decisioni strategiche più velocemente",
+      "dateLabel": "2026-05-07",
+      "createdAt": "2026-05-07 06:02:04"
+    },
+    {
+      "id": "3780001",
+      "name": "Hebbia",
+      "tagline": "AI che legge e analizza documenti complessi per decisioni strategiche aziendali",
+      "dateLabel": "2026-05-06",
+      "createdAt": "2026-05-06 06:12:56"
+    },
+    {
+      "id": "3720001",
+      "name": "Hebbia",
+      "tagline": "AI che legge e analizza milioni di documenti per decisioni strategiche aziendali",
+      "dateLabel": "2026-05-05",
+      "createdAt": "2026-05-05 06:02:01"
+    },
+    {
+      "id": "3690001",
+      "name": "Hebbia",
+      "tagline": "AI per analisi documenti enterprise: da mesi di ricerca a minuti di insight",
+      "dateLabel": "2026-05-04",
+      "createdAt": "2026-05-04 06:03:35"
+    },
+    {
+      "id": "id",
+      "name": "name",
+      "tagline": "tagline",
+      "dateLabel": "dateLabel",
+      "createdAt": "createdAt"
+    },
+    {
+      "id": "4230001",
+      "name": "Dust",
+      "tagline": "Piattaforma AI per costruire assistenti personalizzati che si integrano con i dati aziendali",
+      "dateLabel": "2026-05-14",
+      "createdAt": "2026-05-14 06:03:12"
+    },
+    {
+      "id": "4200002",
+      "name": "Hebbia",
+      "tagline": "AI per analisi documentale enterprise: cerca, interroga e sintetizza milioni di file in secondi",
+      "dateLabel": "2026-05-13",
+      "createdAt": "2026-05-13 00:57:29"
+    },
+    {
+      "id": "4200001",
+      "name": "Hebbia",
+      "tagline": "AI per analisi di documenti complessi e ricerca enterprise",
+      "dateLabel": "2026-05-13",
+      "createdAt": "2026-05-13 00:55:39"
+    },
+    {
+      "id": "4170002",
+      "name": "Taktile",
+      "tagline": "Decision automation platform per financial services alimentata da AI",
+      "dateLabel": "2026-05-12",
+      "createdAt": "2026-05-12 01:13:40"
+    },
+    {
+      "id": "4170001",
+      "name": "Robovision",
+      "tagline": "La piattaforma no-code per la visione artificiale industriale",
+      "dateLabel": "2026-05-12",
+      "createdAt": "2026-05-12 01:13:16"
+    },
+    {
+      "id": "4140001",
+      "name": "Westpoint AI",
+      "tagline": "AI platform che automatizza la due diligence finanziaria e l'analisi di rischio per M&A e private equity",
+      "dateLabel": "2026-05-11",
+      "createdAt": "2026-05-11 08:28:46"
+    },
+    {
+      "id": "4110001",
+      "name": "Hebbia",
+      "tagline": "AI per analisi documentale e ricerca enterprise-grade",
+      "dateLabel": "2026-05-11",
+      "createdAt": "2026-05-11 06:12:57"
+    },
+    {
+      "id": "4080002",
+      "name": "Colibrì AI",
+      "tagline": "AI conversazionale per contact center che abbatte i costi operativi del 60%",
+      "dateLabel": "2026-05-10",
+      "createdAt": "2026-05-10 23:06:09"
+    },
+    {
+      "id": "4050001",
+      "name": "Antiverse",
+      "tagline": "AI generativa per la scoperta di anticorpi terapeutici di nuova generazione",
+      "dateLabel": "2026-05-10",
+      "createdAt": "2026-05-10 11:20:16"
+    },
+    {
+      "id": "4020001",
+      "name": "Hebbia",
+      "tagline": "AI che legge documenti complessi come un analista esperto",
+      "dateLabel": "2026-05-10",
+      "createdAt": "2026-05-10 06:01:25"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\ttagline\tdateLabel\tcreatedAt\n4200002\tHebbia\tAI per analisi documentale enterprise: cerca, interroga e sintetizza milioni di file in secondi\t2026-05-13\t2026-05-13 00:57:29\n4200001\tHebbia\tAI per analisi di documenti complessi e ricerca enterprise\t2026-05-13\t2026-05-13 00:55:39\n4110001\tHebbia\tAI per analisi documentale e ricerca enterprise-grade\t2026-05-11\t2026-05-11 06:12:57\n4020001\tHebbia\tAI che legge documenti complessi come un analista esperto\t2026-05-10\t2026-05-10 06:01:25\n3960001\tHebbia\tAI che legge e analizza milioni di documenti per decisioni strategiche enterprise\t2026-05-09\t2026-05-09 06:02:07\n3900001\tHebbia\tAI che legge e analizza migliaia di documenti come farebbe un analista senior\t2026-05-08\t2026-05-08 06:14:23\n3810001\tHebbia\tAI per analizzare documenti complessi e prendere decisioni strategiche più velocemente\t2026-05-07\t2026-05-07 06:02:04\n3780001\tHebbia\tAI che legge e analizza documenti complessi per decisioni strategiche aziendali\t2026-05-06\t2026-05-06 06:12:56\n3720001\tHebbia\tAI che legge e analizza milioni di documenti per decisioni strategiche aziendali\t2026-05-05\t2026-05-05 06:02:01\n3690001\tHebbia\tAI per analisi documenti enterprise: da mesi di ricerca a minuti di insight\t2026-05-04\t2026-05-04 06:03:35\nid\tname\ttagline\tdateLabel\tcreatedAt\n4230001\tDust\tPiattaforma AI per costruire assistenti personalizzati che si integrano con i dati aziendali\t2026-05-14\t2026-05-14 06:03:12\n4200002\tHebbia\tAI per analisi documentale enterprise: cerca, interroga e sintetizza milioni di file in secondi\t2026-05-13\t2026-05-13 00:57:29\n4200001\tHebbia\tAI per analisi di documenti complessi e ricerca enterprise\t2026-05-13\t2026-05-13 00:55:39\n4170002\tTaktile\tDecision automation platform per financial services alimentata da AI\t2026-05-12\t2026-05-12 01:13:40\n4170001\tRobovision\tLa piattaforma no-code per la visione artificiale industriale\t2026-05-12\t2026-05-12 01:13:16\n4140001\tWestpoint AI\tAI platform che automatizza la due diligence finanziaria e l'analisi di rischio per M&A e private equity\t2026-05-11\t2026-05-11 08:28:46\n4110001\tHebbia\tAI per analisi documentale e ricerca enterprise-grade\t2026-05-11\t2026-05-11 06:12:57\n4080002\tColibrì AI\tAI conversazionale per contact center che abbatte i costi operativi del 60%\t2026-05-10\t2026-05-10 23:06:09\n4050001\tAntiverse\tAI generativa per la scoperta di anticorpi terapeutici di nuova generazione\t2026-05-10\t2026-05-10 11:20:16\n4020001\tHebbia\tAI che legge documenti complessi come un analista esperto\t2026-05-10\t2026-05-10 06:01:25\n",
+  "stderr": "",
+  "execution_time_ms": 269
+}

@@ -381,7 +381,7 @@ async function getTodayStartup(): Promise<StartupOfDayItem | null> {
   };
 }
 
-/** Restituisce 2 startup diverse per oggi (rotazione giornaliera) */
+/** Restituisce 2 startup diverse per oggi (rotazione giornaliera, senza duplicati per nome) */
 async function getTodayStartups(): Promise<StartupOfDayItem[]> {
   const db = await getDb();
   if (!db) return [];
@@ -391,19 +391,35 @@ async function getTodayStartups(): Promise<StartupOfDayItem[]> {
     .from(startupOfDay)
     .where(eq(startupOfDay.dateLabel, today))
     .limit(2);
+
+  // Deduplicazione per nome: rimuove duplicati con stesso nome nella lista di oggi
+  const seenNames = new Set<string>();
+  items = items.filter((i) => {
+    const key = i.name.toLowerCase().trim();
+    if (seenNames.has(key)) return false;
+    seenNames.add(key);
+    return true;
+  });
+
   if (items.length < 2) {
     const existingIds = items.map((i) => i.id);
+    // Recupera più candidati per avere margine di scelta
     const extras = await db
       .select()
       .from(startupOfDay)
       .orderBy(desc(startupOfDay.createdAt))
-      .limit(10);
+      .limit(30);
     for (const e of extras) {
-      if (!existingIds.includes(e.id)) {
-        items.push(e);
-        existingIds.push(e.id);
-        if (items.length >= 2) break;
-      }
+      const key = e.name.toLowerCase().trim();
+      // Salta se stesso ID o stesso nome già presente
+      if (existingIds.includes(e.id)) continue;
+      if (seenNames.has(key)) continue;
+      // Salta se è la data di oggi (già presa sopra)
+      if (e.dateLabel === today) continue;
+      items.push(e);
+      existingIds.push(e.id);
+      seenNames.add(key);
+      if (items.length >= 2) break;
     }
   }
   return items.slice(0, 2).map((s) => ({
