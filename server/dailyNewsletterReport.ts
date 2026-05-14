@@ -151,9 +151,20 @@ async function buildDailyReportHtml(): Promise<{ html: string; subject: string }
   const ppvDb = dbMetrics.ppv;
 
   // ── 3. Stima split aperture proporzionale ai destinatari ─────────────────
-  // SendGrid aggrega tutto — distribuiamo le aperture proporzionalmente
-  const morningRecip = morningDb?.sentCount ?? morningDb?.recipientCount ?? 2097;
-  const ppvRecip = ppvDb?.sentCount ?? ppvDb?.recipientCount ?? 1285;
+  // SendGrid aggrega tutto — distribuiamo le aperture proporzionalmente.
+  // Priorità: sentCount (se > 0), poi recipientCount, poi default.
+  // La newsletter BUONGIORNO salva solo recipientCount (non sent_count), quindi
+  // usiamo recipientCount come base affidabile per entrambe le liste.
+  const morningRecip = (morningDb?.sentCount && morningDb.sentCount > 0)
+    ? morningDb.sentCount
+    : (morningDb?.recipientCount && morningDb.recipientCount > 0)
+      ? morningDb.recipientCount
+      : 2097;
+  const ppvRecip = (ppvDb?.sentCount && ppvDb.sentCount > 0)
+    ? ppvDb.sentCount
+    : (ppvDb?.recipientCount && ppvDb.recipientCount > 0)
+      ? ppvDb.recipientCount
+      : 1285;
   const totalRecip = morningRecip + ppvRecip;
 
   const morningWeight = totalRecip > 0 ? morningRecip / totalRecip : 0.62;
@@ -261,7 +272,7 @@ async function buildDailyReportHtml(): Promise<{ html: string; subject: string }
             </tr>
             <tr>
               <td style="padding:10px 14px;font-size:13px;color:#1d1d1f;border-bottom:1px solid #f0f0f0;">Inviati (DB)</td>
-              <td style="padding:10px 14px;font-size:13px;font-weight:600;color:#1d1d1f;text-align:right;border-bottom:1px solid #f0f0f0;">${fmt(morningDb?.sentCount ?? morningRecip)}</td>
+              <td style="padding:10px 14px;font-size:13px;font-weight:600;color:#1d1d1f;text-align:right;border-bottom:1px solid #f0f0f0;">${fmt(morningRecip)}</td>
               <td style="padding:10px 14px;font-size:12px;color:#8e8e93;text-align:right;border-bottom:1px solid #f0f0f0;">—</td>
             </tr>
             <tr style="background:#fafafa;">
@@ -312,7 +323,7 @@ async function buildDailyReportHtml(): Promise<{ html: string; subject: string }
             </tr>
             <tr>
               <td style="padding:10px 14px;font-size:13px;color:#1d1d1f;border-bottom:1px solid #f0f0f0;">Inviati (DB)</td>
-              <td style="padding:10px 14px;font-size:13px;font-weight:600;color:#1d1d1f;text-align:right;border-bottom:1px solid #f0f0f0;">${fmt(ppvDb?.sentCount ?? ppvRecip)}</td>
+              <td style="padding:10px 14px;font-size:13px;font-weight:600;color:#1d1d1f;text-align:right;border-bottom:1px solid #f0f0f0;">${fmt(ppvRecip)}</td>
               <td style="padding:10px 14px;font-size:12px;color:#8e8e93;text-align:right;border-bottom:1px solid #f0f0f0;">—</td>
             </tr>
             <tr style="background:#fafafa;">
