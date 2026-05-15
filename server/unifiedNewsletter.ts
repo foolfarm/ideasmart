@@ -1579,7 +1579,6 @@ function buildNewsletterHtmlV2(opts: {
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
         ${rebrandHtml}
-        ${verifyTopBannerHtml}
         ${bannerHtml1}
         ${researchHeroHtml}
         ${startupNewsGridHtml}
@@ -1590,8 +1589,8 @@ function buildNewsletterHtmlV2(opts: {
         ${consigliatoHtml1}
         ${channelBlocksHtml}
         ${startupHtml}
+        ${verifyTopBannerHtml}
         ${promptPromoHtml}
-        ${iscrizioneHtml}
         ${eventsHtml}
         ${quickLinksHtml}
         ${researchBoxHtml}
