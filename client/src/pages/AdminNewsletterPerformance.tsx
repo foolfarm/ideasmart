@@ -7,6 +7,10 @@ import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
 import AdminHeader from "@/components/AdminHeader";
+import {
+  LineChart, Line, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from "recharts";
 
 const C = {
   bg: "#f5f5f7",
@@ -53,8 +57,14 @@ export default function AdminNewsletterPerformance() {
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "unsubscribed">("all");
   const [filterOpened, setFilterOpened] = useState<"all" | "opened" | "never">("all");
   const [filterChannel, setFilterChannel] = useState<"all" | "ai" | "startup">("all");
-  const [tab, setTab] = useState<"sendgrid" | "campaigns" | "subscribers">("sendgrid");
+  const [tab, setTab] = useState<"sendgrid" | "campaigns" | "subscribers" | "grafici">("sendgrid");
   const [sgDays, setSgDays] = useState(90);
+  const [chartDays, setChartDays] = useState(30);
+
+  const sgStatsQuery = trpc.adminTools.getSendgridStats.useQuery(
+    { days: chartDays },
+    { enabled: user?.role === "admin" && tab === "grafici", staleTime: 1000 * 60 * 15 }
+  );
 
   const sgQuery = trpc.adminTools.getSendgridSummary.useQuery(
     { days: sgDays },
@@ -194,6 +204,7 @@ export default function AdminNewsletterPerformance() {
         <div className="flex gap-0 mb-6 border-b" style={{ borderColor: C.border }}>
           {[
             { id: "sendgrid", label: "📊 Statistiche SendGrid" },
+            { id: "grafici", label: "📈 Grafici Giornalieri" },
             { id: "campaigns", label: `📧 Campagne (${campaigns.length})` },
             { id: "subscribers", label: `👥 Iscritti (${allSubs.length})` },
           ].map(t => (
@@ -339,6 +350,158 @@ export default function AdminNewsletterPerformance() {
             )}
           </div>
         )}
+
+        {/* ── TAB: GRAFICI GIORNALIERI ─────────────────────────────────── */}
+        {tab === "grafici" && (() => {
+          const statsData = sgStatsQuery.data?.data;
+          const chartData = statsData?.stats
+            .slice(-14)
+            .map((d: { date: string; delivered: number; unique_opens: number; unique_clicks: number; bounces: number; spam_reports: number; unsubscribes: number }) => ({
+              date: new Date(d.date).toLocaleDateString("it-IT", { day: "2-digit", month: "short" }),
+              Consegnate: d.delivered,
+              Aperture: d.unique_opens,
+              Click: d.unique_clicks,
+              Bounce: d.bounces,
+              Spam: d.spam_reports,
+              Disiscritti: d.unsubscribes,
+            })) ?? [];
+          const totals = statsData?.totals;
+          return (
+            <div className="space-y-6">
+              {/* Selettore periodo */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium" style={{ color: C.gray1 }}>Periodo:</span>
+                {[7, 14, 30, 60, 90].map(d => (
+                  <button
+                    key={d}
+                    onClick={() => setChartDays(d)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                    style={{
+                      background: chartDays === d ? C.black : C.white,
+                      color: chartDays === d ? C.white : C.gray1,
+                      border: `1px solid ${chartDays === d ? C.black : C.border}`,
+                    }}
+                  >
+                    {d === 7 ? "7gg" : d === 14 ? "14gg" : d === 30 ? "30gg" : d === 60 ? "60gg" : "90gg"}
+                  </button>
+                ))}
+                <button onClick={() => sgStatsQuery.refetch()} className="ml-auto text-xs font-medium hover:opacity-70" style={{ color: C.gray1 }}>↻ Aggiorna</button>
+              </div>
+
+              {sgStatsQuery.isLoading && (
+                <div className="flex items-center justify-center py-16">
+                  <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: C.black }} />
+                </div>
+              )}
+
+              {totals && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { label: "Email consegnate", value: totals.delivered.toLocaleString("it-IT"), color: "#007aff" },
+                    { label: "Open rate", value: `${totals.open_rate}%`, color: totals.open_rate >= 20 ? "#34c759" : "#ff9500" },
+                    { label: "Click rate", value: `${totals.click_rate}%`, color: totals.click_rate >= 2 ? "#34c759" : "#ff9500" },
+                    { label: "Disiscritti", value: totals.unsubscribes.toLocaleString("it-IT"), color: "#ff3b30" },
+                    { label: "Bounce", value: totals.bounces.toLocaleString("it-IT"), color: "#ff3b30" },
+                    { label: "Spam report", value: totals.spam_reports.toLocaleString("it-IT"), color: totals.spam_reports > 5 ? "#ff3b30" : C.gray1 },
+                    { label: "Bloccate", value: totals.blocks.toLocaleString("it-IT"), color: C.gray1 },
+                    { label: "Email non valide", value: totals.invalid_emails.toLocaleString("it-IT"), color: C.gray1 },
+                  ].map(k => (
+                    <div key={k.label} className="rounded-xl p-4 border" style={{ background: C.white, borderColor: C.border }}>
+                      <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: C.gray1 }}>{k.label}</div>
+                      <div className="text-2xl font-black tabular-nums" style={{ color: k.color, fontFamily: C.font }}>{k.value}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {chartData.length > 0 && (
+                <div className="rounded-2xl border p-5" style={{ background: C.white, borderColor: C.border }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: C.gray1 }}>Consegne · Aperture · Click (ultimi 14 giorni)</p>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                      <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                      <YAxis tick={{ fontSize: 11 }} />
+                      <Tooltip contentStyle={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: "8px", fontSize: "12px" }} />
+                      <Legend wrapperStyle={{ fontSize: "12px" }} />
+                      <Line type="monotone" dataKey="Consegnate" stroke="#007aff" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="Aperture" stroke="#34c759" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="Click" stroke="#ff9500" strokeWidth={2} dot={false} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {chartData.length > 0 && (
+                <div className="rounded-2xl border p-5" style={{ background: C.white, borderColor: C.border }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: C.gray1 }}>Problemi deliverability: Bounce · Spam · Disiscritti</p>
+                  <ResponsiveContainer width="100%" height={180}>
+                    <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                      <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                      <YAxis tick={{ fontSize: 11 }} />
+                      <Tooltip contentStyle={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: "8px", fontSize: "12px" }} />
+                      <Legend wrapperStyle={{ fontSize: "12px" }} />
+                      <Bar dataKey="Bounce" fill="#ff3b30" radius={[2, 2, 0, 0]} />
+                      <Bar dataKey="Spam" fill="#ff9500" radius={[2, 2, 0, 0]} />
+                      <Bar dataKey="Disiscritti" fill="#af52de" radius={[2, 2, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {statsData && statsData.unsubscribes.length > 0 && (
+                <div className="rounded-2xl border overflow-hidden" style={{ background: C.white, borderColor: C.border }}>
+                  <div className="px-5 py-3 border-b" style={{ borderColor: C.border }}>
+                    <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.gray1 }}>Disiscritti recenti ({statsData.unsubscribes.length})</p>
+                  </div>
+                  <div className="overflow-x-auto max-h-64 overflow-y-auto">
+                    <table className="w-full">
+                      <thead><tr className="border-b" style={{ borderColor: C.border }}>
+                        <th className="px-5 py-2 text-left text-xs" style={{ color: C.gray2 }}>Email</th>
+                        <th className="px-5 py-2 text-right text-xs" style={{ color: C.gray2 }}>Data</th>
+                      </tr></thead>
+                      <tbody>
+                        {statsData.unsubscribes.slice(0, 50).map((u: { email: string; created: number }, i: number) => (
+                          <tr key={i} className="border-b hover:bg-gray-50" style={{ borderColor: C.border }}>
+                            <td className="px-5 py-2 text-xs font-mono" style={{ color: C.black }}>{u.email}</td>
+                            <td className="px-5 py-2 text-xs text-right" style={{ color: C.gray1 }}>{new Date(u.created * 1000).toLocaleDateString("it-IT")}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {statsData && statsData.bounces.length > 0 && (
+                <div className="rounded-2xl border overflow-hidden" style={{ background: C.white, borderColor: C.border }}>
+                  <div className="px-5 py-3 border-b" style={{ borderColor: C.border }}>
+                    <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.gray1 }}>Bounce recenti ({statsData.bounces.length})</p>
+                  </div>
+                  <div className="overflow-x-auto max-h-64 overflow-y-auto">
+                    <table className="w-full">
+                      <thead><tr className="border-b" style={{ borderColor: C.border }}>
+                        <th className="px-5 py-2 text-left text-xs" style={{ color: C.gray2 }}>Email</th>
+                        <th className="px-5 py-2 text-left text-xs" style={{ color: C.gray2 }}>Motivo</th>
+                        <th className="px-5 py-2 text-right text-xs" style={{ color: C.gray2 }}>Data</th>
+                      </tr></thead>
+                      <tbody>
+                        {statsData.bounces.slice(0, 50).map((b: { email: string; created: number; reason?: string }, i: number) => (
+                          <tr key={i} className="border-b hover:bg-gray-50" style={{ borderColor: C.border }}>
+                            <td className="px-5 py-2 text-xs font-mono" style={{ color: C.black }}>{b.email}</td>
+                            <td className="px-5 py-2 text-xs max-w-xs truncate" style={{ color: C.gray1 }}>{b.reason ?? "—"}</td>
+                            <td className="px-5 py-2 text-xs text-right" style={{ color: C.gray1 }}>{new Date(b.created * 1000).toLocaleDateString("it-IT")}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* ── TAB: CAMPAGNE ─────────────────────────────────────────────────── */}
         {tab === "campaigns" && (

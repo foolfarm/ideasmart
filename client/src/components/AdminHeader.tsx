@@ -1,7 +1,8 @@
 /**
  * AdminHeader — Header condiviso per tutte le pagine admin
- * Stile Apple monocromatico con menu di navigazione completo
+ * Navigazione a 4 gruppi con dropdown: Newsletter | Contenuti | Sistema | Monetizzazione
  */
+import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 
@@ -14,24 +15,133 @@ const C = {
   font: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
 };
 
-const NAV_ITEMS = [
-  { label: "Dashboard", path: "/admin" },
-  { label: "Performance", path: "/admin/newsletter-performance" },
-  { label: "Audit Contenuti", path: "/admin/audit" },
-  { label: "Monitor RSS", path: "/admin/rss-monitor" },
-  { label: "Email Stats", path: "/admin/sendgrid-stats" },
-  { label: "Salute Sistema", path: "/admin/system-health" },
-  { label: "Alert Log", path: "/admin/alert-log" },
-  { label: "Amazon Deals", path: "/admin/amazon-deals" },
-  { label: "Promo Newsletter", path: "/admin/promo-newsletter" },
-  { label: "Verify Clienti", path: "/admin/verify" },
+const NAV_GROUPS = [
+  {
+    label: "Newsletter",
+    items: [
+      { label: "📊 Performance & Statistiche", path: "/admin/newsletter-performance" },
+      { label: "📧 Promo Newsletter", path: "/admin/promo-newsletter" },
+      { label: "📰 Contenuti & Sponsor", path: "/admin/newsletter-content" },
+    ],
+  },
+  {
+    label: "Contenuti",
+    items: [
+      { label: "🔍 Audit Contenuti", path: "/admin/audit" },
+      { label: "📡 Monitor RSS", path: "/admin/rss-monitor" },
+      { label: "✍️ Giornalisti", path: "/admin/journalists" },
+      { label: "🛠️ Tools & Feedback", path: "/admin/tools-feedback" },
+    ],
+  },
+  {
+    label: "Sistema",
+    items: [
+      { label: "💚 Salute Sistema", path: "/admin/system-health" },
+      { label: "🔔 Alert Log", path: "/admin/alert-log" },
+    ],
+  },
+  {
+    label: "Monetizzazione",
+    items: [
+      { label: "📢 Pubblicità & Banner", path: "/admin/pubblicita" },
+      { label: "🛒 Amazon Deals", path: "/admin/amazon-deals" },
+      { label: "🎯 Leads", path: "/admin/leads" },
+      { label: "✅ Verify Clienti", path: "/admin/verify" },
+    ],
+  },
 ];
+
+interface DropdownMenuProps {
+  label: string;
+  items: { label: string; path: string }[];
+  currentPath: string;
+  onNavigate: (path: string) => void;
+}
+
+function DropdownMenu({ label, items, currentPath, onNavigate }: DropdownMenuProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const isGroupActive = items.some(
+    (item) => currentPath === item.path || currentPath.startsWith(item.path + "/")
+  );
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1 text-xs transition-all px-2.5 py-1.5 rounded-md"
+        style={{
+          color: isGroupActive ? C.black : C.mid,
+          background: isGroupActive ? C.hover : "transparent",
+          fontWeight: isGroupActive ? 600 : 400,
+          fontFamily: C.font,
+        }}
+      >
+        {label}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+          style={{
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 0.15s ease",
+            opacity: 0.5,
+          }}
+        >
+          <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          className="absolute top-full left-0 mt-1 rounded-xl shadow-lg border z-50 py-1 min-w-[200px]"
+          style={{ background: C.white, borderColor: C.border }}
+        >
+          {items.map((item) => {
+            const isActive =
+              currentPath === item.path || currentPath.startsWith(item.path + "/");
+            return (
+              <button
+                key={item.path}
+                onClick={() => {
+                  onNavigate(item.path);
+                  setOpen(false);
+                }}
+                className="w-full text-left text-xs px-4 py-2.5 transition-colors"
+                style={{
+                  color: isActive ? C.black : C.mid,
+                  background: isActive ? C.hover : "transparent",
+                  fontWeight: isActive ? 600 : 400,
+                  fontFamily: C.font,
+                }}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface AdminHeaderProps {
   title?: string;
 }
 
-export default function AdminHeader({ title }: AdminHeaderProps) {
+export default function AdminHeader({ title: _title }: AdminHeaderProps) {
   const [location, navigate] = useLocation();
   const { user } = useAuth();
 
@@ -52,29 +162,37 @@ export default function AdminHeader({ title }: AdminHeaderProps) {
           </button>
           <span className="text-xs" style={{ color: C.border }}>/</span>
 
-          {NAV_ITEMS.map((item) => {
-            const isActive = location === item.path || (item.path !== "/admin" && location.startsWith(item.path));
-            return (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                className="text-xs transition-all px-2.5 py-1.5 rounded-md"
-                style={{
-                  color: isActive ? C.black : C.mid,
-                  background: isActive ? C.hover : "transparent",
-                  fontWeight: isActive ? 600 : 400,
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+          {/* Dashboard link diretto */}
+          <button
+            onClick={() => navigate("/admin")}
+            className="text-xs transition-all px-2.5 py-1.5 rounded-md"
+            style={{
+              color: location === "/admin" ? C.black : C.mid,
+              background: location === "/admin" ? C.hover : "transparent",
+              fontWeight: location === "/admin" ? 600 : 400,
+            }}
+          >
+            Dashboard
+          </button>
+
+          {/* Gruppi dropdown */}
+          {NAV_GROUPS.map((group) => (
+            <DropdownMenu
+              key={group.label}
+              label={group.label}
+              items={group.items}
+              currentPath={location}
+              onNavigate={navigate}
+            />
+          ))}
         </div>
 
         {/* Right: user */}
         <div className="flex items-center gap-2 flex-shrink-0 ml-2">
           <div className="w-2 h-2 rounded-full bg-green-500" />
-          <span className="text-xs" style={{ color: C.mid }}>{user?.name ?? user?.email ?? ""}</span>
+          <span className="text-xs" style={{ color: C.mid }}>
+            {user?.name ?? user?.email ?? ""}
+          </span>
         </div>
       </div>
     </div>
