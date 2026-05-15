@@ -358,11 +358,17 @@ async function getTodayStartup(): Promise<StartupOfDayItem | null> {
     .limit(1);
 
   if (items.length === 0) {
-    items = await db
+    // Rotazione deterministica: ogni giorno una startup diversa basata sulla data
+    const allStartups = await db
       .select()
       .from(startupOfDay)
-      .orderBy(desc(startupOfDay.createdAt))
-      .limit(1);
+      .orderBy(desc(startupOfDay.createdAt));
+    if (allStartups.length === 0) return null;
+    // Hash della data (anno + mese + giorno) per indice stabile ma variabile ogni giorno
+    const [y, m, d] = today.split('-').map(Number);
+    const dayHash = (y * 365 + m * 31 + d);
+    const idx = dayHash % allStartups.length;
+    items = [allStartups[idx]];
   }
 
   if (items.length === 0) return null;
@@ -402,24 +408,26 @@ async function getTodayStartups(): Promise<StartupOfDayItem[]> {
   });
 
   if (items.length < 2) {
-    const existingIds = items.map((i) => i.id);
-    // Recupera più candidati per avere margine di scelta
-    const extras = await db
+    // Rotazione deterministica: 2 startup diverse ogni giorno basate sulla data
+    const allStartups = await db
       .select()
       .from(startupOfDay)
-      .orderBy(desc(startupOfDay.createdAt))
-      .limit(30);
-    for (const e of extras) {
-      const key = e.name.toLowerCase().trim();
-      // Salta se stesso ID o stesso nome già presente
-      if (existingIds.includes(e.id)) continue;
-      if (seenNames.has(key)) continue;
-      // Salta se è la data di oggi (già presa sopra)
-      if (e.dateLabel === today) continue;
-      items.push(e);
-      existingIds.push(e.id);
-      seenNames.add(key);
-      if (items.length >= 2) break;
+      .orderBy(desc(startupOfDay.createdAt));
+    if (allStartups.length > 0) {
+      const [y, m, d] = today.split('-').map(Number);
+      const dayHash = (y * 365 + m * 31 + d);
+      const existingIds = new Set(items.map((i) => i.id));
+      // Seleziona fino a 2 startup con indici diversi ogni giorno
+      for (let offset = 0; offset < allStartups.length && items.length < 2; offset++) {
+        const idx = (dayHash + offset) % allStartups.length;
+        const e = allStartups[idx];
+        const key = e.name.toLowerCase().trim();
+        if (existingIds.has(e.id)) continue;
+        if (seenNames.has(key)) continue;
+        items.push(e);
+        existingIds.add(e.id);
+        seenNames.add(key);
+      }
     }
   }
   return items.slice(0, 2).map((s) => ({
@@ -1269,55 +1277,31 @@ function buildNewsletterHtmlV2(opts: {
     </tr>
     <tr><td style="height:32px;"></td></tr>`;
 
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK L: BANNER FISSI — Business (in mezzo) + Verify (verso la fine)
-  // ═══════════════════════════════════════════════════════════════════════
 
-  // Banner 1 — "Il Giornale che si Scrive da Solo" → /contatti
-  const proofpressAgenticBannerHtml = `
+  // Banner Fasteer — fisso a metà newsletter → fasteer.ai
+  const fasteerBannerHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <a href="https://proofpress.ai/contatti?utm_source=newsletter&utm_medium=email&utm_campaign=agentic_business" style="display:block;text-decoration:none;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0e8;border-radius:12px;overflow:hidden;border:1px solid #e0d8cc;">
-            <tr>
-              <td style="padding:32px 28px 28px;position:relative;">
-                <!-- Eyebrow -->
-                <div style="font-size:9px;font-weight:800;color:#c0392b;letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;border-bottom:2px solid #c0392b;display:inline-block;padding-bottom:4px;">PROOFPRESS</div>
-                <!-- Headline -->
-                <div style="font-size:36px;font-weight:900;color:#1a1a1a;font-family:Georgia,'Times New Roman',serif;line-height:1.1;margin-bottom:14px;letter-spacing:-1px;">Il Giornale<br>che si Scrive<br>da Solo.</div>
-                <!-- Body -->
-                <div style="font-size:15px;color:#333333;font-family:${F_SANS};line-height:1.7;margin-bottom:16px;">Una redazione di Agenti AI genera, verifica<br>e pubblica le tue notizie ogni giorno.<br>Zero giornalisti, zero costi fissi, qualità certificata.</div>
-                <!-- Bullets -->
-                <div style="font-size:14px;color:#c0392b;font-family:${F_SANS};font-weight:600;margin-bottom:20px;line-height:1.8;">
-                  — Online in 24 ore dalla firma<br>
-                  — Notizie 100% verificate con AI
-                </div>
-                <!-- CTA row -->
-                <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td>
-                      <table cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                          <td style="background:#c0392b;border-radius:6px;padding:13px 24px;">
-                            <span style="font-size:14px;font-weight:700;color:#ffffff;font-family:${F_SANS};">Contattaci →</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td align="right" style="vertical-align:bottom;">
-                      <div style="font-size:12px;color:#888;font-family:${F_SANS};">proofpress.ai/contatti</div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <!-- Barra rossa verticale destra -->
-              <td width="8" style="background:#c0392b;border-radius:0 12px 12px 0;"></td>
-            </tr>
-          </table>
+        <a href="https://fasteer.ai?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_sponsor" style="display:block;text-decoration:none;">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_a4_final_e9a59c48.png" alt="Fasteer — Legacy code, modernized. 90% cheaper." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
         </a>
       </td>
     </tr>
     <tr><td style="height:24px;background:${BG};"></td></tr>`;
+  // Banner ProofPress Verify — fisso in alto → proofpressverify.com
+  const verifyTopBannerHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <a href="https://proofpressverify.com?utm_source=newsletter&utm_medium=email&utm_campaign=verify_top" style="display:block;text-decoration:none;">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-verify-banner-720x190_8253ac06.png" alt="ProofPress Verify™ — Il mondo è pieno di fake." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
+        </a>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK L: BANNER FISSI — Business (in mezzo) + Verify (verso la fine)
+  // ═══════════════════════════════════════════════════════════════════════
+
 
   // Banner 2 — "Le Tue Notizie Sono Vere?" → /proofpress-verify
   const proofpressVerifyBannerHtml = `
@@ -1595,6 +1579,7 @@ function buildNewsletterHtmlV2(opts: {
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
         ${rebrandHtml}
+        ${verifyTopBannerHtml}
         ${bannerHtml1}
         ${researchHeroHtml}
         ${startupNewsGridHtml}
@@ -1612,8 +1597,8 @@ function buildNewsletterHtmlV2(opts: {
         ${researchBoxHtml}
         ${ctaSectionHtml}
         ${consigliatoHtml2}
+        ${fasteerBannerHtml}
         ${bannerHtml2}
-        ${proofpressAgenticBannerHtml}
         ${proofpressVerifyBannerHtml}
         ${footerHtml}
       </table>
