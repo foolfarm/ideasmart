@@ -650,6 +650,7 @@ function buildNewsletterHtmlV2(opts: {
   heroImageUrl?: string | null;
   channelImages?: Record<string, string | null>;
   newsletterBanners?: BannerData[];
+  newsImages?: Record<string, string | null>; // key: `${section}_${newsId}` → pexels URL
 }): string {
   const {
     dateLabel,
@@ -669,6 +670,7 @@ function buildNewsletterHtmlV2(opts: {
     newsletterBanners,
     startupsOfDay,
   } = opts;
+  const newsImages = opts.newsImages || {};
 
   // ── Design Tokens v4 (Apple Style — SF Francisco) ──
   const F_SERIF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
@@ -1146,16 +1148,38 @@ function buildNewsletterHtmlV2(opts: {
         ? `${BASE_URL}/research/${r.id}?utm_source=newsletter&utm_medium=email&utm_campaign=research_box`
         : `${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_box`;
       const isLast = i === topResearches.length - 1;
+      const researchImg = r.id ? newsImages[`research_${r.id}`] : null;
+      const labelHtml = r.isResearchOfDay
+        ? `<div style="display:inline-block;font-size:9px;font-weight:700;color:#ffffff;background:#0066cc;border-radius:3px;padding:2px 7px;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">RICERCA DEL GIORNO</div>`
+        : `<div style="font-size:10px;font-weight:600;color:#0066cc;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${r.category || 'RESEARCH'}</div>`;
+      const titleHtml = `<div style="font-size:14px;font-weight:700;color:#111827;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.4;margin-bottom:4px;">${r.title}</div>`;
+      const summaryHtml = `<div style="font-size:12px;color:#6b7280;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">${r.summary ? r.summary.slice(0, 100) + '...' : ''}</div>`;
+      if (researchImg) {
+        return `
+      <tr>
+        <td style="padding:${i === 0 ? '0' : '12px'} 0 12px;${!isLast ? `border-bottom:1px solid #e5e7eb;` : ''}">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="120" style="vertical-align:top;padding-right:14px;">
+                <a href="${researchUrl}" style="display:block;text-decoration:none;">
+                  <img src="${researchImg}" width="120" height="80" style="width:120px;height:80px;object-fit:cover;border-radius:6px;display:block;" alt="${r.title}" />
+                </a>
+              </td>
+              <td style="vertical-align:top;">
+                <a href="${researchUrl}" style="text-decoration:none;display:block;">
+                  ${labelHtml}${titleHtml}${summaryHtml}
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+      }
       return `
       <tr>
         <td style="padding:${i === 0 ? '0' : '12px'} 0 12px;${!isLast ? `border-bottom:1px solid #e5e7eb;` : ''}">
           <a href="${researchUrl}" style="text-decoration:none;display:block;">
-            ${r.isResearchOfDay
-              ? `<div style="display:inline-block;font-size:9px;font-weight:700;color:#ffffff;background:#0066cc;border-radius:3px;padding:2px 7px;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">RICERCA DEL GIORNO</div>`
-              : `<div style="font-size:10px;font-weight:600;color:#0066cc;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${r.category || 'RESEARCH'}</div>`
-            }
-            <div style="font-size:14px;font-weight:700;color:#111827;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.4;margin-bottom:4px;">${r.title}</div>
-            <div style="font-size:12px;color:#6b7280;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">${r.summary ? r.summary.slice(0, 120) + '...' : ''}</div>
+            ${labelHtml}${titleHtml}${summaryHtml}
           </a>
         </td>
       </tr>`;
@@ -1460,8 +1484,33 @@ function buildNewsletterHtmlV2(opts: {
   // ═══════════════════════════════════════════════════════════════
   // BLOCK NEW-B: 4 STARTUP NEWS
   // ═══════════════════════════════════════════════════════════════
-  function renderNewsRow(n: NewsItem, section: string, labelColor: string, labelText: string): string {
+  function renderNewsRow(n: NewsItem, section: string, labelColor: string, labelText: string, imgUrl?: string | null): string {
     const url = n.id ? `${BASE_URL}/${section}/news/${n.id}?utm_source=newsletter&utm_medium=email&utm_campaign=${section}_grid` : `${BASE_URL}/${section}`;
+    if (imgUrl) {
+      // Layout 2-colonne: immagine sinistra (130px) + testo destra
+      return `
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="120" style="vertical-align:top;padding-right:14px;">
+                <a href="${url}" style="display:block;text-decoration:none;">
+                  <img src="${imgUrl}" width="120" height="80" style="width:120px;height:80px;object-fit:cover;border-radius:6px;display:block;" alt="${n.title}" />
+                </a>
+              </td>
+              <td style="vertical-align:top;">
+                <a href="${url}" style="text-decoration:none;display:block;">
+                  <span style="font-size:10px;font-weight:700;color:${labelColor};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">${labelText}</span>
+                  <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.4;margin-top:3px;">${n.title}</div>
+                  <div style="font-size:12px;color:${SLATE};font-family:${F_SANS};line-height:1.5;margin-top:3px;">${n.summary ? n.summary.slice(0, 90) + "..." : ""}</div>
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+    }
+    // Layout senza immagine (fallback)
     return `
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
@@ -1482,7 +1531,7 @@ function buildNewsletterHtmlV2(opts: {
             <td style="padding:20px 26px;">
               <div style="font-size:10px;font-weight:700;color:#7c3aed;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🚀 STARTUP NEWS</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4Startup.map(n => renderNewsRow(n, "startup", "#7c3aed", n.category || "STARTUP")).join("")}
+                ${top4Startup.map(n => renderNewsRow(n, "startup", "#7c3aed", n.category || "STARTUP", newsImages[`startup_${n.id}`])).join("")}
               </table>
               <div style="margin-top:14px;">
                 <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=startup_all" style="font-size:11px;font-weight:700;color:#7c3aed;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTE LE NOTIZIE STARTUP →</a>
@@ -1506,7 +1555,7 @@ function buildNewsletterHtmlV2(opts: {
             <td style="padding:20px 26px;">
               <div style="font-size:10px;font-weight:700;color:#dc2626;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🤖 AI NEWS</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4AI.map(n => renderNewsRow(n, "ai", "#dc2626", n.category || "AI")).join("")}
+                ${top4AI.map(n => renderNewsRow(n, "ai", "#dc2626", n.category || "AI", newsImages[`ai_${n.id}`])).join("")}
               </table>
               <div style="margin-top:14px;">
                 <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=ai_all" style="font-size:11px;font-weight:700;color:#dc2626;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTE LE NOTIZIE AI →</a>
@@ -1559,7 +1608,7 @@ function buildNewsletterHtmlV2(opts: {
             <td style="padding:20px 26px;">
               <div style="font-size:10px;font-weight:700;color:#059669;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">💼 VENTURE CAPITAL</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4VC.map(n => renderNewsRow(n, "dealroom", "#059669", n.category || "VC")).join("")}
+                ${top4VC.map(n => renderNewsRow(n, "dealroom", "#059669", n.category || "VC", newsImages[`dealroom_${n.id}`])).join("")}
               </table>
               <div style="margin-top:14px;">
                 <a href="${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=vc_all" style="font-size:11px;font-weight:700;color:#059669;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTI I DEAL VC →</a>
@@ -1583,7 +1632,7 @@ function buildNewsletterHtmlV2(opts: {
             <td style="padding:20px 26px;">
               <div style="font-size:10px;font-weight:700;color:#0f0f0f;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🏢 DEALROOM — Round, Funding & M&A</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4Dealroom.map(n => renderNewsRow(n, "dealroom", "#0f0f0f", n.category || "DEALROOM")).join("")}
+                ${top4Dealroom.map(n => renderNewsRow(n, "dealroom", "#0f0f0f", n.category || "DEALROOM", newsImages[`dealroom_${n.id}`])).join("")}
               </table>
               <div style="margin-top:14px;">
                 <a href="${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=dealroom_all" style="font-size:11px;font-weight:700;color:#0f0f0f;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTI I DEAL ROOM →</a>
@@ -1727,6 +1776,43 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn("[Newsletter] Pexels fetch skipped:", e);
   }
 
+  // ── Fetch immagini Pexels per singole notizie (AI, Startup, Dealroom, Research) ──
+  const newsImages: Record<string, string | null> = {};
+  try {
+    const { findEditorialImage } = await import("./stockImages");
+    // Prendi le prime 4 notizie per sezione (stesse usate nei blocchi HTML)
+    const top4AI = content.aiNews.filter(n => n.id).slice(0, 4);
+    const top4Startup = content.startupNews.filter(n => n.id).slice(0, 4);
+    const top4Dealroom = content.dealroomNews.filter(n => n.id).slice(0, 8); // include VC + Dealroom
+    const top3Research = content.researches.filter(r => r.id).slice(0, 3);
+    // Fetch in parallelo con Promise.allSettled per non bloccare se una fallisce
+    const aiImgPromises = top4AI.map(n =>
+      findEditorialImage(n.title, n.category || "AI", "ai").catch(() => null)
+    );
+    const startupImgPromises = top4Startup.map(n =>
+      findEditorialImage(n.title, n.category || "startup", "startup").catch(() => null)
+    );
+    const dealroomImgPromises = top4Dealroom.map(n =>
+      findEditorialImage(n.title, n.category || "dealroom", "startup").catch(() => null)
+    );
+    const researchImgPromises = top3Research.map(r =>
+      findEditorialImage(r.title, r.category || "research", "ai").catch(() => null)
+    );
+    const [aiImgs, startupImgs, dealroomImgs, researchImgs] = await Promise.all([
+      Promise.all(aiImgPromises),
+      Promise.all(startupImgPromises),
+      Promise.all(dealroomImgPromises),
+      Promise.all(researchImgPromises),
+    ]);
+    top4AI.forEach((n, i) => { newsImages[`ai_${n.id}`] = aiImgs[i] || null; });
+    top4Startup.forEach((n, i) => { newsImages[`startup_${n.id}`] = startupImgs[i] || null; });
+    top4Dealroom.forEach((n, i) => { newsImages[`dealroom_${n.id}`] = dealroomImgs[i] || null; });
+    top3Research.forEach((r, i) => { newsImages[`research_${r.id}`] = researchImgs[i] || null; });
+    console.log(`[Newsletter] Immagini notizie: AI=${aiImgs.filter(Boolean).length}/4, Startup=${startupImgs.filter(Boolean).length}/4, Dealroom=${dealroomImgs.filter(Boolean).length}/8, Research=${researchImgs.filter(Boolean).length}/3`);
+  } catch (e) {
+    console.warn("[Newsletter] Pexels news images fetch skipped:", e);
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1748,6 +1834,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     heroImageUrl,
     channelImages,
     newsletterBanners,
+    newsImages,
   });
 
   const sponsorIds: number[] = [];
