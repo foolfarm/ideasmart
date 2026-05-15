@@ -1,0 +1,80 @@
+{
+  "query": "SELECT id, name, slot, clickUrl, LEFT(imageUrl, 60) as imageUrl FROM banners WHERE slot IN ('left', 'both', 'all') LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, name, slot, clickUrl, LEFT(imageUrl, 60) as imageUrl FROM banners WHERE slot IN ('left', 'both', 'all') LIMIT 10;",
+  "rows": [
+    {
+      "id": "30004",
+      "name": "Prompt Avvocati Quadrato",
+      "slot": "both",
+      "clickUrl": "https://promptcollection2026.com/",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "30006",
+      "name": "Prompt Collect Studenti Quadr",
+      "slot": "both",
+      "clickUrl": "https://promptcollection2026.com/",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "30007",
+      "name": "Prompt Commecialisti Qyuad",
+      "slot": "both",
+      "clickUrl": "https://promptcollection2026.com/",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "30009",
+      "name": "Pubblictà 1",
+      "slot": "both",
+      "clickUrl": "https://proofpress.ai/pubblicita",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "30010",
+      "name": "Publbiuctà 2",
+      "slot": "both",
+      "clickUrl": "https://proofpress.ai/pubblicita",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "30012",
+      "name": "Foolshare",
+      "slot": "both",
+      "clickUrl": "https://foolshare.biz",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "60001",
+      "name": "scrivi",
+      "slot": "both",
+      "clickUrl": "https://proofpress.ai/scrivi-per-noi",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "90001",
+      "name": "Proofpress Business",
+      "slot": "all",
+      "clickUrl": "https://proofpress.ai/contatti",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "90002",
+      "name": "ProofPress Business",
+      "slot": "all",
+      "clickUrl": "https://proofpress.ai/contatti",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    },
+    {
+      "id": "90004",
+      "name": "redazione",
+      "slot": "all",
+      "clickUrl": "https://proofpress.ai/offertacommerciale",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tslot\tclickUrl\timageUrl\n30004\tPrompt Avvocati Quadrato\tboth\thttps://promptcollection2026.com/\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n30006\tPrompt Collect Studenti Quadr\tboth\thttps://promptcollection2026.com/\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n30007\tPrompt Commecialisti Qyuad\tboth\thttps://promptcollection2026.com/\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n30009\tPubblictà 1\tboth\thttps://proofpress.ai/pubblicita\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n30010\tPublbiuctà 2\tboth\thttps://proofpress.ai/pubblicita\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n30012\tFoolshare\tboth\thttps://foolshare.biz\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n60001\tscrivi\tboth\thttps://proofpress.ai/scrivi-per-noi\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n90001\tProofpress Business\tall\thttps://proofpress.ai/contatti\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n90002\tProofPress Business\tall\thttps://proofpress.ai/contatti\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n90004\tredazione\tall\thttps://proofpress.ai/offertacommerciale\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4n\n",
+  "stderr": "",
+  "execution_time_ms": 270
+}

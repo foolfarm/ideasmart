@@ -1,0 +1,82 @@
+{
+  "query": "SELECT DISTINCT name FROM startup_of_day ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT DISTINCT name FROM startup_of_day ORDER BY name;",
+  "rows": [
+    {
+      "name": "Antiverse"
+    },
+    {
+      "name": "Dust"
+    },
+    {
+      "name": "ElevenLabs"
+    },
+    {
+      "name": "Glean"
+    },
+    {
+      "name": "Hebbia"
+    },
+    {
+      "name": "Hume AI"
+    },
+    {
+      "name": "Imbue"
+    },
+    {
+      "name": "Mistral AI"
+    },
+    {
+      "name": "Nuclia"
+    },
+    {
+      "name": "Ocode"
+    },
+    {
+      "name": "Phind"
+    },
+    {
+      "name": "Poolside"
+    },
+    {
+      "name": "Robo Wunderkind"
+    },
+    {
+      "name": "RoboAdvisorAI"
+    },
+    {
+      "name": "RoboMQ"
+    },
+    {
+      "name": "Robovision"
+    },
+    {
+      "name": "Roby"
+    },
+    {
+      "name": "Seqera"
+    },
+    {
+      "name": "Sweep"
+    },
+    {
+      "name": "Synthesia"
+    },
+    {
+      "name": "Taktile"
+    },
+    {
+      "name": "Voxel"
+    },
+    {
+      "name": "Westpoint AI"
+    },
+    {
+      "name": "Zefiro AI"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\nAntiverse\nDust\nElevenLabs\nGlean\nHebbia\nHume AI\nImbue\nMistral AI\nNuclia\nOcode\nPhind\nPoolside\nRobo Wunderkind\nRoboAdvisorAI\nRoboMQ\nRobovision\nRoby\nSeqera\nSweep\nSynthesia\nTaktile\nVoxel\nWestpoint AI\nZefiro AI\n",
+  "stderr": "",
+  "execution_time_ms": 269
+}

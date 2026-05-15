@@ -1,0 +1,280 @@
+{
+  "query": "SELECT id, name, category, country, funding, aiScore, dateLabel FROM startup_of_day ORDER BY createdAt DESC LIMIT 30;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, name, category, country, funding, aiScore, dateLabel FROM startup_of_day ORDER BY createdAt DESC LIMIT 30;",
+  "rows": [
+    {
+      "id": "4290005",
+      "name": "Sweep",
+      "category": "AI per Software Development",
+      "country": "USA",
+      "funding": "Series A — $10M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-15"
+    },
+    {
+      "id": "4290004",
+      "name": "Hebbia",
+      "category": "AI per Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-15"
+    },
+    {
+      "id": "4290003",
+      "name": "Seqera",
+      "category": "Biotech & Healthtech",
+      "country": "Spagna",
+      "funding": "$82M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-14"
+    },
+    {
+      "id": "4230002",
+      "name": "ElevenLabs",
+      "category": "AI per Audio & Voice",
+      "country": "USA",
+      "funding": "Series B — $80M",
+      "aiScore": "92",
+      "dateLabel": "2026-05-14"
+    },
+    {
+      "id": "4230001",
+      "name": "Dust",
+      "category": "AI per Productivity",
+      "country": "Francia",
+      "funding": "Series A — $16M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-14"
+    },
+    {
+      "id": "4200002",
+      "name": "Hebbia",
+      "category": "AI per Legal",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-13"
+    },
+    {
+      "id": "4200001",
+      "name": "Hebbia",
+      "category": "AI per Legal",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-13"
+    },
+    {
+      "id": "4170002",
+      "name": "Taktile",
+      "category": "AI per Finance",
+      "country": "Germania",
+      "funding": "Series B — $72M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-12"
+    },
+    {
+      "id": "4170001",
+      "name": "Robovision",
+      "category": "AI per Manufacturing",
+      "country": "Belgio",
+      "funding": "Series B — €42M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-12"
+    },
+    {
+      "id": "4140001",
+      "name": "Westpoint AI",
+      "category": "AI per Finance",
+      "country": "Italia",
+      "funding": "Series A — €6.5M (guidato da Primo Ventures e CDP Venture Capital)",
+      "aiScore": "82",
+      "dateLabel": "2026-05-11"
+    },
+    {
+      "id": "4110001",
+      "name": "Hebbia",
+      "category": "AI per Legal e Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-11"
+    },
+    {
+      "id": "4050001",
+      "name": "Antiverse",
+      "category": "AI per Healthcare",
+      "country": "UK",
+      "funding": "Series A — $14M",
+      "aiScore": "88",
+      "dateLabel": "2026-05-10"
+    },
+    {
+      "id": "4020001",
+      "name": "Hebbia",
+      "category": "AI per Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-10"
+    },
+    {
+      "id": "3990001",
+      "name": "Glean",
+      "category": "AI per Enterprise Search & Knowledge Management",
+      "country": "USA",
+      "funding": "Series D — $260M (valutazione $2.2B, Q1 2024)",
+      "aiScore": "87",
+      "dateLabel": "2026-05-09"
+    },
+    {
+      "id": "3960001",
+      "name": "Hebbia",
+      "category": "AI per Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "88",
+      "dateLabel": "2026-05-09"
+    },
+    {
+      "id": "3930001",
+      "name": "Ocode",
+      "category": "AI per Business Process Automation",
+      "country": "Italia",
+      "funding": "Series A — €12M (guidato da P101, con Lventure Group e angel investor tra cui Nerio Alessandri)",
+      "aiScore": "87",
+      "dateLabel": "2026-05-08"
+    },
+    {
+      "id": "3900001",
+      "name": "Hebbia",
+      "category": "AI per Finance & Legal",
+      "country": "USA",
+      "funding": "Series B — $130M (valutazione $700M, aprile 2024, guidato da Andreessen Horowitz e Index Ventures)",
+      "aiScore": "87",
+      "dateLabel": "2026-05-08"
+    },
+    {
+      "id": "3840001",
+      "name": "Poolside",
+      "category": "AI per Software Engineering",
+      "country": "Francia",
+      "funding": "Series B — $500M",
+      "aiScore": "88",
+      "dateLabel": "2026-05-07"
+    },
+    {
+      "id": "3810001",
+      "name": "Hebbia",
+      "category": "AI per Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "92",
+      "dateLabel": "2026-05-07"
+    },
+    {
+      "id": "3780001",
+      "name": "Hebbia",
+      "category": "AI per Legal & Finance",
+      "country": "USA",
+      "funding": "Series B — $130M (valutazione $700M, aprile 2024, guidato da Andreessen Horowitz e Index Ventures)",
+      "aiScore": "87",
+      "dateLabel": "2026-05-06"
+    },
+    {
+      "id": "3720001",
+      "name": "Hebbia",
+      "category": "AI per Legal & Finance",
+      "country": "USA",
+      "funding": "Series B — $130M (valutazione $700M, guidato da Andreessen Horowitz, Index Ventures)",
+      "aiScore": "87",
+      "dateLabel": "2026-05-05"
+    },
+    {
+      "id": "3690001",
+      "name": "Hebbia",
+      "category": "AI per Legal & Finance",
+      "country": "USA",
+      "funding": "Series B — $130M (valutazione $700M, guidato da Andreessen Horowitz, aprile 2024)",
+      "aiScore": "87",
+      "dateLabel": "2026-05-04"
+    },
+    {
+      "id": "3660001",
+      "name": "Nuclia",
+      "category": "AI per Enterprise Search",
+      "country": "Spagna",
+      "funding": "Series A — €6.3M",
+      "aiScore": "78",
+      "dateLabel": "2026-05-03"
+    },
+    {
+      "id": "3630001",
+      "name": "Hebbia",
+      "category": "AI per Legal e Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "88",
+      "dateLabel": "2026-05-02"
+    },
+    {
+      "id": "3600001",
+      "name": "Hebbia",
+      "category": "AI per Finance",
+      "country": "USA",
+      "funding": "Series B — $130M",
+      "aiScore": "87",
+      "dateLabel": "2026-05-01"
+    },
+    {
+      "id": "3540001",
+      "name": "Robovision",
+      "category": "AI per Manufacturing",
+      "country": "Belgio",
+      "funding": "Series B — €42M (2024), totale raccolto ~€58M",
+      "aiScore": "84",
+      "dateLabel": "2026-04-30"
+    },
+    {
+      "id": "3510001",
+      "name": "Hebbia",
+      "category": "AI per Legal/Finance",
+      "country": "USA",
+      "funding": "Series B — $130M (valutazione $700M, guidato da Andreessen Horowitz, aprile 2024)",
+      "aiScore": "87",
+      "dateLabel": "2026-04-29"
+    },
+    {
+      "id": "3480001",
+      "name": "Hebbia",
+      "category": "AI per Legal & Finance",
+      "country": "USA",
+      "funding": "Series C — $130M (valutazione $700M, guidato da Index Ventures e Andreessen Horowitz)",
+      "aiScore": "94",
+      "dateLabel": "2026-04-28"
+    },
+    {
+      "id": "3450001",
+      "name": "Phind",
+      "category": "AI per Software Development",
+      "country": "USA",
+      "funding": "Series A — $15M",
+      "aiScore": "87",
+      "dateLabel": "2026-04-27"
+    },
+    {
+      "id": "3420001",
+      "name": "Voxel",
+      "category": "AI per Manufacturing",
+      "country": "USA",
+      "funding": "Series B — $55M",
+      "aiScore": "87",
+      "dateLabel": "2026-04-26"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\tcountry\tfunding\taiScore\tdateLabel\n4290005\tSweep\tAI per Software Development\tUSA\tSeries A — $10M\t87\t2026-05-15\n4290004\tHebbia\tAI per Finance\tUSA\tSeries B — $130M\t87\t2026-05-15\n4290003\tSeqera\tBiotech & Healthtech\tSpagna\t$82M\t87\t2026-05-14\n4230002\tElevenLabs\tAI per Audio & Voice\tUSA\tSeries B — $80M\t92\t2026-05-14\n4230001\tDust\tAI per Productivity\tFrancia\tSeries A — $16M\t87\t2026-05-14\n4200002\tHebbia\tAI per Legal\tUSA\tSeries B — $130M\t87\t2026-05-13\n4200001\tHebbia\tAI per Legal\tUSA\tSeries B — $130M\t87\t2026-05-13\n4170002\tTaktile\tAI per Finance\tGermania\tSeries B — $72M\t87\t2026-05-12\n4170001\tRobovision\tAI per Manufacturing\tBelgio\tSeries B — €42M\t87\t2026-05-12\n4140001\tWestpoint AI\tAI per Finance\tItalia\tSeries A — €6.5M (guidato da Primo Ventures e CDP Venture Capital)\t82\t2026-05-11\n4110001\tHebbia\tAI per Legal e Finance\tUSA\tSeries B — $130M\t87\t2026-05-11\n4050001\tAntiverse\tAI per Healthcare\tUK\tSeries A — $14M\t88\t2026-05-10\n4020001\tHebbia\tAI per Finance\tUSA\tSeries B — $130M\t87\t2026-05-10\n3990001\tGlean\tAI per Enterprise Search & Knowledge Management\tUSA\tSeries D — $260M (valutazione $2.2B, Q1 2024)\t87\t2026-05-09\n3960001\tHebbia\tAI per Finance\tUSA\tSeries B — $130M\t88\t2026-05-09\n3930001\tOcode\tAI per Business Process Automation\tItalia\tSeries A — €12M (guidato da P101, con Lventure Group e angel investor tra cui Nerio Alessandri)\t87\t2026-05-08\n3900001\tHebbia\tAI per Finance & Legal\tUSA\tSeries B — $130M (valutazione $700M, aprile 2024, guidato da Andreessen Horowitz e Index Ventures)\t87\t2026-05-08\n3840001\tPoolside\tAI per Software Engineering\tFrancia\tSeries B — $500M\t88\t2026-05-07\n3810001\tHebbia\tAI per Finance\tUSA\tSeries B — $130M\t92\t2026-05-07\n3780001\tHebbia\tAI per Legal & Finance\tUSA\tSeries B — $130M (valutazione $700M, aprile 2024, guidato da Andreessen Horowitz e Index Ventures)\t87\t2026-05-06\n3720001\tHebbia\tAI per Legal & Finance\tUSA\tSeries B — $130M (valutazione $700M, guidato da Andreessen Horowitz, Index Ventures)\t87\t2026-05-05\n3690001\tHebbia\tAI per Legal & Finance\tUSA\tSeries B — $130M (valutazione $700M, guidato da Andreessen Horowitz, aprile 2024)\t87\t2026-05-04\n3660001\tNuclia\tAI per Enterprise Search\tSpagna\tSeries A — €6.3M\t78\t2026-05-03\n3630001\tHebbia\tAI per Legal e Finance\tUSA\tSeries B — $130M\t88\t2026-05-02\n3600001\tHebbia\tAI per Finance\tUSA\tSeries B — $130M\t87\t2026-05-01\n3540001\tRobovision\tAI per Manufacturing\tBelgio\tSeries B — €42M (2024), totale raccolto ~€58M\t84\t2026-04-30\n3510001\tHebbia\tAI per Legal/Finance\tUSA\tSeries B — $130M (valutazione $700M, guidato da Andreessen Horowitz, aprile 2024)\t87\t2026-04-29\n3480001\tHebbia\tAI per Legal & Finance\tUSA\tSeries C — $130M (valutazione $700M, guidato da Index Ventures e Andreessen Horowitz)\t94\t2026-04-28\n3450001\tPhind\tAI per Software Development\tUSA\tSeries A — $15M\t87\t2026-04-27\n3420001\tVoxel\tAI per Manufacturing\tUSA\tSeries B — $55M\t87\t2026-04-26\n",
+  "stderr": "",
+  "execution_time_ms": 271
+}

@@ -1,0 +1,9 @@
+{
+  "query": "\nINSERT INTO banners (name, slot, imageUrl, clickUrl, weight, startsAt, endsAt, createdAt, updatedAt)\nVALUES \n  ('ProofPress Verify — Il mondo è pieno di fake', 'left', \n   'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-ppverify.png',\n   'https://proofpressverify.com', 10,\n   NOW(), DATE_ADD(NOW(), INTERVAL 365 DAY), NOW(), NOW()),\n  ('Fasteer — Legacy Code Modernized 90% cheaper', 'left',\n   'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-fasteer.png',\n   'https://fasteer.ai', 9,\n   NOW(), DATE_ADD(NOW(), INTERVAL 365 DAY), NOW(), NOW());\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute \nINSERT INTO banners (name, slot, imageUrl, clickUrl, weight, startsAt, endsAt, createdAt, updatedAt)\nVALUES \n  ('ProofPress Verify — Il mondo è pieno di fake', 'left', \n   'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-ppverify.png',\n   'https://proofpressverify.com', 10,\n   NOW(), DATE_ADD(NOW(), INTERVAL 365 DAY), NOW(), NOW()),\n  ('Fasteer — Legacy Code Modernized 90% cheaper', 'left',\n   'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-fasteer.png',\n   'https://fasteer.ai', 9,\n   NOW(), DATE_ADD(NOW(), INTERVAL 365 DAY), NOW(), NOW());\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 272
+}

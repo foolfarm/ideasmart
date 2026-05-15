@@ -1283,7 +1283,7 @@ function buildNewsletterHtmlV2(opts: {
     <tr>
       <td style="padding:0 20px;">
         <a href="https://fasteer.ai?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_sponsor" style="display:block;text-decoration:none;">
-          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_a4_final_e9a59c48.png" alt="Fasteer — Legacy code, modernized. 90% cheaper." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-fasteer.png" alt="Fasteer — Legacy code, modernized. 90% cheaper." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
         </a>
       </td>
     </tr>
@@ -1293,7 +1293,7 @@ function buildNewsletterHtmlV2(opts: {
     <tr>
       <td style="padding:0 20px;">
         <a href="https://proofpressverify.com?utm_source=newsletter&utm_medium=email&utm_campaign=verify_top" style="display:block;text-decoration:none;">
-          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/proofpress-verify-banner-720x190_8253ac06.png" alt="ProofPress Verify™ — Il mondo è pieno di fake." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-ppverify.png" alt="ProofPress Verify™ — Il mondo è pieno di fake." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
         </a>
       </td>
     </tr>
