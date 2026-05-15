@@ -148,16 +148,19 @@ function Router() {
         <Route path="/admin/newsletter-performance" component={AdminNewsletterPerformance} />
         <Route path="/admin/rss-monitor" component={AdminRssMonitor} />
         <Route path="/admin/audit" component={AuditDashboard} />
-        <Route path="/admin/sendgrid-stats" component={AdminSendgridStats} />
+        {/* /admin/sendgrid-stats → redirect a newsletter-performance (stessa funzione) */}
+        <Route path="/admin/sendgrid-stats">{() => <Redirect to="/admin/newsletter-performance" />}</Route>
+        {/* /admin/newsletter-content → redirect a admin (funzione integrata nel Command Center) */}
+        <Route path="/admin/newsletter-content">{() => <Redirect to="/admin" />}</Route>
+        {/* /admin/journalists → redirect a admin (sezione non più attiva) */}
+        <Route path="/admin/journalists">{() => <Redirect to="/admin" />}</Route>
         <Route path="/admin/system-health" component={AdminSystemHealth} />
-        <Route path="/admin/newsletter-content" component={AdminNewsletterContent} />
         <Route path="/admin/tools-feedback" component={AdminToolsFeedback} />
         <Route path="/admin/leads" component={AdminLeads} />
         <Route path="/admin/alert-log" component={AdminAlertLog} />
         <Route path="/admin/amazon-deals" component={AdminAmazonDeals} />
         <Route path="/admin/pubblicita" component={AdminPubblicita} />
         <Route path="/admin/promo-newsletter" component={AdminPromoNewsletter} />
-        <Route path="/admin/journalists" component={AdminJournalists} />
         <Route path="/admin/verify" component={AdminVerify} />
         <Route path="/admin" component={Admin} />
         <Route path="/privacy" component={Privacy} />
