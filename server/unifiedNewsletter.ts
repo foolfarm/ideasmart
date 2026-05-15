@@ -1278,12 +1278,43 @@ function buildNewsletterHtmlV2(opts: {
     <tr><td style="height:32px;"></td></tr>`;
 
 
-  // Banner Fasteer — fisso a metà newsletter → fasteer.ai
+  // SPONSOR OF THE DAY — rotazione giornaliera tra 4 banner (hash deterministico sulla data)
+  const _sponsorBanners = [
+    {
+      url: 'https://fasteer.ai?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/fasteer_a4_final.png',
+      alt: 'Fasteer — Legacy code, modernized. 90% cheaper.',
+    },
+    {
+      url: 'https://decisionsciencesummit.com?utm_source=newsletter&utm_medium=email&utm_campaign=dss_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/decision_science_summit.png',
+      alt: 'Decision Science Summit — June 18-19, 2026 | Madrid',
+    },
+    {
+      url: 'https://proofpress.ai?utm_source=newsletter&utm_medium=email&utm_campaign=pp_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/proofpress_creator_banner.png',
+      alt: 'ProofPress — The magazine that writes itself.',
+    },
+    {
+      url: 'https://proofpressverify.com?utm_source=newsletter&utm_medium=email&utm_campaign=ppv_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/proofpress_verify_a4.png',
+      alt: 'ProofPress Verify™ — The world is full of fakes.',
+    },
+  ];
+  // Hash deterministico sulla data → indice banner
+  const _todayForSponsor = new Date().toISOString().slice(0, 10);
+  const _sponsorIdx = _todayForSponsor.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % _sponsorBanners.length;
+  const _todaySponsor = _sponsorBanners[_sponsorIdx];
   const fasteerBannerHtml = `
     <tr>
+      <td style="padding:0 20px 6px;">
+        <p style="margin:0;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#999999;">SPONSOR OF THE DAY</p>
+      </td>
+    </tr>
+    <tr>
       <td style="padding:0 20px;">
-        <a href="https://fasteer.ai?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_sponsor" style="display:block;text-decoration:none;">
-          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-fasteer.png" alt="Fasteer — Legacy code, modernized. 90% cheaper." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
+        <a href="${_todaySponsor.url}" style="display:block;text-decoration:none;">
+          <img src="${_todaySponsor.imgSrc}" alt="${_todaySponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
         </a>
       </td>
     </tr>
