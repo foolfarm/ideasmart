@@ -355,6 +355,67 @@ Rispondi SOLO con JSON valido.`;
     }
 
     console.log(`[RssScraper] Selezionati ${result.length} articoli per ${section}`);
+
+    // ─── POST-PROCESSING: rileva e ritraduce titoli/summary rimasti in inglese ───
+    const englishPattern = /\b(the|and|for|with|how|why|what|when|will|has|have|are|was|were|been|from|that|this|into|about|after|before|raises|secures|launches|announces|unveils|backs|cancels|improves|warns|aims|signals|breaks|faces|headwinds|transform|agents|could|would|should|deter|computing|talent|defense|physicians|powered|agricultural|funding|startup|round|series|seed|venture|capital|acquires|acquisition|merger|ipo|listing|backed|led|closes|fund)\b/i;
+    const englishItems = result
+      .map((item, idx) => ({ idx, item }))
+      .filter(({ item }) => englishPattern.test(item.title));
+
+    if (englishItems.length > 0) {
+      console.log(`[RssScraper] Trovati ${englishItems.length} titoli in inglese per ${section} — ritraduco...`);
+      try {
+        const toTranslate = englishItems.map(({ idx, item }) =>
+          `[${idx}] TITOLO: ${item.title}\nSUMMARY: ${item.summary.slice(0, 300)}`
+        ).join("\n---\n");
+        const transResp = await invokeLLMFast({
+          messages: [
+            { role: "system", content: "Sei un traduttore giornalistico italiano senior. Traduci titoli e sommari in italiano giornalistico professionale, stile Corriere della Sera. Rispondi SOLO con JSON valido." },
+            { role: "user", content: `Traduci in italiano giornalistico incisivo questi titoli e sommari (ancora in inglese). Per ogni item restituisci title (max 80 caratteri) e summary (5-8 frasi, 600-900 caratteri).\n\n${toTranslate}\n\nRispondi con JSON: {"items":[{"idx":0,"title":"...","summary":"..."}]}` }
+          ],
+          response_format: {
+            type: "json_schema",
+            json_schema: {
+              name: "translations_fix",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  items: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        idx: { type: "integer" },
+                        title: { type: "string" },
+                        summary: { type: "string" }
+                      },
+                      required: ["idx", "title", "summary"],
+                      additionalProperties: false
+                    }
+                  }
+                },
+                required: ["items"],
+                additionalProperties: false
+              }
+            }
+          }
+        });
+        const transContent = transResp.choices[0]?.message?.content as string;
+        const transParsed: { items?: Array<{ idx: number; title: string; summary: string }> } = JSON.parse(stripJsonBackticks(transContent));
+        for (const t of (transParsed.items || [])) {
+          if (result[t.idx]) {
+            result[t.idx].title = t.title;
+            result[t.idx].summary = t.summary;
+          }
+        }
+        console.log(`[RssScraper] ✅ Ritradotti ${transParsed.items?.length ?? 0} titoli in italiano per ${section}`);
+      } catch (transErr) {
+        console.warn(`[RssScraper] Errore ritraduzone post-processing per ${section}:`, transErr);
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────────────────
+
     return result;
   } catch (err) {
     console.error(`[RssScraper] Errore selezione LLM per ${section}:`, err);

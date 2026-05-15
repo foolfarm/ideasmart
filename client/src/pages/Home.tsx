@@ -891,6 +891,11 @@ export default function Home() {
                   <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
                     Tecnologia · Investimenti · Startup · Venture Capital
                   </div>
+                  {/* Badge edizione italiana */}
+                  <div className="flex items-center justify-center gap-1 mt-2">
+                    <span style={{ fontSize: "clamp(10px, 1.1vw, 14px)" }}>🇮🇹</span>
+                    <span className="font-semibold tracking-[0.12em] uppercase" style={{ fontSize: "clamp(7px, 0.75vw, 10px)", color: "#1a1a1a", opacity: 0.45, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Edizione Italiana</span>
+                  </div>
                 </div>
               </div>
               {/* Manchette destra */}
@@ -934,6 +939,11 @@ export default function Home() {
                 </div>
                 <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
                   Tecnologia · Investimenti · Startup · Venture Capital
+                </div>
+                {/* Badge edizione italiana */}
+                <div className="flex items-center justify-center gap-1 mt-2">
+                  <span style={{ fontSize: "clamp(10px, 1.1vw, 14px)" }}>🇮🇹</span>
+                  <span className="font-semibold tracking-[0.12em] uppercase" style={{ fontSize: "clamp(7px, 0.75vw, 10px)", color: "#1a1a1a", opacity: 0.45, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Edizione Italiana</span>
                 </div>
               </div>
             </div>
