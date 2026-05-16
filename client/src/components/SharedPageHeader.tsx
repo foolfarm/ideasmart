@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import { User, LogOut, Settings, Star } from "lucide-react";
 import BannerRotator from "@/components/BannerRotator";
+import VerifyStatsWidget from "@/components/VerifyStatsWidget";
 import { trpc } from "@/lib/trpc";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -218,6 +219,7 @@ export default function SharedPageHeader() {
       </div>
 
       <Divider thick />
+      <VerifyStatsWidget />
     </header>
   );
 }

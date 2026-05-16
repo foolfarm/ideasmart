@@ -3639,3 +3639,11 @@
 - [x] Aggiornare tutti i prompt LLM con nuova firma
 - [x] Aggiornare fallback inline con nuova firma
 - [x] Implementare risposta bilingue in linkedinCommentResponder.ts
+
+## Uniformazione Hero e Footer pagine canale (16/05/2026)
+- [x] Aggiungere VerifyStatsWidget in SharedPageHeader (dopo il divisore spesso del logo)
+- [x] Aggiungere BannerRotator slot=horizontal 720x190 in SharedPageFooter (prima del testo AxiomX)
+- [x] Pagina /research: rimuovere sezione 'Ricerche del Giorno' come hero separato
+- [x] Pagina /research: eliminare sezione 'Chi e Proof Press'
+- [x] Pagina /research: mostrare tutte le ricerche in griglia unica senza divisioni
+- [x] TypeScript: 0 errori dopo tutte le modifiche
