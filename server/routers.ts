@@ -183,7 +183,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: publicProcedure
+    getById: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`market:byId:${input.id}`, async () => {
@@ -206,7 +206,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: publicProcedure
+    getById: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`reportage:byId:${input.id}`, async () => {
@@ -229,7 +229,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: publicProcedure
+    getById: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`editorial:byId:${input.id}`, async () => {
@@ -279,7 +279,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: publicProcedure
+    getById: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`startup:byId:${input.id}`, async () => {
@@ -412,7 +412,7 @@ export const appRouter = router({
       }),
 
     // Recupera una singola notizia per ID (per la pagina articolo)
-    getById: publicProcedure
+    getById: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         // Cache 30 minuti — il contenuto di un articolo è stabile
@@ -868,7 +868,7 @@ export const appRouter = router({
       }),
 
     // Recupera una singola ricerca per ID (per la pagina dettaglio /research/:id)
-    getResearchById: publicProcedure
+    getResearchById: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(
