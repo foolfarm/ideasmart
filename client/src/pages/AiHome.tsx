@@ -13,7 +13,6 @@ import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import VerifyBadge from "@/components/VerifyBadge";
-import AmazonSectionStrip from "@/components/AmazonSectionStrip";
 
 
 const ACCENT = "#1a1a1a";
@@ -560,9 +559,6 @@ export default function AiHome() {
             accentColor="#1a1a1a"
             skipCount={10}
           />
-
-          {/* ── AMAZON DEALS STRIP ── */}
-          <AmazonSectionStrip />
 
           <div className="max-w-[1280px] mx-auto">
             <SharedPageFooter />

@@ -11,7 +11,6 @@ import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import VerifyBadge from "@/components/VerifyBadge";
-import AmazonSectionStrip from "@/components/AmazonSectionStrip";
 
 const ACCENT = "#1a4a2e";
 const ACCENT_LIGHT = "#f0f7f3";
@@ -397,9 +396,6 @@ export default function DealroomHome() {
 
           {/* Archivio */}
           <ArchiveSection section="dealroom" accentColor={ACCENT} skipCount={10} />
-
-          {/* ── AMAZON DEALS STRIP ── */}
-          <AmazonSectionStrip />
 
           <div className="max-w-[1280px] mx-auto">
             <SharedPageFooter />

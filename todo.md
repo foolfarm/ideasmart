@@ -3647,3 +3647,10 @@
 - [x] Pagina /research: eliminare sezione 'Chi e Proof Press'
 - [x] Pagina /research: mostrare tutte le ricerche in griglia unica senza divisioni
 - [x] TypeScript: 0 errori dopo tutte le modifiche
+
+## Rimozione Banner Amazon + Allineamento /research a /ai (16/05/2026)
+- [x] Rimuovere AmazonSectionStrip da AiHome.tsx
+- [x] Rimuovere AmazonSectionStrip da DealroomHome.tsx
+- [x] Rimuovere AmazonSectionStrip da StartupHome.tsx
+- [ ] Rimuovere widget Amazon inline da Home.tsx (Amazon deals nella Home sono inline nei widget, non AmazonSectionStrip — da valutare)
+- [x] Riscrivere Research.tsx con la stessa impaginazione di AiHome.tsx
