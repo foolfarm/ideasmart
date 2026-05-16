@@ -32,12 +32,12 @@ export default function VerifyStatsWidget() {
     <div className="max-w-[1280px] mx-auto px-4 pt-2 pb-1 hidden sm:block">
       <div
         className="rounded-lg overflow-hidden"
-        style={{ border: "1px solid #e8edf5" }}
+        style={{ border: "1px solid #c8a84b" }}
       >
-        <div className="grid divide-x divide-[#e8edf5]" style={{ gridTemplateColumns: "38% 62%" }}>
+        <div className="grid divide-x divide-[#c8a84b]" style={{ gridTemplateColumns: "38% 62%" }}>
 
           {/* ── COLONNA SINISTRA: ProofPress Verify ── */}
-          <div className="px-4 py-3" style={{ background: "#fff" }}>
+          <div className="px-4 py-3" style={{ background: "#fdf6e3" }}>
             <div className="flex items-center gap-2 mb-1.5">
               <span style={{ fontSize: 12 }}>🔐</span>
               <span

@@ -16,11 +16,9 @@ import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import PostEnricoGiacomelli from "@/components/PostEnricoGiacomelli";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings, ShoppingCart, Star } from "lucide-react";
 import LeftSidebar from "@/components/LeftSidebar";
-import MobileNav from "@/components/MobileNav";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import BannerRotator from "@/components/BannerRotator";
-import CollaboratoriBanner from "@/components/CollaboratoriBanner";
 import { Skeleton } from "@/components/ui/skeleton";
 import VerifyWidget from "@/components/VerifyWidget";
 import VerifyStatsWidget from "@/components/VerifyStatsWidget";
@@ -812,16 +810,10 @@ export default function Home() {
         <div className="flex-1 min-w-0 overflow-x-hidden">
 
         {/* ══ TESTATA ══════════════════════════════════════════════════════════ */}
-        {/* ══ BREAKING NEWS — sotto il ticker, sopra l'header ══════════════════════════════════════════════════════ */}
-        <div className="hidden sm:block">
-          <BreakingNewsSection />
-        </div>
         <header className="max-w-[1280px] mx-auto px-4 pt-2 pb-0 sm:pt-5">
           {/* Riga data + categorie + auth */}
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              {/* Hamburger mobile — visibile solo su < lg */}
-              <MobileNav />
               <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 {formatDateIT(today)}
@@ -981,7 +973,11 @@ export default function Home() {
             </div>
           </div>
         </header>
-        {/* ══ PROOFPRESS VERIFY WIDGET ══════════════════════════════════════════════════════════ */}
+        {/* ══ BREAKING NEWS — sotto l'header, sopra il Verify ══════════════════════════════════════════════════════ */}
+        <div className="hidden sm:block">
+          <BreakingNewsSection />
+        </div>
+        {/* ══ PROOFPRESS VERIFY WIDGET ════════════════════════════════════════════════════════════ */}
         <VerifyStatsWidget />
         {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
         {topNewsWithImages && topNewsWithImages.length > 0 && (
@@ -1833,9 +1829,9 @@ export default function Home() {
             </section>
           )}
 
-          {/* ── BANNER COLLABORATORI ── */}
-          <div className="mt-10 mb-2">
-            <CollaboratoriBanner variant="full" />
+          {/* ── BANNER 720x190 ── */}
+          <div className="mt-10 mb-2 flex justify-center">
+            <BannerRotator slot="horizontal" width={720} height={190} site="it" />
           </div>
 
           {/* ── FOOTER ── */}
