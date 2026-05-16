@@ -395,7 +395,7 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
   // Slot del post: morning (10:00 CET), startup-afternoon (14:30 CET), research (17:00 CET), dealroom (18:00 CET)
   // Legacy slots mantenuti per compatibilità: afternoon, evening
   // English evening slots: en-evening-news (20:00), en-ai-research (21:30), en-research (22:30), en-research-late (23:30)
-  slot: mysqlEnum("slot", ["morning", "editorial", "ai-research-morning", "research", "research-afternoon", "startup-afternoon", "startup-evening", "afternoon", "evening", "dealroom", "ai-tool-radar", "en-evening-news", "en-ai-research", "en-research", "en-research-late"]).default("morning").notNull(),
+  slot: mysqlEnum("slot", ["morning", "editorial", "ai-research-morning", "research", "research-afternoon", "startup-afternoon", "startup-evening", "afternoon", "evening", "dealroom", "ai-tool-radar", "en-evening-news", "en-ai-research", "en-research", "en-research-late", "weekend-digest", "thought-leadership"]).default("morning").notNull(),
   // Testo completo del post LinkedIn
   postText: text("postText").notNull(),
   // URL del post LinkedIn (es. https://www.linkedin.com/posts/...)

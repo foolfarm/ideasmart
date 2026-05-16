@@ -577,9 +577,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Ricerche — 14:30 CET (Proof Press Research)
-  cron.schedule("30 14 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn RICERCHE (Proof Press Research)...");
+  // Post Ricerche — 13:00 CET (Proof Press Research) — A/B test orari: spostato da 14:30 a 13:00
+  cron.schedule("0 13 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 13:00 CET — Pubblicazione LinkedIn RICERCHE (Proof Press Research)...");
     await withLock("linkedin-research", async () => {
       try {
         const result = await publishLinkedInPost("research");
@@ -1705,4 +1705,50 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
   console.log("[SchedulerManager]   🔑 LinkedIn Token Refresh → ogni giorno alle 08:00 CET (auto-rinnovo se < 7 giorni alla scadenza)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // WEEKEND DIGEST — sabato alle 10:00 CET
+  //   Selezione dei 5 insight più importanti della settimana, tono riflessivo IT
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 10 * * 6", async () => { // sabato 10:00 CET
+    console.log("[SchedulerManager] ⏰ Sabato 10:00 CET — Pubblicazione LinkedIn WEEKEND DIGEST...");
+    await withLock("linkedin-weekend-digest", async () => {
+      try {
+        const result = await publishLinkedInPost("weekend-digest");
+        console.log(`[SchedulerManager] ✅ LinkedIn WEEKEND DIGEST: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn WEEKEND DIGEST errori:", result.errors);
+        }
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn WEEKEND DIGEST:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   📅 LinkedIn Weekend Digest → sabato 10:00 CET (5 insight della settimana, tono riflessivo)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // THOUGHT LEADERSHIP MENSILE — primo lunedì del mese alle 09:00 CET
+  //   Editoriale lungo-forma firmato Andrea Cinelli su tema strategico
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 9 * * 1", async () => { // ogni lunedì 09:00 CET
+    // Esegui solo il primo lunedì del mese
+    const now = new Date();
+    const day = now.getDate();
+    if (day > 7) return; // non è il primo lunedì del mese
+    console.log("[SchedulerManager] ⏰ Primo lunedì del mese 09:00 CET — Pubblicazione LinkedIn THOUGHT LEADERSHIP...");
+    await withLock("linkedin-thought-leadership", async () => {
+      try {
+        const result = await publishLinkedInPost("thought-leadership");
+        console.log(`[SchedulerManager] ✅ LinkedIn THOUGHT LEADERSHIP: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn THOUGHT LEADERSHIP errori:", result.errors);
+        }
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn THOUGHT LEADERSHIP:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   🎯 LinkedIn Thought Leadership → primo lunedì del mese 09:00 CET (editoriale lungo-forma)");
 }

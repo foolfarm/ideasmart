@@ -316,7 +316,7 @@ async function auditPrePublish(postText: string, imageUrl: string | null, slot: 
 }
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening" | "en-evening-news" | "en-ai-research" | "en-research" | "en-research-late";
+export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening" | "en-evening-news" | "en-ai-research" | "en-research" | "en-research-late" | "weekend-digest" | "thought-leadership";
 
 // ── Sezioni supportate per LinkedIn ──────────────────────────────────────────
 type LinkedInSection = "ai" | "startup" | "dealroom" | "research";
@@ -360,6 +360,9 @@ function selectSection(slot: LinkedInSlot): LinkedInSection {
   if (slot === "en-ai-research") return "ai";
   if (slot === "en-research") return "research";
   if (slot === "en-research-late") return "research";
+  // Weekend & Thought Leadership slots
+  if (slot === "weekend-digest") return "ai";
+  if (slot === "thought-leadership") return "ai";
   // Legacy slots
   if (slot === "afternoon") return "ai";
   return "startup"; // evening legacy
@@ -597,6 +600,35 @@ STRUCTURE:
 LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms, no Italian references.
 AVOID: Italian companies, Italian market data, generic statements without data, verbose openings.
 LENGTH: MAXIMUM 2800 characters. Target 1200-1800 characters (shorter is better for late-night posts).`;
+  } else if (slot === "weekend-digest") {
+    slotNote = `Questo è il WEEKEND DIGEST (sabato 10:00) — La selezione dei 5 insight più importanti della settimana.
+TONO: Riflessivo, autorevole, umano. Il sabato mattina il pubblico legge con più calma e vuole profondità, non breaking news. Scrivi come se stessi condividendo le tue riflessioni personali della settimana con un collega di alto livello.
+FOCUS: Seleziona i 5 segnali più significativi della settimana appena conclusa su AI, startup, VC e tecnologia. Non notizie singole, ma pattern e tendenze che emergono dall'insieme.
+STRUTTURA:
+1. APERTURA (3-4 righe): Inizia con una riflessione sul tema dominante della settimana — il filo conduttore che lega i 5 insight. Tono quasi editoriale, non giornalistico.
+2. I 5 INSIGHT (formato narrativo, NON lista puntata): Presenta ciascun insight in 2-3 righe, con il dato chiave e la sua implicazione strategica. Separali con una riga vuota. Numera con "1." "2." ecc.
+3. LETTURA STRATEGICA (1 paragrafo): Cosa dicono questi 5 segnali insieme? Qual è il messaggio che il mercato sta inviando?
+4. CHIUSURA (1-2 righe): Una domanda aperta per il weekend — qualcosa su cui riflettere.
+5. FIRMA: Aggiungi ESATTAMENTE questa riga: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+6. CTA: NON aggiungere CTA o link — vengono inseriti automaticamente dal sistema
+HASHTAG: #WeekendReading #AI #Innovation #VentureCapital #TechTrends #ProofPress #StrategicInsights
+LINGUA: Italiano. Tono caldo ma autorevole — meno formale del solito, più personale.
+LUNGHEZZA: MASSIMO 2800 caratteri. Punta a 1800-2200 caratteri.`;
+  } else if (slot === "thought-leadership") {
+    slotNote = `Questo è il POST THOUGHT LEADERSHIP MENSILE (primo lunedì del mese) — Editoriale lungo-forma firmato Andrea Cinelli su un tema strategico.
+TONO: Visionario e provocatorio. Questo è il post più importante del mese — deve generare dibattito, condivisioni e commenti. Scrivi come se stessi presentando una tesi davanti a un board di investitori e CEO europei.
+FOCUS: Un tema strategico di lungo periodo — AI regulation, futuro del lavoro nell'era AI, venture capital europeo vs americano, AI sovereignty, impatto dell'AI sui modelli di business tradizionali. NON dipendere dalle notizie del giorno: questo è un editoriale di visione.
+STRUTTURA:
+1. APERTURA FORTE (3-5 righe): Inizia con una tesi controcorrente o una provocazione che sfida il pensiero convenzionale. Deve far fermare il lettore mentre scrolla.
+2. IL CONTESTO (2-3 paragrafi): Costruisci il caso con dati e tendenze concrete. Cita ricerche autorevoli. Mostra perché questo tema è urgente ORA.
+3. LA TUA TESI (2 paragrafi): Prendi una posizione netta e difendibile. Non "da un lato... dall'altro". Scegli un lato e argomenta con forza.
+4. LE IMPLICAZIONI (1-2 paragrafi): Cosa significa concretamente per CEO, investitori e founder? Quali decisioni devono prendere nei prossimi 6-12 mesi?
+5. CHIUSURA MEMORABILE (2-3 righe): Una sfida al lettore. Non una domanda retorica — una provocazione che genera risposta.
+6. FIRMA: Aggiungi ESATTAMENTE questa riga: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+7. CTA: NON aggiungere CTA o link — vengono inseriti automaticamente dal sistema
+HASHTAG: #ThoughtLeadership #AI #StrategicThinking #Innovation #VentureCapital #FutureOfWork #ProofPress #Leadership
+LINGUA: Italiano. Tono da keynote speaker — ogni frase deve avere peso.
+LUNGHEZZA: MASSIMO 2800 caratteri. Questo è l'unico slot dove si punta al massimo — 2400-2800 caratteri.`;
   } else {
     // Legacy slots
     slotNote = `Post LinkedIn — Sezione variabile.
@@ -1217,7 +1249,9 @@ export async function publishLinkedInPost(
     "en-evening-news": "EN AI NEWS SERA (20:00)",
     "en-ai-research": "EN 2° EDITORIALE AI (21:30)",
     "en-research": "EN RICERCHE (22:30)",
-    "en-research-late": "EN 3° RICERCHE (23:30)"
+    "en-research-late": "EN 3° RICERCHE (23:30)",
+    "weekend-digest": "WEEKEND DIGEST (sabato 10:00)",
+    "thought-leadership": "THOUGHT LEADERSHIP (primo lunedì del mese 09:00)"
   };
   const slotLabel = SLOT_LABELS[slot] ?? slot;
   console.log(`[LinkedIn] 🚀 Avvio pubblicazione slot ${slotLabel}...`);

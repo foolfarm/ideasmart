@@ -3618,3 +3618,10 @@
 - [ ] Aggiornare project instructions con la nuova firma standard LinkedIn
 - [ ] Implementare risposta bilingue IT/EN nel linkedinCommentResponder
 - [ ] Test post manuale LinkedIn per verifica firma
+
+## LinkedIn Nuovi Slot (16/05/2026)
+- [x] Slot "weekend-digest" sabato 10:00 — 5 insight della settimana, tono riflessivo IT
+- [x] Slot "thought-leadership" primo lunedì del mese — editoriale lungo-forma firmato Andrea Cinelli
+- [x] Spostare cron post 14:30 → 13:00 (A/B test orari, slot `research`)
+- [x] Aggiornare tipo LinkedInSlot con i nuovi slot (weekend-digest, thought-leadership)
+- [x] Aggiornare mappa slot→sezione e SLOT_LABELS per i nuovi slot
