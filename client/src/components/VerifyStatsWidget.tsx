@@ -38,14 +38,22 @@ export default function VerifyStatsWidget() {
 
           {/* ── COLONNA SINISTRA: ProofPress Verify ── */}
           <div className="px-4 py-3" style={{ background: "#fdf6e3" }}>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span style={{ fontSize: 12 }}>🔐</span>
-              <span
-                className="text-[11px] font-black uppercase tracking-[0.12em] leading-tight"
-                style={{ color: "#0066cc", fontFamily: SF }}
-              >
-                Verifica se la notizia è vera — copia il codice sotto ogni notizia e vedi le fonti
-              </span>
+            <div className="flex items-start gap-2 mb-1.5">
+              <span style={{ fontSize: 12, marginTop: 1 }}>🔐</span>
+              <div className="flex flex-col gap-0.5">
+                <span
+                  className="text-[11px] font-black uppercase tracking-[0.12em] leading-tight"
+                  style={{ color: "#0066cc", fontFamily: SF }}
+                >
+                  Verifica se la notizia è vera
+                </span>
+                <span
+                  className="text-[10px] font-semibold uppercase tracking-[0.08em] leading-tight"
+                  style={{ color: "#0066cc", opacity: 0.75, fontFamily: SF }}
+                >
+                  Copia il codice sotto ogni notizia e vedi le fonti
+                </span>
+              </div>
             </div>
             <iframe
               src="https://proofpressverify.com/widget/news-verify?theme=light"
