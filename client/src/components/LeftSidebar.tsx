@@ -218,7 +218,7 @@ export default function LeftSidebar() {
         position: "sticky",
         top: 0,
         height: "100vh",
-        overflowY: expanded ? "auto" : "hidden",
+        overflowY: "hidden",
         overflowX: "hidden",
         background: "#ffffff",
         borderRight: "1px solid #e5e5ea",

@@ -3625,3 +3625,10 @@
 - [x] Spostare cron post 14:30 → 13:00 (A/B test orari, slot `research`)
 - [x] Aggiornare tipo LinkedInSlot con i nuovi slot (weekend-digest, thought-leadership)
 - [x] Aggiornare mappa slot→sezione e SLOT_LABELS per i nuovi slot
+
+## UI Home Modifiche (16/05/2026 pomeriggio)
+- [x] Inverti sottotitolo e sotto-sottotitolo nel logo ProofPress
+- [x] Aggiungi canali SERVIZI (/offertacommerciale) e OSSERVATORIO (/base-alpha) alla griglia canali
+- [x] Comprimi area Verify a sinistra (38% vs 62% griglia, 4 colonne canali)
+- [x] Sposta sezione BREAKING sotto il ticker news (sopra l'header)
+- [x] Elimina barra scorrevole del menu a sinistra (overflowY: hidden)

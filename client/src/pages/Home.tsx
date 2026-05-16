@@ -812,6 +812,10 @@ export default function Home() {
         <div className="flex-1 min-w-0 overflow-x-hidden">
 
         {/* ══ TESTATA ══════════════════════════════════════════════════════════ */}
+        {/* ══ BREAKING NEWS — sotto il ticker, sopra l'header ══════════════════════════════════════════════════════ */}
+        <div className="hidden sm:block">
+          <BreakingNewsSection />
+        </div>
         <header className="max-w-[1280px] mx-auto px-4 pt-2 pb-0 sm:pt-5">
           {/* Riga data + categorie + auth */}
           <div className="flex items-center justify-between mb-2">
@@ -899,11 +903,11 @@ export default function Home() {
                 {/* Sottotitolo */}
                 <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                  <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
-                    Il primo magazine con redazione agentica e informazioni 100% certificate
-                  </div>
-                  <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
+                  <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", color: "#00b894" }}>
                     Tecnologia · Investimenti · Startup · Venture Capital
+                  </div>
+                  <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)", marginTop: "3px" }}>
+                    Il primo magazine con redazione agentica e informazioni 100% certificate
                   </div>
                   {/* Badge edizione italiana */}
                   <div className="flex items-center justify-center gap-1 mt-2">
@@ -962,11 +966,11 @@ export default function Home() {
               </Link>
               <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
-                  Il primo magazine con redazione agentica e informazioni 100% certificate
-                </div>
-                <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
+                <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", color: "#00b894" }}>
                   Tecnologia · Investimenti · Startup · Venture Capital
+                </div>
+                <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)", marginTop: "3px" }}>
+                  Il primo magazine con redazione agentica e informazioni 100% certificate
                 </div>
                 {/* Badge edizione italiana */}
                 <div className="flex items-center justify-center gap-1 mt-2">
@@ -979,10 +983,6 @@ export default function Home() {
         </header>
         {/* ══ PROOFPRESS VERIFY WIDGET ══════════════════════════════════════════════════════════ */}
         <VerifyStatsWidget />
-            {/* ══ BREAKING NEWS — nascosto su mobile ═══════════════════════════════════════════════════════════════════ */}
-        <div className="hidden sm:block">
-          <BreakingNewsSection />
-        </div>
         {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
         {topNewsWithImages && topNewsWithImages.length > 0 && (
           <div className="max-w-[1280px] mx-auto px-4 py-3 hidden sm:block">

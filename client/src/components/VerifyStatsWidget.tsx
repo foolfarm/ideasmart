@@ -5,7 +5,7 @@
  */
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
-import { Zap, BookOpen, Rocket, TrendingUp, Sun, Globe } from "lucide-react";
+import { Zap, BookOpen, Rocket, TrendingUp, Sun, Globe, Briefcase, Eye } from "lucide-react";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
 
@@ -16,6 +16,8 @@ const CHANNELS = [
   { label: "Dealroom",         sublabel: "Investimenti & M&A",         path: "/dealroom", Icon: TrendingUp,  color: "#059669",  external: false },
   { label: "Buongiorno",       sublabel: "Newsletter delle 8:30",      path: "/buongiorno",Icon: Sun,         color: "#d97706",  external: false },
   { label: "International",    sublabel: "proofpress.biz",             path: "https://proofpress.biz", Icon: Globe, color: "#374151", external: true },
+  { label: "Servizi",          sublabel: "Offerta commerciale",        path: "/offertacommerciale", Icon: Briefcase, color: "#0891b2", external: false },
+  { label: "Osservatorio",     sublabel: "Base Alpha tech",            path: "/base-alpha", Icon: Eye, color: "#7c3aed", external: false },
 ];
 
 export default function VerifyStatsWidget() {
@@ -32,7 +34,7 @@ export default function VerifyStatsWidget() {
         className="rounded-lg overflow-hidden"
         style={{ border: "1px solid #e8edf5" }}
       >
-        <div className="grid grid-cols-2 divide-x divide-[#e8edf5]">
+        <div className="grid divide-x divide-[#e8edf5]" style={{ gridTemplateColumns: "38% 62%" }}>
 
           {/* ── COLONNA SINISTRA: ProofPress Verify ── */}
           <div className="px-4 py-3" style={{ background: "#fff" }}>
@@ -98,7 +100,7 @@ export default function VerifyStatsWidget() {
                 I canali di ProofPress
               </span>
             </div>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-4 gap-1">
               {CHANNELS.map(({ label, sublabel, path, Icon, color, external }) => {
                 const inner = (
                   <div
