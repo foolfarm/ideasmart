@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { Eye, EyeOff, Download, Lock } from "lucide-react";
 import SharedPageHeader from "@/components/SharedPageHeader";
-import LeftSidebar from "@/components/LeftSidebar";
 import SharedPageFooter from "@/components/SharedPageFooter";
 
 // ─── Costanti ─────────────────────────────────────────────────────────────────
@@ -61,7 +60,7 @@ function LoginGate({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <div className="flex min-h-screen" style={{ fontFamily: FONT }}>
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a" }}>
           <SharedPageHeader />
@@ -154,7 +153,7 @@ function LoginGate({ onSuccess }: { onSuccess: () => void }) {
 function MethodologyContent() {
   return (
     <div className="flex min-h-screen" style={{ fontFamily: FONT }}>
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <div className="min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a" }}>
           <SharedPageHeader />

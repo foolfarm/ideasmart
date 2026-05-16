@@ -17,7 +17,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 
 const FONT =
   "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -274,7 +273,7 @@ function PipelineDiagram() {
 export default function Piattaforma() {
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <SEOHead
           title="Piattaforma Agentica — ProofPress"

@@ -10,7 +10,6 @@ import ArchiveSection from "@/components/ArchiveSection";
 import { trpc } from "@/lib/trpc";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
-import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 import AmazonSectionStrip from "@/components/AmazonSectionStrip";
 
@@ -193,7 +192,7 @@ export default function DealroomHome() {
       />
 
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
         <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">

@@ -10,7 +10,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import { toast } from "sonner";
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -281,7 +280,7 @@ export default function PerGiornalisti() {
         ogSiteName="ProofPress"
       />
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#0a0a0a", fontFamily: FONT }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0">
           <SharedPageHeader />
 

@@ -7,7 +7,6 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
-import LeftSidebar from "@/components/LeftSidebar";
 import { Link } from "wouter";
 import {
   Rocket,
@@ -100,7 +99,7 @@ export default function Dealflow() {
 
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
       <SEOHead
         title="AI Dealflow Europe — Proof Press"

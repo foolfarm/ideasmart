@@ -9,7 +9,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import {
   PenLine, LogOut, Plus, FileText, CheckCircle2, Clock, XCircle,
   Shield, Eye, Trash2, ChevronLeft, Key, Lock, Award, Upload, FileUp, X as XIcon, Loader2
@@ -95,7 +94,7 @@ function PageWrapper({ children, title, description, canonical }: {
 }) {
   return (
     <div className="flex min-h-screen" style={{ fontFamily: FONT }}>
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <SEOHead
           title={title ?? "Portale Giornalisti — ProofPress"}
@@ -1006,7 +1005,7 @@ export default function JournalistPortal() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen" style={{ fontFamily: FONT }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0">
           <SharedPageHeader />
           <div className="flex items-center justify-center py-32">

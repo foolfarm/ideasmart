@@ -8,7 +8,6 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
-import LeftSidebar from "@/components/LeftSidebar";
 
 const ACCENT = "#1a1a1a";
 const ACCENT_LIGHT = "#e6f4f1";
@@ -296,7 +295,7 @@ export default function Tecnologia() {
 
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
       <SEOHead
         title="Tecnologia — Proof Press"

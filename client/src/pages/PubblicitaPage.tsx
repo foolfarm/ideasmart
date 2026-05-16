@@ -9,7 +9,6 @@ import { useState } from "react";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import SEOHead from "@/components/SEOHead";
-import LeftSidebar from "@/components/LeftSidebar";
 import { trpc } from "@/lib/trpc";
 
 // ─── Design tokens Apple-style ────────────────────────────────────────────────
@@ -318,7 +317,7 @@ export default function PubblicitaPage() {
         ogSiteName="ProofPress"
       />
       <div className="flex min-h-screen" style={{ background: BG }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0 overflow-x-hidden">
           <SharedPageHeader />
 

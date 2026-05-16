@@ -9,7 +9,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
-import LeftSidebar from "@/components/LeftSidebar";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const INK     = "#1a1a1a";
@@ -308,7 +307,7 @@ export default function Business() {
 
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
       <SEOHead
         title="Proof Press Business — Piattaforma AI & Advisory"

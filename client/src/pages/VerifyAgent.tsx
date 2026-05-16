@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import SEOHead from "@/components/SEOHead";
 import { ChevronDown, ChevronUp, Shield, CheckCircle, Code, Globe, FileCheck, Zap, Lock, AlertTriangle } from "lucide-react";
 
@@ -181,7 +180,7 @@ export default function VerifyAgent() {
         description="Certifica gli output dei tuoi agenti AI e la loro identità. Conforme EU AI Act. Model-agnostic: funziona con Claude, GPT-4o, Gemini, Llama e qualsiasi modello."
       />
 
-      <LeftSidebar />
+      
 
       <div className="ml-0 md:ml-14">
         <SharedPageHeader />

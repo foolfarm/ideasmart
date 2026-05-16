@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import SharedPageHeader from "@/components/SharedPageHeader";
-import LeftSidebar from "@/components/LeftSidebar";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function formatDate(d: Date | null | undefined): string {
@@ -334,7 +333,7 @@ export default function Abbonamenti() {
     <div className="min-h-screen bg-[#060b14] text-white">
       <Navbar />
       <div className="flex">
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0">
           <SharedPageHeader />
           <main className="max-w-3xl mx-auto px-4 py-10">

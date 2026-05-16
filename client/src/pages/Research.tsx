@@ -9,7 +9,6 @@ import SharedPageHeader from "@/components/SharedPageHeader";
 import SEOHead from "@/components/SEOHead";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import RequireAuth from "@/components/RequireAuth";
-import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 import {
   ExternalLink, TrendingUp, Globe, MapPin, BookOpen,
@@ -321,7 +320,7 @@ export default function Research() {
   return (
     <RequireAuth>
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0 overflow-x-hidden">
         <SEOHead
           title="Ricerche & Analisi — ProofPress"

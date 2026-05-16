@@ -9,7 +9,6 @@ import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 
 const INK = "#0f0f0f";
 const ACCENT = "#1a1a1a";
@@ -216,7 +215,7 @@ export default function AndreaCinelli() {
         description="Editoriali quotidiani su AI, Startup e Venture Capital. Serial entrepreneur, 2 exit. Fondatore di FoolFarm. Professore di AI al Sole 24 Ore Business School."
       />
     <div className="flex" style={{ background: PAPER, minHeight: "100vh" }}>
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
       <SharedPageHeader />
 

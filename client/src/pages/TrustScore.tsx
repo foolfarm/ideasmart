@@ -9,7 +9,6 @@ import { Link } from "wouter";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 
 const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
@@ -347,7 +346,7 @@ export default function TrustScore() {
       />
 
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0 overflow-x-hidden">
           <SharedPageHeader />
           <main className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">

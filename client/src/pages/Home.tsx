@@ -10,12 +10,10 @@ import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import SEOHead from "@/components/SEOHead";
-import BreakingNewsSection from "@/components/BreakingNewsSection";
 import PuntoDelGiorno from "@/components/PuntoDelGiorno";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import PostEnricoGiacomelli from "@/components/PostEnricoGiacomelli";
 import { Cpu, Rocket, Handshake, BookOpen, User, LogOut, Settings, ShoppingCart, Star } from "lucide-react";
-import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 import CommentSection from "@/components/CommentSection";
 import BannerRotator from "@/components/BannerRotator";
@@ -804,7 +802,7 @@ export default function Home() {
 
       <div className="flex min-h-screen" style={{ background: "#ffffff", color: "#1d1d1f" }}>
         {/* ══ SIDEBAR SINISTRA FISSA ══════════════════════════════════════════ */}
-        <LeftSidebar />
+        
 
         {/* ══ CONTENUTO PRINCIPALE ═══════════════════════════════════════════ */}
         <div className="flex-1 min-w-0 overflow-x-hidden">
@@ -973,10 +971,6 @@ export default function Home() {
             </div>
           </div>
         </header>
-        {/* ══ BREAKING NEWS — sotto l'header, sopra il Verify ══════════════════════════════════════════════════════ */}
-        <div className="hidden sm:block">
-          <BreakingNewsSection />
-        </div>
         {/* ══ PROOFPRESS VERIFY WIDGET ════════════════════════════════════════════════════════════ */}
         <VerifyStatsWidget />
         {/* ══ IN EVIDENZA — Top news con immagine, tutte le sezioni ═══════════════════════════════ */}
@@ -1462,23 +1456,6 @@ export default function Home() {
                     <BannerRotator slot="sidebar" width={300} height={250} site="it" />
                   </div>
 
-                  {/* ── Banner Decision Science Summit ── */}
-                  <div className="mb-6">
-                    <a href="https://decisionsciencesummit.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
-                      <img
-                        src="https://files.manuscdn.com/user_upload_by_module/session_file/99304667/sAdkcQDyqbWLNslZ.png"
-                        alt="Decision Science Summit — June 18-19, 2026 Madrid"
-                        style={{
-                          width: "100%",
-                          borderRadius: 10,
-                          display: "block",
-                          boxShadow: "0 2px 12px rgba(0,0,0,0.12)",
-                          transition: "box-shadow 0.2s, transform 0.2s",
-                        }}
-                        className="hover:shadow-xl hover:scale-[1.01]"
-                      />
-                    </a>
-                  </div>
 
                   <div>
                     <div className="flex items-center gap-2 mb-2">

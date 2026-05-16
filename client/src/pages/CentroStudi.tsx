@@ -8,7 +8,6 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
-import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
 import SharedPageFooter from "@/components/SharedPageFooter";
 
@@ -203,7 +202,7 @@ export default function CentroStudi() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: NAVY }}>
       <Navbar />
-      <LeftSidebar />
+      
       <MobileNav />
 
       <main className="pl-0 md:pl-12 pt-16">

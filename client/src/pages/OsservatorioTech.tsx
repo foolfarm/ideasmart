@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import VerifyBadge from "@/components/VerifyBadge";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
@@ -731,7 +730,7 @@ export default function OsservatorioTech() {
         </div>
       </div>
             <div className="flex min-h-screen">
-        <LeftSidebar />
+        
 
         <main className="flex-1 min-w-0" style={{ fontFamily: FONT }}>
 

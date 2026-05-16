@@ -8,7 +8,6 @@ import { useRef, useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
 
@@ -70,7 +69,7 @@ export default function NewsVerify() {
 
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <SEOHead
           title="News Verify — Ogni articolo della tua redazione, certificato. Verificabile da chiunque."

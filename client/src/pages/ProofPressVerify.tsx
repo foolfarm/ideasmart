@@ -11,7 +11,6 @@ import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
 import { ShieldCheck, ShieldX, AlertTriangle, ChevronDown, ChevronUp, Lock, BookOpen, FileText } from "lucide-react";
@@ -214,7 +213,7 @@ export default function ProofPressVerify() {
 
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <SEOHead
           title="ProofPress Verify™ — Il protocollo di certificazione crittografica per qualsiasi contenuto"

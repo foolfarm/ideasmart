@@ -6,7 +6,6 @@
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import SEOHead from "@/components/SEOHead";
-import LeftSidebar from "@/components/LeftSidebar";
 import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import { Link } from "wouter";
 
@@ -129,7 +128,7 @@ export default function Storia() {
         ogSiteName="ProofPress"
       />
       <div className="flex min-h-screen" style={{ background: BG }}>
-        <LeftSidebar />
+        
         <div className="flex-1 min-w-0 overflow-x-hidden">
           <SharedPageHeader />
           <main style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 96px", fontFamily: SF }}>

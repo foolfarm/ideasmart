@@ -8,6 +8,7 @@ import CookieBanner from "./components/CookieBanner";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import MobileBottomNav from "./components/MobileBottomNav";
 import BreakingNewsTicker from "./components/BreakingNewsTicker";
+import BreakingNewsSection from "./components/BreakingNewsSection";
 
 // ─── Caricamento critico (above-the-fold) ─────────────────────────────────────
 // Home è la pagina più visitata: caricamento sincrono per LCP ottimale
@@ -259,6 +260,9 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
+          <div className="hidden sm:block">
+            <BreakingNewsSection />
+          </div>
           <BreakingNewsTicker />
           <Toaster />
           <Router />

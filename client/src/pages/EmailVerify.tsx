@@ -8,7 +8,6 @@ import { useState, useRef } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
 
@@ -68,7 +67,7 @@ export default function EmailVerify() {
 
   return (
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <SEOHead
           title="Email Verify — Catena di custodia crittografica per newsletter e comunicazioni email ad alto valore"

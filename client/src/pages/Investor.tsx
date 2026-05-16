@@ -6,7 +6,6 @@
 import { useState, useEffect } from "react";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 
@@ -202,7 +201,7 @@ export default function Investor() {
         keywords="ProofPress investor, pre-seed round, AI journalism, giornalismo agentico, startup investimento"
       />
     <div className="flex min-h-screen">
-      <LeftSidebar />
+      
       <div className="flex-1 min-w-0">
         <div
           className="min-h-screen"

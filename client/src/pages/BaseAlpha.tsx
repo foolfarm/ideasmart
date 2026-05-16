@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
-import LeftSidebar from "@/components/LeftSidebar";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -168,7 +167,7 @@ export default function BaseAlpha() {
       />
       <SharedPageHeader />
       <div className="flex min-h-screen">
-        <LeftSidebar />
+        
         <main className="flex-1 min-w-0 overflow-x-hidden">
 
             {/* ══ HERO — layout 3/4 + 1/4 con profilo Adrian Lenice ════════════════════ */}
