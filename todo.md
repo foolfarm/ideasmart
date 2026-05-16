@@ -3606,3 +3606,9 @@
 - [x] Aggiornare tRPC procedure ads per filtrare per site_target (getManchette accetta site: 'it'|'en')
 - [x] Aggiornare BannerRotator per passare il dominio corrente e filtrare i banner (prop site)
 - [x] Aggiornare il sito IT (proofpress.ai) con site='it' su tutti i BannerRotator (Home + SharedPageHeader)
+
+## LinkedIn Auto-Commenti + Firma (16 Mag 2026)
+
+- [x] Rimuovere moderazione auto-commenti LinkedIn (già pubblicazione diretta — nessuna coda di approvazione presente)
+- [x] Aggiornare firma standard Andrea Cinelli in tutti i post LinkedIn IT e EN (footer + prompt LLM + fallback)
+- [x] Aggiornato OSSERVATORIO_URL con link lnkd.in/dDT9svDC in tutti i footer
