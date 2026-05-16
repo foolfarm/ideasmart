@@ -3612,3 +3612,9 @@
 - [x] Rimuovere moderazione auto-commenti LinkedIn (già pubblicazione diretta — nessuna coda di approvazione presente)
 - [x] Aggiornare firma standard Andrea Cinelli in tutti i post LinkedIn IT e EN (footer + prompt LLM + fallback)
 - [x] Aggiornato OSSERVATORIO_URL con link lnkd.in/dDT9svDC in tutti i footer
+
+## LinkedIn Firma + Bilingue + Test (16 Mag 2026)
+
+- [ ] Aggiornare project instructions con la nuova firma standard LinkedIn
+- [ ] Implementare risposta bilingue IT/EN nel linkedinCommentResponder
+- [ ] Test post manuale LinkedIn per verifica firma
