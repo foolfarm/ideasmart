@@ -27,6 +27,8 @@ interface BannerRotatorProps {
   fullWidth?: boolean;
   /** Banner statici di fallback se il DB è vuoto */
   fallbackBanners?: Array<{ imageUrl: string; clickUrl: string; name: string }>;
+  /** Targeting sito: 'it' = proofpress.ai | 'en' = proofpress.biz | undefined = tutti */
+  site?: "it" | "en";
 }
 
 // ── Weighted random pick ──────────────────────────────────────────────────────
@@ -48,11 +50,15 @@ export default function BannerRotator({
   className = "",
   fullWidth = false,
   fallbackBanners = [],
+  site,
 }: BannerRotatorProps) {
-  const { data: manchetteData } = trpc.banners.getManchette.useQuery(undefined, {
-    staleTime: 5 * 60 * 1000, // 5 minuti
-    refetchOnWindowFocus: false,
-  });
+  const { data: manchetteData } = trpc.banners.getManchette.useQuery(
+    site ? { site } : undefined,
+    {
+      staleTime: 5 * 60 * 1000, // 5 minuti
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const trackImpression = trpc.banners.trackImpression.useMutation({
     retry: false,

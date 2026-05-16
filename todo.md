@@ -3597,3 +3597,12 @@
 - [x] Cron ogni 2 ore per polling commenti e risposta automatica
 - [x] Procedura tRPC admin.getLinkedInCommentStats + getLinkedInAgenda + runCommentResponderNow
 - [x] UI Admin: sezione agenda giornaliera LinkedIn + stats auto-commenti
+
+## Banner Targeting IT/EN (16 Mag 2026)
+
+- [x] Aggiungere colonna site_target (enum: 'it' | 'en' | 'both') alla tabella ads nel DB
+- [x] Migrare DB con pnpm db:push
+- [x] Aggiornare Admin /admin/pubblicita con selector IT/EN/Entrambi per ogni banner
+- [x] Aggiornare tRPC procedure ads per filtrare per site_target (getManchette accetta site: 'it'|'en')
+- [x] Aggiornare BannerRotator per passare il dominio corrente e filtrare i banner (prop site)
+- [x] Aggiornare il sito IT (proofpress.ai) con site='it' su tutti i BannerRotator (Home + SharedPageHeader)

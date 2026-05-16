@@ -1,0 +1,1 @@
+ALTER TABLE `banners` ADD `siteTarget` enum('it','en','both') DEFAULT 'both' NOT NULL;

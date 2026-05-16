@@ -203,6 +203,12 @@ function BannerCard({ banner, onToggle, onDelete, onUpdated }: {
           <Badge className={`text-[10px] px-2 py-0 ${SLOT_COLORS[banner.slot] ?? "bg-gray-100 text-gray-700"}`}>
             {SLOT_LABELS[banner.slot] ?? banner.slot}
           </Badge>
+          {(banner as any).siteTarget === "it" && (
+            <Badge className="text-[10px] px-2 py-0 bg-green-100 text-green-700">🇮🇹 Solo IT</Badge>
+          )}
+          {(banner as any).siteTarget === "en" && (
+            <Badge className="text-[10px] px-2 py-0 bg-blue-100 text-blue-700">🇬🇧 Solo EN</Badge>
+          )}
           {!banner.active && <Badge variant="secondary" className="text-[10px]">Disattivo</Badge>}
         </div>
         <div className="flex items-center gap-3 text-xs text-[#6e6e73] flex-wrap">
@@ -257,6 +263,7 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
     active: initialData?.active ?? true,
     startsAt: initialData?.startsAt ? new Date(initialData.startsAt).toISOString().split("T")[0] : "",
     endsAt: initialData?.endsAt ? new Date(initialData.endsAt).toISOString().split("T")[0] : "",
+    siteTarget: ((initialData as any)?.siteTarget ?? "both") as "it" | "en" | "both",
   });
 
   const createMut = trpc.banners.create.useMutation({ onSuccess, onError: (e) => toast.error(e.message) });
@@ -472,6 +479,28 @@ function BannerForm({ mode, initialData, onSuccess, onCancel }: {
                 <Label>{form.active ? "Attivo" : "Disattivo"}</Label>
               </div>
             </div>
+          </div>
+
+          {/* Targeting sito */}
+          <div className="col-span-2">
+            <Label className="flex items-center gap-1.5">
+              <span>🌍</span> Targeting sito
+            </Label>
+            <Select value={form.siteTarget} onValueChange={(v) => setForm({ ...form, siteTarget: v as "it" | "en" | "both" })}>
+              <SelectTrigger className="mt-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="both">🌍 Entrambi i siti (proofpress.ai + proofpress.biz)</SelectItem>
+                <SelectItem value="it">🇮🇹 Solo sito italiano (proofpress.ai)</SelectItem>
+                <SelectItem value="en">🇬🇧 Solo sito inglese (proofpress.biz)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-[#6e6e73] mt-1">
+              {form.siteTarget === "both" && "Il banner apparirà su proofpress.ai (IT) e proofpress.biz (EN)"}
+              {form.siteTarget === "it" && "Il banner apparirà solo su proofpress.ai — sito in italiano"}
+              {form.siteTarget === "en" && "Il banner apparirà solo su proofpress.biz — sito in inglese"}
+            </p>
           </div>
 
           {/* Scheduling */}

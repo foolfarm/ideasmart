@@ -199,14 +199,14 @@ export default function SharedPageHeader() {
         {/* Desktop XL: manchette sinistra | logo | manchette destra */}
         <div className="hidden xl:grid xl:grid-cols-[170px_1fr_170px] items-center gap-4">
           <div className="flex justify-center items-center">
-            <BannerRotator slot="left" width={160} height={160} />
+            <BannerRotator slot="left" width={160} height={160} site="it" />
           </div>
           <div className="text-center">
             <ProofPressLogo />
             <ProofPressSubtitle />
           </div>
           <div className="flex justify-center items-center">
-            <BannerRotator slot="right" width={160} height={160} />
+            <BannerRotator slot="right" width={160} height={160} site="it" />
           </div>
         </div>
 

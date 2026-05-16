@@ -943,6 +943,8 @@ export const banners = mysqlTable("banners", {
   clicks: int("clicks").default(0).notNull(),
   // Click provenienti dalla newsletter (tracciamento separato)
   newsletterClicks: int("newsletterClicks").default(0).notNull(),
+  // Targeting sito: 'it' = solo proofpress.ai | 'en' = solo proofpress.biz | 'both' = entrambi
+  siteTarget: mysqlEnum("siteTarget", ["it", "en", "both"]).default("both").notNull(),
   // Ordinamento drag&drop
   sortOrder: int("sortOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

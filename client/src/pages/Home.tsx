@@ -851,7 +851,7 @@ export default function Home() {
             <div className="hidden xl:grid xl:grid-cols-[170px_1fr_170px] items-center gap-4">
               {/* Manchette sinistra */}
               <div className="flex justify-center items-center">
-                <BannerRotator slot="left" width={160} height={160} />
+                <BannerRotator slot="left" width={160} height={160} site="it" />
               </div>
               {/* Titolo centrale */}
               <div className="text-center">
@@ -914,7 +914,7 @@ export default function Home() {
               </div>
               {/* Manchette destra */}
               <div className="flex justify-center items-center">
-                <BannerRotator slot="right" width={160} height={160} />
+                <BannerRotator slot="right" width={160} height={160} site="it" />
               </div>
             </div>
             {/* Fallback mobile/tablet — solo titolo centrato senza manchette */}
@@ -1272,7 +1272,7 @@ export default function Home() {
                       </div>
                       {/* ── Banner Orizzontale 728x90 — subito dopo la griglia Research ── */}
                       <div className="w-full mt-6" style={{ borderTop: "1px solid #e8e8ed", borderBottom: "1px solid #e8e8ed", padding: "16px 0" }}>
-                        <BannerRotator slot="horizontal" height={100} fullWidth />
+                        <BannerRotator slot="horizontal" height={100} fullWidth site="it" />
                       </div>
 
                       <div className="mt-4 text-center">
@@ -1463,7 +1463,7 @@ export default function Home() {
 
                   {/* ── Slot 3: Banner rotante sidebar destra 300x250 ── */}
                   <div className="mb-5 flex flex-col items-center">
-                    <BannerRotator slot="sidebar" width={300} height={250} />
+                    <BannerRotator slot="sidebar" width={300} height={250} site="it" />
                   </div>
 
                   {/* ── Banner Decision Science Summit ── */}

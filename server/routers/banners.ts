@@ -49,13 +49,26 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 export const bannersRouter = router({
 
   // ── API PUBBLICA: manchette attive per il frontend ─────────────────────
-  getManchette: publicProcedure.query(async () => {
+  getManchette: publicProcedure
+    .input(z.object({
+      // 'it' = proofpress.ai | 'en' = proofpress.biz
+      // Se non passato, restituisce tutti i banner attivi (retrocompatibilità)
+      site: z.enum(["it", "en"]).optional(),
+    }).optional())
+    .query(async ({ input }) => {
     const db = await getDb();
   if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB non disponibile" });
     const allBanners = await db.select().from(banners).orderBy(banners.sortOrder, banners.id);
     const settings = await getOrCreateSettings();
 
-    const activeBanners = allBanners.filter(isBannerCurrentlyActive);
+    const site = input?.site;
+    const activeBanners = allBanners
+      .filter(isBannerCurrentlyActive)
+      // Filtra per siteTarget: mostra solo banner compatibili con il sito richiedente
+      .filter((b: Banner) => {
+        if (!site) return true; // nessun filtro se site non specificato
+        return b.siteTarget === "both" || b.siteTarget === site;
+      });
 
     type BannerSlim = { id: number; name: string; imageUrl: string; clickUrl: string; weight: number };
 
@@ -161,6 +174,7 @@ export const bannersRouter = router({
       active: z.boolean().default(true),
       startsAt: z.string().optional(),
       endsAt: z.string().optional(),
+      siteTarget: z.enum(["it", "en", "both"]).default("both"),
     })
   )
     .mutation(async ({ input }) => {
@@ -191,6 +205,7 @@ export const bannersRouter = router({
         slot: input.slot,
         weight: input.weight,
         active: input.active,
+        siteTarget: input.siteTarget,
         startsAt: input.startsAt ? new Date(input.startsAt) : null,
         endsAt: input.endsAt ? new Date(input.endsAt) : null,
         sortOrder: 0,
@@ -210,6 +225,7 @@ export const bannersRouter = router({
       startsAt: z.string().nullable().optional(),
       endsAt: z.string().nullable().optional(),
       sortOrder: z.number().int().optional(),
+      siteTarget: z.enum(["it", "en", "both"]).optional(),
       // Aggiornamento immagine opzionale: base64 upload oppure URL esterna
       imageBase64: z.string().optional(),
       imageMime: z.string().optional(),
