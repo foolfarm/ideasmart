@@ -421,6 +421,33 @@ export const linkedinPosts = mysqlTable("linkedin_posts", {
 export type LinkedinPost = typeof linkedinPosts.$inferSelect;
 export type InsertLinkedinPost = typeof linkedinPosts.$inferInsert;
 
+// ── LinkedIn Comment Replies (auto-risposte AI ai commenti) ──────────────────
+export const linkedinCommentReplies = mysqlTable("linkedin_comment_replies", {
+  id: int("id").autoincrement().primaryKey(),
+  // ID del commento LinkedIn originale (es. urn:li:comment:(urn:li:activity:xxx,yyy))
+  commentUrn: varchar("commentUrn", { length: 500 }).notNull(),
+  // URN del post LinkedIn a cui appartiene il commento
+  postUrn: varchar("postUrn", { length: 500 }).notNull(),
+  // Nome dell'autore del commento
+  commenterName: varchar("commenterName", { length: 200 }),
+  // Testo originale del commento
+  commentText: text("commentText"),
+  // Testo della risposta generata dall'AI
+  replyText: text("replyText"),
+  // URN della risposta pubblicata su LinkedIn
+  replyUrn: varchar("replyUrn", { length: 500 }),
+  // Stato: pending | replied | skipped | error
+  status: mysqlEnum("status", ["pending", "replied", "skipped", "error"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  repliedAt: timestamp("repliedAt"),
+}, (table) => ({
+  // UNIQUE su commentUrn: non rispondere due volte allo stesso commento
+  commentUrnUniq: uniqueIndex("uq_linkedin_comment_urn").on(table.commentUrn),
+}));
+
+export type LinkedinCommentReply = typeof linkedinCommentReplies.$inferSelect;
+export type InsertLinkedinCommentReply = typeof linkedinCommentReplies.$inferInsert;
+
 // ── Barometro Snapshots (Storico Intenzioni di Voto) ──────────────────────
 // Ogni giorno lo scheduler salva uno snapshot del barometro politico
 // per consentire la visualizzazione del grafico storico a 4 settimane.

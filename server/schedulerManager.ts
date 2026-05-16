@@ -69,6 +69,8 @@ import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublis
 import { sendEmail } from "./email";
 import { runSiteHealthCheck } from "./siteHealthCheck";
 import { syncOsservatorioArticles } from "./osservatorioScheduler";
+import { runCommentResponderCycle } from "./linkedinCommentResponder";
+import { checkAndRefreshLinkedInToken } from "./linkedinTokenRefresh";
 
 // ── Helper: invia alert email al team operativo ───────────────────────────────
 async function sendSchedulerAlert(subject: string, bodyHtml: string): Promise<void> {
@@ -1671,4 +1673,36 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
   console.log("[SchedulerManager]   📊 Report Giornaliero Newsletter → ogni giorno alle 18:35 CET (SendGrid API + DB → ac@acinelli.com)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // LINKEDIN COMMENT AUTO-RESPONDER — ogni 2 ore
+  //   Polling dei commenti sui post LinkedIn recenti (ultimi 7 giorni)
+  //   Risposta automatica AI in stile Andrea Cinelli (max 5 risposte/ciclo)
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 */2 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ LinkedIn Comment Responder — avvio ciclo polling...");
+    await withLock("linkedin-comment-responder", async () => {
+      try {
+        const stats = await runCommentResponderCycle();
+        console.log(`[SchedulerManager] ✅ Comment Responder: ${stats.replied} risposte pubblicate, ${stats.processed} processati`);
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Comment Responder errore:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   💬 LinkedIn Comment Responder → ogni 2 ore (polling commenti + risposta AI, max 5/ciclo)");
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // LINKEDIN TOKEN REFRESH CHECK — ogni giorno alle 08:00 CET
+  //   Verifica scadenza token LinkedIn e rinnova automaticamente se < 7 giorni
+  // ══════════════════════════════════════════════════════════════════════════
+  cron.schedule("0 6 * * *", async () => { // 08:00 CET (06:00 UTC)
+    console.log("[SchedulerManager] ⏰ LinkedIn Token Refresh Check...");
+    try {
+      await checkAndRefreshLinkedInToken();
+    } catch (err) {
+      console.error("[SchedulerManager] ❌ LinkedIn Token Refresh errore:", err);
+    }
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   🔑 LinkedIn Token Refresh → ogni giorno alle 08:00 CET (auto-rinnovo se < 7 giorni alla scadenza)");
 }

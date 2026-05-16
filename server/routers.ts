@@ -2359,6 +2359,77 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
             : `Refresh fallito: ${result.error}`,
         };
       }),
+
+    getCommentResponderStats: adminProcedure
+      .query(async () => {
+        const { getCommentResponderStats } = await import("./linkedinCommentResponder");
+        return await getCommentResponderStats();
+      }),
+
+    runCommentResponderNow: adminProcedure
+      .mutation(async () => {
+        const { runCommentResponderCycle } = await import("./linkedinCommentResponder");
+        const stats = await runCommentResponderCycle();
+        return {
+          success: true,
+          message: `Ciclo completato: ${stats.replied} risposte pubblicate, ${stats.processed} commenti processati, ${stats.errors} errori`,
+          ...stats,
+        };
+      }),
+
+    getLinkedInAgenda: adminProcedure
+      .query(async () => {
+        // Agenda giornaliera LinkedIn con slot, orari, contenuto e stato
+        const db = await getDbInstance();
+        const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+        
+        const slots = [
+          { slot: "morning",             time: "10:00", label: "AI News (analisi strategica)",         lang: "IT" },
+          { slot: "ai-research-morning", time: "12:30", label: "2° Editoriale AI (ricerche di mercato)", lang: "IT" },
+          { slot: "research",            time: "14:30", label: "Proof Press Research",                  lang: "IT" },
+          { slot: "research-afternoon",  time: "16:00", label: "AI Tool Radar (10 tool AI)",            lang: "IT" },
+          { slot: "startup-evening",     time: "18:00", label: "Startup News (round, exit, IT/EU)",     lang: "IT" },
+          { slot: "en-evening-news",     time: "20:00", label: "AI News Evening (English)",             lang: "EN" },
+          { slot: "en-ai-research",      time: "21:30", label: "2nd AI Editorial (English)",            lang: "EN" },
+          { slot: "en-research",         time: "22:30", label: "Research Report (English)",             lang: "EN" },
+          { slot: "en-research-late",    time: "23:30", label: "Late Research (English)",               lang: "EN" },
+        ];
+
+        if (!db) return { today, slots: slots.map(s => ({ ...s, published: false, postText: null, linkedinUrl: null, imageUrl: null })) };
+
+        const { linkedinPosts: liTable } = await import("../drizzle/schema");
+        const { eq: eqOp, and: andOp } = await import("drizzle-orm");
+
+        const todayPosts = await db
+          .select({
+            slot: liTable.slot,
+            postText: liTable.postText,
+            linkedinUrl: liTable.linkedinUrl,
+            imageUrl: liTable.imageUrl,
+            title: liTable.title,
+            createdAt: liTable.createdAt,
+          })
+          .from(liTable)
+          .where(eqOp(liTable.dateLabel, today));
+
+        const publishedMap = new Map(todayPosts.map(p => [p.slot, p]));
+
+        return {
+          today,
+          slots: slots.map(s => {
+            const post = publishedMap.get(s.slot as any);
+            return {
+              ...s,
+              published: !!post,
+              postText: post?.postText?.slice(0, 200) ?? null,
+              linkedinUrl: post?.linkedinUrl ?? null,
+              imageUrl: post?.imageUrl ?? null,
+              title: post?.title ?? null,
+              publishedAt: post?.createdAt ?? null,
+            };
+          }),
+        };
+      }),
   }),
   // ── Report Ripetitività Editoriali ──────────────────────────────────────────────
   editorialReport: router({

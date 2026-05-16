@@ -3589,3 +3589,11 @@
 - [x] Procedura tRPC admin.linkedin.getTokenStatus per check scadenza token
 - [x] Badge alert scadenza token nell'Admin (rosso se < 14 giorni, giallo se < 30 giorni)
 - [x] Layout 2-colonne Pexels nella newsletter PPV 17:30 (già presente — nessuna modifica necessaria)
+
+## LinkedIn Auto-Commento + Agenda (16 Mag 2026)
+
+- [x] Sistema auto-risposta AI ai commenti LinkedIn (server/linkedinCommentResponder.ts)
+- [x] Tabella DB linkedin_comment_replies per tracciare risposte già inviate
+- [x] Cron ogni 2 ore per polling commenti e risposta automatica
+- [x] Procedura tRPC admin.getLinkedInCommentStats + getLinkedInAgenda + runCommentResponderNow
+- [x] UI Admin: sezione agenda giornaliera LinkedIn + stats auto-commenti

@@ -315,6 +315,22 @@ export default function Admin() {
     },
     onError: (err) => toast.error("Refresh token fallito: " + err.message),
   });
+  const linkedinAgendaQuery = trpc.admin.getLinkedInAgenda.useQuery(undefined, {
+    enabled: user?.role === "admin",
+    staleTime: 1000 * 60 * 5, // 5 minuti
+    refetchInterval: 1000 * 60 * 10, // aggiorna ogni 10 minuti
+  });
+  const commentStatsQuery = trpc.admin.getCommentResponderStats.useQuery(undefined, {
+    enabled: user?.role === "admin",
+    staleTime: 1000 * 60 * 5,
+  });
+  const runCommentResponderMutation = trpc.admin.runCommentResponderNow.useMutation({
+    onSuccess: (data) => {
+      toast.success(data.message);
+      commentStatsQuery.refetch();
+    },
+    onError: (err) => toast.error("Errore: " + err.message),
+  });
 
   // ─── Auth guard ───────────────────────────────────────────────────────────────
   if (loading) {
@@ -800,6 +816,143 @@ export default function Admin() {
                     </button>
                   )}
                 </div>
+              )}
+            </div>
+
+            {/* LinkedIn Agenda Giornaliera */}
+            <div
+              className="rounded-2xl p-5"
+              style={{ background: C.white, border: `1px solid ${C.border}` }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.mid }}>
+                  📅 Agenda LinkedIn Oggi
+                </p>
+                {linkedinAgendaQuery.data && (
+                  <span className="text-xs" style={{ color: C.light }}>
+                    {linkedinAgendaQuery.data.today}
+                  </span>
+                )}
+              </div>
+              {linkedinAgendaQuery.isLoading ? (
+                <div className="space-y-2">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="h-8 rounded-lg animate-pulse" style={{ background: C.border }} />
+                  ))}
+                </div>
+              ) : linkedinAgendaQuery.data ? (
+                <div className="space-y-1.5">
+                  {linkedinAgendaQuery.data.slots.map((slot) => (
+                    <div
+                      key={slot.slot}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs"
+                      style={{
+                        background: slot.published ? "#f0fdf4" : "#f9f9f9",
+                        border: `1px solid ${slot.published ? "#86efac" : C.border}`,
+                      }}
+                    >
+                      <span className="font-mono font-bold w-10 shrink-0" style={{ color: slot.published ? "#16a34a" : C.mid }}>
+                        {slot.time}
+                      </span>
+                      <span
+                        className="text-xs px-1.5 py-0.5 rounded font-bold shrink-0"
+                        style={{
+                          background: slot.lang === "EN" ? "#eff6ff" : "#fff7ed",
+                          color: slot.lang === "EN" ? "#2563eb" : "#ea580c",
+                        }}
+                      >
+                        {slot.lang}
+                      </span>
+                      <span className="flex-1 truncate" style={{ color: C.dark }}>
+                        {('title' in slot && slot.title) || slot.label}
+                      </span>
+                      {slot.published ? (
+                        slot.linkedinUrl ? (
+                          <a
+                            href={slot.linkedinUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold shrink-0"
+                            style={{ color: "#0a66c2" }}
+                          >
+                            ✅ Vedi
+                          </a>
+                        ) : (
+                          <span className="text-xs font-semibold shrink-0" style={{ color: "#16a34a" }}>✅</span>
+                        )
+                      ) : (
+                        <span className="text-xs shrink-0" style={{ color: C.light }}>⏳</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
+            {/* LinkedIn Auto-Commenti */}
+            <div
+              className="rounded-2xl p-5"
+              style={{ background: C.white, border: `1px solid ${C.border}` }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: C.mid }}>
+                  💬 Auto-Commenti LinkedIn
+                </p>
+                <button
+                  onClick={() => runCommentResponderMutation.mutate()}
+                  disabled={runCommentResponderMutation.isPending}
+                  className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all"
+                  style={{
+                    background: "#0a66c2",
+                    color: "white",
+                    opacity: runCommentResponderMutation.isPending ? 0.6 : 1,
+                  }}
+                >
+                  {runCommentResponderMutation.isPending ? "..." : "▶ Esegui ora"}
+                </button>
+              </div>
+              {commentStatsQuery.data ? (
+                <>
+                  <div className="grid grid-cols-4 gap-2 mb-3">
+                    {[
+                      { label: "Processati", value: commentStatsQuery.data.totalProcessed, color: C.dark },
+                      { label: "Risposti", value: commentStatsQuery.data.totalReplied, color: "#16a34a" },
+                      { label: "Saltati", value: commentStatsQuery.data.totalSkipped, color: C.mid },
+                      { label: "Errori", value: commentStatsQuery.data.totalErrors, color: "#dc2626" },
+                    ].map((stat) => (
+                      <div key={stat.label} className="text-center p-2 rounded-xl" style={{ background: "#f9f9f9" }}>
+                        <p className="text-lg font-bold" style={{ color: stat.color }}>{stat.value}</p>
+                        <p className="text-xs" style={{ color: C.light }}>{stat.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                  {commentStatsQuery.data.recentReplies.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold" style={{ color: C.mid }}>Ultime risposte:</p>
+                      {commentStatsQuery.data.recentReplies.slice(0, 3).map((reply, i) => (
+                        <div key={i} className="rounded-xl p-2.5" style={{ background: "#f9f9f9", border: `1px solid ${C.border}` }}>
+                          <p className="text-xs font-semibold mb-0.5" style={{ color: C.dark }}>
+                            {reply.commenterName}
+                            <span className="ml-1.5 font-normal" style={{ color: reply.status === "replied" ? "#16a34a" : "#dc2626" }}>
+                              {reply.status === "replied" ? "✅" : reply.status === "error" ? "❌" : "⏳"}
+                            </span>
+                          </p>
+                          <p className="text-xs truncate" style={{ color: C.mid }}>💬 {reply.commentText?.slice(0, 80)}</p>
+                          {reply.replyText && (
+                            <p className="text-xs truncate mt-0.5" style={{ color: C.light }}>↩ {reply.replyText?.slice(0, 80)}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {commentStatsQuery.data.totalProcessed === 0 && (
+                    <p className="text-xs text-center py-2" style={{ color: C.light }}>
+                      Nessun commento processato ancora. Il sistema si attiva ogni 2 ore.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <div className="h-16 rounded-lg animate-pulse" style={{ background: C.border }} />
               )}
             </div>
 
