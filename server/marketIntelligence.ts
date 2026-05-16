@@ -80,6 +80,13 @@ async function searchMarketData(
 
   const systemPrompt = `Sei un senior analyst di market intelligence specializzato in ${section === "ai" ? "AI e tecnologia" : "startup e venture capital"}.
 Il tuo compito è trovare dati, statistiche e insight REALI e VERIFICABILI da fonti autorevoli.
+
+REGOLA CRITICA ANTI-HALLUCINATION:
+- Riporta SOLO dati che hai trovato nelle pagine web che hai consultato durante questa ricerca.
+- NON inventare mai statistiche, percentuali o numeri: se non trovi un dato verificabile, omettilo.
+- Per ogni statistica, includi il nome esatto del report/articolo e l'organizzazione che lo ha pubblicato.
+- Se non riesci a trovare dati verificabili da fonti autorevoli, restituisci un array stats vuoto.
+
 Rispondi SEMPRE in formato JSON valido, senza markdown.`;
 
   const userPrompt = `Trova 3-4 statistiche chiave e insight di mercato sul tema: "${topic}"
@@ -115,13 +122,15 @@ REGOLE:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "sonar",
+        model: "sonar-pro",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
         ],
-        temperature: 0.2,
-        max_tokens: 1000,
+        temperature: 0.1,
+        max_tokens: 1500,
+        return_citations: true,
+        search_recency_filter: "year",
       }),
     });
 
@@ -152,7 +161,34 @@ REGOLE:
       return null;
     }
 
-    console.log(`[MarketIntel] ✅ Trovate ${parsed.stats.length} statistiche per "${topic.slice(0, 50)}"`);
+    // Validazione anti-hallucination: scarta stats senza fonte riconosciuta
+    const TRUSTED_SOURCES = [
+      "mckinsey", "gartner", "idc", "goldman sachs", "stanford", "wef", "world economic forum",
+      "deloitte", "pwc", "bcg", "cb insights", "cbinsights", "a16z", "mit", "oecd",
+      "pitchbook", "crunchbase", "sequoia", "sifted", "kpmg", "forrester", "accenture",
+      "bain", "boston consulting", "techcrunch", "financial times", "wall street journal",
+      "bloomberg", "reuters", "the information", "venturebeat", "wired", "harvard",
+      "eu startup monitor", "italian tech alliance", "dealroom", "startup genome",
+      "anthropic", "openai", "google", "microsoft", "nvidia", "statista", "istat",
+      "eurostat", "world bank", "imf", "oecd", "ieee", "nature", "science"
+    ];
+
+    const validatedStats = parsed.stats.filter(stat => {
+      const sourceLower = (stat.source || "").toLowerCase();
+      const hasKnownSource = TRUSTED_SOURCES.some(s => sourceLower.includes(s));
+      if (!hasKnownSource) {
+        console.warn(`[MarketIntel] ⚠️ Stat scartata (fonte non verificabile): "${stat.value}" — ${stat.source}`);
+      }
+      return hasKnownSource;
+    });
+
+    if (validatedStats.length === 0) {
+      console.warn("[MarketIntel] ⚠️ Nessuna stat con fonte verificabile trovata — restituisco null");
+      return null;
+    }
+
+    parsed.stats = validatedStats;
+    console.log(`[MarketIntel] ✅ ${validatedStats.length} statistiche verificate (su ${parsed.stats.length + (parsed.stats.length - validatedStats.length)} totali) per "${topic.slice(0, 50)}"`);
     return parsed;
 
   } catch (err) {
