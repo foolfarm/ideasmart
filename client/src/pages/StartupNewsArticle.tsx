@@ -3,7 +3,6 @@ import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Star } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
-import WithSidebar from "@/components/WithSidebar";
 
 // ─── Banner Amazon compatto per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -115,7 +114,7 @@ export default function StartupNewsArticle() {
   const sourceUrl = news.sourceUrl && news.sourceUrl !== "#" ? news.sourceUrl : null;
 
   return (
-    <WithSidebar>
+    <div className="w-full">
     <RequireAuth>
     <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
       <div className="text-center max-w-lg px-4">
@@ -152,6 +151,6 @@ export default function StartupNewsArticle() {
       </div>
     </div>
     </RequireAuth>
-    </WithSidebar>
+    </div>
   );
 }

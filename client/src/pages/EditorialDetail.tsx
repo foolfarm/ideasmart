@@ -8,7 +8,6 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
-import WithSidebar from "@/components/WithSidebar";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
@@ -50,7 +49,7 @@ export default function EditorialDetail() {
   }
 
   return (
-    <WithSidebar>
+    <div className="w-full">
     <RequireAuth>
     <div className="min-h-screen bg-[#ffffff]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Testata */}
@@ -168,6 +167,6 @@ export default function EditorialDetail() {
       </article>
     </div>
     </RequireAuth>
-    </WithSidebar>
+    </div>
   );
 }

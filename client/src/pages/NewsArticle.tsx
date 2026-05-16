@@ -3,7 +3,6 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ExternalLink, Shield, Clock, Tag, Star, Copy, Check, AlertCircle } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
-import WithSidebar from "@/components/WithSidebar";
 
 // ─── Banner Amazon inline per pagine articolo ───────────────────────────────────────────
 function AmazonArticleBanner() {
@@ -129,7 +128,7 @@ export default function NewsArticle() {
   };
 
   return (
-    <WithSidebar>
+    <div className="w-full">
     <RequireAuth>
     <div style={{ minHeight: "100vh", background: BG, fontFamily: F_SANS }}>
       {/* Header nav */}
@@ -378,6 +377,6 @@ export default function NewsArticle() {
       </div>
     </div>
     </RequireAuth>
-    </WithSidebar>
+    </div>
   );
 }

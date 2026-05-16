@@ -7,7 +7,6 @@ import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import RequireAuth from "@/components/RequireAuth";
 import SharedPageHeader from "@/components/SharedPageHeader";
-import WithSidebar from "@/components/WithSidebar";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import { useEffect, useRef } from "react";
 import {
@@ -105,7 +104,7 @@ export default function ResearchDetail() {
   }
 
   return (
-    <WithSidebar>
+    <div className="w-full">
     <RequireAuth>
       <div className="min-h-screen" style={{ background: "#ffffff", color: "#1a1a1a" }}>
         <SharedPageHeader />
@@ -273,6 +272,6 @@ export default function ResearchDetail() {
         <SharedPageFooter />
       </div>
     </RequireAuth>
-    </WithSidebar>
+    </div>
   );
 }

@@ -7,7 +7,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useSiteAuth } from "@/hooks/useSiteAuth";
 import { User, LogOut, Settings, Star } from "lucide-react";
-import MobileNav from "@/components/MobileNav";
 import BannerRotator from "@/components/BannerRotator";
 import { trpc } from "@/lib/trpc";
 
@@ -153,7 +152,7 @@ export default function SharedPageHeader() {
       {/* Riga data + tagline + auth */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <MobileNav />
+          
           <span className="text-[11px] text-[#1a1a1a]/50 uppercase tracking-widest">
             {formatDateIT(today)}
           </span>
