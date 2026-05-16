@@ -41,43 +41,11 @@ export default function VerifyStatsWidget() {
             <div className="flex items-center gap-2 mb-1.5">
               <span style={{ fontSize: 12 }}>🔐</span>
               <span
-                className="text-[10px] font-black uppercase tracking-[0.18em]"
+                className="text-[11px] font-black uppercase tracking-[0.12em] leading-tight"
                 style={{ color: "#0066cc", fontFamily: SF }}
               >
-                Verifica la veridicità
+                Verifica se la notizia è vera — copia il codice sotto ogni notizia e vedi le fonti
               </span>
-              <span
-                className="text-[7px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded"
-                style={{ background: "#0066cc", color: "#fff" }}
-              >
-                CERTIFICATO
-              </span>
-              {certifiedToday > 0 && (
-                <span
-                  className="text-[8px] font-semibold px-1.5 py-0.5 rounded-full"
-                  style={{ background: "#e8f5e9", color: "#2e7d32", border: "1px solid #a5d6a7" }}
-                >
-                  ✓ {certifiedToday} certificate oggi
-                </span>
-              )}
-              {certifiedToday === 0 && certifiedTotal > 0 && (
-                <span
-                  className="text-[8px] font-semibold px-1.5 py-0.5 rounded-full"
-                  style={{ background: "#e3f2fd", color: "#1565c0", border: "1px solid #90caf9" }}
-                >
-                  {certifiedTotal} certificate
-                </span>
-              )}
-              <div className="flex-1" />
-              <a
-                href="https://proofpressverify.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[9px] font-semibold hover:underline flex-shrink-0"
-                style={{ color: "#0066cc" }}
-              >
-                proofpressverify.com →
-              </a>
             </div>
             <iframe
               src="https://proofpressverify.com/widget/news-verify?theme=light"
