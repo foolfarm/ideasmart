@@ -405,7 +405,7 @@ STRUTTURA DEI POST:
 - Sviluppo: spiegazione delle forze in gioco, con dati a supporto
 - Posizione: interpretazione personale netta, senza paura di essere controcorrente
 - Chiusura: provocazione o domanda che stimola il dibattito
-- Firma: Andrea Cinelli | Executive Tech Editor ProofPress Magazine
+- Firma: Andrea Cinelli / Tech Editor — ProofPress Magazine
 
 COSA NON FARE MAI:
 - Non iniziare con "Ho analizzato...", "La mia esperienza...", "Come imprenditore..."
@@ -545,7 +545,9 @@ STRUCTURE:
 2. DEVELOPMENT (2-3 paragraphs): Explain the forces at play. Use data as argument, not decoration. Cite sources naturally (e.g., "according to TechCrunch", "FT reports").
 3. PERSONAL STANCE (1 paragraph): Take a clear, possibly contrarian position. Use "I" or "we" only here.
 4. PROVOCATIVE CLOSE (1-2 lines): A question or challenge to conventional thinking.
-5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+5. SIGNATURE: Add EXACTLY these lines (two separate lines):
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 6. CTA: Do NOT add any CTA or links — they are automatically appended by the system
 7. HASHTAGS: #AINews #ArtificialIntelligence #AIStrategy #DigitalTransformation #TechStartups #VentureCapital #EnterpriseAI #ProofPress
 LANGUAGE: English — clear, authoritative, no jargon for jargon's sake. Technical terms (LLM, RAG, ARR, burn rate) are fine without explanation.
@@ -562,7 +564,9 @@ STRUCTURE:
 2. DEVELOPMENT (2-3 paragraphs): Unpack the research findings. Use numbers as arguments (e.g., "McKinsey estimates...", "PitchBook data shows..."). Explain implications for global tech and business leaders.
 3. PERSONAL STANCE (1 paragraph): Take a clear position on what this data means for the next 12-24 months.
 4. PROVOCATIVE CLOSE (1-2 lines): A forward-looking question or challenge.
-5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+5. SIGNATURE: Add EXACTLY these lines (two separate lines):
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 6. CTA: Do NOT add any CTA or links — they are automatically appended by the system
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #MarketAnalysis #AIStrategy #Innovation #ProofPress
 LANGUAGE: English — precise, analytical, never academic or bureaucratic.
@@ -578,7 +582,9 @@ STRUCTURE:
 2. DEVELOPMENT (2-3 paragraphs): Break down the key findings. Connect data to business implications. Cite the source naturally (e.g., "PitchBook data shows...", "CB Insights reports...").
 3. PERSONAL STANCE (1 paragraph): What does this mean for founders and investors right now?
 4. PROVOCATIVE CLOSE (1-2 lines): A sharp question or observation that stays with the reader.
-5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+5. SIGNATURE: Add EXACTLY these lines (two separate lines):
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 6. CTA: Do NOT add any CTA or links — they are automatically appended by the system
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #Research #TechTrends #Innovation #ProofPress
 LANGUAGE: English — clear, direct, no filler words.
@@ -594,7 +600,9 @@ STRUCTURE:
 2. DEVELOPMENT (2-3 paragraphs): Explain the key data points and their strategic implications. Keep it tight — late-night readers want signal, not noise. Cite sources naturally.
 3. PERSONAL STANCE (1 paragraph): One clear takeaway for founders and investors.
 4. PROVOCATIVE CLOSE (1-2 lines): A question that makes the reader think before they sleep.
-5. SIGNATURE: Add EXACTLY this line: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+5. SIGNATURE: Add EXACTLY these lines (two separate lines):
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 6. CTA: Do NOT add any CTA or links — they are automatically appended by the system
 7. HASHTAGS: #AINews #ArtificialIntelligence #TechStartups #VentureCapital #GlobalTech #Innovation #AIStrategy #ProofPress
 LANGUAGE: English — sharp, minimal, globally accessible. No Italian idioms, no Italian references.
@@ -609,7 +617,9 @@ STRUTTURA:
 2. I 5 INSIGHT (formato narrativo, NON lista puntata): Presenta ciascun insight in 2-3 righe, con il dato chiave e la sua implicazione strategica. Separali con una riga vuota. Numera con "1." "2." ecc.
 3. LETTURA STRATEGICA (1 paragrafo): Cosa dicono questi 5 segnali insieme? Qual è il messaggio che il mercato sta inviando?
 4. CHIUSURA (1-2 righe): Una domanda aperta per il weekend — qualcosa su cui riflettere.
-5. FIRMA: Aggiungi ESATTAMENTE questa riga: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+5. FIRMA: Aggiungi ESATTAMENTE queste due righe separate:
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 6. CTA: NON aggiungere CTA o link — vengono inseriti automaticamente dal sistema
 HASHTAG: #WeekendReading #AI #Innovation #VentureCapital #TechTrends #ProofPress #StrategicInsights
 LINGUA: Italiano. Tono caldo ma autorevole — meno formale del solito, più personale.
@@ -624,7 +634,9 @@ STRUTTURA:
 3. LA TUA TESI (2 paragrafi): Prendi una posizione netta e difendibile. Non "da un lato... dall'altro". Scegli un lato e argomenta con forza.
 4. LE IMPLICAZIONI (1-2 paragrafi): Cosa significa concretamente per CEO, investitori e founder? Quali decisioni devono prendere nei prossimi 6-12 mesi?
 5. CHIUSURA MEMORABILE (2-3 righe): Una sfida al lettore. Non una domanda retorica — una provocazione che genera risposta.
-6. FIRMA: Aggiungi ESATTAMENTE questa riga: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+6. FIRMA: Aggiungi ESATTAMENTE queste due righe separate:
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 7. CTA: NON aggiungere CTA o link — vengono inseriti automaticamente dal sistema
 HASHTAG: #ThoughtLeadership #AI #StrategicThinking #Innovation #VentureCapital #FutureOfWork #ProofPress #Leadership
 LINGUA: Italiano. Tono da keynote speaker — ogni frase deve avere peso.
@@ -666,7 +678,9 @@ STRUTTURA DEL POST (segui lo stile autentico di Andrea Cinelli):
 2. SVILUPPO (2-3 paragrafi): Spiega le forze in gioco. Usa i dati forniti come argomento, non come decorazione. Cita le fonti in modo naturale. Alterna frasi brevi a periodi più articolati per creare ritmo.
 3. POSIZIONE PERSONALE (1 paragrafo): Prendi una posizione netta, anche controcorrente. Usa "io" o "noi" solo qui, per esprimere una convinzione, non per raccontare processi. Esempio: "La lettura è questa:" oppure "Chi ignora questo segnale..."
 4. CHIUSURA PROVOCATORIA (1-2 righe): Una domanda o una provocazione che sfida il pensiero convenzionale e stimola il dibattito. Deve essere memorabile.
-5. FIRMA: Aggiungi ESATTAMENTE questa riga su una riga separata: "Andrea Cinelli | Executive Tech Editor ProofPress Magazine"
+5. FIRMA: Aggiungi ESATTAMENTE queste due righe separate:
+"Andrea Cinelli"
+"Tech Editor — ProofPress Magazine"
 6. HASHTAG: Aggiungi ESATTAMENTE questa riga su una riga separata dopo la firma: ${effectiveHashtags.join(" ")}
 IMPORTANTE: Il post deve terminare con gli hashtag. NON aggiungere CTA, link o altro testo dopo gli hashtag — vengono inseriti automaticamente dal sistema.
 
@@ -958,6 +972,15 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
           && !l.startsWith("Andrea Cinelli | Executive Advisor")
           && !l.startsWith("Andrea Cinelli | Executive Tech Editor")
           && !l.startsWith("Andrea Cinelli | ProofPress")
+          && !l.startsWith("Andrea Cinelli\nTech Editor")
+          && !(l === "Andrea Cinelli" && false) // kept: nome standalone non rimosso, solo con contesto
+          && !l.startsWith("Tech Editor \u2014 ProofPress Magazine")
+          && !l.startsWith("\u{1F4CA} ProofPress Magazine")
+          && !l.startsWith("\u2192 Italian Edition:")
+          && !l.startsWith("\u2192 International Edition:")
+          && !l.startsWith("\u{1F4EC} Buongiorno ProofPress")
+          && !l.startsWith("\u2192 proofpress.ai/buongiorno")
+          && !l.startsWith("\u2192 lnkd.in/dDT9svDC")
           && !l.startsWith("Segui \u2192 proofpress.ai/");
     })
     .join("\n")
@@ -989,13 +1012,26 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
     // (hashtag)
     const footerEN =
       "\n\n" +
-      "Andrea Cinelli | Executive Tech Editor ProofPress Magazine" +
+      "Andrea Cinelli" +
+      "\n" +
+      "Tech Editor \u2014 ProofPress Magazine" +
       "\n" +
       "\n" +
-      "\u{1F4CA} Explore ProofPress Magazine \u2192 Italian edition https://proofpress.ai International edition: https://proofpress.biz and subscribe to the daily ProofPress newsletter" +
+      "\u{1F4CA} ProofPress Magazine" +
+      "\n" +
+      "\u2192 Italian Edition: proofpress.ai" +
+      "\n" +
+      "\u2192 International Edition: proofpress.biz" +
       "\n" +
       "\n" +
-      "\u{1F680} Follow me on \"Base Alpha\" my tech observatory \u2192 https://lnkd.in/dDT9svDC";
+      "\u{1F680} Base Alpha \u2014 The Next Tech Observatory" +
+      "\n" +
+      "\u2192 lnkd.in/dDT9svDC" +
+      "\n" +
+      "\n" +
+      "\u{1F4EC} Buongiorno ProofPress \u2014 daily newsletter" +
+      "\n" +
+      "\u2192 proofpress.ai/buongiorno";
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
@@ -1016,13 +1052,26 @@ function wrapPostWithHeader(text: string, isEnSlot: boolean): string {
     // (hashtag)
     const footerIT =
       "\n\n" +
-      "Andrea Cinelli | Executive Tech Editor ProofPress Magazine" +
+      "Andrea Cinelli" +
+      "\n" +
+      "Tech Editor \u2014 ProofPress Magazine" +
       "\n" +
       "\n" +
-      "\u{1F4CA} Scopri di pi\u00f9 su ProofPress Magazine\u2192 Italian edition https://proofpress.ai International edition: https://proofpress.biz ed iscriviti alla newsletter quotidiana di ProofPress" +
+      "\u{1F4CA} ProofPress Magazine" +
+      "\n" +
+      "\u2192 Italian Edition: proofpress.ai" +
+      "\n" +
+      "\u2192 International Edition: proofpress.biz" +
       "\n" +
       "\n" +
-      "\u{1F680} Seguimi su \"Base Alpha\" il mio osservatorio tech \u2192 https://lnkd.in/dDT9svDC";
+      "\u{1F680} Base Alpha \u2014 The Next Tech Observatory" +
+      "\n" +
+      "\u2192 lnkd.in/dDT9svDC" +
+      "\n" +
+      "\n" +
+      "\u{1F4EC} Buongiorno ProofPress \u2014 la newsletter quotidiana" +
+      "\n" +
+      "\u2192 proofpress.ai/buongiorno";
     if (hashtagLineIndex >= 0) {
       const bodyPart = lines.slice(0, hashtagLineIndex).join("\n").trim();
       const hashtagPart = lines.slice(hashtagLineIndex).join("\n").trim();
@@ -1065,7 +1114,7 @@ async function generateLinkedInPostText(
         const cutPoint = text.lastIndexOf('\n', 2950);
         text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
         if (!text.includes('proofpress.ai')) {
-          text += '\n\nAndrea Cinelli | Executive Tech Editor ProofPress Magazine\n\n📊 Scopri di più su ProofPress Magazine→ Italian edition https://proofpress.ai International edition: https://proofpress.biz ed iscriviti alla newsletter quotidiana di ProofPress\n\n🚀 Seguimi su "Base Alpha" il mio osservatorio tech → https://lnkd.in/dDT9svDC\n\n';
+          text += '\n\nAndrea Cinelli\nTech Editor — ProofPress Magazine\n\n📊 ProofPress Magazine\n→ Italian Edition: proofpress.ai\n→ International Edition: proofpress.biz\n\n🚀 Base Alpha — The Next Tech Observatory\n→ lnkd.in/dDT9svDC\n\n📬 Buongiorno ProofPress — la newsletter quotidiana\n→ proofpress.ai/buongiorno\n\n';
         }
       }
       console.log(`[LinkedIn] \u2705 Testo post generato con LLM (${text.length} chars, Markdown rimosso)`);
@@ -1080,7 +1129,7 @@ async function generateLinkedInPostText(
       "",
       body.slice(0, 800),
       "",
-      `\n\nAndrea Cinelli | Executive Tech Editor ProofPress Magazine\n\n📊 Scopri di più su ProofPress Magazine→ Italian edition https://proofpress.ai International edition: https://proofpress.biz ed iscriviti alla newsletter quotidiana di ProofPress\n\n🚀 Seguimi su "Base Alpha" il mio osservatorio tech → https://lnkd.in/dDT9svDC`,
+      `\n\nAndrea Cinelli\nTech Editor — ProofPress Magazine\n\n📊 ProofPress Magazine\n→ Italian Edition: proofpress.ai\n→ International Edition: proofpress.biz\n\n🚀 Base Alpha — The Next Tech Observatory\n→ lnkd.in/dDT9svDC\n\n📬 Buongiorno ProofPress — la newsletter quotidiana\n→ proofpress.ai/buongiorno`,
       "",
       "",
       meta.hashtags.join(" ")

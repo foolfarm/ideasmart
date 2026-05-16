@@ -3632,3 +3632,10 @@
 - [x] Comprimi area Verify a sinistra (38% vs 62% griglia, 4 colonne canali)
 - [x] Sposta sezione BREAKING sotto il ticker news (sopra l'header)
 - [x] Elimina barra scorrevole del menu a sinistra (overflowY: hidden)
+
+## Firma LinkedIn e risposta bilingue (16/05/2026 sera)
+- [x] Aggiornare firma IT in linkedinPublisher.ts con nuovo formato (4 righe)
+- [x] Aggiornare firma EN in linkedinPublisher.ts con nuovo formato inglese
+- [x] Aggiornare tutti i prompt LLM con nuova firma
+- [x] Aggiornare fallback inline con nuova firma
+- [x] Implementare risposta bilingue in linkedinCommentResponder.ts

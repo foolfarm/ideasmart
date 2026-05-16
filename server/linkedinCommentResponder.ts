@@ -78,13 +78,35 @@ async function fetchPostComments(postUrn: string, token: string): Promise<Array<
   }
 }
 
+// ─── Rileva la lingua dominante di un testo ─────────────────────────────────
+function detectLanguage(text: string): "en" | "it" {
+  // Parole funzione inglesi ad alta frequenza
+  const enWords = ["the", "and", "is", "are", "was", "were", "this", "that", "with", "for",
+    "have", "has", "you", "your", "our", "from", "what", "how", "great", "very",
+    "think", "interesting", "agree", "point", "really", "thanks", "thank", "good"];
+  const itWords = ["il", "la", "le", "gli", "un", "una", "di", "del", "della", "che", "non",
+    "con", "per", "sono", "hai", "grazie", "ottimo", "bello", "bella", "molto",
+    "questo", "questa", "anche", "come", "cosa", "quando", "dove", "perché"];
+  const lower = text.toLowerCase();
+  const tokens = lower.split(/\s+/);
+  let enScore = 0;
+  let itScore = 0;
+  for (const token of tokens) {
+    if (enWords.includes(token)) enScore++;
+    if (itWords.includes(token)) itScore++;
+  }
+  return enScore > itScore ? "en" : "it";
+}
+
 // ─── Genera risposta AI al commento ──────────────────────────────────────────
 async function generateReply(
   commenterName: string,
   commentText: string,
   postText: string,
 ): Promise<string> {
-  const systemPrompt = `Sei Andrea Cinelli, imprenditore seriale, fondatore di FoolFarm e ProofPress.AI, 
+  const lang = detectLanguage(commentText);
+
+  const systemPromptIT = `Sei Andrea Cinelli, imprenditore seriale, fondatore di FoolFarm e ProofPress.AI, 
 professore di AI al Sole 24 Ore Business School. Rispondi ai commenti LinkedIn in modo autentico, 
 diretto e umano. Tono: autorevole ma accessibile, mai robotico. 
 
@@ -96,15 +118,43 @@ Regole:
 - Non usare asterischi o formattazione markdown
 - Non iniziare con "Grazie per il tuo commento" — sii più originale
 - Scrivi come un essere umano, non come un'AI
-- Puoi citare proofpress.ai se pertinente, ma non in modo forzato`;
+- Puoi citare proofpress.ai se pertinente, ma non in modo forzato
+- LINGUA: Rispondi SEMPRE in italiano`;
 
-  const userPrompt = `Il mio post LinkedIn diceva:
+  const systemPromptEN = `You are Andrea Cinelli, serial entrepreneur, founder of FoolFarm and ProofPress.AI,
+AI Professor at Il Sole 24 Ore Business School. Reply to LinkedIn comments in an authentic,
+direct and human way. Tone: authoritative but accessible, never robotic.
+
+Rules:
+- Maximum 3-4 sentences
+- If the comment is positive, thank briefly without being excessive
+- If the comment asks a question, reply substantively but concisely
+- If the comment is critical, respond with openness and argument
+- No asterisks or markdown formatting
+- Do NOT start with "Thank you for your comment" — be more original
+- Write like a human, not an AI
+- You may mention proofpress.ai or proofpress.biz if relevant, but not forcefully
+- LANGUAGE: Always reply in ENGLISH`;
+
+  const systemPrompt = lang === "en" ? systemPromptEN : systemPromptIT;
+
+  const userPromptIT = `Il mio post LinkedIn diceva:
 "${postText.slice(0, 500)}"
 
 ${commenterName} ha commentato:
 "${commentText}"
 
-Scrivi una risposta breve e autentica.`;
+Scrivi una risposta breve e autentica in italiano.`;
+
+  const userPromptEN = `My LinkedIn post said:
+"${postText.slice(0, 500)}"
+
+${commenterName} commented:
+"${commentText}"
+
+Write a short, authentic reply in English.`;
+
+  const userPrompt = lang === "en" ? userPromptEN : userPromptIT;
 
   try {
     const response = await invokeLLM({
