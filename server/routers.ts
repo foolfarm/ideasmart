@@ -11,7 +11,7 @@ import { cached, invalidateAll, getCacheStats, CACHE_KEYS, DEFAULT_TTL_MS, EDITO
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { protectedProcedure, publicProcedure, siteProtectedProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
@@ -183,7 +183,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: protectedProcedure
+    getById: siteProtectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`market:byId:${input.id}`, async () => {
@@ -206,7 +206,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: protectedProcedure
+    getById: siteProtectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`reportage:byId:${input.id}`, async () => {
@@ -229,7 +229,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: protectedProcedure
+    getById: siteProtectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`editorial:byId:${input.id}`, async () => {
@@ -279,7 +279,7 @@ export const appRouter = router({
           EDITORIAL_TTL_MS
         );
       }),
-    getById: protectedProcedure
+    getById: siteProtectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(`startup:byId:${input.id}`, async () => {
@@ -412,7 +412,7 @@ export const appRouter = router({
       }),
 
     // Recupera una singola notizia per ID (per la pagina articolo)
-    getById: protectedProcedure
+    getById: siteProtectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         // Cache 30 minuti — il contenuto di un articolo è stabile
@@ -868,7 +868,7 @@ export const appRouter = router({
       }),
 
     // Recupera una singola ricerca per ID (per la pagina dettaglio /research/:id)
-    getResearchById: protectedProcedure
+    getResearchById: siteProtectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return cached(
