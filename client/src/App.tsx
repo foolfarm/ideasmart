@@ -263,7 +263,8 @@ function App() {
           <div className="hidden sm:block">
             <BreakingNewsSection />
           </div>
-          <BreakingNewsTicker />
+          {/* TICKER NASCOSTO TEMPORANEAMENTE */}
+          {false && <BreakingNewsTicker />}
           <Toaster />
           <Router />
           <MobileBottomNav />
