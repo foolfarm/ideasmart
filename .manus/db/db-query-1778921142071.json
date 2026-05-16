@@ -1,0 +1,34 @@
+{
+  "query": "SELECT id, section, send_date, status, recipientCount, subject FROM newsletter_sends WHERE send_date >= '2026-05-15' ORDER BY id DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, section, send_date, status, recipientCount, subject FROM newsletter_sends WHERE send_date >= '2026-05-15' ORDER BY id DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "1860001",
+      "section": "ai4business",
+      "send_date": "2026-05-16",
+      "status": "sending",
+      "recipientCount": "0",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Sabato 16 maggio 2026"
+    },
+    {
+      "id": "1830001",
+      "section": "ai4business",
+      "send_date": "2026-05-15",
+      "status": "sent",
+      "recipientCount": "1243",
+      "subject": "☀️ Buonpomeriggio — IdeaSmart Verify™ · CV Verify"
+    },
+    {
+      "id": "1800001",
+      "section": "ai4business",
+      "send_date": "2026-05-15",
+      "status": "failed",
+      "recipientCount": "0",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Venerdì 15 maggio 2026"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tsection\tsend_date\tstatus\trecipientCount\tsubject\n1860001\tai4business\t2026-05-16\tsending\t0\tBUONGIORNO — Le news di oggi da ProofPress, Sabato 16 maggio 2026\n1830001\tai4business\t2026-05-15\tsent\t1243\t☀️ Buonpomeriggio — IdeaSmart Verify™ · CV Verify\n1800001\tai4business\t2026-05-15\tfailed\t0\tBUONGIORNO — Le news di oggi da ProofPress, Venerdì 15 maggio 2026\n",
+  "stderr": "",
+  "execution_time_ms": 292
+}

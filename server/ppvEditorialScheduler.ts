@@ -218,13 +218,71 @@ const PPV_CALENDAR: PpvPage[] = [
   },
 ];
 
+// ─── Rotazione perpetua 3 brand lun-ven ─────────────────────────────────────
+// Lunedì (1) → ProofPress Verify™
+// Martedì (2) → Fasteer.ai
+// Mercoledì (3) → FoolTalent.ai
+// Giovedì (4) → ProofPress Verify™
+// Venerdì (5) → Fasteer.ai
+
+const ROTATING_BRANDS: Record<number, PpvPage> = {
+  1: {
+    date: "", // dinamico
+    url: "https://proofpressverify.com/",
+    product: "ProofPress Verify™",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `ProofPress Verify™ è il protocollo di certificazione crittografica che assegna a ogni contenuto digitale un numero PP univoco ancorato su IPFS tramite hash SHA-256. Il sistema analizza ogni claim fattuale con 4 motori AI, incrocia oltre 4.000 fonti globali e assegna un Trust Score da 0 a 100 con grade A–F. Attualmente conta 669 certificati live. URL: https://proofpressverify.com/`,
+  },
+  2: {
+    date: "",
+    url: "https://fasteer.ai",
+    product: "Fasteer.ai",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp",
+    context: `Fasteer.ai è la piattaforma AI per accelerare la crescita aziendale. Automatizza processi, genera contenuti e ottimizza le operazioni con intelligenza artificiale avanzata. Pensata per imprenditori, team marketing e aziende che vogliono scalare senza aumentare i costi operativi. URL: https://fasteer.ai`,
+  },
+  3: {
+    date: "",
+    url: "https://fooltalent.ai",
+    product: "FoolTalent.ai",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_fooltalent-2nEN4eE9YHfFBW4qWKwTVs.webp",
+    context: `FoolTalent.ai è la piattaforma AI per il recruiting intelligente. Identifica, valuta e ingaggia i migliori talenti con algoritmi AI che analizzano competenze, cultural fit e potenziale di crescita. Riduce il time-to-hire del 60% e aumenta la qualità delle assunzioni. URL: https://fooltalent.ai`,
+  },
+  4: {
+    date: "",
+    url: "https://proofpressverify.com/",
+    product: "ProofPress Verify™",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+    context: `ProofPress Verify™ è l'infrastruttura di fiducia per l'era dell'AI generativa. Quando i contenuti sintetici sono indistinguibili da quelli reali, la certificazione crittografica diventa un vantaggio competitivo. Con 669+ certificati attivi e open rate del 38%, ProofPress Verify™ è già il riferimento per chi produce contenuti credibili. URL: https://proofpressverify.com/`,
+  },
+  5: {
+    date: "",
+    url: "https://fasteer.ai",
+    product: "Fasteer.ai",
+    heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp",
+    context: `Fasteer.ai trasforma il modo in cui le aziende crescono nell'era dell'AI. Dalla generazione di contenuti all'automazione dei processi, Fasteer.ai è il co-pilota AI per team che vogliono fare di più con meno. ROI misurabile in 30 giorni. URL: https://fasteer.ai`,
+  },
+};
+
 // ─── Utility: pagina del giorno ───────────────────────────────────────────────
 
 export function getTodayPpvPage(): PpvPage | null {
   const today = new Date();
   const tz = "Europe/Rome";
   const dateStr = today.toLocaleDateString("sv-SE", { timeZone: tz }); // YYYY-MM-DD
-  return PPV_CALENDAR.find(p => p.date === dateStr) ?? null;
+
+  // Prima controlla il calendario statico (date specifiche hanno priorità)
+  const staticPage = PPV_CALENDAR.find(p => p.date === dateStr);
+  if (staticPage) return staticPage;
+
+  // Rotazione perpetua lun-ven: 1=lun, 2=mar, 3=mer, 4=gio, 5=ven
+  const dayOfWeek = today.toLocaleDateString("en-US", { timeZone: tz, weekday: "short" });
+  const dayMap: Record<string, number> = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5 };
+  const dayNum = dayMap[dayOfWeek];
+
+  if (!dayNum) return null; // sabato o domenica
+
+  const brand = ROTATING_BRANDS[dayNum];
+  return { ...brand, date: dateStr };
 }
 
 // ─── Generazione articolo editoriale ─────────────────────────────────────────
@@ -368,6 +426,16 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
       hero: "https://images.pexels.com/photos/37466061/pexels-photo-37466061.jpeg?auto=compress&cs=tinysrgb&w=600",
       mid: "https://images.pexels.com/photos/5953835/pexels-photo-5953835.jpeg?auto=compress&cs=tinysrgb&w=600",
       bottom: "https://images.pexels.com/photos/36522029/pexels-photo-36522029.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "Fasteer.ai": {
+      hero: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/7567443/pexels-photo-7567443.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    "FoolTalent.ai": {
+      hero: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600",
+      mid: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=600",
+      bottom: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=600"
     }
   };
 
@@ -575,6 +643,76 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
       pricing: "€29 · Pagamento unico · Certificato permanente su IPFS · Badge embeddabile incluso",
       cta: "CERTIFICA IL TUO PRODOTTO — €29",
       ctaUrl: "https://proofpressverify.com/product"
+    },
+    "Fasteer.ai": {
+      tagline: "La piattaforma AI che accelera la crescita aziendale. Automatizza, genera, scala.",
+      intro: "Le aziende che adottano AI nei processi core crescono 2,5× più veloce dei competitor. Ma il 78% dei team non sa da dove iniziare. Fasteer.ai risolve questo problema: una piattaforma unica che automatizza i processi ripetitivi, genera contenuti di qualità e ottimizza le operazioni con intelligenza artificiale avanzata. Zero competenze tecniche richieste. ROI misurabile in 30 giorni.",
+      stats: [
+        { value: "2.5×", label: "Crescita più veloce con AI" },
+        { value: "60%", label: "Riduzione costi operativi" },
+        { value: "30gg", label: "ROI misurabile" },
+        { value: "0", label: "Competenze tecniche richieste" }
+      ],
+      howItWorks: [
+        { step: "01", title: "Connetti i tuoi strumenti", desc: "Integra CRM, email, social e documenti in pochi click. Zero codice." },
+        { step: "02", title: "Definisci i workflow", desc: "Scegli i processi da automatizzare. Fasteer.ai li ottimizza con AI." },
+        { step: "03", title: "Genera contenuti", desc: "Blog, email, social post, report: l'AI produce contenuti in linea con il tuo brand." },
+        { step: "04", title: "Misura i risultati", desc: "Dashboard real-time con KPI di produttività, risparmio di tempo e ROI." }
+      ],
+      features: [
+        { icon: "⚡", title: "Automazione workflow", desc: "Automatizza processi ripetitivi: email, report, aggiornamenti CRM, notifiche." },
+        { icon: "✍️", title: "Generazione contenuti AI", desc: "Blog, newsletter, post social, pitch deck: contenuti professionali in secondi." },
+        { icon: "📊", title: "Analytics & ROI", desc: "Dashboard real-time con risparmio ore, costi evitati e impatto sul revenue." },
+        { icon: "🔗", title: "Integrazioni native", desc: "HubSpot, Salesforce, Slack, Google Workspace, Notion e 100+ tool." }
+      ],
+      targets: [
+        { icon: "🚀", title: "Scale-up e PMI", desc: "Scala senza assumere: automatizza i processi che frenano la crescita." },
+        { icon: "📣", title: "Team marketing", desc: "Produci 10× più contenuti con la stessa squadra. Qualità garantita dall'AI." },
+        { icon: "👔", title: "CEO e founder", desc: "Recupera 10+ ore a settimana eliminando task ripetitivi ad alto costo." }
+      ],
+      testimonial: {
+        initials: "MR",
+        name: "Marco R.",
+        role: "CEO · Scale-up SaaS",
+        text: "Con Fasteer.ai abbiamo ridotto il tempo di produzione contenuti del 70% e triplicato il volume di output in 60 giorni."
+      },
+      cta: "INIZIA GRATIS — 14 GIORNI",
+      ctaUrl: "https://fasteer.ai"
+    },
+    "FoolTalent.ai": {
+      tagline: "Il recruiting intelligente. Trova i migliori talenti con AI che va oltre il CV.",
+      intro: "Il 60% delle assunzioni sbagliate dipende da processi di selezione che valutano solo il passato, non il potenziale. FoolTalent.ai cambia le regole: algoritmi AI analizzano competenze, cultural fit, potenziale di crescita e motivazione in profondità. Il risultato: time-to-hire ridotto del 60%, qualità delle assunzioni aumentata del 40%, turnover dimezzato nel primo anno.",
+      stats: [
+        { value: "-60%", label: "Time-to-hire" },
+        { value: "+40%", label: "Qualità assunzioni" },
+        { value: "-50%", label: "Turnover primo anno" },
+        { value: "4×", label: "Candidati qualificati per posizione" }
+      ],
+      howItWorks: [
+        { step: "01", title: "Pubblica la posizione", desc: "Descrizione del ruolo e profilo ideale. L'AI genera la job description ottimizzata." },
+        { step: "02", title: "AI screening", desc: "FoolTalent.ai analizza CV, LinkedIn, portfolio e test cognitivi in automatico." },
+        { step: "03", title: "Cultural fit score", desc: "Algoritmo proprietario valuta allineamento con i valori e la cultura aziendale." },
+        { step: "04", title: "Shortlist qualificata", desc: "Ricevi una shortlist dei top 5 candidati con score dettagliato e motivazione." }
+      ],
+      features: [
+        { icon: "🧠", title: "AI Screening", desc: "Analisi automatica di CV, LinkedIn, portfolio e test cognitivi. Zero bias." },
+        { icon: "🎯", title: "Cultural Fit Score", desc: "Algoritmo proprietario che valuta l'allineamento con la cultura aziendale." },
+        { icon: "📈", title: "Potential Assessment", desc: "Valuta il potenziale di crescita, non solo l'esperienza passata." },
+        { icon: "🔄", title: "ATS Integration", desc: "Si integra con Workday, Greenhouse, Lever, BambooHR e tutti i principali ATS." }
+      ],
+      targets: [
+        { icon: "🏢", title: "HR Manager", desc: "Gestisci 10× più posizioni aperte con la stessa squadra. L'AI fa lo screening." },
+        { icon: "🚀", title: "Scale-up in crescita", desc: "Assumi veloce senza compromettere la qualità. Il tuo vantaggio competitivo." },
+        { icon: "🎓", title: "Talent Acquisition", desc: "Identifica i talenti nascosti che i processi tradizionali non trovano." }
+      ],
+      testimonial: {
+        initials: "LB",
+        name: "Laura B.",
+        role: "Head of People · Tech Unicorn",
+        text: "FoolTalent.ai ha dimezzato il nostro time-to-hire e aumentato la retention del 35% nel primo anno. È diventato il nostro standard."
+      },
+      cta: "INIZIA GRATIS — PRIMA SELEZIONE",
+      ctaUrl: "https://fooltalent.ai"
     }
   };
 

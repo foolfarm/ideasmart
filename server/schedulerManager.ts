@@ -452,11 +452,11 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── NEWSLETTER PREVIEW (07:30 CET) — invia bozza a ac@acinelli.com ogni giorno ────────────
-  // Cron: 30 7 * * * = ogni giorno alle 07:30 CET, 7 giorni su 7
+  // ── NEWSLETTER PREVIEW (07:30 CET) — invia bozza a ac@acinelli.com solo lun-ven ────────────
+  // Cron: 30 7 * * 1-5 = lun-ven alle 07:30 CET (sospesa sabato e domenica)
   // Spostato a 07:30 per evitare conflitto con verifica notizie (07:00) e verifica research (07:15)
   // Invia la preview della newsletter del giorno a ac@acinelli.com per verifica visiva
-  cron.schedule("30 7 * * *", async () => {
+  cron.schedule("30 7 * * 1-5", async () => {
     console.log("[SchedulerManager] ⏰ 07:30 CET — Invio preview newsletter a ac@acinelli.com...");
     try {
       const { sendUnifiedPreview } = await import("./unifiedNewsletter");
@@ -471,12 +471,12 @@ export function startAllSchedulers(): void {
     }
   }, { timezone: TZ });
 
-  // ── NEWSLETTER MASSIVA "BUONGIORNO by PROOFPRESS" — 08:30 CET (7 giorni su 7) ────────────
-  // Cron: 30 8 * * * = ogni giorno alle 08:30 CET, domenica e sabato inclusi
-  // Nessuna approvazione richiesta — invio automatico diretto a tutti i 2.454 subscriber attivi
-  // Gli unsubscribed (5.608) sono automaticamente esclusi dalla query getActiveSubscribers()
-  cron.schedule("30 8 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (7gg/7)...");
+  // ── NEWSLETTER MASSIVA "BUONGIORNO by PROOFPRESS" — 08:30 CET (solo lun-ven) ────────────
+  // Cron: 30 8 * * 1-5 = lun-ven alle 08:30 CET (sospesa sabato e domenica)
+  // Nessuna approvazione richiesta — invio automatico diretto a tutti i subscriber attivi
+  // Gli unsubscribed sono automaticamente esclusi dalla query getActiveSubscribers()
+  cron.schedule("30 8 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (lun-ven)...");
     await withLock("newsletter-mattino", async () => {
       try {
         const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
@@ -792,6 +792,12 @@ export function startAllSchedulers(): void {
       const hourCET = nowCET.getHours();
       const minuteCET = nowCET.getMinutes();
       const currentMinutes = hourCET * 60 + minuteCET;
+      const dayOfWeek = nowCET.getDay(); // 0=dom, 1=lun, ..., 5=ven, 6=sab
+      // Catch-up BUONGIORNO: solo lun-ven (1-5), sospeso sabato (6) e domenica (0)
+      if (dayOfWeek === 0 || dayOfWeek === 6) {
+        console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: weekend (${dayOfWeek === 0 ? 'domenica' : 'sabato'}) — newsletter sospesa, nessun catch-up`);
+        return;
+      }
       // Finestra catch-up: 08:30 – 12:00 CET
       const CATCHUP_START = 8 * 60 + 30;  // 08:30
       const CATCHUP_END   = 12 * 60;       // 12:00
@@ -1030,7 +1036,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   ✍️  Editoriale DEALROOM → lun/mer/ven alle 01:35 CET");
   console.log("[SchedulerManager]   Audit notturno   -> ogni giorno alle 02:00 CET (verifica URL + sostituzione)");
   console.log("[SchedulerManager]   📧 Audit link NL     -> RIMOSSO (non necessario con nuovo template)");
-  console.log("[SchedulerManager]   📧 Newsletter \"BUONGIORNO by PROOFPRESS\" -> 7gg/7 alle 08:00 CET \u2192 tutti gli iscritti (NO approvazione, mittente: redazione@proofpress.ai)");
+  console.log("[SchedulerManager]   📧 Newsletter \"BUONGIORNO by PROOFPRESS\" -> lun-ven alle 08:30 CET \u2192 tutti gli iscritti (NO approvazione, sospesa sabato e domenica)");
   console.log("[SchedulerManager]   📧 Newsletter Sabato Separata -> DISABILITATA (rimossa 2026-04-24, newsletter unificata 7gg/7)");
   console.log("[SchedulerManager]   📧 Newsletter Promozionali -> DISABILITATE (rimossa 2026-04-12)");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
