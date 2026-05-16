@@ -867,18 +867,32 @@ export default function Home() {
                         }}>
                         ProofPress
                       </h1>
-                      <span className="font-bold tracking-widest text-[#1a1a1a]/50"
-                        style={{
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                          fontSize: "clamp(8px, 1vw, 14px)",
-                          letterSpacing: "0.15em",
-                          textTransform: "uppercase",
-                          lineHeight: 1,
-                          marginTop: "0.3em",
-                          marginLeft: "0.4em"
-                        }}>
-                        Magazine
-                      </span>
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "0.3em", marginLeft: "0.4em" }}>
+                        <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                          style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                            fontSize: "clamp(8px, 1vw, 14px)",
+                            letterSpacing: "0.15em",
+                            textTransform: "uppercase",
+                            lineHeight: 1,
+                          }}>
+                          Magazine
+                        </span>
+                        <span style={{ display: "flex", alignItems: "center", gap: "3px", marginTop: "3px" }}>
+                          <span style={{ fontSize: "clamp(7px, 0.8vw, 11px)", lineHeight: 1 }}>🇮🇹</span>
+                          <span style={{
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                            fontSize: "clamp(5px, 0.55vw, 8px)",
+                            fontWeight: 700,
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
+                            color: "#1a1a1a",
+                            opacity: 0.4,
+                            lineHeight: 1,
+                            whiteSpace: "nowrap"
+                          }}>Italian Edition</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -917,18 +931,32 @@ export default function Home() {
                       }}>
                       ProofPress
                     </h1>
-                    <span className="font-bold tracking-widest text-[#1a1a1a]/50"
-                      style={{
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                        fontSize: "clamp(8px, 1vw, 14px)",
-                        letterSpacing: "0.15em",
-                        textTransform: "uppercase",
-                        lineHeight: 1,
-                        marginTop: "0.3em",
-                        marginLeft: "0.4em"
-                      }}>
-                      Magazine
-                    </span>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "0.3em", marginLeft: "0.4em" }}>
+                      <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                        style={{
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "clamp(8px, 1vw, 14px)",
+                          letterSpacing: "0.15em",
+                          textTransform: "uppercase",
+                          lineHeight: 1,
+                        }}>
+                        Magazine
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", gap: "3px", marginTop: "3px" }}>
+                        <span style={{ fontSize: "clamp(7px, 0.8vw, 11px)", lineHeight: 1 }}>🇮🇹</span>
+                        <span style={{
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "clamp(5px, 0.55vw, 8px)",
+                          fontWeight: 700,
+                          letterSpacing: "0.12em",
+                          textTransform: "uppercase",
+                          color: "#1a1a1a",
+                          opacity: 0.4,
+                          lineHeight: 1,
+                          whiteSpace: "nowrap"
+                        }}>Italian Edition</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>
