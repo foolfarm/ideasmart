@@ -1439,12 +1439,6 @@ export default function Home() {
                   {/* ── ProofPress Verify Widget ── (temporaneamente nascosto) */}
                   {false && <VerifyWidget />}
 
-                  {/* ── Slot 3: Banner rotante sidebar destra 300x250 ── */}
-                  <div className="mb-5 flex flex-col items-center">
-                    <BannerRotator slot="sidebar" width={300} height={250} />
-                  </div>
-
-
                   {/* ── Banner Buongiorno ProofPress — newsletter 8:30 ── */}
                   <div className="mb-6">
                     <a href="/buongiorno" style={{ textDecoration: "none" }}>
@@ -1465,6 +1459,11 @@ export default function Home() {
                         />
                       </div>
                     </a>
+                  </div>
+
+                  {/* ── Slot 3: Banner rotante sidebar destra 300x250 ── */}
+                  <div className="mb-5 flex flex-col items-center">
+                    <BannerRotator slot="sidebar" width={300} height={250} />
                   </div>
 
                   {/* ── Banner Decision Science Summit ── */}
