@@ -3582,3 +3582,10 @@
 - [x] Aggiunto cron 18:35 CET ogni giorno in schedulerManager.ts: chiama sendDailyNewsletterReport() con withLock per prevenire sovrapposizioni
 - [x] Test invio confermato: report inviato a ac@acinelli.com con subject "📊 ProofPress · Report Newsletter giovedì 14 maggio 2026"
 - [x] Zero errori TypeScript
+
+## LinkedIn Miglioramenti (16 Mag 2026)
+
+- [x] Rinnovo automatico token LinkedIn via refresh token (server/linkedinTokenRefresh.ts)
+- [x] Procedura tRPC admin.linkedin.getTokenStatus per check scadenza token
+- [x] Badge alert scadenza token nell'Admin (rosso se < 14 giorni, giallo se < 30 giorni)
+- [x] Layout 2-colonne Pexels nella newsletter PPV 17:30 (già presente — nessuna modifica necessaria)

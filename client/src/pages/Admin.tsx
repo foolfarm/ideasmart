@@ -304,6 +304,17 @@ export default function Admin() {
     },
     onError: (err) => { setPublishingLinkedIn(false); toast.error("Errore LinkedIn: " + err.message); },
   });
+  const linkedinTokenQuery = trpc.admin.getLinkedInTokenStatus.useQuery(undefined, {
+    enabled: user?.role === "admin",
+    staleTime: 1000 * 60 * 60, // 1 ora
+  });
+  const refreshLinkedInTokenMutation = trpc.admin.refreshLinkedInToken.useMutation({
+    onSuccess: (data) => {
+      toast[data.success ? "success" : "error"](data.message);
+      linkedinTokenQuery.refetch();
+    },
+    onError: (err) => toast.error("Refresh token fallito: " + err.message),
+  });
 
   // ─── Auth guard ───────────────────────────────────────────────────────────────
   if (loading) {
@@ -741,6 +752,55 @@ export default function Admin() {
                 loading={publishingLinkedIn}
                 variant="linkedin"
               />
+              {/* LinkedIn Token Status Badge */}
+              {linkedinTokenQuery.data && (
+                <div
+                  className="rounded-xl px-3 py-2.5 flex items-center justify-between gap-2"
+                  style={{
+                    background: linkedinTokenQuery.data.warningLevel === "expired" ? "#fef2f2"
+                      : linkedinTokenQuery.data.warningLevel === "critical" ? "#fff7ed"
+                      : linkedinTokenQuery.data.warningLevel === "warning" ? "#fefce8"
+                      : "#f0fdf4",
+                    border: `1px solid ${
+                      linkedinTokenQuery.data.warningLevel === "expired" ? "#fca5a5"
+                      : linkedinTokenQuery.data.warningLevel === "critical" ? "#fdba74"
+                      : linkedinTokenQuery.data.warningLevel === "warning" ? "#fde047"
+                      : "#86efac"
+                    }`,
+                  }}
+                >
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-xs font-semibold" style={{
+                      color: linkedinTokenQuery.data.warningLevel === "expired" ? "#dc2626"
+                        : linkedinTokenQuery.data.warningLevel === "critical" ? "#ea580c"
+                        : linkedinTokenQuery.data.warningLevel === "warning" ? "#ca8a04"
+                        : "#16a34a",
+                    }}>
+                      {linkedinTokenQuery.data.warningLevel === "expired" ? "🚨 Token SCADUTO"
+                        : linkedinTokenQuery.data.warningLevel === "critical" ? `⚠️ Scade tra ${linkedinTokenQuery.data.daysUntilExpiry}gg`
+                        : linkedinTokenQuery.data.warningLevel === "warning" ? `⏰ Scade tra ${linkedinTokenQuery.data.daysUntilExpiry}gg`
+                        : `✅ Token valido (${linkedinTokenQuery.data.daysUntilExpiry}gg)`}
+                    </span>
+                    <span className="text-xs" style={{ color: C.mid }}>
+                      Scadenza: {linkedinTokenQuery.data.expiresAtFormatted}
+                    </span>
+                  </div>
+                  {(linkedinTokenQuery.data.warningLevel === "critical" || linkedinTokenQuery.data.warningLevel === "expired") && (
+                    <button
+                      onClick={() => refreshLinkedInTokenMutation.mutate()}
+                      disabled={refreshLinkedInTokenMutation.isPending}
+                      className="text-xs font-semibold px-2 py-1 rounded-lg transition-all"
+                      style={{
+                        background: "#0a66c2",
+                        color: "white",
+                        opacity: refreshLinkedInTokenMutation.isPending ? 0.6 : 1,
+                      }}
+                    >
+                      {refreshLinkedInTokenMutation.isPending ? "..." : "Rinnova"}
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Link rapidi sezioni */}

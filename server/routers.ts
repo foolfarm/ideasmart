@@ -15,6 +15,7 @@ import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
+import { getLinkedInTokenStatus, refreshLinkedInToken } from "./linkedinTokenRefresh";
 
 import {
   addSubscriber,
@@ -2330,6 +2331,33 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
             }
           });
         return { success: true, message: `Post "${input.title}" inserito nel DB per il ${dateLabel}` };
+      }),
+
+    // ── LinkedIn Token Status & Refresh ─────────────────────────────────────────
+    getLinkedInTokenStatus: adminProcedure
+      .query(async () => {
+        const status = getLinkedInTokenStatus();
+        return {
+          isValid: status.isValid,
+          expiresAt: status.expiresAt,
+          daysUntilExpiry: status.daysUntilExpiry,
+          needsRefresh: status.needsRefresh,
+          warningLevel: status.warningLevel,
+          expiresAtFormatted: status.expiresAt.toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" }),
+        };
+      }),
+
+    refreshLinkedInToken: adminProcedure
+      .mutation(async () => {
+        const result = await refreshLinkedInToken();
+        return {
+          success: result.success,
+          error: result.error,
+          expiresIn: result.expiresIn,
+          message: result.success
+            ? `Token rinnovato con successo. Scade in ${Math.floor((result.expiresIn ?? 0) / 86400)} giorni. Aggiorna LINKEDIN_ACCESS_TOKEN nei Secrets.`
+            : `Refresh fallito: ${result.error}`,
+        };
       }),
   }),
   // ── Report Ripetitività Editoriali ──────────────────────────────────────────────
