@@ -577,9 +577,9 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  // Post Ricerche — 13:00 CET (Proof Press Research) — A/B test orari: spostato da 14:30 a 13:00
-  cron.schedule("0 13 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 13:00 CET — Pubblicazione LinkedIn RICERCHE (Proof Press Research)...");
+  // Post Ricerche — 14:30 CET (Proof Press Research)
+  cron.schedule("30 14 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 14:30 CET — Pubblicazione LinkedIn RICERCHE (Proof Press Research)...");
     await withLock("linkedin-research", async () => {
       try {
         const result = await publishLinkedInPost("research");
