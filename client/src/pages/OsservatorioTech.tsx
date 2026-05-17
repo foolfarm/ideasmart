@@ -15,6 +15,7 @@ import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import VerifyBadge from "@/components/VerifyBadge";
+import { stripLinkedInSignature } from "@/lib/stripLinkedInSignature";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const INK = "#0a0a0a";
@@ -313,8 +314,9 @@ function LinkedInCard({ post }: {
   }
 }) {
   const [exp, setExp] = useState(false);
-  const preview = post.postText.slice(0, 200);
-  const hasMore = post.postText.length > 200;
+  const cleanText = stripLinkedInSignature(post.postText ?? '');
+  const preview = cleanText.slice(0, 200);
+  const hasMore = cleanText.length > 200;
 
   return (
     <article className="p-5" style={{ border: `1px solid ${LINKEDIN_BLUE}20`, backgroundColor: "#f8fbff" }}>
@@ -327,7 +329,7 @@ function LinkedInCard({ post }: {
         <h3 className="text-sm font-black mb-2 leading-snug" style={{ color: INK, fontFamily: FONT }}>{post.title}</h3>
       )}
       <p className="text-xs leading-relaxed whitespace-pre-line" style={{ color: INK + "70", fontFamily: FONT }}>
-        {exp ? post.postText : preview}{hasMore && !exp ? "…" : ""}
+        {exp ? cleanText : preview}{hasMore && !exp ? "…" : ""}
       </p>
       <div className="mt-3 flex items-center gap-4">
         {hasMore && (

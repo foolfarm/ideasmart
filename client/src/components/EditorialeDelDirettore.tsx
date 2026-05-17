@@ -11,6 +11,7 @@
 
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+import { stripLinkedInSignature } from "@/lib/stripLinkedInSignature";
 
 const INK = "#1a1a1a";
 const ACCENT = "#1a1a1a";
@@ -87,7 +88,7 @@ export default function EditorialeDelDirettore() {
     dateLabel: deepDiveRaw.dateLabel,
     title: deepDiveRaw.title ?? '',
     subtitle: null as string | null,
-    body: deepDiveRaw.postText,
+    body: stripLinkedInSignature(deepDiveRaw.postText ?? ''),
     authorNote: null as string | null,
     linkedinUrl: deepDiveRaw.linkedinUrl,
   } : null;

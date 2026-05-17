@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import SEOHead from "@/components/SEOHead";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
+import { stripLinkedInSignature } from "@/lib/stripLinkedInSignature";
 
 const INK = "#0f0f0f";
 const ACCENT = "#1a1a1a";
@@ -51,7 +52,7 @@ function PostCard({ post }: {
   }
 }) {
   const [expanded, setExpanded] = useState(false);
-  const paragraphs = post.postText
+  const paragraphs = stripLinkedInSignature(post.postText ?? '')
     .split(/\n{2}/)
     .map(p => p.trim())
     .filter(p => p.length > 0 && !p.startsWith("#"));

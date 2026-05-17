@@ -3698,3 +3698,13 @@
 - [x] Corretto cloud ideasmart-en: aggiunto filtro !(l === "Andrea Cinelli") e filtri blocchi footer per eliminare firma duplicata nei post EN
 - [x] Riavviato server PM2 ideasmart-en sul cloud computer
 - [x] TypeScript: 0 errori su Manus (errori cloud preesistenti in BuongiornoNewsletter.tsx non correlati)
+
+## Rimozione firma LinkedIn dalla visualizzazione web (17/05/2026)
+- [x] Creata utility stripLinkedInSignature() in client/src/lib/stripLinkedInSignature.ts — taglia tutto da "Andrea Cinelli" in poi (firma, link, hashtag)
+- [x] Applicata in EditorialeDelDirettore.tsx (Home — sezione Deep Dive)
+- [x] Applicata in AiHome.tsx (sidebar editoriale /ai)
+- [x] Applicata in StartupHome.tsx (sidebar editoriale /startup)
+- [x] Applicata in EditorialDetail.tsx (pagina /ai/editoriale/[id] e /startup/editoriale/[id])
+- [x] Applicata in AndreaCinelli.tsx (archivio post autore)
+- [x] Applicata in OsservatorioTech.tsx (feed LinkedIn)
+- [x] TypeScript: 0 errori

@@ -13,6 +13,7 @@ import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import VerifyBadge from "@/components/VerifyBadge";
+import { stripLinkedInSignature } from "@/lib/stripLinkedInSignature";
 
 
 const ACCENT = "#1a1a1a";
@@ -273,7 +274,7 @@ export default function AiHome() {
                   <ThinDivider />
                   <p className="mt-2 text-sm leading-relaxed text-[#1a1a1a]/70 line-clamp-8"
                     style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
-                    {editorial.body}
+                    {stripLinkedInSignature(editorial.body ?? '')}
                   </p>
                   {editorial.authorNote && (
                     <blockquote className="mt-3 pl-3 border-l-2 text-xs italic text-[#1a1a1a]/55"

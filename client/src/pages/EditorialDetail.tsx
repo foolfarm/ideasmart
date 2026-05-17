@@ -8,6 +8,7 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Calendar, TrendingUp } from "lucide-react";
 import RequireAuth from "@/components/RequireAuth";
 import SaveArticleButton from "@/components/SaveArticleButton";
+import { stripLinkedInSignature } from "@/lib/stripLinkedInSignature";
 
 const SECTION_CONFIG = {
   ai: { label: "AI NEWS", color: "#0a7ea4", path: "/ai" },
@@ -119,7 +120,7 @@ export default function EditorialDetail() {
 
         {/* Corpo del testo */}
         <div className="prose prose-lg max-w-none text-[#1a1a1a]/85 leading-relaxed">
-          {editorial.body.split('\n\n').map((paragraph, i) => (
+          {stripLinkedInSignature(editorial.body ?? '').split('\n\n').map((paragraph, i) => (
             <p key={i} className="mb-6 text-lg leading-relaxed" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {paragraph}
             </p>
