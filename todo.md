@@ -3683,3 +3683,9 @@
 - [ ] Verificare se IdeaSmart EN (cloud) ha lo stesso report e disabilitarlo (EN ha LinkedIn e Newsletter DISABILITATI per design)
 - [x] Mantenere solo Report Newsletter 18:35 come unico report serale
 - [x] TypeScript: 0 errori
+
+## Anti-duplicato LinkedIn (17/05/2026)
+- [x] Aggiungere syncArticleLockFromDB integrato in syncTopicLockFromDB (sincronizza dal DB all'avvio di ogni slot)
+- [x] Aggiornare slot IT: se editoriale già usato oggi, cerca il secondo più recente (anti-duplicato cross-slot)
+- [x] Aggiungere import dailyEditorial in linkedinPublisher.ts
+- [x] TypeScript: 0 errori

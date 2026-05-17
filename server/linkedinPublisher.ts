@@ -22,7 +22,7 @@ import { invokeLLM, sanitizeForLinkedIn } from "./_core/llm";
 import { getLatestEditorial, getDb, getLatestNews, saveEditorial } from "./db";
 import { getMarketIntelligence, type MarketIntelligenceResult } from "./marketIntelligence";
 import { findEditorialImage } from "./stockImages";
-import { linkedinPosts, researchReports, newsItems } from "../drizzle/schema";
+import { linkedinPosts, researchReports, newsItems, dailyEditorial } from "../drizzle/schema";
 import { eq, and, desc, gte } from "drizzle-orm";
 import { getTodayResearch } from "./researchGenerator";
 import { generateAIToolRadarPost } from "./aiToolRadar";
@@ -167,12 +167,17 @@ async function isTopicUsedToday(title: string): Promise<boolean> {
 /**
  * Carica tutti i titoli già pubblicati oggi dal DB nella cache in-memory.
  * Da chiamare all'inizio di ogni slot per sincronizzare lo stato.
+ * Sincronizza anche il todayArticleLock per prevenire duplicati cross-slot.
  */
 async function syncTopicLockFromDB(): Promise<void> {
   const today = getTodayCET();
   if (todayTopicLockDate !== today) {
     todayTopicLock.clear();
     todayTopicLockDate = today;
+  }
+  if (todayArticleLockDate !== today) {
+    todayArticleLock.clear();
+    todayArticleLockDate = today;
   }
   try {
     const db = await getDb();
@@ -181,9 +186,13 @@ async function syncTopicLockFromDB(): Promise<void> {
         .from(linkedinPosts)
         .where(eq(linkedinPosts.dateLabel, today));
       for (const p of todayPosts) {
-        if (p.title) todayTopicLock.add(p.title.toLowerCase().trim());
+        if (p.title) {
+          todayTopicLock.add(p.title.toLowerCase().trim());
+          // Sincronizza anche il lock degli articoli sorgente
+          todayArticleLock.add(p.title.toLowerCase().trim());
+        }
       }
-      console.log(`[LinkedIn TopicLock] 🔒 Sincronizzati ${todayTopicLock.size} titoli già usati oggi`);
+      console.log(`[LinkedIn TopicLock] 🔒 Sincronizzati ${todayTopicLock.size} titoli + ${todayArticleLock.size} articoli sorgente già usati oggi`);
     }
   } catch (err) {
     console.warn('[LinkedIn TopicLock] ⚠️ Errore sync DB:', err);
@@ -1842,7 +1851,10 @@ export async function publishLinkedInPost(
       }
     } else {
       // Slot IT (morning, ecc.): recupera l'editoriale
-      const editorial = await getLatestEditorial(section === "research" ? "ai" : section);
+      // ANTI-DUPLICATO: se l'editoriale più recente è già stato usato oggi da un altro slot,
+      // cerca il secondo più recente per evitare post identici sulla stessa fonte
+      const editorialSection = section === "research" ? "ai" : section;
+      let editorial = await getLatestEditorial(editorialSection);
       if (!editorial) {
         console.warn(`[LinkedIn] ⚠️ Nessun editoriale trovato per sezione '${section}'. Pubblicazione saltata.`);
         return {
@@ -1850,6 +1862,38 @@ export async function publishLinkedInPost(
           errors: [`Nessun editoriale disponibile per sezione '${section}'`],
           posts: []
         };
+      }
+      // Se l'editoriale è già stato usato oggi, cerca il secondo più recente
+      if (isArticleUsedToday(editorial.title)) {
+        console.warn(`[LinkedIn] ⚠️ Editoriale "${editorial.title.slice(0, 50)}" già usato oggi — cerco alternativa...`);
+        try {
+          const db = await getDb();
+          if (db) {
+            const alternatives = await db.select().from(dailyEditorial)
+              .where(eq(dailyEditorial.section, editorialSection as any))
+              .orderBy(desc(dailyEditorial.createdAt))
+              .limit(10);
+            const unused = alternatives.find(e => !isArticleUsedToday(e.title)) ?? null;
+            if (unused) {
+              editorial = unused;
+              console.log(`[LinkedIn] ✅ Editoriale alternativo trovato: "${editorial.title.slice(0, 50)}..."`);
+            } else {
+              console.warn(`[LinkedIn] ⚠️ Tutti gli editoriali recenti già usati oggi per sezione '${section}' — pubblicazione saltata.`);
+              return {
+                published: 0,
+                errors: [`Tutti gli editoriali già usati oggi per sezione '${section}'`],
+                posts: []
+              };
+            }
+          }
+        } catch (altErr) {
+          console.warn('[LinkedIn] ⚠️ Errore ricerca editoriale alternativo:', altErr);
+          // Procedi con l'editoriale originale in caso di errore DB
+        }
+      }
+      if (!editorial) {
+        console.warn(`[LinkedIn] ⚠️ Nessun editoriale disponibile per slot ${slot}. Pubblicazione saltata.`);
+        return { published: 0, errors: [`Nessun editoriale disponibile per slot ${slot}`], posts: [] };
       }
       contentTitle = editorial.title;
       contentBody = editorial.body;
