@@ -3654,3 +3654,12 @@
 - [x] Rimuovere AmazonSectionStrip da StartupHome.tsx
 - [ ] Rimuovere widget Amazon inline da Home.tsx (Amazon deals nella Home sono inline nei widget, non AmazonSectionStrip — da valutare)
 - [x] Riscrivere Research.tsx con la stessa impaginazione di AiHome.tsx
+
+## Fix LinkedIn: Firma + Bug dateLabel (17/05/2026)
+- [x] Bug firma: corretto filtro wrapPostWithHeader (!(l === "Andrea Cinelli" && false) → !(l === "Andrea Cinelli"))
+- [x] Aggiornati tutti i prompt LLM: rimossa istruzione firma dall'LLM, ora gestita solo da wrapPostWithHeader
+- [x] Firma corretta IT e EN già presente in wrapPostWithHeader (4 blocchi: nome, ProofPress Magazine, Base Alpha, Buongiorno ProofPress)
+- [x] Bug dateLabel: corretto formato DD-MM-YYYY → YYYY-MM-DD nel salvataggio daily_editorial
+- [x] Rimosso import inutilizzato publishDailyLinkedInPosts da routers.ts (solo importato, non usato)
+- [x] Scheduling LinkedIn verificato: 9 slot attivi (5 IT + 4 EN) + weekend-digest + thought-leadership
+- [x] TypeScript: 0 errori

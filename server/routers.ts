@@ -14,7 +14,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, siteProtectedProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
-import { publishLinkedInPost, publishDailyLinkedInPosts } from "./linkedinPublisher";
+import { publishLinkedInPost } from "./linkedinPublisher";
 import { getLinkedInTokenStatus, refreshLinkedInToken } from "./linkedinTokenRefresh";
 
 import {
