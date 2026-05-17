@@ -497,10 +497,11 @@ export function startAllSchedulers(): void {
   // NEWSLETTER PROMOZIONALE — DISABILITATA (rimossa 2026-04-12 per decisione editoriale)
   // NEWSLETTER SABATO SEPARATA — DISABILITATA (rimossa 2026-04-24: newsletter unificata 7gg/7)
   // ══════════════════════════════════════════════════════════════════════════
-  // LINKEDIN AUTOPOST — 5 post giornalieri:
+  // LINKEDIN AUTOPOST — 6 post giornalieri:
   //   10:00 CET — AI News (morning)
+  //   11:00 CET — Dealroom Funding & VC (dealroom-morning)
   //   12:30 CET — 2° Editoriale AI su ricerche di mercato (ai-research-morning)
-  //   14:30 CET — 2° AI News (research)
+  //   14:30 CET — Proof Press Research (research)
   //   16:00 CET — 2° Ricerche di mercato (research-afternoon)
   //   18:00 CET — Startup News (startup-evening)
   // ══════════════════════════════════════════════════════════════════════════
@@ -560,6 +561,22 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
+  // Dealroom Mattino — 11:00 CET (Funding & VC)
+  cron.schedule("0 11 * * *", async () => {
+    console.log("[SchedulerManager] ⏰ 11:00 CET — Pubblicazione LinkedIn DEALROOM MATTINO (Funding & VC)...");
+    await withLock("linkedin-dealroom-morning", async () => {
+      try {
+        const result = await publishLinkedInPost("dealroom-morning");
+        console.log(`[SchedulerManager] ✅ LinkedIn DEALROOM MATTINO: ${result.published}/1 post pubblicati`);
+        if (result.errors.length > 0) {
+          console.error("[SchedulerManager] ⚠️ LinkedIn DEALROOM MATTINO errori:", result.errors);
+        }
+        invalidateBySection("home");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore LinkedIn DEALROOM MATTINO:", err);
+      }
+    });
+  }, { timezone: TZ });
   // 2° Editoriale AI — 12:30 CET (ricerche di mercato AI di alto livello)
   cron.schedule("30 12 * * *", async () => {
     console.log("[SchedulerManager] ⏰ 12:30 CET — Pubblicazione LinkedIn 2° EDITORIALE AI (ricerche di mercato)...");
@@ -702,7 +719,7 @@ export function startAllSchedulers(): void {
 
   // ══════════════════════════════════════════════════════════════════════════
   // CATCH-UP LINKEDIN — all'avvio, recupera i post mancati se il cron era offline
-  // Slot IT: morning (10:00), ai-research-morning (12:30), research (14:30), research-afternoon (16:00), startup-evening (18:00)
+  // Slot IT: morning (10:00), dealroom-morning (11:00), ai-research-morning (12:30), research (14:30), research-afternoon (16:00), startup-evening (18:00)
   // [DISABILITATO EN] Slot EN serali rimossi dal catch-up
   // ══════════════════════════════════════════════════════════════════════════
   setTimeout(async () => {
@@ -721,6 +738,7 @@ export function startAllSchedulers(): void {
       // Catch-up slot definitions: [slot, scheduledMinutes]
       const catchUpSlots: Array<[string, number, string]> = [
         ["morning", 10 * 60, "MATTINO (10:00)"],
+        ["dealroom-morning", 11 * 60, "DEALROOM MATTINO (11:00)"],
         ["ai-research-morning", 12 * 60 + 30, "2° EDITORIALE AI (12:30)"],
         ["research", 14 * 60 + 30, "RICERCHE (14:30)"],
         ["research-afternoon", 16 * 60, "2° RICERCHE (16:00)"],
@@ -1045,6 +1063,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   📧 Newsletter Promozionali -> DISABILITATE (rimossa 2026-04-12)");
   console.log("[SchedulerManager]   Morning Health Report -> ogni giorno alle 08:00 CET -> info@andreacinelli.com");
   console.log("[SchedulerManager]   💼 LinkedIn MATTINO       → ogni giorno alle 10:00 CET (AI News)");
+  console.log("[SchedulerManager]   💰 LinkedIn DEALROOM      → ogni giorno alle 11:00 CET (Funding & VC)");
   console.log("[SchedulerManager]   💼 LinkedIn 2° EDITORIALE AI → ogni giorno alle 12:30 CET (ricerche di mercato AI)");
   console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (Proof Press Research)");
   console.log("[SchedulerManager]   💼 LinkedIn 2° RICERCHE    → ogni giorno alle 16:00 CET (2° Proof Press Research)");

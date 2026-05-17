@@ -66,6 +66,7 @@ const DAYS = [
 
 const LINKEDIN_SLOTS = [
   { time: "10:00", type: "Post MATTINO — AI News", content: "Notizia AI del giorno con analisi editoriale" },
+  { time: "11:00", type: "Dealroom — Funding & VC", content: "Round di investimento, deal VC, funding italiani ed europei" },
   { time: "12:30", type: "2° Editoriale AI — Ricerche di Mercato", content: "Analisi settoriale AI di alto livello" },
   { time: "14:30", type: "Post RICERCHE — Proof Press Research", content: "Ricerca AI/Startup/VC del giorno" },
   { time: "16:00", type: "2° RICERCHE — Proof Press Research", content: "Secondo report di ricerca del giorno" },
@@ -84,6 +85,7 @@ const RECAP_NL = [
 
 const RECAP_LI = [
   { label: "Post MATTINO — AI News", days: "Ogni giorno", time: "10:00" },
+  { label: "Dealroom — Funding & VC", days: "Ogni giorno", time: "11:00" },
   { label: "2° Editoriale AI", days: "Ogni giorno", time: "12:30" },
   { label: "Post RICERCHE", days: "Ogni giorno", time: "14:30" },
   { label: "2° RICERCHE", days: "Ogni giorno", time: "16:00" },

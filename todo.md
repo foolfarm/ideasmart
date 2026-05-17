@@ -3670,3 +3670,10 @@
 - [x] Rimossi i 4 slot EN dal catch-up all'avvio
 - [x] Aggiunto log informativo: "Slot LinkedIn EN serali DISABILITATI (20:00-23:30)"
 - [x] TypeScript: 0 errori
+
+## Slot LinkedIn Dealroom 11:00 (17/05/2026)
+- [x] Aggiungere slot 'dealroom-morning' in linkedinPublisher.ts (type + prompt)
+- [x] Aggiungere cron 11:00 CET in schedulerManager.ts
+- [x] Aggiungere slot nel catch-up all'avvio
+- [x] Aggiornare log di riepilogo e commento intestazione
+- [x] Aggiornare tabella di programmazione visibile nel pannello admin

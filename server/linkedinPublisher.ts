@@ -316,7 +316,7 @@ async function auditPrePublish(postText: string, imageUrl: string | null, slot: 
 }
 
 // ── Slot giornalieri ─────────────────────────────────────────────────────────
-export type LinkedInSlot = "morning" | "ai-research-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening" | "en-evening-news" | "en-ai-research" | "en-research" | "en-research-late" | "weekend-digest" | "thought-leadership";
+export type LinkedInSlot = "morning" | "ai-research-morning" | "dealroom-morning" | "research" | "research-afternoon" | "dealroom" | "startup-afternoon" | "startup-evening" | "ai-tool-radar" | "afternoon" | "evening" | "en-evening-news" | "en-ai-research" | "en-research" | "en-research-late" | "weekend-digest" | "thought-leadership";
 
 // ── Sezioni supportate per LinkedIn ──────────────────────────────────────────
 type LinkedInSection = "ai" | "startup" | "dealroom" | "research";
@@ -354,6 +354,7 @@ function selectSection(slot: LinkedInSlot): LinkedInSection {
   if (slot === "startup-afternoon") return "startup";
   if (slot === "startup-evening") return "startup";
   if (slot === "ai-tool-radar") return "ai";
+  if (slot === "dealroom-morning") return "dealroom";
   if (slot === "dealroom") return "dealroom";
   // English evening slots
   if (slot === "en-evening-news") return "ai";
@@ -543,6 +544,20 @@ LINGUAGGIO TECNICO OBBLIGATORIO: Usa terminologia VC precisa — pre-money/post-
 Non aggiungere CTA o link aggiuntivi: vengono inseriti automaticamente dal sistema
 
 HASHTAG DEDICATI SERA: #VentureCapital #StartupEurope #StartupItalia #Funding #PrivateEquity #Dealflow #ProofPress #VC`;
+  } else if (slot === "dealroom-morning") {
+    slotNote = `Questo è il POST DEALROOM MATTINO (11:00) — Sezione Funding & VC.
+Tono: insider del mondo VC e degli investimenti. Il tuo pubblico è composto da founder, investitori e manager che leggono la mattina per aggiornarsi sui deal della notte.
+Focus: analizza il round/deal di investimento più rilevante delle ultime 24 ore — chi ha raccolto, quanto, da chi, e perché è strategicamente importante per l'ecosistema italiano ed europeo.
+Struttura:
+1. APERTURA (2-3 righe): inizia con il dato concreto del deal (es. "X ha chiuso un Series B da Y milioni guidato da Z"). Non iniziare con "Oggi", "Ho analizzato".
+2. SVILUPPO (2 paragrafi): contestualizza il deal — settore, posizionamento competitivo, trend di mercato che lo spiega. Usa dati (valuation, ARR, crescita) se disponibili.
+3. IMPLICAZIONE (1 paragrafo): cosa significa per l'ecosistema italiano/europeo? Chi sono i vincitori e i perdenti?
+4. CHIUSURA (1-2 righe): una domanda o provocazione per chi investe o fonda startup.
+5. FIRMA: NON aggiungere firma — viene inserita automaticamente dal sistema
+6. CTA: NON aggiungere CTA o link — vengono inseriti automaticamente dal sistema
+7. HASHTAG: #Dealroom #Funding #VentureCapital #Startup #Investment #ProofPress #StartupItalia #VC
+LUNGHEZZA: MASSIMO 3000 caratteri. Target 1500-2200 caratteri.
+EVITA: asterischi per formattazione, frasi in seconda persona ("puoi", "devi"), tono da consulente teorico.`;
   } else if (slot === "dealroom") {
     slotNote = `Questo è il POST DEALROOM (18:00) — Sezione Funding & VC.
 Tono: insider del mondo VC. Il tuo pubblico vuole sapere chi ha raccolto quanto e perché è rilevante.
@@ -1298,6 +1313,7 @@ export async function publishLinkedInPost(
     "startup-afternoon": "STARTUP POMERIGGIO (14:30)",
     "startup-evening": "STARTUP NEWS SERA (18:00)",
     "ai-tool-radar": "AI TOOL RADAR (legacy)",
+    "dealroom-morning": "DEALROOM MATTINO (11:00)",
     dealroom: "DEALROOM (legacy)",
     afternoon: "POMERIGGIO (legacy)",
     evening: "SERA (legacy)",
@@ -1519,6 +1535,22 @@ export async function publishLinkedInPost(
     contentKeyTrend = research.keyTrend;
     contentImageUrl = research.imageUrl;
     console.log(`[LinkedIn] 🔬 Ricerca selezionata: "${contentTitle.slice(0, 60)}..."`);
+  } else if (slot === "dealroom-morning") {
+    // Slot Dealroom Mattino (11:00): recupera il deal più rilevante delle ultime 24h
+    const deal = await getDealForLinkedIn(recentPostTitles);
+    if (!deal) {
+      console.warn(`[LinkedIn] ⚠️ Nessun deal disponibile per slot ${slotLabel}. Pubblicazione saltata.`);
+      return {
+        published: 0,
+        errors: ["Nessun deal disponibile per il post LinkedIn Dealroom Mattino"],
+        posts: []
+      };
+    }
+    contentTitle = deal.title;
+    contentBody = deal.body;
+    contentKeyTrend = deal.keyTrend;
+    contentImageUrl = deal.imageUrl;
+    console.log(`[LinkedIn] 💰 Deal mattino selezionato: "${contentTitle.slice(0, 60)}..."`);
   } else if (slot === "dealroom") {
     // Slot Dealroom: recupera uno degli ultimi deal
     const deal = await getDealForLinkedIn(recentPostTitles);
