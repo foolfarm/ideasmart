@@ -1024,25 +1024,22 @@ export function startAllSchedulers(): void {
   }, 120_000); // 2 minuti dopo l'avvio
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // DAILY METRICS REPORT — ogni giorno alle 18:00 CET
-  // Invia report con metriche sito a ac@acinelli.com:
-  // A) Nuovi iscritti + totale mailing list
-  // B) Newsletter inviate oggi (destinatari, aperture, tasso)
-  // C) Post LinkedIn pubblicati oggi
-  // D) Contenuti generati oggi (AI, Startup, Dealroom, Research)
+  // DAILY METRICS REPORT — [DISABILITATO 17/05/2026]
+  // Sostituito dal Report Newsletter 18:35 come unico report serale.
+  // Troppi report email nello stesso orario (18:00 + 18:35).
   // ═══════════════════════════════════════════════════════════════════════════
-  cron.schedule(
-    "0 0 18 * * *", // ogni giorno alle 18:00 CET
-    () => withLock("dailyMetricsReport", async () => {
-      console.log("[SchedulerManager] 📊 18:00 CET — Invio report giornaliero metriche...");
-      try {
-        await sendDailyMetricsReport();
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Daily metrics report errore:", err);
-      }
-    }),
-    { timezone: TZ }
-  );
+  // cron.schedule(
+  //   "0 0 18 * * *", // ogni giorno alle 18:00 CET
+  //   () => withLock("dailyMetricsReport", async () => {
+  //     console.log("[SchedulerManager] 📊 18:00 CET — Invio report giornaliero metriche...");
+  //     try {
+  //       await sendDailyMetricsReport();
+  //     } catch (err) {
+  //       console.error("[SchedulerManager] ❌ Daily metrics report errore:", err);
+  //     }
+  //   }),
+  //   { timezone: TZ }
+  // );
 
   // ── Log riepilogo ─────────────────────────────────────────────────────────
   console.log("[SchedulerManager] ✅ Scheduler attivi (sezioni: AI, Startup, DEALROOM, Research):");
@@ -1082,7 +1079,7 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🔬 Research        → lun/mer/ven alle 06:00 CET (10 ricerche AI/Startup/VC)");
   console.log("[SchedulerManager]   🧠 Channel Ingestor → lun/mer/ven alle 00:00 CET (RSS + AI per 6 canali)");
   console.log("[SchedulerManager]   📅 Events Aggregator → ogni 12 ore alle 06:30 e 18:30 CET (Luma ICS + RSS italiani)");
-  console.log("[SchedulerManager]   📊 Daily Metrics Report → ogni giorno alle 18:00 CET (iscritti, NL, LinkedIn, contenuti) → ac@acinelli.com");
+  console.log("[SchedulerManager]   📊 Daily Metrics Report → [DISABILITATO 17/05/2026] — sostituito da Report Newsletter 18:35");
 
   // ═══════════════════════════════════════════════════════════════════════════
   // EVENTS AGGREGATOR — ogni 12 ore (06:30 e 18:30 CET)

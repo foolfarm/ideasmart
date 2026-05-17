@@ -3677,3 +3677,9 @@
 - [x] Aggiungere slot nel catch-up all'avvio
 - [x] Aggiornare log di riepilogo e commento intestazione
 - [x] Aggiornare tabella di programmazione visibile nel pannello admin
+
+## Pulizia Report Email (17/05/2026)
+- [x] Disabilitare Daily Metrics Report 18:00 in schedulerManager.ts
+- [ ] Verificare se IdeaSmart EN (cloud) ha lo stesso report e disabilitarlo (EN ha LinkedIn e Newsletter DISABILITATI per design)
+- [x] Mantenere solo Report Newsletter 18:35 come unico report serale
+- [x] TypeScript: 0 errori
