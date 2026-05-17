@@ -278,7 +278,7 @@ Trend: 1 frase su cosa emerge (max 2 righe)
 
 #AI #AITools #ProofPress
 
-Andrea Cinelli | ProofPress Magazine
+NON aggiungere firma — viene inserita automaticamente dal sistema.
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
 
@@ -298,7 +298,7 @@ RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii brevissimo.`;
     const cutPoint = text.lastIndexOf('\n', 2950);
     text = text.slice(0, cutPoint > 2000 ? cutPoint : 2950);
     if (!text.includes('proofpress.ai')) {
-      text += '\n\nAndrea Cinelli | ProofPress Magazine | proofpress.ai';
+      text += '\n\nAndrea Cinelli\nTech Editor — ProofPress Magazine\n\n📊 ProofPress Magazine\n→ Italian Edition: proofpress.ai\n→ International Edition: proofpress.biz\n\n🚀 Base Alpha — The Next Tech Observatory\n→ lnkd.in/dDT9svDC\n\n📬 Buongiorno ProofPress — la newsletter quotidiana\n→ proofpress.ai/buongiorno';
     }
   }
   return text;

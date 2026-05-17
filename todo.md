@@ -3689,3 +3689,12 @@
 - [x] Aggiornare slot IT: se editoriale già usato oggi, cerca il secondo più recente (anti-duplicato cross-slot)
 - [x] Aggiungere import dailyEditorial in linkedinPublisher.ts
 - [x] TypeScript: 0 errori
+
+## Fix Firma LinkedIn — Correzione Completa (17/05/2026)
+- [x] Verificato DB: tutti i post IT di oggi (17/05) hanno firma corretta (Andrea Cinelli\nTech Editor — ProofPress Magazine + 4 blocchi)
+- [x] Tracciato percorso codice startup-evening: wrapPostWithHeader viene chiamata correttamente
+- [x] Corretto dailyContentScheduler.ts: firma vecchia "Andrea Cinelli | ProofPress Magazine" + vecchi link → firma corretta a 4 blocchi
+- [x] Corretto aiToolRadar.ts: rimossa firma dal prompt LLM (ora dice "NON aggiungere firma"), corretto fallback troncamento
+- [x] Corretto cloud ideasmart-en: aggiunto filtro !(l === "Andrea Cinelli") e filtri blocchi footer per eliminare firma duplicata nei post EN
+- [x] Riavviato server PM2 ideasmart-en sul cloud computer
+- [x] TypeScript: 0 errori su Manus (errori cloud preesistenti in BuongiornoNewsletter.tsx non correlati)
