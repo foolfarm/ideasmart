@@ -629,79 +629,81 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SLOT SERALI IN INGLESE: 20:00, 21:30, 22:30, 23:30 CET
-  // Quattro post in lingua inglese per il pubblico internazionale
+  // SLOT SERALI IN INGLESE: 20:00, 21:30, 22:30, 23:30 CET — DISABILITATI
+  // Disabilitati il 17/05/2026 su richiesta — pubblico target principalmente IT
+  // Per riabilitare: decommentare i blocchi cron.schedule qui sotto
   // ══════════════════════════════════════════════════════════════════════════
-  cron.schedule("0 20 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 20:00 CET — Pubblicazione LinkedIn EN AI NEWS SERA...");
-    await withLock("linkedin-en-evening-news", async () => {
-      try {
-        const result = await publishLinkedInPost("en-evening-news");
-        console.log(`[SchedulerManager] ✅ LinkedIn EN AI NEWS SERA: ${result.published}/1 post pubblicati`);
-        if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN AI NEWS SERA errori:", result.errors);
-        invalidateBySection("home");
-      } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN AI NEWS SERA:", err); }
-    });
-  }, { timezone: TZ });
+  console.log('[SchedulerManager] ℹ️ Slot LinkedIn EN serali DISABILITATI (20:00-23:30) — pubblico target IT');
+  // [DISABILITATO EN] cron.schedule("0 20 * * *", async () => {
+  // [DISABILITATO EN] console.log("[SchedulerManager] ⏰ 20:00 CET — Pubblicazione LinkedIn EN AI NEWS SERA...");
+  // [DISABILITATO EN] await withLock("linkedin-en-evening-news", async () => {
+  // [DISABILITATO EN] try {
+  // [DISABILITATO EN] const result = await publishLinkedInPost("en-evening-news");
+  // [DISABILITATO EN] console.log(`[SchedulerManager] ✅ LinkedIn EN AI NEWS SERA: ${result.published}/1 post pubblicati`);
+  // [DISABILITATO EN] if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN AI NEWS SERA errori:", result.errors);
+  // [DISABILITATO EN] invalidateBySection("home");
+  // [DISABILITATO EN] } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN AI NEWS SERA:", err); }
+  // [DISABILITATO EN] });
+  // [DISABILITATO EN] }, { timezone: TZ });
 
-  cron.schedule("30 21 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 21:30 CET — Pubblicazione LinkedIn EN 2° EDITORIALE AI...");
-    await withLock("linkedin-en-ai-research", async () => {
-      try {
-        const result = await publishLinkedInPost("en-ai-research");
-        console.log(`[SchedulerManager] ✅ LinkedIn EN 2° EDITORIALE AI: ${result.published}/1 post pubblicati`);
-        if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN 2° EDITORIALE AI errori:", result.errors);
-        invalidateBySection("home");
-      } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN 2° EDITORIALE AI:", err); }
-    });
-  }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("30 21 * * *", async () => {
+  // [DISABILITATO EN] console.log("[SchedulerManager] ⏰ 21:30 CET — Pubblicazione LinkedIn EN 2° EDITORIALE AI...");
+  // [DISABILITATO EN] await withLock("linkedin-en-ai-research", async () => {
+  // [DISABILITATO EN] try {
+  // [DISABILITATO EN] const result = await publishLinkedInPost("en-ai-research");
+  // [DISABILITATO EN] console.log(`[SchedulerManager] ✅ LinkedIn EN 2° EDITORIALE AI: ${result.published}/1 post pubblicati`);
+  // [DISABILITATO EN] if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN 2° EDITORIALE AI errori:", result.errors);
+  // [DISABILITATO EN] invalidateBySection("home");
+  // [DISABILITATO EN] } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN 2° EDITORIALE AI:", err); }
+  // [DISABILITATO EN] });
+  // [DISABILITATO EN] }, { timezone: TZ });
 
-  cron.schedule("30 22 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 22:30 CET — Pubblicazione LinkedIn EN RICERCHE...");
-    await withLock("linkedin-en-research", async () => {
-      try {
-        const result = await publishLinkedInPost("en-research");
-        console.log(`[SchedulerManager] ✅ LinkedIn EN RICERCHE: ${result.published}/1 post pubblicati`);
-        if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN RICERCHE errori:", result.errors);
-        invalidateBySection("home");
-      } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN RICERCHE:", err); }
-    });
-  }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("30 22 * * *", async () => {
+  // [DISABILITATO EN] console.log("[SchedulerManager] ⏰ 22:30 CET — Pubblicazione LinkedIn EN RICERCHE...");
+  // [DISABILITATO EN] await withLock("linkedin-en-research", async () => {
+  // [DISABILITATO EN] try {
+  // [DISABILITATO EN] const result = await publishLinkedInPost("en-research");
+  // [DISABILITATO EN] console.log(`[SchedulerManager] ✅ LinkedIn EN RICERCHE: ${result.published}/1 post pubblicati`);
+  // [DISABILITATO EN] if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN RICERCHE errori:", result.errors);
+  // [DISABILITATO EN] invalidateBySection("home");
+  // [DISABILITATO EN] } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN RICERCHE:", err); }
+  // [DISABILITATO EN] });
+  // [DISABILITATO EN] }, { timezone: TZ });
 
-  cron.schedule("30 23 * * *", async () => {
-    console.log("[SchedulerManager] ⏰ 23:30 CET — Pubblicazione LinkedIn EN 3° RICERCHE...");
-    await withLock("linkedin-en-research-late", async () => {
-      try {
-        const result = await publishLinkedInPost("en-research-late");
-        console.log(`[SchedulerManager] ✅ LinkedIn EN 3° RICERCHE: ${result.published}/1 post pubblicati`);
-        if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN 3° RICERCHE errori:", result.errors);
-        invalidateBySection("home");
-      } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN 3° RICERCHE:", err); }
-    });
-  }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("30 23 * * *", async () => {
+  // [DISABILITATO EN] console.log("[SchedulerManager] ⏰ 23:30 CET — Pubblicazione LinkedIn EN 3° RICERCHE...");
+  // [DISABILITATO EN] await withLock("linkedin-en-research-late", async () => {
+  // [DISABILITATO EN] try {
+  // [DISABILITATO EN] const result = await publishLinkedInPost("en-research-late");
+  // [DISABILITATO EN] console.log(`[SchedulerManager] ✅ LinkedIn EN 3° RICERCHE: ${result.published}/1 post pubblicati`);
+  // [DISABILITATO EN] if (result.errors.length > 0) console.error("[SchedulerManager] ⚠️ LinkedIn EN 3° RICERCHE errori:", result.errors);
+  // [DISABILITATO EN] invalidateBySection("home");
+  // [DISABILITATO EN] } catch (err) { console.error("[SchedulerManager] ❌ Errore LinkedIn EN 3° RICERCHE:", err); }
+  // [DISABILITATO EN] });
+  // [DISABILITATO EN] }, { timezone: TZ });
 
   // Invalidazione cache dopo slot serali inglesi
-  cron.schedule("5 20 * * *", async () => {
-    try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN AI NEWS SERA"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
-  }, { timezone: TZ });
-  cron.schedule("35 21 * * *", async () => {
-    try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN 2° EDITORIALE AI"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
-  }, { timezone: TZ });
-  cron.schedule("35 22 * * *", async () => {
-    try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN RICERCHE"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
-  }, { timezone: TZ });
-  cron.schedule("35 23 * * *", async () => {
-    try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN 3° RICERCHE"); }
-    catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
-  }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("5 20 * * *", async () => {
+  // [DISABILITATO EN] try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN AI NEWS SERA"); }
+  // [DISABILITATO EN] catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
+  // [DISABILITATO EN] }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("35 21 * * *", async () => {
+  // [DISABILITATO EN] try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN 2° EDITORIALE AI"); }
+  // [DISABILITATO EN] catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
+  // [DISABILITATO EN] }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("35 22 * * *", async () => {
+  // [DISABILITATO EN] try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN RICERCHE"); }
+  // [DISABILITATO EN] catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
+  // [DISABILITATO EN] }, { timezone: TZ });
+  // [DISABILITATO EN] cron.schedule("35 23 * * *", async () => {
+  // [DISABILITATO EN] try { invalidateBySection(CACHE_KEYS.PUNTO_DEL_GIORNO); console.log("[SchedulerManager] ✅ Cache invalidata dopo LinkedIn EN 3° RICERCHE"); }
+  // [DISABILITATO EN] catch (err) { console.error("[SchedulerManager] ❌ Errore invalidazione cache:", err); }
+  // [DISABILITATO EN] }, { timezone: TZ });
 
   // ══════════════════════════════════════════════════════════════════════════
   // CATCH-UP LINKEDIN — all'avvio, recupera i post mancati se il cron era offline
   // Slot IT: morning (10:00), ai-research-morning (12:30), research (14:30), research-afternoon (16:00), startup-evening (18:00)
-  // Slot EN: en-evening-news (20:00), en-ai-research (21:30), en-research (22:30), en-research-late (23:30)
+  // [DISABILITATO EN] Slot EN serali rimossi dal catch-up
   // ══════════════════════════════════════════════════════════════════════════
   setTimeout(async () => {
     try {
@@ -723,10 +725,10 @@ export function startAllSchedulers(): void {
         ["research", 14 * 60 + 30, "RICERCHE (14:30)"],
         ["research-afternoon", 16 * 60, "2° RICERCHE (16:00)"],
         ["startup-evening", 18 * 60, "STARTUP NEWS SERA (18:00)"],
-        ["en-evening-news", 20 * 60, "EN AI NEWS SERA (20:00)"],
-        ["en-ai-research", 21 * 60 + 30, "EN 2° EDITORIALE AI (21:30)"],
-        ["en-research", 22 * 60 + 30, "EN RICERCHE (22:30)"],
-        ["en-research-late", 23 * 60 + 30, "EN 3° RICERCHE (23:30)"],
+        // [DISABILITATO EN] ["en-evening-news", 20 * 60, "EN AI NEWS SERA (20:00)"],
+        // [DISABILITATO EN] ["en-ai-research", 21 * 60 + 30, "EN 2° EDITORIALE AI (21:30)"],
+        // [DISABILITATO EN] ["en-research", 22 * 60 + 30, "EN RICERCHE (22:30)"],
+        // [DISABILITATO EN] ["en-research-late", 23 * 60 + 30, "EN 3° RICERCHE (23:30)"],
       ];
 
       for (const [slotName, scheduledMin, label] of catchUpSlots) {
@@ -1047,10 +1049,10 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   💼 LinkedIn RICERCHE      → ogni giorno alle 14:30 CET (Proof Press Research)");
   console.log("[SchedulerManager]   💼 LinkedIn 2° RICERCHE    → ogni giorno alle 16:00 CET (2° Proof Press Research)");
   console.log("[SchedulerManager]   💼 LinkedIn STARTUP NEWS SERA → ogni giorno alle 18:00 CET (round, exit, startup IT/EU)");
-  console.log("[SchedulerManager]   🇬🇧 LinkedIn EN AI NEWS SERA  → ogni giorno alle 20:00 CET (AI news in English)");
-  console.log("[SchedulerManager]   🇬🇧 LinkedIn EN 2° EDITORIALE → ogni giorno alle 21:30 CET (AI research in English)");
-  console.log("[SchedulerManager]   🇬🇧 LinkedIn EN RICERCHE     → ogni giorno alle 22:30 CET (ProofPress Research in English)");
-  console.log("[SchedulerManager]   🇬🇧 LinkedIn EN 3° RICERCHE  → ogni giorno alle 23:30 CET (late-night research in English)");
+  // [DISABILITATO EN] console.log("[SchedulerManager]   🇬🇧 LinkedIn EN AI NEWS SERA  → ogni giorno alle 20:00 CET (AI news in English)");
+  // [DISABILITATO EN] console.log("[SchedulerManager]   🇬🇧 LinkedIn EN 2° EDITORIALE → ogni giorno alle 21:30 CET (AI research in English)");
+  // [DISABILITATO EN] console.log("[SchedulerManager]   🇬🇧 LinkedIn EN RICERCHE     → ogni giorno alle 22:30 CET (ProofPress Research in English)");
+  // [DISABILITATO EN] console.log("[SchedulerManager]   🇬🇧 LinkedIn EN 3° RICERCHE  → ogni giorno alle 23:30 CET (late-night research in English)");
   console.log("[SchedulerManager]   🏥 Health Check    → ogni ora (verifica contenuti sito produzione, alert email se problemi)");
    console.log("[SchedulerManager]   Keep-Alive      -> ping HTTP ogni 4 ore per prevenire ibernazione sandbox");
   console.log("[SchedulerManager]   [OFF] Catch-up NL     -> DISABILITATO (richiede approvazione manuale)");

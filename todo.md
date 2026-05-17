@@ -3663,3 +3663,10 @@
 - [x] Rimosso import inutilizzato publishDailyLinkedInPosts da routers.ts (solo importato, non usato)
 - [x] Scheduling LinkedIn verificato: 9 slot attivi (5 IT + 4 EN) + weekend-digest + thought-leadership
 - [x] TypeScript: 0 errori
+
+## Disabilitazione Slot LinkedIn EN Serali (17/05/2026)
+- [x] Commentati i 4 cron EN serali: 20:00 (en-evening-news), 21:30 (en-ai-research), 22:30 (en-research), 23:30 (en-research-late)
+- [x] Commentate le 4 invalidazioni cache correlate (20:05, 21:35, 22:35, 23:35)
+- [x] Rimossi i 4 slot EN dal catch-up all'avvio
+- [x] Aggiunto log informativo: "Slot LinkedIn EN serali DISABILITATI (20:00-23:30)"
+- [x] TypeScript: 0 errori
