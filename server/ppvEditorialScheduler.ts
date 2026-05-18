@@ -761,193 +761,205 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProofPress Verify™ — ${page.product}</title>
+<title>${page.product} — ProofPress Magazine</title>
 </head>
-<body style="margin:0;padding:0;background:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f2f5;padding:24px 0;">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+<body style="margin:0;padding:0;background:#0a0f1e;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0f1e;padding:0;">
+<tr><td align="center" style="padding:0;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;max-width:600px;width:100%;">
 
-  <!-- HEADER PROOFPRESS -->
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HEADER DARK — PROOFPRESS MAGAZINE
+  ══════════════════════════════════════════════════════════════════════════ -->
   <tr>
-    <td style="background:#0a0f1e;padding:20px 32px;">
+    <td style="background:#0a0f1e;padding:16px 28px;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
-          <td><p style="margin:0;color:#00e5c8;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">ProofPress Magazine · ${dateFormatted}</p></td>
-          <td align="right"><a href="https://proofpress.ai" style="color:#888;font-size:11px;text-decoration:none;">proofpress.ai</a></td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- SALUTO PRINCIPALE -->
-  <tr>
-    <td style="background:linear-gradient(135deg,#0a0f1e 0%,#1a2540 100%);padding:40px 32px 32px;text-align:center;">
-      <h1 style="margin:0 0 8px;color:#ffffff;font-size:36px;font-weight:900;letter-spacing:-1px;line-height:1;">BUON POMERIGGIO</h1>
-      <p style="margin:0 0 24px;color:#00e5c8;font-size:18px;font-weight:600;letter-spacing:1px;">La redazione di ProofPress consiglia</p>
-      <div style="display:inline-block;background:rgba(255,85,0,0.15);border:1px solid #ff5500;border-radius:20px;padding:6px 16px;">
-        <p style="margin:0;color:#ff5500;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">OGGI: ${page.product}</p>
-      </div>
-    </td>
-  </tr>
-
-  <!-- HERO IMAGE (Pexels) -->
-  <tr>
-    <td style="padding:0;">
-      <img src="${imgs.hero}" alt="${page.product}" width="600" style="display:block;width:100%;max-width:600px;height:280px;object-fit:cover;" />
-    </td>
-  </tr>
-
-  <!-- INTRO -->
-  <tr>
-    <td style="padding:32px 32px 16px;">
-      <p style="margin:0 0 8px;color:#ff5500;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">${productLabel}</p>
-      <h2 style="margin:0 0 12px;color:#0a0f1e;font-size:28px;font-weight:800;line-height:1.2;">${page.product}</h2>
-      <p style="margin:0 0 12px;color:#333;font-size:15px;font-weight:600;line-height:1.5;">${desc.tagline}</p>
-      <p style="margin:0;color:#555;font-size:14px;line-height:1.7;">${desc.intro}</p>
-    </td>
-  </tr>
-
-  <!-- STATS -->
-  <tr>
-    <td style="padding:16px 32px 24px;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fa;border-radius:8px;overflow:hidden;">
-        <tr>
-          ${desc.stats.map(s => `
-          <td style="padding:16px;text-align:center;border-right:1px solid #e9ecef;">
-            <p style="margin:0 0 4px;color:#ff5500;font-size:20px;font-weight:900;">${s.value}</p>
-            <p style="margin:0;color:#666;font-size:11px;line-height:1.3;">${s.label}</p>
-          </td>`).join("")}
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- SEZIONE 1: COME FUNZIONA (testo sinistra + immagine destra) -->
-  <tr>
-    <td style="padding:0 32px 24px;">
-      <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">COME FUNZIONA</p>
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="vertical-align:top;width:300px;padding-right:16px;">
-            ${desc.howItWorks.map(h => `
-            <table cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
-              <tr>
-                <td style="vertical-align:top;width:32px;">
-                  <div style="background:#0a0f1e;color:#00e5c8;font-size:10px;font-weight:900;width:26px;height:26px;border-radius:50%;text-align:center;line-height:26px;">${h.step}</div>
-                </td>
-                <td style="padding-left:8px;vertical-align:top;">
-                  <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${h.title}</p>
-                  <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${h.desc}</p>
-                </td>
-              </tr>
-            </table>`).join("")}
+          <td>
+            <span style="color:#00e5c8;font-family:Arial,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">PROOFPRESS MAGAZINE</span>
           </td>
-          <td style="vertical-align:top;width:268px;">
-            <img src="${imgs.mid}" alt="Come funziona ${page.product}" width="268" style="display:block;width:100%;border-radius:8px;object-fit:cover;height:220px;" />
+          <td align="right">
+            <span style="color:#555;font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;">${dateFormatted}</span>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- SEZIONE 2: FUNZIONALITÀ (immagine sinistra + testo destra) -->
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HERO FULL-WIDTH — IMMAGINE + OVERLAY TESTO
+  ══════════════════════════════════════════════════════════════════════════ -->
   <tr>
-    <td style="padding:0 32px 24px;background:#fafafa;">
-      <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">FUNZIONALITÀ CHIAVE</p>
-      <table width="100%" cellpadding="0" cellspacing="0">
+    <td style="padding:0;position:relative;">
+      <img src="${imgs.hero}" alt="${page.product}" width="600" style="display:block;width:100%;max-width:600px;height:340px;object-fit:cover;" />
+      <!-- Overlay scuro sopra l'immagine -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(10,15,30,0.82);margin-top:-340px;position:relative;">
         <tr>
-          <td style="vertical-align:top;width:200px;padding-right:16px;">
-            <img src="${imgs.bottom}" alt="Funzionalità ${page.product}" width="200" style="display:block;width:100%;border-radius:8px;object-fit:cover;height:200px;" />
-          </td>
-          <td style="vertical-align:top;">
-            ${desc.features.map(f => `
-            <table cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
-              <tr>
-                <td style="vertical-align:top;font-size:16px;width:24px;">${f.icon}</td>
-                <td style="padding-left:6px;vertical-align:top;">
-                  <p style="margin:0 0 2px;color:#0a0f1e;font-size:12px;font-weight:700;">${f.title}</p>
-                  <p style="margin:0;color:#666;font-size:11px;line-height:1.4;">${f.desc}</p>
-                </td>
-              </tr>
-            </table>`).join("")}
+          <td style="padding:40px 28px 36px;">
+            <p style="margin:0 0 10px;font-family:Arial,sans-serif;color:#ff5500;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">${productLabel}</p>
+            <h1 style="margin:0 0 14px;font-family:Georgia,serif;color:#ffffff;font-size:42px;font-weight:900;line-height:1.1;letter-spacing:-1px;">${page.product}</h1>
+            <p style="margin:0 0 28px;font-family:Georgia,serif;color:#e0e8ff;font-size:20px;font-style:italic;line-height:1.4;">${desc.tagline}</p>
+            <a href="${desc.ctaUrl}" style="display:inline-block;background:#ff5500;color:#ffffff;font-family:Arial,sans-serif;font-size:17px;font-weight:800;padding:16px 36px;border-radius:6px;text-decoration:none;letter-spacing:0.5px;">${desc.cta} &rarr;</a>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- PER CHI -->
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       INTRO — TESTO GRANDE
+  ══════════════════════════════════════════════════════════════════════════ -->
   <tr>
-    <td style="padding:16px 32px 24px;">
-      <p style="margin:0 0 16px;color:#0a0f1e;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid #00e5c8;padding-bottom:8px;">PER CHI È</p>
+    <td style="background:#ffffff;padding:40px 28px 32px;">
+      <p style="margin:0;font-family:Georgia,serif;color:#1a1a2e;font-size:19px;line-height:1.75;">${desc.intro}</p>
+    </td>
+  </tr>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       STATS — NUMERI GRANDI SU SFONDO SCURO
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#0a0f1e;padding:36px 28px;">
+      <p style="margin:0 0 24px;font-family:Arial,sans-serif;color:#00e5c8;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;text-align:center;">I NUMERI CHE CONTANO</p>
       <table width="100%" cellpadding="0" cellspacing="0">
-        ${desc.targets.map(t => `
         <tr>
-          <td style="padding:8px 0;vertical-align:top;width:32px;font-size:18px;">${t.icon}</td>
-          <td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #f0f0f0;">
-            <p style="margin:0 0 2px;color:#0a0f1e;font-size:13px;font-weight:700;">${t.title}</p>
-            <p style="margin:0;color:#666;font-size:12px;line-height:1.5;">${t.desc}</p>
-          </td>
-        </tr>`).join("")}
+          ${desc.stats.map((s, i) => `
+          <td style="text-align:center;padding:0 8px;${i < desc.stats.length - 1 ? 'border-right:1px solid rgba(255,255,255,0.1);' : ''}">
+            <p style="margin:0 0 6px;font-family:Arial,sans-serif;color:#ff5500;font-size:36px;font-weight:900;line-height:1;">${s.value}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;color:#8899bb;font-size:12px;line-height:1.4;">${s.label}</p>
+          </td>`).join('')}
+        </tr>
       </table>
+    </td>
+  </tr>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       CTA #2 — PRIMA CTA INTERMEDIA
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#ff5500;padding:28px;text-align:center;">
+      <p style="margin:0 0 6px;font-family:Arial,sans-serif;color:rgba(255,255,255,0.85);font-size:14px;font-weight:600;">Hai 60 secondi?</p>
+      <a href="${desc.ctaUrl}" style="display:inline-block;background:#ffffff;color:#ff5500;font-family:Arial,sans-serif;font-size:18px;font-weight:900;padding:16px 40px;border-radius:6px;text-decoration:none;letter-spacing:0.5px;">${desc.cta} &rarr;</a>
+    </td>
+  </tr>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       COME FUNZIONA — STEPS FULL-WIDTH
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#f4f6fb;padding:40px 28px;">
+      <p style="margin:0 0 28px;font-family:Arial,sans-serif;color:#0a0f1e;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">COME FUNZIONA</p>
+      ${desc.howItWorks.map(h => `
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;background:#ffffff;border-radius:8px;overflow:hidden;">
+        <tr>
+          <td style="background:#0a0f1e;width:56px;text-align:center;vertical-align:middle;padding:20px 0;">
+            <span style="font-family:Arial,sans-serif;color:#00e5c8;font-size:18px;font-weight:900;">${h.step}</span>
+          </td>
+          <td style="padding:18px 20px;vertical-align:middle;">
+            <p style="margin:0 0 4px;font-family:Arial,sans-serif;color:#0a0f1e;font-size:16px;font-weight:800;">${h.title}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;color:#555;font-size:14px;line-height:1.6;">${h.desc}</p>
+          </td>
+        </tr>
+      </table>`).join('')}
+    </td>
+  </tr>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FUNZIONALITÀ — CARDS FULL-WIDTH
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#ffffff;padding:40px 28px;">
+      <p style="margin:0 0 28px;font-family:Arial,sans-serif;color:#0a0f1e;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">COSA OTTIENI</p>
+      ${desc.features.map(f => `
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;border-bottom:1px solid #f0f0f0;padding-bottom:16px;">
+        <tr>
+          <td style="width:44px;vertical-align:top;padding-top:2px;">
+            <span style="font-size:28px;">${f.icon}</span>
+          </td>
+          <td style="vertical-align:top;padding-left:12px;">
+            <p style="margin:0 0 4px;font-family:Arial,sans-serif;color:#0a0f1e;font-size:16px;font-weight:800;">${f.title}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;color:#555;font-size:14px;line-height:1.6;">${f.desc}</p>
+          </td>
+        </tr>
+      </table>`).join('')}
+    </td>
+  </tr>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       PER CHI È — LISTA GRANDE
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#f4f6fb;padding:40px 28px;">
+      <p style="margin:0 0 28px;font-family:Arial,sans-serif;color:#0a0f1e;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">PER CHI È</p>
+      ${desc.targets.map(t => `
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+        <tr>
+          <td style="width:44px;vertical-align:top;padding-top:2px;">
+            <span style="font-size:28px;">${t.icon}</span>
+          </td>
+          <td style="vertical-align:top;padding-left:12px;">
+            <p style="margin:0 0 4px;font-family:Arial,sans-serif;color:#0a0f1e;font-size:16px;font-weight:800;">${t.title}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;color:#555;font-size:14px;line-height:1.6;">${t.desc}</p>
+          </td>
+        </tr>
+      </table>`).join('')}
     </td>
   </tr>
 
   ${desc.testimonial ? `
-  <!-- TESTIMONIANZA -->
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       TESTIMONIANZA — GRANDE E VISIBILE
+  ══════════════════════════════════════════════════════════════════════════ -->
   <tr>
-    <td style="padding:0 32px 24px;">
-      <div style="background:#f0f9ff;border-left:4px solid #00e5c8;border-radius:0 8px 8px 0;padding:16px 20px;">
-        <p style="margin:0 0 12px;color:#333;font-size:14px;font-style:italic;line-height:1.6;">&ldquo;${desc.testimonial.text}&rdquo;</p>
-        <p style="margin:0;color:#0a0f1e;font-size:12px;font-weight:700;">${desc.testimonial.name} <span style="color:#888;font-weight:400;">— ${desc.testimonial.role}</span></p>
-      </div>
-    </td>
-  </tr>` : ""}
-
-  ${desc.pricing ? `
-  <!-- PRICING -->
-  <tr>
-    <td style="padding:0 32px 24px;">
-      <div style="background:linear-gradient(135deg,#0a0f1e,#1a2540);border-radius:8px;padding:16px 20px;text-align:center;">
-        <p style="margin:0;color:#ffffff;font-size:14px;font-weight:600;">${desc.pricing}</p>
-      </div>
-    </td>
-  </tr>` : ""}
-
-  <!-- CTA FINALE -->
-  <tr>
-    <td style="padding:8px 32px 0;background:linear-gradient(135deg,#0a0f1e 0%,#1a2540 100%);">
-      <table width="100%" cellpadding="0" cellspacing="0">
+    <td style="background:#0a0f1e;padding:40px 28px;">
+      <p style="margin:0 0 20px;font-family:Georgia,serif;color:#ffffff;font-size:22px;font-style:italic;line-height:1.6;">&ldquo;${desc.testimonial.text}&rdquo;</p>
+      <table cellpadding="0" cellspacing="0">
         <tr>
-          <td style="padding:32px;text-align:center;">
-            <p style="margin:0 0 8px;color:#00e5c8;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">PROVA GRATIS OGGI</p>
-            <h3 style="margin:0 0 16px;color:#ffffff;font-size:22px;font-weight:800;line-height:1.3;">Certifica il tuo primo contenuto<br/>in meno di 60 secondi</h3>
-            <p style="margin:0 0 24px;color:#aab;font-size:13px;line-height:1.6;">10 certificazioni gratuite · Nessuna carta di credito · Risultato immediato</p>
-            <a href="${desc.ctaUrl}" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:16px;font-weight:800;padding:18px 40px;border-radius:8px;text-decoration:none;letter-spacing:1px;">${desc.cta} →</a>
-            <p style="margin:16px 0 0;color:#666;font-size:11px;">Vai su <a href="${desc.ctaUrl}" style="color:#00e5c8;text-decoration:none;">${desc.ctaUrl.replace('https://', '')}</a></p>
+          <td style="background:#ff5500;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:900;width:40px;height:40px;border-radius:50%;text-align:center;line-height:40px;">${desc.testimonial.initials}</td>
+          <td style="padding-left:12px;">
+            <p style="margin:0;font-family:Arial,sans-serif;color:#ffffff;font-size:14px;font-weight:700;">${desc.testimonial.name}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;color:#8899bb;font-size:12px;">${desc.testimonial.role}</p>
           </td>
         </tr>
       </table>
     </td>
+  </tr>` : ''}
+
+  ${desc.pricing ? `
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       PRICING — GRANDE E CHIARO
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#fff8f5;border-top:4px solid #ff5500;padding:32px 28px;text-align:center;">
+      <p style="margin:0 0 8px;font-family:Arial,sans-serif;color:#ff5500;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">PREZZO</p>
+      <p style="margin:0;font-family:Arial,sans-serif;color:#0a0f1e;font-size:18px;font-weight:800;line-height:1.5;">${desc.pricing}</p>
+    </td>
+  </tr>` : ''}
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       CTA FINALE — GRANDE, DARK, IMPATTANTE
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <tr>
+    <td style="background:#0a0f1e;padding:48px 28px;text-align:center;">
+      <p style="margin:0 0 12px;font-family:Arial,sans-serif;color:#00e5c8;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;">INIZIA ADESSO</p>
+      <h2 style="margin:0 0 20px;font-family:Georgia,serif;color:#ffffff;font-size:34px;font-weight:900;line-height:1.2;">Non aspettare.<br/>Il momento giusto è adesso.</h2>
+      <p style="margin:0 0 32px;font-family:Arial,sans-serif;color:#8899bb;font-size:16px;line-height:1.6;">Migliaia di professionisti hanno già scelto.<br/>Unisciti a loro in 60 secondi.</p>
+      <a href="${desc.ctaUrl}" style="display:inline-block;background:#ff5500;color:#ffffff;font-family:Arial,sans-serif;font-size:20px;font-weight:900;padding:20px 52px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">${desc.cta} &rarr;</a>
+      <p style="margin:20px 0 0;font-family:Arial,sans-serif;color:#555;font-size:12px;"><a href="${desc.ctaUrl}" style="color:#00e5c8;text-decoration:none;">${desc.ctaUrl.replace('https://', '')}</a></p>
+    </td>
   </tr>
 
-  <!-- SEPARATOR -->
-  <tr><td style="padding:0 32px;"><hr style="border:none;border-top:1px solid #eee;" /></td></tr>
-
-  <!-- FOOTER -->
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════════════════════ -->
   <tr>
-    <td style="padding:20px 32px;text-align:center;">
-      <p style="margin:0 0 6px;color:#888;font-size:12px;">Questo messaggio è stato inviato da <strong>ProofPress Magazine</strong></p>
-      <p style="margin:0 0 6px;color:#888;font-size:12px;">
-        <a href="https://proofpress.ai" style="color:#00e5c8;text-decoration:none;">proofpress.ai</a> ·
-        <a href="https://proofpressverify.com" style="color:#00e5c8;text-decoration:none;">proofpressverify.com</a>
-      </p>
-      <p style="margin:0 0 6px;color:#bbb;font-size:11px;">Hai ricevuto questa email perché sei iscritto alla newsletter di ProofPress.</p>
-      <p style="margin:0;font-size:11px;">
-        <a href="https://proofpress.ai/unsubscribe?token=UNSUB_TOKEN" style="color:#bbb;text-decoration:underline;">Disiscriviti</a>
-        &nbsp;·&nbsp;
-        <a href="https://proofpress.ai/preferenze-newsletter?token=UNSUB_TOKEN" style="color:#bbb;text-decoration:underline;">Gestisci preferenze</a>
+    <td style="background:#f4f6fb;padding:24px 28px;text-align:center;border-top:1px solid #e0e4ef;">
+      <p style="margin:0 0 8px;font-family:Arial,sans-serif;color:#888;font-size:12px;">Inviato da <strong>ProofPress Magazine</strong> &middot; <a href="https://proofpress.ai" style="color:#0a0f1e;text-decoration:none;">proofpress.ai</a></p>
+      <p style="margin:0 0 8px;font-family:Arial,sans-serif;color:#aaa;font-size:11px;">Hai ricevuto questa email perché sei iscritto alla newsletter di ProofPress.</p>
+      <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;">
+        <a href="https://proofpress.ai/unsubscribe?token=UNSUB_TOKEN" style="color:#aaa;text-decoration:underline;">Disiscriviti</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://proofpress.ai/preferenze-newsletter?token=UNSUB_TOKEN" style="color:#aaa;text-decoration:underline;">Gestisci preferenze</a>
       </p>
     </td>
   </tr>
