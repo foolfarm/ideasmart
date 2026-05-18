@@ -3708,3 +3708,8 @@
 - [x] Applicata in AndreaCinelli.tsx (archivio post autore)
 - [x] Applicata in OsservatorioTech.tsx (feed LinkedIn)
 - [x] TypeScript: 0 errori
+
+## Layout Home — Pulizia fondo pagina (18/05/2026)
+- [x] Rimossa sezione "Certificazione Massima" (GRADE A) dal fondo della Home
+- [x] Banner 720x190 allargato a tutta larghezza usando prop fullWidth di BannerRotator
+- [x] TypeScript: 0 errori, Babel: 0 errori
