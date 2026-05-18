@@ -691,7 +691,7 @@ function buildNewsletterHtmlV2(opts: {
   const now = new Date();
   const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
   const channelPool = ALL_CHANNELS_V2.slice(1); // exclude breaking (used in hero)
-  const mainChannelCount = 5;
+  const mainChannelCount = 2; // Ridotto da 5 a 2 per newsletter più focalizzata
   const startIdx = dayOfYear % channelPool.length;
   const mainChannels: typeof channelPool = [];
   const quickLinkChannels: typeof channelPool = [];
@@ -926,7 +926,8 @@ function buildNewsletterHtmlV2(opts: {
   // BLOCK F: STARTUP DEL GIORNO (2 startup con rotazione giornaliera)
   // ═══════════════════════════════════════════════════════════════
   const startup = opts.startupOfDay;
-  const startupsList = startupsOfDay && startupsOfDay.length > 0 ? startupsOfDay : (startup ? [startup] : []);
+  // Mostra solo 1 startup del giorno (riduzione lunghezza newsletter)
+  const startupsList = startup ? [startup] : (startupsOfDay && startupsOfDay.length > 0 ? [startupsOfDay[0]] : []);
   function renderStartupCard(s: StartupOfDayItem, idx: number): string {
     const countryTd = s.country
       ? `<td style="padding-right:20px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Paese</span><br><span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.country}</span></td>`
@@ -1724,13 +1725,11 @@ function buildNewsletterHtmlV2(opts: {
         <tr><td style="height:8px;background:${BG};"></td></tr>
         ${promptPromoHtml}
         ${puntoDelGiornoHtml}
-        ${ventureCapitalHtml}
         ${dealroomNewsGridHtml}
         ${consigliatoHtml1}
         ${channelBlocksHtml}
         ${startupHtml}
         ${verifyTopBannerHtml}
-        ${eventsHtml}
         ${researchBoxHtml}
         ${consigliatoHtml2}
         ${fasteerBannerHtml}

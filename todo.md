@@ -3725,3 +3725,10 @@
 - [ ] Aggiungere CTA arancione unico "Leggi tutto su ProofPress →" dopo hero
 - [ ] Inserire blocco Prompt Collection sponsor fisso a metà newsletter
 - [ ] Inviare preview a ac@acinelli.com
+
+## Semplificazione Newsletter 8:30 — Taglio blocchi ridondanti (18 mag 2026)
+- [ ] Rimuovere sezione Venture Capital (duplica Dealroom)
+- [ ] Rimuovere "Anche oggi su ProofPress" (quick links duplicati)
+- [ ] Rimuovere Startup del giorno #2 (tenere solo #1)
+- [ ] Rimuovere Prossimi eventi (non focus newsletter)
+- [ ] Ridurre canali da 5 a 2 per invio
