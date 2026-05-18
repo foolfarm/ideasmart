@@ -977,8 +977,53 @@ function buildNewsletterHtmlV2(opts: {
     ? startupsList.map((s, i) => renderStartupCard(s, i)).join("") + `<tr><td style="height:8px;background:${BG};"></td></tr>`
     : "";
 
-  // BLOCK G: PROMO PROMPT COLLECTION — RIMOSSO (richiesta Andrea Cinelli 2026-05-06)
-  const promptPromoHtml = ""; // blocco disabilitato
+  // BLOCK G: PROMO PROMPT COLLECTION — Riattivato 2026-05-18 con nuovo design selling
+  const promptPromoHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a0a0a;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="padding:32px 28px;">
+              <!-- Eyebrow -->
+              <div style="font-size:10px;font-weight:800;color:#ff5500;letter-spacing:0.2em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">📚 EDIZIONI PROOFPRESS · SPONSOR</div>
+              <!-- Headline -->
+              <div style="font-size:32px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;line-height:1.15;margin-bottom:8px;">1.200 Prompt AI<br>Pronti da Usare</div>
+              <!-- Sub -->
+              <div style="font-size:15px;color:rgba(255,255,255,0.75);font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">La raccolta definitiva per chi usa l'AI ogni giorno. ChatGPT, Claude, Gemini, Perplexity. Strategia, marketing, codice, scrittura, analisi.</div>
+              <!-- Stats -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+                <tr>
+                  <td width="33%" style="text-align:center;padding:12px 8px;background:rgba(255,255,255,0.06);border-radius:8px;">
+                    <div style="font-size:28px;font-weight:900;color:#ff5500;font-family:${F_SANS};">1.200</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.6);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Prompt</div>
+                  </td>
+                  <td width="2%"></td>
+                  <td width="33%" style="text-align:center;padding:12px 8px;background:rgba(255,255,255,0.06);border-radius:8px;">
+                    <div style="font-size:28px;font-weight:900;color:#ff5500;font-family:${F_SANS};">12</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.6);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Categorie</div>
+                  </td>
+                  <td width="2%"></td>
+                  <td width="30%" style="text-align:center;padding:12px 8px;background:rgba(255,255,255,0.06);border-radius:8px;">
+                    <div style="font-size:28px;font-weight:900;color:#ff5500;font-family:${F_SANS};">€39</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.6);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Una volta</div>
+                  </td>
+                </tr>
+              </table>
+              <!-- CTA -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center">
+                    <a href="https://promptcollection2026.com?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_promo" style="display:block;background:#ff5500;color:#ffffff;font-size:16px;font-weight:800;font-family:${F_SANS};text-decoration:none;padding:16px 32px;border-radius:8px;text-align:center;letter-spacing:0.02em;">Scopri Prompt Collection 2026 →</a>
+                  </td>
+                </tr>
+              </table>
+              <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.4);font-family:${F_SANS};">promptcollection2026.com</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>`;
 
     // ═════════════════════════════════════════════════════════════
   // BLOCK G2: BANNER PUBBLICITARI — Rotazione giornaliera (2 banner)
@@ -1664,6 +1709,20 @@ function buildNewsletterHtmlV2(opts: {
         ${researchHeroHtml}
         ${startupNewsGridHtml}
         ${aiNewsGridHtml}
+        <!-- CTA arancione grande dopo le prime notizie -->
+        <tr>
+          <td style="padding:0 20px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="padding:8px 0 24px;">
+                  <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=cta_main" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:16px;font-weight:800;font-family:${F_SANS};text-decoration:none;padding:16px 40px;border-radius:8px;letter-spacing:0.02em;">Leggi tutte le notizie di oggi su ProofPress →</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td style="height:8px;background:${BG};"></td></tr>
+        ${promptPromoHtml}
         ${puntoDelGiornoHtml}
         ${ventureCapitalHtml}
         ${dealroomNewsGridHtml}
@@ -1671,11 +1730,8 @@ function buildNewsletterHtmlV2(opts: {
         ${channelBlocksHtml}
         ${startupHtml}
         ${verifyTopBannerHtml}
-        ${promptPromoHtml}
         ${eventsHtml}
-        ${quickLinksHtml}
         ${researchBoxHtml}
-        ${ctaSectionHtml}
         ${consigliatoHtml2}
         ${fasteerBannerHtml}
         ${bannerHtml2}

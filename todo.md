@@ -3719,3 +3719,9 @@
 - [x] Importata getActiveSubscribersLista2 in unifiedNewsletter.ts
 - [x] TypeScript 0 errori
 - [x] Analisi dati SendGrid 5-18 maggio: open rate 27,5%, click rate 0% — problema identificato
+
+## Redesign Newsletter 8:30 — 18 maggio 2026
+- [ ] Ridurre notizie da 20 a 5 (1 hero grande + 4 secondarie compatte)
+- [ ] Aggiungere CTA arancione unico "Leggi tutto su ProofPress →" dopo hero
+- [ ] Inserire blocco Prompt Collection sponsor fisso a metà newsletter
+- [ ] Inviare preview a ac@acinelli.com
