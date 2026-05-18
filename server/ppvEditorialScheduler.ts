@@ -86,10 +86,10 @@ const PPV_CALENDAR: PpvPage[] = [
   },
   {
     date: "2026-05-20",
-    url: "https://proofpressverify.com/info",
-    product: "Info Verify",
+    url: "https://promptcollection2026.com/",
+    product: "Prompt Collection 2026",
     heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
-    context: `Info Verify fornisce prova crittografica che comunicati stampa, report ESG e documenti IR non sono stati alterati dopo la certificazione. Rivolto a PR & Comms, Compliance e Investor Relations che devono dimostrare integrità documentale. URL: https://proofpressverify.com/info`,
+    context: `Prompt Collection 2026 è un ebook PDF di Edizioni ProofPress con 99 prompt curati a mano per professionisti creativi. Organizzati in 12 categorie (Scrittura & Copywriting, Strategia & Marketing, Analisi & Ricerca, Sparring Creativo, Didattica & Formazione, Decisioni & Negoziazione), testati su ChatGPT, Claude, Gemini e Copilot. Prezzo: €29 pagamento unico, download immediato, garanzia 14 giorni. URL: https://promptcollection2026.com/`,
   },
   {
     date: "2026-05-21",
@@ -100,10 +100,10 @@ const PPV_CALENDAR: PpvPage[] = [
   },
   {
     date: "2026-05-22",
-    url: "https://proofpressverify.com/cv-verify",
-    product: "CV Verify",
+    url: "https://promptcollection2026.com/",
+    product: "Prompt Collection 2026",
     heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
-    context: `CV Verify certifica il curriculum con hash SHA-256 e notarizzazione IPFS. Il numero PP-XXXXXXXX è la prova di autenticità verso recruiter e HR. In un mercato del lavoro dove le falsificazioni del CV sono in aumento, CV Verify è la risposta crittografica. URL: https://proofpressverify.com/cv-verify`,
+    context: `Prompt Collection 2026 è un ebook PDF di Edizioni ProofPress con 99 prompt curati a mano per professionisti creativi. Organizzati in 12 categorie (Scrittura & Copywriting, Strategia & Marketing, Analisi & Ricerca, Sparring Creativo, Didattica & Formazione, Decisioni & Negoziazione), testati su ChatGPT, Claude, Gemini e Copilot. Prezzo: €29 pagamento unico, download immediato, garanzia 14 giorni. URL: https://promptcollection2026.com/`,
   },
 
   // ── Settimana 25-29 maggio 2026 ──────────────────────────────────────────────
