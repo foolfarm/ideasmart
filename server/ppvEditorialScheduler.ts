@@ -69,13 +69,13 @@ const PPV_CALENDAR: PpvPage[] = [
     context: `CV Verify è il prodotto di ProofPress Verify™ per certificare il curriculum con hash SHA-256 e notarizzazione IPFS. Il numero PP-XXXXXXXX è la prova di autenticità verso recruiter e HR. Pensato per candidati, recruiter, HR e profili LinkedIn. URL: https://proofpressverify.com/cv-verify`,
   },
 
-  // ── Settimana 18-22 maggio 2026 ──────────────────────────────────────────────
+   // ── Settimana 18-22 maggio 2026 ────────────────────────────────────────────
   {
     date: "2026-05-18",
-    url: "https://proofpressverify.com/product",
-    product: "Product Verify",
+    url: "https://promptcollection2026.com/",
+    product: "Prompt Collection 2026",
     heroImageUrl: "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
-    context: `Product Verify è il prodotto di ProofPress Verify™ per certificare i claim marketing di prodotti fisici e digitali. Verifica ingredienti, certificazioni di sostenibilità e claim di efficacia con Claude AI su 5 fonti indipendenti (Open Food Facts, EFSA, Perplexity, DuckDuckGo, SerpAPI) e rilascia un certificato crittografico immutabile su IPFS con badge embeddabile su sito e packaging. Le multe AGCM per greenwashing superano €10M in media. I brand con badge di verifica terza parte registrano conversion rate 3× superiore. URL: https://proofpressverify.com/product`,
+    context: `Prompt Collection 2026 è un ebook PDF di Edizioni ProofPress con 99 prompt curati a mano per professionisti creativi. Organizzati in 12 categorie (Scrittura & Copywriting, Strategia & Marketing, Analisi & Ricerca, Sparring Creativo, Didattica & Formazione, Decisioni & Negoziazione), testati su ChatGPT, Claude, Gemini e Copilot. Prezzo: €29 pagamento unico, download immediato, garanzia 14 giorni. URL: https://promptcollection2026.com/`,
   },
   {
     date: "2026-05-19",
@@ -713,10 +713,48 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
       },
       cta: "INIZIA GRATIS — PRIMA SELEZIONE",
       ctaUrl: "https://fooltalent.ai"
+    },
+    "Prompt Collection 2026": {
+      tagline: "L'AI risponde bene solo a chi sa domandare. 99 istruzioni curate per professionisti.",
+      intro: "Il problema non è l'intelligenza artificiale. Il problema è come le parliamo. Prompt generici producono mediocrità: testi senz'anima, strategie prevedibili, codice piatto. Prompt Collection 2026 è l'antidoto. 99 prompt curati a mano da Edizioni ProofPress, organizzati in 12 categorie professionali, testati su ChatGPT, Claude, Gemini e Copilot. Un PDF tipograficamente curato, con indice ragionato ed esempi commentati. €29 una volta. Per sempre tuo.",
+      stats: [
+        { value: "99", label: "Prompt curati a mano" },
+        { value: "12", label: "Categorie professionali" },
+        { value: "4+", label: "Modelli compatibili" },
+        { value: "€29", label: "Pagamento unico, nessun abbonamento" }
+      ],
+      howItWorks: [
+        { step: "01", title: "Acquista e scarica", desc: "Pagamento sicuro Stripe. Il PDF è disponibile immediatamente dopo il pagamento." },
+        { step: "02", title: "Scegli la categoria", desc: "12 capitoli tematici: Scrittura, Marketing, Analisi, Sparring Creativo, Didattica, Decisioni e altro." },
+        { step: "03", title: "Copia il prompt", desc: "Ogni prompt ha titolo, contesto d'uso e risultato atteso. Pronto da incollare nel tuo LLM." },
+        { step: "04", title: "Ottieni risposte brillanti", desc: "Smetti di accontentarti del banale. L'AI risponde bene solo a chi sa domandare." }
+      ],
+      features: [
+        { icon: "📝", title: "Scrittura & Copywriting", desc: "Prompt per brief, headline, copy persuasivo, storytelling e contenuti editoriali." },
+        { icon: "📈", title: "Strategia & Marketing", desc: "Analisi competitiva, posizionamento, messaggi chiave, pitch e go-to-market." },
+        { icon: "🔍", title: "Analisi & Ricerca", desc: "Sintesi di documenti, fact-checking, analisi di dati e letteratura scientifica." },
+        { icon: "🎯", title: "Decisioni & Negoziazione", desc: "Framework decisionali, simulazione di scenari, preparazione trattative." }
+      ],
+      targets: [
+        { icon: "💼", title: "Professionisti e freelance", desc: "Copywriter, consulenti, designer: chi vende competenza e non può permettersi risposte mediocri." },
+        { icon: "🏢", title: "Aziende e team", desc: "Marketing, HR, comunicazione interna: prompt da adottare come standard di squadra." },
+        { icon: "🎓", title: "Studenti e ricercatori", desc: "Per analizzare fonti, sintetizzare letteratura, preparare esami e strutturare tesi con metodo." }
+      ],
+      testimonial: {
+        initials: "AL",
+        name: "Adrian Lenice",
+        role: "Curatore · Edizioni ProofPress",
+        text: "Un piccolo manuale da tenere sempre aperto accanto al laptop. Ogni prompt è progettato per produrre un risultato preciso, non risposte vaghe da assistente educato."
+      },
+      pricing: "€29 · Pagamento unico · PDF download immediato · Garanzia 14 giorni · Nessun abbonamento",
+      cta: "ACQUISTA ORA — €29",
+      ctaUrl: "https://promptcollection2026.com/"
     }
   };
 
   const desc = productContents[page.product] ?? productContents["ProofPress Verify™"];
+  const isExternalProduct = !page.url.includes('proofpressverify.com');
+  const productLabel = isExternalProduct ? 'EDIZIONI PROOFPRESS · CONSIGLIO DEL GIORNO' : 'PROOFPRESS VERIFY™ · PRODOTTO DEL GIORNO';
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -763,7 +801,7 @@ export function buildPpvNewsletterHtml(page: PpvPage): string {
   <!-- INTRO -->
   <tr>
     <td style="padding:32px 32px 16px;">
-      <p style="margin:0 0 8px;color:#ff5500;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">PROOFPRESS VERIFY™ · PRODOTTO DEL GIORNO</p>
+      <p style="margin:0 0 8px;color:#ff5500;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">${productLabel}</p>
       <h2 style="margin:0 0 12px;color:#0a0f1e;font-size:28px;font-weight:800;line-height:1.2;">${page.product}</h2>
       <p style="margin:0 0 12px;color:#333;font-size:15px;font-weight:600;line-height:1.5;">${desc.tagline}</p>
       <p style="margin:0;color:#555;font-size:14px;line-height:1.7;">${desc.intro}</p>
@@ -932,7 +970,9 @@ export async function sendPpvNewsletterPreview(): Promise<void> {
 
   console.log(`[PPV Newsletter] Invio preview a ac@acinelli.com per ${page.product}...`);
   const html = buildPpvNewsletterHtml(page);
-  const subject = `[PREVIEW] ProofPress Verify™ — ${page.product} · ${new Date().toLocaleDateString("it-IT")}`;
+  const isExternal = !page.url.includes('proofpressverify.com');
+  const brand = isExternal ? 'Edizioni ProofPress' : 'ProofPress Verify™';
+  const subject = `[PREVIEW] ${brand} — ${page.product} · ${new Date().toLocaleDateString("it-IT")}`;
 
   try {
     await sendEmail({
@@ -959,7 +999,9 @@ export async function sendPpvNewsletterToAll(): Promise<void> {
 
   console.log(`[PPV Newsletter] Invio newsletter a tutti gli iscritti per ${page.product}...`);
   const html = buildPpvNewsletterHtml(page);
-  const subject = `☀️ Buonpomeriggio — ProofPress Verify™ · ${page.product}`;
+  const isExternal = !page.url.includes('proofpressverify.com');
+  const brand = isExternal ? 'Edizioni ProofPress' : 'ProofPress Verify™';
+  const subject = `☀️ Buonpomeriggio — ${brand} · ${page.product}`;
 
   // Data CET per il lock giornaliero (YYYY-MM-DD)
   const sendDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
