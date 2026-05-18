@@ -21,6 +21,7 @@ import { sendWithWarmup } from "./newsletterWarmup";
 import {
   getLatestNews,
   getActiveSubscribers,
+  getActiveSubscribersLista2,
   createNewsletterSend,
   updateNewsletterSendRecipientCount,
 } from "./db";
@@ -2415,15 +2416,26 @@ export async function sendMorningNewsletterToAll(): Promise<{
 
   console.log(`[MorningNewsletter] 📧 Avvio invio automatico "${MORNING_SUBJECT}"...`);
 
+  // ── Rotazione automatica Lista 1/2 ─────────────────────────────────────────
+  // Giorni pari (18, 20, 22...) → Lista 1 (iscritti PRE-10 maggio)
+  // Giorni dispari (19, 21, 23...) → Lista 2 (iscritti POST-10 maggio)
+  // La PPV delle 17:30 usa sempre la lista opposta allo stesso giorno.
+  const todayDay = new Date().getUTCDate();
+  const useLista1 = todayDay % 2 === 0; // pari = Lista 1
+  const listaLabel = useLista1 ? 'Lista 1 (pre-10 mag)' : 'Lista 2 (post-10 mag)';
+  console.log(`[MorningNewsletter] 📋 Rotazione lista: giorno ${todayDay} → ${listaLabel}`);
+
   try {
-    const subscribers = await getActiveSubscribers();
+    const subscribers = useLista1
+      ? await getActiveSubscribers()
+      : await getActiveSubscribersLista2();
     if (subscribers.length === 0) {
       return {
         success: false,
         recipientCount: 0,
         subject: MORNING_SUBJECT,
         stats: { ai: 0, startup: 0, dealroom: 0, breaking: 0, research: 0 },
-        error: "Nessun iscritto attivo",
+        error: `Nessun iscritto attivo in ${listaLabel}`,
       };
     }
 

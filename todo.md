@@ -3713,3 +3713,9 @@
 - [x] Rimossa sezione "Certificazione Massima" (GRADE A) dal fondo della Home
 - [x] Banner 720x190 allargato a tutta larghezza usando prop fullWidth di BannerRotator
 - [x] TypeScript: 0 errori, Babel: 0 errori
+
+## Rotazione Liste 1/2 + Analisi SendGrid — 18 maggio 2026
+- [x] Aggiunta logica rotazione automatica Lista 1/2 in sendMorningNewsletterToAll (giorni pari = Lista 1, dispari = Lista 2)
+- [x] Importata getActiveSubscribersLista2 in unifiedNewsletter.ts
+- [x] TypeScript 0 errori
+- [x] Analisi dati SendGrid 5-18 maggio: open rate 27,5%, click rate 0% — problema identificato
