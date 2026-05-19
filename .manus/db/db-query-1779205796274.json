@@ -1,0 +1,62 @@
+{
+  "query": "SELECT status, COUNT(*) as count FROM subscribers GROUP BY status ORDER BY count DESC;\nSELECT source, COUNT(*) as count FROM subscribers WHERE status = 'active' GROUP BY source ORDER BY count DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT status, COUNT(*) as count FROM subscribers GROUP BY status ORDER BY count DESC;\nSELECT source, COUNT(*) as count FROM subscribers WHERE status = 'active' GROUP BY source ORDER BY count DESC LIMIT 10;",
+  "rows": [
+    {
+      "status": "unsubscribed",
+      "count": "6975"
+    },
+    {
+      "status": "active",
+      "count": "3284"
+    },
+    {
+      "status": "source",
+      "count": "count"
+    },
+    {
+      "status": "import_csv",
+      "count": "1829"
+    },
+    {
+      "status": "csv_import",
+      "count": "1097"
+    },
+    {
+      "status": "website",
+      "count": "169"
+    },
+    {
+      "status": "csv-import",
+      "count": "148"
+    },
+    {
+      "status": "article_wall",
+      "count": "22"
+    },
+    {
+      "status": "foolfarm-soci",
+      "count": "8"
+    },
+    {
+      "status": "site_registration",
+      "count": "7"
+    },
+    {
+      "status": "manual",
+      "count": "2"
+    },
+    {
+      "status": "owner",
+      "count": "1"
+    },
+    {
+      "status": "manual_import",
+      "count": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "status\tcount\nunsubscribed\t6975\nactive\t3284\nsource\tcount\nimport_csv\t1829\ncsv_import\t1097\nwebsite\t169\ncsv-import\t148\narticle_wall\t22\nfoolfarm-soci\t8\nsite_registration\t7\nmanual\t2\nowner\t1\nmanual_import\t1\n",
+  "stderr": "",
+  "execution_time_ms": 315
+}

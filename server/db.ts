@@ -136,11 +136,10 @@ export async function getAllSubscribers() {
   return db.select().from(subscribers).orderBy(subscribers.subscribedAt);
 }
 
-// ─── Gestione due liste newsletter ──────────────────────────────────────────
-// LISTA 1 — Newsletter 08:30 BUONGIORNO: iscritti originali PRE-10 maggio 2026 (~2.103 attivi)
-// LISTA 2 — Newsletter 17:30 BUONPOMERIGGIO PPV: iscritti POST-10 maggio 2026 (~1.312 attivi)
-// Per tornare alla lista unica completa, impostare NEWSLETTER_CUTOFF_DATE = null
-const NEWSLETTER_CUTOFF_DATE: Date | null = new Date('2026-05-10T00:00:00.000Z');
+// ─── Lista unica ALL (unificata il 19 maggio 2026) ──────────────────────────
+// LISTA UNICA — Tutte le newsletter (08:30 Buongiorno + 17:30 PPV) inviano a tutti gli iscritti attivi
+// Lista 1 (pre-10 mag) + Lista 2 (post-10 mag) = Lista ALL (~3.284 attivi)
+const NEWSLETTER_CUTOFF_DATE: Date | null = null;
 
 export async function getActiveSubscribers() {
   const db = await getDb();
@@ -157,9 +156,9 @@ export async function getActiveSubscribers() {
 }
 
 /**
- * LISTA 2 — Newsletter 17:30 BUONPOMERIGGIO PPV
- * Restituisce gli iscritti attivi POST-integrazione del 10 maggio 2026
- * (i nuovi iscritti che ricevono solo la newsletter PPV pomeridiana)
+ * LISTA 2 / Lista ALL — Newsletter 17:30 BUONPOMERIGGIO PPV
+ * Con NEWSLETTER_CUTOFF_DATE = null, restituisce TUTTI gli iscritti attivi
+ * (lista unificata dal 19 maggio 2026)
  */
 export async function getActiveSubscribersLista2() {
   const db = await getDb();
@@ -172,8 +171,8 @@ export async function getActiveSubscribersLista2() {
       )
     );
   }
-  // Se NEWSLETTER_CUTOFF_DATE è null, lista 2 è vuota (lista unica attiva)
-  return [];
+  // Lista unica ALL: restituisce tutti gli iscritti attivi
+  return db.select().from(subscribers).where(eq(subscribers.status, "active"));
 }
 
 export async function getActiveSubscriberCount(): Promise<number> {

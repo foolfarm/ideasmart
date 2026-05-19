@@ -1,0 +1,32 @@
+{
+  "query": "SELECT id, newsletter_type, subject, status, recipientCount, sent_count, failed_count, sentAt, send_date FROM newsletter_sends WHERE send_date = '2026-05-19' ORDER BY createdAt ASC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, newsletter_type, subject, status, recipientCount, sent_count, failed_count, sentAt, send_date FROM newsletter_sends WHERE send_date = '2026-05-19' ORDER BY createdAt ASC;",
+  "rows": [
+    {
+      "id": "1950001",
+      "newsletter_type": "morning",
+      "subject": "BUONGIORNO — Le news di oggi da ProofPress, Martedì 19 maggio 2026",
+      "status": "sent",
+      "recipientCount": "1237",
+      "sent_count": "0",
+      "failed_count": "0",
+      "sentAt": "2026-05-19 06:40:17",
+      "send_date": "2026-05-19"
+    },
+    {
+      "id": "1980001",
+      "newsletter_type": "ppv",
+      "subject": "☀️ Buonpomeriggio — ProofPress Verify™ · News Verify",
+      "status": "sent",
+      "recipientCount": "1227",
+      "sent_count": "1227",
+      "failed_count": "0",
+      "sentAt": "2026-05-19 15:30:56",
+      "send_date": "2026-05-19"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnewsletter_type\tsubject\tstatus\trecipientCount\tsent_count\tfailed_count\tsentAt\tsend_date\n1950001\tmorning\tBUONGIORNO — Le news di oggi da ProofPress, Martedì 19 maggio 2026\tsent\t1237\t0\t0\t2026-05-19 06:40:17\t2026-05-19\n1980001\tppv\t☀️ Buonpomeriggio — ProofPress Verify™ · News Verify\tsent\t1227\t1227\t0\t2026-05-19 15:30:56\t2026-05-19\n",
+  "stderr": "",
+  "execution_time_ms": 273
+}

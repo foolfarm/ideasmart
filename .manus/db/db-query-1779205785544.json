@@ -1,0 +1,22 @@
+{
+  "query": "SHOW TABLES LIKE '%subscri%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SHOW TABLES LIKE '%subscri%';",
+  "rows": [
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%subscri%)": "base_alpha_subscriptions"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%subscri%)": "creator_subscriptions"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%subscri%)": "subscribers"
+    },
+    {
+      "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%subscri%)": "verify_subscriptions"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_UyPaon6i3Ec4nvfPz6kUfg (%subscri%)\nbase_alpha_subscriptions\ncreator_subscriptions\nsubscribers\nverify_subscriptions\n",
+  "stderr": "",
+  "execution_time_ms": 260
+}
