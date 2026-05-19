@@ -13,7 +13,7 @@
 
 import { getDb } from "./db";
 import { contentAudit, newsItems, marketAnalysis, weeklyReportage } from "../drizzle/schema";
-import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
+import { invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { eq, and, isNotNull, desc } from "drizzle-orm";
 
 // ── Configurazione ─────────────────────────────────────────────────────────
@@ -137,7 +137,7 @@ Rispondi SOLO con JSON valido in questo formato:
 {"score": <numero 0-100>, "note": "<spiegazione breve>"}`;
 
   try {
-    const response = await invokeLLMFast({
+    const response = await invokeLLMBulk({
       messages: [
         { role: "system" as const, content: "Sei un editor giornalistico preciso. Rispondi sempre e solo con JSON valido." },
         { role: "user" as const, content: prompt }

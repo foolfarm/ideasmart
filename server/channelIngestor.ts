@@ -11,7 +11,7 @@
 import { getDb } from "./db";
 import { channelContent, rssFeedSources, rssIngestLog } from "../drizzle/schema";
 import { eq, and, desc, sql } from "drizzle-orm";
-import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
+import { invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { findStockImage } from "./stockImages";
 import { certifyWithPpv } from "./proofpressVerifyClient";
 
@@ -243,7 +243,7 @@ export async function ingestChannelContent(channel: string, maxItems: number = 1
   const today = new Date().toISOString().slice(0, 10);
 
   try {
-    const response = await invokeLLMFast({
+    const response = await invokeLLMBulk({
       messages: [
         { role: "system", content: channelPrompt },
         { role: "user", content: `Ecco le ultime notizie/risorse raccolte oggi. Genera esattamente ${maxItems} contenuti strutturati.\n\n${digest}` },

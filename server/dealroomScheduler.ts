@@ -3,7 +3,7 @@
  * Genera contenuti editoriali per la sezione /dealroom: editoriale settimanale sui deal più rilevanti.
  * Focus: round di finanziamento, venture capital, M&A, exit, ecosistema startup italiano ed europeo.
  */
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { dailyEditorial } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -18,7 +18,7 @@ export async function generateDealroomEditorial(): Promise<void> {
     });
     const dateLabel = new Date().toISOString().split("T")[0];
 
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",

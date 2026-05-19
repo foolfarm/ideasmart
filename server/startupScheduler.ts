@@ -3,7 +3,7 @@
  * Genera contenuti per la sezione /startup: news, editoriale, startup della settimana, reportage, analisi
  * Usa la stessa struttura degli scheduler AI e Music ma con focus sulle startup italiane e internazionali
  */
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems, dailyEditorial, startupOfDay, weeklyReportage, marketAnalysis } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -19,7 +19,7 @@ export async function generateStartupNews(): Promise<void> {
       weekday: "long", day: "numeric", month: "long", year: "numeric",
     });
     const weekLabel = new Date().toISOString().split("T")[0];
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",
@@ -151,7 +151,7 @@ export async function generateStartupEditorial(): Promise<void> {
       weekday: "long", day: "numeric", month: "long", year: "numeric",
     });
     const dateLabel = new Date().toISOString().split("T")[0];
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",
@@ -220,7 +220,7 @@ export async function generateStartupOfWeek(): Promise<void> {
       weekday: "long", day: "numeric", month: "long", year: "numeric",
     });
     const dateLabel = new Date().toISOString().split("T")[0];
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",
@@ -301,7 +301,7 @@ export async function generateStartupReportage(): Promise<void> {
   console.log("[StartupScheduler] Generating startup reportage...");
   try {
     const weekLabel = new Date().toISOString().split("T")[0];
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",
@@ -422,7 +422,7 @@ export async function generateStartupMarketAnalysis(): Promise<void> {
   console.log("[StartupScheduler] Generating startup market analysis...");
   try {
     const weekLabel = new Date().toISOString().split("T")[0];
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",

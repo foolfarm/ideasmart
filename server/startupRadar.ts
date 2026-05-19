@@ -14,7 +14,7 @@
  * Stile: VC insider, curation + opinione, non semplice lista
  */
 
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { dealflowPicks } from "../drizzle/schema";
 
@@ -198,7 +198,7 @@ Per ogni startup fornisci:
 
 Rispondi SOLO con un JSON valido. Nessun altro testo.`;
 
-  const response = await invokeLLM({
+  const response = await invokeLLMBulk({
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: `Ecco ${items.length} articoli dalle ultime 48h. Seleziona le 10 startup AI EU/IT più investibili:\n\n${itemsText}` },
@@ -293,7 +293,7 @@ Andrea Cinelli | ProofPress Magazine
 
 RICORDA: MASSIMO 2800 CARATTERI TOTALI. Sii conciso ma informativo.`;
 
-  const response = await invokeLLM({
+  const response = await invokeLLMBulk({
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: `Ecco le 10 startup selezionate per oggi:\n\n${startupsList}\n\nGenera il post LinkedIn nel format AI Dealflow Europe.` },

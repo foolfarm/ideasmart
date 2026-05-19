@@ -21,7 +21,7 @@
  *  - Google AI Blog
  */
 
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { linkedinPosts } from "../drizzle/schema";
 import { eq, and, gte, desc } from "drizzle-orm";
@@ -197,7 +197,7 @@ Per ogni tool selezionato, fornisci:
 
 Rispondi SOLO con un array JSON valido di 10 oggetti. Nessun altro testo.`;
 
-  const response = await invokeLLM({
+  const response = await invokeLLMBulk({
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: `Ecco ${items.length} articoli dalle ultime 48h. Seleziona i 10 tool AI più interessanti:\n\n${itemsText}` },

@@ -5,7 +5,7 @@
  * Cron: ogni giovedì alle 06:00 UTC
  */
 
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { saveMarketAnalysis, getLatestMarketAnalysis, deleteMarketAnalysisByWeek } from "./db";
 import { findMarketAnalysisImage } from "./stockImages";
 
@@ -80,7 +80,7 @@ export async function generateMarketAnalysis(): Promise<void> {
   const shuffledCategories = [...CATEGORIES].sort(() => Math.random() - 0.5).slice(0, 4);
 
   try {
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",

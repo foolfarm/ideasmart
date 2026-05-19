@@ -3732,3 +3732,13 @@
 - [ ] Rimuovere Startup del giorno #2 (tenere solo #1)
 - [ ] Rimuovere Prossimi eventi (non focus newsletter)
 - [ ] Ridurre canali da 5 a 2 per invio
+
+## Fix Research Generator + DeepSeek V3 — 19 maggio 2026
+- [x] Ridotto researchGenerator da 20 a 10 ricerche (system prompt + user prompt + slice)
+- [x] Mix aggiornato: 3-4 AI Trends, 2-3 VC/Startup, 2 Mercati, 1-2 Tech
+- [x] Parser JSON ultra-robusto con 4 tentativi (parse diretto, pulizia chars, regex blocco, regex array)
+- [x] Aggiunto DEEPSEEK_API_KEY in env.ts
+- [x] Aggiunta funzione invokeDeepSeek() in llm.ts (API OpenAI-compatibile, deepseek-chat)
+- [x] Aggiunta funzione invokeLLMBulk() con fallback Claude Haiku
+- [x] Migrati 11 file da invokeLLMFast → invokeLLMBulk (aiToolRadar, articleTranslator, auditContent, breakingNewsGenerator, channelIngestor, dealroomScheduler, marketAnalysisScheduler, newsScheduler, rssScraperNew, startupRadar, startupScheduler)
+- [x] TypeScript: 0 errori

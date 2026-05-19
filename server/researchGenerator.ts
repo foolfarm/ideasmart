@@ -225,7 +225,7 @@ export async function generateDailyResearch(): Promise<{
         {
           role: "system",
           content: `Sei un senior research analyst di Proof Press, specializzato in Startup, Venture Capital e AI Trends.
-Il tuo compito è generare 20 ricerche originali e approfondite per la sezione "Proof Press Research".
+Il tuo compito è generare 10 ricerche originali e approfondite per la sezione "Proof Press Research".
 
 Ogni ricerca deve:
 1. Essere basata su dati reali e aggiornati di fonti autorevoli (Gartner, CB Insights, Statista, McKinsey, Dealroom, PitchBook, ecc.)
@@ -245,9 +245,9 @@ Genera ricerche diverse ogni giorno — oggi è ${dateFormatted}.`,
         },
         {
           role: "user",
-          content: `Genera 20 ricerche originali per Proof Press Research di oggi (${today}).
-Includi una mix di: 6-7 ricerche AI Trends, 5 Venture Capital/Startup, 4 Mercati, 3-4 Tecnologia.
-Almeno 6 devono riguardare il mercato europeo o italiano.
+          content: `Genera 10 ricerche originali per Proof Press Research di oggi (${today}).
+Includi una mix di: 3-4 ricerche AI Trends, 2-3 Venture Capital/Startup, 2 Mercati, 1-2 Tecnologia.
+Almeno 3 devono riguardare il mercato europeo o italiano.
 La prima deve essere la "Ricerca del Giorno" più importante.
 Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight actionable per investitori e founder.
 IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e plausibile alla pagina della fonte originale (es. https://www.gartner.com/en/newsroom/press-releases/..., https://www.cbinsights.com/research/report/..., https://www.statista.com/statistics/...). Non lasciare mai sourceUrl vuoto.`,
@@ -329,7 +329,36 @@ IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e p
       return { generated: 0, error: "LLM non ha risposto" };
     }
 
-    const parsed: LLMResearchResponse = JSON.parse(stripJsonBackticks(content));
+    // Parser JSON robusto: gestisce caratteri speciali e newline non escaped
+    let parsed: LLMResearchResponse;
+    const tryParseResearch = (text: string): LLMResearchResponse | null => {
+      // Tentativo 1: parse diretto
+      try { return JSON.parse(stripJsonBackticks(text)); } catch {}
+      // Tentativo 2: pulizia caratteri di controllo
+      const c1 = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
+      try { return JSON.parse(stripJsonBackticks(c1)); } catch {}
+      // Tentativo 3: estrai il blocco JSON con regex (cerca { ... })
+      const jsonMatch = text.match(/\{[\s\S]*"researches"[\s\S]*\}/m);
+      if (jsonMatch) {
+        const c2 = jsonMatch[0].replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
+        try { return JSON.parse(c2); } catch {}
+      }
+      // Tentativo 4: estrai array researches direttamente
+      const arrMatch = text.match(/"researches"\s*:\s*(\[[\s\S]*\])/m);
+      if (arrMatch) {
+        try {
+          const arr = JSON.parse(arrMatch[1].replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ""));
+          return { researches: arr };
+        } catch {}
+      }
+      return null;
+    };
+    const result = tryParseResearch(content);
+    if (!result) {
+      console.error("[Research] ❌ JSON parse fallito dopo tutti i tentativi. Primi 500 char:", content.slice(0, 500));
+      return { generated: 0, error: "JSON parse error: tutti i tentativi falliti" };
+    }
+    parsed = result;
     const researches = parsed.researches ?? [];
 
     if (researches.length === 0) {
@@ -338,7 +367,7 @@ IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e p
 
     // Salva le ricerche nel DB
     let savedCount = 0;
-    for (const item of researches.slice(0, 20)) {
+    for (const item of researches.slice(0, 10)) {
       try {
         await db.insert(researchReports).values({
           title: item.title.slice(0, 299),

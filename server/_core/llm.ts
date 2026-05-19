@@ -555,3 +555,124 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
   console.log("[LLM] Provider: Manus Forge API (fallback — configura ANTHROPIC_API_KEY per usare Claude)");
   return invokeForge(params);
 }
+
+// ─── Provider: DeepSeek V3 (bulk/economico) ───────────────────────────────────
+
+const DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions";
+const DEEPSEEK_MODEL = "deepseek-chat"; // DeepSeek V3
+
+/**
+ * Invoca DeepSeek V3 tramite API OpenAI-compatibile.
+ * Usato per task bulk ad alto volume dove il costo è prioritario.
+ */
+async function invokeDeepSeek(params: InvokeParams): Promise<InvokeResult> {
+  const apiKey = ENV.deepseekApiKey;
+  if (!apiKey || apiKey.trim().length === 0) {
+    throw new Error("DEEPSEEK_API_KEY non configurata");
+  }
+
+  const { messages, maxTokens, max_tokens, responseFormat, response_format, outputSchema, output_schema } = params;
+  const resolvedMaxTokens = maxTokens || max_tokens || 4096;
+  const normalizedFormat = normalizeResponseFormat({ responseFormat, response_format, outputSchema, output_schema });
+
+  // Costruisci i messaggi per DeepSeek (formato OpenAI-compatibile)
+  const dsMessages: Array<{ role: string; content: string }> = [];
+  let systemContent = ANDREA_CINELLI_STYLE;
+
+  // Aggiungi hint JSON schema se richiesto
+  if (normalizedFormat?.type === "json_schema" || normalizedFormat?.type === "json_object") {
+    const schemaHint = normalizedFormat.type === "json_schema"
+      ? `\n\nRispondi ESCLUSIVAMENTE con un oggetto JSON valido che rispetti questo schema:\n${JSON.stringify((normalizedFormat as { type: "json_schema"; json_schema: JsonSchema }).json_schema.schema, null, 2)}\nNon aggiungere testo prima o dopo il JSON.`
+      : "\n\nRispondi ESCLUSIVAMENTE con un oggetto JSON valido. Non aggiungere testo prima o dopo il JSON.";
+    systemContent += schemaHint;
+  }
+
+  // Estrai system message se presente, altrimenti usa lo stile di default
+  const userMessages = messages.filter(m => m.role !== "system");
+  const systemMessages = messages.filter(m => m.role === "system");
+  if (systemMessages.length > 0) {
+    const sysText = systemMessages.map(m => (typeof m.content === "string" ? m.content : JSON.stringify(m.content))).join("\n");
+    systemContent = `${ANDREA_CINELLI_STYLE}\n\n${sysText}`;
+    if (normalizedFormat?.type === "json_schema" || normalizedFormat?.type === "json_object") {
+      const schemaHint = normalizedFormat.type === "json_schema"
+        ? `\n\nRispondi ESCLUSIVAMENTE con un oggetto JSON valido che rispetti questo schema:\n${JSON.stringify((normalizedFormat as { type: "json_schema"; json_schema: JsonSchema }).json_schema.schema, null, 2)}\nNon aggiungere testo prima o dopo il JSON.`
+        : "\n\nRispondi ESCLUSIVAMENTE con un oggetto JSON valido. Non aggiungere testo prima o dopo il JSON.";
+      systemContent += schemaHint;
+    }
+  }
+
+  dsMessages.push({ role: "system", content: systemContent });
+  for (const msg of userMessages) {
+    dsMessages.push({
+      role: msg.role === "function" ? "user" : msg.role,
+      content: typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content),
+    });
+  }
+
+  const payload: Record<string, unknown> = {
+    model: DEEPSEEK_MODEL,
+    messages: dsMessages,
+    max_tokens: resolvedMaxTokens,
+  };
+
+  if (normalizedFormat?.type === "json_object") {
+    payload.response_format = { type: "json_object" };
+  }
+
+  const resp = await fetch(DEEPSEEK_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!resp.ok) {
+    const errText = await resp.text();
+    throw new Error(`DeepSeek API error ${resp.status}: ${errText}`);
+  }
+
+  const data = await resp.json() as {
+    id: string;
+    created: number;
+    model: string;
+    choices: Array<{ index: number; message: { role: string; content: string }; finish_reason: string | null }>;
+    usage: { prompt_tokens: number; completion_tokens: number; total_tokens: number };
+  };
+
+  return {
+    id: data.id,
+    created: data.created,
+    model: data.model,
+    choices: data.choices.map(c => ({
+      index: c.index,
+      message: { role: c.message.role as "assistant", content: c.message.content },
+      finish_reason: c.finish_reason,
+    })),
+    usage: data.usage,
+  };
+}
+
+/**
+ * Provider bulk economico — usa DeepSeek V3 come primario.
+ * Fallback automatico su Claude Haiku se DeepSeek non è disponibile o fallisce.
+ *
+ * Ideale per: classificazione notizie, summarizzazione, tagging, traduzioni bulk,
+ * generazione descrizioni, qualsiasi task ad alto volume dove il costo è prioritario.
+ */
+export async function invokeLLMBulk(params: InvokeParams): Promise<InvokeResult> {
+  const hasDeepSeek = ENV.deepseekApiKey && ENV.deepseekApiKey.trim().length > 0;
+
+  if (hasDeepSeek) {
+    try {
+      console.log(`[LLM] Provider: DeepSeek V3 (bulk/economico)`);
+      return await invokeDeepSeek(params);
+    } catch (err) {
+      console.warn(`[LLM] DeepSeek fallito, fallback su Claude Haiku:`, err instanceof Error ? err.message : err);
+    }
+  }
+
+  // Fallback: Claude Haiku
+  return invokeLLMFast(params);
+}

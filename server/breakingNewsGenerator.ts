@@ -4,7 +4,7 @@
  * le 3-5 più urgenti/straordinarie usando l'AI.
  * Le breaking news vengono archiviate dopo 6 ore (isActive = false).
  */
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems as newsItemsTable, breakingNews as breakingNewsTable } from "../drizzle/schema";
 import { desc, eq, gte, and } from "drizzle-orm";
@@ -156,7 +156,7 @@ export async function generateBreakingNews(): Promise<{
       )
       .join("\n\n---\n\n");
 
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",

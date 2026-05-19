@@ -1,0 +1,16 @@
+{
+  "query": "SELECT date_label, COUNT(*) as count, MIN(created_at) as first, MAX(created_at) as last FROM research_reports WHERE date_label >= '2026-05-18' GROUP BY date_label ORDER BY date_label DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT date_label, COUNT(*) as count, MIN(created_at) as first, MAX(created_at) as last FROM research_reports WHERE date_label >= '2026-05-18' GROUP BY date_label ORDER BY date_label DESC LIMIT 5;",
+  "rows": [
+    {
+      "date_label": "2026-05-18",
+      "count": "60",
+      "first": "2026-05-18 04:02:08",
+      "last": "2026-05-18 04:02:57"
+    }
+  ],
+  "messages": [],
+  "stdout": "date_label\tcount\tfirst\tlast\n2026-05-18\t60\t2026-05-18 04:02:08\t2026-05-18 04:02:57\n",
+  "stderr": "",
+  "execution_time_ms": 304
+}

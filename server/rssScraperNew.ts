@@ -19,7 +19,7 @@
 
 import Parser from "rss-parser";
 import axios from "axios";
-import { invokeLLMFast, stripJsonBackticks } from "./_core/llm";
+import { invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { AI_SOURCES, STARTUP_SOURCES, DEALROOM_SOURCES, getHomepageForUrl, SECTION_FALLBACKS } from "./rssSources";
 import type { RssSource } from "./rssSources";
 
@@ -249,7 +249,7 @@ IMPORTANTE — ITALIA FIRST:
 Rispondi SOLO con JSON valido.`;
 
   try {
-    const response = await invokeLLMFast({
+    const response = await invokeLLMBulk({
       messages: [
         { role: "system", content: "Sei un giornalista senior italiano con 20 anni di esperienza al Corriere della Sera e al Financial Times. Scrivi notizie dirette, concrete, con fatti e numeri. Non descrivi mai gli articoli: racconti le notizie. Il tuo stile è autorevole, preciso, mai burocratico. Rispondi sempre con JSON valido. IMPORTANTE: tutti i titoli e i summary devono essere scritti in ITALIANO, mai in inglese, anche se la fonte è in inglese." },
         { role: "user", content: prompt }
@@ -294,7 +294,7 @@ Rispondi SOLO con JSON valido.`;
       const shortList = sortedArticles.slice(0, 20).map((a, i) =>
         `[${i}] ${a.sourceName}: ${a.title}`
       ).join("\n");
-      const retryResponse = await invokeLLMFast({
+      const retryResponse = await invokeLLMBulk({
         messages: [
           { role: "system", content: "Sei un redattore. Rispondi SOLO con JSON valido, nessun testo aggiuntivo." },
           { role: "user", content: `Seleziona i 15 articoli più rilevanti su ${cfg.label} da questa lista e traducili in italiano.\n\n${shortList}\n\nRispondi con JSON: {\"items\":[{\"title\":\"...\",\"summary\":\"...\",\"category\":\"...\",\"sourceIndex\":0}]}` }
@@ -368,7 +368,7 @@ Rispondi SOLO con JSON valido.`;
         const toTranslate = englishItems.map(({ idx, item }) =>
           `[${idx}] TITOLO: ${item.title}\nSUMMARY: ${item.summary.slice(0, 300)}`
         ).join("\n---\n");
-        const transResp = await invokeLLMFast({
+        const transResp = await invokeLLMBulk({
           messages: [
             { role: "system", content: "Sei un traduttore giornalistico italiano senior. Traduci titoli e sommari in italiano giornalistico professionale, stile Corriere della Sera. Rispondi SOLO con JSON valido." },
             { role: "user", content: `Traduci in italiano giornalistico incisivo questi titoli e sommari (ancora in inglese). Per ogni item restituisci title (max 80 caratteri) e summary (5-8 frasi, 600-900 caratteri).\n\n${toTranslate}\n\nRispondi con JSON: {"items":[{"idx":0,"title":"...","summary":"..."}]}` }
@@ -448,7 +448,7 @@ Rispondi SOLO con JSON valido.`;
     const fallbackArticles = cleanFallback.slice(0, 20);
     try {
       const titlesForTranslation = fallbackArticles.map((a, i) => `[${i}] ${a.title}`).join("\n");
-      const transResponse = await invokeLLMFast({
+      const transResponse = await invokeLLMBulk({
         messages: [
           { role: "system", content: "Sei un traduttore italiano. Traduci i titoli in italiano giornalistico. Rispondi con JSON valido." },
           { role: "user", content: `Traduci questi titoli in italiano giornalistico incisivo (max 80 caratteri ciascuno).\n\n${titlesForTranslation}\n\nRispondi con JSON: {"translations":[{"index":0,"title":"..."}]}` }

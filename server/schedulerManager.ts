@@ -156,8 +156,8 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
 
-  cron.schedule("5 0 * * 1,3,5", async () => { // lun, mer, ven alle 00:05 CET
-    console.log("[SchedulerManager] ⏰ 00:05 CET (lun/mer/ven) — Editoriale AI + Startup del giorno...");
+  cron.schedule("5 0 * * *", async () => { // ogni giorno alle 00:05 CET
+    console.log("[SchedulerManager] ⏰ 00:05 CET (ogni giorno) — Editoriale AI + Startup del giorno...");
     await withLock("editorial-ai", async () => {
       try { await runDailyContentRefresh(); console.log("[SchedulerManager] ✅ Editoriale e Startup AI aggiornati"); }
       catch (err) { console.error("[SchedulerManager] ❌ Editoriale/Startup AI:", err); }

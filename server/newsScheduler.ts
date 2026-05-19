@@ -4,7 +4,7 @@
  * usando l'AI per cercare e selezionare i nuovi eventi più significativi
  */
 
-import { invokeLLM, stripJsonBackticks } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk, stripJsonBackticks } from "./_core/llm";
 import { getDb } from "./db";
 import { newsItems, newsRefreshLog } from "../drizzle/schema";
 import { desc, eq } from "drizzle-orm";
@@ -114,7 +114,7 @@ Criteri editoriali:
 Rispondi SOLO con un JSON object con chiave "items" contenente l'array.`;
 
   try {
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "system",

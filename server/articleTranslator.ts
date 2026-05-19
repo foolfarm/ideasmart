@@ -4,7 +4,7 @@
  * Usa invokeLLM (helper interno) per massima compatibilità con il provider configurato.
  */
 
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, invokeLLMBulk } from "./_core/llm";
 import { getDb } from "./db";
 import { dailyEditorial, newsItems } from "../drizzle/schema";
 import { isNull, eq } from "drizzle-orm";
@@ -39,7 +39,7 @@ SUBTITLE: ${subtitle ?? ""}
 BODY:
 ${body}`;
 
-  const response = await invokeLLM({
+  const response = await invokeLLMBulk({
     messages: [
       {
         role: "user",
@@ -147,7 +147,7 @@ export async function translateNewsTitle(itemId: number): Promise<boolean> {
     if (!item) return false;
     if (item.titleEn) return true; // già tradotto
 
-    const response = await invokeLLM({
+    const response = await invokeLLMBulk({
       messages: [
         {
           role: "user",
