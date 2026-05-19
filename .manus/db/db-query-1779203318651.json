@@ -1,0 +1,30 @@
+{
+  "query": "SELECT date_label, COUNT(*) as cnt FROM research_reports GROUP BY date_label ORDER BY date_label DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT date_label, COUNT(*) as cnt FROM research_reports GROUP BY date_label ORDER BY date_label DESC LIMIT 5;",
+  "rows": [
+    {
+      "date_label": "2026-05-19",
+      "cnt": "20"
+    },
+    {
+      "date_label": "2026-05-18",
+      "cnt": "60"
+    },
+    {
+      "date_label": "2026-05-17",
+      "cnt": "20"
+    },
+    {
+      "date_label": "2026-05-16",
+      "cnt": "20"
+    },
+    {
+      "date_label": "2026-05-15",
+      "cnt": "20"
+    }
+  ],
+  "messages": [],
+  "stdout": "date_label\tcnt\n2026-05-19\t20\n2026-05-18\t60\n2026-05-17\t20\n2026-05-16\t20\n2026-05-15\t20\n",
+  "stderr": "",
+  "execution_time_ms": 272
+}

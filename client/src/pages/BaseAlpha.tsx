@@ -169,13 +169,14 @@ export default function BaseAlpha() {
       <div className="flex min-h-screen">
         
         <main className="flex-1 min-w-0 overflow-x-hidden">
+          <div className="max-w-[1280px] mx-auto">
 
             {/* ══ HERO — layout 3/4 + 1/4 con profilo Adrian Lenice ════════════════════ */}
           <section className="bg-white border-b border-zinc-200">
             <div style={{ borderBottom: "3px solid #111" }}>
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
                 {/* Titolo display — 3/4 */}
-                <div className="lg:col-span-3 px-8 md:px-12 py-12 md:py-16" style={{ borderRight: "1px solid #11111115" }}>
+                <div className="lg:col-span-3 px-6 md:px-10 py-12 md:py-16" style={{ borderRight: "1px solid #11111115" }}>
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-[10px] font-black tracking-[0.25em] uppercase px-3 py-1.5 bg-[#c9a227] text-black">
                       OSSERVATORIO
@@ -260,7 +261,7 @@ export default function BaseAlpha() {
 
           {/* ══ NUMERI — sfondo grigio chiaro ══════════════════════════════════ */}
           <section className="bg-zinc-50 border-b border-zinc-200">
-            <div className="grid grid-cols-3 divide-x divide-zinc-200">
+            <div className="grid grid-cols-3 divide-x divide-zinc-200 border-b border-zinc-200">
               {[
                 { num: "4.000+", label: "Fonti monitorate", sub: "incluse fonti pre-pubbliche" },
                 { num: "18", label: "Settori verticali", sub: "con copertura dedicata" },
@@ -276,7 +277,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ COME FUNZIONA — sfondo bianco ══════════════════════════════════ */}
-          <section className="bg-white px-6 md:px-12 py-14 border-b border-zinc-100">
+          <section className="bg-white px-6 md:px-10 py-14 border-b border-zinc-100">
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Come funziona</p>
               <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
@@ -315,7 +316,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ SETTORI — sfondo grigio chiaro ═════════════════════════════════ */}
-          <section className="bg-zinc-50 px-6 md:px-12 py-14 border-b border-zinc-200">
+          <section className="bg-zinc-50 px-6 md:px-10 py-14 border-b border-zinc-200">
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Settori coperti</p>
               <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
@@ -336,7 +337,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ PIANI — sfondo bianco ═══════════════════════════════════════════ */}
-          <section id="ba-plans" className="bg-white px-6 md:px-12 py-14 border-b border-zinc-100">
+          <section id="ba-plans" className="bg-white px-6 md:px-10 py-14 border-b border-zinc-100">
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Piani di abbonamento</p>
               <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-10">
@@ -393,7 +394,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ PERCHÉ BASE ALPHA — sfondo scuro ═══════════════════════════════ */}
-          <section className="bg-[#111] text-white px-6 md:px-12 py-14">
+          <section className="bg-[#111] text-white px-6 md:px-10 py-14">
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Perché Base Alpha</p>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-10">
@@ -424,7 +425,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ LEADERSHIP — Adrian Lenice — sfondo bianco, immagine grande ══════ */}
-          <section className="bg-white px-6 md:px-12 py-14 border-b border-zinc-100">
+          <section className="bg-white px-6 md:px-10 py-14 border-b border-zinc-100">
             <div className="max-w-4xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Il team</p>
               <h2 className="text-2xl md:text-3xl font-black text-zinc-900 mb-10">Chi guida Base Alpha +</h2>
@@ -501,7 +502,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ FORM CONTATTO — sfondo bianco, massima leggibilità ═════════════ */}
-          <section id="ba-contact" className="bg-white px-6 md:px-12 py-14 border-t border-zinc-100">
+          <section id="ba-contact" className="bg-white px-6 md:px-10 py-14 border-t border-zinc-100">
             <div className="max-w-2xl">
               <p className="text-[11px] font-black tracking-[0.25em] uppercase text-[#c9a227] mb-2">Sei interessato?</p>
               <h2 className="text-3xl md:text-4xl font-black text-[#111] mb-3">
@@ -606,7 +607,7 @@ export default function BaseAlpha() {
           </section>
 
           {/* ══ FOOTER MINI ════════════════════════════════════════════════════ */}
-          <div className="bg-zinc-50 border-t border-zinc-200 px-6 md:px-12 py-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="bg-zinc-50 border-t border-zinc-200 px-6 md:px-10 py-6 flex flex-wrap items-center justify-between gap-4">
             <p className="text-xs text-zinc-500">© 2026 ProofPress · Base Alpha Osservatorio Intelligence</p>
             <div className="flex gap-4">
               <Link href="/osservatorio-tech" className="text-xs text-zinc-500 hover:text-[#111] transition-colors">← Articoli di Andrea Cinelli</Link>
@@ -614,6 +615,7 @@ export default function BaseAlpha() {
             </div>
           </div>
 
+          </div>{/* /max-w container */}
         </main>
       </div>
       <SharedPageFooter />

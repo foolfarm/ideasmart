@@ -768,7 +768,7 @@ export const appRouter = router({
 
     // ── Proof Press Research ──────────────────────────────────────────────────
     getResearchReports: publicProcedure
-      .input(z.object({ limit: z.number().min(1).max(20).default(10) }))
+      .input(z.object({ limit: z.number().min(1).max(30).default(10) }))
       .query(async ({ input }) => {
         return cached(
           `research:today:${input.limit}`,
@@ -1797,6 +1797,12 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
       await generateWeeklyReportage();
       const items = await getLatestWeeklyReportage();
       return { success: true, count: items.length };
+    }),
+
+    // Rigenerazione manuale delle ricerche giornaliere (forza anche se già presenti)
+    refreshResearch: adminProcedure.mutation(async () => {
+      const result = await generateDailyResearch(true);
+      return { success: true, generated: result.generated, error: result.error ?? null };
     }),
 
     // Rigenerazione manuale della startup del giorno

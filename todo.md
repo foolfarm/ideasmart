@@ -3742,3 +3742,11 @@
 - [x] Aggiunta funzione invokeLLMBulk() con fallback Claude Haiku
 - [x] Migrati 11 file da invokeLLMFast → invokeLLMBulk (aiToolRadar, articleTranslator, auditContent, breakingNewsGenerator, channelIngestor, dealroomScheduler, marketAnalysisScheduler, newsScheduler, rssScraperNew, startupRadar, startupScheduler)
 - [x] TypeScript: 0 errori
+
+## Fix UI e Immagini (19 Mag 2026)
+
+- [x] /base-alpha: layout centrato con max-w-[1280px] mx-auto — titolo allineato con il resto della pagina
+- [x] /research: rimossi filtri categoria (TUTTE / AI TRENDS / VENTURE CAPITAL / STARTUP / TECNOLOGIA / MERCATI)
+- [x] /research: rimossa sezione newsletter in fondo alla pagina
+- [x] /research: aumentato limite query getResearchReports da 20 a 30 — ora mostra tutte le 20 ricerche di oggi
+- [x] News Verify: immagine rotta (ppv_hero_home_9707dcb8.webp — 403 Forbidden) sostituita con nuova immagine CDN (news-verify-hero.jpg — macchina da scrivere "Fake News") per articoli ID 8700001, 8700002, 8700003

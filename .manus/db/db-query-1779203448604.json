@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, title, imageUrl, sourceName FROM news_items WHERE title LIKE '%News Verify%' ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3aGZ9MSLrhgSbtV.0a4dfe1f8b2a --database UyPaon6i3Ec4nvfPz6kUfg --execute SELECT id, title, imageUrl, sourceName FROM news_items WHERE title LIKE '%News Verify%' ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "8700003",
+      "title": "News Verify: la certificazione claim-by-claim che trasforma il trust editoriale in asset",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+      "sourceName": "Andrea Cinelli — ProofPress Magazine"
+    },
+    {
+      "id": "8700002",
+      "title": "News Verify: certificazione claim-by-claim per riconquistare credibilità editoriale",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+      "sourceName": "Andrea Cinelli — IdeaSmart Magazine"
+    },
+    {
+      "id": "8700001",
+      "title": "News Verify: certificazione claim-by-claim per editori che vogliono differenziarsi",
+      "imageUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp",
+      "sourceName": "Andrea Cinelli — ProofPress Magazine"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\timageUrl\tsourceName\n8700003\tNews Verify: la certificazione claim-by-claim che trasforma il trust editoriale in asset\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp\tAndrea Cinelli — ProofPress Magazine\n8700002\tNews Verify: certificazione claim-by-claim per riconquistare credibilità editoriale\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp\tAndrea Cinelli — IdeaSmart Magazine\n8700001\tNews Verify: certificazione claim-by-claim per editori che vogliono differenziarsi\thttps://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ppv_hero_home_9707dcb8.webp\tAndrea Cinelli — ProofPress Magazine\n",
+  "stderr": "",
+  "execution_time_ms": 268
+}

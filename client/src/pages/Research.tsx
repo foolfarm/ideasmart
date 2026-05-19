@@ -3,12 +3,11 @@
  * Layout editoriale identico a AiHome: hero ricerca + sidebar, griglia 3 col, lista, newsletter, archivio.
  * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), accento viola (#6d28d9).
  */
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import { trpc } from "@/lib/trpc";
-import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import VerifyBadge from "@/components/VerifyBadge";
 import RequireAuth from "@/components/RequireAuth";
@@ -178,19 +177,13 @@ function ResearchSkeleton() {
 
 // ── Pagina principale ─────────────────────────────────────────────────────────
 export default function Research() {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
   const _today = useMemo(() => new Date(), []);
 
   const { data: reports, isLoading } = trpc.news.getResearchReports.useQuery({ limit: 30 });
 
-  const categories = ["all", "ai_trends", "venture_capital", "startup", "technology", "market"];
+  const filteredReports = reports ?? [];
 
-  const allReports = reports ?? [];
-  const filteredReports = activeCategory === "all"
-    ? allReports
-    : allReports.filter(r => r.category === activeCategory);
-
-  // Struttura identica ad AiHome: hero + sidebar, griglia, lista
+  // Struttura: hero + sidebar, griglia, lista
   const heroReport = filteredReports[0] ?? null;
   const secondaryReports = filteredReports.slice(1, 3);
   const gridReports = filteredReports.slice(3, 9);
@@ -212,30 +205,6 @@ export default function Research() {
             <SharedPageHeader />
             <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
 
-              {/* ── Filtri categoria ── */}
-              <div className="flex flex-wrap gap-2 mt-4 mb-2 pb-3 border-b border-[#1a1a1a]/10">
-                {categories.map(cat => {
-                  const config = cat === "all"
-                    ? { label: "Tutte", icon: null, accentColor: "#1a1a1a", bgColor: "#ffffff" }
-                    : getCategoryConfig(cat);
-                  const isActive = activeCategory === cat;
-                  return (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors"
-                      style={{
-                        fontFamily: SF,
-                        background: isActive ? "#1a1a1a" : "#ffffff",
-                        color: isActive ? "#ffffff" : "#1a1a1a",
-                        borderColor: isActive ? "#1a1a1a" : "#1a1a1a30"
-                      }}
-                    >
-                      {config.icon} {config.label}
-                    </button>
-                  );
-                })}
-              </div>
 
               {isLoading ? (
                 <ResearchSkeleton />
@@ -439,26 +408,6 @@ export default function Research() {
                 </>
               )}
 
-              {/* SEZIONE 4: Newsletter */}
-              <div className="mt-10">
-                <Divider thick />
-                <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: ACCENT, fontFamily: SF }}>
-                      Newsletter
-                    </span>
-                    <h3 className="mt-2 text-2xl font-bold text-[#1a1a1a]" style={{ fontFamily: SF_DISPLAY }}>
-                      Ricevi le ricerche ogni settimana
-                    </h3>
-                    <p className="mt-2 text-sm text-[#1a1a1a]/65" style={{ fontFamily: SF_SERIF }}>
-                      Analisi su AI, Startup e Venture Capital — dati verificati da Gartner, CB Insights, McKinsey, Statista.
-                    </p>
-                  </div>
-                  <div>
-                    <NewsletterSubscribeForm defaultChannel="ai" accentColor={ACCENT} />
-                  </div>
-                </div>
-              </div>
 
               {/* Archivio */}
               <ArchiveSection

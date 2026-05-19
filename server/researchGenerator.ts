@@ -190,7 +190,7 @@ function buildSourceUrl(rawUrl: string | undefined | null, source: string, title
 /**
  * Genera 20 ricerche giornaliere su Startup, VC e AI Trends usando l'AI.
  */
-export async function generateDailyResearch(): Promise<{
+export async function generateDailyResearch(force = false): Promise<{
   generated: number;
   error?: string;
 }> {
@@ -200,16 +200,22 @@ export async function generateDailyResearch(): Promise<{
   const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
   try {
-    // Controlla se le ricerche di oggi sono già state generate
-    const existing = await db
-      .select({ id: researchReports.id })
-      .from(researchReports)
-      .where(eq(researchReports.dateLabel, today))
-      .limit(1);
+    // Controlla se le ricerche di oggi sono già state generate (skip se force=true)
+    if (!force) {
+      const existing = await db
+        .select({ id: researchReports.id })
+        .from(researchReports)
+        .where(eq(researchReports.dateLabel, today))
+        .limit(1);
 
-    if (existing.length > 0) {
-      console.log(`[Research] Ricerche del ${today} già presenti, skip`);
-      return { generated: 0 };
+      if (existing.length > 0) {
+        console.log(`[Research] Ricerche del ${today} già presenti, skip`);
+        return { generated: 0 };
+      }
+    } else {
+      // Force: elimina le ricerche di oggi e rigenera
+      console.log(`[Research] Force=true: elimino ricerche del ${today} e rigenero...`);
+      await db.delete(researchReports).where(eq(researchReports.dateLabel, today));
     }
 
     // Genera la data corrente in formato leggibile
