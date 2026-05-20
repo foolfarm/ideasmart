@@ -654,6 +654,20 @@ async function startServer() {
     }
   });
 
+  // GET /api/newsletter/html-preview — genera e mostra l'HTML della newsletter nel browser (solo admin)
+  app.get("/api/newsletter/html-preview", async (req, res) => {
+    try {
+      const { buildUnifiedNewsletter } = await import('../unifiedNewsletter');
+      const { html, subject, stats } = await buildUnifiedNewsletter(true);
+      // Aggiungi banner di debug in cima
+      const debugBanner = `<div style="background:#ff5500;color:#fff;font-family:monospace;font-size:12px;padding:8px 16px;text-align:center;">PREVIEW NEWSLETTER v3 — ${subject} — ${JSON.stringify(stats)}</div>`;
+      return res.send(debugBanner + html);
+    } catch (err: any) {
+      console.error('[HTMLPreview] Errore:', err);
+      return res.status(500).send(`<pre>Errore: ${err.message}\n${err.stack}</pre>`);
+    }
+  });
+
   // POST /api/newsletter/trigger-preview — forza la generazione della preview (crea record pending)
   app.post("/api/newsletter/trigger-preview", async (req, res) => {
     const authHeader = req.headers.authorization || '';

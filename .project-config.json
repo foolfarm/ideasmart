@@ -1,0 +1,62 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "db",
+    "server",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://3aGZ9MSLrhgSbtV.0a4dfe1f8b2a:8jNe8l1he97vNMvK0bma@gateway02.us-east-1.prod.aws.tidbcloud.com:4000/UyPaon6i3Ec4nvfPz6kUfg?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/99304667/UyPaon6i3Ec4nvfPz6kUfg",
+    "access_key_id": "ASIAZV3A2ECZCTEOJRC3",
+    "secret_access_key": "z2g8ig1encLwWookbTnc2mzxOFDVKq76EBH19uHO",
+    "session_token": "IQoJb3JpZ2luX2VjEBIaCXVzLWVhc3QtMSJHMEUCIQCRSis7GeKbRC3RmOuXk0TtjGXA6rUT42mvoy0fDcuMbgIgN4jnrJRL7eih+u12I4RzvCTHJbWyNM/b+TlrMBhQGM0q6wMI2///////////ARAEGgw2NjUzODYwOTg4NjYiDLWak0p6RqxAPUPxwSq/A74Sw7DWsD9Jy3s1DgWQyxNdLOxie//t9lD2MrThvGobm1JIXaK0u6bIF4+NY9jpVzVFkS+sHukWWRrp/4MpQpidGvm9E23AoLHufOWT0/WtKLdizGKV21MsGz92+2Lam4KXyU5DlNVQb1cUO7iI/5rBR8aIP7MfR3XJDPV8UkPH2/SASes8WubJjy52J9CvpSUu+9nzQNXTbNZO4njigYVcKsDxL2kswr/G8Ms89mhsfV99XxTq/1+4EPfKxPINu+jsQM3kXf+3Nq2r1X5OjOHE/6mho7InM+LjTwIv5D5DX+qfHhXxujRoUsAAhgP/rsSI3y0i6t7azOsmfVnW2icy8Z6+u53ZN0BQNN5LXKIhWvK0o7fex5Kj+A7PLBZTZ8gDlrt3XHDdak9XhxRjcaj5IoTqe03qw9/XsHDJismhQOdWfhdS/XtOHDoYP6MkJBuiT1mQjBnIht6d40o1a2fM/rImqMghvZZspBdtNKkwNb8RIlrenwvf+gwYOQc31TwgdTX3SKDp5uRfSdm1QOSEp9c9ehqLY4VIxcglKfCeENC51bwD+b0Jho+Q9TTsUKvCniDbvCLpId4xLdsNdDC8wbLQBjqdAeDpIyNAhHcy1bFRQRXjS1S0BurAOm0GEGYLF4rJP7Nzqb7L4zvbHKOT0CUyHa+75Ofo2PlNygcOdKiSDYNMU4qqsz6qRQ6r/t/IA5p5GzjA20EaKlEs52aN1Guh0N+um2foDxISkYA2TpNwXr2ppuMnN3VpgSmoDVQRF9UM0JgBknc6R2aOOdHoUUGOymFKkxEH2O8eK0/wBHkf4LQ=",
+    "expiration": "2026-05-20T05:41:16.000Z"
+  },
+  "name": "ideasmart",
+  "path": "/home/ubuntu/ideasmart",
+  "port": 3000,
+  "secrets": {
+    "ANTHROPIC_API_KEY": "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",
+    "BUILT_IN_FORGE_API_KEY": "XwkttUXcck6HhPUyCSPVdq",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "DEEPSEEK_API_KEY": "sk-889167e0048c47b8a8103a1e8dec8fb7",
+    "FOOLFARM_STRIPE_SECRET_KEY": "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",
+    "FOOLFARM_STRIPE_WEBHOOK_SECRET": "whsec_t2wegYBwdj5YEUcYfgTr3PVLgvP5YzXH",
+    "GOOGLE_FACTCHECK_API_KEY": "AIzaSyDes7u72IMUEoVwqFsZJUiNS8XINhSz5WI",
+    "JWT_SECRET": "6xTQJEE2qKndRDbna3xc45",
+    "LINKEDIN_ACCESS_TOKEN": "AQWWzVs17j_In3Aan6_QTnhhDVHizqU8OobzLNo7Pr9--a4uWPbj4eCWncDMhZD2_9Vh8462YlNdgedRwBfZ9F0HcQCRc77GtsFshVeTm6GhqQPrkmXJ1-2g5PUr5zkfQfCd1V45abduiaF4LvDhRyuL7w8qY3yefCfFua3JvEc4CeCDAPBYxhB8xa_WpzJk0aYcUagAGCs07Wy8rwJN-419Fn7Va505ABgz55rNCCZ0Q4jviCa1-cKmWnzeOsJLRUDbpAd5L0iNtHT03pAzEOXYk56Fy6jETSKHu48nPn9PZF0KFFurz7hEbNmeEb4yhXdcveWeKTh1vdWCBxoUtlSEi2VzDA",
+    "LINKEDIN_AUTHOR_URN": "urn:li:person:T2CjsXZQ59",
+    "LINKEDIN_REFRESH_TOKEN": "AQVoCmu-qWquHKQVkUbgXZbXWZzG7ygiLC4ZIkz_XoDUGLzU-7E0b-SsRklUKxJanH6ge_GVCLP4-1ZBLcUgKJ11luYhNwipagyJDJpscwZIM264nmEnubgC1Tpop2U1IJCA0qXw8kKAjyhyQcEmcdTf_0UdalYS3t8WAjz-k69FoTQbEk49j0Vjwstc91ln62-ldJBR9KaGdH12JSVDS0sq1f64zKZ8SL-kKAiLjwkpFyaasB8uW4K6EGoZL5b9T9jaRcIevkW2G6LLa3Sr5ne3MZ0Rhi_RyOltdYTArVfPAfq-w-kcgSsioR1Z_9hFu_S0z16nYJckYFJPde7e5QqY7WuOPw",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Andrea Cinelli",
+    "OWNER_OPEN_ID": "8CP498LgPHpZknuzxrvPac",
+    "PEXELS_API_KEY": "mAO47EvJCIeKGTMf9J6FS7hTDuI9CcqNDD1xuYo5ObNYUTFb2yWcvapl",
+    "PINATA_API_KEY": "f450287f063f610318be",
+    "PINATA_API_SECRET": "bdbf0826ce00db0707e7505ad86a72c45025a047a7bef384e816352a10aed6fc",
+    "PINATA_GATEWAY_DOMAIN": "brown-characteristic-louse-309.mypinata.cloud",
+    "PINATA_GATEWAY_KEY": "HPJAovdMcXhRLztAjBQlaQv-6yscFPu4jhahhA0JxXTuTCA5-ItHPPPPjOiEYHxu",
+    "PINATA_JWT": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiZTMwYmZiOS04MmYyLTRkMzUtODFjYy1jMWFmYzc0ZmYxOTUiLCJlbWFpbCI6ImFuZHJlYS5jaW5lbGxpQGZvb2xmYXJtLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJmNDUwMjg3ZjA2M2Y2MTAzMThiZSIsInNjb3BlZEtleVNlY3JldCI6ImJkYmYwODI2Y2UwMGRiMDcwN2U3NTA1YWQ4NmE3MmM0NTAyNWEwNDdhN2JlZjM4NGU4MTYzNTJhMTBhZWQ2ZmMiLCJleHAiOjE4MDg0ODY3ODJ9.ApdBdXnDhWRsjtr1gUWhgXUJdg43lcHKmi5FU12Fk3M",
+    "PPV_API_KEY": "ppv_9aabe475925174e346d4ed1ad548085e",
+    "SENDGRID_API_KEY": "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",
+    "SENDGRID_FROM_EMAIL": "noreply@proofpress.ai",
+    "SENDGRID_FROM_NAME": "Daily AI Business Intelligence- Per Decidere, Informarsi, Investire by ProofPress Magazine",
+    "STRIPE_SECRET_KEY": "sk_test_51THUSk8CvMSliYUFmEci6TYrqdVP09qFtTTGLstSR59DhgXejPN9z8LijXevamKZ9uKZvkUFoBxTl2jtzXfUwY5w00p8N6g2fe",
+    "STRIPE_WEBHOOK_SECRET": "whsec_cWDcDSmNlk551RNiSO1k0PVbgHkn8Aah",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "d5df086e-f3ed-4715-8324-b191fe347f31",
+    "VITE_APP_ID": "UyPaon6i3Ec4nvfPz6kUfg",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/99304667/NIoSOefxhDuhjNwA.png",
+    "VITE_APP_TITLE": "PROOF PRESS- Agentic Certified Journalism Platform",
+    "VITE_FRONTEND_FORGE_API_KEY": "cDdSuQp87Y5Uoq2aBJigub",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im",
+    "VITE_STRIPE_PUBLISHABLE_KEY": "pk_test_51THUSk8CvMSliYUFgvBVZMIiy9oa3Btqs8hFB2nper3k0KeTw3dDbvRRebDEZQ5phLM7tmTxZ8mQXkE5nn4TJW9H00tgmfZKAk"
+  },
+  "template_id": "web-db-user",
+  "test_command": "pnpm test"
+}

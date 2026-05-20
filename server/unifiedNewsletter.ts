@@ -630,7 +630,8 @@ function formatEventDate(date: Date): { day: string; month: string } {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HTML TEMPLATE BUILDER — Newsletter "Proof Press Daily" v2
+// HTML TEMPLATE BUILDER — Newsletter "Buongiorno ProofPress" v3
+// Nuovo formato: 10 notizie curate + startup + ricerca + deal + sponsor
 // ═══════════════════════════════════════════════════════════════════════════
 function buildNewsletterHtmlV2(opts: {
   dateLabel: string;
@@ -673,683 +674,48 @@ function buildNewsletterHtmlV2(opts: {
   } = opts;
   const newsImages = opts.newsImages || {};
 
-  // ── Design Tokens v4 (Apple Style — SF Francisco) ──
-  const F_SERIF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
-  const F_SANS  = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
-  const BG      = "#f5f5f7";   // grigio Apple — mai sfondo scuro
+  // ── Design Tokens v3 (ProofPress Editorial) ──
+  const F_SERIF = "Georgia, 'Times New Roman', Times, serif";
+  const F_SANS  = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
+  const BG      = "#f4f4f0";   // carta giornale warm
   const WHITE   = "#ffffff";
-  const BLACK   = "#1d1d1f";   // Apple text primary
-  const SLATE   = "#6e6e73";   // Apple text secondary
-  const MUTED   = "#86868b";   // Apple text tertiary
-  const BORDER  = "#d2d2d7";   // Apple separator
-  const ACCENT  = "#d94f3d";   // rosso Proof Press — solo per CTA
+  const BLACK   = "#111111";
+  const SLATE   = "#444444";
+  const MUTED   = "#888888";
+  const BORDER  = "#e0e0e0";
+  const ACCENT  = "#d94f3d";   // rosso ProofPress
   const ACCENT_DARK = "#b83c2c";
   const GRAY_DARK   = "#1d1d1f";
   const AMAZON_ORANGE = "#FF9900";
 
-  // ── Select 5-6 strongest channels for today ──
-  const now = new Date();
-  const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-  const channelPool = ALL_CHANNELS_V2.slice(1); // exclude breaking (used in hero)
-  const mainChannelCount = 2; // Ridotto da 5 a 2 per newsletter più focalizzata
-  const startIdx = dayOfYear % channelPool.length;
-  const mainChannels: typeof channelPool = [];
-  const quickLinkChannels: typeof channelPool = [];
-  for (let i = 0; i < channelPool.length; i++) {
-    const ch = channelPool[(startIdx + i) % channelPool.length];
-    if (mainChannels.length < mainChannelCount) {
-      mainChannels.push(ch);
-    } else {
-      quickLinkChannels.push(ch);
-    }
-  }
-
-  // ── Helper: get best item for a channel ──
-  // REGOLA: tutti i link devono puntare a proofpress.ai/canale/{id} — MAI alla fonte esterna
-  function getBestItemForChannel(chKey: string): { title: string; summary: string; url: string; category: string } | null {
-    const chItems = channelContents[chKey];
-    if (chItems && chItems.length > 0) {
-      const item = chItems[0];
-      const chDef = ALL_CHANNELS_V2.find(c => c.key === chKey);
-      // Usa sempre link interno a proofpress.ai — con ID articolo se disponibile
-      const internalUrl = item.id
-        ? `${BASE_URL}${chDef?.slug || `/${chKey}`}/${item.id}`
-        : `${BASE_URL}${chDef?.slug || `/${chKey}`}`;
-      return {
-        title: item.title,
-        summary: item.subtitle || item.body.slice(0, 160) + "...",
-        url: internalUrl,
-        category: item.category || chDef?.label || chKey.toUpperCase(),
-      };
-    }
-    if (chKey === "startup" && startupNews.length > 0) {
-      const n = startupNews[0];
-      return { title: n.title, summary: n.summary.slice(0, 160), url: n.id ? `${BASE_URL}/startup/news/${n.id}` : `${BASE_URL}/startup`, category: n.category };
-    }
-    if (chKey === "dealroom" && dealroomNews.length > 0) {
-      const n = dealroomNews[0];
-      return { title: n.title, summary: n.summary.slice(0, 160), url: n.id ? `${BASE_URL}/dealroom/news/${n.id}` : `${BASE_URL}/dealroom`, category: n.category };
-    }
-    if (chKey === "research" && researches.length > 0) {
-      const r = researches[0];
-      return { title: r.title, summary: r.summary.slice(0, 160), url: r.id ? `${BASE_URL}/research/${r.id}` : `${BASE_URL}/research`, category: r.category };
-    }
-    return null;
-  }
-
-  // ── Pexels image URL helper ──
-  function pexelsUrl(id: string | number, w: number, h: number): string {
-    return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&fit=crop`;
-  }
-
-  // ── Fallback Pexels IDs per tema ──
-  const FALLBACK_PEXELS: Record<string, string> = {
-    ai:        "8386440",  // neural network visualization
-    startup:   "3184292",  // business team meeting
-    research:  "2280571",  // laboratory science
-    dealroom:  "3184465",  // boardroom deal
-    default:   "3861969",  // technology abstract
+  // ── Seleziona le 10 notizie del giorno (mix curato) ──
+  // 4 AI + 3 Startup + 3 Dealroom/VC
+  // Escludi categorie non pertinenti (offerte commerciali, promozioni, deals Amazon)
+  const EXCLUDED_CATEGORIES = ['offerte', 'promozioni', 'deals', 'amazon', 'shopping', 'sconti', 'volantino', 'coupon'];
+  const isRelevantNews = (n: NewsItem) => {
+    const cat = (n.category || '').toLowerCase();
+    return n.id && !EXCLUDED_CATEGORIES.some(ex => cat.includes(ex));
   };
+  const top4AI = aiNews.filter(isRelevantNews).slice(0, 4);
+  const top3Startup = startupNews.filter(n => n.id).slice(0, 3);
+  const top3Deal = dealroomNews.filter(n => n.id).slice(0, 3);
+  // Lista unificata delle 10 notizie: AI prima, poi Startup, poi Deal
+  const top10News: (NewsItem & { _section: string; _color: string; _label: string })[] = [
+    ...top4AI.map(n => ({ ...n, _section: 'ai', _color: '#dc2626', _label: n.category || 'AI NEWS' })),
+    ...top3Startup.map(n => ({ ...n, _section: 'startup', _color: '#7c3aed', _label: n.category || 'STARTUP' })),
+    ...top3Deal.map(n => ({ ...n, _section: 'dealroom', _color: '#059669', _label: n.category || 'DEAL & VC' })),
+  ].slice(0, 10);
 
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK A: HEADER
-  // ═══════════════════════════════════════════════════════════════
-  const headerHtml = `
-    <tr>
-      <td style="background:${WHITE};padding:32px 32px 24px;text-align:center;border-radius:8px 8px 0 0;border-bottom:2px solid ${BLACK};">
-        <div style="text-align:right;margin-bottom:16px;">
-          <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
-        </div>
-        <div style="font-size:52px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.0;letter-spacing:-0.02em;margin-bottom:6px;">PROOFPRESS</div>
-        <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;margin-bottom:4px;">BUONGIORNO NEWS</div>
-        <div style="font-size:11px;font-weight:400;color:${MUTED};font-family:${F_SANS};margin-bottom:14px;line-height:1.5;text-transform:uppercase;letter-spacing:0.08em;">IL PRIMO MAGAZINE CON REDAZIONE AGENTICA E INFORMAZIONI 100% VERIFICATE</div>
-        <div style="width:40px;height:2px;background:${ACCENT};margin:0 auto 14px;"></div>
-        <div style="font-size:13px;font-weight:700;color:${BLACK};font-family:${F_SANS};letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">INNOVAZIONE, INVESTIMENTI E TECNOLOGIA</div>
+  // ── Startup del giorno ──
+  const startup = opts.startupOfDay || (startupsOfDay && startupsOfDay[0]) || null;
 
-        <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};line-height:1.5;">
-          ${dateLabel} &nbsp;·&nbsp; N° ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString("it-IT")} lettori</strong>
-        </div>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
+  // ── Ricerca del giorno ──
+  const researchOfDay = researches.find(r => r.isResearchOfDay) || researches[0] || null;
 
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK B: PRESENTAZIONE FORMAT BUONGIORNO by ProofPress
-  // Sostituisce il vecchio banner rebrand — mostra sempre il manifesto editoriale
-  // ═══════════════════════════════════════════════════════════════
-  const rebrandHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
-          <tr>
-            <td style="padding:18px 24px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">IL NOSTRO FORMAT</div>
-              <div style="font-size:17px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:6px;">BUONGIORNO by ProofPress — ogni giorno alle 8.30</div>
-              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;">La newsletter giornaliera creata dalla redazione di ProofPress. Ogni mattina, notizie di innovazione, investimenti e tecnologia <strong>certificate con ProofPress Verify Technology</strong> — zero fake news, solo fatti verificati.</div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
+  // ── Deal del giorno (primo dealroom news) ──
+  const dealOfDay = dealroomNews.filter(n => n.id)[0] || null;
 
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK C: HERO — Notizia di Apertura
-  // ═══════════════════════════════════════════════════════════════
-  // Hero: preferisce breaking news, altrimenti prima notizia AI (solo con ID valido)
-  const heroAiItem = aiNews[0] && aiNews[0].id ? aiNews[0] : null;
-  const heroItem = breakingItems[0] || (heroAiItem ? { ...heroAiItem, id: String(heroAiItem.id) } : null);
-
-  // Funzione helper: costruisce il link corretto per l'hero
-  // - Breaking news: usa newsItemId se disponibile (link a notizia reale), altrimenti /ai
-  // - NewsItem: usa sempre /ai/news/{id}
-  function buildHeroUrl(item: BreakingItem | NewsItem | null, campaign: string): string {
-    if (!item) return `${BASE_URL}/ai`;
-    const isBreaking = 'breakingReason' in item;
-    if (isBreaking) {
-      const breakingItem = item as BreakingItem;
-      if (breakingItem.newsItemId && typeof breakingItem.newsItemId === 'number') {
-        return `${BASE_URL}/ai/news/${breakingItem.newsItemId}?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}`;
-      }
-      // Breaking senza newsItemId collegato: link alla sezione AI
-      return `${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}`;
-    }
-    // NewsItem normale: link diretto
-    const newsItem = item as NewsItem;
-    return `${BASE_URL}/ai/news/${newsItem.id}?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}`;
-  }
-  const heroImgUrl = heroImageUrl || pexelsUrl(FALLBACK_PEXELS.ai, 640, 300);
-  // ProofPress Verify badge: usa l'hash reale SHA-256 dal DB (primi 16 char), oppure genera uno sintetico
-  const heroVerifyHash = heroItem && 'verifyHash' in heroItem && (heroItem as any).verifyHash
-    ? `PP-${((heroItem as any).verifyHash as string).slice(0, 16).toUpperCase()}`
-    : heroItem ? `PP-${Math.abs(heroItem.title.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % 99999).toString().padStart(5, "0")}` : "PP-00000";
-  const verifyHash = heroVerifyHash;
-  const heroHtml = heroItem ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:0;">
-              <img src="${heroImgUrl}" width="600" style="width:100%;max-width:600px;height:280px;object-fit:cover;display:block;" alt="${heroItem.title}" />
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:24px 28px 22px;">
-              <div style="display:inline-block;background:${ACCENT};color:${WHITE};font-size:10px;font-weight:700;padding:4px 10px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">
-                ${heroItem.section ? heroItem.section.toUpperCase().replace(/_/g, " ") : "NOTIZIA DEL GIORNO"}
-              </div>
-              <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:12px;">
-                <a href="${buildHeroUrl(heroItem, 'hero')}" style="color:${BLACK};text-decoration:none;">${heroItem.title}</a>
-              </div>
-              ${heroItem.summary ? `<div style="font-size:15px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${heroItem.summary.slice(0, 280)}${heroItem.summary.length > 280 ? "..." : ""}</div>` : ""}
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td>
-                    <table cellpadding="0" cellspacing="0" border="0">
-                      <tr>
-                        <td style="background:${ACCENT};border-radius:980px;padding:12px 24px;">
-                          <a href="${buildHeroUrl(heroItem, 'hero_cta')}" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Leggi su ProofPress →</a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td style="text-align:right;vertical-align:middle;">
-                    <span style="font-size:10px;color:${MUTED};font-weight:600;font-family:${F_SANS};letter-spacing:0.04em;">✓ PROOFPRESS VERIFY &nbsp;·&nbsp; ${verifyHash}</span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK D: BANNER ROTANTE #3 (sostituisce Amazon posizione premium — rimosso 2026-05-06)
-  // ═══════════════════════════════════════════════════════════════
-  const deal1 = amazonDeals[0]; // mantenuto per compatibilità ma non usato
-  // Banner rotante #3 — al posto dell'Amazon fisso
-  const consigliatoHtml1 = newsletterBanners && newsletterBanners[2] ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <a href="${BASE_URL}/api/nl/b/${newsletterBanners[2].id}" style="display:block;text-decoration:none;">
-          <img src="${newsletterBanners[2].imageUrl}" alt="${newsletterBanners[2].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
-        </a>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK E: SEZIONI TEMATICHE — 5 canali a rotazione
-  // ═══════════════════════════════════════════════════════════════
-  let channelBlocksHtml = "";
-  for (const ch of mainChannels) {
-    const item = getBestItemForChannel(ch.key);
-    if (!item) continue;
-    const chImgUrl = (channelImages && channelImages[ch.key]) || pexelsUrl(FALLBACK_PEXELS[ch.key] || FALLBACK_PEXELS.default, 640, 200);
-    channelBlocksHtml += `
-    <tr>
-      <td style="padding:0 20px 16px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:0;">
-              <img src="${chImgUrl}" width="600" style="width:100%;max-width:600px;height:180px;object-fit:cover;display:block;" alt="${item.title}" />
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:20px 24px 18px;">
-              <div style="display:inline-block;background:${ch.color};color:${WHITE};font-size:10px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:0.08em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">
-                ${ch.emoji} ${ch.label}
-              </div>
-              <div style="font-size:21px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.35;margin-bottom:8px;">
-                <a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}" style="color:${BLACK};text-decoration:none;">${item.title}</a>
-              </div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${item.summary}</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td><a href="${item.url}?utm_source=newsletter&utm_medium=email&utm_campaign=channel_${ch.key}_cta" style="font-size:11px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">LEGGI SUBITO →</a></td>
-                  <td style="text-align:right;"><span style="font-size:9px;color:${MUTED};font-family:${F_SANS};letter-spacing:0.04em;">✓ PROOFPRESS VERIFY</span></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>`;
-  }
-  if (channelBlocksHtml) {
-    channelBlocksHtml += `<tr><td style="height:4px;background:${BG};"></td></tr>`;
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK F: STARTUP DEL GIORNO (2 startup con rotazione giornaliera)
-  // ═══════════════════════════════════════════════════════════════
-  const startup = opts.startupOfDay;
-  // Mostra solo 1 startup del giorno (riduzione lunghezza newsletter)
-  const startupsList = startup ? [startup] : (startupsOfDay && startupsOfDay.length > 0 ? [startupsOfDay[0]] : []);
-  function renderStartupCard(s: StartupOfDayItem, idx: number): string {
-    const countryTd = s.country
-      ? `<td style="padding-right:20px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Paese</span><br><span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.country}</span></td>`
-      : "";
-    const fundingTd = s.funding
-      ? `<td style="padding-right:20px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Funding</span><br><span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.funding}</span></td>`
-      : "";
-    const aiScoreTd = s.aiScore
-      ? `<td><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">AI Score</span><br><span style="font-size:16px;font-weight:800;color:${ACCENT};font-family:${F_SANS};">${s.aiScore}/100</span></td>`
-      : "";
-    const label = idx > 0 ? ` #${idx + 1}` : "";
-    return `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:22px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">🚀 STARTUP DEL GIORNO${label}</div>
-              <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:4px;">${s.name}</div>
-              <div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:10px;">${s.tagline}</div>
-              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:14px;">${s.description.slice(0, 220)}${s.description.length > 220 ? "..." : ""}</div>
-              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
-                <tr>
-                  <td style="padding-right:20px;">
-                    <span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Categoria</span><br>
-                    <span style="font-size:12px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${s.category}</span>
-                  </td>
-                  ${countryTd}
-                  ${fundingTd}
-                  ${aiScoreTd}
-                </tr>
-              </table>
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
-                    <a href="${BASE_URL}/ai/spotlight/${s.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Scopri la startup →</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:12px;background:${BG};"></td></tr>`;
-  }
-  const startupHtml = startupsList.length > 0
-    ? startupsList.map((s, i) => renderStartupCard(s, i)).join("") + `<tr><td style="height:8px;background:${BG};"></td></tr>`
-    : "";
-
-  // BLOCK G: PROMO PROMPT COLLECTION — Riattivato 2026-05-18 con nuovo design selling
-  const promptPromoHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a0a0a;border-radius:12px;overflow:hidden;">
-          <tr>
-            <td style="padding:32px 28px;">
-              <!-- Eyebrow -->
-              <div style="font-size:10px;font-weight:800;color:#ff5500;letter-spacing:0.2em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">📚 EDIZIONI PROOFPRESS · SPONSOR</div>
-              <!-- Headline -->
-              <div style="font-size:32px;font-weight:900;color:#ffffff;font-family:Georgia,'Times New Roman',serif;line-height:1.15;margin-bottom:8px;">1.200 Prompt AI<br>Pronti da Usare</div>
-              <!-- Sub -->
-              <div style="font-size:15px;color:rgba(255,255,255,0.75);font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">La raccolta definitiva per chi usa l'AI ogni giorno. ChatGPT, Claude, Gemini, Perplexity. Strategia, marketing, codice, scrittura, analisi.</div>
-              <!-- Stats -->
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
-                <tr>
-                  <td width="33%" style="text-align:center;padding:12px 8px;background:rgba(255,255,255,0.06);border-radius:8px;">
-                    <div style="font-size:28px;font-weight:900;color:#ff5500;font-family:${F_SANS};">1.200</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.6);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Prompt</div>
-                  </td>
-                  <td width="2%"></td>
-                  <td width="33%" style="text-align:center;padding:12px 8px;background:rgba(255,255,255,0.06);border-radius:8px;">
-                    <div style="font-size:28px;font-weight:900;color:#ff5500;font-family:${F_SANS};">12</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.6);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Categorie</div>
-                  </td>
-                  <td width="2%"></td>
-                  <td width="30%" style="text-align:center;padding:12px 8px;background:rgba(255,255,255,0.06);border-radius:8px;">
-                    <div style="font-size:28px;font-weight:900;color:#ff5500;font-family:${F_SANS};">€39</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.6);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Una volta</div>
-                  </td>
-                </tr>
-              </table>
-              <!-- CTA -->
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td align="center">
-                    <a href="https://promptcollection2026.com?utm_source=newsletter&utm_medium=email&utm_campaign=prompt_promo" style="display:block;background:#ff5500;color:#ffffff;font-size:16px;font-weight:800;font-family:${F_SANS};text-decoration:none;padding:16px 32px;border-radius:8px;text-align:center;letter-spacing:0.02em;">Scopri Prompt Collection 2026 →</a>
-                  </td>
-                </tr>
-              </table>
-              <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.4);font-family:${F_SANS};">promptcollection2026.com</div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:24px;background:${BG};"></td></tr>`;
-
-    // ═════════════════════════════════════════════════════════════
-  // BLOCK G2: BANNER PUBBLICITARI — Rotazione giornaliera (2 banner)
-  // I link usano /api/nl/b/:id per tracciare i click dalla newsletter
-  // ═════════════════════════════
-  const bannerHtml1 = newsletterBanners && newsletterBanners[0] ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <a href="${BASE_URL}/api/nl/b/${newsletterBanners[0].id}" style="display:block;text-decoration:none;">
-          <img src="${newsletterBanners[0].imageUrl}" alt="${newsletterBanners[0].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
-        </a>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  const bannerHtml2 = newsletterBanners && newsletterBanners[1] ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <a href="${BASE_URL}/api/nl/b/${newsletterBanners[1].id}" style="display:block;text-decoration:none;">
-          <img src="${newsletterBanners[1].imageUrl}" alt="${newsletterBanners[1].name}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;border:1px solid ${BORDER};" />
-        </a>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  // ═════════════════════════════════════════════════════════════
-  // BLOCK H: ISCRIZIONE GRATUITA — Blocco fisso
-  // ═════════════════════════════════════════════════════════════
-  const iscrizioneHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${BLACK};">
-          <tr>
-            <td style="padding:22px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">PROOF PRESS</div>
-              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:8px;">Ogni giorno 400 news, ricerche e notizie gratis.</div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.7;margin-bottom:18px;">AI, Startup e Venture Capital — aggiornato ogni giorno.</div>
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:${BLACK};border-radius:980px;padding:12px 26px;">
-                    <a href="${BASE_URL}/registrati?utm_source=newsletter&utm_medium=email&utm_campaign=iscrizione" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Iscriviti gratis →</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK I: SEZIONE EVENTI
-  // ═══════════════════════════════════════════════════════════════
-  const events = opts.events;
-  let eventsHtml = "";
-  if (events.length > 0) {
-    const eventRows = events.slice(0, 4).map((ev) => {
-      const d = formatEventDate(ev.startAt);
-      const typeLabel = ev.isOnline ? "Online" : (ev.location || "In presenza");
-      const evUrl = ev.eventUrl || `${BASE_URL}/eventi`;
-      return `
-        <tr>
-          <td style="padding:12px 0;border-bottom:1px solid ${BORDER};">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td width="52" style="vertical-align:top;">
-                  <div style="background:${ACCENT};border-radius:6px;padding:6px 0;text-align:center;width:46px;">
-                    <div style="font-size:17px;font-weight:800;color:${WHITE};font-family:${F_SANS};line-height:1;">${d.day}</div>
-                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);font-family:${F_SANS};letter-spacing:0.1em;">${d.month}</div>
-                  </div>
-                </td>
-                <td style="vertical-align:top;padding-left:14px;">
-                  <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.35;margin-bottom:3px;">
-                    <a href="${evUrl}" style="color:${BLACK};text-decoration:none;">${ev.title}</a>
-                  </div>
-                  <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};">${typeLabel}${ev.isFree ? " · Gratuito" : ""}</div>
-                </td>
-                <td width="80" style="vertical-align:middle;text-align:right;">
-                  <a href="${evUrl}" style="font-size:11px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;text-transform:uppercase;">ISCRIVITI →</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>`;
-    }).join("");
-    eventsHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:22px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">📅 PROSSIMI EVENTI</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${eventRows}
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK J: QUICK LINKS — "Anche oggi su Proof Press"
-  // ═══════════════════════════════════════════════════════════════
-  let quickLinksHtml = "";
-  const quickItems: { emoji: string; label: string; title: string; url: string; verifyHash?: string | null }[] = [];
-  for (const ch of quickLinkChannels) {
-    const item = getBestItemForChannel(ch.key);
-    if (item) {
-      quickItems.push({ emoji: ch.emoji, label: ch.label, title: item.title, url: item.url });
-    }
-  }
-  // Solo notizie AI con ID valido (esistenti sul sito)
-  for (const n of aiNews.slice(1, 4)) {
-    if (quickItems.length >= 6) break;
-    if (!n.id) continue; // salta notizie senza ID
-    quickItems.push({
-      emoji: "🤖",
-      label: "AI NEWS",
-      title: n.title,
-      url: `${BASE_URL}/ai/news/${n.id}`,
-      verifyHash: n.verifyHash ?? null,
-    });
-  }
-  if (quickItems.length > 0) {
-    const rows = quickItems.slice(0, 6).map((q) => {
-      const shortHash = q.verifyHash ? q.verifyHash.slice(0, 16).toUpperCase() : null;
-      return `
-      <tr>
-        <td style="padding:8px 0;border-bottom:1px solid ${BORDER};">
-          <a href="${q.url}?utm_source=newsletter&utm_medium=email&utm_campaign=quicklink" style="text-decoration:none;display:block;">
-            <span style="font-size:11px;color:${MUTED};font-family:${F_SANS};font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">${q.emoji} ${q.label}</span>
-            <span style="font-size:13px;color:${BLACK};font-family:${F_SANS};font-weight:500;margin-left:6px;">${q.title}</span>
-            ${shortHash ? `<div style="font-size:9px;color:${MUTED};font-family:${F_SANS};margin-top:3px;letter-spacing:0.04em;">✓ PROOFPRESS VERIFY &nbsp;·&nbsp; PP-${shortHash}</div>` : ""}
-          </a>
-        </td>
-      </tr>`;
-    }).join("");
-    quickLinksHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:20px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${GRAY_DARK};letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">ANCHE OGGI SU PROOF PRESS</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${rows}
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK J2: PROOF PRESS RESEARCH — Box ricerche del giorno
-  // ═══════════════════════════════════════════════════════════════
-  let researchBoxHtml = "";
-  if (researches.length > 0) {
-    const topResearches = researches.slice(0, 3);
-    const researchRows = topResearches.map((r, i) => {
-      const researchUrl = r.id
-        ? `${BASE_URL}/research/${r.id}?utm_source=newsletter&utm_medium=email&utm_campaign=research_box`
-        : `${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_box`;
-      const isLast = i === topResearches.length - 1;
-      const researchImg = r.id ? newsImages[`research_${r.id}`] : null;
-      const labelHtml = r.isResearchOfDay
-        ? `<div style="display:inline-block;font-size:9px;font-weight:700;color:#ffffff;background:#0066cc;border-radius:3px;padding:2px 7px;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;margin-bottom:6px;">RICERCA DEL GIORNO</div>`
-        : `<div style="font-size:10px;font-weight:600;color:#0066cc;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${r.category || 'RESEARCH'}</div>`;
-      const titleHtml = `<div style="font-size:14px;font-weight:700;color:#111827;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.4;margin-bottom:4px;">${r.title}</div>`;
-      const summaryHtml = `<div style="font-size:12px;color:#6b7280;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6;">${r.summary ? r.summary.slice(0, 100) + '...' : ''}</div>`;
-      if (researchImg) {
-        return `
-      <tr>
-        <td style="padding:${i === 0 ? '0' : '12px'} 0 12px;${!isLast ? `border-bottom:1px solid #e5e7eb;` : ''}">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="120" style="vertical-align:top;padding-right:14px;">
-                <a href="${researchUrl}" style="display:block;text-decoration:none;">
-                  <img src="${researchImg}" width="120" height="80" style="width:120px;height:80px;object-fit:cover;border-radius:6px;display:block;" alt="${r.title}" />
-                </a>
-              </td>
-              <td style="vertical-align:top;">
-                <a href="${researchUrl}" style="text-decoration:none;display:block;">
-                  ${labelHtml}${titleHtml}${summaryHtml}
-                </a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>`;
-      }
-      return `
-      <tr>
-        <td style="padding:${i === 0 ? '0' : '12px'} 0 12px;${!isLast ? `border-bottom:1px solid #e5e7eb;` : ''}">
-          <a href="${researchUrl}" style="text-decoration:none;display:block;">
-            ${labelHtml}${titleHtml}${summaryHtml}
-          </a>
-        </td>
-      </tr>`;
-    }).join("");
-    researchBoxHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #d2d2d7;border-left:4px solid #0071e3;">
-          <tr>
-            <td style="padding:20px 26px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="padding-bottom:14px;border-bottom:1px solid #d2d2d7;">
-                    <span style="font-size:10px;font-weight:700;color:#0071e3;letter-spacing:0.18em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">🔬 PROOF PRESS RESEARCH</span>
-                    <span style="float:right;">
-                      <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_all" style="font-size:10px;color:#86868b;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;">Tutte le ricerche →</a>
-                    </span>
-                  </td>
-                </tr>
-                ${researchRows}
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:#f5f5f7;"></td></tr>`;
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK J2: CTA — LEGGI LE NOTIZIE DI OGGI SU PROOFPRESS
-  // ═══════════════════════════════════════════════════════════════
-  const ctaNewsItems = [...aiNews.slice(0, 3), ...startupNews.slice(0, 2)];
-  const ctaSectionHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:24px 26px 20px;">
-              <div style="font-size:10px;font-weight:700;color:${MUTED};font-family:${F_SANS};letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">CONTINUA A LEGGERE SU PROOFPRESS</div>
-              <div style="font-size:22px;font-weight:900;color:${BLACK};font-family:${F_SERIF};margin-bottom:8px;letter-spacing:-0.5px;">Le notizie di oggi</div>
-              <p style="font-size:13px;line-height:1.7;color:${SLATE};font-family:${F_SANS};margin:0 0 18px;">Ogni giorno analizziamo oltre 4.000 fonti per portarti solo le notizie che contano su AI, Startup e Venture Capital. Leggi l'aggiornamento completo su proofpress.ai.</p>
-              ${ctaNewsItems.length > 0 ? `
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
-                ${ctaNewsItems.map((n, i) => {
-                  const newsUrl = `${BASE_URL}/${(n as any).section === 'startup' ? 'startup' : 'ai'}/news/${n.id}`;
-                  const isLast = i === ctaNewsItems.length - 1;
-                  return `<tr>
-                    <td style="padding:10px 0;${!isLast ? `border-bottom:1px solid ${BORDER};` : ''}">
-                      <div style="font-size:9px;font-weight:700;color:${ACCENT};font-family:${F_SANS};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">${n.category}</div>
-                      <a href="${newsUrl}" style="font-size:14px;font-weight:700;color:${BLACK};text-decoration:none;font-family:${F_SANS};line-height:1.4;display:block;margin-bottom:3px;">${n.title}</a>
-                      <a href="${newsUrl}" style="font-size:11px;font-weight:600;color:${ACCENT};text-decoration:none;font-family:${F_SANS};">Leggi l'articolo →</a>
-                    </td>
-                  </tr>`;
-                }).join('')}
-              </table>` : ''}
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="padding-right:8px;">
-                    <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:980px;letter-spacing:0.04em;">AI News →</a>
-                  </td>
-                  <td style="padding-right:8px;">
-                    <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${BLACK};color:${WHITE};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:10px 18px;border-radius:980px;letter-spacing:0.04em;">Startup →</a>
-                  </td>
-                  <td>
-                    <a href="${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=cta_section" style="display:inline-block;background:${WHITE};color:${BLACK};border:1.5px solid ${BORDER};font-size:11px;font-weight:700;font-family:${F_SANS};text-decoration:none;padding:9px 18px;border-radius:980px;letter-spacing:0.04em;">Ricerche →</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>`;
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK K: CONSIGLIATO #2 + FOOTER
-  // ═══════════════════════════════════════════════════════════════
-  const deal2 = amazonDeals[1];
-  const consigliatoHtml2 = ""; // Amazon rimosso (2026-05-06)
-
-  const footerHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:28px 26px;text-align:center;">
-              <div style="font-size:28px;font-weight:900;color:${BLACK};font-family:${F_SERIF};letter-spacing:-0.01em;margin-bottom:3px;">ProofPress</div>
-              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">Per chi vuole capire l'innovazione prima degli altri</div>
-              <div style="font-size:10px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">La prima redazione giornalistica agentica con informazione certificata</div>
-              <div style="margin-bottom:14px;">
-                <a href="https://x.com/proofpress_ai" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">X / Twitter</a>
-                <span style="color:${MUTED};">·</span>
-                <a href="https://www.linkedin.com/company/proofpress" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">LinkedIn</a>
-              </div>
-              <div style="margin-bottom:16px;">
-                <a href="${BASE_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};">proofpress.ai</a>
-                <span style="color:${MUTED};margin:0 8px;">·</span>
-                <a href="${FORUM_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};">Prompt Collection</a>
-              </div>
-              <div style="border-top:1px solid ${BORDER};padding-top:16px;margin-top:4px;">
-                <div style="font-size:11px;color:${MUTED};font-family:${F_SANS};line-height:1.8;margin-bottom:12px;">
-                  Hai ricevuto questa email perché sei iscritto alla newsletter Proof Press.<br>
-                  Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
-                </div>
-                <a href="${BASE_URL}/preferenze-newsletter" style="font-size:11px;color:${BLACK};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Gestisci preferenze</a>
-                <span style="color:${MUTED};margin:0 8px;">·</span>
-                <a href="${unsubscribeUrl}" style="font-size:11px;color:${ACCENT};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Cancella iscrizione</a>
-              </div>
-              <div style="margin-top:16px;padding-top:12px;border-top:1px solid ${BORDER};">
-                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto <a href="https://proofpress.ai/chi-siamo" style="color:${MUTED};text-decoration:underline;">AxiomX LLC</a> · USA</div>
-                <div style="font-size:10px;color:${ACCENT};font-weight:700;font-family:${F_SANS};letter-spacing:0.06em;">✓ PROOFPRESS VERIFY TECHNOLOGY</div>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:32px;"></td></tr>`;
-
-
-  // SPONSOR OF THE DAY — rotazione giornaliera tra 4 banner (hash deterministico sulla data)
+  // ── Sponsor banner (rotazione giornaliera) ──
   const _sponsorBanners = [
     {
       url: 'https://fasteer.ai?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_sponsor',
@@ -1372,152 +738,102 @@ function buildNewsletterHtmlV2(opts: {
       alt: 'ProofPress Verify™ — The world is full of fakes.',
     },
   ];
-  // Hash deterministico sulla data → indice banner
   const _todayForSponsor = new Date().toISOString().slice(0, 10);
   const _sponsorIdx = _todayForSponsor.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % _sponsorBanners.length;
-  const _todaySponsor = _sponsorBanners[_sponsorIdx];
-  const fasteerBannerHtml = `
-    <tr>
-      <td style="padding:0 20px 6px;">
-        <p style="margin:0;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#999999;">SPONSOR OF THE DAY</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding:0 20px;">
-        <a href="${_todaySponsor.url}" style="display:block;text-decoration:none;">
-          <img src="${_todaySponsor.imgSrc}" alt="${_todaySponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
-        </a>
-      </td>
-    </tr>
-    <tr><td style="height:24px;background:${BG};"></td></tr>`;
-  // Banner ProofPress Verify — fisso in alto → proofpressverify.com
-  const verifyTopBannerHtml = `
-    <tr>
-      <td style="padding:0 20px;">
-        <a href="https://proofpressverify.com?utm_source=newsletter&utm_medium=email&utm_campaign=verify_top" style="display:block;text-decoration:none;">
-          <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/1778826724322-ppverify.png" alt="ProofPress Verify™ — Il mondo è pieno di fake." width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
-        </a>
-      </td>
-    </tr>
-    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+  const todaySponsor = _sponsorBanners[_sponsorIdx];
+
+  // ── Pexels fallback ──
+  function pexelsUrl(id: string | number, w: number, h: number): string {
+    return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&fit=crop`;
+  }
+  const FALLBACK_PEXELS: Record<string, string> = {
+    ai: '8386440', startup: '3184292', research: '2280571', dealroom: '3184465', default: '3861969',
+  };
+
+  // ── Helper: link notizia ──
+  function newsUrl(n: NewsItem, section: string, campaign: string): string {
+    return n.id ? `${BASE_URL}/${section}/news/${n.id}?utm_source=newsletter&utm_medium=email&utm_campaign=${campaign}` : `${BASE_URL}/${section}`;
+  }
+
+  // ── Helper: verify hash badge ──
+  function verifyBadge(n: NewsItem): string {
+    const h = (n as any).verifyHash;
+    const code = h ? `PP-${String(h).slice(0,12).toUpperCase()}` : `PP-${Math.abs(n.title.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%99999).toString().padStart(5,'0')}`;
+    return `<span style="font-size:10px;color:${MUTED};font-family:${F_SANS};letter-spacing:0.04em;">✓ VERIFY &nbsp;·&nbsp; ${code}</span>`;
+  }
+
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK L: BANNER FISSI — Business (in mezzo) + Verify (verso la fine)
-  // ═══════════════════════════════════════════════════════════════════════
-
-
-  // Banner 2 — "Le Tue Notizie Sono Vere?" → /proofpress-verify
-  const proofpressVerifyBannerHtml = `
+  // BLOCK A: HEADER
+  // ═══════════════════════════════════════════════════════════════
+  const headerHtml = `
     <tr>
-      <td style="padding:0 20px;">
-        <a href="https://proofpress.ai/proofpress-verify?utm_source=newsletter&utm_medium=email&utm_campaign=verify_banner" style="display:block;text-decoration:none;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
-            <tr>
-              <td style="padding:28px 28px 24px;">
-                <!-- Eyebrow -->
-                <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
-                  <tr>
-                    <td style="background:#fce8e8;border-radius:980px;padding:5px 14px;">
-                      <span style="font-size:10px;font-weight:800;color:#c0392b;letter-spacing:0.15em;text-transform:uppercase;font-family:${F_SANS};">PROOFPRESS VERIFY</span>
-                    </td>
-                  </tr>
-                </table>
-                <!-- Headline -->
-                <div style="font-size:30px;font-weight:900;color:#1a1a1a;font-family:Georgia,'Times New Roman',serif;line-height:1.15;margin-bottom:10px;text-align:center;">Le Tue Notizie<br>Sono Vere?</div>
-                <!-- Sub -->
-                <div style="font-size:14px;color:#555;font-family:${F_SANS};line-height:1.7;margin-bottom:18px;text-align:center;">ProofPress Verify certifica ogni informazione<br>con AI e hash crittografico immutabile.</div>
-                <!-- Divisore -->
-                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
-                  <tr><td style="height:2px;background:#c0392b;"></td></tr>
-                </table>
-                <!-- 4 feature cards 2x2 -->
-                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
-                  <tr>
-                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
-                      <div style="font-size:18px;margin-bottom:6px;">🛡️</div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Hash Immutabile</div>
-                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Firma digitale unica per ogni contenuto</div>
-                    </td>
-                    <td width="4%"></td>
-                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
-                      <div style="font-size:18px;margin-bottom:6px;">✅</div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Verifica AI</div>
-                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Analisi da 4.000+ fonti in tempo reale</div>
-                    </td>
-                  </tr>
-                  <tr><td colspan="3" style="height:8px;"></td></tr>
-                  <tr>
-                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
-                      <div style="font-size:18px;margin-bottom:6px;">🔒</div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Score Affidabilità</div>
-                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Rating 0–100 per ogni notizia</div>
-                    </td>
-                    <td width="4%"></td>
-                    <td width="48%" style="padding:10px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;vertical-align:top;">
-                      <div style="font-size:18px;margin-bottom:6px;">🔗</div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;font-family:${F_SANS};margin-bottom:3px;">Audit Trail</div>
-                      <div style="font-size:12px;color:#777;font-family:${F_SANS};">Traccia permanente e verificabile</div>
-                    </td>
-                  </tr>
-                </table>
-                <!-- CTA -->
-                <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td align="center">
-                      <table cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                          <td style="background:#c0392b;border-radius:8px;padding:14px 40px;">
-                            <span style="font-size:15px;font-weight:700;color:#ffffff;font-family:${F_SANS};">Verifica Ora Gratuitamente →</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-                <!-- Footer URL -->
-                <div style="text-align:center;margin-top:12px;font-size:12px;color:#aaa;font-family:${F_SANS};">proofpress.ai/proofpress-verify</div>
-              </td>
-            </tr>
-          </table>
-        </a>
+      <td style="background:${WHITE};padding:36px 32px 28px;text-align:center;border-bottom:3px solid ${BLACK};">
+        <div style="text-align:right;margin-bottom:12px;">
+          <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
+        </div>
+        <div style="font-size:56px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.0;letter-spacing:-0.02em;margin-bottom:4px;">PROOFPRESS</div>
+        <div style="font-size:13px;font-weight:400;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.14em;margin-bottom:16px;">BUONGIORNO NEWSLETTER</div>
+        <div style="width:48px;height:3px;background:${ACCENT};margin:0 auto 16px;"></div>
+        <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};">
+          ${dateLabel} &nbsp;·&nbsp; N° ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString('it-IT')} lettori</strong>
+        </div>
       </td>
     </tr>
     <tr><td style="height:24px;background:${BG};"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
-  // ASSEMBLE
+  // BLOCK B: INTRO — Manifesto editoriale compatto
   // ═══════════════════════════════════════════════════════════════
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK NEW-A: RESEARCH HERO — Prima notizia Research (apertura newsletter)
-  // ═══════════════════════════════════════════════════════════════
-  const researchHero = researches[0] ?? null;
-  const researchHeroUrl = researchHero?.id
-    ? `${BASE_URL}/research/${researchHero.id}?utm_source=newsletter&utm_medium=email&utm_campaign=research_hero`
-    : `${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_hero`;
-  const researchHeroHtml = researchHero ? `
+  const introHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid #0066cc;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${BLACK};border-radius:8px;overflow:hidden;">
           <tr>
-            <td style="padding:22px 26px;">
-              <div style="font-size:10px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:10px;">🔬 RESEARCH — APERTURA DEL GIORNO</div>
-              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.35;margin-bottom:10px;">
-                <a href="${researchHeroUrl}" style="color:${BLACK};text-decoration:none;">${researchHero.title}</a>
+            <td style="padding:20px 28px;">
+              <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.14em;margin-bottom:8px;">IL FORMATO DI OGGI</div>
+              <div style="font-size:18px;font-weight:700;color:#ffffff;font-family:${F_SERIF};line-height:1.4;">10 notizie selezionate · 1 startup · 1 ricerca · 1 deal · 1 sponsor</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.6);font-family:${F_SANS};margin-top:8px;line-height:1.6;">Ogni mattina, il meglio da AI, Startup e Venture Capital — certificato con ProofPress Verify Technology.</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK C: 10 NOTIZIE DEL GIORNO
+  // Ogni notizia: immagine grande + categoria + titolo + summary + verify
+  // ═══════════════════════════════════════════════════════════════
+  function renderNewsCard(n: NewsItem & { _section: string; _color: string; _label: string }, idx: number): string {
+    const url = newsUrl(n, n._section, `news_${idx}`);
+    const imgKey = `${n._section}_${n.id}`;
+    const imgSrc = newsImages[imgKey] || pexelsUrl(FALLBACK_PEXELS[n._section] || FALLBACK_PEXELS.default, 600, 240);
+    const isFirst = idx === 0;
+    return `
+    <tr>
+      <td style="padding:0 20px ${idx < top10News.length - 1 ? '20px' : '0'};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};">
+          <tr>
+            <td style="padding:0;">
+              <a href="${url}" style="display:block;text-decoration:none;">
+                <img src="${imgSrc}" width="600" style="width:100%;max-width:600px;height:${isFirst ? '260px' : '200px'};object-fit:cover;display:block;" alt="${n.title}" />
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 24px 18px;">
+              <div style="display:inline-block;background:${n._color};color:#ffffff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">${n._label}</div>
+              <div style="font-size:${isFirst ? '26px' : '20px'};font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">
+                <a href="${url}" style="color:${BLACK};text-decoration:none;">${n.title}</a>
               </div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:16px;">${researchHero.summary ? researchHero.summary.slice(0, 240) + (researchHero.summary.length > 240 ? "..." : "") : ""}</div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:14px;">${n.summary ? n.summary.slice(0, isFirst ? 280 : 180) + (n.summary.length > (isFirst ? 280 : 180) ? '...' : '') : ''}</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td>
-                    <table cellpadding="0" cellspacing="0" border="0">
-                      <tr>
-                        <td style="background:#0066cc;border-radius:980px;padding:11px 22px;">
-                          <a href="${researchHeroUrl}" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Leggi la ricerca →</a>
-                        </td>
-                      </tr>
-                    </table>
+                    <a href="${url}" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">LEGGI SU PROOFPRESS →</a>
                   </td>
                   <td style="text-align:right;vertical-align:middle;">
-                    <span style="font-size:10px;color:${MUTED};font-weight:600;font-family:${F_SANS};letter-spacing:0.04em;">✓ PROOFPRESS VERIFY</span>
+                    ${verifyBadge(n)}
                   </td>
                 </tr>
               </table>
@@ -1525,114 +841,51 @@ function buildNewsletterHtmlV2(opts: {
           </tr>
         </table>
       </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK NEW-B: 4 STARTUP NEWS
-  // ═══════════════════════════════════════════════════════════════
-  function renderNewsRow(n: NewsItem, section: string, labelColor: string, labelText: string, imgUrl?: string | null): string {
-    const url = n.id ? `${BASE_URL}/${section}/news/${n.id}?utm_source=newsletter&utm_medium=email&utm_campaign=${section}_grid` : `${BASE_URL}/${section}`;
-    if (imgUrl) {
-      // Layout 2-colonne: immagine sinistra (130px) + testo destra
-      return `
-      <tr>
-        <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="120" style="vertical-align:top;padding-right:14px;">
-                <a href="${url}" style="display:block;text-decoration:none;">
-                  <img src="${imgUrl}" width="120" height="80" style="width:120px;height:80px;object-fit:cover;border-radius:6px;display:block;" alt="${n.title}" />
-                </a>
-              </td>
-              <td style="vertical-align:top;">
-                <a href="${url}" style="text-decoration:none;display:block;">
-                  <span style="font-size:10px;font-weight:700;color:${labelColor};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">${labelText}</span>
-                  <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.4;margin-top:3px;">${n.title}</div>
-                  <div style="font-size:12px;color:${SLATE};font-family:${F_SANS};line-height:1.5;margin-top:3px;">${n.summary ? n.summary.slice(0, 90) + "..." : ""}</div>
-                </a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>`;
-    }
-    // Layout senza immagine (fallback)
-    return `
-      <tr>
-        <td style="padding:10px 0;border-bottom:1px solid ${BORDER};">
-          <a href="${url}" style="text-decoration:none;display:block;">
-            <span style="font-size:10px;font-weight:700;color:${labelColor};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">${labelText}</span>
-            <div style="font-size:14px;font-weight:600;color:${BLACK};font-family:${F_SANS};line-height:1.4;margin-top:3px;">${n.title}</div>
-            <div style="font-size:12px;color:${SLATE};font-family:${F_SANS};line-height:1.6;margin-top:3px;">${n.summary ? n.summary.slice(0, 110) + "..." : ""}</div>
-          </a>
-        </td>
-      </tr>`;
+    </tr>`;
   }
-  const top4Startup = startupNews.filter(n => n.id).slice(0, 4);
-  const startupNewsGridHtml = top4Startup.length > 0 ? `
+  const newsCardsHtml = top10News.length > 0
+    ? `
     <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+      <td style="padding:0 0 4px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:20px 26px;">
-              <div style="font-size:10px;font-weight:700;color:#7c3aed;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🚀 STARTUP NEWS</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4Startup.map(n => renderNewsRow(n, "startup", "#7c3aed", n.category || "STARTUP", newsImages[`startup_${n.id}`])).join("")}
-              </table>
-              <div style="margin-top:14px;">
-                <a href="${BASE_URL}/startup?utm_source=newsletter&utm_medium=email&utm_campaign=startup_all" style="font-size:11px;font-weight:700;color:#7c3aed;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTE LE NOTIZIE STARTUP →</a>
-              </div>
+            <td style="padding:0 20px 16px;">
+              <div style="font-size:11px;font-weight:700;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.18em;">LE 10 NOTIZIE DI OGGI</div>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+    ${top10News.map((n, i) => renderNewsCard(n, i)).join('')}
+    <tr><td style="height:28px;background:${BG};"></td></tr>`
+    : '';
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK NEW-C: 4 AI NEWS
+  // BLOCK D: STARTUP DEL GIORNO
   // ═══════════════════════════════════════════════════════════════
-  const top4AI = aiNews.filter(n => n.id).slice(0, 4);
-  const aiNewsGridHtml = top4AI.length > 0 ? `
+  const startupHtml = startup ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:4px solid #7c3aed;">
           <tr>
-            <td style="padding:20px 26px;">
-              <div style="font-size:10px;font-weight:700;color:#dc2626;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🤖 AI NEWS</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4AI.map(n => renderNewsRow(n, "ai", "#dc2626", n.category || "AI", newsImages[`ai_${n.id}`])).join("")}
+            <td style="padding:24px 28px;">
+              <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🚀 STARTUP DEL GIORNO</div>
+              ${startup.imageUrl ? `<img src="${startup.imageUrl}" width="80" height="80" style="width:80px;height:80px;object-fit:cover;border-radius:8px;display:block;margin-bottom:14px;" alt="${startup.name}" />` : ''}
+              <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.2;margin-bottom:6px;">${startup.name}</div>
+              <div style="font-size:15px;color:#7c3aed;font-family:${F_SANS};font-weight:600;margin-bottom:12px;">${startup.tagline}</div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${startup.description.slice(0, 280)}${startup.description.length > 280 ? '...' : ''}</div>
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+                <tr>
+                  ${startup.category ? `<td style="padding-right:24px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Categoria</span><br><span style="font-size:13px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.category}</span></td>` : ''}
+                  ${startup.country ? `<td style="padding-right:24px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Paese</span><br><span style="font-size:13px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.country}</span></td>` : ''}
+                  ${startup.funding ? `<td style="padding-right:24px;"><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">Funding</span><br><span style="font-size:13px;font-weight:600;color:${BLACK};font-family:${F_SANS};">${startup.funding}</span></td>` : ''}
+                  ${startup.aiScore ? `<td><span style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.08em;">AI Score</span><br><span style="font-size:18px;font-weight:800;color:${ACCENT};font-family:${F_SANS};">${startup.aiScore}/100</span></td>` : ''}
+                </tr>
               </table>
-              <div style="margin-top:14px;">
-                <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=ai_all" style="font-size:11px;font-weight:700;color:#dc2626;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTE LE NOTIZIE AI →</a>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK NEW-D: PUNTO DEL GIORNO DI ANDREA CINELLI
-  // ═══════════════════════════════════════════════════════════════
-  // Usa il primo editoriale disponibile come "Punto del Giorno"
-  const editorialeAI = channelContents["ai"] && channelContents["ai"][0] ? channelContents["ai"][0] : null;
-  const puntoDelGiornoHtml = editorialeAI ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
-          <tr>
-            <td style="padding:22px 26px;">
-              <div style="font-size:10px;font-weight:700;color:${ACCENT};letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:8px;">✍️ IL PUNTO DEL GIORNO — Andrea Cinelli</div>
-              <div style="font-size:20px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.35;margin-bottom:8px;">${editorialeAI.title}</div>
-              ${editorialeAI.subtitle ? `<div style="font-size:14px;color:${ACCENT};font-family:${F_SANS};font-weight:600;margin-bottom:8px;">${editorialeAI.subtitle}</div>` : ""}
-              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:16px;">${editorialeAI.body ? editorialeAI.body.slice(0, 260) + (editorialeAI.body.length > 260 ? "..." : "") : ""}</div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:${ACCENT};border-radius:980px;padding:11px 22px;">
-                    <a href="${BASE_URL}/ai?utm_source=newsletter&utm_medium=email&utm_campaign=punto_giorno" style="font-size:13px;font-weight:600;color:${WHITE};text-decoration:none;font-family:${F_SANS};">Leggi il punto del giorno →</a>
+                  <td style="background:#7c3aed;border-radius:6px;padding:12px 24px;">
+                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F_SANS};">Scopri la startup →</a>
                   </td>
                 </tr>
               </table>
@@ -1641,55 +894,147 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK NEW-E: 4 VENTURE CAPITAL NEWS
+  // BLOCK E: RICERCA DEL GIORNO
   // ═══════════════════════════════════════════════════════════════
-  const top4VC = dealroomNews.filter(n => n.id && (n.category?.toLowerCase().includes("venture") || n.category?.toLowerCase().includes("vc") || n.category?.toLowerCase().includes("fund") || n.category?.toLowerCase().includes("invest"))).slice(0, 4);
-  const ventureCapitalHtml = top4VC.length > 0 ? `
+  const researchUrl = researchOfDay?.id
+    ? `${BASE_URL}/research/${researchOfDay.id}?utm_source=newsletter&utm_medium=email&utm_campaign=research_day`
+    : `${BASE_URL}/research?utm_source=newsletter&utm_medium=email&utm_campaign=research_day`;
+  const researchHtml = researchOfDay ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:4px solid #0066cc;">
+          <tr>
+            <td style="padding:24px 28px;">
+              <div style="font-size:11px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🔬 RICERCA DEL GIORNO</div>
+              <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:12px;">
+                <a href="${researchUrl}" style="color:${BLACK};text-decoration:none;">${researchOfDay.title}</a>
+              </div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${researchOfDay.summary ? researchOfDay.summary.slice(0, 260) + (researchOfDay.summary.length > 260 ? '...' : '') : ''}</div>
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:#0066cc;border-radius:6px;padding:12px 24px;">
+                    <a href="${researchUrl}" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F_SANS};">Leggi la ricerca →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK F: DEAL DEL GIORNO
+  // ═══════════════════════════════════════════════════════════════
+  const dealUrl = dealOfDay?.id
+    ? `${BASE_URL}/dealroom/news/${dealOfDay.id}?utm_source=newsletter&utm_medium=email&utm_campaign=deal_day`
+    : `${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=deal_day`;
+  const dealImgSrc = dealOfDay?.id ? (newsImages[`dealroom_${dealOfDay.id}`] || pexelsUrl(FALLBACK_PEXELS.dealroom, 600, 200)) : null;
+  const dealHtml = dealOfDay ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:4px solid #059669;">
+          ${dealImgSrc ? `<tr><td style="padding:0;"><a href="${dealUrl}" style="display:block;text-decoration:none;"><img src="${dealImgSrc}" width="600" style="width:100%;max-width:600px;height:180px;object-fit:cover;display:block;" alt="${dealOfDay.title}" /></a></td></tr>` : ''}
+          <tr>
+            <td style="padding:24px 28px;">
+              <div style="font-size:11px;font-weight:700;color:#059669;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">💼 DEAL DEL GIORNO</div>
+              <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">
+                <a href="${dealUrl}" style="color:${BLACK};text-decoration:none;">${dealOfDay.title}</a>
+              </div>
+              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:16px;">${dealOfDay.summary ? dealOfDay.summary.slice(0, 220) + (dealOfDay.summary.length > 220 ? '...' : '') : ''}</div>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <a href="${dealUrl}" style="font-size:12px;font-weight:700;color:#059669;text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">LEGGI IL DEAL →</a>
+                  </td>
+                  <td style="text-align:right;vertical-align:middle;">
+                    ${verifyBadge(dealOfDay)}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK G: PUBBLICITÀ / SPONSOR OF THE DAY
+  // ═══════════════════════════════════════════════════════════════
+  const sponsorHtml = `
+    <tr>
+      <td style="padding:0 20px 6px;">
+        <p style="margin:0;font-family:${F_SANS};font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:${MUTED};">SPONSOR OF THE DAY</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 20px;">
+        <a href="${todaySponsor.url}" style="display:block;text-decoration:none;">
+          <img src="${todaySponsor.imgSrc}" alt="${todaySponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
+        </a>
+      </td>
+    </tr>
+    <tr><td style="height:28px;background:${BG};"></td></tr>`;
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK H: CTA FINALE — Leggi su ProofPress
+  // ═══════════════════════════════════════════════════════════════
+  const ctaHtml = `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td align="center" style="padding:8px 0 24px;">
+              <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=cta_main" style="display:inline-block;background:${ACCENT};color:#ffffff;font-size:16px;font-weight:800;font-family:${F_SANS};text-decoration:none;padding:18px 44px;border-radius:8px;letter-spacing:0.02em;">Leggi tutte le notizie su ProofPress →</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:8px;background:${BG};"></td></tr>`;
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK I: FOOTER
+  // ═══════════════════════════════════════════════════════════════
+  const footerHtml = `
     <tr>
       <td style="padding:0 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
           <tr>
-            <td style="padding:20px 26px;">
-              <div style="font-size:10px;font-weight:700;color:#059669;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">💼 VENTURE CAPITAL</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4VC.map(n => renderNewsRow(n, "dealroom", "#059669", n.category || "VC", newsImages[`dealroom_${n.id}`])).join("")}
-              </table>
-              <div style="margin-top:14px;">
-                <a href="${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=vc_all" style="font-size:11px;font-weight:700;color:#059669;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTI I DEAL VC →</a>
+            <td style="padding:28px 26px;text-align:center;">
+              <div style="font-size:30px;font-weight:900;color:${BLACK};font-family:${F_SERIF};letter-spacing:-0.01em;margin-bottom:3px;">ProofPress</div>
+              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">Per chi vuole capire l'innovazione prima degli altri</div>
+              <div style="font-size:10px;font-weight:600;color:${GRAY_DARK};font-family:${F_SANS};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">La prima redazione giornalistica agentica con informazione certificata</div>
+              <div style="margin-bottom:14px;">
+                <a href="https://x.com/proofpress_ai" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">X / Twitter</a>
+                <span style="color:${MUTED};">·</span>
+                <a href="https://www.linkedin.com/company/proofpress" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};margin:0 10px;">LinkedIn</a>
+              </div>
+              <div style="margin-bottom:16px;">
+                <a href="${BASE_URL}" style="font-size:12px;color:${BLACK};text-decoration:none;font-weight:600;font-family:${F_SANS};">proofpress.ai</a>
+              </div>
+              <div style="border-top:1px solid ${BORDER};padding-top:16px;margin-top:4px;">
+                <div style="font-size:11px;color:${MUTED};font-family:${F_SANS};line-height:1.8;margin-bottom:12px;">
+                  Hai ricevuto questa email perché sei iscritto alla newsletter Proof Press.<br>
+                  Ai sensi del GDPR (Reg. UE 2016/679) puoi annullare l'iscrizione in qualsiasi momento.
+                </div>
+                <a href="${unsubscribeUrl}" style="font-size:11px;color:${ACCENT};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Cancella iscrizione</a>
+              </div>
+              <div style="margin-top:16px;padding-top:12px;border-top:1px solid ${BORDER};">
+                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto AxiomX LLC · USA</div>
+                <div style="font-size:10px;color:${ACCENT};font-weight:700;font-family:${F_SANS};letter-spacing:0.06em;">✓ PROOFPRESS VERIFY TECHNOLOGY</div>
               </div>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOCK NEW-F: 4 DEALROOM NEWS
-  // ═══════════════════════════════════════════════════════════════
-  const top4Dealroom = dealroomNews.filter(n => n.id && !top4VC.includes(n)).slice(0, 4);
-  const dealroomNewsGridHtml = top4Dealroom.length > 0 ? `
-    <tr>
-      <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};">
-          <tr>
-            <td style="padding:20px 26px;">
-              <div style="font-size:10px;font-weight:700;color:#0f0f0f;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🏢 DEALROOM — Round, Funding & M&A</div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                ${top4Dealroom.map(n => renderNewsRow(n, "dealroom", "#0f0f0f", n.category || "DEALROOM", newsImages[`dealroom_${n.id}`])).join("")}
-              </table>
-              <div style="margin-top:14px;">
-                <a href="${BASE_URL}/dealroom?utm_source=newsletter&utm_medium=email&utm_campaign=dealroom_all" style="font-size:11px;font-weight:700;color:#0f0f0f;text-decoration:none;font-family:${F_SANS};letter-spacing:0.05em;text-transform:uppercase;">TUTTI I DEAL ROOM →</a>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr><td style="height:20px;background:${BG};"></td></tr>` : "";
+    <tr><td style="height:32px;"></td></tr>`;
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -1705,36 +1050,13 @@ function buildNewsletterHtmlV2(opts: {
     <td align="center">
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
-        ${rebrandHtml}
-        ${bannerHtml1}
-        ${researchHeroHtml}
-        ${startupNewsGridHtml}
-        ${aiNewsGridHtml}
-        <!-- CTA arancione grande dopo le prime notizie -->
-        <tr>
-          <td style="padding:0 20px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td align="center" style="padding:8px 0 24px;">
-                  <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=cta_main" style="display:inline-block;background:#ff5500;color:#ffffff;font-size:16px;font-weight:800;font-family:${F_SANS};text-decoration:none;padding:16px 40px;border-radius:8px;letter-spacing:0.02em;">Leggi tutte le notizie di oggi su ProofPress →</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr><td style="height:8px;background:${BG};"></td></tr>
-        ${promptPromoHtml}
-        ${puntoDelGiornoHtml}
-        ${dealroomNewsGridHtml}
-        ${consigliatoHtml1}
-        ${channelBlocksHtml}
+        ${introHtml}
+        ${newsCardsHtml}
         ${startupHtml}
-        ${verifyTopBannerHtml}
-        ${researchBoxHtml}
-        ${consigliatoHtml2}
-        ${fasteerBannerHtml}
-        ${bannerHtml2}
-        ${proofpressVerifyBannerHtml}
+        ${researchHtml}
+        ${dealHtml}
+        ${sponsorHtml}
+        ${ctaHtml}
         ${footerHtml}
       </table>
     </td>
@@ -1743,7 +1065,6 @@ function buildNewsletterHtmlV2(opts: {
 </body>
 </html>`;
 }
-
 // ═══════════════════════════════════════════════════════════════════════════
 // BUILD & SEND FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1786,7 +1107,17 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   console.log(`  Banner newsletter: ${newsletterBanners.length} (${newsletterBanners.map(b => b.name).join(", ")})`);
 
   const issueNumber = getIssueNumber();
-  const subscriberCount = 6651; // TODO: fetch from DB
+  // Legge il conteggio reale degli iscritti attivi dal DB
+  let subscriberCount = 6651;
+  try {
+    const { db } = await import('./db');
+    const { subscribers } = await import('../drizzle/schema');
+    const { eq, count } = await import('drizzle-orm');
+    const result = await db.select({ cnt: count() }).from(subscribers).where(eq(subscribers.status, 'active'));
+    subscriberCount = result[0]?.cnt ?? 6651;
+  } catch (e) {
+    console.warn('[Newsletter] subscriberCount fallback to 6651:', e);
+  }
 
   console.log(`[UnifiedNewsletter] Contenuti raccolti:`);
   console.log(`  AI News: ${content.aiNews.length}`);
