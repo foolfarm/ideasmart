@@ -1110,11 +1110,8 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
   // Legge il conteggio reale degli iscritti attivi dal DB
   let subscriberCount = 6651;
   try {
-    const { db } = await import('./db');
-    const { subscribers } = await import('../drizzle/schema');
-    const { eq, count } = await import('drizzle-orm');
-    const result = await db.select({ cnt: count() }).from(subscribers).where(eq(subscribers.status, 'active'));
-    subscriberCount = result[0]?.cnt ?? 6651;
+    const { getActiveSubscriberCount } = await import('./db');
+    subscriberCount = await getActiveSubscriberCount();
   } catch (e) {
     console.warn('[Newsletter] subscriberCount fallback to 6651:', e);
   }
