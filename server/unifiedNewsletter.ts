@@ -656,6 +656,14 @@ function buildNewsletterHtmlV2(opts: {
   newsImages?: Record<string, string | null>; // key: `${section}_${newsId}` → pexels URL
   heroNewsOverride?: (NewsItem & { _section: string; _color: string; _label: string }) | null; // hero news selezionata da LLM
   catchySummaries?: Record<number, string>; // id notizia → summary catchy riformulato da LLM
+  personaggioDelGiorno?: {
+    nome: string;
+    ruolo: string;
+    azienda: string;
+    cosa_ha_fatto: string;
+    perche_conta: string;
+    emoji: string;
+  } | null;
 }): string {
   const {
     dateLabel,
@@ -678,6 +686,7 @@ function buildNewsletterHtmlV2(opts: {
   const newsImages = opts.newsImages || {};
   const heroNewsOverride = opts.heroNewsOverride || null;
   const catchySummaries = opts.catchySummaries || {};
+  const personaggioDelGiorno = opts.personaggioDelGiorno || null;
 
   // ── Design Tokens v3 (ProofPress Editorial) ──
   const F_SERIF = "Georgia, 'Times New Roman', Times, serif";
@@ -880,6 +889,50 @@ function buildNewsletterHtmlV2(opts: {
     : '';
 
   // ═══════════════════════════════════════════════════════════════
+  // BLOCK D-BIS: PERSONAGGIO DEL GIORNO
+  // ═══════════════════════════════════════════════════════════════
+  const personaggioHtml = personaggioDelGiorno ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);border-radius:12px;overflow:hidden;border:1px solid #e8c84a;">
+          <tr>
+            <td style="padding:28px 30px;">
+              <!-- Label -->
+              <div style="font-size:10px;font-weight:800;color:#e8c84a;letter-spacing:0.25em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:18px;">&#9733; PERSONAGGIO DEL GIORNO</div>
+              <!-- Nome + Emoji -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+                <tr>
+                  <td style="vertical-align:middle;padding-right:14px;">
+                    <div style="font-size:44px;line-height:1;">${personaggioDelGiorno.emoji}</div>
+                  </td>
+                  <td style="vertical-align:middle;">
+                    <div style="font-size:26px;font-weight:900;color:#ffffff;font-family:${F_SERIF};line-height:1.15;letter-spacing:-0.01em;">${personaggioDelGiorno.nome}</div>
+                    <div style="font-size:13px;color:#e8c84a;font-family:${F_SANS};font-weight:600;margin-top:3px;">${personaggioDelGiorno.ruolo} &middot; ${personaggioDelGiorno.azienda}</div>
+                  </td>
+                </tr>
+              </table>
+              <!-- Cosa ha fatto -->
+              <div style="background:rgba(255,255,255,0.07);border-left:3px solid #e8c84a;border-radius:0 6px 6px 0;padding:12px 16px;margin:16px 0;">
+                <div style="font-size:15px;font-weight:700;color:#ffffff;font-family:${F_SANS};line-height:1.5;">${personaggioDelGiorno.cosa_ha_fatto}</div>
+              </div>
+              <!-- Perché conta -->
+              <div style="font-size:13px;color:rgba(255,255,255,0.75);font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">${personaggioDelGiorno.perche_conta}</div>
+              <!-- CTA -->
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:#e8c84a;border-radius:6px;padding:11px 22px;">
+                    <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=personaggio_giorno" style="font-size:12px;font-weight:800;color:#1a1a2e;text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
+
+  // ═══════════════════════════════════════════════════════════════
   // BLOCK D: STARTUP DEL GIORNO
   // ═══════════════════════════════════════════════════════════════
   const startupHtml = startup ? `
@@ -1071,6 +1124,7 @@ function buildNewsletterHtmlV2(opts: {
         ${headerHtml}
         ${introHtml}
         ${newsCardsHtml}
+        ${personaggioHtml}
         ${startupHtml}
         ${researchHtml}
         ${dealHtml}
@@ -1276,6 +1330,61 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn('[Newsletter] LLM hero/summary skipped (fallback a selezione algoritmica):', e instanceof Error ? e.message : e);
   }
 
+  // ── Step 3: Personaggio del Giorno ──────────────────────────────────────────
+  // DeepSeek V3 analizza tutte le notizie e individua il protagonista più iconico
+  // (founder, investor, CEO, innovatore) citato nelle ultime 24h
+  let personaggioDelGiorno: {
+    nome: string;
+    ruolo: string;
+    azienda: string;
+    cosa_ha_fatto: string;
+    perche_conta: string;
+    emoji: string;
+  } | null = null;
+  try {
+    const EXCLUDED_CATEGORIES_P = ['offerte', 'promozioni', 'deals', 'amazon', 'shopping', 'sconti', 'volantino', 'coupon'];
+    const isRelevantP = (n: NewsItem) => {
+      const cat = (n.category || '').toLowerCase();
+      return n.id && !EXCLUDED_CATEGORIES_P.some(ex => cat.includes(ex));
+    };
+    const allNewsForPersonaggio = [
+      ...content.aiNews.filter(isRelevantP).slice(0, 6),
+      ...content.startupNews.filter(n => n.id).slice(0, 4),
+      ...content.dealroomNews.filter(n => n.id).slice(0, 4),
+    ];
+    if (allNewsForPersonaggio.length > 0) {
+      const newsList = allNewsForPersonaggio
+        .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
+        .join('\n');
+      const personaggioPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture, tecnologia, startup e investimenti:\n\n${newsList}\n\nIndividua il PERSONAGGIO DEL GIORNO: il protagonista piu iconico, mitico o rilevante citato o implicato in queste notizie. Puo essere un founder leggendario, un investor di peso, un CEO che ha fatto una mossa clamorosa, un innovatore che sta cambiando le regole del gioco.\n\nSe nessun personaggio specifico emerge chiaramente dalle notizie, scegli comunque il piu rilevante nel contesto attuale del settore tech/venture italiano o globale.\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e iconico o rilevante per il lettore C-level (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
+      const personaggioResult = await invokeLLMBulk({
+        messages: [{ role: 'user', content: personaggioPrompt }],
+      });
+      const personaggioRaw = (typeof personaggioResult.choices?.[0]?.message?.content === 'string'
+        ? personaggioResult.choices[0].message.content
+        : '').trim();
+      try {
+        const cleanJsonP = personaggioRaw
+          .replace(/^```json\s*/i, '')
+          .replace(/^```\s*/i, '')
+          .replace(/\s*```$/i, '')
+          .trim();
+        personaggioDelGiorno = JSON.parse(cleanJsonP);
+        console.log(`[Newsletter] Personaggio del Giorno: ${personaggioDelGiorno?.nome} (${personaggioDelGiorno?.azienda})`);
+      } catch {
+        const jsonMatchP = personaggioRaw.match(/\{[\s\S]*\}/);
+        if (jsonMatchP) {
+          try {
+            personaggioDelGiorno = JSON.parse(jsonMatchP[0]);
+            console.log(`[Newsletter] Personaggio del Giorno (fallback): ${personaggioDelGiorno?.nome}`);
+          } catch { /* ignora */ }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[Newsletter] LLM personaggio del giorno skipped:', e instanceof Error ? e.message : e);
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1300,6 +1409,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     newsImages,
     heroNewsOverride,
     catchySummaries,
+    personaggioDelGiorno,
   });
 
   const sponsorIds: number[] = [];

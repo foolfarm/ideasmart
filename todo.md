@@ -3761,3 +3761,12 @@
 - [x] Aggiunta route POST /api/newsletter/send-test-email per invio preview a indirizzo specifico
 - [x] Preview v3 con hero news LLM + summary catchy inviata a ac@acinelli.com
 - [x] TypeScript: 0 errori
+
+## Task completati (21 maggio 2026 — Newsletter v3 Personaggio del Giorno)
+
+- [x] Aggiunto tipo personaggioDelGiorno (nome, ruolo, azienda, cosa_ha_fatto, perche_conta, emoji) in buildNewsletterHtmlV2
+- [x] Aggiunta logica LLM Step 3 in buildUnifiedNewsletter: DeepSeek V3 analizza 14 notizie (6 AI + 4 Startup + 4 Deal) e individua il protagonista più iconico
+- [x] Aggiunto blocco HTML "PERSONAGGIO DEL GIORNO" con design dark navy/gold tra newsCardsHtml e startupHtml
+- [x] Aggiunto personaggioDelGiorno alla chiamata buildNewsletterHtmlV2
+- [x] Preview v3 con personaggio del giorno inviata a ac@acinelli.com (EQT / Per Franzen)
+- [x] TypeScript: 0 errori
