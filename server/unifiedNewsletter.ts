@@ -664,6 +664,15 @@ function buildNewsletterHtmlV2(opts: {
     perche_conta: string;
     emoji: string;
   } | null;
+  personaggioItalianoDelGiorno?: {
+    nome: string;
+    ruolo: string;
+    azienda: string;
+    cosa_ha_fatto: string;
+    perche_conta: string;
+    emoji: string;
+    citta?: string;
+  } | null;
 }): string {
   const {
     dateLabel,
@@ -687,6 +696,7 @@ function buildNewsletterHtmlV2(opts: {
   const heroNewsOverride = opts.heroNewsOverride || null;
   const catchySummaries = opts.catchySummaries || {};
   const personaggioDelGiorno = opts.personaggioDelGiorno || null;
+  const personaggioItalianoDelGiorno = opts.personaggioItalianoDelGiorno || null;
 
   // ── Design Tokens v3 (ProofPress Editorial) ──
   const F_SERIF = "Georgia, 'Times New Roman', Times, serif";
@@ -715,11 +725,33 @@ function buildNewsletterHtmlV2(opts: {
   const top3Deal = dealroomNews.filter(n => n.id).slice(0, 3);
   // Lista unificata delle 10 notizie: AI prima, poi Startup, poi Deal
   // Se heroNewsOverride è presente (selezionata da LLM), la mette PRIMA di tutte le altre
-  const baseTop10: (NewsItem & { _section: string; _color: string; _label: string })[] = [
+  const baseTop10Raw: (NewsItem & { _section: string; _color: string; _label: string })[] = [
     ...top4AI.map(n => ({ ...n, _section: 'ai', _color: '#dc2626', _label: n.category || 'AI NEWS' })),
     ...top3Startup.map(n => ({ ...n, _section: 'startup', _color: '#7c3aed', _label: n.category || 'STARTUP' })),
     ...top3Deal.map(n => ({ ...n, _section: 'dealroom', _color: '#059669', _label: n.category || 'DEAL & VC' })),
   ];
+
+  // ── REGOLA ITALIA FIRST ──────────────────────────────────────────────────────
+  // Le notizie italiane (titolo/summary/categoria con riferimenti a Italia, startup
+  // italiane, round italiani, ecosistema italiano) vengono portate in cima alla lista.
+  const ITALIA_KEYWORDS = [
+    'italia', 'italiano', 'italiana', 'italiani', 'italiane',
+    'milano', 'roma', 'torino', 'napoli', 'bologna', 'firenze', 'venezia', 'genova', 'palermo', 'bari',
+    'made in italy', 'startup italiana', 'startup italiane', 'fondo italiano', 'venture italiano',
+    'cdp venture', 'invitalia', 'mediocredito', 'confindustria', 'assintel',
+  ];
+  const isItalianNews = (n: NewsItem): boolean => {
+    const text = `${n.title} ${n.summary || ''} ${n.category || ''}`.toLowerCase();
+    return ITALIA_KEYWORDS.some(kw => text.includes(kw));
+  };
+  const italianNews = baseTop10Raw.filter(isItalianNews);
+  const nonItalianNews = baseTop10Raw.filter(n => !isItalianNews(n));
+  // Italia First: notizie italiane prima, poi internazionali
+  const baseTop10 = [...italianNews, ...nonItalianNews];
+  if (italianNews.length > 0) {
+    console.log(`[Newsletter] Italia First: ${italianNews.length} notizie italiane in cima su ${baseTop10.length} totali`);
+  }
+
   let top10News: (NewsItem & { _section: string; _color: string; _label: string })[];
   if (heroNewsOverride) {
     // Rimuovi la hero news dalla lista base (evita duplicati) e mettila in testa
@@ -933,6 +965,50 @@ function buildNewsletterHtmlV2(opts: {
     <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
 
   // ═══════════════════════════════════════════════════════════════
+  // BLOCK D-TER: PERSONAGGIO ITALIANO DEL GIORNO
+  // ═══════════════════════════════════════════════════════════════
+  const personaggioItalianoHtml = personaggioItalianoDelGiorno ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#006400 0%,#1a4a1a 50%,#0d2b0d 100%);border-radius:12px;overflow:hidden;border:1px solid #ffffff;">
+          <tr>
+            <td style="padding:28px 30px;">
+              <!-- Label con bandiera italiana -->
+              <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:0.25em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:18px;">&#127470;&#127481; PERSONAGGIO ITALIANO DEL GIORNO</div>
+              <!-- Nome + Emoji -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+                <tr>
+                  <td style="vertical-align:middle;padding-right:14px;">
+                    <div style="font-size:44px;line-height:1;">${personaggioItalianoDelGiorno.emoji}</div>
+                  </td>
+                  <td style="vertical-align:middle;">
+                    <div style="font-size:26px;font-weight:900;color:#ffffff;font-family:${F_SERIF};line-height:1.15;letter-spacing:-0.01em;">${personaggioItalianoDelGiorno.nome}</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,0.85);font-family:${F_SANS};font-weight:600;margin-top:3px;">${personaggioItalianoDelGiorno.ruolo} &middot; ${personaggioItalianoDelGiorno.azienda}${personaggioItalianoDelGiorno.citta ? ' &middot; ' + personaggioItalianoDelGiorno.citta : ''}</div>
+                  </td>
+                </tr>
+              </table>
+              <!-- Cosa ha fatto -->
+              <div style="background:rgba(255,255,255,0.1);border-left:3px solid #ffffff;border-radius:0 6px 6px 0;padding:12px 16px;margin:16px 0;">
+                <div style="font-size:15px;font-weight:700;color:#ffffff;font-family:${F_SANS};line-height:1.5;">${personaggioItalianoDelGiorno.cosa_ha_fatto}</div>
+              </div>
+              <!-- Perché conta -->
+              <div style="font-size:13px;color:rgba(255,255,255,0.8);font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">${personaggioItalianoDelGiorno.perche_conta}</div>
+              <!-- CTA -->
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:#ffffff;border-radius:6px;padding:11px 22px;">
+                    <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=personaggio_italiano" style="font-size:12px;font-weight:800;color:#006400;text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
+
+  // ═══════════════════════════════════════════════════════════════
   // BLOCK D: STARTUP DEL GIORNO
   // ═══════════════════════════════════════════════════════════════
   const startupHtml = startup ? `
@@ -1125,6 +1201,7 @@ function buildNewsletterHtmlV2(opts: {
         ${introHtml}
         ${newsCardsHtml}
         ${personaggioHtml}
+        ${personaggioItalianoHtml}
         ${startupHtml}
         ${researchHtml}
         ${dealHtml}
@@ -1385,6 +1462,62 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn('[Newsletter] LLM personaggio del giorno skipped:', e instanceof Error ? e.message : e);
   }
 
+  // ── Step 4: Personaggio Italiano del Giorno ─────────────────────────────────
+  // DeepSeek V3 individua il protagonista ITALIANO più rilevante del giorno
+  // dal mondo venture, startup, investimenti, tech italiani
+  let personaggioItalianoDelGiorno: {
+    nome: string;
+    ruolo: string;
+    azienda: string;
+    cosa_ha_fatto: string;
+    perche_conta: string;
+    emoji: string;
+    citta?: string;
+  } | null = null;
+  try {
+    const EXCLUDED_CATEGORIES_IT = ['offerte', 'promozioni', 'deals', 'amazon', 'shopping', 'sconti', 'volantino', 'coupon'];
+    const isRelevantIT = (n: NewsItem) => {
+      const cat = (n.category || '').toLowerCase();
+      return n.id && !EXCLUDED_CATEGORIES_IT.some(ex => cat.includes(ex));
+    };
+    const allNewsForPersonaggioIT = [
+      ...content.aiNews.filter(isRelevantIT).slice(0, 8),
+      ...content.startupNews.filter(n => n.id).slice(0, 6),
+      ...content.dealroomNews.filter(n => n.id).slice(0, 6),
+    ];
+    if (allNewsForPersonaggioIT.length > 0) {
+      const newsListIT = allNewsForPersonaggioIT
+        .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
+        .join('\n');
+      const personaggioITPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore:\n\n${newsListIT}\n\nIndividua il PERSONAGGIO ITALIANO DEL GIORNO: un imprenditore, founder, investitore o manager ITALIANO (o con forte legame con l'ecosistema italiano) che si distingue oggi nel mondo venture capital, startup, tecnologia o investimenti.\n\nPuo essere:\n- Un founder di startup italiana che ha chiuso un round\n- Un investitore italiano che ha fatto una mossa significativa\n- Un CEO o manager italiano di azienda tech\n- Un personaggio dell'ecosistema italiano dell'innovazione\n\nSe nessun personaggio italiano emerge chiaramente dalle notizie, scegli comunque il piu rilevante dell'ecosistema italiano dell'innovazione in questo momento (anche se non direttamente citato nelle notizie).\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "citta": "Citta italiana (es. Milano, Roma, Torino)",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e rilevante per l'ecosistema italiano dell'innovazione (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
+      const personaggioITResult = await invokeLLMBulk({
+        messages: [{ role: 'user', content: personaggioITPrompt }],
+      });
+      const personaggioITRaw = (typeof personaggioITResult.choices?.[0]?.message?.content === 'string'
+        ? personaggioITResult.choices[0].message.content
+        : '').trim();
+      try {
+        const cleanJsonIT = personaggioITRaw
+          .replace(/^```json\s*/i, '')
+          .replace(/^```\s*/i, '')
+          .replace(/\s*```$/i, '')
+          .trim();
+        personaggioItalianoDelGiorno = JSON.parse(cleanJsonIT);
+        console.log(`[Newsletter] Personaggio Italiano del Giorno: ${personaggioItalianoDelGiorno?.nome} (${personaggioItalianoDelGiorno?.azienda})`);
+      } catch {
+        const jsonMatchIT = personaggioITRaw.match(/\{[\s\S]*\}/);
+        if (jsonMatchIT) {
+          try {
+            personaggioItalianoDelGiorno = JSON.parse(jsonMatchIT[0]);
+            console.log(`[Newsletter] Personaggio Italiano del Giorno (fallback): ${personaggioItalianoDelGiorno?.nome}`);
+          } catch { /* ignora */ }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[Newsletter] LLM personaggio italiano del giorno skipped:', e instanceof Error ? e.message : e);
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1410,6 +1543,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     heroNewsOverride,
     catchySummaries,
     personaggioDelGiorno,
+    personaggioItalianoDelGiorno,
   });
 
   const sponsorIds: number[] = [];

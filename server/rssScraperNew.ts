@@ -132,9 +132,16 @@ async function pLimit<T>(tasks: Array<() => Promise<T>>, concurrency: number): P
  * Usa un concurrency limiter (max 5 fetch parallele) per evitare EMFILE.
  */
 async function fetchAllFeeds(sources: RssSource[]): Promise<ReturnType<typeof fetchFeed> extends Promise<infer T> ? T : never> {
+  // ITALIA FIRST: ordina le fonti per priorità (0 = massima, italiane prima)
+  const sortedSources = [...sources].sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
+  const italianSources = sortedSources.filter(s => s.priority === 0 || s.language === "it");
+  const intlSources = sortedSources.filter(s => s.priority !== 0 && s.language !== "it");
+  console.log(`[RssScraper] Italia First: ${italianSources.length} fonti italiane (priorità 0) + ${intlSources.length} internazionali`);
+
   // MAX 5 connessioni HTTP simultanee per evitare EMFILE (too many open files)
   const CONCURRENCY = 5;
-  const tasks = sources.map(s => () => fetchFeed(s));
+  // Processa prima le fonti italiane, poi le internazionali
+  const tasks = sortedSources.map(s => () => fetchFeed(s));
   const results = await pLimit(tasks, CONCURRENCY);
   const all: Awaited<ReturnType<typeof fetchFeed>> = [];
   results.forEach(r => {
@@ -189,7 +196,11 @@ async function selectAndTranslate(
     "lastampa", "agi.it", "tgcom24", "sky.it", "rainews", "adnkronos",
     "askanews", "italpress", "ilgiornale", "libero.it", "panorama.it",
     "espresso.it", "linkiesta", "startupitalia", "economyup", "milanofinanza",
-    "borsaitaliana", "smartworld", "hdblog", "everyeye", "gamereactor.it"
+    "borsaitaliana", "smartworld", "hdblog", "everyeye", "gamereactor.it",
+    // Nuove fonti italiane aggiunte (Italia First)
+    "startupbusiness.it", "bebeez.it", "dealflower.it", "aifi.it",
+    "ninjamarketing.it", "primaonline.it", "dday.it", "scaleupitaly.com",
+    "milanoinvestment.com", "econopoly", "startup-news.it"
   ];
   const isItalian = (a: { sourceName: string; link: string }) =>
     itDomainPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p.replace(".it/", "").replace(".it", "")));

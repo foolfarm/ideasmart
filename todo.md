@@ -3772,3 +3772,12 @@
 - [x] TypeScript: 0 errori
 - [x] Rimosso pulsante "ProofPress International" dalla home (navbar top-right)
 - [x] Nuova preview inviata a ac@acinelli.com con personaggio del giorno visibile (Jacob de Geer / Primer)
+
+## Task completati (21 maggio 2026 — Italia First + 50 Fonti RSS Italiane)
+- [x] Personaggio Italiano del Giorno aggiunto alla newsletter (blocco dopo quello globale)
+- [x] Regola Italia First implementata in rssScraperNew.ts (ordinamento per priorità 0)
+- [x] Verifica 50 feed RSS italiani suggeriti: 24 attivi, 3 no-RSS, 23 errori (403/404)
+- [x] 24 nuove fonti italiane validate aggiunte a STARTUP_SOURCES con priorità 0: BeBeez, CheFuturo, Forbes Italia, Innovation Post, AI4Business, Cybersecurity360, Digital4, P101 Ventures, Digitalic, Data Manager, BitMAT, 01Net Italia, TechCompany360, CrowdfundingBuzz, The Crypto Gateway, Techprincess, Startup News IT
+- [x] 6 nuove fonti italiane validate aggiunte a DEALROOM_SOURCES con priorità 0: CheFuturo, Forbes Italia, Innovation Post, P101 Ventures, CrowdfundingBuzz, TechCompany360
+- [x] Pattern italiani aggiornati in selectAndTranslate per riconoscere le nuove fonti
+- [x] fetchAllFeeds ora ordina le fonti per priorità (0 prima) prima del fetch
