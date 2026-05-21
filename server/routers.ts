@@ -69,7 +69,7 @@ import { runBatchAudit, auditNewsItem, auditMarketAnalysis, getAuditResults, run
 import { getSchedulerStatus, runScheduledAudit } from "./auditScheduler";
 import { getActiveBreakingNews, generateBreakingNews } from "./breakingNewsGenerator";
 import { generateDailyResearch, getTodayResearch, getResearchOfDay } from "./researchGenerator";
-import { researchReports, techEvents, siteUsers, dealflowPicks, toolSubmissions as toolSubmissionsTable, newsletterFeedback as newsletterFeedbackTable, openSourceTools as openSourceToolsTable } from "../drizzle/schema";
+import { researchReports, techEvents, siteUsers, dealflowPicks, toolSubmissions as toolSubmissionsTable, newsletterFeedback as newsletterFeedbackTable, openSourceTools as openSourceToolsTable, personaggi as personaggiTable } from "../drizzle/schema";
 import { aggregateEvents } from "./eventsAggregator";
 import { verifyOrgRouter } from "./verify/orgRouter";
 import { verifyApiKeyRouter } from "./verify/apiKeyRouter";
@@ -4204,6 +4204,121 @@ Genera una notizia diversa, attuale e rilevante per la stessa categoria. Rispond
           results,
           errors,
         };
+      }),
+  }),
+
+  // ── PERSONAGGI DEL VENTURE ITALIANO ──────────────────────────────────────
+  personaggi: router({
+    getAll: publicProcedure
+      .input(z.object({
+        limit: z.number().min(1).max(100).default(20),
+        offset: z.number().min(0).default(0),
+        category: z.string().optional(),
+        onlyItalian: z.boolean().optional(),
+        featured: z.boolean().optional(),
+      }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+        const { eq, desc, and } = await import("drizzle-orm");
+        const conditions: any[] = [];
+        if (input.category) conditions.push(eq(personaggiTable.category, input.category as any));
+        if (input.onlyItalian === true) conditions.push(eq(personaggiTable.isItalian, true));
+        if (input.featured === true) conditions.push(eq(personaggiTable.featured, true));
+        const where = conditions.length > 0 ? and(...conditions) : undefined;
+        const items = await db
+          .select()
+          .from(personaggiTable)
+          .where(where)
+          .orderBy(desc(personaggiTable.featured), desc(personaggiTable.createdAt))
+          .limit(input.limit)
+          .offset(input.offset);
+        return items;
+      }),
+
+    getBySlug: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+        const { eq } = await import("drizzle-orm");
+        const [item] = await db
+          .select()
+          .from(personaggiTable)
+          .where(eq(personaggiTable.slug, input.slug))
+          .limit(1);
+        if (!item) throw new TRPCError({ code: "NOT_FOUND", message: "Personaggio non trovato" });
+        // Incrementa view count
+        await db
+          .update(personaggiTable)
+          .set({ viewCount: (item.viewCount ?? 0) + 1 })
+          .where(eq(personaggiTable.id, item.id));
+        return item;
+      }),
+
+    getFeatured: publicProcedure.query(async () => {
+      const db = await getDbInstance();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+      const { eq, desc } = await import("drizzle-orm");
+      return db
+        .select()
+        .from(personaggiTable)
+        .where(eq(personaggiTable.featured, true))
+        .orderBy(desc(personaggiTable.createdAt))
+        .limit(6);
+    }),
+
+    create: adminProcedure
+      .input(z.object({
+        name: z.string().min(2),
+        slug: z.string().min(2),
+        role: z.string().optional(),
+        company: z.string().optional(),
+        country: z.string().default("IT"),
+        bio: z.string().optional(),
+        fullBio: z.string().optional(),
+        imageUrl: z.string().url().optional(),
+        coverImageUrl: z.string().url().optional(),
+        category: z.enum(["founder", "investor", "executive", "researcher", "journalist", "other"]).default("founder"),
+        tags: z.array(z.string()).optional(),
+        fundingRaised: z.string().optional(),
+        exits: z.number().default(0),
+        companiesCount: z.number().default(1),
+        linkedinUrl: z.string().url().optional(),
+        twitterUrl: z.string().url().optional(),
+        websiteUrl: z.string().url().optional(),
+        quote: z.string().optional(),
+        quoteSource: z.string().optional(),
+        featured: z.boolean().default(false),
+        isItalian: z.boolean().default(true),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDbInstance();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+        await db.insert(personaggiTable).values({
+          name: input.name,
+          slug: input.slug,
+          role: input.role,
+          company: input.company,
+          country: input.country,
+          bio: input.bio,
+          fullBio: input.fullBio,
+          imageUrl: input.imageUrl,
+          coverImageUrl: input.coverImageUrl,
+          category: input.category,
+          tags: input.tags ?? null,
+          fundingRaised: input.fundingRaised,
+          exits: input.exits,
+          companiesCount: input.companiesCount,
+          linkedinUrl: input.linkedinUrl,
+          twitterUrl: input.twitterUrl,
+          websiteUrl: input.websiteUrl,
+          quote: input.quote,
+          quoteSource: input.quoteSource,
+          featured: input.featured,
+          isItalian: input.isItalian,
+        });
+        return { success: true };
       }),
   }),
 });

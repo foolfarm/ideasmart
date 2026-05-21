@@ -3791,3 +3791,17 @@
 - [x] Rinominata sezione "Investitore Italiano del Giorno" → "Angel Investor del Giorno"
 - [x] Startup del Giorno: filtro Italia First (country = Italia/Italy) con fallback internazionale
 - [x] Preview inviata a ac@acinelli.com con tutte le modifiche
+
+## Redesign Grafico StartupItalia (21 Mag 2026)
+
+- [x] Redesign Home.tsx stile StartupItalia: griglia 3 colonne, immagini 16:9, font Playfair Display
+- [x] Redesign AiHome.tsx con stesso design system editoriale
+- [x] Redesign StartupHome.tsx con stesso design system editoriale
+- [x] Redesign DealroomHome.tsx con stesso design system editoriale
+- [x] Redesign Research.tsx con stesso design system editoriale
+- [x] Aggiornamento SharedPageHeader con Playfair Display e navbar sezioni sticky
+- [x] Nuova pagina Personaggi.tsx — protagonisti del venture italiano (90% IT, 10% estero)
+- [x] Tabella DB personaggi con schema completo (founder, investor, executive, researcher, journalist)
+- [x] Router tRPC personaggi.getAll, getBySlug, getFeatured, create
+- [x] Route /personaggi aggiunta in App.tsx
+- [x] Fix scheduler: cron 17:30 PPV commentato, task 08:30 riattivato

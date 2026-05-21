@@ -1381,14 +1381,15 @@ export function startAllSchedulers(): void {
     } catch (err) { console.error("[PPV Campaign] ❌ Articolo editoriale:", err); }
   }, { timezone: TZ });
 
-  cron.schedule("30 17 * * 1-5", async () => {
-    console.log("[PPV Campaign] ⏰ 17:30 CET — Invio newsletter ProofPressVerify agli iscritti...");
-    try {
-      const { sendPpvNewsletterToAll } = await import("./ppvEditorialScheduler");
-      await sendPpvNewsletterToAll();
-    } catch (err) { console.error("[PPV Campaign] ❌ Newsletter iscritti:", err); }
-  }, { timezone: TZ });
-  console.log("[SchedulerManager]   🔐 PPV Campaign → 12:30 preview, 12:50 articolo+LinkedIn, 17:30 newsletter (lun-ven, 11-15 mag 2026)");
+  // DISABILITATO 2026-05-21 — Newsletter PPV 17:30 cancellata per richiesta Andrea
+  // cron.schedule("30 17 * * 1-5", async () => {
+  //   console.log("[PPV Campaign] ⏰ 17:30 CET — Invio newsletter ProofPressVerify agli iscritti...");
+  //   try {
+  //     const { sendPpvNewsletterToAll } = await import("./ppvEditorialScheduler");
+  //     await sendPpvNewsletterToAll();
+  //   } catch (err) { console.error("[PPV Campaign] ❌ Newsletter iscritti:", err); }
+  // }, { timezone: TZ });
+  console.log("[SchedulerManager]   🔐 PPV Campaign → 12:30 preview, 12:50 articolo+LinkedIn [17:30 newsletter DISABILITATA]");
 
   // ══════════════════════════════════════════════════════════════════════════
   // SENDGRID SUPPRESSION SYNC — ogni 12 ore (06:00 e 18:00 CET)
