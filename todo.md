@@ -3781,3 +3781,13 @@
 - [x] 6 nuove fonti italiane validate aggiunte a DEALROOM_SOURCES con priorità 0: CheFuturo, Forbes Italia, Innovation Post, P101 Ventures, CrowdfundingBuzz, TechCompany360
 - [x] Pattern italiani aggiornati in selectAndTranslate per riconoscere le nuove fonti
 - [x] fetchAllFeeds ora ordina le fonti per priorità (0 prima) prima del fetch
+
+## Task completati (21 maggio 2026 — Newsletter v3 Immagini + Label Editoriali)
+
+- [x] Aggiunto fetch immagini Wikipedia (EN + IT) per tutti e 3 i personaggi del giorno
+- [x] Aggiunto fallback Pexels quando Wikipedia non trova thumbnail
+- [x] Rinominata sezione "Personaggio del Giorno" → "Founder del Giorno"
+- [x] Rinominata sezione "Personaggio Italiano del Giorno" → "Startup Founder del Giorno"
+- [x] Rinominata sezione "Investitore Italiano del Giorno" → "Angel Investor del Giorno"
+- [x] Startup del Giorno: filtro Italia First (country = Italia/Italy) con fallback internazionale
+- [x] Preview inviata a ac@acinelli.com con tutte le modifiche

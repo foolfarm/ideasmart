@@ -353,11 +353,23 @@ async function getTodayStartup(): Promise<StartupOfDayItem | null> {
   if (!db) return null;
 
   const today = new Date().toISOString().split("T")[0];
+  // Italia First: cerca prima startup italiane, poi qualsiasi in fallback
+  const ITALIAN_COUNTRIES = ['italia', 'italy', 'it', 'milano', 'roma', 'torino', 'firenze', 'napoli', 'bologna'];
+  const isItalian = (s: { country: string | null }) => {
+    const c = (s.country || '').toLowerCase();
+    return ITALIAN_COUNTRIES.some(it => c.includes(it));
+  };
+
   let items = await db
     .select()
     .from(startupOfDay)
     .where(eq(startupOfDay.dateLabel, today))
-    .limit(1);
+    .limit(5);
+
+  // Preferisci startup italiane tra quelle di oggi
+  const italianToday = items.filter(isItalian);
+  if (italianToday.length > 0) items = [italianToday[0]];
+  else if (items.length > 0) items = [items[0]];
 
   if (items.length === 0) {
     // Rotazione deterministica: ogni giorno una startup diversa basata sulla data
@@ -369,8 +381,11 @@ async function getTodayStartup(): Promise<StartupOfDayItem | null> {
     // Hash della data (anno + mese + giorno) per indice stabile ma variabile ogni giorno
     const [y, m, d] = today.split('-').map(Number);
     const dayHash = (y * 365 + m * 31 + d);
-    const idx = dayHash % allStartups.length;
-    items = [allStartups[idx]];
+    // Preferisci startup italiane nella rotazione
+    const italianAll = allStartups.filter(isItalian);
+    const pool = italianAll.length > 0 ? italianAll : allStartups;
+    const idx = dayHash % pool.length;
+    items = [pool[idx]];
   }
 
   if (items.length === 0) return null;
@@ -674,6 +689,9 @@ function buildNewsletterHtmlV2(opts: {
     emoji: string;
     citta?: string;
   } | null;
+  personaggioImgUrl?: string | null;
+  personaggioItalianoImgUrl?: string | null;
+  investitoreImgUrl?: string | null;
   personaggioItalianoDelGiorno?: {
     nome: string;
     ruolo: string;
@@ -708,6 +726,9 @@ function buildNewsletterHtmlV2(opts: {
   const personaggioDelGiorno = opts.personaggioDelGiorno || null;
   const personaggioItalianoDelGiorno = opts.personaggioItalianoDelGiorno || null;
   const investitoreItalianoDelGiorno = opts.investitoreItalianoDelGiorno || null;
+  const personaggioImgUrl = opts.personaggioImgUrl || null;
+  const personaggioItalianoImgUrl = opts.personaggioItalianoImgUrl || null;
+  const investitoreImgUrl = opts.investitoreImgUrl || null;
 
   // ── Design Tokens v4 (ProofPress Editorial — White/Grey Clean) ──
   const F_SERIF = "Georgia, 'Times New Roman', Times, serif";
@@ -944,12 +965,15 @@ function buildNewsletterHtmlV2(opts: {
           <tr>
             <td style="padding:24px 28px;">
               <!-- Label -->
-              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#9733; PERSONAGGIO DEL GIORNO</div>
-              <!-- Nome + Emoji -->
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#9733; FOUNDER DEL GIORNO</div>
+              <!-- Nome + Foto/Emoji -->
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
                 <tr>
-                  <td style="vertical-align:middle;padding-right:14px;">
-                    <div style="font-size:40px;line-height:1;">${personaggioDelGiorno.emoji}</div>
+                  <td style="vertical-align:middle;padding-right:16px;">
+                    ${personaggioImgUrl
+                      ? `<img src="${personaggioImgUrl}" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:50%;display:block;border:2px solid ${BORDER};" alt="${personaggioDelGiorno.nome}" />`
+                      : `<div style="width:72px;height:72px;border-radius:50%;background:${BG};border:2px solid ${BORDER};display:flex;align-items:center;justify-content:center;font-size:32px;line-height:72px;text-align:center;">${personaggioDelGiorno.emoji}</div>`
+                    }
                   </td>
                   <td style="vertical-align:middle;">
                     <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;">${personaggioDelGiorno.nome}</div>
@@ -981,13 +1005,16 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${ITALY_RED};">
           <tr>
             <td style="padding:24px 28px;">
-              <!-- Label con bandiera italiana -->
-              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#127470;&#127481; PERSONAGGIO ITALIANO DEL GIORNO</div>
-              <!-- Nome + Emoji -->
+              <!-- Label -->
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#127470;&#127481; STARTUP FOUNDER DEL GIORNO</div>
+              <!-- Nome + Foto/Emoji -->
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
                 <tr>
-                  <td style="vertical-align:middle;padding-right:14px;">
-                    <div style="font-size:40px;line-height:1;">${personaggioItalianoDelGiorno.emoji}</div>
+                  <td style="vertical-align:middle;padding-right:16px;">
+                    ${personaggioItalianoImgUrl
+                      ? `<img src="${personaggioItalianoImgUrl}" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:50%;display:block;border:2px solid ${BORDER};" alt="${personaggioItalianoDelGiorno.nome}" />`
+                      : `<div style="width:72px;height:72px;border-radius:50%;background:${BG};border:2px solid ${BORDER};font-size:32px;line-height:72px;text-align:center;">${personaggioItalianoDelGiorno.emoji}</div>`
+                    }
                   </td>
                   <td style="vertical-align:middle;">
                     <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;">${personaggioItalianoDelGiorno.nome}</div>
@@ -1020,12 +1047,15 @@ function buildNewsletterHtmlV2(opts: {
           <tr>
             <td style="padding:24px 28px;">
               <!-- Label -->
-              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#127470;&#127481; INVESTITORE ITALIANO DEL GIORNO</div>
-              <!-- Nome + Emoji -->
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#127470;&#127481; ANGEL INVESTOR DEL GIORNO</div>
+              <!-- Nome + Foto/Emoji -->
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
                 <tr>
-                  <td style="vertical-align:middle;padding-right:14px;">
-                    <div style="font-size:40px;line-height:1;">${investitoreItalianoDelGiorno.emoji}</div>
+                  <td style="vertical-align:middle;padding-right:16px;">
+                    ${investitoreImgUrl
+                      ? `<img src="${investitoreImgUrl}" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:50%;display:block;border:2px solid ${BORDER};" alt="${investitoreItalianoDelGiorno.nome}" />`
+                      : `<div style="width:72px;height:72px;border-radius:50%;background:${BG};border:2px solid ${BORDER};font-size:32px;line-height:72px;text-align:center;">${investitoreItalianoDelGiorno.emoji}</div>`
+                    }
                   </td>
                   <td style="vertical-align:middle;">
                     <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;">${investitoreItalianoDelGiorno.nome}</div>
@@ -1610,6 +1640,65 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn('[Newsletter] LLM investitore italiano del giorno skipped:', e instanceof Error ? e.message : e);
   }
 
+  // ── Fetch immagini Wikipedia per i personaggi del giorno ──
+  let personaggioImgUrl: string | null = null;
+  let personaggioItalianoImgUrl: string | null = null;
+  let investitoreImgUrl: string | null = null;
+  try {
+    const fetchWikipediaImage = async (name: string): Promise<string | null> => {
+      try {
+        const encoded = encodeURIComponent(name);
+        const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encoded}`;
+        const res = await fetch(url, { headers: { 'User-Agent': 'ProofPress/1.0 (newsletter@proofpress.ai)' } });
+        if (!res.ok) {
+          // Prova con Wikipedia italiana
+          const itUrl = `https://it.wikipedia.org/api/rest_v1/page/summary/${encoded}`;
+          const itRes = await fetch(itUrl, { headers: { 'User-Agent': 'ProofPress/1.0' } });
+          if (!itRes.ok) return null;
+          const itData = await itRes.json() as { thumbnail?: { source?: string } };
+          return itData?.thumbnail?.source || null;
+        }
+        const data = await res.json() as { thumbnail?: { source?: string } };
+        return data?.thumbnail?.source || null;
+      } catch { return null; }
+    }
+    // Fallback Pexels per immagini personaggi quando Wikipedia non trova thumbnail
+    const fetchPersonPexels = async (name: string): Promise<string | null> => {
+      try {
+        const pexelsKey = process.env.PEXELS_API_KEY;
+        if (!pexelsKey) return null;
+        const q = encodeURIComponent(name + ' portrait');
+        const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=1&orientation=square`, {
+          headers: { Authorization: pexelsKey }
+        });
+        if (!r.ok) return null;
+        const j = await r.json() as { photos?: Array<{ src?: { medium?: string } }> };
+        return j?.photos?.[0]?.src?.medium || null;
+      } catch { return null; }
+    };
+
+    const imgResults = await Promise.allSettled([
+      personaggioDelGiorno ? fetchWikipediaImage(personaggioDelGiorno.nome) : Promise.resolve(null),
+      personaggioItalianoDelGiorno ? fetchWikipediaImage(personaggioItalianoDelGiorno.nome) : Promise.resolve(null),
+      investitoreItalianoDelGiorno ? fetchWikipediaImage(investitoreItalianoDelGiorno.nome) : Promise.resolve(null),
+    ]);
+    personaggioImgUrl = imgResults[0].status === 'fulfilled' ? imgResults[0].value : null;
+    personaggioItalianoImgUrl = imgResults[1].status === 'fulfilled' ? imgResults[1].value : null;
+    investitoreImgUrl = imgResults[2].status === 'fulfilled' ? imgResults[2].value : null;
+
+    // Fallback Pexels se Wikipedia non ha trovato immagini
+    if (!personaggioImgUrl && personaggioDelGiorno)
+      personaggioImgUrl = await fetchPersonPexels(personaggioDelGiorno.nome);
+    if (!personaggioItalianoImgUrl && personaggioItalianoDelGiorno)
+      personaggioItalianoImgUrl = await fetchPersonPexels(personaggioItalianoDelGiorno.nome);
+    if (!investitoreImgUrl && investitoreItalianoDelGiorno)
+      investitoreImgUrl = await fetchPersonPexels(investitoreItalianoDelGiorno.nome);
+
+    console.log(`[Newsletter] Immagini personaggi: globale=${personaggioImgUrl ? 'OK' : 'N/A'}, italiano=${personaggioItalianoImgUrl ? 'OK' : 'N/A'}, investitore=${investitoreImgUrl ? 'OK' : 'N/A'}`);
+  } catch (e) {
+    console.warn('[Newsletter] Wikipedia image fetch skipped:', e instanceof Error ? e.message : e);
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1637,6 +1726,9 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     personaggioDelGiorno,
     personaggioItalianoDelGiorno,
     investitoreItalianoDelGiorno,
+    personaggioImgUrl,
+    personaggioItalianoImgUrl,
+    investitoreImgUrl,
   });
 
   const sponsorIds: number[] = [];
