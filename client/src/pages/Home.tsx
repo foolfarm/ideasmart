@@ -818,17 +818,6 @@ export default function Home() {
               </span>
             </div>
             <div className="flex items-center gap-3">
-              {/* Pulsante ProofPress International */}
-              <a
-                href="https://proofpress.biz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#1a1a1a]/15 text-[11px] font-semibold text-[#1a1a1a]/70 hover:bg-[#1a1a1a]/5 hover:text-[#1a1a1a] transition-all uppercase tracking-widest"
-                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
-              >
-                <span style={{ fontSize: "14px", lineHeight: 1 }}>🇬🇧</span>
-                ProofPress International
-              </a>
               <HomeAuthButtons />
             </div>
           </div>
