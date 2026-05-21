@@ -105,6 +105,28 @@ export const AI_SOURCES: RssSource[] = [
   { name: "CloudComputing News IT", homepage: "https://www.cloudcomputing-news.it", feedUrl: "https://www.cloudcomputing-news.it/feed", section: "ai", language: "it", priority: 2 },
   { name: "Innovation Nation", homepage: "https://www.innovation-nation.it", feedUrl: "https://www.innovation-nation.it/feed", section: "ai", language: "it", priority: 2 },
   { name: "Italian Tech", homepage: "https://www.italian.tech", feedUrl: "https://www.italian.tech/feed", section: "ai", language: "it", priority: 1 },
+  // ─── Nuove fonti italiane AI/Tech (Italia First 70%) ───────────────────────
+  { name: "Corriere Innovazione", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/innovazione.xml", section: "ai", language: "it", priority: 1 },
+  { name: "La Repubblica Economia", homepage: "https://www.repubblica.it", feedUrl: "https://www.repubblica.it/rss/economia/rss2.0.xml", section: "ai", language: "it", priority: 1 },
+  { name: "Il Sole 24 Ore Economia", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/economia.xml", section: "ai", language: "it", priority: 1 },
+  { name: "Il Sole 24 Ore Norme", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/norme-e-tributi.xml", section: "ai", language: "it", priority: 2 },
+  { name: "Agi Tech", homepage: "https://www.agi.it", feedUrl: "https://www.agi.it/rss/tecnologia.xml", section: "ai", language: "it", priority: 1 },
+  { name: "Ansa Tecnologia", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/tecnologia/tecnologia_rss.xml", section: "ai", language: "it", priority: 1 },
+  { name: "Ansa Economia", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/economia/economia_rss.xml", section: "ai", language: "it", priority: 1 },
+  { name: "Adnkronos Tech", homepage: "https://www.adnkronos.com", feedUrl: "https://www.adnkronos.com/rss/tecnologia.xml", section: "ai", language: "it", priority: 2 },
+  { name: "Cybersecurity360", homepage: "https://www.cybersecurity360.it", feedUrl: "https://www.cybersecurity360.it/feed", section: "ai", language: "it", priority: 1 },
+  { name: "ICT4Executive", homepage: "https://www.ict4executive.it", feedUrl: "https://www.ict4executive.it/feed", section: "ai", language: "it", priority: 2 },
+  { name: "Economyup AI", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "ai", language: "it", priority: 1 },
+  { name: "Startupbusiness IT", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/feed", section: "ai", language: "it", priority: 1 },
+  { name: "Ninja Marketing", homepage: "https://www.ninjamarketing.it", feedUrl: "https://www.ninjamarketing.it/feed", section: "ai", language: "it", priority: 2 },
+  { name: "Bitmat", homepage: "https://www.bitmat.it", feedUrl: "https://www.bitmat.it/feed", section: "ai", language: "it", priority: 2 },
+  { name: "Techeconomy", homepage: "https://techeconomy.it", feedUrl: "https://techeconomy.it/feed", section: "ai", language: "it", priority: 2 },
+  { name: "Sole24Ore Plus", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/plus.xml", section: "ai", language: "it", priority: 2 },
+  { name: "Startupitalia AI", homepage: "https://startupitalia.eu", feedUrl: "https://startupitalia.eu/feed", section: "ai", language: "it", priority: 1 },
+  { name: "Linkiesta Economia", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "ai", language: "it", priority: 2 },
+  { name: "Formiche", homepage: "https://formiche.net", feedUrl: "https://formiche.net/feed", section: "ai", language: "it", priority: 2 },
+  { name: "Rivista Europea", homepage: "https://www.rivistaeuropea.eu", feedUrl: "https://www.rivistaeuropea.eu/feed", section: "ai", language: "it", priority: 3 },
+
   // Tech globale (alimenta sezione AI)
   { name: "The Verge (full)", homepage: "https://www.theverge.com", feedUrl: "https://www.theverge.com/rss/index.xml", section: "ai", language: "en", priority: 2, tags: ["tech"] },
   { name: "Ars Technica", homepage: "https://arstechnica.com", feedUrl: "https://arstechnica.com/feed", section: "ai", language: "en", priority: 1, tags: ["tech"] },
@@ -623,7 +645,28 @@ export const DEALROOM_SOURCES: RssSource[] = [
   { name: "Google News Funding", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+funding+OR+acquisition+OR+series+A+OR+venture+capital&hl=en", section: "dealroom", language: "en", priority: 1, tags: ["aggregator", "funding"] },
   { name: "Google News M&A", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=merger+acquisition+startup+OR+tech+company&hl=en", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "m&a"] },
   { name: "Google News VC Italia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+italiana+finanziamento+OR+round+OR+investimento&hl=it&gl=IT", section: "dealroom", language: "it", priority: 1, tags: ["aggregator", "italia"] },
-  { name: "HackerNews", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/frontpage", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "tech"] }
+  { name: "HackerNews", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/frontpage", section: "dealroom", language: "en", priority: 2, tags: ["aggregator", "tech"] },
+  // ─── Nuove fonti italiane Dealroom (Italia First 70%) ───────────────────────
+  { name: "Bebeez", homepage: "https://bebeez.it", feedUrl: "https://bebeez.it/feed", section: "dealroom", language: "it", priority: 0, tags: ["italia", "vc", "private equity", "funding"] },
+  { name: "Dealflower", homepage: "https://dealflower.it", feedUrl: "https://dealflower.it/feed", section: "dealroom", language: "it", priority: 0, tags: ["italia", "deal", "funding"] },
+  { name: "AIFI Notizie", homepage: "https://www.aifi.it", feedUrl: "https://www.aifi.it/feed", section: "dealroom", language: "it", priority: 0, tags: ["italia", "vc", "private equity"] },
+  { name: "Startupitalia Funding", homepage: "https://startupitalia.eu", feedUrl: "https://startupitalia.eu/feed", section: "dealroom", language: "it", priority: 0, tags: ["italia", "startup", "funding"] },
+  { name: "EconomyUp Funding", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed", section: "dealroom", language: "it", priority: 0, tags: ["italia", "startup", "funding"] },
+  { name: "Corriere Economia", homepage: "https://www.corriere.it", feedUrl: "https://www.corriere.it/rss/economia.xml", section: "dealroom", language: "it", priority: 1, tags: ["italia", "economia", "deal"] },
+  { name: "Il Sole 24 Ore Finanza", homepage: "https://www.ilsole24ore.com", feedUrl: "https://www.ilsole24ore.com/rss/finanza-e-mercati.xml", section: "dealroom", language: "it", priority: 1, tags: ["italia", "finanza", "mercati"] },
+  { name: "Milano Finanza", homepage: "https://www.milanofinanza.it", feedUrl: "https://www.milanofinanza.it/rss", section: "dealroom", language: "it", priority: 1, tags: ["italia", "finanza", "mercati"] },
+  { name: "Borsa Italiana News", homepage: "https://www.borsaitaliana.it", feedUrl: "https://www.borsaitaliana.it/borsa/notizie/radiocor/rss.xml", section: "dealroom", language: "it", priority: 1, tags: ["italia", "borsa", "ipo"] },
+  { name: "Ansa Economia Dealroom", homepage: "https://www.ansa.it", feedUrl: "https://www.ansa.it/sito/notizie/economia/economia_rss.xml", section: "dealroom", language: "it", priority: 1, tags: ["italia", "economia"] },
+  { name: "Forbes Italia Dealroom", homepage: "https://forbes.it", feedUrl: "https://forbes.it/feed/", section: "dealroom", language: "it", priority: 1, tags: ["italia", "business", "funding"] },
+  { name: "Linkiesta Finanza", homepage: "https://www.linkiesta.it", feedUrl: "https://www.linkiesta.it/feed", section: "dealroom", language: "it", priority: 2, tags: ["italia", "finanza"] },
+  { name: "Startupbusiness Dealroom", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/feed", section: "dealroom", language: "it", priority: 1, tags: ["italia", "startup", "vc"] },
+  { name: "Italian Tech Deals", homepage: "https://www.italian.tech", feedUrl: "https://www.italian.tech/feed", section: "dealroom", language: "it", priority: 1, tags: ["italia", "tech", "funding"] },
+  { name: "Wired Italia Deals", homepage: "https://www.wired.it", feedUrl: "https://www.wired.it/feed", section: "dealroom", language: "it", priority: 2, tags: ["italia", "tech"] },
+  { name: "Google News Seed Italia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=seed+round+startup+italiana+OR+serie+A+italia&hl=it&gl=IT&ceid=IT:it", section: "dealroom", language: "it", priority: 0, tags: ["aggregator", "italia", "seed"] },
+  { name: "Google News M&A Italia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=acquisizione+startup+italiana+OR+exit+startup+italia&hl=it&gl=IT&ceid=IT:it", section: "dealroom", language: "it", priority: 0, tags: ["aggregator", "italia", "m&a"] },
+  { name: "Google News IPO Italia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=IPO+quotazione+borsa+italiana+startup&hl=it&gl=IT&ceid=IT:it", section: "dealroom", language: "it", priority: 0, tags: ["aggregator", "italia", "ipo"] },
+  { name: "Adnkronos Economia", homepage: "https://www.adnkronos.com", feedUrl: "https://www.adnkronos.com/rss/economia.xml", section: "dealroom", language: "it", priority: 2, tags: ["italia", "economia"] },
+  { name: "AGI Economia", homepage: "https://www.agi.it", feedUrl: "https://www.agi.it/rss/economia.xml", section: "dealroom", language: "it", priority: 1, tags: ["italia", "economia"] }
 ];
 
 export const ALL_SOURCES = [...AI_SOURCES, ...STARTUP_SOURCES, ...DEALROOM_SOURCES];

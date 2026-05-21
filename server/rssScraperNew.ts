@@ -206,10 +206,26 @@ async function selectAndTranslate(
     itDomainPatterns.some(p => a.link.toLowerCase().includes(p) || a.sourceName.toLowerCase().includes(p.replace(".it/", "").replace(".it", "")));
   const italianArticles = articles.filter(isItalian);
   const internationalArticles = articles.filter(a => !isItalian(a));
-  // Componi: prima gli italiani, poi gli internazionali, max 60 totali
-  const sortedArticles = [...italianArticles, ...internationalArticles].slice(0, 60);
-  const italianCount = italianArticles.length;
-  console.log(`[RssScraper] Italia first: ${italianCount} italiani + ${sortedArticles.length - italianCount} internazionali per ${section}`);
+
+  // REGOLA 70/30: max 60 articoli totali, almeno 70% italiani
+  // Target: 42 italiani + 18 internazionali (fallback: prendi tutti gli italiani disponibili + riempi con internazionali)
+  const TARGET_TOTAL = 60;
+  const TARGET_IT_RATIO = 0.70;
+  const targetIt = Math.round(TARGET_TOTAL * TARGET_IT_RATIO); // 42
+  const targetIntl = TARGET_TOTAL - targetIt;                   // 18
+
+  const itPool = italianArticles.slice(0, targetIt);
+  const intlPool = internationalArticles.slice(0, targetIntl);
+
+  // Fallback: se non ci sono abbastanza italiani, riempi con internazionali
+  const itShortfall = targetIt - itPool.length;
+  const extraIntl = itShortfall > 0 ? internationalArticles.slice(targetIntl, targetIntl + itShortfall) : [];
+
+  const sortedArticles = [...itPool, ...intlPool, ...extraIntl];
+  const italianCount = itPool.length;
+  const intlCount = intlPool.length + extraIntl.length;
+  const actualRatio = sortedArticles.length > 0 ? Math.round((italianCount / sortedArticles.length) * 100) : 0;
+  console.log(`[RssScraper] 70/30 Italia First: ${italianCount} italiani + ${intlCount} internazionali = ${sortedArticles.length} totali (${actualRatio}% IT) per sezione ${section}`);
 
   // Prepara lista articoli per il prompt (max 60 per non superare il context)
   const articlesForPrompt = sortedArticles.map((a, i) => 
@@ -248,9 +264,11 @@ VARIA gli incipit tra questi pattern (non usare sempre lo stesso):
 - Inizio con il paradosso o la tensione: "Più potente, ma anche più costoso.", "La promessa è ambiziosa."
 - Inizio con il nome del protagonista: "Elon Musk torna a scommettere su...", "Anthropic ha scelto..."
 
-IMPORTANTE — ITALIA FIRST:
+REGOLA 70/30 OBBLIGATORIA — ITALIA FIRST:
 - Gli articoli marcati 🇮🇹 provengono da fonti italiane: PRIVILEGIALI nella selezione.
-- Includi almeno 8-10 articoli da fonti italiane (🇮🇹) nei 20 selezionati, se disponibili.
+- OBBLIGATORIO: almeno 14 articoli su 20 devono provenire da fonti italiane (🇮🇹). Questo è un requisito editoriale non negoziabile.
+- Se ci sono meno di 14 articoli italiani disponibili, includi tutti quelli disponibili e completa con internazionali (fallback).
+- Gli articoli internazionali (senza 🇮🇹) possono essere al massimo 6 su 20.
 - Seleziona SOLO articoli dalla lista fornita (usa sourceIndex per riferimento)
 - Traduci e adatta i titoli in italiano giornalistico — TUTTI i titoli devono essere in ITALIANO, anche se la fonte è in inglese
 - LINGUA OBBLIGATORIA: titoli e summary SEMPRE in italiano, mai in inglese
