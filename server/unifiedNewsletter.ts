@@ -664,6 +664,16 @@ function buildNewsletterHtmlV2(opts: {
     perche_conta: string;
     emoji: string;
   } | null;
+  investitoreItalianoDelGiorno?: {
+    nome: string;
+    ruolo: string;
+    fondo: string;
+    tipo: string;
+    cosa_ha_fatto: string;
+    perche_conta: string;
+    emoji: string;
+    citta?: string;
+  } | null;
   personaggioItalianoDelGiorno?: {
     nome: string;
     ruolo: string;
@@ -697,20 +707,24 @@ function buildNewsletterHtmlV2(opts: {
   const catchySummaries = opts.catchySummaries || {};
   const personaggioDelGiorno = opts.personaggioDelGiorno || null;
   const personaggioItalianoDelGiorno = opts.personaggioItalianoDelGiorno || null;
+  const investitoreItalianoDelGiorno = opts.investitoreItalianoDelGiorno || null;
 
-  // ── Design Tokens v3 (ProofPress Editorial) ──
+  // ── Design Tokens v4 (ProofPress Editorial — White/Grey Clean) ──
   const F_SERIF = "Georgia, 'Times New Roman', Times, serif";
   const F_SANS  = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
-  const BG      = "#f4f4f0";   // carta giornale warm
+  const BG      = "#f8f8f8";   // grigio chiarissimo — sfondo email
   const WHITE   = "#ffffff";
   const BLACK   = "#111111";
   const SLATE   = "#444444";
   const MUTED   = "#888888";
-  const BORDER  = "#e0e0e0";
+  const BORDER  = "#e8e8e8";   // bordo grigio chiaro
+  const BORDER_LIGHT = "#f0f0f0"; // separatore leggerissimo
   const ACCENT  = "#d94f3d";   // rosso ProofPress
   const ACCENT_DARK = "#b83c2c";
   const GRAY_DARK   = "#1d1d1f";
   const AMAZON_ORANGE = "#FF9900";
+  const ITALY_RED = "#009246";  // verde bandiera italiana (per sezioni IT)
+  const ITALY_GOLD = "#c8a84b"; // oro per investitori/VC italiani
 
   // ── Seleziona le 10 notizie del giorno (mix curato) ──
   // 4 AI + 3 Startup + 3 Dealroom/VC
@@ -842,18 +856,18 @@ function buildNewsletterHtmlV2(opts: {
   const introHtml = `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${BLACK};border-radius:8px;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
           <tr>
-            <td style="padding:20px 28px;">
-              <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.14em;margin-bottom:8px;">IL FORMATO DI OGGI</div>
-              <div style="font-size:18px;font-weight:700;color:#ffffff;font-family:${F_SERIF};line-height:1.4;">10 notizie selezionate · 1 startup · 1 ricerca · 1 deal · 1 sponsor</div>
-              <div style="font-size:13px;color:rgba(255,255,255,0.6);font-family:${F_SANS};margin-top:8px;line-height:1.6;">Ogni mattina, il meglio da AI, Startup e Venture Capital — certificato con ProofPress Verify Technology.</div>
+            <td style="padding:18px 24px;">
+              <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.18em;margin-bottom:6px;">IL FORMATO DI OGGI</div>
+              <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.4;">🇮🇹 2 personaggi italiani · 10 notizie · 1 startup · 1 deal · 1 sponsor</div>
+              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-top:6px;line-height:1.6;">Ogni mattina, il meglio da AI, Startup e Venture Capital — certificato con ProofPress Verify Technology. Italia First.</div>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+    <tr><td style="height:20px;background:${BG};"></td></tr>`;
 
   // ═══════════════════════════════════════════════════════════════
   // BLOCK C: 10 NOTIZIE DEL GIORNO
@@ -921,92 +935,119 @@ function buildNewsletterHtmlV2(opts: {
     : '';
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK D-BIS: PERSONAGGIO DEL GIORNO
+  // BLOCK D-BIS: PERSONAGGIO DEL GIORNO (Globale) — stile editoriale bianco
   // ═══════════════════════════════════════════════════════════════
   const personaggioHtml = personaggioDelGiorno ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);border-radius:12px;overflow:hidden;border:1px solid #e8c84a;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${BLACK};">
           <tr>
-            <td style="padding:28px 30px;">
+            <td style="padding:24px 28px;">
               <!-- Label -->
-              <div style="font-size:10px;font-weight:800;color:#e8c84a;letter-spacing:0.25em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:18px;">&#9733; PERSONAGGIO DEL GIORNO</div>
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#9733; PERSONAGGIO DEL GIORNO</div>
               <!-- Nome + Emoji -->
-              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
                 <tr>
                   <td style="vertical-align:middle;padding-right:14px;">
-                    <div style="font-size:44px;line-height:1;">${personaggioDelGiorno.emoji}</div>
+                    <div style="font-size:40px;line-height:1;">${personaggioDelGiorno.emoji}</div>
                   </td>
                   <td style="vertical-align:middle;">
-                    <div style="font-size:26px;font-weight:900;color:#ffffff;font-family:${F_SERIF};line-height:1.15;letter-spacing:-0.01em;">${personaggioDelGiorno.nome}</div>
-                    <div style="font-size:13px;color:#e8c84a;font-family:${F_SANS};font-weight:600;margin-top:3px;">${personaggioDelGiorno.ruolo} &middot; ${personaggioDelGiorno.azienda}</div>
+                    <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;">${personaggioDelGiorno.nome}</div>
+                    <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;">${personaggioDelGiorno.ruolo} &middot; ${personaggioDelGiorno.azienda}</div>
                   </td>
                 </tr>
               </table>
+              <!-- Divisore -->
+              <div style="height:1px;background:${BORDER};margin:14px 0;"></div>
               <!-- Cosa ha fatto -->
-              <div style="background:rgba(255,255,255,0.07);border-left:3px solid #e8c84a;border-radius:0 6px 6px 0;padding:12px 16px;margin:16px 0;">
-                <div style="font-size:15px;font-weight:700;color:#ffffff;font-family:${F_SANS};line-height:1.5;">${personaggioDelGiorno.cosa_ha_fatto}</div>
-              </div>
+              <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.5;margin-bottom:10px;">${personaggioDelGiorno.cosa_ha_fatto}</div>
               <!-- Perché conta -->
-              <div style="font-size:13px;color:rgba(255,255,255,0.75);font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">${personaggioDelGiorno.perche_conta}</div>
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${personaggioDelGiorno.perche_conta}</div>
               <!-- CTA -->
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:#e8c84a;border-radius:6px;padding:11px 22px;">
-                    <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=personaggio_giorno" style="font-size:12px;font-weight:800;color:#1a1a2e;text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress →</a>
-                  </td>
-                </tr>
-              </table>
+              <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=personaggio_giorno" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress →</a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : '';
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOCK D-TER: PERSONAGGIO ITALIANO DEL GIORNO
+  // BLOCK D-TER: PERSONAGGIO ITALIANO DEL GIORNO — stile editoriale bianco + bandiera
   // ═══════════════════════════════════════════════════════════════
   const personaggioItalianoHtml = personaggioItalianoDelGiorno ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#006400 0%,#1a4a1a 50%,#0d2b0d 100%);border-radius:12px;overflow:hidden;border:1px solid #ffffff;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${ITALY_RED};">
           <tr>
-            <td style="padding:28px 30px;">
+            <td style="padding:24px 28px;">
               <!-- Label con bandiera italiana -->
-              <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:0.25em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:18px;">&#127470;&#127481; PERSONAGGIO ITALIANO DEL GIORNO</div>
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#127470;&#127481; PERSONAGGIO ITALIANO DEL GIORNO</div>
               <!-- Nome + Emoji -->
-              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
                 <tr>
                   <td style="vertical-align:middle;padding-right:14px;">
-                    <div style="font-size:44px;line-height:1;">${personaggioItalianoDelGiorno.emoji}</div>
+                    <div style="font-size:40px;line-height:1;">${personaggioItalianoDelGiorno.emoji}</div>
                   </td>
                   <td style="vertical-align:middle;">
-                    <div style="font-size:26px;font-weight:900;color:#ffffff;font-family:${F_SERIF};line-height:1.15;letter-spacing:-0.01em;">${personaggioItalianoDelGiorno.nome}</div>
-                    <div style="font-size:13px;color:rgba(255,255,255,0.85);font-family:${F_SANS};font-weight:600;margin-top:3px;">${personaggioItalianoDelGiorno.ruolo} &middot; ${personaggioItalianoDelGiorno.azienda}${personaggioItalianoDelGiorno.citta ? ' &middot; ' + personaggioItalianoDelGiorno.citta : ''}</div>
+                    <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;">${personaggioItalianoDelGiorno.nome}</div>
+                    <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;">${personaggioItalianoDelGiorno.ruolo} &middot; ${personaggioItalianoDelGiorno.azienda}${personaggioItalianoDelGiorno.citta ? ' &middot; ' + personaggioItalianoDelGiorno.citta : ''}</div>
                   </td>
                 </tr>
               </table>
+              <!-- Divisore -->
+              <div style="height:1px;background:${BORDER};margin:14px 0;"></div>
               <!-- Cosa ha fatto -->
-              <div style="background:rgba(255,255,255,0.1);border-left:3px solid #ffffff;border-radius:0 6px 6px 0;padding:12px 16px;margin:16px 0;">
-                <div style="font-size:15px;font-weight:700;color:#ffffff;font-family:${F_SANS};line-height:1.5;">${personaggioItalianoDelGiorno.cosa_ha_fatto}</div>
-              </div>
+              <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.5;margin-bottom:10px;">${personaggioItalianoDelGiorno.cosa_ha_fatto}</div>
               <!-- Perché conta -->
-              <div style="font-size:13px;color:rgba(255,255,255,0.8);font-family:${F_SANS};line-height:1.7;margin-bottom:20px;">${personaggioItalianoDelGiorno.perche_conta}</div>
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${personaggioItalianoDelGiorno.perche_conta}</div>
               <!-- CTA -->
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="background:#ffffff;border-radius:6px;padding:11px 22px;">
-                    <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=personaggio_italiano" style="font-size:12px;font-weight:800;color:#006400;text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress →</a>
-                  </td>
-                </tr>
-              </table>
+              <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=personaggio_italiano" style="font-size:12px;font-weight:700;color:${ITALY_RED};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress →</a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="height:24px;background:${BG};"></td></tr>` : '';
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : '';
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCK D-QUATER: INVESTITORE ITALIANO DEL GIORNO
+  // ═══════════════════════════════════════════════════════════════
+  const investitoreHtml = investitoreItalianoDelGiorno ? `
+    <tr>
+      <td style="padding:0 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${ITALY_GOLD};">
+          <tr>
+            <td style="padding:24px 28px;">
+              <!-- Label -->
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:16px;">&#127470;&#127481; INVESTITORE ITALIANO DEL GIORNO</div>
+              <!-- Nome + Emoji -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+                <tr>
+                  <td style="vertical-align:middle;padding-right:14px;">
+                    <div style="font-size:40px;line-height:1;">${investitoreItalianoDelGiorno.emoji}</div>
+                  </td>
+                  <td style="vertical-align:middle;">
+                    <div style="font-size:24px;font-weight:800;color:${BLACK};font-family:${F_SERIF};line-height:1.2;letter-spacing:-0.01em;">${investitoreItalianoDelGiorno.nome}</div>
+                    <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;">${investitoreItalianoDelGiorno.ruolo} &middot; ${investitoreItalianoDelGiorno.fondo}${investitoreItalianoDelGiorno.citta ? ' &middot; ' + investitoreItalianoDelGiorno.citta : ''}</div>
+                    <div style="font-size:10px;color:${ITALY_GOLD};font-family:${F_SANS};font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:0.1em;">${investitoreItalianoDelGiorno.tipo}</div>
+                  </td>
+                </tr>
+              </table>
+              <!-- Divisore -->
+              <div style="height:1px;background:${BORDER};margin:14px 0;"></div>
+              <!-- Cosa ha fatto -->
+              <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.5;margin-bottom:10px;">${investitoreItalianoDelGiorno.cosa_ha_fatto}</div>
+              <!-- Perch\u00e9 conta -->
+              <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${investitoreItalianoDelGiorno.perche_conta}</div>
+              <!-- CTA -->
+              <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=investitore_italiano" style="font-size:12px;font-weight:700;color:${ITALY_GOLD};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Approfondisci su ProofPress \u2192</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="height:20px;background:${BG};"></td></tr>` : '';
 
   // ═══════════════════════════════════════════════════════════════
   // BLOCK D: STARTUP DEL GIORNO
@@ -1014,13 +1055,13 @@ function buildNewsletterHtmlV2(opts: {
   const startupHtml = startup ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:4px solid #7c3aed;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${ACCENT};">
           <tr>
             <td style="padding:24px 28px;">
-              <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🚀 STARTUP DEL GIORNO</div>
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🇮🇹 STARTUP DEL GIORNO</div>
               ${startup.imageUrl ? `<img src="${startup.imageUrl}" width="80" height="80" style="width:80px;height:80px;object-fit:cover;border-radius:8px;display:block;margin-bottom:14px;" alt="${startup.name}" />` : ''}
               <div style="font-size:28px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.2;margin-bottom:6px;">${startup.name}</div>
-              <div style="font-size:15px;color:#7c3aed;font-family:${F_SANS};font-weight:600;margin-bottom:12px;">${startup.tagline}</div>
+              <div style="font-size:14px;color:${MUTED};font-family:${F_SANS};font-weight:500;margin-bottom:12px;">${startup.tagline}</div>
               <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${startup.description.slice(0, 280)}${startup.description.length > 280 ? '...' : ''}</div>
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
                 <tr>
@@ -1032,8 +1073,8 @@ function buildNewsletterHtmlV2(opts: {
               </table>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:#7c3aed;border-radius:6px;padding:12px 24px;">
-                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F_SANS};">Scopri la startup →</a>
+                  <td>
+                    <a href="${BASE_URL}/ai/spotlight/${startup.id}?utm_source=newsletter&utm_medium=email&utm_campaign=startup_day" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Scopri la startup →</a>
                   </td>
                 </tr>
               </table>
@@ -1053,18 +1094,18 @@ function buildNewsletterHtmlV2(opts: {
   const researchHtml = researchOfDay ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:4px solid #0066cc;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${ACCENT};">
           <tr>
             <td style="padding:24px 28px;">
-              <div style="font-size:11px;font-weight:700;color:#0066cc;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🔬 RICERCA DEL GIORNO</div>
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🔬 RICERCA DEL GIORNO</div>
               <div style="font-size:24px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:12px;">
                 <a href="${researchUrl}" style="color:${BLACK};text-decoration:none;">${researchOfDay.title}</a>
               </div>
               <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:18px;">${researchOfDay.summary ? researchOfDay.summary.slice(0, 260) + (researchOfDay.summary.length > 260 ? '...' : '') : ''}</div>
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background:#0066cc;border-radius:6px;padding:12px 24px;">
-                    <a href="${researchUrl}" style="font-size:13px;font-weight:700;color:#ffffff;text-decoration:none;font-family:${F_SANS};">Leggi la ricerca →</a>
+                  <td>
+                    <a href="${researchUrl}" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">Leggi la ricerca →</a>
                   </td>
                 </tr>
               </table>
@@ -1085,11 +1126,11 @@ function buildNewsletterHtmlV2(opts: {
   const dealHtml = dealOfDay ? `
     <tr>
       <td style="padding:0 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:4px solid #059669;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};border-top:3px solid ${ACCENT};">
           ${dealImgSrc ? `<tr><td style="padding:0;"><a href="${dealUrl}" style="display:block;text-decoration:none;"><img src="${dealImgSrc}" width="600" style="width:100%;max-width:600px;height:180px;object-fit:cover;display:block;" alt="${dealOfDay.title}" /></a></td></tr>` : ''}
           <tr>
             <td style="padding:24px 28px;">
-              <div style="font-size:11px;font-weight:700;color:#059669;letter-spacing:0.18em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">💼 DEAL DEL GIORNO</div>
+              <div style="font-size:10px;font-weight:700;color:${MUTED};letter-spacing:0.22em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:14px;">🇮🇹 DEAL ITALIANO DEL GIORNO</div>
               <div style="font-size:22px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">
                 <a href="${dealUrl}" style="color:${BLACK};text-decoration:none;">${dealOfDay.title}</a>
               </div>
@@ -1097,7 +1138,7 @@ function buildNewsletterHtmlV2(opts: {
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td>
-                    <a href="${dealUrl}" style="font-size:12px;font-weight:700;color:#059669;text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">LEGGI IL DEAL →</a>
+                    <a href="${dealUrl}" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">LEGGI IL DEAL →</a>
                   </td>
                   <td style="text-align:right;vertical-align:middle;">
                     ${verifyBadge(dealOfDay)}
@@ -1199,12 +1240,13 @@ function buildNewsletterHtmlV2(opts: {
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
         ${introHtml}
-        ${newsCardsHtml}
-        ${personaggioHtml}
         ${personaggioItalianoHtml}
+        ${investitoreHtml}
+        ${newsCardsHtml}
         ${startupHtml}
-        ${researchHtml}
         ${dealHtml}
+        ${researchHtml}
+        ${personaggioHtml}
         ${sponsorHtml}
         ${ctaHtml}
         ${footerHtml}
@@ -1433,7 +1475,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
       const newsList = allNewsForPersonaggio
         .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
         .join('\n');
-      const personaggioPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture, tecnologia, startup e investimenti:\n\n${newsList}\n\nIndividua il PERSONAGGIO DEL GIORNO: il protagonista piu iconico, mitico o rilevante citato o implicato in queste notizie. Puo essere un founder leggendario, un investor di peso, un CEO che ha fatto una mossa clamorosa, un innovatore che sta cambiando le regole del gioco.\n\nSe nessun personaggio specifico emerge chiaramente dalle notizie, scegli comunque il piu rilevante nel contesto attuale del settore tech/venture italiano o globale.\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e iconico o rilevante per il lettore C-level (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
+      const personaggioPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture, tecnologia, startup e investimenti:\n\n${newsList}\n\nIndividua il PERSONAGGIO DEL GIORNO GLOBALE: una PERSONA FISICA (non un fondo, non un'azienda, non un'organizzazione) che e il protagonista piu iconico, mitico o rilevante citato o implicato in queste notizie. Deve essere un individuo reale: un founder leggendario, un investor di peso, un CEO che ha fatto una mossa clamorosa, un innovatore che sta cambiando le regole del gioco.\n\nREGOLE FONDAMENTALI:\n- DEVE essere una persona fisica con nome e cognome (es. Sam Altman, Elon Musk, Jensen Huang)\n- NON scegliere mai un fondo (es. EQT, Sequoia, a16z) o un'azienda (es. Google, OpenAI)\n- Se nessuna persona fisica emerge chiaramente dalle notizie, scegli comunque il CEO/founder/investor globale piu rilevante del momento nel settore tech/venture\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e iconico o rilevante per il lettore C-level (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
       const personaggioResult = await invokeLLMBulk({
         messages: [{ role: 'user', content: personaggioPrompt }],
       });
@@ -1518,6 +1560,56 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn('[Newsletter] LLM personaggio italiano del giorno skipped:', e instanceof Error ? e.message : e);
   }
 
+  // ── Step 5: Investitore Italiano del Giorno ──────────────────────────────
+  let investitoreItalianoDelGiorno: {
+    nome: string;
+    ruolo: string;
+    fondo: string;
+    tipo: string;
+    cosa_ha_fatto: string;
+    perche_conta: string;
+    emoji: string;
+    citta?: string;
+  } | null = null;
+  try {
+    const allNewsForInvestitore = [
+      ...content.dealroomNews.filter(n => n.id).slice(0, 8),
+      ...content.startupNews.filter(n => n.id).slice(0, 6),
+      ...content.aiNews.filter(n => n.id).slice(0, 4),
+    ];
+    if (allNewsForInvestitore.length > 0) {
+      const newsListINV = allNewsForInvestitore
+        .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
+        .join('\n');
+      const investitorePrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture capital, deal e startup:\n\n${newsListINV}\n\nIndividua l'INVESTITORE ITALIANO DEL GIORNO: un Angel Investor, Venture Capitalist, Partner di fondo o Business Angel ITALIANO che si distingue oggi. Deve essere una PERSONA FISICA con nome e cognome.\n\nPuo essere:\n- Un partner di un fondo VC italiano (es. P101, Indaco, Primo Ventures, CDP Venture)\n- Un angel investor italiano attivo\n- Un family office italiano che ha fatto una mossa\n- Un investitore italiano in un deal significativo\n\nSe nessun investitore italiano emerge chiaramente dalle notizie, scegli comunque il piu rilevante dell'ecosistema VC italiano in questo momento.\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo (es. General Partner, Angel Investor, Managing Partner)",\n  "fondo": "Nome fondo o portfolio",\n  "tipo": "VC | Angel | Family Office | Corporate VC",\n  "citta": "Citta italiana",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo investitore e rilevante per l'ecosistema italiano (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo investitore"\n}`;
+      const investitoreResult = await invokeLLMBulk({
+        messages: [{ role: 'user', content: investitorePrompt }],
+      });
+      const investitoreRaw = (typeof investitoreResult.choices?.[0]?.message?.content === 'string'
+        ? investitoreResult.choices[0].message.content
+        : '').trim();
+      try {
+        const cleanJsonINV = investitoreRaw
+          .replace(/^```json\s*/i, '')
+          .replace(/^```\s*/i, '')
+          .replace(/\s*```$/i, '')
+          .trim();
+        investitoreItalianoDelGiorno = JSON.parse(cleanJsonINV);
+        console.log(`[Newsletter] Investitore Italiano del Giorno: ${investitoreItalianoDelGiorno?.nome} (${investitoreItalianoDelGiorno?.fondo})`);
+      } catch {
+        const jsonMatchINV = investitoreRaw.match(/\{[\s\S]*\}/);
+        if (jsonMatchINV) {
+          try {
+            investitoreItalianoDelGiorno = JSON.parse(jsonMatchINV[0]);
+            console.log(`[Newsletter] Investitore Italiano del Giorno (fallback): ${investitoreItalianoDelGiorno?.nome}`);
+          } catch { /* ignora */ }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[Newsletter] LLM investitore italiano del giorno skipped:', e instanceof Error ? e.message : e);
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1544,6 +1636,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     catchySummaries,
     personaggioDelGiorno,
     personaggioItalianoDelGiorno,
+    investitoreItalianoDelGiorno,
   });
 
   const sponsorIds: number[] = [];
