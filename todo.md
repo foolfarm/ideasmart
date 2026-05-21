@@ -3805,3 +3805,12 @@
 - [x] Router tRPC personaggi.getAll, getBySlug, getFeatured, create
 - [x] Route /personaggi aggiunta in App.tsx
 - [x] Fix scheduler: cron 17:30 PPV commentato, task 08:30 riattivato
+
+## Personaggi del Venture Italiano (21 Maggio 2026)
+- [x] Tabella personaggi creata nel DB (schema + migration)
+- [x] Router tRPC personaggi (getAll, getBySlug, getFeatured, create)
+- [x] Pagina /personaggi con griglia editoriale e filtri categoria
+- [x] Pagina /personaggi/:slug con bio estesa, citazione, stats e link social
+- [x] 15 profili reali del venture italiano inseriti nel DB
+- [x] Blocco "Protagonisti del Venture" integrato nella Home (6 card in griglia)
+- [x] Route /personaggi/:slug aggiunta in App.tsx

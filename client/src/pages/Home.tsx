@@ -481,6 +481,7 @@ export default function Home() {
   const { data: upcomingEvents } = trpc.events.getUpcoming.useQuery({ limit: 3, category: "all" }, queryOpts);
   const { data: authorPosts } = trpc.news.getAuthorPosts.useQuery({ limit: 3 }, queryOpts);
   const { data: topNewsWithImages } = trpc.news.getTopWithImages.useQuery({ limit: 6 }, queryOpts);
+  const { data: featuredPersonaggi } = trpc.personaggi.getFeatured.useQuery(undefined, queryOpts);
 
   const aiNews      = homeData?.ai      ?? [];
   const startupNews = homeData?.startup ?? [];
@@ -877,6 +878,41 @@ export default function Home() {
                   </section>
                 )}
               </>
+            )}
+
+            {/* ── PROTAGONISTI DEL VENTURE ── */}
+            {featuredPersonaggi && featuredPersonaggi.length > 0 && (
+              <section className="mt-10">
+                <div className="flex items-center justify-between mb-4 pb-2" style={{ borderBottom: "3px solid #1a1a1a" }}>
+                  <span className="text-[13px] font-bold uppercase tracking-[0.15em]" style={{ color: "#1a1a1a", fontFamily: FONT_SANS }}>Protagonisti del Venture</span>
+                  <Link href="/personaggi">
+                    <span className="text-[11px] font-medium text-[#888] hover:text-[#e63946] transition-colors cursor-pointer" style={{ fontFamily: FONT_SANS }}>Tutti i profili →</span>
+                  </Link>
+                </div>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+                  {featuredPersonaggi.slice(0, 6).map((persona) => {
+                    const catColors: Record<string, string> = { founder: "#e63946", investor: "#2563eb", executive: "#059669", researcher: "#7c3aed", journalist: "#d97706", other: "#6b7280" };
+                    const catLabels: Record<string, string> = { founder: "Founder", investor: "Investor", executive: "Executive", researcher: "Ricercatore", journalist: "Giornalista", other: "Altro" };
+                    const fallbacks: Record<string, string> = { founder: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80", investor: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80", executive: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80", researcher: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80", journalist: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80", other: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" };
+                    const imgSrc = persona.imageUrl || fallbacks[persona.category] || fallbacks["founder"];
+                    const color = catColors[persona.category] || "#1a1a1a";
+                    const label = catLabels[persona.category] || persona.category;
+                    return (
+                      <Link key={persona.id} href={`/personaggi/${persona.slug}`}>
+                        <article className="group cursor-pointer text-center">
+                          <div className="relative overflow-hidden rounded-lg bg-[#f5f5f5] mb-2" style={{ aspectRatio: "3/4" }}>
+                            <img src={imgSrc} alt={persona.name} loading="lazy" className="w-full h-full object-cover object-top group-hover:scale-[1.04] transition-transform duration-500" />
+                            {persona.isItalian && <div className="absolute top-1.5 left-1.5 text-sm">🇮🇹</div>}
+                          </div>
+                          <span className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-1.5 py-0.5 mb-1" style={{ background: color, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>{label}</span>
+                          <h3 className="text-[12px] font-bold text-[#1a1a1a] group-hover:text-[#e63946] transition-colors leading-snug" style={{ fontFamily: FONT_SERIF }}>{persona.name}</h3>
+                          {persona.company && <p className="text-[10px] text-[#aaa]" style={{ fontFamily: FONT_SANS }}>{persona.company}</p>}
+                        </article>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </section>
             )}
 
             {/* ── BANNER FOOTER ── */}
