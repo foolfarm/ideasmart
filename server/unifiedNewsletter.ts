@@ -1505,7 +1505,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
       const newsList = allNewsForPersonaggio
         .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
         .join('\n');
-      const personaggioPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture, tecnologia, startup e investimenti:\n\n${newsList}\n\nIndividua il PERSONAGGIO DEL GIORNO GLOBALE: una PERSONA FISICA (non un fondo, non un'azienda, non un'organizzazione) che e il protagonista piu iconico, mitico o rilevante citato o implicato in queste notizie. Deve essere un individuo reale: un founder leggendario, un investor di peso, un CEO che ha fatto una mossa clamorosa, un innovatore che sta cambiando le regole del gioco.\n\nREGOLE FONDAMENTALI:\n- DEVE essere una persona fisica con nome e cognome (es. Sam Altman, Elon Musk, Jensen Huang)\n- NON scegliere mai un fondo (es. EQT, Sequoia, a16z) o un'azienda (es. Google, OpenAI)\n- Se nessuna persona fisica emerge chiaramente dalle notizie, scegli comunque il CEO/founder/investor globale piu rilevante del momento nel settore tech/venture\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e iconico o rilevante per il lettore C-level (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
+      const personaggioPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture, tecnologia, startup e investimenti:\n\n${newsList}\n\nIndividua il PERSONAGGIO DEL GIORNO GLOBALE: una PERSONA FISICA (non un fondo, non un'azienda, non un'organizzazione) che e il protagonista piu iconico, mitico o rilevante citato o implicato in queste notizie. Deve essere un individuo reale: un founder leggendario, un investor di peso, un CEO che ha fatto una mossa clamorosa, un innovatore che sta cambiando le regole del gioco.\n\nREGOLE FONDAMENTALI:\n- DEVE essere una persona fisica con nome e cognome (es. Sam Altman, Elon Musk, Jensen Huang)\n- NON scegliere mai un fondo (es. EQT, Sequoia, a16z) o un'azienda (es. Google, OpenAI)\n- Se nessuna persona fisica emerge chiaramente dalle notizie, scegli comunque il CEO/founder/investor globale piu rilevante del momento nel settore tech/venture\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "cosa_ha_fatto": "Una frase su cosa ha fatto — SOLO fatti verificabili dalle notizie o dal ruolo pubblico noto. NON inventare eventi o ruoli (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e iconico o rilevante per il lettore C-level (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
       const personaggioResult = await invokeLLMBulk({
         messages: [{ role: 'user', content: personaggioPrompt }],
       });
@@ -1671,15 +1671,17 @@ REGOLE ASSOLUTE:
 2. DEVE essere italiano o operante principalmente nell'ecosistema italiano
 3. Preferisci chi ha fatto una mossa concreta recente (deal, closing fondo, exit)
 4. MAI scegliere stranieri, fondi internazionali, o aziende senza un investitore specifico
+5. ANTI-ALLUCINAZIONE: il campo "cosa_ha_fatto" deve descrivere SOLO fatti presenti nelle notizie fornite OPPURE ruoli/attivita pubblicamente noti e verificabili (es. "E General Partner di P101 dal 2013"). NON inventare eventi, date, cifre o attivita non presenti nelle notizie. Se non hai informazioni recenti verificabili, descrivi il ruolo istituzionale della persona.
+6. NON attribuire mai a una persona un ruolo che non ricopre: verifica che il ruolo indicato corrisponda alla posizione pubblica nota della persona.
 
 Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
 {
   "nome": "Nome Cognome",
-  "ruolo": "Titolo (es. General Partner, Angel Investor, Managing Partner, Founder & Investor)",
+  "ruolo": "Titolo verificato e pubblicamente noto (es. General Partner, Angel Investor, Managing Partner, Founder & Investor)",
   "fondo": "Nome fondo, club o portfolio",
   "tipo": "VC | Angel | Business Angel | Family Office | Corporate VC",
   "citta": "Citta italiana",
-  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana — specifico e verificabile (max 130 caratteri)",
+  "cosa_ha_fatto": "Una frase su cosa ha fatto — SOLO fatti verificabili dalle notizie o dal ruolo pubblico noto (max 130 caratteri)",
   "perche_conta": "Una frase sul perche questo investitore e rilevante per l'ecosistema startup italiano (max 160 caratteri)",
   "emoji": "Un singolo emoji che rappresenta questo investitore"
 }`;
