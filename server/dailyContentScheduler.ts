@@ -19,7 +19,7 @@ import { generateDailyResearch } from "./researchGenerator";
 import { publishToLinkedIn } from "./linkedinPublisher";
 import { getDb } from "./db";
 import { dailyEditorial, linkedinPosts, startupOfDay, systemSettings } from "../drizzle/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 
 // ── Recupera titoli editoriali recenti per anti-ripetitività ─────────────────
@@ -155,9 +155,13 @@ Restituisci un JSON con questa struttura esatta:
 
 // ── Startup del Giorno ────────────────────────────────────────────────────────
 
-export async function generateStartupOfDay() {
+export async function generateStartupOfDay(excludeNames: string[] = []) {
   const today = getTodayLabel();
   const italianDate = getItalianDate();
+
+  const excludeClause = excludeNames.length > 0
+    ? `\n\nSTARTUP DA ESCLUDERE TASSATIVAMENTE (già pubblicate di recente, NON ripetere):\n${excludeNames.map(n => `- ${n}`).join('\n')}`
+    : '';
 
   const prompt = `Sei un analista di Proof Press, specializzato nell'identificare startup AI emergenti.
 Oggi è ${italianDate}.
@@ -170,7 +174,7 @@ Criteri di selezione:
 - Prodotto AI applicato al business (non consumer)
 - Trazione recente: round di finanziamento, partnership, lancio prodotto, crescita utenti
 - Rilevante per CEO e manager italiani
-- Non già ampiamente coperta dai media mainstream italiani
+- Non già ampiamente coperta dai media mainstream italiani${excludeClause}
 
 Restituisci un JSON con questa struttura esatta:
 {
@@ -276,20 +280,25 @@ async function runDailyContentRefresh() {
     const startupsNeeded = 2 - existingStartupsToday.length;
     if (startupsNeeded > 0) {
       console.log(`[DailyContent] Generating ${startupsNeeded} startup(s) of the day...`);
-      // Raccoglie nomi già generati oggi per evitare duplicati
+      // Raccoglie nomi già generati negli ultimi 30 giorni per evitare ripetizioni
       const existingNames = new Set<string>();
       if (db2) {
-        const todayStartups = await db2.select({ name: startupOfDay.name }).from(startupOfDay).where(eq(startupOfDay.dateLabel, today));
-        todayStartups.forEach(s => existingNames.add(s.name.toLowerCase()));
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        const recentStartups = await db2.select({ name: startupOfDay.name }).from(startupOfDay)
+          .where(sql`${startupOfDay.createdAt} >= ${thirtyDaysAgo.toISOString().slice(0,10)}`);
+        recentStartups.forEach(s => existingNames.add(s.name.toLowerCase()));
+        console.log(`[DailyContent] Excluding ${existingNames.size} startup names used in last 30 days`);
       }
       for (let i = 0; i < startupsNeeded; i++) {
         try {
-          let startup = await generateStartupOfDay();
-          // Retry se la startup è già presente oggi
+          const excludeList = Array.from(existingNames);
+          let startup = await generateStartupOfDay(excludeList);
+          // Retry se la startup è già presente di recente
           let retries = 0;
-          while (existingNames.has(startup.name.toLowerCase()) && retries < 3) {
-            console.log(`[DailyContent] Startup "${startup.name}" già generata oggi, riprovo...`);
-            startup = await generateStartupOfDay();
+          while (existingNames.has(startup.name.toLowerCase()) && retries < 5) {
+            console.log(`[DailyContent] Startup "${startup.name}" già generata di recente, riprovo...`);
+            startup = await generateStartupOfDay(excludeList);
             retries++;
           }
           existingNames.add(startup.name.toLowerCase());
